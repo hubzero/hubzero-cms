@@ -300,14 +300,12 @@ class Notes extends Plugin
         $pagePrefix = '';
 
         // Output HTML (wrap for notes)
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'notes',
-                'name'    => 'wrap',
-                'layout'  => 'wrap',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'notes',
+            'name'    => 'wrap',
+            'layout'  => 'wrap',
+        ]);
 
         // Get first project note
         $view->firstNote = $this->note->getFirstNote($pagePrefix);
@@ -338,14 +336,12 @@ class Notes extends Plugin
 
         if (!$view->page->get('id') && $this->_task == 'view' && $view->page->get('namespace') != 'special') {
             // Output HTML (wrap for notes)
-            $nview = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'notes',
-                    'name'    => 'pages',
-                    'layout'  => 'doesnotexist',
-                ],
-            );
+            $nview = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'notes',
+                'name'    => 'pages',
+                'layout'  => 'doesnotexist',
+            ]);
             $nview->scope   = $scope;
             $nview->option  = $this->_option;
             $nview->project = $this->model;
@@ -473,13 +469,11 @@ class Notes extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'notes',
-                'name'    => 'pubsettings',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'notes',
+            'name'    => 'pubsettings',
+        ]);
 
         // Get/update public stamp for page
         $view->set('publicStamp', $this->note->getPublicStamp($page->get('id'), true));
@@ -489,13 +483,11 @@ class Notes extends Plugin
             $this->setError(Lang::txt('PLG_PROJECTS_NOTES_ERROR_SHARE'));
 
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'error',
+            ]);
 
             $view->set('title', '');
             $view->setErrors($this->getErrors());
@@ -593,13 +585,11 @@ class Notes extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'notes',
-                'name'    => 'browser',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'notes',
+            'name'    => 'browser',
+        ]);
 
         // Get current attachments
         $pContent = new \Components\Publications\Tables\Attachment($this->_database);
@@ -688,13 +678,11 @@ class Notes extends Plugin
             . stripslashes($this->model->get('title')) . ' - ' . stripslashes($page->get('title')));
 
         // Instantiate a new view
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'notes',
-                'name'    => 'pubview',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'notes',
+            'name'    => 'pubview',
+        ]);
         $view->option = $this->_option;
         $view->model = $this->model;
         $view->page = $page;
@@ -722,13 +710,11 @@ class Notes extends Plugin
             return false;
         }
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'notes',
-                'name'    => 'mini',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'notes',
+            'name'    => 'mini',
+        ]);
 
         $group = $model->config()->get('group_prefix', 'pr-') . $model->get('alias');
         $masterScope = 'projects' . DS . $model->get('alias') . DS . 'notes';
@@ -761,13 +747,11 @@ class Notes extends Plugin
             return false;
         }
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'notes',
-                'name'    => 'publist',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'notes',
+            'name'    => 'publist',
+        ]);
 
         $database = App::get('db');
         $objSt    = new \Components\Projects\Tables\Stamp($database);

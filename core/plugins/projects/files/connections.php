@@ -722,14 +722,12 @@ class Connections
     private function preview()
     {
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'connected',
-                'layout'  => 'preview',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'connected',
+            'layout'  => 'preview',
+        ]);
 
         $file = Request::getString('asset');
         $path = trim($this->subdir, '/') . '/' . $file;

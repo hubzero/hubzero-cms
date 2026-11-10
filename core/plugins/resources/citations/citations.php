@@ -95,13 +95,11 @@ class Citations extends Plugin
         // Are we returning HTML?
         if ($rtrn == 'all' || $rtrn == 'html') {
             // Instantiate a view
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => $this->_type,
-                    'element' => $this->_name,
-                    'name'    => 'browse',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => $this->_type,
+                'element' => $this->_name,
+                'name'    => 'browse',
+            ]);
 
             // Pass the view some info
             $view->option    = $option;
@@ -118,13 +116,11 @@ class Citations extends Plugin
 
         // Are we returning metadata?
         if ($rtrn == 'all' || $rtrn == 'metadata') {
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => $this->_type,
-                    'element' => $this->_name,
-                    'name'    => 'metadata',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => $this->_type,
+                'element' => $this->_name,
+                'name'    => 'metadata',
+            ]);
             $view->url = Route::url($model->link() . '&active=citations');
             $view->citations = $citations;
 

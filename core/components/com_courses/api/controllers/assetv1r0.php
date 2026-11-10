@@ -696,12 +696,10 @@ class Assetv1r0 extends base
         }
 
         // Return message
-        $this->send(
-            [
-                'asset_id' => $assetObj->id,
-                'deleted'  => $deleted,
-            ],
-        );
+        $this->send([
+            'asset_id' => $assetObj->id,
+            'deleted'  => $deleted,
+        ]);
     }
 
     /**

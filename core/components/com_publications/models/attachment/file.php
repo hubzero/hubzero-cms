@@ -1775,14 +1775,12 @@ class File extends Base
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'attachments',
-                'layout'  => $this->_name,
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'attachments',
+            'layout'  => $this->_name,
+        ]);
 
         $view->data   = $data;
         $view->params = $params;

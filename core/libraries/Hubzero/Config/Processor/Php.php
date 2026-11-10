@@ -45,12 +45,10 @@ class Php extends Base
         try {
             $temp = require $path;
         } catch (\Throwable $exception) {
-            throw new ParseException(
-                [
-                    'message'   => 'PHP file threw an exception',
-                    'exception' => $exception,
-                ],
-            );
+            throw new ParseException([
+                'message'   => 'PHP file threw an exception',
+                'exception' => $exception,
+            ]);
         }
 
         // If we have a callable, run it and expect an array back

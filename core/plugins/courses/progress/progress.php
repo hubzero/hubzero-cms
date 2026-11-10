@@ -217,13 +217,11 @@ class Progress extends Plugin
         $start = Request::getInt('limitstart', 0);
 
         // Get all section members
-        $members = $this->course->offering()->section()->members(
-            [
-                'student' => 1,
-                'limit' => $limit,
-                'start' => $start,
-            ],
-        );
+        $members = $this->course->offering()->section()->members([
+            'student' => 1,
+            'limit' => $limit,
+            'start' => $start,
+        ]);
         $member_ids = [];
         $mems = [];
         $grades = null;
@@ -260,15 +258,13 @@ class Progress extends Plugin
             $recognitions = $this->course->offering()->gradebook()->isEligibleForRecognition($member_ids);
         }
 
-        echo json_encode(
-            [
-                'members' => $mems,
-                'grades' => $grades,
-                'progress' => $progress,
-                'passing' => $passing,
-                'recognitions' => $recognitions,
-            ],
-        );
+        echo json_encode([
+            'members' => $mems,
+            'grades' => $grades,
+            'progress' => $progress,
+            'passing' => $passing,
+            'recognitions' => $recognitions,
+        ]);
 
         exit();
     }
@@ -318,14 +314,12 @@ class Progress extends Plugin
         // Get total number of members
         $members_cnt = $this->course->offering()->section()->members(['student' => 1, 'count' => true]);
 
-        echo json_encode(
-            [
-                'gradepolicy' => $policy,
-                'units' => $units,
-                'members_cnt' => $members_cnt,
-                'course_id' => $this->course->get('id'),
-            ],
-        );
+        echo json_encode([
+            'gradepolicy' => $policy,
+            'units' => $units,
+            'members_cnt' => $members_cnt,
+            'course_id' => $this->course->get('id'),
+        ]);
 
         exit();
     }
@@ -361,20 +355,18 @@ class Progress extends Plugin
 
         // Get the assets
         $asset = new \Components\Courses\Tables\Asset(App::get('db'));
-        $assets = $asset->find(
-            [
-                'w' => [
-                    'course_id' => $this->course->get('id'),
-                    'section_id' => $this->course->offering()->section()->get('id'),
-                    'offering_id' => $this->course->offering()->get('id'),
-                    'graded' => true,
-                    'state' => 1,
-                    'asset_scope' => 'asset_group',
-                ],
-                'order_by' => 'title',
-                'order_dir' => 'ASC',
+        $assets = $asset->find([
+            'w' => [
+                'course_id' => $this->course->get('id'),
+                'section_id' => $this->course->offering()->section()->get('id'),
+                'offering_id' => $this->course->offering()->get('id'),
+                'graded' => true,
+                'state' => 1,
+                'asset_scope' => 'asset_group',
             ],
-        );
+            'order_by' => 'title',
+            'order_dir' => 'ASC',
+        ]);
 
         // Get gradebook auxiliary assets
         $auxiliary = $asset->findByScope(
@@ -394,14 +386,12 @@ class Progress extends Plugin
             return strcasecmp($a->title, $b->title);
         });
 
-        echo json_encode(
-            [
-                'assets' => $assets,
-                'members' => $mems,
-                'grades' => $grades,
-                'canManage' => (($this->course->access('manage')) ? true : false),
-            ],
-        );
+        echo json_encode([
+            'assets' => $assets,
+            'members' => $mems,
+            'grades' => $grades,
+            'canManage' => (($this->course->access('manage')) ? true : false),
+        ]);
         exit();
     }
 
@@ -423,20 +413,18 @@ class Progress extends Plugin
 
         // Get the assets
         $asset = new \Components\Courses\Tables\Asset(App::get('db'));
-        $assets = $asset->find(
-            [
-                'w' => [
-                    'course_id' => $this->course->get('id'),
-                    'section_id' => $this->course->offering()->section()->get('id'),
-                    'offering_id' => $this->course->offering()->get('id'),
-                    'graded' => true,
-                    'state' => 1,
-                    'asset_scope' => 'asset_group',
-                ],
-                'order_by' => 'title',
-                'order_dir' => 'ASC',
+        $assets = $asset->find([
+            'w' => [
+                'course_id' => $this->course->get('id'),
+                'section_id' => $this->course->offering()->section()->get('id'),
+                'offering_id' => $this->course->offering()->get('id'),
+                'graded' => true,
+                'state' => 1,
+                'asset_scope' => 'asset_group',
             ],
-        );
+            'order_by' => 'title',
+            'order_dir' => 'ASC',
+        ]);
 
         // Get gradebook auxiliary assets
         $auxiliary = $asset->findByScope(
@@ -456,12 +444,10 @@ class Progress extends Plugin
             return strcasecmp($a->title, $b->title);
         });
 
-        echo json_encode(
-            [
-                'stats' => $stats,
-                'assets' => $assets,
-            ],
-        );
+        echo json_encode([
+            'stats' => $stats,
+            'assets' => $assets,
+        ]);
         exit();
     }
 
@@ -490,20 +476,18 @@ class Progress extends Plugin
 
         // Get the assets
         $asset = new \Components\Courses\Tables\Asset(App::get('db'));
-        $assets = $asset->find(
-            [
-                'w' => [
-                    'course_id' => $this->course->get('id'),
-                    'section_id' => $this->course->offering()->section()->get('id'),
-                    'offering_id' => $this->course->offering()->get('id'),
-                    'graded' => true,
-                    'state' => 1,
-                    'asset_scope' => 'asset_group',
-                ],
-                'order_by' => 'title',
-                'order_dir' => 'ASC',
+        $assets = $asset->find([
+            'w' => [
+                'course_id' => $this->course->get('id'),
+                'section_id' => $this->course->offering()->section()->get('id'),
+                'offering_id' => $this->course->offering()->get('id'),
+                'graded' => true,
+                'state' => 1,
+                'asset_scope' => 'asset_group',
             ],
-        );
+            'order_by' => 'title',
+            'order_dir' => 'ASC',
+        ]);
 
         // Get gradebook auxiliary assets
         $auxiliary = $asset->findByScope(
@@ -1033,13 +1017,11 @@ class Progress extends Plugin
             $policy->quiz_weight = $gp->get('quiz_weight') * 100;
             $policy->homework_weight = $gp->get('homework_weight') * 100;
             $policy->threshold = $gp->get('threshold') * 100;
-            echo json_encode(
-                [
-                    'success' => true,
-                    'message' => 'Scoring policy successfully restored to the default configuration!',
-                    'gradepolicy' => $policy,
-                ],
-            );
+            echo json_encode([
+                'success' => true,
+                'message' => 'Scoring policy successfully restored to the default configuration!',
+                'gradepolicy' => $policy,
+            ]);
             exit();
         } else {
             // Redirect with message

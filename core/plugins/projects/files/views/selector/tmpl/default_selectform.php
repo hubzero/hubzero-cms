@@ -34,14 +34,12 @@ defined('_HZEXEC_') or die();
                 echo $this->connections;
             } else {
                 // Show files
-                $view = new \Hubzero\Plugin\View(
-                    [
-                        'folder'  => 'projects',
-                        'element' => 'files',
-                        'name'    => 'selector',
-                        'layout'  => 'selector',
-                    ],
-                );
+                $view = new \Hubzero\Plugin\View([
+                    'folder'  => 'projects',
+                    'element' => 'files',
+                    'name'    => 'selector',
+                    'layout'  => 'selector',
+                ]);
                 $view->option       = $this->option;
                 $view->model        = $this->model;
                 $view->items        = $this->items;

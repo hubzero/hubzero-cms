@@ -1356,14 +1356,12 @@ class Calendar extends Plugin
         // send a copy to event admin
         if ($eventsEvent->email != '') {
             //build message to send to event admin
-            $email = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'groups',
-                    'element' => 'calendar',
-                    'name'    => 'calendar',
-                    'layout'  => 'register_email_admin',
-                ],
-            );
+            $email = new \Hubzero\Plugin\View([
+                'folder'  => 'groups',
+                'element' => 'calendar',
+                'name'    => 'calendar',
+                'layout'  => 'register_email_admin',
+            ]);
             $email->option     = $this->option;
             $email->group      = $this->group;
             $email->params     = $params;

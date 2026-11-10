@@ -700,13 +700,11 @@ class Filefsv1r0 extends ApiController
         // File preview?
         if ($render == 'preview') {
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'preview',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'preview',
+            ]);
 
             $view->file = isset($collector[0]) ? $collector[0] : null;
 
@@ -874,14 +872,12 @@ class Filefsv1r0 extends ApiController
 
         // Insert file
         $response = new stdClass();
-        $response->results     = $this->model->repo()->insert(
-            [
-                'dataPath'    => $dataPath,
-                'allowReplace' => $this->_task == 'insert' ? false : true,
-                'update'      => $this->_task == 'insert' ? false : true,
-                'subdir'      => Request::getString('subdir', ''),
-            ],
-        );
+        $response->results     = $this->model->repo()->insert([
+            'dataPath'    => $dataPath,
+            'allowReplace' => $this->_task == 'insert' ? false : true,
+            'update'      => $this->_task == 'insert' ? false : true,
+            'subdir'      => Request::getString('subdir', ''),
+        ]);
 
         // Parse results
         if (!empty($response->results)) {

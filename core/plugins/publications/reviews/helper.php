@@ -258,14 +258,12 @@ class Helper extends \Hubzero\Base\Obj
             if (empty($response)) {
                 exit();
             }
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder' => 'publications',
-                    'element' => 'reviews',
-                    'name'   => 'browse',
-                    'layout' => '_rateitem',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder' => 'publications',
+                'element' => 'reviews',
+                'name'   => 'browse',
+                'layout' => '_rateitem',
+            ]);
             $view->option = $this->_option;
             $view->item   = new Models\Review($response[0]);
             $view->rid    = $publication->get('id');
@@ -420,13 +418,11 @@ class Helper extends \Hubzero\Base\Obj
         $subject = Config::get('sitename') . ' ' . Lang::txt('PLG_PUBLICATIONS_REVIEWS_CONTRIBUTIONS');
 
         // Message
-        $eview = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'publications',
-                'element' => 'reviews',
-                'name'    => 'emails',
-            ],
-        );
+        $eview = new \Hubzero\Plugin\View([
+            'folder'  => 'publications',
+            'element' => 'reviews',
+            'name'    => 'emails',
+        ]);
         $eview->option      = $this->_option;
         $eview->juser       = User::getInstance();
         $eview->publication = $publication;

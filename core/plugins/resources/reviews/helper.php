@@ -255,14 +255,12 @@ class Helper extends \Hubzero\Base\Obj
             $rev->set('helpful', $rev->votes()->whereEquals('vote', 1)->total());
             $rev->set('nothelpful', $rev->votes()->whereEquals('vote', -1)->total());
 
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'resources',
-                    'element' => 'reviews',
-                    'name'    => 'browse',
-                    'layout'  => '_rateitem',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'resources',
+                'element' => 'reviews',
+                'name'    => 'browse',
+                'layout'  => '_rateitem',
+            ]);
             $view->option = $this->_option;
             $view->item = $rev;
 
@@ -407,13 +405,11 @@ class Helper extends \Hubzero\Base\Obj
         $subject = Config::get('sitename') . ' ' . Lang::txt('PLG_RESOURCES_REVIEWS_CONTRIBUTIONS');
 
         // Message
-        $eview = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'resources',
-                'element' => 'reviews',
-                'name'    => 'emails',
-            ],
-        );
+        $eview = new \Hubzero\Plugin\View([
+            'folder'  => 'resources',
+            'element' => 'reviews',
+            'name'    => 'emails',
+        ]);
         $eview->option   = $this->_option;
         $eview->user     = User::getInstance();
         $eview->resource = $this->resource;

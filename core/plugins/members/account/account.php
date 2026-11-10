@@ -350,14 +350,12 @@ class Account extends Plugin
         $change = Request::getString('change', '', 'post');
 
         // Create the view
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'members',
-                'element' => 'account',
-                'name'    => 'setlocalpassword',
-                'layout'  => 'confirmtoken',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'members',
+            'element' => 'account',
+            'name'    => 'setlocalpassword',
+            'layout'  => 'confirmtoken',
+        ]);
         $view->option = $this->option;
         $view->id     = $this->user->get('id');
 
@@ -477,14 +475,12 @@ class Account extends Plugin
         $change    = Request::getString('change', '', 'post');
 
         // Create the view
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'members',
-                'element' => 'account',
-                'name'    => 'setlocalpassword',
-                'layout'  => 'setlocalpass',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'members',
+            'element' => 'account',
+            'name'    => 'setlocalpassword',
+            'layout'  => 'setlocalpass',
+        ]);
 
         // Add a few more variables to the view
         $view->option = $this->option;
@@ -568,12 +564,10 @@ class Account extends Plugin
 
         // Redirect
         if (Request::getInt('no_html', 0)) {
-            echo json_encode(
-                [
-                    "success" => true,
-                    "redirect" => Route::url($this->member->link() . '&active=account'),
-                ],
-            );
+            echo json_encode([
+                "success" => true,
+                "redirect" => Route::url($this->member->link() . '&active=account'),
+            ]);
             exit();
         } else {
             // Redirect user to confirm view page

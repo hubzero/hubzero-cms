@@ -338,13 +338,11 @@ class Publications extends Plugin
         // Instantiate a publication object
         $pub = new \Components\Publications\Models\Publication();
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'mini',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'mini',
+        ]);
 
         // Filters for returning results
         $view->filters = [
@@ -379,13 +377,11 @@ class Publications extends Plugin
         // Instantiate a publication object
         $pub = new \Components\Publications\Models\Publication();
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'publist',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'publist',
+        ]);
 
         // Filters for returning results
         $view->filters = [
@@ -417,13 +413,11 @@ class Publications extends Plugin
         $filters['dev']           = 1; // get dev versions
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'browse',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'browse',
+        ]);
 
         // Instantiate a publication object
         $view->pub = new \Components\Publications\Models\Publication();
@@ -495,13 +489,11 @@ class Publications extends Plugin
         if (!$view->publication->exists()) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'error',
+            ]);
 
             $view->title  = '';
             $view->option = $this->_option;
@@ -571,26 +563,22 @@ class Publications extends Plugin
         $element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 0;
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'selector',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'selector',
+        ]);
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
         if (!$view->publication->exists()) {
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'error',
+            ]);
 
             $view->title  = '';
             $view->option = $this->_option;
@@ -606,13 +594,11 @@ class Publications extends Plugin
         // Set block
         if (!$view->publication->_curationModel->setBlock($block, $blockId)) {
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'error',
+            ]);
 
             $view->title  = '';
             $view->option = $this->_option;
@@ -865,13 +851,11 @@ class Publications extends Plugin
 
         // Report only status action
         if ($json) {
-            return json_encode(
-                [
-                    'success' => 1,
-                    'error'   => $this->getError(),
-                    'message' => $this->_msg,
-                ],
-            );
+            return json_encode([
+                'success' => 1,
+                'error'   => $this->getError(),
+                'message' => $this->_msg,
+            ]);
         }
 
         // Go back to panel after changes to individual attachment
@@ -1066,14 +1050,12 @@ class Publications extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'draft',
-                'layout'  => 'start',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'draft',
+            'layout'  => 'start',
+        ]);
 
         // Build pub url
         $view->route = $this->model->isProvisioned()
@@ -1354,13 +1336,11 @@ class Publications extends Plugin
         $name = $block == 'status' ? 'status' : 'draft';
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => $name,
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => $name,
+        ]);
 
         // Output HTML
         $view->option           = $this->_option;
@@ -1433,13 +1413,11 @@ class Publications extends Plugin
         // On error
         if ($this->getError()) {
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'publications',
-                    'name'    => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'publications',
+                'name'    => 'error',
+            ]);
 
             $view->title  = '';
             $view->option = $this->_option;
@@ -1451,14 +1429,12 @@ class Publications extends Plugin
         $pub->setCuration();
 
         // On success
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'edititem',
-                'layout'  => $layout,
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'edititem',
+            'layout'  => $layout,
+        ]);
 
         // Get project path
         if ($this->_task != 'editauthor') {
@@ -1509,13 +1485,11 @@ class Publications extends Plugin
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
         $version = Request::getString('version', 'default');
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'stats',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'stats',
+        ]);
 
         // Get pub stats for each publication
         $pubLog = new \Components\Publications\Tables\Log($this->_database);
@@ -1641,13 +1615,11 @@ class Publications extends Plugin
                 }
             }
         } else {
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'publications',
-                    'name'    => 'suggestlicense',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'publications',
+                'name'    => 'suggestlicense',
+            ]);
 
             // Output HTML
             $view->option    = $this->_option;
@@ -1792,13 +1764,11 @@ class Publications extends Plugin
             }
         } else {
             // Need to ask for new version label
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'publications',
-                    'name'    => 'newversion',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'publications',
+                'name'    => 'newversion',
+            ]);
 
             // Output HTML
             $view->option           = $this->_option;
@@ -2564,13 +2534,11 @@ class Publications extends Plugin
                 }
             }
         } else {
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'publications',
-                    'name'    => 'cancel',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'publications',
+                'name'    => 'cancel',
+            ]);
 
             // Output HTML
             $view->option         = $this->_option;
@@ -2615,13 +2583,11 @@ class Publications extends Plugin
         $pid = $this->_pid ? $this->_pid : Request::getInt('pid', 0);
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder' => 'projects',
-                'element' => 'publications',
-                'name'   => 'versions',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder' => 'projects',
+            'element' => 'publications',
+            'name'   => 'versions',
+        ]);
 
         // Load publication model
         $view->pub  = new \Components\Publications\Models\Publication($pid, 'default');
@@ -2682,14 +2648,12 @@ class Publications extends Plugin
             }
         }
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'browse',
-                'layout'  => 'provisioned',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'browse',
+            'layout'  => 'provisioned',
+        ]);
         $view->option   = $this->_option;
         $view->juser    = User::getInstance();
         $view->database = $this->_database;
@@ -2791,13 +2755,11 @@ class Publications extends Plugin
     public function pubDiskSpace($model)
     {
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'diskspace',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'diskspace',
+        ]);
 
         // Include styling and js
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'files', 'diskspace');

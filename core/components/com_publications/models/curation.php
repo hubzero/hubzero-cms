@@ -2460,14 +2460,12 @@ class Curation extends Obj
             return false;
         }
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'draft',
-                'layout'  => 'statusbar',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'draft',
+            'layout'  => 'statusbar',
+        ]);
         $view->pub       = $this->_pub;
         $view->progress  = $this->_progress;
         $view->active    = $this->_blockname;

@@ -121,32 +121,28 @@ class Migration20180524092913ComGroups extends Base
             }
         }
         $publicDescField = Field::blank()
-            ->set(
-                [
-                    'type' => 'textarea',
-                    'name' => 'public_desc',
-                    'label' => 'Public Description',
-                    'access' => 0,
-                    'ordering' => 1,
-                    'rows' => 10,
-                ],
-            );
+            ->set([
+                'type' => 'textarea',
+                'name' => 'public_desc',
+                'label' => 'Public Description',
+                'access' => 0,
+                'ordering' => 1,
+                'rows' => 10,
+            ]);
         if ($publicDescField->save()) {
             if (!empty($publicDescriptionAnswers)) {
                 $publicDescField->answers()->save($publicDescriptionAnswers);
             }
         }
         $privateDescField = Field::blank()
-            ->set(
-                [
-                    'type' => 'textarea',
-                    'name' => 'private_desc',
-                    'label' => 'Private Description',
-                    'access' => 2,
-                    'ordering' => 1,
-                    'rows' => 10,
-                ],
-            );
+            ->set([
+                'type' => 'textarea',
+                'name' => 'private_desc',
+                'label' => 'Private Description',
+                'access' => 2,
+                'ordering' => 1,
+                'rows' => 10,
+            ]);
         if ($privateDescField->save()) {
             if (!empty($privateDescriptionAnswers)) {
                 $privateDescField->answers()->save($privateDescriptionAnswers);

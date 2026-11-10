@@ -156,12 +156,10 @@ class Emailtoken extends Plugin
             $result = false;
         } else {
             // Log attempt to the database
-            \Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save(
-                [
-                    'username' => $user->username,
-                    'status'   => 'blocked',
-                ],
-            );
+            \Hubzero\User\User::oneOrFail($user->id)->logger()->auth()->save([
+                'username' => $user->username,
+                'status'   => 'blocked',
+            ]);
         }
 
         return $result;

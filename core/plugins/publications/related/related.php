@@ -197,14 +197,12 @@ class Related extends Plugin
             $layout = 'mini';
         }
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'publications',
-                'element' => 'related',
-                'name'    => 'browse',
-                'layout'  => $layout,
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'publications',
+            'element' => 'related',
+            'name'    => 'browse',
+            'layout'  => $layout,
+        ]);
 
         // Pass the view some info
         $view->set('option', $option);

@@ -160,13 +160,11 @@ class Publications extends Plugin
             }
 
             // Plain text
-            $eview = new \Hubzero\Mail\View(
-                [
-                    'base_path' => __DIR__,
-                    'name'      => 'emails',
-                    'layout'    => 'stats_plain',
-                ],
-            );
+            $eview = new \Hubzero\Mail\View([
+                'base_path' => __DIR__,
+                'name'      => 'emails',
+                'layout'    => 'stats_plain',
+            ]);
             $eview->option     = 'com_publications';
             $eview->controller = 'publications';
             $eview->user       = $user;

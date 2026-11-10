@@ -60,24 +60,20 @@ class Yaml extends Base
             try {
                 return SymfonyYaml::parseFile($path);
             } catch (SymfonyYamlException $e) {
-                throw new ParseException(
-                    [
-                        'message' => 'Error parsing YAML file: ' . $path,
-                        'file' => $path,
-                    ],
-                );
+                throw new ParseException([
+                    'message' => 'Error parsing YAML file: ' . $path,
+                    'file' => $path,
+                ]);
             }
         }
 
         $data = @\yaml_parse_file($path);
 
         if ($data === false) {
-            throw new ParseException(
-                [
-                    'message' => 'Error parsing YAML file: ' . $path,
-                    'file' => $path,
-                ],
-            );
+            throw new ParseException([
+                'message' => 'Error parsing YAML file: ' . $path,
+                'file' => $path,
+            ]);
         }
 
         return $data;
@@ -172,22 +168,18 @@ class Yaml extends Base
             try {
                 $parsed = SymfonyYaml::parse($data);
             } catch (SymfonyYamlException $e) {
-                throw new ParseException(
-                    [
-                        'message' => 'Error parsing YAML',
-                    ],
-                );
+                throw new ParseException([
+                    'message' => 'Error parsing YAML',
+                ]);
             }
         } else {
             $parsed = @\yaml_parse($data);
         }
 
         if ($parsed === false) {
-            throw new ParseException(
-                [
-                    'message' => 'Error parsing YAML',
-                ],
-            );
+            throw new ParseException([
+                'message' => 'Error parsing YAML',
+            ]);
         }
 
         if (!$parsed) {

@@ -110,12 +110,10 @@ class Xusers extends Plugin
         }
 
         // Log attempt to the database
-        \Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save(
-            [
-                'username' => $xuser->get('username'),
-                'status'   => 'success',
-            ],
-        );
+        \Hubzero\User\User::oneOrFail($xuser->get('id'))->logger()->auth()->save([
+            'username' => $xuser->get('username'),
+            'status'   => 'success',
+        ]);
 
         // update session tracking with new data
         $session = App::get('session');
@@ -621,13 +619,11 @@ class Xusers extends Plugin
     public function onUserLoginFailure($response)
     {
         // Log attempt to the database
-        \Hubzero\User\User::blank()->logger()->auth()->set(
-            [
-                'user_id'  => 0,
-                'username' => isset($response['username']) ? $response['username'] : '[unknown]',
-                'status'   => 'failure',
-            ],
-        )->save();
+        \Hubzero\User\User::blank()->logger()->auth()->set([
+            'user_id'  => 0,
+            'username' => isset($response['username']) ? $response['username'] : '[unknown]',
+            'status'   => 'failure',
+        ])->save();
 
         return true;
     }

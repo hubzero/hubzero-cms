@@ -71,14 +71,12 @@ class Review extends Base
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'    => 'projects',
-                    'element'   => 'publications',
-                    'name'      => $name,
-                    'layout'    => 'wrapper',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'    => 'projects',
+                'element'   => 'publications',
+                'name'      => $name,
+                'layout'    => 'wrapper',
+            ]);
         }
 
         $view->manifest     = $this->_manifest;
@@ -104,14 +102,12 @@ class Review extends Base
         $name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'    => 'projects',
-                'element'   => 'publications',
-                'name'      => $name,
-                'layout'    => 'review',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'    => 'projects',
+            'element'   => 'publications',
+            'name'      => $name,
+            'layout'    => 'review',
+        ]);
 
         \Hubzero\Document\Assets::addComponentStylesheet('com_projects', 'css/calendar');
 

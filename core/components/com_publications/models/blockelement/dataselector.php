@@ -124,14 +124,12 @@ class Dataselector extends Base
      */
     public function drawItem($elementId, $manifest, $pub = null, $status = null, $master = null, $viewname = 'freeze')
     {
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'freeze',
-                'layout'  => 'dataselector',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'freeze',
+            'layout'  => 'dataselector',
+        ]);
 
         // Get attachment type model
         $attModel = new \Components\Publications\Models\Attachments($this->_parent->_db);
@@ -214,14 +212,12 @@ class Dataselector extends Base
             $manifest->params->role,
         );
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'blockelement',
-                'layout'  => 'dataselector',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'blockelement',
+            'layout'  => 'dataselector',
+        ]);
 
         $view->type        = $manifest->params->type;
         $view->path        = $this->path;

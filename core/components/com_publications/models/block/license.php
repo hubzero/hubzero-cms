@@ -67,24 +67,20 @@ class License extends Base
 
         if ($viewname == 'curator') {
             // Output HTML
-            $view = new \Hubzero\Component\View(
-                [
-                    'name'      => 'curation',
-                    'layout'    => 'block',
-                ],
-            );
+            $view = new \Hubzero\Component\View([
+                'name'      => 'curation',
+                'layout'    => 'block',
+            ]);
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'    => 'projects',
-                    'element'   => 'publications',
-                    'name'      => $name,
-                    'layout'    => 'wrapper',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'    => 'projects',
+                'element'   => 'publications',
+                'name'      => $name,
+                'layout'    => 'wrapper',
+            ]);
         }
 
         $view->manifest     = $this->_manifest;
@@ -113,14 +109,12 @@ class License extends Base
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'publications', 'selector');
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'    => 'projects',
-                'element'   => 'publications',
-                'name'      => $name,
-                'layout'    => 'license',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'    => 'projects',
+            'element'   => 'publications',
+            'name'      => $name,
+            'layout'    => 'license',
+        ]);
 
         $view->pub      = $pub;
         $view->manifest = $this->_manifest;

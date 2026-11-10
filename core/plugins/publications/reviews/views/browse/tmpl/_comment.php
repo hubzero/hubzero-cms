@@ -85,14 +85,12 @@ if ($this->comment->get('publication_id')) {
         <?php if (!$this->comment->isReported() && $this->comment->get('publication_id')) { ?>
             <div class="comment-voting voting" id="answers_<?php echo $this->comment->get('id'); ?>">
                 <?php
-                $view = new \Hubzero\Plugin\View(
-                    [
-                        'folder'  => 'publications',
-                        'element' => 'reviews',
-                        'name'    => 'browse',
-                        'layout'  => '_rateitem',
-                    ],
-                );
+                $view = new \Hubzero\Plugin\View([
+                    'folder'  => 'publications',
+                    'element' => 'reviews',
+                    'name'    => 'browse',
+                    'layout'  => '_rateitem',
+                ]);
                 $view->option = $this->option;
                 $view->item   = $this->comment;
                 $view->type   = 'review';

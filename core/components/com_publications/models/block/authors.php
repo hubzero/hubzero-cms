@@ -71,24 +71,20 @@ class Authors extends Base
 
         if ($viewname == 'curator') {
             // Output HTML
-            $view = new \Hubzero\Component\View(
-                [
-                    'name'   => 'curation',
-                    'layout' => 'block',
-                ],
-            );
+            $view = new \Hubzero\Component\View([
+                'name'   => 'curation',
+                'layout' => 'block',
+            ]);
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'publications',
-                    'name'    => $name,
-                    'layout'  => 'wrapper',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'publications',
+                'name'    => $name,
+                'layout'  => 'wrapper',
+            ]);
         }
 
         $view->manifest     = $this->_manifest;
@@ -682,14 +678,12 @@ class Authors extends Base
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'team', 'selector');
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => $name,
-                'layout'  => 'authors',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => $name,
+            'layout'  => 'authors',
+        ]);
 
         // Get authors
         if (!isset($pub->_authors)) {

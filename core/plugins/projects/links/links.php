@@ -592,27 +592,23 @@ class Links extends Plugin
         $layout = $this->_task == 'newcite' ? 'edit' : 'default';
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'links',
-                'name'    => 'selector',
-                'layout'  => $layout,
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'links',
+            'name'    => 'selector',
+            'layout'  => $layout,
+        ]);
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
         // On error
         if (!$view->publication->exists()) {
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'error',
+            ]);
 
             $view->title  = '';
             $view->option = $this->_option;
@@ -678,14 +674,12 @@ class Links extends Plugin
         $vid = Request::getInt('vid', 0);
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'links',
-                'name'    => 'selector',
-                'layout'  => 'edit',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'links',
+            'name'    => 'selector',
+            'layout'  => 'edit',
+        ]);
 
         // Load classes
         $objP = new \Components\Publications\Tables\Publication($this->_database);
@@ -707,13 +701,11 @@ class Links extends Plugin
         // On error
         if ($this->getError()) {
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'error',
+            ]);
 
             $view->title  = '';
             $view->option = $this->_option;
@@ -757,13 +749,11 @@ class Links extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'links',
-                'name'    => 'browser',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'links',
+            'name'    => 'browser',
+        ]);
 
         // Get current attachments
         $pContent = new \Components\Publications\Tables\Attachment($this->_database);

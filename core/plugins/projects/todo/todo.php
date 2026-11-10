@@ -213,13 +213,11 @@ class Todo extends Plugin
         // Get our To do model
         $this->todo = new \Components\Projects\Models\Todo();
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'todo',
-                'name'    => 'mini',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'todo',
+            'name'    => 'mini',
+        ]);
 
         // Filters for returning results
         $view->filters = [
@@ -253,14 +251,12 @@ class Todo extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'todo',
-                'name'    => 'view',
-                'layout'  => 'shared',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'todo',
+            'name'    => 'view',
+            'layout'  => 'shared',
+        ]);
         $view->limit    = isset($filters['limit']) ? $filters['limit'] : 0;
         $view->filters  = $filters;
         $view->uid      = $uid;
@@ -288,14 +284,12 @@ class Todo extends Plugin
         $mine = isset($this->_mine) ? $this->_mine : Request::getInt('mine', 0);
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'todo',
-                'name'    => 'view',
-                'layout'  => $layout,
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'todo',
+            'name'    => 'view',
+            'layout'  => $layout,
+        ]);
 
         // Filters for returning results
         $view->filters = [
@@ -349,14 +343,12 @@ class Todo extends Plugin
             return;
         }
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => $this->_type,
-                'element' => $this->_name,
-                'name'    => 'item',
-                'layout'  => $layout,
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => $this->_type,
+            'element' => $this->_name,
+            'name'    => 'item',
+            'layout'  => $layout,
+        ]);
         $view->option = $this->option;
         $view->todo   = $this->todo;
         $view->params = $this->model->params;

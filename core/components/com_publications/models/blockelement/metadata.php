@@ -144,14 +144,12 @@ class Metadata extends Base
         $master = null,
         $viewname = 'freeze',
     ) {
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'    => 'projects',
-                'element'   => 'publications',
-                'name'      => 'freeze',
-                'layout'    => 'metadata',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'    => 'projects',
+            'element'   => 'publications',
+            'name'      => 'freeze',
+            'layout'    => 'metadata',
+        ]);
 
         $view->pub           = $pub;
         $view->manifest      = $manifest;
@@ -179,14 +177,12 @@ class Metadata extends Base
         $master = null,
         $order = 0,
     ) {
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'    => 'projects',
-                'element'   => 'publications',
-                'name'      => 'blockelement',
-                'layout'    => 'metadata',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'    => 'projects',
+            'element'   => 'publications',
+            'name'      => 'blockelement',
+            'layout'    => 'metadata',
+        ]);
 
         $view->pub           = $pub;
         $view->manifest      = $manifest;

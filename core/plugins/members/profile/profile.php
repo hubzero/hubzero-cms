@@ -128,16 +128,14 @@ class Profile extends Plugin
         $xreg = null;
 
         $fields = \Components\Members\Models\Profile\Field::all()
-            ->including(
-                [
-                    'options',
-                    function ($option) {
-                        $option
-                            ->select('*')
-                            ->ordered();
-                    },
-                ],
-            )
+            ->including([
+                'options',
+                function ($option) {
+                    $option
+                        ->select('*')
+                        ->ordered();
+                },
+            ])
 
             ->where(
                 'action_edit',

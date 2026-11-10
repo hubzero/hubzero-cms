@@ -142,13 +142,11 @@ class Form extends Content
 							$.fancybox.close();
 
 							var data = "
-                                . json_encode(
-                                    [
-                                        'assets' => [
-                                            $return['assets'],
-                                        ],
+                                . json_encode([
+                                    'assets' => [
+                                        $return['assets'],
                                     ],
-                                ) . ";
+                                ]) . ";
 
 							data.assets[0].asset_title = title;
 

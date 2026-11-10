@@ -357,13 +357,11 @@ class Publications extends Plugin
 
         $thedate = Date::of($thedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
-        $view = new \Hubzero\Component\View(
-            [
-                'base_path' => Component::path('com_publications') . '/site',
-                'name'      => 'browse',
-                'layout'    => 'item',
-            ],
-        );
+        $view = new \Hubzero\Component\View([
+            'base_path' => Component::path('com_publications') . '/site',
+            'name'      => 'browse',
+            'layout'    => 'item',
+        ]);
         $view->set('line', $row)
             ->set('option', 'com_publications')
             ->set('config', $config)

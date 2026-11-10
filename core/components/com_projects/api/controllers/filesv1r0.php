@@ -975,14 +975,12 @@ class Filesv1r0 extends ApiController
 
         // Insert file
         $response = new stdClass();
-        $response->results     = $this->model->repo()->insert(
-            [
-                'dataPath'    => $dataPath,
-                'allowReplace' => $this->_task == 'insert' ? false : true,
-                'update'      => $this->_task == 'insert' ? false : true,
-                'subdir'      => Request::getString('subdir', ''),
-            ],
-        );
+        $response->results     = $this->model->repo()->insert([
+            'dataPath'    => $dataPath,
+            'allowReplace' => $this->_task == 'insert' ? false : true,
+            'update'      => $this->_task == 'insert' ? false : true,
+            'subdir'      => Request::getString('subdir', ''),
+        ]);
 
         // Parse results
         if (!empty($response->results)) {

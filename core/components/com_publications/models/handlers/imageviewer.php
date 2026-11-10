@@ -420,14 +420,12 @@ class ImageViewer extends Base
         $layout = ($data->get('ext') == 'csv') ? 'file' : 'image';
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'attachments',
-                'layout'  => $layout,
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'attachments',
+            'layout'  => $layout,
+        ]);
         $view->data   = $data;
         $view->config = $this->_config;
         $view->params = $params;

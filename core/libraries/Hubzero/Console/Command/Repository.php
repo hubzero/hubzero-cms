@@ -119,11 +119,9 @@ class Repository extends Base implements CommandInterface
             foreach ($status as $k => $v) {
                 if (count($v) > 0) {
                     if ($mode == 'minimal') {
-                        $this->output->addLine(
-                            [
-                                $k => $v,
-                            ],
-                        );
+                        $this->output->addLine([
+                            $k => $v,
+                        ]);
                     } else {
                         $this->output->addSpacer();
                         $this->output->addLine(ucfirst($k) . ' files:');

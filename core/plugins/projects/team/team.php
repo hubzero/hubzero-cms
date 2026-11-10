@@ -224,13 +224,11 @@ class Team extends Plugin
             return false;
         }
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'team',
-                'name'    => 'mini',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'team',
+            'name'    => 'mini',
+        ]);
         $view->team  = $team;
         $view->model = $model;
         return $view->loadTemplate();
@@ -251,14 +249,12 @@ class Team extends Plugin
             return false;
         }
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'team',
-                'name'    => 'view',
-                'layout'  => 'horizontal',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'team',
+            'name'    => 'view',
+            'layout'  => 'horizontal',
+        ]);
 
         // Get team
         $view->team  = $model->team($filters = ['status' => 1]);
@@ -278,13 +274,11 @@ class Team extends Plugin
         $setup  = $this->_task == 'setup' ? 1 : 0;
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'team',
-                'name'    => $layout,
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'team',
+            'name'    => $layout,
+        ]);
 
         $view->total = count($this->model->team());
 
@@ -347,14 +341,12 @@ class Team extends Plugin
         $no_html = (Request::getInt('no_html', 0) || Request::getInt('ajax', 0));
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => $this->_name,
-                'name'    => 'edit',
-                'layout'  => 'choose',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => $this->_name,
+            'name'    => 'edit',
+            'layout'  => 'choose',
+        ]);
 
         $view->filters = [];
         $view->filters['sortby']  = strtolower(Request::getWord('sortby', 'name'));
@@ -411,14 +403,12 @@ class Team extends Plugin
         $layout = $this->_task == 'newauthor' || $this->model->isProvisioned() ? 'newauthor' : 'default';
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'team',
-                'name'    => 'selector',
-                'layout'  => $layout,
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'team',
+            'name'    => 'selector',
+            'layout'  => $layout,
+        ]);
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
@@ -427,13 +417,11 @@ class Team extends Plugin
             $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELECTOR_ERROR_NO_PUBID'));
 
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'error',
+            ]);
 
             $view->title  = '';
             $view->option = $this->_option;
@@ -782,13 +770,11 @@ class Team extends Plugin
 
         if ($this->_task == 'delete') {
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'team',
-                    'name'    => 'delete',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'team',
+                'name'    => 'delete',
+            ]);
 
             $view->selected = $selected;
             $view->checked  = $checked;
@@ -891,13 +877,11 @@ class Team extends Plugin
         if ($currentUser->isManager() && $ownerId != 0) {
             $owner = \Components\Projects\Models\Orm\Owner::oneByProjectAndUser($projectId, $ownerId);
             if ($confirm != 1) {
-                $view = new \Hubzero\Plugin\View(
-                    [
-                        'folder'  => 'projects',
-                        'element' => 'team',
-                        'name'    => 'memberrequest',
-                    ],
-                );
+                $view = new \Hubzero\Plugin\View([
+                    'folder'  => 'projects',
+                    'element' => 'team',
+                    'name'    => 'memberrequest',
+                ]);
 
                 $view->option = $this->_option;
                 $view->model  = $this->model;
@@ -1013,13 +997,11 @@ class Team extends Plugin
             $this->_msg = Lang::txt('PLG_PROJECTS_TEAM_OWNERSHIP_UPDATED');
         } else {
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'team',
-                    'name'    => 'changeowner',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'team',
+                'name'    => 'changeowner',
+            ]);
 
             // Get groups project owner belongs to
             $view->groups = \Hubzero\User\Helper::getGroups($this->model->get('owned_by_user'), 'members', 1);
@@ -1093,13 +1075,11 @@ class Team extends Plugin
             }
         } else {
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'team',
-                    'name'    => 'quit',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'team',
+                'name'    => 'quit',
+            ]);
 
             $view->group       = $this->model->groupOwner('id');
             $view->onlymanager = $onlymanager;
@@ -1163,13 +1143,11 @@ class Team extends Plugin
 
         if ($this->_task == 'changerole') {
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'team',
-                    'name'    => 'role',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'team',
+                'name'    => 'role',
+            ]);
 
             $view->selected = $selected;
             $view->checked  = $checked;

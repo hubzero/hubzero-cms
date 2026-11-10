@@ -73,24 +73,20 @@ class Citations extends Base
 
         if ($viewname == 'curator') {
             // Output HTML
-            $view = new \Hubzero\Component\View(
-                [
-                    'name'   => 'curation',
-                    'layout' => 'block',
-                ],
-            );
+            $view = new \Hubzero\Component\View([
+                'name'   => 'curation',
+                'layout' => 'block',
+            ]);
         } else {
             $name = $viewname == 'freeze' ? 'freeze' : 'draft';
 
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'publications',
-                    'name'    => $name,
-                    'layout'  => 'wrapper',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'publications',
+                'name'    => $name,
+                'layout'  => 'wrapper',
+            ]);
         }
 
         $view->manifest     = $this->_manifest;
@@ -118,14 +114,12 @@ class Citations extends Base
         $name = $viewname == 'freeze' || $viewname == 'curator' ? 'freeze' : 'draft';
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => $name,
-                'layout'  => 'citations',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => $name,
+            'layout'  => 'citations',
+        ]);
 
         // Get selector styles
         \Hubzero\Document\Assets::addPluginStylesheet('projects', 'links');

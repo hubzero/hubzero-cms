@@ -826,14 +826,12 @@ class Html
      */
     public static function drawStatusBar($item, $step = null, $showSubSteps = false, $review = 0)
     {
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'publications',
-                'name'    => 'edit',
-                'layout'  => 'statusbar',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'publications',
+            'name'    => 'edit',
+            'layout'  => 'statusbar',
+        ]);
         $view->set('row', $item->row);
         $view->set('version', $item->version);
         $view->set('panels', $item->panels);

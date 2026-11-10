@@ -91,14 +91,12 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
                 <div id="content-selector" class="content-selector">
                     <?php
                     // Show selection
-                    $view = new \Hubzero\Plugin\View(
-                        [
-                            'folder'  => 'projects',
-                            'element' => 'publications',
-                            'name'    => 'selector',
-                            'layout'  => $this->block,
-                        ],
-                    );
+                    $view = new \Hubzero\Plugin\View([
+                        'folder'  => 'projects',
+                        'element' => 'publications',
+                        'name'    => 'selector',
+                        'layout'  => $this->block,
+                    ]);
                     $view->option      = $this->option;
                     $view->project     = $this->project;
                     $view->database    = $this->database;
@@ -124,14 +122,12 @@ $pluginJs = $basePath . '/core/plugins/projects/publications/assets/js';
             <?php
 
             // Show selection
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'publications',
-                    'name'    => 'selector',
-                    'layout'  => $this->block,
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'publications',
+                'name'    => 'selector',
+                'layout'  => $this->block,
+            ]);
             $view->option      = $this->option;
             $view->project     = $this->project;
             $view->database    = $this->database;

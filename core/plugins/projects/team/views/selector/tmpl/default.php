@@ -60,14 +60,12 @@ $newauthorUrl = Route::url($this->publication->link('editversionid') . '&active=
     <div id="content-selector" class="content-selector">
         <?php
             // Show files
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'    => 'projects',
-                    'element'   => 'team',
-                    'name'      => 'selector',
-                    'layout'    => 'selector',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'    => 'projects',
+                'element'   => 'team',
+                'name'      => 'selector',
+                'layout'    => 'selector',
+            ]);
             $view->option       = $this->option;
             $view->model        = $this->model;
             $view->selected     = $selected;

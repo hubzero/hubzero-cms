@@ -175,12 +175,10 @@ class PdfFormRespondent
 
             $gradebook->save($grade);
         } elseif ($score > $gradebook->get('score')) {
-            $gradebook->save(
-                [
-                    'score'          => $score,
-                    'score_recorded' => Date::toSql(),
-                ],
-            );
+            $gradebook->save([
+                'score'          => $score,
+                'score_recorded' => Date::toSql(),
+            ]);
         }
     }
 

@@ -320,27 +320,23 @@ class Databases extends Plugin
         $prov = $this->model->isProvisioned() ? 1 : 0;
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder' => 'projects',
-                'element' => 'databases',
-                'name' => 'selector',
-                'layout' => 'default',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder' => 'projects',
+            'element' => 'databases',
+            'name' => 'selector',
+            'layout' => 'default',
+        ]);
 
         $view->publication = new \Components\Publications\Models\Publication($pid, null, $vid);
 
         // On error
         if (!$view->publication->exists()) {
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder' => 'projects',
-                    'element' => 'files',
-                    'name' => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder' => 'projects',
+                'element' => 'files',
+                'name' => 'error',
+            ]);
 
             $view->title = '';
             $view->option = $this->_option;
@@ -427,13 +423,11 @@ class Databases extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder' => 'projects',
-                'element' => 'databases',
-                'name' => 'browser',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder' => 'projects',
+            'element' => 'databases',
+            'name' => 'browser',
+        ]);
 
         // Get current attachments
         $pContent = new \Components\Publications\Tables\Attachment($this->_database);
@@ -511,13 +505,11 @@ class Databases extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder' => 'projects',
-                'element' => 'databases',
-                'name' => 'list',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder' => 'projects',
+            'element' => 'databases',
+            'name' => 'list',
+        ]);
         $view->model = $this->model;
         $view->option = $this->_option;
         $view->dataviewer = $this->dataviewer;
@@ -584,13 +576,11 @@ class Databases extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder' => 'projects',
-                'element' => 'databases',
-                'name' => 'create',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder' => 'projects',
+            'element' => 'databases',
+            'name' => 'create',
+        ]);
 
         $view->model = $this->model;
         $view->option = $this->_option;

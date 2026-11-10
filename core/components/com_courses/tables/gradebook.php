@@ -203,16 +203,14 @@ class GradeBook extends Table
 
         // Get the assets
         $asset  = new Asset($this->_db);
-        $assets = $asset->find(
-            [
-                'w' => [
-                    'course_id'   => $course->get('id'),
-                    'section_id'  => $course->offering()->section()->get('id'),
-                    'offering_id' => $course->offering()->get('id'),
-                    'asset_type'  => 'form',
-                ],
+        $assets = $asset->find([
+            'w' => [
+                'course_id'   => $course->get('id'),
+                'section_id'  => $course->offering()->section()->get('id'),
+                'offering_id' => $course->offering()->get('id'),
+                'asset_type'  => 'form',
             ],
-        );
+        ]);
 
         // Query for existing data
         $query = "SELECT * FROM `#__courses_grade_book` WHERE `member_id` IN ("

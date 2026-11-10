@@ -39,18 +39,16 @@ $details['forms']               = [];
 
 // Get the assets
 $asset  = new \Components\Courses\Tables\Asset(App::get('db'));
-$assets = $asset->find(
-    [
-        'w' => [
-            'course_id'   => $this->course->get('id'),
-            'section_id'  => $this->course->offering()->section()->get('id'),
-            'offering_id' => $this->course->offering()->get('id'),
-            'graded'      => true,
-            'state'       => 1,
-            'asset_scope' => 'asset_group',
-        ],
+$assets = $asset->find([
+    'w' => [
+        'course_id'   => $this->course->get('id'),
+        'section_id'  => $this->course->offering()->section()->get('id'),
+        'offering_id' => $this->course->offering()->get('id'),
+        'graded'      => true,
+        'state'       => 1,
+        'asset_scope' => 'asset_group',
     ],
-);
+]);
 
 // Get gradebook auxiliary assets
 $auxiliary = $asset->findByScope(

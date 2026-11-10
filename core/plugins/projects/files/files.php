@@ -403,13 +403,11 @@ class Files extends Plugin
         }
         $this->repo = new \Components\Projects\Models\Repo($model, 'local');
 
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'mini',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'mini',
+        ]);
 
         // Set params
         $view->params = [
@@ -436,14 +434,12 @@ class Files extends Plugin
     protected function _browse($sync = 0)
     {
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'browse',
-                'layout'  => 'display',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'browse',
+            'layout'  => 'display',
+        ]);
 
         // Does subdirectory exist?
         if (!$this->repo->dirExists($this->subdir)) {
@@ -539,13 +535,11 @@ class Files extends Plugin
         $element = (isset($parts[2]) && is_numeric($parts[2]) && $parts[2] > 0) ? $parts[2] : 1;
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'selector',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'selector',
+        ]);
         $attachments = [];
         $allowed = [];
         $used = [];
@@ -562,13 +556,11 @@ class Files extends Plugin
             // On error
             if (!$view->publication->exists()) {
                 // Output error
-                $view = new \Hubzero\Plugin\View(
-                    [
-                        'folder'  => 'projects',
-                        'element' => 'files',
-                        'name'    => 'error',
-                    ],
-                );
+                $view = new \Hubzero\Plugin\View([
+                    'folder'  => 'projects',
+                    'element' => 'files',
+                    'name'    => 'error',
+                ]);
 
                 $view->title  = '';
                 $view->option = $this->_option;
@@ -766,14 +758,12 @@ class Files extends Plugin
             } else {
                 $items = $this->repo->filelist($params);
             }
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'selector',
-                    'layout'  => $layout,
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'selector',
+                'layout'  => $layout,
+            ]);
             $view->option       = $this->option;
             $view->model        = $this->model;
             $view->items        = $items;
@@ -797,14 +787,12 @@ class Files extends Plugin
     private function _connections()
     {
         // Show files
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'selector',
-                'layout'  => 'connections',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'selector',
+            'layout'  => 'connections',
+        ]);
         $view->model       = $this->model;
         $view->connections = Project::oneOrFail($this->model->get('id'))->connections()->thatICanView();
 
@@ -824,13 +812,11 @@ class Files extends Plugin
         $ajax = Request::getInt('ajax', 0);
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'upload',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'upload',
+        ]);
 
         $view->url       = Route::url($this->model->link('files'));
         $view->unused    = $this->model->repo()->getAvailableDiskSpace();
@@ -955,13 +941,11 @@ class Files extends Plugin
         $newdir = Request::getString('newdir', '', 'post');
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'newfolder',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'newfolder',
+        ]);
 
         $view->option = $this->_option;
         $view->model  = $this->model;
@@ -1100,13 +1084,11 @@ class Files extends Plugin
         // Confirm or process request
         if ($this->_task == 'delete') {
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'delete',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'delete',
+            ]);
 
             $view->items       = [];
             $view->services    = $this->_connect->_active;
@@ -1220,13 +1202,11 @@ class Files extends Plugin
             $items = $this->_sortIncoming();
 
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'rename',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'rename',
+            ]);
 
             if (empty($items)) {
                 $view->setError(Lang::txt('COM_PROJECTS_FILES_ERROR_RENAME_NO_OLD_NAME'));
@@ -1307,13 +1287,11 @@ class Files extends Plugin
         // Confirmation screen
         if ($this->_task == 'move') {
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'move',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'move',
+            ]);
 
             $listParams = [
                 'subdir'           => null,
@@ -1449,14 +1427,12 @@ class Files extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'history',
-                'layout'  => 'advanced',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'history',
+            'layout'  => 'advanced',
+        ]);
 
         // Redirect to file list
         $view->url = Route::url($this->model->link('files'));
@@ -1472,13 +1448,11 @@ class Files extends Plugin
 
         if ($this->getError()) {
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'error',
+            ]);
 
             $view->title  = '';
             $view->option = $this->_option;
@@ -1596,14 +1570,12 @@ class Files extends Plugin
         $params['mode']     = urldecode(Request::getString('mode', 'side-by-side'));
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'history',
-                'layout'  => 'diff',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'history',
+            'layout'  => 'diff',
+        ]);
 
         // Run diff
         $view->diff = $this->repo->diff($params);
@@ -1811,13 +1783,11 @@ class Files extends Plugin
         // File preview?
         if ($render == 'preview') {
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'preview',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'preview',
+            ]);
 
             $view->file = isset($collector[0]) ? $collector[0] : null;
 
@@ -2041,13 +2011,11 @@ class Files extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'compiled',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'compiled',
+        ]);
 
         // Get selected item
         if (!$items) {
@@ -2351,13 +2319,11 @@ class Files extends Plugin
         // Confirmation screen
         if ($this->_task == 'share') {
             // Output HTML
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'share',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'share',
+            ]);
 
             $view->option = $this->_option;
             $view->model  = $this->model;
@@ -2380,13 +2346,11 @@ class Files extends Plugin
         // On error
         if ($this->getError()) {
             // Output error
-            $view = new \Hubzero\Plugin\View(
-                [
-                    'folder'  => 'projects',
-                    'element' => 'files',
-                    'name'    => 'error',
-                ],
-            );
+            $view = new \Hubzero\Plugin\View([
+                'folder'  => 'projects',
+                'element' => 'files',
+                'name'    => 'error',
+            ]);
 
             $view->title  = '';
             $view->option = $this->_option;
@@ -2614,13 +2578,11 @@ class Files extends Plugin
     public function diskspace($model, $repoName = 'local', $by = '')
     {
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'diskspace',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'diskspace',
+        ]);
 
         if (!isset($this->repo)) {
             $this->repo = new \Components\Projects\Models\Repo($model, $repoName);
@@ -2690,13 +2652,11 @@ class Files extends Plugin
     protected function _showTrash()
     {
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder'  => 'projects',
-                'element' => 'files',
-                'name'    => 'trash',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder'  => 'projects',
+            'element' => 'files',
+            'name'    => 'trash',
+        ]);
 
         // Get deleted files
         $view->files  = $this->repo->getTrash();
@@ -2775,13 +2735,11 @@ class Files extends Plugin
         }
 
         // Output HTML
-        $view = new \Hubzero\Plugin\View(
-            [
-                'folder' => 'projects',
-                'element' => 'files',
-                'name'   => 'connect',
-            ],
-        );
+        $view = new \Hubzero\Plugin\View([
+            'folder' => 'projects',
+            'element' => 'files',
+            'name'   => 'connect',
+        ]);
 
         $view->option   = $this->_option;
         $view->database = $this->_database;

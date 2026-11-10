@@ -704,20 +704,18 @@ class GradeBook extends Base
         if (!isset($assets[$assetKey])) {
             // Get the graded assets
             $asset  = new Tables\Asset(App::get('db'));
-            $found  = $asset->find(
-                [
-                    'w' => [
-                        'course_id'   => $this->course->get('id'),
-                        'section_id'  => $this->course->offering()->section()->get('id'),
-                        'offering_id' => $this->course->offering()->get('id'),
-                        'graded'      => true,
-                        'state'       => 1,
-                        'asset_scope' => 'asset_group',
-                    ],
-                    'order_by'  => 'title',
-                    'order_dir' => 'ASC',
+            $found  = $asset->find([
+                'w' => [
+                    'course_id'   => $this->course->get('id'),
+                    'section_id'  => $this->course->offering()->section()->get('id'),
+                    'offering_id' => $this->course->offering()->get('id'),
+                    'graded'      => true,
+                    'state'       => 1,
+                    'asset_scope' => 'asset_group',
                 ],
-            );
+                'order_by'  => 'title',
+                'order_dir' => 'ASC',
+            ]);
 
             // Get gradebook auxiliary assets
             $auxiliary = $asset->findByScope(

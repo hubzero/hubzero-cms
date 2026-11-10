@@ -23,12 +23,10 @@ $no_html = Request::getInt('no_html', 0);
 
 // get all sessions
 $online = [];
-$sessions = Hubzero\Session\Helper::getAllSessions(
-    [
-    'guest'    => 0,
-    'distinct' => 1,
-    ],
-);
+$sessions = Hubzero\Session\Helper::getAllSessions([
+'guest'    => 0,
+'distinct' => 1,
+]);
 if ($sessions) {
     // see if any session matches our userid
     foreach ($sessions as $session) {
