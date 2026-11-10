@@ -50,7 +50,7 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
 
     <div class="grid">
         <div class="col span7">

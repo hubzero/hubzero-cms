@@ -34,7 +34,7 @@ if (!$this->wish->get('anonymous')) {
     }
 
     $memberImage = $this->wish->proposer->picture();
-    $memberImage = '<img src="'  . $memberImage . '" alt="<' . Lang::txt('COM_WISHLIST_MEMBER_PICTURE') . '" />';
+    $memberImage = '<img src="' . $memberImage . '" alt="<' . Lang::txt('COM_WISHLIST_MEMBER_PICTURE') . '" />';
 }
 
     // && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)

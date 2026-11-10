@@ -369,7 +369,7 @@ $formAction = Route::url(
         $p = new \Components\Groups\Tables\Page($database);
         $k = 0;
         for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
-            $row =& $this->rows[$i];
+            $row = & $this->rows[$i];
 
             $group = new \Hubzero\User\Group();
             $group->read($row->gidNumber);

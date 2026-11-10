@@ -37,7 +37,7 @@ $this->css();
 Html::behavior('tooltip');
 ?>
 
-<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
 <form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
@@ -81,7 +81,7 @@ Html::behavior('tooltip');
         <caption>
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id'),
+                    'index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id'),
                 );
                 ?>
             (<a href="<?php echo $routeUrl; ?>">
@@ -89,7 +89,7 @@ Html::behavior('tooltip');
             </a>)
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id'),
+                    'index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id'),
                 );
                 ?>
             <a href="<?php echo $routeUrl; ?>">
@@ -179,7 +179,7 @@ Html::behavior('tooltip');
                     <?php if ($canDo->get('core.edit')) { ?>
                         <?php
                             $routeUrl = Route::url(
-                                'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
                                 . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>
@@ -196,7 +196,7 @@ Html::behavior('tooltip');
                     <?php if ($canDo->get('core.edit')) { ?>
                         <?php
                             $routeUrl = Route::url(
-                                'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
                                 . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>
@@ -213,7 +213,7 @@ Html::behavior('tooltip');
                     <?php if ($canDo->get('core.edit.state')) { ?>
                         <?php
                             $routeUrl = Route::url(
-                                'index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task='
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task='
                                 . $task . '&offering=' . $this->offering->get('id') . '&id=' . $row->get('id') . '&'
                                 . Session::getFormToken() . '=1',
                             );
@@ -252,7 +252,7 @@ Html::behavior('tooltip');
                     <?php if ($canDo->get('core.manage') && $assetgroups > 0) { ?>
                         <?php
                             $routeUrl = Route::url(
-                                'index.php?option=' . $this->option  . '&controller=assetgroups&unit=' . $row->get('id'),
+                                'index.php?option=' . $this->option . '&controller=assetgroups&unit=' . $row->get('id'),
                             );
                         ?>
                         <a class="glyph list" href="<?php echo $routeUrl; ?>">
@@ -264,7 +264,7 @@ Html::behavior('tooltip');
                         &nbsp;
                             <?php
                             $routeUrl = Route::url(
-                                'index.php?option=' . $this->option  . '&controller=assetgroups&unit=' . $row->get('id')
+                                'index.php?option=' . $this->option . '&controller=assetgroups&unit=' . $row->get('id')
                                 . '&task=add',
                             );
                             ?>
@@ -278,7 +278,7 @@ Html::behavior('tooltip');
                     <?php if ($canDo->get('core.edit')) { ?>
                         <?php
                             $routeUrl = Route::url(
-                                'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
                                 . '&task=edit&id=' . $row->get('id'),
                             );
                         ?>

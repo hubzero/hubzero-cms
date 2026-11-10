@@ -777,7 +777,7 @@ class Entries extends SiteController
         // Load individual item creator class
         $item = new \Hubzero\Document\Type\Feed\Item();
         $item->title = Lang::txt('Comment #%s', $row->get('id')) . ' @ ' . $row->created('time') . ' on ' . $row->created('date');
-        $item->link  = Route::url($this->entry->link()  . '#c' . $row->get('id'));
+        $item->link  = Route::url($this->entry->link() . '#c' . $row->get('id'));
 
         if ($row->isReported()) {
             $item->description = Lang::txt('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE');

@@ -163,7 +163,7 @@ class Calendar extends Relational
             $output .= "UID:{$uid}\r\n";
             $output .= "SEQUENCE:{$sequence}\r\n";
             $output .= "DTSTAMP:{$now}\r\n";
-            $output .= $dtStart  . "\r\n";
+            $output .= $dtStart . "\r\n";
             if ($event->get('publish_down') != '' && $event->get('publish_down') != '0000-00-00 00:00:00') {
                 $output .= $dtEnd . "\r\n";
             } else {

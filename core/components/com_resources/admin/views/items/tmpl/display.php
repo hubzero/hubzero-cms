@@ -316,8 +316,8 @@ $this->css();
             $license = $row->get('license', $row->params->get('license'));
 
             // Build some publishing info
-            $info  = Lang::txt('COM_RESOURCES_CREATED') .  ': '
-                .  Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) .  '<br />';
+            $info  = Lang::txt('COM_RESOURCES_CREATED') . ': '
+                . Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
             $info .= Lang::txt('COM_RESOURCES_CREATED_BY') . ': ' . $this->escape($row->created_by) . '<br />';
 
             // Get the published status
@@ -347,8 +347,8 @@ $this->css();
                         $task  = 'unpublish';
                     }
 
-                    $info .= Lang::txt('JPUBLISHED') .  ': '
-                        .  Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) .  '<br />';
+                    $info .= Lang::txt('JPUBLISHED') . ': '
+                        . Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
                     break;
                 case 2:
                     $alt   = Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
@@ -420,8 +420,8 @@ $this->css();
 
                 $editor = User::getInstance($row->checked_out);
 
-                $checked  = '<span class="editlinktip hasTip" title="' .  Lang::txt('JLIB_HTML_CHECKED_OUT') .  '::'
-                    .  $this->escape($editor->get('name')) .  '<br />' .  $date .  '<br />' .  $time .  '">';
+                $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::'
+                    . $this->escape($editor->get('name')) . '<br />' . $date . '<br />' . $time . '">';
                 $checked .= '<span class="checkedout"></span>' . '</span>';
 
                 $info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')

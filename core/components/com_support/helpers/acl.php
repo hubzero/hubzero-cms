@@ -215,7 +215,7 @@ class ACL extends Obj
         }
         $set = false;
         for ($i = 0, $n = count($this->_raw_data); $i < $n; $i++) {
-            $line =& $this->_raw_data[$i];
+            $line = & $this->_raw_data[$i];
 
             // Get the aco permission
             if (

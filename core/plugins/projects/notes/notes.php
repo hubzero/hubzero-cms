@@ -360,7 +360,7 @@ class Notes extends Plugin
         }
 
         if (!$view->content) {
-            $controllerName = "Components\Wiki\Site\Controllers\\"  . ucfirst($this->_controllerName);
+            $controllerName = "Components\Wiki\Site\Controllers\\" . ucfirst($this->_controllerName);
             // Instantiate controller
             $controller = new $controllerName([
                 'base_path' => $basePath,

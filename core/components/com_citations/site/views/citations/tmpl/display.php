@@ -162,8 +162,8 @@ foreach ($data_arr['hits'] as $hits) {
 $sumval = array_sum($data_arr['hits']);
 
 for ($i = 0, $n = count($data_arr['text']); $i < $n; $i++) {
-    $text =& $data_arr['text'][$i];
-    $hits =& $data_arr['hits'][$i];
+    $text = & $data_arr['text'][$i];
+    $hits = & $data_arr['hits'][$i];
     if ($maxval > 0 && $sumval > 0) {
         $width = ceil($hits * $polls_graphwidth / $maxval);
         $percent = round(100 * $hits / $sumval, 1);

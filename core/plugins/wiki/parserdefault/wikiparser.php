@@ -1516,7 +1516,7 @@ class WikiParser
                         return '<strong>Macro "' . $matches[1] . '" not allowed.</strong>';
                     }
 
-                    $_macros[$matches[1]] =& $macro;
+                    $_macros[$matches[1]] = & $macro;
                 } else {
                     // No such macro: remember that, and leave $macro unset so
                     // the is_object() check below returns an empty string
@@ -1524,7 +1524,7 @@ class WikiParser
                     $_macros[$matches[1]] = false;
                 }
             } else {
-                $macro =& $_macros[$matches[1]];
+                $macro = & $_macros[$matches[1]];
             }
 
             if (!is_object($macro)) {
@@ -1732,12 +1732,12 @@ class WikiParser
             }
 
             return join('', [
-                ($style) ? ' style="'   . join("", $style) . '"' : '',
-                ($class) ? ' class="'   . $class           . '"' : '',
-                ($lang) ? ' lang="'    . $lang            . '"' : '',
-                ($id and $include_id) ? ' id="' . $id        . '"' : '',
-                ($colspan) ? ' colspan="' . $colspan         . '"' : '',
-                ($rowspan) ? ' rowspan="' . $rowspan         . '"' : '',
+                ($style) ? ' style="' . join("", $style) . '"' : '',
+                ($class) ? ' class="' . $class . '"' : '',
+                ($lang) ? ' lang="' . $lang . '"' : '',
+                ($id and $include_id) ? ' id="' . $id . '"' : '',
+                ($colspan) ? ' colspan="' . $colspan . '"' : '',
+                ($rowspan) ? ' rowspan="' . $rowspan . '"' : '',
             ]);
         }
         return '';
@@ -2300,7 +2300,7 @@ class WikiParser
             if ($this->mLastSection == 'pre') {
                 $result = "</code></pre>\n";
             } else {
-                $result = '</' . $this->mLastSection  . ">\n";
+                $result = '</' . $this->mLastSection . ">\n";
             }
         }
         $this->mInPre = false;

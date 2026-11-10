@@ -69,7 +69,7 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
                     <script src="<?php echo rtrim(Request::base(true), '/'); ?>/core/plugins/projects/files/assets/js/fileupload.jquery.js"></script>
                     <?php
                         /* @TODO: this needs to be handle in a more standard site configuration way */
-                        $acceptedFormatsJS = PATH_APP  . '/acceptedFormats.js';
+                        $acceptedFormatsJS = PATH_APP . '/acceptedFormats.js';
                     if (file_exists($acceptedFormatsJS)) : ?>
                         <script src="<?php echo rtrim(Request::base(true), '/'); ?>/app/site/acceptedFormats.js">"></script>
                     <?php endif; ?>

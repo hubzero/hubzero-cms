@@ -170,7 +170,7 @@ class Adminmenu extends Module
                         $component->text = $lang->hasKey($component->title)
                             ? Lang::txt($component->title)
                             : $component->alias;
-                        $result[$component->parent_id]->submenu[] =& $component;
+                        $result[$component->parent_id]->submenu[] = & $component;
                     }
                 }
             }

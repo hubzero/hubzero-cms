@@ -157,11 +157,11 @@ class Help extends Base implements CommandInterface
                 unset($bits[count($bits) - 1]);
             }
 
-            $aux =& $parsed;
+            $aux = & $parsed;
 
             // Loop through bits and build path to element we want to set
             foreach ($bits as $b) {
-                $aux =& $aux[$b];
+                $aux = & $aux[$b];
             }
 
             // Set element

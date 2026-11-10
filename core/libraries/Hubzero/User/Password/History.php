@@ -50,7 +50,7 @@ class History
         if (is_numeric($instance) && $instance > 0) {
             $hzph->user_id = $instance;
         } else {
-            $query = "SELECT id FROM `#__users` WHERE username=" .  $db->quote($instance) . ";";
+            $query = "SELECT id FROM `#__users` WHERE username=" . $db->quote($instance) . ";";
             $db->setQuery($query);
             $result = $db->loadResult();
             if (is_numeric($result) && $result > 0) {

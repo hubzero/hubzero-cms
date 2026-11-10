@@ -54,7 +54,7 @@ if ($devLabel && $devLabel != $row->get('version_label')) {
     );
     echo '<a href="' . $devUrl
     . '">&raquo; ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_DRAFT')
-    . ' <strong>' . $devLabel  . '</strong></a> '
+    . ' <strong>' . $devLabel . '</strong></a> '
     . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN_PROGRESS');
     if ($this->project->access('content')) {
         if ($this->get('new_pubs')) {

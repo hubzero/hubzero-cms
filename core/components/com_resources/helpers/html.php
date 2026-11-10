@@ -620,7 +620,7 @@ class Html
     public static function processPath($option, $item, $pid = 0, $action = 0)
     {
         if ($item->standalone == 1) {
-            $url = Route::url('index.php?option=' . $option . '&id=' .  $item->id);
+            $url = Route::url('index.php?option=' . $option . '&id=' . $item->id);
         } else {
             $type = $item->type->alias;
 
@@ -638,7 +638,7 @@ class Html
                         $url = $item->path;
                     } else {
                         // internal link but a resource
-                        $url = Route::url('index.php?option=' . $option . '&id=' .  $item->id);
+                        $url = Route::url('index.php?option=' . $option . '&id=' . $item->id);
                     }
                     break;
 

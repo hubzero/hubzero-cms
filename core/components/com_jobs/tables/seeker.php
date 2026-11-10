@@ -245,7 +245,7 @@ class Seeker extends Table
         $query  = "SELECT DISTINCT x.name, x.countryresident, r.title, r.filename, r.created, ";
         $query .= "s.uid, s.lookingfor, s.tagline, s.sought_cid, s.sought_type, s.updated, s.linkedin, s.url ";
         if ($eid) {
-            $query .= "\n , (SELECT count(*) FROM `#__jobs_shortlist` AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->quote($eid) . " AND s.uid=r.uid AND s.uid="  . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($eid) . " AND W.category='resume') AS shortlisted ";
+            $query .= "\n , (SELECT count(*) FROM `#__jobs_shortlist` AS W WHERE W.seeker=s.uid AND W.emp=" . $this->_db->quote($eid) . " AND s.uid=r.uid AND s.uid=" . $this->_db->quote($uid) . " AND s.uid != " . $this->_db->quote($eid) . " AND W.category='resume') AS shortlisted ";
         }
         $query .= "\n , (SELECT count(*) FROM `#__jobs_seekers` AS s WHERE s.uid=" . $this->_db->quote($uid) . " AND s.uid=r.uid AND s.uid = " . $this->_db->quote(User::get('id')) . ") AS mine ";
         $query .= "FROM #__xprofiles AS x JOIN `#__jobs_seekers` AS s ON s.uid=x.uidNumber JOIN `#__jobs_resumes` AS r ON r.uid=s.uid  ";

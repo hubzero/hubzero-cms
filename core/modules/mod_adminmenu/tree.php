@@ -44,7 +44,7 @@ class Tree extends \Hubzero\Base\Obj
     public function __construct()
     {
         $this->root = new Node('ROOT');
-        $this->current =& $this->root;
+        $this->current = & $this->root;
     }
 
     /**
@@ -116,7 +116,7 @@ class Tree extends \Hubzero\Base\Obj
         while ($this->current->hasChildren()) {
             echo '<ul ' . $id . ' ' . $class . ">\n";
             foreach ($this->current->getChildren() as $child) {
-                $this->current =& $child;
+                $this->current = & $child;
                 $this->renderLevel($depth++);
             }
             echo "</ul>\n";
@@ -206,7 +206,7 @@ class Tree extends \Hubzero\Base\Obj
             }
 
             foreach ($this->current->getChildren() as $child) {
-                $this->current =& $child;
+                $this->current = & $child;
                 $this->renderLevel($depth++);
             }
 

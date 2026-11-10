@@ -95,7 +95,7 @@ class Helper extends \Hubzero\Base\Obj
             return;
         }
 
-        $publication =& $this->publication;
+        $publication = & $this->publication;
 
         // Trim and addslashes all posted items
         $comment = Request::getArray('comment', [], 'post');
@@ -157,7 +157,7 @@ class Helper extends \Hubzero\Base\Obj
         // The delete form posts a token
         Request::checkToken();
 
-        $publication =& $this->publication;
+        $publication = & $this->publication;
 
         // Incoming
         $replyid = Request::getInt('comment', 0);
@@ -206,7 +206,7 @@ class Helper extends \Hubzero\Base\Obj
         Request::checkToken();
 
         $database = App::get('db');
-        $publication =& $this->publication;
+        $publication = & $this->publication;
 
         $id   = Request::getInt('refid', 0);
         $ajax = Request::getInt('no_html', 0);
@@ -290,7 +290,7 @@ class Helper extends \Hubzero\Base\Obj
             return;
         }
 
-        $publication =& $this->publication;
+        $publication = & $this->publication;
 
         // Do we have an ID?
         if (!$publication->exists()) {
@@ -344,7 +344,7 @@ class Helper extends \Hubzero\Base\Obj
             return;
         }
 
-        $publication =& $this->publication;
+        $publication = & $this->publication;
 
         // Do we have a publication ID?
         if (!$publication->exists()) {
@@ -467,7 +467,7 @@ class Helper extends \Hubzero\Base\Obj
         Request::checkToken();
 
         $database = App::get('db');
-        $publication =& $this->publication;
+        $publication = & $this->publication;
 
         // Incoming
         $reviewid = Request::getInt('comment', 0);

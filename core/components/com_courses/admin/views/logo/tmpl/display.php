@@ -16,7 +16,7 @@ use Hubzero\Facades\Session;
 defined('_HZEXEC_') or die();
 ?>
 <div id="media">
-    <?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
     <form action="<?php echo $routeUrl; ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
         <table class="formed">
             <thead>
@@ -92,7 +92,7 @@ if ($this->file && file_exists($this->path . DS . $this->file)) {
                     <td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
                     <?php
                         $routeUrl = Route::url(
-                            'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller
                             . '&tmpl=component&task=remove&type=' . $this->type . '&file=' . $this->file . '&id='
                             . $this->id . '&' . Session::getFormToken() . '=1',
                         );

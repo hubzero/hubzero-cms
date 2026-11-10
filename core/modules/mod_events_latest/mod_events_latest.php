@@ -327,7 +327,7 @@ class EventsLatest extends Module
                 }
 
                 $seenThisEvent[$row->id] = 1;
-                $new_rows_events[] =& $rows[$r];
+                $new_rows_events[] = & $rows[$r];
             }
 
             usort($new_rows_events, [$this, 'cmpByStartTime']);

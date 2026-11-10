@@ -472,7 +472,7 @@ class Activity extends Table
         }
 
         $query  = "SELECT IF(admin = 0, 2, 1) FROM $this->_tbl ";
-        $query .= "WHERE projectid=" .  $this->_db->quote($projectid);
+        $query .= "WHERE projectid=" . $this->_db->quote($projectid);
         $query .= " AND activity=" . $this->_db->quote($check) . " AND state!=2 ";
         $query .= " ORDER BY recorded DESC LIMIT 1";
         $this->_db->setQuery($query);

@@ -1050,8 +1050,8 @@ class Groups extends Base
         $log .= Lang::txt('COM_GROUPS_GROUP_CNAME') . ': ' . $group->get('cn') . "\n";
         $log .= Lang::txt('COM_GROUPS_GROUP_TITLE') . ': ' . $group->get('description') . "\n";
         $log .= Lang::txt('COM_GROUPS_GROUP_DISCOVERABILITY') . ': ' . $group->get('discoverability') . "\n";
-        $log .= Lang::txt('COM_GROUPS_GROUP_PUBLIC_TEXT') . ': ' . stripslashes($group->get('public_desc'))  . "\n";
-        $log .= Lang::txt('COM_GROUPS_GROUP_PRIVATE_TEXT') . ': ' . stripslashes($group->get('private_desc'))  . "\n";
+        $log .= Lang::txt('COM_GROUPS_GROUP_PUBLIC_TEXT') . ': ' . stripslashes($group->get('public_desc')) . "\n";
+        $log .= Lang::txt('COM_GROUPS_GROUP_PRIVATE_TEXT') . ': ' . stripslashes($group->get('private_desc')) . "\n";
         $log .= Lang::txt('COM_GROUPS_GROUP_RESTRICTED_MESSAGE') . ': ' . stripslashes($group->get('restrict_msg')) . "\n";
 
         // Get number of group members

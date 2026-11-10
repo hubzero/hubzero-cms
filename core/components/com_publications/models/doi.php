@@ -556,7 +556,7 @@ class Doi extends Obj
 
                 if ($author->organization) {
                     $orgidAtr = (isset($author->orgid) && !empty($author->orgid)) ? ' affiliationIdentifier="' . $author->orgid . '"' . ' affiliationIdentifierScheme="ROR" schemeURI="https://ror.org"' : "";
-                    $xmlfile .= ' <affiliation' .  $orgidAtr . '>' . $author->organization . '</affiliation>';
+                    $xmlfile .= ' <affiliation' . $orgidAtr . '>' . $author->organization . '</affiliation>';
                 }
 
                 $xmlfile .= '</creator>';
@@ -565,7 +565,7 @@ class Doi extends Obj
             $xmlfile .= '<creator>';
             $xmlfile .= '	<creatorName>' . $this->get('creator') . '</creatorName>';
             if ($this->get('creatorOrcid')) {
-                $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">' .  $this->get('creatorOrcid') . '</nameIdentifier>';
+                $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">' . $this->get('creatorOrcid') . '</nameIdentifier>';
             }
             $xmlfile .= '</creator>';
         }
@@ -598,12 +598,12 @@ class Doi extends Obj
                 }
 
                 if (isset($contactPerson->orcid) && !empty($contactPerson->orcid)) {
-                    $xmlfile .= '		<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">' .  $contactPerson->orcid . '</nameIdentifier>';
+                    $xmlfile .= '		<nameIdentifier nameIdentifierScheme="ORCID" schemeURI="https://orcid.org/">' . $contactPerson->orcid . '</nameIdentifier>';
                 }
 
                 if ($contactPerson->organization) {
                     $orgidAtr = (isset($contactPerson->orgid) && !empty($contactPerson->orgid)) ? ' affiliationIdentifier="' . $contactPerson->orgid . '"' . ' affiliationIdentifierScheme="ROR" schemeURI="https://ror.org"' : "";
-                    $xmlfile .= '		<affiliation' .  $orgidAtr . '>' . $contactPerson->organization . '</affiliation>';
+                    $xmlfile .= '		<affiliation' . $orgidAtr . '>' . $contactPerson->organization . '</affiliation>';
                 }
 
                 $xmlfile .= '	</contributor>';

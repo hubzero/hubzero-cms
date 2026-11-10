@@ -43,7 +43,7 @@ $this->css();
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
 <form
     action="<?php echo $routeUrl; ?>"
     method="post"
@@ -177,7 +177,7 @@ $this->css();
                 <?php if ($this->row->get('id')) { ?>
                     <?php
                         $routeUrl = Route::url(
-                            'index.php?option=' . $this->option  . '&controller=managers&tmpl=component&id='
+                            'index.php?option=' . $this->option . '&controller=managers&tmpl=component&id='
                             . $this->row->get('id'),
                         );
                     ?>
@@ -271,7 +271,7 @@ $this->css();
                 <div class="uploader-wrap">
                     <?php
                         $routeUrl = Route::url(
-                            'index.php?option=' . $this->option  . '&controller=logo&task=upload&type=course&id='
+                            'index.php?option=' . $this->option . '&controller=logo&task=upload&type=course&id='
                             . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1',
                         );
                     ?>
@@ -282,7 +282,7 @@ $this->css();
                         <noscript>
                             <?php
                                 $routeUrl = Route::url(
-                                    'index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file='
+                                    'index.php?option=' . $this->option . '&controller=logo&tmpl=component&file='
                                     . $file . '&type=course&id=' . $this->row->get('id'),
                                 );
                             ?>

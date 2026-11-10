@@ -112,7 +112,7 @@ class Base extends Obj
         $result = null;
 
         if (isset($this->_items[$id])) {
-            $result =& $this->_items[$id];
+            $result = & $this->_items[$id];
         }
 
         return $result;
@@ -165,7 +165,7 @@ class Base extends Obj
         if (isset($this->_items[$id])) {
             $this->_active = $id;
 
-            $result =& $this->_items[$id];
+            $result = & $this->_items[$id];
 
             return $result;
         }
@@ -181,7 +181,7 @@ class Base extends Obj
     public function getActive()
     {
         if ($this->_active) {
-            $item =& $this->_items[$this->_active];
+            $item = & $this->_items[$this->_active];
 
             return $item;
         }

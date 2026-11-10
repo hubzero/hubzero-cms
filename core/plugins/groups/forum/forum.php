@@ -2065,7 +2065,7 @@ class Forum extends Plugin
         $section  = Request::getString('section', '');
         $category = Request::getString('category', '');
 
-        $redirect = Route::url($this->base . '&scope=' . $section . '/' . $category)  . '?' . $_SERVER['QUERY_STRING'];
+        $redirect = Route::url($this->base . '&scope=' . $section . '/' . $category) . '?' . $_SERVER['QUERY_STRING'];
 
         // Is the user logged in?
         if (User::isGuest()) {

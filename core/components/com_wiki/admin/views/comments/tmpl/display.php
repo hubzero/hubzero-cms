@@ -99,7 +99,7 @@ Html::behavior('tooltip');
 
         $rows = $this->rows;
         for ($i = 0, $n = count($rows); $i < $n; $i++) {
-            $row =& $rows[$i];
+            $row = & $rows[$i];
 
             if (!$row->get('anonymous')) {
                 $calt2  = Lang::txt('JOFF');

@@ -31,7 +31,7 @@ Toolbar::spacer();
 Toolbar::help('pages');
 ?>
 
-<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
 <form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
@@ -77,7 +77,7 @@ Toolbar::help('pages');
                 <?php if ($this->offering->exists()) { ?>
                     <?php
                     $routeUrl = Route::url(
-                        'index.php?option=' . $this->option  . '&controller=offerings&course='
+                        'index.php?option=' . $this->option . '&controller=offerings&course='
                         . $this->course->get('id'),
                     );
                     ?>
@@ -157,7 +157,7 @@ Toolbar::help('pages');
                         <?php if ($canDo->get('core.edit')) { ?>
                             <?php
                                 $routeUrl = Route::url(
-                                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
                                     . '&task=edit&id=' . $this->escape($page->get('id')),
                                 );
                             ?>
@@ -175,7 +175,7 @@ Toolbar::help('pages');
                             <?php if ($page->get('active') == 1) { ?>
                                 <?php
                                 $routeUrl = Route::url(
-                                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
                                     . '&task=unpublish&id=' . $page->get('id') . '&' . Session::getFormToken()
                                     . '=1',
                                 );
@@ -192,7 +192,7 @@ Toolbar::help('pages');
                             <?php } elseif ($page->get('active') == 2) { ?>
                                 <?php
                                 $routeUrl = Route::url(
-                                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
                                     . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1',
                                 );
                                 ?>
@@ -208,7 +208,7 @@ Toolbar::help('pages');
                             <?php } elseif ($page->get('active') == 3) { ?>
                                 <?php
                                 $routeUrl = Route::url(
-                                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
                                     . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1',
                                 );
                                 ?>
@@ -224,7 +224,7 @@ Toolbar::help('pages');
                             <?php } elseif ($page->get('active') == 0) { ?>
                                 <?php
                                 $routeUrl = Route::url(
-                                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
                                     . '&task=publish&id=' . $page->get('id') . '&' . Session::getFormToken() . '=1',
                                 );
                                 ?>

@@ -118,7 +118,7 @@ $formAction = Route::url(
         $k = 0;
 
         for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
-            $row =& $this->rows[$i];
+            $row = & $this->rows[$i];
 
             if (!$row->get('anonymous')) {
                 $calt = Lang::txt('JOFF');

@@ -44,7 +44,7 @@ Toolbar::help('articles');
 $access = Html::access('assetgroups');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span5">
@@ -139,7 +139,7 @@ $access = Html::access('assetgroups');
                             </span>
                     <?php } else { ?>
                         <?php if ($canDo->get('core.edit')) { ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_EDIT_ARTICLE'); ?>">
+                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_EDIT_ARTICLE'); ?>">
                                 <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
                             </a>
                         <?php } else { ?>
@@ -154,7 +154,7 @@ $access = Html::access('assetgroups');
                 </td>
                 <td class="priority-2">
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&category=' . $this->filters['category'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_KB_SET_TASK', $task);?>">
+                        <a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&category=' . $this->filters['category'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_KB_SET_TASK', $task);?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>

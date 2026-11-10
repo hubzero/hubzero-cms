@@ -100,7 +100,7 @@ class Members extends Plugin
         }
 
         if ($areas && $areas == $response['name']) {
-            $database->setQuery($f_fields . $f_from .  $order_by);
+            $database->setQuery($f_fields . $f_from . $order_by);
             $response['results'] = $database->loadObjectList();
         } else {
             $response['sql'] = $f_fields . $f_from;

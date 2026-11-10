@@ -101,7 +101,7 @@ class Members extends Plugin
                 }
 
                 // Build the description, clean up text
-                $content = $row->email .  ' ' . $profile;
+                $content = $row->email . ' ' . $profile;
                 $content = preg_replace('/<[^>]*>/', ' ', $content);
                 $content = preg_replace('/ {2,}/', ' ', $content);
                 $description = \Hubzero\Utility\Sanitize::stripAll($content);

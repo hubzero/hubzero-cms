@@ -146,7 +146,7 @@ class Maps extends Plugin
      */
     private function getData($type)
     {
-        $db =& $this->udb;
+        $db = & $this->udb;
 
         $html = '';
 

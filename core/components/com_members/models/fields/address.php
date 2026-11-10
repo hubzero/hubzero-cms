@@ -81,7 +81,7 @@ class Address extends Field
             $html[] = '<div class="address-field-wrap">';
             $html[] = '<ul class="address-field">';
             $html[] = '<li>';
-            $html[] = '<label for="' . $this->id . '-' .  $i . '-address1">' . $lang->txt('Street') . '</label>';
+            $html[] = '<label for="' . $this->id . '-' . $i . '-address1">' . $lang->txt('Street') . '</label>';
             $html[] = '<input type="text" id="' . $this->id . '-' . $i . '-address1" '
                 . 'name="' . $this->name . '[' . $i . '][address1]" placeholder="Street" '
                 . 'value="' . htmlspecialchars($value['address1'], ENT_COMPAT, 'UTF-8') . '" />';

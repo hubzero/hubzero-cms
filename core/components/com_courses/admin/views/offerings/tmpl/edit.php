@@ -45,7 +45,7 @@ $this->css();
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
 <form
     action="<?php echo $routeUrl; ?>"
     method="post"
@@ -189,7 +189,7 @@ $this->css();
                     <div class="uploader-wrap">
                         <?php
                             $routeUrl = Route::url(
-                                'index.php?option=' . $this->option  . '&controller=logo&task=upload&type=offering&id='
+                                'index.php?option=' . $this->option . '&controller=logo&task=upload&type=offering&id='
                                 . $this->row->get('id') . '&no_html=1&' . Session::getFormToken() . '=1',
                             );
                         ?>
@@ -200,7 +200,7 @@ $this->css();
                             <noscript>
                                 <?php
                                     $routeUrl = Route::url(
-                                        'index.php?option=' . $this->option  . '&controller=logo&tmpl=component&file='
+                                        'index.php?option=' . $this->option . '&controller=logo&tmpl=component&file='
                                         . $logo . '&type=offering&id=' . $this->row->get('id'),
                                     );
                                 ?>

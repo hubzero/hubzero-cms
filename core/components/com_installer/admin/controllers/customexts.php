@@ -329,11 +329,11 @@ class Customexts extends AdminController
 
         // Set path
         if ($model->folder) {
-            $model->set('path', PATH_APP . "/" . $path_type . "/" . $model->folder . "/"  . $model->alias);
+            $model->set('path', PATH_APP . "/" . $path_type . "/" . $model->folder . "/" . $model->alias);
         } else if ($model->type == "non-standard") {
             $model->set('path', PATH_APP . "/" . $model->alias);
         } else {
-            $model->set('path', PATH_APP . "/" . $path_type . "/"  . $model->alias);
+            $model->set('path', PATH_APP . "/" . $path_type . "/" . $model->alias);
         }
 
         // Validate and save the data

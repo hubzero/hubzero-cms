@@ -443,12 +443,12 @@ class Parser
                         return '<strong>Macro "' . $matches[1] . '" not allowed.</strong>';
                     }
 
-                    self::$macros[$matches[1]] =& $macro;
+                    self::$macros[$matches[1]] = & $macro;
                 } else {
                     self::$macros[$matches[1]] = false;
                 }
             } else {
-                $macro =& self::$macros[$matches[1]];
+                $macro = & self::$macros[$matches[1]];
             }
 
             if (!isset($macro) || !is_object($macro)) {

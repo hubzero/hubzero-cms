@@ -118,7 +118,7 @@ if ($revertAllowed && $this->pub->accepted()) {
                         </tr>
                         <tr>
                             <td class="tbl-lbl"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED')); ?>:</td>
-                            <td class="tbl-input"><?php echo $this->pub->created('date') .  ' (' . $this->pub->created('timeago') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')'; ?></td>
+                            <td class="tbl-input"><?php echo $this->pub->created('date') . ' (' . $this->pub->created('timeago') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')'; ?></td>
                         </tr>
                         <tr>
                             <td class="tbl-lbl"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED_BY')); ?>:</td>

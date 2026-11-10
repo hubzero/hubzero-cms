@@ -105,8 +105,8 @@ if ($mode != 'preview') {
                                 ?>
                             <?php elseif ($this->get('group_owner')) : ?>
                                 <?php
-                                echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') .  ' '
-                                    .  implode(', ', $ghtml);
+                                echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' '
+                                    . implode(', ', $ghtml);
                                 ?>
                             <?php else : ?>
                                 <?php echo Lang::txt('COM_RESOURCES_ALERTNOTAUTH'); ?>

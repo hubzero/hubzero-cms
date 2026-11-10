@@ -177,8 +177,8 @@ $actionUrl = Route::url(
                                     </td>
                                     <td>
                                         <?php
-                                        echo '<span class="test-status ' .  $result->status() .  '">'
-                                            .  $result->status() .  '</span>';
+                                        echo '<span class="test-status ' . $result->status() . '">'
+                                            . $result->status() . '</span>';
                                         ?>
                                     </td>
                                 </tr>

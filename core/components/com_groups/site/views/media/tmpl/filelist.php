@@ -89,8 +89,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                         $dataFolder = $this->relpath . '/' . $folder;
                     }
 
-                        $moveFolderPath     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=movefolder&folder=' .  $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
-                        $renameFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=renamefolder&folder=' .  $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
+                        $moveFolderPath     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=movefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
+                        $renameFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=renamefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
                         $deleteFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=deletefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
                     ?>
                     <a href="javascript:void(0);" data-action-delete="<?php echo $deleteFolderPath; ?>" data-action-rename="<?php echo $renameFolderPath; ?>" data-action-move="<?php echo $moveFolderPath; ?>" data-folder="<?php echo $this->escape($dataFolder); ?>"><?php echo $this->escape($folder); ?></a>
@@ -138,8 +138,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
 
                 // build paths
                 $downloadPath = $baseURI . DS . 'File:' . $relFilePath;
-                $movePath     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=movefile&file=' .  $relFilePath . '&format=raw&' . Session::getFormToken() . '=1'); //tmpl=component');
-                $renamePath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=renamefile&file=' .  $relFilePath . '&format=raw&' . Session::getFormToken() . '=1'); //tmpl=component');
+                $movePath     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=movefile&file=' . $relFilePath . '&format=raw&' . Session::getFormToken() . '=1'); //tmpl=component');
+                $renamePath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=renamefile&file=' . $relFilePath . '&format=raw&' . Session::getFormToken() . '=1'); //tmpl=component');
                 $extractPath  = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=extractfile&file=' . $relFilePath . '&format=raw&' . Session::getFormToken() . '=1'); //tmpl=component');
                 $deletePath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=deletefile&file=' . $relFilePath . '&format=raw&' . Session::getFormToken() . '=1'); //tmpl=component');
                 //$rawPath  = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=rawfile&file=' . $relFilePath . '&tmpl=component');

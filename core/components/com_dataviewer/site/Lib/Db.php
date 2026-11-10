@@ -249,7 +249,7 @@ class Db
                     }
                 }
                 $con = implode(' AND ', $con);
-                $sql .= "$type " . $j['table'] . ' ON (' . $con .  ') ';
+                $sql .= "$type " . $j['table'] . ' ON (' . $con . ') ';
             }
         }
 
@@ -754,7 +754,7 @@ class Db
                     }
                 }
                 $con = implode(' AND ', $con);
-                $sql .= "$type " . $j['table'] . ' ON (' . $con .  ') ';
+                $sql .= "$type " . $j['table'] . ' ON (' . $con . ') ';
             }
         }
 

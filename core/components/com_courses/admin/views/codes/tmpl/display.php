@@ -49,7 +49,7 @@ if ($canDo->get('core.delete')) {
 Html::behavior('tooltip');
 ?>
 
-<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
 <form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
@@ -87,7 +87,7 @@ Html::behavior('tooltip');
         <caption>
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id'),
+                    'index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id'),
                 );
                 ?>
             (<a href="<?php echo $routeUrl; ?>">
@@ -95,7 +95,7 @@ Html::behavior('tooltip');
             </a>)
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=offerings&course=' . $this->course->get('id'),
+                    'index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id'),
                 );
                 ?>
             <a href="<?php echo $routeUrl; ?>">
@@ -103,7 +103,7 @@ Html::behavior('tooltip');
             </a>:
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=sections&offering=' . $this->offering->get('id'),
+                    'index.php?option=' . $this->option . '&controller=sections&offering=' . $this->offering->get('id'),
                 );
                 ?>
             <a href="<?php echo $routeUrl; ?>">

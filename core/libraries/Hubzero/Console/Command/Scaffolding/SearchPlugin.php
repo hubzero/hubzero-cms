@@ -61,7 +61,7 @@ class SearchPlugin extends Scaffolding
 
         // Make plugin file
         $classname   = ucfirst($extension);
-        $destination = $installDir . DS . $extension . DS .  $extension . '.php';
+        $destination = $installDir . DS . $extension . DS . $extension . '.php';
 
         // Make directory
         if (!is_dir($installDir . DS . $extension)) {

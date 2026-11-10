@@ -25,7 +25,7 @@ $this->css('uploader')
     ->js('media.js');
 ?>
 
-<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
 <form action="<?php echo $routeUrl; ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
     <fieldset>
         <legend>
@@ -42,7 +42,7 @@ $this->css('uploader')
         <div id="ajax-uploader-before">&nbsp;</div>
         <?php
             $routeUrl = Route::url(
-                'index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=upload&course='
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=upload&course='
                 . $this->course_id . '&listdir=' . $this->listdir . '&no_html=1&' . Session::getFormToken() . '=1',
             );
             ?>
@@ -75,7 +75,7 @@ $this->css('uploader')
         <div id="themanager" class="manager">
             <?php
                 $routeUrl = Route::url(
-                    'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller
                     . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir
                     . '&course=' . $this->course_id,
                 );
@@ -83,7 +83,7 @@ $this->css('uploader')
             <iframe src="<?php echo $routeUrl; ?>" name="imgManager" id="imgManager" width="98%" height="150"
                 <?php
                     $routeUrl = Route::url(
-                        'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller
                         . '&task=list&tmpl=component&course=' . $this->course_id,
                     );
                     ?>

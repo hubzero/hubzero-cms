@@ -125,7 +125,7 @@ class Token
 
         // Hash the unencrypted version hex version of the binary string
         // Include the unencrypted version and action bytes as well
-        $hash = sha1(bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) .  bin2hex($binaryString));
+        $hash = sha1(bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) . bin2hex($binaryString));
 
         // We're only using a portion of the hash as a checksum
         $hashsub = substr($hash, 0, 4);
@@ -141,7 +141,7 @@ class Token
         $encrypted = openssl_encrypt($binaryString, 'AES-128-CBC', $this->key, OPENSSL_RAW_DATA, $this->iv);
 
         // Prepend an unencrypted version byte and action byte (in base16)
-        $rv = substr(bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) .  bin2hex($encrypted), 0, 36);
+        $rv = substr(bin2hex(pack("C", $version)) . bin2hex(pack("C", $action)) . bin2hex($encrypted), 0, 36);
 
         return $rv;
     }

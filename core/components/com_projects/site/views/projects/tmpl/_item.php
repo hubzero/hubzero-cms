@@ -227,7 +227,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 
                                 ?>
                                 <span class="block">
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option .  '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']); ?>" class="showinbox"><?php echo $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS'); ?></a>
+                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']); ?>" class="showinbox"><?php echo $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS'); ?></a>
                                 </span>
 
                                 <?php if ($this->row->isPending()) : ?>

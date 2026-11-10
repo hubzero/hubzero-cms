@@ -160,7 +160,7 @@ class Citations extends Plugin
 
                 // Determine the path
                 if ($row->scope == 'member') {
-                    $path = '/members/' . $row->scope_id  . '/citations';
+                    $path = '/members/' . $row->scope_id . '/citations';
                 } elseif ($row->scope == 'group') {
                     $group = \Hubzero\User\Group::getInstance($row->scope_id);
 

@@ -111,7 +111,7 @@ class Orcid extends Text
         $html[] = '	</div>';
 
         $html[] = '</div>';
-        $html[] = '<p class="orcid-about"><img src="' . Request::root(true)  . 'core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="" role="presentation" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
+        $html[] = '<p class="orcid-about"><img src="' . Request::root(true) . 'core/components/com_members/site/assets/img/orcid-logo.png" width="80" alt="" role="presentation" /> ' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ABOUT') . '</p>';
 
         Behavior::framework(true);
         Behavior::modal();

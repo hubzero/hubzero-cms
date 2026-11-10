@@ -373,7 +373,7 @@ class Json
                                 $linkpath = ($linkpath != '') ? $linkpath . '/' : '';
                                 $val = $link . $linkpath . $val;
 
-                                $small_img = $link . $linkpath  . $pi['filename'] . '_tn.gif';
+                                $small_img = $link . $linkpath . $pi['filename'] . '_tn.gif';
                                 $medium_img =  $link . $linkpath . $pi['filename'] . '_medium.gif';
                             } else {
                                 $linkpath = ($linkpath != '') ? '/' . $linkpath : '';

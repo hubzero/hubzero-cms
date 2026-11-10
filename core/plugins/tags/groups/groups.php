@@ -114,7 +114,7 @@ class Groups extends Plugin
         $response['total'] = $database->loadResult();
 
         if ($areas && $areas == $response['name']) {
-            $database->setQuery($f_fields . $f_from .  $order_by);
+            $database->setQuery($f_fields . $f_from . $order_by);
             $response['results'] = $database->loadObjectList();
             if ($response['results']) {
                 // Loop through the results and set each item's HREF

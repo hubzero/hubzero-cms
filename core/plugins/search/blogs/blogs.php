@@ -182,7 +182,7 @@ class Blogs extends Plugin
                 if ($row->scope == 'site') {
                     $path = '/blog/' . $year . '/' . $month . '/' . $alias;
                 } elseif ($row->scope == 'member') {
-                    $path = '/members/' . $row->scope_id  . '/blog/' . $year . '/' . $month . '/' . $alias;
+                    $path = '/members/' . $row->scope_id . '/blog/' . $year . '/' . $month . '/' . $alias;
                 } elseif ($row->scope == 'group') {
                     $group = Group::getInstance($row->scope_id);
 

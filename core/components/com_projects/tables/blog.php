@@ -90,7 +90,7 @@ class Blog extends Table
                 . $this->_db->quote($uid) . " AND projectid="
                 . $this->_db->quote($projectid)
                 . " AND blogentry=" . $this->_db->quote($entry)
-                . " AND posted  LIKE " . $this->_db->quote($today .  '%');
+                . " AND posted  LIKE " . $this->_db->quote($today . '%');
         $this->_db->setQuery($query);
         return $this->_db->loadResult();
     }

@@ -53,12 +53,12 @@ $vote_link = 'index.php?option=' . $this->option . '&id=' . $this->item->get('pu
 <?php if (!$this->item->get('vote')) { ?>
     <?php if (User::isGuest()) { ?>
         <span class="vote-like<?php echo $lcls; ?>">
-            <span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') .  $cls; ?>" title="<?php echo $like_title; ?>">
+            <span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" title="<?php echo $like_title; ?>">
                 <?php echo $this->item->get('helpful', 0); ?><span> Like</span>
             </span>
         </span>
         <span class="vote-dislike<?php echo $dcls; ?>">
-            <span class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') .  $cls; ?>" title="<?php echo $dislike_title; ?>">
+            <span class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" title="<?php echo $dislike_title; ?>">
                 <?php echo $this->item->get('nothelpful', 0); ?><span> Dislike</span>
             </span>
         </span>

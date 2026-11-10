@@ -162,13 +162,13 @@ class Curation extends SiteController
         }
         Pathway::append(
             Lang::txt('COM_PUBLICATIONS_CURATION'),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=display',
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=display',
         );
 
         if ($this->_pub) {
             Pathway::append(
                 $this->_pub->title,
-                'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=view&id=' . $this->_pub->id,
+                'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=view&id=' . $this->_pub->id,
             );
         }
     }

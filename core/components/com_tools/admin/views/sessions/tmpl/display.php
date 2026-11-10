@@ -131,7 +131,7 @@ Html::behavior('tooltip');
                         </span>
                     </td>
                     <td class="priority-2">
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&username=' . $row->username); ?>">
+                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&username=' . $row->username); ?>">
                             <span><?php echo $this->escape($row->username); ?></span>
                         </a>
                     </td>
@@ -149,17 +149,17 @@ Html::behavior('tooltip');
                         </time>
                     </td>
                     <td class="priority-3">
-                        <a class="tool" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&appname=' . $row->appname); ?>">
+                        <a class="tool" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&appname=' . $row->appname); ?>">
                             <span><?php echo $this->escape($row->appname); ?></span>
                         </a>
                     </td>
                     <td class="priority-4">
-                        <a class="tool" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&exechost=' . $row->exechost); ?>">
+                        <a class="tool" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&exechost=' . $row->exechost); ?>">
                             <span><?php echo $this->escape($row->exechost); ?></span>
                         </a>
                     </td>
                     <td>
-                        <a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller . '&task=remove&id=' . $row->sessnum . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
+                        <a class="state trash" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $row->sessnum . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>">
                             <span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
                         </a>
                     </td>

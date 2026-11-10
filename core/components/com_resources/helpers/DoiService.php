@@ -337,7 +337,7 @@ class DoiService extends Obj
             $xmlfile .= '<creator>';
             $xmlfile .= '	<creatorName>' . $this->get('creator') . '</creatorName>';
             if ($this->get('creatorOrcid')) {
-                $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID">' . 'http://orcid.org/' .  $this->get('creatorOrcid') . '</nameIdentifier>';
+                $xmlfile .= '	<nameIdentifier nameIdentifierScheme="ORCID">' . 'http://orcid.org/' . $this->get('creatorOrcid') . '</nameIdentifier>';
             }
             $xmlfile .= '</creator>';
         }

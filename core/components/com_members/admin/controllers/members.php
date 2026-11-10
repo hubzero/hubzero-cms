@@ -1150,7 +1150,7 @@ class Members extends AdminController
                 // ----------- UPDATES TO THE PROFILES AND USERS TABLE, and User Profiles Table  ----------
                 // Unset the keys and updates the final user records until after all plugins run.
                 // If anything fail, jos_users still exist which is enough to re-run deidentification.
-                $update_UsersById_Query = "UPDATE `#__users` set name=" . $db->quote($anonUserNameSpace) . ", givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', username=" . $db->quote($anonUserName) . ", password=" .  $db->quote($anonPassword) . ", block='1', registerIP='', params='', homeDirectory='', email=" .  $db->quote($anonUserName . "@example.com") . " where id =" . $db->quote($id);
+                $update_UsersById_Query = "UPDATE `#__users` set name=" . $db->quote($anonUserNameSpace) . ", givenName=" . $db->quote($anonUserName) . ", middleName='', surname='anonSurName', username=" . $db->quote($anonUserName) . ", password=" . $db->quote($anonPassword) . ", block='1', registerIP='', params='', homeDirectory='', email=" . $db->quote($anonUserName . "@example.com") . " where id =" . $db->quote($id);
                 $this->runUpdateOrDeleteQuery($update_UsersById_Query);
 
                 $update_UserProfiles_Query = "UPDATE `#__user_profiles` SET profile_value='sanitized' WHERE user_id=" . $db->quote($id) . " AND profile_key='deletion'";

@@ -18,5 +18,5 @@ $groupLink = rtrim(Request::base(), '/') . '/groups/' . $group->get('cn');
 
 echo Lang::txt('Group Announcement') . ' - ' . $group->get('description') . "\n";
 echo '-------------------------------------------------------' . "\n\n";
-echo strip_tags($this->announcement->get('content'))  . "\n\n";
+echo strip_tags($this->announcement->get('content')) . "\n\n";
 echo $groupLink . '/announcements';

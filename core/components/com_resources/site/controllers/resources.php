@@ -1541,7 +1541,7 @@ class Resources extends SiteController
 
         if (
             $type_alias
-            && (is_file(App::get('template')->path  . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
+            && (is_file(App::get('template')->path . DS . 'html' . DS . $this->_option . DS . 'view' . DS . $type_alias . '.php')
             || is_file(dirname(__DIR__) . DS . 'views' . DS . 'view' . DS . 'tmpl' . DS . $type_alias . '.php'))
         ) {
             $layout = $type_alias;
@@ -2233,14 +2233,14 @@ class Resources extends SiteController
 
         // Rebuild the full file path frome site base, resource base and the request file
 
-        $path =  $resource->basepath() . '/' . $resource_base  . '/' . $request_file;
+        $path =  $resource->basepath() . '/' . $resource_base . '/' . $request_file;
 
         // Ensure the file exist
 
         if (!file_exists($path)) {
             // Look in media subdirectory for the file
 
-            $path = $resource->basepath() . '/' . $resource_base  . '/media/' . $request_file;
+            $path = $resource->basepath() . '/' . $resource_base . '/media/' . $request_file;
 
             if (!file_exists($path)) {
                 App::abort(404, Lang::txt('COM_RESOURCES_FILE_NOT_FOUND') . ' ' . $path);
@@ -2479,7 +2479,7 @@ class Resources extends SiteController
                 }
                 //$doc .= "\r\n";
                 if ($handle) {
-                    $doc .= "%1 " . 'doi:' .  $handle;
+                    $doc .= "%1 " . 'doi:' . $handle;
                     $doc .= "\r\n";
                 }
 

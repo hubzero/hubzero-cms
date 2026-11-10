@@ -155,7 +155,7 @@ $searchPlaceholder = Lang::txt('COM_JOBS_SEARCH_PLACEHOLDER');
         $jc = new \Components\Jobs\Tables\Category($database);
 
         for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
-            $row =& $this->rows[$i];
+            $row = & $this->rows[$i];
 
             $admin = $row->employerid == 1 ? 1 : 0;
             $adminclass = $admin ? 'class="adminpost"' : '';

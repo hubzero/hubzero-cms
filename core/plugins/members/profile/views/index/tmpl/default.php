@@ -459,7 +459,7 @@ $legacy = [
                             <input type="hidden" class="input-text" name="email" id="email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
                             <?php
                             if ($this->profile->get('access') > 2) {
-                                $access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>';
+                                $access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>';
                                 $access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
                                 $access .= '<input type="hidden" name="access[email]" value="' . $this->params->get('access_email') . '" />';
                             } else {
@@ -745,11 +745,11 @@ $legacy = [
                                 $formfield->setValue($profile->get('profile_value'));
 
                                 if ($this->profile->get('access') > 2) {
-                                    $access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>';
+                                    $access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>';
                                     $access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
                                     $access .= '<input type="hidden" name="access[' . $field->get('name') . ']" value="' . $profile->get('access', $field->get('access')) . '" />';
                                 } else {
-                                    $access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY')  . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $value == '' ? $field->get('access') : $profile->get('access', $field->get('access')), 'input-select');
+                                    $access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $value == '' ? $field->get('access') : $profile->get('access', $field->get('access')), 'input-select');
                                 }
 
                                 $this->view('default', 'edit')

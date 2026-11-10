@@ -1178,7 +1178,7 @@ class Projects extends Base
                                 $caid = $this->model->recordActivity(
                                     Lang::txt('COM_PROJECTS_COMMENTED') . ' '
                                     . Lang::txt('COM_PROJECTS_ON') . ' '
-                                    .  Lang::txt('COM_PROJECTS_AN_ACTIVITY'),
+                                    . Lang::txt('COM_PROJECTS_AN_ACTIVITY'),
                                     $cid,
                                     '',
                                     '',

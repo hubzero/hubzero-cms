@@ -825,7 +825,7 @@ class Auth extends SiteController
             // Build logout image if enabled
             if ($params->get('image_' . $type) != -1) {
                 $image = '/images/stories/' . $params->get('image_' . $type);
-                $image = '<img src="' . $image  . '" align="'
+                $image = '<img src="' . $image . '" align="'
                     . $params->get('image_' . $type . '_align') . '" hspace="10" alt="" />';
             }
 

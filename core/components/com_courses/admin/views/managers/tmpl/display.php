@@ -26,7 +26,7 @@ $offerings = $this->course->offerings();
     </dl>
 <?php } ?>
 <div id="groups">
-    <?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
     <form action="<?php echo $routeUrl; ?>" method="post">
         <table>
             <tbody>
@@ -75,7 +75,7 @@ $offerings = $this->course->offerings();
 
         <?php echo Html::input('token'); ?>
     </form>
-    <?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
     <form action="<?php echo $routeUrl; ?>" method="post" id="adminForm">
         <table class="paramlist admintable">
             <thead>

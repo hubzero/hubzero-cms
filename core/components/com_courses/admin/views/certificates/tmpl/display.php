@@ -37,7 +37,7 @@ Html::behavior('framework');
 $this->css('certificates.css')
     ->js('certificates.js');
 ?>
-<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
 <form action="<?php echo $routeUrl; ?>" method="post" name="adminForm" id="item-form">
     <?php if ($this->getError()) { ?>
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>

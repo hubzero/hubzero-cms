@@ -95,7 +95,7 @@ class Solr extends SiteController
             $maxLat = Request::getString('maxlat', false);
 
             if ($minLon && $maxLon && $minLat && $maxLat) {
-                $locationFilter = 'coverage:"INTERSECTS(ENVELOPE(' . $minLon . ',' .  $maxLon . ',' . $maxLat . ',' . $minLat . '))"';
+                $locationFilter = 'coverage:"INTERSECTS(ENVELOPE(' . $minLon . ',' . $maxLon . ',' . $maxLat . ',' . $minLat . '))"';
             }
         }
 

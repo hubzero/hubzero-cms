@@ -676,7 +676,7 @@ class Geocode
             }
             list($table, $n_ip) = $lookup;
 
-            $sql = "SELECT COUNT(*) FROM " . $table . " WHERE ipfrom <= " . $n_ip . " AND ipto >= " . $n_ip . " AND LOWER(location) = " .  $gdb->quote(strtolower($location));
+            $sql = "SELECT COUNT(*) FROM " . $table . " WHERE ipfrom <= " . $n_ip . " AND ipto >= " . $n_ip . " AND LOWER(location) = " . $gdb->quote(strtolower($location));
 
             $result = self::lookupResult($gdb, $table, $sql, $failed);
 

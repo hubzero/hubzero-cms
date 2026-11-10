@@ -48,7 +48,7 @@ $nextDay   = date("d", mktime(0, 0, 0, $month + 1, $day, $year));
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
 <?php } ?>
-<?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+<?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
 <form
     action="<?php echo $routeUrl; ?>"
     method="post"
@@ -60,7 +60,7 @@ $nextDay   = date("d", mktime(0, 0, 0, $month + 1, $day, $year));
             <div class="configuration-options">
                 <?php
                     $routeUrl = Route::url(
-                        'index.php?option=' . $this->option  . '&controller=' . $this->controller . '&section='
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&section='
                         . $this->section->get('id'),
                         false,
                     );

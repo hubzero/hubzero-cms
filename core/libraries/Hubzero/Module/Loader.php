@@ -89,7 +89,7 @@ class Loader
                 // Match the title if we're looking for a specific instance of the module
                 if (!$title || $modules[$i]->title == $title) {
                     // Found it
-                    $result =& $modules[$i];
+                    $result = & $modules[$i];
                     break;
                 }
             }

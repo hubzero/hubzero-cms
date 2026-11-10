@@ -46,7 +46,7 @@ if (empty($this->activities)) {
 
         $message .= Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
             . ' &#64 '
-            .  Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1'))
+            . Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1'))
             . "\n";
         $message .= $name;
         $message .= ' ' . $a->action;

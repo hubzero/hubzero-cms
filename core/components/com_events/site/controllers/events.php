@@ -2033,7 +2033,7 @@ class Events extends SiteController
             $headers .= 'Reply-To: ' . $contact_name . ' <' . $contact_email . ">\n";
             $headers .= "X-Priority: 3\n";
             $headers .= "X-MSMail-Priority: High\n";
-            $headers .= 'X-Mailer: ' .  Config::get('sitename') . "\n";
+            $headers .= 'X-Mailer: ' . Config::get('sitename') . "\n";
 
             if (mail($email, $subject, $message, $headers, $args)) {
                 return 1;

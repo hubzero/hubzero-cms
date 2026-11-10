@@ -67,7 +67,7 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                 $journalTitle = !empty($this->result['journaltitle_s']) ? $this->result['journaltitle_s'] : '';
                 $journalTitle = in_array(substr(trim($journalTitle), -1), ['.', '?', '!']) || empty($journalTitle) ? $journalTitle : $journalTitle . '.';
                 $fullCitation .= '<em>' . $journalTitle . '</em> ';
-                $fullCitation .= !empty($this->result['volumeno_s']) ? '<em>' . $this->result['volumeno_s']  . '</em>' : '';
+                $fullCitation .= !empty($this->result['volumeno_s']) ? '<em>' . $this->result['volumeno_s'] . '</em>' : '';
                 $issueNumber = '';
                 if (!empty($this->result['issuenomonth_s'])) {
                     $issueNumber = $this->result['issuenomonth_s'];

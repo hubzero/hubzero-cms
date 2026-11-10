@@ -81,7 +81,7 @@ class Vote extends Plugin
                 $html .= ' value="' . $rateLabel . '" />';
                 $html .= '<input type="hidden" name="task" value="article.vote" />';
                 $html .= '<input type="hidden" name="hitcount" value="0" />';
-                $html .= '<input type="hidden" name="url" value="' .  htmlspecialchars($uri->toString()) . '" />';
+                $html .= '<input type="hidden" name="url" value="' . htmlspecialchars($uri->toString()) . '" />';
                 $html .= Html::input('token');
                 $html .= '</div>';
                 $html .= '</form>';

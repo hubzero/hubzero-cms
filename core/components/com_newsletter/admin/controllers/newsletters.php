@@ -823,7 +823,7 @@ class Newsletters extends AdminController
         //$mailHeaders .= "Importance: Normal\n";
 
         //set extra headers
-        $mailHeaders .= "X-Mailer: PHP/" . phpversion()  . "\r\n";
+        $mailHeaders .= "X-Mailer: PHP/" . phpversion() . "\r\n";
         $mailHeaders .= "X-Component: " . $this->_option . "\r\n";
         $mailHeaders .= "X-Component-Object: Campaign Mailing" . "\r\n";
         $mailHeaders .= "X-Component-ObjectId: {{CAMPAIGN_MAILING_ID}}" . "\r\n";

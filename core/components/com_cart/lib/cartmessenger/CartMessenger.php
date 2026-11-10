@@ -65,7 +65,7 @@ class CartMessenger
 
         $logPath = Config::get('log_path', PATH_APP . DS . 'logs');
 
-        $this->logFile = $logPath  . DS . 'cart.log';
+        $this->logFile = $logPath . DS . 'cart.log';
         $this->caller  = $caller;
     }
 

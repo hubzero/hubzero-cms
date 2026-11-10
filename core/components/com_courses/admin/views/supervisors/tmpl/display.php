@@ -27,7 +27,7 @@ $this->js('managers.js');
     </dl>
 <?php } ?>
 <div id="groups">
-    <?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
     <form action="<?php echo $routeUrl; ?>" method="post">
         <table>
             <tbody>
@@ -77,7 +77,7 @@ $this->js('managers.js');
 
         <?php echo Html::input('token'); ?>
     </form>
-    <?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
     <form action="<?php echo $routeUrl; ?>" method="post" id="adminForm">
         <table class="paramlist admintable">
             <thead>
@@ -141,7 +141,7 @@ $this->js('managers.js');
                     <td class="paramlist_key">
                         <?php
                             $routeUrl = Route::url(
-                                'index.php?option=' . $this->option  . '&controller=members&task=edit&id='
+                                'index.php?option=' . $this->option . '&controller=members&task=edit&id='
                                 . $u->get('id'),
                             );
                         ?>

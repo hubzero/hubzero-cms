@@ -1276,8 +1276,8 @@ class Publications extends SiteController
             . ' modification-date="' . $mod_date . '";'
             . ' size=' . $fsize . ';',
         ); //RFC2183
-        header("Content-Type: "    . $mime); // MIME type
-        header("Content-Length: "  . $fsize);
+        header("Content-Type: " . $mime); // MIME type
+        header("Content-Length: " . $fsize);
 
         // No encoding - we aren't using compression... (RFC1945)
 

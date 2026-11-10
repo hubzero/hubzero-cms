@@ -55,11 +55,11 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
             <?php if ($this->model->access('content')) : ?>
                 <span id="manage_assets">
                     <?php if ($this->connection->provider->alias != 'github') {?>
-                    <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=upload'   . $subdirlink); ?>"
+                    <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=upload' . $subdirlink); ?>"
                             class="fmanage" id="a-upload" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_TOOLTIP'); ?>">
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD'); ?></span>
                     </a>
-                    <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=newdir'   . $subdirlink); ?>"
+                    <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=newdir' . $subdirlink); ?>"
                             id="a-folder" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_FOLDER_TOOLTIP'); ?>" class="fmanage">
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_NEW_FOLDER'); ?></span>
                     </a>
@@ -69,15 +69,15 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD'); ?></span>
                     </a>
                     <?php if ($this->connection->provider->alias != 'github') {?>
-                    <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=move'     . $subdirlink); ?>"
+                    <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=move' . $subdirlink); ?>"
                         class="fmanage js" id="a-move" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP'); ?>">
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?></span>
                     </a>
-                    <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=delete'   . $subdirlink); ?>"
+                    <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=delete' . $subdirlink); ?>"
                         class="fmanage js" id="a-delete" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP'); ?>">
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_DELETE'); ?></span>
                     </a>
-                    <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=rename'   . $subdirlink); ?>"
+                    <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=rename' . $subdirlink); ?>"
                         class="fmanage js" id="a-rename" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME_TOOLTIP'); ?>">
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME'); ?></span>
                     </a>
@@ -89,7 +89,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                         </a>
                     <?php endif;
                     if ($this->connection->id) : ?>
-                        <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=compile'  . $subdirlink); ?>"
+                        <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=compile' . $subdirlink); ?>"
                             class="fmanage js" id="a-handle" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE_TOOLTIP'); ?>">
                             <span><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE'); ?></span>
                         </a>

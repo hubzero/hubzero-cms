@@ -23,7 +23,7 @@ if ($canDo->get('core.admin')) {
 Toolbar::help('oaipmh');
 
 $this->css();
-$formUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller);
+$formUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
 ?>
 
 <form action="<?php echo $formUrl; ?>" method="post" name="adminForm" id="adminForm">

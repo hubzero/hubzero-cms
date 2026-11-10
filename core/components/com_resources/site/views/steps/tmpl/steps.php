@@ -149,8 +149,8 @@ $this->group_cn = (isset($this->group_cn) ? $this->group_cn : Request::getString
         } else {
             if ($this->progress['submitted'] == 1) {
                 $html .= '<a href="'
-                    .  Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $i . '&id=' . $this->id)
-                    .  '">' .  Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$i])) .  '</a>';
+                    . Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $i . '&id=' . $this->id)
+                    . '">' . Lang::txt('COM_CONTRIBUTE_STEP_' . strtoupper($this->steps[$i])) . '</a>';
             } else {
                 $html .= '<span>' . $this->steps[$i] . '</span>';
             }

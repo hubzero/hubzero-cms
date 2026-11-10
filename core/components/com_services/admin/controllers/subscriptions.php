@@ -174,7 +174,7 @@ class Subscriptions extends AdminController
         $service = $subscription->service;
 
         if (!$service->get('id')) {
-            Notify::error(Lang::txt('COM_SERVICES_SERVICE_NOT_FOUND') . ' ' .  $subscription->get('serviceid'));
+            Notify::error(Lang::txt('COM_SERVICES_SERVICE_NOT_FOUND') . ' ' . $subscription->get('serviceid'));
 
             return $this->cancelTask();
         }

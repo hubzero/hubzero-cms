@@ -835,7 +835,7 @@ class CurrentCart extends Cart
     {
         // (int): quote(false) is '', which strict SQL refuses for the tinyint
         $sql = "UPDATE `#__cart_transaction_steps`
-				SET `tsStatus` = " .  $this->db->quote((int) $status) . "
+				SET `tsStatus` = " . $this->db->quote((int) $status) . "
 				WHERE `tId` = {$this->cart->tId} AND `tsStep` = '{$step}'";
         if (!empty($meta)) {
             $sql .= "AND `tsMeta` = '{$meta}'";

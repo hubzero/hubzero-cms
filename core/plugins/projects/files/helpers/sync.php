@@ -147,11 +147,11 @@ class Sync extends \Hubzero\Base\Obj
                 . ' | (UTC): ' . gmdate('Y-m-d H:i:s', strtotime($synced)) . "\n" : "";
         $output .= 'Previous sync ID: ' . $prevSyncId . "\n";
         $output .= 'Current sync ID: ' . $lastSyncId . "\n";
-        $output .= 'Last synced remote change: ' .  $lastRemoteChange . "\n";
-        $output .= 'Last synced local change: ' .  $lastLocalChange . "\n";
+        $output .= 'Last synced remote change: ' . $lastRemoteChange . "\n";
+        $output .= 'Last synced local change: ' . $lastLocalChange . "\n";
         $output .= 'Time passed since last sync: ' . $passed . "\n";
-        $output .= 'Local sync start time: ' .  $startTime . "\n";
-        $output .= 'Initiated by (user ID): ' .  $this->_uid . ' [';
+        $output .= 'Local sync start time: ' . $startTime . "\n";
+        $output .= 'Initiated by (user ID): ' . $this->_uid . ' [';
         $output .= ($auto == true) ? 'Auto sync' : 'Manual sync request';
         $output .= ']' . "\n";
 
@@ -772,8 +772,8 @@ class Sync extends \Hubzero\Base\Obj
 
         $output .= 'Sync complete:' . "\n";
         $output .= 'Local time: ' . $endTime . "\n";
-        $output .= 'UTC time: ' .  Date::toSql() . "\n";
-        $output .= 'Sync completed in: ' .  $length . "\n";
+        $output .= 'UTC time: ' . Date::toSql() . "\n";
+        $output .= 'Sync completed in: ' . $length . "\n";
 
         // Determine next sync ID
         if (!$nextSyncId) {

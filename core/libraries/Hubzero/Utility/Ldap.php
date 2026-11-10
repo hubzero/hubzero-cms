@@ -173,7 +173,7 @@ class Ldap
             $errstr2 = ldap_err2str($err);
 
             if ($debug) {
-                Log::debug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " .  $errstr);
+                Log::debug("getLDO(): ldap_bind($acctman) failed. [" . posix_getpid() . "] " . $errstr);
             }
 
             $conn = false;
@@ -865,9 +865,9 @@ class Ldap
                     $attr = ldap_get_attributes($conn, $entry);
 
                     if (array_key_exists('gid', $attr)) {
-                        $gids[] = "gid=" . $attr['gid'][0] . "," .  "ou=groups," . $hubLDAPBaseDN;
+                        $gids[] = "gid=" . $attr['gid'][0] . "," . "ou=groups," . $hubLDAPBaseDN;
                     } elseif (array_key_exists('cn', $attr)) {
-                        $gids[] = "cn=" . $attr['cn'][0] . "," .  "ou=groups," . $hubLDAPBaseDN;
+                        $gids[] = "cn=" . $attr['cn'][0] . "," . "ou=groups," . $hubLDAPBaseDN;
                     }
 
                     $entry = ldap_next_entry($conn, $entry);
@@ -901,7 +901,7 @@ class Ldap
         }
 
         foreach ($result as $row) {
-            $dn = "cn=$row," .  "ou=groups," . $hubLDAPBaseDN;
+            $dn = "cn=$row," . "ou=groups," . $hubLDAPBaseDN;
 
             // Added this search because the delete will error on a delete of a non existent object
             $sr = ldap_search($conn, "ou=groups," . $hubLDAPBaseDN, "cn=$row", ['cn'], 0, 0, 0);
@@ -1026,7 +1026,7 @@ class Ldap
         }
 
         foreach ($result as $row) {
-            $dn = "uid=$row," .  "ou=users," . $hubLDAPBaseDN;
+            $dn = "uid=$row," . "ou=users," . $hubLDAPBaseDN;
 
             // see if item to be deleted is there
             $count = 0;

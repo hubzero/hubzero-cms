@@ -217,8 +217,8 @@ class Oauth
         $url  = 'https://';
         $url .= (!empty($this->environment)) ? $this->environment . '.' : '';
         $url .= self::HOSTNAME . '/' . self::AUTHORIZE;
-        $url .= '?client_id='    . $this->clientId;
-        $url .= '&scope='        . $this->scope;
+        $url .= '?client_id=' . $this->clientId;
+        $url .= '&scope=' . $this->scope;
         $url .= '&redirect_uri=' . urlencode($this->redirectUri);
         $url .= '&response_type=code';
 

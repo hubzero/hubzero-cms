@@ -112,7 +112,7 @@ class Pipeline extends SiteController
         }
         Pathway::append(
             Lang::txt('COM_TOOLS_PIPELINE'),
-            'index.php?option=' . $this->_option . '&controller=' . $this->_controller .  '&task=pipeline',
+            'index.php?option=' . $this->_option . '&controller=' . $this->_controller . '&task=pipeline',
         );
 
         $this->view->config = $this->config;
@@ -666,7 +666,7 @@ class Pipeline extends SiteController
         ];
 
         // Set the page title
-        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' .  Lang::txt('COM_TOOLS_TASK_REGISTER_TOOL');
+        $this->view->title = Lang::txt(strtoupper($this->_option)) . ': ' . Lang::txt('COM_TOOLS_TASK_REGISTER_TOOL');
         Document::setTitle($this->view->title);
 
         if (Pathway::count() <= 0) {

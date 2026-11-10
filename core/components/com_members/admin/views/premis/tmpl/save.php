@@ -34,7 +34,7 @@ Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION') . ': ' . Lang::txt('COM_MEM
         echo '<p id="report">';
         foreach ($this->report as $line) {
             if ($line['status'] != 'ok') {
-                echo 'Line ' . $line['line'] . ': ' .  $line['msg'] . '<br>';
+                echo 'Line ' . $line['line'] . ': ' . $line['msg'] . '<br>';
             }
         }
         echo '</p>';

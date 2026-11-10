@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 $this->js('media.js');
 ?>
 <div id="attachments">
-    <?php $routeUrl = Route::url('index.php?option=' . $this->option  . '&controller=' . $this->controller); ?>
+    <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
     <form action="<?php echo $routeUrl; ?>" method="post" id="filelist" name="filelist">
         <table>
             <tbody>
@@ -42,7 +42,7 @@ $this->js('media.js');
                             <td>
                                 <?php
                                     $routeUrl = Route::url(
-                                        'index.php?option=' . $this->option  . '&controller=' . $this->controller
+                                        'index.php?option=' . $this->option . '&controller=' . $this->controller
                                         . '&task=deletefile&delFile=' . $docs[$docName] . '&listdir='
                                         . $this->listdir . '&tmpl=component&subdir=' . $this->subdir . '&course='
                                         . $this->course_id . '&' . Session::getFormToken() . '=1',

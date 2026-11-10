@@ -369,7 +369,7 @@ class File extends Base
                 return $html;
             }
         }
-        $notice = $authorized ? ' (' . Lang::txt('unavailable')  . ')' : '';
+        $notice = $authorized ? ' (' . Lang::txt('unavailable') . ')' : '';
 
         // Draw bundles
         if ($configs->multiZip && $attachments && count($attachments) > 1) {

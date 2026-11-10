@@ -62,8 +62,8 @@ if ($this->contributors) {
         if ($contributor->authorid) {
             $profile = User::getInstance($contributor->authorid);
             if ($profile->get('id') && in_array($profile->get('access'), User::getAuthorisedViewLevels())) {
-                $link = '<a href="' .  Route::url($profile->link()) .  '" rel="contributor" title="'
-                    .  Lang::txt('COM_RESOURCES_VIEW_MEMBER_PROFILE', $name) .  '">' .  $name .  '</a>';
+                $link = '<a href="' . Route::url($profile->link()) . '" rel="contributor" title="'
+                    . Lang::txt('COM_RESOURCES_VIEW_MEMBER_PROFILE', $name) . '">' . $name . '</a>';
             }
         }
 
