@@ -835,7 +835,7 @@ class Pages extends Base
         $currentVersionNumber = $page->version('current')->get('version');
 
         // duplicate page version unsetting the id & updating version #
-        $newVersion = clone $pageVersion;
+        $newVersion = clone($pageVersion);
         $newVersion->set('id', null);
         $newVersion->set('version', $currentVersionNumber + 1);
 

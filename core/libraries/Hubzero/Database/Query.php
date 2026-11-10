@@ -296,7 +296,7 @@ class Query
      **/
     public function __clone()
     {
-        $this->syntax = clone $this->syntax;
+        $this->syntax = clone($this->syntax);
     }
 
     // =========================================================================
@@ -3160,7 +3160,7 @@ class Query
      **/
     public function exists(): bool
     {
-        $query = clone $this;
+        $query = clone($this);
         $query->deselect()
             ->selectRaw('1')
             ->limit(1);
@@ -4902,7 +4902,7 @@ class Query
      **/
     public function first($columns = null)
     {
-        $query = clone $this;
+        $query = clone($this);
 
         if ($columns !== null) {
             $query->deselect();
@@ -4928,7 +4928,7 @@ class Query
      **/
     public function value(?string $column = null)
     {
-        $query = clone $this;
+        $query = clone($this);
         if ($column !== null) {
             $query->deselect()
                 ->select($column);
@@ -4965,7 +4965,7 @@ class Query
      **/
     public function pluck(string $column, ?string $key = null): array
     {
-        $query = clone $this;
+        $query = clone($this);
         $query->deselect();
 
         if ($key !== null) {
@@ -5011,7 +5011,7 @@ class Query
      **/
     public function keyBy(string $column): array
     {
-        $query = clone $this;
+        $query = clone($this);
         if ($query->type !== 'select') {
             $query->select('*');
         }

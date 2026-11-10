@@ -370,7 +370,7 @@ class Overrides extends AdminController
             $query->whereLike('string', $searchstring);
         }
 
-        $total = with(clone $query)->total();
+        $total = with(clone($query))->total();
 
         // Consider the limitstart according to the 'more' parameter and load the results
         $query->start($limitstart)

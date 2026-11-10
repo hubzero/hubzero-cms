@@ -18,7 +18,7 @@ Toolbar::title(Lang::txt('Solr Search: Index Blacklist'));
 Toolbar::preferences($this->option, '550');
 $this->css('solr');
 $option = $this->option;
-$header = clone $this->blacklist;
+$header = clone($this->blacklist);
 $header = $header->toArray();
 
 $this->view('_submenu', 'shared')

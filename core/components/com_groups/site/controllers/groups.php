@@ -584,7 +584,7 @@ class Groups extends Base
             // Group::getInstance() is a singleton cache, so a second call would
             // return the *same* instance as $group and reflect the post-save
             // values; clone it instead, matching the admin controllers.
-            $before = clone $group;
+            $before = clone($group);
         } else {
             $this->_task = 'new';
             $group  = new Group();

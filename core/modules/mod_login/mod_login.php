@@ -48,7 +48,7 @@ class Login extends Module
 
         if (!$url) {
             // stay on the same page
-            $uri = clone Uri::getInstance();
+            $uri = clone(Uri::getInstance());
             $vars = $uri->parse($uri->toString());
             unset($vars['lang']);
 

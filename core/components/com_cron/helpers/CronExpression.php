@@ -268,7 +268,7 @@ class CronExpression
             : new DateTime($currentTime ?: 'now', new \DateTimeZone('GMT'));
 
         $currentDate->setTime($currentDate->format('H'), $currentDate->format('i'), 0);
-        $nextRun = clone $currentDate;
+        $nextRun = clone($currentDate);
         $nth = (int) $nth;
 
         // Set a hard limit to bail on an impossible date

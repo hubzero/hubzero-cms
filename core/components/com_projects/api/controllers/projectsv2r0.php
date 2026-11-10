@@ -118,7 +118,7 @@ class Projectsv2r0 extends ApiController
         $response = new stdClass();
         $response->projects = [];
 
-        $total = clone $query;
+        $total = clone($query);
         $response->total = $total->deselect()->select('*', null, true)->row()->get('COUNT(*)');
 
         if ($response->total) {

@@ -759,7 +759,7 @@ class Items extends AdminController
         // Initiate extended database class
         $row = Entry::oneOrNew(Request::getInt('id', 0, 'post'));
 
-        $old = clone $row;
+        $old = clone($row);
 
         $row->set($fields);
 

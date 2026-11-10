@@ -253,7 +253,7 @@ class Ticketsv2r1 extends ApiController
             }
         }
 
-        $total = clone $tickets;
+        $total = clone($tickets);
 
         $sort = Request::getWord('sort', 'created');
         if (!in_array($sort, ['id', 'type', 'created', 'closed', 'status', 'open', 'owner', 'severity', 'target_date', 'name', 'login', 'email'])) {

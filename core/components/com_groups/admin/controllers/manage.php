@@ -1132,7 +1132,7 @@ class Manage extends AdminController
                     continue;
                 }
 
-                $before = clone $group;
+                $before = clone($group);
 
                 // Set the group to be archived
                 $group->set('published', $state);

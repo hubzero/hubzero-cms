@@ -518,7 +518,7 @@ class RegistryTest extends TestCase
 
         $expected = $data->toString();
 
-        $evilclone = clone $data;
+        $evilclone = clone($data);
 
         $this->assertInstanceOf(Registry::class, $evilclone);
 

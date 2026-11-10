@@ -282,7 +282,7 @@ class Support extends Plugin
                     $old = \Components\Support\Models\Ticket::oneOrNew($submitter->id);
                     $old->set('open', 1);
 
-                    $row = clone $old;
+                    $row = clone($old);
                     $row->set('open', 0);
 
                     $comment->set('comment', str_replace('#XXX', '#' . $row->get('id'), $comment->get('comment')));

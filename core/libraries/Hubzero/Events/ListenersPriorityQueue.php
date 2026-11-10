@@ -222,7 +222,7 @@ class ListenersPriorityQueue implements IteratorAggregate, Countable
     public function getIterator()
     {
         // SplPriorityQueue queue is a heap.
-        $queue = clone $this->queue;
+        $queue = clone($this->queue);
 
         if (!$queue->isEmpty()) {
             $queue->top();

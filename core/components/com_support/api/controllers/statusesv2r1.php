@@ -125,7 +125,7 @@ class Statusesv2r1 extends ApiController
             $rows->whereLike('title', $search);
         }
 
-        $total = clone $rows;
+        $total = clone($rows);
 
         $sort = Request::getWord('sort', 'id');
         if (!in_array($sort, ['id', 'open', 'title', 'alias'])) {

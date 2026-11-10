@@ -255,7 +255,7 @@ class Modules extends AdminController
             ->paginated('limitstart', 'limit')
             ->rows();*/
 
-        $query2 = clone $query;
+        $query2 = clone($query);
         $total = count($query2->rows());
 
         $items = $query

@@ -174,7 +174,7 @@ class Categoriesv2r1 extends ApiController
             }
         }
 
-        $total = clone $rows;
+        $total = clone($rows);
 
         $sort = Request::getWord('sort', 'id');
         if (!in_array($sort, ['id', 'created', 'created_by', 'title', 'alias', 'modified', 'modified_by'])) {

@@ -68,7 +68,7 @@ class Auth extends SiteController
             $title = $menu->title;
         } else {
             // get com_menu global settings
-            $temp = clone Component::params('com_menus');
+            $temp = clone(Component::params('com_menus'));
             $params->merge($temp);
 
             // if supplied, use page title

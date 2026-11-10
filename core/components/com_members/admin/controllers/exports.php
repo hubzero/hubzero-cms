@@ -196,7 +196,7 @@ class Exports extends AdminController
         if ($filters['range']) {
             // Get UTC for now.
             $dNow = Date::of('now');
-            $dStart = clone $dNow;
+            $dStart = clone($dNow);
 
             switch ($filters['range']) {
                 case 'past_week':

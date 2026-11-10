@@ -334,7 +334,7 @@ class Loader
 
                     // Create home element
                     if ($template->home && !isset($templates[0])) {
-                        $templates[0] = clone $template;
+                        $templates[0] = clone($template);
                     }
                 }
 

@@ -106,7 +106,7 @@ class Messagesv2r1 extends ApiController
                 ->resetDepth();
         }
 
-        $total = clone $rows;
+        $total = clone($rows);
 
         $sort = Request::getWord('sort', 'id');
         if (!in_array($sort, ['id', 'title'])) {

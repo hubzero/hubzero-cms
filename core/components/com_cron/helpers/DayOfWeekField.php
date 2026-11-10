@@ -50,7 +50,7 @@ class DayOfWeekField extends AbstractField
         // Find out if this is the last specific weekday of the month
         if (strpos($value, 'L')) {
             $weekday = str_replace('7', '0', substr($value, 0, strpos($value, 'L')));
-            $tdate = clone $date;
+            $tdate = clone($date);
             $tdate->setDate($currentYear, $currentMonth, $lastDayOfMonth);
             while ($tdate->format('w') != $weekday) {
                 $tdate->setDate($currentYear, $currentMonth, --$lastDayOfMonth);
@@ -74,7 +74,7 @@ class DayOfWeekField extends AbstractField
                 return false;
             }
 
-            $tdate = clone $date;
+            $tdate = clone($date);
             $tdate->setDate($currentYear, $currentMonth, 1);
             $dayCount = 0;
             $currentDay = 1;

@@ -939,7 +939,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
     public function __clone()
     {
         if ($this->query !== null) {
-            $this->query = clone $this->query;
+            $this->query = clone($this->query);
         }
     }
 
@@ -2111,7 +2111,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      **/
     public function copy()
     {
-        return clone $this;
+        return clone($this);
     }
 
     /**
@@ -7273,7 +7273,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $page = 1;
 
         do {
-            $results = (clone $this)->forPage($page, $size)->rows();
+            $results = (clone($this))->forPage($page, $size)->rows();
             $count = $results->count();
 
             if ($count === 0) {
@@ -7344,7 +7344,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $page = 1;
 
         do {
-            $results = (clone $this)->forPage($page, $chunkSize)->rows();
+            $results = (clone($this))->forPage($page, $chunkSize)->rows();
             $count = $results->count();
 
             foreach ($results as $model) {
@@ -7434,7 +7434,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
         $page = 1;
 
         do {
-            $results = (clone $this)->forPage($page, $size)->rows();
+            $results = (clone($this))->forPage($page, $size)->rows();
             $count = $results->count();
 
             if ($count === 0) {

@@ -139,7 +139,7 @@ class Dumper
      */
     public function addVar($var)
     {
-        $varc = (is_object($var) ? clone $var : $var);
+        $varc = (is_object($var) ? clone($var) : $var);
         $this->_messages[] = [
             'var'  => $varc,
             'time' => microtime(true),

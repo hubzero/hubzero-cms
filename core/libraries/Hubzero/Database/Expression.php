@@ -795,7 +795,7 @@ final class Expression
      */
     public function as(string $alias): static
     {
-        $clone = clone $this;
+        $clone = clone($this);
         $clone->alias = $alias;
         return $clone;
     }

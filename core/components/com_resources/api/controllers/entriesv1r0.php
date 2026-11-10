@@ -179,7 +179,7 @@ class Entriesv1r0 extends ApiController
         // encode results and return response
         $response = new stdClass();
         $response->records = [];
-        $response->total   = with(clone $query)->total();
+        $response->total   = with(clone($query))->total();
 
         if ($response->total) {
             // Get major types

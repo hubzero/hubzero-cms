@@ -770,7 +770,7 @@ class File extends Base
 
                         // makeDefault writes thumb.gif/master.png at
                         // $configs->pubBase, so resolve that for the new version.
-                        $newVersionConfigs = clone $newConfigs;
+                        $newVersionConfigs = clone($newConfigs);
                         $newVersionConfigs->pubBase = \Components\Publications\Helpers\Html::buildPubPath(
                             $pub->id,
                             $newVersion->id,

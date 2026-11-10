@@ -1184,7 +1184,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
     {
         $html = '';
 
-        $tags = clone $this->tags();
+        $tags = clone($this->tags());
 
         if ($this->tags()->count() > 0) {
             $isAdmin = (User::authorise('core.manage', 'com_citations') ? true : false);

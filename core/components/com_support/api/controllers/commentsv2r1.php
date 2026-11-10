@@ -184,7 +184,7 @@ class Commentsv2r1 extends ApiController
 
         $comments->whereEquals('access', $access);
 
-        $total = clone $comments;
+        $total = clone($comments);
 
         $sort = Request::getWord('sort', 'created');
         if (!in_array($sort, ['id', 'created', 'created_by', 'comment', 'ticket', 'access'])) {
@@ -358,7 +358,7 @@ class Commentsv2r1 extends ApiController
 
         $ticket = Ticket::oneOrFail($ticket_id);
         // As it was, for whoever is told about the change
-        $before = clone $ticket;
+        $before = clone($ticket);
 
         // The same gates as v2.0: commenting needs a ticket the caller may
         // read; changing the ticket's own fields (owner, status, ...) is what

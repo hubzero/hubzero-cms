@@ -47,7 +47,7 @@ class MenuServiceProvider extends ServiceProvider
             if (is_object($menu)) {
                 $params->parse($menu->params);
             } elseif ($app->has('component')) {
-                $temp = clone $app['component']->params('com_menus');
+                $temp = clone($app['component']->params('com_menus'));
                 $params->merge($temp);
             }
 

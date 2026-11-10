@@ -565,7 +565,7 @@ class ApiController implements ControllerInterface
         }
 
         // Get a total record count
-        $total = with(clone $query)->total();
+        $total = with(clone($query))->total();
 
         // Build the response
         $response = new stdClass();

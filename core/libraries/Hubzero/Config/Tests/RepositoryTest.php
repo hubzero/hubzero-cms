@@ -609,7 +609,7 @@ class RepositoryTest extends TestCase
     public function testCloneIsIndependent()
     {
         $config = new Repository($this->fixturePath);
-        $clone = clone $config;
+        $clone = clone($config);
 
         $clone->set('app.debug', '999');
 

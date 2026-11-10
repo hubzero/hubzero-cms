@@ -350,7 +350,7 @@ class ArticlesCategory extends Module
             $item->displayIntrotext = $show_introtext ? self::truncate($item->introtext, $introtext_limit) : '';
             $item->displayReadmore  = $item->alternative_readmore;
 
-            $item->params = clone $params;
+            $item->params = clone($params);
 
             if ($access || in_array($item->access, $authorised)) {
                 // If the access filter has been set, we already know this user can view.

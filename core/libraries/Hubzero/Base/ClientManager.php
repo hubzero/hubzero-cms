@@ -120,7 +120,7 @@ class ClientManager
             $client->id = count($info);
         }
 
-        self::$_clients[$client->id] = clone $client;
+        self::$_clients[$client->id] = clone($client);
 
         return true;
     }

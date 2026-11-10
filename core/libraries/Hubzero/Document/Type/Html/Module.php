@@ -66,7 +66,7 @@ class Module extends Renderer
 
             $params->merge($template_params);
 
-            $module = clone $module;
+            $module = clone($module);
             $module->params = (string) $params;
         }
 

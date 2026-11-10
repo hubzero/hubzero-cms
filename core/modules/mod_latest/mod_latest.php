@@ -201,7 +201,7 @@ class Latest extends Module
                 $additional_catids = [];
 
                 foreach ($catids as $catid) {
-                    $catgories = clone $categories;
+                    $catgories = clone($categories);
                     $catgories->whereEquals('parent_id', $catid);
 
                     $items = $catgories->rows();

@@ -197,7 +197,7 @@ class Members extends AdminController
         if ($filters['range']) {
             // Get UTC for now.
             $dNow = Date::of('now');
-            $dStart = clone $dNow;
+            $dStart = clone($dNow);
 
             switch ($filters['range']) {
                 case 'past_week':
@@ -346,7 +346,7 @@ class Members extends AdminController
 
         // Get the user before changes so we can
         // compare how data changed later on
-        $prev = clone $user;
+        $prev = clone($user);
 
         $iAmSuperAdmin = User::authorise('core.admin');
 

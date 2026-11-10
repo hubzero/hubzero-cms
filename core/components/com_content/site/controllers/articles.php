@@ -68,7 +68,7 @@ class Articles extends SiteController
 
         $registry = $data->attribs;
 
-        $item->params = clone $params;
+        $item->params = clone($params);
         $item->params->merge($registry);
 
         $item->metadata = $data->metadata;
@@ -426,7 +426,7 @@ class Articles extends SiteController
             $query->whereEquals('YEAR(' . $queryDate . ')', $year);
         }
 
-        $total = with(clone $query)->total();
+        $total = with(clone($query))->total();
 
         $items = $query
             ->start($filters['start'])
@@ -445,7 +445,7 @@ class Articles extends SiteController
             $item->alternative_readmore = $articleParams->get('alternative_readmore');
             $item->layout = $articleParams->get('layout');
 
-            $item->params = clone $params;
+            $item->params = clone($params);
 
             // For blogs, article params override menu item params only if menu param = 'use_article'
             // Otherwise, menu item params control the layout
@@ -700,7 +700,7 @@ class Articles extends SiteController
         }
         $query->order('a.created', 'DESC');
 
-        $total = with(clone $query)->total();
+        $total = with(clone($query))->total();
 
         $items = $query
             ->start($filters['start'])
@@ -952,7 +952,7 @@ class Articles extends SiteController
         if ($menu = App::get('menu')->getActive()) {
             $menuParams->parse($menu->params);
         }
-        $params = clone $menuParams;
+        $params = clone($menuParams);
         $params->merge($globalparams);
 
         $filters = [];
@@ -1116,7 +1116,7 @@ class Articles extends SiteController
         }
         $query->order('a.created', 'DESC');
 
-        $total = with(clone $query)->total();
+        $total = with(clone($query))->total();
 
         $items = $query
             ->start($filters['start'])

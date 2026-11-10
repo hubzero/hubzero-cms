@@ -125,7 +125,7 @@ class Ticketsv2r0 extends ApiController
             $tickets->whereEquals('group', Request::getString('group'));
         }
 
-        $total = clone $tickets;
+        $total = clone($tickets);
 
         $rows = $tickets->order('created', 'desc')
             ->limit(Request::getInt('limit', 25))

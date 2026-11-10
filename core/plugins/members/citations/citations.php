@@ -189,7 +189,7 @@ class Citations extends Plugin
         // Instantiate a new citations object
         $obj = $this->filterHandler(Request::getArray('filters', []), $this->member->get('id'));
 
-        $count = clone $obj['citations'];
+        $count = clone($obj['citations']);
         $count = $count->total();
         $isAdmin = $this->member->get('id') == User::get('id');
         $config =  $this->member->params;
@@ -1381,7 +1381,7 @@ class Citations extends Plugin
                     foreach ($columns as $column) {
                         foreach ($terms as $term) {
                             // copy the original item
-                            $cite = clone $citations;
+                            $cite = clone($citations);
 
                             // do some searching
                             $cite->where($column, 'LIKE', "%{$term}%");
@@ -1403,7 +1403,7 @@ class Citations extends Plugin
                 // for tags
                 if ($filter == "tag" && $value != "") {
                     $collection = [];
-                    $cite = clone $citations;
+                    $cite = clone($citations);
                     foreach ($cite as $c) {
                         foreach ($c->tags as $tag) {
                             if ($tag->tag == $value) {

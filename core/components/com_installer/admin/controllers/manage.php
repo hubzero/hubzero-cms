@@ -177,7 +177,7 @@ class Manage extends AdminController
 
             $rows = array_slice($result, $start, $limit ? $limit : null);
         } else {
-            $total = with(clone $entries)->total();
+            $total = with(clone($entries))->total();
 
             $rows = $entries
                 ->order($filters['sort'], $filters['sort_Dir'])

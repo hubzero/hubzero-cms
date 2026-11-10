@@ -123,7 +123,7 @@ class Entriesv1r1 extends ApiController
         $response->citations = [];
 
         $query = Citation::getFilteredRecords($filters);
-        $total = clone $query;
+        $total = clone($query);
 
         // Get a record count
         $response->total = $total->total();
