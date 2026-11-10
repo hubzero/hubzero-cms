@@ -19,7 +19,6 @@ use Hubzero\Facades\App;
  *
  * @FIXME: break into multiple controllers based on entity type
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Jobsv1r0 extends ApiController
 {
     /**

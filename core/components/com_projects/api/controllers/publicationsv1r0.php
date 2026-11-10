@@ -21,7 +21,6 @@ use Hubzero\Facades\Lang;
 /**
  * API controller for the project publications
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Publicationsv1r0 extends ApiController
 {
     protected $model;

@@ -1,6 +1,5 @@
 <?php
 
-// phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable PSR1.Files.SideEffects.FoundWithSymbols
 /**
  * @package    hubzero-cms

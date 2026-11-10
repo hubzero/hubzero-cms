@@ -20,7 +20,6 @@ use Hubzero\Facades\Lang;
 /**
  * API controller for the projects component
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Projectsv1r0 extends ApiController
 {
     /**

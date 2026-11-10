@@ -21,7 +21,6 @@ use Hubzero\Facades\User;
 /**
  * API controller for the projects component
  */
-// phpcs:ignore PSR1.Classes.ClassDeclaration.MissingNamespace
 class Projectsv1r1 extends ApiController
 {
     protected $model;
