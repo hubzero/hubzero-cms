@@ -232,7 +232,7 @@ class Captcha extends Plugin
         }
 
         $type = $this->params->get($ext . 'Captcha', 'image');
-        $type = '_generate' . ucfirst(strtolower($type)) . 'Captcha';
+        $type = 'generate' . ucfirst(strtolower($type)) . 'Captcha';
 
         // Return the HTML
         return $this->$type();
@@ -266,7 +266,7 @@ class Captcha extends Plugin
 
         if (
             $task && $task != 'logout'
-            && $this->_confirm(trim($captcha['answer']), trim($captcha['instance']), trim($captcha['krhash']))
+            && $this->confirm(trim($captcha['answer']), trim($captcha['instance']), trim($captcha['krhash']))
         ) {
             return true;
         }
@@ -279,7 +279,7 @@ class Captcha extends Plugin
      *
      * @return  string
      */
-    private function _generateTextCaptcha()
+    private function generateTextCaptcha()
     {
         if (!isset($GLOBALS['totalCaptchas'])) {
             $GLOBALS['totalCaptchas'] = -1;
@@ -329,10 +329,10 @@ class Captcha extends Plugin
         }
 
         $html .= '</label>' . "\n";
-        $html .= "\t" . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="' . $this->_generateHash($key, date('j')) . '" />' . "\n";
+        $html .= "\t" . '<input type="hidden" name="captcha[krhash]" id="captcha-krhash" value="' . $this->generateHash($key, date('j')) . '" />' . "\n";
         //$html .= "\t" . '<input type="hidden" name="captcha[type]" id="captcha-type" value="text" />' . "\n";
 
-        App::get('session')->set('securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']), $this->_generateHash($key, date('j')));
+        App::get('session')->set('securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']), $this->generateHash($key, date('j')));
 
         if ($this->verified) {
             $html  = '<input type="hidden" name="captcha[answer]" id="captcha-answer" value="' . $key . '" />' . "\n";
@@ -350,7 +350,7 @@ class Captcha extends Plugin
      * @param  string  $day    Day of the week
      * @return string
      */
-    private function _generateHash($input, $day)
+    private function generateHash($input, $day)
     {
         // Add date:
         $input .= Config::get('secret') . $day . date('ny');
@@ -369,13 +369,13 @@ class Captcha extends Plugin
      *
      * @return  string
      */
-    private function _generateImageCaptcha()
+    private function generateImageCaptcha()
     {
         $showCaptcha = Request::getString('showCaptcha', '');
         if ($showCaptcha) {
-            return $this->_displayImage();
+            return $this->displayImage();
         }
-        return $this->_getImageCaptchaHtml();
+        return $this->getImageCaptchaHtml();
     }
 
     /**
@@ -383,10 +383,10 @@ class Captcha extends Plugin
      *
      * @return  boolean
      */
-    private function _displayImage()
+    private function displayImage()
     {
-        $imageFunction = '_createImage' . $this->params->get('imageFunction');
-        $imageFunction = (!method_exists($this, $imageFunction)) ? '_createImageAdv' : $imageFunction;
+        $imageFunction = 'createImage' . $this->params->get('imageFunction');
+        $imageFunction = (!method_exists($this, $imageFunction)) ? 'createImageAdv' : $imageFunction;
 
         $this->$imageFunction();
         exit;
@@ -402,9 +402,9 @@ class Captcha extends Plugin
      * @param   string   $hash
      * @return  boolean  True if valid
      */
-    private function _confirm($word, $instanceNo = '', $hash = '')
+    private function confirm($word, $instanceNo = '', $hash = '')
     {
-        $word = $this->_generateHash(strtolower($word), date('j'));
+        $word = $this->generateHash(strtolower($word), date('j'));
 
         $securiy_code = App::get('session')->get('securiy_code' . $instanceNo);
 
@@ -422,7 +422,7 @@ class Captcha extends Plugin
      *
      * @return  string
      */
-    private function _getImageCaptchaHtml()
+    private function getImageCaptchaHtml()
     {
         if (!isset($GLOBALS['totalCaptchas'])) {
             $GLOBALS['totalCaptchas'] = -1;
@@ -444,7 +444,7 @@ class Captcha extends Plugin
      *
      * @return  void
      */
-    private function _setColors()
+    private function setColors()
     {
         $this->bgColor   = $this->params->get('bgColor', $this->bgColor);
         $this->textColor = $this->params->get('textColor', $this->textColor);
@@ -455,7 +455,7 @@ class Captcha extends Plugin
      *
      * @return  void
      */
-    private function _createImageAdv()
+    private function createImageAdv()
     {
         if (!isset($GLOBALS['totalCaptchas'])) {
             $GLOBALS['totalCaptchas'] = -1;
@@ -472,10 +472,10 @@ class Captcha extends Plugin
         $fluctuation_amplitude = 5;
         $no_spaces = true;
 
-        $this->_setColors();
+        $this->setColors();
 
-        $foreground_color = $this->_hexToRgb($this->textColor);
-        $background_color = $this->_hexToRgb($this->bgColor);
+        $foreground_color = $this->hexToRgb($this->textColor);
+        $background_color = $this->hexToRgb($this->bgColor);
 
         $jpeg_quality = 90;
 
@@ -659,7 +659,7 @@ class Captcha extends Plugin
             header('Content-Type: image/x-png');
             imagepng($img2);
         }
-        $security_code = $this->_generateHash($this->keystring, date('j'));
+        $security_code = $this->generateHash($this->keystring, date('j'));
 
         //Set the session to store the security code
         App::get('session')->set('securiy_code' . Request::getInt('instanceNo', $GLOBALS['totalCaptchas']), $security_code);
@@ -672,14 +672,14 @@ class Captcha extends Plugin
      *
      * @return  void
      */
-    private function _createImagePlain()
+    private function createImagePlain()
     {
         // Let's generate a totally random string using MD5
         $md5_hash = md5(rand(0, 999));
 
         // We don't need a 32 character long string so we trim it down to 5
         $security_code = str_replace(["0", "O", "o"], ["p"], substr($md5_hash, 15, 5));
-        $security_code = $this->_generateHash($security_code, date('j'));
+        $security_code = $this->generateHash($security_code, date('j'));
 
         // Set the session to store the security code
         App::get('session')->set('securiy_code' . (Request::getInt('instanceNo') + 0), $security_code);
@@ -687,9 +687,9 @@ class Captcha extends Plugin
         $width  = 120;
         $height = 40;
         $image  = imagecreate($width, $height);
-        $this->_setColors();
-        $foreground_color = $this->_hexToRgb($this->textColor);
-        $background_color = $this->_hexToRgb($this->bgColor);
+        $this->setColors();
+        $foreground_color = $this->hexToRgb($this->textColor);
+        $background_color = $this->hexToRgb($this->bgColor);
 
         // We are making three colors, white, black and gray
         $white = imagecolorallocate($image, $foreground_color[0], $foreground_color[1], $foreground_color[2]);
@@ -720,7 +720,7 @@ class Captcha extends Plugin
      * @param   string  $hex  Hex value to convert
      * @return  string
      */
-    private function _hexToRgb($hex)
+    private function hexToRgb($hex)
     {
         $hex = preg_replace("/#/", '', $hex);
         $color = [];
@@ -747,7 +747,7 @@ class Captcha extends Plugin
      * @param   string  $b  B color to convert
      * @return  string
      */
-    private function _rgbToHex($r, $g, $b)
+    private function rgbToHex($r, $g, $b)
     {
         $hex  = '#';
         $hex .= dechex($r);

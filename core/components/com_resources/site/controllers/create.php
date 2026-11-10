@@ -428,7 +428,7 @@ class Create extends SiteController
      * @param   string   $parent_label  Tag
      * @return  array
      */
-    private function _loadFocusAreas($type, $labels = null, $parent_id = null, $parent_label = null)
+    private function loadFocusAreas($type, $labels = null, $parent_id = null, $parent_label = null)
     {
         if (is_null($labels)) {
             $this->database->setQuery(
@@ -472,7 +472,7 @@ class Create extends SiteController
         );
         $fas = $this->database->loadAssocList('raw_tag');
         foreach ($fas as &$fa) {
-            $fa['children'] = $this->_loadFocusAreas($type, $labels, $fa['id'], $fa['label']);
+            $fa['children'] = $this->loadFocusAreas($type, $labels, $fa['id'], $fa['label']);
         }
         return $fas;
     }
@@ -504,7 +504,7 @@ class Create extends SiteController
 
         // Get focus areas
         $this->database->setQuery('SELECT type FROM `#__resources` WHERE id = ' . $this->database->quote($id));
-        $fas = $this->_loadFocusAreas($this->database->loadResult());
+        $fas = $this->loadFocusAreas($this->database->loadResult());
         $focusareas = [];
         foreach ($fas as $tag => $fa) {
             if (!isset($focusareas[$fa['label']])) {
@@ -577,7 +577,7 @@ class Create extends SiteController
         if (!User::isGuest()) {
             $xgroups = \Hubzero\User\Helper::getGroups(User::get('id'), 'all');
             // Get the groups the user has access to
-            $usersgroups = $this->_getUsersGroups($xgroups);
+            $usersgroups = $this->getUsersGroups($xgroups);
         }
 
         // Output HTML
@@ -606,7 +606,7 @@ class Create extends SiteController
      * @param   array  $groups  Array of group objects
      * @return  array
      */
-    private function _getUsersGroups($groups)
+    private function getUsersGroups($groups)
     {
         $arr = [];
         if (!empty($groups)) {
@@ -778,13 +778,13 @@ class Create extends SiteController
         }
 
         $row->set('title', preg_replace('/\s+/', ' ', $row->get('title')));
-        $row->set('title', $this->_txtClean($row->get('title')));
+        $row->set('title', $this->txtClean($row->get('title')));
 
         // Strip any scripting there may be
         if (trim($row->get('fulltxt'))) {
             $row->set('fulltxt', \Components\Resources\Helpers\Html::stripStyles($row->get('fulltxt')));
-            $row->set('fulltxt', $this->_txtClean($row->get('fulltxt')));
-            $row->set('footertext', $this->_txtClean($row->get('footertext')));
+            $row->set('fulltxt', $this->txtClean($row->get('fulltxt')));
+            $row->set('footertext', $this->txtClean($row->get('footertext')));
         }
 
         // Fall back to step if any errors found
@@ -1721,7 +1721,7 @@ class Create extends SiteController
      * @param   string  $text  Text to clean
      * @return  string
      */
-    private function _txtClean($text)
+    private function txtClean($text)
     {
         // Handle special characters copied from MS Word
         $text = str_replace('“', '"', $text == null ? '' : $text);

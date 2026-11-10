@@ -160,10 +160,10 @@ class Dashboard extends Plugin
         $view = $this->view('default', 'display');
 
         // load dashboard modules
-        $dashboardModules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
+        $dashboardModules = $this->loadModules($this->params->get('position', 'memberDashboard'));
 
         // load user preferences
-        $preferences = $this->_loadPreferences();
+        $preferences = $this->loadPreferences();
 
         // var to hold modules
         $view->modules = [];
@@ -209,10 +209,10 @@ class Dashboard extends Plugin
         $moduleId = Request::getInt('moduleid', 0);
 
         // get list of modules
-        $modulesList = $this->_loadModules($this->params->get('position', 'memberDashboard'));
+        $modulesList = $this->loadModules($this->params->get('position', 'memberDashboard'));
 
         // load user preferences
-        $preferences = $this->_loadPreferences();
+        $preferences = $this->loadPreferences();
 
         // get module preferences for moduleid
         $preference = new \stdClass();
@@ -288,10 +288,10 @@ class Dashboard extends Plugin
         $view = $this->view('default', 'add');
 
         // load dashboard modules
-        $view->modules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
+        $view->modules = $this->loadModules($this->params->get('position', 'memberDashboard'));
 
         // load user preferences
-        $preferences = $this->_loadPreferences();
+        $preferences = $this->loadPreferences();
 
         // get list of install member modules
         $view->mymodules = array_map(function ($mod) {
@@ -400,7 +400,7 @@ class Dashboard extends Plugin
         $view->modules = [];
 
         // load dashboard modules
-        $dashboardModules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
+        $dashboardModules = $this->loadModules($this->params->get('position', 'memberDashboard'));
 
         // get default prefs
         $preferences = $this->params->get('defaults', []);
@@ -467,7 +467,7 @@ class Dashboard extends Plugin
         $view = $this->view('default', 'add');
 
         // load dashboard modules
-        $view->modules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
+        $view->modules = $this->loadModules($this->params->get('position', 'memberDashboard'));
 
         // get default prefs
         $preferences = $this->params->get('defaults', '[]');
@@ -493,7 +493,7 @@ class Dashboard extends Plugin
         $moduleId = Request::getInt('moduleid', 0);
 
         // get list of modules
-        $modulesList = $this->_loadModules($this->params->get('position', 'memberDashboard'));
+        $modulesList = $this->loadModules($this->params->get('position', 'memberDashboard'));
 
         // get the module
         $module = null;
@@ -529,7 +529,7 @@ class Dashboard extends Plugin
         $view = $this->view('push', 'manage');
 
         // get list of modules
-        $view->modules = $this->_loadModules($this->params->get('position', 'memberDashboard'));
+        $view->modules = $this->loadModules($this->params->get('position', 'memberDashboard'));
 
         // return rendered view
         return $view->loadTemplate();
@@ -631,7 +631,7 @@ class Dashboard extends Plugin
      * @param   string  $position  Position to look for
      * @return  array   Array of modules
      */
-    private function _loadModules($position = '')
+    private function loadModules($position = '')
     {
         $query = "SELECT *
 		          FROM `#__modules` AS m
@@ -654,7 +654,7 @@ class Dashboard extends Plugin
      * @param   integer  $uidNumber  Profile ID number
      * @return  array    Array of preferences
      */
-    private function _loadPreferences($uidNumber = null)
+    private function loadPreferences($uidNumber = null)
     {
         // use logged in user
         if ($uidNumber == null) {

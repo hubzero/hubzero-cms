@@ -80,7 +80,7 @@ class MarkdownParser
         }
 
         // Set the unique token
-        $this->token = "\x07UNIQ" . $this->_randomString();
+        $this->token = "\x07UNIQ" . $this->randomString();
     }
 
     /**
@@ -146,7 +146,7 @@ class MarkdownParser
      *
      * @return     integer
      */
-    private function _randomString()
+    private function randomString()
     {
         return bin2hex(random_bytes(8));
     }
@@ -240,7 +240,7 @@ class MarkdownParser
     private function math($text)
     {
         Html::behavior('math');
-        return preg_replace_callback('/<math>(.*?)<\/math>/s', [&$this, '_stripMath'], $text);
+        return preg_replace_callback('/<math>(.*?)<\/math>/s', [&$this, 'stripMath'], $text);
     }
 
     /**
@@ -249,12 +249,12 @@ class MarkdownParser
      * @param   array   $matches    Wiki markup matching a <math>formula</math>
      * @return  string
      */
-    private function _stripMath($matches)
+    private function stripMath($matches)
     {
-        return $this->_dataPush([
+        return $this->dataPush([
             $matches[0],
             'math',
-            $this->_randomString(),
+            $this->randomString(),
             '$$' . $matches[1] . '$$',
         ]);
     }
@@ -265,7 +265,7 @@ class MarkdownParser
      * @param   string  $txt  Math output
      * @return  string
      */
-    private function _restoreMath($txt)
+    private function restoreMath($txt)
     {
         return '<span class="asciimath">' . $txt . '</span>';
     }
@@ -283,7 +283,7 @@ class MarkdownParser
 
         if (!empty($this->tokens)) {
             foreach ($this->tokens as $tag => $vals) {
-                $text = preg_replace_callback('/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si', [&$this, '_dataPull'], $text);
+                $text = preg_replace_callback('/<(' . $tag . ') (.+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPull'], $text);
                 $this->tokens[$tag] = [];
             }
         }
@@ -298,7 +298,7 @@ class MarkdownParser
      * @param      array   $matches Content to store
      * @return     integer Unique ID
      */
-    private function _dataPush($matches)
+    private function dataPush($matches)
     {
         $tag = $matches[1];
         $key = $matches[2];
@@ -315,13 +315,13 @@ class MarkdownParser
      * @param      string  $matches Content to store
      * @return     integer Unique ID
      */
-    private function _dataPull($matches)
+    private function dataPull($matches)
     {
         $tag = $matches[1];
         $key = $matches[2];
 
         if (isset($this->tokens[$tag]) && isset($this->tokens[$tag][$key])) {
-            return $this->{'_restore' . ucfirst($tag)}($this->tokens[$tag][$key]);
+            return $this->{'restore' . ucfirst($tag)}($this->tokens[$tag][$key]);
         }
         if ($tag == 'macro') {
             return '';

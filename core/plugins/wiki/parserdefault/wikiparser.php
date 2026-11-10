@@ -185,7 +185,7 @@ class WikiParser
         }
 
         // Set the unique token
-        $this->token = "\x07UNIQ" . $this->_randomString();
+        $this->token = "\x07UNIQ" . $this->randomString();
     }
 
     /**
@@ -251,7 +251,7 @@ class WikiParser
      *
      * @return     integer
      */
-    private function _randomString()
+    private function randomString()
     {
         return bin2hex(random_bytes(8));
     }
@@ -362,7 +362,7 @@ class WikiParser
 
         // Unstrip macro blocks BEFORE doing block levels or <p> tags will get messy
         //$text = preg_replace_callback('/MACRO' . $this->token . '/i', array(&$this, 'restore_macros'), $text);
-        $text = preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', [&$this, '_dataPull'], $text);
+        $text = preg_replace_callback('/<(macro) (.+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPull'], $text);
         $this->tokens['macro'] = [];
 
         // Clean up special characters, only run once, next-to-last before block levels
@@ -490,7 +490,7 @@ class WikiParser
      * @param      string $txt Link HTML
      * @return     string
      */
-    private function _restoreAnchor($txt)
+    private function restoreAnchor($txt)
     {
         return $txt;
     }
@@ -575,10 +575,10 @@ class WikiParser
             'scope_id' => 0,
         ];
 
-        return $prfx . $this->_dataPush([
+        return $prfx . $this->dataPush([
             $matches[0],
             'anchor',
-            $this->_randomString(),
+            $this->randomString(),
             '<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '" rel="external">' . $this->glyphs($txt) . '</a>',
         ]);
     }
@@ -621,10 +621,10 @@ class WikiParser
             $whole = trim($whole, '[]');
             $whole = ltrim($whole, '!');
 
-            return $this->_dataPush([
+            return $this->dataPush([
                 $whole,
                 'anchor',
-                $this->_randomString(),
+                $this->randomString(),
                 '[' . trim($whole) . ']',
             ]);
         }
@@ -636,10 +636,10 @@ class WikiParser
 
         // Are we placing an anchor?
         if (substr($href, 0, 2) == '=#') {
-            return $this->_dataPush([
+            return $this->dataPush([
                 $whole,
                 'anchor',
-                $this->_randomString(),
+                $this->randomString(),
                 '<span id="' . htmlspecialchars((string) ltrim($href, '=#'), ENT_QUOTES, 'UTF-8') . '"></span>',
             ]);
         } elseif (substr($href, 0, 1) == '#') {
@@ -648,10 +648,10 @@ class WikiParser
             if (trim($title) === '') {
                 $title = ltrim($href, '#');
             }
-            return $this->_dataPush([
+            return $this->dataPush([
                 $whole,
                 'anchor',
-                $this->_randomString(),
+                $this->randomString(),
                 '<a class="' . $cls . '" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '">' . $this->glyphs($title) . '</a>',
             ]);
         }
@@ -786,10 +786,10 @@ class WikiParser
             $displayTitle = $p->get('pagename') ?: ltrim($href, '/#');
         }
 
-        return $this->_dataPush([
+        return $this->dataPush([
             $whole,
             'anchor',
-            $this->_randomString(),
+            $this->randomString(),
             '<a class="' . $cls . '" href="' . str_replace(['\\', '"', "'"], '', $href) . '">' . $this->glyphs($displayTitle) . '</a>',
         ]);
     }
@@ -824,10 +824,10 @@ class WikiParser
             'scope_id' => 0,
         ];
 
-        return $this->_dataPush([
+        return $this->dataPush([
             $matches[0],
             'anchor',
-            $this->_randomString(),
+            $this->randomString(),
             '<a class="ext-link" href="' . htmlspecialchars((string) $href, ENT_QUOTES, 'UTF-8') . '" rel="external">' . $this->glyphs(trim($title)) . '</a>',
         ]);
     }
@@ -866,10 +866,10 @@ class WikiParser
             'scope_id' => $p->get('id'),
         ];
 
-        return $this->_dataPush([
+        return $this->dataPush([
             $name,
             'anchor',
-            $this->_randomString(),
+            $this->randomString(),
             '<a href="' . $link . '" class="' . $cls . '">' . $this->glyphs($name) . '</a>',
         ]);
     }
@@ -931,7 +931,7 @@ class WikiParser
                         }
                     }
 
-                    $random = $this->_randomString();
+                    $random = $this->randomString();
                     $output[] = ($admon)
                             ? $prfx . '{admonition ' . $random . '}' . $processor
                             : $prfx . '<pre ' . $random . '>' . $processor;
@@ -963,7 +963,7 @@ class WikiParser
                 // Not in a code block
                 if ($codestate == self::CS_NONE) {
                     // Convert inline `code`
-                    $txt = $this->_code($txt);
+                    $txt = $this->code($txt);
                 } else {
                     // IN a code block
                     // Strip indention
@@ -984,7 +984,7 @@ class WikiParser
         }
 
         $output = implode("\n", $output);
-        $output = preg_replace_callback('/<(pre) (\w+?)>(.*)<\/(\1) \2>/si', [&$this, '_dataPush'], $output);
+        $output = preg_replace_callback('/<(pre) (\w+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPush'], $output);
 
         return $output;
     }
@@ -996,7 +996,7 @@ class WikiParser
      * @param      array   $matches Content to store
      * @return     integer Unique ID
      */
-    private function _dataPush($matches)
+    private function dataPush($matches)
     {
         $tag = $matches[1];
         $key = $matches[2];
@@ -1013,13 +1013,13 @@ class WikiParser
      * @param      string  $matches Content to store
      * @return     integer Unique ID
      */
-    private function _dataPull($matches)
+    private function dataPull($matches)
     {
         $tag = $matches[1];
         $key = $matches[2];
 
         if (isset($this->tokens[$tag]) && isset($this->tokens[$tag][$key])) {
-            return $this->{'_restore' . ucfirst($tag)}($this->tokens[$tag][$key]);
+            return $this->{'restore' . ucfirst($tag)}($this->tokens[$tag][$key]);
         }
         if ($tag == 'macro') {
             return '';
@@ -1039,7 +1039,7 @@ class WikiParser
         $this->set('wikitohtml', $html);
 
         foreach ($this->tokens as $tag => $vals) {
-            $text = preg_replace_callback('/<(' . $tag . ') (\w+?)>(.*)<\/(\1) \2>/si', [&$this, '_dataPull'], $text);
+            $text = preg_replace_callback('/<(' . $tag . ') (\w+?)>(.*)<\/(\1) \2>/si', [&$this, 'dataPull'], $text);
             $this->tokens[$tag] = [];
         }
 
@@ -1052,7 +1052,7 @@ class WikiParser
      * @param      string   $txt Parameter description (if any) ...
      * @return     string
      */
-    private function _restorePre($txt)
+    private function restorePre($txt)
     {
         //$txt = array_shift($this->pres);
 
@@ -1151,7 +1151,7 @@ class WikiParser
      * @param      string $text Text to replace code blocks in
      * @return     string
      */
-    private function _code($text)
+    private function code($text)
     {
         static $rules = [
             '`({{{)' => '(}}})`',
@@ -1161,7 +1161,7 @@ class WikiParser
         ];
 
         foreach ($rules as $start => $end) {
-            $text = preg_replace_callback('/(^|\s|[[({>"])' . preg_quote($start, '/') . '(.*?)' . preg_quote($end, '/') . '(\s|$|["\])}])?/ms', [&$this, '_getCode'], $text);
+            $text = preg_replace_callback('/(^|\s|[[({>"])' . preg_quote($start, '/') . '(.*?)' . preg_quote($end, '/') . '(\s|$|["\])}])?/ms', [&$this, 'getCode'], $text);
         }
 
         return $text;
@@ -1173,17 +1173,17 @@ class WikiParser
      * @param      unknown  $m Parameter description (if any) ...
      * @return     string   Return description (if any) ...
      */
-    private function _getCode($m)
+    private function getCode($m)
     {
         $whole  = isset($m[0]) ? $m[0] : '';
         $before = isset($m[1]) ? $m[1] : '';
         $text   = isset($m[2]) ? $m[2] : '';
         $after  = isset($m[3]) ? $m[3] : '';
 
-        return $before . $this->_dataPush([
+        return $before . $this->dataPush([
             $whole,
             'code',
-            $this->_randomString(),
+            $this->randomString(),
             $text,
         ]) . $after;
     }
@@ -1194,7 +1194,7 @@ class WikiParser
      * @param      string $txt
      * @return     string
      */
-    private function _restoreCode($txt)
+    private function restoreCode($txt)
     {
         if (!$this->get('wikitohtml', true)) {
             $txt = str_replace('<code>', '', $txt);
@@ -1294,7 +1294,7 @@ class WikiParser
     private function admonitions($text)
     {
         $this->set('wikitohtml', true);
-        return preg_replace_callback('/\{admonition ([^\}]+)\}(.*?)\{\/admonition \1\}/s', [&$this, '_getAdmonition'], $text); //admonitionCallback
+        return preg_replace_callback('/\{admonition ([^\}]+)\}(.*?)\{\/admonition \1\}/s', [&$this, 'getAdmonition'], $text); //admonitionCallback
     }
 
     /**
@@ -1303,9 +1303,9 @@ class WikiParser
      * @param   array   $matches  Content matching {admonition} ... {/admonition}
      * @return  string  Parsed wiki content
      */
-    private function _getAdmonition($matches)
+    private function getAdmonition($matches)
     {
-        return $this->_restorePre($matches[2]);
+        return $this->restorePre($matches[2]);
     }
 
     /**
@@ -1322,7 +1322,7 @@ class WikiParser
         if (class_exists('Html')) {
             Html::behavior('math');
         }
-        return preg_replace_callback('/<math>(.*?)<\/math>/s', [&$this, '_stripMath'], $text);
+        return preg_replace_callback('/<math>(.*?)<\/math>/s', [&$this, 'stripMath'], $text);
     }
 
     /**
@@ -1331,12 +1331,12 @@ class WikiParser
      * @param   array   $matches    Wiki markup matching a <math>formula</math>
      * @return  string
      */
-    private function _stripMath($matches)
+    private function stripMath($matches)
     {
-        return $this->_dataPush([
+        return $this->dataPush([
             $matches[0],
             'math',
-            $this->_randomString(),
+            $this->randomString(),
             '$$' . $matches[1] . '$$',
         ]);
     }
@@ -1348,16 +1348,16 @@ class WikiParser
      * @param   array  $matches  Wiki markup matching a <math>formula</math>
      * @return  string
      */
-    private function _getMath($matches)
+    private function getMath($matches)
     {
         $m = Math\MathRenderer::renderMath(trim($matches[1]), [
             'option' => $this->get('option'),
         ]);
 
-        return $this->_dataPush([
+        return $this->dataPush([
             $matches[0],
             'math',
-            $this->_randomString(),
+            $this->randomString(),
             $m,
         ]);
     }
@@ -1368,7 +1368,7 @@ class WikiParser
      * @param   string  $txt  Math output
      * @return  string
      */
-    private function _restoreMath($txt)
+    private function restoreMath($txt)
     {
         return '<span class="asciimath">' . $txt . '</span>';
     }
@@ -1382,7 +1382,7 @@ class WikiParser
      */
     private function includes($text)
     {
-        return preg_replace_callback('/\[\[(include)(\]\]|\((.*)\)\]\])/Ui', [&$this, '_getInclude'], $text == null ? '' : $text);
+        return preg_replace_callback('/\[\[(include)(\]\]|\((.*)\)\]\])/Ui', [&$this, 'getInclude'], $text == null ? '' : $text);
     }
 
     /**
@@ -1392,7 +1392,7 @@ class WikiParser
      * @param   array  $matches  Pattern matches from includes() method
      * @return  string
      */
-    private function _getInclude($matches)
+    private function getInclude($matches)
     {
         if (isset($matches[1]) && $matches[1] != '') {
             if (strtolower($matches[1]) != 'include') {
@@ -1455,7 +1455,7 @@ class WikiParser
         $this->macros = [];
 
         // Get macros [[name(args)]]
-        return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', [&$this, '_getMacro'], $text);
+        return preg_replace_callback('/\[\[(?P<macroname>[\w.]+)(\]\]|\((?P<macroargs>.*)\)\]\])/U', [&$this, 'getMacro'], $text);
     }
 
     /**
@@ -1464,7 +1464,7 @@ class WikiParser
      * @param   array  $matches  Result form [[Macro()]] pattern matching
      * @return  string
      */
-    private function _getMacro($matches)
+    private function getMacro($matches)
     {
         static $_macros;
 
@@ -1478,10 +1478,10 @@ class WikiParser
             $macroname = ucfirst($matches[1]) . 'Macro';
 
             if (!$this->get('macros', true) && strtolower($matches[1]) != 'div') {
-                return $this->_dataPush([
+                return $this->dataPush([
                     $matches[1],
                     'macro',
-                    $this->_randomString(),
+                    $this->randomString(),
                     $matches[0],
                 ]);
             }
@@ -1557,10 +1557,10 @@ class WikiParser
                 }
             }
 
-            return $this->_dataPush([
+            return $this->dataPush([
                 $matches[1],
                 'macro',
-                $this->_randomString(),
+                $this->randomString(),
                 $macro->render(),
             ]);
         }
@@ -1574,7 +1574,7 @@ class WikiParser
      * @param   string  $txt
      * @return  string
      */
-    private function _restoreMacro($txt)
+    private function restoreMacro($txt)
     {
         return $txt;
     }
@@ -1810,7 +1810,7 @@ class WikiParser
 				([$pnct]*)
 				$f
 				($|[\]}]|(?=[[:punct:]]{1,2}|\s|\)))
-			/x", [&$this, '_getSpan'], $text);
+			/x", [&$this, 'getSpan'], $text);
         }
         $text = preg_replace('/\^(.*?)\^/', "<sup>\\1</sup>", $text);
         $text = preg_replace('/,,(.*?),,/', "<sub>\\1</sub>", $text);
@@ -1823,7 +1823,7 @@ class WikiParser
      * @param   array  $m  Pattern matches
      * @return  string
      */
-    private function _getSpan($m)
+    private function getSpan($m)
     {
         $qtags = [
             '??' => 'cite',
@@ -1896,7 +1896,7 @@ class WikiParser
         $outtext = '';
         $lines = explode("\n", $text);
         foreach ($lines as $line) {
-            $outtext .= $this->_getQuotes($line) . "\n";
+            $outtext .= $this->getQuotes($line) . "\n";
         }
         $outtext = substr($outtext, 0, -1);
         return $outtext;
@@ -1908,7 +1908,7 @@ class WikiParser
      * @param   string  $text  Wiki markup
      * @return  string
      */
-    private function _getQuotes($text)
+    private function getQuotes($text)
     {
         $arr = preg_split("/(''+)/", $text, -1, PREG_SPLIT_DELIM_CAPTURE);
         if (count($arr) == 1) {
@@ -2135,7 +2135,7 @@ class WikiParser
         $sac = self::$patterns['spns'] . self::$patterns['algn'] . self::$patterns['clss'];
 
         $text .= "\n\n";
-        return preg_replace_callback("/^(?:table(_?{$sac})\. ?\n)?^({$ac}\.? ?\|\|.*\|\|)\n\n/smU", [&$this, '_getTable'], $text);
+        return preg_replace_callback("/^(?:table(_?{$sac})\. ?\n)?^({$ac}\.? ?\|\|.*\|\|)\n\n/smU", [&$this, 'getTable'], $text);
     }
 
     /**
@@ -2144,7 +2144,7 @@ class WikiParser
      * @param   array  $matches  Pattern matches for table syntax
      * @return  string
      */
-    private function _getTable($matches)
+    private function getTable($matches)
     {
         $tatts = $this->pba($matches[1], 'table');
 
@@ -2215,7 +2215,7 @@ class WikiParser
                     $colspan = 0;
                 }
                 // Apply formatting to cell contents
-                $cell = $this->_code($cell);
+                $cell = $this->code($cell);
                 $cell = $this->spans($cell);
 
                 $cellTypes[] = $ctyp;
@@ -2293,7 +2293,7 @@ class WikiParser
      *
      * @return  string
      */
-    private function _closeParagraph()
+    private function closeParagraph()
     {
         $result = '';
         if ('' != $this->mLastSection) {
@@ -2316,7 +2316,7 @@ class WikiParser
      * @param   string  $st2
      * @return  integer
      */
-    private function _getCommon($st1, $st2)
+    private function getCommon($st1, $st2)
     {
         $fl = $st1; //strlen($st1);
         $shorter = $st2; //strlen($st2);
@@ -2341,9 +2341,9 @@ class WikiParser
      * @param   string  $char  List type indicator
      * @return  string
      */
-    private function _openList($char)
+    private function openList($char)
     {
-        $result = $this->_closeParagraph();
+        $result = $this->closeParagraph();
 
         if ('*' == $char) {
             $result .= '<ul><li>';
@@ -2370,7 +2370,7 @@ class WikiParser
      * @param   string  $char  List type indicator
      * @return  string
      */
-    private function _nextItem($char)
+    private function nextItem($char)
     {
         if ('*' == $char || '#' == $char || is_numeric($char)) {
             return '</li><li>';
@@ -2396,7 +2396,7 @@ class WikiParser
      * @param   string  $char  List type indicator
      * @return  string
      */
-    private function _closeList($char)
+    private function closeList($char)
     {
         if ('*' == $char) {
             $text = '</li></ul>';
@@ -2552,7 +2552,7 @@ class WikiParser
             // List generation
             if ($prefixLength && 0 == strcmp($lastPrefix, $pref2) && $prefixLength == $lastPrefixLength) {
                 // Same as the last item, so no need to deal with nesting or opening stuff
-                $output .= $this->_nextItem($pref);
+                $output .= $this->nextItem($pref);
                 $paragraphStack = false;
                 /*if (substr($pref, -1) == ';')
                 {
@@ -2564,11 +2564,11 @@ class WikiParser
                     if ($this->findColonNoLinks($t, $term, $t2) !== false)
                     {
                         $t = $t2;
-                        $output .= $term . $this->_nextItem(':');
+                        $output .= $term . $this->nextItem(':');
                     }
                 }*/
             } elseif ($prefixLength || $lastPrefixLength) {
-                $commonPrefixLength = $this->_getCommon($prefixLength, $lastPrefixLength);
+                $commonPrefixLength = $this->getCommon($prefixLength, $lastPrefixLength);
                 $paragraphStack = false;
 
                 while ($commonPrefixLength < $lastPrefixLength) {
@@ -2578,12 +2578,12 @@ class WikiParser
                     // corresponding <ul><li> to close, so emitting </li></ul> for them
                     // would orphan subsequent <li> elements outside any list.
                     if (!empty($openlistReal[$i + 1])) {
-                        $output .= $this->_closeList($lastPrefix) . '<!-- common: ' . $commonPrefixLength . ', last: ' . $lastPrefixLength . ', prefx:' . $prefixLength . ', ' . $lastPrefix . ' -->';
+                        $output .= $this->closeList($lastPrefix) . '<!-- common: ' . $commonPrefixLength . ', last: ' . $lastPrefixLength . ', prefx:' . $prefixLength . ', ' . $lastPrefix . ' -->';
                     }
                     --$lastPrefixLength;
                 }
                 if ($prefixLength <= $commonPrefixLength && $commonPrefixLength > 0) {
-                    $output .= $this->_nextItem($pref);
+                    $output .= $this->nextItem($pref);
                 }
 
                 $listOpened = false;
@@ -2592,7 +2592,7 @@ class WikiParser
                     $i++;
                     $openlist[$i] = $char;
                     if (!$listOpened) {
-                        $output .= $this->_openList($char);
+                        $output .= $this->openList($char);
                         $listOpened = true;
                         // WCAG fix: mark this slot as having a real HTML element.
                         // When depth jumps skip levels (e.g., 1→3), _openList is only
@@ -2613,7 +2613,7 @@ class WikiParser
                         if ($this->findColonNoLinks($t, $term, $t2) !== false)
                         {
                             $t = $t2;
-                            $output .= $term . $this->_nextItem(':');
+                            $output .= $term . $this->nextItem(':');
                         }
                     }*/
                     ++$commonPrefixLength;
@@ -2634,7 +2634,7 @@ class WikiParser
                 if ($openmatch or $closematch) {
                     $paragraphStack = false;
                     // TODO bug 5718: paragraph closed
-                    $output .= $this->_closeParagraph();
+                    $output .= $this->closeParagraph();
                     if ($preOpenMatch and !$preCloseMatch) {
                         $this->mInPre = true;
                     }
@@ -2648,7 +2648,7 @@ class WikiParser
                         // pre
                         if ($this->mLastSection != 'pre') {
                             $paragraphStack = false;
-                            $output .= $this->_closeParagraph() . '<pre><code>';
+                            $output .= $this->closeParagraph() . '<pre><code>';
                             $this->mLastSection = 'pre';
                         }
                         $t = substr($t, 1);
@@ -2661,7 +2661,7 @@ class WikiParser
                                 $this->mLastSection = 'p';
                             } else {
                                 if ($this->mLastSection != 'p') {
-                                    $output .= $this->_closeParagraph();
+                                    $output .= $this->closeParagraph();
                                     $this->mLastSection = '';
                                     $paragraphStack = '<p>';
                                 } else {
@@ -2674,7 +2674,7 @@ class WikiParser
                                 $paragraphStack = false;
                                 $this->mLastSection = 'p';
                             } elseif ($this->mLastSection != 'p') {
-                                $output .= $this->_closeParagraph() . '<p>';
+                                $output .= $this->closeParagraph() . '<p>';
                                 $this->mLastSection = 'p';
                             }
                         }
@@ -2691,7 +2691,7 @@ class WikiParser
             }
         }
         while ($prefixLength) {
-            $output .= $this->_closeList($pref2);
+            $output .= $this->closeList($pref2);
             --$prefixLength;
         }
         if ('' != $this->mLastSection) {
@@ -2795,10 +2795,10 @@ class WikiParser
                     if ($toclevel < $maxTocLevel) {
                         $prevtoclevel = $toclevel;
                         if ($toc == '') {
-                            $toc .= $this->_tocIndent($toclevel);
-                            $toc .= $this->_tocLine($toc_title_anchor, '(Top)', '', 1);
+                            $toc .= $this->tocIndent($toclevel);
+                            $toc .= $this->tocLine($toc_title_anchor, '(Top)', '', 1);
                         } else {
-                            $toc .= $this->_tocIndent($toclevel);
+                            $toc .= $this->tocIndent($toclevel);
                         }
                         $numVisible++;
                     }
@@ -2824,15 +2824,15 @@ class WikiParser
                     if ($toclevel < $maxTocLevel) {
                         if ($prevtoclevel < $maxTocLevel) {
                             // Unindent only if the previous toc level was shown
-                            $toc .= $this->_tocUnindent($prevtoclevel - $toclevel);
+                            $toc .= $this->tocUnindent($prevtoclevel - $toclevel);
                         } else {
-                            $toc .= $this->_tocLineEnd();
+                            $toc .= $this->tocLineEnd();
                         }
                     }
                 } else {
                     // No change in level, end TOC line
                     if ($toclevel < $maxTocLevel) {
-                        $toc .= $this->_tocLineEnd();
+                        $toc .= $this->tocLineEnd();
                     }
                 }
 
@@ -2893,7 +2893,7 @@ class WikiParser
                 if (!$doTocNumberHeadings) {
                     $numbering = '';
                 }
-                $toc .= $this->_tocLine($anchor, $_tocLine, $numbering, $toclevel);
+                $toc .= $this->tocLine($anchor, $_tocLine, $numbering, $toclevel);
             }
             // Give headline the correct <h#> tag
             /*if ($showEditLink && (!$istemplate || $templatetitle !== ''))
@@ -2904,7 +2904,7 @@ class WikiParser
             {*/
             $editlink = '';
             //}
-            $head[$headlineCount] = $this->_makeHeadline($level, $matches['attrib'][$headlineCount], $anchor, $headline, $editlink);
+            $head[$headlineCount] = $this->makeHeadline($level, $matches['attrib'][$headlineCount], $anchor, $headline, $editlink);
 
             $headlineCount++;
             if (!$istemplate) {
@@ -2912,7 +2912,7 @@ class WikiParser
             }
         }
 
-        $toc .= ($toc) ? $this->_tocUnindent($toclevel - 1) . '</ul>' : '';
+        $toc .= ($toc) ? $this->tocUnindent($toclevel - 1) . '</ul>' : '';
 
         // Never ever show TOC if no headers
         if ($numVisible < 1) {
@@ -2938,8 +2938,8 @@ class WikiParser
 
         // Ensure at least a "(Top)" entry when there were no sub-headings
         if ($toc == '') {
-            $toc .= $this->_tocIndent($toclevel);
-            $toc .= $this->_tocLine($toc_title_anchor, '(Top)', '', 1);
+            $toc .= $this->tocIndent($toclevel);
+            $toc .= $this->tocLine($toc_title_anchor, '(Top)', '', 1);
         }
 
         $output  = '<div class="article-toc' . (!$standalone ? ' macro-toc' : '') . '">' . "\n";
@@ -2996,7 +2996,7 @@ class WikiParser
      * @param   string  $link     Link
      * @return  string
      */
-    private function _makeHeadline($level, $attribs, $anchor, $text, $link)
+    private function makeHeadline($level, $attribs, $anchor, $text, $link)
     {
         return '<h' . $level . $attribs . '<span id="' . $anchor . '" class="tp-headline">' . $text . '</span> ' . $link . '</h' . $level . '>';
     }
@@ -3006,7 +3006,7 @@ class WikiParser
      *
      * @return  string
      */
-    private function _tocIndent($toclevel)
+    private function tocIndent($toclevel)
     {
         return "\n<ul class='toc-list'" . ($toclevel > 1 ? " style='display: none;'" : "") . ">";
     }
@@ -3017,7 +3017,7 @@ class WikiParser
      * @param   integer  $level  Nested list depth
      * @return  string
      */
-    private function _tocUnindent($level)
+    private function tocUnindent($level)
     {
         return "</li>\n" . str_repeat("</ul>\n</li>\n", $level > 0 ? $level : 0);
     }
@@ -3031,7 +3031,7 @@ class WikiParser
      * @param   string  $level      TOC level
      * @return  string
      */
-    private function _tocLine($anchor, $tocLine, $tocnumber, $level)
+    private function tocLine($anchor, $tocLine, $tocnumber, $level)
     {
         $url = $this->get('url');
         $url = $url ?: 'index.php?option=' . $this->get('option') . '&scope=' . $this->get('scope') . '&pagename=' . $this->get('pagename');
@@ -3051,7 +3051,7 @@ class WikiParser
      *
      * @return  string
      */
-    private function _tocLineEnd()
+    private function tocLineEnd()
     {
         return "</li>\n";
     }

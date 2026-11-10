@@ -67,10 +67,10 @@ class Image extends Plugin
     public function onDisplay($name = null, $id = 'image_captcha_1', $class = '')
     {
         if (Request::getString('showCaptcha', '')) {
-            return $this->_display();
+            return $this->display();
         }
 
-        return $this->_getCapthcaHtml();
+        return $this->getCapthcaHtml();
     }
 
     /**
@@ -78,10 +78,10 @@ class Image extends Plugin
      *
      * @return  boolean
      */
-    private function _display()
+    private function display()
     {
-        $imageFunction = '_createImage' . $this->params->get('imageFunction');
-        $imageFunction = (!method_exists($this, $imageFunction)) ? '_createImageAdv' : $imageFunction;
+        $imageFunction = 'createImage' . $this->params->get('imageFunction');
+        $imageFunction = (!method_exists($this, $imageFunction)) ? 'createImageAdv' : $imageFunction;
 
         $this->$imageFunction();
         exit;
@@ -96,7 +96,7 @@ class Image extends Plugin
      * @param   string   $instanceNo  CAPTCHA instance number
      * @return  boolean  True if valid
      */
-    private function _confirm($word, $instanceNo = '')
+    private function confirm($word, $instanceNo = '')
     {
         $securiy_code = App::get('session')->get('securiy_code' . $instanceNo);
 
@@ -128,7 +128,7 @@ class Image extends Plugin
         if (
             $task && $task != 'logout'
             && $imgCatchaTxt
-            && !$this->_confirm($imgCatchaTxt, $imgCatchaTxtInst)
+            && !$this->confirm($imgCatchaTxt, $imgCatchaTxtInst)
         ) {
             return false;
         }
@@ -141,7 +141,7 @@ class Image extends Plugin
      *
      * @return string
      */
-    private function _getCapthcaHtml()
+    private function getCapthcaHtml()
     {
         if (!isset($GLOBALS['totalCaptchas'])) {
             $GLOBALS['totalCaptchas'] = -1;
@@ -162,7 +162,7 @@ class Image extends Plugin
      *
      * @return  void
      */
-    private function _setColors()
+    private function setColors()
     {
         $this->bgColor   = $this->params->get('bgColor', $this->bgColor);
         $this->textColor = $this->params->get('textColor', $this->textColor);
@@ -173,7 +173,7 @@ class Image extends Plugin
      *
      * @return  void
      */
-    private function _createImageAdv()
+    private function createImageAdv()
     {
         $alphabet = "0123456789abcdefghijklmnopqrstuvwxyz";
         $allowed_symbols = "23456789abcdeghkmnpqsuvxyz";
@@ -184,10 +184,10 @@ class Image extends Plugin
         $fluctuation_amplitude = 5;
         $no_spaces = false;
 
-        $this->_setColors();
+        $this->setColors();
 
-        $foreground_color = $this->_hexToRgb($this->textColor);
-        $background_color = $this->_hexToRgb($this->bgColor);
+        $foreground_color = $this->hexToRgb($this->textColor);
+        $background_color = $this->hexToRgb($this->bgColor);
 
         $jpeg_quality = 90;
 
@@ -396,7 +396,7 @@ class Image extends Plugin
      *
      * @return  void
      */
-    private function _createImagePlain()
+    private function createImagePlain()
     {
         // Let's generate a totally random string using md5
         $md5_hash = md5(rand(0, 999));
@@ -410,9 +410,9 @@ class Image extends Plugin
         $width = 120;
         $height = 40;
         $image = imagecreate($width, $height);
-        $this->_setColors();
-        $foreground_color = $this->_hexToRgb($this->textColor);
-        $background_color = $this->_hexToRgb($this->bgColor);
+        $this->setColors();
+        $foreground_color = $this->hexToRgb($this->textColor);
+        $background_color = $this->hexToRgb($this->bgColor);
 
         // We are making three colors, white, black and gray
         $white = imagecolorallocate($image, $foreground_color[0], $foreground_color[1], $foreground_color[2]);
@@ -444,7 +444,7 @@ class Image extends Plugin
      * @param   string  $hex  Hex value to convert
      * @return  string
      */
-    private function _hexToRgb($hex)
+    private function hexToRgb($hex)
     {
         $hex = preg_replace("/#/", '', $hex);
         $color = [];
@@ -471,7 +471,7 @@ class Image extends Plugin
      * @param   string  $b  B color to convert
      * @return  string
      */
-    private function _rgbToHex($r, $g, $b)
+    private function rgbToHex($r, $g, $b)
     {
         $hex  = '#';
         $hex .= dechex($r);
