@@ -252,8 +252,12 @@ class Gitlab
 
     public function request($method, $resource, $params = [])
     {
-        $method = '_' . strtolower($method) . 'Request';
-        $response = call_user_func([__CLASS__, $method], ...[$resource, $params]);
+        $send = [
+            'GET'  => 'getRequest',
+            'POST' => 'postRequest',
+            'PUT'  => '_putRequest',
+        ][strtoupper($method)];
+        $response = $this->$send($resource, $params);
         if (array_key_exists('message', $response)) {
             switch ($response['message']) {
                 case '401 Unauthorized':
