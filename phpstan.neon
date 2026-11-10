@@ -17,5 +17,14 @@ parameters:
             - '*/tests/*'
             - core/libraries/Hubzero/Spam/Tests
             - core/libraries/Hubzero/Geocode
+    ignoreErrors:
+        # A hub writes its own app/config/*.php when it is installed; git
+        # ignores them, so a checkout has none. Both includes check first.
+        -
+            identifier: include.fileNotFound
+            message: '#/app/config/[a-z_]+\.php#'
+            paths:
+                - core/components/com_templates/models/style.php
+                - core/libraries/Hubzero/Console/Command/Install.php
     parallel:
         maximumNumberOfProcesses: 4
