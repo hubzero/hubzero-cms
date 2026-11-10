@@ -227,6 +227,7 @@ class Announcements extends Plugin
                     break;
                 default:
                     $arr['html'] .= $this->list();
+                    break;
             }
         }
 

@@ -104,6 +104,7 @@ class Profile extends Plugin
                 case 'view':
                 default:
                     $arr['html'] = $this->display();
+                    break;
             }
         }
 

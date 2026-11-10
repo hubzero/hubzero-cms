@@ -1567,6 +1567,7 @@ class Calendar extends Plugin
                         break;
                     default:
                         $output .= $this->escapeCsv($registrant->$field) . ',';
+                        break;
                 }
             }
             $output .= "\n";

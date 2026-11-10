@@ -153,6 +153,7 @@ class Tool extends Table
 
             default:
                 $sort .= $admin ? 'f.status, f.created' : 'f.status_changed DESC';
+                break;
         }
 
         $query  = "$this->tableName as f "

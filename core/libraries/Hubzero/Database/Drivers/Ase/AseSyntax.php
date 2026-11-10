@@ -669,6 +669,7 @@ class AseSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 break;
             default:
                 $raw = "CONVERT(DATE, {$quotedColumn}) {$operator} ?";
+                break;
         }
 
         $this->where[] = [

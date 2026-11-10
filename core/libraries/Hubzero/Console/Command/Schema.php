@@ -772,6 +772,7 @@ class Schema extends Base implements CommandInterface
             default:
                 $this->output->error("Unknown snapshot action: {$action}");
                 $this->output->addLine("Available actions: save, list, show, compare, drift, delete, import");
+                break;
         }
     }
 

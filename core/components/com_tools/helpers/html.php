@@ -300,6 +300,7 @@ class Html
                 break;
             default:
                 $statusClass = '';
+                break;
         }
 
         return $statusClass;

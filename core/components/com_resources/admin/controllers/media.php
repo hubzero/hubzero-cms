@@ -121,6 +121,7 @@ class Media extends AdminController
                         case 'zip':
                         default:
                             $cmd = "unzip -o {$escaped_file} -d " . escapeshellarg($path);
+                            break;
                     }
 
                     //unzip file

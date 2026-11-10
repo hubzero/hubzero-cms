@@ -816,6 +816,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
                             break;
                         default:
                             $coins_data[] = isset($this->$k) ? $coins_keys[$k] . '=' . $this->$k : '';
+                            break;
                     }
                 }
 

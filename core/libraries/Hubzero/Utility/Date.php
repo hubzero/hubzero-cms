@@ -186,6 +186,7 @@ class Date extends DateTime
                         . $trace[0]['line'],
                     E_USER_NOTICE,
                 );
+                break;
         }
 
         return $value;

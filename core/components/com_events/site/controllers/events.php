@@ -324,6 +324,7 @@ class Events extends SiteController
             case 'month':
             default:
                 $this->monthTask();
+                break;
         }
     }
 
@@ -1924,6 +1925,7 @@ class Events extends SiteController
                 $tz = is_numeric($row->time_zone)
                     ? timezone_name_from_abbr('', $row->time_zone * 3600, -1)
                     : $row->time_zone;
+                break;
         }
 
         // Publish immediately only for users who can manage publication state

@@ -136,6 +136,7 @@ $no_show = ["errors","duplicate"];
                                                                                     break;
                                                                                 default:
                                                                                         echo nl2br($this->escape(html_entity_decode((string) $c['duplicate']->get($k))));
+                                                                                    break;
                                                                             }
                                                                             ?>
                                                                         </span>

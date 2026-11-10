@@ -421,6 +421,7 @@ class PdfForm
                     break;
                 default:
                     $pdf->errors[] = 'Upload failed for mysterious reasons';
+                    break;
             }
         } else {
             $tmpName = $_FILES[$name]['tmp_name'];

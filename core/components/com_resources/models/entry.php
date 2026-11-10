@@ -1586,6 +1586,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
                 case 4:
                 default:
                     $accessLevel = 'private';
+                    break;
             }
         }
 

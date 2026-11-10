@@ -228,6 +228,7 @@ class Version extends Model
             case 'raw':
             default:
                 $url .= '&controller=pages&task=raw&pageid=' . $pageId . '&version=' . $version;
+                break;
         }
 
         return Route::url($url);

@@ -502,6 +502,7 @@ class PgsqlSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 break;
             default:
                 $raw = "{$quotedColumn}::date {$operator} ?";
+                break;
         }
 
         $this->where[] = [

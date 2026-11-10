@@ -103,6 +103,7 @@ class Sef extends Plugin
                     break;
                 default:
                     $message = 'Unknown PCRE error calling PCRE function';
+                    break;
             }
 
             App::abort(500, $message);

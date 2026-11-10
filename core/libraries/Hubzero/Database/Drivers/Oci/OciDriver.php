@@ -1646,6 +1646,7 @@ class OciDriver extends BaseSqlDriver
                 return "({$date} - INTERVAL '{$value}' SECOND)";
             default:
                 return "({$date} - INTERVAL '{$value}' DAY)";
+                break;
         }
     }
 
@@ -1682,6 +1683,7 @@ class OciDriver extends BaseSqlDriver
                 return "({$date} + INTERVAL '{$value}' SECOND)";
             default:
                 return "({$date} + INTERVAL '{$value}' DAY)";
+                break;
         }
     }
 

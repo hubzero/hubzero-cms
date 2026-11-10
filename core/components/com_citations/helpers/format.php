@@ -250,6 +250,7 @@ class Format
                             break;
                         default:
                             $coins_data[] = $this->coinsKeys[$k] . '=' . $citation->$k;
+                            break;
                     }
                 }
 

@@ -145,6 +145,7 @@ class Router extends Base
                             break;
                         default:
                             $vars['task'] = $segments[0];
+                            break;
                     }
                 }
             }

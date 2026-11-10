@@ -236,6 +236,7 @@ class Citations extends Plugin
                     break;
                 default:
                     $arr['html'] .= $this->browse();
+                    break;
             }
         }
 

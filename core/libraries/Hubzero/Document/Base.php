@@ -723,6 +723,7 @@ class Base extends Obj
 
             default:
                 $this->lineEnd = $style;
+                break;
         }
 
         return $this;

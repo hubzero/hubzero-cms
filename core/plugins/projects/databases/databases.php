@@ -730,6 +730,7 @@ class Databases extends Plugin
                             break;
                         default:
                             $dd[$i]['align'] = 'left';
+                            break;
                     }
 
                     $table['header'][] = ['sTitle' => $label, 'sClass' => $dd[$i]['align']];
@@ -775,6 +776,7 @@ class Databases extends Plugin
                                 break;
                             default:
                                 $dd[$i]['align'] = 'left';
+                                break;
                         }
                     }
 
@@ -983,6 +985,7 @@ class Databases extends Plugin
                         break;
                     default:
                         $col_type = 'text';
+                        break;
                 }
 
                 $table['cols'][] = '`' . $col_name . '` ' . $col_type . ' DEFAULT NULL';

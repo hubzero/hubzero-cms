@@ -100,6 +100,7 @@ class Router extends Base
 
                                 default:
                                     $vars['active'] = $segments[3];
+                                    break;
                             }
                         }
                     } else {

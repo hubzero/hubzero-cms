@@ -432,6 +432,7 @@ class Str
 
                 case 3:
                     $safe .= $letter;
+                    break;
             }
         }
 

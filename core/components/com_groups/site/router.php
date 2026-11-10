@@ -147,6 +147,7 @@ class Router extends Base
                 default:
                     $vars['active'] = $segments[1];
                     $this->handleGroupComponents($vars);
+                    break;
             }
         }
 

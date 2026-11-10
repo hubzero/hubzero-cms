@@ -878,6 +878,7 @@ class Newsletters extends AdminController
                             if (isset($parts[1])) {
                                 $message->addHeader($parts[0], $parts[1]);
                             }
+                            break;
                     }
                 }
 

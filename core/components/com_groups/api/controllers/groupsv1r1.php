@@ -357,6 +357,7 @@ class Groupsv1r1 extends ApiController
                         break;
                     default:
                         $group[$field] = $record->get($field);
+                        break;
                 }
             }
         }

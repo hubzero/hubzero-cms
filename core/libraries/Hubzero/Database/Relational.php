@@ -2388,6 +2388,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
                 } else {
                     $result = $value;
                 }
+                break;
         }
 
         return $result;

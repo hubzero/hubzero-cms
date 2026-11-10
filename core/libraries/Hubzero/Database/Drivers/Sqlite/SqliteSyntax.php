@@ -906,6 +906,7 @@ class SqliteSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 break;
             default:
                 $raw = "date({$quotedColumn}) {$operator} ?";
+                break;
         }
 
         $this->where[] = [

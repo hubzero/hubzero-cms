@@ -418,6 +418,7 @@ class InformixSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 break;
             default:
                 $raw = "EXTEND({$quotedColumn}, YEAR TO DAY) {$operator} ?";
+                break;
         }
 
         $this->where[] = [

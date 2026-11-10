@@ -353,6 +353,7 @@ class Installer
 
             default:
                 echo json_encode(['error' => 'Unknown action']);
+                break;
         }
         exit;
     }

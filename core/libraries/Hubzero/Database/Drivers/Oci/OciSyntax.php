@@ -748,6 +748,7 @@ class OciSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 break;
             default:
                 $raw = "TRUNC({$quotedColumn}) {$operator} TO_DATE(?, 'YYYY-MM-DD')";
+                break;
         }
 
         $this->where[] = [

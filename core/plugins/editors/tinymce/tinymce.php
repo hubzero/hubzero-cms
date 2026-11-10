@@ -61,6 +61,7 @@ class Tinymce extends Plugin
             case '0':
             default:
                 $skin = 'skin : "default",';
+                break;
         }
 
         $entity_encoding = $this->params->def('entity_encoding', 'raw');

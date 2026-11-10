@@ -247,6 +247,7 @@ class Entriesv1r1 extends ApiController
                             case 4:
                             default:
                                 $obj->access_level = 'private';
+                                break;
                         }
                     }
 

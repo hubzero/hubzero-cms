@@ -280,6 +280,7 @@ class MathRenderer
                         break;
                     default:
                         $errmsg = $this->error('math_unknown_error2', $errbit);
+                        break;
                 }
             }
 

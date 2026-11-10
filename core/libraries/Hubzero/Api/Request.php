@@ -481,6 +481,7 @@ class Request
                 } else {
                     $this->post[$key] = $value;
                 }
+                break;
         }
     }
 

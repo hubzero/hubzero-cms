@@ -35,6 +35,7 @@ class BoostDocumentTypeMap
             default:
                 $field = 'type';
                 $fieldValue = $documentType;
+                break;
         }
 
         return [
@@ -51,6 +52,7 @@ class BoostDocumentTypeMap
                 break;
             default:
                 $formattedValue = $fieldValue;
+                break;
         }
 
         return $formattedValue;

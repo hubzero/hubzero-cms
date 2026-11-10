@@ -1189,6 +1189,7 @@ class FirebirdSyntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 break;
             default:
                 $raw = "CAST({$quotedColumn} AS DATE) {$operator} ?";
+                break;
         }
 
         $this->where[] = [

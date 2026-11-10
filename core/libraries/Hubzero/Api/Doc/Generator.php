@@ -84,6 +84,7 @@ class Generator
             case 'json':
             default:
                 $this->output = json_encode($this->output);
+                break;
         }
 
         return $this->output;

@@ -394,6 +394,7 @@ class Db2Syntax extends \Hubzero\Database\Drivers\Base\BaseSqlSyntax
                 break;
             default:
                 $raw = "DATE({$quotedColumn}) {$operator} DATE(?)";
+                break;
         }
 
         $this->where[] = [
