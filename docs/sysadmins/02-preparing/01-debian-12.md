@@ -1,17 +1,17 @@
 <!--
-status: rewritten
+status: draft
 reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
-summary: Preparing a Debian 12 server for a hub: PHP 8.2 and MariaDB 10.11 from Debian, behind Apache or nginx.
+summary: Preparing a Debian 12 server for a hub: PHP 8.4 from Ondřej Surý's archive and MariaDB 10.11 from Debian, behind Apache or nginx.
 -->
 # Preparing a Debian 12 server
 
 This page prepares a server running Debian 12 for a hub, from nothing to a
-web server ready to serve it. It uses Debian 12's own PHP 8.2 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
+web server ready to serve it. It uses PHP 8.4 from Ondřej Surý's archive, Debian 12's own MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
 [Installing the hub](../03-installing-the-hub.md) installs it, the same way on every system.
 
-The PHP 8.2 packages below were installed on Debian 12 and every extension the hub needs was present. Full installs, from the browser and the command line, were run with the same Apache and nginx configurations on Ubuntu 24.04.
+This page was last tested when the hub needed PHP 8.2, which is Debian 12's own: those packages were installed on Debian 12 and every extension the hub needs was present, and full installs, from the browser and the command line, were run with the same Apache and nginx configurations on Ubuntu 24.04. The hub now needs PHP 8.4. The PHP 8.4 package names below are from the Debian 12 (`bookworm`) index of Ondřej Surý's archive, and have not yet been installed on Debian 12.
 
 For another system, or help choosing one, see
 [Preparing the server](index.md).
@@ -26,15 +26,26 @@ For another system, or help choosing one, see
 
 ## 1. Install MariaDB, PHP and the tools
 
-PHP 8.2 and MariaDB 10.11 are Debian 12's own.
+Debian 12 ships PHP 8.2. PHP 8.4 comes from Ondřej Surý's archive, which packages it for Debian under the names Debian uses. Add it first:
+
+```bash
+sudo apt install curl ca-certificates lsb-release
+curl -sSLo /tmp/debsuryorg-archive-keyring.deb https://packages.sury.org/debsuryorg-archive-keyring.deb
+sudo dpkg -i /tmp/debsuryorg-archive-keyring.deb
+echo "deb [signed-by=/usr/share/keyrings/debsuryorg-archive-keyring.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" \
+    | sudo tee /etc/apt/sources.list.d/php.list
+sudo apt update
+```
+
+Then the packages. MariaDB is Debian 12's own, 10.11.
 
 ```bash
 sudo apt install mariadb-server git unzip \
-    php8.2-cli php8.2-fpm php8.2-mysql php8.2-mbstring php8.2-curl \
-    php8.2-gd php8.2-zip php8.2-xml
+    php8.4-cli php8.4-fpm php8.4-mysql php8.4-mbstring php8.4-curl \
+    php8.4-gd php8.4-zip php8.4-xml
 ```
 
-`php8.2-xml` is for the libraries Composer installs, which need it, and
+`php8.4-xml` is for the libraries Composer installs, which need it, and
 `muse install check` asks Composer what they need, so it checks for it too.
 `json`, `openssl`, `fileinfo` and `pdo` come with PHP itself.
 
@@ -135,7 +146,7 @@ and reload the web server.
     </Directory>
 
     <FilesMatch "\.php$">
-        SetHandler "proxy:unix:/run/php/php8.2-fpm.sock|fcgi://localhost"
+        SetHandler "proxy:unix:/run/php/php8.4-fpm.sock|fcgi://localhost"
     </FilesMatch>
 
     <LocationMatch "^/(app/(config|logs|tmp)|core/(bin|vendor/bin))(/|$)">
@@ -194,7 +205,7 @@ server {
         try_files $uri /index.php?$query_string;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
         fastcgi_read_timeout 300;
     }
 }

@@ -1,22 +1,22 @@
 <!--
-status: rewritten
+status: draft
 reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
-summary: Preparing an Ubuntu 26.04 LTS server for a hub, which has no PHP 8.2 packages: FrankenPHP's PHP 8.2 Docker image, with MariaDB 11.8.
+summary: Preparing an Ubuntu 26.04 LTS server for a hub: FrankenPHP's PHP 8.4 Docker image, with MariaDB 11.8.
 -->
 # Preparing an Ubuntu 26.04 LTS server
 
 This page takes a server running Ubuntu 26.04 LTS with nothing on it to a hub
 that answers at its own address and has an administrator who can sign in.
-Ubuntu 26.04 ships PHP 8.5, and Ondřej Surý's PPA, which packages PHP 8.2 for
+Ubuntu 26.04 ships PHP 8.5, and Ondřej Surý's PPA, which packages PHP 8.4 for
 earlier Ubuntu releases, has none for it. So the hub runs in FrankenPHP's
-PHP 8.2 Docker image: FrankenPHP is a web server with PHP built in, and the
-image brings PHP 8.2, so the server needs none. MariaDB is Ubuntu's own,
+PHP 8.4 Docker image: FrankenPHP is a web server with PHP built in, and the
+image brings PHP 8.4, so the server needs none. MariaDB is Ubuntu's own,
 11.8. Then [Installing the hub](../03-installing-the-hub.md) installs it, the same
 way on every system.
 
-The PPA was checked for Ubuntu 26.04 and has no packages for it. Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server, and a hub was installed against MariaDB 11.8.
+The PPA was checked for Ubuntu 26.04 and has no packages for it. The PPA's page points Ubuntu 26.04 instead at Ondřej Surý's archive at `packages.sury.org`, whose index for 26.04 (`resolute`) lists PHP 8.4 packages; a hub has not been installed from them, so this page does not use them. Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server when the hub needed PHP 8.2, with FrankenPHP's PHP 8.2 image, and a hub was installed against MariaDB 11.8. The PHP 8.4 image has not yet been tried.
 
 For another system, or help choosing one, see
 [Preparing the server](index.md).
@@ -54,12 +54,12 @@ On Ubuntu that is the `www-data` account on the server too.
 
 ## 3. Build the image
 
-FrankenPHP is a web server with PHP built in, and its PHP 8.2 image is the
+FrankenPHP is a web server with PHP built in, and its PHP 8.4 image is the
 starting point. Add the extensions the hub needs that it does not already
 have. Put this in `/opt/hub-frankenphp/Dockerfile`:
 
 ```dockerfile
-FROM dunglas/frankenphp:1-php8.2-bookworm
+FROM dunglas/frankenphp:1-php8.4-bookworm
 
 # The extensions the hub needs that the image does not already have, the
 # tools Composer uses, and the MariaDB client muse backs up and restores with

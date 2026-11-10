@@ -26,7 +26,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Base/Application.php:490`](../../../core/libraries/Hubzero/Base/Application.php#L490)
+- [`core/libraries/Hubzero/Base/Application.php:476`](../../../core/libraries/Hubzero/Base/Application.php#L476)
 
 Listeners:
 

@@ -76,9 +76,9 @@
           <p class="eyebrow">System administrators</p>
           <h1>Installation overview</h1>
         </header>
-        
+        <aside class="banner banner--draft" role="note"><strong>Draft.</strong> This page is still being written.</aside>
         <div class="prose">
-<p>A hub runs on a Linux server with PHP 8.2, MariaDB, and a web server in front
+<p>A hub runs on a Linux server with PHP 8.4, MariaDB, and a web server in front
 of PHP. This guide installs the Hubzero CMS: the website and its
 administrator interface. Tool execution and other integrations need
 separate services; see <a href="../../docs/index.html#what-the-cms-includes">What the CMS includes</a>.</p>
@@ -151,10 +151,10 @@ make one.</li>
 not tested with it on.</li>
 <li><code>git</code> and <code>unzip</code>. Composer itself ships in the repository as
 <code>core/bin/composer</code>; you do not install it separately.</li>
-<li>PHP 8.2 and the extensions the installer checks for, read here from its
+<li>PHP 8.4 and the extensions the installer checks for, read here from its
 own requirements check:</li>
 </ul>
-<pre><code class="language-php">    public const MIN_PHP_VERSION = '8.2.0';
+<pre><code class="language-php">    public const MIN_PHP_VERSION = '8.4.0';
 
     /**
      * Required PHP extensions with descriptions
@@ -184,21 +184,25 @@ the migrations, and create the administrator. The hub's code is a git
 checkout of its release branch, <code>2.4-main</code>, which is what
 <a href="../upgrading/index.html">Upgrading a hub</a> brings up to date later.</p>
 <h2 id="what-was-tested">What was tested</h2>
+<p>Everything below was tested when the hub needed PHP 8.2. The hub now needs
+PHP 8.4, and none of these installs has yet been repeated with it: the PHP
+8.4 packages and images the system pages name come from the distributions'
+and repositories' package indexes, not from an install.</p>
 <ul>
 <li><strong>Full installs, browser and command line:</strong> Ubuntu 24.04 LTS behind
 Apache and nginx, with Ubuntu's own PHP 8.3, and FrankenPHP's PHP 8.2
 Docker image.</li>
 <li><strong>Full installs, command line:</strong> Enterprise Linux 8 and 10 behind Apache,
-and 9 behind nginx, with PHP 8.2 from the packages their pages name, in
-Rocky Linux containers. A container has no SELinux, firewall or systemd, so
-those steps were not run.</li>
+and 9 behind nginx, with PHP 8.2 from the packages their pages then named,
+in Rocky Linux containers. A container has no SELinux, firewall or systemd,
+so those steps were not run.</li>
 <li><strong>PHP 8.2 packages installed and every extension checked:</strong> Debian 12 and
 13, Ubuntu 22.04 LTS and 24.04 LTS.</li>
 <li><strong>Databases:</strong> MariaDB 10.11 and 11.8.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d96149df5b</code> on 2026-10-30.</p>
+        
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>System administrators</a><a class="pager__next" href="../preparing/index.html" rel="next"><span>Next</span>Preparing the server</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/01-installing.md">Edit this page on GitHub</a>

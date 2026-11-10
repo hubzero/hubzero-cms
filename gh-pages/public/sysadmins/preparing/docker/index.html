@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Preparing a server for FrankenPHP in Docker · System administrators · Hubzero Documentation</title>
-  <meta name="description" content="Preparing any Linux server for a hub in FrankenPHP&#x27;s PHP 8.2 Docker image, with MariaDB from the server&#x27;s own distribution.">
+  <meta name="description" content="Preparing any Linux server for a hub in FrankenPHP&#x27;s PHP 8.4 Docker image, with MariaDB from the server&#x27;s own distribution.">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/sysadmins/preparing/docker/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,17 +80,17 @@
           <p class="eyebrow">System administrators</p>
           <h1>Preparing a server for FrankenPHP in Docker</h1>
         </header>
-        
+        <aside class="banner banner--draft" role="note"><strong>Draft.</strong> This page is still being written.</aside>
         <div class="prose">
-<p>This page runs the hub in FrankenPHP's PHP 8.2 Docker image, on any Linux
+<p>This page runs the hub in FrankenPHP's PHP 8.4 Docker image, on any Linux
 server that can run Docker. FrankenPHP is a web server with PHP built in, and
-the image brings PHP 8.2, so the server needs no PHP of its own and no other
-web server. It is the way to run a hub on a system whose own PHP is not 8.2
+the image brings PHP 8.4, so the server needs no PHP of its own and no other
+web server. It is the way to run a hub on a system whose own PHP is not 8.4
 and has no second source of it, and a way to keep the hub's PHP apart from
 the server's on any system. MariaDB comes from the server's distribution.
 Then <a href="../../installing-the-hub/index.html">Installing the hub</a> installs it, the same
 way on every system.</p>
-<p>Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server with PHP 8.2.35, and the image rebuild the upgrade page describes was run on it too. Docker on Enterprise Linux was not tried.</p>
+<p>Full installs in FrankenPHP's PHP 8.2 image, from the browser and the command line, were run on an Ubuntu 24.04 server with PHP 8.2.35 when the hub needed PHP 8.2, and the image rebuild the upgrade page describes was run on it too. The PHP 8.4 image this page now builds from has not yet been tried. Docker on Enterprise Linux was not tried.</p>
 <p>For another system, or help choosing one, see
 <a href="../index.html">Preparing the server</a>.</p>
 <h2 id="what-you-need">What you need</h2>
@@ -139,10 +139,10 @@ sudo chown -R 33:33 /var/www/hub
 </code></pre>
 <p>On Debian and Ubuntu that is the <code>www-data</code> account on the server too. On Enterprise Linux no account has the number; use it as it is.</p>
 <h2 id="3-build-the-image">3. Build the image</h2>
-<p>FrankenPHP is a web server with PHP built in, and its PHP 8.2 image is the
+<p>FrankenPHP is a web server with PHP built in, and its PHP 8.4 image is the
 starting point. Add the extensions the hub needs that it does not already
 have. Put this in <code>/opt/hub-frankenphp/Dockerfile</code>:</p>
-<pre><code class="language-dockerfile">FROM dunglas/frankenphp:1-php8.2-bookworm
+<pre><code class="language-dockerfile">FROM dunglas/frankenphp:1-php8.4-bookworm
 
 # The extensions the hub needs that the image does not already have, the
 # tools Composer uses, and the MariaDB client muse backs up and restores with
@@ -264,7 +264,7 @@ migrations with, and are harmless.</p>
 that installs the hub.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d96149df5b</code> on 2026-10-30.</p>
+        
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../enterprise-linux-10/index.html" rel="prev"><span>Previous</span>Preparing an Enterprise Linux 10 server</a><a class="pager__next" href="../other-linux/index.html" rel="next"><span>Next</span>Preparing any other Linux server</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/02-preparing/09-docker.md">Edit this page on GitHub</a>

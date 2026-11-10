@@ -13,9 +13,9 @@ This guide walks you through installing HUBzero CMS from a fresh git clone.
 
 Before installing HUBzero, ensure your system meets the following requirements.
 
-### PHP 8.2 or Higher
+### PHP 8.4 or Higher
 
-HUBzero requires PHP 8.2.0 or later.
+HUBzero requires PHP 8.4.0 or later.
 
 **Check your version:**
 ```bash
@@ -27,17 +27,26 @@ php -v
 - **Ubuntu/Debian:**
   ```bash
   sudo apt update
-  sudo apt install php8.2 php8.2-cli
+  sudo apt install php8.4 php8.4-cli
   ```
+  Debian 13 ships PHP 8.4. Debian 12 and Ubuntu 22.04 and 24.04 do not; add
+  Ondřej Surý's archive (Debian) or PPA (Ubuntu) first, as the page for your
+  system in [docs/sysadmins/02-preparing](docs/sysadmins/02-preparing/index.md)
+  shows.
 
 - **RHEL/CentOS/Rocky Linux:**
   ```bash
-  sudo dnf install php82 php82-cli
+  sudo dnf install php8.4 php8.4-cli
   ```
+  These are Enterprise Linux 10's own PHP 8.4 packages, from release 10.2.
+  Enterprise Linux 8 and 9 get PHP 8.4 from Remi Collet's repository instead
+  (`sudo dnf module enable php:remi-8.4`, then `php` and `php-cli`); see the
+  page for your system in
+  [docs/sysadmins/02-preparing](docs/sysadmins/02-preparing/index.md).
 
 - **macOS (Homebrew):**
   ```bash
-  brew install php@8.2
+  brew install php@8.4
   ```
 
 ### Required PHP Extensions
@@ -47,14 +56,14 @@ The following PHP extensions must be installed and enabled:
 | Extension | Purpose | Installation |
 |-----------|---------|--------------|
 | `pdo` | Database abstraction layer | Usually included with PHP |
-| `pdo_mysql` | MySQL database driver | `apt install php8.2-mysql` |
+| `pdo_mysql` | MySQL database driver | `apt install php8.4-mysql` |
 | `json` | JSON data handling | Usually included with PHP |
-| `mbstring` | Multibyte string support | `apt install php8.2-mbstring` |
+| `mbstring` | Multibyte string support | `apt install php8.4-mbstring` |
 | `openssl` | Encryption and SSL support | Usually included with PHP |
-| `curl` | HTTP client for external APIs | `apt install php8.2-curl` |
-| `gd` | Image processing and manipulation | `apt install php8.2-gd` |
-| `fileinfo` | MIME type detection | `apt install php8.2-fileinfo` |
-| `zip` | Archive handling | `apt install php8.2-zip` |
+| `curl` | HTTP client for external APIs | `apt install php8.4-curl` |
+| `gd` | Image processing and manipulation | `apt install php8.4-gd` |
+| `fileinfo` | MIME type detection | `apt install php8.4-fileinfo` |
+| `zip` | Archive handling | `apt install php8.4-zip` |
 
 **Check installed extensions:**
 ```bash
@@ -63,13 +72,14 @@ php -m | grep -E "pdo|json|mbstring|openssl|curl|gd|fileinfo|zip"
 
 **Install all required extensions (Ubuntu/Debian):**
 ```bash
-sudo apt install php8.2-mysql php8.2-mbstring php8.2-curl php8.2-gd php8.2-zip
+sudo apt install php8.4-mysql php8.4-mbstring php8.4-curl php8.4-gd php8.4-zip
 ```
 
-**Install all required extensions (RHEL/CentOS/Rocky Linux):**
+**Install all required extensions (RHEL/Rocky Linux/AlmaLinux 10):**
 ```bash
-sudo dnf install php82-mysqlnd php82-mbstring php82-curl php82-gd php82-zip
+sudo dnf install php8.4-mysqlnd php8.4-mbstring php8.4-gd php8.4-pecl-zip
 ```
+`curl` comes with PHP's common package. With Remi's PHP 8.4 on Enterprise Linux 8 or 9, the same packages are named without the `8.4`: `php-mysqlnd`, `php-mbstring`, `php-gd`, `php-pecl-zip`.
 
 ### Unzip Command
 
@@ -131,21 +141,21 @@ HUBzero supports Apache or Nginx.
 **Apache (recommended):**
 ```bash
 # Ubuntu/Debian
-sudo apt install apache2 libapache2-mod-php8.2
+sudo apt install apache2 libapache2-mod-php8.4
 sudo a2enmod rewrite
 sudo systemctl restart apache2
 
 # RHEL/CentOS/Rocky Linux
-sudo dnf install httpd php82-fpm
-sudo systemctl enable httpd php82-fpm
-sudo systemctl start httpd php82-fpm
+sudo dnf install httpd php8.4-fpm
+sudo systemctl enable httpd php-fpm
+sudo systemctl start httpd php-fpm
 ```
 
 **Nginx:**
 ```bash
 # Ubuntu/Debian
-sudo apt install nginx php8.2-fpm
-sudo systemctl restart nginx php8.2-fpm
+sudo apt install nginx php8.4-fpm
+sudo systemctl restart nginx php8.4-fpm
 ```
 
 ### Directory Permissions
@@ -275,7 +285,7 @@ server {
     }
 
     location ~ \.php$ {
-        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+        fastcgi_pass unix:/var/run/php/php8.4-fpm.sock;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
         include fastcgi_params;
     }
@@ -306,9 +316,9 @@ Open your browser and navigate to your hub's URL. Log in with the admin credenti
 
 **PHP version too low:**
 ```
-[FAIL] PHP 7.4.33 (requires 8.2.0+)
+[FAIL] PHP 7.4.33 (requires 8.4.0+)
 ```
-Upgrade PHP to version 8.2 or higher.
+Upgrade PHP to version 8.4 or higher.
 
 **Missing PHP extension:**
 ```

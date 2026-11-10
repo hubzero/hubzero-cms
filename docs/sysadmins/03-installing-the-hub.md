@@ -8,7 +8,7 @@ summary: Installing the hub on a server its system's page has prepared, the same
 # Installing the hub
 
 This page installs the hub on a server that one of the system pages has
-prepared: MariaDB and PHP 8.2 installed, the code in `/var/www/hub`, and a
+prepared: MariaDB and PHP 8.4 installed, the code in `/var/www/hub`, and a
 web server answering for the hub's name over HTTPS. If yours is not ready
 yet, start at [Preparing the server](02-preparing/index.md) and follow your system's
 page first.

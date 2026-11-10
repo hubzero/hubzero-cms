@@ -14,7 +14,7 @@ other system; only the package names and paths are yours to find. When this
 page has prepared the server, [Installing the hub](../03-installing-the-hub.md)
 installs it.
 
-If your distribution has no PHP 8.2 and no second source of it, run the hub
+If your distribution has no PHP 8.4 and no second source of it, run the hub
 in Docker instead: [Preparing a server for FrankenPHP in Docker](09-docker.md)
 needs no PHP on the server at all.
 
@@ -35,11 +35,11 @@ Install, from the distribution or a repository that packages them for it:
   SQL mode is stricter than MariaDB's and rejects the zero dates hub data
   carries, so on MySQL set `sql_mode` to MariaDB's default, given on
   [Installing the hub](../03-installing-the-hub.md#mariadb-s-sql-mode).
-- **PHP 8.2**, both its command line and PHP-FPM, with these extensions in
+- **PHP 8.4**, both its command line and PHP-FPM, with these extensions in
   whatever packages they come in: `pdo_mysql`, `mbstring`, `curl`, `gd`,
   `zip`, `fileinfo`, `openssl`, the XML family (`dom`, `simplexml`,
   `xmlreader`, `xmlwriter`), `sockets` and `posix`. If the distribution ships
-  another version of PHP, look for a second repository that packages 8.2 for
+  another version of PHP, look for a second repository that packages 8.4 for
   it, as Debian, Ubuntu and Enterprise Linux each have.
 - **`git` and `unzip`.**
 

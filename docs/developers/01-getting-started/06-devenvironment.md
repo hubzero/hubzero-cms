@@ -29,7 +29,7 @@ Everything here is in the tree and you can read it:
 | [`core/bin/php_tests.sh`](../../../core/bin/php_tests.sh) | Runs `phpcs --standard=PSR12` and `parallel-lint` over the files you name. |
 | [`core/bin/lint/`](../../../core/bin/lint) | `missing-facade-imports.php` and `undefined-language-keys.php`. |
 | [`docs/_tools/`](../../_tools) and `gh-pages/` | The documentation builder and the reference generators. |
-| [`compose.yaml`](../../../compose.yaml) and [`.docker/`](../../../.docker) | A development hub in Docker: this checkout served by FrankenPHP's PHP 8.2, with MariaDB and a mail catcher. See [Developing in Docker](#developing-in-docker). |
+| [`compose.yaml`](../../../compose.yaml) and [`.docker/`](../../../.docker) | A development hub in Docker: this checkout served by FrankenPHP's PHP 8.4, with MariaDB and a mail catcher. See [Developing in Docker](#developing-in-docker). |
 | `.github/workflows/` | The CI. See below. |
 
 ## What this repository does not provide
@@ -45,15 +45,15 @@ the [System administrators](../../sysadmins/index.md) book.
 include the following, declared in
 [`Install/Preflight.php`](../../../core/libraries/Hubzero/Console/Command/Install/Preflight.php):
 
-- PHP **8.2.0** or later.
+- PHP **8.4.0** or later.
 - These extensions: `pdo`, `pdo_mysql`, `json`, `mbstring`, `openssl`,
   `curl`, `gd`, `fileinfo`, `zip`.
 
 Composer also checks the extensions required by the locked dependencies.
 The [server preparation pages](../../sysadmins/02-preparing/index.md)
 install these along with the CMS requirements. `pdo_mysql` is the installer's
-database driver, so use MySQL or MariaDB for the hub. The PHPUnit workflow
-runs on PHP 8.2 and the PHP lint workflow runs on 8.3.
+database driver, so use MySQL or MariaDB for the hub. Both the PHPUnit and
+the PHP lint workflows run on PHP 8.4.
 
 Run `php core/bin/muse install check` from the checkout root to see the
 pre-flight result without installing anything. On a fresh checkout it also
@@ -79,7 +79,7 @@ VirtualBox and Vagrant, with Workspaces and optionally Solr. It lives in a
 not here; nothing in this tree calls it or knows about it, and its own
 README is the only current description of it.
 
-**`muse install` on your own LAMP stack.** If you already have PHP 8.2+, a
+**`muse install` on your own LAMP stack.** If you already have PHP 8.4+, a
 web server, and MySQL or MariaDB, the console can take a checkout of this
 repository the rest of the way. From the checkout root:
 
@@ -163,7 +163,7 @@ your own machine, not for serving. For a real hub in Docker, see
 
 | Service | What it is |
 |---|---|
-| `hub` | FrankenPHP's PHP 8.2 image with the hub's extensions, Xdebug and Composer's tools, built from [`.docker/Dockerfile`](../../../.docker/Dockerfile). It holds no code: the checkout is mounted over `/var/www/hub`, so a change you save is the next request's code. [`.docker/hub-dev`](../../../.docker/hub-dev) starts it. |
+| `hub` | FrankenPHP's PHP 8.4 image with the hub's extensions, Xdebug and Composer's tools, built from [`.docker/Dockerfile`](../../../.docker/Dockerfile). It holds no code: the checkout is mounted over `/var/www/hub`, so a change you save is the next request's code. [`.docker/hub-dev`](../../../.docker/hub-dev) starts it. |
 | `db` | `mariadb:10.11`, with the database in a Docker volume. It waits to be healthy before the hub starts, and creates the usage statistics' `hub_metrics` database on its first start. |
 | `mail` | Mailpit. PHP's `mail()` in the hub's container hands every message to it, so nothing the hub sends leaves your machine. |
 
@@ -347,7 +347,7 @@ needs.
 Three active workflows live in `.github/workflows/`. The workflow files
 declare the paths that trigger each check:
 
-- **`php-lint.yml`** — runs on PHP 8.3. Three checks: `php -l` over every PHP
+- **`php-lint.yml`** — runs on PHP 8.4. Three checks: `php -l` over every PHP
   file under `core/` and `app/` outside `vendor/`;
   `core/bin/lint/missing-facade-imports.php`, which fails on any namespaced file
   that uses a facade without importing it; and
@@ -359,7 +359,7 @@ declare the paths that trigger each check:
   third is a ceiling rather than a gate: lower the number as keys are
   defined.
 - **[`tests.yml`](../../../.github/workflows/tests.yml)** — installs the
-  Composer dependencies and runs the PHPUnit suite on PHP 8.2, using
+  Composer dependencies and runs the PHPUnit suite on PHP 8.4, using
   `core/phpunit.xml.dist`.
 - **`pages.yml`** — builds this documentation, regenerates the references,
   checks every internal link, and fails if the committed `gh-pages/public/`

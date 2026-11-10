@@ -1,22 +1,22 @@
 <!--
-status: rewritten
+status: draft
 reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
-summary: Preparing any Linux server for a hub in FrankenPHP's PHP 8.2 Docker image, with MariaDB from the server's own distribution.
+summary: Preparing any Linux server for a hub in FrankenPHP's PHP 8.4 Docker image, with MariaDB from the server's own distribution.
 -->
 # Preparing a server for FrankenPHP in Docker
 
-This page runs the hub in FrankenPHP's PHP 8.2 Docker image, on any Linux
+This page runs the hub in FrankenPHP's PHP 8.4 Docker image, on any Linux
 server that can run Docker. FrankenPHP is a web server with PHP built in, and
-the image brings PHP 8.2, so the server needs no PHP of its own and no other
-web server. It is the way to run a hub on a system whose own PHP is not 8.2
+the image brings PHP 8.4, so the server needs no PHP of its own and no other
+web server. It is the way to run a hub on a system whose own PHP is not 8.4
 and has no second source of it, and a way to keep the hub's PHP apart from
 the server's on any system. MariaDB comes from the server's distribution.
 Then [Installing the hub](../03-installing-the-hub.md) installs it, the same
 way on every system.
 
-Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server with PHP 8.2.35, and the image rebuild the upgrade page describes was run on it too. Docker on Enterprise Linux was not tried.
+Full installs in FrankenPHP's PHP 8.2 image, from the browser and the command line, were run on an Ubuntu 24.04 server with PHP 8.2.35 when the hub needed PHP 8.2, and the image rebuild the upgrade page describes was run on it too. The PHP 8.4 image this page now builds from has not yet been tried. Docker on Enterprise Linux was not tried.
 
 For another system, or help choosing one, see
 [Preparing the server](index.md).
@@ -83,12 +83,12 @@ On Debian and Ubuntu that is the `www-data` account on the server too. On Enterp
 
 ## 3. Build the image
 
-FrankenPHP is a web server with PHP built in, and its PHP 8.2 image is the
+FrankenPHP is a web server with PHP built in, and its PHP 8.4 image is the
 starting point. Add the extensions the hub needs that it does not already
 have. Put this in `/opt/hub-frankenphp/Dockerfile`:
 
 ```dockerfile
-FROM dunglas/frankenphp:1-php8.2-bookworm
+FROM dunglas/frankenphp:1-php8.4-bookworm
 
 # The extensions the hub needs that the image does not already have, the
 # tools Composer uses, and the MariaDB client muse backs up and restores with

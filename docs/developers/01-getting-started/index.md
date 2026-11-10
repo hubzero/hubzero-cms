@@ -50,9 +50,9 @@ following makes the code chapters easier:
 - Object-oriented PHP. The framework is namespaced under `Hubzero\` and
   autoloaded by Composer.
 
-The documented setup uses PHP 8.2. `core/composer.json` resolves dependencies
-as PHP `8.2.30`; that setting does not install PHP. The PHPUnit workflow
-runs on 8.2 and the syntax/lint workflow runs on 8.3.
+The documented setup uses PHP 8.4, the minimum: `core/composer.json` requires
+`^8.4` and resolves dependencies as PHP `8.4.0`, and the installer refuses
+anything older. Both workflows run on 8.4.
 
 ## Reading the code examples
 

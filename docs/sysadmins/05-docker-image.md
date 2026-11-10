@@ -1,5 +1,5 @@
 <!--
-status: rewritten
+status: draft
 reviewed-against: 2.4-main @ 5d7f20276e
 reviewed: 2026-10-30
 screenshots: none
@@ -7,7 +7,7 @@ summary: A hub built into a Docker image of its own, beside MariaDB's image: bui
 -->
 # A self-contained hub in Docker
 
-This page builds the whole hub into one Docker image: PHP 8.2 and the web
+This page builds the whole hub into one Docker image: PHP 8.4 and the web
 server from FrankenPHP's image, the hub's code, and the libraries Composer
 installs. MariaDB runs beside it in its own official image. The server needs
 nothing but Docker.
@@ -25,11 +25,13 @@ volumes: its configuration, uploads, logs and cache, and the database. You
 do not follow [Installing the hub](03-installing-the-hub.md) or
 [Upgrading a hub](04-upgrading.md); this page does both.
 
-The image was built and run on an Ubuntu 24.04 server with Docker 29 and
-MariaDB 10.11. That covered a first start that installs the hub, restarts and
-a rebuilt image that bring it up to date, administrator sign-in, the
-scheduled tasks, and the backup and restore below. It was served with a
-certificate FrankenPHP made itself, not a real one.
+The image was built from FrankenPHP's PHP 8.2 image, when the hub needed
+PHP 8.2, and run on an Ubuntu 24.04 server with Docker 29 and MariaDB 10.11.
+That covered a first start that installs the hub, restarts and a rebuilt
+image that bring it up to date, administrator sign-in, the scheduled tasks,
+and the backup and restore below. It was served with a certificate
+FrankenPHP made itself, not a real one. The PHP 8.4 image the Dockerfile
+below now starts from has not yet been tried.
 
 ## What you need
 
@@ -92,7 +94,7 @@ Four files go beside the checkout, in `/opt/hub-image`.
 **`Dockerfile`**, which builds the image:
 
 ```dockerfile
-FROM dunglas/frankenphp:1-php8.2-bookworm
+FROM dunglas/frankenphp:1-php8.4-bookworm
 
 # The extensions the hub needs that the image does not already have, and the
 # tools Composer uses

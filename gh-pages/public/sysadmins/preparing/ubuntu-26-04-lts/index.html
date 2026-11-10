@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Preparing an Ubuntu 26.04 LTS server · System administrators · Hubzero Documentation</title>
-  <meta name="description" content="Preparing an Ubuntu 26.04 LTS server for a hub, which has no PHP 8.2 packages: FrankenPHP&#x27;s PHP 8.2 Docker image, with MariaDB 11.8.">
+  <meta name="description" content="Preparing an Ubuntu 26.04 LTS server for a hub: FrankenPHP&#x27;s PHP 8.4 Docker image, with MariaDB 11.8.">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/sysadmins/preparing/ubuntu-26-04-lts/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,17 +80,17 @@
           <p class="eyebrow">System administrators</p>
           <h1>Preparing an Ubuntu 26.04 LTS server</h1>
         </header>
-        
+        <aside class="banner banner--draft" role="note"><strong>Draft.</strong> This page is still being written.</aside>
         <div class="prose">
 <p>This page takes a server running Ubuntu 26.04 LTS with nothing on it to a hub
 that answers at its own address and has an administrator who can sign in.
-Ubuntu 26.04 ships PHP 8.5, and Ondřej Surý's PPA, which packages PHP 8.2 for
+Ubuntu 26.04 ships PHP 8.5, and Ondřej Surý's PPA, which packages PHP 8.4 for
 earlier Ubuntu releases, has none for it. So the hub runs in FrankenPHP's
-PHP 8.2 Docker image: FrankenPHP is a web server with PHP built in, and the
-image brings PHP 8.2, so the server needs none. MariaDB is Ubuntu's own,
+PHP 8.4 Docker image: FrankenPHP is a web server with PHP built in, and the
+image brings PHP 8.4, so the server needs none. MariaDB is Ubuntu's own,
 11.8. Then <a href="../../installing-the-hub/index.html">Installing the hub</a> installs it, the same
 way on every system.</p>
-<p>The PPA was checked for Ubuntu 26.04 and has no packages for it. Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server, and a hub was installed against MariaDB 11.8.</p>
+<p>The PPA was checked for Ubuntu 26.04 and has no packages for it. The PPA's page points Ubuntu 26.04 instead at Ondřej Surý's archive at <code>packages.sury.org</code>, whose index for 26.04 (<code>resolute</code>) lists PHP 8.4 packages; a hub has not been installed from them, so this page does not use them. Full installs in this image, from the browser and the command line, were run on an Ubuntu 24.04 server when the hub needed PHP 8.2, with FrankenPHP's PHP 8.2 image, and a hub was installed against MariaDB 11.8. The PHP 8.4 image has not yet been tried.</p>
 <p>For another system, or help choosing one, see
 <a href="../index.html">Preparing the server</a>.</p>
 <h2 id="what-you-need">What you need</h2>
@@ -116,10 +116,10 @@ sudo chown -R 33:33 /var/www/hub
 </code></pre>
 <p>On Ubuntu that is the <code>www-data</code> account on the server too.</p>
 <h2 id="3-build-the-image">3. Build the image</h2>
-<p>FrankenPHP is a web server with PHP built in, and its PHP 8.2 image is the
+<p>FrankenPHP is a web server with PHP built in, and its PHP 8.4 image is the
 starting point. Add the extensions the hub needs that it does not already
 have. Put this in <code>/opt/hub-frankenphp/Dockerfile</code>:</p>
-<pre><code class="language-dockerfile">FROM dunglas/frankenphp:1-php8.2-bookworm
+<pre><code class="language-dockerfile">FROM dunglas/frankenphp:1-php8.4-bookworm
 
 # The extensions the hub needs that the image does not already have, the
 # tools Composer uses, and the MariaDB client muse backs up and restores with
@@ -241,7 +241,7 @@ migrations with, and are harmless.</p>
 that installs the hub.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d96149df5b</code> on 2026-10-30.</p>
+        
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../ubuntu-24-04-lts/index.html" rel="prev"><span>Previous</span>Preparing an Ubuntu 24.04 LTS server</a><a class="pager__next" href="../enterprise-linux-8/index.html" rel="next"><span>Next</span>Preparing an Enterprise Linux 8 server</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/02-preparing/05-ubuntu-26-04-lts.md">Edit this page on GitHub</a>

@@ -1,17 +1,17 @@
 <!--
-status: rewritten
+status: draft
 reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
-summary: Preparing an Enterprise Linux 10 server (RHEL, Rocky Linux, AlmaLinux) for a hub: PHP 8.2 from Remi's repository and MariaDB 10.11, behind Apache or nginx.
+summary: Preparing an Enterprise Linux 10 server (RHEL, Rocky Linux, AlmaLinux) for a hub: the distribution's own PHP 8.4 and MariaDB 10.11, behind Apache or nginx.
 -->
 # Preparing an Enterprise Linux 10 server
 
 This page prepares a server running Enterprise Linux 10 for a hub, from nothing to a
-web server ready to serve it. Enterprise Linux 10 means Red Hat Enterprise Linux 10 and its rebuilds, Rocky Linux and AlmaLinux. It uses PHP 8.2 from Remi Collet's repository, the distribution's own MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
+web server ready to serve it. Enterprise Linux 10 means Red Hat Enterprise Linux 10 and its rebuilds, Rocky Linux and AlmaLinux. It uses the distribution's own PHP 8.4 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
 [Installing the hub](../03-installing-the-hub.md) installs it, the same way on every system.
 
-A full install from the command line was run in a Rocky Linux 10 container with these packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off. Remi's repository was tried on Rocky Linux, not on Red Hat Enterprise Linux itself.
+This page was last tested when the hub needed PHP 8.2, which came from Remi Collet's repository: a full install from the command line was run in a Rocky Linux 10 container with those packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off. The hub now needs PHP 8.4, which Enterprise Linux 10 has of its own from release 10.2. The `php8.4` package names below, and the `php` command, `php-fpm` service, `apache` account and socket they use, are from Rocky Linux 10.2's AppStream packages; they have not yet been installed for a hub.
 
 For another system, or help choosing one, see
 [Preparing the server](index.md).
@@ -26,28 +26,18 @@ For another system, or help choosing one, see
 
 ## 1. Install MariaDB, PHP and the tools
 
-Enterprise Linux 10 has PHP 8.3 and no PHP 8.2 of its own. PHP 8.2 comes from Remi Collet's repository, which needs EPEL. Add both, and choose Remi's PHP 8.2:
-
-```bash
-sudo dnf install epel-release
-sudo dnf install https://rpms.remirepo.net/enterprise/remi-release-10.rpm
-sudo dnf module enable php:remi-8.2
-```
-
-On Red Hat Enterprise Linux itself, where `epel-release` is not in the repositories, install it from `https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm` instead.
-
-Then the packages. MariaDB is the distribution's own, 10.11.
+Enterprise Linux 10's default PHP is 8.3. From release 10.2 it also has PHP 8.4, in AppStream, as packages whose names begin `php8.4-`. Install them instead of the default ones; they provide the same `php` command and `php-fpm` service. MariaDB is the distribution's own, 10.11.
 
 ```bash
 sudo dnf install mariadb-server git unzip \
-    php-cli php-fpm php-mysqlnd php-mbstring php-gd php-xml php-process php-pecl-zip
+    php8.4-cli php8.4-fpm php8.4-mysqlnd php8.4-mbstring php8.4-gd php8.4-xml php8.4-process php8.4-pecl-zip
 sudo systemctl enable --now mariadb php-fpm
 ```
 
-`php-process` brings the POSIX functions the command line uses, and `php-xml`
+`php8.4-process` brings the POSIX functions the command line uses, and `php8.4-xml`
 the XML extensions the libraries Composer installs need. `curl`, `sockets`,
-`json`, `openssl`, `fileinfo` and `pdo` come with `php-cli` and its common
-package.
+`json`, `openssl`, `fileinfo` and `pdo` come with `php8.4-cli`, its common
+package and `php8.4-mysqlnd`.
 
 ## 2. Install the web server
 

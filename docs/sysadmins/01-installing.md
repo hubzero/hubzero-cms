@@ -1,5 +1,5 @@
 <!--
-status: rewritten
+status: draft
 reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
@@ -7,7 +7,7 @@ summary: How installing a hub goes: what it needs, preparing the server on your 
 -->
 # Installation overview
 
-A hub runs on a Linux server with PHP 8.2, MariaDB, and a web server in front
+A hub runs on a Linux server with PHP 8.4, MariaDB, and a web server in front
 of PHP. This guide installs the Hubzero CMS: the website and its
 administrator interface. Tool execution and other integrations need
 separate services; see [What the CMS includes](../index.md#what-the-cms-includes).
@@ -67,7 +67,7 @@ that executes PHP; the FrankenPHP container includes its own PHP runtime.
   not tested with it on.
 - `git` and `unzip`. Composer itself ships in the repository as
   `core/bin/composer`; you do not install it separately.
-- PHP 8.2 and the extensions the installer checks for, read here from its
+- PHP 8.4 and the extensions the installer checks for, read here from its
   own requirements check:
 
 <!--include: core/libraries/Hubzero/System/Requirements.php:25-40-->
@@ -89,13 +89,18 @@ checkout of its release branch, `2.4-main`, which is what
 
 ## What was tested
 
+Everything below was tested when the hub needed PHP 8.2. The hub now needs
+PHP 8.4, and none of these installs has yet been repeated with it: the PHP
+8.4 packages and images the system pages name come from the distributions'
+and repositories' package indexes, not from an install.
+
 - **Full installs, browser and command line:** Ubuntu 24.04 LTS behind
   Apache and nginx, with Ubuntu's own PHP 8.3, and FrankenPHP's PHP 8.2
   Docker image.
 - **Full installs, command line:** Enterprise Linux 8 and 10 behind Apache,
-  and 9 behind nginx, with PHP 8.2 from the packages their pages name, in
-  Rocky Linux containers. A container has no SELinux, firewall or systemd, so
-  those steps were not run.
+  and 9 behind nginx, with PHP 8.2 from the packages their pages then named,
+  in Rocky Linux containers. A container has no SELinux, firewall or systemd,
+  so those steps were not run.
 - **PHP 8.2 packages installed and every extension checked:** Debian 12 and
   13, Ubuntu 22.04 LTS and 24.04 LTS.
 - **Databases:** MariaDB 10.11 and 11.8.

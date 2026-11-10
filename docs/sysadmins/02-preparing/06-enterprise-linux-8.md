@@ -1,17 +1,17 @@
 <!--
-status: rewritten
+status: draft
 reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
-summary: Preparing an Enterprise Linux 8 server (RHEL, Rocky Linux, AlmaLinux) for a hub: the php:8.2 and mariadb:10.11 module streams, behind Apache or nginx.
+summary: Preparing an Enterprise Linux 8 server (RHEL, Rocky Linux, AlmaLinux) for a hub: PHP 8.4 from Remi's repository and the mariadb:10.11 module stream, behind Apache or nginx.
 -->
 # Preparing an Enterprise Linux 8 server
 
 This page prepares a server running Enterprise Linux 8 for a hub, from nothing to a
-web server ready to serve it. Enterprise Linux 8 means Red Hat Enterprise Linux 8 and its rebuilds, Rocky Linux and AlmaLinux. It uses the distribution's own PHP 8.2 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
+web server ready to serve it. Enterprise Linux 8 means Red Hat Enterprise Linux 8 and its rebuilds, Rocky Linux and AlmaLinux. It uses PHP 8.4 from Remi Collet's repository, the distribution's own MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
 [Installing the hub](../03-installing-the-hub.md) installs it, the same way on every system.
 
-A full install from the command line was run in a Rocky Linux 8 container with these packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off.
+This page was last tested when the hub needed PHP 8.2, which Enterprise Linux 8 has in its `php:8.2` module stream: a full install from the command line was run in a Rocky Linux 8 container with those packages behind this Apache configuration, and nginx accepted this nginx configuration. The hub now needs PHP 8.4, which Enterprise Linux 8 does not have. The `php:remi-8.4` stream and the package names below are from the index of Remi's repository for Enterprise Linux 8, and have not yet been installed on it. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off.
 
 For another system, or help choosing one, see
 [Preparing the server](index.md).
@@ -26,10 +26,21 @@ For another system, or help choosing one, see
 
 ## 1. Install MariaDB, PHP and the tools
 
-PHP 8.2 and MariaDB 10.11 are module streams in AppStream. Enable them before installing anything from either:
+Enterprise Linux 8's newest PHP is 8.2; it has no PHP 8.4 of its own. PHP 8.4 comes from Remi Collet's repository, which needs EPEL. Add both, and choose Remi's PHP 8.4 and the distribution's MariaDB 10.11, a module stream in AppStream, before installing anything from either:
 
 ```bash
-sudo dnf module enable php:8.2 mariadb:10.11
+sudo dnf install epel-release
+sudo dnf install https://rpms.remirepo.net/enterprise/remi-release-8.rpm
+sudo dnf module enable php:remi-8.4 mariadb:10.11
+```
+
+On Red Hat Enterprise Linux itself, where `epel-release` is not in the repositories, install it from `https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm` instead.
+
+> **Note:** Remi's configuration page also lists PowerTools (CodeReady Builder on Red Hat Enterprise Linux) among the repositories his packages need. The PHP 8.2 install from Remi's repository on Enterprise Linux 10 did not need it, and this page has not been run with Remi's PHP 8.4 on Enterprise Linux 8. If `dnf` reports a missing dependency, enable it and try again.
+
+Then the packages.
+
+```bash
 sudo dnf install mariadb-server git unzip \
     php-cli php-fpm php-mysqlnd php-mbstring php-gd php-xml php-process php-pecl-zip
 sudo systemctl enable --now mariadb php-fpm

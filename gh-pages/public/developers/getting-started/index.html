@@ -221,9 +221,9 @@ request, a model manages data, and a view renders the result</li>
 <li>Object-oriented PHP. The framework is namespaced under <code>Hubzero\</code> and
 autoloaded by Composer.</li>
 </ul>
-<p>The documented setup uses PHP 8.2. <code>core/composer.json</code> resolves dependencies
-as PHP <code>8.2.30</code>; that setting does not install PHP. The PHPUnit workflow
-runs on 8.2 and the syntax/lint workflow runs on 8.3.</p>
+<p>The documented setup uses PHP 8.4, the minimum: <code>core/composer.json</code> requires
+<code>^8.4</code> and resolves dependencies as PHP <code>8.4.0</code>, and the installer refuses
+anything older. Both workflows run on 8.4.</p>
 <h2 id="reading-the-code-examples">Reading the code examples</h2>
 <p>Examples use an illustrative instrument-booking feature, with names such
 as <code>com_booking</code> and <code>com_bookings</code>. These are examples to adapt, not

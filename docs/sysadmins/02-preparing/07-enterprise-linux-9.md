@@ -1,17 +1,17 @@
 <!--
-status: rewritten
+status: draft
 reviewed-against: 2.4-main @ d96149df5b
 reviewed: 2026-10-30
 screenshots: none
-summary: Preparing an Enterprise Linux 9 server (RHEL, Rocky Linux, AlmaLinux) for a hub: the php:8.2 and mariadb:10.11 module streams, behind Apache or nginx.
+summary: Preparing an Enterprise Linux 9 server (RHEL, Rocky Linux, AlmaLinux) for a hub: PHP 8.4 from Remi's repository and the mariadb:10.11 module stream, behind Apache or nginx.
 -->
 # Preparing an Enterprise Linux 9 server
 
 This page prepares a server running Enterprise Linux 9 for a hub, from nothing to a
-web server ready to serve it. Enterprise Linux 9 means Red Hat Enterprise Linux 9 and its rebuilds, Rocky Linux and AlmaLinux. It uses the distribution's own PHP 8.2 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
+web server ready to serve it. Enterprise Linux 9 means Red Hat Enterprise Linux 9 and its rebuilds, Rocky Linux and AlmaLinux. It uses PHP 8.4 from Remi Collet's repository, the distribution's own MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
 [Installing the hub](../03-installing-the-hub.md) installs it, the same way on every system.
 
-A full install from the command line was run in a Rocky Linux 9 container with these packages behind this nginx configuration; the Apache configuration is the one installs on Enterprise Linux 8 and 10 were run behind. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off.
+This page was last tested when the hub needed PHP 8.2, which Enterprise Linux 9 has in its `php:8.2` module stream: a full install from the command line was run in a Rocky Linux 9 container with those packages behind this nginx configuration; the Apache configuration is the one installs on Enterprise Linux 8 and 10 were run behind. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off. The hub now needs PHP 8.4. The `php:remi-8.4` stream and the package names below are from the index of Remi's repository for Enterprise Linux 9, and have not yet been installed on it.
 
 For another system, or help choosing one, see
 [Preparing the server](index.md).
@@ -26,10 +26,21 @@ For another system, or help choosing one, see
 
 ## 1. Install MariaDB, PHP and the tools
 
-PHP 8.2 and MariaDB 10.11 are module streams in AppStream. Enable them before installing anything from either; without the MariaDB stream, `dnf` installs the default 10.5.
+Red Hat lists a `php:8.4` module stream for Enterprise Linux 9 from release 9.9, and CentOS Stream 9 already has it, but Rocky Linux and AlmaLinux 9.8, the latest when this page was written, do not. Until yours does, PHP 8.4 comes from Remi Collet's repository, which needs EPEL. Add both, and choose Remi's PHP 8.4 and the distribution's MariaDB 10.11, a module stream in AppStream, before installing anything from either; without the MariaDB stream, `dnf` installs the default 10.5.
 
 ```bash
-sudo dnf module enable php:8.2 mariadb:10.11
+sudo dnf install epel-release
+sudo dnf install https://rpms.remirepo.net/enterprise/remi-release-9.rpm
+sudo dnf module enable php:remi-8.4 mariadb:10.11
+```
+
+On Red Hat Enterprise Linux itself, where `epel-release` is not in the repositories, install it from `https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm` instead.
+
+> **Note:** Remi's configuration page also lists CRB (CodeReady Builder on Red Hat Enterprise Linux) among the repositories his packages need. The PHP 8.2 install from Remi's repository on Enterprise Linux 10 did not need it, and this page has not been run with Remi's PHP 8.4 on Enterprise Linux 9. If `dnf` reports a missing dependency, enable it and try again.
+
+Then the packages.
+
+```bash
 sudo dnf install mariadb-server git unzip \
     php-cli php-fpm php-mysqlnd php-mbstring php-gd php-xml php-process php-pecl-zip
 sudo systemctl enable --now mariadb php-fpm

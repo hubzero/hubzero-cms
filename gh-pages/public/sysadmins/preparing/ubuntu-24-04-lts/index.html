@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Preparing an Ubuntu 24.04 LTS server · System administrators · Hubzero Documentation</title>
-  <meta name="description" content="Preparing an Ubuntu 24.04 LTS server for a hub: PHP 8.2 from Ondřej Surý&#x27;s PPA and MariaDB 10.11, behind Apache or nginx.">
+  <meta name="description" content="Preparing an Ubuntu 24.04 LTS server for a hub: PHP 8.4 from Ondřej Surý&#x27;s PPA and MariaDB 10.11, behind Apache or nginx.">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/sysadmins/preparing/ubuntu-24-04-lts/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -81,12 +81,12 @@
           <p class="eyebrow">System administrators</p>
           <h1>Preparing an Ubuntu 24.04 LTS server</h1>
         </header>
-        
+        <aside class="banner banner--draft" role="note"><strong>Draft.</strong> This page is still being written.</aside>
         <div class="prose">
 <p>This page prepares a server running Ubuntu 24.04 LTS for a hub, from nothing to a
-web server ready to serve it. It uses PHP 8.2 from Ondřej Surý's PPA, Ubuntu's own MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
+web server ready to serve it. It uses PHP 8.4 from Ondřej Surý's PPA, Ubuntu's own MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
 <a href="../../installing-the-hub/index.html">Installing the hub</a> installs it, the same way on every system.</p>
-<p>Full installs, from the browser and the command line, were run on Ubuntu 24.04 behind both Apache and nginx with these configurations, using Ubuntu's own PHP 8.3; nothing in them changes with the PHP version but the number in the package and socket names. The PHP 8.2 packages from the PPA were installed on Ubuntu 24.04 and every extension the hub needs was present.</p>
+<p>Full installs, from the browser and the command line, were run on Ubuntu 24.04 behind both Apache and nginx with these configurations, using Ubuntu's own PHP 8.3, when the hub needed PHP 8.2; nothing in them changes with the PHP version but the number in the package and socket names. PHP 8.2 packages from the PPA were installed on Ubuntu 24.04 and every extension the hub needs was present. The hub now needs PHP 8.4. The PHP 8.4 package names below are from the PPA's index for Ubuntu 24.04, and have not yet been installed on it.</p>
 <p>For another system, or help choosing one, see
 <a href="../index.html">Preparing the server</a>.</p>
 <h2 id="what-you-need">What you need</h2>
@@ -98,17 +98,17 @@ sign-in form always posts to an <code>https://</code> address, so on plain HTTP 
 administrator can never sign in.</li>
 </ul>
 <h2 id="1-install-mariadb-php-and-the-tools">1. Install MariaDB, PHP and the tools</h2>
-<p>Ubuntu 24.04 ships PHP 8.3. PHP 8.2 comes from Ondřej Surý's PPA. Add it first:</p>
+<p>Ubuntu 24.04 ships PHP 8.3. PHP 8.4 comes from Ondřej Surý's PPA. Add it first:</p>
 <pre><code class="language-bash">sudo apt install software-properties-common
 sudo add-apt-repository ppa:ondrej/php
 sudo apt update
 </code></pre>
 <p>Then the packages. MariaDB is Ubuntu's own, 10.11.</p>
 <pre><code class="language-bash">sudo apt install mariadb-server git unzip \
-    php8.2-cli php8.2-fpm php8.2-mysql php8.2-mbstring php8.2-curl \
-    php8.2-gd php8.2-zip php8.2-xml
+    php8.4-cli php8.4-fpm php8.4-mysql php8.4-mbstring php8.4-curl \
+    php8.4-gd php8.4-zip php8.4-xml
 </code></pre>
-<p><code>php8.2-xml</code> is for the libraries Composer installs, which need it, and
+<p><code>php8.4-xml</code> is for the libraries Composer installs, which need it, and
 <code>muse install check</code> asks Composer what they need, so it checks for it too.
 <code>json</code>, <code>openssl</code>, <code>fileinfo</code> and <code>pdo</code> come with PHP itself.</p>
 <h2 id="2-install-the-web-server">2. Install the web server</h2>
@@ -196,7 +196,7 @@ and reload the web server.</p>
     &lt;/Directory&gt;
 
     &lt;FilesMatch &quot;\.php$&quot;&gt;
-        SetHandler &quot;proxy:unix:/run/php/php8.2-fpm.sock|fcgi://localhost&quot;
+        SetHandler &quot;proxy:unix:/run/php/php8.4-fpm.sock|fcgi://localhost&quot;
     &lt;/FilesMatch&gt;
 
     &lt;LocationMatch &quot;^/(app/(config|logs|tmp)|core/(bin|vendor/bin))(/|$)&quot;&gt;
@@ -248,7 +248,7 @@ server {
         try_files $uri /index.php?$query_string;
         include fastcgi_params;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+        fastcgi_pass unix:/run/php/php8.4-fpm.sock;
         fastcgi_read_timeout 300;
     }
 }
@@ -273,7 +273,7 @@ hands addresses that are not files to <code>index.php</code>.</p>
 that installs the hub.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d96149df5b</code> on 2026-10-30.</p>
+        
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../ubuntu-22-04-lts/index.html" rel="prev"><span>Previous</span>Preparing an Ubuntu 22.04 LTS server</a><a class="pager__next" href="../ubuntu-26-04-lts/index.html" rel="next"><span>Next</span>Preparing an Ubuntu 26.04 LTS server</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/02-preparing/04-ubuntu-24-04-lts.md">Edit this page on GitHub</a>

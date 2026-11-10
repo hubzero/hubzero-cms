@@ -5,7 +5,8 @@
    "title": "System administrators",
    "pages": 16,
    "counts": {
-    "rewritten": 16
+    "rewritten": 5,
+    "draft": 11
    }
   },
   {
@@ -54,8 +55,8 @@
   }
  ],
  "totals": {
-  "rewritten": 257,
-  "draft": 1,
+  "rewritten": 246,
+  "draft": 12,
   "reviewed": 34,
   "generated": 154
  }

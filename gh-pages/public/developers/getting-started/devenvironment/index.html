@@ -236,7 +236,7 @@ If you already have a development hub, see
 </tr>
 <tr>
 <td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/compose.yaml"><code>compose.yaml</code></a> and <a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/.docker"><code>.docker/</code></a></td>
-<td>A development hub in Docker: this checkout served by FrankenPHP's PHP 8.2, with MariaDB and a mail catcher. See <a href="#developing-in-docker">Developing in Docker</a>.</td>
+<td>A development hub in Docker: this checkout served by FrankenPHP's PHP 8.4, with MariaDB and a mail catcher. See <a href="#developing-in-docker">Developing in Docker</a>.</td>
 </tr>
 <tr>
 <td><code>.github/workflows/</code></td>
@@ -254,15 +254,15 @@ the <a href="../../../sysadmins/index.html">System administrators</a> book.</p>
 include the following, declared in
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Console/Command/Install/Preflight.php"><code>Install/Preflight.php</code></a>:</p>
 <ul>
-<li>PHP <strong>8.2.0</strong> or later.</li>
+<li>PHP <strong>8.4.0</strong> or later.</li>
 <li>These extensions: <code>pdo</code>, <code>pdo_mysql</code>, <code>json</code>, <code>mbstring</code>, <code>openssl</code>,
 <code>curl</code>, <code>gd</code>, <code>fileinfo</code>, <code>zip</code>.</li>
 </ul>
 <p>Composer also checks the extensions required by the locked dependencies.
 The <a href="../../../sysadmins/preparing/index.html">server preparation pages</a>
 install these along with the CMS requirements. <code>pdo_mysql</code> is the installer's
-database driver, so use MySQL or MariaDB for the hub. The PHPUnit workflow
-runs on PHP 8.2 and the PHP lint workflow runs on 8.3.</p>
+database driver, so use MySQL or MariaDB for the hub. Both the PHPUnit and
+the PHP lint workflows run on PHP 8.4.</p>
 <p>Run <code>php core/bin/muse install check</code> from the checkout root to see the
 pre-flight result without installing anything. On a fresh checkout it also
 reports that Composer dependencies are missing; <code>muse install</code> installs them.</p>
@@ -281,7 +281,7 @@ VirtualBox and Vagrant, with Workspaces and optionally Solr. It lives in a
 <strong>separate repository</strong>, <a href="https://github.com/hubzero/autohub">hubzero/autohub</a>,
 not here; nothing in this tree calls it or knows about it, and its own
 README is the only current description of it.</p>
-<p><strong><code>muse install</code> on your own LAMP stack.</strong> If you already have PHP 8.2+, a
+<p><strong><code>muse install</code> on your own LAMP stack.</strong> If you already have PHP 8.4+, a
 web server, and MySQL or MariaDB, the console can take a checkout of this
 repository the rest of the way. From the checkout root:</p>
 <pre><code class="language-bash">php core/bin/composer install --working-dir=core
@@ -417,7 +417,7 @@ your own machine, not for serving. For a real hub in Docker, see
 <tbody>
 <tr>
 <td><code>hub</code></td>
-<td>FrankenPHP's PHP 8.2 image with the hub's extensions, Xdebug and Composer's tools, built from <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.docker/Dockerfile"><code>.docker/Dockerfile</code></a>. It holds no code: the checkout is mounted over <code>/var/www/hub</code>, so a change you save is the next request's code. <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.docker/hub-dev"><code>.docker/hub-dev</code></a> starts it.</td>
+<td>FrankenPHP's PHP 8.4 image with the hub's extensions, Xdebug and Composer's tools, built from <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.docker/Dockerfile"><code>.docker/Dockerfile</code></a>. It holds no code: the checkout is mounted over <code>/var/www/hub</code>, so a change you save is the next request's code. <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.docker/hub-dev"><code>.docker/hub-dev</code></a> starts it.</td>
 </tr>
 <tr>
 <td><code>db</code></td>
@@ -573,7 +573,7 @@ needs.</p>
 <p>Three active workflows live in <code>.github/workflows/</code>. The workflow files
 declare the paths that trigger each check:</p>
 <ul>
-<li><strong><code>php-lint.yml</code></strong> — runs on PHP 8.3. Three checks: <code>php -l</code> over every PHP
+<li><strong><code>php-lint.yml</code></strong> — runs on PHP 8.4. Three checks: <code>php -l</code> over every PHP
 file under <code>core/</code> and <code>app/</code> outside <code>vendor/</code>;
 <code>core/bin/lint/missing-facade-imports.php</code>, which fails on any namespaced file
 that uses a facade without importing it; and
@@ -585,7 +585,7 @@ when the line runs — see
 third is a ceiling rather than a gate: lower the number as keys are
 defined.</li>
 <li><strong><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/tests.yml"><code>tests.yml</code></a></strong> — installs the
-Composer dependencies and runs the PHPUnit suite on PHP 8.2, using
+Composer dependencies and runs the PHPUnit suite on PHP 8.4, using
 <code>core/phpunit.xml.dist</code>.</li>
 <li><strong><code>pages.yml</code></strong> — builds this documentation, regenerates the references,
 checks every internal link, and fails if the committed <code>gh-pages/public/</code>

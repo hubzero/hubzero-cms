@@ -7,7 +7,7 @@ summary: Preparing a server for a hub: what each system's page covers, and how t
 -->
 # Preparing the server
 
-Before the hub can be installed, the server needs MariaDB, PHP 8.2 with the
+Before the hub can be installed, the server needs MariaDB, PHP 8.4 with the
 extensions the hub uses, the hub's code, and a web server ready to serve it.
 Each page in this section does that for one system, from a server with
 nothing on it, and each is complete on its own. Follow the one for your
@@ -20,7 +20,7 @@ system.
 Every page works through the same steps, with its own packages, accounts and
 paths:
 
-1. **MariaDB, PHP and the tools.** PHP 8.2 from the system where it has it,
+1. **MariaDB, PHP and the tools.** PHP 8.4 from the system where it has it,
    or from the repository that packages it for that system where it does not.
 2. **The web server.** Apache **or** nginx, with PHP-FPM.
 3. **The firewall, and turning SELinux off**, on Enterprise Linux, which
@@ -34,19 +34,19 @@ paths:
 
 
 The Docker pages replace the PHP and web server steps with an image built
-from FrankenPHP's PHP 8.2 image, which brings both, and say how to run the
+from FrankenPHP's PHP 8.4 image, which brings both, and say how to run the
 hub's commands inside the container.
 
-| Page | PHP 8.2 from | MariaDB | Web server |
+| Page | PHP 8.4 from | MariaDB | Web server |
 |---|---|---|---|
-| [Debian 12](01-debian-12.md) | Debian | 10.11 | Apache or nginx |
-| [Debian 13](02-debian-13.md) | Ondřej Surý's archive | 11.8 | Apache or nginx |
+| [Debian 12](01-debian-12.md) | Ondřej Surý's archive | 10.11 | Apache or nginx |
+| [Debian 13](02-debian-13.md) | Debian | 11.8 | Apache or nginx |
 | [Ubuntu 22.04 LTS](03-ubuntu-22-04-lts.md) | Ondřej Surý's PPA | 10.6 | Apache or nginx |
 | [Ubuntu 24.04 LTS](04-ubuntu-24-04-lts.md) | Ondřej Surý's PPA | 10.11 | Apache or nginx |
 | [Ubuntu 26.04 LTS](05-ubuntu-26-04-lts.md) | FrankenPHP's Docker image | 11.8 | FrankenPHP |
-| [Enterprise Linux 8](06-enterprise-linux-8.md) | AppStream, `php:8.2` | 10.11 | Apache or nginx |
-| [Enterprise Linux 9](07-enterprise-linux-9.md) | AppStream, `php:8.2` | 10.11 | Apache or nginx |
-| [Enterprise Linux 10](08-enterprise-linux-10.md) | Remi's repository | 10.11 | Apache or nginx |
+| [Enterprise Linux 8](06-enterprise-linux-8.md) | Remi's repository | 10.11 | Apache or nginx |
+| [Enterprise Linux 9](07-enterprise-linux-9.md) | Remi's repository | 10.11 | Apache or nginx |
+| [Enterprise Linux 10](08-enterprise-linux-10.md) | AppStream, `php8.4-*`, from 10.2 | 10.11 | Apache or nginx |
 | [Any Linux, in Docker](09-docker.md) | FrankenPHP's Docker image | the distribution's | FrankenPHP |
 | [Any other Linux](10-other-linux.md) | wherever it is packaged | the distribution's | Apache or nginx |
 
@@ -62,13 +62,14 @@ systems well, that matters more than any difference between them. Every page
 ends at the same hub.
 
 **If you want to match the hubs Hubzero hosts, choose Enterprise Linux 8.**
-Hosted hubs currently run on it. It is also one of the three systems on
-which PHP 8.2 comes from the distribution itself.
+Hosted hubs currently run on it. It has no PHP 8.4 of its own, so PHP comes
+from Remi Collet's repository.
 
-**If you would rather not add a repository for PHP, choose Debian 12,
-Enterprise Linux 8 or Enterprise Linux 9.** They ship PHP 8.2 themselves. The
-others get it from a repository maintained outside the distribution: Ondřej
-Surý's for Debian 13 and Ubuntu, Remi Collet's for Enterprise Linux 10. Both
+**If you would rather not add a repository for PHP, choose Debian 13 or
+Enterprise Linux 10.** They ship PHP 8.4 themselves, Enterprise Linux 10 from
+release 10.2. The others get it from a repository maintained outside the
+distribution: Ondřej Surý's for Debian 12 and Ubuntu, Remi Collet's for
+Enterprise Linux 8 and 9. Both
 are long established and widely used, but they are one more source to trust
 and to keep up to date.
 
@@ -89,10 +90,10 @@ release is supported.** Approximately, as of this writing:
 Check the distribution's own lifecycle page before you decide; vendors
 sometimes extend them, and paid extended support runs longer still.
 
-**If the system's PHP is not 8.2 and nothing packages 8.2 for it, or you want
+**If the system's PHP is not 8.4 and nothing packages 8.4 for it, or you want
 the hub's PHP kept apart from the server's, use Docker.** The
-[Docker page](09-docker.md) works on any Linux server, and it is the only
-route on Ubuntu 26.04 LTS.
+[Docker page](09-docker.md) works on any Linux server, and it is the route
+the Ubuntu 26.04 LTS page takes.
 
 **If you want the whole hub in an image, built, started and replaced the way
 other containers are, skip this section.**

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Preparing an Enterprise Linux 10 server · System administrators · Hubzero Documentation</title>
-  <meta name="description" content="Preparing an Enterprise Linux 10 server (RHEL, Rocky Linux, AlmaLinux) for a hub: PHP 8.2 from Remi&#x27;s repository and MariaDB 10.11, behind Apache or nginx.">
+  <meta name="description" content="Preparing an Enterprise Linux 10 server (RHEL, Rocky Linux, AlmaLinux) for a hub: the distribution&#x27;s own PHP 8.4 and MariaDB 10.11, behind Apache or nginx.">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/sysadmins/preparing/enterprise-linux-10/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,12 +82,12 @@
           <p class="eyebrow">System administrators</p>
           <h1>Preparing an Enterprise Linux 10 server</h1>
         </header>
-        
+        <aside class="banner banner--draft" role="note"><strong>Draft.</strong> This page is still being written.</aside>
         <div class="prose">
 <p>This page prepares a server running Enterprise Linux 10 for a hub, from nothing to a
-web server ready to serve it. Enterprise Linux 10 means Red Hat Enterprise Linux 10 and its rebuilds, Rocky Linux and AlmaLinux. It uses PHP 8.2 from Remi Collet's repository, the distribution's own MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
+web server ready to serve it. Enterprise Linux 10 means Red Hat Enterprise Linux 10 and its rebuilds, Rocky Linux and AlmaLinux. It uses the distribution's own PHP 8.4 and MariaDB 10.11, and Apache or nginx with PHP-FPM. Then
 <a href="../../installing-the-hub/index.html">Installing the hub</a> installs it, the same way on every system.</p>
-<p>A full install from the command line was run in a Rocky Linux 10 container with these packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off. Remi's repository was tried on Rocky Linux, not on Red Hat Enterprise Linux itself.</p>
+<p>This page was last tested when the hub needed PHP 8.2, which came from Remi Collet's repository: a full install from the command line was run in a Rocky Linux 10 container with those packages behind this Apache configuration, and nginx accepted this nginx configuration. A container has no SELinux, firewall or systemd, so those steps are written from the distribution's documentation and were not run in these tests; hubs in service run on Enterprise Linux with SELinux turned off. The hub now needs PHP 8.4, which Enterprise Linux 10 has of its own from release 10.2. The <code>php8.4</code> package names below, and the <code>php</code> command, <code>php-fpm</code> service, <code>apache</code> account and socket they use, are from Rocky Linux 10.2's AppStream packages; they have not yet been installed for a hub.</p>
 <p>For another system, or help choosing one, see
 <a href="../index.html">Preparing the server</a>.</p>
 <h2 id="what-you-need">What you need</h2>
@@ -99,21 +99,15 @@ sign-in form always posts to an <code>https://</code> address, so on plain HTTP 
 administrator can never sign in.</li>
 </ul>
 <h2 id="1-install-mariadb-php-and-the-tools">1. Install MariaDB, PHP and the tools</h2>
-<p>Enterprise Linux 10 has PHP 8.3 and no PHP 8.2 of its own. PHP 8.2 comes from Remi Collet's repository, which needs EPEL. Add both, and choose Remi's PHP 8.2:</p>
-<pre><code class="language-bash">sudo dnf install epel-release
-sudo dnf install https://rpms.remirepo.net/enterprise/remi-release-10.rpm
-sudo dnf module enable php:remi-8.2
-</code></pre>
-<p>On Red Hat Enterprise Linux itself, where <code>epel-release</code> is not in the repositories, install it from <code>https://dl.fedoraproject.org/pub/epel/epel-release-latest-10.noarch.rpm</code> instead.</p>
-<p>Then the packages. MariaDB is the distribution's own, 10.11.</p>
+<p>Enterprise Linux 10's default PHP is 8.3. From release 10.2 it also has PHP 8.4, in AppStream, as packages whose names begin <code>php8.4-</code>. Install them instead of the default ones; they provide the same <code>php</code> command and <code>php-fpm</code> service. MariaDB is the distribution's own, 10.11.</p>
 <pre><code class="language-bash">sudo dnf install mariadb-server git unzip \
-    php-cli php-fpm php-mysqlnd php-mbstring php-gd php-xml php-process php-pecl-zip
+    php8.4-cli php8.4-fpm php8.4-mysqlnd php8.4-mbstring php8.4-gd php8.4-xml php8.4-process php8.4-pecl-zip
 sudo systemctl enable --now mariadb php-fpm
 </code></pre>
-<p><code>php-process</code> brings the POSIX functions the command line uses, and <code>php-xml</code>
+<p><code>php8.4-process</code> brings the POSIX functions the command line uses, and <code>php8.4-xml</code>
 the XML extensions the libraries Composer installs need. <code>curl</code>, <code>sockets</code>,
-<code>json</code>, <code>openssl</code>, <code>fileinfo</code> and <code>pdo</code> come with <code>php-cli</code> and its common
-package.</p>
+<code>json</code>, <code>openssl</code>, <code>fileinfo</code> and <code>pdo</code> come with <code>php8.4-cli</code>, its common
+package and <code>php8.4-mysqlnd</code>.</p>
 <h2 id="2-install-the-web-server">2. Install the web server</h2>
 <p>Choose Apache <strong>or</strong> nginx. Install one of them, not both.</p>
 <p><strong>Apache:</strong></p>
@@ -300,7 +294,7 @@ go back to <a href="#3-open-the-firewall-and-turn-off-selinux">step 3</a>.</p>
 that installs the hub.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ d96149df5b</code> on 2026-10-30.</p>
+        
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../enterprise-linux-9/index.html" rel="prev"><span>Previous</span>Preparing an Enterprise Linux 9 server</a><a class="pager__next" href="../docker/index.html" rel="next"><span>Next</span>Preparing a server for FrankenPHP in Docker</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/sysadmins/02-preparing/08-enterprise-linux-10.md">Edit this page on GitHub</a>

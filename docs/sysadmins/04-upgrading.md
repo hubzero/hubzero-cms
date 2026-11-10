@@ -107,7 +107,7 @@ uses MariaDB's own.
    A migration that ended in a warning is tried again on every run.
 
 3. **Reload PHP**, so no worker carries on with copies of the old code it had
-   already compiled: `sudo systemctl reload php8.2-fpm` for Apache or nginx
+   already compiled: `sudo systemctl reload php8.4-fpm` for Apache or nginx
    on Debian and Ubuntu, `sudo systemctl reload php-fpm` on Enterprise
    Linux, `sudo docker restart hub` for FrankenPHP.
 
