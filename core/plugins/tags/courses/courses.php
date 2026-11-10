@@ -60,8 +60,10 @@ class Courses extends Plugin
 
         // Build the query
         $e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
-        $e_fields = "SELECT e.id, e.title, e.alias, e.blurb AS itext, e.description AS ftext, e.state, e.created, e.created_by,
-					NULL AS modified, NULL AS publish_up, NULL AS publish_down, CONCAT('index.php?option=com_courses&gid=', e.alias) AS href,
+        $e_fields = "SELECT e.id, e.title, e.alias, e.blurb AS itext, e.description AS ftext, e.state, e.created, "
+            . "e.created_by,
+					NULL AS modified, NULL AS publish_up, NULL AS publish_down, CONCAT('index.php?option=com_courses&gid=', e.alias) "
+            . "AS href,
 					'courses' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.params, 0 AS rcount, u.name AS data1,
 					NULL AS data2, NULL AS data3 ";
         $e_from  = " FROM `#__courses` AS e, `#__tags_object` AS t, `#__users` AS u";

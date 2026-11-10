@@ -32,7 +32,8 @@ class Kb extends Plugin
             return null;
         }
 
-        $query  = "SELECT rc.id, rc.content as text, rc.created_by as author, rc.created, NULL as subject, rc.anonymous as anon, 'kb' AS parent_category,
+        $query  = "SELECT rc.id, rc.content as text, rc.created_by as author, rc.created, NULL as subject, "
+            . "rc.anonymous as anon, 'kb' AS parent_category,
 					c.alias AS section, c.alias AS category, f.alias AS article
 					FROM `#__kb_comments` AS rc
 					LEFT JOIN `#__kb_articles` AS f

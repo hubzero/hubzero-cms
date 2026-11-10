@@ -94,7 +94,8 @@ class Blogs extends Plugin
                 "SELECT
 				CASE WHEN bc.anonymous THEN 'Anonymous Comment' ELSE concat('Comment by ', u.name) END AS title,
 				bc.content AS description,
-				concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
+				concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), "
+                    . "'/', extract(month from be.created), '/', be.alias) AS link,
 				bc.created AS date,
 				'Comments' AS section,
 				bc.entry_id

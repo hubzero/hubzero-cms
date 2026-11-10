@@ -26,8 +26,12 @@ class Twitter extends WikiMacro
     {
         $txt = [];
         $txt['wiki'] = "Embeds a Twitter Feed into the page";
-        $txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@hubzero) or a Twitter widget ID(see below), followed by a comma(,) and then the number of tweets to display.</p>
-						<p>A Twitter widget may be set up by going to <a href="https://www.twitter.com/settings/widgets">Twitter\'s widget configuration page</a>.  After setting a widget up, the widget ID can be found as an 18 digit number in the URL of the settings, or within the HTML in the text box labeled "Copy and paste the code into the HTML of your site" as the item data-widget-id="####".</p>
+        $txt['html'] = '<p>Embeds a Twitter Feed into the page. Can be a user feed(@hubzero) or a Twitter widget '
+            . 'ID(see below), followed by a comma(,) and then the number of tweets to display.</p>
+						<p>A Twitter widget may be set up by going to <a href="https://www.twitter.com/settings/widgets">Twitter\'s '
+            . 'widget configuration page</a>.  After setting a widget up, the widget ID can be found as an 18 digit '
+            . 'number in the URL of the settings, or within the HTML in the text box labeled "Copy and paste the code '
+            . 'into the HTML of your site" as the item data-widget-id="####".</p>
 						<p>Examples:</p>
 						<ul>
 							<li><code>[[Twitter(@hubzeroplatform,2)]]</code></li>

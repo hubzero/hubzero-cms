@@ -603,7 +603,8 @@ class User extends \Hubzero\Database\Relational
                         $db = App::get('db');
                         $query = "INSERT INTO `#__users` (`id`, `name`, `username`, `email`, `password`, `usertype`, "
                             . "`block`, "
-                            . "`approved`, `sendEmail`, `activation`, `params`, `access`, `usageAgreement`, `homeDirectory`, `loginShell`, `ftpShell`)
+                            . "`approved`, `sendEmail`, `activation`, `params`, `access`, `usageAgreement`, "
+                            . "`homeDirectory`, `loginShell`, `ftpShell`)
 							VALUES (" . $db->quote($jwtid) . ", " . $db->quote($jwtname) . ", " . $db->quote($jwtuser)
                             . ", " . $db->quote($jwtemail) . ", " . $db->quote('') . ", " . $db->quote('') . ", "
                             . $db->quote('0') . ", " . $db->quote('2') . ", " . $db->quote('0') . ", " . $db->quote('1')

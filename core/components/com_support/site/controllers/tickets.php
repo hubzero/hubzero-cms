@@ -351,7 +351,8 @@ class Tickets extends SiteController
         }
 
         // Closed tickets
-        $sql = "SELECT t.id AS ticket, t.owner AS created_by, t.closed AS created, YEAR(t.closed) AS `year`, MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
+        $sql = "SELECT t.id AS ticket, t.owner AS created_by, t.closed AS created, YEAR(t.closed) AS `year`, "
+            . "MONTH(t.closed) AS `month`, UNIX_TIMESTAMP(t.created) AS opened, UNIX_TIMESTAMP(t.closed) AS closed
 				FROM `#__support_tickets` AS t
 				WHERE t.report!=''
 				AND t.type=" . $this->database->quote($this->view->type) . " AND t.open=0";

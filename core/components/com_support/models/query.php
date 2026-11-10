@@ -473,7 +473,8 @@ class Query extends Relational
 							SELECT jto.' . $db->quoteName('objectid') . ' FROM #__tags_object AS jto
 							JOIN #__tags AS jt ON jto.' . $db->quoteName('tagid') . '=jt.' . $db->quoteName('id') . '
 							WHERE jto.' . $db->quoteName('tbl') . '=\'support\'
-							AND (jt.' . $db->quoteName('tag') . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . ' OR jt.' . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . '))';
+							AND (jt.' . $db->quoteName('tag') . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . ' OR '
+                . 'jt.' . $db->quoteName('raw_tag') . ' ' . str_replace('$1', "'" . implode("','", $nottags) . "'", 'IN ($1)') . '))';
                 $having = " GROUP BY f.id ";
             } else {
                 $e[] = '(t.'

@@ -25,19 +25,27 @@ class FootNote extends WikiMacro
     public function description()
     {
         $txt = [];
-        $txt['wiki'] = "Add a footnote, or explicitly display collected footnotes when no args are given. Useful for citations.
+        $txt['wiki'] = "Add a footnote, or explicitly display collected footnotes when no args are given. Useful for "
+            . "citations.
 
 Examples:
  * [[Footnote(I am a footnote)]]  # add a reference to a footnote with text 'I am a footnote'
- * [[Footnote(reflabel | I am another footnote )]]  # add a reference with label 'reflabel' to a footnote with text 'I am another footnote'. The label can be used in future footnote macro calls to reference the same footnote (see next example).
- * [[Footnote(reflabel)]]  # add a reference to a new footnote with text 'reflabel' or an existing footnote with label or text 'reflabel'
+ * [[Footnote(reflabel | I am another footnote )]]  # add a reference with label 'reflabel' to a footnote with text 'I "
+            . "am another footnote'. The label can be used in future footnote macro calls to reference the same "
+            . "footnote (see next example).
+ * [[Footnote(reflabel)]]  # add a reference to a new footnote with text 'reflabel' or an existing footnote with label "
+            . "or text 'reflabel'
  * [[Footnote]]  # display all collected footnotes in a referenced list";
-        $txt['html'] = '<p>Add a footnote, or explicitly display collected footnotes when no args are given.  Useful for citations.</p>
+        $txt['html'] = '<p>Add a footnote, or explicitly display collected footnotes when no args are given.  Useful '
+            . 'for citations.</p>
 <p>Examples:</p>
 <ul>
 <li><code>[[Footnote(I am a footnote)]]</code>  # add a reference to a footnote with text "I am a footnote"</li>
-<li><code>[[Footnote(reflabel | I am another footnote )]]</code>  # add a reference with label "reflabel" to a footnote with text "I am another footnote". The label can be used in future footnote macro calls to reference the same footnote (see next example).</li>
-<li><code>[[Footnote(reflabel)]]</code>  # add a reference to a new footnote with text "reflabel" or an existing footnote with label or text "reflabel"</li>
+<li><code>[[Footnote(reflabel | I am another footnote )]]</code>  # add a reference with label "reflabel" to a '
+            . 'footnote with text "I am another footnote". The label can be used in future footnote macro calls to '
+            . 'reference the same footnote (see next example).</li>
+<li><code>[[Footnote(reflabel)]]</code>  # add a reference to a new footnote with text "reflabel" or an existing '
+            . 'footnote with label or text "reflabel"</li>
 <li><code>[[Footnote]]</code>  # display all collected footnotes in a referenced list</li>
 </ul>';
         return $txt['html'];

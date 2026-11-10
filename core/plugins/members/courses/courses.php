@@ -211,7 +211,8 @@ class Courses extends Plugin
                     $results = $this->database->loadResult();
                 } else {
                     $this->database->setQuery(
-                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, "
+                            . "s.alias AS section_alias, s.title AS section_title, s.is_default,
 						m.enrolled, s.publish_up AS starts, s.publish_down AS ends
 						FROM `#__courses` AS c
 							JOIN `#__courses_members` AS m ON m.course_id=c.id
@@ -242,7 +243,8 @@ class Courses extends Plugin
                     $results = $this->database->loadResult();
                 } else {
                     $this->database->setQuery(
-                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, "
+                            . "s.alias AS section_alias, s.title AS section_title, s.is_default,
 							m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
 							FROM `#__courses` AS c
 							JOIN `#__courses_members` AS m ON m.course_id=c.id
@@ -272,7 +274,8 @@ class Courses extends Plugin
                     $results = $this->database->loadResult();
                 } else {
                     $this->database->setQuery(
-                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, "
+                            . "s.alias AS section_alias, s.title AS section_title, s.is_default,
 						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
 						FROM `#__courses` AS c
 						JOIN `#__courses_members` AS m ON m.course_id=c.id
@@ -302,7 +305,8 @@ class Courses extends Plugin
                     $results = $this->database->loadResult();
                 } else {
                     $this->database->setQuery(
-                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, "
+                            . "s.alias AS section_alias, s.title AS section_title, s.is_default,
 						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
 						FROM `#__courses` AS c
 						JOIN `#__courses_members` AS m ON m.course_id=c.id
@@ -332,7 +336,8 @@ class Courses extends Plugin
                     $results = $this->database->loadResult();
                 } else {
                     $this->database->setQuery(
-                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, "
+                            . "s.alias AS section_alias, s.title AS section_title, s.is_default,
 						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
 						FROM `#__courses` AS c
 						JOIN `#__courses_members` AS m ON m.course_id=c.id
@@ -433,7 +438,9 @@ class Courses extends Plugin
             return $database->loadResult();
         } else {
             //$rows = $tbl->getUserCourses($uidNumber, $type='instructor', $limit, $limitstart);
-            $query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default
+            $query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS "
+                . "ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS "
+                . "section_alias, s.title AS section_title, s.is_default
 					FROM `#__courses` AS c
 					JOIN `#__courses_members` AS m ON m.course_id=c.id
 					LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id

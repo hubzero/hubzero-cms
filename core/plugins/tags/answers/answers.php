@@ -62,8 +62,10 @@ class Answers extends Plugin
         // Build the query
         $f_count = "SELECT COUNT(f.id) FROM (SELECT a.id, COUNT(DISTINCT t.tagid) AS uniques ";
 
-        $f_fields = "SELECT a.id, a.subject AS title, NULL AS alias, NULL AS itext, a.question AS ftext, a.state, a.created, a.created_by,
-					NULL AS modified, a.created AS publish_up, NULL AS publish_down, CONCAT('index.php?option=com_answers&task=question&id=', a.id) AS href,
+        $f_fields = "SELECT a.id, a.subject AS title, NULL AS alias, NULL AS itext, a.question AS ftext, a.state, "
+            . "a.created, a.created_by,
+					NULL AS modified, a.created AS publish_up, NULL AS publish_down, "
+            . "CONCAT('index.php?option=com_answers&task=question&id=', a.id) AS href,
 					'answers' AS section, COUNT(DISTINCT t.tagid) AS uniques, a.anonymous AS params,
 					(SELECT COUNT(*) FROM `#__answers_responses` AS r WHERE r.question_id=a.id) AS rcount,
 					NULL AS data1, NULL AS data2, NULL AS data3 ";

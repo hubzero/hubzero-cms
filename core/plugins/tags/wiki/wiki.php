@@ -128,11 +128,14 @@ class Wiki extends Plugin
                 $query = "SELECT COUNT(*) FROM (SELECT COUNT(DISTINCT v.page_id) ";
             }
         } else {
-            $query = "SELECT v.page_id AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, w.state, v.created, v.created_by,
+            $query = "SELECT v.page_id AS id, w.title, w.pagename AS alias, v.pagetext AS itext, v.pagehtml AS ftext, "
+                . "w.state, v.created, v.created_by,
 						v.created AS modified, v.created AS publish_up, NULL AS publish_down,
 						CASE
-							WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&alias=', xp.alias, '&active=notes&pagename=', w.path, '/', w.pagename)
-							WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&cn=', xg.cn, '&active=wiki&pagename=', w.path, '/', w.pagename)
+							WHEN w.scope = 'project' THEN concat('index.php?option=com_projects&alias=', xp.alias, "
+                . "'&active=notes&pagename=', w.path, '/', w.pagename)
+							WHEN w.scope = 'group' THEN CONCAT('index.php?option=com_groups&cn=', xg.cn, '&active=wiki&pagename=', w.path, "
+                . "'/', w.pagename)
 							ELSE CONCAT('index.php?option=com_wiki&pagename=', w.pagename)
 						END AS href,
 						'wiki' AS section ";

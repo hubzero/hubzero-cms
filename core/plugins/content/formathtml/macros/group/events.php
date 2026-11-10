@@ -38,20 +38,29 @@ class Events extends GroupMacro
         $txt['html']  = '<p>Displays group events.</p>';
         $txt['html'] .= '<p>Arguments:</p>
 							<ul>
-								<li><code>from</code> - The start date of the events to display. Default is "today". Can be either in YYYY-MM-DD format, or one of "today", "yesterday", or "tomorrow.</li>
-								<li><code>to</code> - The end date of the events to display. Default is one year after "from" date. Can be either in YYYY-MM-DD format, or one of "today", "yesterday", or "tomorrow.</li>
-								<li><code>for</code> - The duration of events to display, starting after "from" date (inclusive). Default is "1 year". Can use number of days, weeks, months, or years. This argument is ignored if the "to" argument is specified.</li>
-								<li><code>order</code> - The order in which to display the events. Can be "forward" or "backward" in time. Default is "forward." This is most helpful when displaying past events (see example below). </li>
+								<li><code>from</code> - The start date of the events to display. Default is "today". Can be either in '
+            . 'YYYY-MM-DD format, or one of "today", "yesterday", or "tomorrow.</li>
+								<li><code>to</code> - The end date of the events to display. Default is one year after "from" date. Can be '
+            . 'either in YYYY-MM-DD format, or one of "today", "yesterday", or "tomorrow.</li>
+								<li><code>for</code> - The duration of events to display, starting after "from" date (inclusive). Default is '
+            . '"1 year". Can use number of days, weeks, months, or years. This argument is ignored if the "to" '
+            . 'argument is specified.</li>
+								<li><code>order</code> - The order in which to display the events. Can be "forward" or "backward" in time. '
+            . 'Default is "forward." This is most helpful when displaying past events (see example below). </li>
 							</ul>';
         $txt['html'] .= '<p>Examples:</p>
 							<ul>
 								<li><code>[[Group.Events()]]</code> - Displays all events from today to 1 year from today</li>
-								<li><code>[[Group.Events(from=today)]]</code> - Another way to display all events from today to 1 year from today</li>
+								<li><code>[[Group.Events(from=today)]]</code> - Another way to display all events from today to 1 year from '
+            . 'today</li>
 								<li><code>[[Group.Events(from=today, for=3 months)]]</code> - Displays 3 months of events from today</li>
 								<li><code>[[Group.Events(from=today, to=today)]]</code> - Displays events for today only</li>
-								<li><code>[[Group.Events(from=0000-01-01, to=yesterday, order=backward)]]</code> - Displays events up to and including yesterday (i.e. all past events), with most recent events shown first.</li>
-								<li><code>[[Group.Events(from=2021-04-15)]]</code> - Displays events from 2021-04-15 to 2022-04-14 (1 year default)</li>
-								<li><code>[[Group.Events(from=2021-04-15, to=2025-01-01)]]</code> - Displays events from 2021-04-15 to 2025-01-01</li>
+								<li><code>[[Group.Events(from=0000-01-01, to=yesterday, order=backward)]]</code> - Displays events up to and '
+            . 'including yesterday (i.e. all past events), with most recent events shown first.</li>
+								<li><code>[[Group.Events(from=2021-04-15)]]</code> - Displays events from 2021-04-15 to 2022-04-14 (1 year '
+            . 'default)</li>
+								<li><code>[[Group.Events(from=2021-04-15, to=2025-01-01)]]</code> - Displays events from 2021-04-15 to '
+            . '2025-01-01</li>
 							</ul>';
 
         return $txt['html'];

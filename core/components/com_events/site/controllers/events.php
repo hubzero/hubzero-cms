@@ -313,7 +313,8 @@ class Events extends SiteController
         if (Request::getInt('year', 0) > 0) {
             $db = App::get('db');
             $db->setQuery(
-                "SELECT YEAR(MIN(publish_up)) AS mn, YEAR(GREATEST(MAX(publish_up), COALESCE(MAX(publish_down), MAX(publish_up)))) AS mx
+                "SELECT YEAR(MIN(publish_up)) AS mn, YEAR(GREATEST(MAX(publish_up), COALESCE(MAX(publish_down), "
+                    . "MAX(publish_up)))) AS mx
 				   FROM `#__events`
 				  WHERE `scope` = 'event' AND `state` = 1 AND `approved` = 1",
             );

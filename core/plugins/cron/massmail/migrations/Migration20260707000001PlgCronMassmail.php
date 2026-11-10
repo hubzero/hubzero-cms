@@ -32,9 +32,11 @@ class Migration20260707000001PlgCronMassmail extends Base
                 // mass mail is configured and sending is turned on.
                 $this->db->setQuery(
                     "INSERT INTO `#__cron_jobs`
-						(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
+						(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, "
+                        . "`modified_by`, `active`, `ordering`, `params`)
 					 VALUES
-						('Process Mass Mail Queue', 0, 'massmail', 'processMassmailQueue', NULL, NULL, '*/5 * * * *', NULL, 1, NULL, 0, 0, 0, '');",
+						('Process Mass Mail Queue', 0, 'massmail', 'processMassmailQueue', NULL, NULL, '*/5 * * * *', NULL, 1, NULL, 0, "
+                        . "0, 0, '');",
                 );
                 $this->db->query();
             }

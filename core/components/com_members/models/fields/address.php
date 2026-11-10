@@ -163,7 +163,8 @@ class Address extends Field
 							this.selectedIndex = 0;
 						});
 						grp.find('label').each(function(){
-							\$(this).attr('for', \$(this).attr('for').replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) + '-';}));
+							\$(this).attr('for', \$(this).attr('for').replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + "
+                        . "(parseInt(p1,10)+1) + '-';}));
 						});
 						if (!grp.find('.address-remove').length) {
 							var rmv = \$('<a class=\"address-remove icon-remove\" "

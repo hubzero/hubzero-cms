@@ -188,13 +188,16 @@ class Sessionsv1r0 extends ApiController
         //poll database for tool matching alias
         if ($version !== 0) {
             if ($version === null) {
-                $sql = "SELECT 0 AS id, tv.toolname AS alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision, tv.fulltxt as abstract, '0000-00-00 00:00:00' AS created, tv.toolid, tv.id
+                $sql = "SELECT 0 AS id, tv.toolname AS alias, tv.toolname, tv.title, tv.description, tv.toolaccess as "
+                    . "access, tv.mw, tv.instance, tv.revision, tv.fulltxt as abstract, '0000-00-00 00:00:00' AS "
+                    . "created, tv.toolid, tv.id
 					FROM `#__tool_version` as tv
 					WHERE
 					tv.toolname=" . $database->quote($tool) . "
 				        AND tv.revision IS NULL";
             } else {
-                $sql = "SELECT r.id, r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision, r.fulltxt as abstract, r.created, tv.toolid, tv.id
+                $sql = "SELECT r.id, r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, "
+                    . "tv.instance, tv.revision, r.fulltxt as abstract, r.created, tv.toolid, tv.id
 				FROM `#__resources` as r, `#__tool_version` as tv
 				WHERE 
 				r.type=7
@@ -204,7 +207,9 @@ class Sessionsv1r0 extends ApiController
 				AND tv.revision=" . $database->quote($version) . "";
             }
         } else {
-            $sql = "SELECT 0 AS id, t.toolname AS alias, t.toolname, t.title, t.description, t.toolaccess as access, t.mw, CONCAT(t.toolname,'_dev') AS instance, 'dev' AS revision, t.fulltxt as abstract, '0000-00-00 00:00:00' AS created, t.id AS toolid, 0 AS id FROM `#__tool` as t
+            $sql = "SELECT 0 AS id, t.toolname AS alias, t.toolname, t.title, t.description, t.toolaccess as access, "
+                . "t.mw, CONCAT(t.toolname,'_dev') AS instance, 'dev' AS revision, t.fulltxt as abstract, '0000-00-00 "
+                . "00:00:00' AS created, t.id AS toolid, 0 AS id FROM `#__tool` as t
 				WHERE t.toolname=" . $database->quote($tool) . "";
         }
         $database->setQuery($sql);

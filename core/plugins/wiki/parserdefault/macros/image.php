@@ -47,16 +47,19 @@ class Image extends WikiMacro
         $txt = "Embed an image in wiki-formatted text.
 
 The first argument is the file specification. The file specification may reference attachments or files in three ways:
- * `module:id:file`, where module can be either '''wiki''' or '''ticket''', to refer to the attachment named ''file'' of the specified wiki page or ticket.
+ * `module:id:file`, where module can be either '''wiki''' or '''ticket''', to refer to the attachment named ''file'' "
+            . "of the specified wiki page or ticket.
  * `id:file`: same as above, but id is either a ticket shorthand or a Wiki page name.
  * `file` to refer to a local attachment named 'file'. This only works from within that wiki page or a ticket.
 
-Also, the file specification may refer to repository files, using the `source:file` syntax (`source:file@rev` works also).
+Also, the file specification may refer to repository files, using the `source:file` syntax (`source:file@rev` works "
+            . "also).
 
 The remaining arguments are optional and allow configuring the attributes and style of the rendered `<img>` element:
  * digits and unit are interpreted as the size (ex. 120, 25%) for the image
  * `right`, `left`, `top` or `bottom` are interpreted as the alignment for the image
- * `link=some TracLinks...` replaces the link to the image source by the one specified using a TracLinks. If no value is specified, the link is simply removed.
+ * `link=some TracLinks...` replaces the link to the image source by the one specified using a TracLinks. If no value "
+            . "is specified, the link is simply removed.
  * `nolink` means without link to image source (deprecated, use `link=`)
  * `key=value` style are interpreted as HTML attributes or CSS style indications for the image. Valid keys are:
  * align, border, width, height, alt, title, longdesc, class, id and usemap
@@ -83,10 +86,13 @@ You can use image from other page, other ticket or other module.
 }}}
 ";
         $txt = [];
-        $txt['wiki'] = "Embed an image in wiki-formatted text. The first argument is the file specification. The remaining arguments are optional and allow configuring the attributes and style of the rendered `img` element:
+        $txt['wiki'] = "Embed an image in wiki-formatted text. The first argument is the file specification. The "
+            . "remaining arguments are optional and allow configuring the attributes and style of the rendered `img` "
+            . "element:
  * digits and unit are interpreted as the size (ex. 120, 25%) for the image
  * `right`, `left`, `top` or `bottom` are interpreted as the alignment for the image
- * `link=some Link...` replaces the link to the image source by the one specified using Link. If no value is specified, the link is simply removed.
+ * `link=some Link...` replaces the link to the image source by the one specified using Link. If no value is "
+            . "specified, the link is simply removed.
  * `nolink` means without link to image source (deprecated, use `link=`)
  * `key=value` style are interpreted as HTML attributes or CSS style indications for the image. Valid keys are:
  * align, border, width, height, alt, title, longdesc, class, id and usemap
@@ -100,14 +106,20 @@ Examples:
  * Image(photo.jpg, align=right)  # aligned by attribute
  * Image(photo.jpg, 120px, class=mypic) # with image width size and a CSS class
 ";
-        $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is the file specification, either as <code>file</code> for the current page or <code>Page:file</code> for a file located on the wiki page named <code>Page</code>. The remaining arguments are optional and allow configuring the attributes and style of the rendered <code>&lt;img&gt;</code> element:</p>
+        $txt['html'] = '<p>Embed an image in wiki-formatted text. The first argument is the file specification, either '
+            . 'as <code>file</code> for the current page or <code>Page:file</code> for a file located on the wiki page '
+            . 'named <code>Page</code>. The remaining arguments are optional and allow configuring the attributes and '
+            . 'style of the rendered <code>&lt;img&gt;</code> element:</p>
 <ul>
 <li>digits and unit are interpreted as the size (ex. 120, 25%) for the image</li>
-<li><code>right</code>, <code>left</code>, <code>top</code> or <code>bottom</code> are interpreted as the alignment for the image</li>
-<li><code>link=some Link...</code> replaces the link to the image source by the one specified using Link. If no value is specified, the link is simply removed.</li>
+<li><code>right</code>, <code>left</code>, <code>top</code> or <code>bottom</code> are interpreted as the alignment '
+            . 'for the image</li>
+<li><code>link=some Link...</code> replaces the link to the image source by the one specified using Link. If no value '
+            . 'is specified, the link is simply removed.</li>
 <li><code>nolink</code> means without link to image source (deprecated, use <code>link=</code>)</li>
 <li><code>nofigure</code> means no border or clickable image</li>
-<li><code>key=value</code> style are interpreted as HTML attributes or CSS style indications for the image. Valid keys are:</li>
+<li><code>key=value</code> style are interpreted as HTML attributes or CSS style indications for the image. Valid keys '
+            . 'are:</li>
 <li>align, border, width, height, alt, title, longdesc, class, id and usemap</li>
 <li><code>border</code> can only be a number</li>
 </ul>
@@ -160,7 +172,8 @@ Examples:
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
         $argues = preg_replace_callback(
-            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i',
+            '/[, '
+                . '](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i',
             [&$this, 'parseAttributeValuePair'],
             $content,
         );

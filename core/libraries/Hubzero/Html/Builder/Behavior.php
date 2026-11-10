@@ -208,7 +208,8 @@ class Behavior
 				},
 				TeX: {
 					extensions: ["autoload-all.js", "mediawiki-texvc.js"],
-					noUndefined: { attributes: { mathcolor: "#8b0000", mathbackground: "#FFEEEE", mathsize: "90%" } }, // [a11y] darkred: 8.85:1 on #FFEEEE (was "red" = 3.57:1, fails SC 1.4.3)
+					noUndefined: { attributes: { mathcolor: "#8b0000", mathbackground: "#FFEEEE", mathsize: "90%" } }, // [a11y] '
+        . 'darkred: 8.85:1 on #FFEEEE (was "red" = 3.57:1, fails SC 1.4.3)
 					Macros: { href: "{}" }
 				},
 				messageStyle: "none",
@@ -536,7 +537,8 @@ class Behavior
 
 						if (tipText && tipText.indexOf('::') != -1) {
 							var parts = tipText.split('::');
-							tip.attr('title', '<div class=\"tip-title\">' + parts[0] + '</div><div class=\"tip-text\">' + parts[1] + '</div>');
+							tip.attr('title', '<div class=\"tip-title\">' + parts[0] + '</div><div class=\"tip-text\">' + parts[1] + "
+            . "'</div>');
 						} else {
 							tip.attr('title', '<div class=\"tip-text\">' + tipText + '</div>');
 						}
@@ -1113,7 +1115,8 @@ Calendar._TT["ABOUT_TIME"] = "\n\n" +
 "- or Shift-click to decrease it\n" +
 "- or click and drag for faster selection.";
 
-		Calendar._TT["PREV_YEAR"] = "' . Lang::txt('JLIB_HTML_BEHAVIOR_PREV_YEAR_HOLD_FOR_MENU', true) . '";' . ' Calendar._TT["PREV_MONTH"] = "'
+		Calendar._TT["PREV_YEAR"] = "' . Lang::txt('JLIB_HTML_BEHAVIOR_PREV_YEAR_HOLD_FOR_MENU', true) . '";' . ' '
+            . 'Calendar._TT["PREV_MONTH"] = "'
                 . Lang::txt('JLIB_HTML_BEHAVIOR_PREV_MONTH_HOLD_FOR_MENU', true)
                 . '";'
                 . ' Calendar._TT["GO_TODAY"] = "'

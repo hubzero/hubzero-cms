@@ -136,7 +136,8 @@ class Miner extends Obj implements Provider
             }
         }
 
-        $query = "SELECT CONCAT(p.id, ':', pv.version_number) AS id, " . $this->database->quote($this->name()) . " AS `base`
+        $query = "SELECT CONCAT(p.id, ':', pv.version_number) AS id, " . $this->database->quote($this->name()) . " AS "
+            . "`base`
 				FROM `#__publications` AS p
 				INNER JOIN `#__publication_versions` AS pv ON pv.publication_id = p.id
 				WHERE pv.state=1";
@@ -158,7 +159,8 @@ class Miner extends Obj implements Provider
             }
 
             $query .= " AND (
-				(CASE WHEN pv.`accepted` IS NOT NULL AND pv.`accepted` != '0000-00-00 00:00:00' THEN pv.`accepted` ELSE pv.`published_up` END) >= " . $this->database->quote($filters['from']) . "
+				(CASE WHEN pv.`accepted` IS NOT NULL AND pv.`accepted` != '0000-00-00 00:00:00' THEN pv.`accepted` ELSE "
+                . "pv.`published_up` END) >= " . $this->database->quote($filters['from']) . "
 			)";
         }
         if (isset($filters['until']) && $filters['until']) {
@@ -174,7 +176,8 @@ class Miner extends Obj implements Provider
             }
 
             $query .= " AND (
-				(CASE WHEN pv.`accepted` IS NOT NULL AND pv.`accepted` != '0000-00-00 00:00:00' THEN pv.`accepted` ELSE pv.`published_up` END) < " . $this->database->quote($filters['until']) . "
+				(CASE WHEN pv.`accepted` IS NOT NULL AND pv.`accepted` != '0000-00-00 00:00:00' THEN pv.`accepted` ELSE "
+                . "pv.`published_up` END) < " . $this->database->quote($filters['until']) . "
 			)";
         }
 
@@ -404,7 +407,8 @@ class Miner extends Obj implements Provider
         $this->database->setQuery(
             "SELECT DISTINCT t.raw_tag
 			FROM `#__tags` t, `#__tags_object` tos
-			WHERE t.id = tos.tagid AND tos.objectid=" . $this->database->quote($record->version_id) . " AND tos.tbl='publications' AND t.admin=0
+			WHERE t.id = tos.tagid AND tos.objectid=" . $this->database->quote($record->version_id) . " AND "
+            . "tos.tbl='publications' AND t.admin=0
 			ORDER BY t.raw_tag",
         );
         $record->subject = $this->database->loadColumn();

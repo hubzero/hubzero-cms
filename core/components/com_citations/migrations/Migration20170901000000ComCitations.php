@@ -85,7 +85,8 @@ class Migration20170901000000ComCitations extends Base
 			  `custom4` varchar(45) DEFAULT NULL,
 			  PRIMARY KEY (`id`),
 			  FULLTEXT KEY `ftidx_title_isbn_doi_abstract` (`title`,`isbn`,`doi`,`abstract`),
-			  FULLTEXT KEY `ftidx_title_isbn_doi_abstract_author_publisher` (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`),
+			  FULLTEXT KEY `ftidx_title_isbn_doi_abstract_author_publisher` "
+                . "(`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`),
 			  FULLTEXT KEY `ftidx_search` (`title`,`isbn`,`doi`,`abstract`,`author`,`publisher`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 

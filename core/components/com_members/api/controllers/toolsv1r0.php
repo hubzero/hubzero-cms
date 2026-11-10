@@ -229,7 +229,8 @@ class Toolsv1r0 extends ApiController
         $supportedtagusage = $this->rt->getTagUsage($supportedtag, 'alias');
 
         // Load users recent tools
-        $sql = "SELECT r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, tv.revision
+        $sql = "SELECT r.alias, tv.toolname, tv.title, tv.description, tv.toolaccess as access, tv.mw, tv.instance, "
+            . "tv.revision
 				FROM `#__resources` as r, `#__recent_tools` as rt, `#__tool_version` as tv
 				WHERE r.published=1
 				AND r.type=7

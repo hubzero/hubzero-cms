@@ -305,7 +305,8 @@ class Resources extends Plugin
 							((90 / ((datediff(NOW(), " . $r . ".created) * 1) + 90)) + 0)
 						)
 						+
-						(LN(LN(1 / (case when datediff(NOW(), " . $r . ".created) >= 1 then datediff(NOW(), " . $r . ".created) else 1 end) + 1)) + 10)
+						(LN(LN(1 / (case when datediff(NOW(), " . $r . ".created) >= 1 then datediff(NOW(), " . $r . ".created) else 1 "
+                    . "end) + 1)) + 10)
 					";
 
                     $query->select('(' . $subquery . ')', 'tag_weight');

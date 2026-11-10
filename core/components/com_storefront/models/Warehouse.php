@@ -479,7 +479,8 @@ class Warehouse extends \Hubzero\Base\Obj
         $sql = "SELECT DISTINCT p.*, pt.ptName, i.imgName FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_product_types` pt ON p.`ptId` = pt.`ptId`
 				LEFT JOIN `#__storefront_product_collections` c ON p.`pId` = c.`pId`
-				LEFT JOIN `#__storefront_images` i ON (p.`pId` = i.`imgObjectId` AND i.`imgObject` = 'product' AND i.`imgPrimary` = 1)";
+				LEFT JOIN `#__storefront_images` i ON (p.`pId` = i.`imgObjectId` AND i.`imgObject` = 'product' AND i.`imgPrimary` "
+            . "= 1)";
         /*if ($useAccessGroups)
         {
             $sql .= " LEFT JOIN `#__storefront_product_access_groups` ag1 ON p.`pId` = ag1.`pId` AND ag1.`exclude`= 0";
@@ -513,7 +514,8 @@ class Warehouse extends \Hubzero\Base\Obj
                 )";*/
                 $sql .= " AND (
 					p.`pId` IN (SELECT ag.pId FROM `#__storefront_product_access_groups` ag WHERE ag.`exclude`=0 and ag.agId IN(" . implode(',', $this->accessGroupsScope) . ")) AND
-					p.`pId` NOT IN (SELECT ag2.pId FROM `#__storefront_product_access_groups` ag2 WHERE ag2.`exclude`=1 and ag2.agId IN(" . implode(',', $this->accessGroupsScope) . "))
+					p.`pId` NOT IN (SELECT ag2.pId FROM `#__storefront_product_access_groups` ag2 WHERE ag2.`exclude`=1 and ag2.agId "
+                . "IN(" . implode(',', $this->accessGroupsScope) . "))
 				)";
             }
         } else {
@@ -1496,7 +1498,8 @@ class Warehouse extends \Hubzero\Base\Obj
 				FROM `#__storefront_collections` c
 				LEFT JOIN `#__storefront_product_collections` pc ON c.`cId` = pc.`cId`
 				LEFT JOIN `#__storefront_products` p ON p.`pId` = pc.`pId`
-				LEFT JOIN `#__storefront_images` i ON (c.`cId` = i.`imgObjectId` AND i.`imgObject` = 'collection' AND i.`imgPrimary` = 1)
+				LEFT JOIN `#__storefront_images` i ON (c.`cId` = i.`imgObjectId` AND i.`imgObject` = 'collection' AND "
+            . "i.`imgPrimary` = 1)
 				WHERE c.`cParent` IS NULL AND c.`cActive` = 1 AND p.`pActive` = 1";
 
         $sql .= " AND c.`cType` = '{$collectionType}'";

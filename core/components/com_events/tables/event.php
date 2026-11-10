@@ -132,8 +132,10 @@ class Event extends Table
 					(
 							(publish_up >= " . $this->db->quote($select_date . '%') . " AND publish_up <= " . $this->db->quote($select_date_fin . '%') . " AND publish_down IS NOT NULL AND publish_down != '0000-00-00 00:00:00')
 						OR (publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down >= " . $this->db->quote($select_date . '%') . " AND publish_down <= " . $this->db->quote($select_date_fin . '%') . ")
-						OR (publish_up >= " . $this->db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down <= " . $this->db->quote($select_date_fin . '%') . ")
-						OR (publish_up <= " . $this->db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down !='0000-00-00 00:00:00' AND publish_down >= " . $this->db->quote($select_date_fin . '%') . ")
+						OR (publish_up >= " . $this->db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down "
+                . "!='0000-00-00 00:00:00' AND publish_down <= " . $this->db->quote($select_date_fin . '%') . ")
+						OR (publish_up <= " . $this->db->quote($select_date . '%') . " AND publish_down IS NOT NULL AND publish_down "
+                . "!='0000-00-00 00:00:00' AND publish_down >= " . $this->db->quote($select_date_fin . '%') . ")
 					)
 					AND $this->tableName.state = '1'";
 

@@ -494,7 +494,8 @@ class Publication extends Table
 
         $sql .= ",(SELECT vv.version_label FROM #__publication_versions as vv
 				WHERE vv.publication_id=C.id AND (vv.state = 3 OR vv.state = 5) LIMIT 1) AS dev_version_label ";
-        $sql .= ",(SELECT vv.state FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.main=1 ORDER BY vv.created DESC LIMIT 1)
+        $sql .= ",(SELECT vv.state FROM #__publication_versions as vv WHERE vv.publication_id=C.id AND vv.main=1 ORDER "
+            . "BY vv.created DESC LIMIT 1)
 				AS default_version_status ";
         $sql .= ",(SELECT COUNT(*) FROM #__publication_versions WHERE publication_id=C.id AND state!=3 ) AS versions ";
         $sql .= " FROM #__publication_versions as V, #__projects AS PP, #__publication_master_types AS "

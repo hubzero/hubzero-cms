@@ -31,9 +31,12 @@ class Migration20261029000000PlgCronMembersExpireInactive extends Base
                 // shadowExpire is already set. 03:00 on the 1st of each month.
                 $this->db->setQuery(
                     "INSERT INTO `#__cron_jobs`
-						(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, `modified_by`, `active`, `ordering`, `params`)
+						(`title`, `state`, `plugin`, `event`, `last_run`, `next_run`, `recurrence`, `created`, `created_by`, `modified`, "
+                        . "`modified_by`, `active`, `ordering`, `params`)
 					 VALUES
-						('Expire inactive accounts', 0, 'members', 'expireInactiveAccounts', NULL, NULL, '0 3 1 * *', NULL, 1, NULL, 0, 0, 0, '{\"members_expireinactive_months\":\"36\",\"members_expireinactive_exempt_group\":\"Service accounts\"}');",
+						('Expire inactive accounts', 0, 'members', 'expireInactiveAccounts', NULL, NULL, '0 3 1 * *', NULL, 1, NULL, 0, "
+                        . "0, 0, "
+                        . "'{\"members_expireinactive_months\":\"36\",\"members_expireinactive_exempt_group\":\"Service accounts\"}');",
                 );
                 $this->db->query();
             }

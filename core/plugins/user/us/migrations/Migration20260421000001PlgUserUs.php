@@ -24,7 +24,8 @@ class Migration20260421000001PlgUserUs extends Base
 
         if ($this->db->tableExists('#__xgroups')) {
             $this->db->setQuery(
-                "INSERT IGNORE INTO `#__xgroups` (`cn`, `published`, `approved`, `type`, `join_policy`, `discoverability`)
+                "INSERT IGNORE INTO `#__xgroups` (`cn`, `published`, `approved`, `type`, `join_policy`, "
+                    . "`discoverability`)
 				 VALUES ('location_us', 1, 1, 1, 3, 1)",
             );
             $this->db->query();

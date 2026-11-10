@@ -1311,7 +1311,8 @@ class Groups extends Base
 
         $query = "SELECT t.gidNumber, t.cn, t.description
 					FROM `#__xgroups` AS t
-					WHERE (t.type=1 OR t.type=3) AND (LOWER(t.cn) LIKE " . $this->database->quote('%' . $filters['search'] . '%') . " OR LOWER(t.description) LIKE " . $this->database->quote('%' . $filters['search'] . '%') . ")
+					WHERE (t.type=1 OR t.type=3) AND (LOWER(t.cn) LIKE " . $this->database->quote('%' . $filters['search'] . '%') . " "
+        . "OR LOWER(t.description) LIKE " . $this->database->quote('%' . $filters['search'] . '%') . ")
 					ORDER BY t.description ASC";
 
         $this->database->setQuery($query);
@@ -1369,7 +1370,8 @@ class Groups extends Base
         if ($filters['cn']) {
             $query = "SELECT u.username, u.name
 						FROM `#__users` AS u, `#__xgroups_members` AS m, `#__xgroups` AS g
-						WHERE g.cn=" . $this->database->quote($filters['cn']) . " AND g.gidNumber=m.gidNumber AND m.uidNumber=u.id AND u.block = '0'
+						WHERE g.cn=" . $this->database->quote($filters['cn']) . " AND g.gidNumber=m.gidNumber AND m.uidNumber=u.id AND "
+            . "u.block = '0'
 						ORDER BY u.name ASC LIMIT 10000";
         } else {
             $query = "SELECT a.username, a.name

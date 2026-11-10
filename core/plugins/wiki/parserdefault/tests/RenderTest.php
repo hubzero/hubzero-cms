@@ -113,16 +113,26 @@ end',
 <h3 class="article-toc-heading">Contents</h3>
 
 <ul class=\'toc-list\'>
-<li class="toclevel toclevel-1"><div class="toc-item"><button class="toggle-button" aria-expanded="false" aria-label="Toggle subsection"></button><a href="/wiki#content-header"><span class="tocnumber"> </span><span class="toctext">(Top)</span></a></div>
-<li class="toclevel toclevel-1"><div class="toc-item"><button class="toggle-button" aria-expanded="false" aria-label="Toggle subsection"></button><a href="/wiki#One"><span class="tocnumber">1 </span><span class="toctext">One</span></a></div></li>
+<li class="toclevel toclevel-1"><div class="toc-item"><button class="toggle-button" aria-expanded="false" '
+                    . 'aria-label="Toggle subsection"></button><a href="/wiki#content-header"><span class="tocnumber"> '
+                    . '</span><span class="toctext">(Top)</span></a></div>
+<li class="toclevel toclevel-1"><div class="toc-item"><button class="toggle-button" aria-expanded="false" '
+                    . 'aria-label="Toggle subsection"></button><a href="/wiki#One"><span class="tocnumber">1 '
+                    . '</span><span class="toctext">One</span></a></div></li>
 
-<li class="toclevel toclevel-1"><div class="toc-item"><button class="toggle-button" aria-expanded="false" aria-label="Toggle subsection"></button><a href="/wiki#Two"><span class="tocnumber">2 </span><span class="toctext">Two</span></a></div>
+<li class="toclevel toclevel-1"><div class="toc-item"><button class="toggle-button" aria-expanded="false" '
+                    . 'aria-label="Toggle subsection"></button><a href="/wiki#Two"><span class="tocnumber">2 '
+                    . '</span><span class="toctext">Two</span></a></div>
 <ul class=\'toc-list\' style=\'display: none;\'>
-<li class="toclevel toclevel-2"><div class="toc-item"><button class="toggle-button" aria-expanded="false" aria-label="Toggle subsection"></button><a href="/wiki#Three"><span class="tocnumber">2.1 </span><span class="toctext">Three</span></a></div></li>
+<li class="toclevel toclevel-2"><div class="toc-item"><button class="toggle-button" aria-expanded="false" '
+                    . 'aria-label="Toggle subsection"></button><a href="/wiki#Three"><span class="tocnumber">2.1 '
+                    . '</span><span class="toctext">Three</span></a></div></li>
 </ul>
 </li>
 
-<li class="toclevel toclevel-1"><div class="toc-item"><button class="toggle-button" aria-expanded="false" aria-label="Toggle subsection"></button><a href="/wiki#Four"><span class="tocnumber">3 </span><span class="toctext">Four</span></a></div></li>
+<li class="toclevel toclevel-1"><div class="toc-item"><button class="toggle-button" aria-expanded="false" '
+                    . 'aria-label="Toggle subsection"></button><a href="/wiki#Four"><span class="tocnumber">3 '
+                    . '</span><span class="toctext">Four</span></a></div></li>
 </ul>
 </div>
 

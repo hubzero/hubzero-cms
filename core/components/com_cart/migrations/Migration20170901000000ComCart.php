@@ -117,7 +117,8 @@ class Migration20170901000000ComCart extends Base
 			  `saState` char(2) NOT NULL,
 			  `saZip` char(10) NOT NULL,
 			  PRIMARY KEY (`saId`),
-			  UNIQUE KEY `uidx_uidNumber_saToFirst_saToLast_saAddress_saZip` (`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)
+			  UNIQUE KEY `uidx_uidNumber_saToFirst_saToLast_saAddress_saZip` "
+                . "(`uidNumber`,`saToFirst`,`saToLast`,`saAddress`(100),`saZip`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
             $this->db->setQuery($query);

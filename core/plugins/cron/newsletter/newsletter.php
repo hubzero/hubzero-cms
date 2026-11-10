@@ -73,7 +73,9 @@ class Newsletter extends Plugin
         $database = App::get('db');
 
         // get all queued mailing recipients
-        $sql = "SELECT nmr.id AS mailing_recipientid, nm.id AS mailingid, nm.nid AS newsletterid, nm.lid AS mailinglistid, nmr.email, nm.subject, nm.html_body, nm.plain_body, nm.headers, nm.args, nm.tracking, nl.autogen, nm.date AS sendDate
+        $sql = "SELECT nmr.id AS mailing_recipientid, nm.id AS mailingid, nm.nid AS newsletterid, nm.lid AS "
+            . "mailinglistid, nmr.email, nm.subject, nm.html_body, nm.plain_body, nm.headers, nm.args, nm.tracking, "
+            . "nl.autogen, nm.date AS sendDate
 				FROM `#__newsletter_mailings` AS nm, `#__newsletter_mailing_recipients` AS nmr, `#__newsletters` AS nl
 				WHERE nm.id=nmr.mid
 				AND nm.nid=nl.id

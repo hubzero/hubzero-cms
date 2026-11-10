@@ -159,7 +159,8 @@ class Profiles extends SiteController
                 // Someone typed a name with a space so it could be "first middle last", "first last", or "first middle"
                 $match = "(LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
 					OR (LOWER(u.givenName) LIKE " . $this->database->quote('%' . strtolower($parts[0]) . '%') . "
-					AND (LOWER(u.middleName) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . " OR LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . ")))";
+					AND (LOWER(u.middleName) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . " OR "
+                . "LOWER(u.surname) LIKE " . $this->database->quote('%' . strtolower($parts[1]) . '%') . ")))";
             } else {
                 $match = "(LOWER(u.name) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "
 					OR LOWER(u.givenName) LIKE " . $this->database->quote('%' . strtolower($filters['search']) . '%') . "

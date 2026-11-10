@@ -300,7 +300,8 @@ class PostfixCollector
             $db->setQuery(
                 "INSERT INTO `#__massmail_queue_daily` (`day`, `samples`, `total`, `max`)
 				 VALUES (" . $db->quote(gmdate('Y-m-d')) . ", 1, " . (int) $depth . ", " . (int) $depth . ")
-				 ON DUPLICATE KEY UPDATE `samples` = `samples` + 1, `total` = `total` + " . (int) $depth . ", `max` = GREATEST(`max`, " . (int) $depth . ")",
+				 ON DUPLICATE KEY UPDATE `samples` = `samples` + 1, `total` = `total` + " . (int) $depth . ", `max` = "
+                . "GREATEST(`max`, " . (int) $depth . ")",
             );
             $db->execute();
 

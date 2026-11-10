@@ -1042,7 +1042,8 @@ class Create extends SiteController
 			UNION
 			SELECT 1 FROM `#__users` u
 			INNER JOIN `#__user_usergroup_map` cagam ON cagam.user_id = u.id
-			INNER JOIN `#__usergroups` caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title = \'Super Users\' OR caag.title = \'Administrator\')
+			INNER JOIN `#__usergroups` caag ON caag.id = cagam.group_id AND (caag.title = \'Super Administrator\' OR caag.title '
+            . '= \'Super Users\' OR caag.title = \'Administrator\')
 			WHERE u.id = ' . User::get('id'),
         );
 
@@ -1124,7 +1125,8 @@ class Create extends SiteController
                             'SELECT t.id
 							FROM `#__tags_object` to1
 							INNER JOIN `#__tags` t ON t.id = to1.tagid
-							INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = to1.tagid
+							INNER JOIN `#__tags_object` to2 ON to2.tagid = ' . $tag[4] . ' AND to2.tbl = \'tags\' AND to2.objectid = '
+                            . 'to1.tagid
 							WHERE to1.objectid IN (' . implode(',', $parent_id) . ') AND to1.tbl = \'tags\' AND to1.label = \'parent\'',
                         );
                         $parent_id = $this->database->loadColumn();

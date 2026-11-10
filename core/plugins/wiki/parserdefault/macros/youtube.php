@@ -28,7 +28,8 @@ class Youtube extends WikiMacro
     {
         $txt = [];
         $txt['wiki'] = 'Embeds a Youtube Video into the Page';
-        $txt['html'] = '<p>Embeds a Youtube Video into the Page. Accepts either full Youtube video URL or just Youtube Video ID (highlighted below).</p>
+        $txt['html'] = '<p>Embeds a Youtube Video into the Page. Accepts either full Youtube video URL or just Youtube '
+            . 'Video ID (highlighted below).</p>
 						<p><strong>Youtube URL:</strong> https://www.youtube.com/watch?v=<span class="highlight">FgfGOEpZEOw</span></p>
 						<p>Examples:</p>
 						<ul>
@@ -38,7 +39,8 @@ class Youtube extends WikiMacro
 							<li><code>[[Youtube(FgfGOEpZEOw, 100%)]] - width of 100%</code></li>
 						</ul>
 						<p>Displays:</p>
-						<iframe sandbox="allow-scripts allow-same-origin" src="https://youtube.com/embed/FgfGOEpZEOw" width="640px" height="390px" border="0" title="YouTube video"></iframe>';
+						<iframe sandbox="allow-scripts allow-same-origin" src="https://youtube.com/embed/FgfGOEpZEOw" width="640px" '
+            . 'height="390px" border="0" title="YouTube video"></iframe>';
 
         return $txt['html'];
     }
