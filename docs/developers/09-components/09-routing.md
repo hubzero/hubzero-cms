@@ -65,30 +65,28 @@ use Hubzero\Component\Router\Base;
 
 class Router extends Base
 {
-	public function build(&$query)
-	{
-		$segments = array();
+    public function build(&$query)
+    {
+        $segments = [];
 
-		if (isset($query['instrument']))
-		{
-			$segments[] = $query['instrument'];
-			unset($query['instrument']);
-		}
+        if (isset($query['instrument'])) {
+            $segments[] = $query['instrument'];
+            unset($query['instrument']);
+        }
 
-		return $segments;
-	}
+        return $segments;
+    }
 
-	public function parse(&$segments)
-	{
-		$vars = array();
+    public function parse(&$segments)
+    {
+        $vars = [];
 
-		if (count($segments) > 0)
-		{
-			$vars['instrument'] = $segments[0];
-		}
+        if (count($segments) > 0) {
+            $vars['instrument'] = $segments[0];
+        }
 
-		return $vars;
-	}
+        return $vars;
+    }
 }
 ```
 

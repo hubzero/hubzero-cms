@@ -101,7 +101,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -277,6 +277,11 @@ what makes a hub's own copy of an extension win over the shipped one.</p>
 <td><code>modules/booking/</code></td>
 </tr>
 <tr>
+<td><code>Modules\ArticlesLatest\ArticlesLatest</code></td>
+<td><code>modules/mod_articleslatest/</code></td>
+<td><code>modules/mod_articles_latest/</code>, <code>modules/articleslatest/</code></td>
+</tr>
+<tr>
 <td><code>Plugins\Content\Booking\Helper</code></td>
 <td><code>plugins/content/booking/</code></td>
 <td>—</td>
@@ -309,31 +314,30 @@ it, the same path lowercased in full, the path with its directories
 lowercased but the file name as spelled, and the path with only the client
 directory (<code>site</code>, <code>admin</code>, <code>api</code>) or the one after the extension
 lowercased:</p>
-<pre><code class="language-php">
-        // Extensions are different: whichever directory holds the extension
-        // owns it outright, so an app level copy fully replaces the core one.
-        $owningBase = null;
-
-        foreach (self::$directories as $baseDir) {
-            foreach ($extensionDirs as $extDir) {
-                if (is_dir($baseDir . '/' . $extDir)) {
-                    $owningBase = $baseDir;
-                    break 2;
+<pre><code class="language-php">        // Build all file path variants (CamelCase + lowercase + lowercase-dirs)
+        $fileVariants = [];
+        foreach ($relativePaths as $relativePath) {
+            $fileVariants[] = $relativePath;
+            $fileVariants[] = strtolower($relativePath);
+            // Lowercase directory parts but preserve filename case
+            $lastSlash = strrpos($relativePath, '/');
+            if ($lastSlash !== false) {
+                $fileVariants[] = strtolower(substr($relativePath, 0, $lastSlash))
+                    . substr($relativePath, $lastSlash);
+            }
+            // Lowercase only the leading client segment, keep the rest as-is:
+            // Components\Dataviewer\Site\Modes\ModeDb lives in
+            // com_dataviewer/site/Modes/ModeDb.php - a lowercase client
+            // directory holding capitalised ones.
+            $parts = explode('/', $relativePath);
+            foreach ([2, 3] as $depth) {
+                if (count($parts) &gt; $depth) {
+                    $lowered = $parts;
+                    $lowered[$depth - 1] = strtolower($lowered[$depth - 1]);
+                    $fileVariants[] = implode('/', $lowered);
                 }
             }
         }
-
-        // If no extension directory found, class doesn't exist
-        if ($owningBase === null) {
-            return false;
-        }
-
-        // Search ONLY in the owning base directory
-        foreach ($fileVariants as $path) {
-            $fullPath = $owningBase . '/' . $path;
-            if (file_exists($fullPath)) {
-                require_once $fullPath;
-                return true;
 </code></pre>
 <p>So <code>Components\Booking\Models\Instrument</code> is looked for at:</p>
 <pre><code class="language-text">components/com_booking/Models/Instrument.php
@@ -388,20 +392,26 @@ extension or none of it; to change one view, use a
 across both directories, one file at a time, so an app-level copy of a single
 framework file does not hide the rest of the library.</p>
 <h2 id="the-per-kind-details-that-catch-people">The per-kind details that catch people</h2>
-<p><strong>Modules collapse to one word.</strong> The module directory is <code>mod_</code> plus the
-namespace segment lowercased, with nothing inserted. <code>Modules\ArticlesArchive</code>
-is looked for in <code>modules/mod_articlesarchive</code>, and the directory in the tree
-is <code>mod_articles_archive</code>. Sixteen shipped module directories carry an
-underscore in the name and none of them can be reached that way. It costs
-nothing today, because a module is rendered by including <code>mod_{name}.php</code>
-rather than by autoloading a class — see
-<a href="../extensions/index.html#modules">Extensions</a> — but a class you add to such a module
-will not load by name.</p>
+<p><strong>Modules try the words run together, then split.</strong> The module directory is
+<code>mod_</code> plus the namespace segment lowercased, and then the same with an
+underscore before each inner capital. <code>Modules\ArticlesArchive</code> is looked for
+in <code>modules/mod_articlesarchive</code> and then <code>modules/mod_articles_archive</code>,
+which is the directory in the tree. All sixteen shipped module directories
+with an underscore in the name are reached the second way. A directory whose
+underscores fall anywhere else than before the namespace's inner capitals is
+not found. The file inside is the rest of the class name, and the module's
+own <code>mod_{name}.php</code> is tried as well, which is where a module's entry class
+lives: <code>Modules\Login\Login</code> is <code>mod_login/mod_login.php</code>.</p>
 <p><strong>Plugins have one path, not two.</strong> <code>Plugins\Content\Booking\Helper</code> is
 <code>plugins/content/booking/Helper.php</code> (or the all-lowercase spelling). There
 is no <code>plg_</code> prefix and no second directory to fall back on. The group
 directory name and the plugin directory name both come straight from the
-class name, lowercased.</p>
+class name, lowercased, with two exceptions mapped back by hand:
+<code>EditorsXtd</code> is the <code>editors-xtd</code> group and <code>DefaultHandler</code> is the
+<code>citation/default</code> plugin — a hyphen cannot appear in a namespace, and
+<code>Default</code> cannot name a class. A plugin's entry class, <code>Plugins\Content\Formathtml\Formathtml</code>,
+resolves the same way to <code>formathtml/formathtml.php</code>, so it can be autoloaded
+as well as required by the plugin loader.</p>
 <p><strong>Templates try <code>tpl_</code> first.</strong> Every template in the tree is a bare name —
 <code>core/templates/kimera</code> — so it is always the second variant that matches.</p>
 <h2 id="the-legacy-underscore-fallback">The legacy underscore fallback</h2>
@@ -453,7 +463,7 @@ autoloader answers.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
+        <p class="stamp">Reviewed against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../constants/index.html" rel="prev"><span>Previous</span>Constants</a><a class="pager__next" href="../events/index.html" rel="next"><span>Next</span>Events</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/03-autoloading.md">Edit this page on GitHub</a>

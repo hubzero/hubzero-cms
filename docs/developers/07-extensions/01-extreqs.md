@@ -188,15 +188,15 @@ defined('_HZEXEC_') or die();
 
 class Migration20260901000000ComBookings extends Base
 {
-	public function up()
-	{
-		$this->addComponentEntry('bookings');
-	}
+    public function up()
+    {
+        $this->addComponentEntry('bookings');
+    }
 
-	public function down()
-	{
-		$this->deleteComponentEntry('bookings');
-	}
+    public function down()
+    {
+        $this->deleteComponentEntry('bookings');
+    }
 }
 ```
 

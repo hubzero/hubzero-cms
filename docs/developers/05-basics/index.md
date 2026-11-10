@@ -83,15 +83,14 @@ class Bookings extends SiteController
         // Every write is guarded by the form token
         Request::checkToken();
 
-        $fields = Request::getArray('fields', array(), 'post');
+        $fields = Request::getArray('fields', [], 'post');
 
         $row = Booking::oneOrNew($fields['id'])->set($fields);
 
         // The member typed a local time; the column holds UTC
         $row->set('starts', Date::of($fields['starts'], Config::get('offset'))->toSql());
 
-        if (!$row->save())
-        {
+        if (!$row->save()) {
             Notify::error($row->getError());
 
             return $this->editTask($row);

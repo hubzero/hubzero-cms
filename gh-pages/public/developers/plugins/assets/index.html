@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -250,7 +250,7 @@ plugin and you never have to pass an argument.</p>
 tag-attribute array: <code>media</code>, <code>type</code>, and <code>attribs</code> for a stylesheet; <code>type</code>,
 <code>defer</code>, and <code>async</code> for a script.</p>
 <pre><code class="language-php">$this-&gt;css()
-     -&gt;js('blog');
+    -&gt;js('blog');
 </code></pre>
 <h2 id="on-a-plugin-view">On a plugin view</h2>
 <p>Inside a layout, <code>$this</code> is a <code>Hubzero\Plugin\View</code>, and <code>css()</code>, <code>js()</code>, and
@@ -294,7 +294,7 @@ notice.</p>
 <p>Layouts in <code>plg_groups_forum</code> and <code>plg_members_blog</code> call these with one
 argument or none:</p>
 <pre><code class="language-php">$this-&gt;css()
-     -&gt;js();
+    -&gt;js();
 
 $this-&gt;css('jquery.datepicker.css', 'system');
 </code></pre>
@@ -333,7 +333,7 @@ you give it:</p>
 the path from <code>Request::root(true)</code> yourself.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Reviewed against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../views/index.html" rel="prev"><span>Previous</span>Views</a><a class="pager__next" href="../configuration/index.html" rel="next"><span>Next</span>Configuration</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/06-assets.md">Edit this page on GitHub</a>

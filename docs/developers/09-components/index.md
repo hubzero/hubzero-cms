@@ -104,10 +104,10 @@ use Hubzero\Component\SiteController;
 
 class Instruments extends SiteController
 {
-	public function displayTask()
-	{
-		$this->view->display();
-	}
+    public function displayTask()
+    {
+        $this->view->display();
+    }
 }
 ```
 

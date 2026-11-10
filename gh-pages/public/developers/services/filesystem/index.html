@@ -100,7 +100,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -243,8 +243,7 @@ root. Build them from the <a href="../../foundation/constants/index.html">consta
 <h2 id="reading-and-writing">Reading and writing</h2>
 <pre><code class="language-php">use Filesystem;
 
-if (!Filesystem::exists($path))
-{
+if (!Filesystem::exists($path)) {
     throw new Exception(Lang::txt('File not found.'));
 }
 
@@ -365,8 +364,7 @@ test <code>exists()</code> first.</p>
 </table>
 <p><code>isSafe()</code> is the one to remember. Everything a member uploads goes through
 it, and a failure means the file is deleted rather than kept:</p>
-<pre><code class="language-php">if (!Filesystem::isSafe($path . DS . $file['name']))
-{
+<pre><code class="language-php">if (!Filesystem::isSafe($path . DS . $file['name'])) {
     Filesystem::delete($path . DS . $file['name']);
 
     throw new Exception(Lang::txt('COM_BOOKINGS_FILE_FAILED_SCAN'));

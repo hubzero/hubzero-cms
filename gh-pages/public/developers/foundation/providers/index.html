@@ -98,7 +98,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -217,9 +217,8 @@ class RouterServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this-&gt;app['router'] = function($app)
-        {
-            return new Manager($app, array(PATH_CORE, PATH_APP));
+        $this-&gt;app['router'] = function ($app) {
+            return new Manager($app, [PATH_CORE, PATH_APP]);
         };
     }
 }
@@ -236,10 +235,8 @@ calls <code>boot()</code> on each one that defines it. Only then is it safe to u
 another provider's service, because only then is every key present:</p>
 <pre><code class="language-php">public function boot()
 {
-    if ($this-&gt;app['config']-&gt;get('force_ssl') == 2)
-    {
-        if (!$this-&gt;app['request']-&gt;isSecure())
-        {
+    if ($this-&gt;app['config']-&gt;get('force_ssl') == 2) {
+        if (!$this-&gt;app['request']-&gt;isSecure()) {
             // redirect to https and stop
         }
     }

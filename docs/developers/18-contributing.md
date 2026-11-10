@@ -118,14 +118,16 @@ Then:
 ```bash
 (cd core && vendor/bin/parallel-lint --exclude vendor .)
 (cd core && vendor/bin/phpunit -c phpunit.xml.dist)
+core/vendor/bin/phpcs
+core/vendor/bin/phpstan analyse --memory-limit=4G
 php core/bin/lint/missing-facade-imports.php
 ```
 
 Read [PHP Coding Style](19-conventions/01-php-style.md#checking-your-work)
-for what each of those catches and how to run phpcs usefully against a
-codebase that has no committed ruleset. The suite takes about half a minute;
-[Testing](15-testing.md#running-one-test) covers running one test while you
-work on it.
+for what each of those catches. phpcs and PHPStan both report nothing on the
+tree as it stands, so anything they report is from your change. The test
+suite takes about half a minute; [Testing](15-testing.md#running-one-test)
+covers running one test while you work on it.
 
 If you touched anything under `docs/`, rebuild the site and commit the result:
 
@@ -162,8 +164,8 @@ in [`php-lint.yml`](../../.github/workflows/php-lint.yml) when checking
 locally. Define the keys your change asks for. If you fix existing ones,
 lower the ceiling in the same pull request.
 
-No workflow runs phpcs. Style is caught in review; see
-[When the linter and the house style disagree](19-conventions/01-php-style.md#when-the-linter-and-the-house-style-disagree).
+No workflow runs phpcs or PHPStan yet. Run both before opening a pull
+request; a reviewer will.
 
 ### The pull request
 

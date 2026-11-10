@@ -105,7 +105,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -443,15 +443,15 @@ defined('_HZEXEC_') or die();
 
 class Migration20260901000000ComBookings extends Base
 {
-	public function up()
-	{
-		$this-&gt;addComponentEntry('bookings');
-	}
+    public function up()
+    {
+        $this-&gt;addComponentEntry('bookings');
+    }
 
-	public function down()
-	{
-		$this-&gt;deleteComponentEntry('bookings');
-	}
+    public function down()
+    {
+        $this-&gt;deleteComponentEntry('bookings');
+    }
 }
 </code></pre>
 <p>Write this file first, before the controllers. It is one call, it takes a

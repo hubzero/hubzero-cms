@@ -56,8 +56,7 @@ Used from a view:
 ```php
 $canDo = Components\Kb\Admin\Helpers\Permissions::getActions('article');
 
-if ($canDo->get('core.create'))
-{
+if ($canDo->get('core.create')) {
     Toolbar::addNew();
 }
 ```

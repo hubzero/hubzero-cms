@@ -212,10 +212,10 @@ is registered with the other API providers and enforces two windows,
 configured in `app/config/rate_limit.php`:
 
 ```php
-return array(
-    'short' => array('period' => '5',    'limit' => '500'),
-    'long'  => array('period' => '1440', 'limit' => '10000'),
-);
+return [
+    'short' => ['period' => '5',    'limit' => '500'],
+    'long'  => ['period' => '1440', 'limit' => '10000'],
+];
 ```
 
 `period` is in minutes. Counts are kept in the database.

@@ -47,9 +47,8 @@ class RouterServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app['router'] = function($app)
-        {
-            return new Manager($app, array(PATH_CORE, PATH_APP));
+        $this->app['router'] = function ($app) {
+            return new Manager($app, [PATH_CORE, PATH_APP]);
         };
     }
 }
@@ -72,10 +71,8 @@ another provider's service, because only then is every key present:
 ```php
 public function boot()
 {
-    if ($this->app['config']->get('force_ssl') == 2)
-    {
-        if (!$this->app['request']->isSecure())
-        {
+    if ($this->app['config']->get('force_ssl') == 2) {
+        if (!$this->app['request']->isSecure()) {
             // redirect to https and stop
         }
     }

@@ -99,7 +99,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -327,8 +327,7 @@ whether the object had tags before or not:</p>
 
 $cloud = new Tags($instrument-&gt;get('id'));
 
-if (!$cloud-&gt;setTags($tags, User::get('id')))
-{
+if (!$cloud-&gt;setTags($tags, User::get('id'))) {
     $this-&gt;setError($cloud-&gt;getError());
 }
 </code></pre>
@@ -433,16 +432,13 @@ which is what they typed.</p>
 <h2 id="the-tag-editor">The tag editor</h2>
 <p>The autocompleting input every edit form uses comes from the
 <code>hubzero/autocompleter</code> plugin, reached by event:</p>
-<pre><code class="language-php">$tf = Event::trigger('hubzero.onGetMultiEntry', array(
-    array('tags', 'tags', 'actags', '', $this-&gt;escape($tags))
-));
+<pre><code class="language-php">$tf = Event::trigger('hubzero.onGetMultiEntry', [
+    ['tags', 'tags', 'actags', '', $this-&gt;escape($tags)]
+]);
 
-if (count($tf))
-{
+if (count($tf)) {
     echo $tf[0];
-}
-else
-{
+} else {
     echo '&lt;input type=&quot;text&quot; name=&quot;tags&quot; value=&quot;' . $this-&gt;escape($tags) . '&quot; /&gt;';
 }
 </code></pre>

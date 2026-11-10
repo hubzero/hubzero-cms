@@ -92,8 +92,7 @@ class Migration20260910120000ComBookings extends Base
      **/
     public function up()
     {
-        if (!$this->db->tableExists('#__bookings_reservations'))
-        {
+        if (!$this->db->tableExists('#__bookings_reservations')) {
             $query = "CREATE TABLE `#__bookings_reservations` (
                 `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                 `instrument_id` int(11) unsigned NOT NULL DEFAULT 0,
@@ -120,8 +119,7 @@ class Migration20260910120000ComBookings extends Base
     {
         $this->deleteComponentEntry('bookings');
 
-        if ($this->db->tableExists('#__bookings_reservations'))
-        {
+        if ($this->db->tableExists('#__bookings_reservations')) {
             $this->db->setQuery("DROP TABLE `#__bookings_reservations`");
             $this->db->query();
         }
@@ -282,8 +280,7 @@ For a migration that takes a while, drive the progress indicator through the
 ```php
 $this->callback('progress', 'init', ['Running ' . __CLASS__ . ':']);
 
-foreach ($rows as $i => $row)
-{
+foreach ($rows as $i => $row) {
     // ... work ...
     $this->callback('progress', 'setProgress', [$i]);
 }

@@ -63,7 +63,7 @@ use Request;
 $id     = Request::getInt('id', 0);
 $alias  = Request::getCmd('alias', '');
 $title  = Request::getString('title', '', 'post');
-$fields = Request::getArray('fields', array(), 'post');
+$fields = Request::getArray('fields', [], 'post');
 ```
 
 | Method | Returns |
@@ -214,8 +214,7 @@ their key `search` will read each other's filter.
 | `ajax()` | Whether it is an `XMLHttpRequest` |
 
 ```php
-if (Request::ajax())
-{
+if (Request::ajax()) {
     Response::header('Content-Type', 'application/json');
 
     echo json_encode($data);

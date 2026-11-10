@@ -40,13 +40,13 @@ returning a plain array:
 
 ```php
 // app/config/app.php
-return array(
+return [
     'secret'        => '26a6751ffda14c...',
     'sitename'      => 'myhub',
     'debug'         => '0',
     'offset'        => 'America/New_York',
     'site_template' => 'hubzero',
-);
+];
 ```
 
 `Hubzero\Base\Application` builds a
@@ -178,8 +178,7 @@ All four return the same class, so the same methods apply:
 $params = Component::params('com_bookings');
 $params->merge($menuParams);
 
-if ($params->has('feed_email'))
-{
+if ($params->has('feed_email')) {
     // ...
 }
 ```

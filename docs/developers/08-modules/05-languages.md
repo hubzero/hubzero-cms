@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Languages
 
@@ -49,7 +49,8 @@ unfinished.
 ## When they are loaded
 
 You do not load them. [`Hubzero\Module\Loader::render()`](../../../core/libraries/Hubzero/Module/Loader.php)
-loads the module's language file immediately before including the entry file,
+loads the module's language file immediately before it includes the entry
+file and runs the class,
 trying two locations and stopping at the first that produces strings:
 
 1. `app/bootstrap/{client}/language/{tag}/{tag}.mod_upcoming_bookings.ini`
@@ -117,9 +118,10 @@ typo in the key, a stale cached copy of the module's output, or a file
 whose name does not match the module element.
 
 > **Note:** In a layout, `Lang` needs no import — layouts run in the global
-> namespace. In `helper.php`, which declares
-> `namespace Modules\UpcomingBookings`, you must write `use Lang;` at the top
-> of the file or the call fatals. See
+> namespace, though core layouts import `Hubzero\Facades\Lang` anyway. In the
+> module class, which declares `namespace Modules\UpcomingBookings`, you must
+> import it at the top of the file — `use Hubzero\Facades\Lang;` or
+> `use Lang;` — or the call fatals. See
 > [Facades](../03-foundation/06-facades.md).
 
 ## Registering the file

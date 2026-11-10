@@ -155,11 +155,11 @@ Outside a controller — in a module, a plugin, or a second view within one task
 — construct one directly:
 
 ```php
-$view = new \Hubzero\Component\View(array(
+$view = new \Hubzero\Component\View([
     'base_path' => PATH_COMPONENT,
     'name'      => 'instruments',
     'layout'    => 'display'
-));
+]);
 
 $view->set('instruments', $instruments)
      ->display();

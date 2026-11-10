@@ -101,8 +101,7 @@ $reservations = Reservation::all()
     ->paginated()
     ->rows();
 
-foreach ($reservations as $reservation)
-{
+foreach ($reservations as $reservation) {
     echo $reservation->starts;
 }
 ```
@@ -205,8 +204,7 @@ $reservation->set([
     'state'         => 1
 ]);
 
-if (!$reservation->save())
-{
+if (!$reservation->save()) {
     // $reservation->getError() / getErrors() explain why
 }
 ```

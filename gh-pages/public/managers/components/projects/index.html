@@ -425,10 +425,9 @@ at the old value.</p>
 to edit project settings after project setup</em> — describes a screen that is
 no longer built. What it actually controls is the <strong>Team</strong> section of the
 Edit Project screen, and it controls it by deletion:</p>
-<pre><code class="language-php">$sections = array('info', 'team');
-if ($this-&gt;config-&gt;get('edit_settings', 0) == 0)
-{
-	array_pop($sections);
+<pre><code class="language-php">$sections = ['info', 'team'];
+if ($this-&gt;config-&gt;get('edit_settings', 0) == 0) {
+    array_pop($sections);
 }
 $this-&gt;section = in_array($this-&gt;section, $sections) ? $this-&gt;section : 'info';
 </code></pre>

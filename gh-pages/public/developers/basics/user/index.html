@@ -101,7 +101,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -328,8 +328,7 @@ $user = Hubzero\User\User::oneOrFail($id);      // throws if absent
 </code></pre>
 <p><code>setParam($key, $value)</code> and <code>defParam($key, $value)</code> write and default one.</p>
 <h2 id="logged-in-or-not">Logged in or not</h2>
-<pre><code class="language-php">if (User::isGuest())
-{
+<pre><code class="language-php">if (User::isGuest()) {
     // logged OUT
     App::abort(403, Lang::txt('Login required'));
 }
@@ -370,8 +369,7 @@ profile.</p>
 <h2 id="access-groups">Access groups</h2>
 <p>Access groups are the ACL groups an administrator assigns, not community
 groups:</p>
-<pre><code class="language-php">foreach (User::getInstance($id)-&gt;accessgroups() as $map)
-{
+<pre><code class="language-php">foreach (User::getInstance($id)-&gt;accessgroups() as $map) {
     echo $map-&gt;get('group_id');
 }
 </code></pre>
@@ -382,8 +380,7 @@ inherited parents, and <code>getAuthorisedViewLevels()</code> the view levels th
 groups grant.</p>
 <p>Permissions are checked with <code>authorise($action, $assetname = null)</code>
 (<code>authorize()</code> is a spelling alias):</p>
-<pre><code class="language-php">if (!User::authorise('core.edit', 'com_blog'))
-{
+<pre><code class="language-php">if (!User::authorise('core.edit', 'com_blog')) {
     App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 </code></pre>

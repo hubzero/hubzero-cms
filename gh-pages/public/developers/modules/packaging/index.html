@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
@@ -197,7 +197,6 @@ code reads but the manifest does not declare has no way of being set.</p>
     tmpl/default.php
     tmpl/index.html
     composer.json
-    helper.php
     index.html
     mod_upcoming_bookings.php
     mod_upcoming_bookings.xml
@@ -251,6 +250,10 @@ after the module, and it is not listed in its own <code>&lt;files&gt;</code> blo
 		&lt;filename&gt;assets/css/mod_mygroups.css&lt;/filename&gt;
 	&lt;/files&gt;
 </code></pre>
+<p><code>mod_mygroups</code> still lists a <code>helper.php</code> that no longer exists, as do 66 of
+the core manifests: the class moved into the entry file and the manifests were
+not updated. Nothing in this release installs from <code>&lt;files&gt;</code>, so the stale
+line does no harm, but leave it out of yours.</p>
 <table>
 <thead>
 <tr>
@@ -350,7 +353,7 @@ instrument. Parameters are the cheapest way to avoid writing a second module.</p
 you pass it yourself as the second argument — the manifest default is applied
 by the form, not by the Registry. So <code>default=&quot;5&quot;</code> here and
 <code>$this-&gt;params-&gt;get('limit', 5)</code> in the class: write both, or an older
-instance reads null. See <a href="../helpers/index.html#parameters">Helpers</a>.</p>
+instance reads null. See <a href="../helpers/index.html#parameters">The module class</a>.</p>
 <p>Two field names are conventional across almost every module:</p>
 <ul>
 <li><code>moduleclass_sfx</code> — a suffix the chrome function appends to the wrapper's
@@ -359,7 +362,7 @@ CSS class, so an administrator can style one instance differently.</li>
 if your module's output is the same for every visitor. The cache key is the
 instance id alone, so on a per-user module such as <code>mod_upcoming_bookings</code>
 they hand one researcher's reservations to the next visitor. See
-<a href="../helpers/index.html#caching">Helpers</a>.</li>
+<a href="../helpers/index.html#caching">The module class</a>.</li>
 </ul>
 <p>The <code>member_dashboard=&quot;1&quot;</code> attribute seen on some fields marks a parameter as
 editable by a member when the module appears on their dashboard, rather than
@@ -390,7 +393,7 @@ an enabled row there.</p>
 </ol>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../assets/index.html" rel="prev"><span>Previous</span>Assets</a><a class="pager__next" href="../loading/index.html" rel="next"><span>Next</span>Loading</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/08-packaging.md">Edit this page on GitHub</a>

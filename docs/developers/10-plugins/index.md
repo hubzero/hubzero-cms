@@ -1,7 +1,7 @@
 <!--
-status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+status: reviewed
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Plugins
 
@@ -59,28 +59,31 @@ Three files under `app/plugins/bookings/notify/`, and one command.
 
 ```php
 <?php
-// No direct access
-defined('_HZEXEC_') or die();
 
-class plgBookingsNotify extends \Hubzero\Plugin\Plugin
+namespace Plugins\Bookings\Notify;
+
+use Hubzero\Facades\Config;
+use Hubzero\Mail\Message;
+use Hubzero\Plugin\Plugin;
+
+class Notify extends Plugin
 {
-	public function onReservationCreate($reservation)
-	{
-		$to = $this->params->get('manager_email');
+    public function onReservationCreate($reservation)
+    {
+        $to = $this->params->get('manager_email');
 
-		if (!$to)
-		{
-			return;
-		}
+        if (!$to) {
+            return;
+        }
 
-		$message = new \Hubzero\Mail\Message();
-		$message->setSubject('New reservation')
-		        ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
-		        ->addTo($to)
-		        ->addPart('A new reservation was created.', 'text/plain');
+        $message = new Message();
+        $message->setSubject('New reservation')
+            ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
+            ->addTo($to)
+            ->addPart('A new reservation was created.', 'text/plain');
 
-		$message->send();
-	}
+        $message->send();
+    }
 }
 ```
 
@@ -90,21 +93,21 @@ name and the parameter form. `migrations/Migration20260210000000PlgBookingsNotif
 ```php
 <?php
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\Bookings\Notify\Migrations;
 
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 class Migration20260210000000PlgBookingsNotify extends Base
 {
-	public function up()
-	{
-		$this->addPluginEntry('bookings', 'notify');
-	}
+    public function up()
+    {
+        $this->addPluginEntry('bookings', 'notify');
+    }
 
-	public function down()
-	{
-		$this->deletePluginEntry('bookings', 'notify');
-	}
+    public function down()
+    {
+        $this->deletePluginEntry('bookings', 'notify');
+    }
 }
 ```
 
@@ -167,7 +170,8 @@ core/plugins/members/blog/
 ```
 
 Only `blog.php` and `blog.xml` are required, plus the migration if the plugin
-is ever to run. The class inside `blog.php` is `plgMembersBlog`, it extends
+is ever to run. The class inside `blog.php` is `Plugins\Members\Blog\Blog`,
+it extends
 [`Hubzero\Plugin\Plugin`](../../../core/libraries/Hubzero/Plugin/Plugin.php), and
 its public `onMembersAreas()` and `onMembers()` methods are what
 `com_members` triggers.

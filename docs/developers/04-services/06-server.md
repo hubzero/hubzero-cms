@@ -93,8 +93,7 @@ into `index.php`, a Windows drive letter, a backslash, or a path containing
 exists or that the caller may read it.
 
 ```php
-if (!Server::valid($file))
-{
+if (!Server::valid($file)) {
     App::abort(404, Lang::txt('File not found'));
 }
 ```

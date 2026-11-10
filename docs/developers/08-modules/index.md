@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Modules
 
@@ -53,8 +53,8 @@ it shows `mod_upcoming_bookings`, that is what you write.
 ## What a module is made of
 
 At minimum a module is two files: an entry point named after the directory,
-and an XML manifest. Nearly every real module adds a helper class, a layout,
-and a language file:
+and an XML manifest. Nearly every real module adds a layout and a language
+file:
 
 ```
 app/modules/mod_upcoming_bookings/
@@ -68,28 +68,26 @@ app/modules/mod_upcoming_bookings/
     tmpl/
         default.php
     composer.json
-    helper.php
     mod_upcoming_bookings.php
     mod_upcoming_bookings.xml
 ```
 
-The entry file is included by [`Hubzero\Module\Loader`](../../../core/libraries/Hubzero/Module/Loader.php)
-with two variables already in scope, `$params` and `$module`. It hands both to
-a helper class extending [`Hubzero\Module\Module`](../../../core/libraries/Hubzero/Module/Module.php),
-which gathers data and requires a layout out of `tmpl/`.
+The entry file declares one class, `Modules\UpcomingBookings\UpcomingBookings`,
+extending [`Hubzero\Module\Module`](../../../core/libraries/Hubzero/Module/Module.php).
+[`Hubzero\Module\Loader`](../../../core/libraries/Hubzero/Module/Loader.php)
+works that class name out from the module's name, includes the file the first
+time it is needed, constructs the class with the instance's parameters and
+database row, and calls `run()` inside an output buffer. The class gathers
+data and requires a layout out of `tmpl/`; whatever it echoes is the module.
+All 100 shipped modules are written this way. See
+[Controllers](03-controllers.md).
 
-That two-part arrangement — a stub that `require_once`s `helper.php` and
-constructs a class named `Helper` — is what 99 of the 100 shipped modules do,
-and it is what the loader expects. It does not instantiate anything itself: it
-`include`s the entry file inside an output buffer and keeps whatever was
-echoed. See [Controllers](03-controllers.md).
-
-> **Note:** Module classes are namespaced (`namespace Modules\UpcomingBookings;`) but
-> the layouts they require are not. A namespaced class must `use` every facade
-> it calls — `use User;`, `use Request;` — or the call resolves to a class in
-> the module's own namespace and fatals. See
-> [Facades](../03-foundation/06-facades.md). Layouts run in the global
-> namespace and need no imports.
+> **Note:** The module class is namespaced (`namespace Modules\UpcomingBookings;`)
+> but the layouts it requires are not. A namespaced class must import every
+> facade it calls — core writes `use Hubzero\Facades\User;`, and the root
+> alias `use User;` works as well — or the call resolves to a class in the
+> module's own namespace and fatals. See
+> [Facades](../03-foundation/06-facades.md).
 
 ## Two things stand between your files and the page
 
@@ -122,9 +120,10 @@ a dropdown; a module with no instance is missing from the page.
 - [Migrations](01-migrations.md) — registering the module with the CMS.
 - [Structure](02-structure.md) — the directory layout and where the loader
   looks for it.
-- [Controllers](03-controllers.md) — the entry file, and what is in scope
-  when it runs.
-- [Helpers](04-helpers.md) — the module class, its properties, and caching.
+- [Controllers](03-controllers.md) — the entry file, how the loader runs
+  it, and what the class is handed.
+- [The module class](04-helpers.md) — the base class, properties, and
+  caching.
 - [Languages](05-languages.md) — translation files and how they are loaded.
 - [Views](06-views.md) — layouts, `getLayoutPath()`, and template overrides.
 - [Assets](07-assets.md) — pushing CSS and JavaScript to the document.

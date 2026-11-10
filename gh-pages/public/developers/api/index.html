@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/assets/index.html">Assets</a></li>
@@ -391,10 +391,10 @@ on the page; without it <code>Hubzero</code> is undefined.</p>
 <p><a href="https://github.com/hubzero/hubzero-cms/tree/2.4-main/core/libraries/Hubzero/Api/RateLimit"><code>Hubzero\Api\RateLimit\RateLimitService</code></a>
 is registered with the other API providers and enforces two windows,
 configured in <code>app/config/rate_limit.php</code>:</p>
-<pre><code class="language-php">return array(
-    'short' =&gt; array('period' =&gt; '5',    'limit' =&gt; '500'),
-    'long'  =&gt; array('period' =&gt; '1440', 'limit' =&gt; '10000'),
-);
+<pre><code class="language-php">return [
+    'short' =&gt; ['period' =&gt; '5',    'limit' =&gt; '500'],
+    'long'  =&gt; ['period' =&gt; '1440', 'limit' =&gt; '10000'],
+];
 </code></pre>
 <p><code>period</code> is in minutes. Counts are kept in the database.</p>
 <h2 id="adding-an-endpoint">Adding an endpoint</h2>

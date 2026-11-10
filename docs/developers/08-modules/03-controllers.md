@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Controllers
 
@@ -10,22 +10,85 @@ Modules have no controllers. There is no `controllers` directory, no
 the framework. A module never handles a request of its own: it is rendered as
 a side effect of whatever page the component is already drawing.
 
-What plays the part of a controller is a single unconditional script, the
-entry file, which the loader includes to produce the module's output.
+What plays the part of a controller is one method, `run()`, on the class in
+the entry file. The loader calls it once for each instance on the page.
 
 ## The entry file
 
 The file is named after the directory and sits at its top level —
-`mod_login/mod_login.php`. This is the whole of it:
+`mod_multilangstatus/mod_multilangstatus.php`. It declares the module class
+and nothing else. This one needs no code of its own, because the base class
+already knows how to require a layout:
 
-<!--include: core/modules/mod_login/mod_login.php-->
+<!--include: core/modules/mod_multilangstatus/mod_multilangstatus.php-->
 
-Three lines of work: declare the namespace, pull in the class, construct it
-and call `display()`. `with()` is a global helper that returns the object it
-is given, so that a method can be called on a freshly constructed instance in
-one expression.
+`mod_upcoming_bookings.php` starts the same way, with its own name in it:
 
-Write the same file for your module and change the namespace:
+```php
+<?php
+
+namespace Modules\UpcomingBookings;
+
+use Hubzero\Module\Module;
+
+class UpcomingBookings extends Module
+{
+}
+```
+
+The file runs no code when it is included. It has no `defined('_HZEXEC_')`
+guard either — none of the 100 core entry files does — because a file that
+only declares a class does nothing if a web server is tricked into executing
+it. The layouts, which do emit output, keep the guard; see
+[Views](06-views.md).
+
+## How the loader runs it
+
+[`Hubzero\Module\Loader::render()`](../../../core/libraries/Hubzero/Module/Loader.php)
+finds the entry file, loads the module's language file, and then:
+
+<!--include: core/libraries/Hubzero/Module/Loader.php:262-289-->
+
+In order:
+
+1. `resolveClassName()` turns `mod_upcoming_bookings` into
+   `Modules\UpcomingBookings\UpcomingBookings`. See
+   [Structure](02-structure.md#namespaces-and-class-names).
+2. If that class is not declared yet, the file is included. On the second
+   instance of the same module on a page it already is, so the file is not
+   included again and nothing is declared twice.
+3. If the class exists and extends `Hubzero\Module\Module`, the loader
+   constructs it with this instance's parameters and row, calls `run()`, and
+   keeps everything echoed as `$module->content`.
+
+The loader then wraps `$module->content` in the chrome function named by the
+render style, which is what actually emits the markup into the page. See
+[Loading](09-loading.md).
+
+On the base class, `run()` calls `display()`, and `display()` requires the
+layout named by the `layout` parameter. So the ordinary module overrides
+`display()`: it gathers data, sets properties, and requires a layout. 79 of
+the 100 core modules do exactly that and leave `run()` alone. See
+[The module class](04-helpers.md).
+
+## What the class is handed
+
+The constructor stores its two arguments as properties:
+
+| Property | Type | Contents |
+|---|---|---|
+| `$this->module` | `stdClass` | The row from `#__modules` for this instance: `id`, `title`, `module`, `position`, `content`, `showtitle`, `params`, `menuid`, `protected`, plus `name`, `style` and `path` added by the loader. |
+| `$this->params` | `Hubzero\Config\Registry` | The instance's parameters, parsed from `$module->params` and merged with any parameters passed by the caller. |
+
+> **Note:** The loader constructs a new object for every *instance*. Two
+> instances of `mod_login` in two positions are two `Login` objects, with
+> different `$module` rows and different `$params`. Keep per-instance state
+> on `$this`; a `static` property is shared by every instance on the page.
+
+## Old-style entry files
+
+Before this release a module's entry file was a stub that required
+`helper.php` and called a `Helper` class:
 
 ```php
 <?php
@@ -37,95 +100,20 @@ require_once __DIR__ . DS . 'helper.php';
 with(new Helper($params, $module))->display();
 ```
 
-That stub-plus-`helper.php` pair is not one style among several. It is what
-[`Loader::render()`](../../../core/libraries/Hubzero/Module/Loader.php) is
-built around:
+The loader still runs files like that. When the file declares no class of the
+expected name, `render()` includes it inside the output buffer, from inside
+the method, so `$params` and `$module` are in scope as local variables, and
+whatever the file echoes becomes the module's output. A hub's own modules in
+`app/modules` written for an earlier release keep working without changes.
 
-```php
-$path = $this->path($module->module);
+Two things are different about that path. The file is included again for
+every instance, so anything it declares at the top level fatals the second
+time — which is why the old stub kept its class behind a `require_once`. And
+the same fallback is what runs when you *meant* to write a class but got its
+name wrong: the file is included, declares a class nobody asks for, echoes
+nothing, and the module renders empty.
 
-if (file_exists($path))
-{
-	// … load the language file …
-	ob_start();
-	include $path;
-	$module->content = ob_get_contents() . $content;
-	ob_end_clean();
-}
-```
-
-The loader `include`s a file. It never instantiates a class, never looks one
-up by name, and never calls a method on your module. Whatever your entry file
-echoes is the module's output; whatever it does not echo does not exist. All
-100 shipped modules are written this way, and 99 of them put the work in a
-`Helper` class beside the stub. The exception, `mod_multilangstatus`, has no
-data to gather and constructs the base `Hubzero\Module\Module` directly so
-that `display()` requires its layout — which is the shortest a module can be
-and still have one.
-
-## What is in scope
-
-[`Hubzero\Module\Loader::render()`](../../../core/libraries/Hubzero/Module/Loader.php)
-includes the entry file inside an output buffer, from inside a method, so the
-file inherits that method's local variables. Two of them matter:
-
-| Variable | Type | Contents |
-|---|---|---|
-| `$module` | `stdClass` | The row from `#__modules` for this instance: `id`, `title`, `module`, `position`, `content`, `showtitle`, `params`, `menuid`, plus `name` and `style` added by the loader. |
-| `$params` | `Hubzero\Config\Registry` | The instance's parameters, parsed from `$module->params` and merged with any parameters passed by the caller. |
-
-Both are handed straight to the module class constructor, which stores them as
-`$this->module` and `$this->params`.
-
-Anything the entry file echoes is captured. When the include returns, the
-loader assigns the buffer to `$module->content` and then runs the chrome
-function named by the render style, which is what actually emits the markup
-into the page.
-
-> **Note:** The include happens once per *instance*, not once per module. Two
-> instances of `mod_login` in two positions run the file twice, with different
-> `$module` rows and different `$params`. Nothing in the entry file may assume
-> it runs only once — declaring a function or a class at the top level of the
-> entry file will fatal on the second instance. That is precisely why the
-> class lives in `helper.php` behind a `require_once`.
-
-## Doing the work inline
-
-The class in `helper.php` is a convention, not a requirement. A module with
-almost no logic can do everything in the entry file:
-
-```php
-<?php
-
-namespace Modules\UpcomingBookings;
-
-use Lang;
-
-defined('_HZEXEC_') or die();
-
-echo '<p>' . Lang::txt('MOD_UPCOMING_BOOKINGS_NONE') . '</p>';
-```
-
-That works, and it is the wrong shape for anything you will keep. It gives up
-both things the module class provides: a template override point, because
-`getLayoutPath()` is a method on the class, and the asset helpers `css()`,
-`js()`, and `img()`. It also means a hub cannot restyle your module without
-editing your file. Use the class.
-
-## Guarding the file
-
-Core module entry files are reached only through the loader, which resolves
-them from `PATH_APP` or `PATH_CORE`, so a direct HTTP request cannot execute
-them unless the whole `modules` tree is inside the document root. Layouts and
-helper files still carry the guard:
-
-```php
-defined('_HZEXEC_') or die();
-```
-
-Add it to anything a misconfigured server might serve directly. See
-[Constants](../03-foundation/02-constants.md) for what `_HZEXEC_` is and where
-it is defined.
+Write new modules as a class.
 
 ## What replaces a controller
 

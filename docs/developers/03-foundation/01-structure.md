@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 348f0057c2
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 screenshots: none
 -->
 # Application structure
@@ -89,9 +89,9 @@ directories in both trees:
 | Namespace | Looked for in |
 |---|---|
 | `Components\Blog\Models\Entry` | `{app,core}/components/com_blog/Models/Entry.php` |
-| `Modules\Menu\Helper` | `{app,core}/modules/mod_menu/Helper.php` |
-| `Plugins\System\Debug\Helper` | `{app,core}/plugins/system/debug/Helper.php` |
-| `Templates\Kimera\Helper` | `{app,core}/templates/kimera/Helper.php` |
+| `Modules\Adminmenu\Tree` | `{app,core}/modules/mod_adminmenu/Tree.php` |
+| `Plugins\Content\Formathtml\Macros\Iframe` | `{app,core}/plugins/content/formathtml/Macros/Iframe.php` |
+| `Templates\Meridian\Palette` | `{app,core}/templates/meridian/Palette.php` |
 
 Composer's PSR-4 map covers only `Hubzero\` and `Bootstrap\`; every
 extension class comes through this loader, which also tries a lowercase

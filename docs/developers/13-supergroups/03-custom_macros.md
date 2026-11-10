@@ -74,28 +74,28 @@ use Plugins\Content\Formathtml\Macro;
  */
 class HelloWorld extends Macro
 {
-	/**
-	 * Description of the macro, shown in the macro list
-	 *
-	 * @return  string
-	 */
-	public function description()
-	{
-		$txt = array();
-		$txt['wiki'] = 'Outputs "Hello world"';
-		$txt['html'] = '<p>Outputs "Hello world"</p>';
-		return $txt['html'];
-	}
+    /**
+     * Description of the macro, shown in the macro list
+     *
+     * @return  string
+     */
+    public function description()
+    {
+        $txt = [];
+        $txt['wiki'] = 'Outputs "Hello world"';
+        $txt['html'] = '<p>Outputs "Hello world"</p>';
+        return $txt['html'];
+    }
 
-	/**
-	 * Generate macro output
-	 *
-	 * @return  string
-	 */
-	public function render()
-	{
-		return 'Hello World, args = ' . $this->args;
-	}
+    /**
+     * Generate macro output
+     *
+     * @return  string
+     */
+    public function render()
+    {
+        return 'Hello World, args = ' . $this->args;
+    }
 }
 ```
 

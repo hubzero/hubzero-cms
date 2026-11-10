@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
@@ -234,9 +234,9 @@ each module, and <code>params</code>, an inline parameter override.</p>
 <p><code>countModules()</code> on the document tells a template whether a position has
 anything in it, so that the markup around it can be omitted:</p>
 <pre><code class="language-php">&lt;?php if ($this-&gt;countModules('helppane')) : ?&gt;
-	&lt;div id=&quot;help&quot;&gt;
-		&lt;jdoc:include type=&quot;modules&quot; name=&quot;helppane&quot; /&gt;
-	&lt;/div&gt;
+    &lt;div id=&quot;help&quot;&gt;
+        &lt;jdoc:include type=&quot;modules&quot; name=&quot;helppane&quot; /&gt;
+    &lt;/div&gt;
 &lt;?php endif; ?&gt;
 </code></pre>
 <p>The argument is an expression. <code>Hubzero\Document\Type\Html::countModules()</code>

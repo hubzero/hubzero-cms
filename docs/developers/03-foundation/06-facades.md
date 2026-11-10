@@ -118,6 +118,19 @@ use App;
 Writing `\Route::url(...)` works equally well. The import is the house style
 because it puts every global name a file depends on at the top of the file.
 
+Most core files import the facade class the alias points at instead:
+
+```php
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\App;
+```
+
+It is the same class, so the calls are identical. The difference is that the
+class is found by the Composer autoloader, so the import works in every
+client, including one whose alias list leaves that name out. About 3,400 core
+files use this form and about 160 the alias; the linter accepts either.
+
 ### What actually happens when you forget
 
 Worth knowing exactly, because the behaviour is not the one the warning

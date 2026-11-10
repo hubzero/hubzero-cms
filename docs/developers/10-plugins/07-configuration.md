@@ -1,7 +1,7 @@
 <!--
-status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+status: reviewed
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Configuration
 
@@ -73,13 +73,14 @@ constructor takes them from the `#__extensions` row and wraps them in a
 ```php
 public function onReservationCreate($reservation)
 {
-	if (!($to = $this->params->get('manager_email')))
-	{
-		return;
-	}
+    $to = $this->params->get('manager_email');
 
-	$notes = $this->params->get('include_notes', 0);
-	// ...
+    if (!$to) {
+        return;
+    }
+
+    $notes = $this->params->get('include_notes', 0);
+    // ...
 }
 ```
 
@@ -115,10 +116,9 @@ each with a `params` string on it — which is what `mod_login` uses to find
 each authentication provider's `display_name`:
 
 ```php
-foreach (Plugin::byType('authentication') as $p)
-{
-	$pparams = new Registry($p->params);
-	$display = $pparams->get('display_name', ucfirst($p->name));
+foreach (Plugin::byType('authentication') as $p) {
+    $pparams = new Registry($p->params);
+    $display = $pparams->get('display_name', ucfirst($p->name));
 }
 ```
 
@@ -142,9 +142,9 @@ and `element` columns.
 
 ```php
 $this->params = \Hubzero\Plugin\Params::getParams(
-	$member->get('id'),
-	'members',
-	$this->pluginName
+    $member->get('id'),
+    'members',
+    $this->pluginName
 );
 ```
 
@@ -154,14 +154,13 @@ has never been customised falls back to the site-wide settings.
 `getCustomParams()` returns only the per-object values and
 `getDefaultParams()` only the global ones.
 
-`plgMembersBlog` does exactly this, then sets a few runtime-only values on the
+`Plugins\Members\Blog\Blog` does exactly this, then sets a few runtime-only values on the
 same Registry to carry authorisation decisions into its views:
 
 ```php
-if ($user->get('id') == $member->get('id'))
-{
-	$this->params->set('access-edit-comment', true);
-	$this->params->set('access-delete-comment', true);
+if ($user->get('id') == $member->get('id')) {
+    $this->params->set('access-edit-comment', true);
+    $this->params->set('access-delete-comment', true);
 }
 ```
 

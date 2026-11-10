@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -613,7 +613,7 @@ controller, module or plugin object to hand.</p>
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Browser/Detector.php"><code>Hubzero\Browser\Detector</code></a>,
 alongside the text direction and the template's own state:</p>
 <pre><code class="language-php">$browser = new \Hubzero\Browser\Detector();
-$cls = array('no-js', $browser-&gt;name(), $browser-&gt;name() . $browser-&gt;major(), $this-&gt;direction);
+$cls = ['no-js', $browser-&gt;name(), $browser-&gt;name() . $browser-&gt;major(), $this-&gt;direction];
 </code></pre>
 <p>That gives selectors such as <code>html.chrome</code>, <code>html.firefox52</code> and <code>html.rtl</code> to
 hang a fix on, and it is the mechanism to reach for.</p>

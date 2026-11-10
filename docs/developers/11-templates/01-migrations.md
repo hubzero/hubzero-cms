@@ -70,16 +70,16 @@ defined('_HZEXEC_') or die();
 
 class Migration20260910102219TplNorthgate extends Base
 {
-	public function up()
-	{
-		// element, title, client (0 = site), enabled, home
-		$this->addTemplateEntry('northgate', 'Northgate University', 0, 1, 0);
-	}
+    public function up()
+    {
+        // element, title, client (0 = site), enabled, home
+        $this->addTemplateEntry('northgate', 'Northgate University', 0, 1, 0);
+    }
 
-	public function down()
-	{
-		$this->deleteTemplateEntry('northgate', 0);
-	}
+    public function down()
+    {
+        $this->deleteTemplateEntry('northgate', 0);
+    }
 }
 ```
 

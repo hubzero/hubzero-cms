@@ -102,7 +102,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -228,7 +228,7 @@ optionally which part of the request to look in:</p>
 $id     = Request::getInt('id', 0);
 $alias  = Request::getCmd('alias', '');
 $title  = Request::getString('title', '', 'post');
-$fields = Request::getArray('fields', array(), 'post');
+$fields = Request::getArray('fields', [], 'post');
 </code></pre>
 <table>
 <thead>
@@ -448,8 +448,7 @@ their key <code>search</code> will read each other's filter.</p>
 </tr>
 </tbody>
 </table>
-<pre><code class="language-php">if (Request::ajax())
-{
+<pre><code class="language-php">if (Request::ajax()) {
     Response::header('Content-Type', 'application/json');
 
     echo json_encode($data);

@@ -21,15 +21,15 @@ A hub keeps its database credentials in `app/config/database.php`, which
 returns a plain PHP array:
 
 ```php
-return array(
-	'dbtype'   => 'mysql',
-	'host'     => 'localhost',
-	'user'     => 'hubuser',
-	'password' => '…',
-	'db'       => 'hubdatabase',
-	'dbprefix' => 'jos_',
-	'port'     => '',
-);
+return [
+    'dbtype'   => 'mysql',
+    'host'     => 'localhost',
+    'user'     => 'hubuser',
+    'password' => '…',
+    'db'       => 'hubdatabase',
+    'dbprefix' => 'jos_',
+    'port'     => '',
+];
 ```
 
 The file is written by the installer and is not in the repository. Read it
@@ -95,9 +95,9 @@ given:
 
 ```php
 $rows = Post::all()
-	->whereEquals('state', 1)
-	->order('created', 'desc')
-	->rows();
+    ->whereEquals('state', 1)
+    ->order('created', 'desc')
+    ->rows();
 ```
 
 The [Database](../06-database/index.md) book covers all three layers: the

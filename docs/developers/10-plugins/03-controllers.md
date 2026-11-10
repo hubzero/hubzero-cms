@@ -1,7 +1,7 @@
 <!--
-status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+status: reviewed
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Controllers
 
@@ -22,40 +22,47 @@ out of the public interface.
 
 ```php
 <?php
-// No direct access
-defined('_HZEXEC_') or die();
 
-class plgBookingsNotify extends \Hubzero\Plugin\Plugin
+namespace Plugins\Bookings\Notify;
+
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Mail\Message;
+use Hubzero\Plugin\Plugin;
+
+class Notify extends Plugin
 {
-	/**
-	 * Email the lab manager when a reservation is created.
-	 *
-	 * @param   object  $reservation  Components\Bookings\Models\Reservation
-	 * @return  void
-	 */
-	public function onReservationCreate($reservation)
-	{
-		if (!($to = $this->params->get('manager_email')))
-		{
-			return;
-		}
+    /**
+     * Email the lab manager when a reservation is created.
+     *
+     * @param   object  $reservation  Components\Bookings\Models\Reservation
+     * @return  void
+     */
+    public function onReservationCreate($reservation)
+    {
+        $to = $this->params->get('manager_email');
 
-		$body = $this->view('message', 'email')
-			->set('reservation', $reservation)
-			->loadTemplate();
+        if (!$to) {
+            return;
+        }
 
-		$message = new \Hubzero\Mail\Message();
-		$message->setSubject(Lang::txt('PLG_BOOKINGS_NOTIFY_SUBJECT', $reservation->instrument->get('title')))
-		        ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
-		        ->addTo($to)
-		        ->addHeader('X-Component', 'com_bookings')
-		        ->addPart($body, 'text/plain');
+        $body = $this->view('message', 'email')
+            ->set('reservation', $reservation)
+            ->loadTemplate();
 
-		if (!$message->send())
-		{
-			$this->setError(Lang::txt('PLG_BOOKINGS_NOTIFY_SEND_FAILED', $to));
-		}
-	}
+        $title = $reservation->instrument->get('title');
+
+        $message = new Message();
+        $message->setSubject(Lang::txt('PLG_BOOKINGS_NOTIFY_SUBJECT', $title))
+            ->addFrom(Config::get('mailfrom'), Config::get('sitename'))
+            ->addTo($to)
+            ->addHeader('X-Component', 'com_bookings')
+            ->addPart($body, 'text/plain');
+
+        if (!$message->send()) {
+            $this->setError(Lang::txt('PLG_BOOKINGS_NOTIFY_SEND_FAILED', $to));
+        }
+    }
 }
 ```
 
@@ -71,7 +78,9 @@ what calls it.
 
 It answers `onContentBeforeSave` and `onContentPrepare`, and keeps its two
 helpers, `isWiki()` and `key()`, private — which is not a style preference.
-See the warning below.
+See the warning below. Its third public method, the static `wasRendered()`,
+exists so that `formathtml` can ask whether a piece of content came from this
+plugin; being public, it is registered as a listener too.
 
 ## What the base class gives you
 
@@ -87,8 +96,8 @@ See the warning below.
 | `css()`, `js()`, `img()` | Asset helpers. See [Assets](06-assets.md). |
 | `Plugin::getParams($name, $folder)` | Static; reads one plugin's params straight from the database. |
 
-Because `Plugin` extends `Hubzero\Base\Obj`, which uses the `ErrorBag` trait,
-`setError()`, `getError()`, and `getErrors()` are available too, and plugins
+`Plugin` uses the `ErrorBag` trait, so `setError()`, `getError()`, and
+`getErrors()` are available too, and plugins
 use them to hand a message back to the component that triggered them. The
 component has to ask: an error set in a plugin goes nowhere on its own.
 
@@ -98,11 +107,11 @@ You rarely need one. If you write one, call the parent — it is what populates
 `$params`, `$pluginName`, and `$pluginType`, and what loads the language file:
 
 ```php
-public function __construct(&$subject, $config)
+public function __construct($subject, $config)
 {
-	parent::__construct($subject, $config);
+    parent::__construct($subject, $config);
 
-	// Extra initialisation
+    // Extra initialisation
 }
 ```
 
@@ -122,12 +131,12 @@ plugin instance and registers it once per public method name. There is no list
 of events to declare and no annotation to write — the method name *is* the
 registration.
 
-> **Warning:** Every public method is registered, and that includes the
-> seventeen a plugin inherits without writing: `__construct`, `loadLanguage`,
-> `getParams`, `view`, `__toString`, `def`, `get`, `getProperties`, `set`,
-> `setProperties`, `getError`, `getErrors`, `setError`, `setErrors`, `css`,
-> `js` and `img`. Every plugin on the hub is a listener for an event called
-> `get`. Add a public `display()` and it becomes a listener for `display`.
+> **Warning:** Every public method is registered, static ones included, and
+> that includes the eleven a plugin inherits without writing: `__construct`,
+> `loadLanguage`, `getParams`, `view`, `getError`, `getErrors`, `setError`,
+> `setErrors`, `css`, `js` and `img`. Every plugin on the hub is a listener
+> for an event called `view`. Add a public `display()` and it becomes a
+> listener for `display`.
 > Name your handlers `onSomething`, and make every helper `protected` or
 > `private`.
 

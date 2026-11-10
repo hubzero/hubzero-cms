@@ -112,8 +112,7 @@ $tz = User::getParam('timezone', Config::get('offset'));
 ## Logged in or not
 
 ```php
-if (User::isGuest())
-{
+if (User::isGuest()) {
     // logged OUT
     App::abort(403, Lang::txt('Login required'));
 }
@@ -164,8 +163,7 @@ Access groups are the ACL groups an administrator assigns, not community
 groups:
 
 ```php
-foreach (User::getInstance($id)->accessgroups() as $map)
-{
+foreach (User::getInstance($id)->accessgroups() as $map) {
     echo $map->get('group_id');
 }
 ```
@@ -180,8 +178,7 @@ Permissions are checked with `authorise($action, $assetname = null)`
 (`authorize()` is a spelling alias):
 
 ```php
-if (!User::authorise('core.edit', 'com_blog'))
-{
+if (!User::authorise('core.edit', 'com_blog')) {
     App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
 }
 ```

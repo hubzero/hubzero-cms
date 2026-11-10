@@ -122,7 +122,7 @@ which is simply:
 
 ```php
 <div class="group-php-page">
-	<?php echo $this->content; ?>
+    <?php echo $this->content; ?>
 </div>
 ```
 
@@ -142,10 +142,9 @@ $db = \Hubzero\User\Group\Helper::getDbo();
 $db->setQuery("SELECT `name`, `reading` FROM `gauges` ORDER BY `name`");
 
 echo '<ul class="gauges">';
-foreach ($db->loadObjectList() as $gauge)
-{
-	echo '<li>' . htmlspecialchars($gauge->name) . ': '
-	   . htmlspecialchars($gauge->reading) . '</li>';
+foreach ($db->loadObjectList() as $gauge) {
+    echo '<li>' . htmlspecialchars($gauge->name) . ': '
+       . htmlspecialchars($gauge->reading) . '</li>';
 }
 echo '</ul>';
 ```

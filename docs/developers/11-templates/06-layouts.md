@@ -27,13 +27,13 @@ defined('_HZEXEC_') or die();
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>">
-	<head>
-		<jdoc:include type="head" />
-	</head>
-	<body>
-		<jdoc:include type="message" />
-		<jdoc:include type="component" />
-	</body>
+    <head>
+        <jdoc:include type="head" />
+    </head>
+    <body>
+        <jdoc:include type="message" />
+        <jdoc:include type="component" />
+    </body>
 </html>
 ```
 
@@ -382,8 +382,7 @@ from the result:
 ```php
 $bground = $this->params->get('backgroundImage', $this->params->get('background', 'delauney'));
 $styles  = include_once __DIR__ . '/css/theme.php';
-if ($styles)
-{
+if ($styles) {
     $this->addStyleDeclaration($styles);
 }
 ```

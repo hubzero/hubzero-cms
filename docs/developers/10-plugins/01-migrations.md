@@ -1,7 +1,7 @@
 <!--
-status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+status: reviewed
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Migrations
 
@@ -29,7 +29,14 @@ app/plugins/bookings/notify/
 ```
 
 The class name is `Migration{timestamp}Plg{Group}{Name}`, and the file is
-named after the class. Migrations run in timestamp order across every
+named after the class. The class sits in the plugin's `Migrations` namespace,
+`Plugins\{Group}\{Name}\Migrations`, as all 339 plugin migrations in core do.
+[`Hubzero\Content\Migration`](../../../core/libraries/Hubzero/Content/Migration.php)
+requires the file, looks for the class without a namespace, and then for the
+same name in the namespace it derives from the file's path — so a global
+migration written for an earlier release still runs, and a namespaced one has
+to be in the namespace its directory implies. A mismatch is logged as
+`class not found (expected …)` and the file is skipped. Migrations run in timestamp order across every
 extension on the hub, so give a plugin that depends on a component's tables a
 later timestamp than the migration that creates them — `plg_bookings_notify`
 after `com_bookings`, not before.
@@ -44,22 +51,21 @@ For `plg_bookings_notify`, the whole migration is two calls:
 ```php
 <?php
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\Bookings\Notify\Migrations;
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 class Migration20260210000000PlgBookingsNotify extends Base
 {
-	public function up()
-	{
-		$this->addPluginEntry('bookings', 'notify');
-	}
+    public function up()
+    {
+        $this->addPluginEntry('bookings', 'notify');
+    }
 
-	public function down()
-	{
-		$this->deletePluginEntry('bookings', 'notify');
-	}
+    public function down()
+    {
+        $this->deletePluginEntry('bookings', 'notify');
+    }
 }
 ```
 
@@ -114,7 +120,7 @@ it when a plugin must arrive with a value other than the manifest default:
 ```php
 public function up()
 {
-	$this->addPluginEntry('content', 'formatwiki', 1, '{"applyFormat":"0","convertFormat":"1"}');
+    $this->addPluginEntry('content', 'formatwiki', 1, '{"applyFormat":"0","convertFormat":"1"}');
 }
 ```
 
@@ -126,10 +132,10 @@ That is the right tool when a later migration adds a field:
 ```php
 public function up()
 {
-	$params = $this->getParams('plg_content_formatwiki');
-	$params->set('convertFormat', 0);
+    $params = $this->getParams('plg_content_formatwiki');
+    $params->set('convertFormat', 0);
 
-	$this->savePluginParams('content', 'formatwiki', $params);
+    $this->savePluginParams('content', 'formatwiki', $params);
 }
 ```
 
@@ -181,17 +187,16 @@ matching `down()`:
 ```php
 public function up()
 {
-	if (!$this->db->tableExists('#__bookings_notifications'))
-	{
-		$this->db->query("CREATE TABLE `#__bookings_notifications` (
-			`id` int(11) NOT NULL AUTO_INCREMENT,
-			`reservation_id` int(11) NOT NULL DEFAULT 0,
-			`sent` datetime DEFAULT NULL,
-			PRIMARY KEY (`id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-	}
+    if (!$this->db->tableExists('#__bookings_notifications')) {
+        $this->db->query("CREATE TABLE `#__bookings_notifications` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `reservation_id` int(11) NOT NULL DEFAULT 0,
+            `sent` datetime DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+    }
 
-	$this->addPluginEntry('bookings', 'notify', 0);
+    $this->addPluginEntry('bookings', 'notify', 0);
 }
 ```
 

@@ -120,8 +120,7 @@ log instead — see below.
 stages — `afterDispatch` and the rest — and the debug panel renders them.
 
 ```php
-if ($profiler = App::get('profiler'))
-{
+if ($profiler = App::get('profiler')) {
     $profiler->mark('afterMyExpensiveThing');
 }
 ```

@@ -103,7 +103,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -192,7 +192,7 @@ Everything above it ends up here.</p>
 <h2 id="configuration">Configuration</h2>
 <p>The connection settings live in <code>app/config/database.php</code>, which returns a
 plain array:</p>
-<pre><code class="language-php">return array(
+<pre><code class="language-php">return [
     'dbtype'   =&gt; 'mysql',
     'host'     =&gt; '127.0.0.1',
     'user'     =&gt; 'hubzero',
@@ -200,7 +200,7 @@ plain array:</p>
     'db'       =&gt; 'hubzero',
     'dbprefix' =&gt; 'jos_',
     'port'     =&gt; '3306',
-);
+];
 </code></pre>
 <p><code>Hubzero\Database\DatabaseServiceProvider</code> reads those values at boot and
 registers the resulting driver in the application container under <code>db</code>:</p>
@@ -356,8 +356,7 @@ array of explicit types (<code>bool</code>, <code>null</code>, <code>int</code>,
 </table>
 <pre><code class="language-php">$db-&gt;setQuery(&quot;SELECT `id`, `title`, `alias` FROM `#__bookings_instruments` ORDER BY `title`&quot;);
 
-foreach ($db-&gt;loadObjectList('alias') as $alias =&gt; $instrument)
-{
+foreach ($db-&gt;loadObjectList('alias') as $alias =&gt; $instrument) {
     echo $instrument-&gt;title;
 }
 </code></pre>

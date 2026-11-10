@@ -72,33 +72,31 @@ defined('_HZEXEC_') or die();
  **/
 class Migration20260901120000ComGauges extends Base
 {
-	/**
-	 * Up
-	 **/
-	public function up()
-	{
-		if (!$this->db->tableExists('#__gauges'))
-		{
-			$this->db->setQuery("CREATE TABLE `#__gauges` (
-				`id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-				`name` varchar(255) NOT NULL DEFAULT '',
-				PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-			$this->db->query();
-		}
-	}
+    /**
+     * Up
+     **/
+    public function up()
+    {
+        if (!$this->db->tableExists('#__gauges')) {
+            $this->db->setQuery("CREATE TABLE `#__gauges` (
+                `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                `name` varchar(255) NOT NULL DEFAULT '',
+                PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+            $this->db->query();
+        }
+    }
 
-	/**
-	 * Down
-	 **/
-	public function down()
-	{
-		if ($this->db->tableExists('#__gauges'))
-		{
-			$this->db->setQuery("DROP TABLE `#__gauges`");
-			$this->db->query();
-		}
-	}
+    /**
+     * Down
+     **/
+    public function down()
+    {
+        if ($this->db->tableExists('#__gauges')) {
+            $this->db->setQuery("DROP TABLE `#__gauges`");
+            $this->db->query();
+        }
+    }
 }
 ```
 

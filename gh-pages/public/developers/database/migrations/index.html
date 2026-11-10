@@ -106,7 +106,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -259,8 +259,7 @@ class Migration20260910120000ComBookings extends Base
      **/
     public function up()
     {
-        if (!$this-&gt;db-&gt;tableExists('#__bookings_reservations'))
-        {
+        if (!$this-&gt;db-&gt;tableExists('#__bookings_reservations')) {
             $query = &quot;CREATE TABLE `#__bookings_reservations` (
                 `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                 `instrument_id` int(11) unsigned NOT NULL DEFAULT 0,
@@ -287,8 +286,7 @@ class Migration20260910120000ComBookings extends Base
     {
         $this-&gt;deleteComponentEntry('bookings');
 
-        if ($this-&gt;db-&gt;tableExists('#__bookings_reservations'))
-        {
+        if ($this-&gt;db-&gt;tableExists('#__bookings_reservations')) {
             $this-&gt;db-&gt;setQuery(&quot;DROP TABLE `#__bookings_reservations`&quot;);
             $this-&gt;db-&gt;query();
         }
@@ -526,8 +524,7 @@ terminal.</p>
 <code>progress</code> callback:</p>
 <pre><code class="language-php">$this-&gt;callback('progress', 'init', ['Running ' . __CLASS__ . ':']);
 
-foreach ($rows as $i =&gt; $row)
-{
+foreach ($rows as $i =&gt; $row) {
     // ... work ...
     $this-&gt;callback('progress', 'setProgress', [$i]);
 }

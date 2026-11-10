@@ -75,9 +75,8 @@ The entry point is the `Filesystem` facade, which resolves to
 ```php
 use Filesystem;
 
-if (Filesystem::exists($path))
-{
-	$contents = Filesystem::read($path);
+if (Filesystem::exists($path)) {
+    $contents = Filesystem::read($path);
 }
 
 Filesystem::write($path, $contents);

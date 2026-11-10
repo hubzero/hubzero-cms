@@ -51,14 +51,14 @@ It returns an array, and the hub writes it in this shape:
 
 ```php
 <?php
-	return array(
-		'host'     => 'localhost',
-		'port'     => '',
-		'user'     => 'sgmanager',
-		'password' => 'xxxxx',
-		'database' => 'sg_coastal',
-		'prefix'   => ''
-	);
+    return [
+        'host'     => 'localhost',
+        'port'     => '',
+        'user'     => 'sgmanager',
+        'password' => 'xxxxx',
+        'database' => 'sg_coastal',
+        'prefix'   => ''
+    ];
 ```
 
 The array is handed straight to
@@ -95,7 +95,7 @@ Outside a group request — in a command line script, say — pass the alias as
 the second argument, or the configuration array as the first:
 
 ```php
-$database = \Hubzero\User\Group\Helper::getDbo(array(), 'coastal');
+$database = \Hubzero\User\Group\Helper::getDbo([], 'coastal');
 ```
 
 The hub's own database is a separate object and stays available:

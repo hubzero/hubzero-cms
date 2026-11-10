@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -205,13 +205,13 @@ defined('_HZEXEC_') or die();
 ?&gt;
 &lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;&lt;?php echo $this-&gt;language; ?&gt;&quot; dir=&quot;&lt;?php echo $this-&gt;direction; ?&gt;&quot;&gt;
-	&lt;head&gt;
-		&lt;jdoc:include type=&quot;head&quot; /&gt;
-	&lt;/head&gt;
-	&lt;body&gt;
-		&lt;jdoc:include type=&quot;message&quot; /&gt;
-		&lt;jdoc:include type=&quot;component&quot; /&gt;
-	&lt;/body&gt;
+    &lt;head&gt;
+        &lt;jdoc:include type=&quot;head&quot; /&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;jdoc:include type=&quot;message&quot; /&gt;
+        &lt;jdoc:include type=&quot;component&quot; /&gt;
+    &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
 <p>Save that as <code>app/templates/northgate/index.php</code>,
@@ -753,8 +753,7 @@ background pattern, and two accent colours, then builds a style declaration
 from the result:</p>
 <pre><code class="language-php">$bground = $this-&gt;params-&gt;get('backgroundImage', $this-&gt;params-&gt;get('background', 'delauney'));
 $styles  = include_once __DIR__ . '/css/theme.php';
-if ($styles)
-{
+if ($styles) {
     $this-&gt;addStyleDeclaration($styles);
 }
 </code></pre>

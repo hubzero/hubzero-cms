@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Assets
 
@@ -39,8 +39,8 @@ core modules all use `assets/`.
 
 | Method | Signature |
 |---|---|
-| `css` | `css($stylesheet = '', $extension = null, $attributes = array())` |
-| `js` | `js($asset = '', $extension = null, $attributes = array())` |
+| `css` | `css($stylesheet = '', $extension = null, $attributes = [])` |
+| `js` | `js($asset = '', $extension = null, $attributes = [])` |
 | `img` | `img($asset, $extension = null)` |
 
 `css()` and `js()` add the file to the document and return `$this`, so calls
@@ -112,8 +112,8 @@ The third argument tunes the tag. For `css()`, `media` and `type` and an
 `attribs` array; for `js()`, `type`, `defer`, and `async`:
 
 ```php
-$this->css('print', null, array('media' => 'print'))
-     ->js('widget', null, array('defer' => true));
+$this->css('print', null, ['media' => 'print'])
+     ->js('widget', null, ['defer' => true]);
 ```
 
 ## Declarations
@@ -139,7 +139,7 @@ web font, build the path yourself from `Request::root(true)`.
 ## From the class or the layout
 
 Both work, because both run with `$this` bound to the module object.
-`mod_login` pushes its assets from `display()` in `helper.php`; `mod_mygroups`
+`mod_login` pushes its assets from `display()` in `mod_login.php`; `mod_mygroups`
 does it at the top of `tmpl/default.php`.
 
 Push from the layout. The stylesheet exists to style *that* markup, and a hub

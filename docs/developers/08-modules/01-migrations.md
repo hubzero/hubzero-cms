@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Migrations
 
@@ -44,15 +44,15 @@ Most modules need exactly one migration, and it is four lines long:
 ```php
 class Migration20260101000000ModUpcomingBookings extends Base
 {
-	public function up()
-	{
-		$this->addModuleEntry('mod_upcoming_bookings');
-	}
+    public function up()
+    {
+        $this->addModuleEntry('mod_upcoming_bookings');
+    }
 
-	public function down()
-	{
-		$this->deleteModuleEntry('mod_upcoming_bookings');
-	}
+    public function down()
+    {
+        $this->deleteModuleEntry('mod_upcoming_bookings');
+    }
 }
 ```
 
@@ -142,8 +142,7 @@ migration, using the raw query helpers described in the
 ```php
 public function up()
 {
-    if (!$this->db->tableExists('#__example_items'))
-    {
+    if (!$this->db->tableExists('#__example_items')) {
         $this->db->query("CREATE TABLE `#__example_items` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `title` varchar(255) NOT NULL DEFAULT '',

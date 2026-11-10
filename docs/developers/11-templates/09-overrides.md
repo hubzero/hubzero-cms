@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 screenshots: none
 -->
 # Output overrides
@@ -250,18 +250,18 @@ one file, chosen by
 
 There are exactly three candidates, tried in order:
 
-1. `{templates}/{template}/html/{mod_name}/{layout}.php`
+1. `{templates}/{template}/html/{mod_name}/{layout}.php` — on a super group's
+   pages, the group's template first, then the site template
 2. `{module}/tmpl/{layout}.php`
 3. `{module}/tmpl/default.php`
 
-A module is a `mod_name.php` stub, a `helper.php` holding the data logic, and
-one or more layouts in `tmpl/`:
+A module is a `mod_name.php` holding the module class, which gathers the
+data, and one or more layouts in `tmpl/`:
 
 ```
 core/modules/mod_reportproblems/
     assets/css/mod_reportproblems.css
     assets/js/mod_reportproblems.js
-    helper.php
     mod_reportproblems.php
     mod_reportproblems.xml
     tmpl/default.php

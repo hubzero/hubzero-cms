@@ -166,9 +166,9 @@ the link is routed.
 
 ```php
 Submenu::addEntry(
-	Lang::txt('COM_COLLECTIONS_POSTS'),
-	Route::url('index.php?option=com_collections&controller=posts'),
-	$controllerName == 'posts'
+    Lang::txt('COM_COLLECTIONS_POSTS'),
+    Route::url('index.php?option=com_collections&controller=posts'),
+    $controllerName == 'posts'
 );
 ```
 

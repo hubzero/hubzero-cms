@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -271,13 +271,14 @@ constructor takes them from the <code>#__extensions</code> row and wraps them in
 <code>Registry</code>.</p>
 <pre><code class="language-php">public function onReservationCreate($reservation)
 {
-	if (!($to = $this-&gt;params-&gt;get('manager_email')))
-	{
-		return;
-	}
+    $to = $this-&gt;params-&gt;get('manager_email');
 
-	$notes = $this-&gt;params-&gt;get('include_notes', 0);
-	// ...
+    if (!$to) {
+        return;
+    }
+
+    $notes = $this-&gt;params-&gt;get('include_notes', 0);
+    // ...
 }
 </code></pre>
 <p>Always read through <code>get()</code> with a default, and check the value before using
@@ -302,10 +303,9 @@ echo $params-&gt;get('manager_email');
 <p><code>Plugin::byType('authentication')</code> returns the raw rows for a whole group,
 each with a <code>params</code> string on it — which is what <code>mod_login</code> uses to find
 each authentication provider's <code>display_name</code>:</p>
-<pre><code class="language-php">foreach (Plugin::byType('authentication') as $p)
-{
-	$pparams = new Registry($p-&gt;params);
-	$display = $pparams-&gt;get('display_name', ucfirst($p-&gt;name));
+<pre><code class="language-php">foreach (Plugin::byType('authentication') as $p) {
+    $pparams = new Registry($p-&gt;params);
+    $display = $pparams-&gt;get('display_name', ucfirst($p-&gt;name));
 }
 </code></pre>
 <p><code>Hubzero\Plugin\Plugin::getParams($name, $folder)</code> is a static shortcut that
@@ -325,9 +325,9 @@ run for, not one setting for the whole site. That is what
 provides, backed by the <code>#__plugin_params</code> table with <code>object_id</code>, <code>folder</code>,
 and <code>element</code> columns.</p>
 <pre><code class="language-php">$this-&gt;params = \Hubzero\Plugin\Params::getParams(
-	$member-&gt;get('id'),
-	'members',
-	$this-&gt;pluginName
+    $member-&gt;get('id'),
+    'members',
+    $this-&gt;pluginName
 );
 </code></pre>
 <p><code>getParams($oid, $folder, $element)</code> reads the plugin's global parameters,
@@ -335,12 +335,11 @@ merges the per-object row on top, and returns the result — so an object that
 has never been customised falls back to the site-wide settings.
 <code>getCustomParams()</code> returns only the per-object values and
 <code>getDefaultParams()</code> only the global ones.</p>
-<p><code>plgMembersBlog</code> does exactly this, then sets a few runtime-only values on the
+<p><code>Plugins\Members\Blog\Blog</code> does exactly this, then sets a few runtime-only values on the
 same Registry to carry authorisation decisions into its views:</p>
-<pre><code class="language-php">if ($user-&gt;get('id') == $member-&gt;get('id'))
-{
-	$this-&gt;params-&gt;set('access-edit-comment', true);
-	$this-&gt;params-&gt;set('access-delete-comment', true);
+<pre><code class="language-php">if ($user-&gt;get('id') == $member-&gt;get('id')) {
+    $this-&gt;params-&gt;set('access-edit-comment', true);
+    $this-&gt;params-&gt;set('access-delete-comment', true);
 }
 </code></pre>
 <aside class="admonition admonition--note">
@@ -357,7 +356,7 @@ first with <code>getParams('plg_group_name')</code> because the macro replaces t
 rather than merging into it. See <a href="../migrations/index.html#shipping-default-parameters">Migrations</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Reviewed against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../assets/index.html" rel="prev"><span>Previous</span>Assets</a><a class="pager__next" href="../packaging/index.html" rel="next"><span>Next</span>Packaging</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/07-configuration.md">Edit this page on GitHub</a>

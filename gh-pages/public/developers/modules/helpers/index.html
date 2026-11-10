@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Helpers · Developers · Hubzero Documentation</title>
-  <meta name="description" content="The helper class is where a module does its work. It gathers whatever data the layout needs, exposes it as properties, and requires the layout. By convention…">
+  <title>The module class · Developers · Hubzero Documentation</title>
+  <meta name="description" content="The module class is where a module does its work. It gathers whatever data the layout needs, keeps it in properties, and requires the layout. It lives in the…">
   <link rel="canonical" href="https://hubzero.github.io/hubzero-cms/developers/modules/helpers/">
   <link rel="icon" href="../../../assets/hubzero-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Helpers</a><ol class="toc">
+<li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">The module class</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-base-class">The base class</a></li>
 <li class="toc__item toc__item--l2"><a href="#the-smallest-one-that-works">The smallest one that works</a></li>
 <li class="toc__item toc__item--l2"><a href="#choosing-a-layout">Choosing a layout</a></li>
@@ -174,27 +174,27 @@
     </aside>
 
     <main id="main-content" class="article-wrap" tabindex="-1">
-      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Modules</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">Helpers</span></nav>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="../../../index.html">Home</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../../index.html">Developers</a><span class="crumbs__sep" aria-hidden="true">/</span><a href="../index.html">Modules</a><span class="crumbs__sep" aria-hidden="true">/</span><span aria-current="page">The module class</span></nav>
       <article class="article">
         <header class="article__header">
           <p class="eyebrow">Developers</p>
-          <h1>Helpers</h1>
+          <h1>The module class</h1>
         </header>
         
         <div class="prose">
-<p>The helper class is where a module does its work. It gathers whatever data the
-layout needs, exposes it as properties, and requires the layout. By convention
-it lives in <code>helper.php</code> beside the entry file and is named <code>Helper</code>, and it
-extends <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Module.php"><code>Hubzero\Module\Module</code></a>.</p>
-<p>It exists for a reason that has nothing to do with tidiness. The loader
-<code>include</code>s the entry file once per <em>instance</em>, so anything declared at that
-file's top level is declared twice the second time the module appears on a
-page. Putting the class behind a <code>require_once</code> in a separate file is what
-makes a module safe to place more than once. See
+<p>The module class is where a module does its work. It gathers whatever data the
+layout needs, keeps it in properties, and requires the layout. It lives in the
+entry file, is named for the module — <code>Modules\UpcomingBookings\UpcomingBookings</code>
+in <code>mod_upcoming_bookings.php</code> — and extends
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Module.php"><code>Hubzero\Module\Module</code></a>.
+The loader constructs one per instance and calls <code>run()</code>; see
 <a href="../controllers/index.html">Controllers</a>.</p>
+<p>Earlier releases put this class in a separate <code>helper.php</code> and named it
+<code>Helper</code>. Neither is true of any core module now.</p>
 <h2 id="the-base-class">The base class</h2>
-<p><code>Hubzero\Module\Module</code> extends <code>Hubzero\Base\Obj</code> and mixes in two traits,
-<code>AssetAware</code> and <code>Escapable</code>. It is small enough to hold in your head:</p>
+<p><code>Hubzero\Module\Module</code> extends nothing and mixes in three traits,
+<code>ErrorBag</code>, <code>AssetAware</code> and <code>Escapable</code>. It is small enough to hold in your
+head:</p>
 <table>
 <thead>
 <tr>
@@ -216,6 +216,10 @@ makes a module safe to place more than once. See
 <td>Stores both. Takes them positionally, in that order.</td>
 </tr>
 <tr>
+<td><code>run()</code></td>
+<td>What the loader calls. Calls <code>display()</code>.</td>
+</tr>
+<tr>
 <td><code>display()</code></td>
 <td>Requires the layout named by the <code>layout</code> parameter, defaulting to <code>default</code>.</td>
 </tr>
@@ -225,7 +229,7 @@ makes a module safe to place more than once. See
 </tr>
 <tr>
 <td><code>getCacheContent()</code></td>
-<td>Returns cached output for this instance, generating it by calling <code>run()</code> if the cache is cold.</td>
+<td>Returns cached output for this instance, generating it by calling <code>run()</code> if the cache is cold. See <a href="#caching">Caching</a>.</td>
 </tr>
 <tr>
 <td><code>css()</code>, <code>js()</code>, <code>img()</code></td>
@@ -235,57 +239,61 @@ makes a module safe to place more than once. See
 <td><code>escape($var)</code>, <code>setEscape($spec)</code></td>
 <td>From <code>Escapable</code>. Escapes a value for output; <code>htmlspecialchars</code> by default.</td>
 </tr>
+<tr>
+<td><code>setError()</code>, <code>getError()</code>, <code>getErrors()</code>, <code>setErrors()</code></td>
+<td>From <code>ErrorBag</code>.</td>
+</tr>
 </tbody>
 </table>
-<p>Because it extends <code>Obj</code>, the class also carries the error bag: <code>setError()</code>,
-<code>getError()</code>, <code>getErrors()</code>.</p>
+<p>Override <code>display()</code>. Leave <code>run()</code> to the base class unless you have a reason
+to put something between the loader and <code>display()</code>.</p>
 <h2 id="the-smallest-one-that-works">The smallest one that works</h2>
-<p>The whole of <code>mod_upcoming_bookings/helper.php</code>:</p>
+<p>The whole of <code>mod_upcoming_bookings/mod_upcoming_bookings.php</code>:</p>
 <pre><code class="language-php">&lt;?php
 
 namespace Modules\UpcomingBookings;
 
 use Hubzero\Module\Module;
+use Hubzero\Facades\Date;
+use Hubzero\Facades\User;
 use Components\Bookings\Models\Reservation;
-use Date;
-use User;
 
-defined('_HZEXEC_') or die();
-
-class Helper extends Module
+class UpcomingBookings extends Module
 {
-	public function display()
-	{
-		$query = Reservation::all()
-			-&gt;whereEquals('created_by', User::get('id'))
-			-&gt;whereEquals('state', 1)
-			-&gt;where('starts', '&gt;=', Date::of('now')-&gt;toSql());
+    protected $reservations;
 
-		if ($instrument = intval($this-&gt;params-&gt;get('instrument_id', 0)))
-		{
-			$query-&gt;whereEquals('instrument_id', $instrument);
-		}
+    public function display()
+    {
+        $query = Reservation::all()
+            -&gt;whereEquals('created_by', User::get('id'))
+            -&gt;whereEquals('state', 1)
+            -&gt;where('starts', '&gt;=', Date::of('now')-&gt;toSql());
 
-		$this-&gt;reservations = $query
-			-&gt;order('starts', 'asc')
-			-&gt;limit(intval($this-&gt;params-&gt;get('limit', 5)))
-			-&gt;rows();
+        if ($instrument = intval($this-&gt;params-&gt;get('instrument_id', 0))) {
+            $query-&gt;whereEquals('instrument_id', $instrument);
+        }
 
-		require $this-&gt;getLayoutPath();
-	}
+        $this-&gt;reservations = $query
+            -&gt;order('starts', 'asc')
+            -&gt;limit(intval($this-&gt;params-&gt;get('limit', 5)))
+            -&gt;rows();
+
+        require $this-&gt;getLayoutPath();
+    }
 }
 </code></pre>
 <p>Properties set on <code>$this</code> before the <code>require</code> are visible to the layout,
 because the layout is included in the method's scope. There is no separate
 view object and no <code>assign()</code> step.</p>
+<p>Declare every property the class sets. The base class does not allow dynamic
+properties, and PHP 8.2 deprecates assigning one that was never declared.
+Core declares them <code>protected</code>, as above: the layout runs inside the method,
+so it can read them.</p>
 <p><code>Components\Bookings\Models\Reservation</code> needs no <code>require</code>: the class loader
-maps <code>Components\</code> namespaces to component directories on its own. Several
-shipped modules still write <code>include_once Component::path('com_groups') . DS . 'models' . DS . 'recent.php';</code> before naming the class. That is the older
-convention, from before the class loader covered extension namespaces; it is
-harmless but do not copy it. See
+maps <code>Components\</code> namespaces to component directories on its own. See
 <a href="../../foundation/autoloading/index.html">Autoloading</a>.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> <code>use User;</code> is not optional. Inside
+<p><strong>Warning:</strong> The facade imports are not optional. Inside
 <code>namespace Modules\UpcomingBookings</code> an unqualified <code>User</code> resolves to
 <code>Modules\UpcomingBookings\User</code>, which does not exist, and the call is a
 fatal error — a white page, or an exception trace naming a class you never
@@ -296,7 +304,7 @@ wrote. Import every facade the file names: <code>App</code>, <code>Lang</code>, 
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> A module is rendered inside somebody else's page, so an
 uncaught exception in <code>display()</code> takes the whole page with it — not just
-the block. Nothing wraps the include in a <code>try</code>. A model call that can throw
+the block. Nothing wraps <code>run()</code> in a <code>try</code>. A model call that can throw
 because the component is missing, or a table that does not exist yet, breaks
 every page the module is placed on.</p>
 </aside>
@@ -305,8 +313,7 @@ every page the module is placed on.</p>
 parameter. If you override <code>display()</code>, you choose the layout yourself.
 <code>mod_mygroups</code> switches on a parameter:</p>
 <pre><code class="language-php">$layout = 'default';
-if (!$this-&gt;params-&gt;get('show_recent', 1))
-{
+if (!$this-&gt;params-&gt;get('show_recent', 1)) {
     $layout = 'simple';
 }
 
@@ -332,16 +339,15 @@ emits <code>LIMIT 18446744073709551615</code>. Your five-item sidebar block quie
 becomes every row in the table.</p>
 </aside>
 <h2 id="caching">Caching</h2>
-<p>Cache a module when the query behind it is expensive and its output is the
-same for everybody. <code>getCacheContent()</code> gives an opt-in output cache keyed on
-the instance id. It returns an empty string — meaning &quot;no cached content, do
-the work&quot; — unless a cache store is configured, the instance's <code>cache</code>
-parameter is on, <code>cache_time</code> is non-zero, and the application is not in debug
-mode. On a miss it buffers a call to <code>run()</code>, appends an HTML comment
-recording when the copy was made, stores it, and returns it.</p>
-<p>That contract splits the class in two: <code>run()</code> produces the output, and
-<code>display()</code> decides whether to reuse a stored copy. <code>mod_findresources</code> is the
-pattern in full:</p>
+<p><code>getCacheContent()</code> is an opt-in output cache keyed on the instance id. It
+returns an empty string — meaning &quot;no cached content, do the work&quot; — unless a
+cache store is configured, the instance's <code>cache</code> parameter is on,
+<code>cache_time</code> is non-zero, and the application is not in debug mode. On a miss
+it buffers a call to <code>run()</code>, appends an HTML comment recording when the copy
+was made, stores it, and returns it.</p>
+<p>The core modules that cache split the class in two: <code>run()</code> produces the
+output, and <code>display()</code> decides whether to reuse a stored copy.
+<code>mod_findresources</code> is the pattern in full:</p>
 <pre><code class="language-php">class Findresources extends Module
 {
     protected $categories;
@@ -383,22 +389,25 @@ pattern in full:</p>
     }
 }
 </code></pre>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> A module that calls <code>getCacheContent()</code> <strong>must</strong> define <code>run()</code>.
-The base class does not: <code>getCacheContent()</code> calls <code>$this-&gt;run()</code>, and a
-module without one fatals the first time the cache misses.</p>
+<aside class="admonition admonition--warning">
+<p><strong>Warning:</strong> That pattern was written for the old entry stub, which called
+<code>display()</code>. The loader now calls <code>run()</code>, so in the 19 core modules written
+this way <code>display()</code> is never reached and the cache is never consulted:
+every request does the work. Calling <code>getCacheContent()</code> from <code>run()</code>
+instead does not help — on a miss it calls <code>run()</code> again, and recurses until
+PHP runs out of stack. As things stand, module output caching has no working
+entry point.</p>
 </aside>
 <aside class="admonition admonition--warning">
 <p><strong>Warning:</strong> The cache key is <code>modules.{id}</code> and nothing else. It does not
 vary by user, view level, or menu item. Cache a per-user module and the
 first visitor's output is served to everyone else — <code>mod_upcoming_bookings</code>
 would show one researcher's reservations to the whole hub. That is a data
-leak, not a rendering bug, and nothing in the framework stops you: the
-<code>cache</code> parameter is on the instance, so an administrator can switch it on
-for a module you never intended to cache. Do not declare <code>cache</code> and
-<code>cache_time</code> fields in the manifest of a module whose output is per-user.
-<code>mod_findresources</code> lists popular tags and caches; <code>mod_mygroups</code> is
-per-user and does not.</p>
+leak, not a rendering bug: the <code>cache</code> parameter is on the instance, so an
+administrator can switch it on for a module you never intended to cache. Do
+not declare <code>cache</code> and <code>cache_time</code> fields in the manifest of a module
+whose output is per-user. <code>mod_findresources</code> lists popular tags and
+declares them; <code>mod_mygroups</code> is per-user and does not.</p>
 </aside>
 <p><code>cache_time</code> is stored in seconds by the Module Manager but the cache store
 takes minutes, so <code>getCacheContent()</code> divides values above 120 by 60 and
@@ -406,22 +415,19 @@ passes smaller values through unchanged. A <code>cache_time</code> of 900 caches
 fifteen minutes; a <code>cache_time</code> of 30 caches for thirty minutes, not thirty
 seconds.</p>
 <h2 id="more-than-one-class">More than one class</h2>
-<p>Nothing limits a module to one class. Put additional classes in their own
-files under the module directory and <code>require_once</code> them from <code>helper.php</code>,
-keeping them in the module's namespace so they cannot collide with another
-extension's.</p>
-<p><code>require_once</code> them by path, not by name. The class loader resolves
-<code>Modules\…</code> by collapsing the namespace segment to one word, so a class in
-<code>mod_upcoming_bookings</code> is looked for under <code>mod_upcomingbookings</code> and never
-found — see <a href="../structure/index.html#namespaces-and-class-names">Structure</a> and
-<a href="../../foundation/autoloading/index.html#the-per-kind-details-that-catch-people">Autoloading</a>.</p>
+<p>Nothing limits a module to one class. Put each additional class in its own
+file under the module directory, named after the class, in the module's
+namespace. The class loader finds it without a <code>require</code>:
+<code>mod_adminmenu</code> constructs <code>new Tree()</code> and the loader includes
+<code>mod_adminmenu/tree.php</code>. See
+<a href="../structure/index.html#namespaces-and-class-names">Structure</a>.</p>
 <p>Before you add the second class, ask whether it belongs in the component. A
 &quot;does this reservation clash&quot; method is the <code>Reservation</code> model's, and putting
 it in the module hides it from the administrator screens that need the same
 rule.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../controllers/index.html" rel="prev"><span>Previous</span>Controllers</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/04-helpers.md">Edit this page on GitHub</a>

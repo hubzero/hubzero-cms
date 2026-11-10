@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Packaging
 
@@ -25,7 +25,6 @@ mod_upcoming_bookings/
     tmpl/default.php
     tmpl/index.html
     composer.json
-    helper.php
     index.html
     mod_upcoming_bookings.php
     mod_upcoming_bookings.xml
@@ -72,6 +71,11 @@ The XML manifest is what the CMS itself reads. It is required, it is named
 after the module, and it is not listed in its own `<files>` block.
 
 <!--include: core/modules/mod_mygroups/mod_mygroups.xml:1-17-->
+
+`mod_mygroups` still lists a `helper.php` that no longer exists, as do 66 of
+the core manifests: the class moved into the entry file and the manifests were
+not updated. Nothing in this release installs from `<files>`, so the stale
+line does no harm, but leave it out of yours.
 
 | Element or attribute | Meaning |
 |---|---|
@@ -124,7 +128,7 @@ instrument. Parameters are the cheapest way to avoid writing a second module.
 you pass it yourself as the second argument — the manifest default is applied
 by the form, not by the Registry. So `default="5"` here and
 `$this->params->get('limit', 5)` in the class: write both, or an older
-instance reads null. See [Helpers](04-helpers.md#parameters).
+instance reads null. See [The module class](04-helpers.md#parameters).
 
 Two field names are conventional across almost every module:
 
@@ -134,7 +138,7 @@ Two field names are conventional across almost every module:
   if your module's output is the same for every visitor. The cache key is the
   instance id alone, so on a per-user module such as `mod_upcoming_bookings`
   they hand one researcher's reservations to the next visitor. See
-  [Helpers](04-helpers.md#caching).
+  [The module class](04-helpers.md#caching).
 
 The `member_dashboard="1"` attribute seen on some fields marks a parameter as
 editable by a member when the module appears on their dashboard, rather than

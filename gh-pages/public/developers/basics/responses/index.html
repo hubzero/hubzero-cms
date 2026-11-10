@@ -101,7 +101,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -237,7 +237,7 @@ then echoing the payload and ending the request:</p>
 {
     Response::header('Content-Type', 'application/json');
 
-    echo json_encode(array('state' =&gt; $booking-&gt;get('state')));
+    echo json_encode(['state' =&gt; $booking-&gt;get('state')]);
 
     App::close();
 }
@@ -326,8 +326,7 @@ error template renders the right page:</p>
 </tr>
 </tbody>
 </table>
-<pre><code class="language-php">if (!$row-&gt;get('id'))
-{
+<pre><code class="language-php">if (!$row-&gt;get('id')) {
     App::abort(404, Lang::txt('COM_BLOG_ERROR_ENTRY_NOT_FOUND'));
 }
 </code></pre>

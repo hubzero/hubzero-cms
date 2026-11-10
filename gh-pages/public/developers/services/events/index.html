@@ -99,7 +99,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -202,7 +202,7 @@ debug bar can list what fired.</p>
 <h2 id="triggering">Triggering</h2>
 <pre><code class="language-php">use Event;
 
-$results = Event::trigger('bookings.onBookingSaved', array(&amp;$booking, $isNew));
+$results = Event::trigger('bookings.onBookingSaved', [&amp;$booking, $isNew]);
 </code></pre>
 <p>Two things about that line matter.</p>
 <p><strong>The return value is an array.</strong> <code>trigger()</code> collects each listener's
@@ -210,10 +210,9 @@ return value, skipping nulls, and hands back the collected array — not the
 event, and not a single result. Code that treats it as a boolean is testing
 &quot;did any listener return something truthy&quot;, which is usually not what it
 means:</p>
-<pre><code class="language-php">$results = Event::trigger('content.onContentPrepare', array('com_bookings.note', &amp;$row, $params));
+<pre><code class="language-php">$results = Event::trigger('content.onContentPrepare', ['com_bookings.note', &amp;$row, $params]);
 
-foreach ($results as $result)
-{
+foreach ($results as $result) {
     // ...
 }
 </code></pre>
@@ -247,7 +246,7 @@ then calls <code>addListeners($group)</code> before dispatching, and the plugin 
 registered with the dispatcher loads and instantiates every enabled plugin
 in that group.</p>
 <pre><code class="language-php">// loads core/plugins/cron/*, then calls onClosePending on each
-Event::trigger('cron.onClosePending', array($job));
+Event::trigger('cron.onClosePending', [$job]);
 </code></pre>
 <p>So <code>content.onContentPrepare</code> reaches the content plugins,
 <code>members.onMembersAreas</code> the members plugins, <code>xmessage.onSendMessage</code> the
@@ -280,20 +279,19 @@ into the method's parameters.</p>
 <p>With no second argument the object is registered for every event whose name
 matches one of its public methods, at <code>NORMAL</code> priority. Pass an array to
 restrict it and set priorities:</p>
-<pre><code class="language-php">App::get('dispatcher')-&gt;addListener(new SystemListener, array(
+<pre><code class="language-php">App::get('dispatcher')-&gt;addListener(new SystemListener(), [
     'onBeforeRoute' =&gt; Hubzero\Events\Priority::HIGH,
     'onAfterRoute'  =&gt; Hubzero\Events\Priority::NORMAL
-));
+]);
 </code></pre>
 <p>A closure is also a listener, but it must be told which events it listens
 for — there are no method names to infer from — and it receives the <code>Event</code>
 object rather than unpacked arguments:</p>
 <pre><code class="language-php">App::get('dispatcher')-&gt;addListener(
-    function($event)
-    {
+    function ($event) {
         $foo = $event-&gt;getArgument(0);
     },
-    array('onBeforeRoute' =&gt; Hubzero\Events\Priority::NORMAL)
+    ['onBeforeRoute' =&gt; Hubzero\Events\Priority::NORMAL]
 );
 </code></pre>
 <pre><code class="language-php">final class Priority

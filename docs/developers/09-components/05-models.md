@@ -29,7 +29,7 @@ use Hubzero\Database\Relational;
 
 class Instrument extends Relational
 {
-	protected $namespace = 'bookings';
+    protected $namespace = 'bookings';
 }
 ```
 
@@ -90,10 +90,9 @@ on. `save()` returns false and fills the error bag when one fails, which is
 why a save task reads:
 
 ```php
-if (!$row->save())
-{
-	Notify::error($row->getError());
-	return $this->editTask($row);
+if (!$row->save()) {
+    Notify::error($row->getError());
+    return $this->editTask($row);
 }
 ```
 
@@ -125,7 +124,7 @@ Relationships are methods that return a relation object:
 ```php
 public function reservations()
 {
-	return $this->oneToMany('Reservation', 'instrument_id');
+    return $this->oneToMany('Reservation', 'instrument_id');
 }
 ```
 
@@ -144,11 +143,11 @@ calls chain onto it:
 
 ```php
 $rows = Reservation::all()
-	->whereEquals('instrument_id', $id)
-	->whereEquals('state', Reservation::STATE_PUBLISHED)
-	->ordered('filter_order', 'filter_order_Dir')
-	->paginated('limitstart', 'limit')
-	->rows();
+    ->whereEquals('instrument_id', $id)
+    ->whereEquals('state', Reservation::STATE_PUBLISHED)
+    ->ordered('filter_order', 'filter_order_Dir')
+    ->paginated('limitstart', 'limit')
+    ->rows();
 
 $one = Reservation::oneOrNew($id);       // existing row, or a blank one
 $one = Reservation::oneOrFail($id);      // or throw
@@ -169,12 +168,11 @@ and nothing complains. Full details are in the
 component's records without editing the component:
 
 ```php
-if ($this->isNew())
-{
-	\Event::trigger($this->getTableName() . '_new', ['model' => $this]);
+if ($this->isNew()) {
+    \Event::trigger($this->getTableName() . '_new', ['model' => $this]);
 }
 
-\Event::trigger('system.onContentSave', array($this->getTableName(), $this));
+\Event::trigger('system.onContentSave', [$this->getTableName(), $this]);
 ```
 
 `system.onContentSave` carries a group — the part before the dot — so the
@@ -193,7 +191,7 @@ To let a hub react to a reservation reliably, trigger an event yourself, with
 a group of your own:
 
 ```php
-Event::trigger('bookings.onReservationCreate', array($reservation));
+Event::trigger('bookings.onReservationCreate', [$reservation]);
 ```
 
 The dispatcher splits on the dot, loads every enabled plugin whose

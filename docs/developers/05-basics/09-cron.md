@@ -38,13 +38,13 @@ class plgCronBookings extends \Hubzero\Plugin\Plugin
 
         $obj = new stdClass();
         $obj->plugin = 'bookings';
-        $obj->events = array(
-            array(
+        $obj->events = [
+            [
                 'name'   => 'releaseExpiredHolds',
                 'label'  => Lang::txt('PLG_CRON_BOOKINGS_RELEASE_HOLDS'),
                 'params' => ''
-            )
-        );
+            ]
+        ];
 
         return $obj;
     }

@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Views
 
@@ -14,7 +14,7 @@ That override point is the whole argument. A module ends up in the sidebar of
 a hub whose designer you will never meet, and the only way they can make your
 booking list match the rest of the page — without forking the module and
 inheriting your bugs — is to drop a file into their template. Echo the markup
-from `helper.php` and you have taken that away.
+from the module class and you have taken that away.
 
 ## The smallest one
 
@@ -28,17 +28,17 @@ $this->css();
 ?>
 <h3><?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_HEADING'); ?></h3>
 <?php if (!count($this->reservations)) : ?>
-	<p><?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_NONE'); ?></p>
+    <p><?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_NONE'); ?></p>
 <?php else : ?>
-	<ul id="upcoming-bookings-<?php echo $this->module->id; ?>">
-		<?php foreach ($this->reservations as $reservation) : ?>
-			<li><?php echo Lang::txt(
-				'MOD_UPCOMING_BOOKINGS_SLOT',
-				$this->escape($reservation->get('starts')),
-				$this->escape($reservation->get('ends'))
-			); ?></li>
-		<?php endforeach; ?>
-	</ul>
+    <ul id="upcoming-bookings-<?php echo $this->module->id; ?>">
+        <?php foreach ($this->reservations as $reservation) : ?>
+            <li><?php echo Lang::txt(
+                'MOD_UPCOMING_BOOKINGS_SLOT',
+                $this->escape($reservation->get('starts')),
+                $this->escape($reservation->get('ends'))
+            ); ?></li>
+        <?php endforeach; ?>
+    </ul>
 <?php endif; ?>
 ```
 
@@ -67,7 +67,8 @@ required from another layout, not chosen directly.
 which returns the first of three paths:
 
 1. `{templates}/{template}/html/mod_upcoming_bookings/{layout}.php` — the active
-   template's override.
+   template's override. On a super group's pages the group's own template is
+   tried before the site template.
 2. `{module directory}/tmpl/{layout}.php` — the module's own layout.
 3. `{module directory}/tmpl/default.php` — the fallback.
 
@@ -96,8 +97,7 @@ when its `show_recent` parameter is off:
 
 ```php
 $layout = 'default';
-if (!$this->params->get('show_recent', 1))
-{
+if (!$this->params->get('show_recent', 1)) {
     $layout = 'simple';
 }
 
@@ -113,9 +113,10 @@ is the module object. Every property the class set is available, along with
 <!--include: core/modules/mod_mygroups/tmpl/default.php:1-20-->
 
 Two things to note. The layout has no `namespace` declaration, so it runs in
-the global namespace and can call `Lang::txt()`, `Route::url()`, and `User`
-without importing anything — unlike `helper.php`, which is namespaced and must
-import each facade it uses. And `$this->module->id` is used to build element
+the global namespace, where `Lang::txt()`, `Route::url()` and `User` resolve
+to the root aliases without any import. Core layouts import the facade classes
+anyway, as above, which is harmless; the module class, which is namespaced,
+must import each facade it uses. And `$this->module->id` is used to build element
 ids: two instances of the same module on one page would otherwise collide.
 
 ## Escaping
@@ -137,10 +138,8 @@ resolver, which keeps the override point intact. `mod_mygroups` renders each
 row this way:
 
 ```php
-foreach ($this->recentgroups as $group)
-{
-    if ($group->published)
-    {
+foreach ($this->recentgroups as $group) {
+    if ($group->published) {
         $status = $this->getStatus($group);
 
         require $this->getLayoutPath('_item');
@@ -157,5 +156,5 @@ warning beyond an undefined-variable notice.
 
 There is no view object in a module and no `loadTemplate()`. The class is the
 view context, the layout is the template, and the output goes to the buffer
-that `Hubzero\Module\Loader::render()` opened around the entry file. Plugins
+that `Hubzero\Module\Loader::render()` opened around `run()`. Plugins
 work differently — see [Plugin views](../10-plugins/05-views.md).

@@ -190,7 +190,7 @@ The component's output is then wrapped by
 
 ```php
 <div class="group-component">
-	<?php echo $this->content; ?>
+    <?php echo $this->content; ?>
 </div>
 ```
 

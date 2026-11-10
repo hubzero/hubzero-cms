@@ -339,7 +339,7 @@ alongside the text direction and the template's own state:
 
 ```php
 $browser = new \Hubzero\Browser\Detector();
-$cls = array('no-js', $browser->name(), $browser->name() . $browser->major(), $this->direction);
+$cls = ['no-js', $browser->name(), $browser->name() . $browser->major(), $this->direction];
 ```
 
 That gives selectors such as `html.chrome`, `html.firefox52` and `html.rtl` to

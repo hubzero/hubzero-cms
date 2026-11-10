@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -527,16 +527,16 @@ one file, chosen by
 </code></pre>
 <p>There are exactly three candidates, tried in order:</p>
 <ol>
-<li><code>{templates}/{template}/html/{mod_name}/{layout}.php</code></li>
+<li><code>{templates}/{template}/html/{mod_name}/{layout}.php</code> — on a super group's
+pages, the group's template first, then the site template</li>
 <li><code>{module}/tmpl/{layout}.php</code></li>
 <li><code>{module}/tmpl/default.php</code></li>
 </ol>
-<p>A module is a <code>mod_name.php</code> stub, a <code>helper.php</code> holding the data logic, and
-one or more layouts in <code>tmpl/</code>:</p>
+<p>A module is a <code>mod_name.php</code> holding the module class, which gathers the
+data, and one or more layouts in <code>tmpl/</code>:</p>
 <pre><code>core/modules/mod_reportproblems/
     assets/css/mod_reportproblems.css
     assets/js/mod_reportproblems.js
-    helper.php
     mod_reportproblems.php
     mod_reportproblems.xml
     tmpl/default.php
@@ -696,7 +696,7 @@ plugin, or a change to the component, is the right answer instead.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../javascript/index.html" rel="prev"><span>Previous</span>JavaScript</a><a class="pager__next" href="../packaging/index.html" rel="next"><span>Next</span>Packaging</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/11-templates/09-overrides.md">Edit this page on GitHub</a>

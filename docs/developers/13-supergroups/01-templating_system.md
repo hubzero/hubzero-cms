@@ -23,9 +23,9 @@ One file, and it can be four lines:
 ```php
 <?php // app/site/groups/1051/template/index.php ?>
 <div class="coastal">
-	<h1>Coastal Resilience Center</h1>
-	<group:include type="menu" />
-	<group:include type="content" />
+    <h1>Coastal Resilience Center</h1>
+    <group:include type="menu" />
+    <group:include type="content" />
 </div>
 ```
 

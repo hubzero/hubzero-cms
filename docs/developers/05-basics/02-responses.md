@@ -72,7 +72,7 @@ public function statusTask()
 {
     Response::header('Content-Type', 'application/json');
 
-    echo json_encode(array('state' => $booking->get('state')));
+    echo json_encode(['state' => $booking->get('state')]);
 
     App::close();
 }
@@ -161,8 +161,7 @@ error template renders the right page:
 | anything else | `Hubzero\Error\Exception\RuntimeException` with that code |
 
 ```php
-if (!$row->get('id'))
-{
+if (!$row->get('id')) {
     App::abort(404, Lang::txt('COM_BLOG_ERROR_ENTRY_NOT_FOUND'));
 }
 ```

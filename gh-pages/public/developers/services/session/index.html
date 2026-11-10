@@ -97,7 +97,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -234,7 +234,7 @@ extensions from colliding over a common name. It is stored prefixed with
 <code>__</code>, so <code>default</code> becomes <code>$_SESSION['__default']</code>.</p>
 <pre><code class="language-php">Session::set('cart', $cart, 'com_cart');
 
-$cart = Session::get('cart', array(), 'com_cart');
+$cart = Session::get('cart', [], 'com_cart');
 </code></pre>
 <p>Get the argument order wrong — <code>Session::get('cart', 'com_cart')</code> — and you
 have asked for <code>cart</code> in the <code>default</code> namespace with the string

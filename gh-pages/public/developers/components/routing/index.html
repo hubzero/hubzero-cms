@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -230,30 +230,28 @@ use Hubzero\Component\Router\Base;
 
 class Router extends Base
 {
-	public function build(&amp;$query)
-	{
-		$segments = array();
+    public function build(&amp;$query)
+    {
+        $segments = [];
 
-		if (isset($query['instrument']))
-		{
-			$segments[] = $query['instrument'];
-			unset($query['instrument']);
-		}
+        if (isset($query['instrument'])) {
+            $segments[] = $query['instrument'];
+            unset($query['instrument']);
+        }
 
-		return $segments;
-	}
+        return $segments;
+    }
 
-	public function parse(&amp;$segments)
-	{
-		$vars = array();
+    public function parse(&amp;$segments)
+    {
+        $vars = [];
 
-		if (count($segments) &gt; 0)
-		{
-			$vars['instrument'] = $segments[0];
-		}
+        if (count($segments) &gt; 0) {
+            $vars['instrument'] = $segments[0];
+        }
 
-		return $vars;
-	}
+        return $vars;
+    }
 }
 </code></pre>
 <p><code>build()</code> and <code>parse()</code> have to be exact inverses. When they are not, a URL

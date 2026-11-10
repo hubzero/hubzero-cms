@@ -1,7 +1,7 @@
 <!--
-status: rewritten
-reviewed-against: 2.4-main @ 348f0057c2
-reviewed: 2026-09-10
+status: reviewed
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 screenshots: none
 -->
 # Events
@@ -30,7 +30,7 @@ directory, and why an event sometimes reaches nobody.
 A component triggers a named event and reads back what came home:
 
 ```php
-use Event;
+use Hubzero\Facades\Event;
 
 // core/components/com_booking/site/controllers/bookings.php
 $results = Event::trigger('booking.onBookingAfterSave', array(&$row, $isNew));
@@ -40,9 +40,11 @@ A plugin in the matching group answers it by having a method of that name:
 
 ```php
 // core/plugins/booking/notify/notify.php
-defined('_HZEXEC_') or die;
+namespace Plugins\Booking\Notify;
 
-class plgBookingNotify extends \Hubzero\Plugin\Plugin
+use Hubzero\Plugin\Plugin;
+
+class Notify extends Plugin
 {
     public function onBookingAfterSave($row, $isNew)
     {
@@ -56,10 +58,12 @@ Nothing connects those two files. The name does.
 
 The plugin's entry file is `plugins/{group}/{name}/{name}.php` and the loader
 `require`s it by that path, so autoloading is not involved in reaching it. It
-accepts either of two class names: `plg{Group}{Name}` in the root namespace,
-which is what every shipped plugin uses, or `Plugins\{Group}\{Name}`. Helper
-classes *inside* the plugin are namespaced `Plugins\{Group}\{Name}\…` and are
-autoloaded normally — `Plugins\Content\Formathtml\Parser` is
+accepts either of two class names: `Plugins\{Group}\{Name}\{Name}`, which is
+what every shipped plugin uses, or the older `plg{Group}{Name}` in the root
+namespace, still accepted for a hub's own plugins; see
+[Plugins: the class](../10-plugins/02-structure.md#the-class). Helper
+classes *inside* the plugin share the namespace, `Plugins\{Group}\{Name}\…`,
+and are autoloaded normally — `Plugins\Content\Formathtml\Parser` is
 `core/plugins/content/formathtml/parser.php`. See
 [Autoloading](03-autoloading.md).
 

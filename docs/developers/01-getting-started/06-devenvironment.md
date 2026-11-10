@@ -383,9 +383,10 @@ MariaDB database. See [Testing](../15-testing.md) for dependencies, selecting
 a single test, and the limits of that coverage.
 
 For style, `core/bin/php_tests.sh <files>` gives you the PSR-12 check and the
-syntax check in one call. No workflow runs it: much of the older code is
-indented with tabs, which PSR-12 does not allow, so run it on files you write
-or bring up to the standard.
+syntax check in one call; `core/vendor/bin/phpcs` from the checkout root checks
+the whole tree against the committed
+[`phpcs.xml.dist`](../../../phpcs.xml.dist), which it passes. See
+[PHP Coding Style](../19-conventions/01-php-style.md#checking-your-work).
 
 ## Next
 

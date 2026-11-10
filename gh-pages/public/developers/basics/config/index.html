@@ -99,7 +99,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -235,13 +235,13 @@ effect.</p>
 <p>The site settings live in <code>app/config/</code>, one PHP file per group, each
 returning a plain array:</p>
 <pre><code class="language-php">// app/config/app.php
-return array(
+return [
     'secret'        =&gt; '26a6751ffda14c...',
     'sitename'      =&gt; 'myhub',
     'debug'         =&gt; '0',
     'offset'        =&gt; 'America/New_York',
     'site_template' =&gt; 'hubzero',
-);
+];
 </code></pre>
 <p><code>Hubzero\Base\Application</code> builds a
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Config/Repository.php"><code>Hubzero\Config\Repository</code></a>
@@ -373,8 +373,7 @@ because the layout is included from within the module object.</p>
 <pre><code class="language-php">$params = Component::params('com_bookings');
 $params-&gt;merge($menuParams);
 
-if ($params-&gt;has('feed_email'))
-{
+if ($params-&gt;has('feed_email')) {
     // ...
 }
 </code></pre>

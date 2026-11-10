@@ -100,7 +100,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -200,16 +200,18 @@ wiring underneath it: where the dispatcher comes from, how a name reaches a
 directory, and why an event sometimes reaches nobody.</p>
 <h2 id="the-smallest-working-pair">The smallest working pair</h2>
 <p>A component triggers a named event and reads back what came home:</p>
-<pre><code class="language-php">use Event;
+<pre><code class="language-php">use Hubzero\Facades\Event;
 
 // core/components/com_booking/site/controllers/bookings.php
 $results = Event::trigger('booking.onBookingAfterSave', array(&amp;$row, $isNew));
 </code></pre>
 <p>A plugin in the matching group answers it by having a method of that name:</p>
 <pre><code class="language-php">// core/plugins/booking/notify/notify.php
-defined('_HZEXEC_') or die;
+namespace Plugins\Booking\Notify;
 
-class plgBookingNotify extends \Hubzero\Plugin\Plugin
+use Hubzero\Plugin\Plugin;
+
+class Notify extends Plugin
 {
     public function onBookingAfterSave($row, $isNew)
     {
@@ -221,10 +223,12 @@ class plgBookingNotify extends \Hubzero\Plugin\Plugin
 <p>Nothing connects those two files. The name does.</p>
 <p>The plugin's entry file is <code>plugins/{group}/{name}/{name}.php</code> and the loader
 <code>require</code>s it by that path, so autoloading is not involved in reaching it. It
-accepts either of two class names: <code>plg{Group}{Name}</code> in the root namespace,
-which is what every shipped plugin uses, or <code>Plugins\{Group}\{Name}</code>. Helper
-classes <em>inside</em> the plugin are namespaced <code>Plugins\{Group}\{Name}\…</code> and are
-autoloaded normally — <code>Plugins\Content\Formathtml\Parser</code> is
+accepts either of two class names: <code>Plugins\{Group}\{Name}\{Name}</code>, which is
+what every shipped plugin uses, or the older <code>plg{Group}{Name}</code> in the root
+namespace, still accepted for a hub's own plugins; see
+<a href="../../plugins/structure/index.html#the-class">Plugins: the class</a>. Helper
+classes <em>inside</em> the plugin share the namespace, <code>Plugins\{Group}\{Name}\…</code>,
+and are autoloaded normally — <code>Plugins\Content\Formathtml\Parser</code> is
 <code>core/plugins/content/formathtml/parser.php</code>. See
 <a href="../autoloading/index.html">Autoloading</a>.</p>
 <aside class="admonition admonition--note">
@@ -369,7 +373,7 @@ event with listeners but no call site <em>is</em> dead, and there are some.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
+        <p class="stamp">Reviewed against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../autoloading/index.html" rel="prev"><span>Previous</span>Autoloading</a><a class="pager__next" href="../extensions/index.html" rel="next"><span>Next</span>Extensions</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/04-events.md">Edit this page on GitHub</a>

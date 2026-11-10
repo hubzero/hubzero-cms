@@ -44,8 +44,7 @@ out; see below.
 ```php
 use Filesystem;
 
-if (!Filesystem::exists($path))
-{
+if (!Filesystem::exists($path)) {
     throw new Exception(Lang::txt('File not found.'));
 }
 
@@ -98,8 +97,7 @@ Check `exists()` first, as the example above does, and neither bites.
 it, and a failure means the file is deleted rather than kept:
 
 ```php
-if (!Filesystem::isSafe($path . DS . $file['name']))
-{
+if (!Filesystem::isSafe($path . DS . $file['name'])) {
     Filesystem::delete($path . DS . $file['name']);
 
     throw new Exception(Lang::txt('COM_BOOKINGS_FILE_FAILED_SCAN'));

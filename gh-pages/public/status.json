@@ -39,7 +39,8 @@
    "title": "Developers",
    "pages": 108,
    "counts": {
-    "rewritten": 108
+    "rewritten": 97,
+    "reviewed": 11
    }
   },
   {
@@ -53,9 +54,9 @@
   }
  ],
  "totals": {
-  "rewritten": 268,
+  "rewritten": 257,
   "draft": 1,
-  "reviewed": 23,
+  "reviewed": 34,
   "generated": 154
  }
 }

@@ -98,7 +98,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -308,8 +308,7 @@ serve. It rejects anything that looks like an absolute URL, a call back
 into <code>index.php</code>, a Windows drive letter, a backslash, or a path containing
 <code>..</code>. It is a filter on user-supplied names, not a check that the file
 exists or that the caller may read it.</p>
-<pre><code class="language-php">if (!Server::valid($file))
-{
+<pre><code class="language-php">if (!Server::valid($file)) {
     App::abort(404, Lang::txt('File not found'));
 }
 </code></pre>

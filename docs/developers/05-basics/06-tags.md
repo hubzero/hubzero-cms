@@ -107,8 +107,7 @@ $tags = Request::getString('tags', '');
 
 $cloud = new Tags($instrument->get('id'));
 
-if (!$cloud->setTags($tags, User::get('id')))
-{
+if (!$cloud->setTags($tags, User::get('id'))) {
     $this->setError($cloud->getError());
 }
 ```
@@ -186,16 +185,13 @@ The autocompleting input every edit form uses comes from the
 `hubzero/autocompleter` plugin, reached by event:
 
 ```php
-$tf = Event::trigger('hubzero.onGetMultiEntry', array(
-    array('tags', 'tags', 'actags', '', $this->escape($tags))
-));
+$tf = Event::trigger('hubzero.onGetMultiEntry', [
+    ['tags', 'tags', 'actags', '', $this->escape($tags)]
+]);
 
-if (count($tf))
-{
+if (count($tf)) {
     echo $tf[0];
-}
-else
-{
+} else {
     echo '<input type="text" name="tags" value="' . $this->escape($tags) . '" />';
 }
 ```

@@ -1,76 +1,19 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 348f0057c2
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 screenshots: none
 -->
 # PHP Coding Style
 
-Hubzero writes PHP to [PSR-12](https://www.php-fig.org/psr/psr-12/) with three
-deliberate departures: indentation is a tab, the opening brace of a control
-structure goes on its own line, and a leading underscore on a non-public member
-is still allowed. Everything else PSR-12 says holds.
+Hubzero writes PHP to [PSR-12](https://www.php-fig.org/psr/psr-12/) and its
+successor, [PER Coding Style](https://www.php-fig.org/per/coding-style/), with
+no house departures. The repository commits the ruleset that checks it,
+[`phpcs.xml.dist`](../../../phpcs.xml.dist), and the whole tree passes it:
+run phpcs and anything it reports came from your change.
 
-> **Note:** The repository ships no phpcs ruleset. PSR-12 is a description of
-> the house style, not a gate the build enforces. What continuous integration
-> checks is in [What the build checks](#what-the-build-checks) below.
-
-## The three departures
-
-None of the three is a better idea than what PSR-12 asks for. They are older
-than PSR-12, they are what the tree is written in, and the cost of changing
-them is the point: reformatting 2,800 files rewrites every line of every file,
-which destroys `git blame`, turns every open pull request into a conflict, and
-buries the next real change in a diff nobody can review. The style is frozen
-because unfreezing it is expensive, not because it is right.
-
-The rule that follows from that: **match the file you are editing.** A patch
-that fixes one line and reindents the surrounding forty is a patch a reviewer
-has to read twice.
-
-### Indent with tabs
-
-One tab per level. PSR-12 asks for four spaces; core does not use them. Of the
-2,870 PHP files under `core/components`, 2,809 indent with tabs and 32 with
-spaces.
-
-Newer framework files written from scratch — `Hubzero\Base\ClassLoader`, for
-one — use four spaces. Match the file you are editing. Never mix the two in a
-single file, and never reindent a file you are otherwise only patching: it
-buries the change in a diff nobody can read.
-
-### Braces on their own line
-
-The opening brace goes on the line below, for classes, methods, functions
-**and** control structures. PSR-12 puts a control structure's brace on the same
-line; core does not.
-
-```php
-if ($filters['month'] > 12)
-{
-	$filters['month'] = 0;
-}
-
-foreach ($rows as $row)
-{
-	$row->save();
-}
-```
-
-### A leading underscore is allowed
-
-PSR-12 says an underscore prefix has no meaning. Core uses one on protected and
-private members throughout — 887 methods and 718 properties under
-`core/components` and `core/libraries`. Do not add the prefix to new code;
-do not strip it from existing code either, because the name is part of the
-class's contract with its subclasses.
-
-That last part is the reason this one is not simply a tidy-up waiting to
-happen. Renaming `_sortNames()` to `sortNames()` in a base class silently
-breaks every subclass that overrides it — including subclasses in extensions
-that are not in this repository, on hubs you cannot see. PHP raises nothing;
-the override just stops being an override and the base implementation runs
-instead. The prefix stays.
+The rules are PSR-12's. This page shows what they look like in core, adds the
+handful of conventions PSR-12 leaves open, and says how to check your work.
 
 ## Files
 
@@ -81,9 +24,10 @@ instead. The prefix stays.
   ends in markup keeps its final `?>` because it has to.
 - End the file with a single newline, and use Unix line endings (LF, `0x0A`).
   Never CR or CRLF.
+- Indent with four spaces. Never tabs.
 - One class per file.
 
-Every PHP file opens with the same four-line docblock:
+Every PHP file opens with the same docblock:
 
 <!--include: core/components/com_blog/site/controllers/entries.php:1-7-->
 
@@ -94,48 +38,63 @@ Every PHP file opens with the same four-line docblock:
  * @copyright  Copyright © 2026 Purdue University. All Rights Reserved.
 ```
 
-and a file modified from core keeps the earliest year already there:
-`Copyright © 2015-2026 …`. The long LGPL preamble that older documentation
-showed is gone; no file in the tree carries it.
+and a file modified from core keeps the copyright line already there. The long
+LGPL preamble that older documentation showed is gone; no file in the tree
+carries it.
 
-### The direct-access gate
+### Side effects
 
-A file that is reached by including it — a view template, a plugin entry point,
-a helper the router pulls in — declares the gate immediately after the header:
+A file either declares symbols — classes, functions, constants — or runs code.
+Not both. That is PSR-1's rule, and phpcs enforces it.
+
+A file reached by including it rather than through the autoloader — almost
+always a view template — declares the direct-access gate immediately after the
+header:
 
 ```php
 // No direct access
 defined('_HZEXEC_') or die;
 ```
 
-3,389 files do. A file that is only ever reached through the autoloader does
-not need it; the autoloader will not run arbitrary code on request.
+1,855 files do, 1,784 of them under a `tmpl/` directory. phpcs accepts the gate
+as the one statement a symbol-declaring file may run. A file reached only
+through the autoloader does not need it: the autoloader will not run arbitrary
+code on request.
+
+A few files genuinely do both: `core/bootstrap/app.php`, and template overrides
+that declare a helper function and then render with it. They open with
+`// phpcs:disable PSR1.Files.SideEffects`. Do not add that line to a class file;
+move the code that runs into a method instead.
 
 ### Importing global facades
 
 The CMS registers `Route`, `App`, `User`, `Lang`, `Event`, `Config`, `Request`,
 `Notify` and the rest as root-namespace aliases. Inside a namespaced file an
-unqualified `Route::url()` resolves to `Current\Namespace\Route`, not the alias,
-and fatals when the line runs. Import every facade you call:
+unqualified `Route::url()` resolves to `Current\Namespace\Route`, not the
+alias, and fails when the line runs if that name means something else there.
+Import every facade you call:
 
 ```php
 namespace Components\Blog\Site\Controllers;
 
 use Hubzero\Component\SiteController;
-use Request;
-use Route;
-use Lang;
-use User;
+use Hubzero\Facades\Request;
+use Hubzero\Facades\Route;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
 ```
 
-A leading backslash (`\Route::url()`) works too, but the `use` list is the house
-form. This is the one style rule with a linter behind it; see below.
+Core imports the facade class itself, `Hubzero\Facades\Route`, in about 3,400
+files. Importing the alias (`use Route;`) does the same job and survives in
+about 160; either satisfies the linter. See
+[Facades](../03-foundation/06-facades.md#importing-a-facade).
 
 ## Lines
 
-The soft limit is 120 characters. There is no hard limit: a longer line is a
-warning, never an error, and readability wins over the count. Split a long call
-by pulling its arguments into variables first.
+The soft limit is 120 characters. There is no hard limit: phpcs reports a
+longer line as a warning, which the committed ruleset does not show, and
+readability wins over the count. Split a long call by pulling its arguments
+into variables first.
 
 No trailing whitespace. One statement per line.
 
@@ -158,41 +117,43 @@ $greeting = "Hello {$name}, welcome back!";
 `"${name}"` is not permitted; PHP 8.2 deprecates it.
 
 Concatenate with `.`, a space on each side. When a concatenated expression runs
-long, break it and align the `.` under the `=`:
+long, break before the `.` and indent the continuation one level:
 
 ```php
-$sql = "SELECT `id`, `name` FROM `users` "
-     . "WHERE `name` = 'Jim' "
-     . "ORDER BY `name` ASC";
+$this->setQuery(
+    "SELECT TABLE_NAME"
+    . " FROM INFORMATION_SCHEMA.TABLES"
+    . " WHERE TABLE_TYPE = 'SEQUENCE'"
+);
 ```
 
 ## Arrays
 
-`array()` is the prevailing form in core — 11,377 uses under
-`core/components` — and short `[]` syntax is accepted in new code. Pick one per
-file.
+Short syntax, `[]`. Core has no `array()` constructor left.
 
 A single space after each comma. A multi-line array indents its items one level
-and puts the closing paren on its own line at the level of the declaration:
+and puts the closing bracket on its own line at the level of the declaration:
 
 ```php
-$filters = array(
-	'year'       => Request::getInt('year', 0),
-	'month'      => Request::getInt('month', 0),
-	'scope'      => $this->config->get('show_from', 'site'),
-	'authorized' => false,
-	'state'      => 1,
-	'access'     => User::getAuthorisedViewLevels()
-);
+$filters = [
+    'year'       => Request::getInt('year', 0),
+    'month'      => Request::getInt('month', 0),
+    'scope'      => $this->config->get('show_from', 'site'),
+    'authorized' => false,
+    'state'      => 1,
+    'access'     => User::getAuthorisedViewLevels(),
+];
 ```
 
-Aligning the `=>` operators is house style, as above. A trailing comma on the
-last item is allowed but core generally omits it.
+Aligning the `=>` operators is allowed and common. A trailing comma on the last
+item of a multi-line array is allowed, and it keeps the next addition to a
+one-line diff.
 
 ## Classes
 
 Name classes as [PHP Naming Conventions](02-php-naming.md) describes.
-`extends` and `implements` stay on the class line:
+`extends` and `implements` stay on the class line, and the opening brace goes
+on the line below:
 
 ```php
 class Entries extends SiteController
@@ -200,16 +161,16 @@ class Entries extends SiteController
 }
 ```
 
-Declare visibility on every property and method. `var` is not used. Properties
-come before methods.
+Declare visibility on every property, method and class constant. `var` is not
+used. Properties come before methods.
 
 ## Functions and methods
 
-No space between the name and the opening parenthesis. Arguments separated by
-`, `. Arguments with defaults go last, and the default gets a space on each
-side of the `=` — `$limit = 25`, not `$limit=25`. Both forms are in core; the
-spaced one is more common and is what PSR-12 asks for. Do not wrap a return
-value in parentheses — `return $this->bar;`, not `return($this->bar);`.
+The opening brace of a function or method goes on the line below its
+signature. No space between the name and the opening parenthesis. Arguments
+separated by `, `. Arguments with defaults go last, and the default gets a
+space on each side of the `=` — `$limit = 25`, not `$limit=25`. Do not wrap a
+return value in parentheses — `return $this->bar;`, not `return($this->bar);`.
 
 Call-time pass-by-reference (`foo(&$bar)` at the call site) is a PHP fatal and
 is never used. Declare the reference in the signature instead:
@@ -222,41 +183,46 @@ public function onContentPrepare($context, &$article, &$params)
 
 ## Control structures
 
-One space after the keyword, none inside the parentheses. Braces are always
-required, even for a single statement. `elseif`, not `else if` — both appear in
-core, and `elseif` is the rule for new code.
-
-Break a long condition before the operator, and indent the continuation so the
-operator hangs one column left of the first clause:
+One space after the keyword, none inside the parentheses. The opening brace
+goes on the same line as the keyword, and the closing brace on its own line.
+Braces are always required, even for a single statement. `elseif`, not
+`else if`.
 
 ```php
-		if (!User::authorise('core.edit', $this->option)
-		 && !User::authorise('core.create', $this->option))
-		{
-			App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-		}
+if ($filters['month'] > 12) {
+    $filters['month'] = 0;
+} elseif ($filters['month'] < 0) {
+    $filters['month'] = 1;
+}
+
+foreach ($rows as $row) {
+    $row->save();
+}
 ```
 
-Put the operator at the start of the continuation line, not the end of the one
-before, and do not mix the two in one condition.
+A condition too long for one line puts each clause on a line of its own,
+indented one level, with the boolean operator at the start of the line. The
+closing parenthesis and the opening brace share the line after:
+
+<!--include: core/components/com_blog/admin/controllers/entries.php:134-139-->
 
 A `switch` indents its `case` one level and the case body one more. Give it a
 `default`. Where a non-empty case falls through deliberately, say so with a
-`// no break` comment, so the next reader does not read it as a bug:
+`// no break` comment; PSR-12 requires it, and the next reader would otherwise
+read the fall-through as a bug:
 
 ```php
-switch ($state)
-{
-	case 'archived':
-		$this->archive();
-		// no break
+switch ($state) {
+    case 'archived':
+        $this->archive();
+        // no break
 
-	case 'published':
-		$this->publish();
-		break;
+    case 'published':
+        $this->publish();
+        break;
 
-	default:
-		break;
+    default:
+        break;
 }
 ```
 
@@ -267,13 +233,13 @@ method gets a description, its parameters, and its return type. Columns are
 aligned with spaces, two after each tag:
 
 ```php
-	/**
-	 * Generate an alias from the data being saved
-	 *
-	 * @param   array   $data  the data being saved
-	 * @return  string
-	 */
-	public function automaticAlias($data)
+    /**
+     * Generate an alias from the data being saved
+     *
+     * @param   array   $data  the data being saved
+     * @return  string
+     */
+    public function automaticAlias($data)
 ```
 
 Add `@throws` for every exception class a method can raise. Do not write
@@ -297,8 +263,17 @@ over hand-written SQL in new code; see
 ## Checking your work
 
 The tools live under `core/vendor/bin`, installed by `php bin/composer install`
-run from the `core` directory. The lint and test commands expect that working
-directory too:
+run from the `core` directory. phpcs and PHPStan read their configuration from
+the repository root, so run them from there:
+
+```bash
+core/vendor/bin/phpcs                    # the whole tree, about half a minute
+core/vendor/bin/phpcs path/to/file.php   # just what you changed
+core/vendor/bin/phpstan analyse --memory-limit=4G
+php core/bin/lint/missing-facade-imports.php
+```
+
+The lint and test commands expect `core` as the working directory:
 
 ```bash
 cd core
@@ -306,62 +281,18 @@ vendor/bin/parallel-lint --exclude vendor .
 vendor/bin/phpunit -c phpunit.xml.dist
 ```
 
-The facade check runs from the repository root:
+| Tool | Configuration | What it catches |
+|---|---|---|
+| phpcs | [`phpcs.xml.dist`](../../../phpcs.xml.dist) | Every PSR-12 rule above, across `core/bootstrap`, `components`, `libraries`, `migrations`, `modules`, `plugins` and `templates`. Test directories are excluded; warnings are not shown. |
+| phpcbf | the same | Fixes most of what phpcs reports. Run it on the files you changed and read the diff. |
+| PHPStan | [`phpstan.neon`](../../../phpstan.neon) | At level 0: classes, functions and methods that do not exist, wrong argument counts, undefined variables, includes that point nowhere. The tree has no findings. |
+| `missing-facade-imports.php` | none | A facade called without a `use`. Takes `--fix` to insert the missing imports, and any path to narrow the scan. |
 
-```bash
-php core/bin/lint/missing-facade-imports.php
-```
-
-It takes `--fix` to insert the missing `use` statements, and any path to narrow
-the scan; with no path it scans `core/components`, `core/plugins`,
-`core/modules` and `core/libraries/Hubzero`.
-
-phpcs is installed as a development dependency but the repository commits no
-ruleset, so running plain PSR-12 against core reports mostly the three
-departures above: one ordinary controller draws 772 errors, nearly all of them
-tab indentation and control-structure braces. Excluding the sniffs that see only
-those departures makes the result readable — the same file drops to a few dozen
-findings worth reading:
-
-```bash
-house_style=Generic.WhiteSpace.DisallowTabIndent
-house_style=$house_style,Generic.WhiteSpace.ScopeIndent
-house_style=$house_style,Squiz.WhiteSpace.ScopeClosingBrace
-house_style=$house_style,Squiz.ControlStructures.ControlSignature
-house_style=$house_style,PSR12.ControlStructures.ControlStructureSpacing
-house_style=$house_style,PSR2.Methods.MethodDeclaration
-house_style=$house_style,Squiz.Functions.MultiLineFunctionDeclaration
-
-core/vendor/bin/phpcs --standard=PSR12 --exclude=$house_style path/to/changed/file.php
-```
-
-Run it on the files you changed, not on the tree.
-
-## When the linter and the house style disagree
-
-phpcs has no committed ruleset here, so there is nothing in the repository
-that encodes the house style. `--standard=PSR12` is the closest thing
-available and it is wrong about three rules, which is why the exclude list
-above exists. When a finding and this page disagree:
-
-1. **The three departures win.** Tabs, braces on their own line, and a
-   leading underscore on an existing non-public member are the house style.
-   phpcs is not configured to know that. Exclude the sniff, do not change the
-   code.
-2. **Everything else, phpcs wins.** Trailing whitespace, a missing visibility
-   modifier, a space before a comma, `else if` for `elseif` — fix those. They
-   are PSR-12 and they are also what this page asks for.
-3. **The file you are in wins over both, for anything cosmetic.** A file
-   already written with four-space indentation or `[]` arrays stays that way.
-   Consistency inside one file beats consistency across the tree, because the
-   reader is looking at one file.
-4. **When it is still not clear, leave it.** A style question that needs a
-   decision is not worth holding a fix for. Say in the pull request that you
-   left it and why; a reviewer can settle it in one comment.
-
-Do not add a ruleset to the repository as part of an unrelated change. A
-committed `phpcs.xml` would decide the house style for everyone, and that is
-its own pull request with its own discussion.
+A phpcs finding in a file you touched is yours to fix, including one on a line
+you did not change: the tree is clean, so it was not there before. Do not add a
+`phpcs:disable` or `phpcs:ignore` to quiet one. Nearly all the tree carries are
+for side effects in the files described [above](#side-effects); the rest are
+two view templates with long lines and one standalone command-line script.
 
 ## What the build checks
 
@@ -374,6 +305,5 @@ cares about.
 | [`tests.yml`](../../../.github/workflows/tests.yml) | The PHPUnit suite, for a change under `core` |
 | [`pages.yml`](../../../.github/workflows/pages.yml) | Builds the documentation, regenerates `docs/reference`, checks every internal link, and fails if the committed `gh-pages/public` is stale |
 
-None of them runs phpcs. A style problem is caught in review, not by the
-build. A syntax error, a missing facade import, a language key nothing
-defines, and a broken test are caught by the build.
+None of them runs phpcs or PHPStan yet. Run both before you open a pull
+request; a reviewer will.

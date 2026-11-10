@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -318,11 +318,11 @@ A view with no <code>.xml</code> files at all offers no menu item types.</p>
 <h2 id="building-a-view-by-hand">Building a view by hand</h2>
 <p>Outside a controller — in a module, a plugin, or a second view within one task
 — construct one directly:</p>
-<pre><code class="language-php">$view = new \Hubzero\Component\View(array(
+<pre><code class="language-php">$view = new \Hubzero\Component\View([
     'base_path' =&gt; PATH_COMPONENT,
     'name'      =&gt; 'instruments',
     'layout'    =&gt; 'display'
-));
+]);
 
 $view-&gt;set('instruments', $instruments)
      -&gt;display();

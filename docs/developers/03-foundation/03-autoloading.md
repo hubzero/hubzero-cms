@@ -1,7 +1,7 @@
 <!--
-status: rewritten
-reviewed-against: 2.4-main @ 348f0057c2
-reviewed: 2026-09-10
+status: reviewed
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 screenshots: none
 -->
 # Autoloading
@@ -62,6 +62,7 @@ Each one turns the rest of the class name into a path a different way.
 |---|---|---|
 | `Components\Booking\Models\Instrument` | `components/com_booking/` | `components/booking/` |
 | `Modules\Booking\Booking` | `modules/mod_booking/` | `modules/booking/` |
+| `Modules\ArticlesLatest\ArticlesLatest` | `modules/mod_articleslatest/` | `modules/mod_articles_latest/`, `modules/articleslatest/` |
 | `Plugins\Content\Booking\Helper` | `plugins/content/booking/` | — |
 | `Templates\Kimera\Helper` | `templates/tpl_kimera/` | `templates/kimera/` |
 | `Migrations\Global\Core\Migration…` | `migrations/` | — |
@@ -81,7 +82,7 @@ lowercased but the file name as spelled, and the path with only the client
 directory (`site`, `admin`, `api`) or the one after the extension
 lowercased:
 
-<!--include: core/libraries/Hubzero/Base/ClassLoader.php:273-297-->
+<!--include: core/libraries/Hubzero/Base/ClassLoader.php:229-252-->
 
 So `Components\Booking\Models\Instrument` is looked for at:
 
@@ -128,21 +129,27 @@ framework file does not hide the rest of the library.
 
 ## The per-kind details that catch people
 
-**Modules collapse to one word.** The module directory is `mod_` plus the
-namespace segment lowercased, with nothing inserted. `Modules\ArticlesArchive`
-is looked for in `modules/mod_articlesarchive`, and the directory in the tree
-is `mod_articles_archive`. Sixteen shipped module directories carry an
-underscore in the name and none of them can be reached that way. It costs
-nothing today, because a module is rendered by including `mod_{name}.php`
-rather than by autoloading a class — see
-[Extensions](05-extensions.md#modules) — but a class you add to such a module
-will not load by name.
+**Modules try the words run together, then split.** The module directory is
+`mod_` plus the namespace segment lowercased, and then the same with an
+underscore before each inner capital. `Modules\ArticlesArchive` is looked for
+in `modules/mod_articlesarchive` and then `modules/mod_articles_archive`,
+which is the directory in the tree. All sixteen shipped module directories
+with an underscore in the name are reached the second way. A directory whose
+underscores fall anywhere else than before the namespace's inner capitals is
+not found. The file inside is the rest of the class name, and the module's
+own `mod_{name}.php` is tried as well, which is where a module's entry class
+lives: `Modules\Login\Login` is `mod_login/mod_login.php`.
 
 **Plugins have one path, not two.** `Plugins\Content\Booking\Helper` is
 `plugins/content/booking/Helper.php` (or the all-lowercase spelling). There
 is no `plg_` prefix and no second directory to fall back on. The group
 directory name and the plugin directory name both come straight from the
-class name, lowercased.
+class name, lowercased, with two exceptions mapped back by hand:
+`EditorsXtd` is the `editors-xtd` group and `DefaultHandler` is the
+`citation/default` plugin — a hyphen cannot appear in a namespace, and
+`Default` cannot name a class. A plugin's entry class, `Plugins\Content\Formathtml\Formathtml`,
+resolves the same way to `formathtml/formathtml.php`, so it can be autoloaded
+as well as required by the plugin loader.
 
 **Templates try `tpl_` first.** Every template in the tree is a bare name —
 `core/templates/kimera` — so it is always the second variant that matches.

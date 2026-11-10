@@ -101,7 +101,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -331,8 +331,7 @@ functions above are the intended way to reach it.</p>
 <code>mark($label)</code> records a point in the request; <code>marks()</code>, <code>duration()</code>,
 <code>memory()</code> and <code>summary()</code> read the result. The application marks its own
 stages — <code>afterDispatch</code> and the rest — and the debug panel renders them.</p>
-<pre><code class="language-php">if ($profiler = App::get('profiler'))
-{
+<pre><code class="language-php">if ($profiler = App::get('profiler')) {
     $profiler-&gt;mark('afterMyExpensiveThing');
 }
 </code></pre>

@@ -109,7 +109,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -604,9 +604,10 @@ directory. From the checkout root, run the suite with:</p>
 MariaDB database. See <a href="../../testing/index.html">Testing</a> for dependencies, selecting
 a single test, and the limits of that coverage.</p>
 <p>For style, <code>core/bin/php_tests.sh &lt;files&gt;</code> gives you the PSR-12 check and the
-syntax check in one call. No workflow runs it: much of the older code is
-indented with tabs, which PSR-12 does not allow, so run it on files you write
-or bring up to the standard.</p>
+syntax check in one call; <code>core/vendor/bin/phpcs</code> from the checkout root checks
+the whole tree against the committed
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/phpcs.xml.dist"><code>phpcs.xml.dist</code></a>, which it passes. See
+<a href="../../conventions/php-style/index.html#checking-your-work">PHP Coding Style</a>.</p>
 <h2 id="next">Next</h2>
 <p><a href="../../foundation/index.html">Foundation</a> covers how a request is served.</p>
 

@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/assets/index.html">Assets</a></li>
@@ -227,49 +227,52 @@ instead of sending the mail from the component.</p>
 <p>Three files under <code>app/plugins/bookings/notify/</code>, and one command.</p>
 <p><code>notify.php</code>:</p>
 <pre><code class="language-php">&lt;?php
-// No direct access
-defined('_HZEXEC_') or die();
 
-class plgBookingsNotify extends \Hubzero\Plugin\Plugin
+namespace Plugins\Bookings\Notify;
+
+use Hubzero\Facades\Config;
+use Hubzero\Mail\Message;
+use Hubzero\Plugin\Plugin;
+
+class Notify extends Plugin
 {
-	public function onReservationCreate($reservation)
-	{
-		$to = $this-&gt;params-&gt;get('manager_email');
+    public function onReservationCreate($reservation)
+    {
+        $to = $this-&gt;params-&gt;get('manager_email');
 
-		if (!$to)
-		{
-			return;
-		}
+        if (!$to) {
+            return;
+        }
 
-		$message = new \Hubzero\Mail\Message();
-		$message-&gt;setSubject('New reservation')
-		        -&gt;addFrom(Config::get('mailfrom'), Config::get('sitename'))
-		        -&gt;addTo($to)
-		        -&gt;addPart('A new reservation was created.', 'text/plain');
+        $message = new Message();
+        $message-&gt;setSubject('New reservation')
+            -&gt;addFrom(Config::get('mailfrom'), Config::get('sitename'))
+            -&gt;addTo($to)
+            -&gt;addPart('A new reservation was created.', 'text/plain');
 
-		$message-&gt;send();
-	}
+        $message-&gt;send();
+    }
 }
 </code></pre>
 <p><code>notify.xml</code> — the manifest, which the Plugin Manager reads for the display
 name and the parameter form. <code>migrations/Migration20260210000000PlgBookingsNotify.php</code>:</p>
 <pre><code class="language-php">&lt;?php
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\Bookings\Notify\Migrations;
 
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 class Migration20260210000000PlgBookingsNotify extends Base
 {
-	public function up()
-	{
-		$this-&gt;addPluginEntry('bookings', 'notify');
-	}
+    public function up()
+    {
+        $this-&gt;addPluginEntry('bookings', 'notify');
+    }
 
-	public function down()
-	{
-		$this-&gt;deletePluginEntry('bookings', 'notify');
-	}
+    public function down()
+    {
+        $this-&gt;deletePluginEntry('bookings', 'notify');
+    }
 }
 </code></pre>
 <p>Then:</p>
@@ -318,7 +321,8 @@ see <a href="structure/index.html#group-and-directory-must-match">Group and dire
     composer.json
 </code></pre>
 <p>Only <code>blog.php</code> and <code>blog.xml</code> are required, plus the migration if the plugin
-is ever to run. The class inside <code>blog.php</code> is <code>plgMembersBlog</code>, it extends
+is ever to run. The class inside <code>blog.php</code> is <code>Plugins\Members\Blog\Blog</code>,
+it extends
 <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Plugin.php"><code>Hubzero\Plugin\Plugin</code></a>, and
 its public <code>onMembersAreas()</code> and <code>onMembers()</code> methods are what
 <code>com_members</code> triggers.</p>
@@ -359,7 +363,7 @@ the responses.</li>
 </ul>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Reviewed against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../components/packaging/index.html" rel="prev"><span>Previous</span>Packaging</a><a class="pager__next" href="migrations/index.html" rel="next"><span>Next</span>Migrations</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/index.md">Edit this page on GitHub</a>

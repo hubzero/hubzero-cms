@@ -32,7 +32,7 @@ debug bar can list what fired.
 ```php
 use Event;
 
-$results = Event::trigger('bookings.onBookingSaved', array(&$booking, $isNew));
+$results = Event::trigger('bookings.onBookingSaved', [&$booking, $isNew]);
 ```
 
 Two things about that line matter.
@@ -44,10 +44,9 @@ event, and not a single result. Code that treats it as a boolean is testing
 means:
 
 ```php
-$results = Event::trigger('content.onContentPrepare', array('com_bookings.note', &$row, $params));
+$results = Event::trigger('content.onContentPrepare', ['com_bookings.note', &$row, $params]);
 
-foreach ($results as $result)
-{
+foreach ($results as $result) {
     // ...
 }
 ```
@@ -93,7 +92,7 @@ in that group.
 
 ```php
 // loads core/plugins/cron/*, then calls onClosePending on each
-Event::trigger('cron.onClosePending', array($job));
+Event::trigger('cron.onClosePending', [$job]);
 ```
 
 So `content.onContentPrepare` reaches the content plugins,
@@ -133,10 +132,10 @@ matches one of its public methods, at `NORMAL` priority. Pass an array to
 restrict it and set priorities:
 
 ```php
-App::get('dispatcher')->addListener(new SystemListener, array(
+App::get('dispatcher')->addListener(new SystemListener(), [
     'onBeforeRoute' => Hubzero\Events\Priority::HIGH,
     'onAfterRoute'  => Hubzero\Events\Priority::NORMAL
-));
+]);
 ```
 
 A closure is also a listener, but it must be told which events it listens
@@ -145,11 +144,10 @@ object rather than unpacked arguments:
 
 ```php
 App::get('dispatcher')->addListener(
-    function($event)
-    {
+    function ($event) {
         $foo = $event->getArgument(0);
     },
-    array('onBeforeRoute' => Hubzero\Events\Priority::NORMAL)
+    ['onBeforeRoute' => Hubzero\Events\Priority::NORMAL]
 );
 ```
 

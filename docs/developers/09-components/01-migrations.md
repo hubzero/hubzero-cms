@@ -88,15 +88,15 @@ defined('_HZEXEC_') or die();
 
 class Migration20260901000000ComBookings extends Base
 {
-	public function up()
-	{
-		$this->addComponentEntry('bookings');
-	}
+    public function up()
+    {
+        $this->addComponentEntry('bookings');
+    }
 
-	public function down()
-	{
-		$this->deleteComponentEntry('bookings');
-	}
+    public function down()
+    {
+        $this->deleteComponentEntry('bookings');
+    }
 }
 ```
 
@@ -144,29 +144,27 @@ the same way a table migration checks for its table:
 ```php
 public function up()
 {
-	if (!$this->db->tableExists('#__bookings_instruments'))
-	{
-		return;
-	}
+    if (!$this->db->tableExists('#__bookings_instruments')) {
+        return;
+    }
 
-	$this->db->setQuery(
-		"SELECT `id` FROM `#__bookings_instruments` WHERE `alias`='confocal'"
-	);
+    $this->db->setQuery(
+        "SELECT `id` FROM `#__bookings_instruments` WHERE `alias`='confocal'"
+    );
 
-	if ($this->db->loadResult())
-	{
-		return;
-	}
+    if ($this->db->loadResult()) {
+        return;
+    }
 
-	$now = with(new \Hubzero\Utility\Date('now'))->toSql();
+    $now = with(new \Hubzero\Utility\Date('now'))->toSql();
 
-	$this->db->setQuery(
-		"INSERT INTO `#__bookings_instruments`
-		 (`title`, `alias`, `created`, `created_by`, `state`, `access`)
-		 VALUES ('Confocal microscope', 'confocal', "
-		 . $this->db->quote($now) . ", 1000, 1, 1)"
-	);
-	$this->db->query();
+    $this->db->setQuery(
+        "INSERT INTO `#__bookings_instruments`
+             (`title`, `alias`, `created`, `created_by`, `state`, `access`)
+             VALUES ('Confocal microscope', 'confocal', "
+        . $this->db->quote($now) . ", 1000, 1, 1)"
+    );
+    $this->db->query();
 }
 ```
 

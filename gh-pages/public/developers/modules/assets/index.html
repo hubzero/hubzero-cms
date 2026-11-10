@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Assets</a><ol class="toc">
@@ -217,11 +217,11 @@ core modules all use <code>assets/</code>.</p>
 <tbody>
 <tr>
 <td><code>css</code></td>
-<td><code>css($stylesheet = '', $extension = null, $attributes = array())</code></td>
+<td><code>css($stylesheet = '', $extension = null, $attributes = [])</code></td>
 </tr>
 <tr>
 <td><code>js</code></td>
-<td><code>js($asset = '', $extension = null, $attributes = array())</code></td>
+<td><code>js($asset = '', $extension = null, $attributes = [])</code></td>
 </tr>
 <tr>
 <td><code>img</code></td>
@@ -281,8 +281,8 @@ file outside <code>assets/</code>.</p>
 <h2 id="attributes">Attributes</h2>
 <p>The third argument tunes the tag. For <code>css()</code>, <code>media</code> and <code>type</code> and an
 <code>attribs</code> array; for <code>js()</code>, <code>type</code>, <code>defer</code>, and <code>async</code>:</p>
-<pre><code class="language-php">$this-&gt;css('print', null, array('media' =&gt; 'print'))
-     -&gt;js('widget', null, array('defer' =&gt; true));
+<pre><code class="language-php">$this-&gt;css('print', null, ['media' =&gt; 'print'])
+     -&gt;js('widget', null, ['defer' =&gt; true]);
 </code></pre>
 <h2 id="declarations">Declarations</h2>
 <p>Passing a string that contains <code>{</code> or <code>@</code> to <code>css()</code> makes it a declaration
@@ -299,7 +299,7 @@ it keeps the file extension you give it:</p>
 web font, build the path yourself from <code>Request::root(true)</code>.</p>
 <h2 id="from-the-class-or-the-layout">From the class or the layout</h2>
 <p>Both work, because both run with <code>$this</code> bound to the module object.
-<code>mod_login</code> pushes its assets from <code>display()</code> in <code>helper.php</code>; <code>mod_mygroups</code>
+<code>mod_login</code> pushes its assets from <code>display()</code> in <code>mod_login.php</code>; <code>mod_mygroups</code>
 does it at the top of <code>tmpl/default.php</code>.</p>
 <p>Push from the layout. The stylesheet exists to style <em>that</em> markup, and a hub
 that overrides the layout should get to drop your stylesheet along with it —
@@ -308,7 +308,7 @@ replaced. Push from the class only for an asset the module needs whatever
 layout is chosen.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../views/index.html" rel="prev"><span>Previous</span>Views</a><a class="pager__next" href="../packaging/index.html" rel="next"><span>Next</span>Packaging</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/07-assets.md">Edit this page on GitHub</a>

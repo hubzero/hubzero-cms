@@ -101,7 +101,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -297,15 +297,14 @@ loads the published instances for the current client whose access level the
 user holds and whose menu assignment matches, ordered by <code>ordering</code>;
 <code>byPosition($position)</code> filters that list, and the template asks for a
 position at a time.</p>
-<p>Rendering a module is an <code>include</code> of <code>mod_{name}.php</code> with output buffering
-on, wrapped in a <em>chrome</em> function from the template's <code>html/modules.php</code>.
-Chrome is the template's name for the markup around a module's output: the
-box, its heading and its CSS classes.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> On this release a module's <code>mod_{name}.php</code> is a stub that
-requires <code>helper.php</code>, and the loader includes the file rather than
-instantiating a class. Do not expect a class-per-module.</p>
-</aside>
+<p>Rendering a module means loading <code>mod_{name}.php</code>, which declares one class —
+<code>Modules\Login\Login</code> for <code>mod_login</code> — constructing it for the instance and
+calling <code>run()</code> with output buffering on. The output is then wrapped in a
+<em>chrome</em> function from the template's <code>html/modules.php</code>. Chrome is the
+template's name for the markup around a module's output: the box, its heading
+and its CSS classes. An entry file that declares no such class is included
+and its echoed output used instead, so modules written for earlier releases
+still render; see <a href="../../modules/controllers/index.html">Modules</a>.</p>
 <h2 id="templates">Templates</h2>
 <p>A template is the page around whatever the component produced: the markup,
 the CSS, the positions modules render into, and the error and offline pages.
@@ -366,7 +365,7 @@ row, which is why every extension ships one. See
 <a href="../../extensions/deployext/index.html">Deploying extensions</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 348f0057c2</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../events/index.html" rel="prev"><span>Previous</span>Events</a><a class="pager__next" href="../facades/index.html" rel="next"><span>Next</span>Facades</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/03-foundation/05-extensions.md">Edit this page on GitHub</a>

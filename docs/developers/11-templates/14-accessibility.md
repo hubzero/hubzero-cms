@@ -329,7 +329,7 @@ whole layout, so you can write the header cell yourself:
 
 ```php
 <th scope="col" aria-sort="<?php echo $sorted ? $dir : 'none'; ?>">
-	<a href="<?php echo $sortUrl; ?>"><?php echo Lang::txt('COM_BOOKINGS_INSTRUMENT'); ?></a>
+    <a href="<?php echo $sortUrl; ?>"><?php echo Lang::txt('COM_BOOKINGS_INSTRUMENT'); ?></a>
 </th>
 ```
 

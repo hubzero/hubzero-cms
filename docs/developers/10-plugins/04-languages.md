@@ -1,7 +1,7 @@
 <!--
-status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+status: reviewed
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Languages
 
@@ -41,14 +41,14 @@ strings and loading a file per plugin per request would be wasted work. Opt in
 with a property:
 
 ```php
-class plgBookingsNotify extends \Hubzero\Plugin\Plugin
+class Notify extends Plugin
 {
-	/**
-	 * Affects constructor behavior. If true, language files will be loaded automatically.
-	 *
-	 * @var  boolean
-	 */
-	protected $autoloadLanguage = true;
+    /**
+     * Affects constructor behavior. If true, language files will be loaded automatically.
+     *
+     * @var  boolean
+     */
+    protected $autoloadLanguage = true;
 }
 ```
 
@@ -61,8 +61,8 @@ that creates a reservation:
 ```php
 public function onReservationCreate($reservation)
 {
-	$this->loadLanguage();
-	// ...
+    $this->loadLanguage();
+    // ...
 }
 ```
 
@@ -101,24 +101,22 @@ wraps every string it did find in `**`, and every one it did not in `??`.
 ## Overriding the search
 
 `loadLanguage()` is a normal method and a plugin may override it.
-`plgGroupsForum` does, so that a super group can ship its own strings from
+`Plugins\Groups\Forum\Forum` does, so that a super group can ship its own strings from
 inside the group's own directory:
 
 ```php
 public function loadLanguage($extension = '', $basePath = PATH_APP)
 {
-	if (empty($extension))
-	{
-		$extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
-	}
+    if (empty($extension)) {
+        $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
+    }
 
-	$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
-	if ($group && $group->isSuperGroup())
-	{
-		$basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
-	}
+    $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
+    if ($group && $group->isSuperGroup()) {
+        $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
+    }
 
-	// ... then the normal chain
+    // ... then the normal chain
 }
 ```
 
@@ -159,11 +157,11 @@ unchanged when there is no translation — which is why a missing string appears
 on the page in capitals rather than as an error. A key with a `%s` in it and
 no argument passed comes out with the `%s` still in it, for the same reason.
 
-> **Note:** The plugin entry class is in the root namespace, so `Lang` needs no
-> import there. A *namespaced* helper class beside the plugin is a different
-> case, and not the simple one: an unimported facade in a namespaced file
+> **Note:** The plugin entry class is namespaced, so `Lang` has to be imported
+> — `use Hubzero\Facades\Lang;` — like any other facade. Forgetting is not
+> the simple failure it looks like: an unimported facade in a namespaced file
 > usually resolves anyway, through a fallback in the alias autoloader, and
-> then fails in a few specific situations. Import it. See
+> then fails in a few specific situations. See
 > [Facades](../03-foundation/06-facades.md#importing-a-facade), and run
 > `php core/bin/lint/undefined-language-keys.php app/plugins/bookings/notify` to
 > find keys with no string behind them.

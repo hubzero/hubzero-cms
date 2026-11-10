@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../modules/assets/index.html">Assets</a></li>
@@ -289,13 +289,15 @@ this repository and has not been for several release lines. Use <code>2.4-main</
 <p>Then:</p>
 <pre><code class="language-bash">(cd core &amp;&amp; vendor/bin/parallel-lint --exclude vendor .)
 (cd core &amp;&amp; vendor/bin/phpunit -c phpunit.xml.dist)
+core/vendor/bin/phpcs
+core/vendor/bin/phpstan analyse --memory-limit=4G
 php core/bin/lint/missing-facade-imports.php
 </code></pre>
 <p>Read <a href="../conventions/php-style/index.html#checking-your-work">PHP Coding Style</a>
-for what each of those catches and how to run phpcs usefully against a
-codebase that has no committed ruleset. The suite takes about half a minute;
-<a href="../testing/index.html#running-one-test">Testing</a> covers running one test while you
-work on it.</p>
+for what each of those catches. phpcs and PHPStan both report nothing on the
+tree as it stands, so anything they report is from your change. The test
+suite takes about half a minute; <a href="../testing/index.html#running-one-test">Testing</a>
+covers running one test while you work on it.</p>
 <p>If you touched anything under <code>docs/</code>, rebuild the site and commit the result:</p>
 <pre><code class="language-bash">sh docs/_tools/rebuild.sh
 </code></pre>
@@ -343,8 +345,8 @@ existing findings while preventing the count from growing. Use the value
 in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/workflows/php-lint.yml"><code>php-lint.yml</code></a> when checking
 locally. Define the keys your change asks for. If you fix existing ones,
 lower the ceiling in the same pull request.</p>
-<p>No workflow runs phpcs. Style is caught in review; see
-<a href="../conventions/php-style/index.html#when-the-linter-and-the-house-style-disagree">When the linter and the house style disagree</a>.</p>
+<p>No workflow runs phpcs or PHPStan yet. Run both before opening a pull
+request; a reviewer will.</p>
 <h3 id="the-pull-request">The pull request</h3>
 <p>The <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/.github/pull_request_template.md">pull request template</a> asks for:</p>
 <ul>

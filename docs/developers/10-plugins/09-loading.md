@@ -1,7 +1,7 @@
 <!--
-status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+status: reviewed
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Loading
 
@@ -141,9 +141,8 @@ A component that wants an answer collects one:
 ```php
 $results = Event::trigger('members.onMembersAreas', array($user, $member));
 
-foreach ($results as $area)
-{
-	// one entry per plugin that answered
+foreach ($results as $area) {
+    // one entry per plugin that answered
 }
 ```
 
@@ -174,15 +173,18 @@ event. The event object is assigned to `$this->event` on the plugin before its
 method is called:
 
 ```php
-class plgSystemExample extends \Hubzero\Plugin\Plugin
+namespace Plugins\System\Example;
+
+use Hubzero\Plugin\Plugin;
+
+class Example extends Plugin
 {
-	public function onAfterRoute()
-	{
-		if ($this->handled())
-		{
-			$this->event->stop();
-		}
-	}
+    public function onAfterRoute()
+    {
+        if ($this->handled()) {
+            $this->event->stop();
+        }
+    }
 }
 ```
 
@@ -201,10 +203,9 @@ events it should answer, since a closure has no method name to infer one
 from:
 
 ```php
-Event::listen(function($event)
-{
-	// ...
-}, array('onAfterRoute' => \Hubzero\Events\Priority::HIGH));
+Event::listen(function ($event) {
+    // ...
+}, ['onAfterRoute' => \Hubzero\Events\Priority::HIGH]);
 ```
 
 The closure receives the `Event` object itself, not the unpacked arguments;

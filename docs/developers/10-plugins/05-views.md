@@ -1,7 +1,7 @@
 <!--
-status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+status: reviewed
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Views
 
@@ -44,11 +44,11 @@ second**. So `plg_bookings_notify` reaches `views/email/tmpl/message.php` with
 
 ```php
 $body = $this->view('message', 'email')
-	->set('reservation', $reservation)
-	->loadTemplate();
+    ->set('reservation', $reservation)
+    ->loadTemplate();
 ```
 
-and `plgGroupsForum` renders `views/sections/tmpl/display.php` with
+and `Plugins\Groups\Forum\Forum` renders `views/sections/tmpl/display.php` with
 
 ```php
 $this->view = $this->view('display', 'sections');
@@ -62,12 +62,12 @@ Constructing the view class directly works too, and is what the helper does
 underneath:
 
 ```php
-$view = new \Hubzero\Plugin\View(array(
-	'folder'  => 'bookings',
-	'element' => 'notify',
-	'name'    => 'email',
-	'layout'  => 'message'
-));
+$view = new \Hubzero\Plugin\View([
+    'folder'  => 'bookings',
+    'element' => 'notify',
+    'name'    => 'email',
+    'layout'  => 'message',
+]);
 ```
 
 `folder` is the plugin group, `element` is the plugin, `name` is the view
@@ -98,10 +98,13 @@ and reads the same in the layout.
 
 ```php
 <?php
+
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\User;
+
 // No direct access
 defined('_HZEXEC_') or die();
-?>
-<?php
+
 $who = User::getInstance($this->reservation->get('created_by'));
 echo Lang::txt('PLG_BOOKINGS_NOTIFY_BOOKED_BY', $who->get('name'));
 ?>
@@ -114,7 +117,9 @@ Inside the layout, `$this` is the view. Every variable you `set()` is a
 property. `$this->escape()` is available and should be used for anything that
 came from the database or the request and is going into HTML; the plain-text
 mail body above is the case where it is wrong to use it. Layouts run in the
-global namespace, so `Lang`, `Route`, `User`, and the rest need no imports.
+global namespace, so `Lang`, `Route`, `User` and the rest resolve to the
+root-namespace aliases without an import; core's layouts import the facade
+classes anyway, as above, so that every name a file uses is listed at its top.
 
 > **Warning:** A layout that is not found does not fail where you expect.
 > `loadTemplate()` first retries with `default.php` in the same directory, so a
@@ -150,8 +155,8 @@ element:
 ```php
 <?php
 $this->view('_entry')
-     ->set('entry', $entry)
-     ->display();
+    ->set('entry', $entry)
+    ->display();
 ?>
 ```
 
@@ -162,16 +167,17 @@ if you need the string.
 
 ## Helpers
 
-Calling an undefined method on a plugin view makes it look for a helper: first
-a file `helpers/{method}.php` under the plugin directory, then a class named
-`Plugins\{Group}\{Element}\Helpers\{Method}`, falling back to the older
-`Plugin{Group}{Element}Helper{Method}`. If the class is invokable it is bound
-to the view and called. This is how plugins share a formatting routine between
+Calling an undefined method on a plugin view makes it look for a helper: a
+class named `Plugins\{Group}\{Element}\Helpers\{Method}`, autoloaded from
+`helpers/{method}.php` under the plugin directory, then the older
+`Plugin{Group}{Element}Helper{Method}`, then the framework's own
+`Hubzero\View\Helper\{Method}`. If the class is invokable it is bound to the
+view and called. This is how plugins share a formatting routine between
 several layouts without a global function.
 
-The namespaced form is the one to write. The `Plugin…Helper…` form is
-inherited naming kept for the plugins that still use it, and a new helper
-should not add to them.
+The namespaced form is the one to write. No plugin in core uses the
+`Plugin…Helper…` form any more; it is still searched so that a hub's older
+plugin keeps working.
 
 > **Note:** A plugin does not have to use views at all. Returning a small
 > string of markup from an event handler is legitimate for a one-line

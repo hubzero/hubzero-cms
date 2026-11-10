@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -257,28 +257,28 @@ use Plugins\Content\Formathtml\Macro;
  */
 class HelloWorld extends Macro
 {
-	/**
-	 * Description of the macro, shown in the macro list
-	 *
-	 * @return  string
-	 */
-	public function description()
-	{
-		$txt = array();
-		$txt['wiki'] = 'Outputs &quot;Hello world&quot;';
-		$txt['html'] = '&lt;p&gt;Outputs &quot;Hello world&quot;&lt;/p&gt;';
-		return $txt['html'];
-	}
+    /**
+     * Description of the macro, shown in the macro list
+     *
+     * @return  string
+     */
+    public function description()
+    {
+        $txt = [];
+        $txt['wiki'] = 'Outputs &quot;Hello world&quot;';
+        $txt['html'] = '&lt;p&gt;Outputs &quot;Hello world&quot;&lt;/p&gt;';
+        return $txt['html'];
+    }
 
-	/**
-	 * Generate macro output
-	 *
-	 * @return  string
-	 */
-	public function render()
-	{
-		return 'Hello World, args = ' . $this-&gt;args;
-	}
+    /**
+     * Generate macro output
+     *
+     * @return  string
+     */
+    public function render()
+    {
+        return 'Hello World, args = ' . $this-&gt;args;
+    }
 }
 </code></pre>
 <p>That is <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/plugins/content/formathtml/macros/helloworld.php"><code>macros/helloworld.php</code></a>

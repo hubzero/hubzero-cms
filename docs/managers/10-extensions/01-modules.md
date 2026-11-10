@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 35f103b1b3
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 screenshots: ok
 -->
 # Module Manager
@@ -44,12 +44,13 @@ directory per module, named `mod_something`. A hub's own modules go in
 hundred modules ship with the platform: 78 for the site and 22 for the
 administrator interface.
 
-Each directory holds `mod_name.php`, a `mod_name.xml` manifest that declares
-the module's parameters, and a `tmpl/` directory of layouts. All but one also
-carry a `helper.php` holding the class that does the work, which
-`mod_name.php` requires and runs:
+Each directory holds `mod_name.php`, the class that does the work; a
+`mod_name.xml` manifest that declares the module's parameters; and a `tmpl/`
+directory of layouts that turn the class's data into HTML. The smallest
+module in core has nothing in its class at all and lets the base class pick
+the layout:
 
-<!--include: core/modules/mod_login/mod_login.php-->
+<!--include: core/modules/mod_multilangstatus/mod_multilangstatus.php-->
 
 The Module Manager does not list those directories. It lists *instances*.
 Creating a module makes a row in `#__modules` that points at one of the

@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -204,10 +204,10 @@ use Hubzero\Component\SiteController;
 
 class Instruments extends SiteController
 {
-	public function displayTask()
-	{
-		$this-&gt;view-&gt;display();
-	}
+    public function displayTask()
+    {
+        $this-&gt;view-&gt;display();
+    }
 }
 </code></pre>
 <p>That is a working controller. <code>/index.php?option=com_bookings</code> runs
@@ -384,9 +384,9 @@ running task <code>book</code> renders
 name — most often when <code>saveTask()</code> fails validation and falls through to the
 edit form:</p>
 <pre><code class="language-php">$this-&gt;view
-	-&gt;set('row', $row)
-	-&gt;setLayout('edit')
-	-&gt;display();
+    -&gt;set('row', $row)
+    -&gt;setLayout('edit')
+    -&gt;display();
 </code></pre>
 <p>Assigned data survives a <code>setLayout()</code> call. To change the view directory as
 well, call <code>$this-&gt;setView($name, $layout)</code>, which replaces <code>$this-&gt;view</code>
@@ -398,8 +398,8 @@ calling the task.</p>
 <p>A task that changes something should redirect rather than render, so that a
 reload does not repeat the write:</p>
 <pre><code class="language-php">App::redirect(
-	Route::url('index.php?option=' . $this-&gt;option . '&amp;controller=reservations', false),
-	Lang::txt('COM_BOOKINGS_RESERVATION_SAVED')
+    Route::url('index.php?option=' . $this-&gt;option . '&amp;controller=reservations', false),
+    Lang::txt('COM_BOOKINGS_RESERVATION_SAVED')
 );
 </code></pre>
 <p>Pass <code>false</code> as the second argument to <code>Route::url()</code> here. The encoded form is

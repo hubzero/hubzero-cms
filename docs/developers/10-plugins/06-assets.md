@@ -1,7 +1,7 @@
 <!--
-status: rewritten
-reviewed-against: 2.4-main @ 91d03d0a23
-reviewed: 2026-09-10
+status: reviewed
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 -->
 # Assets
 
@@ -69,7 +69,7 @@ tag-attribute array: `media`, `type`, and `attribs` for a stylesheet; `type`,
 
 ```php
 $this->css()
-     ->js('blog');
+    ->js('blog');
 ```
 
 ## On a plugin view
@@ -104,7 +104,7 @@ argument or none:
 
 ```php
 $this->css()
-     ->js();
+    ->js();
 
 $this->css('jquery.datepicker.css', 'system');
 ```

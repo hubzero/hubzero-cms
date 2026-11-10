@@ -49,7 +49,7 @@ extensions from colliding over a common name. It is stored prefixed with
 ```php
 Session::set('cart', $cart, 'com_cart');
 
-$cart = Session::get('cart', array(), 'com_cart');
+$cart = Session::get('cart', [], 'com_cart');
 ```
 
 Get the argument order wrong — `Session::get('cart', 'com_cart')` — and you

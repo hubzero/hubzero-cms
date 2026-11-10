@@ -94,12 +94,12 @@
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Controllers</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-entry-file">The entry file</a></li>
-<li class="toc__item toc__item--l2"><a href="#what-is-in-scope">What is in scope</a></li>
-<li class="toc__item toc__item--l2"><a href="#doing-the-work-inline">Doing the work inline</a></li>
-<li class="toc__item toc__item--l2"><a href="#guarding-the-file">Guarding the file</a></li>
+<li class="toc__item toc__item--l2"><a href="#how-the-loader-runs-it">How the loader runs it</a></li>
+<li class="toc__item toc__item--l2"><a href="#what-the-class-is-handed">What the class is handed</a></li>
+<li class="toc__item toc__item--l2"><a href="#old-style-entry-files">Old-style entry files</a></li>
 <li class="toc__item toc__item--l2"><a href="#what-replaces-a-controller">What replaces a controller</a></li>
 </ol></li>
-<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../assets/index.html">Assets</a></li>
@@ -185,11 +185,13 @@
 <code>controller.php</code>, no task dispatch, and no <code>Hubzero\Module\Controller</code> class in
 the framework. A module never handles a request of its own: it is rendered as
 a side effect of whatever page the component is already drawing.</p>
-<p>What plays the part of a controller is a single unconditional script, the
-entry file, which the loader includes to produce the module's output.</p>
+<p>What plays the part of a controller is one method, <code>run()</code>, on the class in
+the entry file. The loader calls it once for each instance on the page.</p>
 <h2 id="the-entry-file">The entry file</h2>
 <p>The file is named after the directory and sits at its top level —
-<code>mod_login/mod_login.php</code>. This is the whole of it:</p>
+<code>mod_multilangstatus/mod_multilangstatus.php</code>. It declares the module class
+and nothing else. This one needs no code of its own, because the base class
+already knows how to require a layout:</p>
 <pre><code class="language-php">&lt;?php
 
 /**
@@ -198,174 +200,117 @@ entry file, which the loader includes to produce the module's output.</p>
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-namespace Modules\Login;
+namespace Modules\Multilangstatus;
 
 use Hubzero\Module\Module;
-use Hubzero\Config\Registry;
-use Hubzero\Utility\Uri;
-use Hubzero\Facades\Request;
-use Hubzero\Facades\Plugin;
-use Hubzero\Facades\User;
-use Hubzero\Facades\App;
 
 /**
- * Module class for displaying a login form
+ * Module class for multilanguage status
  */
-class Login extends Module
+class Multilangstatus extends Module
 {
-    /**
-     * Get the redirect URL
-     *
-     * @param   object  $params  Registry The module options.
-     * @param   string  $type    Type
-     * @return  string
-     */
-    public static function getReturnURL($params, $type)
-    {
-        $url = null;
-        if ($itemid =  $params-&gt;get($type)) {
-            $db = App::get('db');
-            $query = $db-&gt;getQuery();
-
-            $query-&gt;select($db-&gt;quoteName('link'));
-            $query-&gt;from('#__menu');
-            $query-&gt;where($db-&gt;quoteName('published'), '=', 1);
-            $query-&gt;where($db-&gt;quoteName('id'), '=', $db-&gt;quote($itemid));
-
-            $db-&gt;setQuery($query);
-            if ($link = $db-&gt;loadResult()) {
-                $url = 'index.php?Itemid=' . $itemid;
-            }
-        }
-
-        if (!$url) {
-            // stay on the same page
-            $uri = clone(Uri::getInstance());
-            $vars = $uri-&gt;parse($uri-&gt;toString());
-            unset($vars['lang']);
-
-            if (isset($vars['Itemid'])) {
-                $itemid = $vars['Itemid'];
-                $item = App::get('menu')-&gt;getItem($itemid);
-                unset($vars['Itemid']);
-                if (isset($item) &amp;&amp; $vars == $item-&gt;query) {
-                    $url = 'index.php?Itemid=' . $itemid;
-                } else {
-                    $url = 'index.php?' . $uri-&gt;buildQuery($vars) . '&amp;Itemid=' . $itemid;
-                }
-            } else {
-                $url = 'index.php?' . $uri-&gt;buildQuery($vars);
-            }
-        }
-
-        return base64_encode($url);
-    }
-
-    /**
-     * Get type
-     *
-     * @return  string
-     */
-    public static function getType()
-    {
-        return (!User::isGuest()) ? 'logout' : 'login';
-    }
-
-    /**
-     * Display module content
-     *
-     * @return  void
-     */
-    public function display()
-    {
-        // [!] Legacy compatibility for older view overrides
-        $params = $this-&gt;params;
-        $module = $this-&gt;module;
-
-        // Make sure we're using a secure connection
-        if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') {
-            App::redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-            die('insecure connection and redirection failed');
-        }
-
-        // Get and add the js and extra css to the page
-        $this-&gt;css('login.css', 'com_login');
-        $this-&gt;css('providers.css', 'com_login');
-        $this-&gt;js('login', 'com_login');
-
-        $this-&gt;js('jquery.hoverIntent', 'system');
-
-        $type    = self::getType();
-        $return  = Request::getString('return', null);
-
-        $uri = \Hubzero\Utility\Uri::getInstance();
-        if ($rtrn = $uri-&gt;getUriVar('return')) {
-            if (preg_match('/[^A-Za-z0-9\+\/\=]/', $rtrn)) {
-                // This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
-                $uri-&gt;setUriVar('return', base64_encode($uri-&gt;toString(['path'])));
-            }
-        }
-        $freturn = base64_encode($uri-&gt;toString());
-
-        //$freturn = base64_encode($_SERVER['REQUEST_URI']);
-
-        // If we have a return set with an authenticator in it, we're linking an existing account
-        // Parse the return to retrive the authenticator, and remove it from the list below
-        $auth = '';
-        if ($areturn = Request::getString('return', null)) {
-            if (preg_match('/[^A-Za-z0-9\+\/\=]/', $areturn)) {
-                // This isn't a base64 string and most likely is someone trying to do something nasty (XSS)
-                $return = null;
-                Request::setVar('return', null);
-            } else {
-                $areturn = base64_decode($areturn);
-                $query   = parse_url($areturn);
-                if (is_array($query) &amp;&amp; isset($query['query'])) {
-                    $query  = $query['query'];
-                    $query  = explode('&amp;', $query);
-                    $auth   = '';
-                    foreach ($query as $q) {
-                        $n = explode('=', $q);
-                        if ($n[0] == 'authenticator') {
-                            $auth = $n[1];
-                        }
-                    }
-                }
-            }
-        }
-
-        // Figure out whether or not any of our third party auth plugins are turned on
-        // Don't include the 'hubzero' plugin, or the $auth plugin as described above
-        $multiAuth      = false;
-        $plugins        = Plugin::byType('authentication');
-        $authenticators = [];
-
-        foreach ($plugins as $p) {
-            if ($p-&gt;name != 'hubzero' &amp;&amp; $p-&gt;name != $auth) {
-                $pparams = new Registry($p-&gt;params);
-                $display = $pparams-&gt;get('display_name', ucfirst($p-&gt;name));
-                $authenticators[$p-&gt;name] = ['name' =&gt; $p-&gt;name, 'display' =&gt; $display];
-                $multiAuth = true;
-            } elseif ($p-&gt;name == 'hubzero') {
-                $pparams = new Registry($p-&gt;params);
-                $remember_me_default = $pparams-&gt;get('remember_me_default', 0);
-            }
-        }
-
-        Plugin::import('authentication');
-
-        // Set the return if we have it...
-        $returnQueryString = ($return) ? &quot;&amp;return={$return}&quot; : '';
-
-        require $this-&gt;getLayoutPath();
-    }
 }
 </code></pre>
-<p>Three lines of work: declare the namespace, pull in the class, construct it
-and call <code>display()</code>. <code>with()</code> is a global helper that returns the object it
-is given, so that a method can be called on a freshly constructed instance in
-one expression.</p>
-<p>Write the same file for your module and change the namespace:</p>
+<p><code>mod_upcoming_bookings.php</code> starts the same way, with its own name in it:</p>
+<pre><code class="language-php">&lt;?php
+
+namespace Modules\UpcomingBookings;
+
+use Hubzero\Module\Module;
+
+class UpcomingBookings extends Module
+{
+}
+</code></pre>
+<p>The file runs no code when it is included. It has no <code>defined('_HZEXEC_')</code>
+guard either — none of the 100 core entry files does — because a file that
+only declares a class does nothing if a web server is tricked into executing
+it. The layouts, which do emit output, keep the guard; see
+<a href="../views/index.html">Views</a>.</p>
+<h2 id="how-the-loader-runs-it">How the loader runs it</h2>
+<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader::render()</code></a>
+finds the entry file, loads the module's language file, and then:</p>
+<pre><code class="language-php">            // Try class-based module loading first
+            $className = $this-&gt;resolveClassName($module-&gt;module);
+            $output = '';
+
+            if (!class_exists($className, false)) {
+                // Load the entry file inside a buffer: a class-based module only
+                // declares its class here, while a legacy procedural module
+                // renders itself with $params and $module in scope
+                $content = '';
+                ob_start();
+                include $path;
+                $output = ob_get_contents() . $content;
+                ob_end_clean();
+            }
+
+            if (
+                class_exists($className, false)
+                &amp;&amp; is_subclass_of($className, \Hubzero\Module\Module::class)
+            ) {
+                $instance = new $className($params, $module);
+
+                ob_start();
+                $instance-&gt;run();
+                $module-&gt;content = ob_get_contents();
+                ob_end_clean();
+            } else {
+                $module-&gt;content = $output;
+            }
+</code></pre>
+<p>In order:</p>
+<ol>
+<li><code>resolveClassName()</code> turns <code>mod_upcoming_bookings</code> into
+<code>Modules\UpcomingBookings\UpcomingBookings</code>. See
+<a href="../structure/index.html#namespaces-and-class-names">Structure</a>.</li>
+<li>If that class is not declared yet, the file is included. On the second
+instance of the same module on a page it already is, so the file is not
+included again and nothing is declared twice.</li>
+<li>If the class exists and extends <code>Hubzero\Module\Module</code>, the loader
+constructs it with this instance's parameters and row, calls <code>run()</code>, and
+keeps everything echoed as <code>$module-&gt;content</code>.</li>
+</ol>
+<p>The loader then wraps <code>$module-&gt;content</code> in the chrome function named by the
+render style, which is what actually emits the markup into the page. See
+<a href="../loading/index.html">Loading</a>.</p>
+<p>On the base class, <code>run()</code> calls <code>display()</code>, and <code>display()</code> requires the
+layout named by the <code>layout</code> parameter. So the ordinary module overrides
+<code>display()</code>: it gathers data, sets properties, and requires a layout. 79 of
+the 100 core modules do exactly that and leave <code>run()</code> alone. See
+<a href="../helpers/index.html">The module class</a>.</p>
+<h2 id="what-the-class-is-handed">What the class is handed</h2>
+<p>The constructor stores its two arguments as properties:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$this-&gt;module</code></td>
+<td><code>stdClass</code></td>
+<td>The row from <code>#__modules</code> for this instance: <code>id</code>, <code>title</code>, <code>module</code>, <code>position</code>, <code>content</code>, <code>showtitle</code>, <code>params</code>, <code>menuid</code>, <code>protected</code>, plus <code>name</code>, <code>style</code> and <code>path</code> added by the loader.</td>
+</tr>
+<tr>
+<td><code>$this-&gt;params</code></td>
+<td><code>Hubzero\Config\Registry</code></td>
+<td>The instance's parameters, parsed from <code>$module-&gt;params</code> and merged with any parameters passed by the caller.</td>
+</tr>
+</tbody>
+</table>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The loader constructs a new object for every <em>instance</em>. Two
+instances of <code>mod_login</code> in two positions are two <code>Login</code> objects, with
+different <code>$module</code> rows and different <code>$params</code>. Keep per-instance state
+on <code>$this</code>; a <code>static</code> property is shared by every instance on the page.</p>
+</aside>
+<h2 id="old-style-entry-files">Old-style entry files</h2>
+<p>Before this release a module's entry file was a stub that required
+<code>helper.php</code> and called a <code>Helper</code> class:</p>
 <pre><code class="language-php">&lt;?php
 
 namespace Modules\UpcomingBookings;
@@ -374,95 +319,18 @@ require_once __DIR__ . DS . 'helper.php';
 
 with(new Helper($params, $module))-&gt;display();
 </code></pre>
-<p>That stub-plus-<code>helper.php</code> pair is not one style among several. It is what
-<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Loader::render()</code></a> is
-built around:</p>
-<pre><code class="language-php">$path = $this-&gt;path($module-&gt;module);
-
-if (file_exists($path))
-{
-	// … load the language file …
-	ob_start();
-	include $path;
-	$module-&gt;content = ob_get_contents() . $content;
-	ob_end_clean();
-}
-</code></pre>
-<p>The loader <code>include</code>s a file. It never instantiates a class, never looks one
-up by name, and never calls a method on your module. Whatever your entry file
-echoes is the module's output; whatever it does not echo does not exist. All
-100 shipped modules are written this way, and 99 of them put the work in a
-<code>Helper</code> class beside the stub. The exception, <code>mod_multilangstatus</code>, has no
-data to gather and constructs the base <code>Hubzero\Module\Module</code> directly so
-that <code>display()</code> requires its layout — which is the shortest a module can be
-and still have one.</p>
-<h2 id="what-is-in-scope">What is in scope</h2>
-<p><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Module/Loader.php"><code>Hubzero\Module\Loader::render()</code></a>
-includes the entry file inside an output buffer, from inside a method, so the
-file inherits that method's local variables. Two of them matter:</p>
-<table>
-<thead>
-<tr>
-<th>Variable</th>
-<th>Type</th>
-<th>Contents</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>$module</code></td>
-<td><code>stdClass</code></td>
-<td>The row from <code>#__modules</code> for this instance: <code>id</code>, <code>title</code>, <code>module</code>, <code>position</code>, <code>content</code>, <code>showtitle</code>, <code>params</code>, <code>menuid</code>, plus <code>name</code> and <code>style</code> added by the loader.</td>
-</tr>
-<tr>
-<td><code>$params</code></td>
-<td><code>Hubzero\Config\Registry</code></td>
-<td>The instance's parameters, parsed from <code>$module-&gt;params</code> and merged with any parameters passed by the caller.</td>
-</tr>
-</tbody>
-</table>
-<p>Both are handed straight to the module class constructor, which stores them as
-<code>$this-&gt;module</code> and <code>$this-&gt;params</code>.</p>
-<p>Anything the entry file echoes is captured. When the include returns, the
-loader assigns the buffer to <code>$module-&gt;content</code> and then runs the chrome
-function named by the render style, which is what actually emits the markup
-into the page.</p>
-<aside class="admonition admonition--note">
-<p><strong>Note:</strong> The include happens once per <em>instance</em>, not once per module. Two
-instances of <code>mod_login</code> in two positions run the file twice, with different
-<code>$module</code> rows and different <code>$params</code>. Nothing in the entry file may assume
-it runs only once — declaring a function or a class at the top level of the
-entry file will fatal on the second instance. That is precisely why the
-class lives in <code>helper.php</code> behind a <code>require_once</code>.</p>
-</aside>
-<h2 id="doing-the-work-inline">Doing the work inline</h2>
-<p>The class in <code>helper.php</code> is a convention, not a requirement. A module with
-almost no logic can do everything in the entry file:</p>
-<pre><code class="language-php">&lt;?php
-
-namespace Modules\UpcomingBookings;
-
-use Lang;
-
-defined('_HZEXEC_') or die();
-
-echo '&lt;p&gt;' . Lang::txt('MOD_UPCOMING_BOOKINGS_NONE') . '&lt;/p&gt;';
-</code></pre>
-<p>That works, and it is the wrong shape for anything you will keep. It gives up
-both things the module class provides: a template override point, because
-<code>getLayoutPath()</code> is a method on the class, and the asset helpers <code>css()</code>,
-<code>js()</code>, and <code>img()</code>. It also means a hub cannot restyle your module without
-editing your file. Use the class.</p>
-<h2 id="guarding-the-file">Guarding the file</h2>
-<p>Core module entry files are reached only through the loader, which resolves
-them from <code>PATH_APP</code> or <code>PATH_CORE</code>, so a direct HTTP request cannot execute
-them unless the whole <code>modules</code> tree is inside the document root. Layouts and
-helper files still carry the guard:</p>
-<pre><code class="language-php">defined('_HZEXEC_') or die();
-</code></pre>
-<p>Add it to anything a misconfigured server might serve directly. See
-<a href="../../foundation/constants/index.html">Constants</a> for what <code>_HZEXEC_</code> is and where
-it is defined.</p>
+<p>The loader still runs files like that. When the file declares no class of the
+expected name, <code>render()</code> includes it inside the output buffer, from inside
+the method, so <code>$params</code> and <code>$module</code> are in scope as local variables, and
+whatever the file echoes becomes the module's output. A hub's own modules in
+<code>app/modules</code> written for an earlier release keep working without changes.</p>
+<p>Two things are different about that path. The file is included again for
+every instance, so anything it declares at the top level fatals the second
+time — which is why the old stub kept its class behind a <code>require_once</code>. And
+the same fallback is what runs when you <em>meant</em> to write a class but got its
+name wrong: the file is included, declares a class nobody asks for, echoes
+nothing, and the module renders empty.</p>
+<p>Write new modules as a class.</p>
 <h2 id="what-replaces-a-controller">What replaces a controller</h2>
 <p>If you find yourself wanting a controller — a module that responds to a form
 post, or that needs several tasks — the work belongs somewhere else. Post to a
@@ -479,8 +347,8 @@ module, and there would be no route to it that a menu, a permission check, or
 a redirect could see.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
-        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../structure/index.html" rel="prev"><span>Previous</span>Structure</a><a class="pager__next" href="../helpers/index.html" rel="next"><span>Next</span>Helpers</a></nav>
+        <p class="stamp">Rewritten and checked against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
+        <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../structure/index.html" rel="prev"><span>Previous</span>Structure</a><a class="pager__next" href="../helpers/index.html" rel="next"><span>Next</span>The module class</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/03-controllers.md">Edit this page on GitHub</a>
           <span>Hubzero 2.4 documentation</span>

@@ -16,7 +16,7 @@ The connection settings live in `app/config/database.php`, which returns a
 plain array:
 
 ```php
-return array(
+return [
     'dbtype'   => 'mysql',
     'host'     => '127.0.0.1',
     'user'     => 'hubzero',
@@ -24,7 +24,7 @@ return array(
     'db'       => 'hubzero',
     'dbprefix' => 'jos_',
     'port'     => '3306',
-);
+];
 ```
 
 `Hubzero\Database\DatabaseServiceProvider` reads those values at boot and
@@ -139,8 +139,7 @@ Every method below prepares nothing itself; call `setQuery()` or
 ```php
 $db->setQuery("SELECT `id`, `title`, `alias` FROM `#__bookings_instruments` ORDER BY `title`");
 
-foreach ($db->loadObjectList('alias') as $alias => $instrument)
-{
+foreach ($db->loadObjectList('alias') as $alias => $instrument) {
     echo $instrument->title;
 }
 ```

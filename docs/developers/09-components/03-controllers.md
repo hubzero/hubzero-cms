@@ -28,10 +28,10 @@ use Hubzero\Component\SiteController;
 
 class Instruments extends SiteController
 {
-	public function displayTask()
-	{
-		$this->view->display();
-	}
+    public function displayTask()
+    {
+        $this->view->display();
+    }
 }
 ```
 
@@ -147,9 +147,9 @@ edit form:
 
 ```php
 $this->view
-	->set('row', $row)
-	->setLayout('edit')
-	->display();
+    ->set('row', $row)
+    ->setLayout('edit')
+    ->display();
 ```
 
 Assigned data survives a `setLayout()` call. To change the view directory as
@@ -167,8 +167,8 @@ reload does not repeat the write:
 
 ```php
 App::redirect(
-	Route::url('index.php?option=' . $this->option . '&controller=reservations', false),
-	Lang::txt('COM_BOOKINGS_RESERVATION_SAVED')
+    Route::url('index.php?option=' . $this->option . '&controller=reservations', false),
+    Lang::txt('COM_BOOKINGS_RESERVATION_SAVED')
 );
 ```
 

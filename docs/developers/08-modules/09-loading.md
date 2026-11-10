@@ -69,9 +69,9 @@ anything in it, so that the markup around it can be omitted:
 
 ```php
 <?php if ($this->countModules('helppane')) : ?>
-	<div id="help">
-		<jdoc:include type="modules" name="helppane" />
-	</div>
+    <div id="help">
+        <jdoc:include type="modules" name="helppane" />
+    </div>
 <?php endif; ?>
 ```
 

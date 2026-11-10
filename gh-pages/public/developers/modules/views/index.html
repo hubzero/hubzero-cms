@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link is-active" href="index.html" aria-current="page">Views</a><ol class="toc">
 <li class="toc__item toc__item--l2"><a href="#the-smallest-one">The smallest one</a></li>
@@ -192,7 +192,7 @@ cannot.</p>
 a hub whose designer you will never meet, and the only way they can make your
 booking list match the rest of the page — without forking the module and
 inheriting your bugs — is to drop a file into their template. Echo the markup
-from <code>helper.php</code> and you have taken that away.</p>
+from the module class and you have taken that away.</p>
 <h2 id="the-smallest-one">The smallest one</h2>
 <p><code>mod_upcoming_bookings/tmpl/default.php</code>, in full:</p>
 <pre><code class="language-php">&lt;?php
@@ -202,17 +202,17 @@ $this-&gt;css();
 ?&gt;
 &lt;h3&gt;&lt;?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_HEADING'); ?&gt;&lt;/h3&gt;
 &lt;?php if (!count($this-&gt;reservations)) : ?&gt;
-	&lt;p&gt;&lt;?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_NONE'); ?&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;?php echo Lang::txt('MOD_UPCOMING_BOOKINGS_NONE'); ?&gt;&lt;/p&gt;
 &lt;?php else : ?&gt;
-	&lt;ul id=&quot;upcoming-bookings-&lt;?php echo $this-&gt;module-&gt;id; ?&gt;&quot;&gt;
-		&lt;?php foreach ($this-&gt;reservations as $reservation) : ?&gt;
-			&lt;li&gt;&lt;?php echo Lang::txt(
-				'MOD_UPCOMING_BOOKINGS_SLOT',
-				$this-&gt;escape($reservation-&gt;get('starts')),
-				$this-&gt;escape($reservation-&gt;get('ends'))
-			); ?&gt;&lt;/li&gt;
-		&lt;?php endforeach; ?&gt;
-	&lt;/ul&gt;
+    &lt;ul id=&quot;upcoming-bookings-&lt;?php echo $this-&gt;module-&gt;id; ?&gt;&quot;&gt;
+        &lt;?php foreach ($this-&gt;reservations as $reservation) : ?&gt;
+            &lt;li&gt;&lt;?php echo Lang::txt(
+                'MOD_UPCOMING_BOOKINGS_SLOT',
+                $this-&gt;escape($reservation-&gt;get('starts')),
+                $this-&gt;escape($reservation-&gt;get('ends'))
+            ); ?&gt;&lt;/li&gt;
+        &lt;?php endforeach; ?&gt;
+    &lt;/ul&gt;
 &lt;?php endif; ?&gt;
 </code></pre>
 <p>Everything the class set is on <code>$this</code>. There is no view object between them.</p>
@@ -234,7 +234,8 @@ required from another layout, not chosen directly.</p>
 which returns the first of three paths:</p>
 <ol>
 <li><code>{templates}/{template}/html/mod_upcoming_bookings/{layout}.php</code> — the active
-template's override.</li>
+template's override. On a super group's pages the group's own template is
+tried before the site template.</li>
 <li><code>{module directory}/tmpl/{layout}.php</code> — the module's own layout.</li>
 <li><code>{module directory}/tmpl/default.php</code> — the fallback.</li>
 </ol>
@@ -256,8 +257,7 @@ forking it. See <a href="../../templates/overrides/index.html">Overrides</a>.</p
 <p>A class that overrides <code>display()</code> chooses for itself, as <code>mod_mygroups</code> does
 when its <code>show_recent</code> parameter is off:</p>
 <pre><code class="language-php">$layout = 'default';
-if (!$this-&gt;params-&gt;get('show_recent', 1))
-{
+if (!$this-&gt;params-&gt;get('show_recent', 1)) {
     $layout = 'simple';
 }
 
@@ -289,9 +289,10 @@ $this-&gt;css()
 &lt;div&lt;?php echo ($this-&gt;moduleclass) ? ' class=&quot;' . $this-&gt;moduleclass . '&quot;' : '';?&gt;&gt;
 </code></pre>
 <p>Two things to note. The layout has no <code>namespace</code> declaration, so it runs in
-the global namespace and can call <code>Lang::txt()</code>, <code>Route::url()</code>, and <code>User</code>
-without importing anything — unlike <code>helper.php</code>, which is namespaced and must
-import each facade it uses. And <code>$this-&gt;module-&gt;id</code> is used to build element
+the global namespace, where <code>Lang::txt()</code>, <code>Route::url()</code> and <code>User</code> resolve
+to the root aliases without any import. Core layouts import the facade classes
+anyway, as above, which is harmless; the module class, which is namespaced,
+must import each facade it uses. And <code>$this-&gt;module-&gt;id</code> is used to build element
 ids: two instances of the same module on one page would otherwise collide.</p>
 <h2 id="escaping">Escaping</h2>
 <p>Anything that came from the database or the request goes through
@@ -304,10 +305,8 @@ through the content plugins — is echoed directly.</p>
 <p>A layout can require another layout from the same module through the same
 resolver, which keeps the override point intact. <code>mod_mygroups</code> renders each
 row this way:</p>
-<pre><code class="language-php">foreach ($this-&gt;recentgroups as $group)
-{
-    if ($group-&gt;published)
-    {
+<pre><code class="language-php">foreach ($this-&gt;recentgroups as $group) {
+    if ($group-&gt;published) {
         $status = $this-&gt;getStatus($group);
 
         require $this-&gt;getLayoutPath('_item');
@@ -321,11 +320,11 @@ warning beyond an undefined-variable notice.</p>
 <h2 id="no-view-class">No view class</h2>
 <p>There is no view object in a module and no <code>loadTemplate()</code>. The class is the
 view context, the layout is the template, and the output goes to the buffer
-that <code>Hubzero\Module\Loader::render()</code> opened around the entry file. Plugins
+that <code>Hubzero\Module\Loader::render()</code> opened around <code>run()</code>. Plugins
 work differently — see <a href="../../plugins/views/index.html">Plugin views</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Rewritten and checked against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../languages/index.html" rel="prev"><span>Previous</span>Languages</a><a class="pager__next" href="../assets/index.html" rel="next"><span>Next</span>Assets</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/08-modules/06-views.md">Edit this page on GitHub</a>

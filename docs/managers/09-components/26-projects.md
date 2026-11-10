@@ -204,10 +204,9 @@ no longer built. What it actually controls is the **Team** section of the
 Edit Project screen, and it controls it by deletion:
 
 ```php
-$sections = array('info', 'team');
-if ($this->config->get('edit_settings', 0) == 0)
-{
-	array_pop($sections);
+$sections = ['info', 'team'];
+if ($this->config->get('edit_settings', 0) == 0) {
+    array_pop($sections);
 }
 $this->section = in_array($this->section, $sections) ? $this->section : 'info';
 ```

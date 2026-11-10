@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -274,15 +274,15 @@ defined('_HZEXEC_') or die();
 
 class Migration20260901000000ComBookings extends Base
 {
-	public function up()
-	{
-		$this-&gt;addComponentEntry('bookings');
-	}
+    public function up()
+    {
+        $this-&gt;addComponentEntry('bookings');
+    }
 
-	public function down()
-	{
-		$this-&gt;deleteComponentEntry('bookings');
-	}
+    public function down()
+    {
+        $this-&gt;deleteComponentEntry('bookings');
+    }
 }
 </code></pre>
 <p>The <code>com_</code> prefix is optional; <code>addComponentEntry('bookings')</code> and
@@ -352,29 +352,27 @@ migration and the model looks for a table that is not there. See
 the same way a table migration checks for its table:</p>
 <pre><code class="language-php">public function up()
 {
-	if (!$this-&gt;db-&gt;tableExists('#__bookings_instruments'))
-	{
-		return;
-	}
+    if (!$this-&gt;db-&gt;tableExists('#__bookings_instruments')) {
+        return;
+    }
 
-	$this-&gt;db-&gt;setQuery(
-		&quot;SELECT `id` FROM `#__bookings_instruments` WHERE `alias`='confocal'&quot;
-	);
+    $this-&gt;db-&gt;setQuery(
+        &quot;SELECT `id` FROM `#__bookings_instruments` WHERE `alias`='confocal'&quot;
+    );
 
-	if ($this-&gt;db-&gt;loadResult())
-	{
-		return;
-	}
+    if ($this-&gt;db-&gt;loadResult()) {
+        return;
+    }
 
-	$now = with(new \Hubzero\Utility\Date('now'))-&gt;toSql();
+    $now = with(new \Hubzero\Utility\Date('now'))-&gt;toSql();
 
-	$this-&gt;db-&gt;setQuery(
-		&quot;INSERT INTO `#__bookings_instruments`
-		 (`title`, `alias`, `created`, `created_by`, `state`, `access`)
-		 VALUES ('Confocal microscope', 'confocal', &quot;
-		 . $this-&gt;db-&gt;quote($now) . &quot;, 1000, 1, 1)&quot;
-	);
-	$this-&gt;db-&gt;query();
+    $this-&gt;db-&gt;setQuery(
+        &quot;INSERT INTO `#__bookings_instruments`
+             (`title`, `alias`, `created`, `created_by`, `state`, `access`)
+             VALUES ('Confocal microscope', 'confocal', &quot;
+        . $this-&gt;db-&gt;quote($now) . &quot;, 1000, 1, 1)&quot;
+    );
+    $this-&gt;db-&gt;query();
 }
 </code></pre>
 <p><code>down()</code> deletes the same rows by the same criteria.</p>

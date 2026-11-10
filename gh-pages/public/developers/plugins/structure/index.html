@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -277,8 +277,28 @@ the extension row does not change, because it records only the group and the
 element. Your own plugins belong in <code>app/</code>, always —
 <code>core/</code> is replaced wholesale by an upgrade.</p>
 <h2 id="the-class">The class</h2>
-<p>The entry file must define a class the loader can find. Two names are
-accepted, checked in this order:</p>
+<p>The entry file declares one class, namespaced by the group and the plugin and
+named after the plugin:</p>
+<pre><code class="language-php">&lt;?php
+
+namespace Plugins\Bookings\Notify;
+
+use Hubzero\Plugin\Plugin;
+
+class Notify extends Plugin
+{
+    public function onReservationCreate($reservation)
+    {
+        // ...
+    }
+}
+</code></pre>
+<p>All 329 plugins in <code>core/plugins</code> are written this way:
+<code>Plugins\Members\Blog\Blog</code>, <code>Plugins\Content\Formatwiki\Formatwiki</code>.
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Plugin/Loader.php"><code>Hubzero\Plugin\Loader::init()</code></a>
+builds the expected name from the <code>folder</code> and <code>element</code> columns, requires
+<code>{name}.php</code> if the class is not already defined, and then checks two names in
+order:</p>
 <table>
 <thead>
 <tr>
@@ -288,55 +308,55 @@ accepted, checked in this order:</p>
 </thead>
 <tbody>
 <tr>
-<td><code>plg{Group}{Name}</code></td>
-<td><code>plgBookingsNotify</code>, <code>plgMembersBlog</code>, <code>plgContentFormatwiki</code></td>
+<td><code>Plugins\{Group}\{Name}\{Name}</code></td>
+<td><code>Plugins\Bookings\Notify\Notify</code></td>
 </tr>
 <tr>
-<td><code>Plugins\{Group}\{Name}</code></td>
-<td><code>Plugins\Bookings\Notify</code></td>
+<td><code>plg{Group}{Name}</code>, in the root namespace</td>
+<td><code>plgBookingsNotify</code></td>
 </tr>
 </tbody>
 </table>
-<p>The loader concatenates the two column values without changing their case and
-calls <code>class_exists()</code> on the result, and PHP resolves class names
-case-insensitively, so the capitalisation in your file is not what makes the
-match. Follow the convention anyway: only the first letter of each name is
-capitalised, so <code>formatwiki</code> gives <code>plgContentFormatwiki</code> and not
-<code>plgContentFormatWiki</code>, and every plugin shipped in <code>core/plugins</code> is written
-that way.</p>
-<p>Every shipped plugin uses the first form, in the global namespace. The
-namespaced form is supported by the loader but unused; supporting classes
-under a plugin — models, helpers, macros — do use <code>Plugins\Group\Name\…</code>
-namespaces, and are loaded by the framework's class loader.</p>
+<p>Each segment of the namespaced form is the column value with its first letter
+capitalised, and a hyphen dropped with the letter after it capitalised, so
+<code>editors-xtd</code> becomes <code>EditorsXtd</code>. PHP resolves class and namespace names
+case-insensitively, so <code>Formatwiki</code> and <code>FormatWiki</code> both match. Capitalise
+only the first letter of each name anyway: it is the name the loader builds,
+and the one every core plugin uses.</p>
+<p>The root-namespace <code>plg</code> form is still accepted so that a hub's own plugin
+written for an earlier release keeps loading unchanged. Nothing in core uses
+it. When the loader finds the namespaced class it also registers the <code>plg</code>
+name as an alias, so code that still names a core plugin the old way — a
+<code>plgMembersBlog::</code> static call in an override, say — resolves to the new class.</p>
 <aside class="admonition admonition--note">
-<p><strong>Note:</strong> The <code>editors-xtd</code> group is the exception that proves the rule. Its
-classes are named <code>plgButtonImage</code>, <code>plgButtonReadmore</code>, and so on, which
-matches neither form, so <code>Hubzero\Plugin\Loader</code> cannot construct them.
-<code>Hubzero\Html\Editor</code> imports that group with autocreation switched off
-(<code>Plugin::import('editors-xtd', $name, false)</code>) and instantiates the class
-itself. Do not copy the pattern in a new plugin.</p>
+<p><strong>Note:</strong> One plugin name is a PHP keyword. <code>citation/default</code> cannot
+declare a class called <code>Default</code>, so the loader maps the element <code>default</code>
+to <code>DefaultHandler</code>, and the class is
+<code>Plugins\Citation\DefaultHandler\DefaultHandler</code>. The class loader maps
+the segment back to the <code>default</code> directory. Do not name a plugin after a
+keyword.</p>
 </aside>
-<pre><code class="language-php">&lt;?php
-// No direct access
-defined('_HZEXEC_') or die();
-
-class plgBookingsNotify extends \Hubzero\Plugin\Plugin
-{
-	public function onReservationCreate($reservation)
-	{
-		// ...
-	}
-}
-</code></pre>
+<p>Supporting classes under the plugin — models, helpers, macros — sit in the
+same namespace, one level down: <code>Plugins\Content\Formathtml\Macros\Iframe</code> is
+<code>core/plugins/content/formathtml/macros/iframe.php</code>, loaded by the
+<a href="../../foundation/autoloading/index.html">class loader</a>.</p>
+<aside class="admonition admonition--note">
+<p><strong>Note:</strong> The <code>editors-xtd</code> group follows the namespaced form —
+<code>Plugins\EditorsXtd\Image\Image</code> — but the loader does not construct those
+classes. <code>Hubzero\Html\Editor</code> imports the group with autocreation switched
+off (<code>Plugin::import('editors-xtd', $name, false)</code>) and instantiates each
+class itself, passing the editor rather than the dispatcher as the subject.</p>
+</aside>
 <h2 id="facades-in-a-plugin">Facades in a plugin</h2>
-<p>The plugin entry class is declared in the <strong>root</strong> namespace, so an
-unqualified <code>Lang::txt()</code>, <code>Route::url()</code> or <code>Config::get()</code> in it already
-names the alias. No <code>use</code> line is needed, and none of the shipped plugins has
-one. This is the one place in the tree where the import rule does not bite,
-and it is why plugin files look different from component files.</p>
-<p>Everything else beside the plugin does declare a namespace — models, helpers,
-a <code>Plugins\Bookings\Notify\Helpers\Recipients</code> class — and there the rule
-applies in full. It is subtler than &quot;it fatals&quot;: an unimported facade in a
+<p>The entry class is namespaced, so the rule that applies to every other
+namespaced file applies here: import each facade you call. Core plugins
+import the facade classes themselves:</p>
+<pre><code class="language-php">use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Facades\Route;
+</code></pre>
+<p><code>use Lang;</code>, naming the root-namespace alias, works as well.</p>
+<p>It is subtler than &quot;it fatals&quot; when you forget: an unimported facade in a
 namespaced file usually <em>works</em>, because the alias autoloader falls back to
 the last segment of the class name, and then fails later in a handful of
 specific situations. Read <a href="../../foundation/facades/index.html#importing-a-facade">Facades</a>
@@ -344,13 +364,18 @@ for which ones, and run
 <code>php core/bin/lint/missing-facade-imports.php app/plugins/bookings/notify</code> before
 you ship.</p>
 <h2 id="the-entry-guard">The entry guard</h2>
-<p>Plugin files begin with</p>
+<p>A file that runs code when it is included begins with</p>
 <pre><code class="language-php">defined('_HZEXEC_') or die();
 </code></pre>
-<p>before any executable code. Plugin directories are inside the document root on
-a default install, so this line is the only thing preventing a direct HTTP
-request from running the file outside the application. It belongs at the top
-of the entry file, the migration, and every view template. See
+<p>before anything else executes. Plugin directories are inside the document root
+on a default install, so this line is what stops a direct HTTP request from
+running the file outside the application. Every view template in
+<code>core/plugins</code> has it — all 486 of them.</p>
+<p>The entry file and the migration do not need it. Each declares a class and
+does nothing else, so a direct request defines the class and exits, and
+<a href="https://www.php-fig.org/psr/psr-1/#23-side-effects">PSR-1</a> asks that a file
+declaring a class have no other side effects. Four of the 329 entry files and
+six of the 339 migrations still carry the line. See
 <a href="../../foundation/constants/index.html">Constants</a>.</p>
 <h2 id="subdirectories">Subdirectories</h2>
 <p>Everything else is optional and follows fixed names, because the framework
@@ -358,11 +383,13 @@ looks for them by convention: <code>views/{name}/tmpl/{layout}.php</code> for
 <a href="../views/index.html">views</a>, <code>assets/{css,js,img}</code> for <a href="../assets/index.html">assets</a>,
 <code>language/{tag}</code> for <a href="../languages/index.html">languages</a>, <code>migrations</code> for
 <a href="../migrations/index.html">migrations</a>. Models and helpers have no enforced location;
-<code>helpers</code> beside the entry file is the common arrangement, and is where a
-plugin view looks first when a layout calls a method the view does not have.</p>
+<code>helpers</code> beside the entry file is the common arrangement, and it is where a
+<code>Plugins\{Group}\{Name}\Helpers\…</code> class autoloads from — which is the first
+place a plugin view looks when a layout calls a method the view does not have.
+See <a href="../views/index.html#helpers">Views</a>.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Reviewed against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../migrations/index.html" rel="prev"><span>Previous</span>Migrations</a><a class="pager__next" href="../controllers/index.html" rel="next"><span>Next</span>Controllers</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/02-structure.md">Edit this page on GitHub</a>

@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -195,40 +195,47 @@ out of the public interface.</p>
 <h2 id="the-smallest-working-thing">The smallest working thing</h2>
 <p><code>plg_bookings_notify</code> answers one event and returns nothing:</p>
 <pre><code class="language-php">&lt;?php
-// No direct access
-defined('_HZEXEC_') or die();
 
-class plgBookingsNotify extends \Hubzero\Plugin\Plugin
+namespace Plugins\Bookings\Notify;
+
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Lang;
+use Hubzero\Mail\Message;
+use Hubzero\Plugin\Plugin;
+
+class Notify extends Plugin
 {
-	/**
-	 * Email the lab manager when a reservation is created.
-	 *
-	 * @param   object  $reservation  Components\Bookings\Models\Reservation
-	 * @return  void
-	 */
-	public function onReservationCreate($reservation)
-	{
-		if (!($to = $this-&gt;params-&gt;get('manager_email')))
-		{
-			return;
-		}
+    /**
+     * Email the lab manager when a reservation is created.
+     *
+     * @param   object  $reservation  Components\Bookings\Models\Reservation
+     * @return  void
+     */
+    public function onReservationCreate($reservation)
+    {
+        $to = $this-&gt;params-&gt;get('manager_email');
 
-		$body = $this-&gt;view('message', 'email')
-			-&gt;set('reservation', $reservation)
-			-&gt;loadTemplate();
+        if (!$to) {
+            return;
+        }
 
-		$message = new \Hubzero\Mail\Message();
-		$message-&gt;setSubject(Lang::txt('PLG_BOOKINGS_NOTIFY_SUBJECT', $reservation-&gt;instrument-&gt;get('title')))
-		        -&gt;addFrom(Config::get('mailfrom'), Config::get('sitename'))
-		        -&gt;addTo($to)
-		        -&gt;addHeader('X-Component', 'com_bookings')
-		        -&gt;addPart($body, 'text/plain');
+        $body = $this-&gt;view('message', 'email')
+            -&gt;set('reservation', $reservation)
+            -&gt;loadTemplate();
 
-		if (!$message-&gt;send())
-		{
-			$this-&gt;setError(Lang::txt('PLG_BOOKINGS_NOTIFY_SEND_FAILED', $to));
-		}
-	}
+        $title = $reservation-&gt;instrument-&gt;get('title');
+
+        $message = new Message();
+        $message-&gt;setSubject(Lang::txt('PLG_BOOKINGS_NOTIFY_SUBJECT', $title))
+            -&gt;addFrom(Config::get('mailfrom'), Config::get('sitename'))
+            -&gt;addTo($to)
+            -&gt;addHeader('X-Component', 'com_bookings')
+            -&gt;addPart($body, 'text/plain');
+
+        if (!$message-&gt;send()) {
+            $this-&gt;setError(Lang::txt('PLG_BOOKINGS_NOTIFY_SEND_FAILED', $to));
+        }
+    }
 }
 </code></pre>
 <p>Nothing registers <code>onReservationCreate</code> anywhere else. The method name is the
@@ -255,7 +262,9 @@ class Formatwiki extends Plugin
 </code></pre>
 <p>It answers <code>onContentBeforeSave</code> and <code>onContentPrepare</code>, and keeps its two
 helpers, <code>isWiki()</code> and <code>key()</code>, private — which is not a style preference.
-See the warning below.</p>
+See the warning below. Its third public method, the static <code>wasRendered()</code>,
+exists so that <code>formathtml</code> can ask whether a piece of content came from this
+plugin; being public, it is registered as a listener too.</p>
 <h2 id="what-the-base-class-gives-you">What the base class gives you</h2>
 <table>
 <thead>
@@ -303,18 +312,18 @@ See the warning below.</p>
 </tr>
 </tbody>
 </table>
-<p>Because <code>Plugin</code> extends <code>Hubzero\Base\Obj</code>, which uses the <code>ErrorBag</code> trait,
-<code>setError()</code>, <code>getError()</code>, and <code>getErrors()</code> are available too, and plugins
+<p><code>Plugin</code> uses the <code>ErrorBag</code> trait, so <code>setError()</code>, <code>getError()</code>, and
+<code>getErrors()</code> are available too, and plugins
 use them to hand a message back to the component that triggered them. The
 component has to ask: an error set in a plugin goes nowhere on its own.</p>
 <h2 id="the-constructor">The constructor</h2>
 <p>You rarely need one. If you write one, call the parent — it is what populates
 <code>$params</code>, <code>$pluginName</code>, and <code>$pluginType</code>, and what loads the language file:</p>
-<pre><code class="language-php">public function __construct(&amp;$subject, $config)
+<pre><code class="language-php">public function __construct($subject, $config)
 {
-	parent::__construct($subject, $config);
+    parent::__construct($subject, $config);
 
-	// Extra initialisation
+    // Extra initialisation
 }
 </code></pre>
 <p><code>$subject</code> is the dispatcher the plugin was created with, retained only for
@@ -330,12 +339,12 @@ plugin instance and registers it once per public method name. There is no list
 of events to declare and no annotation to write — the method name <em>is</em> the
 registration.</p>
 <aside class="admonition admonition--warning">
-<p><strong>Warning:</strong> Every public method is registered, and that includes the
-seventeen a plugin inherits without writing: <code>__construct</code>, <code>loadLanguage</code>,
-<code>getParams</code>, <code>view</code>, <code>__toString</code>, <code>def</code>, <code>get</code>, <code>getProperties</code>, <code>set</code>,
-<code>setProperties</code>, <code>getError</code>, <code>getErrors</code>, <code>setError</code>, <code>setErrors</code>, <code>css</code>,
-<code>js</code> and <code>img</code>. Every plugin on the hub is a listener for an event called
-<code>get</code>. Add a public <code>display()</code> and it becomes a listener for <code>display</code>.
+<p><strong>Warning:</strong> Every public method is registered, static ones included, and
+that includes the eleven a plugin inherits without writing: <code>__construct</code>,
+<code>loadLanguage</code>, <code>getParams</code>, <code>view</code>, <code>getError</code>, <code>getErrors</code>, <code>setError</code>,
+<code>setErrors</code>, <code>css</code>, <code>js</code> and <code>img</code>. Every plugin on the hub is a listener
+for an event called <code>view</code>. Add a public <code>display()</code> and it becomes a
+listener for <code>display</code>.
 Name your handlers <code>onSomething</code>, and make every helper <code>protected</code> or
 <code>private</code>.</p>
 </aside>
@@ -430,7 +439,7 @@ for your own component is not already taken.</p>
 </aside>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Reviewed against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../structure/index.html" rel="prev"><span>Previous</span>Structure</a><a class="pager__next" href="../languages/index.html" rel="next"><span>Next</span>Languages</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/03-controllers.md">Edit this page on GitHub</a>

@@ -93,7 +93,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -201,7 +201,14 @@ directory, run by <a href="../../muse/index.html"><code>muse migration</code></a
         Migration20260210000000PlgBookingsNotify.php
 </code></pre>
 <p>The class name is <code>Migration{timestamp}Plg{Group}{Name}</code>, and the file is
-named after the class. Migrations run in timestamp order across every
+named after the class. The class sits in the plugin's <code>Migrations</code> namespace,
+<code>Plugins\{Group}\{Name}\Migrations</code>, as all 339 plugin migrations in core do.
+<a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/libraries/Hubzero/Content/Migration.php"><code>Hubzero\Content\Migration</code></a>
+requires the file, looks for the class without a namespace, and then for the
+same name in the namespace it derives from the file's path — so a global
+migration written for an earlier release still runs, and a namespaced one has
+to be in the namespace its directory implies. A mismatch is logged as
+<code>class not found (expected …)</code> and the file is skipped. Migrations run in timestamp order across every
 extension on the hub, so give a plugin that depends on a component's tables a
 later timestamp than the migration that creates them — <code>plg_bookings_notify</code>
 after <code>com_bookings</code>, not before.</p>
@@ -213,22 +220,21 @@ conventions, the <code>muse</code> commands, and the schema helpers on <code>$th
 <p>For <code>plg_bookings_notify</code>, the whole migration is two calls:</p>
 <pre><code class="language-php">&lt;?php
 
-use Hubzero\Content\Migration\Base;
+namespace Plugins\Bookings\Notify\Migrations;
 
-// No direct access
-defined('_HZEXEC_') or die();
+use Hubzero\Content\Migration\Base;
 
 class Migration20260210000000PlgBookingsNotify extends Base
 {
-	public function up()
-	{
-		$this-&gt;addPluginEntry('bookings', 'notify');
-	}
+    public function up()
+    {
+        $this-&gt;addPluginEntry('bookings', 'notify');
+    }
 
-	public function down()
-	{
-		$this-&gt;deletePluginEntry('bookings', 'notify');
-	}
+    public function down()
+    {
+        $this-&gt;deletePluginEntry('bookings', 'notify');
+    }
 }
 </code></pre>
 <p>Which is, allowing for the names, the shipped members blog migration:</p>
@@ -335,7 +341,7 @@ column. Pass a JSON string, or an array, which the macro encodes for you. Use
 it when a plugin must arrive with a value other than the manifest default:</p>
 <pre><code class="language-php">public function up()
 {
-	$this-&gt;addPluginEntry('content', 'formatwiki', 1, '{&quot;applyFormat&quot;:&quot;0&quot;,&quot;convertFormat&quot;:&quot;1&quot;}');
+    $this-&gt;addPluginEntry('content', 'formatwiki', 1, '{&quot;applyFormat&quot;:&quot;0&quot;,&quot;convertFormat&quot;:&quot;1&quot;}');
 }
 </code></pre>
 <p>For a plugin that is already installed, <code>savePluginParams()</code> writes the
@@ -344,10 +350,10 @@ merge — so read the current values first and set only what you are changing.
 That is the right tool when a later migration adds a field:</p>
 <pre><code class="language-php">public function up()
 {
-	$params = $this-&gt;getParams('plg_content_formatwiki');
-	$params-&gt;set('convertFormat', 0);
+    $params = $this-&gt;getParams('plg_content_formatwiki');
+    $params-&gt;set('convertFormat', 0);
 
-	$this-&gt;savePluginParams('content', 'formatwiki', $params);
+    $this-&gt;savePluginParams('content', 'formatwiki', $params);
 }
 </code></pre>
 <p><code>getParams()</code> returns a <code>Hubzero\Config\Registry</code> unless you pass <code>true</code> as
@@ -387,17 +393,16 @@ comment, because nothing else in the tree records the dependency.</p>
 matching <code>down()</code>:</p>
 <pre><code class="language-php">public function up()
 {
-	if (!$this-&gt;db-&gt;tableExists('#__bookings_notifications'))
-	{
-		$this-&gt;db-&gt;query(&quot;CREATE TABLE `#__bookings_notifications` (
-			`id` int(11) NOT NULL AUTO_INCREMENT,
-			`reservation_id` int(11) NOT NULL DEFAULT 0,
-			`sent` datetime DEFAULT NULL,
-			PRIMARY KEY (`id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8;&quot;);
-	}
+    if (!$this-&gt;db-&gt;tableExists('#__bookings_notifications')) {
+        $this-&gt;db-&gt;query(&quot;CREATE TABLE `#__bookings_notifications` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `reservation_id` int(11) NOT NULL DEFAULT 0,
+            `sent` datetime DEFAULT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;&quot;);
+    }
 
-	$this-&gt;addPluginEntry('bookings', 'notify', 0);
+    $this-&gt;addPluginEntry('bookings', 'notify', 0);
 }
 </code></pre>
 <p>Write <code>#__</code> for the table prefix, never a literal <code>jos_</code>; see
@@ -427,7 +432,7 @@ under a folder or element you did not expect: check <code>#__extensions</code> d
 before assuming the loader is at fault.</p>
 
         </div>
-        <p class="stamp">Rewritten and checked against <code>2.4-main @ 91d03d0a23</code> on 2026-09-10.</p>
+        <p class="stamp">Reviewed against <code>per-cs-3.1 @ 6196e778df</code> on 2026-11-10.</p>
         <nav class="pager" aria-label="Chapter navigation"><a class="pager__prev" href="../index.html" rel="prev"><span>Previous</span>Plugins</a><a class="pager__next" href="../structure/index.html" rel="next"><span>Next</span>Structure</a></nav>
         <footer class="article__footer">
           <a class="edit-link" href="https://github.com/hubzero/hubzero-cms/edit/2.4-main/docs/developers/10-plugins/01-migrations.md">Edit this page on GitHub</a>

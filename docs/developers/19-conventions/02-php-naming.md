@@ -1,7 +1,7 @@
 <!--
 status: rewritten
-reviewed-against: 2.4-main @ 348f0057c2
-reviewed: 2026-09-10
+reviewed-against: per-cs-3.1 @ 6196e778df
+reviewed: 2026-11-10
 screenshots: none
 -->
 # PHP Naming Conventions
@@ -163,28 +163,31 @@ have one — 285 of the 1,140 layout files in core carry one.
 
 ## Plugins: `Plugins\`
 
-A plugin's entry class is **not** namespaced. It is a global class named
-`plg[Folder][Element]`, in `core/plugins/[folder]/[element]/[element].php`:
+A plugin's entry class is named for its element, in a namespace built from
+its folder and element, and lives in
+`core/plugins/[folder]/[element]/[element].php`:
 
 ```php
-class plgContentFormathtml extends \Hubzero\Plugin\Plugin
+namespace Plugins\Content\Formathtml;
+
+use Hubzero\Plugin\Plugin;
+
+class Formathtml extends Plugin
 {
 }
 ```
 
-330 plugins in core follow this. `Hubzero\Plugin\Loader` reads the plugin's
-`folder` and `element` from `#__extensions`, includes
-`plugins/[folder]/[element]/[element].php`, and then looks for a class named
-`plg` + folder + element. PHP class names are case-insensitive, so
-`plgContentFormathtml` matches the lower-case values in the table. Get the name
-wrong and the file loads but nothing is instantiated — silently.
+Every plugin in core follows this. `Hubzero\Plugin\Loader` reads the plugin's
+`folder` and `element` from `#__extensions`, includes the file, and looks for
+`Plugins\[Folder]\[Element]\[Element]`. It then aliases that class to the
+older global name, `plg` + folder + element (`plgContentFormathtml`), so code
+that still names a plugin that way keeps working. A plugin outside core that
+declares only the global `plg[Folder][Element]` class still loads; new plugins
+should not use it. Get either name wrong and the file loads but nothing is
+instantiated — silently.
 
-The loader will also accept a namespaced entry class named
-`Plugins\[Folder]\[Element]`, but no plugin in core uses that form.
-
-Supporting classes that a plugin ships alongside its entry point may be
-namespaced, as `Plugins\[Folder]\[Element]\[Name]`, and about seventy files in
-core are:
+Supporting classes that a plugin ships alongside its entry point go in the
+same namespace, one segment deeper, as `Plugins\[Folder]\[Element]\[Name]`:
 
 ```
 Plugins\Content\Formathtml\Macros\Iframe
@@ -194,12 +197,9 @@ Plugins\Content\Formathtml\Macros\Iframe
 
 The folder and element segments are lowercased before the path is built, so
 `Plugins\Content\Formathtml\…` reaches `plugins/content/formathtml/`. There is
-no `plg_` directory prefix to add.
-
-Plenty of plugin helpers are still global classes with no namespace —
-`core/plugins/projects/files/helpers/sync.php` declares a bare `Sync`. Those are
-reached by an explicit `require_once`, not by the autoloader. Namespace new
-ones.
+no `plg_` directory prefix to add. No plugin class in core is global any more;
+`core/plugins/projects/files/helpers/sync.php`, for one, declares
+`Plugins\Projects\Files\Helpers\Sync`.
 
 ## Modules: `Modules\`
 
@@ -236,9 +236,6 @@ it.
 
 ## Migrations
 
-`ClassLoader` registers a `Migrations\` prefix pointing at `core/migrations`,
-but nothing in core uses it: every migration class is global.
-
 A migration class is named `Migration` + a fourteen-digit UTC timestamp + the
 extension it changes, in PascalCase with the `com_`/`plg_`/`mod_` prefix folded
 in:
@@ -250,9 +247,24 @@ Migration20260129000000Core
 ```
 
 The file is the class name plus `.php`, in `core/migrations/` for a core
-migration or in the extension's own `migrations/` directory. It extends
+migration or in the extension's own `migrations/` directory, and the class
+extends
 [`Hubzero\Content\Migration\Base`](../../../core/libraries/Hubzero/Content/Migration/Base.php).
-See [Migrations](../06-database/03-migrations.md).
+
+The namespace follows the directory:
+
+| Migration directory | Namespace |
+|---|---|
+| `core/migrations/` | `Migrations` |
+| `core/components/com_blog/migrations/` | `Components\Blog\Migrations` |
+| `core/modules/mod_login/migrations/` | `Modules\Login\Migrations` |
+| `core/plugins/content/formathtml/migrations/` | `Plugins\Content\Formathtml\Migrations` |
+| `core/templates/[name]/migrations/` | `Templates\[Name]\Migrations` |
+
+`Hubzero\Content\Migration` includes the file and looks for the class by its
+bare name first, then in the namespace it derives from the path. Every
+migration in core is namespaced; a global class, as older extensions declare,
+still runs. See [Migrations](../06-database/03-migrations.md).
 
 ## Files
 
@@ -274,10 +286,11 @@ named pattern says so — `getInstance()` for a singleton.
 Controller tasks end in `Task`: a request for `task=entry` calls `entryTask()`.
 Plugin event handlers start with `on`: `onContentPrepare()`.
 
-A leading underscore on a protected or private method is the one place an
-underscore is allowed. It is legacy — see
-[PHP Coding Style](01-php-style.md) —
-and new code should not add one. A public method never has one.
+No method has a leading underscore, whatever its visibility. PSR-12 gives the
+prefix no meaning, and core dropped it in 2.5: a protected `_sortNames()` is
+now `sortNames()`. A subclass outside core that still overrides the old name
+no longer overrides anything — PHP raises nothing and the base implementation
+runs — so an extension written against 2.4 has to rename its overrides too.
 
 Functions in the global scope are permitted but discouraged. The bootstrap
 declares a handful (`app()`, `config()`, `with()`); everything else belongs on
@@ -285,9 +298,8 @@ a class.
 
 ## Variables
 
-Letters and digits, `camelCase`, starting lowercase. As with methods, a leading
-underscore on a protected or private property is legacy and tolerated, never on
-a public one.
+Letters and digits, `camelCase`, starting lowercase. As with methods, no
+leading underscore on a property, whatever its visibility.
 
 Name for what the variable holds. `$i` and `$n` are fine as loop indices in a
 few lines and wrong in a loop long enough that the reader has forgotten them.
@@ -297,14 +309,14 @@ namespace Hubzero\Base;
 
 class Example
 {
-	private $_status = null;
+    private $status = null;
 
-	protected $_fieldName = null;
+    protected $fieldName = null;
 
-	protected function _sortNames()
-	{
-		$someNames = array();
-	}
+    protected function sortNames()
+    {
+        $someNames = [];
+    }
 }
 ```
 

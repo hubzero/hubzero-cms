@@ -98,7 +98,7 @@
 <li class="tree__leaf"><a class="tree__link" href="../../modules/migrations/index.html">Migrations</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/structure/index.html">Structure</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/controllers/index.html">Controllers</a></li>
-<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">Helpers</a></li>
+<li class="tree__leaf"><a class="tree__link" href="../../modules/helpers/index.html">The module class</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/languages/index.html">Languages</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/views/index.html">Views</a></li>
 <li class="tree__leaf"><a class="tree__link" href="../../modules/assets/index.html">Assets</a></li>
@@ -190,15 +190,15 @@ hub configured differently from yours.</p>
 <h2 id="the-credentials">The credentials</h2>
 <p>A hub keeps its database credentials in <code>app/config/database.php</code>, which
 returns a plain PHP array:</p>
-<pre><code class="language-php">return array(
-	'dbtype'   =&gt; 'mysql',
-	'host'     =&gt; 'localhost',
-	'user'     =&gt; 'hubuser',
-	'password' =&gt; '…',
-	'db'       =&gt; 'hubdatabase',
-	'dbprefix' =&gt; 'jos_',
-	'port'     =&gt; '',
-);
+<pre><code class="language-php">return [
+    'dbtype'   =&gt; 'mysql',
+    'host'     =&gt; 'localhost',
+    'user'     =&gt; 'hubuser',
+    'password' =&gt; '…',
+    'db'       =&gt; 'hubdatabase',
+    'dbprefix' =&gt; 'jos_',
+    'port'     =&gt; '',
+];
 </code></pre>
 <p>The file is written by the installer and is not in the repository. Read it
 over <a href="../fileaccess/index.html#reaching-the-server">SSH</a>; it is only readable by the
@@ -264,9 +264,9 @@ php core/bin/muse database load &lt;file&gt;
 above it sit a query builder and an ORM that bind every value they are
 given:</p>
 <pre><code class="language-php">$rows = Post::all()
-	-&gt;whereEquals('state', 1)
-	-&gt;order('created', 'desc')
-	-&gt;rows();
+    -&gt;whereEquals('state', 1)
+    -&gt;order('created', 'desc')
+    -&gt;rows();
 </code></pre>
 <p>The <a href="../../database/index.html">Database</a> book covers all three layers: the
 <a href="../../database/query-builder/index.html">query builder</a>, the
