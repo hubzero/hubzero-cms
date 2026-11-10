@@ -60,8 +60,7 @@ $this->css()
                         . "\n";
                     $html .= "\t\t\t"
                         . '<td class="textual-data"><a href="'
-                        . Route::url('index
-                        . php?option='
+                        . Route::url('index.php?option='
                         . $this->option
                         . '&id='
                         . $users[$userkey]['uidNumber'])

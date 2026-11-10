@@ -110,48 +110,48 @@ class Resourcetype extends Select
                     . '>' . $option->text . '</option>';
             }
             $html[] = '
-                    </select>
-                <div class="input-wrap">
-                </div>
-                    <label id="fields_params_genre_0-lbl" for="fields_params_genre_0">'
+					</select>
+				<div class="input-wrap">
+				</div>
+					<label id="fields_params_genre_0-lbl" for="fields_params_genre_0">'
             . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
-                    <select id="fields_params_genre_0" name="fields[params][type][0][genre]">
-                        <option value="article"'
-                . ($value['genre'] == 'article' ? ' selected="selected"' : '') . '>article</option>
-                        <option value="book"'
-                . ($value['genre'] == 'book' ? ' selected="selected"' : '') . '>book</option>
-                        <option value="bookitem"'
-                . ($value['genre'] == 'bookitem' ? ' selected="selected"' : '') . '>bookitem</option>
-                    </select>
-                </div>
-                </fieldset>';
+					<select id="fields_params_genre_0" name="fields[params][type][0][genre]">
+						<option value="article"'
+                . ($value['genre'] == 'article ' ? 'selected="selected"' : '') . '>article</option>
+						<option value="book"'
+                . ($value['genre'] == 'book ' ? 'selected="selected"' : '') . '>book</option>
+						<option value="bookitem"'
+                . ($value['genre'] == 'bookitem ' ? 'selected="selected"' : '') . '>bookitem</option>
+					</select>
+				</div>
+				</fieldset>';
         }
 
         $html[] = '
-        <script id="plg_resources_coins" type="text/x-handlebars-template">
-            <fieldset class="coinstypes">
-                <div class="input-wrap">
-                    <label id="fields_params_type_{{index}}-lbl" for="fields_params_type_{{index}}">'
+		<script id="plg_resources_coins" type="text/x-handlebars-template">
+			<fieldset class="coinstypes">
+				<div class="input-wrap">
+					<label id="fields_params_type_{{index}}-lbl" for="fields_params_type_{{index}}">'
                         . Lang::txt('PLG_RESOURCES_COINS_RESOURCETYPE_LABEL') . '</label><br>
-                    <select id="fields_params_type_{{index}}" name="fields[params][type][{{index}}][resource]">
-                        <option value="">' . Lang::txt('PLG_RESOURCES_COINS_RESOURCETYPE_SELECT') . '</option>';
+					<select id="fields_params_type_{{index}}" name="fields[params][type][{{index}}][resource]">
+						<option value="">' . Lang::txt('PLG_RESOURCES_COINS_RESOURCETYPE_SELECT') . '</option>';
         foreach ($options as $option) {
             $html[] = '<option value="' . $option->value . '">' . $option->text . '</option>';
         }
         $html[] = '
-                    </select>
-                <div class="input-wrap">
-                </div>
-                    <label id="fields_params_genre_{{index}}-lbl" for="fields_params_genre_{{index}}">'
+					</select>
+				<div class="input-wrap">
+				</div>
+					<label id="fields_params_genre_{{index}}-lbl" for="fields_params_genre_{{index}}">'
         . Lang::txt('PLG_RESOURCES_COINS_COINTYPE_LABEL') . '</label><br>
-                    <select id="fields_params_genre_{{index}}" name="fields[params][type][{{index}}][genre]">
-                        <option value="article">article</option>
-                        <option value="book">book</option>
-                        <option value="bookitem">bookitem</option>
-                    </select>
-                </div>
-            </fieldset>
-        </script>';
+					<select id="fields_params_genre_{{index}}" name="fields[params][type][{{index}}][genre]">
+						<option value="article">article</option>
+						<option value="book">book</option>
+						<option value="bookitem">bookitem</option>
+					</select>
+				</div>
+			</fieldset>
+		</script>';
 
         $html[] = '<button class="button" id="add-resource-type">'
             . Lang::txt('PLG_RESOURCES_COINS_ADD_TYPE') . '</button>';

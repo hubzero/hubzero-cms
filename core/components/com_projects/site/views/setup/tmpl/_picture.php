@@ -32,8 +32,7 @@ if (!$this->model->exists()) {
         <?php if ($this->model->get('picture')) { ?>
             <?php
             $routeUrl = Route::url(
-                'index
-    . php?option='
+                'index.php?option='
                 . $this->option
                 . '&task=deleteimg&alias='
                 . $this->model->get('alias'),

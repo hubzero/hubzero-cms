@@ -27,11 +27,12 @@ class Slider extends WikiMacro
         $txt = [];
         $txt['wiki'] = "Creates a slider with the images passed in.";
         $txt['html'] = '<p>Creates a slider with the images passed in. '
-            . 'Enter uploaded image names seperated by commas.</p>' . "\n"
-            . '                        <p>Examples:</p>
-                        <ul>
-                            <li><code>[[Slider(image1.jpg, image2.gif, image3.png)]]</code></li>
-                        </ul>';
+            . 'Enter uploaded image names seperated by commas.</p>
+						' . ""
+            . '<p>Examples:</p>
+						<ul>
+							<li><code>[[Slider(image1.jpg, image2.gif, image3.png)]]</code></li>
+						</ul>';
 
         return $txt['html'];
     }
@@ -102,17 +103,13 @@ class Slider extends WikiMacro
         $html .= '</div>';
 
         Document::addStyleSheet(Request::root()
-            . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider
-            . css?t='
+            . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider.css?t='
             . filemtime(__DIR__
-            . '/macro-assets/slider/slider
-            . css',));
+            . '/macro-assets/slider/slider.css'));
         Document::addScript(Request::root()
-            . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider
-            . js?t='
+            . 'core/plugins/wiki/parserdefault/macros/macro-assets/slider/slider.js?t='
             . filemtime(__DIR__
-            . '/macro-assets/slider/slider
-            . js',));
+            . '/macro-assets/slider/slider.js'));
 
         return $html;
     }

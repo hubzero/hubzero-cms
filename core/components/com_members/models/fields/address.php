@@ -140,9 +140,9 @@ class Address extends Field
         $html[] = '</fieldset>';
 
         Behavior::framework(true);
-        App::get('document')->addScriptDeclaration("
-			function manageProfileAddresses() {
-				if ($('.addresses-" . $this->id . "').length > 0) {
+        App::get('document
+			')->addScriptDeclaration("function manageProfileAddresses() {
+				if (\$('.addresses-" . $this->id . "').length > 0) {
 					var fieldset = $('.addresses-" . $this->id . "');
 					var btn = $('<p class=\"address-add\"><a class=\"icon-add\" href=\"#\">"
                         . "Add another address</a></p>').on('click', function(e){
@@ -153,33 +153,20 @@ class Address extends Field
 							.last()
 							.clone();
 						grp.find('input').each(function(){
-							this.name = this.name.replace(/\[(\d+)\]/,function(str,p1){
-								return '[' + (parseInt(p1,10)+1) + ']';
-							});
-							this.id = this.id.replace(/\-(\d+)\-/,function(str,p1){
-								return '-' + (parseInt(p1,10)+1) + '-';
-							});
+							this.name = this.name.replace(/\\[(\\d+)\\]/,function(str,p1){return '[' + (parseInt(p1,10)+1) + ']';});
+							this.id = this.id.replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) + '-';});
 							this.value = '';
 						});
 						grp.find('select').each(function(){
-							this.name = this.name.replace(/\[(\d+)\]/,function(str,p1){
-								return '[' + (parseInt(p1,10)+1) + ']';
-							});
-							this.id = this.id.replace(/\-(\d+)\-/,function(str,p1){
-								return '-' + (parseInt(p1,10)+1) + '-';
-							});
+							this.name = this.name.replace(/\\[(\\d+)\\]/,function(str,p1){return '[' + (parseInt(p1,10)+1) + ']';});
+							this.id = this.id.replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) + '-';});
 							this.selectedIndex = 0;
 						});
 						grp.find('label').each(function(){
-							$(this).attr('for', $(this).attr('for').replace(
-								/\-(\d+)\-/,
-								function(str,p1){
-									return '-' + (parseInt(p1,10)+1) + '-';
-								}
-							));
+							\$(this).attr('for', \$(this).attr('for').replace(/\\-(\\d+)\\-/,function(str,p1){return '-' + (parseInt(p1,10)+1) + '-';}));
 						});
 						if (!grp.find('.address-remove').length) {
-							var rmv = $('<a class=\"address-remove icon-remove\" "
+							var rmv = \$('<a class=\"address-remove icon-remove\" "
                                 . "href=\"#\">Remove</a>');
 							grp.append(rmv);
 						}

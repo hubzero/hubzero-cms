@@ -34,8 +34,7 @@ $member = $this->model->member();
         <?php if ($this->model->access('manager')) { ?>
                     <?php
                     $routeUrl = Route::url(
-                        'index
-    . php?option='
+                        'index.php?option='
                         . $this->option
                         . '&alias='
                         . $this->model->get('alias')
@@ -46,8 +45,7 @@ $member = $this->model->member();
                     <li><a href="<?php echo $routeUrl; ?>"><?php echo $langTxt2; ?></a></li>
                     <?php
                     $routeUrl3 = Route::url(
-                        'index
-    . php?option='
+                        'index.php?option='
                         . $this->option
                         . '&alias='
                         . $this->model->get('alias')
@@ -60,8 +58,7 @@ $member = $this->model->member();
         <?php if ($this->model->isPublic()) { ?>
                     <?php
                     $routeUrl5 = Route::url(
-                        'index
-    . php?option='
+                        'index.php?option='
                         . $this->option
                         . '&alias='
                         . $this->model->get('alias')
@@ -74,8 +71,7 @@ $member = $this->model->member();
         <?php if (isset($counts['team']) && $counts['team'] > 1 && $member && $member->get('status') == 1) { ?>
                     <?php
                     $routeUrl7 = Route::url(
-                        'index
-    . php?option='
+                        'index.php?option='
                         . $this->option
                         . '&alias='
                         . $this->model->get('alias')

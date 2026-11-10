@@ -67,8 +67,7 @@ $editAuthorized = User::authorise('core.manage', 'com_members');
 
                             //display link if we are authorized
                         if ($editAuthorized) {
-                            $editLink = Route::url('index
-                                . php?option=com_members&controller=members&task=edit&id='
+                            $editLink = Route::url('index.php?option=com_members&controller=members&task=edit&id='
                                 . $row->userid);
                             echo '<a href="'
                                 . $editLink

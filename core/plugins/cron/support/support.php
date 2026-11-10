@@ -195,11 +195,11 @@ class Support extends Plugin
 							SELECT jto.`objectid` FROM `#__tags_object` AS jto
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
-                            AND (
-                                jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
+							AND (
+								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
                                 . implode(", ", $tags) . ")
-                            )
-                        )";
+							)
+						)";
             }
 
             if ($tags = $params->get('support_ticketpending_includeTags', '')) {
@@ -213,11 +213,11 @@ class Support extends Plugin
 							SELECT jto.`objectid` FROM `#__tags_object` AS jto
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
-                            AND (
-                                jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
+							AND (
+								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
                                 . implode(", ", $tags) . ")
-                            )
-                        )";
+							)
+						)";
             }
 
             if ($created = $params->get('support_ticketpending_activity', '-2week')) {
@@ -682,7 +682,7 @@ class Support extends Plugin
 							JOIN `#__tags` AS jt ON jto.`tagid`=jt.`id`
 							WHERE jto.`tbl`='support'
 							AND (
-                                jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
+								jt.`tag` IN (" . implode(", ", $tags) . ") OR jt.`raw_tag` IN ("
                                 . implode(", ", $tags) . ")
 							)
 						)";

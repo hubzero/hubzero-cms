@@ -79,8 +79,7 @@ if ($this->contributors) {
                 // get users groups
                 // in reverse to get the highest levels first
                 $groupIds = Hubzero\Access\Access::getGroupsByUser($xuser->id, false);
-                $database->setQuery("SELECT title FROM `#__usergroups` WHERE `id` IN (" . implode(',', $groupIds) . ")
-                ORDER BY lft ASC");
+                $database->setQuery("SELECT title FROM `#__usergroups` WHERE `id` IN (" . implode(',', $groupIds) . ") ORDER BY lft ASC");
                 $groups = array_reverse($database->loadColumn());
 
                 // use the users first group

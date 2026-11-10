@@ -64,7 +64,7 @@ $invalidMsg = $this->escape(
                         id="field-anonymous"
                         value="1"
                         <?php if ($this->row->get('anonymous')) {
-                            echo 'checked="checked"';
+                            echo ' checked="checked"';
                         } ?>
                     />
                     <label for="field-anonymous"><?php echo Lang::txt('COM_PROJECTS_FIELD_ANONYMOUS'); ?></label>

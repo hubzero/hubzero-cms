@@ -25,8 +25,7 @@ $config = $this->model->config();
 <?php if ($this->model->access('manager') || ($this->model->access('content') && $config->get('edit_description'))) { ?>
     <?php
     $routeUrl = Route::url(
-        'index
-    . php?option='
+        'index.php?option='
         . $this->option
         . '&task=edit&alias='
         . $this->model->get('alias')
@@ -71,8 +70,7 @@ $config = $this->model->config();
                             <?php if ($this->model->access('manager')) { ?>
                                 <?php
                                 $routeUrl7 = Route::url(
-                                    'index
-    . php?option='
+                                    'index.php?option='
                                     . $this->option
                                     . '&task=edit&alias='
                                     . $this->model->get('alias')

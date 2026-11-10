@@ -174,9 +174,11 @@ class Item extends Table
             default:
                 $query = "SELECT b.*, u.name AS poster_name, "
                     . "s.description AS user_description, s.created AS posted, "
-                    . "s.created_by AS poster, s.original, s.id AS post_id, s.collection_id, "
+                    . "s.created_by AS poster, s.original, s.id AS post_id, s.collection_id,
+						"
                     . "(SELECT COUNT(*) FROM `#__collections_posts` AS s "
-                    . "WHERE s.item_id=b.id AND s.original=0) AS reposts, "
+                    . "WHERE s.item_id=b.id AND s.original=0) AS reposts,
+						"
                     . "(SELECT COUNT(*) FROM `#__item_comments` AS c "
                     . "WHERE c.item_id=b.id AND c.item_type='collection' "
                     . "AND c.state IN (1, 3)) AS comments";
@@ -402,9 +404,11 @@ class Item extends Table
     {
         $filters['collection_id'] = 0;
         $query = "SELECT b.*, u.name, s.created AS posted, s.created_by AS poster, "
-            . "s.original, s.id AS post_id, "
+            . "s.original, s.id AS post_id,
+				"
             . "(SELECT COUNT(*) FROM `#__collections_posts` AS s "
-            . "WHERE s.item_id=b.id AND s.original=0) AS reposts, "
+            . "WHERE s.item_id=b.id AND s.original=0) AS reposts,
+				"
             . "(SELECT COUNT(*) FROM `#__item_comments` AS c "
             . "WHERE c.item_id=b.id AND c.item_type='bulletin' AND c.state IN (1, 3)) AS comments";
         if (isset($filters['user_id']) && $filters['user_id']) {

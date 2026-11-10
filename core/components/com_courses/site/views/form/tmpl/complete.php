@@ -73,20 +73,13 @@ if ($this->resp->getStartTime()) {
                                     left: ' . $ans['left'] . 'px;
                                 }',
                             );
-                            echo '<input
-                                name="question-' . $qid . '"
-                                id="question-' . $qid . '-' . $aidx . '"
-                                value="' . $ans['id'] . '"
-                                ' . (
+                            echo '<input name="question-' . $qid . '" id="question-' . $qid . '-' . $aidx . '" value="' . $ans['id'] . '" ' . (
                                 (isset($_POST['question-' . $qid]) && $_POST['question-' . $qid] == $ans['id'])
                                     || (!isset($_POST['question-' . $qid])
                                         && isset($progress[$qid])
-                                        && $progress[$qid]['answer_id'] == $ans['id'])
-                                    ? '
-                                checked="checked"
-                                ' : ''
-                            ) . 'class="placeholder"
-                                type="radio" />';
+                                        && $progress[$qid]['answer_id'] == $ans['id '])
+                                    ? 'checked="checked" ' : ''
+                            ) . 'class="placeholder" type="radio" />';
                             if (isset($incomplete[$qid])) :
                                 $view->css(
                                     '#question-' . $qid . '-incomplete-marker {
@@ -94,9 +87,7 @@ if ($this->resp->getStartTime()) {
                                         left: ' . ($ans['left'] - 20) . 'px;
                                     }',
                                 );
-                                echo '<div
-                                    class="incomplete-marker"
-                                    id="question-' . $qid . '-incomplete-marker">*</div>';
+                                echo '<div class="incomplete-marker" id="question-' . $qid . '-incomplete-marker">*</div>';
                             endif;
                         endforeach;
                         ++$qidx;

@@ -34,10 +34,7 @@ foreach ($this->records as $record) {
                 $orcid_html .= $orcid;
             $orcid_html .= "</div>";
             $orcid_html .= "<div class=\"col span4 omega\">";
-            $orcid_html .= "<a class=\"btn\" onclick=\"HUB
-                . Members
-                . Profile
-                . associateOrcid('', '"
+            $orcid_html .= "<a class=\"btn\" onclick=\"HUB.Members.Profile.associateOrcid('', '"
                 . $orcid
                 . "')\"> "
                 . Lang::txt('Associate this ORCID')

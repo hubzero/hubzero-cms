@@ -55,8 +55,8 @@ class Popup extends Button
         $text  = Lang::txt($text);
         $class = $this->fetchIconClass($name);
         $url   = $this->getCommand($name, $url, $width, $height, $top, $left);
-        $html  = "<a data-title=\"$text\" class=\"modal\" href=\"$url\" data-width=\"$width\" data-height=\"$height\" 
-            rel=\"{size: {width: $width, height: $height}, onClose: function() {"
+        $html  = "<a data-title=\"$text\" class=\"modal\" href=\"$url\" data-width=\"$width\" data-height=\"$height\" "
+            . "rel=\"{size: {width: $width, height: $height}, onClose: function() {"
             . $onClose
             . "}}\">\n";
         $html .= "<span class=\"$class\">\n";

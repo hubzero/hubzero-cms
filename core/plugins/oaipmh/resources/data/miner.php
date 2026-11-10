@@ -267,9 +267,9 @@ class Miner extends Obj implements Provider
         $this->database->setQuery(
             "SELECT r.id, r.id AS identifier, r.title, r.introtext AS description, "
             . "r.fulltxt, r.created, r.publish_up, r.alias, rt.alias AS type
-            FROM `#__resources` AS r
-            INNER JOIN `#__resource_types` AS rt ON r.type = rt.id
-            WHERE r.id = " . $this->database->quote($id),
+			FROM `#__resources` AS r
+			INNER JOIN `#__resource_types` AS rt ON r.type = rt.id
+			WHERE r.id = " . $this->database->quote($id),
         );
         $record = $this->database->loadObject();
 

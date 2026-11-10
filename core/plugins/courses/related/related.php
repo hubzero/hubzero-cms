@@ -46,15 +46,14 @@ class Related extends Plugin
         $database = App::get('db');
 
         $query = "SELECT DISTINCT c.*
-                    FROM `#__courses` AS c
-                    JOIN `#__courses_members` AS m ON m.course_id=c.id AND m.student=0
-                    LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
-                    WHERE r.alias='instructor'
-                    AND m.user_id IN (" . implode(",", $ids) . ")
-                    AND m.student=0
-                    AND c.state=1
-                    AND c.id !=" . $database->Quote($course->get('id')) . "
-                    LIMIT " . (int) $this->params->get('display_limit', 3);
+					FROM `#__courses` AS c
+					JOIN `#__courses_members` AS m ON m.course_id=c.id AND m.student=0
+					LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
+					WHERE r.alias='instructor'
+					AND m.user_id IN (" . implode(",", $ids) . ")
+					AND m.student=0
+					AND c.state=1
+					AND c.id !=" . $database->Quote($course->get('id ')) . "LIMIT " . (int) $this->params->get('display_limit', 3);
 
         $database->setQuery($query);
         if ($courses = $database->loadObjectList()) {

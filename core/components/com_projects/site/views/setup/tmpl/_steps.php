@@ -23,8 +23,7 @@ defined('_HZEXEC_') or die();
         <?php if ($this->model->get('setup_stage') > 0 && $this->step != 0) : ?>
             <?php
             $routeUrl = Route::url(
-                'index
-    . php?option='
+                'index.php?option='
                 . $this->option
                 . '&alias='
                 . $this->model->get('alias')
@@ -50,8 +49,7 @@ defined('_HZEXEC_') or die();
         <?php if ($this->model->get('setup_stage') >= 1 && $this->step != 1) : ?>
             <?php
             $routeUrl2 = Route::url(
-                'index
-    . php?option='
+                'index.php?option='
                 . $this->option
                 . '&alias='
                 . $this->model->get('alias')

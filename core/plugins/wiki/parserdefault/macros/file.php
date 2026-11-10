@@ -535,12 +535,7 @@ class File extends WikiMacro
                     . '</div>' . "\n";
 
                 Document::addScript(Request::scheme()
-                    . '://webplayer
-                    . unity3d
-                    . com/download_webplayer-3
-                    . x/3
-                    . 0/uo/UnityObject2
-                    . js',);
+                    . '://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject2.js');
                 $fileJs = Request::root() . 'core/plugins/wiki/parserdefault/macros/macro-assets/file/file.js'
                     . '?t=' . filemtime(__DIR__ . '/macro-assets/file/file.js');
                 Document::addScript($fileJs);

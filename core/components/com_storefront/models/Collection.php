@@ -331,8 +331,7 @@ class Collection
         $img = $this->getImage();
 
         // First delete all old references
-        $sql = "DELETE FROM `#__storefront_images`
-            WHERE `imgObject` = 'collection' AND `imgObjectId` = " . $db->quote($this->getId());
+        $sql = "DELETE FROM `#__storefront_images` WHERE `imgObject` = 'collection' AND `imgObjectId` = " . $db->quote($this->getId());
         $db->setQuery($sql);
         $db->query();
 

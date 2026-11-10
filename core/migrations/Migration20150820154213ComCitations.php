@@ -44,8 +44,10 @@ class Migration20150820154213ComCitations extends Base
             $apaFormat->set([
                 'style'  => 'APA',
                 'format' => '{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, '
-                    . '<i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, '
-                    . '<b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, '
+                    . '<i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER},
+				{SERIES}, {PUBLISHER}, {ADDRESS}, '
+                    . '<b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION},
+				'
                     . '{SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI}). '
                     . "Cited by: <a href='{SECONDARY LINK}'>{SECONDARY COUNT}</a>",
             ]);
@@ -59,8 +61,10 @@ class Migration20150820154213ComCitations extends Base
             $ieeeFormat->set([
                 'style'  => 'IEEE',
                 'format' => '{AUTHORS}, {EDITORS} ({YEAR}), {TITLE/CHAPTER}, <i>{JOURNAL}</i>, '
-                    . '<i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER}, {SERIES}, {PUBLISHER}, {ADDRESS}, '
-                    . '<b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION}, '
+                    . '<i>{BOOK TITLE}</i>, {EDITION}, {CHAPTER},
+				{SERIES}, {PUBLISHER}, {ADDRESS}, '
+                    . '<b>{VOLUME}</b>, <b>{ISSUE/NUMBER}</b>: {PAGES}, {ORGANIZATION}, {INSTITUTION},
+				'
                     . '{SCHOOL}, {LOCATION}, {MONTH}, {ISBN/ISSN}, (DOI: {DOI})',
             ]);
 

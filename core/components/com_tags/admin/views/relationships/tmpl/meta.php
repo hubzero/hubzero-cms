@@ -32,11 +32,14 @@ $this->js('d3.js', 'system')
 
 $dbh = App::get('db');
 $dbh->setQuery(
-    'SELECT *, (SELECT group_concat(resource_type_id)'
-    . ' FROM `#__focus_area_resource_type_rel` WHERE focus_area_id = fa.id) AS types'
-    . ' FROM `#__tags` t'
-    . ' INNER JOIN `#__focus_areas` fa ON fa.tag_id = t.id'
-    . ' ORDER BY raw_tag',
+    'SELECT *, (SELECT group_concat(resource_type_id) '
+    . 'FROM `#__focus_area_resource_type_rel` WHERE focus_area_id = fa.id) AS types
+	'
+    . 'FROM `#__tags` t
+	'
+    . 'INNER JOIN `#__focus_areas` fa ON fa.tag_id = t.id
+	'
+    . 'ORDER BY raw_tag',
 );
 $fas = $dbh->loadAssocList();
 $dbh->setQuery(

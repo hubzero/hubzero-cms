@@ -182,8 +182,7 @@ class Migration extends Base implements CommandInterface
         $email = false;
         if ($this->arguments->getOpt('email')) {
             if (
-                !preg_match('/^[a-zA-Z0-9\.\_\-]+@[a-zA-Z0-9\.]+\.[a-zA-Z]{2,
-                4}$/', $this->arguments->getOpt('email'))
+                !preg_match('/^[a-zA-Z0-9\.\_\-]+@[a-zA-Z0-9\.]+\.[a-zA-Z]{2,4}$/', $this->arguments->getOpt('email'))
             ) {
                 $this->output->error('Error: '
                     . $this->arguments->getOpt('email')
@@ -291,8 +290,7 @@ class Migration extends Base implements CommandInterface
                                     $complete[] = $matches[1] . $matches[2];
                                 }
                                 if (
-                                    preg_match('/migration up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php) has 
-                                    not been run/i', $log['message'], $matches)
+                                    preg_match('/migration up\(\) in (.*?)(Migration[0-9]{14}[[:alnum:]_]*\.php) has not been run/i', $log['message'], $matches)
                                 ) {
                                     $missed[] = $matches[1] . $matches[2];
                                 }

@@ -420,8 +420,7 @@ class MathRenderer
             . DS
             . substr($this->hash, 2, 1)
             . DS
-            . "{$this->hash}
-            . png";
+            . "{$this->hash}.png";
 
         return '<img src="' . $url . '" class="tex" alt="' . htmlspecialchars($this->tex) . '" />';
     }

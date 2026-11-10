@@ -21,8 +21,7 @@ defined('_HZEXEC_') or die();
                 } ?>>
                 <?php
                 $routeUrl = Route::url(
-                    'index
-    . php?option='
+                    'index.php?option='
                     . $this->option
                     . '&task=edit&alias='
                     . $this->model->get('alias')
@@ -40,8 +39,7 @@ defined('_HZEXEC_') or die();
                 } ?>>
                 <?php
                 $routeUrl2 = Route::url(
-                    'index
-    . php?option='
+                    'index.php?option='
                     . $this->option
                     . '&task=edit&alias='
                     . $this->model->get('alias')

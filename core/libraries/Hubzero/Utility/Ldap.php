@@ -209,15 +209,14 @@ class Ldap
             return false;
         }
 
-        $query = "SELECT u.id AS uidNumber, u.username AS uid, u.name AS cn, "
-                . " p.gidNumber, u.homeDirectory, u.loginShell, "
-                . " pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning, 
-                    "
-                . " pwd.shadowInactive, pwd.shadowExpire, pwd.shadowFlag "
-                . " FROM #__users AS u "
-                . " LEFT JOIN #__users_password AS pwd ON u.id = pwd.user_id "
-                . " LEFT JOIN #__xprofiles AS p ON u.id = p.uidNumber "
-                . " WHERE u.id = " . $db->quote($user_id) . " LIMIT 1;";
+        $query = "SELECT u.id AS uidNumber, u.username AS uid, u.name AS cn,  "
+                . "p.gidNumber, u.homeDirectory, u.loginShell,  "
+                . "pwd.passhash AS userPassword, pwd.shadowLastChange, pwd.shadowMin, pwd.shadowMax, pwd.shadowWarning,  "
+                . "pwd.shadowInactive, pwd.shadowExpire, pwd.shadowFlag  "
+                . "FROM #__users AS u  "
+                . "LEFT JOIN #__users_password AS pwd ON u.id = pwd.user_id  "
+                . "LEFT JOIN #__xprofiles AS p ON u.id = p.uidNumber  "
+                . "WHERE u.id =  " . $db->quote($user_id) . "LIMIT 1;";
 
         $db->setQuery($query);
         $dbinfo = $db->loadAssoc();
@@ -462,10 +461,9 @@ class Ldap
         $dbinfo = $db->loadAssoc();
 
         if (!empty($dbinfo)) {
-            $query = "SELECT DISTINCT(u.username) AS memberUid FROM `#__xgroups_members` AS gm, 
-                `#__users` AS u WHERE gm.gidNumber = "
-                . $db->quote($dbinfo['gidNumber'])
-                . " AND gm.uidNumber=u.id;";
+            $query = "SELECT DISTINCT(u.username) AS memberUid FROM `#__xgroups_members` AS gm, `#__users` AS u WHERE gm.gidNumber = "
+                . $db->quote($dbinfo['gidNumber '])
+                . "AND gm.uidNumber=u.id;";
             $db->setQuery($query);
             $dbinfo['memberUid'] = $db->loadColumn();
         }
@@ -1015,8 +1013,7 @@ class Ldap
 
         // Negative numbers exist as usernames for placeholders, these aren't in ldap
         // In fact we can't even search for them without causing an error
-        $query = "SELECT username FROM `#__users` where (username not REGEXP '^-?\d+$' and 
-            username REGEXP '^[a-zA-Z]')";
+        $query = "SELECT username FROM `#__users` where (username not REGEXP '^-?\\d+\$' and username REGEXP '^[a-zA-Z]')";
         $db->setQuery($query);
 
         $result = $db->loadColumn();

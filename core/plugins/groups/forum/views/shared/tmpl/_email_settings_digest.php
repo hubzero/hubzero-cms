@@ -46,8 +46,7 @@ $base = $this->base;
                 value="1"<?php if ($this->recvEmailOptionValue == 1) {
                     echo ' checked="checked"';
                          } ?><?php if ($this->recvEmailOptionValue == 0) {
-                         echo '
-                                                                                                   disabled="disabled"';
+                         echo ' disabled="disabled"';
                          } ?> />
             <label>
                 <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_IMMEDIATELY'); ?>
@@ -60,8 +59,7 @@ $base = $this->base;
                 value="2"<?php if ($this->recvEmailOptionValue >= 2) {
                     echo ' checked="checked"';
                          } ?><?php if ($this->recvEmailOptionValue == 0) {
-                         echo '
-                                                                                                disabled="disabled"';
+                         echo ' disabled="disabled"';
                          } ?> />
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_AS_A'); ?>
             <select name="recvpostemail"

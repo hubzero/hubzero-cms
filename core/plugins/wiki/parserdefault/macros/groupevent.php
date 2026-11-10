@@ -29,12 +29,17 @@ class GroupEvent extends WikiMacro
         $txt = [];
         $txt['wiki'] = 'Displays group events';
         $txt['html'] = '<p>Displays group events.</p>';
-        $txt['html'] = '<p>Examples:</p>'
-            . '<ul>'
-            . '<li><code>[[Groupevent(number=3)]]</code> - Displays the next three group events</li>'
+        $txt['html'] = '<p>Examples:</p>
+							'
+            . '<ul>
+								'
+            . '<li><code>[[Groupevent(number=3)]]</code> - Displays the next three group events</li>
+								'
             . '<li><code>[[Groupevent(title=Group Events, number=2)]]</code> '
-            . '- Adds title above event list. Displays 2 events.</li>'
-            . '<li><code>[[Groupevent(id=123)]]</code> - Displays single group event with ID # 123</li>'
+            . '- Adds title above event list. Displays 2 events.</li>
+								'
+            . '<li><code>[[Groupevent(id=123)]]</code> - Displays single group event with ID # 123</li>
+							'
             . '</ul>';
         return $txt['html'];
     }
@@ -119,10 +124,10 @@ class GroupEvent extends WikiMacro
 
         //build query
         $sql = "SELECT * FROM `#__events`
-                WHERE publish_up >= UTC_TIMESTAMP()
-                AND scope=" . $database->quote('group') . "
-                AND scope_id=" . $database->Quote($group->get('gidNumber')) . "
-                AND state=1";
+				WHERE publish_up >= UTC_TIMESTAMP()
+				AND scope=" . $database->quote('group
+				') . "AND scope_id=" . $database->Quote($group->get('gidNumber
+				')) . "AND state=1";
 
         //do we have an ID set
         if (isset($filters['id'])) {
@@ -155,8 +160,7 @@ class GroupEvent extends WikiMacro
         if (count($events) > 0) {
             foreach ($events as $event) {
                 //build link
-                $link = Route::url('index
-                    . php?option=com_groups&cn='
+                $link = Route::url('index.php?option=com_groups&cn='
                     . $group->get('cn')
                     . '&active=calendar&action=details&event_id='
                     . $event->id);
@@ -199,14 +203,11 @@ class GroupEvent extends WikiMacro
             }
         } else {
             $content
-                .= '<p>Currently there are no upcoming group events
-                . Add an event by <a href="'
-                . Route::url('index
-                . php?option=com_groups&cn='
+                .= '<p>Currently there are no upcoming group events. Add an event by <a href="'
+                . Route::url('index.php?option=com_groups&cn='
                 . $group->get('cn')
                 . '&active=calendar&action=add')
-                . '">clicking here
-                . </a></p>';
+                . '">clicking here.</a></p>';
         }
 
         return $content;

@@ -148,8 +148,7 @@ $router->rules('parse')->append('version', function ($uri) {
 
     // Does the accept header have version identifier?
     if (
-        preg_match('/application\/vnd\.[a-zA-Z]{2,
-        20}\.v([0-9x]{1,2}\.[0-9x]{1,2}|[0-9x]{1,2})/', App::get('request')->headers->get('accept', ''), $matches)
+        preg_match('/application\/vnd\.[a-zA-Z]{2,20}\.v([0-9x]{1,2}\.[0-9x]{1,2}|[0-9x]{1,2})/', App::get('request')->headers->get('accept', ''), $matches)
     ) {
         $version = $matches[1];
     }

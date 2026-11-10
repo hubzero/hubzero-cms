@@ -115,8 +115,11 @@ class Package extends Base implements CommandInterface
             $gitHubUser = exec('whoami');
 
             if ($this->output->getMode() != 'minimal') {
-                $this->output->addLine("Assuming {$gitHubUser} as your GitHub username. To override,
-                    please specify the '--github-user' flag", 'info');
+                $this->output->addLine(
+                    "Assuming {$gitHubUser} as your GitHub username. To override, "
+                    . "please specify the '--github-user' flag",
+                    'info',
+                );
             }
         } else {
             if ($this->output->getMode() != 'minimal') {
@@ -134,8 +137,8 @@ class Package extends Base implements CommandInterface
 
         $workTree = PATH_CORE . DS . 'vendor' . DS . 'hubzero' . DS . 'framework';
         $dir      = $workTree . DS . '.git';
-        $cmd      = "git --git-dir={$dir} --work-tree={$workTree} remote set-url --push origin 
-            git@github.com:{$gitHubUser}/framework.git 2>&1";
+        $cmd      = "git --git-dir={$dir} --work-tree={$workTree} remote set-url --push origin "
+            . "git@github.com:{$gitHubUser}/framework.git 2>&1";
         $result   = shell_exec($cmd);
     }
 

@@ -666,8 +666,8 @@ class Migration
                                     } elseif ($useTransaction) {
                                         $runDb->transactionRollback();
                                     }
-                                    $this->log("Error: running {$direction}() resulted in a fatal error in
-                                        {$scope}/{$file}: {$error['message']}", 'error');
+                                    $this->log("Error: running {$direction}() resulted in a fatal error in "
+                                        . "{$scope}/{$file}: {$error['message']}", 'error');
                                     // Only record if not in all-or-nothing mode
                                     if (!$this->allOrNothing) {
                                         $this->recordMigration(
@@ -682,14 +682,14 @@ class Migration
                                     return false;
                                 } elseif ($error['type'] == 'warning') {
                                     // Just a warning...display message and carry on (my wayward son)
-                                    $this->log("Warning: running {$direction}() resulted in a non-fatal error in
-                                        {$scope}/{$file}: {$error['message']}", 'warning');
+                                    $this->log("Warning: running {$direction}() resulted in a non-fatal error in "
+                                        . "{$scope}/{$file}: {$error['message']}", 'warning');
                                     $status = 'warning';
                                     continue;
                                 } elseif ($error['type'] == 'info') {
                                     // Informational error (is that a real thing?)
-                                    $this->log("Info: running {$direction}() noted this in {$scope}/{$file}:
-                                        {$error['message']}", 'info');
+                                    $this->log("Info: running {$direction}() noted this in {$scope}/{$file}: "
+                                        . "{$error['message']}", 'info');
                                 } elseif ($error['type'] == 'skipped') {
                                     // Migration chose to skip - will retry on next run
                                     $this->log(

@@ -86,8 +86,7 @@ $this->css('formbuilder.css')
 ?>
 <?php
 $routeUrl = Route::url(
-    'index
-    . php?option='
+    'index.php?option='
     . $this->option
     . '&controller='
     . $this->controller,

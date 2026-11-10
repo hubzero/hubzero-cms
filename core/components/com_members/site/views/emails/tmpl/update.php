@@ -16,8 +16,7 @@ Thank you for updating your account on <?php echo $this->sitename; ?>!
 Since you have changed your e-mail address you must click the following
 link to confirm your new email address and reactivate your account:
 <?php echo $this->baseURL
-    . Route::url('index
-    . php?option='
+    . Route::url('index.php?option='
     . $this->option
     . '&controller='
     . $this->controller

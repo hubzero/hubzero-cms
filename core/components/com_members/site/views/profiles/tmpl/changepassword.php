@@ -75,8 +75,7 @@ $this->css()
 
                 <div class="grid">
                     <div class="col span6">
-                        <label<?php echo ($this->change && (!$this->newpass || $this->newpass != $this->newpass2)) ? '
-                            class="fieldWithErrors"' : ''; ?>>
+                        <label<?php echo ($this->change && (!$this->newpass || $this->newpass != $this->newpass2)) ? ' class="fieldWithErrors"' : ''; ?>>
                             <?php echo Lang::txt('COM_MEMBERS_FIELD_NEW_PASS'); ?>
                             <input name="newpass" id="newpass" type="password" value="" />
                             <?php
@@ -87,8 +86,7 @@ $this->css()
                         </label>
                     </div>
                     <div class="col span6 omega">
-                        <label<?php echo ($this->change && (!$this->newpass2 || $this->newpass != $this->newpass2)) ? '
-                            class="fieldWithErrors"' : ''; ?>>
+                        <label<?php echo ($this->change && (!$this->newpass2 || $this->newpass != $this->newpass2)) ? ' class="fieldWithErrors"' : ''; ?>>
                             <?php echo Lang::txt('COM_MEMBERS_FIELD_PASS_CONFIRM'); ?>
                             <input name="newpass2" id="newpass2" type="password" value="" />
                             <?php

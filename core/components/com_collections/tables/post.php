@@ -136,20 +136,33 @@ class Post extends Table
 
             case 'list':
             default:
-                $query = "SELECT p.*, c.alias, c.title, c.object_type, c.object_id, u.name, "
-                    . "i.title AS item_title, "
-                    . "i.description AS item_description, "
-                    . "i.url AS item_url, "
-                    . "i.created AS item_created, "
-                    . "i.created_by AS item_created_by, "
-                    . "i.positive AS item_positive, "
-                    . "i.state AS item_state, "
-                    . "i.access AS item_access, "
-                    . "i.negative AS item_negative, "
-                    . "i.type AS item_type, "
-                    . "i.object_id As item_object_id, "
+                $query = "SELECT p.*, c.alias, c.title, c.object_type, c.object_id, u.name,
+						"
+                    . "i.title AS item_title,
+						"
+                    . "i.description AS item_description,
+						"
+                    . "i.url AS item_url,
+						"
+                    . "i.created AS item_created,
+						"
+                    . "i.created_by AS item_created_by,
+						"
+                    . "i.positive AS item_positive,
+						"
+                    . "i.state AS item_state,
+						"
+                    . "i.access AS item_access,
+						"
+                    . "i.negative AS item_negative,
+						"
+                    . "i.type AS item_type,
+						"
+                    . "i.object_id As item_object_id,
+						"
                     . "(SELECT COUNT(*) FROM `#__collections_posts` AS s "
-                    . "WHERE s.item_id=p.item_id AND s.original=0) AS item_reposts, "
+                    . "WHERE s.item_id=p.item_id AND s.original=0) AS item_reposts,
+						"
                     . "(SELECT COUNT(*) FROM `#__item_comments` AS ct "
                     . "WHERE ct.item_id=p.item_id AND ct.item_type='collection' "
                     . "AND ct.state IN (1, 3)) AS item_comments";

@@ -36,10 +36,10 @@ class Events extends GroupMacro
         $txt = [];
         $txt['html']  = '<p>Displays group events.</p>';
         $txt['html'] .= '<p>Examples:</p>
-                            <ul>
-                                <li><code>[[Group.Events()]]</code></li>
-                                <li><code>[[Group.Events(3)]]</code> - Displays the next 3 group events</li>
-                            </ul>';
+							<ul>
+								<li><code>[[Group.Events()]]</code></li>
+								<li><code>[[Group.Events(3)]]</code> - Displays the next 3 group events</li>
+							</ul>';
 
         return $txt['html'];
     }
@@ -94,10 +94,10 @@ class Events extends GroupMacro
 
         //build query
         $sql = "SELECT * FROM `#__events`
-                WHERE publish_up >= UTC_TIMESTAMP()
-                AND scope=" . $database->quote('group') . "
-                AND scope_id=" . $database->Quote($group->get('gidNumber')) . "
-                AND state=1";
+				WHERE publish_up >= UTC_TIMESTAMP()
+				AND scope=" . $database->quote('group
+				') . "AND scope_id=" . $database->Quote($group->get('gidNumber
+				')) . "AND state=1";
 
         //add ordering
         $sql .= " ORDER BY publish_up ASC";
@@ -125,8 +125,7 @@ class Events extends GroupMacro
         if (count($events) > 0) {
             foreach ($events as $event) {
                 //build link
-                $link = Route::url('index
-                    . php?option=com_groups&cn='
+                $link = Route::url('index.php?option=com_groups&cn='
                     . $group->get('cn')
                     . '&active=calendar&action=details&event_id='
                     . $event->id);
@@ -170,14 +169,11 @@ class Events extends GroupMacro
             }
         } else {
             $content
-                .= '<p>Currently there are no upcoming group events
-                . Add an event by <a href="'
-                . Route::url('index
-                . php?option=com_groups&cn='
+                .= '<p>Currently there are no upcoming group events. Add an event by <a href="'
+                . Route::url('index.php?option=com_groups&cn='
                 . $group->get('cn')
                 . '&active=calendar&action=add')
-                . '">clicking here
-                . </a></p>';
+                . '">clicking here.</a></p>';
         }
 
         return $content;

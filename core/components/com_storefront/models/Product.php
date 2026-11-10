@@ -60,10 +60,8 @@ class Product
         //$productInfo = $warehouse->getProductInfo($pId, true);
 
         $sql = "SELECT p.*,
-				IF((p.`publish_up` IS null OR p.`publish_up` = '0000-00-00 00:00:00'
-				OR p.`publish_up` <= NOW())
-				AND (p.`publish_down` IS null OR p.`publish_down` = '0000-00-00 00:00:00'
-				OR p.`publish_down` > NOW()), 1, 0) AS pPublishedNow,
+				IF((p.`publish_up` IS null OR p.`publish_up` = '0000-00-00 00:00:00' OR p.`publish_up` <= NOW())
+				AND (p.`publish_down` IS null OR p.`publish_down` = '0000-00-00 00:00:00' OR p.`publish_down` > NOW()), 1, 0) AS pPublishedNow,
 				pt.ptName, pt.ptModel";
         $sql .= " FROM `#__storefront_products` p
 				LEFT JOIN `#__storefront_product_types` pt ON pt.ptId = p.ptId

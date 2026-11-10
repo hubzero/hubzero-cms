@@ -17,8 +17,7 @@ This process has changed your registered e-mail address. You must click
 the following link to confirm that you received this e-mail at the new
 address and reactivate your account:
 <?php echo $this->baseURL
-    . Route::url('index
-    . php?option='
+    . Route::url('index.php?option='
     . $this->option
     . '&controller='
     . $this->controller

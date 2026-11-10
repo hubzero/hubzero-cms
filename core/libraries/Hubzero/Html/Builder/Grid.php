@@ -410,10 +410,7 @@ class Grid
         $time = addslashes(htmlspecialchars(with(new Date($time))->toLocal('H:i'), ENT_COMPAT, 'UTF-8'));
 
         $active_title   = Lang::txt('JLIB_HTML_CHECKIN') . '::' . $text . '<br />' . $date . '<br />' . $time;
-        $inactive_title = Lang::txt('JLIB_HTML_CHECKED_OUT') . '
-            ::' . $text . '
-            <br />' . $date . '
-            <br />' . $time;
+        $inactive_title = Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $text . '<br />' . $date . '<br />' . $time;
         return self::action(
             $i,
             'checkin',

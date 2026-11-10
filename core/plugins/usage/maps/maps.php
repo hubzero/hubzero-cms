@@ -106,10 +106,10 @@ class Maps extends Plugin
             $info .= '_br_ - Guests: ' . $guests;
         }
 
-        $query = "SELECT COUNT(DISTINCT ip) FROM `#__xsession`,`#__session`"
-                . " WHERE `#__xsession`.session_id=`#__session`.session_id AND guest = '1'"
-                . " AND domain = '" . $domain . "' AND bot = '1' AND ipLATITUDE = '" . $location['lat'] . "'"
-                . " AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
+        $query = "SELECT COUNT(DISTINCT ip) FROM `#__xsession`,`#__session` "
+                . "WHERE `#__xsession`.session_id=`#__session`.session_id AND  guest = '1' "
+                . "AND domain = '" . $domain . "' AND bot = '1' AND ipLATITUDE = '" . $location['lat'] . "' "
+                . "AND ipLONGITUDE = '" . $location['lng'] . "' LIMIT 1";
 
         $db->setQuery($query);
         $bots = $db->loadResult();
@@ -234,8 +234,9 @@ class Maps extends Plugin
                         $info = $this->getHosts($db, $location);
                         $bot = $this->checkBot($db, $location);
 
-                        $html .= '<marker lat="' . $location['lat'] . '" lng="' . $location['lng'] . '"'
-                                . ' info="' . $city . '_hr_' . $info . '" bot="' . $bot . '"/>' . "\n";
+                        $html .= '<marker lat="' . $location['lat'] . '" lng="' . $location['lng'] . '" '
+                                . 'info = "' . $city . '_hr_' . $info . '" bot = "' . $bot . '"/>
+' . "";
                     }
                 }
                 $html .= '</markers>' . "\n";

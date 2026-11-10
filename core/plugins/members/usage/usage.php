@@ -304,8 +304,7 @@ class Usage extends Plugin
         if ($authorid) {
             $sql = "SELECT COUNT(DISTINCT (c.id))
 					FROM `#__citations` c, `#__citations_assoc` ca, `#__author_assoc` aa, `#__resources` r
-					WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = 'resources'
-                    AND ca.tbl = 'resource' AND r.published=1
+					WHERE c.id = ca.cid AND r.id = ca.oid AND r.id = aa.subid AND  aa.subtable = 'resources' AND ca.tbl = 'resource' AND r.published=1
 					AND r.standalone=1 AND aa.authorid = " . $database->quote($authorid);
         } else {
             $sql = "SELECT COUNT(DISTINCT (c.id)) AS citations
@@ -335,8 +334,7 @@ class Usage extends Plugin
         $rank = "-";
         $i = 1;
         $sql = 'SELECT a.id AS aid, COUNT(res.id) AS contribs
-				FROM `#__users` a JOIN `#__author_assoc` aa ON a.id = aa.authorid AND aa.subtable="resources"
-                JOIN `#__resources` res ON res.id = aa.subid
+				FROM `#__users` a JOIN `#__author_assoc` aa ON a.id = aa.authorid AND aa.subtable="resources" JOIN `#__resources` res ON res.id = aa.subid
 				WHERE res.published=1 AND (res.access=0 OR res.access=3)
 				AND res.standalone=1 GROUP BY a.id';
 

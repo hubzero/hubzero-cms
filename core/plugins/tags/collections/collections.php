@@ -61,26 +61,25 @@ class Collections extends Plugin
         // Build the query
         $e_count = "SELECT COUNT(f.id) FROM (SELECT p.id, COUNT(DISTINCT t.tagid) AS uniques";
         $e_fields = "SELECT p.id, i.title, c.alias, NULL AS itext,
-                    CASE WHEN (p.description!='' AND p.description IS NOT NULL) THEN p.description
-                    ELSE i.description END AS ftext,
-                    i.state,
-                    p.created,
-                    p.created_by,
-                    NULL AS modified,
-                    p.created AS publish_up,
-                    NULL AS publish_down,
-                    concat('index.php?option=com_collections&controller=posts&post=', p.id) AS href,
-                    'collections' AS section,
-                    COUNT(DISTINCT t.tagid) AS uniques,
-                    c.object_type AS params,
-                    c.object_id AS rcount,
-                    i.type AS data1,
-                    i.object_id AS data2,
-                    NULL AS data3 ";
+					CASE WHEN (p.description!='' AND p.description IS NOT NULL) THEN p.description ELSE i.description END AS ftext,
+					i.state,
+					p.created,
+					p.created_by,
+					NULL AS modified,
+					p.created AS publish_up,
+					NULL AS publish_down,
+					concat('index.php?option=com_collections&controller=posts&post=', p.id) AS href,
+					'collections' AS section,
+					COUNT(DISTINCT t.tagid) AS uniques,
+					c.object_type AS params,
+					c.object_id AS rcount,
+					i.type AS data1,
+					i.object_id AS data2,
+					NULL AS data3 ";
         $e_from  = " FROM #__collections_posts AS p
-            INNER JOIN #__collections AS c ON c.id=p.collection_id
-            INNER JOIN #__collections_items AS i ON p.item_id=i.id
-            INNER JOIN #__tags_object AS t";
+			INNER JOIN #__collections AS c ON c.id=p.collection_id
+			INNER JOIN #__collections_items AS i ON p.item_id=i.id
+			INNER JOIN #__tags_object AS t";
         $e_where = " WHERE i.state=1 AND c.state=1 AND t.objectid=p.item_id AND t.tbl='bulletinboard'"
             . " AND t.tagid IN ($ids)";
 

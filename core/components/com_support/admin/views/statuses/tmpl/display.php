@@ -33,8 +33,7 @@ Toolbar::help('status');
 
 $this->css('
 .color-block {
-	display:block;width:1em;height:1em;overflow:hidden;text-indent:5em;
-	border:1px solid #999;background-color: attr(data-color);
+	display:block;width:1em;height:1em;overflow:hidden;text-indent:5em;border:1px solid #999;background-color: attr(data-color);
 }
 ');
 ?>

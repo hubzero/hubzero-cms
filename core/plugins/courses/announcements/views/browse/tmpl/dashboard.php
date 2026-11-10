@@ -73,8 +73,7 @@ $rows = $this->offering->announcements([
                                 <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_REQUIRED'); ?>
                             </span></span>
                         <?php
-                        echo $this->editor('fields[content]', '', 35, 3, 'field_content', ['class' => 'minimal
-                        no-footer']);
+                        echo $this->editor('fields[content]', '', 35, 3, 'field_content', ['class' => 'minimal no-footer']);
                         ?>
                     </label>
 

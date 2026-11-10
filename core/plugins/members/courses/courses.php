@@ -211,18 +211,17 @@ class Courses extends Plugin
                     $results = $this->database->loadResult();
                 } else {
                     $this->database->setQuery(
-                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias,
-                        o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
 						m.enrolled, s.publish_up AS starts, s.publish_down AS ends
 						FROM `#__courses` AS c
 							JOIN `#__courses_members` AS m ON m.course_id=c.id
 							LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
 							LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
 							LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
-						WHERE c.state=1 AND m.user_id=" . (int) $this->member->get('id') . " AND m.student=1
+						WHERE c.state=1 AND m.user_id=" . (int) $this->member->get('id ') . "AND m.student=1
 							AND (s.publish_down IS NULL OR s.publish_down='0000-00-00 00:00:00' OR s.publish_down < "
                         . $this->database->quote($now) . ") AND s.state=1 AND o.state=1
-						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
+						ORDER BY " . $filters['sort '] . "ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
                     );
                     $results = $this->database->loadObjectList();
                 }
@@ -243,18 +242,16 @@ class Courses extends Plugin
                     $results = $this->database->loadResult();
                 } else {
                     $this->database->setQuery(
-                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias,
-                            o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
-							m.enrolled, r.alias AS role_alias, r.title AS role_title,
-                            s.publish_up AS starts, s.publish_down AS ends
+                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+							m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
 							FROM `#__courses` AS c
 							JOIN `#__courses_members` AS m ON m.course_id=c.id
 							LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
 							LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
 							LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
-						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('id')
-                        . " AND m.student=0 AND r.alias='manager'
-						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('id ')
+                        . "AND m.student=0 AND r.alias='manager'
+						ORDER BY " . $filters['sort '] . "ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
                     );
                     $results = $this->database->loadObjectList();
                 }
@@ -275,18 +272,16 @@ class Courses extends Plugin
                     $results = $this->database->loadResult();
                 } else {
                     $this->database->setQuery(
-                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias,
-                        o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
-						m.enrolled, r.alias AS role_alias, r.title AS role_title,
-                        s.publish_up AS starts, s.publish_down AS ends
+                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
 						FROM `#__courses` AS c
 						JOIN `#__courses_members` AS m ON m.course_id=c.id
 						LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
 						LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
 						LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
-						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('id')
-                        . " AND m.student=0 AND r.alias=" . $this->database->Quote('instructor') . "
-						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('id ')
+                        . "AND m.student=0 AND r.alias=" . $this->database->Quote('instructor
+						') . "ORDER BY " . $filters['sort '] . "ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
                     );
                     $results = $this->database->loadObjectList();
                 }
@@ -307,18 +302,16 @@ class Courses extends Plugin
                     $results = $this->database->loadResult();
                 } else {
                     $this->database->setQuery(
-                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias,
-                        o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
-						m.enrolled, r.alias AS role_alias, r.title AS role_title,
-                        s.publish_up AS starts, s.publish_down AS ends
+                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
 						FROM `#__courses` AS c
 						JOIN `#__courses_members` AS m ON m.course_id=c.id
 						LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
 						LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
 						LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
-						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('id')
-                        . " AND m.student=0 AND r.alias=" . $this->database->Quote('ta') . "
-						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('id ')
+                        . "AND m.student=0 AND r.alias=" . $this->database->Quote('ta
+						') . "ORDER BY " . $filters['sort '] . "ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
                     );
                     $results = $this->database->loadObjectList();
                 }
@@ -339,18 +332,16 @@ class Courses extends Plugin
                     $results = $this->database->loadResult();
                 } else {
                     $this->database->setQuery(
-                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias,
-                        o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
-						m.enrolled, r.alias AS role_alias, r.title AS role_title,
-                        s.publish_up AS starts, s.publish_down AS ends
+                        "SELECT c.id, c.state, c.alias, c.title, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default,
+						m.enrolled, r.alias AS role_alias, r.title AS role_title, s.publish_up AS starts, s.publish_down AS ends
 						FROM `#__courses` AS c
 						JOIN `#__courses_members` AS m ON m.course_id=c.id
 						LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
 						LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
 						LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
-						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('id')
-                        . " AND r.alias=" . $this->database->Quote($who) . "
-						ORDER BY " . $filters['sort'] . " ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
+						WHERE c.state IN (1, 3) AND m.user_id=" . (int) $this->member->get('id ')
+                        . "AND r.alias=
+						" . $this->database->Quote($who) . "ORDER BY " . $filters['sort '] . "ASC LIMIT " . $filters['start'] . "," . $filters['limit'],
                     );
                     $results = $this->database->loadObjectList();
                 }
@@ -442,16 +433,13 @@ class Courses extends Plugin
             return $database->loadResult();
         } else {
             //$rows = $tbl->getUserCourses($uidNumber, $type='instructor', $limit, $limitstart);
-            $query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts,
-                    s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title,
-                    s.alias AS section_alias, s.title AS section_title, s.is_default
+            $query = "SELECT c.id, c.alias, c.title, c.blurb, m.enrolled, s.publish_up AS starts, s.publish_down AS ends, r.alias AS role, o.alias AS offering_alias, o.title AS offering_title, s.alias AS section_alias, s.title AS section_title, s.is_default
 					FROM `#__courses` AS c
 					JOIN `#__courses_members` AS m ON m.course_id=c.id
 					LEFT JOIN `#__courses_offerings` AS o ON o.id=m.offering_id
 					LEFT JOIN `#__courses_offering_sections` AS s on s.id=m.section_id
 					LEFT JOIN `#__courses_roles` AS r ON r.id=m.role_id
-					WHERE m.user_id=" . $database->Quote($uidNumber) . " AND m.student=0 AND r.alias='instructor'
-                    AND c.state=1";
+					WHERE m.user_id= " . $database->Quote($uidNumber) . "AND m.student=0 AND r.alias='instructor' AND c.state=1";
             $database->setQuery($query);
             $rows = $database->loadObjectList();
 

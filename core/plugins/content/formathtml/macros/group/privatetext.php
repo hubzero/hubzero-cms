@@ -42,10 +42,10 @@ class Privatetext extends GroupMacro
         $txt['html']  = '<p>Display private content. Note: Content wrapped in this macro will '
             . '<strong>only</strong> be displayed to logged-in members of the group.</p>';
         $txt['html'] .= '<p>Examples:</p>
-            <ul>
-                <li><code>[[Group.Privatetext(start)]]Only members can see this'
+							<ul>
+								<li><code>[[Group.Privatetext(start)]]Only members can see this'
                 . '[[Group.Privatetext(end)]]</code></li>
-            </ul>';
+							</ul>';
 
         return $txt['html'];
     }

@@ -167,9 +167,9 @@ class Publications extends Plugin
             }
         } else {
             $query = "SELECT DISTINCT r.id, V.title, V.version_number as alias,
-                    V.abstract as itext, V.id as ftext, V.state AS state, V.created, V.created_by,
-                    V.modified, V.published_up as publish_up, V.published_down as publish_down,
-                    CONCAT('index.php?option=com_publications&id=', r.id) AS href, 'publications' AS section ";
+					V.abstract as itext, V.id as ftext, V.state AS state, V.created, V.created_by,
+					V.modified, V.published_up as publish_up, V.published_down as publish_down,
+					CONCAT('index.php?option=com_publications&id=', r.id) AS href, 'publications' AS section ";
             if (isset($filters['tags'])) {
                 $query .= ", COUNT(DISTINCT t.tagid) AS uniques ";
             }

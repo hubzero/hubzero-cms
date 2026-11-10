@@ -20,8 +20,7 @@ if (!$this->model->exists()) {
     <div class="col span1">
         <?php
         $routeUrl = Route::url(
-            'index
-    . php?option='
+            'index.php?option='
             . $this->option
             . '&alias='
             . $this->model->get('alias')

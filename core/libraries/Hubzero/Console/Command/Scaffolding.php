@@ -111,8 +111,7 @@ class Scaffolding extends Base implements CommandInterface
             $obj = new $class($this->output, $this->arguments);
         } else {
             if (empty($this->type)) {
-                $this->output->error('Error: Sorry,
-                    scaffolding can\'t create nothing/everything. Try telling it what you want to create.');
+                $this->output->error('Error: Sorry, scaffolding can\'t create nothing/everything. Try telling it what you want to create.');
             } else {
                 $this->output->error('Error: Sorry, scaffolding doesn\'t know how to create a ' . $this->type);
             }
@@ -164,8 +163,7 @@ class Scaffolding extends Base implements CommandInterface
             $obj = new $class($this->output, $this->arguments);
         } else {
             if (empty($this->type)) {
-                $this->output->error('Error: Sorry,
-                    scaffolding can\'t copy nothing. Try telling it what you want to copy.');
+                $this->output->error('Error: Sorry, scaffolding can\'t copy nothing. Try telling it what you want to copy.');
             } else {
                 $this->output->error('Error: Sorry, scaffolding doesn\'t know how to copy a ' . $this->type);
             }

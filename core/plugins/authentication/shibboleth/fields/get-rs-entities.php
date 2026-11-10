@@ -50,14 +50,19 @@ $rv = [];
 // being members ourselves, we can get attributes about users released fromt these entities
 foreach (
     $xp->xpath(
-        '//base:EntityDescriptor['
-        . 'base:Extensions/'
-        . 'mdattr:EntityAttributes/'
-        . 'saml:Attribute[attribute::Name="http://macedir.org/entity-category-support"]/'
+        '//base:EntityDescriptor[
+	'
+        . 'base:Extensions/
+		'
+        . 'mdattr:EntityAttributes/
+			'
+        . 'saml:Attribute[attribute::Name="http://macedir.org/entity-category-support"]/
+				'
         . 'saml:AttributeValue['
         . 'text()="http://id.incommon.org/category/research-and-scholarship" or '
         . 'text()="http://refeds.org/category/research-and-scholarship"'
-        . ']'
+        . ']
+	'
         . ']',
     ) as $entity
 ) {

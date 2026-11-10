@@ -22,17 +22,17 @@ class Migration20170901000000PlgResourcesSponsors extends Base
     {
         if (!$this->db->tableExists('#__resource_sponsors')) {
             $query = "CREATE TABLE `#__resource_sponsors` (
-              `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-              `alias` varchar(255) DEFAULT NULL,
-              `title` varchar(255) DEFAULT NULL,
-              `state` tinyint(3) NOT NULL DEFAULT '1',
-              `created` datetime DEFAULT NULL,
-              `created_by` int(11) NOT NULL DEFAULT '0',
-              `modified` datetime DEFAULT NULL,
-              `modified_by` int(11) NOT NULL DEFAULT '0',
-              `description` text,
-              PRIMARY KEY (`id`)
-            ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `alias` varchar(255) DEFAULT NULL,
+			  `title` varchar(255) DEFAULT NULL,
+			  `state` tinyint(3) NOT NULL DEFAULT '1',
+			  `created` datetime DEFAULT NULL,
+			  `created_by` int(11) NOT NULL DEFAULT '0',
+			  `modified` datetime DEFAULT NULL,
+			  `modified_by` int(11) NOT NULL DEFAULT '0',
+			  `description` text,
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
             $this->db->setQuery($query);
             $this->db->query();

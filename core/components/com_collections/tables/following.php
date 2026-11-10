@@ -154,9 +154,11 @@ class Following extends Table
      */
     public function find($filters = [])
     {
-        $query = "SELECT f.*, "
+        $query = "SELECT f.*,
+			"
             . "(SELECT COUNT(*) FROM `#__collections_following` AS fg "
-            . "WHERE fg.following_id=f.following_id AND fg.following_type=f.following_type) AS followers, "
+            . "WHERE fg.following_id=f.following_id AND fg.following_type=f.following_type) AS followers,
+			"
             . "(SELECT COUNT(*) FROM `#__collections_following` AS fr "
             . "WHERE fr.follower_id=f.following_id AND fr.follower_type=f.following_type) AS following";
         $query .= $this->buildQuery($filters);

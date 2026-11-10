@@ -22,8 +22,8 @@ class Migration20180314000000ComTools extends Base
     {
         if ($this->db->tableExists('#__doi_mapping')) {
             if (!$this->db->tableHasField('#__doi_mapping', 'id')) {
-                $query = "ALTER TABLE `#__doi_mapping` ADD `id` INT(11) UNSIGNED "
-                    . "NOT NULL AUTO_INCREMENT PRIMARY KEY;";
+                $query = "ALTER TABLE `#__doi_mapping` ADD `id` INT(11) UNSIGNED  "
+                    . "NOT NULL  AUTO_INCREMENT  PRIMARY KEY;";
                 $this->db->setQuery($query);
                 $this->db->query();
             }

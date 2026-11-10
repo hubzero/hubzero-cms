@@ -92,11 +92,9 @@ class Blogs extends Plugin
         if (!empty($id_map)) {
             $comments = new \Components\Search\Models\Basic\Result\Sql(
                 "SELECT
-				CASE WHEN bc.anonymous THEN 'Anonymous Comment'
-					ELSE concat('Comment by ', u.name) END AS title,
+				CASE WHEN bc.anonymous THEN 'Anonymous Comment' ELSE concat('Comment by ', u.name) END AS title,
 				bc.content AS description,
-				concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=',
-					extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
+				concat('index.php?option=com_members&id=', be.created_by, '&active=blog&task=', extract(year from be.created), '/', extract(month from be.created), '/', be.alias) AS link,
 				bc.created AS date,
 				'Comments' AS section,
 				bc.entry_id

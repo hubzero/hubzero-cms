@@ -32,12 +32,12 @@ class Redirect extends GroupMacro
     public function description()
     {
         return '<p>Redirects to a URL with an optional delay (in seconds).</p>
-            <p>Examples:</p>
-            <ul>
-                <li><code>[[Group.Redirect(http://google.com)]]</code></li>
-                <li><code>[[Group.Redirect(http://google.com, 5)]]</code> - '
+				<p>Examples:</p>
+					<ul>
+						<li><code>[[Group.Redirect(http://google.com)]]</code></li>
+						<li><code>[[Group.Redirect(http://google.com, 5)]]</code> - '
                 . 'Wait 5 seconds before redirecting.</li>
-            </ul>';
+					</ul>';
     }
 
     /**

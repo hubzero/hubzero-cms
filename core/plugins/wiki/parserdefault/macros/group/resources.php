@@ -33,12 +33,17 @@ class Resources extends GroupMacro
     {
         $txt = [];
         $txt['html']  = '<p>Displays group resources.</p>';
-        $txt['html'] .= '<p>Examples:</p>'
-            . '<ul>'
-            . '<li><code>[[Group.Resources()]]</code></li>'
-            . '<li><code>[[Group.Resources(3)]]</code> - Displays the 3 latest group resources</li>'
+        $txt['html'] .= '<p>Examples:</p>
+							'
+            . '<ul>
+								'
+            . '<li><code>[[Group.Resources()]]</code></li>
+								'
+            . '<li><code>[[Group.Resources(3)]]</code> - Displays the 3 latest group resources</li>
+								'
             . '<li><code>[[Group.Resources(type=teachingmaterials, 5)]]</code> '
-            . '- Displays the 5 latest group teachingmaterials resources.</li>'
+            . '- Displays the 5 latest group teachingmaterials resources.</li>
+							'
             . '</ul>';
         return $txt['html'];
     }
@@ -70,8 +75,7 @@ class Resources extends GroupMacro
 
         foreach ($groupResources as $resource) {
             $resourceLink     = Route::url('index.php?option=com_resources&id=' . $resource->get('id'));
-            $resourceTypeLink = Route::url('index
-                . php?option=com_groups&cn='
+            $resourceTypeLink = Route::url('index.php?option=com_groups&cn='
                 . $this->group->get('cn')
                 . '&active=resources&area='
                 . $resource->type->get('alias'));

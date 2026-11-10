@@ -250,7 +250,7 @@ class Job extends Table
         $sql .= " WHERE ";
         // only show active ads
         if ($admin) {
-            $sql .= "\n  j.status!=2";
+            $sql .= " j.status != 2 ";
         } else {
             $sql .= "\n  j.status=1 AND s.status=1 AND s.expires > ";
             $sql .= $this->db->quote($now) . " ";

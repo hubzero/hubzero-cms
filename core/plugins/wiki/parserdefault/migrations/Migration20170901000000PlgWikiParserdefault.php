@@ -22,15 +22,15 @@ class Migration20170901000000PlgWikiParserdefault extends Base
     {
         if (!$this->db->tableExists('#__wiki_formulas')) {
             $query = "CREATE TABLE `#__wiki_formulas` (
-              `inputhash` varchar(32) NOT NULL DEFAULT '',
-              `outputhash` varchar(32) NOT NULL DEFAULT '',
-              `conservativeness` tinyint(4) NOT NULL,
-              `html` text,
-              `mathml` text,
-              `id` int(11) NOT NULL AUTO_INCREMENT,
-              PRIMARY KEY (`id`),
-              UNIQUE KEY `uidx_inputhash` (`inputhash`)
-            ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+			  `inputhash` varchar(32) NOT NULL DEFAULT '',
+			  `outputhash` varchar(32) NOT NULL DEFAULT '',
+			  `conservativeness` tinyint(4) NOT NULL,
+			  `html` text,
+			  `mathml` text,
+			  `id` int(11) NOT NULL AUTO_INCREMENT,
+			  PRIMARY KEY (`id`),
+			  UNIQUE KEY `uidx_inputhash` (`inputhash`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
             $this->db->setQuery($query);
             $this->db->query();

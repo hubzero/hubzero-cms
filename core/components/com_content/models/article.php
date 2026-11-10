@@ -959,7 +959,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                 \Hubzero\Utility\Arr::toInteger($articleId);
                 $articleId = implode(',', $articleId);
                 $type = $filters['article_id.include'] ? 'IN' : 'NOT IN';
-                $query->whereRaw('a.id ' . $type . ' (' . $articleId . ')');
+                $query->whereRaw('a.id ' . $type . '(' . $articleId . ')');
             }
         }
 
@@ -1013,7 +1013,7 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                 $categoryId = implode(',', $categoryId);
                 if (!empty($categoryId)) {
                     $type = $filters['category_id.include'] ? 'IN' : 'NOT IN';
-                    $query->whereRaw('a.catid ' . $type . ' (' . $categoryId . ')');
+                    $query->whereRaw('a.catid ' . $type . '(' . $categoryId . ')');
                 }
             }
         }

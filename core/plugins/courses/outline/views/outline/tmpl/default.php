@@ -147,11 +147,11 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                     $done     = ($complete == 100) ? ' complete' : '';
 
                     $this->css('
-                .unit-fill .unit-fill-inner' . $unit->get('id') . ' {
-                    height: ' . $complete . '%;
-                    margin-top: ' . $margin . '%;
-                }
-            ');
+				.unit-fill .unit-fill-inner' . $unit->get('id ') . '{
+					height: ' . $complete . '%;
+					margin-top: ' . $margin . '%;
+				}
+			');
                     ?>
         <div class="unit<?php echo ($i == 0) ? ' active' : ''; ?> unit-<?php echo ($i + 1) . $cls; ?>">
             <div class="unit-wrap">

@@ -24,11 +24,11 @@ $week = Date::add('1 week')->toSql();
 $database = App::get('db');
 
 $query = "SELECT sd.*
-        FROM `#__courses_offering_section_dates` AS sd
-        WHERE sd.section_id=" . $this->offering->section()->get('id') . "
-        AND (sd.publish_up >= " . $database->Quote($now) . " AND sd.publish_up <= " . $database->Quote($week) . ")
-        AND sd.scope!='asset'
-        ORDER BY sd.publish_up LIMIT 20";
+		FROM `#__courses_offering_section_dates` AS sd
+		WHERE sd.section_id=" . $this->offering->section()->get('id
+		') . "AND (sd.publish_up >=  " . $database->Quote($now) . "AND sd.publish_up <= " . $database->Quote($week) . ")
+		AND sd.scope!='asset'
+		ORDER BY sd.publish_up LIMIT 20";
 
 $database->setQuery($query);
 $rows = $database->loadObjectList();

@@ -24,10 +24,10 @@ class PageName extends WikiMacro
     {
         $txt = [];
         $txt['wiki'] = "Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args given) "
-            . "or title" . "\n"
+            . "or title " . ""
             . "of the current page.";
         $txt['html'] = "<p>Accepts either 'alias' or 'title' as arg. Returns either the alias (default if no args "
-            . "given) " . "\n"
+            . "given) " . ""
             . "or title of the current page.</p>";
         return $txt['html'];
     }

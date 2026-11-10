@@ -183,16 +183,14 @@ class Log extends Base implements CommandInterface
                             // h - help info
                         case 104:
                             $this->output->backspace();
-                            $help = "q: quit, h: help, i: input mode, p: pause/play, b: beep on/off, f: fields, 
-                                r: rerender last 100 lines";
+                            $help = "q: quit, h: help, i: input mode, p: pause/play, b: beep on/off, f: fields, r: rerender last 100 lines";
                             $this->output->addLine($help);
                             break;
 
                             // i - input mode
                         case 105:
                             $this->output->backspace((2 + strlen($prompt)));
-                            $this->output->addLine('You\'re entering input mode. Pausing log streaming. Type "done" or 
-                                "i" to return.');
+                            $this->output->addLine('You\'re entering input mode. Pausing log streaming. Type "done" or "i" to return.');
                             $this->output->addString('input mode >>> ');
 
                             // Set input mode to true and undo icanon setting
@@ -323,7 +321,7 @@ class Log extends Base implements CommandInterface
                                 }
                                 $this->output->addLine(
                                     'You can set thresholds using the format: '
-                                    . '"threshold field>value[, field=value]"',
+                                    . '"threshold field>value[,field=value]"',
                                 );
                             }
 

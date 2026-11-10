@@ -36,10 +36,10 @@ class Members extends GroupMacro
         $txt = [];
         $txt['html']  = '<p>Displays group members.</p>';
         $txt['html'] .= '<p>Examples:</p>
-                            <ul>
-                                <li><code>[[Group.Members()]]</code></li>
-                                <li><code>[[Group.Members(3, random)]]</code> - Displays 3 group members</li>
-                            </ul>';
+							<ul>
+								<li><code>[[Group.Members()]]</code></li>
+								<li><code>[[Group.Members(3, random)]]</code> - Displays 3 group members</li>
+							</ul>';
 
         return $txt['html'];
     }
@@ -149,8 +149,7 @@ class Members extends GroupMacro
                     . $link
                     . '" class="member" title="Go to '
                     . stripslashes($profile->get('name'))
-                    . '\'s Profile
-                    . ">';
+                    . '\'s Profile.">';
                 $content
                     .= '<img src="'
                     . $profile->picture(0, true)

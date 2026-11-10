@@ -69,21 +69,21 @@ class Kb extends Plugin
         // Build the query
         $f_count = "SELECT COUNT(*)";
         $f_fields = "SELECT
-            f.id,
-            f.title,
-            f.fulltxt AS `text`,
-            concat('index.php?option=com_kb&section=', coalesce(concat(c.path, '/'), ''), f.alias) AS href,
-            'kb' AS section,
-            c.alias AS subsection";
+			f.id,
+			f.title,
+			f.fulltxt AS `text`,
+			concat('index.php?option=com_kb&section=', coalesce(concat(c.path, '/'), ''), f.alias) AS href,
+			'kb' AS section,
+			c.alias AS subsection";
 
         $f_from = " FROM `#__kb_articles` AS f
-            LEFT JOIN `#__categories` AS c
-                ON c.id = f.category
-            WHERE f.state=1
-                AND c.published = 1
-                AND f.created > " . $database->quote($period->cStartDat) . "
-                AND f.created < " . $database->quote($period->cEndDate) . "
-                AND f.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")";
+			LEFT JOIN `#__categories` AS c
+				ON c.id = f.category
+			WHERE f.state=1
+				AND c.published = 1
+				AND f.created > 
+				" . $database->quote($period->cStartDat) . "AND f.created < 
+				" . $database->quote($period->cEndDate) . "AND f.access IN (" . implode(',', User::getAuthorisedViewLevels()) . ")";
 
         $order_by = " ORDER BY f.created DESC, f.title";
         $order_by .= ($limit != 'all') ? " LIMIT $limitstart,$limit" : "";

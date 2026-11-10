@@ -81,9 +81,12 @@ class Migration20190327000000ComMembers extends Base
             if ($extension_id) {
                 // Reset link
                 $query = "SELECT * FROM `#__menu` WHERE "
-                    . "`link`='index.php?option=com_members&view=credentials&layout=reset' "
-                    . "OR `link`='index.php?option=com_members&controller=credentials&task=reset' "
-                    . "OR `link`='index.php?option=com_members&task=reset' "
+                    . "`link`='index.php?option=com_members&view=credentials&layout=reset'
+						"
+                    . "OR `link`='index.php?option=com_members&controller=credentials&task=reset'
+						"
+                    . "OR `link`='index.php?option=com_members&task=reset'
+						"
                     . "LIMIT 1";
                 $this->db->setQuery($query);
                 $menu = $this->db->loadObject();
@@ -101,9 +104,12 @@ class Migration20190327000000ComMembers extends Base
 
                 // Remind link
                 $query = "SELECT * FROM `#__menu` WHERE "
-                    . "`link`='index.php?option=com_members&view=credentials&layout=remind' "
-                    . "OR `link`='index.php?option=com_members&controller=credentials&task=remind' "
-                    . "OR `link`='index.php?option=com_members&task=remind' "
+                    . "`link`='index.php?option=com_members&view=credentials&layout=remind'
+							"
+                    . "OR `link`='index.php?option=com_members&controller=credentials&task=remind'
+							"
+                    . "OR `link`='index.php?option=com_members&task=remind'
+							"
                     . "LIMIT 1";
                 $this->db->setQuery($query);
                 $menu = $this->db->loadObject();

@@ -75,12 +75,7 @@ $this->css('certificates.css')
             ];
 
             $this->certificate->eachPage(function ($src, $idx) use ($layout) {
-                echo '<img
-                    src="' . $src . '"
-                    id="page-' . $idx . '"
-                    width="' . $layout['width'] . '"
-                    height="' . $layout['height'] . '"
-                    alt=""/>';
+                echo '<img src="' . $src . '" id="page-' . $idx . '" width="' . $layout['width'] . '" height="' . $layout['height'] . '" alt="" />';
             });
             ?>
         <?php $certWidth = $this->certificate->properties()->width; ?>

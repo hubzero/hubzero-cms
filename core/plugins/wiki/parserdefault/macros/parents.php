@@ -29,10 +29,10 @@ class Parents extends WikiMacro
             . ' * \'\'\'depth:\'\'\' how deep to mine for pages. Default is one level.';
         $txt['html'] = '<p>Inserts a nested list of ancestor pages (parents) of the current page into the output. '
             . 'Accepts one parameter:</p>
-        <ul>
-            <li><strong>depth</strong>: how deep to mine for pages. Default is one level.</li>
-        </ul>
-        <p>Example usage: <code>[[Parents(depth=3)]]</code></p>';
+		<ul>
+			<li><strong>depth</strong>: how deep to mine for pages. Default is one level.</li>
+		</ul>
+		<p>Example usage: <code>[[Parents(depth=3)]]</code></p>';
         return $txt['html'];
     }
 

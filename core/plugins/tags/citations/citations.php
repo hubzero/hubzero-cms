@@ -65,10 +65,8 @@ class Citations extends Plugin
         // Build the query
         $e_count = "SELECT COUNT(f.id) FROM (SELECT e.id, COUNT(DISTINCT t.tagid) AS uniques";
 
-        $e_fields = "SELECT e.id,
-             e.title, e.author, e.booktitle, e.doi, e.published, e.created, e.year, e.month, e.isbn, e.journal,
-                    e.url as href, 'citations' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.volume, e.number,
-                    e.type, e.pages, e.publisher ";
+        $e_fields = "SELECT e.id, e.title, e.author, e.booktitle, e.doi, e.published, e.created, e.year, e.month, e.isbn, e.journal, e.url as href,
+					'citations' AS section, COUNT(DISTINCT t.tagid) AS uniques, e.volume, e.number, e.type, e.pages, e.publisher ";
         $e_from  = " FROM `#__citations` AS e, `#__tags_object` AS t"; //", #__users AS u";
         $e_where = " WHERE t.objectid=e.id AND t.tbl='citations' AND t.tagid IN ($ids)"; //e.uid=u.id AND
 
