@@ -75,7 +75,7 @@ class Ckeditor5 extends Plugin
      * @param   mixed   $value
      * @return  string
      */
-    private function _js($value)
+    private function jsLiteral($value)
     {
         return json_encode(
             $value,
@@ -91,7 +91,7 @@ class Ckeditor5 extends Plugin
      */
     public function onGetContent($id)
     {
-        return 'getEditorContent(' . $this->_js($id) . ");\n";
+        return 'getEditorContent(' . $this->jsLiteral($id) . ");\n";
     }
 
     /**
@@ -103,7 +103,7 @@ class Ckeditor5 extends Plugin
      */
     public function onSetContent($id, $html)
     {
-        return 'setEditorContent(' . $this->_js($id) . ', ' . $this->_js($html) . ");\n";
+        return 'setEditorContent(' . $this->jsLiteral($id) . ', ' . $this->jsLiteral($html) . ");\n";
     }
 
     /**
@@ -257,8 +257,8 @@ class Ckeditor5 extends Plugin
                 $opts['images'] = true;
             }
         }
-        $optsJson = $this->_js($opts ? $opts : new \stdClass());
-        $idJson   = $this->_js($id);
+        $optsJson = $this->jsLiteral($opts ? $opts : new \stdClass());
+        $idJson   = $this->jsLiteral($id);
 
         // Script to actually make ckeditor (deferred until the element exists).
         // The created instance is registered with HUB.Editor so application code

@@ -46,7 +46,7 @@ class ACL extends Obj
      *
      * @var array
      */
-    private $_user_groups;
+    private $memberGroups;
 
     /**
      * Constructor
@@ -67,7 +67,7 @@ class ACL extends Obj
         $this->_raw_data = $this->_db->loadAssocList();
 
         if (!$this->_user->isGuest()) {
-            $this->_user_groups = UserHelper::getGroups($this->_user->get('id'));
+            $this->memberGroups = UserHelper::getGroups($this->_user->get('id'));
         }
     }
 
@@ -114,8 +114,8 @@ class ACL extends Obj
         }
 
         // Check user's groups
-        if ($this->_user_groups && count($this->_user_groups) > 0) {
-            foreach ($this->_user_groups as $ug) {
+        if ($this->memberGroups && count($this->memberGroups) > 0) {
+            foreach ($this->memberGroups as $ug) {
                 foreach ($this->_raw_data as $line) {
                     // Get the aco permission
                     if (
@@ -193,7 +193,7 @@ class ACL extends Obj
         if ($aro_foreign_key) {
             if ($this->_user->get('id') != $aro_foreign_key) {
                 $this->_user = User::getInstance($aro_foreign_key);
-                $this->_user_groups = UserHelper::getGroups($this->_user->get('id'));
+                $this->memberGroups = UserHelper::getGroups($this->_user->get('id'));
             }
         }
     }
@@ -259,8 +259,8 @@ class ACL extends Obj
      */
     public function authorize($group = null)
     {
-        if ($group && $this->_user_groups && count($this->_user_groups) > 0) {
-            foreach ($this->_user_groups as $ug) {
+        if ($group && $this->memberGroups && count($this->memberGroups) > 0) {
+            foreach ($this->memberGroups as $ug) {
                 if ($ug->gidNumber == $group) {
                     return true;
                 }

@@ -335,7 +335,7 @@ class Composer
      * @return  boolean Indicates success or failure
      */
     // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
-    private static function _updatePackage($packageName)
+    private static function runUpdate($packageName)
     {
         self::init();
         self::dispatch('update');
@@ -373,7 +373,7 @@ class Composer
     public static function updatePackages()
     {
         // Send empty array to update all packages
-        self::_updatePackage([]);
+        self::runUpdate([]);
     }
 
     /**
@@ -384,7 +384,7 @@ class Composer
      */
     public static function updatePackage($packageName)
     {
-        return self::_updatePackage($packageName);
+        return self::runUpdate($packageName);
     }
 
     /**
@@ -399,7 +399,7 @@ class Composer
     {
         if (self::requirePackage($packageName, $constraint)) {
             self::resetComposer();
-            return self::_updatePackage($packageName);
+            return self::runUpdate($packageName);
         }
         return false;
     }
@@ -414,7 +414,7 @@ class Composer
     {
         if (self::unrequirePackage($packageName)) {
             self::resetComposer();
-            return self::_updatePackage($packageName);
+            return self::runUpdate($packageName);
         }
         return false;
     }

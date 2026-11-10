@@ -185,7 +185,7 @@ class Warehouse extends \Hubzero\Base\Obj
      */
     public function getRootCategories($return = 'rows', $filters = false)
     {
-        return $this->_getCollections('category', $filters);
+        return $this->rootCollections('category', $filters);
     }
 
     /**
@@ -1470,7 +1470,7 @@ class Warehouse extends \Hubzero\Base\Obj
      * @param  $collectionType -- type of collection, category by default
      * @return array
      */
-    private function _getCollections($collectionType = 'category', $filters = false)
+    private function rootCollections($collectionType = 'category', $filters = false)
     {
         $sql = "SELECT DISTINCT c.`cId`, c.`cAlias`, c.`cName`, i.imgName
 				FROM `#__storefront_collections` c

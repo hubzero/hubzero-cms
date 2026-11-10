@@ -112,7 +112,7 @@ class Account extends Plugin
             switch ($action) {
                 // Views
                 case 'view':
-                    $arr['html'] = $this->_view();
+                    $arr['html'] = $this->renderOverview();
                     break;
 
                     // Actions
@@ -139,7 +139,7 @@ class Account extends Plugin
 
                     // Default
                 default:
-                    $arr['html'] = $this->_view();
+                    $arr['html'] = $this->renderOverview();
                     break;
             }
         }
@@ -178,7 +178,7 @@ class Account extends Plugin
      *
      * @return  object  Return
      */
-    private function _view()
+    private function renderOverview()
     {
         // Setup our view
         $view = $this->view('default', 'overview');
