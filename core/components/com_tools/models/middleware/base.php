@@ -24,7 +24,7 @@ class Base extends Model
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_config = null;
+    private $config = null;
 
     /**
      * Constructor
@@ -71,13 +71,13 @@ class Base extends Model
      */
     public function config($key = '', $default = null)
     {
-        if (!isset($this->_config)) {
-            $this->_config = Component::params('com_tools');
+        if (!isset($this->config)) {
+            $this->config = Component::params('com_tools');
         }
 
         if ($key) {
-            return $this->_config->get((string) $key, $default);
+            return $this->config->get((string) $key, $default);
         }
-        return $this->_config;
+        return $this->config;
     }
 }

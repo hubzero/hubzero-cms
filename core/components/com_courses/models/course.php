@@ -41,7 +41,7 @@ class Course extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_offering = null;
+    private $offering = null;
 
     /**
      * \Components\Courses\Models\Iterator
@@ -49,7 +49,7 @@ class Course extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_offerings = null;
+    private $offerings = null;
 
     /**
      * \Components\Courses\Models\Permissions
@@ -57,7 +57,7 @@ class Course extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_permissions = null;
+    private $permissions = null;
 
     /**
      * \Components\Courses\Models\Offering
@@ -65,7 +65,7 @@ class Course extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_manager = null;
+    private $manager = null;
 
     /**
      * List of managers
@@ -73,7 +73,7 @@ class Course extends Base
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_managers = null;
+    private $managers = null;
 
     /**
      * List of students
@@ -81,7 +81,7 @@ class Course extends Base
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_students = null;
+    private $students = null;
 
     /**
      * \Components\Courses\Models\Offering
@@ -89,7 +89,7 @@ class Course extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_page = null;
+    private $page = null;
 
     /**
      * \Components\Courses\Models\Iterator
@@ -97,7 +97,7 @@ class Course extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_pages = null;
+    private $pages = null;
 
     /**
      * List of plugins available for a given event
@@ -105,7 +105,7 @@ class Course extends Base
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_plugins = [];
+    private $plugins = [];
 
     /**
      * URL to this object
@@ -113,7 +113,7 @@ class Course extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_base = null;
+    private $base = null;
 
     /**
      * Certificate
@@ -121,7 +121,7 @@ class Course extends Base
      * @var string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_certificate = null;
+    private $certificate = null;
 
     /**
      * Constructor
@@ -135,9 +135,9 @@ class Course extends Base
 
         $this->config()->merge(new Registry($this->get('params')));
 
-        if (!isset($this->_permissions)) {
-            $this->_permissions = Permissions::getInstance();
-            $this->_permissions->set('course_id', $this->get('id'));
+        if (!isset($this->permissions)) {
+            $this->permissions = Permissions::getInstance();
+            $this->permissions->set('course_id', $this->get('id'));
         }
     }
 
@@ -174,9 +174,9 @@ class Course extends Base
     public function isManager($user_id = 0)
     {
         if ((int) $user_id) {
-            $this->_permissions->isManager($user_id);
+            $this->permissions->isManager($user_id);
         }
-        return $this->_permissions->isManager();
+        return $this->permissions->isManager();
     }
 
     /**
@@ -188,9 +188,9 @@ class Course extends Base
     public function isStudent($user_id = 0)
     {
         if ((int) $user_id) {
-            $this->_permissions->isStudent($user_id);
+            $this->permissions->isStudent($user_id);
         }
-        return $this->_permissions->isStudent();
+        return $this->permissions->isStudent();
     }
 
     /**
@@ -208,32 +208,32 @@ class Course extends Base
         // so without it a course with no current offering is asked for the id
         // of nothing.
         $idMismatch = $id !== null
-            && isset($this->_offering)
-            && (int) $this->_offering->get('id') != $id
-            && (string) $this->_offering->get('alias') != $id;
-        if (!isset($this->_offering) || $idMismatch) {
+            && isset($this->offering)
+            && (int) $this->offering->get('id') != $id
+            && (string) $this->offering->get('alias') != $id;
+        if (!isset($this->offering) || $idMismatch) {
             // Reset current offering
-            $this->_offering = null;
+            $this->offering = null;
 
             // If the list of all offerings is available ...
-            if (isset($this->_offerings)) {
+            if (isset($this->offerings)) {
                 // Find an offering in the list that matches the ID passed
                 foreach ($this->offerings() as $key => $offering) {
                     if ((int) $offering->get('id') == $id || (string) $offering->get('alias') == $id) {
                         // Set current offering
-                        $this->_offering = $offering;
+                        $this->offering = $offering;
                         break;
                     }
                 }
             }
 
-            if (is_null($this->_offering)) {
+            if (is_null($this->offering)) {
                 // Get current offering
-                $this->_offering = Offering::getInstance($id, $this->get('id'));
+                $this->offering = Offering::getInstance($id, $this->get('id'));
             }
         }
         // Return current offering
-        return $this->_offering;
+        return $this->offering;
     }
 
     /**
@@ -257,7 +257,7 @@ class Course extends Base
         }
 
         // Is the data is not set OR is it not the right type?
-        if (!($this->_offerings instanceof \Traversable) || $clear) {
+        if (!($this->offerings instanceof \Traversable) || $clear) {
             $tbl = new Tables\Offering($this->_db);
 
             // Attempt to get database results
@@ -273,11 +273,11 @@ class Course extends Base
             }
 
             // Set the results
-            $this->_offerings = new Iterator($results);
+            $this->offerings = new Iterator($results);
         }
 
         // Return results
-        return $this->_offerings;
+        return $this->offerings;
     }
 
     /**
@@ -288,7 +288,7 @@ class Course extends Base
      */
     public function access($action = 'view', $item = 'course')
     {
-        return $this->_permissions->access($action, $item);
+        return $this->permissions->access($action, $item);
     }
 
     /**
@@ -299,21 +299,21 @@ class Course extends Base
     public function manager($user_id = null)
     {
         if (
-            !isset($this->_manager)
-            || ($user_id !== null && (int) $this->_manager->get('user_id') != $user_id)
+            !isset($this->manager)
+            || ($user_id !== null && (int) $this->manager->get('user_id') != $user_id)
         ) {
-            $this->_manager = null;
+            $this->manager = null;
 
-            if (isset($this->_managers) && isset($this->_managers[$user_id])) {
-                $this->_manager = $this->_managers[$user_id];
+            if (isset($this->managers) && isset($this->managers[$user_id])) {
+                $this->manager = $this->managers[$user_id];
             }
 
-            if (!$this->_manager) {
-                $this->_manager = \Components\Courses\Models\Manager::getInstance($user_id, $this->get('id'), 0, 0);
+            if (!$this->manager) {
+                $this->manager = \Components\Courses\Models\Manager::getInstance($user_id, $this->get('id'), 0, 0);
             }
         }
 
-        return $this->_manager;
+        return $this->manager;
     }
 
     /**
@@ -345,7 +345,7 @@ class Course extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->_managers) || !is_array($this->_managers) || $clear) {
+        if (!isset($this->managers) || !is_array($this->managers) || $clear) {
             $tbl = new Tables\Member($this->_db);
 
             $results = [];
@@ -366,10 +366,10 @@ class Course extends Base
                 }
             }
 
-            $this->_managers = $results;
+            $this->managers = $results;
         }
 
-        return $this->_managers;
+        return $this->managers;
     }
 
     /**
@@ -392,7 +392,7 @@ class Course extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->_students) || !is_array($this->_students) || $clear) {
+        if (!isset($this->students) || !is_array($this->students) || $clear) {
             $tbl = new Tables\Member($this->_db);
 
             $results = [];
@@ -403,10 +403,10 @@ class Course extends Base
                 }
             }
 
-            $this->_students = $results;
+            $this->students = $results;
         }
 
-        return $this->_students;
+        return $this->students;
     }
 
     /**
@@ -442,7 +442,7 @@ class Course extends Base
             $filters['user_id'] = $user_id;
 
             if (($data = $tbl->find($filters))) {
-                $this->_managers[$user_id] = new Manager(array_shift($data), $this->get('id'));
+                $this->managers[$user_id] = new Manager(array_shift($data), $this->get('id'));
 
                 if (count($data) > 0) {
                     foreach ($data as $key => $result) {
@@ -453,16 +453,16 @@ class Course extends Base
                 }
             }
 
-            if (!isset($this->_managers[$user_id])) {
-                $this->_managers[$user_id] = new Manager($user_id, $this->get('id'));
+            if (!isset($this->managers[$user_id])) {
+                $this->managers[$user_id] = new Manager($user_id, $this->get('id'));
             }
-            $this->_managers[$user_id]->set('user_id', $user_id);
-            $this->_managers[$user_id]->set('course_id', $this->get('id'));
-            $this->_managers[$user_id]->set('role_id', $role_id);
-            $this->_managers[$user_id]->set('section_id', 0);
-            $this->_managers[$user_id]->set('student', 0);
-            $this->_managers[$user_id]->set('offering_id', 0);
-            $this->_managers[$user_id]->store();
+            $this->managers[$user_id]->set('user_id', $user_id);
+            $this->managers[$user_id]->set('course_id', $this->get('id'));
+            $this->managers[$user_id]->set('role_id', $role_id);
+            $this->managers[$user_id]->set('section_id', 0);
+            $this->managers[$user_id]->set('student', 0);
+            $this->managers[$user_id]->set('offering_id', 0);
+            $this->managers[$user_id]->store();
         }
     }
 
@@ -480,9 +480,9 @@ class Course extends Base
             $this->managers();
 
             foreach ($user_ids as $user_id) {
-                if (isset($this->_managers[$user_id])) {
-                    $this->_managers[$user_id]->delete();
-                    unset($this->_managers[$user_id]);
+                if (isset($this->managers[$user_id])) {
+                    $this->managers[$user_id]->delete();
+                    unset($this->managers[$user_id]);
                 }
             }
         }
@@ -618,21 +618,21 @@ class Course extends Base
     public function page($url = null)
     {
         if (
-            !isset($this->_page)
-            || ($url !== null && (string) $this->_page->get('url') != $url)
+            !isset($this->page)
+            || ($url !== null && (string) $this->page->get('url') != $url)
         ) {
-            $this->_page = null;
+            $this->page = null;
 
-            if (isset($this->_pages) && is_array($this->_pages) && isset($this->_pages[$url])) {
-                $this->_page = $this->_pages[$url];
+            if (isset($this->pages) && is_array($this->pages) && isset($this->pages[$url])) {
+                $this->page = $this->pages[$url];
             }
 
-            if (!$this->_page) {
-                $this->_page = new Page(0);
+            if (!$this->page) {
+                $this->page = new Page(0);
             }
         }
 
-        return $this->_page;
+        return $this->page;
     }
 
     /**
@@ -659,7 +659,7 @@ class Course extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->_pages) || !is_array($this->_pages)) {
+        if (!isset($this->pages) || !is_array($this->pages)) {
             $tbl = new Tables\Page($this->_db);
 
             $results = [];
@@ -670,10 +670,10 @@ class Course extends Base
                 }
             }
 
-            $this->_pages = $results;
+            $this->pages = $results;
         }
 
-        return $this->_pages;
+        return $this->pages;
     }
 
     /**
@@ -724,23 +724,23 @@ class Course extends Base
      */
     public function link($type = '')
     {
-        if (!isset($this->_base)) {
-            $this->_base  = 'index.php?option=com_courses&gid=' . $this->get('alias');
+        if (!isset($this->base)) {
+            $this->base  = 'index.php?option=com_courses&gid=' . $this->get('alias');
         }
 
         // If it doesn't exist or isn't published
         switch (strtolower($type)) {
             case 'edit':
-                $link = $this->_base . '&task=edit';
+                $link = $this->base . '&task=edit';
                 break;
 
             case 'delete':
-                $link = $this->_base . '&task=delete';
+                $link = $this->base . '&task=delete';
                 break;
 
             case 'permalink':
             default:
-                $link = $this->_base;
+                $link = $this->base;
                 break;
         }
 
@@ -939,10 +939,10 @@ class Course extends Base
      */
     public function certificate()
     {
-        if (!$this->_certificate) {
-            $this->_certificate = Certificate::getInstance(0, $this->get('id'));
+        if (!$this->certificate) {
+            $this->certificate = Certificate::getInstance(0, $this->get('id'));
         }
 
-        return $this->_certificate;
+        return $this->certificate;
     }
 }

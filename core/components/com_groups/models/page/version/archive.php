@@ -28,14 +28,14 @@ class Archive extends Model
      *
      * @var object
      */
-    private $_versions = null;
+    private $versions = null;
 
     /**
      * Version Count
      *
      * @var int
      */
-    private $_versions_count = null;
+    private $versions_count = null;
 
     /**
      * Constructor
@@ -62,14 +62,14 @@ class Archive extends Model
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->_versions_count)) {
-                    $this->_versions_count = $tbl->count($filters);
+                if (!isset($this->versions_count)) {
+                    $this->versions_count = $tbl->count($filters);
                 }
-                return (int) $this->_versions_count;
+                return (int) $this->versions_count;
                 break;
             case 'list':
             default:
-                if (!($this->_versions instanceof ItemList) || $clear) {
+                if (!($this->versions instanceof ItemList) || $clear) {
                     // make sure we have page id
                     if (!isset($filters['pageid'])) {
                         $filters['pageid'] = 0;
@@ -80,9 +80,9 @@ class Archive extends Model
                             $results[$key] = new Version($result);
                         }
                     }
-                    $this->_versions = new ItemList($results);
+                    $this->versions = new ItemList($results);
                 }
-                return $this->_versions;
+                return $this->versions;
                 break;
         }
     }

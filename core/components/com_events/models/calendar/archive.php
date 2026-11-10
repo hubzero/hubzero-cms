@@ -31,7 +31,7 @@ class Archive extends Model
      *
      * @var object
      */
-    private $_calendars = null;
+    private $calendars = null;
 
     /**
      * Constructor
@@ -78,16 +78,16 @@ class Archive extends Model
         switch (strtolower($rtrn)) {
             case 'list':
             default:
-                if (!($this->_calendars instanceof ItemList) || $clear) {
+                if (!($this->calendars instanceof ItemList) || $clear) {
                     $tbl = new Tables\Calendar($this->_db);
                     if ($results = $tbl->find($filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Calendar($result);
                         }
                     }
-                    $this->_calendars = new ItemList($results);
+                    $this->calendars = new ItemList($results);
                 }
-                return $this->_calendars;
+                return $this->calendars;
                 break;
         }
     }

@@ -96,7 +96,7 @@ class Project extends Model
      *
      * @var  mixed
      */
-    private $_authorized = false;
+    private $authorized = false;
 
     /**
      * Constructor
@@ -536,7 +536,7 @@ class Project extends Model
      */
     private function authorize($reviewer = false)
     {
-        $this->_authorized = true;
+        $this->authorized = true;
 
         if (
             in_array($this->get('access'), User::getAuthorisedViewLevels())
@@ -720,7 +720,7 @@ class Project extends Model
      */
     public function access($action = 'view')
     {
-        if (!$this->_authorized) {
+        if (!$this->authorized) {
             $this->authorize();
         }
         return $this->params->get('access-' . strtolower($action) . '-project');

@@ -32,7 +32,7 @@ class Zone extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_cache = [
+    private $cache = [
         'locations.count' => null,
         'locations.list'  => null,
         'locations.one'   => null,
@@ -76,16 +76,16 @@ class Zone extends Base
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->_cache['locations.count']) || $clear) {
-                    $this->_cache['locations.count'] = $tbl->find('count', $filters);
+                if (!isset($this->cache['locations.count']) || $clear) {
+                    $this->cache['locations.count'] = $tbl->find('count', $filters);
                 }
-                return $this->_cache['locations.count'];
+                return $this->cache['locations.count'];
                 break;
 
             case 'list':
             case 'results':
             default:
-                if (!($this->_cache['locations.list'] instanceof ItemList) || $clear) {
+                if (!($this->cache['locations.list'] instanceof ItemList) || $clear) {
                     if ($results = $tbl->find('list', $filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Location($result);
@@ -93,9 +93,9 @@ class Zone extends Base
                     } else {
                         $results = [];
                     }
-                    $this->_cache['locations.list'] = new ItemList($results);
+                    $this->cache['locations.list'] = new ItemList($results);
                 }
-                return $this->_cache['locations.list'];
+                return $this->cache['locations.list'];
                 break;
         }
     }

@@ -59,7 +59,7 @@ class Unit extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_asset = null;
+    private $asset = null;
 
     /**
      * \Components\Courses\Models\Iterator
@@ -67,7 +67,7 @@ class Unit extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_assets = null;
+    private $assets = null;
 
     /**
      * \Components\Courses\Models\Iterator
@@ -75,7 +75,7 @@ class Unit extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_siblings = null;
+    private $siblings = null;
 
     /**
      * Constructor
@@ -288,9 +288,9 @@ class Unit extends Base
     public function siblings(&$siblings)
     {
         if ($siblings instanceof \Traversable) {
-            $this->_siblings = $siblings;
+            $this->siblings = $siblings;
         } else {
-            $this->_siblings = new Iterator($siblings);
+            $this->siblings = new Iterator($siblings);
         }
     }
 
@@ -301,10 +301,10 @@ class Unit extends Base
      */
     public function isFirst()
     {
-        if (!$this->_siblings) {
+        if (!$this->siblings) {
             return true;
         }
-        return $this->_siblings->isFirst();
+        return $this->siblings->isFirst();
     }
 
     /**
@@ -314,10 +314,10 @@ class Unit extends Base
      */
     public function isLast()
     {
-        if (!$this->_siblings) {
+        if (!$this->siblings) {
             return true;
         }
-        return $this->_siblings->isLast();
+        return $this->siblings->isLast();
     }
 
     /**
@@ -327,7 +327,7 @@ class Unit extends Base
      */
     public function key()
     {
-        return $this->_siblings->key();
+        return $this->siblings->key();
     }
 
     /**
@@ -342,7 +342,7 @@ class Unit extends Base
         switch ($dir) {
             case 'prev':
             case 'next':
-                return $this->_siblings->fetch($dir);
+                return $this->siblings->fetch($dir);
                 break;
 
             default:
@@ -360,19 +360,19 @@ class Unit extends Base
     public function asset($id = null)
     {
         if (
-            !isset($this->_asset)
-            || ($id !== null && (int) $this->_asset->get('id') != (int) $id)
+            !isset($this->asset)
+            || ($id !== null && (int) $this->asset->get('id') != (int) $id)
         ) {
-            $this->_asset = null;
+            $this->asset = null;
 
             foreach ($this->assets() as $key => $asset) {
                 if ((int) $asset->get('id') == (int) $id) {
-                    $this->_asset = $asset;
+                    $this->asset = $asset;
                     break;
                 }
             }
         }
-        return $this->_asset;
+        return $this->asset;
     }
 
     /**
@@ -384,7 +384,7 @@ class Unit extends Base
      */
     public function assets($filters = [])
     {
-        if (!isset($this->_assets) || !($this->_assets instanceof \Traversable)) {
+        if (!isset($this->assets) || !($this->assets instanceof \Traversable)) {
             if (!isset($filters['asset_scope_id'])) {
                 $filters['asset_scope_id'] = (int) $this->get('id');
             }
@@ -405,10 +405,10 @@ class Unit extends Base
                 $results = [];
             }
 
-            $this->_assets = new Iterator($results);
+            $this->assets = new Iterator($results);
         }
 
-        return $this->_assets;
+        return $this->assets;
     }
 
     /**

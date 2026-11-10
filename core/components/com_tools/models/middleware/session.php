@@ -33,7 +33,7 @@ class Session extends Base
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_cache = [
+    private $cache = [
         'shared.count' => null,
         'shared.list'  => null,
     ];
@@ -139,16 +139,16 @@ class Session extends Base
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->_cache['shared.count']) || $clear) {
-                    $this->_cache['shared.count'] = count($this->shared('list', $filters));
+                if (!isset($this->cache['shared.count']) || $clear) {
+                    $this->cache['shared.count'] = count($this->shared('list', $filters));
                 }
-                return $this->_cache['shared.count'];
+                return $this->cache['shared.count'];
                 break;
 
             case 'list':
             case 'results':
             default:
-                if (!($this->_cache['shared.list'] instanceof ItemList) || $clear) {
+                if (!($this->cache['shared.list'] instanceof ItemList) || $clear) {
                     if ($results = $tbl->loadViewperm($filters['sessnum'])) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Location($result);
@@ -156,9 +156,9 @@ class Session extends Base
                     } else {
                         $results = [];
                     }
-                    $this->_cache['shared.list'] = new ItemList($results);
+                    $this->cache['shared.list'] = new ItemList($results);
                 }
-                return $this->_cache['shared.list'];
+                return $this->cache['shared.list'];
                 break;
         }
     }

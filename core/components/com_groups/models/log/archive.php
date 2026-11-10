@@ -26,7 +26,7 @@ class Archive extends Model
      *
      * @var object
      */
-    private $_logs = null;
+    private $logs = null;
 
     /**
      * Constructor
@@ -70,16 +70,16 @@ class Archive extends Model
         switch (strtolower($rtrn)) {
             case 'list':
             default:
-                if (!($this->_logs instanceof ItemList) || $clear) {
+                if (!($this->logs instanceof ItemList) || $clear) {
                     $tbl = new Tables\Log($this->_db);
                     if ($results = $tbl->find($filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Log($result);
                         }
                     }
-                    $this->_logs = new ItemList($results);
+                    $this->logs = new ItemList($results);
                 }
-                return $this->_logs;
+                return $this->logs;
                 break;
         }
     }

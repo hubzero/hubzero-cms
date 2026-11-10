@@ -40,14 +40,14 @@ class Category extends Model
      *
      * @var object
      */
-    private $_pages = null;
+    private $pages = null;
 
     /**
      * Page count
      *
      * @var integer
      */
-    private $_pages_count = null;
+    private $pages_count = null;
 
     /**
      * Constructor
@@ -92,22 +92,22 @@ class Category extends Model
 
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!isset($this->_pages_count)) {
-                    $this->_pages_count = $tbl->count($filters);
+                if (!isset($this->pages_count)) {
+                    $this->pages_count = $tbl->count($filters);
                 }
-                return (int) $this->_pages_count;
+                return (int) $this->pages_count;
                 break;
             case 'list':
             default:
-                if (!($this->_pages instanceof ItemList) || $clear) {
+                if (!($this->pages instanceof ItemList) || $clear) {
                     if ($results = $tbl->find($filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Page($result);
                         }
                     }
-                    $this->_pages = new ItemList($results);
+                    $this->pages = new ItemList($results);
                 }
-                return $this->_pages;
+                return $this->pages;
                 break;
         }
     }

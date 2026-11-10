@@ -41,7 +41,7 @@ class Module extends Model
      *
      * @var array
      */
-    private $_menu_items = null;
+    private $menu_items = null;
 
     /**
      * Constructor
@@ -83,7 +83,7 @@ class Module extends Model
         switch (strtolower($rtrn)) {
             case 'list':
             default:
-                if (!($this->_menu_items instanceof ItemList) || $clear) {
+                if (!($this->menu_items instanceof ItemList) || $clear) {
                     if ($results = $tbl->getMenu($filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Module\Menu($result);
@@ -91,9 +91,9 @@ class Module extends Model
                     } else {
                         $results = [];
                     }
-                    $this->_menu_items = new ItemList($results);
+                    $this->menu_items = new ItemList($results);
                 }
-                return $this->_menu_items;
+                return $this->menu_items;
                 break;
         }
     }

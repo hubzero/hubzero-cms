@@ -43,70 +43,70 @@ class Section extends Base
      *
      * @var mixed
      */
-    private $_authorized = false;
+    private $authorized = false;
 
     /**
      * List of roles
      *
      * @var object
      */
-    private $_roles = null;
+    private $roles = null;
 
     /**
      * List of members
      *
      * @var object
      */
-    private $_members = null;
+    private $members = null;
 
     /**
      * Member
      *
      * @var object
      */
-    private $_member = null;
+    private $member = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
      * @var object
      */
-    private $_codes = null;
+    private $codes = null;
 
     /**
      * \Components\Courses\Models\Section\Code
      *
      * @var object
      */
-    private $_code = null;
+    private $code = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
      * @var object
      */
-    private $_dates = null;
+    private $dates = null;
 
     /**
      * \Components\Courses\Models\Section\Date
      *
      * @var object
      */
-    private $_date = null;
+    private $date = null;
 
     /**
      * \Components\Courses\Models\Section\Badge
      *
      * @var object
      */
-    private $_badge = null;
+    private $badge = null;
 
     /**
      * Registry
      *
      * @var object
      */
-    private $_params = null;
+    private $params = null;
 
     /**
      * Constructor
@@ -308,21 +308,21 @@ class Section extends Base
     public function member($user_id = null)
     {
         if (
-            !isset($this->_member)
-            || ($user_id !== null && (int) $this->_member->get('user_id') != $user_id)
+            !isset($this->member)
+            || ($user_id !== null && (int) $this->member->get('user_id') != $user_id)
         ) {
-            $this->_member = null;
+            $this->member = null;
 
-            if (isset($this->_members) && isset($this->_members[$user_id])) {
-                $this->_member = $this->_members[$user_id];
+            if (isset($this->members) && isset($this->members[$user_id])) {
+                $this->member = $this->members[$user_id];
             }
         }
 
-        if (!$this->_member) {
-            $this->_member = Member::getInstance($user_id, null, null, $this->get('id'));
+        if (!$this->member) {
+            $this->member = Member::getInstance($user_id, null, null, $this->get('id'));
         }
 
-        return $this->_member;
+        return $this->member;
     }
 
     /**
@@ -347,7 +347,7 @@ class Section extends Base
             return $tbl->count($filters);
         }
 
-        if (!isset($this->_members) || !is_array($this->_members) || $clear) {
+        if (!isset($this->members) || !is_array($this->members) || $clear) {
             $tbl = new Tables\Member($this->_db);
 
             $results = [];
@@ -358,10 +358,10 @@ class Section extends Base
                 }
             }
 
-            $this->_members = $results;
+            $this->members = $results;
         }
 
-        return $this->_members;
+        return $this->members;
     }
 
     /**
@@ -372,21 +372,21 @@ class Section extends Base
     public function date($scope = null, $scope_id = null)
     {
         if (
-            !isset($this->_date)
-            || ((int) $this->_date->get('scope_id') != (int) $scope_id || (string) $this->_date->get('scope') != (string) $scope)
+            !isset($this->date)
+            || ((int) $this->date->get('scope_id') != (int) $scope_id || (string) $this->date->get('scope') != (string) $scope)
         ) {
-            $this->_date = new Section\Date(null);
+            $this->date = new Section\Date(null);
 
             foreach ($this->dates() as $dt) {
                 if (
                     $dt->get('scope') == $scope
                     && $dt->get('scope_id') == $scope_id
                 ) {
-                    $this->_date = $dt;
+                    $this->date = $dt;
                 }
             }
         }
-        return $this->_date;
+        return $this->date;
     }
 
     /**
@@ -411,7 +411,7 @@ class Section extends Base
             return $tbl->count($filters);
         }
 
-        if (!($this->_dates instanceof \Traversable) || $clear) {
+        if (!($this->dates instanceof \Traversable) || $clear) {
             $tbl = new Tables\SectionDate($this->_db);
 
             if (($results = $tbl->find($filters))) {
@@ -422,10 +422,10 @@ class Section extends Base
                 $results = [];
             }
 
-            $this->_dates = new Iterator($results);
+            $this->dates = new Iterator($results);
         }
 
-        return $this->_dates;
+        return $this->dates;
     }
 
     /**
@@ -467,8 +467,8 @@ class Section extends Base
             }
 
             // Append to the members list
-            if (isset($this->_members) && is_array($this->_members)) {
-                $this->_members[$user_id] = $model;
+            if (isset($this->members) && is_array($this->members)) {
+                $this->members[$user_id] = $model;
             }
         }
     }
@@ -501,8 +501,8 @@ class Section extends Base
                 continue;
             }
 
-            if (isset($this->_members[$user_id])) {
-                unset($this->_members[$user_id]);
+            if (isset($this->members[$user_id])) {
+                unset($this->members[$user_id]);
             }
         }
     }
@@ -588,25 +588,25 @@ class Section extends Base
     public function code($code = null)
     {
         if (
-            !isset($this->_code)
-            || ($code !== null && (string) $this->_code->get('code') != $code)
+            !isset($this->code)
+            || ($code !== null && (string) $this->code->get('code') != $code)
         ) {
-            $this->_code = null;
+            $this->code = null;
 
-            if (isset($this->_codes)) {
-                foreach ($this->_codes as $c) {
+            if (isset($this->codes)) {
+                foreach ($this->codes as $c) {
                     if ($c->get('code') == $code) {
-                        $this->_code = $c;
+                        $this->code = $c;
                     }
                 }
             }
         }
 
-        if (!$this->_code) {
-            $this->_code = new Section\Code($code, $this->get('id'));
+        if (!$this->code) {
+            $this->code = new Section\Code($code, $this->get('id'));
         }
 
-        return $this->_code;
+        return $this->code;
     }
 
     /**
@@ -631,7 +631,7 @@ class Section extends Base
             return $tbl->count($filters);
         }
 
-        if (!($this->_codes instanceof \Traversable) || $clear) {
+        if (!($this->codes instanceof \Traversable) || $clear) {
             $tbl = new Tables\SectionCode($this->_db);
 
             if (($results = $tbl->find($filters))) {
@@ -642,10 +642,10 @@ class Section extends Base
                 $results = [];
             }
 
-            $this->_codes = new Iterator($results);
+            $this->codes = new Iterator($results);
         }
 
-        return $this->_codes;
+        return $this->codes;
     }
 
     /**
@@ -685,11 +685,11 @@ class Section extends Base
   */
     public function badge()
     {
-        if (!isset($this->_badge)) {
-            $this->_badge = Section\Badge::loadBySectionId($this->get('id'));
+        if (!isset($this->badge)) {
+            $this->badge = Section\Badge::loadBySectionId($this->get('id'));
         }
 
-        return $this->_badge;
+        return $this->badge;
     }
 
     /**
@@ -724,13 +724,13 @@ class Section extends Base
      */
     public function params($key = '', $default = null)
     {
-        if (!($this->_params instanceof Registry)) {
-            $this->_params = new Registry($this->get('params'));
+        if (!($this->params instanceof Registry)) {
+            $this->params = new Registry($this->get('params'));
         }
         if ($key) {
-            return $this->_params->get((string) $key, $default);
+            return $this->params->get((string) $key, $default);
         }
-        return $this->_params;
+        return $this->params;
     }
 
     /**

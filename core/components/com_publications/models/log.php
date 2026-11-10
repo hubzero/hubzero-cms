@@ -32,7 +32,7 @@ class Log extends Model
      * @var  object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_config = null;
+    private $config = null;
 
     /**
      * Table class object
@@ -203,15 +203,15 @@ class Log extends Model
      */
     public function getLogPath($pid = 0, $vid = 0)
     {
-        if (!isset($this->_config)) {
-            $this->_config = Component::params('com_publications');
+        if (!isset($this->config)) {
+            $this->config = Component::params('com_publications');
         }
         if (!$pid || !$vid) {
             return false;
         }
 
         // Build log path (access logs)
-        $logPath = Html::buildPubPath($pid, $vid, $this->_config->get('webpath'), 'logs', 1);
+        $logPath = Html::buildPubPath($pid, $vid, $this->config->get('webpath'), 'logs', 1);
 
         if (!is_dir($logPath)) {
             return false;

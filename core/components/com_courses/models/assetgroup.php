@@ -39,7 +39,7 @@ class Assetgroup extends Base
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_asset = null;
+    private $asset = null;
 
     /**
      * \Components\Courses\Models\Asset
@@ -47,7 +47,7 @@ class Assetgroup extends Base
      * @var array
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_assets = null;
+    private $assets = null;
 
     /**
      * \Components\Courses\Models\Iterator
@@ -62,7 +62,7 @@ class Assetgroup extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_parent = null;
+    private $parent = null;
 
     /**
      * Container for properties
@@ -78,7 +78,7 @@ class Assetgroup extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_params = null;
+    private $params = null;
 
     /**
      * Constructor
@@ -102,10 +102,10 @@ class Assetgroup extends Base
   */
     public function params($key, $default = null)
     {
-        if (!($this->_params instanceof Registry)) {
-            $this->_params = new Registry($this->get('params'));
+        if (!($this->params instanceof Registry)) {
+            $this->params = new Registry($this->get('params'));
         }
-        return $this->_params->get($key, $default);
+        return $this->params->get($key, $default);
     }
 
     /**
@@ -210,19 +210,19 @@ class Assetgroup extends Base
     public function asset($id = null)
     {
         if (
-            !isset($this->_asset)
-            || ($id !== null && (int) $this->_asset->get('id') != (int) $id)
+            !isset($this->asset)
+            || ($id !== null && (int) $this->asset->get('id') != (int) $id)
         ) {
-            $this->_asset = null;
+            $this->asset = null;
 
             foreach ($this->assets() as $key => $asset) {
                 if ((int) $asset->get('id') == (int) $id) {
-                    $this->_asset = $asset;
+                    $this->asset = $asset;
                     break;
                 }
             }
         }
-        return $this->_asset;
+        return $this->asset;
     }
 
     /**
@@ -234,7 +234,7 @@ class Assetgroup extends Base
      */
     public function assets($filters = [])
     {
-        if (!($this->_assets instanceof \Traversable)) {
+        if (!($this->assets instanceof \Traversable)) {
             if (!isset($filters['asset_scope_id'])) {
                 $filters['asset_scope_id'] = (int) $this->get('id');
             }
@@ -259,10 +259,10 @@ class Assetgroup extends Base
                 $results = [];
             }
 
-            $this->_assets = new Iterator($results);
+            $this->assets = new Iterator($results);
         }
 
-        return $this->_assets;
+        return $this->assets;
     }
 
     /**

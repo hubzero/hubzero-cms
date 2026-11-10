@@ -26,7 +26,7 @@ class Archive extends Model
      *
      * @var object
      */
-    private $_categories = null;
+    private $categories = null;
 
     /**
      * Constructor
@@ -54,16 +54,16 @@ class Archive extends Model
                 break;
             case 'list':
             default:
-                if (!($this->_categories instanceof ItemList) || $clear) {
+                if (!($this->categories instanceof ItemList) || $clear) {
                     $tbl = new Tables\PageCategory($this->_db);
                     if ($results = $tbl->find($filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Page\Category($result);
                         }
                     }
-                    $this->_categories = new ItemList($results);
+                    $this->categories = new ItemList($results);
                 }
-                return $this->_categories;
+                return $this->categories;
                 break;
         }
     }

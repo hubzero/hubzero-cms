@@ -40,7 +40,7 @@ class Code extends Base
      * @var object
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    private $_redeemer = null;
+    private $redeemer = null;
 
     /**
      * Constructor
@@ -110,13 +110,13 @@ class Code extends Base
      */
     public function redeemer($property = null)
     {
-        if (!$this->_redeemer) {
-            $this->_redeemer = User::getInstance($this->get('redeemed_by'));
+        if (!$this->redeemer) {
+            $this->redeemer = User::getInstance($this->get('redeemed_by'));
         }
         if ($property) {
-            return $this->_redeemer->get($property);
+            return $this->redeemer->get($property);
         }
-        return $this->_redeemer;
+        return $this->redeemer;
     }
 
     /**

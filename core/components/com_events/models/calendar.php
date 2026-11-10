@@ -46,21 +46,21 @@ class Calendar extends Model
      *
      * @var object
      */
-    private $_events = null;
+    private $events = null;
 
     /**
      * \Hubzero\Base\ItemList
      *
      * @var object
      */
-    private $_events_repeating = null;
+    private $events_repeating = null;
 
     /**
      * Events Count
      *
      * @var int
      */
-    private $_events_count = null;
+    private $events_count = null;
 
     /**
      * Constructor
@@ -116,15 +116,15 @@ class Calendar extends Model
     {
         switch (strtolower($rtrn)) {
             case 'count':
-                if (!$this->_events_count || $clear) {
+                if (!$this->events_count || $clear) {
                     $tbl = new Tables\Event($this->_db);
-                    $this->_events_count = $tbl->count($filters);
+                    $this->events_count = $tbl->count($filters);
                 }
-                return $this->_events_count;
+                return $this->events_count;
                 break;
 
             case 'repeating':
-                if (!($this->_events_repeating instanceof ItemList) || $clear) {
+                if (!($this->events_repeating instanceof ItemList) || $clear) {
                     // var to hold repeating data
                     $repeats = [];
 
@@ -180,23 +180,23 @@ class Calendar extends Model
                             }
                         }
                     }
-                    $this->_events_repeating = new ItemList($repeats);
+                    $this->events_repeating = new ItemList($repeats);
                 }
-                return $this->_events_repeating;
+                return $this->events_repeating;
                 break;
 
             case 'list':
             default:
-                if (!($this->_events instanceof ItemList) || $clear) {
+                if (!($this->events instanceof ItemList) || $clear) {
                     $tbl = new Tables\Event($this->_db);
                     if ($results = $tbl->find($filters)) {
                         foreach ($results as $key => $result) {
                             $results[$key] = new Event($result);
                         }
                     }
-                    $this->_events = new ItemList($results);
+                    $this->events = new ItemList($results);
                 }
-                return $this->_events;
+                return $this->events;
                 break;
         }
     }
