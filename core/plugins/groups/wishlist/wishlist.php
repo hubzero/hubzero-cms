@@ -47,7 +47,7 @@ class Wishlist extends Plugin
     public function loadLanguage($extension = '', $basePath = PATH_APP)
     {
         if (empty($extension)) {
-            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+            $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
         }
 
         $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
@@ -55,7 +55,7 @@ class Wishlist extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
+        $pluginPath = DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName;
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)

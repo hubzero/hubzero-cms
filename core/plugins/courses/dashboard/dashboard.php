@@ -43,9 +43,9 @@ class Dashboard extends Plugin
         }
 
         $response = with(new \Hubzero\Base\Obj())
-            ->set('name', $this->_name)
-            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
+            ->set('name', $this->pluginName)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)))
+            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName) . '_BLURB'))
             ->set('default_access', $this->params->get('plugin_access', 'managers'))
             ->set('display_menu_tab', true)
             ->set('icon', 'f083');
@@ -56,16 +56,16 @@ class Dashboard extends Plugin
 
         $nonadmin = Request::getState('com_courses.offering' . $offering->get('id') . '.nonadmin', 0);
         if (!($active = Request::getString('active')) && !$nonadmin) {
-            Request::setVar('active', ($active = $this->_name));
+            Request::setVar('active', ($active = $this->pluginName));
         }
 
         if ($response->get('name') == $active) {
             // Set the page title
-            Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
+            Document::setTitle(Document::getTitle() . ': ' . Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)));
 
             Pathway::append(
-                Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
-                $offering->link() . '&active=' . $this->_name,
+                Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)),
+                $offering->link() . '&active=' . $this->pluginName,
             );
 
             $view = with($this->view('default', 'overview'))

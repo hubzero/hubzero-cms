@@ -343,7 +343,7 @@ class Team extends Plugin
         // Output HTML
         $view = new \Hubzero\Plugin\View([
             'folder'  => 'projects',
-            'element' => $this->_name,
+            'element' => $this->pluginName,
             'name'    => 'edit',
             'layout'  => 'choose',
         ]);
@@ -366,7 +366,7 @@ class Team extends Plugin
         $view->uid      = $this->_uid;
         $view->config   = $this->_config;
         $view->task     = $this->_task;
-        $view->section  = $this->_name;
+        $view->section  = $this->pluginName;
         $view->step     = 1;
         $view->ajax     = $no_html;
         $view->setErrors($this->getErrors());

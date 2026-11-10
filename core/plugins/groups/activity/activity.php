@@ -41,7 +41,7 @@ class Activity extends Plugin
     public function &onGroupAreas()
     {
         $area = [
-            'name' => $this->_name,
+            'name' => $this->pluginName,
             'title' => Lang::txt('PLG_GROUPS_ACTIVITY'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
@@ -66,7 +66,7 @@ class Activity extends Plugin
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
         $return = 'html';
-        $active = $this->_name;
+        $active = $this->pluginName;
 
         // The output array we're returning
         $arr = [
@@ -227,7 +227,7 @@ class Activity extends Plugin
             ->rows();
 
         $view = $this->view('default', 'activity')
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('group', $this->group)
             ->set('canModerate', $this->canModerate)
             ->set('canStar', $this->canStar)
@@ -353,11 +353,11 @@ class Activity extends Plugin
      */
     protected function loginRedirect()
     {
-        $url = Route::url($this->base . '&active=' . $this->_name, false, true);
+        $url = Route::url($this->base . '&active=' . $this->pluginName, false, true);
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
-            Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($this->_name)),
+            Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($this->pluginName)),
             'warning',
         );
     }
@@ -413,7 +413,7 @@ class Activity extends Plugin
 
         // Redirect
         App::redirect(
-            Route::url($this->base . '&active=' . $this->_name, false),
+            Route::url($this->base . '&active=' . $this->pluginName, false),
         );
     }
 
@@ -478,7 +478,7 @@ class Activity extends Plugin
 
         // Redirect
         App::redirect(
-            Route::url($this->base . '&active=' . $this->_name, false),
+            Route::url($this->base . '&active=' . $this->pluginName, false),
         );
     }
 
@@ -567,7 +567,7 @@ class Activity extends Plugin
 
             if (!$file->upload($upload['name'], $upload['tmp_name'], $upload['size'])) {
                 App::redirect(
-                    Route::url($this->base . '&active=' . $this->_name),
+                    Route::url($this->base . '&active=' . $this->pluginName),
                     $file->getError(),
                     'error',
                 );
@@ -587,7 +587,7 @@ class Activity extends Plugin
             );
 
             App::redirect(
-                Route::url($this->base . '&active=' . $this->_name),
+                Route::url($this->base . '&active=' . $this->pluginName),
                 $row->getError(),
                 'error',
             );
@@ -620,7 +620,7 @@ class Activity extends Plugin
                 'anonymous'   => $row->get('anonymous', 0),
                 'description' => $row->get('description'),
                 'details'     => [
-                    'url'         => Route::url($this->base . '&active=' . $this->_name . '#activity' . $row->get('id')),
+                    'url'         => Route::url($this->base . '&active=' . $this->pluginName . '#activity' . $row->get('id')),
                     'title'       => $this->group->get('description'),
                     'attachments' => $row->details->get('attachments'),
                 ],
@@ -630,7 +630,7 @@ class Activity extends Plugin
 
         // Redirect
         App::redirect(
-            Route::url($this->base . '&active=' . $this->_name),
+            Route::url($this->base . '&active=' . $this->pluginName),
             Lang::txt('PLG_GROUPS_ACTIVITY_COMMENTS_SAVED'),
         );
     }

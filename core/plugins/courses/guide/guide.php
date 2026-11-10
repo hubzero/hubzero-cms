@@ -54,12 +54,12 @@ class Guide extends Plugin
             return;
         }
 
-        $this->view = with($this->view('overlay', $this->_name))
+        $this->view = with($this->view('overlay', $this->pluginName))
             ->set('option', Request::getCmd('option', 'com_courses'))
             ->set('controller', Request::getWord('controller', 'course'))
             ->set('course', $course)
             ->set('offering', $offering)
-            ->set('plugin', $this->_name);
+            ->set('plugin', $this->pluginName);
 
         return $this->view->loadTemplate();
     }
@@ -75,8 +75,8 @@ class Guide extends Plugin
     public function onCourse($course, $offering, $describe = false)
     {
         $response = with(new \Hubzero\Base\Obj())
-            ->set('name', $this->_name)
-            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
+            ->set('name', $this->pluginName)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)))
             ->set('default_access', $this->params->get('plugin_access', 'members'))
             ->set('display_menu_tab', true)
             ->set('icon', 'f059');
@@ -93,7 +93,7 @@ class Guide extends Plugin
         }
 
         if (!($active = Request::getString('active'))) {
-            Request::setVar('active', ($active = $this->_name));
+            Request::setVar('active', ($active = $this->pluginName));
         }
 
         // Determine if we need to return any HTML (meaning this is the active plugin)
@@ -108,13 +108,13 @@ class Guide extends Plugin
                 $action = $act;
             }
 
-            $this->view = $this->view('default', $this->_name);
+            $this->view = $this->view('default', $this->pluginName);
             $this->view->option = Request::getCmd('option', 'com_courses');
             $this->view->controller = Request::getWord('controller', 'course');
             $this->view->course = $course;
             $this->view->offering = $offering;
             $this->view->config = $this->params;
-            $this->view->plugin = $this->_name;
+            $this->view->plugin = $this->pluginName;
 
             switch ($action) {
                 case 'mark':

@@ -185,9 +185,9 @@ class Hubzero extends Plugin
                     $lang->setLanguage($userLocale);
                 }
 
-                $lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'site')
-                || $lang->load('plg_user_' . $this->_name, PATH_APP . DS . 'bootstrap' . DS . 'administrator')
-                || $lang->load('plg_user_' . $this->_name, __DIR__);
+                $lang->load('plg_user_' . $this->pluginName, PATH_APP . DS . 'bootstrap' . DS . 'site')
+                || $lang->load('plg_user_' . $this->pluginName, PATH_APP . DS . 'bootstrap' . DS . 'administrator')
+                || $lang->load('plg_user_' . $this->pluginName, __DIR__);
 
                 $config = App::get('config');
 

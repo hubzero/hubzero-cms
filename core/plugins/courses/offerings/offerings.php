@@ -81,8 +81,8 @@ class Offerings extends Plugin
 
         // Prepare response
         $response = with(new \Hubzero\Base\Obj())
-            ->set('name', $this->_name)
-            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
+            ->set('name', $this->pluginName)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)));
 
         // Check if our area is in the array of areas we want to return results for
         if ($response->get('name') == $active) {
@@ -90,7 +90,7 @@ class Offerings extends Plugin
             $view->set('option', Request::getCmd('option', 'com_courses'))
                 ->set('controller', Request::getWord('controller', 'course'))
                 ->set('course', $course)
-                ->set('name', $this->_name);
+                ->set('name', $this->pluginName);
 
             $response->set('html', $view->loadTemplate());
         }

@@ -64,7 +64,7 @@ class Resources extends Plugin
     public function loadLanguage($extension = '', $basePath = PATH_APP)
     {
         if (empty($extension)) {
-            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+            $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
         }
 
         $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
@@ -72,12 +72,12 @@ class Resources extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
+        $pluginPath = DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName;
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
     }
 
     /**
@@ -470,8 +470,8 @@ class Resources extends Plugin
         if (is_array($areas) && $limit) {
             $ars = $this->getResourcesAreas();
             if (
-                !isset($areas[$this->_name])
-                && !in_array($this->_name, $areas)
+                !isset($areas[$this->pluginName])
+                && !in_array($this->pluginName, $areas)
                 && !array_intersect($areas, array_keys($ars['resources']))
             ) {
                 return [];

@@ -89,7 +89,7 @@ class Files extends Plugin
     public function &onProjectAreas($alias = null)
     {
         $area = [
-            'name'    => $this->_name,
+            'name'    => $this->pluginName,
             'title'   => Lang::txt('COM_PROJECTS_TAB_FILES'),
             'submenu' => 'Assets',
             'show'    => true,

@@ -62,7 +62,7 @@ class Sponsors extends Plugin
     public function onResourcesSub($resource, $option, $miniview = 0)
     {
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];
@@ -118,7 +118,7 @@ class Sponsors extends Plugin
      */
     public function onCanManage()
     {
-        return $this->_name;
+        return $this->pluginName;
     }
 
     /**
@@ -131,7 +131,7 @@ class Sponsors extends Plugin
      */
     public function onManage($option, $controller = 'plugins', $task = 'default')
     {
-        if (Request::getCmd('plugin') != $this->_name) {
+        if (Request::getCmd('plugin') != $this->pluginName) {
             return;
         }
 

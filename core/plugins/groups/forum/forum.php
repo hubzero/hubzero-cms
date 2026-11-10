@@ -67,7 +67,7 @@ class Forum extends Plugin
     public function loadLanguage($extension = '', $basePath = PATH_APP)
     {
         if (empty($extension)) {
-            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+            $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
         }
 
         $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
@@ -77,9 +77,9 @@ class Forum extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
     }
 
     /**
@@ -90,7 +90,7 @@ class Forum extends Plugin
     public function &onGroupAreas()
     {
         $area = [
-            'name'             => $this->_name,
+            'name'             => $this->pluginName,
             'title'            => Lang::txt('PLG_GROUPS_FORUM'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
@@ -115,7 +115,7 @@ class Forum extends Plugin
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
         $return = 'html';
-        $active = $this->_name;
+        $active = $this->pluginName;
         $active_real = 'discussion';
 
         // The output array we're returning
@@ -187,7 +187,7 @@ class Forum extends Plugin
             $this->authorized = $authorized;
 
             // Get the plugins params
-            $this->params = \Hubzero\Plugin\Params::getParams($this->group->get('gidNumber'), 'groups', $this->_name);
+            $this->params = \Hubzero\Plugin\Params::getParams($this->group->get('gidNumber'), 'groups', $this->pluginName);
             $this->params->def('allow_anonymous', 1);
             $this->params->def('threading', 'list');
             $this->params->def('threading_depth', 3);
@@ -197,7 +197,7 @@ class Forum extends Plugin
             $this->option = $option;
             $this->limitstart = $limitstart;
             $this->limit = $limit;
-            $this->base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;
+            $this->base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName;
 
             $path = Request::path();
             if (strstr($path, '/')) {
@@ -1894,7 +1894,7 @@ class Forum extends Plugin
         }
 
         $from = [];
-        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->_name));
+        $from['name']  = Config::get('sitename') . ' ' . Lang::txt(strtoupper($this->pluginName));
         $from['email'] = Config::get('mailfrom');
 
         $subject = $postAuthor . " mentioned you on a group thread from " . $groupTitle;
@@ -2452,7 +2452,7 @@ class Forum extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->_type, $this->_name);
+        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->pluginType, $this->pluginName);
 
         // Get parameters
         $params = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
@@ -2485,7 +2485,7 @@ class Forum extends Plugin
 
         // Redirect to setting spage
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'),
+            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&action=settings'),
             Lang::txt('PLG_GROUPS_FORUM_SETTINGS_SAVED'),
         );
     }
@@ -2495,7 +2495,7 @@ class Forum extends Plugin
      */
     public function unsubscribe()
     {
-        $rtrn = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name;
+        $rtrn = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName;
 
         // get the token
         $token = Request::getCmd('t', '');

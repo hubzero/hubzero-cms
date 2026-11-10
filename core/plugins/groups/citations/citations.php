@@ -77,7 +77,7 @@ class Citations extends Plugin
     public function loadLanguage($extension = '', $basePath = PATH_APP)
     {
         if (empty($extension)) {
-            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+            $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
         }
 
         $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
@@ -87,9 +87,9 @@ class Citations extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
     }
 
     /**
@@ -100,7 +100,7 @@ class Citations extends Plugin
     public function &onGroupAreas()
     {
         $area = [
-            'name'             => $this->_name,
+            'name'             => $this->pluginName,
             'title'            => Lang::txt('PLG_GROUPS_CITATIONS'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
@@ -201,7 +201,7 @@ class Citations extends Plugin
             }
 
             if ($this->group->isSuperGroup()) {
-                $this->path = PATH_APP . DS . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'html' . DS . 'plg_' . $this->_type . '_' . $this->_name;
+                $this->path = PATH_APP . DS . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber') . DS . 'template' . DS . 'html' . DS . 'plg_' . $this->pluginType . '_' . $this->pluginName;
             }
 
             // run task based on action
@@ -295,9 +295,9 @@ class Citations extends Plugin
             // push objects to the view
             $view->group     = $this->group;
             $view->option    = $this->option;
-            $view->task      = $this->_name;
+            $view->task      = $this->pluginName;
             $view->database  = $this->database;
-            $view->title     = Lang::txt(strtoupper($this->_name));
+            $view->title     = Lang::txt(strtoupper($this->pluginName));
             $view->isManager = ($this->authorized == 'manager') ? true : false;
             $view->config    = $config;
         }
@@ -496,7 +496,7 @@ class Citations extends Plugin
         Document::addScriptDeclaration('var fields = ' . json_encode($fields) . ';');
 
         // Instantiate a new view
-        $view->title = Lang::txt(strtoupper($this->_name)) . ': ' . Lang::txt(strtoupper($this->_name) . '_' . strtoupper($this->action));
+        $view->title = Lang::txt(strtoupper($this->pluginName)) . ': ' . Lang::txt(strtoupper($this->pluginName) . '_' . strtoupper($this->action));
 
         // No ID, so we're creating a new entry
         // Set the ID of the creator
@@ -1366,7 +1366,7 @@ class Citations extends Plugin
     private function loginTask()
     {
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . DS . $this->group->get('cn') . DS . $this->_name . '&action=' . $this->action, false, true))),
+            Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . DS . $this->group->get('cn') . DS . $this->pluginName . '&action=' . $this->action, false, true))),
             Lang::txt('PLG_GROUPS_CITATIONS_NOT_LOGGEDIN'),
             'warning',
         );
@@ -1658,9 +1658,9 @@ class Citations extends Plugin
         $view = $this->view('default', 'member');
         $view->group    = $group;
         $view->option   = 'com_groups';
-        $view->task     = $this->_name;
+        $view->task     = $this->pluginName;
         $view->database = App::get('db');
-        $view->title    = Lang::txt(strtoupper($this->_name));
+        $view->title    = Lang::txt(strtoupper($this->pluginName));
 
         $view->citationTemplate = 'apa';
 

@@ -110,8 +110,8 @@ class Publications extends Plugin
         if (is_array($areas) && $limit) {
             $ars = $this->onMembersContributionsAreas();
             if (
-                !isset($areas[$this->_name])
-                && !in_array($this->_name, $areas)
+                !isset($areas[$this->pluginName])
+                && !in_array($this->pluginName, $areas)
                 && !array_intersect($areas, array_keys($ars))
             ) {
                 return [];

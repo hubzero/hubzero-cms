@@ -707,7 +707,7 @@ class Tinymce extends Plugin
         }
 
         if (is_array($buttons) || (is_bool($buttons) && $buttons)) {
-            $results = $this->_subject->getButtons($name, $buttons, $asset, $author);
+            $results = $this->subject->getButtons($name, $buttons, $asset, $author);
 
             // This will allow plugins to attach buttons or change the behavior on the fly using AJAX
             $return .= "\n<div id=\"editor-xtd-buttons\">\n";

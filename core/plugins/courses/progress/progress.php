@@ -48,9 +48,9 @@ class Progress extends Plugin
     public function onCourse($course, $offering, $describe = false)
     {
         $response = with(new \Hubzero\Base\Obj())
-            ->set('name', $this->_name)
-            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
+            ->set('name', $this->pluginName)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)))
+            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName) . '_BLURB'))
             ->set('default_access', $this->params->get('plugin_access', 'members'))
             ->set('display_menu_tab', true)
             ->set('icon', 'f012');
@@ -60,7 +60,7 @@ class Progress extends Plugin
         }
 
         if (!($active = Request::getString('active'))) {
-            Request::setVar('active', ($active = $this->_name));
+            Request::setVar('active', ($active = $this->pluginName));
         }
 
         if ($response->get('name') != $active) {

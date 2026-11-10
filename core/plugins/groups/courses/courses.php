@@ -38,7 +38,7 @@ class Courses extends Plugin
     public function loadLanguage($extension = '', $basePath = PATH_APP)
     {
         if (empty($extension)) {
-            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+            $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
         }
 
         $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
@@ -46,7 +46,7 @@ class Courses extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
+        $pluginPath = DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName;
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
@@ -62,7 +62,7 @@ class Courses extends Plugin
     public function &onGroupAreas()
     {
         $area = [
-            'name'             => $this->_name,
+            'name'             => $this->pluginName,
             'title'            => Lang::txt('PLG_GROUPS_COURSES'),
             'default_access'   => $this->params->get('plugin_access', 'anyone'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
@@ -87,7 +87,7 @@ class Courses extends Plugin
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
         $return = 'html';
-        $active = $this->_name;
+        $active = $this->pluginName;
         $active_real = 'discussion';
 
         // The output array we're returning

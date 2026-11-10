@@ -438,7 +438,7 @@ class Feed extends Plugin
                         'anonymous'   => $row->get('anonymous', 0),
                         'description' => $row->get('description'),
                         'details'     => [
-                            'url'   => Route::url($this->model->link() . '&active=' . $this->_name . '#activity' . $row->get('id')),
+                            'url'   => Route::url($this->model->link() . '&active=' . $this->pluginName . '#activity' . $row->get('id')),
                             'class' => ($row->get('parent') ? 'quote' : 'blog'),
                         ],
                     ],

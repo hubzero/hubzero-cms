@@ -78,7 +78,7 @@ class Questions extends Plugin
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];
@@ -247,7 +247,7 @@ class Questions extends Plugin
     {
         // Login required
         if (User::isGuest()) {
-            $rtrn = Request::getString('REQUEST_URI', Route::url($this->model->link() . '&active=' . $this->_name, false, true), 'server');
+            $rtrn = Request::getString('REQUEST_URI', Route::url($this->model->link() . '&active=' . $this->pluginName, false, true), 'server');
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
@@ -486,7 +486,7 @@ class Questions extends Plugin
 
         // Redirect to the question
         App::redirect(
-            Route::url($this->model->link() . '&active=' . $this->_name),
+            Route::url($this->model->link() . '&active=' . $this->pluginName),
         );
     }
 }

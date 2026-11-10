@@ -38,7 +38,7 @@ class Info extends Plugin
     public function &onProjectAreas($alias = null)
     {
         $area = [
-            'name' => $this->_name,
+            'name' => $this->pluginName,
             'alias' => null,
             'title' => Lang::txt('PLG_PROJECTS_INFO'),
             'submenu' => null,

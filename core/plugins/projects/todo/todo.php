@@ -344,8 +344,8 @@ class Todo extends Plugin
         }
 
         $view = new \Hubzero\Plugin\View([
-            'folder'  => $this->_type,
-            'element' => $this->_name,
+            'folder'  => $this->pluginType,
+            'element' => $this->pluginName,
             'name'    => 'item',
             'layout'  => $layout,
         ]);

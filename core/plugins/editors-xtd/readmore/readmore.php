@@ -44,7 +44,7 @@ class Readmore extends Plugin
         $template = App::get('template')->template;
 
         // button is not active in specific content components
-        $getContent = $this->_subject->getContent($name);
+        $getContent = $this->subject->getContent($name);
         $present = Lang::txt('PLG_READMORE_ALREADY_EXISTS', true);
         $js = "
 			function insertReadmore(editor) {

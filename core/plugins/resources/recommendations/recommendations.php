@@ -50,7 +50,7 @@ class Recommendations extends Plugin
     public function onResourcesSub($resource, $option, $miniview = 0)
     {
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];

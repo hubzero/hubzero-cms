@@ -33,8 +33,8 @@ class Pec extends Plugin
     public function onOfferingEdit()
     {
         $area = [
-            'name' => $this->_name,
-            'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
+            'name' => $this->pluginName,
+            'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)),
         ];
         return $area;
     }

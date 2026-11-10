@@ -353,7 +353,7 @@ class Dashboard extends Plugin
      */
     public function onCanManage()
     {
-        return $this->_name;
+        return $this->pluginName;
     }
 
     /**

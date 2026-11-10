@@ -247,8 +247,8 @@ class Impact extends Plugin
     {
         if (is_array($areas) && $limit && count($this->onMembersContributionsAreas()) > 0) {
             if (
-                !isset($areas[$this->_name])
-                && !in_array($this->_name, $areas)
+                !isset($areas[$this->pluginName])
+                && !in_array($this->pluginName, $areas)
                 && !array_intersect($areas, array_keys($this->onMembersContributionsAreas()))
             ) {
                 return [];

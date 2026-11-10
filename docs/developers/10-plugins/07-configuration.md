@@ -144,7 +144,7 @@ and `element` columns.
 $this->params = \Hubzero\Plugin\Params::getParams(
 	$member->get('id'),
 	'members',
-	$this->_name
+	$this->pluginName
 );
 ```
 

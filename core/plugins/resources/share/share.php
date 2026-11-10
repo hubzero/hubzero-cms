@@ -63,7 +63,7 @@ class Share extends Plugin
         }
 
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];

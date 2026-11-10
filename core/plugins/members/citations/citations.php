@@ -212,9 +212,9 @@ class Citations extends Plugin
             // push objects to the view
             $view->option      = $this->option;
             $view->member      = $this->member;
-            $view->task        = $this->_name;
+            $view->task        = $this->pluginName;
             $view->database    = $this->database;
-            $view->title       = Lang::txt(strtoupper($this->_name));
+            $view->title       = Lang::txt(strtoupper($this->pluginName));
             $view->isAdmin     = $isAdmin;
             $view->config      = $config;
             $view->grand_total = $total;
@@ -383,7 +383,7 @@ class Citations extends Plugin
             if (!$view->row->isNew() && ($view->row->uid != User::get('id') || $view->row->scope != 'member')) {
                 // redirect
                 App::redirect(
-                    Route::url($this->member->link() . '&active=' . $this->_name),
+                    Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
                     'warning',
                 );
@@ -616,7 +616,7 @@ class Citations extends Plugin
 
         // Resdirect after save
         App::redirect(
-            Route::url($this->member->link() . '&active=' . $this->_name),
+            Route::url($this->member->link() . '&active=' . $this->pluginName),
             ($this->getError() ? $this->getError() : Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_SAVED')),
             ($this->getError() ? 'error' : 'success'),
         );
@@ -659,14 +659,14 @@ class Citations extends Plugin
 
             if ($citation->save()) {
                 App::redirect(
-                    Route::url($this->member->link() . '&active=' . $this->_name),
+                    Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
                     'success',
                 );
                 return;
             } else {
                 App::redirect(
-                    Route::url($this->member->link() . '&active=' . $this->_name),
+                    Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
                     'error',
                 );
@@ -682,7 +682,7 @@ class Citations extends Plugin
             if ($bulk == true && $citationIDs == '') {
                 // redirect and warn
                 App::redirect(
-                    Route::url($this->member->link() . '&active=' . $this->_name),
+                    Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt('PLG_MEMBERS_CITATIONS_SELECTION_NOT_FOUND'),
                     'warning',
                 );
@@ -708,14 +708,14 @@ class Citations extends Plugin
             }
 
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name),
+                Route::url($this->member->link() . '&active=' . $this->pluginName),
                 Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_DELETED'),
                 'success',
             );
             return;
         } else {
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name),
+                Route::url($this->member->link() . '&active=' . $this->pluginName),
                 Lang::txt('PLG_MEMBERS_CITATIONS_NO_SUCH_CITATION'),
                 'error',
             );
@@ -780,7 +780,7 @@ class Citations extends Plugin
             if (!$this->member->save()) {
                 // failed
                 App::redirect(
-                    Route::url($this->member->link() . '&active=' . $this->_name),
+                    Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_NOT_SAVED'),
                     'error',
                 );
@@ -788,7 +788,7 @@ class Citations extends Plugin
 
             // redirect after save
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name),
+                Route::url($this->member->link() . '&active=' . $this->pluginName),
                 Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_SAVED'),
                 'success',
             );
@@ -874,7 +874,7 @@ class Citations extends Plugin
             if ($citation->uid != $this->member->get('id')) {
                 // redirect
                 App::redirect(
-                    Route::url($this->member->link() . '&active=' . $this->_name),
+                    Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt('PLG_MEMBERS_CITATIONS_OWNER_ONLY'),
                     'warning',
                 );
@@ -895,14 +895,14 @@ class Citations extends Plugin
                     && $citation->scope_id == $this->member->get('id')
             ) {
                 App::redirect(
-                    Route::url($this->member->link() . '&active=' . $this->_name),
+                    Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt($string),
                     'success',
                 );
                 return;
             } else {
                 App::redirect(
-                    Route::url($this->member->link() . '&active=' . $this->_name),
+                    Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
                     'error',
                 );
@@ -917,7 +917,7 @@ class Citations extends Plugin
             if ($bulk == true && $citationIDs == '') {
                 // redirect and warn
                 App::redirect(
-                    Route::url($this->member->link() . '&active=' . $this->_name),
+                    Route::url($this->member->link() . '&active=' . $this->pluginName),
                     Lang::txt('PLG_MEMBERS_CITATIONS_SELECTION_NOT_FOUND'),
                     'warning',
                 );
@@ -952,14 +952,14 @@ class Citations extends Plugin
                 }
             }
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name),
+                Route::url($this->member->link() . '&active=' . $this->pluginName),
                 Lang::txt($string),
                 'success',
             );
             return;
         } else {
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name),
+                Route::url($this->member->link() . '&active=' . $this->pluginName),
                 Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_NOT_FOUND'),
                 'error',
             );
@@ -978,7 +978,7 @@ class Citations extends Plugin
         $action = (Request::method() == 'POST') ? '' : '&action=' . $this->action;
 
         App::redirect(
-            Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->member->link() . '&active=' . $this->_name . $action, false, true))),
+            Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->member->link() . '&active=' . $this->pluginName . $action, false, true))),
             Lang::txt('PLG_MEMBERS_CITATIONS_NOT_LOGGEDIN'),
             'warning',
         );
@@ -1046,7 +1046,7 @@ class Citations extends Plugin
         $filename = $file->getClientOriginalName();
         if ($filename == '') {
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
+                Route::url($this->member->link() . '&active=' . $this->pluginName . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE'),
                 'error',
             );
@@ -1056,7 +1056,7 @@ class Citations extends Plugin
         // make sure file is under 4MB
         if ($file->getSize() > 4000000) {
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
+                Route::url($this->member->link() . '&active=' . $this->pluginName . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_FILE_TOO_BIG'),
                 'error',
             );
@@ -1075,7 +1075,7 @@ class Citations extends Plugin
         // did we get citations from the citation plugins
         if (!$citations) {
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
+                Route::url($this->member->link() . '&active=' . $this->pluginName . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_PROCESS_FAILURE'),
                 'error',
             );
@@ -1098,7 +1098,7 @@ class Citations extends Plugin
         }
 
         App::redirect(
-            Route::url($this->member->link() . '&active=' . $this->_name . '&action=review'),
+            Route::url($this->member->link() . '&active=' . $this->pluginName . '&action=review'),
         );
     }
 
@@ -1124,7 +1124,7 @@ class Citations extends Plugin
         // make sure we have some citations
         if (!$citations_require_attention && !$citations_require_no_attention) {
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
+                Route::url($this->member->link() . '&active=' . $this->pluginName . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );
@@ -1185,7 +1185,7 @@ class Citations extends Plugin
         // check to make sure we have citations
         if (!$cites_require_attention && !$cites_require_no_attention) {
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
+                Route::url($this->member->link() . '&active=' . $this->pluginName . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );
@@ -1242,7 +1242,7 @@ class Citations extends Plugin
 
         //redirect
         App::redirect(
-            Route::url($this->member->link() . '&active=' . $this->_name . '&action=saved'),
+            Route::url($this->member->link() . '&active=' . $this->pluginName . '&action=saved'),
         );
     }
 
@@ -1273,7 +1273,7 @@ class Citations extends Plugin
         // Check to make sure we have citations
         if (!$citations_saved && !$citations_not_saved) {
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name . '&action=import'),
+                Route::url($this->member->link() . '&active=' . $this->pluginName . '&action=import'),
                 Lang::txt('PLG_MEMBERS_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );

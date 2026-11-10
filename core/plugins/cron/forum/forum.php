@@ -32,7 +32,7 @@ class Forum extends Plugin
         $this->loadLanguage();
 
         $obj = new \stdClass();
-        $obj->plugin = $this->_name;
+        $obj->plugin = $this->pluginName;
         $obj->events = [
             [
                 'name'   => 'emailGroupForumDigest',

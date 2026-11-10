@@ -55,7 +55,7 @@ class Supportingdocs extends Plugin
         }
 
         if (
-            !$archive && $model->type->params->get('plg_' . $this->_name)
+            !$archive && $model->type->params->get('plg_' . $this->pluginName)
             && $model->access('view-all')
         ) {
             $areas['supportingdocs'] = Lang::txt('PLG_RESOURCES_SUPPORTINGDOCS');
@@ -76,7 +76,7 @@ class Supportingdocs extends Plugin
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];

@@ -82,7 +82,7 @@ class Autocompleter extends Plugin
             }
 
             $scripts .= '";</script>' . "\n";
-            $scripts .= '<script type="text/javascript" src="' . $base . '/core/plugins' . DS . $this->_type . DS . $this->_name . '/assets/js/' . $this->_name . '.js"></script>' . "\n";
+            $scripts .= '<script type="text/javascript" src="' . $base . '/core/plugins' . DS . $this->pluginType . DS . $this->pluginName . '/assets/js/' . $this->pluginName . '.js"></script>' . "\n";
 
             $this->pushscripts = false;
         }

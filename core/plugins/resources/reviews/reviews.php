@@ -73,7 +73,7 @@ class Reviews extends Plugin
         $id = Request::getInt('rid', 0);
 
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];
@@ -101,7 +101,7 @@ class Reviews extends Plugin
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];
@@ -158,7 +158,7 @@ class Reviews extends Plugin
 
                 // A posted action cannot be returned to, so come back to the reviews
                 if (Request::method() == 'POST') {
-                    $rtrn = Route::url($model->link() . '&active=' . $this->_name, false, true);
+                    $rtrn = Route::url($model->link() . '&active=' . $this->pluginName, false, true);
                 }
 
                 App::redirect(
@@ -188,7 +188,7 @@ class Reviews extends Plugin
 
         // Build the HTML meant for the "about" tab's metadata overview
         if ($rtrn == 'all' || $rtrn == 'metadata') {
-            $url  = $model->link() . '&active=' . $this->_name;
+            $url  = $model->link() . '&active=' . $this->pluginName;
 
             $view = $this->view('default', 'metadata')
                 ->set('reviews', $reviews)

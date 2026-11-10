@@ -52,8 +52,8 @@ class Wiki extends Plugin
     {
         if (is_array($areas) && $limit) {
             if (
-                !isset($areas[$this->_name])
-                && !in_array($this->_name, $areas)
+                !isset($areas[$this->pluginName])
+                && !in_array($this->pluginName, $areas)
             ) {
                 return [];
             }
@@ -91,7 +91,7 @@ class Wiki extends Plugin
                 $row->href = Route::url($page->link());
                 $row->text = strip_tags($page->version->get('pagehtml', ''));
                 $row->category = $page->get('scope');
-                $row->section = $this->_name;
+                $row->section = $this->pluginName;
 
                 $rows[] = $row;
             }

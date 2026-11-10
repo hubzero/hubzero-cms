@@ -113,7 +113,7 @@ trait AssetAware
     private function detectExtensionName()
     {
         if ($this instanceof Plugin) {
-            return 'plg_' . $this->_type . '_' . $this->_name;
+            return 'plg_' . $this->pluginType . '_' . $this->pluginName;
         } elseif ($this instanceof ControllerInterface) {
             $option = property_exists($this, 'option') ? $this->option : null;
             return Request::getCmd('option', $option);

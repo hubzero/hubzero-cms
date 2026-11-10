@@ -56,7 +56,7 @@ class Findthistext extends Plugin
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];

@@ -74,7 +74,7 @@ class Overview extends Plugin
         $datetime = $cur_year . '-' . $cur_month;
 
         $view = $this->view('default', 'usage')
-            ->set('element', $this->_name)
+            ->set('element', $this->pluginName)
             ->set('period', $period)
             ->set('datetime', $datetime)
             ->set('message', $this->params->get('message', ''));

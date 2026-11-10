@@ -541,7 +541,7 @@ class Activity extends Plugin
      */
     protected function loginAction()
     {
-        $return = base64_encode(Route::url($this->member->link() . '&active=' . $this->_name, false, true));
+        $return = base64_encode(Route::url($this->member->link() . '&active=' . $this->pluginName, false, true));
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . $return, false),

@@ -55,7 +55,7 @@ class Collections extends Plugin
     public function loadLanguage($extension = '', $basePath = PATH_APP)
     {
         if (empty($extension)) {
-            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+            $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
         }
 
         $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
@@ -65,9 +65,9 @@ class Collections extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
     }
 
     /**
@@ -137,8 +137,8 @@ class Collections extends Plugin
     public function &onGroupAreas()
     {
         $area = [
-            'name'             => $this->_name,
-            'title'            => Lang::txt('PLG_GROUPS_' . strtoupper($this->_name)),
+            'name'             => $this->pluginName,
+            'title'            => Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName)),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
             'icon'             => 'f005',
@@ -162,7 +162,7 @@ class Collections extends Plugin
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
         $return = 'html';
-        $active = $this->_name;
+        $active = $this->pluginName;
 
         // The output array we're returning
         $arr = [
@@ -269,7 +269,7 @@ class Collections extends Plugin
                 $start = false;
                 $bits = [];
                 foreach ($parts as $p) {
-                    if ($p == $this->_name) {
+                    if ($p == $this->pluginName) {
                         $start = true;
                         continue;
                     }
@@ -452,7 +452,7 @@ class Collections extends Plugin
      */
     private function login()
     {
-        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name, false, true);
+        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName, false, true);
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)),
@@ -505,7 +505,7 @@ class Collections extends Plugin
         $rows        = $this->model->following($filters);
 
         $view = $this->view('following', 'follow')
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('params', $this->params)
@@ -553,7 +553,7 @@ class Collections extends Plugin
         $rows        = $this->model->followers($filters);
 
         $view = $this->view('followers', 'follow')
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('params', $this->params)
@@ -581,7 +581,7 @@ class Collections extends Plugin
     private function collections()
     {
         $view = $this->view('collections', 'collection')
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('params', $this->params)
@@ -646,7 +646,7 @@ class Collections extends Plugin
     private function collection()
     {
         $view = $this->view('default', 'collection')
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('params', $this->params)
@@ -845,7 +845,7 @@ class Collections extends Plugin
     private function posts()
     {
         $view = $this->view('default', 'collection')
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('params', $this->params)
@@ -940,7 +940,7 @@ class Collections extends Plugin
         $no_html = Request::getInt('no_html', 0);
 
         $view = $this->view('default', 'post')
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('params', $this->params)
@@ -982,7 +982,7 @@ class Collections extends Plugin
 
         if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
+                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName),
                 Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'),
                 'error',
             );
@@ -999,7 +999,7 @@ class Collections extends Plugin
         // threads $this->no_html through its form action, so it is the right
         // template for the AJAX case too.
         $view = $this->view('edit', 'post');
-        $view->name        = $this->_name;
+        $view->name        = $this->pluginName;
         $view->option      = $this->option;
         $view->group       = $this->group;
         $view->task        = $this->action;
@@ -1077,7 +1077,7 @@ class Collections extends Plugin
 
         // Access check
         if (!$this->params->get('access-edit-item') || !$this->params->get('access-create-item')) {
-            $this->setError(Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            $this->setError(Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             return $this->collections();
         }
 
@@ -1101,7 +1101,7 @@ class Collections extends Plugin
             && ($post->get('created_by') != User::get('id')
             || intval($post->get('item_id')) !== intval($item->get('id')))
         ) {
-            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         // The item itself may only be written by its owner: fields[id] names an
@@ -1112,7 +1112,7 @@ class Collections extends Plugin
         $writeItem = !$item->exists() || $item->get('created_by') == User::get('id');
 
         if (!$post->exists() && !$writeItem) {
-            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         $tmp = null;
@@ -1178,7 +1178,7 @@ class Collections extends Plugin
         // member belongs to, or one of their own. An empty value creates a new
         // board below.
         if (!empty($p['collection_id']) && !$this->mayPostToCollection($p['collection_id'])) {
-            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         if (!$post->exists()) {
@@ -1219,7 +1219,7 @@ class Collections extends Plugin
             $collection = new \Components\Collections\Models\Collection($p['collection_id']);
         }
 
-        $url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias');
+        $url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&scope=' . $collection->get('alias');
 
         // Record the activity
         $recipients = [
@@ -1344,7 +1344,7 @@ class Collections extends Plugin
             $view->myboards      = $this->model->mine();
             $view->groupboards   = $this->model->mine('groups');
 
-            $view->name          = $this->_name;
+            $view->name          = $this->pluginName;
             $view->option        = $this->option;
             $view->group         = $this->group;
             $view->no_html       = $no_html;
@@ -1369,14 +1369,14 @@ class Collections extends Plugin
         // one this member can post to -- collection_id comes straight from the
         // request and Collection resolves any row.
         if ($collection_id && !$this->mayPostToCollection($collection_id)) {
-            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         if (!$collection_id) {
             // No board named: a new one is created FOR THIS GROUP, which is a
             // group member's right, not every logged-in viewer's
             if (!$this->params->get('access-create-collection')) {
-                App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+                App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             }
 
             $collection = new \Components\Collections\Models\Collection();
@@ -1400,7 +1400,7 @@ class Collections extends Plugin
         $__item = new \Components\Collections\Models\Item($item_id);
 
         if (!$__item->isCollectableBy()) {
-            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         // Try loading the current board/bulletin to see
@@ -1529,7 +1529,7 @@ class Collections extends Plugin
             $type = 'error';
         }
 
-        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&scope=' . $collection->get('alias'));
 
         // Record the activity
         $recipients = [
@@ -1610,14 +1610,14 @@ class Collections extends Plugin
         $__dest = Request::getInt('board', 0);
 
         if ($__dest && !$this->mayPostToCollection($__dest)) {
-            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         if (!$post->move($__dest)) {
             $this->setError($post->getError());
         }
 
-        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
+        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName);
 
         if ($no_html = Request::getInt('no_html', 0)) {
             echo $route;
@@ -1704,7 +1704,7 @@ class Collections extends Plugin
             $view->params   = $this->params;
             $view->post     = $post;
             $view->no_html  = $no_html;
-            $view->name     = $this->_name;
+            $view->name     = $this->pluginName;
             $view->collection = $collection;
 
             foreach ($this->getErrors() as $error) {
@@ -1743,7 +1743,7 @@ class Collections extends Plugin
             }
         }
 
-        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&scope=' . $collection->get('alias'));
 
         // Record the activity
         $recipients = [
@@ -2065,7 +2065,7 @@ class Collections extends Plugin
         }
 
         // ($collection is resolved and access-checked above)
-        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&scope=' . $collection->get('alias'));
 
         // Record the activity
         $recipients = [
@@ -2122,7 +2122,7 @@ class Collections extends Plugin
         // Access check
         if (!$this->params->get('access-create-collection') && !$this->params->get('access-edit-collection')) {
             App::redirect(
-                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
+                Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName),
                 Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'),
                 'error',
             );
@@ -2131,7 +2131,7 @@ class Collections extends Plugin
 
         $view = $this->view('edit', 'collection');
 
-        $view->name       = $this->_name;
+        $view->name       = $this->pluginName;
         $view->option     = $this->option;
         $view->group      = $this->group;
         $view->task       = $this->action;
@@ -2222,7 +2222,7 @@ class Collections extends Plugin
 
         $collection->item()->tag(trim(Request::getString('tags', '', 'post')));
 
-        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&scope=' . $collection->get('alias'));
+        $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&scope=' . $collection->get('alias'));
 
         // Record the activity
         $recipients = [
@@ -2306,7 +2306,7 @@ class Collections extends Plugin
 
             // Output HTML
             $view = $this->view('delete', 'collection')
-                ->set('name', $this->_name)
+                ->set('name', $this->pluginName)
                 ->set('option', $this->option)
                 ->set('group', $this->group)
                 ->set('params', $this->params)
@@ -2355,7 +2355,7 @@ class Collections extends Plugin
         ]);
 
         // Redirect to main view
-        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
+        $route = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName);
 
         if ($no_html) {
             echo $route;
@@ -2381,7 +2381,7 @@ class Collections extends Plugin
 
         // Output HTML
         $view = $this->view('default', 'settings')
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('group', $this->group)
             ->set('params', $this->params)
@@ -2411,7 +2411,7 @@ class Collections extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->_type, $this->_name);
+        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->pluginType, $this->pluginName);
 
         // Get parameters
         $params = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
@@ -2440,7 +2440,7 @@ class Collections extends Plugin
         ]);
 
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name),
+            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName),
             Lang::txt('PLG_GROUPS_COLLECTIONS_SETTINGS_SAVED'),
             'passed',
         );
@@ -2455,7 +2455,7 @@ class Collections extends Plugin
     protected function _params($group_id)
     {
         if (!$this->_params) {
-            $this->_params = \Hubzero\Plugin\Params::getCustomParams($group_id, 'groups', $this->_name);
+            $this->_params = \Hubzero\Plugin\Params::getCustomParams($group_id, 'groups', $this->pluginName);
         }
         return $this->_params;
     }

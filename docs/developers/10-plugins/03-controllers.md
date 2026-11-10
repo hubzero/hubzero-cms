@@ -80,7 +80,7 @@ See the warning below.
 | `$params` | `Hubzero\Config\Registry` of the plugin's parameters, built in the constructor. |
 | `$event` | The `Hubzero\Events\Event` currently being dispatched to this plugin. |
 | `$option` | `com_` plus the group name. Legacy, and wrong for any group that is not a component; do not rely on it. |
-| `$_name`, `$_type` | The plugin's element and group, both `protected`. |
+| `$pluginName`, `$pluginType` | The plugin's element and group, both `protected`. |
 | `$autoloadLanguage` | Set `true` to load the language file in the constructor. |
 | `loadLanguage($extension = '', $basePath = PATH_APP)` | Loads a language file. See [Languages](04-languages.md). |
 | `view($layout = 'default', $name = '')` | Returns a `Hubzero\Plugin\View`. See [Views](05-views.md). |
@@ -95,7 +95,7 @@ component has to ask: an error set in a plugin goes nowhere on its own.
 ## The constructor
 
 You rarely need one. If you write one, call the parent — it is what populates
-`$params`, `$_name`, and `$_type`, and what loads the language file:
+`$params`, `$pluginName`, and `$pluginType`, and what loads the language file:
 
 ```php
 public function __construct(&$subject, $config)

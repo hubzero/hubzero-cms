@@ -47,7 +47,7 @@ class Collections extends Plugin
     public function onMembersAreas($user, $member)
     {
         $areas = [
-            'collections' => Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name)),
+            'collections' => Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName)),
             'icon'        => 'f005',
             'icon-class' => 'icon-archive',
             'menu'        => $this->params->get('display_tab', 1),
@@ -114,7 +114,7 @@ class Collections extends Plugin
                 $start = false;
                 $bits = [];
                 foreach ($parts as $p) {
-                    if ($p == $this->_name) {
+                    if ($p == $this->pluginName) {
                         $start = true;
                         continue;
                     }
@@ -300,7 +300,7 @@ class Collections extends Plugin
      */
     private function login()
     {
-        $route = Route::url('index.php?option=' . $this->option . '&id=' . $this->member->get('id') . '&active=' . $this->_name);
+        $route = Route::url('index.php?option=' . $this->option . '&id=' . $this->member->get('id') . '&active=' . $this->pluginName);
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($route)),
@@ -318,7 +318,7 @@ class Collections extends Plugin
     private function followers()
     {
         $view = $this->view('followers', 'follow');
-        $view->name        = $this->_name;
+        $view->name        = $this->pluginName;
         $view->option      = $this->option;
         $view->member      = $this->member;
         $view->params      = $this->params;
@@ -363,7 +363,7 @@ class Collections extends Plugin
     private function following()
     {
         $view = $this->view('following', 'follow');
-        $view->name        = $this->_name;
+        $view->name        = $this->pluginName;
         $view->option      = $this->option;
         $view->member      = $this->member;
         $view->params      = $this->params;
@@ -413,7 +413,7 @@ class Collections extends Plugin
     private function collections()
     {
         $view = $this->view('collections', 'collection');
-        $view->name        = $this->_name;
+        $view->name        = $this->pluginName;
         $view->option      = $this->option;
         $view->member      = $this->member;
         $view->params      = $this->params;
@@ -463,7 +463,7 @@ class Collections extends Plugin
     private function collection()
     {
         $view = $this->view('default', 'collection');
-        $view->name       = $this->_name;
+        $view->name       = $this->pluginName;
         $view->member     = $this->member;
         $view->option     = $this->option;
         $view->params     = $this->params;
@@ -678,7 +678,7 @@ class Collections extends Plugin
     private function feed()
     {
         $view = $this->view('feed', 'collection');
-        $view->name       = $this->_name;
+        $view->name       = $this->pluginName;
         $view->member     = $this->member;
         $view->option     = $this->option;
         $view->params     = $this->params;
@@ -735,7 +735,7 @@ class Collections extends Plugin
     private function posts()
     {
         $view = $this->view('default', 'collection')
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('member', $this->member)
             ->set('params', $this->params)
@@ -826,14 +826,14 @@ class Collections extends Plugin
 
         // Check authorization
         if (!$this->params->get('access-view-item')) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTH'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTH'));
             return;
         }
 
         $no_html = Request::getInt('no_html', 0);
 
         $view = $this->view('default', 'post')
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('option', $this->option)
             ->set('member', $this->member)
             ->set('params', $this->params)
@@ -889,7 +889,7 @@ class Collections extends Plugin
 
         if (!$this->params->get('access-edit-item') && !$this->params->get('access-create-item')) {
             App::redirect(
-                Route::url($this->member->link() . '&active=' . $this->_name),
+                Route::url($this->member->link() . '&active=' . $this->pluginName),
                 Lang::txt('You are not authorized to perform this action.'),
                 'error',
             );
@@ -906,7 +906,7 @@ class Collections extends Plugin
         // threads $this->no_html through its form action and a hidden input, so
         // it is the right template for the AJAX case too.
         $view = $this->view('edit', 'post');
-        $view->name       = $this->_name;
+        $view->name       = $this->pluginName;
         $view->option     = $this->option;
         $view->member     = $this->member;
         $view->task       = $this->action;
@@ -937,7 +937,7 @@ class Collections extends Plugin
             && $view->entry->get('created_by') != User::get('id')
             && $view->entry->item()->get('created_by') != User::get('id')
         ) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         if ($remove = Request::getInt('remove', 0)) {
@@ -987,7 +987,7 @@ class Collections extends Plugin
         }
 
         if (!$this->params->get('access-create-item') && !$this->params->get('access-edit-item')) {
-            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             return $this->collections();
         }
 
@@ -1009,14 +1009,14 @@ class Collections extends Plugin
             $post->exists()
             && ($post->get('created_by') != User::get('id') || intval($post->get('item_id')) !== intval($item->get('id')))
         ) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         // The item itself may only be written by its owner: for a repost the
         // content stays the original author's and only the post is updated below
         $writeItem = !$item->exists() || $item->get('created_by') == User::get('id');
         if (!$post->exists() && !$writeItem) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         $tmp = null;
@@ -1088,7 +1088,7 @@ class Collections extends Plugin
         // but the id arrives from the request: only post to a board the member owns
         // (or a group board they belong to). An empty value creates a new board below.
         if (!empty($p['collection_id']) && !$this->mayPostToCollection($p['collection_id'])) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         $post = new \Components\Collections\Models\Post($p['id']);
@@ -1127,7 +1127,7 @@ class Collections extends Plugin
             $collection = new \Components\Collections\Models\Collection($p['collection_id']);
         }
 
-        $url = $this->member->link() . '&active=' . $this->_name . '&task=' . $collection->get('alias');
+        $url = $this->member->link() . '&active=' . $this->pluginName . '&task=' . $collection->get('alias');
 
         // Record the activity
         Event::trigger('system.logActivity', [
@@ -1216,7 +1216,7 @@ class Collections extends Plugin
                 }
 
                 if (!$collection->isReadableBy()) {
-                    App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+                    App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
                 }
 
                 $item_id       = $collection->item()->get('id');
@@ -1232,7 +1232,7 @@ class Collections extends Plugin
             $view->myboards      = $this->model->mine();
             $view->groupboards   = $this->model->mine('groups');
 
-            $view->name          = $this->_name;
+            $view->name          = $this->pluginName;
             $view->option        = $this->option;
             $view->member        = $this->member;
             $view->no_html       = $no_html;
@@ -1257,7 +1257,7 @@ class Collections extends Plugin
         // one this member can post to -- collection_id comes straight from the
         // request and Collection resolves any row.
         if ($collection_id && !$this->mayPostToCollection($collection_id)) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         if (!$collection_id) {
@@ -1281,7 +1281,7 @@ class Collections extends Plugin
         $__item = new \Components\Collections\Models\Item($item_id);
 
         if (!$__item->isCollectableBy()) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         // Try loading the current board/bulletin to see
@@ -1337,7 +1337,7 @@ class Collections extends Plugin
         }
 
         // Display the main listing
-        App::redirect(Route::url($this->member->link() . '&active=' . $this->_name));
+        App::redirect(Route::url($this->member->link() . '&active=' . $this->pluginName));
     }
 
     /**
@@ -1357,7 +1357,7 @@ class Collections extends Plugin
 
         // Access check
         if (!$this->params->get('access-create-item')) {
-            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             return $this->collections();
         }
 
@@ -1376,7 +1376,7 @@ class Collections extends Plugin
             && $post->get('created_by') != User::get('id')
             && !$this->model->collection($post->get('collection_id'))->canBeModeratedBy()
         ) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         $collection = $this->model->collection($post->get('collection_id'));
@@ -1388,7 +1388,7 @@ class Collections extends Plugin
             $type = 'error';
         }
 
-        $route = Route::url($this->member->link() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+        $route = Route::url($this->member->link() . '&active=' . $this->pluginName . '&task=' . $collection->get('alias'));
 
         // Record the activity
         Event::trigger('system.logActivity', [
@@ -1431,7 +1431,7 @@ class Collections extends Plugin
 
         // Authorization check
         if (!$this->params->get('access-edit-item')) {
-            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             return $this->collections();
         }
 
@@ -1450,7 +1450,7 @@ class Collections extends Plugin
             && $post->get('created_by') != User::get('id')
             && !$this->model->collection($post->get('collection_id'))->canBeModeratedBy()
         ) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         // The destination board arrives from the request like the source did, so
@@ -1459,14 +1459,14 @@ class Collections extends Plugin
         $__dest = Request::getInt('board', 0);
 
         if ($__dest && !$this->mayPostToCollection($__dest)) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         if (!$post->move($__dest)) {
             $this->setError($post->getError());
         }
 
-        $route = Route::url($this->member->link() . '&active=' . $this->_name);
+        $route = Route::url($this->member->link() . '&active=' . $this->pluginName);
 
         if (Request::getInt('no_html', 0)) {
             echo $route;
@@ -1490,7 +1490,7 @@ class Collections extends Plugin
 
         // Access check
         if (!$this->params->get('access-delete-item')) {
-            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             return $this->collections();
         }
 
@@ -1517,7 +1517,7 @@ class Collections extends Plugin
         $__board    = $this->model->collection($post->get('collection_id'));
 
         if (!$__ownsItem && !$__board->canBeModeratedBy()) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         $process = Request::getString('process', '');
@@ -1528,7 +1528,7 @@ class Collections extends Plugin
         // Did they confirm delete?
         if (!$process || !$confirmdel) {
             if ($process && !$confirmdel) {
-                $this->setError(Lang::txt('PLG_GROUPS_' . strtoupper($this->_name) . '_ERROR_CONFIRM_DELETION'));
+                $this->setError(Lang::txt('PLG_GROUPS_' . strtoupper($this->pluginName) . '_ERROR_CONFIRM_DELETION'));
                 if ($no_html) {
                     echo '';
                     exit;
@@ -1543,7 +1543,7 @@ class Collections extends Plugin
             $view->params   = $this->params;
             $view->post     = $post;
             $view->no_html  = $no_html;
-            $view->name     = $this->_name;
+            $view->name     = $this->pluginName;
             $view->collection = $collection;
 
             foreach ($this->getErrors() as $error) {
@@ -1579,7 +1579,7 @@ class Collections extends Plugin
         }
 
         // Redirect to collection
-        $route = Route::url($this->member->link() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+        $route = Route::url($this->member->link() . '&active=' . $this->pluginName . '&task=' . $collection->get('alias'));
 
         // Record the activity
         Event::trigger('system.logActivity', [
@@ -1636,7 +1636,7 @@ class Collections extends Plugin
         $post = new \Components\Collections\Models\Post(Request::getInt('post', 0));
 
         if (!$post->get('id') || !$post->get('item_id')) {
-            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             return $this->post();
         }
 
@@ -1654,7 +1654,7 @@ class Collections extends Plugin
                 User::get('id') != $existing->get('created_by')
                 && !User::authorise('core.manage', 'com_collections')
             ) {
-                $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+                $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
                 return $this->post();
             }
         }
@@ -1754,7 +1754,7 @@ class Collections extends Plugin
             User::get('id') != $comment->get('created_by')
             && !User::authorise('core.manage', 'com_collections')
         ) {
-            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             return $this->post();
         }
 
@@ -1798,7 +1798,7 @@ class Collections extends Plugin
         $post = \Components\Collections\Models\Post::getInstance($id);
 
         if (!$post->get('id')) {
-            App::abort(404, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(404, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         // Apply the same visibility test _post() does, and for the same reason it
@@ -1818,7 +1818,7 @@ class Collections extends Plugin
         }
 
         if (!$collection->isReadableBy()) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTH'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTH'));
         }
 
         // Record the vote
@@ -1835,7 +1835,7 @@ class Collections extends Plugin
 
         // ($collection is resolved and access-checked above)
 
-        $url = Route::url($this->member->link() . '&active=' . $this->_name . '&task=' . $collection->get('alias'));
+        $url = Route::url($this->member->link() . '&active=' . $this->pluginName . '&task=' . $collection->get('alias'));
 
         // Record the activity
         Event::trigger('system.logActivity', [
@@ -1881,7 +1881,7 @@ class Collections extends Plugin
      */
     private function editcollection($row = null)
     {
-        $collection = Route::url($this->member->link() . '&active=' . $this->_name);
+        $collection = Route::url($this->member->link() . '&active=' . $this->pluginName);
 
         // Login check
         if (User::isGuest()) {
@@ -1918,7 +1918,7 @@ class Collections extends Plugin
         }
 
         $view = $this->view('edit', 'collection');
-        $view->name    = $this->_name;
+        $view->name    = $this->pluginName;
         $view->option  = $this->option;
         $view->member  = $this->member;
         $view->task    = $this->action;
@@ -1960,7 +1960,7 @@ class Collections extends Plugin
 
         // Access check
         if (!$this->params->get('access-edit-collection') || !$this->params->get('access-create-collection')) {
-            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             return $this->collections();
         }
 
@@ -1982,7 +1982,7 @@ class Collections extends Plugin
                 || $__stored->get('object_type') != 'member'
                 || (int) $__stored->get('object_id') !== (int) $this->member->get('id')
             ) {
-                App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+                App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             }
         }
 
@@ -2010,7 +2010,7 @@ class Collections extends Plugin
 
         $collection->item()->tag(trim(Request::getString('tags', '', 'post')));
 
-        $url = Route::url($this->member->link() . '&active=' . $this->_name . '&task=all');
+        $url = Route::url($this->member->link() . '&active=' . $this->pluginName . '&task=all');
 
         // Record the activity
         Event::trigger('system.logActivity', [
@@ -2051,7 +2051,7 @@ class Collections extends Plugin
 
         // Access check
         if (!$this->params->get('access-delete-collection')) {
-            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            $this->setError(Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
             return $this->collections();
         }
 
@@ -2078,18 +2078,18 @@ class Collections extends Plugin
             || $collection->get('object_type') != 'member'
             || (int) $collection->get('object_id') !== (int) $this->member->get('id')
         ) {
-            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->_name) . '_NOT_AUTHORIZED'));
+            App::abort(403, Lang::txt('PLG_MEMBERS_' . strtoupper($this->pluginName) . '_NOT_AUTHORIZED'));
         }
 
         // Did they confirm delete?
         if (!$process || !$confirmdel) {
             if ($process && !$confirmdel) {
-                $this->setError(Lang::txt('PLG_GROUPS' . strtoupper($this->_name) . 'ERROR_CONFIRM_DELETION'));
+                $this->setError(Lang::txt('PLG_GROUPS' . strtoupper($this->pluginName) . 'ERROR_CONFIRM_DELETION'));
             }
 
             // Output HTML
             $view = $this->view('delete', 'collection')
-                ->set('name', $this->_name)
+                ->set('name', $this->pluginName)
                 ->set('option', $this->option)
                 ->set('member', $this->member)
                 ->set('params', $this->params)
@@ -2135,7 +2135,7 @@ class Collections extends Plugin
         ]);
 
         // Redirect to main view
-        $route = Route::url($this->member->link() . '&active=' . $this->_name . '&task=all');
+        $route = Route::url($this->member->link() . '&active=' . $this->pluginName . '&task=all');
 
         if ($no_html) {
             echo $route;

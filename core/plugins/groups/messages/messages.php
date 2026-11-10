@@ -48,7 +48,7 @@ class Messages extends Plugin
     public function loadLanguage($extension = '', $basePath = PATH_APP)
     {
         if (empty($extension)) {
-            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+            $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
         }
 
         $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
@@ -56,7 +56,7 @@ class Messages extends Plugin
             $basePath = PATH_APP . DS . 'site' . DS . 'groups' . DS . $group->get('gidNumber');
         }
 
-        $pluginPath = DS . 'plugins' . DS . $this->_type . DS . $this->_name;
+        $pluginPath = DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName;
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
             || $lang->load(strtolower($extension), PATH_APP . $pluginPath, null, false, true)
@@ -198,7 +198,7 @@ class Messages extends Plugin
     protected function _sent()
     {
         // Set the page title
-        $pageTitle = Lang::txt(strtoupper($this->_name)) . ': ' . $this->group->get('description');
+        $pageTitle = Lang::txt(strtoupper($this->pluginName)) . ': ' . $this->group->get('description');
         $pageTitle .= ': ' . Lang::txt('PLG_GROUPS_MESSAGES_SENT');
         Document::setTitle($pageTitle);
 
@@ -321,7 +321,7 @@ class Messages extends Plugin
         }
 
         // Set the page title
-        $pageTitle = Lang::txt(strtoupper($this->_name)) . ': ' . $this->group->get('description');
+        $pageTitle = Lang::txt(strtoupper($this->pluginName)) . ': ' . $this->group->get('description');
         $pageTitle .= ': ' . Lang::txt('PLG_GROUPS_MESSAGES_SEND');
         Document::setTitle($pageTitle);
 

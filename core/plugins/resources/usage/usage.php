@@ -37,7 +37,7 @@ class Usage extends Plugin
     {
         $areas = [];
 
-        if ($model->type->params->get('plg_' . $this->_name) && $model->isTool()) {
+        if ($model->type->params->get('plg_' . $this->pluginName) && $model->isTool()) {
             // Only show tab for tools
             $areas['usage'] = Lang::txt('PLG_RESOURCES_USAGE');
         }
@@ -57,7 +57,7 @@ class Usage extends Plugin
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];
@@ -88,7 +88,7 @@ class Usage extends Plugin
         $tables = $database->getTableList();
         $table  = $database->getPrefix() . 'resource_stats_tools';
 
-        $url = Route::url($model->link() . '&active=' . $this->_name);
+        $url = Route::url($model->link() . '&active=' . $this->pluginName);
 
         if (!in_array($table, $tables)) {
             $arr['html'] = '<p class="error">' . Lang::txt('PLG_RESOURCES_USAGE_MISSING_TABLE') . '</p>';

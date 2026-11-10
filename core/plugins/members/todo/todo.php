@@ -118,7 +118,7 @@ class Todo extends Plugin
             $this->option = $option;
             $this->database = App::get('db');
 
-            $this->params = \Hubzero\Plugin\Params::getParams($this->member->get('id'), 'members', $this->_name);
+            $this->params = \Hubzero\Plugin\Params::getParams($this->member->get('id'), 'members', $this->pluginName);
 
             if ($user->get('id') == $member->get('id')) {
                 $this->params->set('access-edit-comment', true);
@@ -308,7 +308,7 @@ class Todo extends Plugin
         }
 
         App::redirect(
-            Route::url($this->member->link() . '&active=' . $this->_name),
+            Route::url($this->member->link() . '&active=' . $this->pluginName),
             Lang::txt('PLG_MEMBERS_TODO_SAVED'),
         );
     }

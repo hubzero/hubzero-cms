@@ -27,7 +27,7 @@ class Plugin
      * @deprecated
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_subject = null;
+    protected $subject = null;
 
     /**
      * A Registry object holding the parameters for the plugin
@@ -42,7 +42,7 @@ class Plugin
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_name = null;
+    protected $pluginName = null;
 
     /**
      * The plugin type
@@ -50,7 +50,7 @@ class Plugin
      * @var  string
      */
     // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
-    protected $_type = null;
+    protected $pluginType = null;
 
     /**
      * Component this plugin might be associated with
@@ -85,7 +85,7 @@ class Plugin
     public function __construct($subject, $config)
     {
         // Set the subject to observe
-        $this->_subject = &$subject;
+        $this->subject = &$subject;
 
         // Get the parameters.
         if (isset($config['params'])) {
@@ -98,16 +98,16 @@ class Plugin
 
         // Get the plugin name.
         if (isset($config['name'])) {
-            $this->_name = $config['name'];
+            $this->pluginName = $config['name'];
         }
 
         // Get the plugin type.
         if (isset($config['type'])) {
-            $this->_type = $config['type'];
+            $this->pluginType = $config['type'];
         }
 
         // @TODO: Remove this
-        $this->option = (isset($config['type']) ? 'com_' . $config['type'] : 'com_' . $this->_type);
+        $this->option = (isset($config['type']) ? 'com_' . $config['type'] : 'com_' . $this->pluginType);
 
         // Load the language files if needed.
         if ($this->autoloadLanguage) {
@@ -125,7 +125,7 @@ class Plugin
     public function loadLanguage($extension = '', $basePath = PATH_APP)
     {
         if (empty($extension)) {
-            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+            $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
         }
 
         $lang = App::get('language');
@@ -134,16 +134,16 @@ class Plugin
                 . DS
                 . 'plugins'
                 . DS
-                . $this->_type
+                . $this->pluginType
                 . DS
-                . $this->_name, null, false, true)
+                . $this->pluginName, null, false, true)
             || $lang->load(strtolower($extension), PATH_CORE
                 . DS
                 . 'plugins'
                 . DS
-                . $this->_type
+                . $this->pluginType
                 . DS
-                . $this->_name, null, false, true);
+                . $this->pluginName, null, false, true);
     }
 
     /**
@@ -181,9 +181,9 @@ class Plugin
     public function view($layout = 'default', $name = '')
     {
         $view = new View([
-            'folder'  => $this->_type,
-            'element' => $this->_name,
-            'name'    => ($name ?: $this->_name),
+            'folder'  => $this->pluginType,
+            'element' => $this->pluginName,
+            'name'    => ($name ?: $this->pluginName),
             'layout'  => ($layout ?: 'default'),
         ]);
         return $view;

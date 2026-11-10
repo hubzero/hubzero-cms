@@ -41,7 +41,7 @@ class Wishlist extends Plugin
     {
         $areas = [];
 
-        if ($model->type->params->get('plg_' . $this->_name) && $model->access('view-all')) {
+        if ($model->type->params->get('plg_' . $this->pluginName) && $model->access('view-all')) {
             $areas['wishlist'] = Lang::txt('PLG_RESOURCES_WISHLIST');
         }
 
@@ -60,13 +60,13 @@ class Wishlist extends Plugin
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];
 
         // Check if our area is in the array of areas we want to return results for
-        if (!$model->type->params->get('plg_' . $this->_name)) {
+        if (!$model->type->params->get('plg_' . $this->pluginName)) {
             return $arr;
         }
 

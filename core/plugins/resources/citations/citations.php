@@ -58,7 +58,7 @@ class Citations extends Plugin
     public function onResources($model, $option, $areas, $rtrn = 'all')
     {
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];
@@ -96,8 +96,8 @@ class Citations extends Plugin
         if ($rtrn == 'all' || $rtrn == 'html') {
             // Instantiate a view
             $view = new \Hubzero\Plugin\View([
-                'folder'  => $this->_type,
-                'element' => $this->_name,
+                'folder'  => $this->pluginType,
+                'element' => $this->pluginName,
                 'name'    => 'browse',
             ]);
 
@@ -117,8 +117,8 @@ class Citations extends Plugin
         // Are we returning metadata?
         if ($rtrn == 'all' || $rtrn == 'metadata') {
             $view = new \Hubzero\Plugin\View([
-                'folder'  => $this->_type,
-                'element' => $this->_name,
+                'folder'  => $this->pluginType,
+                'element' => $this->pluginName,
                 'name'    => 'metadata',
             ]);
             $view->url = Route::url($model->link() . '&active=citations');

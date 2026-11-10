@@ -36,8 +36,8 @@ class Overview extends Plugin
     public function onCourseView($course, $active = null)
     {
         $response = with(new \Hubzero\Base\Obj())
-            ->set('name', $this->_name)
-            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
+            ->set('name', $this->pluginName)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)));
 
         // Check if our area is in the array of areas we want to return results for
         if ($response->get('name') == $active) {

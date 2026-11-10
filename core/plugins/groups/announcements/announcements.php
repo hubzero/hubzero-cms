@@ -48,7 +48,7 @@ class Announcements extends Plugin
     public function loadLanguage($extension = '', $basePath = PATH_APP)
     {
         if (empty($extension)) {
-            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+            $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
         }
 
         $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
@@ -58,9 +58,9 @@ class Announcements extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
     }
 
     /**
@@ -71,7 +71,7 @@ class Announcements extends Plugin
     public function &onGroupAreas()
     {
         $area = [
-            'name'             => $this->_name,
+            'name'             => $this->pluginName,
             'title'            => Lang::txt('COM_GROUPS_ANNOUNCEMENTS'),
             'default_access'   => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
@@ -121,7 +121,7 @@ class Announcements extends Plugin
             ->set('option', 'com_groups')
             ->set('authorized', $authorized)
             ->set('group', $group)
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('rows', $rows)
             ->setError($this->getErrors());
 
@@ -303,7 +303,7 @@ class Announcements extends Plugin
             ->set('option', $this->option)
             ->set('authorized', $this->authorized)
             ->set('group', $this->group)
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('filters', $filters)
             ->set('rows', $rows)
             ->setError($this->getErrors());
@@ -345,7 +345,7 @@ class Announcements extends Plugin
             ->set('option', $this->option)
             ->set('authorized', $this->authorized)
             ->set('group', $this->group)
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->set('announcement', $model)
             ->setError($this->getError());
 
@@ -463,7 +463,7 @@ class Announcements extends Plugin
             $model->save();
         }
 
-        $url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;
+        $url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName;
 
         // Record the activity
         $recipients = [['group', $this->group->get('gidNumber')]];
@@ -549,7 +549,7 @@ class Announcements extends Plugin
             return $this->list();
         }
 
-        $url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name;
+        $url = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName;
 
         // Record the activity
         $recipients = [['group', $this->group->get('gidNumber')]];
@@ -676,7 +676,7 @@ class Announcements extends Plugin
      */
     public function onGroupsApiList($group, $active, $start, $limit)
     {
-        if ($active != $this->_name) {
+        if ($active != $this->pluginName) {
             return;
         }
 
@@ -724,7 +724,7 @@ class Announcements extends Plugin
      */
     public function onGroupsApiCreate($group, $active)
     {
-        if ($active != $this->_name) {
+        if ($active != $this->pluginName) {
             return;
         }
 
@@ -790,7 +790,7 @@ class Announcements extends Plugin
      */
     public function onGroupsApiRead($group, $active, $id)
     {
-        if ($active != $this->_name) {
+        if ($active != $this->pluginName) {
             return;
         }
 
@@ -816,7 +816,7 @@ class Announcements extends Plugin
      */
     public function onGroupsApiUpdate($group, $active, $id)
     {
-        if ($active != $this->_name) {
+        if ($active != $this->pluginName) {
             return;
         }
 
@@ -889,7 +889,7 @@ class Announcements extends Plugin
      */
     public function onGroupsApiDelete($group, $active, $id)
     {
-        if ($active != $this->_name) {
+        if ($active != $this->pluginName) {
             return;
         }
 

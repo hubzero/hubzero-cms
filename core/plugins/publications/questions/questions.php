@@ -243,7 +243,7 @@ class Questions extends Plugin
                     . '&id='
                     . $this->publication->id
                     . '&active='
-                    . $this->_name, false, true), 'server');
+                    . $this->pluginName, false, true), 'server');
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),

@@ -109,7 +109,7 @@ public function loadLanguage($extension = '', $basePath = PATH_APP)
 {
 	if (empty($extension))
 	{
-		$extension = 'plg_' . $this->_type . '_' . $this->_name;
+		$extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
 	}
 
 	$group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));

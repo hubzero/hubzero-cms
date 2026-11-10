@@ -47,8 +47,8 @@ class Reviews extends Plugin
     {
         // Prepare the response
         $response = with(new \Hubzero\Base\Obj())
-            ->set('name', $this->_name)
-            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)));
+            ->set('name', $this->pluginName)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)));
 
         $this->option     = Request::getCmd('option', 'com_courses');
         $this->controller = Request::getWord('controller', 'course');
@@ -74,7 +74,7 @@ class Reviews extends Plugin
             $this->view->controller = $this->controller;
             $this->view->obj      = $this->obj      = $course;
             $this->view->obj_type = $this->obj_type = substr($this->option, 4);
-            $this->view->url      = $this->url      = Route::url($course->link() . '&active=' . $this->_name, false, true);
+            $this->view->url      = $this->url      = Route::url($course->link() . '&active=' . $this->pluginName, false, true);
             $this->view->depth    = 0;
             $this->view->tbl      = $tbl;
 

@@ -102,8 +102,8 @@ class Discussions extends Plugin
     public function onCourseAreas()
     {
         $area = [
-            'name' => $this->_name,
-            'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
+            'name' => $this->pluginName,
+            'title' => Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => true,
             'icon' => 'f086',
@@ -322,9 +322,9 @@ class Discussions extends Plugin
     public function onCourse($course, $offering, $describe = false)
     {
         $response = with(new \Hubzero\Base\Obj())
-            ->set('name', $this->_name)
-            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
+            ->set('name', $this->pluginName)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)))
+            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName) . '_BLURB'))
             ->set('default_access', $this->params->get('plugin_access', 'members'))
             ->set('display_menu_tab', true)
             ->set('icon', 'f086');
@@ -334,7 +334,7 @@ class Discussions extends Plugin
         }
 
         if (!($active = Request::getString('active'))) {
-            Request::setVar('active', ($active = $this->_name));
+            Request::setVar('active', ($active = $this->pluginName));
         }
 
         $this->config   = $course->config();
@@ -346,7 +346,7 @@ class Discussions extends Plugin
 
         // Determine if we need to return any HTML (meaning this is the active plugin)
         if ($response->get('name') == $active) {
-            $this->_active = $this->_name;
+            $this->_active = $this->pluginName;
 
             $this->sections = Section::all()
                 ->whereEquals('scope', 'course')
@@ -426,12 +426,12 @@ class Discussions extends Plugin
             //push the stylesheet to the view
             $this->css();
 
-            $this->base = $this->offering->link() . '&active=' . $this->_name;
+            $this->base = $this->offering->link() . '&active=' . $this->pluginName;
 
             $this->forum = new Manager('course', $this->offering->get('id'));
 
             Pathway::append(
-                Lang::txt('PLG_COURSES_' . strtoupper($this->_name)),
+                Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)),
                 $this->base,
             );
 
@@ -2255,9 +2255,9 @@ class Discussions extends Plugin
         $section  = Request::getString('section', '');
 
         if (User::isGuest()) {
-            $return = Route::url($this->offering->link() . '&active=' . $this->_name . '&unit=' . $section . '&b=' . $category . '&c=new');
+            $return = Route::url($this->offering->link() . '&active=' . $this->pluginName . '&unit=' . $section . '&b=' . $category . '&c=new');
             if ($id) {
-                $return = Route::url($this->offering->link() . '&active=' . $this->_name . '&unit=' . $section . '&b=' . $category . '&c=' . $id . '/edit');
+                $return = Route::url($this->offering->link() . '&active=' . $this->pluginName . '&unit=' . $section . '&b=' . $category . '&c=' . $id . '/edit');
             }
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
@@ -2303,7 +2303,7 @@ class Discussions extends Plugin
             ->set('section', $section)
             ->set('category', $category)
             ->set('post', $post)
-            ->set('name', $this->_name)
+            ->set('name', $this->pluginName)
             ->setErrors($this->getErrors())
             ->loadTemplate();
     }
@@ -2670,7 +2670,7 @@ class Discussions extends Plugin
 
         // Check logged in status
         if (User::isGuest()) {
-            $return = Route::url($this->offering->link() . '&active=' . $this->_name . '&unit=download&b=' . $thread . '&file=' . $file);
+            $return = Route::url($this->offering->link() . '&active=' . $this->pluginName . '&unit=download&b=' . $thread . '&file=' . $file);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );

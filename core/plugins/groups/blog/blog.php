@@ -49,7 +49,7 @@ class Blog extends Plugin
     public function loadLanguage($extension = '', $basePath = PATH_APP)
     {
         if (empty($extension)) {
-            $extension = 'plg_' . $this->_type . '_' . $this->_name;
+            $extension = 'plg_' . $this->pluginType . '_' . $this->pluginName;
         }
 
         $group = \Hubzero\User\Group::getInstance(Request::getCmd('cn'));
@@ -59,9 +59,9 @@ class Blog extends Plugin
 
         $lang = App::get('language');
         return $lang->load(strtolower($extension), $basePath, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true)
-            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->_type . DS . $this->_name, null, false, true);
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_APP . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true)
+            || $lang->load(strtolower($extension), PATH_CORE . DS . 'plugins' . DS . $this->pluginType . DS . $this->pluginName, null, false, true);
     }
 
     /**
@@ -72,7 +72,7 @@ class Blog extends Plugin
     public function &onGroupAreas()
     {
         $area = [
-            'name' => $this->_name,
+            'name' => $this->pluginName,
             'title' => Lang::txt('PLG_GROUPS_BLOG'),
             'default_access' => $this->params->get('plugin_access', 'members'),
             'display_menu_tab' => $this->params->get('display_tab', 1),
@@ -97,7 +97,7 @@ class Blog extends Plugin
     public function onGroup($group, $option, $authorized, $limit, $limitstart, $action, $access, $areas = null)
     {
         $return = 'html';
-        $active = $this->_name;
+        $active = $this->pluginName;
 
         // The output array we're returning
         $arr = [
@@ -169,7 +169,7 @@ class Blog extends Plugin
             $this->database   = App::get('db');
 
             //get the plugins params
-            $this->params = \Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->_name);
+            $this->params = \Hubzero\Plugin\Params::getParams($group->gidNumber, 'groups', $this->pluginName);
 
             if ($authorized == 'manager' || $authorized == 'admin') {
                 $this->params->set('access-edit-comment', true);
@@ -452,7 +452,7 @@ class Blog extends Plugin
 
         // Start a new feed object
         $doc = Document::instance();
-        $doc->link = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
+        $doc->link = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName);
 
         // Build some basic RSS document information
         $doc->title       = Config::get('sitename') . ': ' . Lang::txt('Groups') . ': ' . stripslashes($this->group->get('description')) . ': ' . Lang::txt('Blog');
@@ -628,7 +628,7 @@ class Blog extends Plugin
      */
     private function edit($entry = null)
     {
-        $blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name);
+        $blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName);
 
         if (User::isGuest()) {
             App::redirect(
@@ -677,7 +677,7 @@ class Blog extends Plugin
     private function save()
     {
         if (User::isGuest()) {
-            $blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name, false, true);
+            $blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName, false, true);
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog)),
@@ -902,7 +902,7 @@ class Blog extends Plugin
     {
         // Ensure the user is logged in
         if (User::isGuest()) {
-            $blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->_name, false, true);
+            $blog = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName, false, true);
 
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog)),
@@ -1132,7 +1132,7 @@ class Blog extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->_type, $this->_name);
+        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->group->get('gidNumber'), $this->pluginType, $this->pluginName);
 
         // Get parameters
         $params = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
@@ -1161,7 +1161,7 @@ class Blog extends Plugin
         ]);
 
         App::redirect(
-            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->_name . '&action=settings'),
+            Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $this->pluginName . '&action=settings'),
             Lang::txt('PLG_GROUPS_BLOG_SETTINGS_SAVED'),
             'passed',
         );

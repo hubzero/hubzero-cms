@@ -63,7 +63,7 @@ class Related extends Plugin
             $view->option = Request::getCmd('option', 'com_courses');
             $view->controller = Request::getWord('controller', 'course');
             $view->course = $course;
-            $view->name = $this->_name;
+            $view->name = $this->pluginName;
             $view->courses = $courses;
             $view->ids = $ids;
 

@@ -62,7 +62,7 @@ class Forks extends Plugin
         $arr = [
             'html'     => '',
             'metadata' => '',
-            'name'     => $this->_name,
+            'name'     => $this->pluginName,
         ];
 
         // Check if our area is in the array of areas we want to return results for

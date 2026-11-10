@@ -82,7 +82,7 @@ class Reviews extends Plugin
     public function onPublication($model, $option, $areas, $rtrn = 'all', $version = 'default', $extended = true)
     {
         $arr = [
-            'area'     => $this->_name,
+            'area'     => $this->pluginName,
             'html'     => '',
             'metadata' => '',
         ];
@@ -119,11 +119,11 @@ class Reviews extends Plugin
             // Did they perform an action?
             // If so, they need to be logged in first.
             if (!$h->loggedin) {
-                $rtrn = Request::getString('REQUEST_URI', Route::url($model->link($this->_name)), 'server');
+                $rtrn = Request::getString('REQUEST_URI', Route::url($model->link($this->pluginName)), 'server');
 
                 // A posted action cannot be returned to, so come back to the reviews
                 if (Request::method() == 'POST') {
-                    $rtrn = Route::url($model->link($this->_name), false);
+                    $rtrn = Route::url($model->link($this->pluginName), false);
                 }
 
                 App::redirect(
@@ -164,8 +164,8 @@ class Reviews extends Plugin
         // Build the HTML meant for the "about" tab's metadata overview
         if ($rtrn == 'all' || $rtrn == 'metadata') {
             $view = $this->view('default', 'metadata')
-                ->set('url', Route::url($model->link($this->_name)))
-                ->set('url2', Route::url($model->link($this->_name) . '&action=addreview#reviewform'))
+                ->set('url', Route::url($model->link($this->pluginName)))
+                ->set('url2', Route::url($model->link($this->pluginName) . '&action=addreview#reviewform'))
                 ->set('reviews', $arr['count']);
 
             $arr['metadata'] = $view->loadTemplate();

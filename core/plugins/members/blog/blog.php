@@ -104,7 +104,7 @@ class Blog extends Plugin
             //$this->authorized = $authorized;
             $this->database = App::get('db');
 
-            $this->params = \Hubzero\Plugin\Params::getParams($this->member->get('id'), 'members', $this->_name);
+            $this->params = \Hubzero\Plugin\Params::getParams($this->member->get('id'), 'members', $this->pluginName);
 
             if ($user->get('id') == $member->get('id')) {
                 $this->params->set('access-edit-comment', true);
@@ -231,7 +231,7 @@ class Blog extends Plugin
             $path = str_replace('index.php', '', $path);
             $path = '/' . trim($path, '/');
 
-            $blog = '/members/' . $this->member->get('id') . '/' . $this->_name;
+            $blog = '/members/' . $this->member->get('id') . '/' . $this->pluginName;
 
             if ($path == $blog) {
                 $path = [];
@@ -249,7 +249,7 @@ class Blog extends Plugin
             $paths = [];
             $start = false;
             foreach ($path as $bit) {
-                if ($bit == $this->_name && !$start) {
+                if ($bit == $this->pluginName && !$start) {
                     $start = true;
                     continue;
                 }
@@ -368,7 +368,7 @@ class Blog extends Plugin
 
         // Start a new feed object
         $doc = Document::instance();
-        $doc->link = Route::url($this->member->link() . '&active=' . $this->_name);
+        $doc->link = Route::url($this->member->link() . '&active=' . $this->pluginName);
 
         // Build some basic RSS document information
         $doc->title       = Config::get('sitename') . ' - ' . stripslashes($this->member->get('name')) . ': ' . Lang::txt('Blog');
@@ -487,7 +487,7 @@ class Blog extends Plugin
      */
     private function login()
     {
-        $return = base64_encode(Route::url($this->member->link() . '&active=' . $this->_name, false, true));
+        $return = base64_encode(Route::url($this->member->link() . '&active=' . $this->pluginName, false, true));
 
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . $return, false),
@@ -722,7 +722,7 @@ class Blog extends Plugin
         ]);
 
         // Return the topics list
-        App::redirect(Route::url($this->member->link() . '&active=' . $this->_name));
+        App::redirect(Route::url($this->member->link() . '&active=' . $this->pluginName));
     }
 
     /**
@@ -948,7 +948,7 @@ class Blog extends Plugin
         // Check for request forgeries
         Request::checkToken();
 
-        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->member->get('id'), $this->_type, $this->_name);
+        $row = \Hubzero\Plugin\Params::oneByPluginOrNew($this->member->get('id'), $this->pluginType, $this->pluginName);
 
         $params = new \Hubzero\Config\Registry(Request::getArray('params', [], 'post'));
         $row->set('params', $params->toString());
@@ -973,7 +973,7 @@ class Blog extends Plugin
         ]);
 
         App::redirect(
-            Route::url($this->member->link() . '&active=' . $this->_name . '&task=settings'),
+            Route::url($this->member->link() . '&active=' . $this->pluginName . '&task=settings'),
             Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_SAVED'),
         );
     }

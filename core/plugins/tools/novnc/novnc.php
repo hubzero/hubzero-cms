@@ -35,9 +35,9 @@ class Novnc extends Plugin
     public function onToolSessionIdentify()
     {
         $obj = new \stdClass();
-        $obj->name  = $this->_name;
-        $obj->type  = $this->_type;
-        $obj->title = Lang::txt('PLG_' . $this->_type . '_' . $this->_name . '_TITLE');
+        $obj->name  = $this->pluginName;
+        $obj->type  = $this->pluginType;
+        $obj->title = Lang::txt('PLG_' . $this->pluginType . '_' . $this->pluginName . '_TITLE');
 
         return $obj;
     }
@@ -59,7 +59,7 @@ class Novnc extends Plugin
 
         if (
             (isset($session->rendered) && $session->rendered)
-            || ($viewer && $viewer != $this->_name)
+            || ($viewer && $viewer != $this->pluginName)
         ) {
             return;
         }
@@ -68,15 +68,15 @@ class Novnc extends Plugin
             return;
         }
 
-        $session->rendered = $this->_name;
+        $session->rendered = $this->pluginName;
 
         if (!$declared) {
             //$us->set('tool_viewer', $this->_name);
         }
 
         $view = new \Hubzero\Plugin\View([
-            'folder'  => $this->_type,
-            'element' => $this->_name,
+            'folder'  => $this->pluginType,
+            'element' => $this->pluginName,
             'name'    => 'session',
             'layout'  => 'default',
         ]);

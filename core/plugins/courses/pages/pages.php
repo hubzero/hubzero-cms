@@ -58,9 +58,9 @@ class Pages extends Plugin
     public function onCourse($course, $offering, $describe = false)
     {
         $response = with(new \Hubzero\Base\Obj())
-            ->set('name', $this->_name)
-            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->_name)))
-            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->_name) . '_BLURB'))
+            ->set('name', $this->pluginName)
+            ->set('title', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName)))
+            ->set('description', Lang::txt('PLG_COURSES_' . strtoupper($this->pluginName) . '_BLURB'))
             ->set('default_access', $this->params->get('plugin_access', 'members'))
             ->set('display_menu_tab', true)
             ->set('icon', 'f05a');
@@ -70,7 +70,7 @@ class Pages extends Plugin
         }
 
         if (!($active = Request::getString('active'))) {
-            Request::setVar('active', ($active = $this->_name));
+            Request::setVar('active', ($active = $this->pluginName));
         }
 
         // Section specific pages
@@ -227,7 +227,7 @@ class Pages extends Plugin
     public function _edit($model = null)
     {
         if (User::isGuest()) {
-            $return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
+            $return = Route::url($this->view->offering->link() . '&active=' . $this->pluginName, false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -288,7 +288,7 @@ class Pages extends Plugin
     public function _save()
     {
         if (User::isGuest()) {
-            $return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
+            $return = Route::url($this->view->offering->link() . '&active=' . $this->pluginName, false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
@@ -345,7 +345,7 @@ class Pages extends Plugin
         }
 
         App::redirect(
-            Route::url($this->view->offering->link() . '&active=' . $this->_name . '&unit=' . $model->get('url')),
+            Route::url($this->view->offering->link() . '&active=' . $this->pluginName . '&unit=' . $model->get('url')),
         );
     }
 
@@ -357,7 +357,7 @@ class Pages extends Plugin
     public function _delete()
     {
         if (User::isGuest()) {
-            $return = Route::url($this->view->offering->link() . '&active=' . $this->_name, false, true);
+            $return = Route::url($this->view->offering->link() . '&active=' . $this->pluginName, false, true);
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );

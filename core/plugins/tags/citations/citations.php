@@ -42,7 +42,7 @@ class Citations extends Plugin
     public function onTagView($tags, $limit = 0, $limitstart = 0, $sort = '', $areas = null)
     {
         $response = [
-            'name'    => $this->_name,
+            'name'    => $this->pluginName,
             'title'   => Lang::txt('PLG_TAGS_CITATIONS'),
             'total'   => 0,
             'results' => null,
