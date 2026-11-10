@@ -573,19 +573,25 @@ class Entriesv1r0 extends ApiController
     {
         switch (strtoupper(Request::method())) {
             case 'POST':
-                return $this->createCategory();
+                $this->createCategory();
+                return;
 
             case 'PUT':
-                return $this->updateCategory();
+                $this->updateCategory();
+                return;
 
             case 'DELETE':
-                return $this->deleteCategory();
+                $this->deleteCategory();
+                return;
 
             case 'GET':
             case 'HEAD':
-                return Request::getInt('id', 0)
-                    ? $this->readCategory()
-                    : $this->listCategories();
+                if (Request::getInt('id', 0)) {
+                    $this->readCategory();
+                } else {
+                    $this->listCategories();
+                }
+                return;
         }
 
         throw new Exception(Lang::txt('COM_KB_ERROR_METHOD_NOT_ALLOWED'), 405);
