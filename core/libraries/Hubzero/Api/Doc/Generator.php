@@ -63,9 +63,9 @@ class Generator
     /**
      * Return documentation
      *
-     * @param   string  $format  Output format
-     * @param   bool    $format  Force new version
-     * @return  string
+     * @param   string  $format  Output format: 'array', 'php' (serialized) or 'json'
+     * @param   bool    $force   Force new version
+     * @return  array|string  The documentation array for 'array', else a string
      */
     public function output($format = 'json', $force = false)
     {
