@@ -31,10 +31,9 @@ class DropboxOauthClient
     /**
      * Initialize Dropbox OAuth Client
      *
-     * @param   array   $args  Dropbox client data
      * @return  void
      **/
-    public function __construct($args = [])
+    public function __construct()
     {
         $config = Plugin::params('filesystem', 'dropbox');
         $this->clientId = $config->get('app_key');
