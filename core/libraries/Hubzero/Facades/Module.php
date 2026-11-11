@@ -12,7 +12,7 @@ namespace Hubzero\Facades;
  * Module loader facade
  *
  * @method static int    count(string $condition)
- * @method static object byName(string $name, string $title = null)
+ * @method static object|null byName(string $name, string $title = null)
  * @method static array  byPosition(string $position)
  * @method static bool   isEnabled(string $module)
  * @method static string position(string $position, string $style = 'none')
