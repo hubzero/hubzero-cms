@@ -556,7 +556,7 @@
 </table>
 <h2 id="post-support-categories">POST /support/categories</h2>
 <p>Create a new support category</p>
-<p>API version 2.1, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/api/controllers/categoriesv2r1.php#L248"><code>categoriesv2r1.php</code></a>.</p>
+<p>API version 2.1, task <code>create</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/api/controllers/categoriesv2r1.php#L252"><code>categoriesv2r1.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -636,16 +636,16 @@
 <tr>
 <td><code>created</code></td>
 <td>string|integer</td>
-<td>false</td>
-<td>null</td>
-<td>A timestamp (YYYY-MM-DD HH:mm:ss) for items created on or after</td>
+<td>no</td>
+<td>—</td>
+<td>A timestamp (YYYY-MM-DD HH:mm:ss) for items created on or after the specified date. A time window can be specified adding a second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31</td>
 </tr>
 <tr>
 <td><code>modified</code></td>
 <td>string|integer</td>
-<td>false</td>
-<td>null</td>
-<td>A timestamp (YYYY-MM-DD HH:mm:ss) for items modified on or after</td>
+<td>no</td>
+<td>—</td>
+<td>A timestamp (YYYY-MM-DD HH:mm:ss) for items modified on or after the specified date. A time window can be specified adding a second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31</td>
 </tr>
 <tr>
 <td><code>limit</code></td>
@@ -679,7 +679,7 @@
 </table>
 <h2 id="delete-support-categories-id">DELETE /support/categories/{id}</h2>
 <p>Delete a support category</p>
-<p>API version 2.1, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/api/controllers/categoriesv2r1.php#L441"><code>categoriesv2r1.php</code></a>.</p>
+<p>API version 2.1, task <code>delete</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/api/controllers/categoriesv2r1.php#L445"><code>categoriesv2r1.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -702,7 +702,7 @@
 </table>
 <h2 id="get-support-categories-id">GET /support/categories/{id}</h2>
 <p>Displays details for a support category</p>
-<p>API version 2.1, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/api/controllers/categoriesv2r1.php#L315"><code>categoriesv2r1.php</code></a>.</p>
+<p>API version 2.1, task <code>read</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/api/controllers/categoriesv2r1.php#L319"><code>categoriesv2r1.php</code></a>.</p>
 <table>
 <thead>
 <tr>
@@ -725,7 +725,7 @@
 </table>
 <h2 id="put-support-categories-id">PUT /support/categories/{id}</h2>
 <p>Update a support category</p>
-<p>API version 2.1, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/api/controllers/categoriesv2r1.php#L356"><code>categoriesv2r1.php</code></a>.</p>
+<p>API version 2.1, task <code>update</code> in <a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/core/components/com_support/api/controllers/categoriesv2r1.php#L360"><code>categoriesv2r1.php</code></a>.</p>
 <table>
 <thead>
 <tr>

@@ -74,9 +74,11 @@ class Categoriesv2r1 extends ApiController
      * }
      * @apiParameter {
      *      "name":          "created",
-     *      "description":   "A timestamp (YYYY-MM-DD HH:mm:ss) for items created on or after
-     *                        the specified date. A time window can be specified adding a
-     *                        second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31",
+     *      "description":   [
+     *          "A timestamp (YYYY-MM-DD HH:mm:ss) for items created on or after",
+     *          "the specified date. A time window can be specified adding a",
+     *          "second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31"
+     *      ],
      *      "type":          "string|integer",
      *      "required":      false,
      *      "default":       null,
@@ -84,9 +86,11 @@ class Categoriesv2r1 extends ApiController
      * }
      * @apiParameter {
      *      "name":          "modified",
-     *      "description":   "A timestamp (YYYY-MM-DD HH:mm:ss) for items modified on or after
-     *                        the specified date. A time window can be specified adding a
-     *                        second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31",
+     *      "description":   [
+     *          "A timestamp (YYYY-MM-DD HH:mm:ss) for items modified on or after",
+     *          "the specified date. A time window can be specified adding a",
+     *          "second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31"
+     *      ],
      *      "type":          "string|integer",
      *      "required":      false,
      *      "default":       null,

@@ -54,7 +54,7 @@ API version 1.0, task `list` in [`pagesv1r0.php`](../../../core/components/com_w
 
 Delete a page
 
-API version 1.0, task `delete` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L500).
+API version 1.0, task `delete` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L502).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -69,13 +69,13 @@ API version 1.0, task `read` in [`pagesv1r0.php`](../../../core/components/com_w
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
 | `id` | integer | yes | 0 | Page identifier |
-| `version_id` | integer | false | 0 | Optional revision ID. If none specified |
+| `version_id` | integer | no | 0 | Optional revision ID. If none specified, page will default to most current approved revision. |
 
 ## PUT /wiki/{id}
 
 Update a page
 
-API version 1.0, task `update` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L276).
+API version 1.0, task `update` in [`pagesv1r0.php`](../../../core/components/com_wiki/api/controllers/pagesv1r0.php#L278).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

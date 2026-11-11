@@ -30,13 +30,13 @@ class TagActivityLogsv2r0 extends ApiController
      *      "name":          "tagId",
      *      "description":   "ID of associated tag",
      *      "type":          "integer",
-     *      "required":      true,
+     *      "required":      true
      * }
      * @apiParameter {
      *      "name":          "logId",
      *      "description":   "ID of log to compare against",
      *      "type":          "integer",
-     *      "required":      true,
+     *      "required":      true
      * }
      * @apiParameter {
      *      "name":          "limit",

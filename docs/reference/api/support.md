@@ -74,7 +74,7 @@ API version 1.0, task `create` in [`ticketsv1r0.php`](../../../core/components/c
 
 Create a new support category
 
-API version 2.1, task `create` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L248).
+API version 2.1, task `create` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L252).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -94,8 +94,8 @@ API version 2.1, task `list` in [`categoriesv2r1.php`](../../../core/components/
 | `created_by` | integer | no | 0 | List categories created by a specific user (by id) |
 | `modified_by` | integer | no | 0 | List categories modified by a specific user (by id) |
 | `search` | string | no | — | A word or phrase to search for in the category title. |
-| `created` | string\|integer | false | null | A timestamp (YYYY-MM-DD HH:mm:ss) for items created on or after |
-| `modified` | string\|integer | false | null | A timestamp (YYYY-MM-DD HH:mm:ss) for items modified on or after |
+| `created` | string\|integer | no | — | A timestamp (YYYY-MM-DD HH:mm:ss) for items created on or after the specified date. A time window can be specified adding a second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31 |
+| `modified` | string\|integer | no | — | A timestamp (YYYY-MM-DD HH:mm:ss) for items modified on or after the specified date. A time window can be specified adding a second timestamp, separated by a comma. Example: 2018-01-01,2018-12-31 |
 | `limit` | integer | no | 25 | Number of result to return. |
 | `start` | integer | no | 0 | Number of where to start returning results. |
 | `sort` | string | no | id | Field to sort results by. |
@@ -105,7 +105,7 @@ API version 2.1, task `list` in [`categoriesv2r1.php`](../../../core/components/
 
 Delete a support category
 
-API version 2.1, task `delete` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L441).
+API version 2.1, task `delete` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L445).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -115,7 +115,7 @@ API version 2.1, task `delete` in [`categoriesv2r1.php`](../../../core/component
 
 Displays details for a support category
 
-API version 2.1, task `read` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L315).
+API version 2.1, task `read` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L319).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -125,7 +125,7 @@ API version 2.1, task `read` in [`categoriesv2r1.php`](../../../core/components/
 
 Update a support category
 
-API version 2.1, task `update` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L356).
+API version 2.1, task `update` in [`categoriesv2r1.php`](../../../core/components/com_support/api/controllers/categoriesv2r1.php#L360).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

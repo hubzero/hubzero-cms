@@ -224,8 +224,10 @@ class Pagesv1r0 extends ApiController
      * }
      * @apiParameter {
      *      "name":          "version_id",
-     *      "description":   "Optional revision ID. If none specified, page will default to most
-     *                        current approved revision.",
+     *      "description":   [
+     *          "Optional revision ID. If none specified, page will default to most",
+     *          "current approved revision."
+     *      ],
      *      "type":          "integer",
      *      "required":      false,
      *      "default":       0
