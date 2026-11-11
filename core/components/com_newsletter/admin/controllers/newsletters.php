@@ -301,7 +301,7 @@ class Newsletters extends AdminController
         // Make sure we have ids
         $success = 0;
 
-        if (isset($ids) && count($ids) > 0) {
+        if (count($ids) > 0) {
             // delete each newsletter
             foreach ($ids as $id) {
                 // Instantiate newsletter object
@@ -344,7 +344,7 @@ class Newsletters extends AdminController
         // Make sure we have ids
         $success = 0;
 
-        if (isset($ids) && count($ids) > 0) {
+        if (count($ids) > 0) {
             foreach ($ids as $id) {
                 // Instantiate newsletter object
                 $newsletter = Newsletter::oneOrFail($id);
@@ -653,7 +653,9 @@ class Newsletters extends AdminController
             $sendingTest = false,
         );
 
-        // get count of emails
+        // get count of emails (the default list also goes to the guest list)
+        $guestmailinglist = null;
+        $count2 = 0;
         if (isset($mailinglist)) {
             $count = $mailinglist
                 ->emails()
@@ -730,7 +732,7 @@ class Newsletters extends AdminController
         }
 
         // handle guest users for the default list
-        if (!isset($mailinglist)) {
+        if ($guestmailinglist !== null) {
             // array of filters
             $filters = [
                 'lid'    => $mailinglistId,

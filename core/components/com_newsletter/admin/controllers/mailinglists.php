@@ -181,7 +181,7 @@ class Mailinglists extends AdminController
         // make sure we have ids
         $success = 0;
 
-        if (isset($ids) && count($ids) > 0) {
+        if (count($ids) > 0) {
             // delete each newsletter
             foreach ($ids as $id) {
                 // instantiate mailing list object
@@ -575,7 +575,7 @@ class Mailinglists extends AdminController
         // make sure we have ids
         $success = 0;
 
-        if (isset($ids) && count($ids) > 0) {
+        if (count($ids) > 0) {
             // delete each newsletter
             foreach ($ids as $id) {
                 // instantiate mailing list object

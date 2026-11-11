@@ -98,7 +98,7 @@ class Mailings extends AdminController
     {
         // Get request vars
         $ids = Request::getArray('id', []);
-        $id = (isset($ids)) ? $ids[0] : 0;
+        $id = isset($ids[0]) ? $ids[0] : 0;
 
         // Instantiate newsletter mailing object
         $mailing = Mailing::oneOrFail($id);
@@ -282,7 +282,7 @@ class Mailings extends AdminController
     {
         // Get request vars
         $ids = Request::getArray('id', []);
-        $id = (isset($ids)) ? $ids[0] : null;
+        $id = isset($ids[0]) ? $ids[0] : null;
 
         // Instantiate newsletter mailing object
         $mailing = Mailing::oneOrFail($id);

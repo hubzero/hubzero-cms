@@ -206,7 +206,7 @@ class Mailinglists extends SiteController
         }
 
         //validate email
-        if (!isset($email) || $email == '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if ($email == '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             //inform user and redirect
             App::redirect(
                 Route::url($return),
@@ -217,7 +217,7 @@ class Mailinglists extends SiteController
         }
 
         //validate list
-        if (!isset($list) || !is_numeric($list)) {
+        if (!is_numeric($list)) {
             //inform user and redirect
             App::redirect(
                 Route::url($return),

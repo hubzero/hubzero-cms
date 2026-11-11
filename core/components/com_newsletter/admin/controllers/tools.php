@@ -69,7 +69,7 @@ class Tools extends AdminController
         }
 
         //do we have a file upload or just an image url
-        if (isset($imageFile) && $imageFile['tmp_name'] != '') {
+        if (isset($imageFile['tmp_name']) && $imageFile['tmp_name'] != '') {
             //make sure file is image
             $info = pathinfo($imageFile['name']);
             $ext  = isset($info['extension']) ? strtolower($info['extension']) : '';

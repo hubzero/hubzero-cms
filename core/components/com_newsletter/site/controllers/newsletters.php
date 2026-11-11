@@ -239,7 +239,7 @@ class Newsletters extends SiteController
             }
         }
 
-        if (isset($cmd) && $cmd) {
+        if ($cmd) {
             // exec command
             exec($cmd, $ouput, $status);
 

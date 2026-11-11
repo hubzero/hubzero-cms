@@ -155,7 +155,7 @@ class Templates extends AdminController
         $success = 0;
 
         //make sure we have ids
-        if (isset($ids) && count($ids) > 0) {
+        if (count($ids) > 0) {
             foreach ($ids as $id) {
                 // instantiate mailing list object
                 $row = Template::oneOrFail($id);
