@@ -41,6 +41,23 @@ use Hubzero\Facades\Notify;
 
 /**
  * Jobs controller class for postings
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  int                          $_banking             The banking option, set by execute() (unused)
+ * @property  string                       $_industry            The industry the hub serves, set by execute()
+ * @property  int                          $_allowSubscriptions  Whether employers subscribe, set by execute()
+ * @property  int                          $_admin               Whether the user administers jobs, authorizeAdmin()
+ * @property  int|bool                     $_emp                 Whether the user is an employer, authorizeEmployer()
+ * @property  int                          $_masterAdmin         An administrator who is not an employer, execute()
+ * @property  string                       $_jobCode             The job's code, from the request or the job
+ * @property  string                       $_jobtitle            The title of the job being shown
+ * @property  int                          $_jobid               The ID of the job being shown
+ * @property  \Components\Jobs\Tables\Job  $_job                 The job being saved, kept to redisplay the form
+ * @property  string                       $_title               The page title, set by buildTitle()
+ * @property  string                       $_subtitle            The page subtitle, set by a task
+ * @property  string                       $_msg                 A message for the user, set by a task
+ * @property  string                       $_msg_passed          The msg request variable, set by dashboardTask()
  */
 class Jobs extends SiteController
 {
