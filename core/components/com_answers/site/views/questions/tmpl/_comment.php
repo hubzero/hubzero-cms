@@ -113,12 +113,16 @@ if (!$this->comment->get('item_id')) {
             <?php }*/ ?>
             <?php if (!$this->comment->isReported()) { ?>
                 <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-                    <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= Route::url($this->comment->link()) ?>" data-rel="comment-form<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>"><!--
+                    <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) {
+                        $linkUrl = Route::url($this->comment->link());
+                        ?>
+                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= $linkUrl ?>" data-rel="comment-form<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('JCANCEL'); ?><!--
                 --></a>
-                    <?php } else { ?>
-                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= Route::url($this->comment->link('reply')) ?>" data-rel="comment-form<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>"><!--
+                    <?php } else {
+                        $linkUrl = Route::url($this->comment->link('reply'));
+                        ?>
+                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= $linkUrl ?>" data-rel="comment-form<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('COM_ANSWERS_REPLY'); ?><!--
                 --></a>
                     <?php } ?>

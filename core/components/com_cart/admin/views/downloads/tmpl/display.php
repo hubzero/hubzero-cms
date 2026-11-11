@@ -258,8 +258,13 @@ $this
                     <span><?php echo $product; ?></span>
                 </td>
                 <td>
-                    <?php if ($row->uidNumber) { ?>
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber=' . $row->uidNumber) ?>">
+                    <?php if ($row->uidNumber) {
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber='
+                                . $row->uidNumber,
+                        );
+                        ?>
+                    <a href="<?= $linkUrl ?>">
                     <?php } ?>
                         <span><?= ($row->uidNumber) ? $this->escape(stripslashes($row->dName)) . ' (' . $this->escape(stripslashes($row->username)) . ')' : Lang::txt('COM_CART_UNKNOWN') ?></span>
                         <?php if ($row->uidNumber) { ?>
@@ -305,8 +310,13 @@ $this
                     <span><?php echo $this->escape(stripslashes($row->dIp)); ?></span>
                 </td>
                 <td>
-                    <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?= $class ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->dId) ?>" title="<?= Lang::txt('COM_CART_SET_TASK', $task) ?>">
+                    <?php if ($canDo->get('core.edit.state')) {
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task
+                                . '&id=' . $row->dId,
+                        );
+                        ?>
+                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_CART_SET_TASK', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>

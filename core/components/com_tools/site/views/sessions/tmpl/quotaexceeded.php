@@ -46,10 +46,20 @@ $this->css('tools.css');
                 <td><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=session&app=' . $session->appname . '&sess=' . $session->sessnum) ?>" title="<?= Lang::txt('COM_TOOLS_RESUME_TITLE') ?>"><?= $this->escape($session->sessname) ?></a></td>
                 <td><?php echo $session->start; ?></td>
                 <td><?php echo $session->accesstime; ?></td>
-                <?php if (User::get('username') == $session->username) { ?>
-                <td><a class="closetool" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stop&app=' . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_TITLE') ?>"><?= Lang::txt('COM_TOOLS_TERMINATE') ?></a></td>
-                <?php } else { ?>
-                <td><a class="disconnect" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unshare&app=' . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_DISCONNECT_TITLE') ?>"><?= Lang::txt('COM_TOOLS_DISCONNECT') ?></a> <span class="owner"><?= Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username ?></span></td>
+                <?php if (User::get('username') == $session->username) {
+                    $stopUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stop&app='
+                            . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1',
+                    );
+                    ?>
+                <td><a class="closetool" href="<?= $stopUrl ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_TITLE') ?>"><?= Lang::txt('COM_TOOLS_TERMINATE') ?></a></td>
+                <?php } else {
+                    $unshareUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unshare&app='
+                            . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1',
+                    );
+                    ?>
+                <td><a class="disconnect" href="<?= $unshareUrl ?>" title="<?= Lang::txt('COM_TOOLS_DISCONNECT_TITLE') ?>"><?= Lang::txt('COM_TOOLS_DISCONNECT') ?></a> <span class="owner"><?= Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username ?></span></td>
                 <?php } ?>
             </tr>
                 <?php

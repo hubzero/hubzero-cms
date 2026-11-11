@@ -38,8 +38,10 @@ $show_weight = array_key_exists('show_weight', $_GET);
                 </fieldset>
             </form>
     <?php if ($this->results->valid()) : ?>
-        <?php if (($ct = $this->results->getCustomTitle())) : ?>
-            <p class="information">You are viewing <strong><?= $ct ?></strong> matching your query. <a href="<?= Route::url('index.php?option=com_search&terms=' . urlencode($this->terms) . '&force-generic=1') ?>">View all results.</a></p>
+        <?php if (($ct = $this->results->getCustomTitle())) :
+            $linkUrl = Route::url('index.php?option=com_search&terms=' . urlencode($this->terms) . '&force-generic=1');
+            ?>
+            <p class="information">You are viewing <strong><?= $ct ?></strong> matching your query. <a href="<?= $linkUrl ?>">View all results.</a></p>
         <?php endif; ?>
 
             <div class="container">
@@ -58,8 +60,10 @@ $show_weight = array_key_exists('show_weight', $_GET);
 
                 <?php if (($tags = $this->results->getTags())) : ?>
                     <ol class="tags">
-                        <?php foreach ($tags as $tag) : ?>
-                            <li><a class="tag" href="<?= Route::url($tag->getLink()) ?>"><?= $this->escape($tag->getTitle()) ?></a></li>
+                        <?php foreach ($tags as $tag) :
+                            $linkUrl = Route::url($tag->getLink());
+                            ?>
+                            <li><a class="tag" href="<?= $linkUrl ?>"><?= $this->escape($tag->getTitle()) ?></a></li>
                         <?php endforeach; ?>
                     </ol>
                 <?php endif; ?>
@@ -94,8 +98,12 @@ $show_weight = array_key_exists('show_weight', $_GET);
                                             ?>
                                             Contributor(s):
                                             <?php foreach ($contributors as $idx => $contrib) : ?>
-                                                <?php if (isset($contrib_ids[$idx])) : ?>
-                                                <a href="<?= Route::url('index.php?option=com_members&id=' . $contrib_ids[$idx]) ?>"><?= $this->escape($contrib) ?></a><?= $idx != $contrib_len - 1 ? ', ' : '' ?>
+                                                <?php if (isset($contrib_ids[$idx])) :
+                                                    $linkUrl = Route::url(
+                                                        'index.php?option=com_members&id=' . $contrib_ids[$idx],
+                                                    );
+                                                    ?>
+                                                <a href="<?= $linkUrl ?>"><?= $this->escape($contrib) ?></a><?= $idx != $contrib_len - 1 ? ', ' : '' ?>
                                                 <?php else : ?>
                                                     <?php echo $this->escape($contrib); ?>
                                                 <?php endif; ?>
@@ -206,8 +214,10 @@ $show_weight = array_key_exists('show_weight', $_GET);
         <?php if ($this->results->getTotalCount()) : ?>
             <ul class="sub-nav">
                 <li>
-                    <?php if ($this->plugin) : ?>
-                        <a href="<?= Route::url('index.php?option=com_search&terms=' . $this->url_terms) ?>"><?= Lang::txt('COM_SEARCH_FILTER_ALL') ?> <span class="item-count"><?= $this->results->getTotalCount() ?></span></a>
+                    <?php if ($this->plugin) :
+                        $linkUrl = Route::url('index.php?option=com_search&terms=' . $this->url_terms);
+                        ?>
+                        <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_SEARCH_FILTER_ALL') ?> <span class="item-count"><?= $this->results->getTotalCount() ?></span></a>
                     <?php else : ?>
                         <strong><?= Lang::txt('COM_SEARCH_FILTER_ALL') ?> <span
                             class="item-count"><?= $this->results->getTotalCount() ?></span></strong>
@@ -219,8 +229,10 @@ $show_weight = array_key_exists('show_weight', $_GET);
                         <?php if ($this->plugin == $cat && !$this->section) : ?>
                             <strong><?= $this->escape($def['friendly_name']) ?> <span
                                 class="item-count"><?= $def['count'] ?></span></strong>
-                        <?php else : ?>
-                            <a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?= $this->escape($def['friendly_name']) ?> <span class="item-count"><?= $def['count'] ?></span></a>
+                        <?php else :
+                            $linkUrl = Route::url('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms);
+                            ?>
+                            <a href="<?= $linkUrl ?>"><?= $this->escape($def['friendly_name']) ?> <span class="item-count"><?= $def['count'] ?></span></a>
                         <?php endif; ?>
                         <?php
                         $fc_child_flag = 'plgsearch' . $def['plugin_name'] . '::FIRST_CLASS_CHILDREN';

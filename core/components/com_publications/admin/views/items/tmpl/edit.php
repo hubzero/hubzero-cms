@@ -469,10 +469,26 @@ $featuredSelected = function ($value) use ($view) {
                             <tr>
                                 <td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE'); ?></td>
                                 <td>
-                                    <?php if (file_exists($this->model->bundlePath())) { ?>
-                                        <a href="<?= trim($site, DS) . '/publications/' . $this->model->get('id') . DS . 'serve' . DS . $this->model->get('version_number') . '/?render=archive' ?>" class="archival"><?= Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE') ?></a> &nbsp;&nbsp;<a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=archive&pid=' . $this->model->get('id') . '&vid=' . $this->model->get('version_id') . '&version=' . $this->model->versionAlias(), false) ?>">[<?= Lang::txt('COM_PUBLICATIONS_REPACKAGE') ?>]</a>
-                                    <?php  } else { ?>
-                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=archive&pid=' . $this->model->get('id') . '&vid=' . $this->model->get('version_id') . '&version=' . $this->model->versionAlias(), false) ?>" class="archival"><?= Lang::txt('COM_PUBLICATIONS_PRODUCE_ARCHIVAL') ?></a>
+                                    <?php if (file_exists($this->model->bundlePath())) {
+                                        $archiveUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                . '&task=archive&pid=' . $this->model->get('id') . '&vid='
+                                                . $this->model->get('version_id') . '&version='
+                                                . $this->model->versionAlias(),
+                                            false,
+                                        );
+                                        ?>
+                                        <a href="<?= trim($site, DS) . '/publications/' . $this->model->get('id') . DS . 'serve' . DS . $this->model->get('version_number') . '/?render=archive' ?>" class="archival"><?= Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE') ?></a> &nbsp;&nbsp;<a href="<?= $archiveUrl ?>">[<?= Lang::txt('COM_PUBLICATIONS_REPACKAGE') ?>]</a>
+                                    <?php  } else {
+                                        $archiveUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                . '&task=archive&pid=' . $this->model->get('id') . '&vid='
+                                                . $this->model->get('version_id') . '&version='
+                                                . $this->model->versionAlias(),
+                                            false,
+                                        );
+                                        ?>
+                                    <a href="<?= $archiveUrl ?>" class="archival"><?= Lang::txt('COM_PUBLICATIONS_PRODUCE_ARCHIVAL') ?></a>
                                     <?php } ?>
                                 </td>
                             </tr>

@@ -79,13 +79,22 @@ $option = 'com_groups';
                 <?php $canManageRoles = (
                     ($this->authorized == 'manager' || $this->authorized == 'admin') && $this->membership_control == 1
                 ); ?>
-                <?php if ($canManageRoles) : ?>
-                    <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=addrole') ?>">
+                <?php if ($canManageRoles) :
+                    $addroleUrl = Route::url(
+                        'index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=addrole',
+                    );
+                    ?>
+                    <a class="icon-add add btn" href="<?= $addroleUrl ?>">
                         <?php echo Lang::txt('PLG_GROUPS_MEMBERS_ADD_ROLE'); ?>
                     </a>
                 <?php endif; ?>
-                <?php if ($canManageRoles) : ?>
-                    <a class="icon-edit edit btn" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=denyresponses') ?>">
+                <?php if ($canManageRoles) :
+                    $denyresponsesUrl = Route::url(
+                        'index.php?option=' . $option . '&cn=' . $this->group->cn
+                            . '&active=members&action=denyresponses',
+                    );
+                    ?>
+                    <a class="icon-edit edit btn" href="<?= $denyresponsesUrl ?>">
                         <?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES'); ?>
                     </a>
                 <?php endif; ?>
@@ -717,8 +726,13 @@ $option = 'com_groups';
                     Html::behavior('framework', true);
                 }
                 ?>
-                <?php if ($canOrderRoles) : ?>
-                    <form class="roles-order" action="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=reorderroles&no_html=1') ?>" method="post" data-error="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_ERROR')) ?>">
+                <?php if ($canOrderRoles) :
+                    $reorderrolesUrl = Route::url(
+                        'index.php?option=' . $option . '&cn=' . $this->group->cn
+                            . '&active=members&action=reorderroles&no_html=1',
+                    );
+                    ?>
+                    <form class="roles-order" action="<?= $reorderrolesUrl ?>" method="post" data-error="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_ERROR')) ?>">
                         <?php echo Html::input('token'); ?>
                     </form>
                     <p class="roles-order-hint"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_HINT'); ?></p>
@@ -743,8 +757,13 @@ $option = 'com_groups';
                                     title="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_DRAG')) ?>"
                                     aria-hidden="true"></span>
                             <?php endif; ?>
-                            <?php if ($this->authorized == 'manager' && $this->membership_control == 1) : ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=removerole&role=' . $role['id']) ?>" class="remove-role" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') ?>"><?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') ?></button>
+                            <?php if ($this->authorized == 'manager' && $this->membership_control == 1) :
+                                $removeroleUrl = Route::url(
+                                    'index.php?option=' . $option . '&cn=' . $this->group->cn
+                                        . '&active=members&action=removerole&role=' . $role['id'],
+                                );
+                                ?>
+                                <button type="submit" form="hz-post-action" formaction="<?= $removeroleUrl ?>" class="remove-role" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') ?>"><?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') ?></button>
                                 <a class="edit-role" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=editrole&role=' . $role['id']) ?>" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_EDIT') ?>">
                                     <?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_EDIT'); ?>
                                 </a>

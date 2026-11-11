@@ -70,12 +70,16 @@ tooltip: true,
 $base = rtrim(Request::base(true), '/');
 ?>
 <div id="plg-header">
-<?php if ($this->project->isProvisioned()) { ?>
-<h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> <?php if ($this->pub->exists()) {
+<?php if ($this->project->isProvisioned()) {
+    $linkUrl = Route::url($this->pub->link('editbase'));
+    ?>
+<h3 class="prov-header"><a href="<?= $linkUrl ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> <?php if ($this->pub->exists()) {
     ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
                                  } ?> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')); ?></h3>
-<?php } else { ?>
-<h3 class="publications c-header"><a href="<?= Route::url($this->project->link('publications')) ?>"><?= $this->title ?></a> <?php if ($this->pub->exists()) {
+<?php } else {
+    $linkUrl = Route::url($this->project->link('publications'));
+    ?>
+<h3 class="publications c-header"><a href="<?= $linkUrl ?>"><?= $this->title ?></a> <?php if ($this->pub->exists()) {
     ?>  &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>"><?= $this->escape($this->pub->title) ?></a></span><?php
                                            } ?> &raquo; <span class="indlist"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS')) ?></span></h3>
 <?php } ?>
@@ -84,8 +88,10 @@ $base = rtrim(Request::base(true), '/');
 <div class="pubstats">
 <?php if ($this->pubstats) {
     ?>
-    <?php if ($this->pub) { ?>
-<p class="viewallstats"><a href="<?= Route::url($this->project->link('publications') . '&action=stats') ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS') ?> &raquo;</a></p>
+    <?php if ($this->pub) {
+        $statsUrl = Route::url($this->project->link('publications') . '&action=stats');
+        ?>
+<p class="viewallstats"><a href="<?= $statsUrl ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_USAGE_STATS') ?> &raquo;</a></p>
     <?php } ?>
     <?php if (!$this->pub->exists() && $this->totals && count($this->pubstats) > 1) { ?>
 <p class="pubstats-overall"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_YOUR') . ' <span class="prominent">' . count($this->pubstats) . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATIONS_S') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_HAVE_BEEN_ACCESSED') . ' <span class="prominent">' . $this->totals->all_total_primary . '</span> ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_TIMES') ?>.</p>

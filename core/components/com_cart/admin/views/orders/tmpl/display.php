@@ -175,8 +175,13 @@ $this
                     <span><?php echo $this->escape(stripslashes($row->tLastUpdated)); ?></span>
                 </td>
                 <td>
-                    <?php if ($row->uidNumber) { ?>
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber=' . $row->uidNumber) ?>">
+                    <?php if ($row->uidNumber) {
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber='
+                                . $row->uidNumber,
+                        );
+                        ?>
+                    <a href="<?= $linkUrl ?>">
                     <?php } ?>
                         <span><?= ($row->name) ? $this->escape(stripslashes($row->name)) : Lang::txt('COM_CART_UNKNOWN') ?></span>
                         <?php if ($row->uidNumber) { ?>

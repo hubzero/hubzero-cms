@@ -122,12 +122,20 @@ $this
                                 </p>
                                 <div class="actions">
                                     <?php if (!User::isGuest()) { ?>
-                                        <?php if ($row->get('created_by') == User::get('id')) { ?>
-                                            <a class="btn edit" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=edit') ?>">
+                                        <?php if ($row->get('created_by') == User::get('id')) {
+                                            $editUrl = Route::url(
+                                                $base . '&controller=posts&post=' . $row->get('id') . '&task=edit',
+                                            );
+                                            ?>
+                                            <a class="btn edit" data-id="<?= $row->get('id') ?>" href="<?= $editUrl ?>">
                                                 <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                                             </a>
-                                        <?php } else { ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=vote') ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $item->get('id') ?>" data-text-like="<?= Lang::txt('COM_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('COM_COLLECTIONS_UNLIKE') ?>">
+                                        <?php } else {
+                                            $voteUrl = Route::url(
+                                                $base . '&controller=posts&post=' . $row->get('id') . '&task=vote',
+                                            );
+                                            ?>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $voteUrl ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $item->get('id') ?>" data-text-like="<?= Lang::txt('COM_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('COM_COLLECTIONS_UNLIKE') ?>">
                                                 <span><?= ($item->get('voted')) ? Lang::txt('COM_COLLECTIONS_UNLIKE') : Lang::txt('COM_COLLECTIONS_LIKE') ?></span>
                                             </button>
                                         <?php } ?>
@@ -142,8 +150,21 @@ $this
                                             <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=collect') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
-                                    <?php } else { ?>
-                                            <a class="btn vote like tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task, false, true)), false) ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
+                                    <?php } else {
+                                        $linkUrl = Route::url(
+                                            'index.php?option=com_users&view=login&return='
+                                                . base64_encode(
+                                                    Route::url(
+                                                        $base . '&controller=' . $this->controller . '&task='
+                                                            . $this->task,
+                                                        false,
+                                                        true,
+                                                    ),
+                                                ),
+                                            false,
+                                        );
+                                        ?>
+                                            <a class="btn vote like tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_LIKE'); ?></span>
                                             </a>
                                             <?php

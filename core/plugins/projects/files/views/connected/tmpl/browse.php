@@ -91,8 +91,13 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME'); ?></span>
                     </a>
                     <?php }?>
-                    <?php if (count($metadata)) : ?>
-                        <a href="<?= Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=annotate' . $subdirlink) ?>"
+                    <?php if (count($metadata)) :
+                        $annotateUrl = Route::url(
+                            $this->model->link('files') . '&connection=' . $this->connection->id . '&action=annotate'
+                                . $subdirlink,
+                        );
+                        ?>
+                        <a href="<?= $annotateUrl ?>"
                             class="fmanage js" id="a-annotate"
                                 title="<?= Lang::txt('PLG_PROJECTS_FILES_ANNOTATE_TOOLTIP') ?>">
                             <span><?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE'); ?></span>

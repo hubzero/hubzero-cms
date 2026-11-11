@@ -355,8 +355,12 @@ if (!$this->app->sess) {
     ?>
 
     <div class="clear share-divider"></div>
-    <?php if ($this->config->get('shareable', 0)) { ?>
-    <form name="share" id="app-share" method="post" action="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess) ?>">
+    <?php if ($this->config->get('shareable', 0)) {
+        $sessionUrl = Route::url(
+            'index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess,
+        );
+        ?>
+    <form name="share" id="app-share" method="post" action="<?= $sessionUrl ?>">
         <div class="grid">
         <?php if (is_object($this->app->owns)) : ?>
             <div class="col span8">

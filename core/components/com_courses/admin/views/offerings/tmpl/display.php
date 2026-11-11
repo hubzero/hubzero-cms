@@ -200,8 +200,13 @@ $stateSelected = function ($value) use ($view) {
                     <?php echo $this->escape($row->get('id')); ?>
                 </td>
                 <td>
-                    <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                    <?php if ($canDo->get('core.edit')) {
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->get('id'),
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                         </a>
                     <?php } else { ?>
@@ -222,26 +227,50 @@ $stateSelected = function ($value) use ($view) {
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <?php if ($row->get('state') == 1) { ?>
-                        <a class="jgrid" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')) ?>">
+                        <?php if ($row->get('state') == 1) {
+                            $unpublishUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=unpublish&course=' . $this->course->get('id') . '&id=' . $row->get('id')
+                                    . '&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                        <a class="jgrid" href="<?= $unpublishUrl ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')) ?>">
                             <span class="state publish">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
                             </span>
                         </a>
-                        <?php } elseif ($row->get('state') == 2) { ?>
-                        <a class="jgrid" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
+                        <?php } elseif ($row->get('state') == 2) {
+                            $publishUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id')
+                                    . '&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                        <a class="jgrid" href="<?= $publishUrl ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
                             <span class="state trash">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
                             </span>
                         </a>
-                        <?php } elseif ($row->get('state') == 3) { ?>
-                        <a class="jgrid" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
+                        <?php } elseif ($row->get('state') == 3) {
+                            $publishUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id')
+                                    . '&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                        <a class="jgrid" href="<?= $publishUrl ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
                             <span class="state pending">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></span>
                             </span>
                         </a>
-                        <?php } elseif ($row->get('state') == 0) { ?>
-                        <a class="jgrid" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
+                        <?php } elseif ($row->get('state') == 0) {
+                            $publishUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id')
+                                    . '&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                        <a class="jgrid" href="<?= $publishUrl ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
                             <span class="state unpublish">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>
                             </span>
@@ -250,8 +279,12 @@ $stateSelected = function ($value) use ($view) {
                     <?php } ?>
                 </td>
                 <td>
-                    <?php if ($canDo->get('core.manage') && $sections > 0) { ?>
-                        <a class="glyph category" href="<?= Route::url('index.php?option=' . $this->option . '&controller=sections&offering=' . $row->get('id')) ?>">
+                    <?php if ($canDo->get('core.manage') && $sections > 0) {
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=sections&offering=' . $row->get('id'),
+                        );
+                        ?>
+                        <a class="glyph category" href="<?= $linkUrl ?>">
                             <?php echo $sections; ?>
                         </a>
                     <?php } else { ?>
@@ -267,8 +300,13 @@ $stateSelected = function ($value) use ($view) {
                     <?php } ?>
                 </td>
                 <td class="priority-2">
-                    <?php if ($canDo->get('core.manage')) { ?>
-                        <a class="glyph member" href="<?= Route::url('index.php?option=' . $this->option . '&controller=students&offering=' . $row->get('id') . '&section=0') ?>">
+                    <?php if ($canDo->get('core.manage')) {
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=students&offering=' . $row->get('id')
+                                . '&section=0',
+                        );
+                        ?>
+                        <a class="glyph member" href="<?= $linkUrl ?>">
                             <?php echo $students; ?>
                         </a>
                     <?php } else { ?>
@@ -278,8 +316,12 @@ $stateSelected = function ($value) use ($view) {
                     <?php } ?>
                 </td>
                 <td>
-                    <?php if ($canDo->get('core.manage') && $units > 0) { ?>
-                        <a class="glyph list" href="<?= Route::url('index.php?option=' . $this->option . '&controller=units&offering=' . $row->get('id')) ?>">
+                    <?php if ($canDo->get('core.manage') && $units > 0) {
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=units&offering=' . $row->get('id'),
+                        );
+                        ?>
+                        <a class="glyph list" href="<?= $linkUrl ?>">
                             <?php echo $units; ?>
                         </a>
                     <?php } else { ?>
@@ -293,8 +335,12 @@ $stateSelected = function ($value) use ($view) {
                     <?php } ?>
                 </td>
                 <td class="priority-2">
-                    <?php if ($canDo->get('core.manage') && $pages > 0) { ?>
-                        <a class="glyph list" href="<?= Route::url('index.php?option=' . $this->option . '&controller=pages&offering=' . $row->get('id')) ?>">
+                    <?php if ($canDo->get('core.manage') && $pages > 0) {
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=pages&offering=' . $row->get('id'),
+                        );
+                        ?>
+                        <a class="glyph list" href="<?= $linkUrl ?>">
                             <?php echo $pages; ?>
                         </a>
                     <?php } else { ?>

@@ -50,8 +50,13 @@ $over  = $data->get('pubThumb') == 1 ? ' title="' . Lang::txt('PLG_PROJECTS_PUBL
         <span class="item-options">
             <?php if ($data->get('viewer') == 'edit') { ?>
             <span>
-                <?php if (!$data->get('pubThumb')) { ?>
-                <a href="<?= Route::url($pub->link('editversion') . '&action=saveitem&aid=' . $data->get('id') . '&p=' . $data->get('props') . '&makedefault=1') ?>" class="item-default" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMAGE_MAKE_DEFAULT') ?>">&nbsp;</a>
+                <?php if (!$data->get('pubThumb')) {
+                    $saveitemUrl = Route::url(
+                        $pub->link('editversion') . '&action=saveitem&aid=' . $data->get('id') . '&p='
+                            . $data->get('props') . '&makedefault=1',
+                    );
+                    ?>
+                <a href="<?= $saveitemUrl ?>" class="item-default" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMAGE_MAKE_DEFAULT') ?>">&nbsp;</a>
                 <?php } ?>
                 <a href="<?= Route::url($pub->link('editversion') . '&action=edititem&aid=' . $data->get('id') . '&p=' . $data->get('props')) ?>" class="showinbox item-edit" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL') ?>">&nbsp;</a>
                 <button type="submit" form="hz-post-action" formaction="<?= Route::url($pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p=' . $data->get('props')) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
