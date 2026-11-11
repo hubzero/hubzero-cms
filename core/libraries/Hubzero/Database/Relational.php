@@ -187,9 +187,21 @@ use Hubzero\Facades\User;
  * @method static static unorder()
  * @method static static start(int $start)
  * @method static static limit(int $limit)
+ *
+ * Lifecycle listeners are registered by event name through __callStatic():
+ *
+ * @method static void creating(callable $callback)
+ * @method static void created(callable $callback)
+ * @method static void updating(callable $callback)
+ * @method static void updated(callable $callback)
+ * @method static void saving(callable $callback)
+ * @method static void saved(callable $callback)
+ * @method static void deleting(callable $callback)
+ * @method static void deleted(callable $callback)
+ * @method static void retrieved(callable $callback)
+ *
+ * @phpstan-consistent-constructor
  */
-
-/** @phpstan-consistent-constructor */
 class Relational implements \IteratorAggregate, \ArrayAccess
 {
     /*
