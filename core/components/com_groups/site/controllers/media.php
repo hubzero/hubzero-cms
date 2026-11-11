@@ -22,6 +22,10 @@ use Hubzero\Facades\Component;
 
 /**
  * Groups controller class
+ *
+ * @property  \Hubzero\User\Group  $group       The group, loaded by execute()
+ * @property  bool                 $authorized  Whether the user may manage the group's files, set by execute()
+ * @property  string               $path        The group's upload directory, set by execute()
  */
 class Media extends Base
 {

@@ -25,6 +25,11 @@ use Hubzero\Facades\App;
 
 /**
  * Groups controller class for managing group pages
+ *
+ * @property  string                                  $gid      The group id from the request, read by execute()
+ * @property  \Hubzero\User\Group                     $group    The group, loaded by execute()
+ * @property  \Components\Groups\Models\Page          $page     The page being saved, set by saveTask()
+ * @property  \Components\Groups\Models\Page\Version  $version  The new page version, set by saveTask()
  */
 class Pages extends AdminController
 {

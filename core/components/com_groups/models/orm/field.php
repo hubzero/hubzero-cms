@@ -16,6 +16,8 @@ use Hubzero\Facades\Lang;
 
 /**
  * Group description field model
+ *
+ * @property  \Hubzero\Database\Rows  $options  The field's options, through options()
  */
 class Field extends Relational
 {

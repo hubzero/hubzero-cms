@@ -21,6 +21,10 @@ use Hubzero\Facades\User;
 /**
  * Group model
  *
+ * @property  int     $type         Column: the group type
+ * @property  string  $cn           Column: the group's alias
+ * @property  string  $description  Column: the group's title
+ * @property  string  $public_desc  Column: the public description
  */
 class Group extends Relational implements \Hubzero\Search\Searchable
 {

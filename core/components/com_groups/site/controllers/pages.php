@@ -22,6 +22,10 @@ use Hubzero\Facades\Event;
 
 /**
  * Groups controller class
+ *
+ * @property  \Hubzero\User\Group                     $group    The group, loaded by execute()
+ * @property  \Components\Groups\Models\Page          $page     The page being saved, set by saveTask()
+ * @property  \Components\Groups\Models\Page\Version  $version  The new page version, set by saveTask()
  */
 class Pages extends Base
 {

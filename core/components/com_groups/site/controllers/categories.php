@@ -19,6 +19,9 @@ use Hubzero\Facades\Event;
 
 /**
  * Groups controller class
+ *
+ * @property  \Hubzero\User\Group                      $group     The group, loaded by execute()
+ * @property  \Components\Groups\Models\Page\Category  $category  The category being saved, set by saveTask()
  */
 class Categories extends Base
 {

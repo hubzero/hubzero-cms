@@ -21,6 +21,9 @@ use Hubzero\Facades\Html;
 
 /**
  * Manage files for a group
+ *
+ * @property  \Hubzero\User\Group  $group  The group, loaded by execute()
+ * @property  string               $path   The group's upload directory, set by execute()
  */
 class Media extends AdminController
 {

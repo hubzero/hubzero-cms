@@ -25,6 +25,10 @@ use Hubzero\Facades\App;
 
 /**
  * Groups controller class
+ *
+ * @property  string                            $gid     The group id from the request, read by execute()
+ * @property  \Hubzero\User\Group               $group   The group, loaded by execute()
+ * @property  \Components\Groups\Models\Module  $module  The module being saved, set by saveTask()
  */
 class Modules extends AdminController
 {

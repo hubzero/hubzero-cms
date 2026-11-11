@@ -23,6 +23,12 @@ use Hubzero\Facades\Component;
 
 /**
  * Groups controller class
+ *
+ * @property  string  $cn        The group cname from the request, read by the subclasses' execute()
+ * @property  string  $active    The active group tab from the request
+ * @property  string  $action    The plugin action from the request
+ * @property  string  $_title    The page title, built by buildTitle()
+ * @property  array   $messages  The queued notifications, read by getNotifications()
  */
 class Base extends SiteController
 {

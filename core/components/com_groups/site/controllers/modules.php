@@ -22,6 +22,9 @@ use Hubzero\Facades\Event;
 
 /**
  * Groups controller class
+ *
+ * @property  \Hubzero\User\Group               $group   The group, loaded by execute()
+ * @property  \Components\Groups\Models\Module  $module  The module being saved, set by saveTask()
  */
 class Modules extends Base
 {

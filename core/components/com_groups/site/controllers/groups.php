@@ -32,6 +32,10 @@ use Hubzero\Facades\Session;
 
 /**
  * Groups controller class
+ *
+ * @property  \Hubzero\User\Group  $group  The unsaved group saveTask() hands back to editTask()
+ * @property  string               $tags   The unsaved tags saveTask() hands back to editTask()
+ * @property  int                  $lid    The upload folder id saveTask() hands back to editTask()
  */
 class Groups extends Base
 {

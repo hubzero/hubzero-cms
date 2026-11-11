@@ -21,6 +21,8 @@ use Hubzero\Facades\User;
 
 /**
  * Groups controller class for page categories
+ *
+ * @property  \Hubzero\User\Group  $group  The group, loaded by execute()
  */
 class Categories extends AdminController
 {
