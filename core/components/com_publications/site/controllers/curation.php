@@ -29,6 +29,11 @@ use Hubzero\Facades\Event;
 
 /**
  * Primary component controller (extends \Hubzero\Component\SiteController)
+ *
+ * @property  int                       $_id     The incoming publication id, set by execute()
+ * @property  Models\Publication|null   $pub     The publication a task loaded
+ * @property  string                    $_title  The page title, set by buildTitle()
+ * @property  string                    $_msg    The message login() shows
  */
 class Curation extends SiteController
 {
@@ -272,7 +277,7 @@ class Curation extends SiteController
         if (!$this->pub->exists()) {
             if ($ajax) {
                 $this->view
-                    ->set('title', $this->title)
+                    ->set('title', $this->_title)
                     ->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD'))
                     ->setName('error')
                     ->setLayout('default')
@@ -287,7 +292,7 @@ class Curation extends SiteController
         if (!$this->pub->access('curator')) {
             if ($ajax) {
                 $this->view
-                    ->set('title', $this->title)
+                    ->set('title', $this->_title)
                     ->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'))
                     ->setName('error')
                     ->setLayout('default')
@@ -340,7 +345,7 @@ class Curation extends SiteController
         if (!$this->pub->exists()) {
             if ($ajax) {
                 $this->view
-                    ->set('title', $this->title)
+                    ->set('title', $this->_title)
                     ->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_LOAD'))
                     ->setName('error')
                     ->setLayout('default')
@@ -354,7 +359,7 @@ class Curation extends SiteController
         if (!$this->pub->access('curator')) {
             if ($ajax) {
                 $this->view
-                    ->set('title', $this->title)
+                    ->set('title', $this->_title)
                     ->setError(Lang::txt('COM_PUBLICATIONS_CURATION_ERROR_UNAUTHORIZED'))
                     ->setName('error')
                     ->setLayout('default')

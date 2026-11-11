@@ -33,6 +33,21 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Primary component controller
+ *
+ * It keeps these on itself through __set() and __get(); execute() sets the
+ * first seven from the request and the configuration:
+ *
+ * @property  int                  $_logging        Whether access is logged
+ * @property  bool                 $_contributable  Whether publications may be contributed
+ * @property  int                  $_id             The incoming publication id
+ * @property  string               $_alias          The incoming publication alias
+ * @property  string               $_version        The incoming version number or alias
+ * @property  int|string           $_identifier     The alias, or else the id
+ * @property  string               $_route          The publication's base URL
+ * @property  Models\Publication   $model           The publication a task loaded
+ * @property  string               $_title          The page title, set by buildTitle()
+ * @property  string               $_task_title     The task's part of the page title
+ * @property  string               $_msg            The message login() shows
  */
 class Publications extends SiteController
 {
@@ -1426,7 +1441,7 @@ class Publications extends SiteController
                 'layout' => 'restricted',
             ]);
             $this->view->set('error', Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP'));
-            $this->view->set('title', $this->title);
+            $this->view->set('title', $this->_title);
             $this->view->set('option', $this->option);
             $this->view->display();
             return;
@@ -1619,7 +1634,7 @@ class Publications extends SiteController
 
             $this->view
                 ->set('error', Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP'))
-                ->set('title', $this->title)
+                ->set('title', $this->_title)
                 ->set('option', $this->option)
                 ->setName('error')
                 ->setLayout('restricted')
