@@ -76,10 +76,9 @@ class Registration
     /**
      * Constructor
      *
-     * @param   string  $login
      * @return  void
      */
-    public function __construct($login = null)
+    public function __construct()
     {
         $this->clear();
     }
