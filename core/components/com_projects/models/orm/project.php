@@ -22,6 +22,14 @@ use Hubzero\Facades\Plugin;
  * Projects database model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * @property  int                       $id            Column
+ * @property  string                    $title         Column
+ * @property  string                    $about         Column
+ * @property  \Hubzero\Config\Registry  $params        The parameters, through transformParams()
+ * @property  \Hubzero\Database\Rows    $connections   Its storage connections, through connections()
+ * @property  \Hubzero\Database\Rows    $descriptions  Its description values, through descriptions()
+ * @property  \Hubzero\Database\Rows    $team          Its team members, through team()
  */
 class Project extends Relational implements \Hubzero\Search\Searchable
 {

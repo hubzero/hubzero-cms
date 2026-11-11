@@ -13,6 +13,8 @@ use Hubzero\Facades\Component;
 
 /**
  * User profile field model
+ *
+ * @property  \Hubzero\Database\Rows  $options  The field's options, through options()
  */
 class Field extends Relational
 {
