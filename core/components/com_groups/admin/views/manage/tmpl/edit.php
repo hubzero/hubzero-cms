@@ -121,7 +121,8 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 class="active"><?= Lang::txt('JDETAILS') ?></a></li>
                             <li><a href="#page-files" onclick="return false;"
                                 id="files"><?= Lang::txt('COM_GROUPS_MEDIA') ?></a></li>
-                            <!-- <li><a href="#" onclick="return false;" id="pages"><?= Lang::txt('COM_COURSES_FIELDSET_PAGES') ?></a></li> -->
+                            <!-- <li><a href="#" onclick="return false;"
+                                id="pages"><?= Lang::txt('COM_COURSES_FIELDSET_PAGES') ?></a></li> -->
                         </ul>
                         <div class="clr"></div>
                     </div>
@@ -372,9 +373,12 @@ $discoverabilityChecked = function ($value) use ($view) {
                             <legend><span><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP'); ?></span></legend>
 
                             <div class="input-wrap">
-                                <input type="checkbox" name="group[params][membership_control]" id="field-membership_control" value="1" <?php if ($membership_control == 1) {
-                                    ?>checked="checked"<?php
-                                                                                                                                        } ?> />
+                                <?php
+                                $checkedAttr = $membership_control == 1 ? 'checked="checked"' : '';
+                                ?>
+                                <input type="checkbox" name="group[params][membership_control]"
+                                    id="field-membership_control" value="1"
+                                    <?= $checkedAttr ?> />
                                 <?php
                                 $labelText = Lang::txt('COM_GROUPS_MEMBERSHIP_CONTROL');
                                 ?>
@@ -490,9 +494,12 @@ $discoverabilityChecked = function ($value) use ($view) {
 
                                     <div class="input-wrap">
                                         <input type="hidden" name="group[discussion_email_autosubscribe]" value="0" />
-                                        <input type="checkbox" name="group[discussion_email_autosubscribe]" id="field-membership_control" value="1" <?php if ($autoEmailResponses == 1) {
-                                            ?>checked="checked"<?php
-                                                                                                                                                    } ?> />
+                                        <?php
+                                        $checkedAttr = $autoEmailResponses == 1 ? 'checked="checked"' : '';
+                                        ?>
+                                        <input type="checkbox" name="group[discussion_email_autosubscribe]"
+                                            id="field-membership_control" value="1"
+                                            <?= $checkedAttr ?> />
                                         <?php
                                         $labelText = Lang::txt('COM_GROUPS_DISCUSSION_EMAIL_AUTOSUBSCRIBE');
                                         ?>

@@ -100,7 +100,9 @@ if ($this->masterAdmin) {
                                 . '?pile=shortlisted" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_DOWNLOAD')
                                 . ' ]</a> &nbsp;&nbsp;&nbsp;';
                         }
-                        echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW') . ' ]</a>'; ?>
+                        echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=resumes')
+                            . '?filterby=shortlisted" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW')
+                            . ' ]</a>'; ?>
                     </span><?php echo $this->stats['shortlisted']; ?>
                 </p>
                 <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_DASHBOARD_APPLIED_TO_ADS'); ?></span>
@@ -111,7 +113,9 @@ if ($this->masterAdmin) {
                                 . '?pile=applied" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_DOWNLOAD')
                                 . ' ]</a> &nbsp;&nbsp;&nbsp;';
                         }
-                        echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=applied" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW') . ' ]</a>'; ?>
+                        echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=resumes')
+                            . '?filterby=applied" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW')
+                            . ' ]</a>'; ?>
                     </span><?php echo $this->stats['applied']; ?>
                 </p>
                 <div class="spacer"></div>
@@ -120,9 +124,12 @@ if ($this->masterAdmin) {
                 </h4>
 
                 <p class="reg">
-                    <span><?php echo Lang::txt('COM_JOBS_DASHBOARD_YOU_HAVE_CURRENTLY') . ' ' . $this->activejobs . ' ' . Lang::txt('COM_JOBS_DASHBOARD_PUBLISHED_ADS');
+                    <span><?php
+                    echo Lang::txt('COM_JOBS_DASHBOARD_YOU_HAVE_CURRENTLY') . ' ' . $this->activejobs . ' '
+                        . Lang::txt('COM_JOBS_DASHBOARD_PUBLISHED_ADS');
                     if (!$this->masterAdmin) {
-                        ?> <br /><?php echo $allowed_ads . ' ' . Lang::txt('COM_JOBS_DASHBOARD_NUMBER_ADS_STILL_ALLOWED');
+                        ?> <br /><?php
+                        echo $allowed_ads . ' ' . Lang::txt('COM_JOBS_DASHBOARD_NUMBER_ADS_STILL_ALLOWED');
                     } ?></span>
                 </p>
                 <?php if (count($this->myjobs) > 0) {
