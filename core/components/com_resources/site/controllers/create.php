@@ -31,6 +31,10 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Resources controller for creating a resource
+ *
+ * @property  int     $step      The step of the submission, set by execute()
+ * @property  array   $progress  Which steps are complete, set by checkProgress()
+ * @property  string  $_title    The page title, set by buildTitle()
  */
 class Create extends SiteController
 {

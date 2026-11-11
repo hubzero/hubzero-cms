@@ -15,6 +15,10 @@ use Components\Members\Models\Member;
  * Resource license model
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * Read through __get():
+ *
+ * @property  \Hubzero\User\User  $profile  The author's account, through profile()
  */
 class Author extends Relational
 {

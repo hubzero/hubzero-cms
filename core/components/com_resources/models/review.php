@@ -17,6 +17,10 @@ use Hubzero\Facades\User;
 
 /**
  * Resource review
+ *
+ * Read through __get():
+ *
+ * @property  string  $comment  The comment column, parsed as wiki text
  */
 class Review extends Relational
 {

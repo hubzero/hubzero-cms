@@ -36,6 +36,19 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Resources controller class
+ *
+ * @property  string                              $_base_path     The component's site directory, set by the constructor
+ * @property  bool                                $_sub           Whether shown inside another component, constructor
+ * @property  bool|string                         $group          The group it is shown for, from the constructor
+ * @property  int                                 $_id            The id request variable, set by execute()
+ * @property  string                              $_alias         The alias request variable, set by execute()
+ * @property  int                                 $resid          The resid request variable, execute() and playTask()
+ * @property  string                              $_title         The page title, set by buildTitle()
+ * @property  string                              $_task_title    The pathway title of the task, set by a task
+ * @property  string                              $type           The type of resource browsed by tag, browsetagsTask()
+ * @property  \Components\Resources\Models\Entry  $activechild    The child being played, set by playTask()
+ * @property  \Components\Resources\Models\Entry  $model          The resource being shown, set by viewTask()
+ * @property  array                               $allowedgroups  The groups that may see it, checkGroupAccess()
  */
 class Resources extends SiteController
 {

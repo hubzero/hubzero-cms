@@ -12,6 +12,10 @@ use Hubzero\Item\Comment as ItemComment;
 
 /**
  * Resources model for a review comment
+ *
+ * Not columns, read and set through __get() and __set():
+ *
+ * @property  string  $_base  The link base, cached by link()
  */
 class Reviewcomment extends ItemComment
 {
