@@ -103,8 +103,9 @@ $show_weight = array_key_exists('show_weight', $_GET);
                                                     $linkUrl = Route::url(
                                                         'index.php?option=com_members&id=' . $contrib_ids[$idx],
                                                     );
+                                                    $sep = $idx != $contrib_len - 1 ? ', ' : '';
                                                     ?>
-                                                <a href="<?= $linkUrl ?>"><?= $this->escape($contrib) ?></a><?= $idx != $contrib_len - 1 ? ', ' : '' ?>
+                                                <a href="<?= $linkUrl ?>"><?= $this->escape($contrib) ?></a><?= $sep ?>
                                                 <?php else : ?>
                                                     <?php echo $this->escape($contrib); ?>
                                                 <?php endif; ?>

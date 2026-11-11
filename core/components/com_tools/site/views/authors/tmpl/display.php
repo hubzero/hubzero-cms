@@ -124,7 +124,15 @@ if ($this->contributors) {
                 <tr>
                     <td width="100%">
                         <?php echo $this->escape($name); ?><br />
-                        <input type="text" name="authors[<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>][organization]" size="35" value="<?= $this->escape(stripslashes($contributor->organization == null ? '' : $contributor->organization)) ?>" placeholder="<?= Lang::txt('COM_TOOLS_AUTHOR_ORGANIZATION') ?>" />
+                        <?php
+                        $authorId = isset($contributor->authorid) ? $contributor->authorid : $contributor->id;
+                        $organization = $this->escape(
+                            stripslashes($contributor->organization == null ? '' : $contributor->organization),
+                        );
+                        ?>
+                        <input type="text" name="authors[<?= $authorId ?>][organization]" size="35"
+                            value="<?= $organization ?>"
+                            placeholder="<?= Lang::txt('COM_TOOLS_AUTHOR_ORGANIZATION') ?>" />
                     </td>
                     <td>
                         <?php

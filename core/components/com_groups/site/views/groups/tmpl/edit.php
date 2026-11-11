@@ -375,7 +375,12 @@ $discoverabilityChecked = function ($value) use ($view) {
                                             <select name="group_plugin[<?= $i ?>][access]"
                                                 aria-label="<?= $ariaLabel ?>">
                                                 <?php foreach ($levels as $level => $name) : ?>
-                                                    <?php $sel = ($this->group_plugin_access[$this->hub_group_plugins[$i]['name']] == $level) ? 'selected' : ''; ?>
+                                                    <?php
+                                                    $pluginName = $this->hub_group_plugins[$i]['name'];
+                                                    $sel = ($this->group_plugin_access[$pluginName] == $level)
+                                                        ? 'selected'
+                                                        : '';
+                                                    ?>
                                                     <?php
                                                     if (
                                                         (
@@ -407,17 +412,17 @@ $discoverabilityChecked = function ($value) use ($view) {
 
                             <div class="form-group form-check">
                                 <label for="discussion_email_autosubscribe" class="form-check-label">
-                                    <input type="checkbox" class="option form-check-input" name="discussion_email_autosubscribe" id="discussion_email_autosubscribe" value="1" <?php
-                                    if (
-                                        $this->group->get('discussion_email_autosubscribe', null) == 1
-                                         || (
-                                             $this->group->get('discussion_email_autosubscribe', null) == null
-                                             && $autoEmailResponses
-                                         )
-                                    ) :
-                                        echo ' checked="checked"';
-                                    endif;
-                                    ?> />
+                                    <?php
+                                    $autosubscribe = $this->group->get('discussion_email_autosubscribe', null);
+                                    $checkedAttr = (
+                                        $autosubscribe == 1 || ($autosubscribe == null && $autoEmailResponses)
+                                    )
+                                        ? ' checked="checked"'
+                                        : '';
+                                    ?>
+                                    <input type="checkbox" class="option form-check-input"
+                                        name="discussion_email_autosubscribe"
+                                        id="discussion_email_autosubscribe" value="1" <?= $checkedAttr ?> />
                                     <?php
                                     $strongText = Lang::txt('COM_GROUPS_EMAIL_SETTING_FORUM_AUTO_SUBSCRIBE');
                                     ?>

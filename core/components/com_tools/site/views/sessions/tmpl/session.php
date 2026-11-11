@@ -74,9 +74,11 @@ if (!$this->app->sess) {
 
     <div id="app-wrap" style="width: <?php echo $this->output->width; ?>px;">
         <div id="app-header">
-            <h2 id="session-title" class="session-title item:name id:<?= $this->app->sess ?> <?php if (is_object($this->app->owns)) :
-                ?>editable<?php
-                                                                     endif; ?>" rel="<?= $this->app->sess ?>"><?= $this->escape($this->app->caption) ?></h2>
+            <?php
+            $editable = is_object($this->app->owns) ? 'editable' : '';
+            ?>
+            <h2 id="session-title" class="session-title item:name id:<?= $this->app->sess ?> <?= $editable ?>"
+                rel="<?= $this->app->sess ?>"><?= $this->escape($this->app->caption) ?></h2>
             <?php if ($this->app->sess) { ?>
                 <ul class="app-toolbar" id="session-options">
                     <li class="timer-li">

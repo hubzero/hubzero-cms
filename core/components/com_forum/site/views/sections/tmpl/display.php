@@ -223,7 +223,15 @@ $this
                                                 <?php
                                                 $actionUrl = Route::url($row->link('delete'));
                                                 ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><span><?= Lang::txt('JACTION_DELETE') ?></span></button>
+                                                <?php
+                                                $confirm = Lang::txt('COM_FORUM_CONFIRM_DELETE');
+                                                $label = Lang::txt('JACTION_DELETE');
+                                                ?>
+                                                <button type="submit" form="hz-post-action"
+                                                    formaction="<?= $actionUrl ?>"
+                                                    class="icon-delete delete tooltips"
+                                                    data-txt-confirm="<?= $confirm ?>"
+                                                    title="<?= $label ?>"><span><?= $label ?></span></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>

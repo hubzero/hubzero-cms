@@ -100,7 +100,14 @@ $categorySelected = function ($value) use ($template) {
             ?>
                 <li<?php echo $cls; ?>>
                     <div class="event-details">
-                        <div class="event-date"><?= Date::of($rows['week']['year'] . '-' . $rows['week']['month'] . '-' . $rows['week']['day'] . ' 00:00:00', date('T'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></div>
+                        <?php
+                        $eventDate = Date::of(
+                            $rows['week']['year'] . '-' . $rows['week']['month'] . '-' . $rows['week']['day']
+                                . ' 00:00:00',
+                            date('T'),
+                        )->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                        ?>
+                        <div class="event-date"><?= $eventDate ?></div>
                     </div>
                     <div class="ewrap">
                 <?php

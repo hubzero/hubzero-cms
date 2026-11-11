@@ -432,7 +432,11 @@ $this
                                         <span class="ticket-id">
                                             <?php echo $row->get('id'); ?>
                                         </span>
-                                        <span class="<?= ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status->get('class') ?> status">
+                                        <?php
+                                        $statusClass = ($row->isOpen() ? 'open' : 'closed') . ' '
+                                            . $row->status->get('class');
+                                        ?>
+                                        <span class="<?= $statusClass ?> status">
                                             <?php
                                             echo $row->status->get('text');
                                             echo (!$row->isOpen())
