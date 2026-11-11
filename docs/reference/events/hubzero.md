@@ -12,7 +12,7 @@ Events in the `hubzero` group. A plugin in `core/plugins/hubzero/` receives an e
 Fired from:
 
 - [`core/components/com_citations/site/views/citations/tmpl/view.php:578`](../../../core/components/com_citations/site/views/citations/tmpl/view.php#L578) with `$params`
-- [`core/components/com_groups/site/views/pages/tmpl/_view.php:262`](../../../core/components/com_groups/site/views/pages/tmpl/_view.php#L262) with `$params`
+- [`core/components/com_groups/site/views/pages/tmpl/_view.php:264`](../../../core/components/com_groups/site/views/pages/tmpl/_view.php#L264) with `$params`
 - [`core/plugins/groups/citations/views/view/tmpl/view.php:582`](../../../core/plugins/groups/citations/views/view/tmpl/view.php#L582) with `$params`
 
 Listeners:
