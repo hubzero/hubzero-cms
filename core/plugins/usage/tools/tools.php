@@ -78,6 +78,8 @@ class Tools extends Plugin
         $html .= "\t" . '</thead>' . "\n";
         $count = 0;
 
+        // The total comes from the rank 0 row; without one, no percentages
+        $total = 0;
         if ($results) {
             foreach ($results as $row) {
                 $cls = ($cls == 'even') ? 'odd' : 'even';
@@ -306,11 +308,11 @@ class Tools extends Plugin
     {
         if ($time < 60) {
             $data = $time . ' seconds';
-        } elseif ($time > 60 && $time < 3600) {
+        } elseif ($time >= 60 && $time < 3600) {
             $data = number_format(($time / 60), 2) . ' minutes';
         } elseif ($time >= 3600 && $time < 86400) {
             $data = number_format(($time / 3600), 2) . ' hours';
-        } elseif ($time >= 86400) {
+        } else {
             $data = number_format(($time / 86400), 2) . ' days';
         }
 
@@ -494,6 +496,13 @@ class Tools extends Plugin
                 break;
 
             case '13':
+                // The year the latest October-to-September period starts in
+                if ($cur_month >= 9) {
+                    $full_year = $cur_year;
+                } else {
+                    $full_year = $cur_year - 1;
+                }
+
                 $ytd_found = 0;
                 foreach ($monthsReverse as $key => $month) {
                     $value = $cur_year . '-' . $key;
@@ -502,14 +511,7 @@ class Tools extends Plugin
                         if ($value == $dthis) {
                             $html .= ' selected="selected"';
                         }
-                        $html .= '>Oct ';
-                        if ($cur_month >= 9) {
-                            $html .= $cur_year;
-                            $full_year = $cur_year;
-                        } else {
-                            $html .= $cur_year - 1;
-                            $full_year = $cur_year - 1;
-                        }
+                        $html .= '>Oct ' . $full_year;
                         $html .= ' - ' . $month . ' ' . $cur_year . '</option>' . "\n";
                         $ytd_found = 1;
                     }
@@ -764,6 +766,7 @@ class Tools extends Plugin
         $sql = "SELECT * FROM `#__stats_tops` ORDER BY id";
         $database->setQuery($sql);
         $results = $database->loadObjectList();
+        $data = [];
         if ($results) {
             foreach ($results as $row) {
                 $top = $row->id;
