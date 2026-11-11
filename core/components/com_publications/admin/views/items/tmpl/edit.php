@@ -84,17 +84,17 @@ $panels = [
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform" data-confirmreset="<?php echo Lang::txt('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET'); ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform" data-confirmreset="<?= Lang::txt('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET') ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
                 <div class="input-wrap">
-                    <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="title" id="field-title" maxlength="250" class="required" value="<?php echo $this->escape(stripslashes($this->model->get('title'))); ?>" />
+                    <label><?= Lang::txt('COM_PUBLICATIONS_FIELD_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="title" id="field-title" maxlength="250" class="required" value="<?= $this->escape(stripslashes($this->model->get('title'))) ?>" />
                 </div>
                 <div class="input-wrap">
-                    <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                    <label><?= Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <?php
                     // Draw category list
                     $this
@@ -108,11 +108,11 @@ $panels = [
                 </div>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
-                    <input type="text" name="alias" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->model->get('alias'))); ?>" />
+                    <input type="text" name="alias" id="field-alias" maxlength="250" value="<?= $this->escape(stripslashes($this->model->get('alias'))) ?>" />
                 </div>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SYNOPSIS'); ?>:</label>
-                    <textarea name="abstract" id="pub-abstract" cols="40" rows="3" class="pubinput"><?php echo $this->escape(preg_replace("/\r\n/", "\r", trim($this->model->get('abstract')))); ?></textarea>
+                    <textarea name="abstract" id="pub-abstract" cols="40" rows="3" class="pubinput"><?= $this->escape(preg_replace("/\r\n/", "\r", trim($this->model->get('abstract')))) ?></textarea>
                 </div>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
@@ -124,18 +124,18 @@ $panels = [
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_METADATA'); ?></span></legend>
                 <div class="input-wrap">
-                    <?php echo $fields ? $fields : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_METADATA_FIELDS') . '</p>'; ?>
+                    <?= $fields ? $fields : '<p class="notice">' . Lang::txt('COM_PUBLICATIONS_NO_METADATA_FIELDS') . '</p>' ?>
                 </div>
             </fieldset>
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NOTES'); ?></span></legend>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_NOTES'); ?>:</label>
-                    <?php echo $this->editor('release_notes', $this->escape(stripslashes($this->model->get('release_notes', ''))), '20', '10', 'notes', ['class' => 'minimal no-footer']); ?>
+                    <?= $this->editor('release_notes', $this->escape(stripslashes($this->model->get('release_notes', ''))), '20', '10', 'notes', ['class' => 'minimal no-footer']) ?>
                 </div>
             </fieldset>
             <fieldset class="adminform">
-                <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_AUTHORS'); ?></span> <span class="sidenote add"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addauthor&pid=' . $this->model->get('id') . '&vid=' . $this->model->get('version_id')); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR'); ?></a></span></legend>
+                <legend><span><?= Lang::txt('COM_PUBLICATIONS_FIELDSET_AUTHORS') ?></span> <span class="sidenote add"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addauthor&pid=' . $this->model->get('id') . '&vid=' . $this->model->get('version_id')) ?>"><?= Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR') ?></a></span></legend>
 
                 <fieldset>
                 <div class="input-wrap" id="publiction-authors">
@@ -159,7 +159,7 @@ $panels = [
                     if (count($tf) > 0) {
                         echo $tf[0];
                     } else { ?>
-                        <input type="text" name="tags" id="actags" value="<?php echo $this->escape($this->model->getTagsForEditing()); ?>" />
+                        <input type="text" name="tags" id="actags" value="<?= $this->escape($this->model->getTagsForEditing()) ?>" />
                     <?php } ?>
                 </div>
             </fieldset>
@@ -178,14 +178,14 @@ $panels = [
                 </div>
                 <div class="input-wrap">
                     <label for="license_text"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE_TEXT'); ?>:</label>
-                    <textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?php echo $this->escape(preg_replace("/\r\n/", "\r", trim($this->model->get('license_text', '')))); ?></textarea>
+                    <textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?= $this->escape(preg_replace("/\r\n/", "\r", trim($this->model->get('license_text', '')))) ?></textarea>
                 </div>
             </fieldset>
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_LINK'); ?></span></legend>
                 <div class="input-wrap">
-                    <input type="checkbox" name="disabledownloadlink" id="disabledownloadlink" <?php echo $this->model->version->downloadDisabled ? "checked" : ''; ?>/>
-                    <label for="disabledownloadlink"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_DESCRIPTION'); ?></label>
+                    <input type="checkbox" name="disabledownloadlink" id="disabledownloadlink" <?= $this->model->version->downloadDisabled ? "checked" : '' ?>/>
+                    <label for="disabledownloadlink"><?= Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_DESCRIPTION') ?></label>
                 </div>
             </fieldset>
         </div>
@@ -225,15 +225,15 @@ $panels = [
                             <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RANKING'); ?>:</th>
                             <td><?php echo $this->model->get('master_ranking'); ?>/10
                                 <?php if ($this->model->get('master_ranking') != '0') { ?>
-                                    <input type="button" name="reset_ranking" id="reset_ranking" value="<?php echo Lang::txt('Reset ranking'); ?>" />
+                                    <input type="button" name="reset_ranking" id="reset_ranking" value="<?= Lang::txt('Reset ranking') ?>" />
                                 <?php } ?>
                             </td>
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RATING'); ?>:</th>
-                            <td><?php echo $rating . '/5.0 (' . $this->model->get('master_times_rated') . ' reviews)'; ?>
+                            <td><?= $rating . '/5.0 (' . $this->model->get('master_times_rated') . ' reviews)' ?>
                             <?php if ($rating != '0.0') { ?>
-                                <input type="button" name="reset_rating" id="reset_rating" value="<?php echo Lang::txt('Reset rating'); ?>" />
+                                <input type="button" name="reset_rating" id="reset_rating" value="<?= Lang::txt('Reset rating') ?>" />
                             <?php } ?>
                             </td>
                         </tr>
@@ -253,13 +253,13 @@ $panels = [
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_VERSION'); ?></th>
                             <td>
-                                <input type="text" name="version_label" id="field-version_label" maxlength="250" size="10" value="<?php echo $this->escape($this->model->get('version_label')); ?>" />
+                                <input type="text" name="version_label" id="field-version_label" maxlength="250" size="10" value="<?= $this->escape($this->model->get('version_label')) ?>" />
                                 <?php echo ' (' . $status . ')'; ?>
                             </td>
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_URL'); ?></th>
-                            <td><a href="<?php echo trim($site, '/') . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number'); ?>"><?php echo trim($site, '/') . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number'); ?></a></td>
+                            <td><a href="<?= trim($site, '/') . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number') ?>"><?= trim($site, '/') . '/publications/' . $this->model->get('id') . '/' . $this->model->get('version_number') ?></a></td>
                         </tr>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED'); ?></th>
@@ -267,7 +267,7 @@ $panels = [
                         </tr>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_MODIFIED_BY'); ?></th>
-                            <td><?php echo $this->escape($this->model->modifier()->get('name', Lang::txt('(unknown)'))); ?></td>
+                            <td><?= $this->escape($this->model->modifier()->get('name', Lang::txt('(unknown)'))) ?></td>
                         </tr>
                     </tbody>
                 </table>
@@ -275,34 +275,34 @@ $panels = [
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELDSET_PUBLISHING'); ?></span></legend>
                 <div class="input-wrap">
-                    <label for="field-published"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?>:</label><br />
+                    <label for="field-published"><?= Lang::txt('COM_PUBLICATIONS_FIELD_STATUS') ?>:</label><br />
                     <select name="state" id="field-published">
-                        <option value="3"<?php echo ($this->model->get('state') == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT'); ?></option>
-                        <option value="4"<?php echo ($this->model->get('state') == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_READY'); ?></option>
-                        <option value="5"<?php echo ($this->model->get('state') == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PENDING'); ?></option>
-                        <option value="7"<?php echo ($this->model->get('state') == 7) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_WIP'); ?></option>
-                        <option value="1"<?php echo ($this->model->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED'); ?></option>
-                        <option value="0"<?php echo ($this->model->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED'); ?></option>
-                        <option value="2"<?php echo ($this->model->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_VERSION_DELETED'); ?></option>
+                        <option value="3"<?= ($this->model->get('state') == 3) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT') ?></option>
+                        <option value="4"<?= ($this->model->get('state') == 4) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_READY') ?></option>
+                        <option value="5"<?= ($this->model->get('state') == 5) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PENDING') ?></option>
+                        <option value="7"<?= ($this->model->get('state') == 7) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_WIP') ?></option>
+                        <option value="1"<?= ($this->model->get('state') == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED') ?></option>
+                        <option value="0"<?= ($this->model->get('state') == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?></option>
+                        <option value="2"<?= ($this->model->get('state') == 2) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DELETED') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap" id="unPubReasonDiv">
-                    <label for="field-unPubReason"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISHED_REASON'); ?>:</label><br />
+                    <label for="field-unPubReason"><?= Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISHED_REASON') ?>:</label><br />
                     <select name="unPubReasonDropdownList" id="field-unPubReason" disabled>
-                        <option value="0"<?php echo ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_OTHERS'); ?></option>
-                        <option value="1" <?php echo ($this->model->get('unpublished_reason') == null || $this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE'); ?></option>
-                        <option value="2"<?php echo ($this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR'); ?></option>
+                        <option value="0"<?= ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_OTHERS') ?></option>
+                        <option value="1" <?= ($this->model->get('unpublished_reason') == null || $this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') ?></option>
+                        <option value="2"<?= ($this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap" id="reasonDiv">
                     <label for="reason"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ASK_REASON'); ?>:</label><br />
-                    <textarea name="reason" id="reason" rows="5" cols="50" disabled ><?php echo ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? $this->escape($this->model->get('unpublished_reason')) : ''; ?></textarea>
+                    <textarea name="reason" id="reason" rows="5" cols="50" disabled ><?= ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? $this->escape($this->model->get('unpublished_reason')) : '' ?></textarea>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-featured"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_FEATURED'); ?>:</label><br />
+                    <label for="field-featured"><?= Lang::txt('COM_PUBLICATIONS_FIELD_FEATURED') ?>:</label><br />
                     <select name="featured" id="field-featured">
-                        <option value="0"<?php echo ($this->model->get('featured') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_NO'); ?></option>
-                        <option value="1"<?php echo ($this->model->get('featured') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_YES'); ?></option>
+                        <option value="0"<?= ($this->model->get('featured') == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_NO') ?></option>
+                        <option value="1"<?= ($this->model->get('featured') == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_YES') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap">
@@ -332,11 +332,11 @@ $panels = [
                     </div>
                 <?php endif; ?>
                 <div class="input-wrap">
-                    <label for="publish_up"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_PUBLISH_DATE'); ?>:</label><br />
-                    <?php echo Html::input('calendar', 'published_up', ($this->model->version->published_up && $this->model->version->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s')) : '')); ?>
+                    <label for="publish_up"><?= Lang::txt('COM_PUBLICATIONS_FIELD_PUBLISH_DATE') ?>:</label><br />
+                    <?= Html::input('calendar', 'published_up', ($this->model->version->published_up && $this->model->version->published_up != '0000-00-00 00:00:00' ? $this->escape(Date::of($this->model->version->published_up)->toLocal('Y-m-d H:i:s')) : '')) ?>
                 </div>
                 <div class="input-wrap">
-                    <label for="publish_down"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE'); ?>:</label><br />
+                    <label for="publish_down"><?= Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE') ?>:</label><br />
                     <?php
                         $down = 'Never';
                     if (strtolower($this->model->version->published_down == null ? '' : $this->model->version->published_down) != Lang::txt('COM_PUBLICATIONS_NEVER')) {
@@ -357,25 +357,25 @@ $panels = [
                         <tbody>
                             <?php if ($this->model->submitter()) { ?>
                                 <tr>
-                                    <td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTER'); ?>:</td>
+                                    <td class="paramlist_key"><?= Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTER') ?>:</td>
                                     <td><?php echo $this->escape($this->model->submitter()->name); ?></td>
                                 </tr>
                             <?php } ?>
                             <?php if ($this->model->isPending()) { ?>
                                 <tr>
-                                    <td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?>:</td>
+                                    <td class="paramlist_key"><?= Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTED') ?>:</td>
                                     <td><?php echo $this->model->submitted; ?></td>
                                 </tr>
                             <?php } elseif ($this->model->isPublished() || $this->model->isUnpublished()) { ?>
                                 <?php if ($this->model->submitted()) { ?>
                                         <tr>
-                                            <td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTED'); ?></td>
+                                            <td class="paramlist_key"><?= Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTED') ?></td>
                                             <td><?php echo $this->model->submitted('datetime'); ?></td>
                                         </tr>
                                 <?php } ?>
                                 <?php if ($this->model->accepted()) { ?>
                                         <tr>
-                                            <td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ACCEPTED'); ?></td>
+                                            <td class="paramlist_key"><?= Lang::txt('COM_PUBLICATIONS_FIELD_ACCEPTED') ?></td>
                                             <td><?php echo $this->model->accepted('datetime'); ?></td>
                                         </tr>
                                 <?php } ?>
@@ -384,9 +384,9 @@ $panels = [
                                 <td class="paramlist_key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE'); ?></td>
                                 <td>
                                     <?php if (file_exists($this->model->bundlePath())) { ?>
-                                        <a href="<?php echo trim($site, DS) . '/publications/' . $this->model->get('id') . DS . 'serve' . DS . $this->model->get('version_number') . '/?render=archive'; ?>" class="archival"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE'); ?></a> &nbsp;&nbsp;<a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=archive&pid=' . $this->model->get('id') . '&vid=' . $this->model->get('version_id') . '&version=' . $this->model->versionAlias(), false); ?>">[<?php echo Lang::txt('COM_PUBLICATIONS_REPACKAGE'); ?>]</a>
+                                        <a href="<?= trim($site, DS) . '/publications/' . $this->model->get('id') . DS . 'serve' . DS . $this->model->get('version_number') . '/?render=archive' ?>" class="archival"><?= Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE') ?></a> &nbsp;&nbsp;<a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=archive&pid=' . $this->model->get('id') . '&vid=' . $this->model->get('version_id') . '&version=' . $this->model->versionAlias(), false) ?>">[<?= Lang::txt('COM_PUBLICATIONS_REPACKAGE') ?>]</a>
                                     <?php  } else { ?>
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=archive&pid=' . $this->model->get('id') . '&vid=' . $this->model->get('version_id') . '&version=' . $this->model->versionAlias(), false); ?>" class="archival"><?php echo Lang::txt('COM_PUBLICATIONS_PRODUCE_ARCHIVAL'); ?></a>
+                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=archive&pid=' . $this->model->get('id') . '&vid=' . $this->model->get('version_id') . '&version=' . $this->model->versionAlias(), false) ?>" class="archival"><?= Lang::txt('COM_PUBLICATIONS_PRODUCE_ARCHIVAL') ?></a>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -399,14 +399,14 @@ $panels = [
                 <div class="input-wrap">
                     <textarea name="message" id="message" rows="5" cols="50"></textarea>
                     <input type="hidden" name="admin_action" id="admin_action" value="" />
-                    <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_SEND_MESSAGE'); ?>" class="btn" id="do-message" />
+                    <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_SEND_MESSAGE') ?>" class="btn" id="do-message" />
                     <?php if ($this->model->isPublished()) { ?>
-                        <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION'); ?>" class="btn" id="do-unpublish" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION') ?>" class="btn" id="do-unpublish" />
                     <?php } elseif ($this->model->isUnpublished()) { ?>
-                        <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION'); ?>" class="btn" id="do-republish" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION') ?>" class="btn" id="do-republish" />
                     <?php } elseif ($this->model->isPending()) { ?>
-                        <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH'); ?>" class="btn" id="do-publish" />
-                        <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT'); ?>" class="btn" id="do-revert" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH') ?>" class="btn" id="do-publish" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT') ?>" class="btn" id="do-revert" />
                     <?php } ?>
                 </div>
             </fieldset>
@@ -424,8 +424,8 @@ $panels = [
                                 <td class="key"><?php echo ucfirst($panel); ?>:</td>
                                 <td>
                                     <select name="params[show_<?php echo $panel; ?>]">
-                                        <option value="0" <?php echo ($params->get('show_' . $panel, $val) == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_HIDE'); ?></option>
-                                        <option value="1" <?php echo ($params->get('show_' . $panel, $val) > 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PUBLICATIONS_SHOW'); ?></option>
+                                        <option value="0" <?= ($params->get('show_' . $panel, $val) == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_HIDE') ?></option>
+                                        <option value="1" <?= ($params->get('show_' . $panel, $val) > 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_SHOW') ?></option>
                                     </select>
                                 </td>
                             </tr>

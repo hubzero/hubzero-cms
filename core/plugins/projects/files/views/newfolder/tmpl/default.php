@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
 
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_ADD_NEW_FOLDER'); ?> <?php if ($this->subdir) {
-    ?> <?php echo Lang::txt('PLG_PROJECTS_FILES_IN'); ?> <span class="folder"><?php echo $this->escape($this->subdir); ?></span> <?php
+    ?> <?= Lang::txt('PLG_PROJECTS_FILES_IN') ?> <span class="folder"><?= $this->escape($this->subdir) ?></span> <?php
     } ?></h3>
 <?php
 // Display error

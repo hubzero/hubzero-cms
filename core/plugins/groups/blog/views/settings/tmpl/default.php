@@ -68,8 +68,8 @@ $this
                 <label for="param-feeds_enabled">
                     <?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_FEED'); ?>
                     <select name="params[feeds_enabled]" id="param-feeds_enabled" class="form-control">
-                        <option value="0"<?php echo !$this->config->get('feeds_enabled', 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_DISABLED'); ?></option>
-                        <option value="1"<?php echo $this->config->get('feeds_enabled', 1) == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENABLED'); ?></option>
+                        <option value="0"<?= !$this->config->get('feeds_enabled', 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_DISABLED') ?></option>
+                        <option value="1"<?= $this->config->get('feeds_enabled', 1) == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENABLED') ?></option>
                     </select>
                 </label>
             </div>
@@ -78,8 +78,8 @@ $this
                 <label for="param-feeds_entries">
                     <?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FEED_ENTRY_LENGTH'); ?>
                     <select name="params[feed_entries]" id="param-feeds_entries" class="form-control">
-                        <option value="full"<?php echo $this->config->get('feed_entries', 'partial') == 'full' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FULL'); ?></option>
-                        <option value="partial"<?php echo $this->config->get('feed_entries', 'partial') == 'partial' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_PARTIAL'); ?></option>
+                        <option value="full"<?= $this->config->get('feed_entries', 'partial') == 'full' ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FULL') ?></option>
+                        <option value="partial"<?= $this->config->get('feed_entries', 'partial') == 'partial' ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_PARTIAL') ?></option>
                     </select>
                 </label>
             </div>

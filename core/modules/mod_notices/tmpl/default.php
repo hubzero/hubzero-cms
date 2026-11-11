@@ -59,7 +59,7 @@ if ($this->publish) {
                 $page .= $this->moduleid . '=close';
                                 $page = htmlspecialchars($page, ENT_COMPAT, 'UTF-8');
                 ?>
-                <a class="close" rel="nofollow" href="<?php echo $page; ?>" data-duration="<?php echo $this->days_left; ?>" title="<?php echo Lang::txt('MOD_NOTICES_CLOSE_TITLE'); ?>">
+                <a class="close" rel="nofollow" href="<?= $page ?>" data-duration="<?= $this->days_left ?>" title="<?= Lang::txt('MOD_NOTICES_CLOSE_TITLE') ?>">
                     <span><?php echo Lang::txt('MOD_NOTICES_CLOSE'); ?></span>
                 </a>
                 <?php

@@ -57,7 +57,7 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
             <input type="hidden" name="p" value="<?php echo $this->escape($this->props); ?>" />
             <input type="hidden" name="action" value="saveitem" />
             <input type="hidden" name="active" value="publications" />
-            <input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
+            <input type="hidden" name="option" value="<?= $this->project->isProvisioned() ? 'com_publications' : $this->option ?>" />
             <input type="hidden" name="backUrl" value="<?php echo $this->escape($this->backUrl); ?>" />
             <?php if ($this->project->isProvisioned()) { ?>
                 <input type="hidden" name="task" value="submit" />
@@ -67,39 +67,39 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
             <div class="content-edit">
 
                 <label for="title">
-                    <span class="leftshift faded"><?php echo $this->row->type == 'link' ? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE')) : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LABEL')); ?>:</span>
-                    <input type="text" name="title" maxlength="250" class="long" value="<?php echo $this->escape($this->row && $this->row->title ? $this->row->title : $defaultTitle); ?>" placeholder="<?php echo $this->escape($placeholder); ?>" />
+                    <span class="leftshift faded"><?= $this->row->type == 'link' ? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE')) : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LABEL')) ?>:</span>
+                    <input type="text" name="title" maxlength="250" class="long" value="<?= $this->escape($this->row && $this->row->title ? $this->row->title : $defaultTitle) ?>" placeholder="<?= $this->escape($placeholder) ?>" />
                 </label>
                 <?php if ($this->row->type == 'link') { ?>
                     <p class="c-wrapper">
-                        <span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_URL')); ?>:</span>
+                        <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_URL')) ?>:</span>
                         <span class="content-filepath"><?php echo $this->escape($this->row->path); ?></span>
                     </p>
                 <?php } ?>
                 <?php if ($this->row->type == 'file') { ?>
                     <?php if ($gone || !$allowRename) { ?>
                         <p class="c-wrapper">
-                            <span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>:</span>
+                            <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')) ?>:</span>
                             <span class="content-filepath"><?php echo $this->escape($this->row->path); ?></span>
                         </p>
                         <p class="c-wrapper">
-                            <span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_DESCRIPTION')); ?>:</span>
-                            <textarea name="description" class="long" rows="10" cols="60" maxlength="5000" placeholder="Enter up to 5000 characters..."><?php echo $this->escape($this->row->attribs); ?></textarea>
+                            <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_DESCRIPTION')) ?>:</span>
+                            <textarea name="description" class="long" rows="10" cols="60" maxlength="5000" placeholder="Enter up to 5000 characters..."><?= $this->escape($this->row->attribs) ?></textarea>
                         </p>
                     <?php } else { ?>
                         <p class="c-wrapper">
-                            <span class="leftshift faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')); ?>*:</span>
-                            <span><?php echo $dirpath; ?> <input type="text" name="filename" maxlength="100" value="<?php echo $this->escape(basename($this->row->path)); ?>" /></span>
+                            <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')) ?>*:</span>
+                            <span><?= $dirpath ?> <input type="text" name="filename" maxlength="100" value="<?= $this->escape(basename($this->row->path)) ?>" /></span>
                         </p>
                     <?php } ?>
                 <?php } ?>
 
                 <p class="submitarea">
-                    <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE'); ?>" />
+                    <input type="submit" class="btn" value="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE') ?>" />
                     <?php if ($this->ajax) { ?>
-                        <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                        <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?= Lang::txt('JCANCEL') ?>" />
                     <?php } else { ?>
-                        <a href="<?php echo $this->backUrl; ?>" class="btn btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
+                        <a href="<?= $this->backUrl ?>" class="btn btn-cancel"><?= Lang::txt('JCANCEL') ?></a>
                     <?php } ?>
                 </p>
             </div>

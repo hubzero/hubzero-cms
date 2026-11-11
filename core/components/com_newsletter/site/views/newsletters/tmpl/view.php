@@ -24,13 +24,13 @@ $this
         <ul>
             <?php if (isset($this->id) && $this->id != 0) : ?>
                 <li>
-                    <a href="<?php echo Route::url('index.php?option=com_newsletter&id=' . $this->id . '&task=output'); ?>" class="btn icon-file">
+                    <a href="<?= Route::url('index.php?option=com_newsletter&id=' . $this->id . '&task=output') ?>" class="btn icon-file">
                         <?php echo Lang::txt('COM_NEWSLETTER_VIEW_SAVEASPDF'); ?>
                     </a>
                 </li>
             <?php endif; ?>
             <li>
-                <a href="<?php echo Route::url('index.php?option=com_newsletter&task=subscribe'); ?>" class="btn icon-feed">
+                <a href="<?= Route::url('index.php?option=com_newsletter&task=subscribe') ?>" class="btn icon-feed">
                     <?php echo Lang::txt('COM_NEWSLETTER_VIEW_SUBSCRIBE_TO_MAILINGLISTS'); ?>
                 </a>
             </li>
@@ -51,7 +51,7 @@ $this
 
             <?php if ($this->newsletter != '') : ?>
                 <div class="container">
-                    <iframe id="newsletter-iframe" width="100%" height="0" title="<?php echo $this->escape($this->title); ?>" src="<?php echo Route::url('index.php?option=com_newsletter&id=' . $this->id . '&no_html=1'); ?>"></iframe>
+                    <iframe id="newsletter-iframe" width="100%" height="0" title="<?= $this->escape($this->title) ?>" src="<?= Route::url('index.php?option=com_newsletter&id=' . $this->id . '&no_html=1') ?>"></iframe>
                 </div>
             <?php else : ?>
                 <p class="info">
@@ -93,7 +93,7 @@ $this
             <h3><?php echo Lang::txt('COM_NEWSLETTER_VIEW_NEWSLETTER_HELP'); ?></h3>
             <ul>
                 <li>
-                    <a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=newsletter&page=index'); ?>">
+                    <a class="popup" href="<?= Route::url('index.php?option=com_help&component=newsletter&page=index') ?>">
                         <?php echo Lang::txt('COM_NEWSLETTER_VIEW_NEWSLETTER_HELP'); ?>
                     </a>
                 </li>

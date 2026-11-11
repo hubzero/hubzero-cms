@@ -68,8 +68,8 @@ $authorlist = '';
                         <?php if ($line->section == 'Topic') { ?>
                             <a href="<?php echo $sef; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>
                         <?php } else { ?>
-                            <?php echo $line->section == 'Series' ? Lang::txt('PLG_PUBLICATION_RELATED_PART_OF') : ''; ?>
-                                <a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>
+                            <?= $line->section == 'Series' ? Lang::txt('PLG_PUBLICATION_RELATED_PART_OF') : '' ?>
+                                <a href="<?= $sef ?>" class="fixedResourceTip" title="DOM:rsrce<?= $line->id ?>"><?= $this->escape(stripslashes($line->title)) ?></a>
                                 <div class="hide" id="rsrce<?php echo $line->id; ?>">
                                     <h4><?php echo $this->escape(stripslashes($line->title)); ?></h4>
                                     <div>
@@ -81,22 +81,22 @@ $authorlist = '';
                                                 </tr>
                                             <?php if ($authorlist) { ?>
                                                 <tr>
-                                                    <th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_CONTRIBUTORS'); ?></th>
+                                                    <th><?= Lang::txt('PLG_PUBLICATION_RELATED_CONTRIBUTORS') ?></th>
                                                     <td><?php echo $authorlist; ?></td>
                                                 </tr>
                                             <?php } ?>
                                                 <tr>
                                                     <th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_DATE'); ?></th>
-                                                    <td><?php echo Date::of($line->published_up)->toLocal('d M, Y'); ?></td>
+                                                    <td><?= Date::of($line->published_up)->toLocal('d M, Y') ?></td>
                                                 </tr>
                                                 <tr>
-                                                    <th><?php echo Lang::txt('PLG_PUBLICATION_RELATED_AVG_RATING'); ?></th>
-                                                    <td><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('OUT_OF_5_STARS', $line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
+                                                    <th><?= Lang::txt('PLG_PUBLICATION_RELATED_AVG_RATING') ?></th>
+                                                    <td><span class="avgrating<?= $class ?>"><span><?= Lang::txt('OUT_OF_5_STARS', $line->rating) ?></span>&nbsp;</span> (<?= $line->times_rated ?>)</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
-                                    <?php echo $this->escape(\Hubzero\Utility\Str::truncate(strip_tags(stripslashes($line->abstract)), 300)); ?>
+                                    <?= $this->escape(\Hubzero\Utility\Str::truncate(strip_tags(stripslashes($line->abstract)), 300)) ?>
                                 </div>
                         <?php } ?>
                     </td>

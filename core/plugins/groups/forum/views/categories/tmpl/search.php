@@ -20,18 +20,18 @@ $this
 ?>
 <ul id="page_options">
     <li>
-        <a class="icon-folder categories btn" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('PLG_GROUPS_FORUM_ALL_CATEGORIES'); ?></a>
+        <a class="icon-folder categories btn" href="<?= Route::url($base) ?>"><?= Lang::txt('PLG_GROUPS_FORUM_ALL_CATEGORIES') ?></a>
     </li>
 </ul>
 
 <section class="main section">
     <form action="<?php echo Route::url($base . '&scope=search'); ?>" method="get">
         <div class="container data-entry">
-            <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH'); ?>" />
+            <input class="entry-search-submit" type="submit" value="<?= Lang::txt('PLG_GROUPS_FORUM_SEARCH') ?>" />
             <fieldset class="entry-search">
                 <legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LEGEND'); ?></legend>
                 <label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LABEL'); ?></label>
-                <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER'); ?>" />
+                <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER') ?>" />
             </fieldset>
         </div><!-- / .container -->
 
@@ -76,7 +76,7 @@ $this
                                     <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                 </th>
                                 <td>
-                                    <a class="entry-title" href="<?php echo Route::url($base . '&scope=' . $this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('alias') . '/' . $this->categories[$row->get('category_id')]->get('alias') . '/' . $row->get('thread')); ?>">
+                                    <a class="entry-title" href="<?= Route::url($base . '&scope=' . $this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('alias') . '/' . $this->categories[$row->get('category_id')]->get('alias') . '/' . $row->get('thread')) ?>">
                                         <span><?php echo $title; ?></span>
                                     </a>
                                     <span class="entry-details">
@@ -92,13 +92,13 @@ $this
                                 <td class="priority-4">
                                     <span><?php echo Lang::txt('PLG_GROUPS_FORUM_SECTION'); ?></span>
                                     <span class="entry-details section-name">
-                                        <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, ['exact' => true])); ?>
+                                        <?= $this->escape(\Hubzero\Utility\Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, ['exact' => true])) ?>
                                     </span>
                                 </td>
                                 <td class="priority-3">
                                     <span><?php echo Lang::txt('PLG_GROUPS_FORUM_CATEGORY'); ?></span>
                                     <span class="entry-details category-name">
-                                        <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->categories[$row->get('category_id')]->get('title'), 100, ['exact' => true])); ?>
+                                        <?= $this->escape(\Hubzero\Utility\Str::truncate($this->categories[$row->get('category_id')]->get('title'), 100, ['exact' => true])) ?>
                                     </span>
                                 </td>
                             </tr>

@@ -57,19 +57,19 @@ $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=com_messages&view=messages'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=com_messages&view=messages') ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6 filter-search">
-                <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER_LABEL'); ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MESSAGES_SEARCH_IN_SUBJECT'); ?>" />
+                <label class="filter-search-lbl" for="filter_search"><?= Lang::txt('JSEARCH_FILTER_LABEL') ?></label>
+                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MESSAGES_SEARCH_IN_SUBJECT') ?>" />
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
             <div class="col span6 filter-select">
                 <select name="filter_state" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
-                    <?php echo Html::select('options', Components\Messages\Helpers\Utilities::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
+                    <?= Html::select('options', Components\Messages\Helpers\Utilities::getStateOptions(), 'value', 'text', $this->filters['state']) ?>
                 </select>
             </div>
         </div>
@@ -79,7 +79,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" value="" title="<?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?>" class="checkbox-toggle toggle-all" />
+                    <input type="checkbox" name="checkall-toggle" value="" title="<?= Lang::txt('JGLOBAL_CHECK_ALL') ?>" class="checkbox-toggle toggle-all" />
                 </th>
                 <th class="title">
                     <?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_SUBJECT', 'subject', $listDirn, $listOrder); ?>
@@ -88,7 +88,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                     <?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_READ', 'state', $listDirn, $listOrder); ?>
                 </th>
                 <th>
-                    <?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_FROM', 'user_id_from', $listDirn, $listOrder); ?>
+                    <?= Html::grid('sort', 'COM_MESSAGES_HEADING_FROM', 'user_id_from', $listDirn, $listOrder) ?>
                 </th>
                 <th class="nowrap">
                     <?php echo Html::grid('sort', 'JDATE', 'date_time', $listDirn, $listOrder); ?>
@@ -111,7 +111,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                         <?php echo Html::grid('id', $i, $item->message_id); ?>
                     </td>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=com_messages&task=view&message_id=' . (int) $item->message_id); ?>">
+                        <a href="<?= Route::url('index.php?option=com_messages&task=view&message_id=' . (int) $item->message_id) ?>">
                             <?php echo $this->escape($item->subject); ?>
                         </a>
                     </td>

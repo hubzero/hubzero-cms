@@ -19,8 +19,8 @@ if ($this->getError()) {
 $this->js('media.js');
 
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
-    <p><?php echo Lang::txt('COM_RESOURCES_MEDIA_PATH', $this->escape(str_replace(PATH_ROOT, 'ROOT', $this->path))); ?></p>
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+    <p><?= Lang::txt('COM_RESOURCES_MEDIA_PATH', $this->escape(str_replace(PATH_ROOT, 'ROOT', $this->path))) ?></p>
 
     <fieldset>
         <label>
@@ -29,8 +29,8 @@ $this->js('media.js');
         </label>
 
         <div id="themanager" class="manager">
-            <iframe src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir); ?>" name="imgManager" id="imgManager" width="98%" height="180"
-                data-dir="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component'); ?>"></iframe>
+            <iframe src="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir) ?>" name="imgManager" id="imgManager" width="98%" height="180"
+                data-dir="<?= Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component') ?>"></iframe>
         </div>
     </fieldset>
 
@@ -43,15 +43,15 @@ $this->js('media.js');
                 </tr>
                 <tr>
                     <td> </td>
-                    <td><input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?php echo Lang::txt('COM_RESOURCES_MEDIA_UPLOAD_UNPACK'); ?></label></td>
+                    <td><input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?= Lang::txt('COM_RESOURCES_MEDIA_UPLOAD_UNPACK') ?></label></td>
                 </tr>
                 <tr>
-                    <td><label for="foldername"><?php echo Lang::txt('COM_RESOURCES_MEDIA_CREATE_DIRECTORY'); ?></label></td>
+                    <td><label for="foldername"><?= Lang::txt('COM_RESOURCES_MEDIA_CREATE_DIRECTORY') ?></label></td>
                     <td><input type="text" name="foldername" id="foldername" /></td>
                 </tr>
                 <tr>
                     <td> </td>
-                    <td><input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_MEDIA_ACTION_UPLOAD'); ?>" /></td>
+                    <td><input type="submit" value="<?= Lang::txt('COM_RESOURCES_MEDIA_ACTION_UPLOAD') ?>" /></td>
                 </tr>
             </tbody>
         </table>

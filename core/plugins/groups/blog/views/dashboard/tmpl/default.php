@@ -22,9 +22,9 @@ if ($this->entries) {
         ?>
         <tr>
             <th scope="row"><?php echo $area; ?></th>
-            <td class="author"><a href="<?php echo Route::url('index.php?option=com_members&id=' . $entry->created_by); ?>"><?php echo stripslashes($name); ?></a></td>
+            <td class="author"><a href="<?= Route::url('index.php?option=com_members&id=' . $entry->created_by) ?>"><?= stripslashes($name) ?></a></td>
             <td class="action"><?php echo $this->escape(stripslashes($entry->title)); ?></td>
-            <td class="date"><?php echo Date::of($entry->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' @' . Lang::txt('TIME_FORMAT_HZ1')); ?></td>
+            <td class="date"><?= Date::of($entry->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1') . ' @' . Lang::txt('TIME_FORMAT_HZ1')) ?></td>
         </tr>
         <?php
     }

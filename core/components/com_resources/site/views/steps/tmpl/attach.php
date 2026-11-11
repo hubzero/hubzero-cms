@@ -25,7 +25,7 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
+            <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=draft') ?>">
                 <?php echo Lang::txt('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
             </a>
         </p>
@@ -49,14 +49,14 @@ $this
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn . '&id=' . $this->id); ?>" method="post" id="hubForm">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn . '&id=' . $this->id) ?>" method="post" id="hubForm">
         <div class="explaination">
             <h4><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_WHAT_ARE_ATTACHMENTS'); ?></h4>
             <p><?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_EXPLANATION'); ?></p>
             <h4><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS'); ?></h4>
             <p>
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION'); ?><br />
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION'); ?>
+                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION') ?><br />
+                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION') ?>
             </p>
         </div>
         <fieldset>
@@ -78,7 +78,7 @@ $this
                             ?>
                         <?php endif; ?>
                     </div>
-                    <iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" title="<?php echo Lang::txt('COM_CONTRIBUTE_ATTACH_CONTENT'); ?>" src="index.php?option=<?php echo $this->option; ?>&amp;controller=attachments&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
+                    <iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" title="<?= Lang::txt('COM_CONTRIBUTE_ATTACH_CONTENT') ?>" src="index.php?option=<?= $this->option ?>&amp;controller=attachments&amp;id=<?= $this->id ?>&amp;tmpl=component"></iframe>
                 </div><!-- / .asset-uploader -->
             </div><!-- / .field-wrap -->
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

@@ -64,7 +64,7 @@ $route = $this->model->isProvisioned()
     : 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 
 ?>
-<ul id="c-browser" <?php echo count($items) == 0 && isset($this->attachments) && count($this->attachments) == 0 ? 'class="hidden"' : ''; ?> >
+<ul id="c-browser" <?= count($items) == 0 && isset($this->attachments) && count($this->attachments) == 0 ? 'class="hidden"' : '' ?> >
     <?php
     if (count($notes) > 0) {
         foreach ($notes as $note) {

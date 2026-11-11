@@ -50,20 +50,20 @@ $formUrl = Route::url(
         <?php if (count($this->responses)) : ?>
             <label for="deny-response">
                 <?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_CHOOSE'); ?>
-                <select id="deny-response" data-confirm="<?php echo $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_REPLACE')); ?>">
+                <select id="deny-response" data-confirm="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_REPLACE')) ?>">
                     <option value=""><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_NONE'); ?></option>
                     <?php foreach ($this->responses as $i => $response) : ?>
-                        <option value="<?php echo $i; ?>" data-text="<?php echo $this->escape($response['text']); ?>"><?php echo $this->escape($response['title']); ?></option>
+                        <option value="<?= $i ?>" data-text="<?= $this->escape($response['text']) ?>"><?= $this->escape($response['title']) ?></option>
                     <?php endforeach; ?>
                 </select>
             </label>
             <p class="hint">
-                <a href="<?php echo Route::url($manageUrl); ?>"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_MANAGE'); ?></a>
+                <a href="<?= Route::url($manageUrl) ?>"><?= Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_MANAGE') ?></a>
             </p>
         <?php else : ?>
             <p class="hint">
                 <?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_NONE'); ?>
-                <a href="<?php echo Route::url($manageUrl); ?>"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_ADD'); ?></a>
+                <a href="<?= Route::url($manageUrl) ?>"><?= Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_ADD') ?></a>
             </p>
         <?php endif; ?>
 

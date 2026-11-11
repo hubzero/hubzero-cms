@@ -40,24 +40,24 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
     <input type="hidden" name="action" value="team" />
 
     <div class="container">
-        <!-- <p class="msg-total"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SHOWING')); ?> <?php echo $this->total <= count($this->team) ? Lang::txt('PLG_PROJECTS_TEAM_ALL') : ''; ?> <span class="prominent"><?php echo count($this->team); ?></span>  <?php echo $this->total > count($this->team) ? Lang::txt('PLG_PROJECTS_TEAM_OUT_OF') . ' ' . $this->total : ''; ?> <?php echo Lang::txt('PLG_PROJECTS_TEAM_MEMBERS'); ?></p> -->
+        <!-- <p class="msg-total"><?= ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SHOWING')) ?> <?= $this->total <= count($this->team) ? Lang::txt('PLG_PROJECTS_TEAM_ALL') : '' ?> <span class="prominent"><?= count($this->team) ?></span>  <?= $this->total > count($this->team) ? Lang::txt('PLG_PROJECTS_TEAM_OUT_OF') . ' ' . $this->total : '' ?> <?= Lang::txt('PLG_PROJECTS_TEAM_MEMBERS') ?></p> -->
 
         <table id="teamlist" class="listing">
             <thead>
                 <tr>
-                    <th class="priority-3 imagebox" aria-label="<?php echo Lang::txt('Photo'); ?>"><span class="sr-only">Photo</span></th>
+                    <th class="priority-3 imagebox" aria-label="<?= Lang::txt('Photo') ?>"><span class="sr-only">Photo</span></th>
                     <th>
-                        <a class="sort-title <?php echo $this->filters['sortby'] == 'name' ? strtolower($this->filters['sortdir']) . ' active' : ''; ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=name'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_NAME'))); ?>">
+                        <a class="sort-title <?= $this->filters['sortby'] == 'name' ? strtolower($this->filters['sortdir']) . ' active' : '' ?>" href="<?= Route::url($this->model->link('team') . $sortAppend . '&sortby=name') ?>" title="<?= Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_NAME'))) ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?>
                         </a>
                     </th>
                     <th>
-                        <a class="sort-title <?php echo $this->filters['sortby'] == 'role' ? strtolower($this->filters['sortdir']) . ' active' : ''; ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=role'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_ROLE'))); ?>">
+                        <a class="sort-title <?= $this->filters['sortby'] == 'role' ? strtolower($this->filters['sortdir']) . ' active' : '' ?>" href="<?= Route::url($this->model->link('team') . $sortAppend . '&sortby=role') ?>" title="<?= Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_ROLE'))) ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_ROLE'); ?>
                         </a>
                     </th>
                     <th class="priority-5">
-                        <a class="sort-title <?php echo $this->filters['sortby'] == 'date' ? strtolower($this->filters['sortdir']) . ' active' : ''; ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=date'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_JOINED'))); ?>">
+                        <a class="sort-title <?= $this->filters['sortby'] == 'date' ? strtolower($this->filters['sortdir']) . ' active' : '' ?>" href="<?= Route::url($this->model->link('team') . $sortAppend . '&sortby=date') ?>" title="<?= Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_JOINED'))) ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_JOINED'); ?>
                         </a>
                     </th>
@@ -104,12 +104,12 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                 }
                 $username = $owner->username ? $owner->username : $owner->invited_email;
                 ?>
-                <tr class="mline <?php echo $owner->userid == $this->uid ? 'native' : ''; ?>" id="tr_<?php echo $owner->id; ?>">
+                <tr class="mline <?= $owner->userid == $this->uid ? 'native' : '' ?>" id="tr_<?= $owner->id ?>">
                     <td class="priority-3 imagebox">
-                        <a class="user-img-wrap" href="<?php echo Route::url('index.php?option=com_members&id=' . $owner->userid); ?>" <?php if ($owner->fullname) {
+                        <a class="user-img-wrap" href="<?= Route::url('index.php?option=com_members&id=' . $owner->userid) ?>" <?php if ($owner->fullname) {
                             ?>title="<?php echo $this->escape($owner->fullname) . ' (' . $owner->userid . ')'; ?>"<?php
                                                        } ?>>
-                            <img src="<?php echo $profile->picture(); ?>" alt="<?php echo $owner->fullname ? $this->escape($owner->fullname) : ''; ?>" />
+                            <img src="<?= $profile->picture() ?>" alt="<?= $owner->fullname ? $this->escape($owner->fullname) : '' ?>" />
                         </a>
                     </td>
                     <td>
@@ -117,7 +117,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                         <span class="block short prominent"><?php echo $this->escape($username); ?></span>
                     </td>
                     <td>
-                        <?php echo ($creator && !$this->model->groupOwner() ? '<span class="prominent">' . Lang::txt('PLG_PROJECTS_TEAM_OWNER') . '</span>/' : '') . $role; ?>
+                        <?= ($creator && !$this->model->groupOwner() ? '<span class="prominent">' . Lang::txt('PLG_PROJECTS_TEAM_OWNER') . '</span>/' : '') . $role ?>
                     </td>
                     <td class="priority-5">
                         <?php if ($owner->status == 1) : ?>
@@ -132,11 +132,11 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                     </td>
                     <td>
                         <?php if ($owner->status == 3 && $this->currentUser->isManager()) : ?>
-                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid);?>" id="<?php echo 'form-approve-' . $owner->id;?>" class="btn btn-success">
+                            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=approvemembership&owner=' . $owner->userid) ?>" id="<?= 'form-approve-' . $owner->id ?>" class="btn btn-success">
                                 <?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
                             </button>
                             <a id="<?php echo 'form-deny-' . $owner->id;?>"
-                                href="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid);?>"
+                                href="<?= Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid) ?>"
                                 class="btn btn-danger modal">
                                 <?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
                             </a>
@@ -144,7 +144,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                     </td>
                     <?php if ($this->count_groups) { ?>
                         <td class="priority-2">
-                            <?php echo $owner->groupdesc ? $this->escape(\Hubzero\Utility\Str::truncate($owner->groupdesc, 30)) : ''; ?><span class="block short prominent"><?php echo $this->escape($owner->groupname); ?></span>
+                            <?= $owner->groupdesc ? $this->escape(\Hubzero\Utility\Str::truncate($owner->groupdesc, 30)) : '' ?><span class="block short prominent"><?= $this->escape($owner->groupname) ?></span>
                         </td>
                     <?php } ?>
                     <td class="priority-4">
@@ -187,5 +187,5 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
 </form>
 
 <?php if ((!$this->model->access('manager') || $this->managers_count > 1) && !$this->setup && !$this->model->groupOwner()) { ?>
-    <p class="extras"><span class="rightfloat"><a href="<?php echo Route::url($this->model->link('team') . '&action=quit'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT'); ?></a></span></p>
+    <p class="extras"><span class="rightfloat"><a href="<?= Route::url($this->model->link('team') . '&action=quit') ?>"><?= Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT') ?></a></span></p>
 <?php }

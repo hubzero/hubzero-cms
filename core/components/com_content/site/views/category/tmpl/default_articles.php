@@ -37,12 +37,12 @@ $listDirn  = $this->escape($this->filters['direction']);
             <fieldset>
                 <?php if ($this->params->get('filter_field') != 'hide') :?>
                     <div class="container data-entry">
-                        <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?>" />
+                        <input class="entry-search-submit" type="submit" value="<?= Lang::txt('JGLOBAL_FILTER_LABEL') ?>" />
                         <fieldset class="entry-search">
                             <legend><?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?></legend>
 
-                            <label class="filter-search-lbl" for="filter-search"><?php echo Lang::txt('COM_CONTENT_' . $this->params->get('filter_field') . '_FILTER_LABEL') . '&#160;'; ?>></label>
-                            <input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->filters['filter']); ?>" placeholder="<?php echo Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
+                            <label class="filter-search-lbl" for="filter-search"><?= Lang::txt('COM_CONTENT_' . $this->params->get('filter_field') . '_FILTER_LABEL') . '&#160;' ?>></label>
+                            <input type="text" name="filter-search" id="filter-search" value="<?= $this->escape($this->filters['filter']) ?>" placeholder="<?= Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />
                         </fieldset>
                     </div><!-- / .container -->
                 <?php endif; ?>
@@ -75,11 +75,11 @@ $listDirn  = $this->escape($this->filters['direction']);
                         <?php if ($date = $this->params->get('list_show_date')) : ?>
                             <th class="list-date" id="tableOrdering2">
                                 <?php if ($date == "created") : ?>
-                                    <?php echo Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.created', $listDirn, $listOrder); ?>
+                                    <?= Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.created', $listDirn, $listOrder) ?>
                                 <?php elseif ($date == "modified") : ?>
-                                    <?php echo Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.modified', $listDirn, $listOrder); ?>
+                                    <?= Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.modified', $listDirn, $listOrder) ?>
                                 <?php elseif ($date == "published") : ?>
-                                    <?php echo Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
+                                    <?= Html::grid('sort', 'COM_CONTENT_' . $date . '_DATE', 'a.publish_up', $listDirn, $listOrder) ?>
                                 <?php endif; ?>
                             </th>
                         <?php endif; ?>
@@ -108,7 +108,7 @@ $listDirn  = $this->escape($this->filters['direction']);
                 <?php endif; ?>
                     <?php if (in_array($article->access, $this->user->getAuthorisedViewLevels())) : ?>
                         <td class="list-title">
-                            <a href="<?php echo Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language); ?>">
+                            <a href="<?= Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language) ?>">
                                 <?php echo $this->escape($article->title); ?></a>
 
                             <?php if ($article->params->get('access-edit')) : ?>
@@ -122,7 +122,7 @@ $listDirn  = $this->escape($this->filters['direction']);
 
                         <?php if ($this->params->get('list_show_date')) : ?>
                         <td class="list-date">
-                            <?php echo Date::of($article->displayDate)->toLocal($this->escape($this->params->get('date_format', Lang::txt('DATE_FORMAT_LC3')))); ?>
+                            <?= Date::of($article->displayDate)->toLocal($this->escape($this->params->get('date_format', Lang::txt('DATE_FORMAT_LC3')))) ?>
                         </td>
                         <?php endif; ?>
 
@@ -133,7 +133,7 @@ $listDirn  = $this->escape($this->filters['direction']);
                                 <?php $author = ($article->created_by_alias ? $article->created_by_alias : $author);?>
 
                                 <?php if (!empty($article->contactid) &&  $this->params->get('link_author') == true) :?>
-                                    <?php echo '<a href="' . Route::url('index.php?option=com_contact&view=contact&id=' . $article->contactid) . '">' . $author . '</a>'; ?>
+                                    <?= '<a href="' . Route::url('index.php?option=com_contact&view=contact&id=' . $article->contactid) . '">' . $author . '</a>' ?>
                                 <?php else :?>
                                     <?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
                                 <?php endif; ?>

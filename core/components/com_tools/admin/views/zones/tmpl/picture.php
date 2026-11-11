@@ -15,11 +15,11 @@ use Hubzero\Facades\Session;
 defined('_HZEXEC_') or die();
 ?>
 <div id="media">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
         <table class="formed">
             <thead>
                 <tr>
-                    <th><label for="image"><?php echo Lang::txt('COM_TOOLS_UPLOAD'); ?> <?php echo Lang::txt('COM_TOOLS_WILL_REPLACE_EXISTING_IMAGE'); ?></label></th>
+                    <th><label for="image"><?= Lang::txt('COM_TOOLS_UPLOAD') ?> <?= Lang::txt('COM_TOOLS_WILL_REPLACE_EXISTING_IMAGE') ?></label></th>
                 </tr>
             </thead>
             <tbody>
@@ -61,7 +61,7 @@ defined('_HZEXEC_') or die();
                 ?>
                 <tr>
                     <td rowspan="6">
-                        <img src="<?php echo substr($path, strlen(PATH_ROOT)) . '/' . $file; ?>" alt="<?php echo Lang::txt('COM_TOOLS_FIELDSET_IMAGE'); ?>" id="conimage" />
+                        <img src="<?= substr($path, strlen(PATH_ROOT)) . '/' . $file ?>" alt="<?= Lang::txt('COM_TOOLS_FIELDSET_IMAGE') ?>" id="conimage" />
                     </td>
                     <th><?php echo Lang::txt('COM_TOOLS_IMAGE_FILE'); ?>:</th>
                     <td><?php echo $this->escape($file); ?></td>
@@ -80,7 +80,7 @@ defined('_HZEXEC_') or die();
                 </tr>
                 <tr>
                     <td><input type="hidden" name="currentfile" value="<?php echo $this->escape($file); ?>" /></td>
-                    <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=removefile&id=' . $this->zone->get('id') . '&' . Session::getFormToken() . '=1'); ?>">[ <?php echo Lang::txt('JDELETE'); ?> ]</a></td>
+                    <td><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=removefile&id=' . $this->zone->get('id') . '&' . Session::getFormToken() . '=1') ?>">[ <?= Lang::txt('JDELETE') ?> ]</a></td>
                 </tr>
             <?php } else { ?>
                 <tr>

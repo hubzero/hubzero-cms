@@ -34,7 +34,7 @@ defined('_HZEXEC_') or die();
                     <select name="pid" id="pid">
                         <option value="" selected><?php echo $placeholder; ?></option>
                         <?php foreach ($this->resources as $entry) : ?>
-                            <option value="<?php echo $entry->id;?>"><?php echo $this->escape($entry->title); ?></option>
+                            <option value="<?= $entry->id ?>"><?= $this->escape($entry->title) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

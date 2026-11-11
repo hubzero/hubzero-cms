@@ -52,7 +52,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
     $this->wish->set('negative', $this->wish->votes()->whereEquals('helpful', 'no')->total());
 ?>
     <header id="content-header">
-        <h2><?php echo $this->escape($this->title) . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . (int) $this->wish->get('id'); ?></h2>
+        <h2><?= $this->escape($this->title) . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . (int) $this->wish->get('id') ?></h2>
 
         <?php /*<div id="content-header-extra">
             <ul id="useroptions">
@@ -139,11 +139,11 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
 
                     <p class="entry-title">
                         <strong><?php echo $name; ?></strong>
-                        <a class="permalink" href="<?php echo Route::url($this->wish->link()); ?>" rel="bookmark" title="<?php echo Lang::txt('COM_WISHLIST_PERMALINK'); ?>">
+                        <a class="permalink" href="<?= Route::url($this->wish->link()) ?>" rel="bookmark" title="<?= Lang::txt('COM_WISHLIST_PERMALINK') ?>">
                             <span class="entry-date-at"><?php echo Lang::txt('COM_WISHLIST_AT'); ?></span>
-                            <span class="time"><time datetime="<?php echo $this->wish->proposed(); ?>"><?php echo $this->wish->proposed('time'); ?></time></span>
+                            <span class="time"><time datetime="<?= $this->wish->proposed() ?>"><?= $this->wish->proposed('time') ?></time></span>
                             <span class="entry-date-on"><?php echo Lang::txt('COM_WISHLIST_ON'); ?></span>
-                            <span class="date"><time datetime="<?php echo $this->wish->proposed(); ?>"><?php echo $this->wish->proposed('date'); ?></time></span>
+                            <span class="date"><time datetime="<?= $this->wish->proposed() ?>"><?= $this->wish->proposed('date') ?></time></span>
                         </a>
                     </p><!-- / .wish-title -->
 
@@ -189,25 +189,25 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                     <?php if ($this->wishlist->access('admin') && $this->wishlist->get('admin') != 3) { ?>
                         <?php if (!$this->wish->isGranted()) { ?>
                             <li>
-                                <a class="icon-pushpin changestatus" href="<?php echo Route::url($this->wish->link('changestatus')); ?>">
+                                <a class="icon-pushpin changestatus" href="<?= Route::url($this->wish->link('changestatus')) ?>">
                                     <?php echo Lang::txt('COM_WISHLIST_ACTION_CHANGE_STATUS'); ?>
                                 </a>
                             </li>
                         <?php } ?>
                             <li>
-                                <a class="icon-resize-horizontal transfer" href="<?php echo Route::url($this->wish->link('move')); ?>">
+                                <a class="icon-resize-horizontal transfer" href="<?= Route::url($this->wish->link('move')) ?>">
                                     <?php echo Lang::txt('COM_WISHLIST_MOVE'); ?>
                                 </a>
                             </li>
                         <?php if ($this->wish->isPrivate()) { ?>
                             <li>
-                                <a class="icon-eye-open makepublic" href="<?php echo Route::url($this->wish->link('privacy', ['private' => '0'])); ?>">
+                                <a class="icon-eye-open makepublic" href="<?= Route::url($this->wish->link('privacy', ['private' => '0'])) ?>">
                                     <?php echo Lang::txt('COM_WISHLIST_MAKE_PUBLIC'); ?>
                                 </a>
                             </li>
                         <?php } else { ?>
                             <li>
-                                <a class="icon-eye-close makeprivate" href="<?php echo Route::url($this->wish->link('privacy', ['private' => '1'])); ?>">
+                                <a class="icon-eye-close makeprivate" href="<?= Route::url($this->wish->link('privacy', ['private' => '1'])) ?>">
                                     <?php echo Lang::txt('COM_WISHLIST_MAKE_PRIVATE'); ?>
                                 </a>
                             </li>
@@ -221,13 +221,13 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                         </li>
                     <?php } ?>
                         <li>
-                            <a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('COM_WISHLIST_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->wish->link('report')); ?>">
+                            <a class="icon-abuse abuse" data-txt-flagged="<?= Lang::txt('COM_WISHLIST_COMMENT_REPORTED_AS_ABUSIVE') ?>" href="<?= Route::url($this->wish->link('report')) ?>">
                                 <?php echo Lang::txt('COM_WISHLIST_REPORT_ABUSE'); ?>
                             </a>
                         </li>
                     <?php if (User::get('id') == $this->wish->get('proposed_by') && $this->wish->isOpen()) { ?>
                         <li>
-                            <a class="icon-trash delete" href="<?php echo Route::url($this->wish->link('withdraw')); ?>">
+                            <a class="icon-trash delete" href="<?= Route::url($this->wish->link('withdraw')) ?>">
                                 <?php echo Lang::txt('COM_WISHLIST_ACTION_WITHDRAW_WISH'); ?>
                             </a>
                         </li>
@@ -236,11 +236,11 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
 
             <?php if ($this->wishlist->access('manage') && !$this->wish->isDeleted() && !$this->wish->isWithdrawn() && $voters > 0) { ?>
                 <div class="container">
-                    <form method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>" class="rankingform" id="rankForm">
+                    <form method="post" action="<?= Route::url('index.php?option=' . $this->option) ?>" class="rankingform" id="rankForm">
                         <table class="wish-priority" id="priority">
                             <caption>
-                                <?php echo Lang::txt('COM_WISHLIST_PRIORITY'); ?>: <strong><?php echo $this->wish->get('ranking'); ?></strong>
-                                <span>(<?php echo $this->wish->rankings()->total('count') . ' ' . Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') . ' ' . $voters . ' ' . Lang::txt('COM_WISHLIST_VOTES'); ?>)</span>
+                                <?= Lang::txt('COM_WISHLIST_PRIORITY') ?>: <strong><?= $this->wish->get('ranking') ?></strong>
+                                <span>(<?= $this->wish->rankings()->total('count') . ' ' . Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') . ' ' . $voters . ' ' . Lang::txt('COM_WISHLIST_VOTES') ?>)</span>
                             </caption>
                             <thead>
                                 <tr>
@@ -258,9 +258,9 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                     <td></td>
                                     <td>
                                         <input type="hidden" name="task" value="savevote" />
-                                        <input type="hidden" name="category" value="<?php echo $this->escape($this->wishlist->get('category')); ?>" />
-                                        <input type="hidden" name="rid" value="<?php echo $this->escape($this->wishlist->get('referenceid')); ?>" />
-                                        <input type="hidden" name="wishid" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
+                                        <input type="hidden" name="category" value="<?= $this->escape($this->wishlist->get('category')) ?>" />
+                                        <input type="hidden" name="rid" value="<?= $this->escape($this->wishlist->get('referenceid')) ?>" />
+                                        <input type="hidden" name="wishid" value="<?= $this->escape($this->wish->get('id')) ?>" />
 
                                         <?php echo Html::input('token'); ?>
 
@@ -288,7 +288,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                     ];
                                     ?>
                                     <td>
-                                        <?php echo \Components\Wishlist\Helpers\Html::formSelect('importance', $importance, $this->wish->ranking('importance'), 'rankchoices'); ?>
+                                        <?= \Components\Wishlist\Helpers\Html::formSelect('importance', $importance, $this->wish->ranking('importance'), 'rankchoices') ?>
                                     </td>
                                     <?php
                                 }
@@ -298,7 +298,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                     <?php
                                 } else {
                                     ?>
-                                    <td><?php echo \Components\Wishlist\Helpers\Html::convertVote($this->wish->get('average_imp', $this->wish->ranking('importance')), 'importance'); ?></td>
+                                    <td><?= \Components\Wishlist\Helpers\Html::convertVote($this->wish->get('average_imp', $this->wish->ranking('importance')), 'importance') ?></td>
                                     <?php
                                 }
                                 ?>
@@ -334,7 +334,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                     ];
                                     ?>
                                     <td>
-                                        <?php echo \Components\Wishlist\Helpers\Html::formSelect('effort', $effort, $this->wish->ranking('effort'), 'rankchoices'); ?>
+                                        <?= \Components\Wishlist\Helpers\Html::formSelect('effort', $effort, $this->wish->ranking('effort'), 'rankchoices') ?>
                                     </td>
                                     <?php
                                 }
@@ -346,7 +346,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                 } else {
                                     ?>
                                     <td>
-                                        <?php echo \Components\Wishlist\Helpers\Html::convertVote($this->wish->get('average_effort', $this->wish->ranking('effort')), 'effort'); ?>
+                                        <?= \Components\Wishlist\Helpers\Html::convertVote($this->wish->get('average_effort', $this->wish->ranking('effort')), 'effort') ?>
                                     </td>
                                     <?php
                                 }
@@ -355,11 +355,11 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                     <?php if ($this->wishlist->get('banking')) { ?>
                                         <span class="entry-reward icon-coins">
                                         <?php if ($this->wish->get('bonus', 0) > 0 && ($this->wish->isOpen() or $this->wish->isAccepted())) { ?>
-                                            <a class="bonus tooltips" href="<?php echo Route::url($this->wish->link('addbonus')); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS'); ?>">+ <?php echo $this->wish->get('bonus', 0); ?></a>
+                                            <a class="bonus tooltips" href="<?= Route::url($this->wish->link('addbonus')) ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') ?>">+ <?= $this->wish->get('bonus', 0) ?></a>
                                         <?php } elseif ($this->wish->isOpen() or $this->wish->isAccepted()) { ?>
-                                            <a class="no-bonus tooltips" href="<?php echo Route::url($this->wish->link('addbonus')); ?>" title="<?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS'); ?>">0</a>
+                                            <a class="no-bonus tooltips" href="<?= Route::url($this->wish->link('addbonus')) ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') ?>">0</a>
                                         <?php } else { ?>
-                                            <span class="bonus-inactive" title="<?php echo Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED'); ?>">&nbsp;</span>
+                                            <span class="bonus-inactive" title="<?= Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED') ?>">&nbsp;</span>
                                         <?php } ?>
                                         </span>
                                     <?php } ?>
@@ -384,7 +384,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                     <h4><?php echo Lang::txt('COM_WISHLIST_ARE_YOU_SURE_DELETE_WISH'); ?></h4>
                     <div class="wish-delete-options">
                         <span class="say_yes">
-                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->wish->link('delete')); ?>" class="btn btn-danger"><?php echo Lang::txt('COM_WISHLIST_YES'); ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->wish->link('delete')) ?>" class="btn btn-danger"><?= Lang::txt('COM_WISHLIST_YES') ?></button>
                         </span>
                         <span class="say_no">
                             <a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">
@@ -397,7 +397,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
 
             <?php if ($this->wish->get('action') == 'changestatus') { ?>
                 <div class="takeaction" id="action">
-                    <form class="edit-form" id="changeStatus" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
+                    <form class="edit-form" id="changeStatus" method="post" action="<?= Route::url('index.php?option=' . $this->option) ?>">
                         <h4><?php echo Lang::txt('COM_WISHLIST_ACTION_CHANGE_STATUS_TO'); ?></h4>
                         <fieldset>
                             <div class="sidenote">
@@ -408,41 +408,41 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
 
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                             <input type="hidden" name="task" value="editwish" />
-                            <input type="hidden" id="wishlist" name="wishlist" value="<?php echo $this->escape($this->wishlist->get('id')); ?>" />
-                            <input type="hidden" id="category" name="category" value="<?php echo $this->escape($this->wishlist->get('category')); ?>" />
-                            <input type="hidden" id="rid" name="rid" value="<?php echo $this->escape($this->wishlist->get('referenceid')); ?>" />
-                            <input type="hidden" id="wishid" name="wishid" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
+                            <input type="hidden" id="wishlist" name="wishlist" value="<?= $this->escape($this->wishlist->get('id')) ?>" />
+                            <input type="hidden" id="category" name="category" value="<?= $this->escape($this->wishlist->get('category')) ?>" />
+                            <input type="hidden" id="rid" name="rid" value="<?= $this->escape($this->wishlist->get('referenceid')) ?>" />
+                            <input type="hidden" id="wishid" name="wishid" value="<?= $this->escape($this->wish->get('id')) ?>" />
 
                             <div class="form-group form-check">
                                 <label for="field-status-pending" class="form-check-label">
-                                    <input type="radio" name="status" id="field-status-pending" class="form-check-input" value="pending" <?php echo ($this->wish->isOpen()) ? 'checked="checked"' : ''; ?> />
+                                    <input type="radio" name="status" id="field-status-pending" class="form-check-input" value="pending" <?= ($this->wish->isOpen()) ? 'checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_PENDING'); ?>
                                 </label>
                             </div>
 
                             <div class="form-group form-check">
                                 <label for="field-status-accepted" class="form-check-label">
-                                    <input type="radio" name="status" id="field-status-accepted" class="form-check-input" value="accepted" <?php echo ($this->wish->isAccepted()) ? 'checked="checked"' : ''; ?> />
+                                    <input type="radio" name="status" id="field-status-accepted" class="form-check-input" value="accepted" <?= ($this->wish->isAccepted()) ? 'checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED'); ?>
                                 </label>
                             </div>
 
                             <div class="form-group form-check">
                                 <label for="field-status-rejected" class="form-check-label">
-                                    <input type="radio" name="status" id="field-status-rejected" class="form-check-input" value="rejected" <?php echo ($this->wish->isRejected()) ? 'checked="checked"' : ''; ?> />
+                                    <input type="radio" name="status" id="field-status-rejected" class="form-check-input" value="rejected" <?= ($this->wish->isRejected()) ? 'checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED'); ?>
                                 </label>
                             </div>
 
                             <div class="form-group form-check">
-                                <label for="field-status" class="form-check-label<?php echo $this->wishlist->get('category') == 'resource' ? ' grantstatus' : ''; ?>">
+                                <label for="field-status" class="form-check-label<?= $this->wishlist->get('category') == 'resource' ? ' grantstatus' : '' ?>">
                                     <input type="radio" name="status" value="granted" id="field-status" class="form-check-input" <?php
                                         echo ($this->wish->get('status') == 1) ? 'checked="checked"' : '';
                                         echo ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) ? 'disabled="disabled"' : '';
                                     ?> />
                                     <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED'); ?>
                                 <?php if ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) { ?>
-                                    <span class="forbidden"> - <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING'); ?>
+                                    <span class="forbidden"> - <?= Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING') ?>
                                 <?php }
                                 // Throws error Hubzero\Base\Model; Method [versions] does not exist.
                                 /*else if ($this->wishlist->get('category')=='resource' && $this->wish->versions()) { ?>
@@ -462,7 +462,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                             </div>
 
                             <p>
-                                <input type="submit" class="btn btn-success" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_CHANGE_STATUS')); ?>" />
+                                <input type="submit" class="btn btn-success" value="<?= strtolower(Lang::txt('COM_WISHLIST_ACTION_CHANGE_STATUS')) ?>" />
 
                                 <a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">
                                     <?php echo Lang::txt('JCANCEL'); ?>
@@ -476,7 +476,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
             <?php if (!$this->wish->isDeleted() && !$this->wish->isWithdrawn()) { ?>
                 <?php if ($this->wish->get('action') == 'addbonus' && $this->wish->get('status') != 1 && $this->wishlist->get('banking')) { ?>
                     <div class="addbonus" id="action">
-                        <form class="edit-form" id="addBonus" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
+                        <form class="edit-form" id="addBonus" method="post" action="<?= Route::url('index.php?option=' . $this->option) ?>">
                             <h4><?php echo Lang::txt('COM_WISHLIST_WISH_ADD_BONUS'); ?></h4>
                             <fieldset>
                                 <div class="sidenote">
@@ -494,24 +494,24 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
 
                                 <?php echo Html::input('token'); ?>
                                 <input type="hidden" name="task" value="addbonus" />
-                                <input type="hidden" name="wishlist" id="wishlist" value="<?php echo $this->escape($this->wishlist->get('id')); ?>" />
-                                <input type="hidden" name="wish" id="wish" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
+                                <input type="hidden" name="wishlist" id="wishlist" value="<?= $this->escape($this->wishlist->get('id')) ?>" />
+                                <input type="hidden" name="wish" id="wish" value="<?= $this->escape($this->wish->get('id')) ?>" />
 
                                 <div class="form-group">
                                     <label for="field-amount">
                                         <?php echo Lang::txt('COM_WISHLIST_ACTION_ADD'); ?>
                                         <span class="price"></span>
-                                        <input class="option form-control" type="text" maxlength="4" name="amount" id="field-amount" value=""<?php echo ($this->wish->get('funds') <= 0) ? ' disabled="disabled"' : ''; ?> />
+                                        <input class="option form-control" type="text" maxlength="4" name="amount" id="field-amount" value=""<?= ($this->wish->get('funds') <= 0) ? ' disabled="disabled"' : '' ?> />
                                         <span>
-                                            (<?php echo Lang::txt('COM_WISHLIST_NOTICE_OUT_OF'); ?> <?php echo $this->wish->get('funds'); ?> <?php echo Lang::txt('COM_WISHLIST_NOTICE_POINTS_AVAILABLE'); ?>
-                                            <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=points'); ?>"><?php echo Lang::txt('COM_WISHLIST_ACCOUNT'); ?></a>)
+                                            (<?= Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') ?> <?= $this->wish->get('funds') ?> <?= Lang::txt('COM_WISHLIST_NOTICE_POINTS_AVAILABLE') ?>
+                                            <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=points') ?>"><?= Lang::txt('COM_WISHLIST_ACCOUNT') ?></a>)
                                         </span>
                                     </label>
                                 </div>
 
                                 <p>
                                     <?php if ($this->wish->get('funds') > 0) { ?>
-                                        <input type="submit" class="btn btn-success process" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_ADD_POINTS')); ?>" />
+                                        <input type="submit" class="btn btn-success process" value="<?= strtolower(Lang::txt('COM_WISHLIST_ACTION_ADD_POINTS')) ?>" />
                                     <?php } ?>
                                     <a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">
                                         <?php echo Lang::txt('JCANCEL'); ?>
@@ -528,47 +528,47 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
 
                 <?php if ($this->wish->get('action') == 'move') { ?>
                     <div class="moveitem" id="action">
-                        <form class="edit-form" id="moveWish" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
+                        <form class="edit-form" id="moveWish" method="post" action="<?= Route::url('index.php?option=' . $this->option) ?>">
                         <?php echo $this->getError() ? '<p class="error">' . $this->getError() . '</p>' : ''; ?>
                             <h4><?php echo Lang::txt('COM_WISHLIST_WISH_BELONGS_TO'); ?>:</h4>
                             <fieldset>
                                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                                 <input type="hidden"  name="task" value="movewish" />
                                 <?php echo Html::input('token'); ?>
-                                <input type="hidden" id="wishlist" name="wishlist" value="<?php echo $this->wishlist->get('id'); ?>" />
-                                <input type="hidden" id="wish" name="wish" value="<?php echo $this->wish->get('id'); ?>" />
+                                <input type="hidden" id="wishlist" name="wishlist" value="<?= $this->wishlist->get('id') ?>" />
+                                <input type="hidden" id="wish" name="wish" value="<?= $this->wish->get('id') ?>" />
 
                                 <div class="form-group form-check">
                                     <label class="form-check-label" for="field-type-general">
-                                        <input class="option form-check-input" type="radio" name="type" value="general" id="field-type-general" <?php echo ($this->wishlist->get('category') == 'general') ? 'checked="checked"' : ''; ?> />
+                                        <input class="option form-check-input" type="radio" name="type" value="general" id="field-type-general" <?= ($this->wishlist->get('category') == 'general') ? 'checked="checked"' : '' ?> />
                                         <?php echo Lang::txt('COM_WISHLIST_MAIN_NAME'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="form-check-label" for="field-type-resource">
-                                        <input class="option form-check-input" type="radio" name="type" value="resource" id="field-type-resource" <?php echo ($this->wishlist->get('category') == 'resource') ? 'checked="checked"' : ''; ?> />
+                                        <input class="option form-check-input" type="radio" name="type" value="resource" id="field-type-resource" <?= ($this->wishlist->get('category') == 'resource') ? 'checked="checked"' : '' ?> />
                                         <?php echo Lang::txt('COM_WISHLIST_RESOURCE_NAME'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="form-check-label" for="acresource">
-                                        <input class="form-control secondary_option" type="text" name="resource" id="acresource" aria-label="<?php echo Lang::txt('COM_WISHLIST_RESOURCE'); ?>" value="<?php echo ($this->wishlist->get('category') == 'resource') ? $this->wishlist->get('referenceid') : ''; ?>" autocomplete="off" />
+                                        <input class="form-control secondary_option" type="text" name="resource" id="acresource" aria-label="<?= Lang::txt('COM_WISHLIST_RESOURCE') ?>" value="<?= ($this->wishlist->get('category') == 'resource') ? $this->wishlist->get('referenceid') : '' ?>" autocomplete="off" />
                                     </label>
                                 </div>
 
                             <?php if ($this->wish->get('cats') && preg_replace("/group/", '', $this->wish->get('cats')) != $this->wish->get('cats')) { ?>
                                 <div class="form-group form-check">
                                     <label class="form-check-label" for="field-type-group">
-                                        <input class="option form-check-input" type="radio" name="type" value="group" id="field-type-group" <?php echo $this->wishlist->get('category') == 'group' ? 'checked="checked"' : ''; ?> />
+                                        <input class="option form-check-input" type="radio" name="type" value="group" id="field-type-group" <?= $this->wishlist->get('category') == 'group' ? 'checked="checked"' : '' ?> />
                                         <?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="acgroup" class="sr-only"><?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?></label>
-                                        <input type="text" name="group" value="<?php echo $this->wishlist->get('category') == 'group' ? $this->wishlist->item('alias') : ''; ?>" id="acgroup" class="form-control secondary_option" autocomplete="off" aria-label="<?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?>" />
+                                    <label for="acgroup" class="sr-only"><?= Lang::txt('COM_WISHLIST_GROUP_NAME') ?></label>
+                                        <input type="text" name="group" value="<?= $this->wishlist->get('category') == 'group' ? $this->wishlist->item('alias') : '' ?>" id="acgroup" class="form-control secondary_option" autocomplete="off" aria-label="<?= Lang::txt('COM_WISHLIST_GROUP_NAME') ?>" />
                                 </div>
                             <?php } ?>
                                 <fieldset>
@@ -600,7 +600,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                 </fieldset>
 
                                 <p>
-                                    <input type="submit" value="<?php echo strtolower(Lang::txt('COM_WISHLIST_ACTION_MOVE_THIS_WISH')); ?>" />
+                                    <input type="submit" value="<?= strtolower(Lang::txt('COM_WISHLIST_ACTION_MOVE_THIS_WISH')) ?>" />
                                     <span class="cancelaction">
                                         <a href="<?php echo Route::url($this->wish->link()); ?>">
                                             <?php echo Lang::txt('JCANCEL'); ?>
@@ -664,7 +664,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                 } else {
                     ?>
                 <p>
-                    <?php echo Lang::txt('COM_WISHLIST_NO_COMMENTS'); ?> <a href="<?php echo Route::url($this->wish->link('comment')); ?>"><?php echo Lang::txt('COM_WISHLIST_MAKE_A_COMMENT'); ?></a>.
+                    <?= Lang::txt('COM_WISHLIST_NO_COMMENTS') ?> <a href="<?= Route::url($this->wish->link('comment')) ?>"><?= Lang::txt('COM_WISHLIST_MAKE_A_COMMENT') ?></a>.
                 </p>
                     <?php
                 }
@@ -688,7 +688,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                 <?php if (!User::isGuest()) { //if (is_object($this->addcomment) && $this->addcomment->item_id == $this->wish->get('id')) {?>
         <section class="below section">
             <div class="subject">
-                <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="commentform" enctype="multipart/form-data">
+                <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" id="commentform" enctype="multipart/form-data">
                     <h3>
                         <?php echo Lang::txt('COM_WISHLIST_ACTION_ADD_COMMENT'); ?>
                     </h3>
@@ -697,10 +697,10 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                     </p>
                     <fieldset>
                         <input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
-                        <input type="hidden" name="listid" value="<?php echo $this->escape($this->wishlist->get('id')); ?>" />
-                        <input type="hidden" name="wishid" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
+                        <input type="hidden" name="listid" value="<?= $this->escape($this->wishlist->get('id')) ?>" />
+                        <input type="hidden" name="wishid" value="<?= $this->escape($this->wish->get('id')) ?>" />
                         <input type="hidden" name="task" value="savereply" />
-                        <input type="hidden" name="referenceid" value="<?php echo $this->escape($this->wish->get('id')); ?>" />
+                        <input type="hidden" name="referenceid" value="<?= $this->escape($this->wish->get('id')) ?>" />
                         <input type="hidden" name="cat" value="wish" />
 
                         <input type="hidden" name="comment[item_id]" value="<?php echo $this->wish->get('id'); ?>" />
@@ -769,15 +769,15 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                 <h3>
                     <?php echo Lang::txt('COM_WISHLIST_IMPLEMENTATION_PLAN'); ?>
                     <?php if ($this->wish->plan->get('id')) { ?>
-                        (<a href="<?php echo Route::url($this->wish->link('editplan')); ?>"><?php echo Lang::txt('COM_WISHLIST_ACTION_EDIT'); ?></a>)
+                        (<a href="<?= Route::url($this->wish->link('editplan')) ?>"><?= Lang::txt('COM_WISHLIST_ACTION_EDIT') ?></a>)
                     <?php } else { ?>
                         (<?php echo Lang::txt('COM_WISHLIST_PLAN_NOT_STARTED'); ?>)
                     <?php } ?>
                 </h3>
-                <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="planform" enctype="multipart/form-data">
+                <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" id="planform" enctype="multipart/form-data">
                     <p class="plan-member-photo">
                         <span class="plan-anchor"></span>
-                        <img src="<?php echo User::picture(0); ?>" alt="<?php echo Lang::txt('COM_WISHLIST_MEMBER_PICTURE'); ?>" />
+                        <img src="<?= User::picture(0) ?>" alt="<?= Lang::txt('COM_WISHLIST_MEMBER_PICTURE') ?>" />
                     </p>
                     <fieldset>
                     <?php if ($this->wish->get('action') == 'editplan') { ?>
@@ -793,8 +793,8 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                             <div class="col span6 omega">
                                 <div class="form-group">
                                     <label for="publish_up" id="publish_up-label">
-                                        <?php echo Lang::txt('COM_WISHLIST_DUE'); ?> (<?php echo Lang::txt('COM_WISHLIST_OPTIONAL'); ?>)
-                                        <input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" placeholder="YYYY-MM-DD" value="<?php echo $due ? $this->wish->due() : ''; ?>" />
+                                        <?= Lang::txt('COM_WISHLIST_DUE') ?> (<?= Lang::txt('COM_WISHLIST_OPTIONAL') ?>)
+                                        <input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" placeholder="YYYY-MM-DD" value="<?= $due ? $this->wish->due() : '' ?>" />
                                     </label>
                                 </div>
                             </div>
@@ -813,12 +813,12 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                         <div class="form-group">
                             <label for="pagetext">
                                 <?php echo Lang::txt('COM_WISHLIST_ACTION_INSERT_TEXT'); ?>
-                                <?php echo $this->editor('pagetext', $this->escape($this->wish->plan->get('pagetext')), 35, 40, 'pagetext', ['class' => 'form-control minimal no-footer']); ?>
+                                <?= $this->editor('pagetext', $this->escape($this->wish->plan->get('pagetext')), 35, 40, 'pagetext', ['class' => 'form-control minimal no-footer']) ?>
                             </label>
                         </div>
 
                         <input type="hidden" name="pageid" value="<?php echo $this->wish->plan()->get('id', 0); ?>" />
-                        <input type="hidden" name="version" value="<?php echo $this->wish->plan()->get('version', 1); ?>" />
+                        <input type="hidden" name="version" value="<?= $this->wish->plan()->get('version', 1) ?>" />
                         <input type="hidden" name="wishid" value="<?php echo $this->wish->get('id'); ?>" />
                         <input type="hidden" name="option" value="'<?php echo $this->option; ?>" />
                         <input type="hidden" name="created_by" value="<?php echo User::get('id'); ?>" />
@@ -827,7 +827,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                         <?php echo Html::input('token'); ?>
 
                         <p class="submit">
-                            <input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
+                            <input class="btn btn-success" type="submit" name="submit" value="<?= Lang::txt('COM_WISHLIST_SAVE') ?>" />
 
                             <a class="btn btn-secondary" href="<?php echo Route::url($this->wish->link()); ?>">
                                 <?php echo Lang::txt('JCANCEL'); ?>
@@ -853,7 +853,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
 
                                 <?php echo Lang::txt('COM_WISHLIST_PLAN_IS_DUE'); ?>
                                 <a href="<?php echo Route::url($this->wish->link('editplan')); ?>'">
-                                    <?php echo ($this->wish->due() && $this->wish->due() != '0000-00-00 00:00:00') ? $this->wish->due() : Lang::txt('COM_WISHLIST_DUE_NEVER'); ?>
+                                    <?= ($this->wish->due() && $this->wish->due() != '0000-00-00 00:00:00') ? $this->wish->due() : Lang::txt('COM_WISHLIST_DUE_NEVER') ?>
                                 </a>
                             </p>
                         <?php } ?>
@@ -864,13 +864,13 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                             <?php echo $assigned; ?>
                             <?php echo Lang::txt('COM_WISHLIST_PLAN_IS_DUE'); ?>
                             <a href="<?php echo Route::url($this->wish->link('editplan')); ?>'">
-                                <?php echo ($this->wish->due() && $this->wish->due() != '0000-00-00 00:00:00') ? $this->wish->due() : Lang::txt('COM_WISHLIST_DUE_NEVER'); ?>
+                                <?= ($this->wish->due() && $this->wish->due() != '0000-00-00 00:00:00') ? $this->wish->due() : Lang::txt('COM_WISHLIST_DUE_NEVER') ?>
                             </a>.
                         </p>
                         <?php } ?>
                         <div class="planbody">
                             <p class="plannote">
-                                <?php echo Lang::txt('COM_WISHLIST_PLAN_LAST_EDIT') . ' ' . $this->wish->plan->created('date') . ' at ' . $this->wish->plan->created('time') . ' ' . Lang::txt('COM_WISHLIST_BY') . ' ' . $this->escape($this->wish->plan->creator->get('name'));?>
+                                <?= Lang::txt('COM_WISHLIST_PLAN_LAST_EDIT') . ' ' . $this->wish->plan->created('date') . ' at ' . $this->wish->plan->created('time') . ' ' . Lang::txt('COM_WISHLIST_BY') . ' ' . $this->escape($this->wish->plan->creator->get('name')) ?>
                             </p>
                             <?php echo $this->wish->plan->content; ?>
                         </div>

@@ -27,14 +27,14 @@ $this
         <div class="col span9">
             <h3><?php echo Lang::txt('COM_TOOLS_TOOL_DEVELOPMENT'); ?></h3>
             <p>
-                <?php echo Lang::txt('COM_TOOLS_TOOL_DEVELOPMENT_INTRO', $this->escape($this->forgeName), $this->escape(Config::get('sitename'))); ?>
+                <?= Lang::txt('COM_TOOLS_TOOL_DEVELOPMENT_INTRO', $this->escape($this->forgeName), $this->escape(Config::get('sitename'))) ?>
             </p>
         </div>
         <div class="col span3 omega">
             <?php if (User::isGuest()) { ?>
             <h3><?php echo Lang::txt('COM_TOOLS_HELP'); ?></h3>
             <ul>
-                <li><a href="<?php echo Route::url('index.php?option=com_members&controller=register'); ?>"><?php echo Lang::txt('COM_TOOLS_SIGN_UP_FREE'); ?></a></li>
+                <li><a href="<?= Route::url('index.php?option=com_members&controller=register') ?>"><?= Lang::txt('COM_TOOLS_SIGN_UP_FREE') ?></a></li>
             </ul>
             <?php } ?>
         </div>
@@ -77,12 +77,12 @@ $this
                     ?>
                     <tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even';
                     echo $cls; ?>">
-                        <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($project->title), 50)); ?></a></td>
-                        <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki'); ?>"><?php echo $this->escape($project->toolname); ?></a></td>
+                        <td><a href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki') ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($project->title), 50)) ?></a></td>
+                        <td><a href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki') ?>"><?= $this->escape($project->toolname) ?></a></td>
                         <td>
                             <span class="<?php echo $this->escape($status); ?>-code"><?php echo $status; ?></span>
                             <?php if ($pipeline) { ?>
-                                <br /><span class="pipeline-state"><?php echo Lang::txt('COM_TOOLS_PIPELINE_STATE_STALE', $this->escape($pipeline), $project->live ? Lang::txt('COM_TOOLS_PIPELINE_LIVE') : Lang::txt('COM_TOOLS_PIPELINE_NOT_LIVE')); ?></span>
+                                <br /><span class="pipeline-state"><?= Lang::txt('COM_TOOLS_PIPELINE_STATE_STALE', $this->escape($pipeline), $project->live ? Lang::txt('COM_TOOLS_PIPELINE_LIVE') : Lang::txt('COM_TOOLS_PIPELINE_NOT_LIVE')) ?></span>
                             <?php } ?>
                         </td>
                     </tr>

@@ -30,7 +30,7 @@ $assets = [];
 
         <p>
             <label for="title">Title: </label><span class="required">*required</span>
-            <input type="text" name="title" class="wiki-title" placeholder="Wiki page title" value="<?php echo $this->escape($asset->get('title')); ?>" />
+            <input type="text" name="title" class="wiki-title" placeholder="Wiki page title" value="<?= $this->escape($asset->get('title')) ?>" />
         </p>
 
         <label for="content">Content: </label>
@@ -104,20 +104,20 @@ endforeach;
             <select name="scope_id">
                 <?php foreach ($assetgroups as $assetgroup) : ?>
                     <?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?php echo $this->escape($assetgroup['title']); ?></option>
+                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?= $this->escape($assetgroup['title']) ?></option>
                 <?php endforeach; ?>
             </select>
         </p>
 
         <p>
             <label for="graded">Create a gradebook entry for this item?</label>
-            <input name="graded" type="checkbox" value="1" <?php echo ($asset->get('graded')) ? 'checked="checked"' : ''; ?>/>
+            <input name="graded" type="checkbox" value="1" <?= ($asset->get('graded')) ? 'checked="checked"' : '' ?>/>
             <input type="hidden" name="edit_graded" value="1" />
         </p>
 
         <p>
             <label for="progress_factors">Include this item in the progress calculation?</label>
-            <input name="progress_factors" type="checkbox" value="1" <?php echo ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : ''; ?>/>
+            <input name="progress_factors" type="checkbox" value="1" <?= ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : '' ?>/>
             <input type="hidden" name="edit_progress_factors" value="1" />
         </p>
 

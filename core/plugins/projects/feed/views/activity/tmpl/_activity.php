@@ -63,12 +63,12 @@ if (!$this->activity->log->get('anonymous')) {
     }
 }
 ?>
-<div id="li_<?php echo $this->activity->log->get('id'); ?>" class="activity <?php echo $new ? ' newitem' : ''; ?>" data-recorded="<?php echo $recorded; ?>">
+<div id="li_<?= $this->activity->log->get('id') ?>" class="activity <?= $new ? ' newitem' : '' ?>" data-recorded="<?= $recorded ?>">
 
-    <div class="activity-actor-picture<?php echo $online ? ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE') : ''; ?>">
+    <div class="activity-actor-picture<?= $online ? ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE') : '' ?>">
         <?php if ($showProject) { ?>
             <span class="user-img-wrap">
-                <img class="project-image" src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="<?php echo $this->escape($this->model->get('title')); ?>" />
+                <img class="project-image" src="<?= Route::url($this->model->link('thumb')) ?>" alt="<?= $this->escape($this->model->get('title')) ?>" />
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_PROJECTS_FEED_ONLINE'); ?></span>
                 <?php } ?>
@@ -122,7 +122,7 @@ if (!$this->activity->log->get('anonymous')) {
             </div><!-- / .activity-details -->
 
             <div class="activity-event">
-                <div class="activity-event-content <?php echo $class; //if ($a->admin) { echo ' admin-action'; }?>" id="activity-event-content<?php echo $this->activity->log->get('id'); ?>">
+                <div class="activity-event-content <?php echo $class; //if ($a->admin) { echo ' admin-action'; }?>" id="activity-event-content<?= $this->activity->log->get('id') ?>">
                     <?php
                     $content = $this->activity->log->get('description');
                     $short = null;
@@ -166,7 +166,7 @@ if (!$this->activity->log->get('anonymous')) {
                             <?php
                         }
                         ?>
-                        <div class="activity-event-content<?php echo ($short) ? ' hide' : ''; ?>" id="activity-event-full-content<?php echo $this->activity->log->get('id'); ?>">
+                        <div class="activity-event-content<?= ($short) ? ' hide' : '' ?>" id="activity-event-full-content<?= $this->activity->log->get('id') ?>">
                             <?php echo $content; ?>
                         </div>
                     <?php } else { ?>
@@ -313,7 +313,7 @@ if (!$this->activity->log->get('anonymous')) {
                                     formaction="<?php echo $deleteUrl; ?>"
                                     class="icon-delete delete tooltips"
                                     title="<?php echo Lang::txt('JACTION_DELETE'); ?>"
-                                    data-confirm="<?php echo Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION'); ?>"><?php
+                                    data-confirm="<?= Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION') ?>"><?php
                                     echo Lang::txt('JACTION_DELETE');
                                     ?></button>
                             </li>
@@ -331,7 +331,7 @@ if (!$this->activity->log->get('anonymous')) {
                                 <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
                                 <input type="hidden" name="active" value="feed" />
                                 <input type="hidden" name="action" value="save" />
-                                <input type="hidden" name="parent_activity" value="<?php echo $this->activity->log->get('parent'); ?>" />
+                                <input type="hidden" name="parent_activity" value="<?= $this->activity->log->get('parent') ?>" />
 
                                 <input type="hidden"
                                     name="activity"
@@ -352,7 +352,7 @@ if (!$this->activity->log->get('anonymous')) {
                                 ?>
 
                                 <p class="blog-submit">
-                                    <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE'); ?>" class="btn c-submit" />
+                                    <input type="submit" value="<?= Lang::txt('COM_PROJECTS_SAVE') ?>" class="btn c-submit" />
                                 </p>
                             </fieldset>
                         </form>

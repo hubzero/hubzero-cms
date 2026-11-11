@@ -34,7 +34,7 @@ $no_html = Request::getInt('no_html', 0);
         ?>
         <div id="page_identity">
             <a href="<?php echo $link; ?>">
-                <img src="<?php echo $this->group->getLogo(); ?>" alt="<?php echo Lang::txt('COM_GROUPS_OVERVIEW_LOGO', $this->escape($this->group->get('description'))); ?>" />
+                <img src="<?= $this->group->getLogo() ?>" alt="<?= Lang::txt('COM_GROUPS_OVERVIEW_LOGO', $this->escape($this->group->get('description'))) ?>" />
             </a>
         </div><!-- /#page_identity -->
 
@@ -102,7 +102,7 @@ $no_html = Request::getInt('no_html', 0);
 
     <div id="page_main">
     <div id="page_header">
-        <h1><a href="<?php echo $link; ?>" aria-label="<?php echo $this->escape($this->group->get('description')); ?> — Group Home"><?php echo $this->escape($this->group->get('description')); ?></a></h1>
+        <h1><a href="<?= $link ?>" aria-label="<?= $this->escape($this->group->get('description')) ?> — Group Home"><?= $this->escape($this->group->get('description')) ?></a></h1>
         <span class="divider" aria-hidden="true"></span>
         <h2>
             <?php echo \Components\Groups\Helpers\View::displayTab($this->group); ?>

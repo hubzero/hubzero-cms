@@ -41,7 +41,7 @@ $this
                         continue;
                     }
                     ?>
-                    <option value="<?php echo $this->escape($type->alias); ?>"<?php echo $type->id == $this->filters['type'] ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($type->type)); ?></option>
+                    <option value="<?= $this->escape($type->alias) ?>"<?= $type->id == $this->filters['type'] ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($type->type)) ?></option>
                 <?php } ?>
                 </select>
             </label>
@@ -49,7 +49,7 @@ $this
             <input type="hidden" name="task" value="browsetags" />
         </fieldset>
 
-        <div id="tagbrowser" data-loader="<?php echo Request::base(true); ?>/core/components/com_resources/site/assets/img/loading.gif" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_BROWSETAGS_LABEL'); ?>">
+        <div id="tagbrowser" data-loader="<?= Request::base(true) ?>/core/components/com_resources/site/assets/img/loading.gif" role="region" aria-label="<?= Lang::txt('COM_RESOURCES_BROWSETAGS_LABEL') ?>">
             <p class="info"><?php echo Lang::txt('COM_RESOURCES_TAGBROWSER_EXPLANATION'); ?></p>
 
             <div id="level-1" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_TAG'); ?>">
@@ -64,7 +64,7 @@ $this
                     <li id="level-2-loading" role="option" aria-selected="false"></li>
                 </ul>
             </div><!-- / #level-2 -->
-            <div id="level-3" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_INFO'); ?>" aria-live="polite">
+            <div id="level-3" role="region" aria-label="<?= Lang::txt('COM_RESOURCES_INFO') ?>" aria-live="polite">
                 <h3><?php echo Lang::txt('COM_RESOURCES_INFO'); ?></h3>
                 <ul id="ulinfo" tabindex="0" aria-label="<?php echo Lang::txt('COM_RESOURCES_INFO'); ?>">
                     <li><?php echo Lang::txt('COM_RESOURCES_TAGBROWSER_COL_EXPLANATION'); ?></li>
@@ -72,13 +72,13 @@ $this
             </div><!-- / #level-3 -->
 
             <input type="hidden" name="id" id="id" value="" />
-            <input type="hidden" name="pretype" id="pretype" value="<?php echo $this->escape($this->filters['type']); ?>" />
+            <input type="hidden" name="pretype" id="pretype" value="<?= $this->escape($this->filters['type']) ?>" />
             <input type="hidden" name="preinput" id="preinput" value="<?php echo $this->escape($this->tag); ?>" />
             <input type="hidden" name="preinput2" id="preinput2" value="<?php echo $this->escape($this->tag2); ?>" />
             <div class="clear"></div>
         </div><!-- / #tagbrowser -->
 
-        <p id="viewalltools"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&type=' . $this->filters['type']); ?>"><?php echo Lang::txt('COM_RESOURCES_VIEW_MORE'); ?></a></p>
+        <p id="viewalltools"><a href="<?= Route::url('index.php?option=' . $this->option . '&type=' . $this->filters['type']) ?>"><?= Lang::txt('COM_RESOURCES_VIEW_MORE') ?></a></p>
         <div class="clear"></div>
 
         <?php
@@ -92,7 +92,7 @@ $this
             }
             ?>
             <p class="supported">
-                <?php echo Lang::txt('COM_RESOURCES_WHATS_THIS'); ?> <a href="<?php echo $link; ?>"><?php echo Lang::txt('COM_RESOURCES_ABOUT_TAG', $tag->get('raw_tag')); ?></a>
+                <?= Lang::txt('COM_RESOURCES_WHATS_THIS') ?> <a href="<?= $link ?>"><?= Lang::txt('COM_RESOURCES_ABOUT_TAG', $tag->get('raw_tag')) ?></a>
             </p>
             <?php
         }

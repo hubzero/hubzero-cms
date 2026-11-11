@@ -55,19 +55,19 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                         <?php echo Lang::txt('COM_WISHLIST_TITLE'); ?>:
                 <?php if ($this->wishlist->get('category') == 'resource') { ?>
                         <span class="highighted"><?php echo $this->escape($this->wishlist->get('title')); ?></span>
-                        <input name="fields[title]" id="field-title" type="hidden" value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
+                        <input name="fields[title]" id="field-title" type="hidden" value="<?= $this->escape($this->wishlist->get('title')) ?>" />
                     </label>
                     <p class="hint"><?php echo Lang::txt('COM_WISHLIST_TITLE_NOTE'); ?></p>
                 <?php } else { ?>
-                        <input name="fields[title]" id="field-title" class="form-control" type="text" value="<?php echo $this->escape($this->wishlist->get('title')); ?>" />
+                        <input name="fields[title]" id="field-title" class="form-control" type="text" value="<?= $this->escape($this->wishlist->get('title')) ?>" />
                     </label>
                 <?php } ?>
                 </div>
 
                 <div class="form-group">
                     <label for="field-description">
-                        <?php echo Lang::txt('COM_WISHLIST_DESC'); ?> (<?php echo Lang::txt('COM_WISHLIST_OPTIONAL'); ?>):
-                        <textarea name="fields[description]" id="field-description" class="form-control" rows="10" cols="50"><?php echo $this->escape($this->wishlist->get('description')); ?></textarea>
+                        <?= Lang::txt('COM_WISHLIST_DESC') ?> (<?= Lang::txt('COM_WISHLIST_OPTIONAL') ?>):
+                        <textarea name="fields[description]" id="field-description" class="form-control" rows="10" cols="50"><?= $this->escape($this->wishlist->get('description')) ?></textarea>
                     </label>
                 </div>
 
@@ -138,7 +138,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                                 <td><?php echo count($members); ?></td>
                                 <td>
                                     <?php if ($n > 1 && !in_array($groups[$i], $native['groups'])) { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&group=' . $groups[$i]); ?>" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></button>
+                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->wishlist->link('savesettings') . '&action=delete&group=' . $groups[$i]) ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -202,7 +202,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                                 <td><?php echo $this->escape($kuser->get('username')); ?></td>
                                 <td>
                                     <?php if ($n > 1 && !in_array($individuals[$i], $native['individuals'])) { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]); ?>" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></button>
+                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]) ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -267,7 +267,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                                     <td><?php echo $this->escape($quser->get('name')); ?></td>
                                     <td><?php echo $this->escape($quser->get('username')); ?></td>
                                     <td>
-                                        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $advisory[$i]); ?>" class="delete"><?php echo Lang::txt('COM_WISHLIST_OPTION_REMOVE'); ?></button>
+                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $advisory[$i]) ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
                                     </td>
                                 </tr>
                                     <?php
@@ -304,7 +304,7 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
             <?php } ?>
 
             <p class="submit">
-                <input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_WISHLIST_SAVE'); ?>" />
+                <input class="btn btn-success" type="submit" name="submit" value="<?= Lang::txt('COM_WISHLIST_SAVE') ?>" />
 
                 <a class="btn btn-secondary" href="<?php echo Route::url($this->wishlist->link()); ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>

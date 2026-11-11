@@ -51,10 +51,10 @@ if (!$this->getError()) {
         <?php if ($this->project->isPublic()) { ?>
         <h4><?php echo Lang::txt('COM_PROJECTS_NOTES_PUB_LINK_LIST_SHOW_ON_PUBLIC'); ?></h4>
         <label>
-        <input type="radio" name="action" value="<?php echo 'publist'; ?>" <?php echo $this->publicStamp->listed ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('COM_PROJECTS_NOTES_PUB_LIST'); ?>
+        <input type="radio" name="action" value="<?= 'publist' ?>" <?= $this->publicStamp->listed ? 'checked="checked"' : '' ?> /> <?= Lang::txt('COM_PROJECTS_NOTES_PUB_LIST') ?>
         </label>
         <label class="block">
-        <input type="radio" name="action" value="<?php echo 'unlist'; ?>" <?php echo !$this->publicStamp->listed ? 'checked="checked"' : ''; ?>  /> <?php echo Lang::txt('COM_PROJECTS_NOTES_PUB_UNLIST'); ?>
+        <input type="radio" name="action" value="<?= 'unlist' ?>" <?= !$this->publicStamp->listed ? 'checked="checked"' : '' ?>  /> <?= Lang::txt('COM_PROJECTS_NOTES_PUB_UNLIST') ?>
         </label>
         <p class="submitarea">
             <input type="submit" class="btn" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_MY_CHOICE'); ?>" />

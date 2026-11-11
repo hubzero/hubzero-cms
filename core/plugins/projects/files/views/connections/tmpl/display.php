@@ -28,9 +28,9 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
 
 <ul id="page_options" class="layout">
     <li>
-        <a class="layout-control layout-large-icon first<?php echo ($layout == 'large-icon') ? ' active' : ''; ?>" data-class="large-icon" href="#" aria-label="<?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_GRID'); ?>"><span class="sr-only"><?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_GRID'); ?></span></a>
-        <a class="layout-control layout-small-icon<?php echo ($layout == 'small-icon') ? ' active' : ''; ?>" data-class="small-icon" href="#" aria-label="<?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_LIST'); ?>"><span class="sr-only"><?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_LIST'); ?></span></a>
-        <a class="layout-control layout-list last<?php echo ($layout == 'list') ? ' active' : ''; ?>" data-class="list" href="#" aria-label="<?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_DETAILS'); ?>"><span class="sr-only"><?php echo Lang::txt('PLG_PROJECTS_FILES_LAYOUT_DETAILS'); ?></span></a>
+        <a class="layout-control layout-large-icon first<?= ($layout == 'large-icon') ? ' active' : '' ?>" data-class="large-icon" href="#" aria-label="<?= Lang::txt('PLG_PROJECTS_FILES_LAYOUT_GRID') ?>"><span class="sr-only"><?= Lang::txt('PLG_PROJECTS_FILES_LAYOUT_GRID') ?></span></a>
+        <a class="layout-control layout-small-icon<?= ($layout == 'small-icon') ? ' active' : '' ?>" data-class="small-icon" href="#" aria-label="<?= Lang::txt('PLG_PROJECTS_FILES_LAYOUT_LIST') ?>"><span class="sr-only"><?= Lang::txt('PLG_PROJECTS_FILES_LAYOUT_LIST') ?></span></a>
+        <a class="layout-control layout-list last<?= ($layout == 'list') ? ' active' : '' ?>" data-class="list" href="#" aria-label="<?= Lang::txt('PLG_PROJECTS_FILES_LAYOUT_DETAILS') ?>"><span class="sr-only"><?= Lang::txt('PLG_PROJECTS_FILES_LAYOUT_DETAILS') ?></span></a>
     </li>
 </ul>
 
@@ -46,7 +46,7 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
         <?php $imgRel = '/plugins/filesystem/' . $connection->provider->alias . '/assets/img/icon.png'; ?>
         <?php $img = (is_file(PATH_APP . DS . $imgRel)) ? '/app' . $imgRel : '/core' . $imgRel; ?>
         <div class="connection-wrap <?php echo $layout; ?>">
-            <a class="connection" href="<?php echo Route::url($this->model->link('files') . '&action=browse&connection=' . $connection->id); ?>">
+            <a class="connection" href="<?= Route::url($this->model->link('files') . '&action=browse&connection=' . $connection->id) ?>">
                 <?php if (!$connection->isShared()) : ?>
                     <?php $hasPrivate = true; ?>
                     <div class="private-connection"></div>
@@ -79,29 +79,29 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
             ?>
             <?php if ($mayActOnConnection) : ?>
             <div class="connection-actions">
-                <a class="connection-refresh icon-refresh" title="<?php echo Lang::txt('Refresh Connection Credentials'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=refreshaccess&connection=' . $connection->id); ?>">
+                <a class="connection-refresh icon-refresh" title="<?= Lang::txt('Refresh Connection Credentials') ?>" href="<?= Route::url($this->model->link('files') . '&action=refreshaccess&connection=' . $connection->id) ?>">
                     <?php echo Lang::txt('Refresh Connection Credentials'); ?>
                 </a>
-                <a class="connection-refreshpath icon-folder" title="<?php echo Lang::txt('Refresh Connection Path'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=refreshpath&connection=' . $connection->id); ?>">
+                <a class="connection-refreshpath icon-folder" title="<?= Lang::txt('Refresh Connection Path') ?>" href="<?= Route::url($this->model->link('files') . '&action=refreshpath&connection=' . $connection->id) ?>">
                     <?php echo Lang::txt('Refresh Connection Path'); ?>
                 </a>
-                <a class="connection-edit icon-edit" title="<?php echo Lang::txt('Edit Connection'); ?>" href="<?php echo Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id); ?>">
+                <a class="connection-edit icon-edit" title="<?= Lang::txt('Edit Connection') ?>" href="<?= Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id) ?>">
                     <?php echo Lang::txt('Edit'); ?>
                 </a>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->model->link('files') . '&action=deleteconnection&connection=' . $connection->id); ?>" class="connection-delete icon-delete" title="<?php echo Lang::txt('Delete Connection'); ?>" data-confirm="<?php echo Lang::txt('Are you sure you want to delete this connection?'); ?>"><?php echo Lang::txt('Delete'); ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->model->link('files') . '&action=deleteconnection&connection=' . $connection->id) ?>" class="connection-delete icon-delete" title="<?= Lang::txt('Delete Connection') ?>" data-confirm="<?= Lang::txt('Are you sure you want to delete this connection?') ?>"><?= Lang::txt('Delete') ?></button>
             </div>
             <?php endif; ?>
         </div>
     <?php endforeach; ?>
 
-    <form class="connection-wrap new-connection <?php echo $layout; ?>" action="<?php echo Route::url($this->model->link('files') . '&action=newconnection'); ?>" method="post">
+    <form class="connection-wrap new-connection <?= $layout ?>" action="<?= Route::url($this->model->link('files') . '&action=newconnection') ?>" method="post">
         <fieldset class="connection">
             <div class="new"></div>
             <div class="name">
-                <select name="provider_id" class="connection-type" aria-label="<?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECTION_TYPE'); ?>">
+                <select name="provider_id" class="connection-type" aria-label="<?= Lang::txt('PLG_PROJECTS_FILES_CONNECTION_TYPE') ?>">
                     <option value=""><?php echo Lang::txt('New Connection'); ?></option>
                     <?php foreach (\Components\Projects\Models\Orm\Provider::all() as $provider) : ?>
-                        <option value="<?php echo $provider->id; ?>"><?php echo $this->escape($provider->name); ?></option>
+                        <option value="<?= $provider->id ?>"><?= $this->escape($provider->name) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

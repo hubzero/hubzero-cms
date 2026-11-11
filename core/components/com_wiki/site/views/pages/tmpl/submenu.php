@@ -25,29 +25,29 @@ if ($tmpl != 'component' && $this->sub) { ?>
         <ul id="page_options">
             <?php if (!User::isGuest() && $this->page->access('create')) { ?>
                 <li class="page-new">
-                    <a class="icon-add add btn" href="<?php echo Route::url($this->page->link('base') . '&action=new'); ?>">
+                    <a class="icon-add add btn" href="<?= Route::url($this->page->link('base') . '&action=new') ?>">
                         <?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>
                     </a>
                 </li>
             <?php } ?>
             <li class="page-index">
-                <a class="icon-list-ul index btn" href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:AllPages'); ?>">
+                <a class="icon-list-ul index btn" href="<?= Route::url($this->page->link('base') . '&pagename=Special:AllPages') ?>">
                     <span><?php echo Lang::txt('COM_WIKI_INDEX'); ?></span>
                 </a>
             </li>
             <li class="page-search">
-                <a class="icon-search search btn" href="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Search'); ?>">
+                <a class="icon-search search btn" href="<?= Route::url($this->page->link('base') . '&pagename=Special:Search') ?>">
                     <?php echo Lang::txt('COM_WIKI_SEARCH'); ?>
                 </a>
                 <div class="page-search-form">
-                    <form action="<?php echo Route::url($this->page->link('base') . '&pagename=Special:Search'); ?>" method="get">
+                    <form action="<?= Route::url($this->page->link('base') . '&pagename=Special:Search') ?>" method="get">
                         <fieldset>
                             <legend><?php echo Lang::txt('COM_WIKI_SEARCH_LEGEND'); ?></legend>
                             <label for="page-search-q">
                                 <span><?php echo Lang::txt('COM_WIKI_SEARCH'); ?></span>
-                                <input type="text" name="q" id="page-search-q" value="" placeholder="<?php echo Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER'); ?>" />
+                                <input type="text" name="q" id="page-search-q" value="" placeholder="<?= Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER') ?>" />
                             </label>
-                            <input type="submit" class="page-search-submit" value="<?php echo Lang::txt('COM_WIKI_GO'); ?>" />
+                            <input type="submit" class="page-search-submit" value="<?= Lang::txt('COM_WIKI_GO') ?>" />
                         </fieldset>
                     </form>
                 </div>
@@ -59,7 +59,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
                 if ($grp && !User::isGuest() && $grp->isManager(User::get('id'))) {
                     ?>
                     <li class="page-settings">
-                        <a class="icon-settings settings btn" href="<?php echo Route::url($this->page->link('base') . '&action=settings'); ?>">
+                        <a class="icon-settings settings btn" href="<?= Route::url($this->page->link('base') . '&action=settings') ?>">
                             <?php echo Lang::txt('COM_WIKI_SETTINGS'); ?>
                         </a>
                     </li>
@@ -73,7 +73,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 
 <nav aria-label="<?php echo Lang::txt('COM_WIKI_PAGE_MENU'); ?>">
 <ul class="sub-menu">
-    <li class="page-text<?php echo $this->controller == 'pages' && ($this->task == 'display' || !$this->task) ? ' active' : ''; ?>">
+    <li class="page-text<?= $this->controller == 'pages' && ($this->task == 'display' || !$this->task) ? ' active' : '' ?>">
         <a href="<?php echo Route::url($this->page->link()); ?>">
             <span class="icon-align-left"><?php echo Lang::txt('COM_WIKI_TAB_ARTICLE'); ?></span>
         </a>
@@ -81,7 +81,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
     <?php if ($tmpl != 'component') { ?>
         <?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->getNamespace() != 'special') { ?>
             <?php if ((($this->page->isLocked() && $this->page->access('manage')) || ((!$this->page->isLocked() && $this->page->access('edit')) || $this->page->access('manage'))) && ($this->page->getNamespace() != 'help' || $this->page->access('manage'))) { ?>
-                <li class="page-edit<?php echo $this->controller == 'pages' && in_array($this->task, ['edit', 'preview', 'save']) ? ' active' : ''; ?>">
+                <li class="page-edit<?= $this->controller == 'pages' && in_array($this->task, ['edit', 'preview', 'save']) ? ' active' : '' ?>">
                     <a href="<?php echo Route::url($this->page->link('edit')); ?>">
                         <span class="icon-pencil"><?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?></span>
                     </a>
@@ -111,7 +111,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
                 ($this->page->isLocked() && $this->page->access('manage', 'page'))
                     || ((!$this->page->isLocked() && $this->page->access('delete', 'page')) || $this->page->access('manage'))
             ) { ?>
-                <li class="page-delete<?php echo $this->controller == 'pages' && $this->task == 'delete' ? ' active' : ''; ?>">
+                <li class="page-delete<?= $this->controller == 'pages' && $this->task == 'delete' ? ' active' : '' ?>">
                     <a href="<?php echo Route::url($this->page->link('delete')); ?>">
                         <span class="icon-remove-sign"><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></span>
                     </a>

@@ -48,7 +48,7 @@ if ($this->post->get('id')) {
                     <?php echo Lang::txt('COM_FORUM_NEW_DISCUSSION'); ?>
                 <?php } ?>
             </h3>
-            <form action="<?php echo Route::url($action); ?>" method="post" id="commentform" enctype="multipart/form-data">
+            <form action="<?= Route::url($action) ?>" method="post" id="commentform" enctype="multipart/form-data">
                 <p class="comment-member-photo">
                     <img src="<?php echo $this->post->creator->picture(); ?>" alt="" />
                 </p>
@@ -59,7 +59,7 @@ if ($this->post->get('id')) {
                         <div class="col span-half">
                             <div class="form-group">
                                 <label for="field-sticky">
-                                    <input class="option form-check-input"  type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php echo $this->post->get('sticky') ? ' checked="checked"' : ''; ?> />
+                                    <input class="option form-check-input"  type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?= $this->post->get('sticky') ? ' checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('COM_FORUM_FIELD_STICKY'); ?>
                                 </label>
                             </div>
@@ -67,15 +67,15 @@ if ($this->post->get('id')) {
                         <div class="col span-half omega">
                             <div class="form-group">
                                 <label for="field-closed">
-                                    <input class="option form-check-input" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php echo $this->post->get('closed') ? ' checked="checked"' : ''; ?> />
+                                    <input class="option form-check-input" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?= $this->post->get('closed') ? ' checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('COM_FORUM_FIELD_CLOSED_THREAD'); ?>
                                 </label>
                             </div>
                         </div>
                     </div>
                 <?php } else { ?>
-                    <input type="hidden" name="fields[sticky]" id="field-sticky" value="<?php echo $this->post->get('sticky'); ?>" />
-                    <input type="hidden" name="fields[closed]" id="field-closed" value="<?php echo $this->post->get('closed'); ?>" />
+                    <input type="hidden" name="fields[sticky]" id="field-sticky" value="<?= $this->post->get('sticky') ?>" />
+                    <input type="hidden" name="fields[closed]" id="field-closed" value="<?= $this->post->get('closed') ?>" />
                 <?php } ?>
 
                 <?php if (!$this->post->get('parent')) { ?>
@@ -83,14 +83,14 @@ if ($this->post->get('id')) {
                         <label for="field-access">
                             <?php echo Lang::txt('COM_FORUM_FIELD_READ_ACCESS'); ?>
                             <select class="form-control" name="fields[access]" id="field-access">
-                                <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->post->get('access')); ?>
+                                <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->post->get('access')) ?>
                             </select>
                         </label>
                     </div>
 
                     <div class="form-group">
                         <label for="field-category_id">
-                            <?php echo Lang::txt('COM_FORUM_FIELD_CATEGORY'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
+                            <?= Lang::txt('COM_FORUM_FIELD_CATEGORY') ?> <span class="required"><?= Lang::txt('COM_FORUM_REQUIRED') ?></span>
                             <select class="form-control" name="fields[category_id]" id="field-category_id">
                                 <?php
                                 $filters = [
@@ -104,9 +104,9 @@ if ($this->post->get('id')) {
                                         ->whereIn('access', $filters['access'])
                                         ->rows();
                                     if ($categories->count() > 0) { ?>
-                                        <optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
+                                        <optgroup label="<?= $this->escape(stripslashes($section->get('title'))) ?>">
                                             <?php foreach ($categories as $category) { ?>
-                                                <option value="<?php echo $category->get('id'); ?>"<?php echo $this->category->get('alias') == $category->get('alias') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+                                                <option value="<?= $category->get('id') ?>"<?= $this->category->get('alias') == $category->get('alias') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($category->get('title'))) ?></option>
                                             <?php } ?>
                                         </optgroup>
                                     <?php } ?>
@@ -118,18 +118,18 @@ if ($this->post->get('id')) {
                     <div class="form-group">
                         <label for="field-title">
                             <?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?>
-                            <input type="text" class="form-control" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->post->get('title', ''))); ?>" />
+                            <input type="text" class="form-control" name="fields[title]" id="field-title" value="<?= $this->escape(stripslashes($this->post->get('title', ''))) ?>" />
                         </label>
                     </div>
                 <?php } else { ?>
-                    <input type="hidden" name="fields[category_id]" id="field-category_id" value="<?php echo $this->post->get('category_id'); ?>" />
-                    <input type="hidden" name="fields[access]" id="field-access" value="<?php echo $this->post->get('access', 0); ?>" />
+                    <input type="hidden" name="fields[category_id]" id="field-category_id" value="<?= $this->post->get('category_id') ?>" />
+                    <input type="hidden" name="fields[access]" id="field-access" value="<?= $this->post->get('access', 0) ?>" />
                 <?php } ?>
 
                     <div class="form-group">
                         <label for="fieldcomment">
                             <div>
-                                <?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
+                                <?= Lang::txt('COM_FORUM_FIELD_COMMENTS') ?> <span class="required"><?= Lang::txt('COM_FORUM_REQUIRED') ?></span>
                                 <span class="note" style='float:right'>Use an @ sign to mention users in the post</span>
                             </div>
                             
@@ -184,7 +184,7 @@ if ($this->post->get('id')) {
                             <div class="col span-half">
                                 <div class="form-group">
                                     <label for="upload">
-                                        <?php echo Lang::txt('COM_FORUM_FIELD_FILE'); ?> <?php echo $attachment->get('filename') ? '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>' : ''; ?>
+                                        <?= Lang::txt('COM_FORUM_FIELD_FILE') ?> <?= $attachment->get('filename') ? '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>' : '' ?>
                                         <input type="file" class="form-control-file" name="upload" id="upload" />
                                     </label>
                                 </div>
@@ -193,11 +193,11 @@ if ($this->post->get('id')) {
                                 <div class="form-group">
                                     <label for="field-attach-descritpion">
                                         <?php echo Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?>
-                                        <input type="text" class="form-control" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($attachment->get('description', ''))); ?>" />
+                                        <input type="text" class="form-control" name="description" id="field-attach-descritpion" value="<?= $this->escape(stripslashes($attachment->get('description', ''))) ?>" />
                                     </label>
                                 </div>
                             </div>
-                            <input type="hidden" name="attachment" value="<?php echo $this->escape($attachment->get('id')); ?>" />
+                            <input type="hidden" name="attachment" value="<?= $this->escape($attachment->get('id')) ?>" />
                         </div>
                         <?php if ($attachment->get('id')) { ?>
                             <p class="warning">
@@ -209,7 +209,7 @@ if ($this->post->get('id')) {
                     <?php if ($this->config->get('allow_anonymous')) { ?>
                         <div class="form-group">
                             <label for="field-anonymous" class="comment-anonymous-label">
-                                <input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php echo $this->post->get('anonymous') ? ' checked="checked"' : ''; ?> />
+                                <input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?= $this->post->get('anonymous') ? ' checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
                             </label>
                         </div>
@@ -231,13 +231,13 @@ if ($this->post->get('id')) {
                 <input type="hidden" name="fields[id]" value="<?php echo $this->post->get('id'); ?>" />
                 <input type="hidden" name="fields[scope]" value="site" />
                 <input type="hidden" name="fields[scope_id]" value="0" />
-                <input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->post->get('scope_sub_id'); ?>" />
+                <input type="hidden" name="fields[scope_sub_id]" value="<?= $this->post->get('scope_sub_id') ?>" />
                 <input type="hidden" name="fields[object_id]" value="<?php echo $this->post->get('object_id'); ?>" />
 
                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                 <input type="hidden" name="controller" value="threads" />
                 <input type="hidden" name="task" value="save" />
-                <input type="hidden" name="section" value="<?php echo $this->escape($this->section->get('alias')); ?>" />
+                <input type="hidden" name="section" value="<?= $this->escape($this->section->get('alias')) ?>" />
 
                 <?php echo Html::input('token'); ?>
             </form>

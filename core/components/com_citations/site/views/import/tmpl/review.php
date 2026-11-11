@@ -38,18 +38,18 @@ $no_show = ["errors","duplicate"];
         ?>
 
         <ul id="steps">
-            <li><a href="<?php echo Request::base(true); ?>/citations/import" class="passed"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
-            <li><a class="active"><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>
-            <li><a><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3'); ?><span><?php echo Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME'); ?></span></a></li>
+            <li><a href="<?= Request::base(true) ?>/citations/import" class="passed"><?= Lang::txt('COM_CITATIONS_IMPORT_STEP1') ?><span><?= Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME') ?></span></a></li>
+            <li><a class="active"><?= Lang::txt('COM_CITATIONS_IMPORT_STEP2') ?><span><?= Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME') ?></span></a></li>
+            <li><a><?= Lang::txt('COM_CITATIONS_IMPORT_STEP3') ?><span><?= Lang::txt('COM_CITATIONS_IMPORT_STEP3_NAME') ?></span></a></li>
         </ul><!-- / #steps -->
 
-        <form method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=import_save'); ?>">
+        <form method="post" action="<?= Route::url('index.php?option=' . $this->option . '&task=import_save') ?>">
             <?php if ($citations_require_attention) : ?>
                 <table class="upload-list require-action">
                     <thead>
                         <tr>
                             <!--<th></th>-->
-                            <th><?php echo Lang::txt('COM_CITATIONS_IMPORT_REQUIRE_ATTENTION', count($citations_require_attention)); ?></th>
+                            <th><?= Lang::txt('COM_CITATIONS_IMPORT_REQUIRE_ATTENTION', count($citations_require_attention)) ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -63,13 +63,13 @@ $no_show = ["errors","duplicate"];
                             <tr>
                                 <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
                                 <td>
-                                    <span class="citation-title"><u><?php echo Lang::txt('COM_CITATIONS_IMPORT_DUPLICATE'); ?></u>: <?php echo $this->escape(html_entity_decode((string) $c['title'])); ?></span>
-                                    <span class="click-more"><?php echo Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS'); ?></span>
+                                    <span class="citation-title"><u><?= Lang::txt('COM_CITATIONS_IMPORT_DUPLICATE') ?></u>: <?= $this->escape(html_entity_decode((string) $c['title'])) ?></span>
+                                    <span class="click-more"><?= Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS') ?></span>
                             <?php if (1) { ?>
                                     <table class="citation-details hide">
                                         <thead>
                                             <tr>
-                                                <th><?php echo Lang::txt('COM_CITATIONS_IMPORT_CITATION_DETAILS'); ?></th>
+                                                <th><?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_DETAILS') ?></th>
                                                 <th class="options">
                                                     <label>
                                                         <input
@@ -77,21 +77,21 @@ $no_show = ["errors","duplicate"];
                                                             class="citation_require_attention_option"
                                                             name="citation_action_attention[<?php echo $counter; ?>]"
                                                             value="overwrite"
-                                                            checked="checked" /> <?php echo Lang::txt('COM_CITATIONS_IMPORT_CITATION_REPLACE'); ?>
+                                                            checked="checked" /> <?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_REPLACE') ?>
                                                     </label>
                                                     <label>
                                                         <input
                                                             type="radio"
                                                             class="citation_require_attention_option"
                                                             name="citation_action_attention[<?php echo $counter; ?>]"
-                                                            value="both" /> <?php echo Lang::txt('COM_CITATIONS_IMPORT_CITATION_KEEP'); ?>
+                                                            value="both" /> <?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_KEEP') ?>
                                                     </label>
                                                     <label>
                                                         <input
                                                             type="radio"
                                                             class="citation_require_attention_option"
                                                             name="citation_action_attention[<?php echo $counter; ?>]"
-                                                            value="discard" /> <?php echo Lang::txt('COM_CITATIONS_IMPORT_CITATION_NOTHING'); ?>
+                                                            value="discard" /> <?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_NOTHING') ?>
                                                     </label>
                                                 </th>
                                             </tr>
@@ -110,18 +110,18 @@ $no_show = ["errors","duplicate"];
                                                 <?php if (!in_array($k, $no_show)) : ?>
                                                     <tr>
                                                         <td class="key">
-                                                            <?php echo $this->escape(str_replace("_", " ", (string) $k)); ?>
+                                                            <?= $this->escape(str_replace("_", " ", (string) $k)) ?>
                                                         </td>
                                                         <td>
                                                             <table class="citation-differences">
                                                                 <tr>
-                                                                    <td><?php echo Lang::txt('COM_CITATIONS_IMPORT_JUST_UPLOADED'); ?>:</td>
+                                                                    <td><?= Lang::txt('COM_CITATIONS_IMPORT_JUST_UPLOADED') ?>:</td>
                                                                     <td>
-                                                                        <span class="new insert"><?php echo nl2br($this->escape(html_entity_decode((string) $c[$k]))); ?></span>
+                                                                        <span class="new insert"><?= nl2br($this->escape(html_entity_decode((string) $c[$k]))) ?></span>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td><?php echo Lang::txt('COM_CITATIONS_IMPORT_ON_FILE'); ?>:</td>
+                                                                    <td><?= Lang::txt('COM_CITATIONS_IMPORT_ON_FILE') ?>:</td>
                                                                     <td>
                                                                         <span class="old delete">
                                                                             <?php
@@ -168,14 +168,14 @@ $no_show = ["errors","duplicate"];
                     <thead>
                         <tr>
                             <th><input type="checkbox" class="checkall" name="select-all-no-attention" checked="checked" /></th>
-                            <th><?php echo Lang::txt('COM_CITATIONS_IMPORT_REQUIRE_NO_ATTENTION', count($citations_require_no_attention)); ?></th>
+                            <th><?= Lang::txt('COM_CITATIONS_IMPORT_REQUIRE_NO_ATTENTION', count($citations_require_no_attention)) ?></th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php $counter = 0; ?>
                             <?php foreach ($citations_require_no_attention as $c) : ?>
                             <tr>
-                                <td><input type="checkbox" class="check-single" name="citation_action_no_attention[<?php echo $counter++; ?>]" checked="checked" value="1" /></td>
+                                <td><input type="checkbox" class="check-single" name="citation_action_no_attention[<?= $counter++ ?>]" checked="checked" value="1" /></td>
                                 <td>
                                     <span class="citation-title">
                                         <?php
@@ -186,19 +186,19 @@ $no_show = ["errors","duplicate"];
                                         }
                                         ?>
                                     </span>
-                                    <span class="click-more"><?php echo Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS'); ?></span>
+                                    <span class="click-more"><?= Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS') ?></span>
                                     <table class="citation-details hide">
                                         <thead>
                                             <tr>
-                                                <th colspan="2"><?php echo Lang::txt('COM_CITATIONS_IMPORT_CITATION_DETAILS'); ?></th>
+                                                <th colspan="2"><?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_DETAILS') ?></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach (array_keys($c) as $k) : ?>
                                                 <?php if (!in_array($k, $no_show)) : ?>
                                                     <tr>
-                                                        <td class="key"><?php echo $this->escape(str_replace("_", " ", (string) $k)); ?></td>
-                                                        <td><?php echo nl2br($this->escape(html_entity_decode((string) $c[$k]))); ?></td>
+                                                        <td class="key"><?= $this->escape(str_replace("_", " ", (string) $k)) ?></td>
+                                                        <td><?= nl2br($this->escape(html_entity_decode((string) $c[$k]))) ?></td>
                                                     </tr>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>
@@ -212,7 +212,7 @@ $no_show = ["errors","duplicate"];
             <?php endif; ?>
 
             <p class="submit">
-                <input type="submit" name="submit" value="<?php echo Lang::txt('COM_CITATIONS_IMPORT_SUBMIT_IMPORTED'); ?>" />
+                <input type="submit" name="submit" value="<?= Lang::txt('COM_CITATIONS_IMPORT_SUBMIT_IMPORTED') ?>" />
             </p>
 
             <?php echo Html::input('token'); ?>

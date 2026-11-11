@@ -65,7 +65,7 @@ $this->css();
         </div>
 
         <div class="form-group">
-            <label for="field-title"<?php echo $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : ''; ?>>
+            <label for="field-title"<?= $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '' ?>>
                 <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_TITLE'); ?>
                 <span class="required">
                     <?php echo Lang::txt('JREQUIRED'); ?>
@@ -120,7 +120,7 @@ $this->css();
             <div class="col span6">
                 <div class="form-group">
                     <label for="field-layout"
-                        class="form-control<?php echo $this->task == 'save' && !$this->entry->get('layout') ? ' fieldWithErrors' : ''; ?>">
+                        class="form-control<?= $this->task == 'save' && !$this->entry->get('layout') ? ' fieldWithErrors' : '' ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_LAYOUT'); ?>
                         <?php
                         $layout = $this->entry->get('layout');
@@ -144,7 +144,7 @@ $this->css();
             <div class="col span6 omega">
                 <div class="form-group">
                     <label for="field-sort"
-                        class="form-control<?php echo $this->task == 'save' && !$this->entry->get('sort') ? ' fieldWithErrors' : ''; ?>">
+                        class="form-control<?= $this->task == 'save' && !$this->entry->get('sort') ? ' fieldWithErrors' : '' ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_SORT'); ?>
                         <?php
                         $sort = $this->entry->get('sort');

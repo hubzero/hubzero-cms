@@ -93,7 +93,7 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
                                 stroke-dashoffset="<?php echo round($offset, 2); ?>"></circle>
                     </svg>
                     <div class="gauge-center">
-                        <span class="gauge-percent" data-value="<?php echo $percent; ?>"><?php echo $percent; ?></span><span class="gauge-unit">%</span>
+                        <span class="gauge-percent" data-value="<?= $percent ?>"><?= $percent ?></span><span class="gauge-unit">%</span>
                         <span class="gauge-caption"><?php echo Lang::txt('COM_TOOLS_STORAGE_USED_LABEL'); ?></span>
                     </div>
                 </div>
@@ -101,15 +101,15 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
                 <ul class="storage-stats">
                     <li>
                         <span class="stat-label"><?php echo Lang::txt('COM_TOOLS_STORAGE_USED_LABEL'); ?></span>
-                        <span class="stat-value" data-bytes="<?php echo (float) $used; ?>"><?php echo $fmt($used); ?></span>
+                        <span class="stat-value" data-bytes="<?= (float) $used ?>"><?= $fmt($used) ?></span>
                     </li>
                     <li>
                         <span class="stat-label"><?php echo Lang::txt('COM_TOOLS_STORAGE_QUOTA_LABEL'); ?></span>
-                        <span class="stat-value" data-bytes="<?php echo (float) $soft; ?>"><?php echo $fmt($soft); ?></span>
+                        <span class="stat-value" data-bytes="<?= (float) $soft ?>"><?= $fmt($soft) ?></span>
                     </li>
                     <li>
                         <span class="stat-label"><?php echo Lang::txt('COM_TOOLS_STORAGE_FREE_LABEL'); ?></span>
-                        <span class="stat-value" data-bytes="<?php echo (float) $free; ?>"><?php echo $fmt($free); ?></span>
+                        <span class="stat-value" data-bytes="<?= (float) $free ?>"><?= $fmt($free) ?></span>
                     </li>
                 </ul>
             </div>
@@ -124,9 +124,9 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
                         <span><?php echo Lang::txt('COM_TOOLS_STORAGE_CLEAN_UP_DISCK_SPACE'); ?></span>
                         <select name="degree">
                             <option value="default"><?php echo Lang::txt('COM_TOOLS_STORAGE_OPT_MINIMALLY'); ?></option>
-                            <option value="olderthan1"><?php echo Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_DAY'); ?></option>
-                            <option value="olderthan7"><?php echo Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_WEEK'); ?></option>
-                            <option value="olderthan30"><?php echo Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_MONTH'); ?></option>
+                            <option value="olderthan1"><?= Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_DAY') ?></option>
+                            <option value="olderthan7"><?= Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_WEEK') ?></option>
+                            <option value="olderthan30"><?= Lang::txt('COM_TOOLS_STORAGE_OPT_OLDER_MONTH') ?></option>
                             <option value="all"><?php echo Lang::txt('COM_TOOLS_STORAGE_OPT_ALL'); ?></option>
                         </select>
                     </label>
@@ -151,7 +151,7 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
 
             <div class="storage-browser" id="storage-files">
                 <div class="sb-head">
-                    <nav class="sb-crumbs" id="sb-crumbs" aria-label="<?php echo Lang::txt('COM_TOOLS_STORAGE_YOUR_FILES'); ?>"></nav>
+                    <nav class="sb-crumbs" id="sb-crumbs" aria-label="<?= Lang::txt('COM_TOOLS_STORAGE_YOUR_FILES') ?>"></nav>
                     <div class="sb-tools">
                         <input type="search" class="sb-filter" id="sb-filter" autocomplete="off"
                                placeholder="<?php echo Lang::txt('COM_TOOLS_STORAGE_FILTER'); ?>"
@@ -165,7 +165,7 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
                             <span><?php echo Lang::txt('COM_TOOLS_STORAGE_UPLOAD'); ?></span>
                         </button>
                         <input type="file" id="sb-file-input" multiple hidden />
-                        <button type="button" class="sb-refresh" id="sb-refresh" title="<?php echo Lang::txt('COM_TOOLS_STORAGE_REFRESH'); ?>" aria-label="<?php echo Lang::txt('COM_TOOLS_STORAGE_REFRESH'); ?>">
+                        <button type="button" class="sb-refresh" id="sb-refresh" title="<?= Lang::txt('COM_TOOLS_STORAGE_REFRESH') ?>" aria-label="<?= Lang::txt('COM_TOOLS_STORAGE_REFRESH') ?>">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
                         </button>
                     </div>
@@ -191,14 +191,14 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
                     </button>
                 </div>
 
-                <ul class="sb-list" id="sb-list" aria-label="<?php echo Lang::txt('COM_TOOLS_STORAGE_YOUR_FILES'); ?>"></ul>
+                <ul class="sb-list" id="sb-list" aria-label="<?= Lang::txt('COM_TOOLS_STORAGE_YOUR_FILES') ?>"></ul>
                 <p class="sb-state" id="sb-loading"><?php echo Lang::txt('COM_TOOLS_STORAGE_BROWSER_LOADING'); ?></p>
                 <p class="sb-state" id="sb-empty" hidden><?php echo Lang::txt('COM_TOOLS_STORAGE_BROWSER_EMPTY'); ?></p>
-                <p class="sb-state" id="sb-nomatch" hidden><?php echo Lang::txt('COM_TOOLS_STORAGE_BROWSER_NOMATCH'); ?></p>
-                <p class="sb-state sb-error" id="sb-error" hidden><?php echo Lang::txt('COM_TOOLS_STORAGE_BROWSER_ERROR'); ?></p>
+                <p class="sb-state" id="sb-nomatch" hidden><?= Lang::txt('COM_TOOLS_STORAGE_BROWSER_NOMATCH') ?></p>
+                <p class="sb-state sb-error" id="sb-error" hidden><?= Lang::txt('COM_TOOLS_STORAGE_BROWSER_ERROR') ?></p>
 
                 <noscript>
-                    <iframe src="<?php echo $filerUrl; ?>" name="filer" id="filer" title="<?php echo Lang::txt('COM_TOOLS_STORAGE_YOUR_FILES'); ?>"></iframe>
+                    <iframe src="<?= $filerUrl ?>" name="filer" id="filer" title="<?= Lang::txt('COM_TOOLS_STORAGE_YOUR_FILES') ?>"></iframe>
                 </noscript>
             </div>
 

@@ -45,7 +45,7 @@ $this->css('
     <div class="video-page-header">
         <h2><?php echo $this->escape(isset($this->parent) ? $this->parent->title : $this->resource->title); ?></h2>
         <?php if (isset($this->parent)) : ?>
-            <p class="video-page-back"><a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->parent->id); ?>">&larr; Back to resource</a></p>
+            <p class="video-page-back"><a href="<?= Route::url('index.php?option=com_resources&id=' . $this->parent->id) ?>">&larr; Back to resource</a></p>
         <?php endif; ?>
     </div>
 
@@ -58,7 +58,7 @@ $this->css('
         <svg class="flash-pause" viewBox="0 0 48 48" fill="none"><rect x="12" y="10" width="8" height="28" rx="2" fill="#fff"/><rect x="28" y="10" width="8" height="28" rx="2" fill="#fff"/></svg>
     </div>
     <?php if (count($presentation->media) > 0) : ?>
-        <video webkit-playsinline playsinline controls id="video-player" aria-label="<?php echo $this->escape(isset($this->parent) ? $this->parent->title : $this->resource->title); ?>" data-mediaid="<?php echo $this->resource->id; ?>">
+        <video webkit-playsinline playsinline controls id="video-player" aria-label="<?= $this->escape(isset($this->parent) ? $this->parent->title : $this->resource->title) ?>" data-mediaid="<?= $this->resource->id ?>">
             <?php foreach ($presentation->media as $video) : ?>
                 <?php
                 switch ($video->type) {
@@ -117,14 +117,14 @@ $this->css('
                     <?php if (preg_match('/\.vtt$/i', $source)) : ?>
                         <?php // VTT: use native <track> — browser renders captions with
                           // user-preferred styles from OS accessibility settings.?>
-                    <track kind="captions" src="<?php echo $this->escape($source); ?>?v=<?php echo $this->escape($modified); ?>" srclang="<?php echo $this->escape(isset($subtitle->lang) ? $subtitle->lang : 'en'); ?>" label="<?php echo $this->escape($subtitle->name); ?>"<?php echo ($auto) ? ' default' : ''; ?> />
+                    <track kind="captions" src="<?= $this->escape($source) ?>?v=<?= $this->escape($modified) ?>" srclang="<?= $this->escape(isset($subtitle->lang) ? $subtitle->lang : 'en') ?>" label="<?= $this->escape($subtitle->name) ?>"<?= ($auto) ? ' default' : '' ?> />
                     <?php else : ?>
                         <?php // SRT: use custom JS overlay (browsers don't support native SRT)?>
                     <div aria-hidden="true"
                         data-autoplay="<?php echo $this->escape($auto); ?>"
                         data-type="subtitle"
                         data-lang="<?php echo $this->escape($subtitle->name); ?>"
-                        data-src="<?php echo $this->escape($source); ?>?v=<?php echo $this->escape($modified); ?>"></div>
+                        data-src="<?= $this->escape($source) ?>?v=<?= $this->escape($modified) ?>"></div>
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>

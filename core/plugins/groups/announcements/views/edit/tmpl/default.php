@@ -144,7 +144,7 @@ $backUrl = Route::url(
                             type="checkbox"
                             name="fields[email]"
                             id="field-email"
-                            value="1" <?php echo $this->announcement->get('email') == 1 ? 'checked="checked"' : ''; ?> />
+                            value="1" <?= $this->announcement->get('email') == 1 ? 'checked="checked"' : '' ?> />
                         <?php if ($this->announcement->get('sent') == 1) : ?>
                             <?php $resendText = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_RESEND'); ?>
                             <span class="important"><?php echo $resendText; ?></span>

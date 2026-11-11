@@ -21,7 +21,7 @@ $this
 
 <ul id="page_options">
     <li>
-        <a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=collections&page=index'); ?>">
+        <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=collections&page=index') ?>">
             <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GETTING_STARTED'); ?></span>
         </a>
     </li>
@@ -51,7 +51,7 @@ $this
                         <tr class="<?php echo $row->get('following_type'); ?>">
                             <th>
                                 <?php if ($row->following()->image()) { ?>
-                                    <img src="<?php echo $row->following()->image(); ?>" width="40" height="40" alt="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($row->following()->title() ?: ''))); ?>" />
+                                    <img src="<?= $row->following()->image() ?>" width="40" height="40" alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes($row->following()->title() ?: ''))) ?>" />
                                 <?php } else { ?>
                                     <span class="entry-id">
                                         <?php echo $row->get('following_id'); ?>
@@ -60,22 +60,22 @@ $this
                             </th>
                             <td>
                                 <a class="entry-title" href="<?php echo Route::url($row->following()->link()); ?>">
-                                    <?php echo $this->escape(stripslashes($row->following()->title() ?: Lang::txt('(unknown)'))); ?>
+                                    <?= $this->escape(stripslashes($row->following()->title() ?: Lang::txt('(unknown)'))) ?>
                                 </a>
                                 <?php if ($row->get('following_type') == 'collection') { ?>
-                                    <?php echo Lang::txt('by %s', $this->escape(stripslashes($row->following()->creator('name') ?: ''))); ?>
+                                    <?= Lang::txt('by %s', $this->escape(stripslashes($row->following()->creator('name') ?: ''))) ?>
                                 <?php } ?>
                                 <br />
                                 <span class="entry-details">
-                                    <span class="follower count"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWERS', $row->count('followers')); ?></span>
+                                    <span class="follower count"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWERS', $row->count('followers')) ?></span>
                                     <?php if ($row->get('following_type') != 'collection') { ?>
-                                        <span class="following count"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWING', $row->count('following')); ?></span>
+                                        <span class="following count"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_FOLLOWING', $row->count('following')) ?></span>
                                     <?php } ?>
                                 </span>
                             </td>
                             <td>
                                 <?php if ($this->params->get('access-manage-collection')) { ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($row->following()->link('unfollow')); ?>" class="icon-unfollow unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?>">
+                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->following()->link('unfollow')) ?>" class="icon-unfollow unfollow btn" data-id="<?= $row->get('following_id') ?>" data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?></span>
                                     </button>
                                 <?php } ?>
@@ -102,7 +102,7 @@ $this
             <?php if ($this->params->get('access-manage-collection')) { ?>
                 <div class="instructions">
                     <ol>
-                        <li><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP1', Route::url('index.php?option=com_collections')); ?></li>
+                        <li><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP1', Route::url('index.php?option=com_collections')) ?></li>
                         <li><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP2'); ?></li>
                         <li><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP3'); ?></li>
                     </ol>

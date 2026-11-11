@@ -17,7 +17,7 @@ $id = str_replace('resource-', '', $this->result['id']);
 $extras = Event::trigger('resources.onResourcesList', [$id]);
 ?>
 
-<div class="result <?php echo isset($this->result['access_level']) ? $this->result['access_level'] : 'public'; ?>" id="<?php echo $this->result['id']; ?>">
+<div class="result <?= isset($this->result['access_level']) ? $this->result['access_level'] : 'public' ?>" id="<?= $this->result['id'] ?>">
     <div class="result-body">
         <!-- Cateogory : mandatory -->
         <span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>
@@ -32,7 +32,7 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                         <?php foreach ($this->result['_childDocuments_'] as $index => $badge) : ?>
                             <?php if (isset($badge['badge_b']) && $badge['badge_b']) : ?>
                                 <?php $description = !empty($badge['description']) ? $badge['description'] : $badge['title'][0];?>
-                                <a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . urlencode($description)); ?>" data-tag="<?php echo $this->escape($description); ?>">
+                                <a class="tag" href="<?= Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . urlencode($description)) ?>" data-tag="<?= $this->escape($description) ?>">
                                     <?php echo $this->escape($badge['title'][0]); ?>
                                 </a>
                                 <?php unset($this->result['_childDocuments_'][$index]); ?>
@@ -44,7 +44,7 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
         </div>
 
         <!-- Title : mandatory -->
-        <h3 class="result-title"><a href="<?php echo $this->escape($this->result['url']); ?>"><b><!-- highlight portion --></b><?php echo $this->escape($this->result['title']); ?></a></h3>
+        <h3 class="result-title"><a href="<?= $this->escape($this->result['url']) ?>"><b><!-- highlight portion --></b><?= $this->escape($this->result['title']) ?></a></h3>
 
         <div class="result-extras">
             <?php if (!empty($extras)) : ?>
@@ -53,7 +53,7 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
 
             <?php if (isset($this->result['date'])) : ?>
                 <?php $date = new \Hubzero\Utility\Date($this->result['date']); ?>
-                <span class="result-timestamp"><time datetime="<?php echo $this->result['date']; ?>"><?php echo $date->toLocal('Y-m-d h:mA'); ?></time></span>
+                <span class="result-timestamp"><time datetime="<?= $this->result['date'] ?>"><?= $date->toLocal('Y-m-d h:mA') ?></time></span>
             <?php endif; ?>
             <span class="result-citation">
                 <?php
@@ -101,7 +101,7 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                         <?php if (!empty($tag['title'][0])) : ?>
                         <li>
                             <?php $description = !empty($tag['description']) ? $tag['description'] : $tag['title'][0]; ?>
-                            <a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . urlencode($description)); ?>" data-tag="<?php echo $this->escape($description); ?>">
+                            <a class="tag" href="<?= Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . urlencode($description)) ?>" data-tag="<?= $this->escape($description) ?>">
                                 <?php echo $this->escape($tag['title'][0]); ?>
                             </a>
                         </li>
@@ -115,7 +115,7 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                 <ul class="tags">
                     <?php foreach ($this->result['tags'] as $tag) : ?>
                         <li>
-                            <a class="tag" href="<?php echo Route::url('index.php?option=com_search&terms=' . $tag); ?>">
+                            <a class="tag" href="<?= Route::url('index.php?option=com_search&terms=' . $tag) ?>">
                                 <?php echo $this->escape($tag); ?>
                             </a>
                         </li>

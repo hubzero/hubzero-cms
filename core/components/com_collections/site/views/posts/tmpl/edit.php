@@ -50,7 +50,7 @@ if (!$dir) {
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">
+            <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index') ?>">
                 <span><?php echo Lang::txt('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
             </a>
         </p>
@@ -63,12 +63,12 @@ if (!$dir) {
             <ul>
                 <li>
                     <a class="collections count" href="<?php echo Route::url($base . '&task=all'); ?>">
-                        <span><?php echo Lang::txt('COM_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->counts['collections']); ?></span>
+                        <span><?= Lang::txt('COM_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->counts['collections']) ?></span>
                     </a>
                 </li>
                 <li>
                     <a class="posts count" href="<?php echo Route::url($base . '&task=posts'); ?>">
-                        <span><?php echo Lang::txt('COM_COLLECTIONS_HEADER_NUM_POSTS', $this->counts['posts']); ?></span>
+                        <span><?= Lang::txt('COM_COLLECTIONS_HEADER_NUM_POSTS', $this->counts['posts']) ?></span>
                     </a>
                 </li>
             </ul>
@@ -76,7 +76,7 @@ if (!$dir) {
             <p>
                 <label for="filter-search">
                     <span><?php echo Lang::txt('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
-                    <input type="text" name="search" id="filter-search" value="" placeholder="<?php echo Lang::txt('COM_COLLECTIONS_SEARCH_PLACEHOLDER'); ?>" />
+                    <input type="text" name="search" id="filter-search" value="" placeholder="<?= Lang::txt('COM_COLLECTIONS_SEARCH_PLACEHOLDER') ?>" />
                 </label>
                 <input type="submit" class="filter-submit" value="<?php echo Lang::txt('COM_COLLECTIONS_GO'); ?>" />
             </p>
@@ -88,9 +88,9 @@ if (!$dir) {
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url($base . '&task=save'); ?>" method="post" id="hubForm" enctype="multipart/form-data">
+    <form action="<?= Route::url($base . '&task=save') ?>" method="post" id="hubForm" enctype="multipart/form-data">
         <fieldset>
-            <legend><?php echo $item->get('id') ? Lang::txt('COM_COLLECTIONS_EDIT_POST') : Lang::txt('COM_COLLECTIONS_NEW_POST'); ?></legend>
+            <legend><?= $item->get('id') ? Lang::txt('COM_COLLECTIONS_EDIT_POST') : Lang::txt('COM_COLLECTIONS_NEW_POST') ?></legend>
 
     <?php if ($this->entry->get('original')) { ?>
             <div class="field-wrap">
@@ -138,20 +138,20 @@ if (!$dir) {
                             </span>
                             <span class="asset-file">
                         <?php if ($asset->get('type') == 'link') { ?>
-                                <input type="text" name="assets[<?php echo $i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" placeholder="http://" />
+                                <input type="text" name="assets[<?= $i ?>][filename]" size="35" value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>" placeholder="http://" />
                         <?php } else { ?>
                                 <?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
-                                <input type="hidden" name="assets[<?php echo $i; ?>][filename]" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][filename]" value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>" />
                         <?php } ?>
                             </span>
                             <span class="asset-description">
-                                <input type="hidden" name="assets[<?php echo $i; ?>][type]" value="<?php echo $this->escape(stripslashes($asset->get('type'))); ?>" />
-                                <input type="hidden" name="assets[<?php echo $i; ?>][id]" value="<?php echo $this->escape($asset->get('id')); ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][type]" value="<?= $this->escape(stripslashes($asset->get('type'))) ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][id]" value="<?= $this->escape($asset->get('id')) ?>" />
                             <?php // The asset hangs off the item, so removing it removes it from
                                   // every repost too. The controller allows that only to the item's
                                   // owner; offering the link to anyone else is a 403 waiting to happen.
                             if ($item->get('created_by') == User::get('id')) { ?>
-                                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&post=' . $this->entry->get('id') . '&task=edit&remove=' . $asset->get('id')); ?>" class="icon-delete delete" title="<?php echo Lang::txt('COM_COLLECTIONS_DELETE_ASSET'); ?>">
+                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&post=' . $this->entry->get('id') . '&task=edit&remove=' . $asset->get('id')) ?>" class="icon-delete delete" title="<?= Lang::txt('COM_COLLECTIONS_DELETE_ASSET') ?>">
                                     <?php echo Lang::txt('COM_COLLECTIONS_DELETE'); ?>
                                 </button>
                             <?php } ?>
@@ -166,15 +166,15 @@ if (!$dir) {
 
                     <label for="field-title">
                         <?php echo Lang::txt('COM_COLLECTIONS_FIELD_TITLE'); ?>
-                        <input type="text" name="fields[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
+                        <input type="text" name="fields[title]" id="field-title" size="35" value="<?= $this->escape(stripslashes($item->get('title'))) ?>" />
                     </label>
     <?php } ?>
                     <label for="field_description">
                         <?php echo Lang::txt('COM_COLLECTIONS_FIELD_DESCRIPTION'); ?>
                     <?php if ($this->entry->get('original')) { ?>
-                        <?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', ['class' => 'minimal no-footer']); ?>
+                        <?= $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', ['class' => 'minimal no-footer']) ?>
                     <?php } else { ?>
-                        <?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', ['class' => 'minimal no-footer']); ?>
+                        <?= $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', ['class' => 'minimal no-footer']) ?>
                     <?php } ?>
                     </label>
                 <?php if ($this->task == 'save' && !$item->get('description')) { ?>
@@ -193,7 +193,7 @@ if (!$dir) {
                     <?php echo Lang::txt('COM_COLLECTIONS_SELECT_COLLECTION'); ?>
                     <select name="post[collection_id]" id="post-collection_id">
                     <?php foreach ($this->collections as $collection) { ?>
-                        <option value="<?php echo $this->escape($collection->get('id')); ?>"<?php echo $this->collection->get('id') == $collection->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($collection->get('title'))); ?></option>
+                        <option value="<?= $this->escape($collection->get('id')) ?>"<?= $this->collection->get('id') == $collection->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($collection->get('title'))) ?></option>
                     <?php } ?>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_COLLECTIONS_SELECT_COLLECTION_HINT'); ?></span>
@@ -225,7 +225,7 @@ if (!$dir) {
         <input type="hidden" name="fields[dir]" id="field-dir" value="<?php echo $dir; ?>" />
 
         <input type="hidden" name="post[id]" value="<?php echo $this->entry->get('id'); ?>" />
-        <input type="hidden" name="post[item_id]" id="post-item_id" value="<?php echo $this->entry->get('item_id'); ?>" />
+        <input type="hidden" name="post[item_id]" id="post-item_id" value="<?= $this->entry->get('item_id') ?>" />
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -234,9 +234,9 @@ if (!$dir) {
         <?php echo Html::input('token'); ?>
 
         <p class="submit">
-            <input class="btn btn-success" type="submit" value="<?php echo Lang::txt(strtoupper($this->option) . '_SAVE'); ?>" />
+            <input class="btn btn-success" type="submit" value="<?= Lang::txt(strtoupper($this->option) . '_SAVE') ?>" />
             <?php if ($item->get('id')) { ?>
-                <a class="btn btn-secondary" href="<?php echo Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')); ?>">
+                <a class="btn btn-secondary" href="<?= Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')) ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>
                 </a>
             <?php } ?>

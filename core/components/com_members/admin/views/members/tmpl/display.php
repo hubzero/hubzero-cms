@@ -69,53 +69,53 @@ $this
     ->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span4">
                 <label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
+                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
             </div>
             <div class="col span8">
-                <label for="filter_emailConfirmed"><?php echo Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED'); ?></label>
+                <label for="filter_emailConfirmed"><?= Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED') ?></label>
                 <select name="activation" id="filter_emailConfirmed" class="inputbox filter filter-submit">
-                    <option value="0"<?php echo $this->filters['activation'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED'); ?></option>
-                    <option value="1"<?php echo $this->filters['activation'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED'); ?></option>
-                    <option value="-1"<?php echo $this->filters['activation'] == -1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED'); ?></option>
+                    <option value="0"<?= $this->filters['activation'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED') ?></option>
+                    <option value="1"<?= $this->filters['activation'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED') ?></option>
+                    <option value="-1"<?= $this->filters['activation'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED') ?></option>
                 </select>
 
                 <?php // This is who may view the profile (users.access), not the access group: that's the Group filter?>
                 <label for="filter-access"><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS');?></option>
-                    <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+                    <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']) ?>
                 </select>
 
                 <label for="filter-state"><?php echo Lang::txt('COM_MEMBERS_FILTER_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="inputbox filter filter-submit">
                     <option value="*"><?php echo Lang::txt('COM_MEMBERS_FILTER_STATE');?></option>
-                    <?php echo Html::select('options', Components\Members\Helpers\Admin::getStateOptions(), 'value', 'text', $this->filters['state']); ?>
+                    <?= Html::select('options', Components\Members\Helpers\Admin::getStateOptions(), 'value', 'text', $this->filters['state']) ?>
                 </select>
 
                 <label for="filter-approved"><?php echo Lang::txt('COM_MEMBERS_FILTER_APPROVED'); ?>:</label>
                 <select name="approved" id="filter-approved" class="inputbox filter filter-submit">
                     <option value="*"><?php echo Lang::txt('COM_MEMBERS_FILTER_APPROVED');?></option>
-                    <?php echo Html::select('options', Components\Members\Helpers\Admin::getApprovedOptions(), 'value', 'text', $this->filters['approved']); ?>
+                    <?= Html::select('options', Components\Members\Helpers\Admin::getApprovedOptions(), 'value', 'text', $this->filters['approved']) ?>
                 </select>
 
                 <label for="filter-group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USERGROUP'); ?>:</label>
                 <select name="group_id" id="filter-group_id" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_USERGROUP');?></option>
-                    <?php echo Html::select('options', Components\Members\Helpers\Admin::getAccessGroups(), 'value', 'text', $this->filters['group_id']); ?>
+                    <?= Html::select('options', Components\Members\Helpers\Admin::getAccessGroups(), 'value', 'text', $this->filters['group_id']) ?>
                 </select>
 
                 <label for="filter-range"><?php echo Lang::txt('COM_MEMBERS_OPTION_FILTER_DATE'); ?>:</label>
                 <select name="range" id="filter-range" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_FILTER_DATE');?></option>
-                    <?php echo Html::select('options', Components\Members\Helpers\Admin::getRangeOptions(), 'value', 'text', $this->filters['range']); ?>
+                    <?= Html::select('options', Components\Members\Helpers\Admin::getRangeOptions(), 'value', 'text', $this->filters['range']) ?>
                 </select>
             </div>
         </div>
@@ -126,16 +126,16 @@ $this
             <tr>
                 <th scope="col">
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-6"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_MEMBERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_MEMBERS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_MEMBERS_COL_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-6"><?= Html::grid('sort', 'COM_MEMBERS_COL_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col" class="priority-3 nowrap"><?php echo Lang::txt('COM_MEMBERS_COL_GROUPS'); ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_MEMBERS_STATUS'); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_REGISTERED', 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-6"><?php echo Html::grid('sort', 'COM_MEMBERS_COL_LAST_VISIT', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_MEMBERS_COL_REGISTERED', 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-6"><?= Html::grid('sort', 'COM_MEMBERS_COL_LAST_VISIT', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -222,8 +222,8 @@ $this
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canEdit) : ?>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                        <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('id') ?>" class="checkbox-toggle" />
+                        <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->get('id') ?></label>
                     <?php endif; ?>
                 </td>
                 <td class="priority-2">
@@ -232,26 +232,26 @@ $this
                 <td>
                     <div class="fltrt">
                         <?php if ($count = $row->notes->count()) : ?>
-                            <a class="state filter" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&search=uid%3A' . (int) $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_FILTER_NOTES'); ?>">
+                            <a class="state filter" href="<?= Route::url('index.php?option=' . $this->option . '&controller=notes&search=uid%3A' . (int) $row->get('id')) ?>" title="<?= Lang::txt('COM_MEMBERS_FILTER_NOTES') ?>">
                                 <span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
                             </a>
-                            <a class="modal state notes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&tmpl=component&task=modal&id=' . (int) $row->get('id')); ?>" rel="{handler: 'iframe', size: {x: 800, y: 450}}" title="<?php echo Lang::txts('COM_MEMBERS_N_USER_NOTES', $count); ?>">
+                            <a class="modal state notes" href="<?= Route::url('index.php?option=' . $this->option . '&controller=notes&tmpl=component&task=modal&id=' . (int) $row->get('id')) ?>" rel="{handler: 'iframe', size: {x: 800, y: 450}}" title="<?= Lang::txts('COM_MEMBERS_N_USER_NOTES', $count) ?>">
                                 <span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
                             </a>
                         <?php endif; ?>
-                        <a class="state notes" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=notes&task=add&user_id=' . (int) $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_ADD_NOTE'); ?>">
+                        <a class="state notes" href="<?= Route::url('index.php?option=' . $this->option . '&controller=notes&task=add&user_id=' . (int) $row->get('id')) ?>" title="<?= Lang::txt('COM_MEMBERS_ADD_NOTE') ?>">
                             <span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
                         </a>
                     </div>
                     <?php if ($canEdit) : ?>
-                        <a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo $this->escape(stripslashes($row->get('name')));/* ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; /><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; </span>*/?>">
+                        <a class="editlinktip hasTip" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>" title="<?php echo $this->escape(stripslashes($row->get('name')));/* ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; /><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; </span>*/?>">
                             <?php echo $this->escape($row->get('name')); ?>
                         </a>
                     <?php else : ?>
                         <?php echo $this->escape($row->get('name')); ?>
                     <?php endif; ?>
                     <?php if (Config::get('debug')) : ?>
-                        <a class="permissions button" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debug&id=' . $row->get('id'));?>">
+                        <a class="permissions button" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debug&id=' . $row->get('id')) ?>">
                             <?php echo Lang::txt('COM_MEMBERS_DEBUG_USER');?>
                         </a>
                     <?php endif; ?>
@@ -264,7 +264,7 @@ $this
                 </td>
                 <td class="center priority-3">
                     <?php if (substr_count($row->get('group_names'), "\n") > 1) : ?>
-                        <span class="hasTip" title="<?php echo Lang::txt('COM_MEMBERS_HEADING_GROUPS') . '::' . $row->get('group_names'); ?>"><?php echo Lang::txt('COM_MEMBERS_MULTIPLE_GROUPS'); ?></span>
+                        <span class="hasTip" title="<?= Lang::txt('COM_MEMBERS_HEADING_GROUPS') . '::' . $row->get('group_names') ?>"><?= Lang::txt('COM_MEMBERS_MULTIPLE_GROUPS') ?></span>
                     <?php else : ?>
                         <?php echo $row->get('group_names'); ?>
                     <?php endif; ?>
@@ -272,14 +272,14 @@ $this
                 <td class="center priority-4">
                     <?php if ($row->get('block')) : ?>
                         <div class="btn-group dropdown user-state blocked">
-                            <span class="btn hasTip" title="<?php echo Lang::txt('COM_MEMBERS_STATUS_BLOCKED_DESC'); ?>">
+                            <span class="btn hasTip" title="<?= Lang::txt('COM_MEMBERS_STATUS_BLOCKED_DESC') ?>">
                                 <?php echo Lang::txt('COM_MEMBERS_STATUS_BLOCKED'); ?>
                             </span>
                             <?php if ($canChange) : ?>
                                 <span class="btn dropdown-toggle"></span>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="grid-action grid-boolean icon-unban" data-id="cb<?php echo $i; ?>" data-task="unblock" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_UNBLOCK'); ?></a>
+                                        <a class="grid-action grid-boolean icon-unban" data-id="cb<?= $i ?>" data-task="unblock" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_UNBLOCK') ?></a>
                                     </li>
                                 </ul>
                             <?php endif; ?>
@@ -287,64 +287,64 @@ $this
                     <?php else : ?>
                         <?php if ($incomplete) : ?>
                             <div class="btn-group dropdown user-state incomplete">
-                                <span class="btn hasTip" title="<?php echo Lang::txt('COM_MEMBERS_STATUS_INCOMPLETE_DESC'); ?>">
+                                <span class="btn hasTip" title="<?= Lang::txt('COM_MEMBERS_STATUS_INCOMPLETE_DESC') ?>">
                                     <?php echo Lang::txt('COM_MEMBERS_STATUS_INCOMPLETE', $authenticator); ?>
                                 </span>
                             </div>
                             <!-- <span class="authenticator"><?php echo $authenticator; ?></span> -->
                         <?php elseif ($row->get('activation') <= 0) : ?>
                             <div class="btn-group dropdown user-state unconfrmed">
-                                <span class="btn hasTip" title="<?php echo Lang::txt('COM_MEMBERS_STATUS_UNCONFIRMED_DESC'); ?>">
+                                <span class="btn hasTip" title="<?= Lang::txt('COM_MEMBERS_STATUS_UNCONFIRMED_DESC') ?>">
                                     <?php echo Lang::txt('COM_MEMBERS_STATUS_UNCONFIRMED'); ?>
                                 </span>
                                 <?php if ($canChange) : ?>
                                     <span class="btn dropdown-toggle"></span>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="grid-action grid-boolean icon-success" data-id="cb<?php echo $i; ?>" data-task="confirm" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_CONFIRM'); ?></a>
+                                            <a class="grid-action grid-boolean icon-success" data-id="cb<?= $i ?>" data-task="confirm" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_CONFIRM') ?></a>
                                         </li>
                                         <li>
-                                            <a class="grid-action grid-boolean icon-resend" data-id="cb<?php echo $i; ?>" data-task="resendConfirm" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_RESEND'); ?></a>
+                                            <a class="grid-action grid-boolean icon-resend" data-id="cb<?= $i ?>" data-task="resendConfirm" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_RESEND') ?></a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?php echo $i; ?>" data-task="block" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_BLOCK'); ?></a>
+                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?= $i ?>" data-task="block" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_BLOCK') ?></a>
                                         </li>
                                     </ul>
                                 <?php endif; ?>
                             </div>
                         <?php elseif (!$row->get('approved')) : ?>
                             <div class="btn-group dropdown user-state confirmed unapproved">
-                                <span class="btn hasTip" title="<?php echo Lang::txt('COM_MEMBERS_STATUS_UNAPPROVED_DESC'); ?>">
+                                <span class="btn hasTip" title="<?= Lang::txt('COM_MEMBERS_STATUS_UNAPPROVED_DESC') ?>">
                                     <?php echo Lang::txt('COM_MEMBERS_STATUS_UNAPPROVED'); ?>
                                 </span>
                                 <?php if ($canChange) : ?>
                                     <span class="btn dropdown-toggle"></span>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="grid-action grid-boolean icon-approve" data-id="cb<?php echo $i; ?>" data-task="approve" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_APPROVE'); ?></a>
+                                            <a class="grid-action grid-boolean icon-approve" data-id="cb<?= $i ?>" data-task="approve" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_APPROVE') ?></a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?php echo $i; ?>" data-task="block" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_BLOCK'); ?></a>
+                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?= $i ?>" data-task="block" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_BLOCK') ?></a>
                                         </li>
                                     </ul>
                                 <?php endif; ?>
                             </div>
                         <?php else : ?>
                             <div class="btn-group dropdown user-state confirmed approved enabled">
-                                <span class="btn hasTip" title="<?php echo Lang::txt('COM_MEMBERS_STATUS_APPROVED_DESC'); ?>">
+                                <span class="btn hasTip" title="<?= Lang::txt('COM_MEMBERS_STATUS_APPROVED_DESC') ?>">
                                     <?php echo Lang::txt('COM_MEMBERS_STATUS_APPROVED'); ?>
                                 </span>
                                 <?php if ($canChange) : ?>
                                     <span class="btn dropdown-toggle"></span>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="grid-action grid-boolean icon-unapprove" data-id="cb<?php echo $i; ?>" data-task="disapprove" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_UNAPPROVE'); ?></a>
+                                            <a class="grid-action grid-boolean icon-unapprove" data-id="cb<?= $i ?>" data-task="disapprove" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_UNAPPROVE') ?></a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?php echo $i; ?>" data-task="block" href="#toggle"><?php echo Lang::txt('COM_MEMBERS_ACTION_BLOCK'); ?></a>
+                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?= $i ?>" data-task="block" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_BLOCK') ?></a>
                                         </li>
                                     </ul>
                                 <?php endif; ?>
@@ -353,13 +353,13 @@ $this
                     <?php endif; ?>
                 </td>
                 <td class="priority-3">
-                    <time datetime="<?php echo Date::of($row->get('registerDate'))->format('Y-m-dTh:i:s'); ?>"><?php echo Date::of($row->get('registerDate'))->toLocal('Y-m-d'); ?></time>
+                    <time datetime="<?= Date::of($row->get('registerDate'))->format('Y-m-dTh:i:s') ?>"><?= Date::of($row->get('registerDate'))->toLocal('Y-m-d') ?></time>
                 </td>
                 <td class="priority-6">
                     <?php if (!$row->get('lastvisitDate') || $row->get('lastvisitDate') == '0000-00-00 00:00:00') : ?>
                         <span class="never"><?php echo Lang::txt('COM_MEMBERS_NEVER'); ?></span>
                     <?php else : ?>
-                        <time datetime="<?php echo Date::of($row->get('lastvisitDate'))->format('Y-m-dTh:i:s'); ?>"><?php echo Date::of($row->get('lastvisitDate'))->toLocal('Y-m-d'); ?></time>
+                        <time datetime="<?= Date::of($row->get('lastvisitDate'))->format('Y-m-dTh:i:s') ?>"><?= Date::of($row->get('lastvisitDate'))->toLocal('Y-m-d') ?></time>
                     <?php endif; ?>
                 </td>
             </tr>

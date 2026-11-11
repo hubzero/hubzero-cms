@@ -18,11 +18,11 @@ $this->css();
 <div class="item-watch <?php echo $this->watched->get('id') ? 'watching' : ''; ?>">
     <?php if ($this->watched->get('id')) { ?>
         <p>
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->link . '&action=unsubscribe'); ?>" class="btn unsubscribe"><?php echo Lang::txt('PLG_RESOURCES_WATCH_UNSUBSCRIBE'); ?></button>
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->link . '&action=unsubscribe') ?>" class="btn unsubscribe"><?= Lang::txt('PLG_RESOURCES_WATCH_UNSUBSCRIBE') ?></button>
         </p>
     <?php } else { ?>
         <p>
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->link . '&action=subscribe'); ?>" class="btn subscribe"><?php echo Lang::txt('PLG_RESOURCES_WATCH_SUBSCRIBE'); ?></button>
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->link . '&action=subscribe') ?>" class="btn subscribe"><?= Lang::txt('PLG_RESOURCES_WATCH_SUBSCRIBE') ?></button>
         </p>
     <?php } ?>
 

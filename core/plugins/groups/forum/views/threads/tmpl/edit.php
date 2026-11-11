@@ -32,7 +32,7 @@ $this
 ?>
 <ul id="page_options">
     <li>
-        <a class="icon-comments comments btn" href="<?php echo Route::url($base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias')); ?>">
+        <a class="icon-comments comments btn" href="<?= Route::url($base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias')) ?>">
             <?php echo Lang::txt('PLG_GROUPS_FORUM_ALL_DISCUSSIONS'); ?>
         </a>
     </li>
@@ -63,7 +63,7 @@ $this
                         <div class="form-group">
                             <div class="form-check">
                                 <label for="field-sticky" class="form-check-label">
-                                    <input class="option form-check-input" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php echo $this->post->get('sticky') ? ' checked="checked"' : ''; ?> />
+                                    <input class="option form-check-input" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?= $this->post->get('sticky') ? ' checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
                                 </label>
                             </div>
@@ -73,7 +73,7 @@ $this
                         <div class="form-group">
                             <div class="form-check">
                                 <label for="field-closed" class="form-check-label">
-                                    <input class="option form-check-input" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php echo $this->post->get('closed') ? ' checked="checked"' : ''; ?> />
+                                    <input class="option form-check-input" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?= $this->post->get('closed') ? ' checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED_THREAD'); ?>
                                 </label>
                             </div>
@@ -81,8 +81,8 @@ $this
                     </div>
                 </div>
             <?php } else { ?>
-                <input type="hidden" name="fields[sticky]" id="field-sticky" value="<?php echo $this->escape($this->post->get('sticky')); ?>" />
-                <input type="hidden" name="fields[closed]" id="field-closed" value="<?php echo $this->escape($this->post->get('closed')); ?>" />
+                <input type="hidden" name="fields[sticky]" id="field-sticky" value="<?= $this->escape($this->post->get('sticky')) ?>" />
+                <input type="hidden" name="fields[closed]" id="field-closed" value="<?= $this->escape($this->post->get('closed')) ?>" />
             <?php } ?>
 
             <?php if (!$this->post->get('parent')) { ?>
@@ -91,19 +91,19 @@ $this
                         <label for="field-access">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_READ_ACCESS'); ?>
                             <select name="fields[access]" id="field-access" class="form-control">
-                                <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->post->get('access')); ?>
+                                <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->post->get('access')) ?>
                             </select>
                         </label>
                     </div>
                 <?php } else { ?>
-                    <input type="hidden" name="fields[access]" id="field-access" value="<?php echo $this->post->get('access', 0); ?>" />
+                    <input type="hidden" name="fields[access]" id="field-access" value="<?= $this->post->get('access', 0) ?>" />
                 <?php } ?>
 
                 <div class="form-group">
                     <label for="field-category_id">
-                        <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
+                        <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY') ?> <span class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
                         <select name="fields[category_id]" id="field-category_id" class="form-control">
-                            <option value="0"><?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY_SELECT'); ?></option>
+                            <option value="0"><?= Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY_SELECT') ?></option>
                             <?php
                             $filters = [
                                 'state'  => 1,
@@ -119,9 +119,9 @@ $this
                                     ->whereIn('access', $filters['access'])
                                     ->rows();
                                 if ($categories->count() > 0) { ?>
-                                    <optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
+                                    <optgroup label="<?= $this->escape(stripslashes($section->get('title'))) ?>">
                                         <?php foreach ($categories as $category) { ?>
-                                            <option value="<?php echo $category->get('id'); ?>"<?php echo $this->category->get('alias') == $category->get('alias') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+                                            <option value="<?= $category->get('id') ?>"<?= $this->category->get('alias') == $category->get('alias') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($category->get('title'))) ?></option>
                                         <?php } ?>
                                     </optgroup>
                                 <?php } ?>
@@ -132,19 +132,19 @@ $this
 
                 <div class="form-group">
                     <label for="field-title">
-                        <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
-                        <input type="text" class="form-control" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->post->get('title', ''))); ?>" />
+                        <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE') ?> <span class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
+                        <input type="text" class="form-control" name="fields[title]" id="field-title" value="<?= $this->escape(stripslashes($this->post->get('title', ''))) ?>" />
                     </label>
                 </div>
             <?php } else { ?>
-                <input type="hidden" name="fields[category_id]" id="field-category_id" value="<?php echo $this->escape($this->post->get('category_id')); ?>" />
-                <input type="hidden" name="fields[access]" id="field-access" value="<?php echo $this->post->get('access', 0); ?>" />
+                <input type="hidden" name="fields[category_id]" id="field-category_id" value="<?= $this->escape($this->post->get('category_id')) ?>" />
+                <input type="hidden" name="fields[access]" id="field-access" value="<?= $this->post->get('access', 0) ?>" />
             <?php } ?>
 
                 <div class="form-group">
                     <label for="field_comment">
                         <div>
-                            <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('PLG_GROUPS_FORUM_REQUIRED'); ?></span>
+                            <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS') ?> <span class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
                             <span class="note" style='float:right'>Use an @ sign to mention group users in the post</span>
                         </div>                      
                         <?php
@@ -187,7 +187,7 @@ $this
                 <div class="form-group">
                     <label for="actags">
                         <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_TAGS'); ?>:
-                        <?php echo $this->autocompleter('tags', 'tags', $this->escape($this->post->tags('string')), 'actags'); ?>
+                        <?= $this->autocompleter('tags', 'tags', $this->escape($this->post->tags('string')), 'actags') ?>
                     </label>
                 </div>
 
@@ -200,7 +200,7 @@ $this
                         <div class="col span-half">
                             <div class="form-group">
                                 <label for="upload">
-                                    <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>: <?php echo $attachment->get('filename') ? '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>' : ''; ?>
+                                    <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE') ?>: <?= $attachment->get('filename') ? '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>' : '' ?>
                                     <input type="file" class="form-control-file" name="upload" id="upload" />
                                 </label>
                             </div>
@@ -209,11 +209,11 @@ $this
                             <div class="form-group">
                                 <label for="field-attach-descritpion">
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>:
-                                    <input type="text" class="form-control" name="description" id="field-attach-descritpion" value="<?php echo $this->escape(stripslashes($attachment->get('description', ''))); ?>" />
+                                    <input type="text" class="form-control" name="description" id="field-attach-descritpion" value="<?= $this->escape(stripslashes($attachment->get('description', ''))) ?>" />
                                 </label>
                             </div>
                         </div>
-                        <input type="hidden" name="attachment" value="<?php echo $this->escape(stripslashes($attachment->get('id', ''))); ?>" />
+                        <input type="hidden" name="attachment" value="<?= $this->escape(stripslashes($attachment->get('id', ''))) ?>" />
                     </div>
                     <?php if ($attachment->get('id')) { ?>
                         <p class="warning">
@@ -237,7 +237,7 @@ $this
                     <div class="form-group">
                         <div class="form-check">
                             <label for="field-anonymous" class="comment-anonymous-label" class="form-check-label">
-                                <input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php echo $this->post->get('anonymous') ? ' checked="checked"' : ''; ?> />
+                                <input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?= $this->post->get('anonymous') ? ' checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
                             </label>
                         </div>
@@ -245,7 +245,7 @@ $this
                 <?php } ?>
 
                 <p class="submit">
-                    <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SUBMIT'); ?>" />
+                    <input class="btn btn-success" type="submit" value="<?= Lang::txt('PLG_GROUPS_FORUM_SUBMIT') ?>" />
                 </p>
 
                 <div class="sidenote">
@@ -254,12 +254,12 @@ $this
                     </p>
                 </div>
             </fieldset>
-            <input type="hidden" name="fields[parent]" value="<?php echo $this->escape($this->post->get('parent')); ?>" />
+            <input type="hidden" name="fields[parent]" value="<?= $this->escape($this->post->get('parent')) ?>" />
             <input type="hidden" name="fields[state]" value="1" />
             <input type="hidden" name="fields[id]" value="<?php echo $this->escape($this->post->get('id')); ?>" />
-            <input type="hidden" name="fields[scope]" value="<?php echo $this->escape($this->forum->get('scope')); ?>" />
-            <input type="hidden" name="fields[scope_id]" value="<?php echo $this->escape($this->forum->get('scope_id')); ?>" />
-            <input type="hidden" name="fields[thread]" value="<?php echo $this->escape($this->post->get('thread')); ?>" />
+            <input type="hidden" name="fields[scope]" value="<?= $this->escape($this->forum->get('scope')) ?>" />
+            <input type="hidden" name="fields[scope_id]" value="<?= $this->escape($this->forum->get('scope_id')) ?>" />
+            <input type="hidden" name="fields[thread]" value="<?= $this->escape($this->post->get('thread')) ?>" />
 
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />

@@ -46,7 +46,7 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
     <table class="adminlist attention">
         <thead>
             <tr>
-                <th scope="col">(<?php echo $this->needsAttention->count(); ?>) <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION'); ?></th>
+                <th scope="col">(<?= $this->needsAttention->count() ?>) <?= Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION') ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECKS'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></th>
@@ -61,13 +61,13 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                     <td>
                         <ol class="attention-view">
                             <li class="raw">
-                                <a class="version" href="<?php echo Route::url($base . '&task=raw&moduleid=' . $needsAttention->get('id')); ?>" class="btn">
+                                <a class="version" href="<?= Route::url($base . '&task=raw&moduleid=' . $needsAttention->get('id')) ?>" class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW_RAW'); ?>
                                 </a>
                             </li>
                             <?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
                                 <li class="preview">
-                                    <a class="preview" href="<?php echo Route::url($base . '&task=preview&moduleid=' . $needsAttention->get('id')); ?>" class="btn">
+                                    <a class="preview" href="<?= Route::url($base . '&task=preview&moduleid=' . $needsAttention->get('id')) ?>" class="btn">
                                         <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_RENDER_PREVIEW'); ?>
                                     </a>
                                 </li>
@@ -77,7 +77,7 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                                 </li>
                             <?php endif; ?>
                             <li class="edit">
-                                <a href="<?php echo Route::url($base . '&task=edit&id[]=' . $needsAttention->get('id')); ?>" class="btn">
+                                <a href="<?= Route::url($base . '&task=edit&id[]=' . $needsAttention->get('id')) ?>" class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_EDIT'); ?>
                                 </a>
                             </li>
@@ -86,12 +86,12 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                     <td>
                         <ol class="attention-actions">
                             <li class="<?php echo $needsAttention->get('checked_errors') ? 'completed' : ''; ?>">
-                                <a href="<?php echo Route::url($base . '&task=errors&id=' . $needsAttention->get('id')); ?>" class="btn">
+                                <a href="<?= Route::url($base . '&task=errors&id=' . $needsAttention->get('id')) ?>" class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECK_FOR_ERRORS'); ?>
                                 </a>
                             </li>
                             <li class="<?php echo $needsAttention->get('scanned') ? 'completed' : ''; ?>">
-                                <a href="<?php echo Route::url($base . '&task=scan&id=' . $needsAttention->get('id')); ?>" class="btn">
+                                <a href="<?= Route::url($base . '&task=scan&id=' . $needsAttention->get('id')) ?>" class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_SCAN_CONTENT'); ?>
                                 </a>
                             </li>
@@ -102,12 +102,12 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                         <ol class="attention-actions">
                             <?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
                                 <li class="approve">
-                                    <a href="<?php echo Route::url($base . '&task=approve&id=' . $needsAttention->get('id') . '&' . Session::getFormToken() . '=1'); ?>" class="btn">
-                                        <strong><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></strong>
+                                    <a href="<?= Route::url($base . '&task=approve&id=' . $needsAttention->get('id') . '&' . Session::getFormToken() . '=1') ?>" class="btn">
+                                        <strong><?= Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE') ?></strong>
                                     </a>
                                 </li>
                             <?php else : ?>
-                                <span><em><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE_HINT'); ?></em></span>
+                                <span><em><?= Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE_HINT') ?></em></span>
                             <?php endif; ?>
                         </ol>
                     </td>
@@ -118,13 +118,13 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
     <br />
 <?php endif; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="adminForm" method="post">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn) ?>" name="adminForm" id="adminForm" method="post">
     <table class="adminlist">
         <thead>
             <tr>
                 <th>
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?></th>
@@ -136,11 +136,11 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
     <?php foreach ($this->modules as $k => $module) : ?>
             <tr>
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $k;?>" value="<?php echo $module->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $k;?>" class="sr-only visually-hidden"><?php echo $module->get('id'); ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?= $k ?>" value="<?= $module->get('id') ?>" class="checkbox-toggle" />
+                    <label for="cb<?= $k ?>" class="sr-only visually-hidden"><?= $module->get('id') ?></label>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&gid=' . $this->group->cn . '&id=' . $module->get('id')); ?>">
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&gid=' . $this->group->cn . '&id=' . $module->get('id')) ?>">
                         <?php echo $this->escape($module->get('title')); ?>
                     </a><br />
                     <span class="hint">

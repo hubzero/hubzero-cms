@@ -21,9 +21,9 @@ Toolbar::spacer();
 Toolbar::cancel();
 
 ?>
-<p class="crumbs"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id; ?></a> &raquo; <?php echo Lang::txt('COM_PUBLICATIONS_VERSIONS'); ?></p>
+<p class="crumbs"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_VERSIONS') ?></p>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
@@ -63,7 +63,7 @@ Toolbar::cancel();
                     ?>
                 </td>
                 <td><?php echo $this->escape($doi_notice); ?></td>
-                <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id . '&version=' . $v->version_number); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_MANAGE_VERSION'); ?></a></td>
+                <td><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id . '&version=' . $v->version_number) ?>"><?= Lang::txt('COM_PUBLICATIONS_MANAGE_VERSION') ?></a></td>
             </tr>
             <?php
         endforeach;

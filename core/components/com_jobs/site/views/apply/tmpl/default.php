@@ -27,17 +27,17 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
     <div id="content-header-extra">
         <ul id="useroptions">
         <?php if (User::isGuest()) { ?>
-            <li><?php echo Lang::txt('COM_JOBS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
+            <li><?= Lang::txt('COM_JOBS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS') ?></li>
         <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
-            <li><a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-            <li><a class="shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
+            <li><a class="myjobs btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=dashboard') ?>"><?= Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD') ?></a></li>
+            <li><a class="shortlist btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted' ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
         <?php } elseif ($this->admin) { ?>
             <li>
                 <?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
-                <a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a>
+                <a class="myjobs btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=dashboard') ?>"><?= Lang::txt('COM_JOBS_ADMIN_DASHBOARD') ?></a>
             </li>
         <?php } else { ?>
-            <li><a class="alljobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_JOBS_ALL_JOBS'); ?></a></li>
+            <li><a class="alljobs btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>"><?= Lang::txt('COM_JOBS_ALL_JOBS') ?></a></li>
         <?php } ?>
         </ul>
     </div><!-- / #content-header-extra -->
@@ -45,7 +45,7 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
 
 <?php if (!$seeker) { ?>
     <p class="warning"><?php echo Lang::txt('COM_JOBS_APPLY_TO_APPLY') . ' ' . Config::get('sitename') . ' ' . Lang::txt('COM_JOBS_APPLY_NEED_RESUME') ?>
-        <?php echo '<a href="' . Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=resume') . '" class="add">' . Lang::txt('COM_JOBS_ACTION_CREATE_PROFILE') . '</a>'; ?>
+        <?= '<a href="' . Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=resume') . '" class="add">' . Lang::txt('COM_JOBS_ACTION_CREATE_PROFILE') . '</a>' ?>
     </p>
 <?php } else { ?>
     <section class="main section">
@@ -61,13 +61,13 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
         <div id="applyinfo">
             <h3>
                 <?php echo $this->escape($job->title); ?> -
-                <?php echo preg_match('#^https?://#i', (string) $job->companyWebsite) ? '<a href="' . $this->escape($job->companyWebsite) . '">' . $this->escape($job->companyName) . '</a>' : $this->escape($job->companyName); ?>,
-                <?php echo $this->escape(implode(', ', array_filter([trim((string) $job->companyLocation), trim((string) $job->companyLocationCountry)]))); ?>
+                <?= preg_match('#^https?://#i', (string) $job->companyWebsite) ? '<a href="' . $this->escape($job->companyWebsite) . '">' . $this->escape($job->companyName) . '</a>' : $this->escape($job->companyName) ?>,
+                <?= $this->escape(implode(', ', array_filter([trim((string) $job->companyLocation), trim((string) $job->companyLocationCountry)]))) ?>
                 <span><?php echo Lang::txt('COM_JOBS_JOB_REFERENCE_CODE'); ?>: <?php echo $job->code; ?></span>
             </h3>
         </div>
 
-        <form id="hubForm" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . "&task=saveapp"); ?>">
+        <form id="hubForm" method="post" action="<?= Route::url('index.php?option=' . $this->option . "&task=saveapp") ?>">
             <div class="explaination">
                 <p><?php echo Lang::txt('COM_JOBS_APPLY_HINT_COVER_LETTER'); ?></p>
             </div>
@@ -78,9 +78,9 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
                 <input type="hidden" id="appid" name="appid" value="<?php echo $appid; ?>" />
                 <input type="hidden" id="uid" name="uid" value="<?php echo User::get('id'); ?>" />
                 <?php echo Html::input('token'); ?>
-                <h3><?php echo Lang::txt('COM_JOBS_APPLY_MSG_TO_EMPLOYER'); ?> <span class="opt">(<?php echo Lang::txt('COM_JOBS_OPTIONAL'); ?>)</span></h3>
+                <h3><?= Lang::txt('COM_JOBS_APPLY_MSG_TO_EMPLOYER') ?> <span class="opt">(<?= Lang::txt('COM_JOBS_OPTIONAL') ?>)</span></h3>
                 <label>
-                    <textarea name="cover" id="cover" rows="10" cols="15"><?php echo $this->escape($application->cover); ?></textarea>
+                    <textarea name="cover" id="cover" rows="10" cols="15"><?= $this->escape($application->cover) ?></textarea>
                 </label>
             </fieldset>
             <div class="clear"></div>
@@ -107,8 +107,8 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
                 ?>
             </div>
             <p class="submit">
-                <input class="btn btn-success" type="submit" name="submit" value="<?php echo $this->task == 'editapp' ? Lang::txt('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION') : Lang::txt('COM_JOBS_ACTION_APPLY_THIS_JOB'); ?>" />
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&id=' . $job->code); ?>"><button type="button" class="btn btn-secondary">
+                <input class="btn btn-success" type="submit" name="submit" value="<?= $this->task == 'editapp' ? Lang::txt('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION') : Lang::txt('COM_JOBS_ACTION_APPLY_THIS_JOB') ?>" />
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&task=job&id=' . $job->code) ?>"><button type="button" class="btn btn-secondary">
                             <?php echo Lang::txt('JCANCEL'); ?>
                     </button></a>
             </p>

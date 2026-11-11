@@ -19,17 +19,17 @@ defined('_HZEXEC_') or die();
 
 <ul id="page_options">
     <li>
-        <a class="icon-browse btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>">
+        <a class="icon-browse btn" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members') ?>">
             <?php echo Lang::txt('PLG_GROUPS_MEMBERS'); ?>
         </a>
     </li>
 </ul>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>" method="post" id="hubForm" class="full">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members') ?>" method="post" id="hubForm" class="full">
     <fieldset>
         <legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_DETAILS'); ?></legend>
         <label>
-            <?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_NAME'); ?>: <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+            <?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_NAME') ?>: <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
             <input type="text" name="role[name]" value="<?php echo $this->escape($this->role->name); ?>" >
         </label>
         <fieldset>
@@ -38,7 +38,7 @@ defined('_HZEXEC_') or die();
                 <label>
                     <?php $ckd = ($this->role->permissions->get($perm)) ? 'checked="checked"' : '' ?>
                     <input type="hidden" name="role[permissions][<?php echo $perm; ?>]" value="0" />
-                    <input class="option" type="checkbox" <?php echo $ckd; ?> name="role[permissions][<?php echo $perm; ?>]" value="1"> <?php echo $label; ?>
+                    <input class="option" type="checkbox" <?= $ckd ?> name="role[permissions][<?= $perm ?>]" value="1"> <?= $label ?>
                 </label>
             <?php endforeach; ?>
         </fieldset>

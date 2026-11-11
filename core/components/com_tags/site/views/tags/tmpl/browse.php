@@ -31,14 +31,14 @@ $this
 </header>
 
 <section class="main section">
-    <form class="section-inner hz-layout-with-aside" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
+    <form class="section-inner hz-layout-with-aside" action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" method="get">
         <div class="subject">
 
             <div class="container data-entry">
                 <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TAGS_SEARCH'); ?>" />
                 <fieldset class="entry-search">
                     <label for="entry-search-text"><?php echo Lang::txt('COM_TAGS_SEARCH_TAGS'); ?></label>
-                    <input type="text" name="search" id="entry-search-text" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER'); ?>" />
+                    <input type="text" name="search" id="entry-search-text" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER') ?>" />
                 </fieldset>
             </div><!-- / .container -->
 
@@ -52,7 +52,7 @@ $this
                                 $cls = ($this->filters['sort'] == 'total') ? 'active ' : '';
                                 $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=total&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
                             ?>
-                            <a class="<?php echo $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'); ?>" href="<?php echo $url; ?>" title="<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE'); ?>">
+                            <a class="<?= $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down') ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
                             </a>
                         </li>
@@ -61,7 +61,7 @@ $this
                                 $cls = ($this->filters['sort'] == '' || $this->filters['sort'] == 'raw_tag') ? 'active ' : '';
                                 $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=raw_tag&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
                             ?>
-                            <a class="<?php echo $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down'); ?>" href="<?php echo $url; ?>" title="<?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE'); ?>">
+                            <a class="<?= $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down') ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA'); ?>
                             </a>
                         </li>
@@ -109,7 +109,7 @@ $this
                             ?>
                             <tr class="<?php echo $cls; ?>">
                                 <td>
-                                    <a class="tag <?php echo $row->get('admin') ? ' admin' : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&tag=' . $row->get('tag')); ?>">
+                                    <a class="tag <?= $row->get('admin') ? ' admin' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&tag=' . $row->get('tag')) ?>">
                                         <?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
                                     </a>
                                 </td>
@@ -123,12 +123,12 @@ $this
                                 <?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>
                                     <td>
                                         <?php if ($this->config->get('access-delete-tag')) { ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" class="icon-delete delete delete-tag" data-confirm="<?php echo Lang::txt('COM_TAGS_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>" class="icon-delete delete delete-tag" data-confirm="<?= Lang::txt('COM_TAGS_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                         <?php } ?>
                                     </td>
                                     <td>
                                         <?php if ($this->config->get('access-edit-tag')) { ?>
-                                            <a class="icon-edit edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>" title="<?php echo Lang::txt('COM_TAGS_EDIT_TAG', $this->escape(stripslashes($row->get('raw_tag')))); ?>">
+                                            <a class="icon-edit edit" href="<?= Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>" title="<?= Lang::txt('COM_TAGS_EDIT_TAG', $this->escape(stripslashes($row->get('raw_tag')))) ?>">
                                                 <?php echo Lang::txt('JACTION_EDIT'); ?>
                                             </a>
                                         <?php } ?>
@@ -140,7 +140,7 @@ $this
                     } else {
                         ?>
                         <tr class="odd">
-                            <td colspan="<?php echo $this->config->get('access-edit-tag') || $this->config->get('access-delete-tag') ? 4 : 2; ?>">
+                            <td colspan="<?= $this->config->get('access-edit-tag') || $this->config->get('access-delete-tag') ? 4 : 2 ?>">
                                 <?php echo Lang::txt('COM_TAGS_NO_RESULTS'); ?>
                             </td>
                         </tr>

@@ -244,7 +244,7 @@ $this->css();
                                     $domain->domain,
                                 );
                                 ?>
-                                <span class="pie-key <?php echo $pieClass; ?>"></span><?php echo $this->escape($domain->domain); ?>
+                                <span class="pie-key <?= $pieClass ?>"></span><?= $this->escape($domain->domain) ?>
                             </th>
                             <td class="val">
                                 <?php echo $domain->email_count; ?>

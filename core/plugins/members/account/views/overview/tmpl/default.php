@@ -273,7 +273,7 @@ $this
                     <?php echo Html::input('token'); ?>
                 </form>
             <?php else : ?>
-                <p class="error"><?php echo Lang::txt(!empty($this->keyError) ? $this->keyError : 'PLG_MEMBERS_ACCOUNT_KEY_ERROR_ACCESSING_HOME_DIR'); ?></p>
+                <p class="error"><?= Lang::txt(!empty($this->keyError) ? $this->keyError : 'PLG_MEMBERS_ACCOUNT_KEY_ERROR_ACCESSING_HOME_DIR') ?></p>
             <?php endif; ?>
         </div><!-- / .sub-section-content -->
     </div><!-- / .sub-section -->

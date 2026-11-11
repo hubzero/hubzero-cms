@@ -80,7 +80,7 @@ $this->thread->set('category', $this->category->get('alias'));
         }
         ?>
 
-        <form action="<?php echo Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $this->post->get('id')); ?>" method="get">
+        <form action="<?= Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $this->post->get('id')) ?>" method="get">
             <?php
             // Initiate paging
             $pageNav = $posts->pagination;
@@ -121,7 +121,7 @@ $this->thread->set('category', $this->category->get('alias'));
                         if (!$participant->get('anonymous')) {
                             ?>
                             <li>
-                                <a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->get('created_by')); ?>">
+                                <a class="member" href="<?= Route::url('index.php?option=com_members&id=' . $participant->get('created_by')) ?>">
                                     <?php echo $this->escape(stripslashes($participant->get('name'))); ?>
                                 </a>
                             </li>
@@ -168,7 +168,7 @@ $this->thread->set('category', $this->category->get('alias'));
                             }
                             ?>
                             <li>
-                                <a class="<?php echo $cls; ?> attachment" href="<?php echo Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $attachment->get('parent') . '&c=' . $attachment->get('post_id') . '/' . $attachment->get('filename')); ?>">
+                                <a class="<?= $cls ?> attachment" href="<?= Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $attachment->get('parent') . '&c=' . $attachment->get('post_id') . '/' . $attachment->get('filename')) ?>">
                                     <?php echo $this->escape($title); ?>
                                 </a>
                             </li>
@@ -187,7 +187,7 @@ $this->thread->set('category', $this->category->get('alias'));
         <h3 class="post-comment-title">
             <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ADD_COMMENT'); ?>
         </h3>
-        <form action="<?php echo Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $this->post->get('id')); ?>" method="post" id="commentform" enctype="multipart/form-data">
+        <form action="<?= Route::url($base . '&unit=' . $this->category->get('alias') . '&b=' . $this->post->get('id')) ?>" method="post" id="commentform" enctype="multipart/form-data">
             <p class="comment-member-photo">
                 <?php
                 $anon = 1;
@@ -205,13 +205,13 @@ $this->thread->set('category', $this->category->get('alias'));
             <?php } else { ?>
                 <p class="comment-title">
                     <strong>
-                        <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(User::get('name')); ?></a>
+                        <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>"><?= $this->escape(User::get('name')) ?></a>
                     </strong>
                     <span class="permalink">
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_AT'); ?><</span>
-                        <span class="time"><time datetime="<?php echo Date::of('now')->toSql(); ?>"><?php echo Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
+                        <span class="time"><time datetime="<?= Date::of('now')->toSql() ?>"><?= Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1')) ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-                        <span class="date"><time datetime="<?php echo Date::of('now')->toSql(); ?>"><?php echo Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+                        <span class="date"><time datetime="<?= Date::of('now')->toSql() ?>"><?= Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1')) ?></time></span>
                     </span>
                 </p>
 

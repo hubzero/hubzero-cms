@@ -28,7 +28,7 @@ $this
     ->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
     <div class="col span5">
         <fieldset class="adminform">
@@ -46,7 +46,7 @@ $this
                     </tr>
                     <tr>
                         <th>Ordered by:</th>
-                        <td><span><?php echo ($this->user->get('id')) ? $this->user->get('name') . ' (' . $this->user->get('username') . ')' : Lang::txt('COM_CART_UNKNOWN'); ?></span></td>
+                        <td><span><?= ($this->user->get('id')) ? $this->user->get('name') . ' (' . $this->user->get('username') . ')' : Lang::txt('COM_CART_UNKNOWN') ?></span></td>
                     </tr>
                     <tr>
                         <th>Order subtotal:</th>
@@ -167,7 +167,7 @@ $this
                         ?>
                             <span><?php echo $product; ?></span>
                         </td>
-                        <td><span><?php echo isset($itemOrdered['transactionInfo']->tiPrice) ? $itemOrdered['transactionInfo']->tiPrice : 'N/A'; ?></span></td>
+                        <td><span><?= isset($itemOrdered['transactionInfo']->tiPrice) ? $itemOrdered['transactionInfo']->tiPrice : 'N/A' ?></span></td>
                         <td><span><?php echo $itemOrdered['transactionInfo']->qty; ?></span></td>
                     </tr>
                 <?php
@@ -246,11 +246,11 @@ $this
                 <div class="diff">
                     <div>
                         <p>New value:</p>
-                        <div class="value"><?php echo $this->escape(is_scalar($change->new) ? $change->new : json_encode($change->new)); ?></div>
+                        <div class="value"><?= $this->escape(is_scalar($change->new) ? $change->new : json_encode($change->new)) ?></div>
                     </div>
                     <div>
                         <p>Old value:</p>
-                        <div class="value old"><?php echo $this->escape(is_scalar($change->old) ? $change->old : json_encode($change->old)); ?></div>
+                        <div class="value old"><?= $this->escape(is_scalar($change->old) ? $change->old : json_encode($change->old)) ?></div>
                     </div>
                 </div>
 

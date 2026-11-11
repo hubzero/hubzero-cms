@@ -26,7 +26,7 @@ $title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . 
 ?>
 <header id="content-header">
     <h2><?php echo $title; ?> <?php if ($this->gid && is_object($this->group)) {
-        ?> <?php echo Lang::txt('COM_PROJECTS_FOR') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_GROUP')); ?> <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')); ?>"><?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->group->get('description'), 50)); ?></a><?php
+        ?> <?= Lang::txt('COM_PROJECTS_FOR') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_GROUP')) ?> <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')) ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate($this->group->get('description'), 50)) ?></a><?php
         } ?></h2>
 </header><!-- / #content-header -->
 
@@ -71,7 +71,7 @@ $title = $this->project->title ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . 
                 <div id="f-restricted-explain" class="cautionaction">
                     <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_EXPLAIN'); ?>
                 </div>
-                <p class="submitarea"><input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_CONTINUE'); ?>" class="btn" id="btn-preform" /></p>
+                <p class="submitarea"><input type="submit" value="<?= Lang::txt('COM_PROJECTS_CONTINUE') ?>" class="btn" id="btn-preform" /></p>
             </fieldset>
         </form>
     </div>

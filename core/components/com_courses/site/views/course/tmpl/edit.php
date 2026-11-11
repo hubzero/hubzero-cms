@@ -23,7 +23,7 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="prev btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>" title="<?php echo Lang::txt('JCANCEL'); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+            <a class="prev btn" href="<?= Route::url('index.php?option=' . $this->option) ?>" title="<?= Lang::txt('JCANCEL') ?>"><?= Lang::txt('JCANCEL') ?></a>
         </p>
     </div><!-- / #content-header-extra -->
 </header>
@@ -41,8 +41,8 @@ $this
             <?php else : ?>
                 <div class="form-group">
                     <label class="course_alias_label" for="course_alias_field">
-                        <?php echo Lang::txt('COM_COURSES_FIELD_ALIAS'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                        <input name="course[alias]" id="course_alias_field" type="text" size="35" class="form-control" value="<?php echo $this->escape($this->course->get('alias')); ?>" autocomplete="off" data-route="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=courseavailability&no_html=1'); ?>" />
+                        <?= Lang::txt('COM_COURSES_FIELD_ALIAS') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                        <input name="course[alias]" id="course_alias_field" type="text" size="35" class="form-control" value="<?= $this->escape($this->course->get('alias')) ?>" autocomplete="off" data-route="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=courseavailability&no_html=1') ?>" />
                         <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                     </label>
                 </div>
@@ -50,15 +50,15 @@ $this
 
             <div class="form-group">
                 <label for="field-title">
-                    <?php echo Lang::txt('COM_COURSES_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                    <input type="text" name="course[title]" id="field-title" size="35" class="form-control" value="<?php echo $this->escape(stripslashes($this->course->get('title', ''))); ?>" />
+                    <?= Lang::txt('COM_COURSES_FIELD_TITLE') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                    <input type="text" name="course[title]" id="field-title" size="35" class="form-control" value="<?= $this->escape(stripslashes($this->course->get('title', ''))) ?>" />
                 </label>
             </div>
 
             <div class="form-group">
                 <label for="field-blurb">
                     <?php echo Lang::txt('COM_COURSES_FIELD_BLURB'); ?>
-                    <textarea name="course[blurb]" id="field-blurb" class="form-control" cols="50" rows="3"><?php echo $this->escape(stripslashes($this->course->get('blurb', ''))); ?></textarea>
+                    <textarea name="course[blurb]" id="field-blurb" class="form-control" cols="50" rows="3"><?= $this->escape(stripslashes($this->course->get('blurb', ''))) ?></textarea>
                     <span class="hint">
                         <?php echo Lang::txt('COM_COURSES_FIELD_BLURB_HINT'); ?>
                     </span>
@@ -74,7 +74,7 @@ $this
                     if (count($tf) > 0) {
                         echo implode("\n", $tf);
                     } else { ?>
-                        <input type="text" name="tags" id="actags" class="form-control" value="<?php echo $this->escape($this->course->tags('string')); ?>" />
+                        <input type="text" name="tags" id="actags" class="form-control" value="<?= $this->escape($this->course->tags('string')) ?>" />
                     <?php } ?>
 
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?></span>

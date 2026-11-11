@@ -33,7 +33,7 @@ $authIDs = [];
 </select>
     </div>
     <div class="col span3">
-<input type="button" name="addel" id="addel" onclick="HUB.Resources.addAuthor();" value="<?php echo Lang::txt('Add'); ?>" />
+<input type="button" name="addel" id="addel" onclick="HUB.Resources.addAuthor();" value="<?= Lang::txt('Add') ?>" />
     </div>
 </div>
 
@@ -57,23 +57,23 @@ $authIDs = [];
             ?>
         <li id="author_<?php echo $authname->authorid; ?>">
             <span class="handle"><?php echo Lang::txt('COM_RESOURCES_AUTHOR_DRAG'); ?></span>
-            <a class="state trash" data-parent="author_<?php echo $authname->authorid; ?>" href="#" onclick="HUB.Resources.removeAuthor('author_<?php echo $authname->authorid; ?>');return false;"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></a>
+            <a class="state trash" data-parent="author_<?= $authname->authorid ?>" href="#" onclick="HUB.Resources.removeAuthor('author_<?= $authname->authorid ?>');return false;"><span><?= Lang::txt('JACTION_DELETE') ?></span></a>
             <?php echo $this->escape(stripslashes($name)); ?> (<?php echo $authname->authorid; ?>)
-            <br /><?php echo Lang::txt('COM_RESOURCES_AUTHOR_AFFILIATION'); ?>: <input type="text" name="<?php echo $authname->authorid; ?>_organization" value="<?php echo $this->escape($org); ?>" />
+            <br /><?= Lang::txt('COM_RESOURCES_AUTHOR_AFFILIATION') ?>: <input type="text" name="<?= $authname->authorid ?>_organization" value="<?= $this->escape($org) ?>" />
 
             <select name="<?php echo $authname->authorid; ?>_role">
-                <option value=""<?php echo $authname->role == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
+                <option value=""<?= $authname->role == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_ROLE_AUTHOR') ?></option>
                 <?php
                 if ($this->roles) {
                     foreach ($this->roles as $role) {
                         ?>
-                            <option value="<?php echo $this->escape($role->alias); ?>"<?php echo $authname->role == $role->alias ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                            <option value="<?= $this->escape($role->alias) ?>"<?= $authname->role == $role->alias ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($role->title)) ?></option>
                         <?php
                     }
                 }
                 ?>
             </select>
-            <input type="hidden" name="<?php echo $authname->authorid; ?>_name" value="<?php echo $this->escape($name); ?>" />
+            <input type="hidden" name="<?= $authname->authorid ?>_name" value="<?= $this->escape($name) ?>" />
         </li>
             <?php
         }

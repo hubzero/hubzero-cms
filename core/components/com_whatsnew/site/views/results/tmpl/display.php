@@ -99,7 +99,7 @@ foreach ($this->cats as $cat) {
 </header><!-- / #content-header -->
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="get" class="section-inner hz-layout-with-aside">
+    <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="get" class="section-inner hz-layout-with-aside">
         <div class="subject">
             <div class="container">
             <?php
@@ -280,7 +280,7 @@ foreach ($this->cats as $cat) {
                 <legend><?php echo Lang::txt('COM_WHATSNEW_FILTER'); ?></legend>
                 <label for="period">
                     <?php echo Lang::txt('COM_WHATSNEW_TIME_PERIOD'); ?>
-                    <?php echo Html::select('genericlist', $this->periodlist, 'period', '', 'value', 'text', $this->period); ?>
+                    <?= Html::select('genericlist', $this->periodlist, 'period', '', 'value', 'text', $this->period) ?>
                 </label>
                 <p class="submit"><input type="submit" value="<?php echo Lang::txt('COM_WHATSNEW_GO'); ?>" /></p>
             </fieldset>

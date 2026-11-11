@@ -83,15 +83,15 @@ $link = rtrim($base, '/') . '/' . trim($this->url, '/');
                     <tbody>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Publication:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->publication->get('title')); ?></td>
+                            <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->publication->get('title')) ?></td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Version:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->publication->get('version_label')); ?></td>
+                            <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->publication->get('version_label')) ?></td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">URL:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+                            <td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -134,7 +134,7 @@ $link = rtrim($base, '/') . '/' . trim($this->url, '/');
             <td align="left" valign="bottom">
                     <span>
                         This email was sent to you on behalf of <?php echo $base; ?> because you are subscribed
-                        to watch this publication. To unsubscribe, please follow the <a href="<?php echo $base . $this->unsubscribeLink; ?>">unsubscribe link</a>. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.</span>
+                        to watch this publication. To unsubscribe, please follow the <a href="<?= $base . $this->unsubscribeLink ?>">unsubscribe link</a>. Visit our <a href="<?= Request::base() ?>/legal/privacy">Privacy Policy</a> and <a href="<?= Request::base() ?>/support">Support Center</a> if you have any questions.</span>
             </td>
         </tr>
     </tbody>

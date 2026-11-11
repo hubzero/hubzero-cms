@@ -83,13 +83,13 @@ $revisions = $this->page
 
         <div class="grid">
             <div class="col">
-                <p><?php echo Lang::txt('COM_WIKI_HISTORY_EXPLANATION', Route::url($this->page->link('base') . '&pagename=Help:PageHistory')); ?></p>
+                <p><?= Lang::txt('COM_WIKI_HISTORY_EXPLANATION', Route::url($this->page->link('base') . '&pagename=Help:PageHistory')) ?></p>
             </div><!-- / .aside -->
         </div>
 
         <form action="<?php echo Route::url($this->page->link('compare')); ?>" method="post">
             <p class="info">
-                <?php echo Lang::txt('COM_WIKI_HISTORY_SUMMARY', count($revisions), '<time datetime="' . $this->page->get('created') . '">' . Date::of($this->page->get('created'))->toLocal('Y-m-d H:i:s') . '</time>', '<time datetime="' . $this->page->get('modified') . '">' . Date::of($this->page->get('modified'))->toLocal('Y-m-d H:i:s') . '</time>'); ?>
+                <?= Lang::txt('COM_WIKI_HISTORY_SUMMARY', count($revisions), '<time datetime="' . $this->page->get('created') . '">' . Date::of($this->page->get('created'))->toLocal('Y-m-d H:i:s') . '</time>', '<time datetime="' . $this->page->get('modified') . '">' . Date::of($this->page->get('modified'))->toLocal('Y-m-d H:i:s') . '</time>') ?>
             </p>
 
             <div class="container">
@@ -155,13 +155,13 @@ $revisions = $this->page
                                 <?php if ($this->page->get('version_id') == $revision->get('id')) { ?>
                                     <td><?php /* [a11y] old-version radio placeholder */ ?></td>
                                     <td>
-                                        <label class="sr-only" for="diff-<?php echo $revision->get('id'); ?>"><?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')); ?></label>
-                                    <input type="radio" name="diff" id="diff-<?php echo $revision->get('id'); ?>" value="<?php echo $revision->get('version'); ?>" aria-label="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')); ?>" checked="checked" />
+                                        <label class="sr-only" for="diff-<?= $revision->get('id') ?>"><?= Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')) ?></label>
+                                    <input type="radio" name="diff" id="diff-<?= $revision->get('id') ?>" value="<?= $revision->get('version') ?>" aria-label="<?= Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')) ?>" checked="checked" />
                                     </td>
                                 <?php } else { ?>
                                     <td>
-                                        <label class="sr-only" for="oldid-<?php echo $revision->get('id'); ?>"><?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')); ?></label>
-                                        <input type="radio" name="oldid" id="oldid-<?php echo $revision->get('id'); ?>" value="<?php echo $revision->get('version'); ?>" aria-label="<?php echo Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')); ?>"
+                                        <label class="sr-only" for="oldid-<?= $revision->get('id') ?>"><?= Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')) ?></label>
+                                        <input type="radio" name="oldid" id="oldid-<?= $revision->get('id') ?>" value="<?= $revision->get('version') ?>" aria-label="<?= Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')) ?>"
                                         <?php if ($comparefirst == true) {
                                             echo ' checked="checked"';
                                             $comparefirst = false;
@@ -170,12 +170,12 @@ $revisions = $this->page
                                     <td><?php /* [a11y] new-version radio placeholder */ ?></td>
                                 <?php } ?>
                                 <td>
-                                    <a href="<?php echo Route::url($this->page->link('', 'version=' . $revision->get('version'))); ?>" class="tooltips" title="<?php echo Lang::txt('COM_WIKI_REVISION_SUMMARY') . ' :: ' . $this->escape(strip_tags((string) $summary)); ?>">
-                                        <time datetime="<?php echo $revision->get('created'); ?>"><?php echo $this->escape(Date::of($revision->get('created'))->toLocal('Y-m-d H:i:s')); ?></time>
+                                    <a href="<?= Route::url($this->page->link('', 'version=' . $revision->get('version'))) ?>" class="tooltips" title="<?= Lang::txt('COM_WIKI_REVISION_SUMMARY') . ' :: ' . $this->escape(strip_tags((string) $summary)) ?>">
+                                        <time datetime="<?= $revision->get('created') ?>"><?= $this->escape(Date::of($revision->get('created'))->toLocal('Y-m-d H:i:s')) ?></time>
                                     </a>
                                 </td>
                                 <td>
-                                    <a class="tooltips markup icon-file-alt-text" href="<?php echo Route::url($this->page->link('', 'version=' . $revision->get('version') . '&format=raw')); ?>" title="<?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE'); ?>">
+                                    <a class="tooltips markup icon-file-alt-text" href="<?= Route::url($this->page->link('', 'version=' . $revision->get('version') . '&format=raw')) ?>" title="<?= Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE') ?>">
                                         <?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP'); ?>
                                     </a>
                                 </td>
@@ -183,13 +183,13 @@ $revisions = $this->page
                                     <?php echo $this->escape($xname); ?>
                                 </td>
                                 <td>
-                                    <?php echo Lang::txt('COM_WIKI_HISTORY_BYTES', number_format($revision->get('length'))); ?> (<span class="page-length <?php echo ($diff > 0) ? 'increase' : ($diff == 0 ? 'created' : 'decrease'); ?>"><?php echo ($diff > 0) ? '+' . number_format($diff) : ($diff == 0 ? number_format($diff) : number_format($diff)); ?></span>)
+                                    <?= Lang::txt('COM_WIKI_HISTORY_BYTES', number_format($revision->get('length'))) ?> (<span class="page-length <?= ($diff > 0) ? 'increase' : ($diff == 0 ? 'created' : 'decrease') ?>"><?= ($diff > 0) ? '+' . number_format($diff) : ($diff == 0 ? number_format($diff) : number_format($diff)) ?></span>)
                                 </td>
                                 <td>
                                     <?php echo $status; ?>
                                     <?php if (!$revision->get('approved') && $this->page->access('manage')) { ?>
                                         <br />
-                                        <a href="<?php echo Route::url($this->page->link('approve', 'oldid=' . $revision->get('id'))); ?>">
+                                        <a href="<?= Route::url($this->page->link('approve', 'oldid=' . $revision->get('id'))) ?>">
                                             <?php echo Lang::txt('COM_WIKI_ACTION_APPROVED'); ?>
                                         </a>
                                     <?php } ?>
@@ -201,13 +201,13 @@ $revisions = $this->page
                                     </td>
                                     <?php } else { ?>
                                     <td>
-                                        <a class="icon-circle-arrow-up" href="<?php echo Route::url($this->page->link('setcurrentrevision', 'version_id=' . $revision->get('id'))); ?>" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>">
+                                        <a class="icon-circle-arrow-up" href="<?= Route::url($this->page->link('setcurrentrevision', 'version_id=' . $revision->get('id'))) ?>" title="<?= Lang::txt('COM_WIKI_REVISION_DELETE') ?>">
                                             <?php echo Lang::txt('COM_WIKI_HISTORY_SET_CURRENT'); ?>
                                         </a>
                                     </td>
                                     <?php } ?>
                                 <td>
-                                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->page->link('deleterevision', 'oldid=' . $revision->get('id'))); ?>" class="icon-trash delete" title="<?php echo Lang::txt('COM_WIKI_REVISION_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->page->link('deleterevision', 'oldid=' . $revision->get('id'))) ?>" class="icon-trash delete" title="<?= Lang::txt('COM_WIKI_REVISION_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                 </td>
                                 <?php } ?>
                             </tr>
@@ -227,7 +227,7 @@ $revisions = $this->page
             <input type="hidden" name="pageid" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 
             <?php foreach ($this->page->adapter()->routing('compare') as $name => $val) { ?>
-                <input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+                <input type="hidden" name="<?= $this->escape($name) ?>" value="<?= $this->escape($val) ?>" />
             <?php } ?>
         </form>
     </div>

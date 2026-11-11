@@ -24,7 +24,7 @@ $base = $this->offering->link() . '&active=forum';
                     <legend><?php echo Lang::txt('Search for posts'); ?></legend>
 
                     <label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
-                    <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+                    <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" />
 
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -62,8 +62,8 @@ $base = $this->offering->link() . '&active=forum';
                     <?php if (!$this->category->get('closed')) { ?>
                         <tfoot>
                             <tr>
-                                <td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
-                                    <a class="add btn" href="<?php echo Route::url($base . '&unit=' . $this->filters['category'] . '&b=new'); ?>">
+                                <td colspan="<?= ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4' ?>">
+                                    <a class="add btn" href="<?= Route::url($base . '&unit=' . $this->filters['category'] . '&b=new') ?>">
                                         <?php echo Lang::txt('Add Discussion'); ?>
                                     </a>
                                 </td>
@@ -97,14 +97,14 @@ $base = $this->offering->link() . '&active=forum';
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>
                                     <td>
-                                        <a class="entry-title" href="<?php echo Route::url($base . '&unit=' . $this->filters['category'] . '&b=' . $row->get('id')); ?>">
+                                        <a class="entry-title" href="<?= Route::url($base . '&unit=' . $this->filters['category'] . '&b=' . $row->get('id')) ?>">
                                             <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
                                         </a>
                                         <span class="entry-details">
                                             <span class="entry-date">
-                                                <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
+                                                <time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time>
                                             </span>
-                                            <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
+                                            <?= Lang::txt('PLG_COURSES_DISCUSSIONS_BY_USER', '<span class="entry-author">' . $name . '</span>') ?>
                                         </span>
                                     </td>
                                     <td>
@@ -134,9 +134,9 @@ $base = $this->offering->link() . '&active=forum';
                                                 }
                                                 ?>
                                                 <span class="entry-date">
-                                                    <time datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>
+                                                    <time datetime="<?= $lastpost->created() ?>"><?= $lastpost->created('date') ?></time>
                                                 </span>
-                                                <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_BY_USER', '<span class="entry-author">' . $lname . '</span>'); ?>
+                                                <?= Lang::txt('PLG_COURSES_DISCUSSIONS_BY_USER', '<span class="entry-author">' . $lname . '</span>') ?>
                                             <?php } else { ?>
                                                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NONE'); ?>
                                             <?php } ?>
@@ -145,12 +145,12 @@ $base = $this->offering->link() . '&active=forum';
                                     <?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) { ?>
                                         <td class="entry-options">
                                             <?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-thread')) { ?>
-                                                <a class="edit" href="<?php echo Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=edit'); ?>">
+                                                <a class="edit" href="<?= Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=edit') ?>">
                                                     <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDIT'); ?>
                                                 </a>
                                             <?php } ?>
                                             <?php if ($this->config->get('access-delete-thread')) { ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=delete'); ?>" class="delete"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE'); ?></button>
+                                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=delete') ?>" class="delete"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE') ?></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>
@@ -159,7 +159,7 @@ $base = $this->offering->link() . '&active=forum';
                             }
                         } else { ?>
                                 <tr>
-                                    <td colspan="<?php echo ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4'; ?>">
+                                    <td colspan="<?= ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4' ?>">
                                         <?php echo Lang::txt('There are currently no discussions.'); ?>
                                     </td>
                                 </tr>

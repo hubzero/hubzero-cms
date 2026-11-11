@@ -50,12 +50,12 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
 
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
-                <legend><span><?php echo Lang::txt('COM_SERVICES_SUBSCRIPTION_NUM', $this->subscription->id, $this->subscription->code); ?></span></legend>
+                <legend><span><?= Lang::txt('COM_SERVICES_SUBSCRIPTION_NUM', $this->subscription->id, $this->subscription->code) ?></span></legend>
 
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_SERVICES_FIELD_SERVICE'); ?>:</label><br />
@@ -72,14 +72,14 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
 
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_SERVICES_FIELD_EMPLOYER'); ?>:</label><br />
-                    <?php echo Lang::txt('Company Name'); ?>: <?php echo $this->escape($this->subscription->companyName); ?> <br />
-                    <?php echo Lang::txt('Company Location'); ?>: <?php echo $this->escape($this->subscription->companyLocation); ?> <br />
-                    <?php echo Lang::txt('Company URL'); ?>: <?php echo $this->escape($this->subscription->companyWebsite); ?>
+                    <?= Lang::txt('Company Name') ?>: <?= $this->escape($this->subscription->companyName) ?> <br />
+                    <?= Lang::txt('Company Location') ?>: <?= $this->escape($this->subscription->companyLocation) ?> <br />
+                    <?= Lang::txt('Company URL') ?>: <?= $this->escape($this->subscription->companyWebsite) ?>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-notes"><?php echo Lang::txt('COM_SERVICES_FIELD_NOTES'); ?>:</label><br />
-                    <textarea name="notes" id="field-notes" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->subscription->notes)); ?></textarea>
+                    <textarea name="notes" id="field-notes" cols="50" rows="10"><?= $this->escape(stripslashes($this->subscription->notes)) ?></textarea>
                 </div>
             </fieldset>
         </div>
@@ -112,7 +112,7 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_PENDING_PAYMENT'); ?>:</th>
-                        <td><?php echo $this->subscription->pendingpayment; ?> <?php if ($this->subscription->usepoints) {
+                        <td><?= $this->subscription->pendingpayment ?> <?php if ($this->subscription->usepoints) {
                             echo Lang::txt('COM_SERVICES_POINTS');
                             } else {
                                 echo $service->get('currency');
@@ -140,10 +140,10 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
                 <?php if ($this->subscription->pendingpayment > 0) { ?>
                     <div class="input-wrap">
                         <input type="radio" name="action" id="field-action-refund" value="refund" />
-                        <label for="field-action-refund"><?php echo Lang::txt('COM_SERVICES_FIELD_PROCESS_REFUND'); ?></label>
+                        <label for="field-action-refund"><?= Lang::txt('COM_SERVICES_FIELD_PROCESS_REFUND') ?></label>
                     </div>
                     <div class="input-wrap">
-                        <label><?php echo Lang::txt('COM_SERVICES_FIELD_PENDING_REFUND_FOR', $this->subscription->pendingunits); ?>:</label><br />
+                        <label><?= Lang::txt('COM_SERVICES_FIELD_PENDING_REFUND_FOR', $this->subscription->pendingunits) ?>:</label><br />
                         <?php echo $this->subscription->pendingpayment; ?>
                         <?php if ($this->subscription->usepoints) {
                             echo Lang::txt('COM_SERVICES_POINTS');
@@ -152,7 +152,7 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
                         } ?>
                     </div>
                     <div class="input-wrap">
-                        <label for="field-received_refund"><?php echo Lang::txt('COM_SERVICES_FIELD_REFUND_POSTED'); ?>:</label><br />
+                        <label for="field-received_refund"><?= Lang::txt('COM_SERVICES_FIELD_REFUND_POSTED') ?>:</label><br />
                         <input type="text" name="received_refund" id="field-received_refund" value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
                         <?php if ($this->subscription->usepoints) {
                             echo Lang::txt('COM_SERVICES_POINTS');
@@ -167,7 +167,7 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
                     <label for="field-action-activate"><?php echo Lang::txt('COM_SERVICES_FIELD_ACTIVATE'); ?></label>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-received_payment"><?php echo Lang::txt('COM_SERVICES_FIELD_PAYMENT_RECEIVED'); ?>:</label><br />
+                    <label for="field-received_payment"><?= Lang::txt('COM_SERVICES_FIELD_PAYMENT_RECEIVED') ?>:</label><br />
                     <?php if ($this->subscription->pendingpayment > 0) { ?>
                         <input type="text" name="received_payment" id="field-received_payment" value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
                     <?php } else {
@@ -180,7 +180,7 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
                     } ?>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-newunits"><?php echo Lang::txt('COM_SERVICES_FIELD_ACTIVE_UNITS'); ?>:</label><br />
+                    <label for="field-newunits"><?= Lang::txt('COM_SERVICES_FIELD_ACTIVE_UNITS') ?>:</label><br />
                     <?php if ($this->subscription->pendingunits > 0 or $this->subscription->expires < $now) { ?>
                         <input type="text" name="newunits" id="field-newunits" value="<?php echo $this->escape($this->subscription->pendingunits) ?>" />
                     <?php } else {
@@ -189,11 +189,11 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
                 </div>
                 <div class="input-wrap">
                     <input type="radio" name="action" id="field-action-cancelsub" value="cancelsub" />
-                    <label for="field-action-cancelsub"><?php echo Lang::txt('COM_SERVICES_FIELD_CANCEL_SUBSCRIPTION'); ?></label>
+                    <label for="field-action-cancelsub"><?= Lang::txt('COM_SERVICES_FIELD_CANCEL_SUBSCRIPTION') ?></label>
                 </div>
             <?php } ?>
                 <div class="input-wrap">
-                    <label for="field-message"><?php echo Lang::txt('COM_SERVICES_FIELD_SEND_MESSAGE'); ?>:</label><br />
+                    <label for="field-message"><?= Lang::txt('COM_SERVICES_FIELD_SEND_MESSAGE') ?>:</label><br />
                     <textarea name="message" id="field-message"  cols="30" rows="5"></textarea>
                 </div>
             </fieldset>

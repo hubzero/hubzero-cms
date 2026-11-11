@@ -28,7 +28,7 @@ $this
                     <caption>
                         <span class="icon-home home">
                             <?php if (count($this->dirtree) > 0) { ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component'); ?>"><?php echo Lang::txt('COM_TOOLS_HOME'); ?></a>
+                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component') ?>"><?= Lang::txt('COM_TOOLS_HOME') ?></a>
                             <?php } else { ?>
                                 <span><?php echo Lang::txt('COM_TOOLS_HOME'); ?></span>
                             <?php } ?>
@@ -45,7 +45,7 @@ $this
                                     <span class="arrow">&raquo;</span>
                                     <span class="icon-folder folder">
                                         <?php if ($i != count($this->dirtree)) { ?>
-                                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&listdir=' . $path); ?>"><?php echo ucfirst($branch); ?></a>
+                                            <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&listdir=' . $path) ?>"><?= ucfirst($branch) ?></a>
                                         <?php } else { ?>
                                             <span><?php echo ucfirst($branch); ?></span>
                                         <?php } ?>
@@ -69,7 +69,7 @@ $this
                         ?>
                         <tr>
                             <td width="100%">
-                                <a class="icon-folder" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&listdir=' . urlencode($d)); ?>">
+                                <a class="icon-folder" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&listdir=' . urlencode($d)) ?>">
                                     <?php echo $dir; ?>
                                 </a>
                             </td>
@@ -77,7 +77,7 @@ $this
                             </td>
                             <td>
                                 <?php if ($dir != '/data' && $dir != '/sessions') { ?>
-                                    <a class="delete icon-delete delete-folder" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefolder&amp;delFolder=<?php echo urlencode($dir); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component&amp;<?php echo Session::getFormToken(); ?>=1" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the folder "%s"?', $dir); ?>" data-files="<?php echo $numFiles; ?>" data-notempty="<?php echo Lang::txt('Sorry unable to delete folder because it is not empty'); ?>" target="filer" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                                    <a class="delete icon-delete delete-folder" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=deletefolder&amp;delFolder=<?= urlencode($dir) ?>&amp;listdir=<?= urlencode($this->listdir) ?>&amp;tmpl=component&amp;<?= Session::getFormToken() ?>=1" data-confirm="<?= Lang::txt('Are you sure you want to delete the folder "%s"?', $dir) ?>" data-files="<?= $numFiles ?>" data-notempty="<?= Lang::txt('Sorry unable to delete folder because it is not empty') ?>" target="filer" title="<?= Lang::txt('JACTION_DELETE') ?>">
 
                                         <?php echo Lang::txt('JACTION_DELETE'); ?>
                                     </a>
@@ -97,7 +97,7 @@ $this
                                 <?php echo \Hubzero\Utility\Number::formatBytes(filesize($fullpath)); ?>
                             </td>
                             <td>
-                                <a class="delete icon-delete delete-file" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=deletefile&amp;file=<?php echo urlencode($name); ?>&amp;listdir=<?php echo urlencode($this->listdir); ?>&amp;tmpl=component&amp;<?php echo Session::getFormToken(); ?>=1" target="filer" data-confirm="<?php echo Lang::txt('Are you sure you want to delete the file "%s"?', $name); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                                <a class="delete icon-delete delete-file" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=deletefile&amp;file=<?= urlencode($name) ?>&amp;listdir=<?= urlencode($this->listdir) ?>&amp;tmpl=component&amp;<?= Session::getFormToken() ?>=1" target="filer" data-confirm="<?= Lang::txt('Are you sure you want to delete the file "%s"?', $name) ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
 
                                     <?php echo Lang::txt('JACTION_DELETE'); ?>
                                 </a>

@@ -21,9 +21,9 @@ $this
 </header>
 
 <section class="main section">
-    <p>Confirm that <strong><?php echo $this->escape($this->email); ?></strong> is your email address to finish setting up your account.</p>
+    <p>Confirm that <strong><?= $this->escape($this->email) ?></strong> is your email address to finish setting up your account.</p>
 
-    <form method="post" id="hubForm" action="<?php echo Route::url('index.php?option=com_members&controller=register&task=confirm'); ?>">
+    <form method="post" id="hubForm" action="<?= Route::url('index.php?option=com_members&controller=register&task=confirm') ?>">
         <p class="submit">
             <button type="submit" class="btn btn-primary">Confirm my email address</button>
         </p>

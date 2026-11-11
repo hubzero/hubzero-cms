@@ -43,13 +43,13 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                 <legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_GROUPS_PAGES_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="page[title]" id="field-title" class="required" value="<?php echo $this->escape(stripslashes($this->page->get('title'))); ?>" />
+                    <label for="field-title"><?= Lang::txt('COM_GROUPS_PAGES_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="page[title]" id="field-title" class="required" value="<?= $this->escape(stripslashes($this->page->get('title'))) ?>" />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-alias"><?php echo Lang::txt('COM_GROUPS_PAGES_ALIAS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></label><br />
-                    <input type="text" name="page[alias]" id="field-alias" class="required" value="<?php echo $this->escape(stripslashes($this->page->get('alias'))); ?>" />
+                    <label for="field-alias"><?= Lang::txt('COM_GROUPS_PAGES_ALIAS') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></label><br />
+                    <input type="text" name="page[alias]" id="field-alias" class="required" value="<?= $this->escape(stripslashes($this->page->get('alias'))) ?>" />
                 </div>
             </fieldset>
 
@@ -62,7 +62,7 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                         <option value=""><?php echo Lang::txt('COM_GROUPS_PAGES_CATEGORY_OPTION_NULL'); ?></option>
                         <?php foreach ($this->categories as $pageCategory) : ?>
                             <?php $sel = ($this->page->get('category') == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
-                            <option <?php echo $sel; ?> value="<?php echo $pageCategory->get('id'); ?>"><?php echo $this->escape($pageCategory->get('title')); ?></option>
+                            <option <?= $sel ?> value="<?= $pageCategory->get('id') ?>"><?= $this->escape($pageCategory->get('title')) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -80,7 +80,7 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                                 } ?>
                                 <?php $sel = ($this->page->get('parent') == $page->get('id')) ? 'selected="selected"' : ''; ?>
                                 <option <?php echo $sel; ?> value="<?php echo $page->get('id'); ?>">
-                                    <?php echo $page->heirarchyIndicator(' &ndash; ') . $this->escape($page->get('title')); ?>
+                                    <?= $page->heirarchyIndicator(' &ndash; ') . $this->escape($page->get('title')) ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>
@@ -108,7 +108,7 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
 
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_GROUPS_PAGES_STATE'); ?>:</label><br />
-                    <select name="page[state]" id="field-state" <?php echo $this->page->get('home') == 1 ? 'disabled="disabled"' : ''; ?>>
+                    <select name="page[state]" id="field-state" <?= $this->page->get('home') == 1 ? 'disabled="disabled"' : '' ?>>
                         <?php
                         $states = [
                             1 => Lang::txt('COM_GROUPS_PAGES_STATE_PUBLISHED'),
@@ -140,10 +140,10 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                     }
                     ?>
                     <select name="page[privacy]" id="page[privacy]">
-                        <option value="default" <?php echo $this->page->get('privacy') == "default" ? 'selected="selected"' : ''; ?>>
+                        <option value="default" <?= $this->page->get('privacy') == "default" ? 'selected="selected"' : '' ?>>
                             <?php echo Lang::txt('COM_GROUPS_PAGES_PRIVACY_OPTION_INHERIT', $name); ?>
                         </option>
-                        <option value="members" <?php echo $this->page->get('privacy') == "members" ? 'selected="selected"' : ''; ?>>
+                        <option value="members" <?= $this->page->get('privacy') == "members" ? 'selected="selected"' : '' ?>>
                             <?php echo Lang::txt('COM_GROUPS_PAGES_PRIVACY_OPTION_PRIVATE'); ?>
                         </option>
                     </select>
@@ -154,9 +154,9 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                 <legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CONTENT'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-content"><?php echo Lang::txt('COM_GROUPS_PAGES_CONTENT'); ?>:</span></label><br />
-                    <?php echo $this->editor('pageversion[content]', $this->escape(stripslashes($this->version->get('content'))), 50, 30, 'field-content', ['buttons' => false]); ?>
-                    <input type="hidden" name="pageversion[version]" value="<?php echo $this->version->get('version'); ?>" />
+                    <label for="field-content"><?= Lang::txt('COM_GROUPS_PAGES_CONTENT') ?>:</span></label><br />
+                    <?= $this->editor('pageversion[content]', $this->escape(stripslashes($this->version->get('content'))), 50, 30, 'field-content', ['buttons' => false]) ?>
+                    <input type="hidden" name="pageversion[version]" value="<?= $this->version->get('version') ?>" />
                 </div>
             </fieldset>
         </div>
@@ -178,7 +178,7 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                         </tr>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED'); ?></th>
-                            <td><?php echo Date::of($this->firstversion->get('created'))->toLocal('F j, Y @ g:ia'); ?></td>
+                            <td><?= Date::of($this->firstversion->get('created'))->toLocal('F j, Y @ g:ia') ?></td>
                         </tr>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_GROUPS_PAGES_CREATED_BY'); ?></th>
@@ -241,7 +241,7 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                                         ?>
                                     </td>
                                     <td>
-                                        <a class="version" href="<?php echo $base; ?>&amp;task=raw&amp;pageid=<?php echo $this->page->get('id'); ?>&amp;version=<?php echo $version->get('version'); ?>">
+                                        <a class="version" href="<?= $base ?>&amp;task=raw&amp;pageid=<?= $this->page->get('id') ?>&amp;version=<?= $version->get('version') ?>">
                                             <?php echo Lang::txt('COM_GROUPS_PAGES_VERSION_VIEW_RAW'); ?>
                                         </a>
                                     </td>

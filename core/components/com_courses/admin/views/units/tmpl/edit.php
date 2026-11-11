@@ -184,9 +184,9 @@ $this->js();
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label><br />
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?php echo $this->row->get('state') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
-                        <option value="1"<?php echo $this->row->get('state') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
-                        <option value="2"<?php echo $this->row->get('state') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
+                        <option value="0"<?= $this->row->get('state') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_UNPUBLISHED') ?></option>
+                        <option value="1"<?= $this->row->get('state') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_PUBLISHED') ?></option>
+                        <option value="2"<?= $this->row->get('state') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_TRASHED') ?></option>
                     </select>
                 </div>
             </fieldset>

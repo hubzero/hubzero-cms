@@ -36,12 +36,12 @@ Toolbar::help('offerings');
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER'); ?>" />
+                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER') ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_COURSES_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -49,11 +49,11 @@ Html::behavior('tooltip');
             <div class="col span6">
                 <label for="filter-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
-                    <option value="-1"<?php echo $this->filters['state'] == -1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
-                    <option value="0"<?php echo $this->filters['state'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
-                    <option value="1"<?php echo $this->filters['state'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
-                    <option value="3"<?php echo $this->filters['state'] == 3 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></option>
-                    <option value="2"<?php echo $this->filters['state'] == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
+                    <option value="-1"<?= $this->filters['state'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ALL_STATES') ?></option>
+                    <option value="0"<?= $this->filters['state'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_UNPUBLISHED') ?></option>
+                    <option value="1"<?= $this->filters['state'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_PUBLISHED') ?></option>
+                    <option value="3"<?= $this->filters['state'] == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_DRAFT') ?></option>
+                    <option value="2"<?= $this->filters['state'] == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_TRASHED') ?></option>
                 </select>
             </div>
         </div>
@@ -68,14 +68,14 @@ Html::behavior('tooltip');
             <tr>
                 <th scope="col">
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_COURSES_COL_ORDERING', 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                    <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_COURSES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_COURSES_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_COURSES_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_COURSES_COL_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_COURSES_COL_ORDERING', 'ordering', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                    <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_COURSES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_COURSES_COL_STARTS', 'publish_up', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_COURSES_COL_ENDS', 'publish_down', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_COURSES_COL_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_COURSES_COL_SECTIONS'); ?></th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_COURSES_COL_ENROLLMENT'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_COURSES_COL_UNITS'); ?></th>
@@ -123,20 +123,20 @@ Html::behavior('tooltip');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('id') ?>" class="checkbox-toggle" />
+                    <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->get('id') ?></label>
                 </td>
                 <td class="order nowrap">
                     <?php $otoken = Session::getFormToken(); ?>
-                    <a class="state" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderup&' . $otoken . '=1'); ?>" title="<?php echo Lang::txt('Move up'); ?>" aria-label="<?php echo Lang::txt('Move up'); ?>">&uarr;</a>
-                    <a class="state" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderdown&' . $otoken . '=1'); ?>" title="<?php echo Lang::txt('Move down'); ?>" aria-label="<?php echo Lang::txt('Move down'); ?>">&darr;</a>
+                    <a class="state" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderup&' . $otoken . '=1') ?>" title="<?= Lang::txt('Move up') ?>" aria-label="<?= Lang::txt('Move up') ?>">&uarr;</a>
+                    <a class="state" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderdown&' . $otoken . '=1') ?>" title="<?= Lang::txt('Move down') ?>" aria-label="<?= Lang::txt('Move down') ?>">&darr;</a>
                 </td>
                 <td class="priority-5">
                     <?php echo $this->escape($row->get('id')); ?>
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
                             <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                         </a>
                     <?php } else { ?>
@@ -146,33 +146,33 @@ Html::behavior('tooltip');
                     <?php } ?>
                 </td>
                 <td class="priority-4">
-                    <?php echo ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? Date::of($row->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NO_DATE'); ?>
+                    <?= ($row->get('publish_up') && $row->get('publish_up') != '0000-00-00 00:00:00') ? Date::of($row->get('publish_up'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NO_DATE') ?>
                 </td>
                 <td class="priority-4">
-                    <?php echo ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? Date::of($row->get('publish_down'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER'); ?>
+                    <?= ($row->get('publish_down') && $row->get('publish_down') != '0000-00-00 00:00:00') ? Date::of($row->get('publish_down'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_COURSES_NEVER') ?>
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit.state')) { ?>
                         <?php if ($row->get('state') == 1) { ?>
-                        <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')); ?>">
+                        <a class="jgrid" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_UNPUBLISHED')) ?>">
                             <span class="state publish">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></span>
                             </span>
                         </a>
                         <?php } elseif ($row->get('state') == 2) { ?>
-                        <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+                        <a class="jgrid" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
                             <span class="state trash">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></span>
                             </span>
                         </a>
                         <?php } elseif ($row->get('state') == 3) { ?>
-                        <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+                        <a class="jgrid" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
                             <span class="state pending">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></span>
                             </span>
                         </a>
                         <?php } elseif ($row->get('state') == 0) { ?>
-                        <a class="jgrid" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')); ?>">
+                        <a class="jgrid" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_COURSES_SET_TASK', Lang::txt('COM_COURSES_PUBLISHED')) ?>">
                             <span class="state unpublish">
                                 <span class="text"><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></span>
                             </span>
@@ -182,7 +182,7 @@ Html::behavior('tooltip');
                 </td>
                 <td>
                     <?php if ($canDo->get('core.manage') && $sections > 0) { ?>
-                        <a class="glyph category" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=sections&offering=' . $row->get('id')); ?>">
+                        <a class="glyph category" href="<?= Route::url('index.php?option=' . $this->option . '&controller=sections&offering=' . $row->get('id')) ?>">
                             <?php echo $sections; ?>
                         </a>
                     <?php } else { ?>
@@ -191,7 +191,7 @@ Html::behavior('tooltip');
                         </span>
                         <?php if ($canDo->get('core.manage')) { ?>
                         &nbsp;
-                        <a class="state add" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=sections&offering=' . $row->get('id') . '&task=add'); ?>">
+                        <a class="state add" href="<?= Route::url('index.php?option=' . $this->option . '&controller=sections&offering=' . $row->get('id') . '&task=add') ?>">
                             <span><?php echo Lang::txt('[ + ]'); ?></span>
                         </a>
                         <?php } ?>
@@ -199,7 +199,7 @@ Html::behavior('tooltip');
                 </td>
                 <td class="priority-2">
                     <?php if ($canDo->get('core.manage')) { ?>
-                        <a class="glyph member" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=students&offering=' . $row->get('id') . '&section=0'); ?>">
+                        <a class="glyph member" href="<?= Route::url('index.php?option=' . $this->option . '&controller=students&offering=' . $row->get('id') . '&section=0') ?>">
                             <?php echo $students; ?>
                         </a>
                     <?php } else { ?>
@@ -210,14 +210,14 @@ Html::behavior('tooltip');
                 </td>
                 <td>
                     <?php if ($canDo->get('core.manage') && $units > 0) { ?>
-                        <a class="glyph list" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=units&offering=' . $row->get('id')); ?>">
+                        <a class="glyph list" href="<?= Route::url('index.php?option=' . $this->option . '&controller=units&offering=' . $row->get('id')) ?>">
                             <?php echo $units; ?>
                         </a>
                     <?php } else { ?>
                         <?php echo $units; ?>
                         <?php if ($canDo->get('core.manage')) { ?>
                         &nbsp;
-                        <a class="state add" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=units&offering=' . $row->get('id') . '&task=add'); ?>">
+                        <a class="state add" href="<?= Route::url('index.php?option=' . $this->option . '&controller=units&offering=' . $row->get('id') . '&task=add') ?>">
                             <span><?php echo Lang::txt('COM_COURSES_ADD'); ?></span>
                         </a>
                         <?php } ?>
@@ -225,14 +225,14 @@ Html::behavior('tooltip');
                 </td>
                 <td class="priority-2">
                     <?php if ($canDo->get('core.manage') && $pages > 0) { ?>
-                        <a class="glyph list" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&offering=' . $row->get('id')); ?>">
+                        <a class="glyph list" href="<?= Route::url('index.php?option=' . $this->option . '&controller=pages&offering=' . $row->get('id')) ?>">
                             <?php echo $pages; ?>
                         </a>
                     <?php } else { ?>
                         <?php echo $pages; ?>
                         <?php if ($canDo->get('core.manage')) { ?>
                         &nbsp;
-                        <a class="state add" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=pages&course=' . $this->course->get('id') . '&offering=' . $row->get('id') . '&task=add'); ?>">
+                        <a class="state add" href="<?= Route::url('index.php?option=' . $this->option . '&controller=pages&course=' . $this->course->get('id') . '&offering=' . $row->get('id') . '&task=add') ?>">
                             <span><?php echo Lang::txt('COM_COURSES_ADD'); ?></span>
                         </a>
                         <?php } ?>

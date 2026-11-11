@@ -26,11 +26,11 @@ $timezone = $userLocalizer->getTimezone();
 <?php if ($this->group->published == 1 && in_array(User::get('id'), $this->members)) : ?>
     <ul id="page_options">
         <li>
-            <a class="icon-add btn add" title="<?php echo Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=add'); ?>">
+            <a class="icon-add btn add" title="<?= Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT') ?>" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=add') ?>">
                 <?php echo Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>
             </a>
             <?php if ($this->authorized == 'manager') : ?>
-                <a class="icon-date btn date" title="<?php echo Lang::txt('Manage Calendars'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=calendars'); ?>">
+                <a class="icon-date btn date" title="<?= Lang::txt('Manage Calendars') ?>" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=calendars') ?>">
                     <?php echo Lang::txt('Manage Calendars'); ?>
                 </a>
             <?php endif; ?>
@@ -40,7 +40,7 @@ $timezone = $userLocalizer->getTimezone();
 
 <?php $quickCreate = ($this->params->get('allow_quick_create', 1) && in_array(User::get('id'), $this->group->get('members'))) ? true : 0; ?>
 <div id="calendar"
-    data-base="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar'); ?>"
+    data-base="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=calendar') ?>"
     data-month="<?php echo $this->month; ?>"
     data-year="<?php echo $this->year; ?>"
     data-event-quickcreate="<?php echo $quickCreate; ?>"></div>
@@ -49,7 +49,7 @@ $timezone = $userLocalizer->getTimezone();
     <option value="0"><?php echo Lang::txt('All Calendars'); ?></option>
     <?php foreach ($this->calendars as $calendar) : ?>
         <?php $sel = ($calendar->get('id') == $this->calendar) ? 'selected="selected"' : ''; ?>
-        <option <?php echo $sel; ?> data-img="<?php echo Request::base(true); ?>/core/plugins/groups/calendar/assets/img/swatch-<?php echo ($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray'; ?>.png" value="<?php echo $calendar->get('id'); ?>" class="calendar-picker-option"><?php echo $this->escape($calendar->get('title')); ?></option>
+        <option <?= $sel ?> data-img="<?= Request::base(true) ?>/core/plugins/groups/calendar/assets/img/swatch-<?= ($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray' ?>.png" value="<?= $calendar->get('id') ?>" class="calendar-picker-option"><?= $this->escape($calendar->get('title')) ?></option>
     <?php endforeach; ?>
 </select>
 
@@ -73,7 +73,7 @@ $timezone = $userLocalizer->getTimezone();
                         </h4>
                         <dl class="entry-meta">
                             <dd class="calendar">
-                                in <?php echo ($event->calendar()->get('id')) ? $this->escape($event->calendar()->get('title')) : 'Uncategorized'; ?>
+                                in <?= ($event->calendar()->get('id')) ? $this->escape($event->calendar()->get('title')) : 'Uncategorized' ?>
                             </dd>
                             <?php if ($event->get('publish_down') && $event->get('publish_down') != '0000-00-00 00:00:00') : ?>
                                 <dd class="start-and-end">

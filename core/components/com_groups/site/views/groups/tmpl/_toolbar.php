@@ -39,17 +39,17 @@ if ($this->group->isSuperGroup()) {
 <ul <?php echo $this->classOrId; ?>>
     <?php if (User::isGuest() == 1) : ?>
         <li>
-            <a class="login btn" href="<?php echo $loginLink; ?>" aria-label="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_LOGIN_ARIA'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_LOGIN'); ?></a>
+            <a class="login btn" href="<?= $loginLink ?>" aria-label="<?= Lang::txt('COM_GROUPS_TOOLBAR_LOGIN_ARIA') ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_LOGIN') ?></a>
         </li>
     <?php elseif (in_array(User::get("id"), $this->group->get("invitees"))) : ?>
         <?php if ($membership_control == 1) : ?>
             <li>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept'); ?>" class="invited btn btn-success icon">
+                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept') ?>" class="invited btn btn-success icon">
                     <?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>
                 </button>
             </li>
             <li>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=cancel'); ?>" class="invited btn btn-secondary"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_DECLINE'); ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=cancel') ?>" class="invited btn btn-secondary"><?= Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') ?></button>
             </li>
         <?php endif; ?>
     <?php elseif ($this->group->get('join_policy') == 3 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
@@ -63,16 +63,16 @@ if ($this->group->isSuperGroup()) {
     <?php elseif ($this->group->get('join_policy') == 0 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
         <?php if ($membership_control == 1) : ?>
             <li>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=join'); ?>" class="join btn"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=join') ?>" class="join btn"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></button>
             </li>
         <?php endif; ?>
     <?php elseif ($this->group->get('join_policy') == 1 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
         <?php if ($membership_control == 1) : ?>
             <?php if (in_array(User::get("id"), $this->group->get("applicants"))) : ?>
-                <li><span class="pending" role="status"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_PENDING'); ?></span></li>
+                <li><span class="pending" role="status"><?= Lang::txt('COM_GROUPS_TOOLBAR_PENDING') ?></span></li>
             <?php else : ?>
                 <li>
-                    <a class="request btn" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=join'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_REQUEST'); ?></a>
+                    <a class="request btn" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=join') ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_REQUEST') ?></a>
                 </li>
             <?php endif; ?>
         <?php endif; ?>
@@ -128,10 +128,10 @@ if ($this->group->isSuperGroup()) {
         <li>
             <div class="btn-group <?php echo ($isManager) ? "manager" : "member" ?>">
                 <button type="button" class="btn dropdown-label" aria-expanded="false" aria-haspopup="true">
-                    <?php echo Lang::txt('COM_GROUPS_GROUP'); ?> <?php echo ($isManager) ? Lang::txt('COM_GROUPS_TOOLBAR_MANAGER') : Lang::txt('COM_GROUPS_TOOLBAR_MEMBER') ?>
+                    <?= Lang::txt('COM_GROUPS_GROUP') ?> <?php echo ($isManager) ? Lang::txt('COM_GROUPS_TOOLBAR_MANAGER') : Lang::txt('COM_GROUPS_TOOLBAR_MEMBER') ?>
                 </button>
                 <?php if (!empty($menuItems)) : ?>
-                    <button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_MORE_OPTIONS'); ?>">
+                    <button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="<?= Lang::txt('COM_GROUPS_TOOLBAR_MORE_OPTIONS') ?>">
                         <span class="sr-only"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_MORE_OPTIONS'); ?></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">

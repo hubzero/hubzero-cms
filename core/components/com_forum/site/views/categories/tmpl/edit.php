@@ -19,7 +19,7 @@ $this->css();
 
         <div id="content-header-extra">
             <p>
-                <a class="icon-folder categories btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>">
+                <a class="icon-folder categories btn" href="<?= Route::url('index.php?option=' . $this->option) ?>">
                     <?php echo Lang::txt('COM_FORUM_ALL_CATEGORIES'); ?>
                 </a>
             </p>
@@ -45,7 +45,7 @@ $this->css();
                     <div class="col span6">
                         <div class="form-group">
                             <label for="field-closed" class="comment-anonymous-label">
-                                <input class="option form-control" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php echo $this->category->get('closed') ? ' checked="checked"' : ''; ?> />
+                                <input class="option form-control" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?= $this->category->get('closed') ? ' checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('COM_FORUM_FIELD_CLOSED'); ?>
                             </label>
                         </div>
@@ -55,7 +55,7 @@ $this->css();
                             <label for="field-access">
                                 <?php echo Lang::txt('COM_FORUM_FIELD_VIEW_ACCESS'); ?>
                                 <select class="form-control" name="fields[access]" id="field-access">
-                                    <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->category->get('access')); ?>
+                                    <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->category->get('access')) ?>
                                 </select>
                             </label>
                         </div>
@@ -64,10 +64,10 @@ $this->css();
 
                 <div class="form-group">
                     <label for="field-section_id">
-                        <?php echo Lang::txt('COM_FORUM_FIELD_SECTION'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
+                        <?= Lang::txt('COM_FORUM_FIELD_SECTION') ?> <span class="required"><?= Lang::txt('COM_FORUM_REQUIRED') ?></span>
                         <select class="form-control" name="fields[section_id]" id="field-section_id">
                             <?php foreach ($this->forum->sections(['state' => 1])->rows() as $section) { ?>
-                                <option value="<?php echo $section->get('id'); ?>"<?php echo $this->category->get('section_id') == $section->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+                                <option value="<?= $section->get('id') ?>"<?= $this->category->get('section_id') == $section->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($section->get('title'))) ?></option>
                             <?php } ?>
                         </select>
                     </label>
@@ -75,15 +75,15 @@ $this->css();
 
                 <div class="form-group">
                     <label for="field-title">
-                        <?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
-                        <input type="text" class="form-control" name="fields[title]" id="field-title" value="<?php echo $this->escape(stripslashes($this->category->get('title', ''))); ?>" />
+                        <?= Lang::txt('COM_FORUM_FIELD_TITLE') ?> <span class="required"><?= Lang::txt('COM_FORUM_REQUIRED') ?></span>
+                        <input type="text" class="form-control" name="fields[title]" id="field-title" value="<?= $this->escape(stripslashes($this->category->get('title', ''))) ?>" />
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label for="field-description">
                         <?php echo Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?>
-                        <textarea class="form-control" name="fields[description]" id="field-description" cols="35" rows="5"><?php echo $this->escape(stripslashes($this->category->get('description', ''))); ?></textarea>
+                        <textarea class="form-control" name="fields[description]" id="field-description" cols="35" rows="5"><?= $this->escape(stripslashes($this->category->get('description', ''))) ?></textarea>
                     </label>
                 </div>
             </fieldset>

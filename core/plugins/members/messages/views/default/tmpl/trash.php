@@ -52,7 +52,7 @@ $this
             <select class="option" name="action">
                 <option value=""><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
                 <option value="sendtoinbox"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_INBOX'); ?></option>
-                <option value="sendtoarchive"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE'); ?></option>
+                <option value="sendtoarchive"><?= Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE') ?></option>
                 <option value="delete"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_DELETE'); ?></option>
             </select>
             <input type="hidden"name="activetab" value="trash" />

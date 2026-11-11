@@ -46,7 +46,7 @@ $this->js();
                 <div class="input-wrap">
                     <label for="field-offering_id"><?php echo Lang::txt('COM_COURSES_OFFERING'); ?>:</label><br />
                     <select name="fields[offering_id]" id="field-offering_id">
-                        <option value="0"<?php echo 0 == $this->row->offering_id ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_NONE'); ?></option>
+                        <option value="0"<?= 0 == $this->row->offering_id ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_NONE') ?></option>
                         <?php foreach ($this->courses as $course) { ?>
                                 <optgroup label="<?php echo $course->get('alias'); ?>">
                             <?php foreach ($course->offerings() as $offering) { ?>

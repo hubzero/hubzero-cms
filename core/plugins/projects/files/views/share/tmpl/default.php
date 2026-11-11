@@ -23,15 +23,15 @@ if (!empty($this->file)) {
 
 ?>
 <div id="abox-content">
-<h3><?php echo $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_PROJECT_FILES') : Lang::txt('PLG_PROJECTS_FILES_SHARE_PROJECT_FILES'); ?></h3>
+<h3><?= $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_PROJECT_FILES') : Lang::txt('PLG_PROJECTS_FILES_SHARE_PROJECT_FILES') ?></h3>
 <?php
 // Display error or success message
 if ($this->getError()) {
     echo '<p class="witherror">' . $this->getError() . '</p>';
 } else { ?>
-<form id="hubForm-ajax" method="post" class="" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')); ?>">
+<form id="hubForm-ajax" method="post" class="" action="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')) ?>">
     <p class="notice">
-    <?php echo $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_FILES_CONFIRM') : Lang::txt('PLG_PROJECTS_FILES_SHARE_FILES_CONFIRM');  ?>
+    <?= $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_FILES_CONFIRM') : Lang::txt('PLG_PROJECTS_FILES_SHARE_FILES_CONFIRM') ?>
     </p>
 
     <fieldset >
@@ -43,7 +43,7 @@ if ($this->getError()) {
         <input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="service" value="<?php echo $this->service; ?>" />
-        <p class="send_to"><span class="<?php echo $remoteControl ? 'send_to_local' : 'send_to_remote'; ?>"><span>&nbsp;</span></span></p>
+        <p class="send_to"><span class="<?= $remoteControl ? 'send_to_local' : 'send_to_remote' ?>"><span>&nbsp;</span></span></p>
         <ul class="sample">
             <?php
                 // Display list item with file data
@@ -74,8 +74,8 @@ if ($this->getError()) {
                 foreach ($formats as $key => $value) {
                     ?>
                 <label <?php echo $ext == $key ? 'class="original-format"' : ''; ?> >
-                    <input type="radio" name="format" value="<?php echo $key; ?>" <?php echo ($first && $i == 0) || $ext == $key ? 'checked="checked"' : ''; ?> />
-                    <?php echo $value; ?> <?php echo $ext == $key ? '<span class="hint mini rightfloat"> [original format]</span>' : ''; ?>
+                    <input type="radio" name="format" value="<?= $key ?>" <?= ($first && $i == 0) || $ext == $key ? 'checked="checked"' : '' ?> />
+                    <?= $value ?> <?= $ext == $key ? '<span class="hint mini rightfloat"> [original format]</span>' : '' ?>
                 </label>
                     <?php
                     $i++;
@@ -90,7 +90,7 @@ if ($this->getError()) {
             <?php echo $this->file->get('type') == 'folder'
                 ? '<input type="hidden" name="folder" value="' . $this->escape($this->file->get('name')) . '" />'
                 : '<input type="hidden" name="asset" value="' . $this->escape($this->file->get('name')) . '" />'; ?>
-            <input type="submit" value="<?php echo $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_ACTION_UNSHARE') : Lang::txt('PLG_PROJECTS_FILES_ACTION_SHARE'); ?>" id="submit-ajaxform" class="btn" />
+            <input type="submit" value="<?= $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_ACTION_UNSHARE') : Lang::txt('PLG_PROJECTS_FILES_ACTION_SHARE') ?>" id="submit-ajaxform" class="btn" />
             <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
         </p>
     </fieldset>

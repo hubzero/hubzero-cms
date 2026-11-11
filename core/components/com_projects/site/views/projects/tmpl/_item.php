@@ -26,7 +26,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
     ? Lang::txt('COM_PROJECTS_LABEL_REVIEWER')
     : $role;
 ?>
-<div class="project-card" id="project-<?php echo $this->row->get('id'); ?>" role="group" aria-label="<?php echo $this->escape($this->row->get('alias')) . ' ' . $this->escape($this->row->get('title')); ?>">
+<div class="project-card" id="project-<?= $this->row->get('id') ?>" role="group" aria-label="<?= $this->escape($this->row->get('alias')) . ' ' . $this->escape($this->row->get('title')) ?>">
     <div class="project-contents">
         <?php
         $canView = ((!$this->row->inSetup() && $this->row->access('view'))
@@ -123,14 +123,14 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
             <?php endif;*/ ?>
 
             <?php if ($this->row->groupOwner()) : ?>
-                <span class="project-owner owner-group icon-group tooltips" title="<?php echo $this->escape(Lang::txt('This project is owned by the %s group', $this->row->groupOwner('description'))); ?>">
+                <span class="project-owner owner-group icon-group tooltips" title="<?= $this->escape(Lang::txt('This project is owned by the %s group', $this->row->groupOwner('description'))) ?>">
                     <?php
                         $_ownerTrunc = $this->escape(Hubzero\Utility\Str::truncate($this->row->groupOwner('description'), 25));
                         $_ownerCn = $this->escape($this->row->groupOwner('cn'));
                         // [a11y] aria-label must contain visible text (SC 2.5.3) and be unique (SC 2.4.4)
                         $_ownerLabel = $_ownerTrunc . ' (' . $_ownerCn . ')';
                     ?>
-                    <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->row->groupOwner('cn')); ?>" aria-label="<?php echo $_ownerLabel; ?>">
+                    <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->row->groupOwner('cn')) ?>" aria-label="<?= $_ownerLabel ?>">
                         <?php echo $_ownerTrunc; ?>
                     </a>
                 </span>
@@ -143,7 +143,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                     $name = $owner->get('name');
                 endif;
                 ?>
-                <span class="project-owner owner-user icon-user tooltips" title="<?php echo $this->escape(Lang::txt('This project is owned by %s', $name)); ?>">
+                <span class="project-owner owner-user icon-user tooltips" title="<?= $this->escape(Lang::txt('This project is owned by %s', $name)) ?>">
                     <?php
                     if ($owner->get('id') && in_array($owner->get('access'), User::getAuthorisedViewLevels())) :
                         $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $owner->get('id')) . '">' . $this->escape($name) . '</a>';
@@ -227,12 +227,12 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 
                                 ?>
                                 <span class="block">
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']); ?>" class="showinbox"><?php echo $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS'); ?></a>
+                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']) ?>" class="showinbox"><?= $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS') ?></a>
                                 </span>
 
                                 <?php if ($this->row->isPending()) : ?>
                                     <span class="manage">
-                                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']); ?>" class="showinbox"><?php echo Lang::txt('COM_PROJECTS_APPROVE'); ?></a>
+                                        <a href="<?= Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']) ?>" class="showinbox"><?= Lang::txt('COM_PROJECTS_APPROVE') ?></a>
                                     </span>
                                 <?php endif; ?>
                             </div>
@@ -246,7 +246,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                             <tbody>
                                 <?php foreach (['title', 'PI', 'agency', 'budget'] as $key) : ?>
                                     <tr>
-                                        <th scope="row"><?php echo Lang::txt('COM_PROJECTS_GRANT_' . strtoupper($key)); ?></th>
+                                        <th scope="row"><?= Lang::txt('COM_PROJECTS_GRANT_' . strtoupper($key)) ?></th>
                                         <td><?php echo $this->escape($params->get('grant_' . $key)); ?></td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -264,7 +264,7 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                         ?>
 
                                         <span class="manage">
-                                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id')) . '?reviewer=' . $this->filters['reviewer'] . '&filterby=' . $this->filters['filterby']; ?>" class="showinbox"><?php echo Lang::txt('COM_PROJECTS_MANAGE'); ?></a>
+                                            <a href="<?= Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id')) . '?reviewer=' . $this->filters['reviewer'] . '&filterby=' . $this->filters['filterby'] ?>" class="showinbox"><?= Lang::txt('COM_PROJECTS_MANAGE') ?></a>
                                         </span>
                                     </td>
                                 </tr>

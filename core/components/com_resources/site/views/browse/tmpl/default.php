@@ -37,22 +37,22 @@ $this
     </div>
 </header>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="resourcesform" method="get">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" id="resourcesform" method="get">
     <section class="main section">
         <div class="section-inner hz-layout-with-aside">
             <div class="subject">
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_RESOURCES_SEARCH'); ?>" />
+                    <input class="entry-search-submit" type="submit" value="<?= Lang::txt('COM_RESOURCES_SEARCH') ?>" />
                     <fieldset class="entry-search">
                         <legend><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE'); ?></legend>
                         <label for="entry-search-field"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?>" />
-                        <input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
+                        <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_RESOURCES_SEARCH_LABEL') ?>" />
+                        <input type="hidden" name="sortby" value="<?= $this->escape($this->filters['sortby']) ?>" />
                         <input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
                     </fieldset>
                     <?php if ($this->filters['tag']) { ?>
                         <fieldset class="applied-tags">
-                            <legend class="sr-only visually-hidden"><?php echo Lang::txt('COM_RESOURCES_TAGS'); ?></legend>
+                            <legend class="sr-only visually-hidden"><?= Lang::txt('COM_RESOURCES_TAGS') ?></legend>
                             <ol class="tags">
                             <?php
                             $url  = 'index.php?option=' . $this->option . '&task=browse';
@@ -65,9 +65,9 @@ $this
                             foreach ($tags as $tag) {
                                 ?>
                                 <li>
-                                    <a class="tag" rel="nofollow" href="<?php echo Route::url($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))); ?>">
+                                    <a class="tag" rel="nofollow" href="<?= Route::url($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))) ?>">
                                         <?php echo $this->escape(stripslashes($tag)); ?>
-                                        <span class="remove" title="<?php echo Lang::txt('COM_RESOURCES_REMOVE_TAG'); ?>">x</a>
+                                        <span class="remove" title="<?= Lang::txt('COM_RESOURCES_REMOVE_TAG') ?>">x</a>
                                     </a>
                                 </li>
                                 <?php
@@ -103,7 +103,7 @@ $this
                 <?php } ?>
 
                 <div class="container">
-                    <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
+                    <nav class="entries-filters" aria-label="<?= Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS') ?>">
                         <?php
                         $qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
                         $qs .= ($this->filters['type'] ? '&type=' . $this->escape($this->filters['type']) : '');
@@ -111,14 +111,14 @@ $this
                         ?>
                         <ul class="entries-menu order-options">
                             <li>
-                                <a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" rel="nofollow"><?php echo Lang::txt('COM_RESOURCES_SORT_TITLE'); ?></a>
+                                <a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs) ?>" rel="nofollow"><?= Lang::txt('COM_RESOURCES_SORT_TITLE') ?></a>
                             </li>
                             <li>
-                                <a<?php echo ($this->filters['sortby'] == 'date') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs); ?>" rel="nofollow"><?php echo Lang::txt('COM_RESOURCES_SORT_PUBLISHED'); ?></a>
+                                <a<?= ($this->filters['sortby'] == 'date') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs) ?>" rel="nofollow"><?= Lang::txt('COM_RESOURCES_SORT_PUBLISHED') ?></a>
                             </li>
                             <?php if ($this->config->get('show_ranking')) { ?>
                                 <li>
-                                    <a<?php echo ($this->filters['sortby'] == 'ranking') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs); ?>" rel="nofollow"><?php echo Lang::txt('COM_RESOURCES_SORT_RANKING'); ?></a>
+                                    <a<?= ($this->filters['sortby'] == 'ranking') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs) ?>" rel="nofollow"><?= Lang::txt('COM_RESOURCES_SORT_RANKING') ?></a>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -126,9 +126,9 @@ $this
                         <?php if (count($this->types) > 0) { ?>
                             <ul class="entries-menu filter-options">
                                 <li>
-                                    <label for="filter-type" class="sr-only visually-hidden"><?php echo Lang::txt('COM_RESOURCES_TYPE'); ?></label>
-                                    <select name="type" id="filter-type" aria-label="<?php echo Lang::txt('COM_RESOURCES_TYPE'); ?>">
-                                        <option value="" <?php echo (!$this->filters['type']) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_ALL_TYPES'); ?></option>
+                                    <label for="filter-type" class="sr-only visually-hidden"><?= Lang::txt('COM_RESOURCES_TYPE') ?></label>
+                                    <select name="type" id="filter-type" aria-label="<?= Lang::txt('COM_RESOURCES_TYPE') ?>">
+                                        <option value="" <?= (!$this->filters['type']) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_ALL_TYPES') ?></option>
                                         <?php foreach ($this->types as $item) { ?>
                                             <?php
                                             if (!$item->state) {
@@ -138,7 +138,7 @@ $this
                                                 continue;
                                             }
                                             ?>
-                                            <option value="<?php echo $item->id; ?>"<?php echo ($this->filters['type'] == $item->id) ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->type)); ?></option>
+                                            <option value="<?= $item->id ?>"<?= ($this->filters['type'] == $item->id) ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($item->type)) ?></option>
                                         <?php } ?>
                                     </select>
                                 </li>

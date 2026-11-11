@@ -22,7 +22,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 
 <ul id="page_options">
     <li>
-        <a class="icon-date btn date" title="" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&year=' . $year . '&month=' . $month); ?>">
+        <a class="icon-date btn date" title="" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&year=' . $year . '&month=' . $month) ?>">
             <?php echo Lang::txt('Back to Calendar'); ?>
         </a>
     </li>
@@ -33,8 +33,8 @@ $month = date("m", strtotime($this->event->get('publish_up')));
         <?php echo $this->escape($this->event->get('title')); ?>
     </span>
     <?php if ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
-        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=delete&event_id=' . $this->event->get('id')); ?>" class="delete">Delete</button>
-        <a class="edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=edit&event_id=' . $this->event->get('id')); ?>">
+        <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=delete&event_id=' . $this->event->get('id')) ?>" class="delete">Delete</button>
+        <a class="edit" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=edit&event_id=' . $this->event->get('id')) ?>">
             Edit
         </a>
     <?php endif; ?>
@@ -43,19 +43,19 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 <div class="event-sub-menu">
     <ul>
         <li>
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $this->event->get('id')); ?>">
+            <a href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=details&event_id=' . $this->event->get('id')) ?>">
                 <span><?php echo Lang::txt('Details'); ?></span>
             </a>
         </li>
         <?php if ($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') : ?>
             <li class="active">
-                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=register&event_id=' . $this->event->get('id')); ?>">
+                <a href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=register&event_id=' . $this->event->get('id')) ?>">
                     <span><?php echo Lang::txt('Register'); ?></span>
                 </a>
             </li>
             <?php if ($this->user->get('id') == $this->event->get('created_by') || $this->authorized == 'manager') : ?>
                 <li>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=registrants&event_id=' . $this->event->get('id')); ?>">
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=registrants&event_id=' . $this->event->get('id')) ?>">
                         <span><?php echo Lang::txt('Registrants (' . $this->registrants . ')'); ?></span>
                     </a>
                 </li>
@@ -65,19 +65,19 @@ $month = date("m", strtotime($this->event->get('publish_up')));
     <div class="clear"></div>
 </div>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=register&event_id=' . $this->event->get('id')); ?>" id="hubForm" method="post" class="full">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=register&event_id=' . $this->event->get('id')) ?>" id="hubForm" method="post" class="full">
     <fieldset>
         <legend><?php echo Lang::txt('Name &amp; Title'); ?></legend>
 
         <div class="grid">
             <div class="col span6">
                 <label><?php echo Lang::txt('First Name:'); ?> <span class="required">Required</span>
-                    <input type="text" name="register[first_name]" value="<?php echo (isset($this->register['first_name'])) ? $this->escape($this->register['first_name']) : ''; ?>" />
+                    <input type="text" name="register[first_name]" value="<?= (isset($this->register['first_name'])) ? $this->escape($this->register['first_name']) : '' ?>" />
                 </label>
             </div>
             <div class="col span6 omega">
                 <label><?php echo Lang::txt('Last Name:'); ?> <span class="required">Required</span>
-                    <input type="text" name="register[last_name]" value="<?php echo (isset($this->register['last_name'])) ? $this->escape($this->register['last_name']) : ''; ?>" />
+                    <input type="text" name="register[last_name]" value="<?= (isset($this->register['last_name'])) ? $this->escape($this->register['last_name']) : '' ?>" />
                 </label>
             </div>
         </div>
@@ -87,14 +87,14 @@ $month = date("m", strtotime($this->event->get('publish_up')));
                 <div class="col span6">
                 <?php if ($this->params->get('show_affiliation')) : ?>
                     <label><?php echo Lang::txt('Affiliation:'); ?> <span class="required">Required</span>
-                        <input type="text" name="register[affiliation]" value="<?php echo (isset($this->register['affiliation'])) ? $this->escape($this->register['affiliation']) : ''; ?>" />
+                        <input type="text" name="register[affiliation]" value="<?= (isset($this->register['affiliation'])) ? $this->escape($this->register['affiliation']) : '' ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
                 <div class="col span6 omega">
                 <?php if ($this->params->get('show_title')) : ?>
                     <label><?php echo Lang::txt('Title:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[title]" value="<?php echo (isset($this->register['title'])) ? $this->escape($this->register['title']) : ''; ?>" />
+                        <input type="text" name="register[title]" value="<?= (isset($this->register['title'])) ? $this->escape($this->register['title']) : '' ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
@@ -108,24 +108,24 @@ $month = date("m", strtotime($this->event->get('publish_up')));
             <div class="grid">
                 <div class="col span6">
                     <label><?php echo Lang::txt('City:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[city]" value="<?php echo (isset($this->register['city'])) ? $this->escape($this->register['city']) : ''; ?>" />
+                        <input type="text" name="register[city]" value="<?= (isset($this->register['city'])) ? $this->escape($this->register['city']) : '' ?>" />
                     </label>
                 </div>
                 <div class="col span6 omega">
                     <label><?php echo Lang::txt('State/Province:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[state]" value="<?php echo (isset($this->register['state'])) ? $this->escape($this->register['state']) : ''; ?>" />
+                        <input type="text" name="register[state]" value="<?= (isset($this->register['state'])) ? $this->escape($this->register['state']) : '' ?>" />
                     </label>
                 </div>
             </div>
             <div class="grid">
                 <div class="col span6">
                     <label><?php echo Lang::txt('Zip/Postal code:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[zip]" value="<?php echo (isset($this->register['zip'])) ? $this->escape($this->register['zip']) : ''; ?>" />
+                        <input type="text" name="register[zip]" value="<?= (isset($this->register['zip'])) ? $this->escape($this->register['zip']) : '' ?>" />
                     </label>
                 </div>
                 <div class="col span6 omega">
                     <label><?php echo Lang::txt('Country:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[country]" value="<?php echo (isset($this->register['country'])) ? $this->escape($this->register['country']) : ''; ?>" />
+                        <input type="text" name="register[country]" value="<?= (isset($this->register['country'])) ? $this->escape($this->register['country']) : '' ?>" />
                     </label>
                 </div>
             </div>
@@ -136,14 +136,14 @@ $month = date("m", strtotime($this->event->get('publish_up')));
                 <div class="col span6">
                 <?php if ($this->params->get('show_telephone')) : ?>
                     <label><?php echo Lang::txt('Telephone:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[telephone]" value="<?php echo (isset($this->register['telephone'])) ? $this->escape($this->register['telephone']) : ''; ?>" />
+                        <input type="text" name="register[telephone]" value="<?= (isset($this->register['telephone'])) ? $this->escape($this->register['telephone']) : '' ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
                 <div class="col span6 omega">
                 <?php if ($this->params->get('show_fax')) : ?>
                     <label><?php echo Lang::txt('Fax:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[fax]" value="<?php echo (isset($this->register['fax'])) ? $this->escape($this->register['fax']) : ''; ?>" />
+                        <input type="text" name="register[fax]" value="<?= (isset($this->register['fax'])) ? $this->escape($this->register['fax']) : '' ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
@@ -155,14 +155,14 @@ $month = date("m", strtotime($this->event->get('publish_up')));
                 <div class="col span6">
                 <?php if ($this->params->get('show_email')) : ?>
                     <label><?php echo Lang::txt('E-mail:'); ?> <span class="required">required</span>
-                        <input type="text" name="register[email]" value="<?php echo (isset($this->register['email'])) ? $this->escape($this->register['email']) : ''; ?>" />
+                        <input type="text" name="register[email]" value="<?= (isset($this->register['email'])) ? $this->escape($this->register['email']) : '' ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
                 <div class="col span6 omega">
                 <?php if ($this->params->get('show_website')) : ?>
                     <label><?php echo Lang::txt('Website:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[website]" value="<?php echo (isset($this->register['website'])) ? $this->escape($this->register['website']) : ''; ?>" />
+                        <input type="text" name="register[website]" value="<?= (isset($this->register['website'])) ? $this->escape($this->register['website']) : '' ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
@@ -175,38 +175,38 @@ $month = date("m", strtotime($this->event->get('publish_up')));
             <legend><?php echo Lang::txt('Demographics'); ?></legend>
             <?php if ($this->params->get('show_position')) : ?>
                 <label for="register[position]">
-                    <?php echo Lang::txt('Which best describes your current position?'); ?> <span class="optional">Optional</span>
+                    <?= Lang::txt('Which best describes your current position?') ?> <span class="optional">Optional</span>
                     <select name="register[position]">
-                        <option value="" selected="selected"><?php echo Lang::txt('(select from list or enter below)'); ?></option>
-                        <option value="university"><?php echo Lang::txt('University / College Student or Staff'); ?></option>
-                        <option value="precollege"><?php echo Lang::txt('K-12 (Pre-College) Student or Staff'); ?></option>
+                        <option value="" selected="selected"><?= Lang::txt('(select from list or enter below)') ?></option>
+                        <option value="university"><?= Lang::txt('University / College Student or Staff') ?></option>
+                        <option value="precollege"><?= Lang::txt('K-12 (Pre-College) Student or Staff') ?></option>
                         <option value="nationallab"><?php echo Lang::txt('National Laboratory'); ?></option>
                         <option value="industry"><?php echo Lang::txt('Industry / Private Company'); ?></option>
                         <option value="government"><?php echo Lang::txt('Government Agency'); ?></option>
                         <option value="military"><?php echo Lang::txt('Military'); ?></option>
                         <option value="unemployed"><?php echo Lang::txt('Retired / Unemployed'); ?></option>
                     </select>
-                    <input name="register[position_other]" type="text" value="<?php echo (isset($this->register['position_other'])) ? $this->escape($this->register['position_other']) : ''; ?>" />
+                    <input name="register[position_other]" type="text" value="<?= (isset($this->register['position_other'])) ? $this->escape($this->register['position_other']) : '' ?>" />
                 </label>
             <?php endif; ?>
 
             <?php if ($this->params->get('show_degree')) : ?>
                 <fieldset>
-                    <legend><?php echo Lang::txt('Highest academic degree earned:'); ?> <span class="optional">Optional</span></legend>
+                    <legend><?= Lang::txt('Highest academic degree earned:') ?> <span class="optional">Optional</span></legend>
                         <label>
-                            <input type="radio" class="option" name="register[degree]" value="Bachelors" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Bachelors') ? 'checked="checked"' : ''; ?> />
+                            <input type="radio" class="option" name="register[degree]" value="Bachelors" <?= (isset($this->register['degree']) && $this->register['degree'] == 'Bachelors') ? 'checked="checked"' : '' ?> />
                             <?php echo Lang::txt('Bachelors degree'); ?>
                         </label>
                         <label>
-                            <input type="radio" class="option" name="register[degree]" value="Masters" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Masters') ? 'checked="checked"' : ''; ?> />
+                            <input type="radio" class="option" name="register[degree]" value="Masters" <?= (isset($this->register['degree']) && $this->register['degree'] == 'Masters') ? 'checked="checked"' : '' ?> />
                             <?php echo Lang::txt('Masters degree'); ?>
                         </label>
                         <label>
-                            <input type="radio" class="option" name="register[degree]" value="Doctoral" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Doctoral') ? 'checked="checked"' : ''; ?> />
+                            <input type="radio" class="option" name="register[degree]" value="Doctoral" <?= (isset($this->register['degree']) && $this->register['degree'] == 'Doctoral') ? 'checked="checked"' : '' ?> />
                             <?php echo Lang::txt('Doctoral degree'); ?>
                         </label>
                         <label>
-                            <input type="radio" class="option" name="register[degree]" value="Other" <?php echo (isset($this->register['degree']) && $this->register['degree'] == 'Other') ? 'checked="checked"' : ''; ?> />
+                            <input type="radio" class="option" name="register[degree]" value="Other" <?= (isset($this->register['degree']) && $this->register['degree'] == 'Other') ? 'checked="checked"' : '' ?> />
                             <?php echo Lang::txt('None of the above'); ?>
                         </label>
                 </fieldset>
@@ -216,15 +216,15 @@ $month = date("m", strtotime($this->event->get('publish_up')));
                 <fieldset>
                     <legend><?php echo Lang::txt('Gender:'); ?> <span class="optional">Optional</span></legend>
                     <label>
-                        <input type="radio" name="register[sex]" value="Male" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Male') ? 'checked="checked"' : ''; ?> />
+                        <input type="radio" name="register[sex]" value="Male" class="option" <?= (isset($this->register['sex']) && $this->register['sex'] == 'Male') ? 'checked="checked"' : '' ?> />
                         <?php echo Lang::txt('Male'); ?>
                     </label>
                     <label>
-                        <input type="radio" name="register[sex]" value="Female" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Female') ? 'checked="checked"' : ''; ?> />
+                        <input type="radio" name="register[sex]" value="Female" class="option" <?= (isset($this->register['sex']) && $this->register['sex'] == 'Female') ? 'checked="checked"' : '' ?> />
                         <?php echo Lang::txt('Female'); ?>
                     </label>
                     <label>
-                        <input type="radio" name="register[sex]" value="Refused" class="option" <?php echo (isset($this->register['sex']) && $this->register['sex'] == 'Refused') ? 'checked="checked"' : ''; ?> />
+                        <input type="radio" name="register[sex]" value="Refused" class="option" <?= (isset($this->register['sex']) && $this->register['sex'] == 'Refused') ? 'checked="checked"' : '' ?> />
                         <?php echo Lang::txt('Do not wish to reveal'); ?>
                     </label>
                 </fieldset>
@@ -278,24 +278,24 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 
             <?php if ($this->params->get('show_arrival')) : ?>
                 <fieldset>
-                    <legend><?php echo Lang::txt('Arrival Information:'); ?> <span class="optional">Optional</span></legend>
+                    <legend><?= Lang::txt('Arrival Information:') ?> <span class="optional">Optional</span></legend>
                     <label><?php echo Lang::txt('Arrival Day'); ?>
-                        <input type="text" name="arrival[day]" value="<?php echo (isset($this->arrival['day'])) ? $this->arrival['day'] : ''; ?>" />
+                        <input type="text" name="arrival[day]" value="<?= (isset($this->arrival['day'])) ? $this->arrival['day'] : '' ?>" />
                     </label>
                     <label><?php echo Lang::txt('Arrival Time'); ?>
-                        <input type="text" name="arrival[time]" value="<?php echo (isset($this->arrival['time'])) ? $this->arrival['time'] : ''; ?>" />
+                        <input type="text" name="arrival[time]" value="<?= (isset($this->arrival['time'])) ? $this->arrival['time'] : '' ?>" />
                     </label>
                 </fieldset>
             <?php endif ?>
 
             <?php if ($this->params->get('show_departure')) : ?>
             <fieldset>
-                <legend><?php echo Lang::txt('Departure Information:'); ?> <span class="optional">Optional</span></legend>
+                <legend><?= Lang::txt('Departure Information:') ?> <span class="optional">Optional</span></legend>
                 <label><?php echo Lang::txt('Departure Day'); ?>
-                    <input type="text" name="departure[day]" value="<?php echo (isset($this->departure['day'])) ? $this->departure['day'] : ''; ?>" />
+                    <input type="text" name="departure[day]" value="<?= (isset($this->departure['day'])) ? $this->departure['day'] : '' ?>" />
                 </label>
                 <label><?php echo Lang::txt('Departure Time'); ?>
-                    <input type="text" name="departure[time]" value="<?php echo (isset($this->departure['time'])) ? $this->departure['time'] : ''; ?>" />
+                    <input type="text" name="departure[time]" value="<?= (isset($this->departure['time'])) ? $this->departure['time'] : '' ?>" />
                 </label>
             </fieldset>
             <?php endif; ?>
@@ -307,18 +307,18 @@ $month = date("m", strtotime($this->event->get('publish_up')));
             <legend><?php echo Lang::txt('Disability/Dietary needs'); ?></legend>
             <?php if ($this->params->get('show_disability')) : ?>
                 <label>
-                    <input type="checkbox" class="option" name="disability" value="yes" <?php echo isset($this->disability) && $this->disability == 'yes' ? 'checked="checked"' : ''; ?> />
-                    <?php echo Lang::txt('I have auxiliary aids or services due to a disability. Please contact me.'); ?>
+                    <input type="checkbox" class="option" name="disability" value="yes" <?= isset($this->disability) && $this->disability == 'yes' ? 'checked="checked"' : '' ?> />
+                    <?= Lang::txt('I have auxiliary aids or services due to a disability. Please contact me.') ?>
                 </label>
             <?php endif; ?>
 
             <?php if ($this->params->get('show_dietary')) : ?>
                 <label>
-                    <input type="checkbox" class="option" name="dietary[needs]" value="yes" <?php echo isset($this->dietary['needs']) && $this->dietary['needs'] == 'yes' ? 'checked="checked"' : ''; ?> />
+                    <input type="checkbox" class="option" name="dietary[needs]" value="yes" <?= isset($this->dietary['needs']) && $this->dietary['needs'] == 'yes' ? 'checked="checked"' : '' ?> />
                     <?php echo Lang::txt('I have specific dietary needs.'); ?>
                 </label>
                 <label class="indent"><?php echo Lang::txt('Please specify'); ?>
-                    <input type="text" name="dietary[specific]" value="<?php echo isset($this->dietary['specific']) ? $this->escape($this->dietary['specific']) : ''; ?>" />
+                    <input type="text" name="dietary[specific]" value="<?= isset($this->dietary['specific']) ? $this->escape($this->dietary['specific']) : '' ?>" />
                 </label>
             <?php endif; ?>
         </fieldset>
@@ -328,7 +328,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
         <fieldset>
             <legend><?php echo Lang::txt('Dinner'); ?></legend>
             <label for="filed-dinner">
-                <input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" <?php echo isset($this->dinner) && $this->dinner == 'yes' ? 'checked="checked"' : ''; ?> />
+                <input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" <?= isset($this->dinner) && $this->dinner == 'yes' ? 'checked="checked"' : '' ?> />
                 <?php echo Lang::txt('I plan to attend the dinner.'); ?>
             </label>
         </fieldset>
@@ -343,7 +343,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
                     echo stripslashes($this->params->get('abstract_text'));
                 }
                 ?>
-                <textarea name="register[abstract]" rows="16" cols="32"><?php echo (isset($this->register['abstract'])) ? $this->escape($this->register['abstract']) : ''; ?></textarea>
+                <textarea name="register[abstract]" rows="16" cols="32"><?= (isset($this->register['abstract'])) ? $this->escape($this->register['abstract']) : '' ?></textarea>
             </label>
         </fieldset>
     <?php endif; ?>
@@ -353,7 +353,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
             <legend><?php echo Lang::txt('Comments'); ?></legend>
             <label>
                 <?php echo Lang::txt('Please use the space below to provide any additional comments:'); ?>
-                <textarea name="register[comment]" rows="4" cols="32"><?php echo (isset($this->register['comment'])) ? $this->escape($this->register['comment']) : ''; ?></textarea>
+                <textarea name="register[comment]" rows="4" cols="32"><?= (isset($this->register['comment'])) ? $this->escape($this->register['comment']) : '' ?></textarea>
             </label>
         </fieldset>
     <?php endif; ?>

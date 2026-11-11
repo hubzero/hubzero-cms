@@ -24,20 +24,20 @@ Toolbar::help('hosts');
 $this->css();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_NAME', 'hostname', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_SERVICE_HOST', 'service_host', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_TOOLS_COL_PROVISIONS', 'provisions', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_TOOLS_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_TOOLS_COL_USES', 'uses', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_TOOLS_COL_ZONE', 'zone_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_TOOLS_COL_NAME', 'hostname', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_TOOLS_COL_SERVICE_HOST', 'service_host', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_TOOLS_COL_PROVISIONS', 'provisions', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_TOOLS_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_TOOLS_COL_USES', 'uses', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_TOOLS_COL_ZONE', 'zone_id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_TOOLS_COL_BROKEN_CONTAINERS'); ?></th>
             </tr>
         </thead>
@@ -70,11 +70,11 @@ if ($this->rows) {
         ?>
             <tr>
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i;?>" value="<?php echo $row->hostname; ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->hostname; ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->hostname ?>" class="checkbox-toggle" />
+                    <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->hostname ?></label>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&hostname=' . $row->hostname); ?>">
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&hostname=' . $row->hostname) ?>">
                         <span><?php echo $this->escape($row->hostname); ?></span>
                     </a>
                 </td>
@@ -88,7 +88,7 @@ if ($this->rows) {
                         echo '<strong>';
                     }
                     ?>
-                    <a class="<?php echo ($value != '0') ? 'active' : 'inactive'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle&hostname=' . $row->hostname . '&item=' . $key . '&' . Session::getFormToken() . '=1'); ?>">
+                    <a class="<?= ($value != '0') ? 'active' : 'inactive' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=toggle&hostname=' . $row->hostname . '&item=' . $key . '&' . Session::getFormToken() . '=1') ?>">
                         <span><?php echo $this->escape($key); ?></span>
                     </a>
                         <?php
@@ -100,7 +100,7 @@ if ($this->rows) {
                 ?>
                 </td>
                 <td class="priority-2">
-                    <a class="state <?php echo ($row->status == 'up') ? 'publish' : 'unpublish'; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&hostname=' . $row->hostname); ?>">
+                    <a class="state <?= ($row->status == 'up') ? 'publish' : 'unpublish' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&hostname=' . $row->hostname) ?>">
                         <span><?php echo $this->escape($row->status); ?></span>
                     </a>
                 </td>

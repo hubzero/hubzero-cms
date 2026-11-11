@@ -24,7 +24,7 @@ jQuery(document).ready(function(jQuery) {
 
     var $ = jQuery,
         _DEBUG = false,
-        url = "<?php echo Request::base(true) . '/' . $this->offering->link() . '&active=notes&scope=lecture&scope_id=' . $this->lecture->get('id') . '&no_html=1&note='; ?>";
+        url = "<?= Request::base(true) . '/' . $this->offering->link() . '&active=notes&scope=lecture&scope_id=' . $this->lecture->get('id') . '&no_html=1&note=' ?>";
 
     var options = {
         notes: <?php

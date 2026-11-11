@@ -24,7 +24,7 @@ if ($forumCommentEmailNotifications) {
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions'); ?>" method="post" id="memberoptionform">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=memberoptions') ?>" method="post" id="memberoptionform">
     <?php echo Html::input('token'); ?>
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
@@ -39,7 +39,7 @@ if ($forumCommentEmailNotifications) {
 
     <?php if ($forumCommentEmailNotifications) { ?>
         <div class="input-wrap">
-            <input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php echo $this->recvEmailOptionValue == 1 ? 'checked="checked"' : ''; ?> />
+            <input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?= $this->recvEmailOptionValue == 1 ? 'checked="checked"' : '' ?> />
             <label for="recvpostemail"><?php echo Lang::txt('GROUP_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
         </div>
     <?php } ?>

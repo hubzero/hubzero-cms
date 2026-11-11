@@ -43,18 +43,18 @@ Toolbar::spacer();
 Toolbar::help('billboards');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th>
                     <input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_NAME'); ?></th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
-                <th scope="col" class="priority-3"><?php echo Lang::txt('COM_BILLBOARDS_COL_ORDERING') . Html::grid('order', $this->rows->toArray()); ?></th>
+                <th scope="col" class="priority-3"><?= Lang::txt('COM_BILLBOARDS_COL_ORDERING') . Html::grid('order', $this->rows->toArray()) ?></th>
                 <th scope="col" class="priority-1"><?php echo Lang::txt('COM_BILLBOARDS_COL_PUBLISHED'); ?></th>
             </tr>
         </thead>
@@ -86,16 +86,16 @@ foreach ($this->rows as $row) {
                 <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id); ?>"><?php echo $this->escape($row->name); ?></a>
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id) ?>"><?= $this->escape($row->name) ?></a>
                 </td>
                 <td class="priority-2">
                 <?php echo $this->escape($row->collection->name); ?>
                 </td>
                 <td class="order priority-3">
-                    <input type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" class="text_area" />
+                    <input type="text" name="order[]" size="5" value="<?= $row->ordering ?>" class="text_area" />
                 </td>
                 <td class="priority-1">
-                    <a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&cid=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_BILLBOARDS_SET_TO', $task); ?>">
+                    <a class="state <?= $class ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&cid=' . $row->id . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_BILLBOARDS_SET_TO', $task) ?>">
                         <span><?php echo $alt; ?></span>
                     </a>
                 </td>

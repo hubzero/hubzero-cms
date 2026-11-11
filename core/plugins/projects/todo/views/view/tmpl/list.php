@@ -47,7 +47,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
     <?php if (!$this->filters['state'] && $this->model->access('content')) { ?>
     <ul id="page_options" class="pluginOptions">
         <li>
-            <a class="icon-add add btn showinbox"  href="<?php echo Route::url($url . '&action=new&list=' . $this->filters['todolist']); ?>">
+            <a class="icon-add add btn showinbox"  href="<?= Route::url($url . '&action=new&list=' . $this->filters['todolist']) ?>">
                 <?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?>
             </a>
         </li>
@@ -70,7 +70,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
                 <th class="checkbox"><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ORDER'); ?></th>
                 <th class="primarycolumn"><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ITEM'); ?></th>
                 <th><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ASSIGNED'); ?></th>
-                <th><?php echo ($this->filters['state']) ? Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMPLETED') : Lang::txt('PLG_PROJECTS_TODO_COLUMN_DUE'); ?></th>
+                <th><?= ($this->filters['state']) ? Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMPLETED') : Lang::txt('PLG_PROJECTS_TODO_COLUMN_DUE') ?></th>
                 <th><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMMENTS'); ?></th>
                 <th aria-label="<?php echo Lang::txt('Options'); ?>"><span class="sr-only">Options</span></th>
             </tr>
@@ -87,19 +87,19 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
                 ?>
             <tr class="<?php echo $class; ?>" id="todo-<?php echo $row->get('id'); ?>">
                 <td><span class="ordernum"><?php echo $order; ?></span></td>
-                <td><a href="<?php echo Route::url($url . '&action=view') . '/?todoid=' . $row->get('id'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->get('content'), 120); ?></a></td>
-                <td class="mini faded"><?php echo $row->isComplete() ? $row->closer('name') : $row->owner('name'); ?></td>
-                <td class="mini nowrap"><?php echo $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote; ?></td>
-                <td class="mini"><a href="<?php echo Route::url($url . '&action=view') . '/?todoid=' . $row->get('id'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT'); ?>"><?php echo $row->comments('count'); ?></a></td>
+                <td><a href="<?= Route::url($url . '&action=view') . '/?todoid=' . $row->get('id') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT') ?>"><?= \Hubzero\Utility\Str::truncate($row->get('content'), 120) ?></a></td>
+                <td class="mini faded"><?= $row->isComplete() ? $row->closer('name') : $row->owner('name') ?></td>
+                <td class="mini nowrap"><?= $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote ?></td>
+                <td class="mini"><a href="<?= Route::url($url . '&action=view') . '/?todoid=' . $row->get('id') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT') ?>"><?= $row->comments('count') ?></a></td>
                 <td><?php if (!$row->isComplete()) {
-                    ?><button type="submit" form="hz-post-action" formaction="<?php echo Route::url($url . '&action=changestate') . '/?todoid=' . $row->get('id') . '&amp;state=1'; ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_CHECK_OFF'); ?>" class="unchecked confirm-checkoff">&nbsp;</button><?php
+                    ?><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=changestate') . '/?todoid=' . $row->get('id') . '&amp;state=1' ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_CHECK_OFF') ?>" class="unchecked confirm-checkoff">&nbsp;</button><?php
                     } ?></td>
             </tr>
                 <?php $order++;
             } ?>
         <?php } else { ?>
             <tr>
-                <td colspan="6"><p class="noresults"><?php echo Lang::txt('PLG_PROJECTS_TODO_NO_TODOS') . $where . '.'; ?></p></td>
+                <td colspan="6"><p class="noresults"><?= Lang::txt('PLG_PROJECTS_TODO_NO_TODOS') . $where . '.' ?></p></td>
             </tr>
         <?php } ?>
         </tbody>

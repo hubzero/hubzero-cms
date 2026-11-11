@@ -24,7 +24,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
 <ul id="page_options">
     <li>
-        <a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=collections&page=index'); ?>">
+        <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=collections&page=index') ?>">
             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_GETTING_STARTED'); ?></span>
         </a>
     </li>
@@ -55,11 +55,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
             <?php } ?>
 
             <?php if ($this->model->isFollowing()) { ?>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=unfollow'); ?>" class="icon-unfollow unfollow btn" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW_ALL'); ?>">
+                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=unfollow') ?>" class="icon-unfollow unfollow btn" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW_ALL') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW_ALL') ?>">
                     <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW_ALL'); ?></span>
                 </button>
             <?php } else { ?>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=follow'); ?>" class="icon-follow follow btn" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW_ALL'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW_ALL'); ?>">
+                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=follow') ?>" class="icon-follow follow btn" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW_ALL') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW_ALL') ?>">
                     <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW_ALL'); ?></span>
                 </button>
             <?php } ?>
@@ -67,7 +67,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
     <?php } ?>
 
     <?php if ($this->rows->total() > 0) { ?>
-        <div id="posts" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" class="<?php echo (User::isGuest()) ? 'loggedout' : 'loggedin'; ?>">
+        <div id="posts" data-base="<?= rtrim(Request::base(true), '/') ?>" class="<?= (User::isGuest()) ? 'loggedout' : 'loggedin' ?>">
             <?php if (!User::isGuest()) { ?>
                 <?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
                     <div class="post new-collection">
@@ -78,7 +78,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                 <?php } ?>
             <?php } ?>
             <?php foreach ($this->rows as $row) { ?>
-                <div class="post collection <?php echo ($row->get('access') == 4) ? 'private' : 'public'; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>">
+                <div class="post collection <?= ($row->get('access') == 4) ? 'private' : 'public' ?>" id="b<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>">
                     <div class="content">
                         <?php
                             $this
@@ -95,7 +95,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                         <div class="meta">
                             <p class="stats">
                                 <span class="likes">
-                                    <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_POST_LIKES', $row->get('positive', 0)); ?>
+                                    <?= Lang::txt('PLG_GROUPS_COLLECTIONS_POST_LIKES', $row->get('positive', 0)) ?>
                                 </span>
                                 <span class="reposts">
                                     <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_POST_POSTS', $row->get('posts', 0)); ?>
@@ -104,35 +104,35 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                             <div class="actions">
                                 <?php if (!User::isGuest()) { ?>
                                     <?php if ($row->isFollowing()) { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/unfollow'); ?>" class="btn unfollow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>">
+                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=' . $row->get('alias') . '/unfollow') ?>" class="btn unfollow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW') ?>">
                                             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
                                         </button>
                                     <?php } else { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/follow'); ?>" class="btn follow" data-id="<?php echo $row->get('id'); ?>" data-text-follow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?>" data-text-unfollow="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?>">
+                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=' . $row->get('alias') . '/follow') ?>" class="btn follow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW') ?>">
                                             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
                                         </button>
                                     <?php } ?>
                                     <?php if ($this->params->get('access-manage-collection')) { ?>
                                         <?php if ($this->params->get('access-edit-collection')) { ?>
-                                            <a class="btn edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/edit'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT'); ?>">
+                                            <a class="btn edit" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&scope=' . $row->get('alias') . '/edit') ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT'); ?></span>
                                             </a>
                                         <?php } ?>
                                         <?php if ($this->params->get('access-delete-collection')) { ?>
-                                            <a class="btn delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/delete'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>">
+                                            <a class="btn delete" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&scope=' . $row->get('alias') . '/delete') ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
                                             </a>
                                         <?php } ?>
                                     <?php } else { ?>
-                                            <a class="btn repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&scope=' . $row->get('alias') . '/collect'); ?>">
+                                            <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&scope=' . $row->get('alias') . '/collect') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $row->get('alias'), false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+                                    <a class="btn repost tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $row->get('alias'), false, true)), false) ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
-                                    <a class="btn follow tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $row->get('alias'), false, true)), false); ?>" title="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW'); ?>">
+                                    <a class="btn follow tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $row->get('alias'), false, true)), false) ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
                                     </a>
                                 <?php } ?>
@@ -172,7 +172,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     </div>
                 </div><!-- / .instructions -->
                 <div class="questions">
-                    <p><strong><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_INSTRUCT_COLLECTION_ABOUT_TITLE'); ?></strong></p>
+                    <p><strong><?= Lang::txt('PLG_GROUPS_COLLECTIONS_INSTRUCT_COLLECTION_ABOUT_TITLE') ?></strong></p>
                     <p><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_INSTRUCT_COLLECTION_ABOUT_DESC'); ?></p>
                 </div>
             <?php } else { ?>

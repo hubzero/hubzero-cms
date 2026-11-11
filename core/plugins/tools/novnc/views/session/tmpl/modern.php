@@ -217,7 +217,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
     <div id="novnc-modern-clip" role="dialog" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?>" hidden>
         <div class="nmc-head">
             <span class="nmc-title"><?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?></span>
-            <button type="button" class="nmc-close" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_CLOSE'); ?>" title="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_CLOSE'); ?>">&times;</button>
+            <button type="button" class="nmc-close" aria-label="<?= Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_CLOSE') ?>" title="<?= Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_CLOSE') ?>">&times;</button>
         </div>
         <p><?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_HINT'); ?></p>
         <textarea spellcheck="false" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?>"></textarea>
@@ -598,9 +598,9 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
             '<button type="button" data-act="save"></button>' +
             '<button type="button" data-act="print"></button>' +
             '<button type="button" class="nx-close" data-act="close">&times;</button></div>';
-        d.querySelector('[data-act="save"]').textContent  = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER_SAVE')); ?>;
-        d.querySelector('[data-act="print"]').textContent = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER_PRINT')); ?>;
-        d.querySelector('[data-act="close"]').setAttribute('aria-label', <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER_CLOSE')); ?>);
+        d.querySelector('[data-act="save"]').textContent  = <?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER_SAVE')) ?>;
+        d.querySelector('[data-act="print"]').textContent = <?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER_PRINT')) ?>;
+        d.querySelector('[data-act="close"]').setAttribute('aria-label', <?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_XFER_CLOSE')) ?>);
 
         d.querySelector('.novnc-xfer-bar').addEventListener('click', (e) => {
             const act = e.target.closest('button') && e.target.closest('button').getAttribute('data-act');
@@ -827,7 +827,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
             if (!rfb || !live || readOnly || typeof text !== 'string') { return false; }
             const w = forWire(text);
             if (w.dropped) {
-                note(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_DROPPED')); ?>.replace('%d', w.dropped));
+                note(<?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_DROPPED')) ?>.replace('%d', w.dropped));
             }
             if (w.text !== remote) {
                 rfb.clipboardPasteFrom(w.text);
@@ -946,7 +946,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
         });
         panel.querySelector('.nmc-copy').addEventListener('click', function () {
             const text = textarea.value;
-            const done = () => { pending = null; markPending(false); say(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_COPIED')); ?>); };
+            const done = () => { pending = null; markPending(false); say(<?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_COPIED')) ?>); };
             if (api && api.writeText) {
                 api.writeText(text).then(done, () => { textarea.select(); document.execCommand('copy'); done(); });
             } else {
@@ -1082,7 +1082,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
             });
             rfb.addEventListener('credentialsrequired', () => rfb.sendCredentials({ password: password }));
             rfb.addEventListener('securityfailure', (e) => {
-                setStatus(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_SECURITY_FAILURE')); ?> + (e.detail && e.detail.reason ? ': ' + e.detail.reason : ''));
+                setStatus(<?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_SECURITY_FAILURE')) ?> + (e.detail && e.detail.reason ? ': ' + e.detail.reason : ''));
             });
 
             window.__novncRFB = rfb;
@@ -1170,7 +1170,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
                     const z = effZoom();
                     btn.querySelector('.zoom-level').textContent = Math.round(z * 100) + '%';
                     const label = (zoom === 'fit')
-                        ? <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_ZOOM_FIT')); ?> + ' (' + Math.round(z * 100) + '%)'
+                        ? <?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_ZOOM_FIT')) ?> + ' (' + Math.round(z * 100) + '%)'
                         : Math.round(z * 100) + '%';
                     btn.setAttribute('aria-label', btn.title + ': ' + label);
                     items.forEach(([v, b]) => b.setAttribute('aria-checked', (v === zoom) ? 'true' : 'false'));
@@ -1253,7 +1253,7 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
             }
             function releaseAll() { held.forEach((k) => hold(k, false)); }
 
-            add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_CAD')); ?>, () => { if (rfb && live) { rfb.sendCtrlAltDel(); } });
+            add(<?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_CAD')) ?>, () => { if (rfb && live) { rfb.sendCtrlAltDel(); } });
             add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_ESC')); ?>, () => tap('esc'));
             add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_TAB')); ?>, () => tap('tab'));
             const sep = document.createElement('div');
@@ -1264,16 +1264,16 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
             head.textContent = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_HOLD')); ?>;
             menu.appendChild(head);
             const toggles = {
-                ctrl:  add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_CTRL')); ?>, () => hold('ctrl', !held.has('ctrl')), true),
-                alt:   add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_ALT')); ?>, () => hold('alt', !held.has('alt')), true),
-                super: add(<?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_SUPER')); ?>, () => hold('super', !held.has('super')), true)
+                ctrl:  add(<?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_CTRL')) ?>, () => hold('ctrl', !held.has('ctrl')), true),
+                alt:   add(<?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_ALT')) ?>, () => hold('alt', !held.has('alt')), true),
+                super: add(<?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS_SUPER')) ?>, () => hold('super', !held.has('super')), true)
             };
 
             function update() {
                 Object.keys(toggles).forEach((k) => toggles[k].setAttribute('aria-checked', held.has(k) ? 'true' : 'false'));
                 btn.classList.toggle('held', held.size > 0);
                 const names = Object.keys(toggles).filter((k) => held.has(k)).map((k) => toggles[k].textContent);
-                btn.title = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS')); ?> + (names.length ? ' (' + names.join('+') + ')' : '');
+                btn.title = <?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS')) ?> + (names.length ? ' (' + names.join('+') + ')' : '');
                 btn.setAttribute('aria-label', btn.title);
             }
 

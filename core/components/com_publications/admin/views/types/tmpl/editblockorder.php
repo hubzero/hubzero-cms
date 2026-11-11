@@ -75,7 +75,7 @@ $backLabel = Lang::txt('COM_PUBLICATIONS_MTYPE_BACK')
                 <?php foreach ($blocks as $blockId => $block) {
                     $blockMaster = $masterBlocks[$block->name];
                     ?>
-                    <li id="s-<?php echo $blockId; ?>" class="pick<?php echo $block->name != 'review' ? ' reorder' : ''; ?>"><?php echo $block->name; ?></li>
+                    <li id="s-<?= $blockId ?>" class="pick<?= $block->name != 'review' ? ' reorder' : '' ?>"><?= $block->name ?></li>
                 <?php } ?>
             </ul>
         </div>

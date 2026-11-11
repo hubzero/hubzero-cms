@@ -95,7 +95,7 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
     <div class="group-content-header">
         <h3><?php echo Lang::txt('COM_GROUPS_OVERVIEW_MEMBERS_HEADING'); ?></h3>
         <div class="group-content-header-extra">
-            <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members'); ?>">
+            <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members') ?>">
                 <?php echo Lang::txt('COM_GROUPS_OVERVIEW_MEMBERS_BTN_TEXT') . ' &rarr;'; ?>
             </a>
         </div>
@@ -112,13 +112,13 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
         foreach ($profiles as $profile) : ?>
             <?php if ($counter <= 12 && $profile->get('id')) : ?>
                 <?php if (in_array($profile->get('access'), User::getAuthorisedViewLevels()) && ($profile->get('activation') > 0)) { ?>
-                    <a href="<?php echo Route::url($profile->link()); ?>" class="member" title="<?php echo $this->escape(Lang::txt('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name')))); ?>">
+                    <a href="<?= Route::url($profile->link()) ?>" class="member" title="<?= $this->escape(Lang::txt('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name')))) ?>">
                 <?php } else { ?>
                     <div class="member">
                 <?php } ?>
-                        <img src="<?php echo $profile->picture(0, true); ?>" alt="<?php echo $this->escape(stripslashes($profile->get('name'))); ?>" class="member-border" width="50px" height="50px" />
+                        <img src="<?= $profile->picture(0, true) ?>" alt="<?= $this->escape(stripslashes($profile->get('name'))) ?>" class="member-border" width="50px" height="50px" />
                         <span class="name"><?php echo $this->escape(stripslashes($profile->get('name'))); ?></span>
-                        <span class="org"><?php echo $this->escape(stripslashes($profile->get('organization', ''))); ?></span>
+                        <span class="org"><?= $this->escape(stripslashes($profile->get('organization', ''))) ?></span>
                 <?php if (in_array($profile->get('access'), User::getAuthorisedViewLevels())) { ?>
                     </a>
                 <?php } else { ?>

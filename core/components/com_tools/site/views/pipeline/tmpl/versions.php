@@ -24,8 +24,8 @@ $this
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="icon-status status btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']); ?>"><?php echo Lang::txt('COM_TOOLS_TOOL_STATUS'); ?></a></li>
-            <li><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create'); ?>"><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL'); ?></a></li>
+            <li><a class="icon-status status btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']) ?>"><?= Lang::txt('COM_TOOLS_TOOL_STATUS') ?></a></li>
+            <li><a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create') ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -53,21 +53,21 @@ $this
 
             <?php if ($this->action != 'dev' && $this->status['state'] != \Components\Tools\Helpers\Html::getStatusNum('Published')) { ?>
                 <?php if ($this->action == 'confirm' or $this->action == 'edit') { ?>
-                    <h4><?php echo Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM'); ?> <?php echo ($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT') : Lang::txt('COM_TOOLS_THIS'); ?> <?php echo Lang::txt('COM_TOOLS_TOOL_RELEASE'); ?>:</h4>
+                    <h4><?= Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM') ?> <?= ($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT') : Lang::txt('COM_TOOLS_THIS') ?> <?= Lang::txt('COM_TOOLS_TOOL_RELEASE') ?>:</h4>
                 <?php } elseif ($this->action == 'new' && $this->status['toolname']) { // new version is required?>
                     <h4><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_ENTER_UNIQUE_VERSION'); ?>:</h4>
                 <?php } ?>
-                    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=saveversion&app=' . $this->status['toolname']); ?>" method="post" id="versionForm">
+                    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=saveversion&app=' . $this->status['toolname']) ?>" method="post" id="versionForm">
                         <fieldset class="versionfield">
                             <label for="newversion"><?php echo ucfirst(Lang::txt('COM_TOOLS_VERSION')); ?>: </label>
-                            <input type="text" name="newversion" id="newversion" value="<?php echo $this->escape($this->status['version']); ?>" size="20" maxlength="15" />
+                            <input type="text" name="newversion" id="newversion" value="<?= $this->escape($this->status['version']) ?>" size="20" maxlength="15" />
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
                             <input type="hidden" name="task" value="saveversion" />
                             <input type="hidden" name="newstate" value="<?php echo $this->escape($newstate); ?>" />
                             <input type="hidden" name="action" value="<?php echo $this->escape($this->action); ?>" />
-                            <input type="hidden" name="id" value="<?php echo $this->escape($this->status['toolid']); ?>" />
-                            <input type="hidden" name="toolname" value="<?php echo $this->escape($this->status['toolname']); ?>" />
+                            <input type="hidden" name="id" value="<?= $this->escape($this->status['toolid']) ?>" />
+                            <input type="hidden" name="toolname" value="<?= $this->escape($this->status['toolname']) ?>" />
                             <?php echo Html::input('token'); ?>
                             <input type="submit" value="<?php echo $submitlabel ?>" />
                         </fieldset>
@@ -114,13 +114,13 @@ $this
                     <tr id="displays_<?php echo $i; ?>">
                         <td>
                             <span class="showcontrols">
-                                <a href="#confdiv_<?php echo $i; ?>" class="expand" id="exp_<?php echo $i; ?>">&nbsp;&nbsp;</a>
+                                <a href="#confdiv_<?= $i ?>" class="expand" id="exp_<?= $i ?>">&nbsp;&nbsp;</a>
                             </span>
                         <?php echo ($t->version) ? $this->escape($t->version) : Lang::txt('COM_TOOLS_NA'); ?>
                         </td>
                         <td>
                         <?php if ($t->state != 3) { ?>
-                                <?php echo $t->released ? Date::of($t->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A'; ?>
+                                <?= $t->released ? Date::of($t->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'N/A' ?>
                         <?php } else { ?>
                                 <span class="yes"><?php echo Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT'); ?></span>
                         <?php } ?>
@@ -138,11 +138,11 @@ $this
                         <td>
                         <?php if ($t->state == 1 && $this->admin) { ?>
                                 <span class="actionlink">
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=current'); ?>"><?php echo Lang::txt('COM_TOOLS_EDIT'); ?></a>
+                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=current') ?>"><?= Lang::txt('COM_TOOLS_EDIT') ?></a>
                                 </span>
                         <?php } elseif ($t->state == 3) { ?>
                                 <span class="actionlink">
-                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=dev'); ?>"><?php echo Lang::txt('COM_TOOLS_EDIT');?></a>
+                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=dev') ?>"><?= Lang::txt('COM_TOOLS_EDIT') ?></a>
                                 </span>
                         <?php } ?>
                         </td>
@@ -151,12 +151,12 @@ $this
                         <td id="conftdone_<?php echo $i; ?>"></td>
                         <td colspan="4" id="conftdtwo_<?php echo $i; ?>">
                             <div id="confdiv_<?php echo $i; ?>" class="vmanage">
-                                <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TITLE')); ?>: </span><span class="desc"><?php echo $this->escape($t->title); ?></span></p>
-                                <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_DESCRIPTION')); ?>: </span><span class="desc"><?php echo $this->escape($t->description); ?></span></p>
-                                <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_AUTHORS')); ?>: </span><span class="desc"><?php echo \Components\Tools\Helpers\Html::getDevTeam($t->authors); ?></span></p>
-                                <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')); ?>: </span><span class="desc"><?php echo $toolaccess; ?></span></p>
-                                <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')); ?>: </span><span class="desc"><?php echo $codeaccess; ?></span></p>
-                            <?php echo $handle != '' ? ' <p><span class="heading">' . Lang::txt('COM_TOOLS_DOI') . ': </span><span class="desc">' . $handle . '</span></p>' : ''; ?>
+                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_TITLE')) ?>: </span><span class="desc"><?= $this->escape($t->title) ?></span></p>
+                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_DESCRIPTION')) ?>: </span><span class="desc"><?= $this->escape($t->description) ?></span></p>
+                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_AUTHORS')) ?>: </span><span class="desc"><?= \Components\Tools\Helpers\Html::getDevTeam($t->authors) ?></span></p>
+                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')) ?>: </span><span class="desc"><?= $toolaccess ?></span></p>
+                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')) ?>: </span><span class="desc"><?= $codeaccess ?></span></p>
+                            <?= $handle != '' ? ' <p><span class="heading">' . Lang::txt('COM_TOOLS_DOI') . ': </span><span class="desc">' . $handle . '</span></p>' : '' ?>
                             </div>
                         </td>
                     </tr>

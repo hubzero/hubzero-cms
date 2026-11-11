@@ -112,10 +112,10 @@ $first = $this->archive
                 </dd>
                 <?php if ($this->group->published == 1) { ?>
                     <dd class="entry-options">
-                        <a class="icon-edit edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?>">
+                        <a class="icon-edit edit" href="<?= Route::url($this->row->link('edit')) ?>" title="<?= Lang::txt('PLG_GROUPS_BLOG_EDIT') ?>">
                             <span><?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?></span>
                         </a>
-                        <a class="icon-delete delete" data-confirm="<?php echo Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?>">
+                        <a class="icon-delete delete" data-confirm="<?= Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE') ?>" href="<?= Route::url($this->row->link('delete')) ?>" title="<?= Lang::txt('PLG_GROUPS_BLOG_DELETE') ?>">
                             <span><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?></span>
                         </a>
                     </dd>
@@ -267,18 +267,18 @@ $first = $this->archive
                             <p>
                                 <strong><?php echo $name; ?></strong>
                                 <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_BLOG_AT'); ?></span>
-                                <span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
+                                <span class="time"><time datetime="<?= $replyto->get('created') ?>"><?= $replyto->created('time') ?></time></span>
                                 <span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?></span>
-                                <span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
+                                <span class="date"><time datetime="<?= $replyto->get('created') ?>"><?= $replyto->created('date') ?></time></span>
                             </p>
-                            <p><?php echo $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags(stripslashes($replyto->get('content'))), ENT_QUOTES, 'UTF-8'), 300)); ?></p>
+                            <p><?= $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags(stripslashes($replyto->get('content'))), ENT_QUOTES, 'UTF-8'), 300)) ?></p>
                         </blockquote>
                         <?php } ?>
 
                         <?php if (!User::isGuest()) { ?>
                             <label for="comment_content">
-                                Your <?php echo ($replyto->get('id')) ? 'reply' : 'comments'; ?>: <span class="required"><?php echo Lang::txt('PLG_GROUPS_BLOG_REQUIRED'); ?></span>
-                                <?php echo $this->editor('comment[content]', '', 40, 15, 'comment_content', ['class' => 'minimal no-footer']); ?>
+                                Your <?= ($replyto->get('id')) ? 'reply' : 'comments' ?>: <span class="required"><?= Lang::txt('PLG_GROUPS_BLOG_REQUIRED') ?></span>
+                                <?= $this->editor('comment[content]', '', 40, 15, 'comment_content', ['class' => 'minimal no-footer']) ?>
                             </label>
 
                             <label class="comment-anonymous-label">
@@ -287,11 +287,11 @@ $first = $this->archive
                             </label>
 
                             <p class="submit">
-                                <input type="submit" name="submit" value="<?php echo Lang::txt('PLG_GROUPS_BLOG_SUBMIT'); ?>" />
+                                <input type="submit" name="submit" value="<?= Lang::txt('PLG_GROUPS_BLOG_SUBMIT') ?>" />
                             </p>
                         <?php } else { ?>
                             <p class="warning">
-                                <?php echo Lang::txt('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_GROUPS_BLOG_LOG_IN') . '</a>'); ?>
+                                <?= Lang::txt('PLG_GROUPS_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_GROUPS_BLOG_LOG_IN') . '</a>') ?>
                             </p>
                         <?php } ?>
 

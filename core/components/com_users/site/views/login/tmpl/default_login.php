@@ -71,7 +71,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
         <h2><?php echo $this->escape($this->params->get('page_heading')) ?></h2>
     </header>
 <?php else : ?>
-    <h2 class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0"><?php echo Lang::txt('COM_USERS_LOGIN'); ?></h2>
+    <h2 class="sr-only" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0"><?= Lang::txt('COM_USERS_LOGIN') ?></h2>
 <?php endif; ?>
 
 <section class="main section">
@@ -88,16 +88,16 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
         <?php endif; ?>
 <?php if ($this->totalauths) : ?>
     <?php if ($primary && $primary != 'hubzero') : ?>
-        <a class="primary" href="<?php echo Route::url('index.php?option=' . $this->option . '&authenticator=' . $primary . $this->returnQueryString); ?>">
+        <a class="primary" href="<?= Route::url('index.php?option=' . $this->option . '&authenticator=' . $primary . $this->returnQueryString) ?>">
             <div class="<?php echo $primary; ?> upper"></div>
             <div class="auth">
                 <div class="person">
                     <?php if (isset($user_img) && file_exists($user_img) && !$user->get('block')) : ?>
-                        <img src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('COM_USERS_LOGIN_USER_PICTURE'); ?>" />
+                        <img src="<?= $user_img ?>" alt="<?= Lang::txt('COM_USERS_LOGIN_USER_PICTURE') ?>" />
                     <?php endif; ?>
                 </div>
                 <div class="lower">
-                    <div class="instructions"><?php echo isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(null, $this->returnQueryString) : Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $this->authenticators[$primary]['display']); ?></div>
+                    <div class="instructions"><?= isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(null, $this->returnQueryString) : Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $this->authenticators[$primary]['display']) ?></div>
                 </div>
             </div>
         </a>
@@ -108,7 +108,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                     <?php $image = $user->picture(0, false, false); ?>
                     <?php $img_properties = getimagesize(PATH_CORE . DS . $image); ?>
                     <?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
-                    <img class="<?php echo $class; ?>" src="<?php echo $user_img; ?>" alt="<?php echo Lang::txt('COM_USERS_LOGIN_USER_PICTURE'); ?>" />
+                    <img class="<?= $class ?>" src="<?= $user_img ?>" alt="<?= Lang::txt('COM_USERS_LOGIN_USER_PICTURE') ?>" />
                 <?php endif; ?>
             </div>
             <div class="default <?php echo ($primary || $login_provider_html == '') ? 'none' : 'block'; ?>">
@@ -119,8 +119,8 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                 <?php if (isset($this->local) && $this->local) : ?>
                     <div class="or"></div>
                     <div class="local">
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&view=login&primary=hubzero&reset=1' . $this->returnQueryString); ?>">
-                            <?php echo Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($this->site_display)) ? $this->site_display : Config::get('sitename'))); ?>
+                        <a href="<?= Route::url('index.php?option=' . $this->option . '&view=login&primary=hubzero&reset=1' . $this->returnQueryString) ?>">
+                            <?= Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_ACCOUNT', ((isset($this->site_display)) ? $this->site_display : Config::get('sitename'))) ?>
                         </a>
                     </div>
                 <?php endif; ?>
@@ -130,18 +130,18 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                 <form action="<?php echo Route::url('index.php', true, true); ?>" method="post" class="login_form">
                     <div class="input-wrap">
                         <?php if (isset($user) && is_object($user) && !$user->get('block') && $user->get('username') != '') : ?>
-                            <input type="hidden" name="username" value="<?php echo $this->escape($user->get('username')); ?>" />
+                            <input type="hidden" name="username" value="<?= $this->escape($user->get('username')) ?>" />
                             <div class="existing-name"><?php echo $this->escape($user->get('name')); ?></div>
                             <div class="existing-email"><?php echo $this->escape($user->get('email')); ?></div>
                         <?php else : ?>
                             <div class="label-input-pair username">
                                 <label for="username"><?php echo Lang::txt('COM_USERS_LOGIN_USERNAME'); ?>:</label>
-                                <input type="text" name="username" id="username" class="username" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_USERNAME')); ?>" required aria-required="true" />
+                                <input type="text" name="username" id="username" class="username" placeholder="<?= strtolower(Lang::txt('COM_USERS_LOGIN_USERNAME')) ?>" required aria-required="true" />
                             </div>
                         <?php endif; ?>
                         <div class="label-input-pair">
                             <label for="password"><?php echo Lang::txt('COM_USERS_LOGIN_PASSWORD'); ?>:</label>
-                            <input type="password" name="passwd" id="password" class="passwd" placeholder="<?php echo strtolower(Lang::txt('COM_USERS_LOGIN_PASSWORD')); ?>" autocomplete="off" required aria-required="true" />
+                            <input type="password" name="passwd" id="password" class="passwd" placeholder="<?= strtolower(Lang::txt('COM_USERS_LOGIN_PASSWORD')) ?>" autocomplete="off" required aria-required="true" />
                             <div class="spinner">
                                 <div class="bounce1"></div>
                                 <div class="bounce2"></div>
@@ -151,19 +151,19 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                         <div class="input-error" role="alert"></div>
                     </div>
                     <div class="submission">
-                        <input type="submit" value="<?php echo Lang::txt('COM_USERS_LOGIN'); ?>" class="login-submit btn btn-primary" />
+                        <input type="submit" value="<?= Lang::txt('COM_USERS_LOGIN') ?>" class="login-submit btn btn-primary" />
                         <?php if (Plugin::isEnabled('system', 'remember')) : ?>
                             <div class="remember-wrap">
-                                <input type="checkbox" class="remember option" name="remember" id="remember" value="yes" <?php echo ($this->remember_me_default) ? 'checked="checked"' : ''; ?> />
-                                <label for="remember" class="remember-me-label"><?php echo Lang::txt('COM_USERS_LOGIN_KEEP_LOGGED_IN'); ?></label>
+                                <input type="checkbox" class="remember option" name="remember" id="remember" value="yes" <?= ($this->remember_me_default) ? 'checked="checked"' : '' ?> />
+                                <label for="remember" class="remember-me-label"><?= Lang::txt('COM_USERS_LOGIN_KEEP_LOGGED_IN') ?></label>
                             </div>
                         <?php endif; ?>
                     </div>
                     <div class="forgots">
                         <?php if (!isset($user)) : ?>
-                            <a class="forgot-username" href="<?php echo Route::url('index.php?option=com_members&task=remind'); ?>"><?php echo Lang::txt('COM_USERS_LOGIN_REMIND');?></a>
+                            <a class="forgot-username" href="<?= Route::url('index.php?option=com_members&task=remind') ?>"><?= Lang::txt('COM_USERS_LOGIN_REMIND') ?></a>
                         <?php endif; ?>
-                        <a class="forgot-password" href="<?php echo Route::url('index.php?option=com_members&task=reset'); ?>"><?php echo Lang::txt('COM_USERS_LOGIN_RESET'); ?></a>
+                        <a class="forgot-password" href="<?= Route::url('index.php?option=com_members&task=reset') ?>"><?= Lang::txt('COM_USERS_LOGIN_RESET') ?></a>
                     </div>
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="authenticator" value="hubzero" />
@@ -177,7 +177,7 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
     <?php endif; ?>
     <?php if (isset($user) && is_object($user)) : ?>
         <div class="others">
-            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&view=login&reset=1' . $this->returnQueryString); ?>">
+            <a href="<?= Route::url('index.php?option=' . $this->option . '&view=login&reset=1' . $this->returnQueryString) ?>">
                 <?php echo Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_DIFFERENT_ACCOUNT'); ?>
             </a>
         </div>

@@ -91,19 +91,19 @@ $accept = $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '
                     <table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Group:'); ?></th>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?= Lang::txt('Group:') ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php echo $this->escape($this->group->get('description')); ?>
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Alias:'); ?></th>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?= Lang::txt('Alias:') ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php echo $this->group->get('cn'); ?>
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Link:'); ?></th>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?= Lang::txt('Link:') ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <a href="<?php echo $group; ?>">
                                         <?php echo $group; ?>
@@ -111,7 +111,7 @@ $accept = $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?php echo Lang::txt('Invited by:'); ?></th>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?= Lang::txt('Invited by:') ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php echo $this->user->get('name'); ?>
                                 </td>
@@ -138,20 +138,20 @@ $accept = $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '
                                         </p>
                                     <?php } else { ?>
                                         <p style="font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; text-align: center; max-width: 100%; word-break: break-word; margin-bottom: 2rem;">
-                                            <?php echo Lang::txt('You\'ve been invited to the "%s" group!', $this->escape($this->group->get('description'))); ?>
+                                            <?= Lang::txt('You\'ve been invited to the "%s" group!', $this->escape($this->group->get('description'))) ?>
                                         </p>
                                     <?php } ?>
                                     <div style="text-align: center; margin: 2rem 0 1rem;">
                                         <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #439fe0; border-bottom: 2px solid #3286b1; padding: 1em 2em; display: inline-block;">
                                             <tr>
                                                 <td style="border-collapse: collapse;">
-                                                    <a style="color: white; font-weight: normal; text-decoration: none; word-break: break-word; display: inline-block; letter-spacing: 1px; font-size: 1.5em; text-shadow: 0 1px 1px rgba(0,0,0,0.25);" align="center" href="<?php echo $accept; ?>"><?php echo Lang::txt('Accept Invite'); ?></a>
+                                                    <a style="color: white; font-weight: normal; text-decoration: none; word-break: break-word; display: inline-block; letter-spacing: 1px; font-size: 1.5em; text-shadow: 0 1px 1px rgba(0,0,0,0.25);" align="center" href="<?= $accept ?>"><?= Lang::txt('Accept Invite') ?></a>
                                                 </td>
                                             </tr>
                                         </table>
                                         <p style="font-size: 1em; line-height: 1.6em; margin: 1rem auto 1rem; color: #AAA; text-align: center; max-width: 100%; word-break: break-word; margin-bottom: 2rem;">
-                                            <?php echo Lang::txt('You may copy/paste this link into your browser:'); ?><br />
-                                            <a href="<?php echo $accept; ?>" style="font-weight: bold; text-decoration: none; word-break: break-word;"><?php echo $accept; ?></a>
+                                            <?= Lang::txt('You may copy/paste this link into your browser:') ?><br />
+                                            <a href="<?= $accept ?>" style="font-weight: bold; text-decoration: none; word-break: break-word;"><?= $accept ?></a>
                                         </p>
                                     </div>
                                 </td>
@@ -179,7 +179,7 @@ $accept = $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '
         <tbody>
             <tr>
                 <td align="left" valign="bottom">
-                    <span><?php echo Config::get('sitename'); ?> sent this email because you are a group manager for this group. Visit our <a href="<?php echo $base; ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo $base; ?>/support">Support Center</a> if you have any questions.</span>
+                    <span><?= Config::get('sitename') ?> sent this email because you are a group manager for this group. Visit our <a href="<?= $base ?>/legal/privacy">Privacy Policy</a> and <a href="<?= $base ?>/support">Support Center</a> if you have any questions.</span>
                 </td>
             </tr>
         </tbody>

@@ -67,13 +67,13 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
 ?>
 
 <!-- Load content selection browser //-->
-<div id="<?php echo $elName; ?>" class="draft-review <?php echo $complete ? 'draft-complete' : 'draft-incomplete'; ?> <?php echo $this->pub->state == 7 ? ' draft-resubmit' : ''; ?>">
+<div id="<?= $elName ?>" class="draft-review <?= $complete ? 'draft-complete' : 'draft-incomplete' ?> <?= $this->pub->state == 7 ? ' draft-resubmit' : '' ?>">
     <?php if ($complete) { ?>
     <p class="review-prompt"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_COMPLETE'); ?></p>
     <?php } else { ?>
     <p class="review-prompt"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INCOMPLETE'); ?></p>
     <div class="submitarea">
-        <a href="<?php echo Route::url($this->pub->link('editversion') . '&active=publications&action=continue'); ?>" class="btn mini btn-success icon-next"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT'); ?></a>
+        <a href="<?= Route::url($this->pub->link('editversion') . '&active=publications&action=continue') ?>" class="btn mini btn-success icon-next"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT') ?></a>
     </div>
     <?php } ?>
 
@@ -84,11 +84,11 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_PREVIEW'); ?></h5>
+                <h5 class="element-title"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_PREVIEW') ?></h5>
                 <div class="element-instructions">
                     <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_PREVIEW'); ?></p>
                     <div class="submitarea">
-                        <a href="<?php echo Route::url($this->pub->link('version')); ?>" class="btn mini btn-primary active icon-next" rel="external"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE'); ?></a>
+                        <a href="<?= Route::url($this->pub->link('version')) ?>" class="btn mini btn-primary active icon-next" rel="external"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE') ?></a>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_BUNDLE'); ?></h5>
+                <h5 class="element-title"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_BUNDLE') ?></h5>
                 <div class="element-instructions">
                     <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_ARCHIVE_PACKAGE'); ?></p>
                     <div class="list-wrapper">
@@ -120,7 +120,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_TITLE_DOI'); ?></h5>
+                <h5 class="element-title"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_TITLE_DOI') ?></h5>
                 <div class="element-instructions">
                     <?php
                     if ($citation) {
@@ -139,12 +139,12 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_DATE'); ?></h5>
+                <h5 class="element-title"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_DATE') ?></h5>
                 <div class="element-instructions">
                     <label>
-                        <span class="review-label"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN'); ?>*:</span>
-                        <input type="text" id="publish_date" name="publish_date" value="<?php echo $this->escape($pubdate); ?>" placeholder="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE'); ?>" />
-                        <span class="hint block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO'); ?></span>
+                        <span class="review-label"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN') ?>*:</span>
+                        <input type="text" id="publish_date" name="publish_date" value="<?= $this->escape($pubdate) ?>" placeholder="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE') ?>" />
+                        <span class="hint block"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO') ?></span>
                     </label>
 
                     <?php if ($this->pub->submitter()) {
@@ -161,13 +161,13 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                         }
                         ?>
                         <label>
-                            <span class="review-label"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')); ?>:</span> <?php echo $submitter; ?>
+                            <span class="review-label"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMITTER')) ?>:</span> <?= $submitter ?>
                         </label>
                     <?php } ?>
 
                     <?php if ($this->pub->config()->get('repository', 1)) { ?>
                         <h6><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT'); ?></h6>
-                        <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT_EXPLANATION'); ?></p>
+                        <p><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_PRIMARY_CONTACT_EXPLANATION') ?></p>
                         <ul class="itemlist" id="author-list">
                         <?php foreach ($this->pub->authors() as $author) {
                             $dept = $author->department;
@@ -178,18 +178,18 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                             $email = trim($author->p_email == null ? '' : $author->p_email) ? $author->p_email : (trim($author->invited_email == null ? '' : $author->invited_email) ? trim($author->invited_email == null ? '' : $author->invited_email) : null);
                             ?>
                             <li>
-                                <span class="item-order"><input type="checkbox" name="contact[]" value="<?php echo $this->escape($author->id); ?>" <?php echo $author->repository_contact ? ' checked="checked"' : ''; ?>/></span>
+                                <span class="item-order"><input type="checkbox" name="contact[]" value="<?= $this->escape($author->id) ?>" <?= $author->repository_contact ? ' checked="checked"' : '' ?>/></span>
                                     <span class="item-title"><?php echo $this->escape($name); ?> 
                                         <?php if (!empty($dept)) {?>
-                                        <span id=<?php echo $this->escape($author->id) . "_dept" ?> class="item-subtext"><?php echo ' - ' . $this->escape($dept); ?></span>
+                                        <span id=<?php echo $this->escape($author->id) . "_dept" ?> class="item-subtext"><?= ' - ' . $this->escape($dept) ?></span>
                                         <?php } ?>
                                         
                                         <?php if (!empty($org)) {?>
-                                        <span id=<?php echo $this->escape($author->id) . "_org" ?> class="item-subtext"><?php echo ' - ' . $this->escape($org); ?></span>
+                                        <span id=<?php echo $this->escape($author->id) . "_org" ?> class="item-subtext"><?= ' - ' . $this->escape($org) ?></span>
                                         <?php } ?>
                                         
                                         <?php if (!empty($email)) { ?>
-                                        <span id=<?php echo $this->escape($author->id) . "_email" ?> class="item-subtext"><?php echo ' - ' . $this->escape($email); ?></span>
+                                        <span id=<?php echo $this->escape($author->id) . "_email" ?> class="item-subtext"><?= ' - ' . $this->escape($email) ?></span>
                                         <?php }?>
                                     </span>
                                 
@@ -211,7 +211,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                                     }
                                     ?>
                                     <span style="display:none" id=<?php echo $this->escape($author->id) . "_missing_item" ?> class="item-msg"><?php echo "The contact is required to include $missingItem. Please " ?>
-                                    <a href="<?php echo Route::url($this->pub->link('editversionid') . '&active=publications&action=editauthor&aid=' . $author->id . '&p=' . $props); ?>" class="showinbox item-edit"><?php echo "edit"; ?></a>
+                                    <a href="<?= Route::url($this->pub->link('editversionid') . '&active=publications&action=editauthor&aid=' . $author->id . '&p=' . $props) ?>" class="showinbox item-edit"><?= "edit" ?></a>
                                     <?php echo "the author."; ?>
                                     </span> 
                                 <?php } ?>                              
@@ -225,12 +225,12 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                         <label>
                             <input class="option" name="action" type="radio" value="publish" checked="checked" />
                             <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH'); ?>
-                            <span class="hint block ipadded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH_HINT'); ?></span>
+                            <span class="hint block ipadded"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_PUBLISH_HINT') ?></span>
                         </label>
                         <label>
                             <input class="option" name="action" type="radio" value="post" />
                             <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST'); ?>
-                            <span class="hint block ipadded"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT'); ?></span>
+                            <span class="hint block ipadded"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_REVIEW_OPTION_POST_HINT') ?></span>
                         </label>
                     <?php } else { ?>
                         <input type="hidden" name="action" value="publish" />
@@ -244,7 +244,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_COMMENT'); ?></h5>
+                <h5 class="element-title"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_COMMENT') ?></h5>
                 <div class="element-instructions">
                     <label><span class="optional"><?php echo Lang::txt('Optional'); ?></span>
                     <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_DESC_COMMENT'); ?>
@@ -259,7 +259,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_AGREE'); ?></h5>
+                <h5 class="element-title"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_AGREE') ?></h5>
                 <div class="element-instructions">
                     <label><span class="required"><?php echo Lang::txt('Required'); ?></span>
                         <input class="option" name="agree" type="checkbox" value="1" />
@@ -287,7 +287,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
             <div class="element_editing">
                 <div class="pane-wrapper">
                     <span class="checker">&nbsp;</span>
-                    <h5 class="element-title"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_REVIEW'); ?></h5>
+                    <h5 class="element-title"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_TITLE_REVIEW') ?></h5>
                     <div class="element-instructions">
                         <label>
                             <input class="option" name="request_review" type="checkbox" value="1" />
@@ -303,7 +303,7 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
     <div class="submitarea" id="submit-area">
         <span class="submit-question"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_LOOKING_GOOD'); ?></span>
         <span class="button-wrapper icon-apply">
-            <input type="submit" value="<?php echo $this->pub->isWorked() ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT'); ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
+            <input type="submit" value="<?= $this->pub->isWorked() ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT') ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
         </span>
     </div>
     <?php } ?>

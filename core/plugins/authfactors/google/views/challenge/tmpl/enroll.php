@@ -45,7 +45,7 @@ if (!$data || empty($data->qrcode)) {
     <p class="subtitle"> Please scan with the <a target="_blank" rel="noopener noreferrer" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_US"> Google Authenticator </a> or the <a target="_blank" rel="noopener noreferrer" href="https://play.google.com/store/apps/details?id=com.duosecurity.duomobile&hl=en_US"> Duo Mobile</a>  App on your device. </p>
 
        <p class="qrcode">
-       <a  href="<?php echo $this->escape($data->qrcode); ?>"><img style="border: 0; padding:10px" src="<?php echo $this->escape($data->qrcode); ?>"/></a>
+       <a  href="<?= $this->escape($data->qrcode) ?>"><img style="border: 0; padding:10px" src="<?= $this->escape($data->qrcode) ?>"/></a>
        </p>
 
         <input type="hidden" name="action" value="registered" />

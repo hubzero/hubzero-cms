@@ -41,7 +41,7 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
+            <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=draft') ?>">
                 <?php echo Lang::txt('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
             </a>
         </p>
@@ -67,7 +67,7 @@ $this
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php } ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn . '&id=' . $this->id); ?>" method="post" id="hubForm" accept-charset="utf-8">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn . '&id=' . $this->id) ?>" method="post" id="hubForm" accept-charset="utf-8">
         <div class="explaination">
             <p><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_EXPLANATION'); ?></p>
 
@@ -77,21 +77,21 @@ $this
             <legend><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_ABOUT'); ?></legend>
 
             <label for="field-title">
-                <?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                <input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->title ? $this->row->title : "")); ?>" />
+                <?= Lang::txt('COM_CONTRIBUTE_COMPOSE_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                <input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?= $this->escape(stripslashes($this->row->title ? $this->row->title : "")) ?>" />
             </label>
 
             <label for="field-fulltxt">
                 <?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_ABSTRACT'); ?>:
                 <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                <?php echo $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->fulltxt)), 50, 20, 'field-fulltxt'); ?>
+                <?= $this->editor('fields[fulltxt]', $this->escape(stripslashes($this->row->fulltxt)), 50, 20, 'field-fulltxt') ?>
             </label>
 
             <fieldset>
                 <legend><?php echo Lang::txt('COM_CONTRIBUTE_MEDIA_MANAGER'); ?></legend>
                 <p><?php echo Lang::txt('COM_CONTRIBUTE_MEDIA_EXPLANATION'); ?></p>
                 <div class="field-wrap">
-                    <iframe width="100%" height="160" name="filer" id="filer" title="<?php echo Lang::txt('COM_CONTRIBUTE_MEDIA_MANAGER'); ?>" src="<?php echo Request::base(true); ?>/index.php?option=<?php echo $this->option; ?>&amp;controller=media&amp;tmpl=component&amp;resource=<?php echo $this->row->id; ?>"></iframe>
+                    <iframe width="100%" height="160" name="filer" id="filer" title="<?= Lang::txt('COM_CONTRIBUTE_MEDIA_MANAGER') ?>" src="<?= Request::base(true) ?>/index.php?option=<?= $this->option ?>&amp;controller=media&amp;tmpl=component&amp;resource=<?= $this->row->id ?>"></iframe>
                 </div>
             </fieldset>
         </fieldset><div class="clear"></div>

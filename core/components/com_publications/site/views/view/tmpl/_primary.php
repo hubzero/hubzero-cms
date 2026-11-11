@@ -27,14 +27,14 @@ if ($this->disabled) : ?>
             <ul class="dropdown-menu">
                 <?php foreach ($this->options as $option) : ?>
                     <li>
-                        <a <?php echo $option->class ? 'class="' . $option->class . '"' : ''; ?> <?php echo isset($option->attrs) ? $option->attrs : ''; ?> href="<?php echo $option->href; ?>"><?php echo $this->escape($option->title); ?></a>
+                        <a <?= $option->class ? 'class="' . $option->class . '"' : '' ?> <?= isset($option->attrs) ? $option->attrs : '' ?> href="<?= $option->href ?>"><?= $this->escape($option->title) ?></a>
                     </li>
                 <?php endforeach; ?>
             </ul>
         </div>
         <?php
         if ($this->showDoc && !empty($this->ftpDoc)) :?>     
-            <p class="ftpDoc"><a href="<?php echo $this->ftpDoc;?>" target="_blank"><?php echo Lang::txt('Download Guide');?></a></p>
+            <p class="ftpDoc"><a href="<?= $this->ftpDoc ?>" target="_blank"><?= Lang::txt('Download Guide') ?></a></p>
         <?php endif; ?>
     <?php else : ?>
         <p id="primary-document">

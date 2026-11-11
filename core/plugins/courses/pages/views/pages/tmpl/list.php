@@ -79,8 +79,8 @@ if (!$no_html) { ?>
                             <span><?php echo $this->escape(stripslashes($name)); ?></span>
                         </td>
                         <td>
-                            <a class="delete" href="<?php echo Route::url($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1') . '&section_id=' . $section . '&' . Session::getFormToken() . '=1'); ?>" <?php if (!$no_html) {
-                                ?>target="filer" onclick="return deleteFile('<?php echo $this->escape(addslashes($name)); ?>');"<?php
+                            <a class="delete" href="<?= Route::url($base . '&action=remove&file=' . urlencode(stripslashes($name)) . '&' . (!$no_html ? 'tmpl=component' : 'no_html=1') . '&section_id=' . $section . '&' . Session::getFormToken() . '=1') ?>" <?php if (!$no_html) {
+                                ?>target="filer" onclick="return deleteFile('<?= $this->escape(addslashes($name)) ?>');"<?php
                                                     } ?> title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>">
                                 <?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>
                             </a>
@@ -88,7 +88,7 @@ if (!$no_html) { ?>
                     </tr>
                     <tr class="row-group end">
                         <td colspan="2">
-                            <span class="file-path"><?php echo Route::url($base . '&unit=download&b=' . $type . ':' . $this->escape(stripslashes($name))); ?></span>
+                            <span class="file-path"><?= Route::url($base . '&unit=download&b=' . $type . ':' . $this->escape(stripslashes($name))) ?></span>
                         </td>
                     </tr>
                         <?php

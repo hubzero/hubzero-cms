@@ -378,7 +378,7 @@ Toolbar::cancel();
                     </label>
                     <select name="params[titlematch]" id="param-titlematch">
                         <option value="0"><?php echo Lang::txt('JNo'); ?></option>
-                        <option value="1" <?php echo $this->params->get('titlematch', 0) == 1 ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('JYes'); ?></option>
+                        <option value="1" <?= $this->params->get('titlematch', 0) == 1 ? 'selected="selected"' : '' ?>><?= Lang::txt('JYes') ?></option>
                     </select>
                     <span class="hint"><?php
                           echo
@@ -394,7 +394,7 @@ Toolbar::cancel();
                         <option value="0">
                             <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_CHECKREQUIRED_NO'); ?>
                         </option>
-                        <option value="1" <?php echo $this->params->get('requiredfields', 1) == 1 ? 'selected="selected"' : ''; ?>>
+                        <option value="1" <?= $this->params->get('requiredfields', 1) == 1 ? 'selected="selected"' : '' ?>>
                             <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_CHECKREQUIRED_YES'); ?>
                         </option>
                     </select>

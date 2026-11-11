@@ -33,28 +33,28 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_LIST'); ?></a></li>
+            <li><a class="btn icon-browse" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LIST') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" id="curation-form" name="curation-form">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" id="curation-form" name="curation-form">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-        <input type="hidden" name="id" id="pid" value="<?php echo $this->pub->id; ?>" data-route="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&id=' . $this->pub->id . '&task=save'); ?>" />
+        <input type="hidden" name="id" id="pid" value="<?= $this->pub->id ?>" data-route="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&id=' . $this->pub->id . '&task=save') ?>" />
         <input type="hidden" name="vid" id="vid" value="<?php echo $this->pub->version_id; ?>" />
         <input type="hidden" name="task" id="task" value="save" />
 
         <div class="curation-wrap">
             <div class="pubtitle">
                 <h3>
-                    <span class="restype indlist"><?php echo $typetitle; ?></span> <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->pub->title, 65)); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->escape($this->pub->version_label); ?>
+                    <span class="restype indlist"><?= $typetitle ?></span> <?= $this->escape(\Hubzero\Utility\Str::truncate($this->pub->title, 65)) ?> | <?= Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->escape($this->pub->version_label) ?>
                 </h3>
             </div>
             <p class="instruct">
                 <span class="pubimage">
-                    <img src="<?php echo Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_id) . '/Image:thumb'; ?>" alt="" />
+                    <img src="<?= Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_id) . '/Image:thumb' ?>" alt="" />
                 </span>
                 <strong class="block">
                     <?php
@@ -66,25 +66,25 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
                 </strong>
                 <?php if ($this->pub->curator()) : ?>
                     <span class="block">
-                        <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGNED_CURATOR') . ' <strong>' . $this->escape($this->pub->curator('name')) . ' (' . $this->escape($this->pub->curator('username')) . ')</strong>';  ?>
+                        <?= Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGNED_CURATOR') . ' <strong>' . $this->escape($this->pub->curator('name')) . ' (' . $this->escape($this->pub->curator('username')) . ')</strong>' ?>
                     </span>
                 <?php endif; ?>
                 <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_REVIEW_AND_ACT'); ?>
                 <span class="legend">
-                    <span class="legend-checker-none"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_NONE'); ?></span>
-                    <span class="legend-checker-pass"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_PASS'); ?></span>
-                    <span class="legend-checker-fail"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_FAIL'); ?></span>
-                    <span class="legend-checker-update"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_UPDATE'); ?></span>
+                    <span class="legend-checker-none"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_NONE') ?></span>
+                    <span class="legend-checker-pass"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_PASS') ?></span>
+                    <span class="legend-checker-fail"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_FAIL') ?></span>
+                    <span class="legend-checker-update"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_UPDATE') ?></span>
                 </span>
             </p>
             <div class="clear"></div>
             <div class="submit-curation">
                 <p>
                     <span class="button-wrapper icon-kickback">
-                        <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_LOOKS_BAD'); ?>" class="btn btn-primary active icon-kickback btn-curate curate-kickback" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_CURATION_LOOKS_BAD') ?>" class="btn btn-primary active icon-kickback btn-curate curate-kickback" />
                     </span>
                     <span class="button-wrapper icon-apply">
-                        <input type="submit" value="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_LOOKS_GOOD'); ?>" class="btn btn-success active icon-apply btn-curate curate-save" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_CURATION_LOOKS_GOOD') ?>" class="btn btn-success active icon-apply btn-curate curate-save" />
                     </span>
                 </p>
             </div>
@@ -116,7 +116,7 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 
     <div class="hidden">
         <div id="addnotice" class="addnotice">
-            <form id="notice-form" name="noticeForm" action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post">
+            <form id="notice-form" name="noticeForm" action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post">
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_TITLE'); ?></legend>
 
@@ -134,13 +134,13 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 
                     <div class="form-group">
                         <label for="notice-review">
-                            <span class="block"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_LABEL'); ?></span>
+                            <span class="block"><?= Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_LABEL') ?></span>
                             <textarea name="review" id="notice-review" class="form-control" rows="5" cols="10"></textarea>
                         </label>
                     </div>
                 </fieldset>
                 <p class="submitarea">
-                    <input type="submit" id="notice-submit" class="btn" value="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_MARK_AS_FAIL'); ?>" />
+                    <input type="submit" id="notice-submit" class="btn" value="<?= Lang::txt('COM_PUBLICATIONS_CURATION_MARK_AS_FAIL') ?>" />
                 </p>
             </form>
         </div>

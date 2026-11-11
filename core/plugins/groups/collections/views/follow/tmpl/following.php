@@ -26,11 +26,11 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <ul id="page_options">
     <li>
         <?php if ($this->model->isFollowing()) { ?>
-        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=unfollow'); ?>" class="icon-unfollow unfollow btn" data-text-follow="<?php echo Lang::txt('Follow All'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>">
+        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=unfollow') ?>" class="icon-unfollow unfollow btn" data-text-follow="<?= Lang::txt('Follow All') ?>" data-text-unfollow="<?= Lang::txt('Unfollow All') ?>">
             <span><?php echo Lang::txt('Unfollow All'); ?></span>
         </button>
         <?php } else { ?>
-        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=follow'); ?>" class="icon-follow follow btn" data-text-follow="<?php echo Lang::txt('Follow All'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow All'); ?>">
+        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=follow') ?>" class="icon-follow follow btn" data-text-follow="<?= Lang::txt('Follow All') ?>" data-text-unfollow="<?= Lang::txt('Unfollow All') ?>">
             <span><?php echo Lang::txt('Follow All'); ?></span>
         </button>
         <?php } ?>
@@ -62,7 +62,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     <tr class="<?php echo $row->get('following_type'); ?>">
                         <th>
                         <?php if ($row->following()->image()) { ?>
-                            <img src="<?php echo $row->following()->image(); ?>" width="40" height="40" alt="Profile picture of <?php echo $this->escape(stripslashes($row->following()->title())); ?>" />
+                            <img src="<?= $row->following()->image() ?>" width="40" height="40" alt="Profile picture of <?= $this->escape(stripslashes($row->following()->title())) ?>" />
                         <?php } else { ?>
                             <span class="entry-id">
                                 <?php echo $row->get('following_id'); ?>
@@ -74,19 +74,19 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                                 <?php echo $this->escape(stripslashes($row->following()->title())); ?>
                             </a>
                             <?php if ($row->get('following_type') == 'collection') { ?>
-                                <?php echo Lang::txt('by %s', $this->escape(stripslashes($row->following()->creator('name')))); ?>
+                                <?= Lang::txt('by %s', $this->escape(stripslashes($row->following()->creator('name')))) ?>
                             <?php } ?>
                             <br />
                             <span class="entry-details">
-                                <span class="follower count"><?php echo Lang::txt('<strong>%s</strong> followers', $row->count('followers')); ?></span>
+                                <span class="follower count"><?= Lang::txt('<strong>%s</strong> followers', $row->count('followers')) ?></span>
                             <?php if ($row->get('following_type') != 'collection') { ?>
-                                <span class="following count"><?php echo Lang::txt('<strong>%s</strong> following', $row->count('following')); ?></span>
+                                <span class="following count"><?= Lang::txt('<strong>%s</strong> following', $row->count('following')) ?></span>
                             <?php } ?>
                             </span>
                         </td>
                         <td>
                             <?php if ($this->params->get('access-manage-collection')) { ?>
-                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($row->following()->link('unfollow')); ?>" class="unfollow btn" data-id="<?php echo $row->get('following_id'); ?>" data-text-follow="<?php echo Lang::txt('Follow'); ?>" data-text-unfollow="<?php echo Lang::txt('Unfollow'); ?>">
+                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->following()->link('unfollow')) ?>" class="unfollow btn" data-id="<?= $row->get('following_id') ?>" data-text-follow="<?= Lang::txt('Follow') ?>" data-text-unfollow="<?= Lang::txt('Unfollow') ?>">
                                 <span><?php echo Lang::txt('Unfollow'); ?></span>
                             </button>
                             <?php } ?>
@@ -120,8 +120,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                 </div><!-- / .instructions -->
                 <div class="questions">
                     <p><strong><?php echo Lang::txt('What is following?'); ?></strong></p>
-                    <p><?php echo Lang::txt('"Following" someone means you\'ll see that person\'s posts on this page in real time. If he/she creates a new collection, you\'ll automatically follow the new collection as well.'); ?><p>
-                    <p><?php echo Lang::txt('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.'); ?><p>
+                    <p><?= Lang::txt('"Following" someone means you\'ll see that person\'s posts on this page in real time. If he/she creates a new collection, you\'ll automatically follow the new collection as well.') ?><p>
+                    <p><?= Lang::txt('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.') ?><p>
                     <p><?php echo Lang::txt('You can unfollow other people or collections at any time.'); ?></p>
                 </div>
             <?php } else { ?>

@@ -106,16 +106,16 @@ $link = str_replace('/administrator', '', $link);
                     <table width="100%" style="border-collapse: collapse; font-size: 1em;" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_MEMBERS_EMAIL_CREATED'); ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->xprofile->get('registerDate'); ?> (UTC)</td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('COM_MEMBERS_EMAIL_CREATED') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->xprofile->get('registerDate') ?> (UTC)</td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_MEMBERS_EMAIL_NAME'); ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->xprofile->get('name')); ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('COM_MEMBERS_EMAIL_NAME') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->xprofile->get('name')) ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?php echo Lang::txt('COM_MEMBERS_EMAIL_USERNAME'); ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->xprofile->get('username'); ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('COM_MEMBERS_EMAIL_USERNAME') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->xprofile->get('username') ?></td>
                             </tr>
                         </tbody>
                     </table>
@@ -123,12 +123,12 @@ $link = str_replace('/administrator', '', $link);
                         <tbody>
                             <tr>
                                 <td style="text-align: left; padding: 1em 0.5em 0 0.5em;" align="left">
-                                    <p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_MESSAGE', $this->sitename); ?></p>
+                                    <p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?= Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_MESSAGE', $this->sitename) ?></p>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
-                                    <p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; font-size: 1.2em;"><a href="<?php echo $link; ?>"><?php echo Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_LINK_TEXT'); ?></a></p>
+                                    <p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; font-size: 1.2em;"><a href="<?= $link ?>"><?= Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_LINK_TEXT') ?></a></p>
                                 </td>
                             </tr>
                         </tbody>

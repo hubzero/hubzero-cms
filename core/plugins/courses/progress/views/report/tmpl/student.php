@@ -332,11 +332,11 @@ $progress_timeline .= '</div>';
     <div class="recognition certificate earned">
         <h3>Congratulations!</h3>
         <p>
-            You've completed all of the requirements of <?php echo $this->escape(stripslashes($this->course->get('title'))); ?>, qualifying you to receive
+            You've completed all of the requirements of <?= $this->escape(stripslashes($this->course->get('title'))) ?>, qualifying you to receive
             a certificate of completion.
         </p>
         <p>
-            <a class="claim-item" href="<?php echo Route::url($this->course->offering()->link() . '&controller=certificate'); ?>">
+            <a class="claim-item" href="<?= Route::url($this->course->offering()->link() . '&controller=certificate') ?>">
                 <?php echo Lang::txt('Download your certificate!'); ?>
             </a>
         </p>

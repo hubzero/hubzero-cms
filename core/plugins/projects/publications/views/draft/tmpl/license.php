@@ -107,7 +107,7 @@ $text = $this->pub->get('license_text', $defaultText);
                 ?>
                 <div class="chosenitem">
                     <p class="item-title">
-                        <?php echo $this->license ? '<img src="' . $icon . '" alt="' . htmlentities($this->license->title) . '" />' : ''; ?>
+                        <?= $this->license ? '<img src="' . $icon . '" alt="' . htmlentities($this->license->title) . '" />' : '' ?>
                         <?php echo $this->license->title; ?>
                         <span class="item-sub-details"><?php echo $info; ?></span>
                     </p>

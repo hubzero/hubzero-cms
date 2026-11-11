@@ -45,16 +45,16 @@ $this
         <label for="field-param-feeds_enabled">
             <?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_ENTRY_FEED'); ?>
             <select name="params[feeds_enabled]" id="field-param-feeds_enabled">
-                <option value="0"<?php echo !$this->config->get('feeds_enabled', 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_DISABLED'); ?></option>
-                <option value="1"<?php echo $this->config->get('feeds_enabled', 1) == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_ENABLED'); ?></option>
+                <option value="0"<?= !$this->config->get('feeds_enabled', 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_DISABLED') ?></option>
+                <option value="1"<?= $this->config->get('feeds_enabled', 1) == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_ENABLED') ?></option>
             </select>
         </label>
 
         <label for="field-params-feed_entries">
             <?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_FEED_ENTRY_LENGTH'); ?>
             <select name="params[feed_entries]" id="field-params-feed_entries">
-                <option value="full"<?php echo $this->config->get('feed_entries', 'partial') == 'full' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_FULL'); ?></option>
-                <option value="partial"<?php echo $this->config->get('feed_entries', 'partial') == 'partial' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_PARTIAL'); ?></option>
+                <option value="full"<?= $this->config->get('feed_entries', 'partial') == 'full' ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_FULL') ?></option>
+                <option value="partial"<?= $this->config->get('feed_entries', 'partial') == 'partial' ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_MEMBERS_BLOG_SETTINGS_PARTIAL') ?></option>
             </select>
         </label>
 

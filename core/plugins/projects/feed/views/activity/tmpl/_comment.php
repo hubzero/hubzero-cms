@@ -52,9 +52,9 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
 ?>
     <li class="activity <?php echo $newComment ? ' newitem' : ''; ?>" id="c_<?php echo $comment->id; ?>">
 
-        <div class="activity-actor-picture<?php echo $online ? ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE') : ''; ?>">
+        <div class="activity-actor-picture<?= $online ? ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE') : '' ?>">
             <span class="user-img-wrap">
-                <img class="comment-author" src="<?php echo $creator->picture($comment->admin); ?>" alt="<?php echo $this->escape(($comment->admin == 1) ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author); ?>" />
+                <img class="comment-author" src="<?= $creator->picture($comment->admin) ?>" alt="<?= $this->escape(($comment->admin == 1) ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author) ?>" />
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_PROJECTS_FEED_ONLINE'); ?></span>
                 <?php } ?>
@@ -65,8 +65,8 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
             <div class="activity-body">
 
                 <div class="activity-details">
-                    <span class="activity-actor"><?php echo $comment->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author; ?></span>
-                    <span class="activity-time"><time datetime="<?php echo Date::of($comment->created)->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo \Components\Projects\Helpers\Html::showTime($comment->created, true); ?></time></span>
+                    <span class="activity-actor"><?= $comment->admin == 1 ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author ?></span>
+                    <span class="activity-time"><time datetime="<?= Date::of($comment->created)->format('Y-m-d\TH:i:s\Z') ?>"><?= \Components\Projects\Helpers\Html::showTime($comment->created, true) ?></time></span>
                 </div><!-- / .activity-details -->
 
                 <div class="activity-event">
@@ -92,14 +92,14 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                         <ul>
                             <?php if ($this->edit && $this->model->access('manager')) { ?>
                                 <li id="pu_<?php echo $comment->id; ?>_edit">
-                                    <a class="icon-edit edit tooltips" data-form="comment-form<?php echo $comment->id; ?>" data-content="activity-event-content<?php echo $comment->id; ?>" href="<?php echo Route::url($this->model->link('feed') . '&action=editcomment&cid=' . $comment->id);  ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>"><!--
+                                    <a class="icon-edit edit tooltips" data-form="comment-form<?= $comment->id ?>" data-content="activity-event-content<?= $comment->id ?>" href="<?= Route::url($this->model->link('feed') . '&action=editcomment&cid=' . $comment->id) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>"><!--
                                         --><?php echo Lang::txt('JACTION_EDIT'); ?><!--
                                     --></a>
                                 </li>
                             <?php } ?>
                             <?php if ($deletable) { ?>
                                 <li id="pu_<?php echo $comment->id; ?>_delete">
-                                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->model->link('feed') . '&action=deletecomment&cid=' . $comment->id); ?>" class="icon-delete delete tooltips" title="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-confirm="<?php echo Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->model->link('feed') . '&action=deletecomment&cid=' . $comment->id) ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -114,14 +114,14 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                                 <input type="hidden" name="active" value="feed" />
                                 <input type="hidden" name="action" value="savecomment" />
                                 <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
-                                <input type="hidden" name="parent_activity" value="<?php echo $this->activity->id; ?>" />
+                                <input type="hidden" name="parent_activity" value="<?= $this->activity->id ?>" />
                                 <input type="hidden" name="cid" value="<?php echo $comment->id; ?>" />
                                 <?php echo Html::input('token'); ?>
 
-                                <?php echo $this->editor('comment', $comment->comment, 5, 5, 'comment' . $comment->id, ['class' => 'minimal no-footer']); ?>
+                                <?= $this->editor('comment', $comment->comment, 5, 5, 'comment' . $comment->id, ['class' => 'minimal no-footer']) ?>
 
                                 <p class="blog-submit">
-                                    <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE'); ?>" class="btn c-submit" />
+                                    <input type="submit" value="<?= Lang::txt('COM_PROJECTS_SAVE') ?>" class="btn c-submit" />
                                 </p>
                             </fieldset>
                         </form>

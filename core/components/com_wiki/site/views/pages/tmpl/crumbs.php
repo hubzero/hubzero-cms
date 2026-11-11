@@ -16,6 +16,6 @@ if (empty($this->parents)) {
 ?>
 <p class="wiki-crumbs">
     <?php foreach ($this->parents as $parent) { ?>
-        <a class="wiki-crumb" href="<?php echo Route::url($parent->link()); ?>"><?php echo $this->escape($parent->title); ?></a> /
+        <a class="wiki-crumb" href="<?= Route::url($parent->link()) ?>"><?= $this->escape($parent->title) ?></a> /
     <?php } ?>
 </p>

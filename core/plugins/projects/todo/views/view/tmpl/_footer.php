@@ -35,12 +35,12 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
 <?php } ?>
 <?php if ($this->filters['todolist']) { ?>
 <div class="container-footer">
-    <span class="listoptions"><button type="submit" form="hz-post-action" formaction="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist']); ?>" class="dellist" id="del-<?php echo $this->filters['todolist']; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_TODO_LIST'); ?></button></span>
-    <div class="confirmaction" id="confirm-<?php echo $this->filters['todolist']; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_ARE_YOU_SURE'); ?>
+    <span class="listoptions"><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=delete&dl=' . $this->filters['todolist']) ?>" class="dellist" id="del-<?= $this->filters['todolist'] ?>"><?= Lang::txt('PLG_PROJECTS_TODO_DELETE_TODO_LIST') ?></button></span>
+    <div class="confirmaction" id="confirm-<?= $this->filters['todolist'] ?>"><?= Lang::txt('PLG_PROJECTS_TODO_DELETE_ARE_YOU_SURE') ?>
         <ul>
-            <li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist'] . '&all=1'); ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_ALL_ITEMS'); ?></button></li>
-            <li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url($url . '&action=delete&dl=' . $this->filters['todolist']); ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_LEAVE_ITEMS'); ?></button></li>
-            <li><a href="<?php echo Route::url($url . '&list=' . $this->filters['todolist']); ?>" id="cnl-<?php echo $this->filters['todolist']; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_DELETE_CANCEL'); ?></a></li>
+            <li><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=delete&dl=' . $this->filters['todolist'] . '&all=1') ?>"><?= Lang::txt('PLG_PROJECTS_TODO_DELETE_ALL_ITEMS') ?></button></li>
+            <li><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=delete&dl=' . $this->filters['todolist']) ?>"><?= Lang::txt('PLG_PROJECTS_TODO_DELETE_LEAVE_ITEMS') ?></button></li>
+            <li><a href="<?= Route::url($url . '&list=' . $this->filters['todolist']) ?>" id="cnl-<?= $this->filters['todolist'] ?>"><?= Lang::txt('PLG_PROJECTS_TODO_DELETE_CANCEL') ?></a></li>
         </ul>
     </div>
 </div>

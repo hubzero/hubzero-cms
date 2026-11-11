@@ -22,7 +22,7 @@ Toolbar::custom('doaddemail', 'save', '', 'COM_NEWSLETTER_TOOLBAR_SUBMIT', false
 Toolbar::cancel('cancelemail');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" enctype="multipart/form-data">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" enctype="multipart/form-data">
     <fieldset class="adminform">
         <legend><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS'); ?></legend>
 
@@ -36,9 +36,9 @@ Toolbar::cancel('cancelemail');
                     <th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION'); ?>:</th>
                     <td>
                         <select name="email_confirmation">
-                            <option value="-1"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_NULL'); ?></option>
-                            <option value="1"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_YES'); ?></option>
-                            <option value="0"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_NO'); ?></option>
+                            <option value="-1"><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_NULL') ?></option>
+                            <option value="1"><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_YES') ?></option>
+                            <option value="0"><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_NO') ?></option>
                         </select>
                     </td>
                 </tr>
@@ -58,9 +58,9 @@ Toolbar::cancel('cancelemail');
                         <th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_GROUP'); ?>:</th>
                         <td>
                             <select name="email_group">
-                                <option value=""><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_GROUP_OPTION_NULL'); ?></option>
+                                <option value=""><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_GROUP_OPTION_NULL') ?></option>
                                 <?php foreach ($this->groups as $group) : ?>
-                                    <option value="<?php echo (int) $group->gidNumber; ?>"><?php echo $this->escape($group->description); ?></option>
+                                    <option value="<?= (int) $group->gidNumber ?>"><?= $this->escape($group->description) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </td>
@@ -74,7 +74,7 @@ Toolbar::cancel('cancelemail');
                 <tr>
                     <th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_RAW'); ?>:</th>
                     <td>
-                        <textarea name="email_box" rows="10" cols="100"><?php echo $this->escape($this->emailBox); ?></textarea>
+                        <textarea name="email_box" rows="10" cols="100"><?= $this->escape($this->emailBox) ?></textarea>
                     </td>
                 </tr>
             </tbody>

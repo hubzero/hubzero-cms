@@ -30,28 +30,28 @@ $this->css();
 $this->css('admin.subscriptions.css');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter-status"><?php echo Lang::txt('COM_SERVICES_FILTER_BY'); ?>:</label>
         <select name="filter_status" id="filter-status" class="filter filter-submit">
-            <option value="pending"<?php echo $this->filters['status'] == 'pending' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_PENDING'); ?></option>
-            <option value="active"<?php echo $this->filters['status'] == 'active' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_ACTIVE'); ?></option>
-            <option value="cancelled"<?php echo $this->filters['status'] == 'cancelled' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_CANCELLED'); ?></option>
-            <option value="all"<?php echo $this->filters['status'] == 'all' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_ALL'); ?></option>
+            <option value="pending"<?= $this->filters['status'] == 'pending' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_PENDING') ?></option>
+            <option value="active"<?= $this->filters['status'] == 'active' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_ACTIVE') ?></option>
+            <option value="cancelled"<?= $this->filters['status'] == 'cancelled' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_CANCELLED') ?></option>
+            <option value="all"<?= $this->filters['status'] == 'all' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_ALL') ?></option>
         </select>
     </fieldset>
 
     <table class="adminlist">
         <thead>
             <tr>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_ID_CODE', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_ID_CODE', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_SERVICES_COL_SERVICE'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_SERVICES_COL_PENDING'); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_USER', 'uid', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_ADDED', 'added', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_LAST_UPDATED', 'updated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SERVICES_COL_EXPIRES', 'expires', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_USER', 'uid', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_ADDED', 'added', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_LAST_UPDATED', 'updated', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_EXPIRES', 'expires', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -99,7 +99,7 @@ $this->css('admin.subscriptions.css');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>">
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id) ?>" title="<?= Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS') ?>">
                         <?php echo $row->id . ' -- ' . $row->code; ?>
                     </a>
                 </td>
@@ -107,12 +107,12 @@ $this->css('admin.subscriptions.css');
                     <?php echo $status; ?>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>" title="<?php echo Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS'); ?>">
-                        <span><?php echo $this->escape($service->get('category')) . ' -- ' . $this->escape($service->get('title')); ?></span>
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id) ?>" title="<?= Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS') ?>">
+                        <span><?= $this->escape($service->get('category')) . ' -- ' . $this->escape($service->get('title')) ?></span>
                     </a>
                 </td>
                 <td>
-                    <?php echo $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0) ? '<span class="service-pending">' . $pending . '</span>' : $pending; ?>
+                    <?= $row->pendingpayment && ($row->pendingpayment > 0 or $row->pendingunits > 0) ? '<span class="service-pending">' . $pending . '</span>' : $pending ?>
                 </td>
                 <td>
                     <?php echo $this->escape($name) . ' (' . $this->escape($login) . ')'; ?>
@@ -121,7 +121,7 @@ $this->css('admin.subscriptions.css');
                     <?php echo Date::of($row->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?>
                 </td>
                 <td>
-                    <?php echo $row->updated ? Date::of($row->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NEVER'); ?>
+                    <?= $row->updated ? Date::of($row->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NEVER') ?>
                 </td>
                 <td>
                     <?php echo $expires; ?>

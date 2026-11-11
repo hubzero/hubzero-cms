@@ -87,13 +87,13 @@ endif;
             <thead>
                 <tr>
                     <th scope="col">
-                        <a<?php echo $sort == 'timestamp' ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->page->link() . '&sort=timestamp&dir=' . $altdir); ?>">
-                            <?php echo $sort == 'timestamp' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_DATE'); ?>
+                        <a<?= $sort == 'timestamp' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=timestamp&dir=' . $altdir) ?>">
+                            <?= $sort == 'timestamp' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_DATE') ?>
                         </a>
                     </th>
                     <th scope="col">
-                        <a<?php echo $sort == 'title' ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->page->link() . '&sort=title&dir=' . $altdir); ?>">
-                            <?php echo $sort == 'title' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_TITLE'); ?>
+                        <a<?= $sort == 'title' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=title&dir=' . $altdir) ?>">
+                            <?= $sort == 'title' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_TITLE') ?>
                         </a>
                     </th>
                 </tr>
@@ -105,11 +105,11 @@ endif;
                     ?>
                     <tr>
                         <td>
-                            <time datetime="<?php echo $this->escape($row->get('timestamp')); ?>"><?php echo $this->escape(Date::of($row->get('timestamp'))->toLocal()); ?></time>
+                            <time datetime="<?= $this->escape($row->get('timestamp')) ?>"><?= $this->escape(Date::of($row->get('timestamp'))->toLocal()) ?></time>
                         </td>
                         <td>
                             <a href="<?php echo Route::url($row->link()); ?>">
-                                <?php echo $this->escape(stripslashes($row->get('title', '') ?: $row->get('pagename', '(untitled)'))); ?>
+                                <?= $this->escape(stripslashes($row->get('title', '') ?: $row->get('pagename', '(untitled)'))) ?>
                             </a>
                         </td>
                     </tr>

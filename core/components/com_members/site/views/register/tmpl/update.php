@@ -26,7 +26,7 @@ $this
         <?php if ($this->getError()) { ?>
             <p class="error"><?php echo $this->getError(); ?></p>
         <?php } else { ?>
-            <p>A confirmation email has been sent to <?php echo $this->escape($this->xprofile->get('email')); ?>. You must click the link in that email to activate your account and begin using <?php echo $this->sitename; ?>.</p>
+            <p>A confirmation email has been sent to <?= $this->escape($this->xprofile->get('email')) ?>. You must click the link in that email to activate your account and begin using <?= $this->sitename ?>.</p>
         <?php } ?>
     <?php } ?>
 <?php } else { ?>
@@ -36,7 +36,7 @@ $this
         <?php if ($this->getError()) { ?>
             <p class="error"><?php echo $this->getError(); ?></p>
         <?php } else { ?>
-            <p>A confirmation email has been sent to <?php echo $this->escape($this->xprofile->get('email')); ?>. They must click the link in that email to activate your account and begin using <?php echo $this->sitename; ?>.</p>
+            <p>A confirmation email has been sent to <?= $this->escape($this->xprofile->get('email')) ?>. They must click the link in that email to activate your account and begin using <?= $this->sitename ?>.</p>
         <?php } ?>
     <?php } ?>
 <?php } ?>

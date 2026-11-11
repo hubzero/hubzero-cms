@@ -42,26 +42,26 @@ $this
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span5">
                 <label for="filter_search_field"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
                 <select name="search_field" id="filter_search_field" class="filter">
-                    <option value="username"<?php echo $this->filters['search_field'] == 'username' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_USERNAME'); ?></option>
-                    <option value="name"<?php echo $this->filters['search_field'] == 'name' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_NAME'); ?></option>
+                    <option value="username"<?= $this->filters['search_field'] == 'username' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_MEMBERS_QUOTA_USERNAME') ?></option>
+                    <option value="name"<?= $this->filters['search_field'] == 'name' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_MEMBERS_QUOTA_NAME') ?></option>
                 </select>
 
                 <label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
+                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
             </div>
             <div class="col span7">
                 <select name="class_alias" id="filter_class_alias" class="filter filter-submit">
-                    <option value=""<?php echo $this->filters['class_alias'] == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS'); ?></option>
+                    <option value=""<?= $this->filters['class_alias'] == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS') ?></option>
                     <?php foreach ($this->classes as $class) : ?>
-                        <option value="<?php echo $this->escape($class->get('alias')); ?>"<?php echo $this->filters['class_alias'] == $class->get('alias') ? ' selected="selected"' : ''; ?>><?php echo $this->escape($class->get('alias')); ?></option>
+                        <option value="<?= $this->escape($class->get('alias')) ?>"<?= $this->filters['class_alias'] == $class->get('alias') ? ' selected="selected"' : '' ?>><?= $this->escape($class->get('alias')) ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -72,13 +72,13 @@ $this
             <tr>
                 <th>
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <!-- <th class="priority-6"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th> -->
-                <th class="priority-5"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th class="priority-4"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th class="priority-3"><?php echo Html::grid('sort', 'COM_MEMBERS_QUOTA_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <!-- <th class="priority-6"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th> -->
+                <th class="priority-5"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th class="priority-4"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th class="priority-3"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th><?php echo Lang::txt('COM_MEMBERS_QUOTA_DISK_USAGE'); ?></th>
             </tr>
         </thead>
@@ -98,18 +98,18 @@ $this
         $i = 0;
         foreach ($this->rows as $row) {
             ?>
-            <tr class="<?php echo "row$k quota-row"; ?>" data-quota="<?php echo Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage&id=' . $row->get('id'), false); ?>">
+            <tr class="<?= "row$k quota-row" ?>" data-quota="<?= Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage&id=' . $row->get('id'), false) ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('user_id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('user_id'); ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('user_id') ?>" class="checkbox-toggle" />
+                    <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->get('user_id') ?></label>
                 </td>
                 <td class="priority-5">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
                         <?php echo $this->escape($row->get('user_id')); ?>
                     </a>
                 </td>
                 <td class="priority-4">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
                         <?php echo $this->escape($row->get('username')); ?>
                     </a>
                 </td>

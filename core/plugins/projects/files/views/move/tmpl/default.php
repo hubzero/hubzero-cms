@@ -69,7 +69,7 @@ if ($this->getError()) {
                 echo '<ul class="dirtree">';
                 ?>
                 <li>
-                    <input type="radio" name="newpath" value="" <?php echo !$this->subdir ? 'disabled="disabled" ' : ''; ?> checked="checked" /> <span><?php echo Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
+                    <input type="radio" name="newpath" value="" <?= !$this->subdir ? 'disabled="disabled" ' : '' ?> checked="checked" /> <span><?= Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY') ?></span>
                 </li>
                 <?php
                 for ($i = 0; $i < count($dirs); $i++) {
@@ -85,7 +85,7 @@ if ($this->getError()) {
                     $leftMargin = ($level * 15) . 'px';
                     ?>
                 <li style="margin-left:<?php echo $leftMargin; ?>">
-                    <input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php echo $this->subdir == $dir ? 'disabled="disabled" ' : ''; ?> /> <span><span class="folder <?php echo $this->subdir == $dir ? 'prominent ' : ''; ?>"><?php echo $this->escape($dirname); ?></span></span>
+                    <input type="radio" name="newpath" value="<?= urlencode($dir) ?>" <?= $this->subdir == $dir ? 'disabled="disabled" ' : '' ?> /> <span><span class="folder <?= $this->subdir == $dir ? 'prominent ' : '' ?>"><?= $this->escape($dirname) ?></span></span>
                 </li>
                 <?php }
                 echo '</ul>';
@@ -95,7 +95,7 @@ if ($this->getError()) {
                 <div class="or"><?php echo Lang::txt('COM_PROJECTS_OR'); ?></div>
                 <?php }  ?>
             <label><span class="block"><?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE_TO_NEW_DIRECTORY'); ?></span>
-                <span class="mini prominent"><?php echo $this->subdir ? $this->escape($this->subdir) . DS : ''; ?></span>
+                <span class="mini prominent"><?= $this->subdir ? $this->escape($this->subdir) . DS : '' ?></span>
                 <input type="text" name="newdir" maxlength="50" value="" />
             </label>
             <?php }  ?>
@@ -103,10 +103,10 @@ if ($this->getError()) {
         <p class="submitarea">
             <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_MOVE'); ?>" />
             <?php if ($this->ajax) { ?>
-                <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?= Lang::txt('JCANCEL') ?>" />
             <?php } else {  ?>
                 <span>
-                    <a id="cancel-action"  class="btn btn-cancel"  href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+                    <a id="cancel-action"  class="btn btn-cancel"  href="<?= $this->url . '?a=1' . $subdirlink ?>"><?= Lang::txt('JCANCEL') ?></a>
                 </span>
             <?php } ?>
         </p>

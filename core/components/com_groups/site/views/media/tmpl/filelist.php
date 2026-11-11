@@ -57,12 +57,12 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
         ?>
         <ul class="path">
             <?php if ($this->group->get('type') == 3) : ?>
-                <li><a data-folder="/" href="javascript:(void);"><?php echo Lang::txt('COM_GROUPS_MEDIA_PATH_SLASH_ROOT'); ?></a></li>
+                <li><a data-folder="/" href="javascript:(void);"><?= Lang::txt('COM_GROUPS_MEDIA_PATH_SLASH_ROOT') ?></a></li>
             <?php endif; ?>
             <?php foreach ($segments as $segment) : ?>
                 <?php $folder .= DS . $segment; ?>
                 <li class="divider"><?php echo Lang::txt('COM_GROUPS_MEDIA_PATH_SLASH'); ?></li>
-                <li><a data-folder="<?php echo $this->escape($folder); ?>" href="javascript:(void);"><?php echo $this->escape($segment); ?></a></li>
+                <li><a data-folder="<?= $this->escape($folder) ?>" href="javascript:(void);"><?= $this->escape($segment) ?></a></li>
             <?php endforeach; ?>
         </ul>
         <div class="buttons"></div>
@@ -94,7 +94,7 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                         $renameFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=renamefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
                         $deleteFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=deletefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
                     ?>
-                    <a href="javascript:void(0);" data-action-delete="<?php echo $deleteFolderPath; ?>" data-action-rename="<?php echo $renameFolderPath; ?>" data-action-move="<?php echo $moveFolderPath; ?>" data-folder="<?php echo $this->escape($dataFolder); ?>"><?php echo $this->escape($folder); ?></a>
+                    <a href="javascript:void(0);" data-action-delete="<?= $deleteFolderPath ?>" data-action-rename="<?= $renameFolderPath ?>" data-action-move="<?= $moveFolderPath ?>" data-folder="<?= $this->escape($dataFolder) ?>"><?= $this->escape($folder) ?></a>
                 </div>
                 <div class="modified">
                     --
@@ -158,9 +158,9 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                     <div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW'); ?></div>
                     <div class="preview">
                         <?php if ($isImage) : ?>
-                            <img src="<?php echo rtrim(Request::base(true), '/'); ?>/core/components/com_groups/site/assets/img/loading.gif" data-src="<?php echo $this->escape($downloadPath); ?>" alt="<?php echo $this->escape(basename($file)); ?>" />
+                            <img src="<?= rtrim(Request::base(true), '/') ?>/core/components/com_groups/site/assets/img/loading.gif" data-src="<?= $this->escape($downloadPath) ?>" alt="<?= $this->escape(basename($file)) ?>" />
                         <?php else : ?>
-                            <p><strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW_NOT_AVAILABLE'); ?></strong></p>
+                            <p><strong><?= Lang::txt('COM_GROUPS_MEDIA_FILE_PREVIEW_NOT_AVAILABLE') ?></strong></p>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -168,34 +168,34 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                     <div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_DETAILS'); ?></div>
                     <ul>
                         <li>
-                            <strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_NAME'); ?>: </strong> <?php echo $this->escape($file); ?>
+                            <strong><?= Lang::txt('COM_GROUPS_MEDIA_FILE_NAME') ?>: </strong> <?= $this->escape($file) ?>
                         </li>
                         <li>
-                            <strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_SIZE'); ?>: </strong> <?php echo $formattedFilesize; ?>
+                            <strong><?= Lang::txt('COM_GROUPS_MEDIA_FILE_SIZE') ?>: </strong> <?= $formattedFilesize ?>
                         </li>
                         <?php if ($isImage) : ?>
                             <li>
-                                <strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_DIMENSIONS'); ?>: </strong> <?php echo $formattedDimensions; ?>
+                                <strong><?= Lang::txt('COM_GROUPS_MEDIA_FILE_DIMENSIONS') ?>: </strong> <?= $formattedDimensions ?>
                             </li>
                         <?php endif; ?>
                         <li class="path">
-                            <strong><?php echo Lang::txt('COM_GROUPS_MEDIA_FILE_PATH'); ?>: </strong> <span><?php echo $this->escape($downloadPath); ?></span>
+                            <strong><?= Lang::txt('COM_GROUPS_MEDIA_FILE_PATH') ?>: </strong> <span><?= $this->escape($downloadPath) ?></span>
                         </li>
                         <li>
                             <?php if ($this->authorized && isset($editorName) && $editorName != '') : ?>
-                                <a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="return editorInsertFile(<?php echo $this->escape(json_encode($downloadPath)); ?>);"><?php echo Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE'); ?></a>
+                                <a href="javascript:void(0);" class="btn btn-secondary icon-add" onclick="return editorInsertFile(<?= $this->escape(json_encode($downloadPath)) ?>);"><?= Lang::txt('COM_GROUPS_MEDIA_INSERT_FILE') ?></a>
                             <?php endif; ?>
-                            <a href="<?php echo $this->escape($downloadPath); ?>" class="btn btn-secondary icon-download action-download"><?php echo Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD'); ?></a>
+                            <a href="<?= $this->escape($downloadPath) ?>" class="btn btn-secondary icon-download action-download"><?= Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD') ?></a>
                             <?php if ($this->authorized) : ?>
                                 <?php if ($this->group->published == 1) : ?>
-                                    <a href="<?php echo $renamePath; ?>" class="btn btn-secondary icon-edit action-rename"><?php echo Lang::txt('COM_GROUPS_MEDIA_RENAME'); ?></a>
-                                    <a href="<?php echo $movePath; ?>" class="btn btn-secondary icon-move action-move"><?php echo Lang::txt('COM_GROUPS_MEDIA_MOVE'); ?></a>
+                                    <a href="<?= $renamePath ?>" class="btn btn-secondary icon-edit action-rename"><?= Lang::txt('COM_GROUPS_MEDIA_RENAME') ?></a>
+                                    <a href="<?= $movePath ?>" class="btn btn-secondary icon-move action-move"><?= Lang::txt('COM_GROUPS_MEDIA_MOVE') ?></a>
                                 <?php endif; ?>
                                 <?php if ($isArchive) : ?>
-                                    <a href="<?php echo $extractPath; ?>" class="btn btn-secondary icon-extract action-extract"><?php echo Lang::txt('COM_GROUPS_MEDIA_EXTRACT'); ?></a>
+                                    <a href="<?= $extractPath ?>" class="btn btn-secondary icon-extract action-extract"><?= Lang::txt('COM_GROUPS_MEDIA_EXTRACT') ?></a>
                                 <?php endif; ?>
                                 <?php if ($this->group->published == 1) : ?>
-                                    <a data-file="<?php echo $this->escape($relFilePath); ?>" href="<?php echo $deletePath; ?>" class="btn btn-secondary icon-delete action-delete"><?php echo Lang::txt('COM_GROUPS_MEDIA_DELETE'); ?></a>
+                                    <a data-file="<?= $this->escape($relFilePath) ?>" href="<?= $deletePath ?>" class="btn btn-secondary icon-delete action-delete"><?= Lang::txt('COM_GROUPS_MEDIA_DELETE') ?></a>
                                 <?php endif; ?>
                             <?php endif; ?>
                         </li>

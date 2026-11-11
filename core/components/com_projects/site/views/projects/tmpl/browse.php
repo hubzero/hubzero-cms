@@ -35,7 +35,7 @@ $total = $this->model->entries('count', $this->filters);
     <?php if (User::authorise('core.create', $this->option)) { ?>
         <div id="content-header-extra">
             <p>
-                <a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>">
+                <a class="btn icon-add" href="<?= Route::url('index.php?option=' . $this->option . '&task=start') ?>">
                     <?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?>
                 </a>
             </p>
@@ -43,14 +43,14 @@ $total = $this->model->entries('count', $this->filters);
     <?php } ?>
 </header><!-- / #content-header -->
 
-<form method="get" id="browseForm" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
+<form method="get" id="browseForm" action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>">
     <section class="main section">
         <div class="container data-entry">
             <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>" />
             <fieldset class="entry-search">
                 <legend><?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?></legend>
                 <label for="entry-search-field"><?php echo Lang::txt('COM_PROJECTS_ENTER_PHRASE'); ?></label>
-                <input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_PROJECTS_ENTER_PHRASE'); ?>" />
+                <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_PROJECTS_ENTER_PHRASE') ?>" />
                 <input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
             </fieldset>
         </div>
@@ -67,21 +67,21 @@ $total = $this->model->entries('count', $this->filters);
                 ?>
                 <ul class="entries-menu order-options">
                     <?php if (!empty($this->filters['reviewer']) && (strtolower($this->filters['reviewer']) == 'sponsored')) : ?>
-                    <li><a<?php echo ($this->filters['sortby'] == 'grant_status') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=grant_status' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?>" rel="nofollow">&darr; <?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS'); ?></a></li>
+                    <li><a<?= ($this->filters['sortby'] == 'grant_status') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=grant_status' . $qs) ?>" title="<?= Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS') ?>" rel="nofollow">&darr; <?= Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS') ?></a></li>
                     <?php endif;?>
-                    <li><a<?php echo ($this->filters['sortby'] == 'owner') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER'); ?>" rel="nofollow">&darr; <?php echo Lang::txt('COM_PROJECTS_OWNER'); ?></a></li>
-                    <li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs); ?>" title="<?php echo Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE'); ?>" rel="nofollow">&darr; <?php echo Lang::txt('COM_PROJECTS_TITLE'); ?></a></li>
+                    <li><a<?= ($this->filters['sortby'] == 'owner') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs) ?>" title="<?= Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER') ?>" rel="nofollow">&darr; <?= Lang::txt('COM_PROJECTS_OWNER') ?></a></li>
+                    <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs) ?>" title="<?= Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE') ?>" rel="nofollow">&darr; <?= Lang::txt('COM_PROJECTS_TITLE') ?></a></li>
                 </ul>
-                <ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_PROJECTS_BROWSE_SHOW'); ?>">
+                <ul class="entries-menu filter-options" data-label="<?= Lang::txt('COM_PROJECTS_BROWSE_SHOW') ?>">
                     <li>
                         <label for="filterby"><?php echo Lang::txt('COM_PROJECTS_BROWSE_SHOW'); ?></label>
                         <select name="filterby" id="filterby">
-                            <option value="all" <?php echo ($this->filters['filterby'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_ALL'); ?></option>
+                            <option value="all" <?= ($this->filters['filterby'] == 'all') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_ALL') ?></option>
                             <?php /*<option value="public" <?php echo ($this->filters['filterby'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PUBLIC'); ?></option>
                             <option value="open" <?php echo ($this->filters['filterby'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_OPEN'); ?></option>*/ ?>
-                            <option value="archived" <?php echo ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_ARCHIVED'); ?></option>
+                            <option value="archived" <?= ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_ARCHIVED') ?></option>
                             <?php if (in_array($this->filters['reviewer'], ['sponsored', 'sensitive'])) { ?>
-                                <option value="pending" <?php echo ($this->filters['filterby'] == 'pending') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PENDING'); ?></option>
+                                <option value="pending" <?= ($this->filters['filterby'] == 'pending') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_PENDING') ?></option>
                             <?php } ?>
                         </select>
                     </li>

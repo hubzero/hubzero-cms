@@ -71,9 +71,9 @@ $extras = Event::trigger('resources.onResourcesList', [$this->line]);
 					');
                     ?>
                     <span class="rank">
-                        <span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->line->get('id'); ?>"><?php echo Lang::txt('COM_RESOURCES_THIS_HAS'); ?></span>
+                        <span class="rank-<?= $r ?>" id="rank-<?= $this->line->get('id') ?>"><?= Lang::txt('COM_RESOURCES_THIS_HAS') ?></span>
                     </span>
-                    <?php echo number_format($this->line->get('ranking'), 1) . ' ' . Lang::txt('COM_RESOURCES_RANKING'); ?>
+                    <?= number_format($this->line->get('ranking'), 1) . ' ' . Lang::txt('COM_RESOURCES_RANKING') ?>
                 </dt>
                 <dd>
                     <p><?php echo Lang::txt('COM_RESOURCES_RANKING_EXPLANATION'); ?></p>
@@ -97,7 +97,7 @@ $extras = Event::trigger('resources.onResourcesList', [$this->line]);
         <div class="metadata">
             <p class="rating">
                 <span class="avgrating <?php echo $this->line->rating; ?>">
-                    <span><?php echo Lang::txt('COM_RESOURCES_OUT_OF_5_STARS', $this->line->get('rating')); ?></span>&nbsp;
+                    <span><?= Lang::txt('COM_RESOURCES_OUT_OF_5_STARS', $this->line->get('rating')) ?></span>&nbsp;
                 </span>
             </p>
         </div>

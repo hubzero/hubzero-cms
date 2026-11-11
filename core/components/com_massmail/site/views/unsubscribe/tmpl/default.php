@@ -17,13 +17,13 @@ defined('_HZEXEC_') or die();
         <?php } elseif ($this->done) { ?>
             <p class="passed"><?php echo Lang::txt('COM_MASSMAIL_UNSUBSCRIBE_OK', $this->escape($this->email)); ?></p>
         <?php } else { ?>
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=unsubscribe'); ?>" method="post">
+            <form action="<?= Route::url('index.php?option=' . $this->option . '&task=unsubscribe') ?>" method="post">
                 <p><?php echo Lang::txt('COM_MASSMAIL_UNSUBSCRIBE_CONFIRM', $this->escape($this->email)); ?></p>
                 <p>
                     <input type="hidden" name="e" value="<?php echo $this->escape($this->email); ?>" />
                     <input type="hidden" name="m" value="<?php echo (int) $this->mailing; ?>" />
                     <input type="hidden" name="t" value="<?php echo $this->escape($this->token); ?>" />
-                    <input type="submit" class="btn" value="<?php echo $this->escape(Lang::txt('COM_MASSMAIL_UNSUBSCRIBE_BUTTON')); ?>" />
+                    <input type="submit" class="btn" value="<?= $this->escape(Lang::txt('COM_MASSMAIL_UNSUBSCRIBE_BUTTON')) ?>" />
                 </p>
             </form>
         <?php } ?>

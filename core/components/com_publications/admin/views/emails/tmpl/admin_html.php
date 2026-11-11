@@ -98,23 +98,23 @@ if ($comment) {
                     <tbody>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Title:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->model->get('title')); ?></td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->model->get('title')) ?></td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Version:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->model->get('version_label')); ?></td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->model->get('version_label')) ?></td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">@ <?php echo $this->model->created('time'); ?> on <?php echo $this->model->created('date'); ?></td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">@ <?= $this->model->created('time') ?> on <?= $this->model->created('date') ?></td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Project:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($this->project->get('title')); ?> (<?php echo $this->escape($this->project->get('alias')); ?> <?php echo $this->project->isProvisioned() ? ' - ' . Lang::txt('provisioned') : ''; ?>)</td>
+                            <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->project->get('title')) ?> (<?= $this->escape($this->project->get('alias')) ?> <?= $this->project->isProvisioned() ? ' - ' . Lang::txt('provisioned') : '' ?>)</td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?php echo $pubLink; ?>"><?php echo $pubLink; ?></a></td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?= $pubLink ?>"><?= $pubLink ?></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -123,9 +123,9 @@ if ($comment) {
                     <tbody>
                         <tr>
                             <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?></div>
+                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?= $comment ?></div>
                                 <?php if (!empty($this->permissionURL) && !empty($this->permissionTxt)) {?>
-                                    <a href="<?php echo $this->permissionURL; ?>"><?php echo $this->permissionTxt; ?></a>
+                                    <a href="<?= $this->permissionURL ?>"><?= $this->permissionTxt ?></a>
                                 <?php } ?>
                             </td>
                         </tr>

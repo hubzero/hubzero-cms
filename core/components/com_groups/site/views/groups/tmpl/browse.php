@@ -25,7 +25,7 @@ $this
     <?php if (User::authorise('core.create', $this->option)) : ?>
         <div id="content-header-extra">
             <p>
-                <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+                <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=new') ?>">
                     <?php echo Lang::txt('COM_GROUPS_NEW'); ?>
                 </a>
             </p>
@@ -48,46 +48,46 @@ foreach ($this->notifications as $notification) {
                     <input class="entry-search-submit" type="submit" value="Search" />
                     <fieldset class="entry-search">
                         <legend><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_LEGEND'); ?></legend>
-                        <label for="entry-search-field"><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP'); ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER'); ?>" />
-                        <input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
-                        <input type="hidden" name="policy" value="<?php echo $this->escape($this->filters['policy']); ?>" />
-                        <input type="hidden" name="index" value="<?php echo $this->escape($this->filters['index']); ?>" />
+                        <label for="entry-search-field"><?= Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP') ?></label>
+                        <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER') ?>" />
+                        <input type="hidden" name="sortby" value="<?= $this->escape($this->filters['sortby']) ?>" />
+                        <input type="hidden" name="policy" value="<?= $this->escape($this->filters['policy']) ?>" />
+                        <input type="hidden" name="index" value="<?= $this->escape($this->filters['index']) ?>" />
                     </fieldset>
                 </div><!-- / .container -->
 
                 <div class="container">
-                    <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
+                    <nav class="entries-filters" aria-label="<?= Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS') ?>">
                         <?php
                             $fltrs  = ($this->filters['index']) ? '&index=' . $this->escape($this->filters['index']) : '';
                             $fltrs .= ($this->filters['policy']) ? '&policy=' . $this->escape($this->filters['policy']) : '';
                             $fltrs .= ($this->filters['search']) ? '&search=' . $this->escape($this->filters['search']) : '';
                         ?>
-                        <ul class="entries-menu order-options" data-label="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT'); ?>">
-                            <li><a class="sort-title<?php echo ($this->filters['sortby'] == 'title') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT_BY_TITLE'); ?>" rel="nofollow"><?php echo Lang::txt('COM_GROUPS_GROUP_TITLE'); ?></a></li>
-                            <li><a class="sort-alias<?php echo ($this->filters['sortby'] == 'alias') ? ' active' : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&sortby=alias' . $fltrs); ?>" title="<?php echo Lang::txt('COM_GROUPS_BROWSE_SORT_BY_ALIAS'); ?>" rel="nofollow"><?php echo Lang::txt('COM_GROUPS_GROUP_ALIAS'); ?></a></li>
+                        <ul class="entries-menu order-options" data-label="<?= Lang::txt('COM_GROUPS_BROWSE_SORT') ?>">
+                            <li><a class="sort-title<?= ($this->filters['sortby'] == 'title') ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $fltrs) ?>" title="<?= Lang::txt('COM_GROUPS_BROWSE_SORT_BY_TITLE') ?>" rel="nofollow"><?= Lang::txt('COM_GROUPS_GROUP_TITLE') ?></a></li>
+                            <li><a class="sort-alias<?= ($this->filters['sortby'] == 'alias') ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=alias' . $fltrs) ?>" title="<?= Lang::txt('COM_GROUPS_BROWSE_SORT_BY_ALIAS') ?>" rel="nofollow"><?= Lang::txt('COM_GROUPS_GROUP_ALIAS') ?></a></li>
                         </ul>
                         <?php
                         $fltrs  = ($this->filters['index']) ? '&index=' . $this->escape($this->filters['index']) : '';
                         $fltrs .= ($this->filters['sortby']) ? '&sortby=' . $this->escape($this->filters['sortby']) : '';
                         $fltrs .= ($this->filters['search']) ? '&search=' . $this->escape($this->filters['search']) : '';
                         ?>
-                        <ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('COM_GROUPS_BROWSE_SHOW'); ?>">
+                        <ul class="entries-menu filter-options" data-label="<?= Lang::txt('COM_GROUPS_BROWSE_SHOW') ?>">
                             <li>
-                                <label for="filter-published"><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE'); ?></label>
+                                <label for="filter-published"><?= Lang::txt('COM_GROUPS_BROWSE_STATE') ?></label>
                                 <select name="published" id="filter-published">
-                                    <option value="1" <?php echo ($this->filters['published'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ACTIVE'); ?></option>
-                                    <option value="2" <?php echo ($this->filters['published'] == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED'); ?></option>
+                                    <option value="1" <?= ($this->filters['published'] == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_STATE_ACTIVE') ?></option>
+                                    <option value="2" <?= ($this->filters['published'] == 2) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED') ?></option>
                                 </select>
                             </li>
                             <li>
                                 <label for="filter-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY'); ?></label>
                                 <select name="policy" id="filter-policy">
                                     <option value=""><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_ALL'); ?></option>
-                                    <option value="open" <?php echo ($this->filters['policy'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?></option>
-                                    <option value="restricted" <?php echo ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?></option>
-                                    <option value="invite" <?php echo ($this->filters['policy'] == 'invite') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY'); ?></option>
-                                    <option value="closed" <?php echo ($this->filters['policy'] == 'closed') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED'); ?></option>
+                                    <option value="open" <?= ($this->filters['policy'] == 'open') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN') ?></option>
+                                    <option value="restricted" <?= ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED') ?></option>
+                                    <option value="invite" <?= ($this->filters['policy'] == 'invite') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY') ?></option>
+                                    <option value="closed" <?= ($this->filters['policy'] == 'closed') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED') ?></option>
                                 </select>
                             </li>
                         </ul>
@@ -138,7 +138,7 @@ foreach ($this->notifications as $notification) {
             <?php if (Component::isEnabled('com_members')) : ?>
                 <div class="container">
                     <h3><?php echo Lang::txt('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_TITLE'); ?></h3>
-                    <p><?php echo Lang::txt('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS', Route::url('index.php?option=com_members')); ?></p>
+                    <p><?= Lang::txt('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS', Route::url('index.php?option=com_members')) ?></p>
                 </div><!-- / .container -->
             <?php endif; ?>
         </aside><!-- / .aside -->

@@ -50,7 +50,7 @@ $this
     <?php } ?>
         <fieldset>
             <h3><?php echo Lang::txt('Correct Email Address'); ?></h3>
-            <label<?php echo !$this->email || !\Components\Members\Helpers\Utility::validemail($this->email) ? ' class="fieldWithErrors"' : ''; ?>>
+            <label<?= !$this->email || !\Components\Members\Helpers\Utility::validemail($this->email) ? ' class="fieldWithErrors"' : '' ?>>
                 <?php echo Lang::txt('Valid E-mail:'); ?>
                 <input
                     name="email"

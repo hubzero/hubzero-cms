@@ -75,11 +75,11 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                 <?php if ($this->config->get('restricted_data', 0)) : ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE'); ?></h4>
                     <p><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_RULE_EXPLAIN'); ?></p>
-                    <p><?php echo Lang::txt('COM_PROJECTS_SETUP_MORE_ON'); ?><a href="<?php echo $hipaa; ?>" rel="external" > <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_HIPAA'); ?></a>. <?php echo Lang::txt('COM_PROJECTS_SETUP_MORE_ON'); ?><a href="<?php echo $ferpa; ?>" rel="external nofollow"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_FERPA'); ?></a>.</p>
+                    <p><?= Lang::txt('COM_PROJECTS_SETUP_MORE_ON') ?><a href="<?= $hipaa ?>" rel="external" > <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_HIPAA') ?></a>. <?= Lang::txt('COM_PROJECTS_SETUP_MORE_ON') ?><a href="<?= $ferpa ?>" rel="external nofollow"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_FERPA') ?></a>.</p>
                     <p class="info"><?php echo Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_NOTE'); ?></p>
                 <?php else : ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_WHY'); ?></h4>
-                    <p><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_BECAUSE'); ?> <a href="<?php echo $privacylink; ?>" rel="external nofollow"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS'); ?></a>.</p>
+                    <p><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_BECAUSE') ?> <a href="<?= $privacylink ?>" rel="external nofollow"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a>.</p>
                 <?php endif; ?>
             </div>
             <fieldset>
@@ -88,28 +88,28 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                 <p class="notice"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_WHY_ASK'); ?></p>
 
                 <?php if ($this->config->get('restricted_data', 0) == 1) : ?>
-                    <h4 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI'); ?><span class="required"><?php echo Lang::txt('REQUIRED'); ?></span></h4>
+                    <h4 class="terms-question"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI') ?><span class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
                     <div class="form-group form-check">
                         <label for="restricted-yes" class="terms-label dark form-check-label">
-                            <input class="option form-check-input restricted-answer" name="restricted" id="restricted-yes" type="radio" value="yes" <?php echo $this->model->params->get('restricted_data') == 'yes' ? 'checked="checked"' : ''; ?> />
+                            <input class="option form-check-input restricted-answer" name="restricted" id="restricted-yes" type="radio" value="yes" <?= $this->model->params->get('restricted_data') == 'yes' ? 'checked="checked"' : '' ?> />
                             <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_YES'); ?>
                         </label>
                     </div>
 
                     <div class="ipadded" id="restricted-choice">
-                        <p class="hint prominent"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_MAKE_CHOICE'); ?></p>
+                        <p class="hint prominent"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_MAKE_CHOICE') ?></p>
 
                         <div class="form-group form-check">
                             <label for="export" class="terms-label form-check-label">
-                                <input class="option form-check-input restricted-opt" name="export" id="export" type="checkbox" value="yes" <?php echo $this->model->params->get('export_data') == 'yes' ? 'checked="checked"' : ''; ?> />
-                                <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_EXPORT_CONTROLLED'); ?>
+                                <input class="option form-check-input restricted-opt" name="export" id="export" type="checkbox" value="yes" <?= $this->model->params->get('export_data') == 'yes' ? 'checked="checked"' : '' ?> />
+                                <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_EXPORT_CONTROLLED') ?>
                             </label>
                         </div>
-                        <div id="stop-export" class="stopaction hidden"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_EXPORT'); ?></div>
+                        <div id="stop-export" class="stopaction hidden"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_EXPORT') ?></div>
 
                         <div class="form-group form-check">
                             <label for="irb" class="terms-label form-check-label">
-                                <input class="option form-check-input restricted-opt" name="irb" id="irb" type="checkbox" value="yes" <?php echo $this->model->params->get('irb_data') == 'yes' ? 'checked="checked"' : ''; ?> />
+                                <input class="option form-check-input restricted-opt" name="irb" id="irb" type="checkbox" value="yes" <?= $this->model->params->get('irb_data') == 'yes' ? 'checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_IRB'); ?>
                             </label>
                         </div>
@@ -126,15 +126,15 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 
                         <div class="form-group form-check">
                             <label for="hipaa" class="form-check-label terms-label">
-                                <input class="option form-check-input restricted-opt" name="hipaa" id="hipaa" type="checkbox" value="yes" <?php echo $this->model->params->get('hipaa_data') == 'yes' ? 'checked="checked"' : ''; ?> />
+                                <input class="option form-check-input restricted-opt" name="hipaa" id="hipaa" type="checkbox" value="yes" <?= $this->model->params->get('hipaa_data') == 'yes' ? 'checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_HIPAA'); ?>
                             </label>
                         </div>
-                        <div id="stop-hipaa" class="stopaction hidden"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_HIPAA'); ?></div>
+                        <div id="stop-hipaa" class="stopaction hidden"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_HIPAA') ?></div>
 
                         <div class="form-group form-check">
                             <label for="ferpa" class="form-check-label terms-label">
-                                <input class="option form-check-input restricted-opt" name="ferpa" id="ferpa" type="checkbox" value="yes" <?php echo $this->model->params->get('ferpa_data') == 'yes' ? 'checked="checked"' : ''; ?> />
+                                <input class="option form-check-input restricted-opt" name="ferpa" id="ferpa" type="checkbox" value="yes" <?= $this->model->params->get('ferpa_data') == 'yes' ? 'checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_FERPA'); ?>
                             </label>
                         </div>
@@ -152,13 +152,13 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 
                     <div class="form-group form-check">
                         <label class="terms-label dark form-check-label">
-                            <input class="option form-check-input restricted-answer" name="restricted" id="restricted-no" type="radio" value="no" <?php echo $this->model->params->get('restricted_data') == 'no' ? 'checked="checked"' : ''; ?> />
+                            <input class="option form-check-input restricted-answer" name="restricted" id="restricted-no" type="radio" value="no" <?= $this->model->params->get('restricted_data') == 'no' ? 'checked="checked"' : '' ?> />
                             <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_NO'); ?>
                         </label>
                     </div>
                 <?php endif; ?>
                 <?php if ($this->config->get('restricted_data', 0) == 2) : ?>
-                    <h4 class="terms-question"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI'); ?><span class="required"><?php echo Lang::txt('REQUIRED'); ?></span></h4>
+                    <h4 class="terms-question"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI') ?><span class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
 
                     <div class="form-group form-check">
                         <label for="restricted" class="terms-label dark form-check-label">
@@ -197,31 +197,31 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                         <div class="form-group">
                             <label class="terms-label">
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
-                                <input name="grant_title" maxlength="250" type="text" class="form-control" value="<?php echo $this->escape($this->model->params->get('grant_title')); ?>" class="long" />
+                                <input name="grant_title" maxlength="250" type="text" class="form-control" value="<?= $this->escape($this->model->params->get('grant_title')) ?>" class="long" />
                             </label>
                         </div>
                         <div class="form-group">
                             <label class="terms-label">
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
-                                <input name="grant_PI" maxlength="250" type="text" class="form-control" value="<?php echo $this->escape($this->model->params->get('grant_PI')); ?>" class="long" />
+                                <input name="grant_PI" maxlength="250" type="text" class="form-control" value="<?= $this->escape($this->model->params->get('grant_PI')) ?>" class="long" />
                             </label>
                         </div>
                         <div class="form-group">
                             <label class="terms-label">
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:
-                                <input name="award_number" maxlength="250" type="text" class="form-control" value="<?php echo $this->escape($this->model->params->get('award_number')); ?>" class="long" />
+                                <input name="award_number" maxlength="250" type="text" class="form-control" value="<?= $this->escape($this->model->params->get('award_number')) ?>" class="long" />
                             </label>
                         </div>
                         <div class="form-group">
                             <label class="terms-label">
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
-                                <input name="grant_agency" maxlength="250" type="text" class="form-control" value="<?php echo $this->escape($this->model->params->get('grant_agency')); ?>" class="long" />
+                                <input name="grant_agency" maxlength="250" type="text" class="form-control" value="<?= $this->escape($this->model->params->get('grant_agency')) ?>" class="long" />
                             </label>
                         </div>
                         <div class="form-group">
                             <label class="terms-label">
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
-                                <input name="grant_budget" maxlength="250" type="text" class="form-control" value="<?php echo $this->escape($this->model->params->get('grant_budget')); ?>" class="long" />
+                                <input name="grant_budget" maxlength="250" type="text" class="form-control" value="<?= $this->escape($this->model->params->get('grant_budget')) ?>" class="long" />
                             </label>
                         </div>
                     </div>
@@ -234,16 +234,16 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 
                 <div class="form-group form-check">
                     <label class="form-check-label terms-label">
-                        <h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE'); ?> <a href="<?php echo $privacylink; ?>" rel="external" ><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS'); ?></a>? <span class="required"><?php echo Lang::txt('REQUIRED'); ?></span></h4>
+                        <h4><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE') ?> <a href="<?= $privacylink ?>" rel="external" ><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a>? <span class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
                         <input class="option form-check-input" name="agree" type="checkbox" value="1" />
-                        <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AGREE'); ?> <a href="<?php echo $privacylink; ?>" rel="external" ><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS'); ?></a> <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE_PROJECT'); ?> <span class="prominent"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_ALL_MEMBERS'); ?></span>.
+                        <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_AGREE') ?> <a href="<?= $privacylink ?>" rel="external" ><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a> <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE_PROJECT') ?> <span class="prominent"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_ALL_MEMBERS') ?></span>.
                     </label>
                 </div>
             </fieldset>
             <div class="clear" aria-hidden="true"></div>
 
             <div class="submitarea">
-                <input type="submit" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE'); ?>" class="btn btn-success" id="btn-finalize" />
+                <input type="submit" value="<?= Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE') ?>" class="btn btn-success" id="btn-finalize" />
             </div>
         </form>
     </div>

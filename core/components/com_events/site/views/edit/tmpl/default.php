@@ -27,14 +27,14 @@ $this
     <div id="content-header-extra">
         <ul id="useroptions">
             <li class="last">
-                <a class="icon-browse browse btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('EVENTS_BROWSE'); ?></a>
+                <a class="icon-browse browse btn" href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('EVENTS_BROWSE') ?></a>
             </li>
         </ul>
     </div>
 </header>
 
 <section class="main section">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=save'); ?>" method="post" id="hubForm">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&task=save') ?>" method="post" id="hubForm">
 <?php if ($this->getError()) { ?>
         <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
@@ -42,38 +42,38 @@ $this
             <p><?php echo Lang::txt('EVENTS_CAL_LANG_EXPLANATION'); ?></p>
         </div>
         <fieldset>
-            <legend><?php echo ($this->row->id) ? Lang::txt('EVENTS_UPDATE_EVENT') : Lang::txt('EVENTS_NEW_EVENT');?></legend>
+            <legend><?= ($this->row->id) ? Lang::txt('EVENTS_UPDATE_EVENT') : Lang::txt('EVENTS_NEW_EVENT') ?></legend>
 
             <label>
-                <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?>: <span class="required"><?php echo Lang::txt('EVENTS_CAL_LANG_REQUIRED'); ?></span>
-                <?php echo \Components\Events\Helpers\Html::buildCategorySelect($this->row->catid, '', $this->gid, $this->option); ?>
+                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY') ?>: <span class="required"><?= Lang::txt('EVENTS_CAL_LANG_REQUIRED') ?></span>
+                <?= \Components\Events\Helpers\Html::buildCategorySelect($this->row->catid, '', $this->gid, $this->option) ?>
             </label>
 
             <label>
-                <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE'); ?>: <span class="required"><?php echo Lang::txt('EVENTS_CAL_LANG_REQUIRED'); ?></span>
-                <input type="text" name="title" maxlength="250" value="<?php echo $this->escape(html_entity_decode(stripslashes($this->row->title ? $this->row->title : ''))); ?>" />
+                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE') ?>: <span class="required"><?= Lang::txt('EVENTS_CAL_LANG_REQUIRED') ?></span>
+                <input type="text" name="title" maxlength="250" value="<?= $this->escape(html_entity_decode(stripslashes($this->row->title ? $this->row->title : ''))) ?>" />
             </label>
 
             <label>
                 <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_DESCRIPTION'); ?>:
-                <?php echo App::get('editor')->display('econtent', $this->row->content, '', '', 10, 15, false, 'econtent', null, null, ['class' => 'minimal no-footer']); ?>
+                <?= App::get('editor')->display('econtent', $this->row->content, '', '', 10, 15, false, 'econtent', null, null, ['class' => 'minimal no-footer']) ?>
             </label>
 
             <label>
                 <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_ADRESSE'); ?>
-                <input type="text" name="adresse_info" maxlength="120" value="<?php echo $this->escape(stripslashes($this->row->adresse_info ? $this->row->adresse_info : '')); ?>" />
+                <input type="text" name="adresse_info" maxlength="120" value="<?= $this->escape(stripslashes($this->row->adresse_info ? $this->row->adresse_info : '')) ?>" />
             </label>
 
             <label>
                 <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_EXTRA'); ?>
-                <input type="text" name="extra_info" maxlength="240" value="<?php echo $this->escape(stripslashes($this->row->extra_info ? $this->row->extra_info : '')); ?>" />
+                <input type="text" name="extra_info" maxlength="240" value="<?= $this->escape(stripslashes($this->row->extra_info ? $this->row->extra_info : '')) ?>" />
             </label>
             <?php
             if ($this->fields) {
                 foreach ($this->fields as $field) {
                     ?>
                         <label>
-                        <?php echo $field[1]; ?>: <?php echo ($field[3]) ? '<span class="required">required</span>' : ''; ?>
+                        <?= $field[1] ?>: <?= ($field[3]) ? '<span class="required">required</span>' : '' ?>
                         <?php
                         if ($field[2] == 'checkbox') {
                             echo '<input class="option" type="checkbox" name="fields[' . $field[0] . ']" value="1"';
@@ -104,26 +104,26 @@ $this
             <fieldset>
                 <legend><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_TIME'); ?></legend>
                 <label for="publish_up">
-                <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_STARTDATE') . ' &amp; ' . Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME'); ?></label>
+                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_STARTDATE') . ' &amp; ' . Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME') ?></label>
                 <p>
                     <?php //echo Html::input('calendar', 'publish_up', $start_publish, array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10'));?>
-                    <input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?php echo $this->times['start_publish']; ?>" />
-                    <input class="option" type="text" name="start_time" id="start_time" size="5" maxlength="6" value="<?php echo $this->times['start_time']; ?>" aria-label="<?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME'); ?>" />
+                    <input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?= $this->times['start_publish'] ?>" />
+                    <input class="option" type="text" name="start_time" id="start_time" size="5" maxlength="6" value="<?= $this->times['start_time'] ?>" aria-label="<?= Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME') ?>" />
                     <?php if ($this->config->getCfg('calUseStdTime') == 'YES') { ?>
-                    <input class="option" id="start_pm0" name="start_pm" type="radio"  value="0" <?php echo !$this->times['start_pm'] ? 'checked="checked"' : ''; ?> /><small>AM</small>
-                    <input class="option" id="start_pm1" name="start_pm" type="radio"  value="1" <?php echo $this->times['start_pm'] ? 'checked="checked"' : ''; ?> /><small>PM</small>
+                    <input class="option" id="start_pm0" name="start_pm" type="radio"  value="0" <?= !$this->times['start_pm'] ? 'checked="checked"' : '' ?> /><small>AM</small>
+                    <input class="option" id="start_pm1" name="start_pm" type="radio"  value="1" <?= $this->times['start_pm'] ? 'checked="checked"' : '' ?> /><small>PM</small>
                     <?php } ?>
                 </p>
 
                 <label for="publish_down">
-                <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_ENDDATE') . ' &amp; ' . Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME'); ?></label>
+                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_ENDDATE') . ' &amp; ' . Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME') ?></label>
                 <p>
                     <?php //echo Html::input('calendar', 'publish_down', $stop_publish, array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10'));?>
-                    <input class="option" type="text" name="publish_down" id="publish_down" size="10" maxlength="10" value="<?php echo $this->times['stop_publish']; ?>" />
-                    <input class="option" type="text" name="end_time" id="end_time" size="5" maxlength="6" value="<?php echo $this->times['end_time']; ?>" aria-label="<?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME'); ?>" />
+                    <input class="option" type="text" name="publish_down" id="publish_down" size="10" maxlength="10" value="<?= $this->times['stop_publish'] ?>" />
+                    <input class="option" type="text" name="end_time" id="end_time" size="5" maxlength="6" value="<?= $this->times['end_time'] ?>" aria-label="<?= Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME') ?>" />
                     <?php if ($this->config->getCfg('calUseStdTime') == 'YES') { ?>
-                    <input class="option" id="end_pm0" name="end_pm" type="radio"  value="0" <?php echo !$this->times['end_pm'] ? 'checked="checked"' : ''; ?> /><small>AM</small>
-                    <input class="option" id="end_pm1" name="end_pm" type="radio"  value="1" <?php echo $this->times['end_pm'] ? 'checked="checked"' : ''; ?> /><small>PM</small>
+                    <input class="option" id="end_pm0" name="end_pm" type="radio"  value="0" <?= !$this->times['end_pm'] ? 'checked="checked"' : '' ?> /><small>AM</small>
+                    <input class="option" id="end_pm1" name="end_pm" type="radio"  value="1" <?= $this->times['end_pm'] ? 'checked="checked"' : '' ?> /><small>PM</small>
                     <?php } ?>
                 </p>
 
@@ -135,12 +135,12 @@ $this
             <input type="hidden" name="state" value="<?php echo $this->escape($this->row->state); ?>" />
         </fieldset><div class="clear"></div>
 
-        <input type="hidden" name="email" value="<?php echo $this->escape(stripslashes($this->row->email ? $this->row->email : '')); ?>" />
-        <input type="hidden" name="restricted" value="<?php echo $this->escape(stripslashes($this->row->restricted ? $this->row->restricted : '')); ?>" />
+        <input type="hidden" name="email" value="<?= $this->escape(stripslashes($this->row->email ? $this->row->email : '')) ?>" />
+        <input type="hidden" name="restricted" value="<?= $this->escape(stripslashes($this->row->restricted ? $this->row->restricted : '')) ?>" />
         <p class="submit">
             <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('EVENTS_SAVE'); ?>" />
 
-            <a class="btn btn-secondary" href="<?php echo $this->row->id ? Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id) : Route::url('index.php?option=' . $this->option); ?>">
+            <a class="btn btn-secondary" href="<?= $this->row->id ? Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id) : Route::url('index.php?option=' . $this->option) ?>">
                 <?php echo Lang::txt('JCANCEL'); ?>
             </a>
         </p>

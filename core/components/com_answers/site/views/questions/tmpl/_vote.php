@@ -52,26 +52,26 @@ $voteUrlBase = 'index.php?option=' . $this->option . '&task=vote&category=' . $t
         <span class="vote-like<?php echo $lcls; ?>">
             <span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral';
             echo $cls; ?>" title="<?php echo $like_title; ?>">
-                <?php echo $this->item->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
+                <?= $this->item->get('helpful', 0) ?><span> <?= Lang::txt('COM_ANSWERS_VOTE_LIKE') ?></span>
             </span>
         </span>
         <span class="vote-dislike<?php echo $dcls; ?>">
             <span class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral';
             echo $cls; ?>" title="<?php echo $dislike_title; ?>">
-                <?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_DISLIKE'); ?></span>
+                <?= $this->item->get('nothelpful', 0) ?><span> <?= Lang::txt('COM_ANSWERS_VOTE_DISLIKE') ?></span>
             </span>
         </span>
     <?php } else { ?>
         <span class="vote-like<?php echo $lcls; ?>">
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($voteUrlBase . '&vote=yes'); ?>" class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral';
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($voteUrlBase . '&vote=yes') ?>" class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral';
             echo $cls; ?>" title="<?php echo $like_title; ?>">
-                <?php echo $this->item->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
+                <?= $this->item->get('helpful', 0) ?><span> <?= Lang::txt('COM_ANSWERS_VOTE_LIKE') ?></span>
             </button>
         </span>
         <span class="vote-dislike<?php echo $dcls; ?>">
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($voteUrlBase . '&vote=no'); ?>" class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral';
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($voteUrlBase . '&vote=no') ?>" class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral';
             echo $cls; ?>" title="<?php echo $dislike_title; ?>">
-                <?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_DISLIKE'); ?></span>
+                <?= $this->item->get('nothelpful', 0) ?><span> <?= Lang::txt('COM_ANSWERS_VOTE_DISLIKE') ?></span>
             </button>
         </span>
     <?php } ?>
@@ -80,26 +80,26 @@ $voteUrlBase = 'index.php?option=' . $this->option . '&task=vote&category=' . $t
         <span class="vote-like<?php echo $lcls; ?>">
             <span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral';
             echo $cls; ?>" title="<?php echo $like_title; ?>">
-                <?php echo $this->item->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
+                <?= $this->item->get('helpful', 0) ?><span> <?= Lang::txt('COM_ANSWERS_VOTE_LIKE') ?></span>
             </span>
         </span>
         <span class="vote-dislike<?php echo $dcls; ?>">
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($voteUrlBase . '&vote=no'); ?>" class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral';
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($voteUrlBase . '&vote=no') ?>" class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral';
             echo $cls; ?>" title="<?php echo $dislike_title; ?>">
-                <?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_DISLIKE'); ?></span>
+                <?= $this->item->get('nothelpful', 0) ?><span> <?= Lang::txt('COM_ANSWERS_VOTE_DISLIKE') ?></span>
             </button>
         </span>
     <?php } else { ?>
         <span class="vote-like<?php echo $lcls; ?>">
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($voteUrlBase . '&vote=yes'); ?>" class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral';
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($voteUrlBase . '&vote=yes') ?>" class="vote-button <?php echo ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral';
             echo $cls; ?>" title="<?php echo $like_title; ?>">
-                <?php echo $this->item->get('helpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_LIKE'); ?></span>
+                <?= $this->item->get('helpful', 0) ?><span> <?= Lang::txt('COM_ANSWERS_VOTE_LIKE') ?></span>
             </button>
         </span>
         <span class="vote-dislike<?php echo $dcls; ?>">
             <span class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral';
             echo $cls; ?>" title="<?php echo $dislike_title; ?>">
-                <?php echo $this->item->get('nothelpful', 0); ?><span> <?php echo Lang::txt('COM_ANSWERS_VOTE_DISLIKE'); ?></span>
+                <?= $this->item->get('nothelpful', 0) ?><span> <?= Lang::txt('COM_ANSWERS_VOTE_DISLIKE') ?></span>
             </span>
         </span>
     <?php } ?>

@@ -21,7 +21,7 @@ $this->css();
 
 <div class="container">
     <p class="section-options">
-        <a class="icon-add add btn" href="<?php echo Route::url($this->publication->link('questions') . '&action=new#ask'); ?>"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION'); ?></a>
+        <a class="icon-add add btn" href="<?= Route::url($this->publication->link('questions') . '&action=new#ask') ?>"><?= Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION') ?></a>
     </p>
     <table class="questions entries">
         <caption>
@@ -57,21 +57,21 @@ $this->css();
                 </th>
                 <td>
                     <?php if (!$row->isReported()) { ?>
-                        <a class="entry-title" href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape(strip_tags($row->get('subject'))); ?></a><br />
+                        <a class="entry-title" href="<?= Route::url($row->link()) ?>"><?= $this->escape(strip_tags($row->get('subject'))) ?></a><br />
                     <?php } else { ?>
-                        <span class="entry-title"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
+                        <span class="entry-title"><?= Lang::txt('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW') ?></span><br />
                     <?php } ?>
                     <span class="entry-details">
-                        <?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name); ?> <span class="entry-date-at">@</span>
-                        <span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span> <span class="entry-date-on">on</span>
-                        <span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
+                        <?= Lang::txt('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name) ?> <span class="entry-date-at">@</span>
+                        <span class="entry-time"><time datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span> <span class="entry-date-on">on</span>
+                        <span class="entry-date"><time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-state">
                             <?php echo ($row->get('state') == 1) ? Lang::txt('Closed') : Lang::txt('Open'); ?>
                         </span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-comments">
-                            <a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('There are %s responses to this question.', $row->get('rcount')); ?>">
+                            <a href="<?= Route::url($row->link() . '#answers') ?>" title="<?= Lang::txt('There are %s responses to this question.', $row->get('rcount')) ?>">
                                 <?php echo $row->responses->count(); ?>
                             </a>
                         </span>
@@ -80,18 +80,18 @@ $this->css();
                 <?php if ($this->banking) { ?>
                     <td class="reward">
                         <?php if ($row->get('reward') == 1 && $this->banking) { ?>
-                            <span class="entry-reward"><?php echo $row->get('points'); ?> <a href="<?php echo $this->infolink; ?>" title="<?php echo Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points', 0)); ?>">Points</a></span>
+                            <span class="entry-reward"><?= $row->get('points') ?> <a href="<?= $this->infolink ?>" title="<?= Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points', 0)) ?>">Points</a></span>
                         <?php } ?>
                     </td>
                 <?php } ?>
                 <td class="voting">
                     <span class="vote-like">
                         <?php if (User::isGuest()) { ?>
-                            <span class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote this up :: Please login to vote.">
+                            <span class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="Vote this up :: Please login to vote.">
                                 <?php echo $row->get('helpful', 0); ?><span> Like</span>
                             </span>
                         <?php } else { ?>
-                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes'); ?>" class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" title="Vote this up :: <?php echo $row->get('helpful', 0); ?> people liked this">
+                            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes') ?>" class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="Vote this up :: <?= $row->get('helpful', 0) ?> people liked this">
                                 <?php echo $row->get('helpful', 0); ?><span> Like</span>
                             </button>
                         <?php } ?>

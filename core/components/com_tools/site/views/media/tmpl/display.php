@@ -20,7 +20,7 @@ $this
     ->css('component.css')
     ->js('media.js');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
     <fieldset>
         <label for="upload">
             <input type="file" class="option" name="upload" id="upload" />
@@ -54,10 +54,10 @@ $this
                 ?>
                 <tr>
                     <td width="100%">
-                        <?php echo Route::url('index.php?option=com_resources&id=' . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file=' . urlencode($docs[$docName])); ?>
+                        <?= Route::url('index.php?option=com_resources&id=' . ($this->row->alias ? $this->row->alias : $this->resource) . '&task=download&file=' . urlencode($docs[$docName])) ?>
                     </td>
                     <td>
-                        <a class="icon-delete delete delete-file" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;file=<?php echo urlencode($docs[$docName]); ?>&amp;resource=<?php echo $this->escape($this->resource); ?>&amp;tmpl=component&amp;subdir=<?php echo $this->escape($this->subdir); ?>&amp;<?php echo Session::getFormToken(); ?>=1" target="filer" data-confirm="<?php echo $this->escape(Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName])); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                        <a class="icon-delete delete delete-file" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=delete&amp;file=<?= urlencode($docs[$docName]) ?>&amp;resource=<?= $this->escape($this->resource) ?>&amp;tmpl=component&amp;subdir=<?= $this->escape($this->subdir) ?>&amp;<?= Session::getFormToken() ?>=1" target="filer" data-confirm="<?= $this->escape(Lang::txt('Are you sure you want to delete the file "%s"?', $docs[$docName])) ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                         </a>
                     </td>

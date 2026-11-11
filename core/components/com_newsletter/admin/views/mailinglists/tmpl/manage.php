@@ -30,15 +30,15 @@ Toolbar::cancel();
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?>:</label>
         <select name="status">
-            <option value="all" <?php echo $this->filters['status'] == 'all' ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ALL'); ?></option>
-            <option value="active" <?php echo $this->filters['status'] == 'active' ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ACTIVE'); ?></option>
-            <option value="removed" <?php echo $this->filters['status'] == 'removed' ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_REMOVED'); ?></option>
-            <option value="unsubscribed" <?php echo $this->filters['status'] == 'unsubscribed' ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED'); ?></option>
-            <option value="inactive" <?php echo $this->filters['status'] == 'inactive' ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE'); ?></option>
+            <option value="all" <?= $this->filters['status'] == 'all' ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ALL') ?></option>
+            <option value="active" <?= $this->filters['status'] == 'active' ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ACTIVE') ?></option>
+            <option value="removed" <?= $this->filters['status'] == 'removed' ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_REMOVED') ?></option>
+            <option value="unsubscribed" <?= $this->filters['status'] == 'unsubscribed' ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED') ?></option>
+            <option value="inactive" <?= $this->filters['status'] == 'inactive' ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE') ?></option>
         </select>
         <input type="submit" value="<?php echo Lang::txt('Go'); ?>" id="btn-manage" />
     </fieldset>
@@ -48,14 +48,14 @@ $this->js();
             <tr>
                 <th>
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_CONFIRMED'); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED', 'date_added', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED', 'date_added', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col">
-                    <?php echo Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED', 'date_confirmed', @$this->filters['sort_Dir'], @$this->filters['sort']); ?>
+                    <?= Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_CONFIRMED', 'date_confirmed', @$this->filters['sort_Dir'], @$this->filters['sort']) ?>
                 </th>
             </tr>
         </thead>
@@ -74,11 +74,11 @@ $this->js();
                 <?php foreach ($this->list_emails as $le) { ?>
                     <tr>
                         <td width="30">
-                            <input type="checkbox" name="email_id[]" id="cb<?php echo $k;?>" value="<?php echo $le->id; ?>" class="checkbox-toggle" />
-                            <label for="cb<?php echo $k; ?>" class="sr-only visually-hidden"><?php echo $le->id; ?></label>
+                            <input type="checkbox" name="email_id[]" id="cb<?= $k ?>" value="<?= $le->id ?>" class="checkbox-toggle" />
+                            <label for="cb<?= $k ?>" class="sr-only visually-hidden"><?= $le->id ?></label>
                         </td>
                         <td>
-                            <a href="mailto:<?php echo $this->escape($le->email); ?>"><?php echo $this->escape($le->email); ?></a>
+                            <a href="mailto:<?= $this->escape($le->email) ?>"><?= $this->escape($le->email) ?></a>
                             <?php
                             if ($le->unsubscribe->reason) {
                                 echo '<p><strong>' . Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_UNSUBSCRIBE_REASON') . '</strong> ' . $this->escape($le->unsubscribe->reason) . '</p>';
@@ -99,7 +99,7 @@ $this->js();
                             ?>
                         </td>
                         <td>
-                            <time datetime="<?php echo $le->date_added; ?>"><?php echo Date::of($le->date_added)->format('l, F d, Y @ g:ia'); ?></time>
+                            <time datetime="<?= $le->date_added ?>"><?= Date::of($le->date_added)->format('l, F d, Y @ g:ia') ?></time>
                         </td>
                         <td>
                             <?php
@@ -116,7 +116,7 @@ $this->js();
             <?php } else { ?>
                 <tr>
                     <td colspan="6">
-                        <?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_EMAILS', "javascript:submitbutton('addemail');"); ?>
+                        <?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_NO_EMAILS', "javascript:submitbutton('addemail');") ?>
                     </td>
                 </tr>
             <?php } ?>

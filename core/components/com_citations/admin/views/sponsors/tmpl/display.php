@@ -24,7 +24,7 @@ Toolbar::spacer();
 Toolbar::help('sponsors');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
@@ -45,10 +45,10 @@ Toolbar::help('sponsors');
                         <td class="priority-4"><?php echo $this->escape($sponsor['image']); ?></td>
                         <td>
                             <?php if ($canDo->get('core.edit')) { ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $sponsor['id']); ?>"><?php echo Lang::txt('JACTION_EDIT'); ?></a> |
+                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $sponsor['id']) ?>"><?= Lang::txt('JACTION_EDIT') ?></a> |
                             <?php } ?>
                             <?php if ($canDo->get('core.delete')) { ?>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $sponsor['id'] . '&' . Session::getFormToken() . '=1'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></a>
+                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $sponsor['id'] . '&' . Session::getFormToken() . '=1') ?>"><?= Lang::txt('JACTION_DELETE') ?></a>
                             <?php } ?>
                         </td>
                     </tr>

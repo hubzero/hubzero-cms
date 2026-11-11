@@ -34,14 +34,14 @@ $route = $this->model->isProvisioned()
 $p_url = Route::url($route . '&active=databases');
 
 ?>
-<ul id="c-browser" <?php echo count($items) == 0 && isset($this->attachments) && count($this->attachments) == 0 ? 'class="hidden"' : ''; ?> >
+<ul id="c-browser" <?= count($items) == 0 && isset($this->attachments) && count($this->attachments) == 0 ? 'class="hidden"' : '' ?> >
 <?php
 if (count($items) > 0) { ?>
     <?php
     foreach ($items as $item) {
         if ($item->revision == null || ($selected && $selected == $item->database_name)) {
             ?>
-        <li class="c-click databases" id="data::<?php echo $this->escape($item->database_name); ?>"><?php echo $this->escape($item->title); ?></li>
+        <li class="c-click databases" id="data::<?= $this->escape($item->database_name) ?>"><?= $this->escape($item->title) ?></li>
             <?php
             $shown[] = $item->database_name;
         }
@@ -68,7 +68,7 @@ if (count($items) > 0) { ?>
         // Add missing items
         if (count($missing) > 0) {
             foreach ($missing as $miss) { ?>
-                <li class="c-click databases i-missing" id="data::<?php echo $this->escape($miss['id']); ?>"><?php echo $this->escape($miss['title']); ?><span class="c-missing"><?php echo Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE'); ?></span></li>
+                <li class="c-click databases i-missing" id="data::<?= $this->escape($miss['id']) ?>"><?= $this->escape($miss['title']) ?><span class="c-missing"><?= Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE') ?></span></li>
             <?php }
         }
 }
@@ -80,5 +80,5 @@ if (count($items) > 0) { ?>
 <?php } ?>
 
 <?php if (!$this->model->isProvisioned()) { ?>
-    <p class="addnew"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO'); ?> <a href="<?php echo Route::url($route . '&active=databases'); ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?></a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE'); ?></p>
+    <p class="addnew"><?= Lang::txt('PLG_PROJECTS_DATABASES_GO_TO') ?> <a href="<?= Route::url($route . '&active=databases') ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> <?= Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE') ?></p>
 <?php }

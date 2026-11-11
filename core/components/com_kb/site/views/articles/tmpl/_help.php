@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
     <div class="container">
         <h3><?php echo Lang::txt('COM_KB_COMMUNITY'); ?></h3>
         <p>
-            <?php echo Lang::txt('COM_KB_COMMUNITY_CANT_FIND'); ?> <?php echo Lang::txt('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . Route::url('index.php?option=com_answers') . '">' . Lang::txt('COM_ANSWERS') . '</a>'); ?>
+            <?= Lang::txt('COM_KB_COMMUNITY_CANT_FIND') ?> <?= Lang::txt('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . Route::url('index.php?option=com_answers') . '">' . Lang::txt('COM_ANSWERS') . '</a>') ?>
         </p>
     </div><!-- / .container -->
 <?php } ?>
@@ -24,7 +24,7 @@ defined('_HZEXEC_') or die();
     <div class="container">
         <h3><?php echo Lang::txt('COM_KB_FEATURE_REQUEST'); ?></h3>
         <p>
-            <?php echo Lang::txt('COM_KB_HAVE_A_FEATURE_REQUEST'); ?> <a href="<?php echo Route::url('index.php?option=com_wishlist'); ?>"><?php echo Lang::txt('COM_KB_FEATURE_TELL_US'); ?></a>
+            <?= Lang::txt('COM_KB_HAVE_A_FEATURE_REQUEST') ?> <a href="<?= Route::url('index.php?option=com_wishlist') ?>"><?= Lang::txt('COM_KB_FEATURE_TELL_US') ?></a>
         </p>
     </div><!-- / .container -->
 <?php } ?>
@@ -32,7 +32,7 @@ defined('_HZEXEC_') or die();
     <div class="container">
         <h3><?php echo Lang::txt('COM_KB_TROUBLE_REPORT'); ?></h3>
         <p>
-            <?php echo Lang::txt('COM_KB_TROUBLE_FOUND_BUG'); ?> <a href="<?php echo Route::url('index.php?option=com_support&controller=tickets&task=new'); ?>"><?php echo Lang::txt('COM_KB_TROUBLE_TELL_US'); ?></a>
+            <?= Lang::txt('COM_KB_TROUBLE_FOUND_BUG') ?> <a href="<?= Route::url('index.php?option=com_support&controller=tickets&task=new') ?>"><?= Lang::txt('COM_KB_TROUBLE_TELL_US') ?></a>
         </p>
     </div><!-- / .container -->
 <?php } ?>

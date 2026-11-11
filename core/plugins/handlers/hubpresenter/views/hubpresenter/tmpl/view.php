@@ -112,18 +112,18 @@ if (isset($this->entityId) && isset($this->entityType)) {
                 <ul class="no-js">
                     <?php $counter = 0; ?>
                     <?php foreach ($presentation->slides as $slide) : ?>
-                        <li id="slide_<?php echo $counter; ?>" title="<?php echo $this->escape($slide->title); ?>" time="<?php echo $this->escape($slide->time); ?>">
+                        <li id="slide_<?= $counter ?>" title="<?= $this->escape($slide->title) ?>" time="<?= $this->escape($slide->time) ?>">
                             <?php if ($slide->type == 'Image') : ?>
-                                <img src="<?php echo with(new Moderator($content_folder . DS . $slide->media))->getUrl(); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
+                                <img src="<?= with(new Moderator($content_folder . DS . $slide->media))->getUrl() ?>" alt="<?= $this->escape($slide->title) ?>" />
                             <?php else : ?>
                                 <video class="slidevideo">
                                     <?php foreach ($slide->media as $source) : ?>
-                                        <source src="<?php echo with(new Moderator($content_folder . DS . $source->source))->getUrl(); ?>" />
+                                        <source src="<?= with(new Moderator($content_folder . DS . $source->source))->getUrl() ?>" />
                                     <?php endforeach; ?>
-                                    <a href="<?php echo with(new Moderator($content_folder . DS . $slide->media[0]->source))->getUrl(); ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
+                                    <a href="<?= with(new Moderator($content_folder . DS . $slide->media[0]->source))->getUrl() ?>" class="flowplayer_slide" id="flowplayer_slide_<?= $counter ?>"></a>
                                 </video>
                                 <?php if (isset($slide->media[3])) : ?>
-                                <img src="<?php echo with(new Moderator($content_folder . DS . $slide->media[3]->source))->getUrl(); ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement" />
+                                <img src="<?= with(new Moderator($content_folder . DS . $slide->media[3]->source))->getUrl() ?>" alt="<?= $this->escape($slide->title) ?>" class="imagereplacement" />
                                 <?php endif; ?>
                             <?php endif; ?>
                         </li>
@@ -136,69 +136,69 @@ if (isset($this->entityId) && isset($this->entityType)) {
                 <div id="progress-bar"></div>
                 <div id="control-buttons">
                     <div id="control-buttons-left" class="cf">
-                        <a id="previous" class="control" href="javascript:void(0);" title="Previous Slide"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_PREV'); ?></a>
-                        <a id="play-pause" class="control" href="javascript:void(0);" title="Play Presentation"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_PAUSE'); ?></a>
-                        <a id="next" class="control" href="javascript:void(0);" title="Next Slide"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_NEXT'); ?></a>
+                        <a id="previous" class="control" href="javascript:void(0);" title="Previous Slide"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_PREV') ?></a>
+                        <a id="play-pause" class="control" href="javascript:void(0);" title="Play Presentation"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_PAUSE') ?></a>
+                        <a id="next" class="control" href="javascript:void(0);" title="Next Slide"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_NEXT') ?></a>
                         <div id="media-progress"></div>
                     </div>
                     <div id="control-buttons-right" class="cf">
                         <a id="subtitle" class="control" href="javascript:void(0);">
                             <?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT'); ?>
                             <div class="control-container subtitle-controls">
-                                <h3><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
+                                <h3><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT') ?></h3>
                                 <div class="grid">
                                     <div class="col span4 label">
-                                        <label for="subtitle-selector"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS'); ?>:</label>
+                                        <label for="subtitle-selector"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS') ?>:</label>
                                     </div>
                                     <div class="col span8 omega input">
                                         <select id="subtitle-selector">
-                                            <option value=""><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
+                                            <option value=""><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="grid">
                                     <div class="col span4 label">
-                                        <label for="transcript-selector"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_TRANSCRIPT'); ?>:</label>
+                                        <label for="transcript-selector"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_TRANSCRIPT') ?>:</label>
                                     </div>
                                     <div class="col span8 omega input">
                                         <select class="transcript-selector">
-                                            <option value=""><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
+                                            <option value=""><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <span class="options-toggle"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTIONS'); ?></span>
+                                <span class="options-toggle"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTIONS') ?></span>
                                 <div class="subtitle-settings hide">
                                     <div class="grid">
                                         <div class="col span6 label">
-                                            <label for="font-selector"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT'); ?>:</label>
+                                            <label for="font-selector"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT') ?>:</label>
                                         </div>
                                         <div class="col span6 omega input">
                                             <select id="font-selector">
-                                                <option value="Arial" selected><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_ARIAL'); ?></option>
-                                                <option value="Times New Roman"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TIMES'); ?></option>
-                                                <option value="Tahoma"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TAHOMA'); ?></option>
-                                                <option value="Trebuchet MS"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TREBUCHET'); ?></option>
-                                                <option value="Verdana"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_VERDANA'); ?></option>
-                                                <option value="Courier New"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_COURIER'); ?></option>
+                                                <option value="Arial" selected><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_ARIAL') ?></option>
+                                                <option value="Times New Roman"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TIMES') ?></option>
+                                                <option value="Tahoma"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TAHOMA') ?></option>
+                                                <option value="Trebuchet MS"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TREBUCHET') ?></option>
+                                                <option value="Verdana"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_VERDANA') ?></option>
+                                                <option value="Courier New"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_COURIER') ?></option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="grid">
                                         <div class="col span6 label">
-                                            <label for="font-size-selector"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE'); ?>:</label>
+                                            <label for="font-size-selector"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE') ?>:</label>
                                         </div>
                                         <div class="col span6 omega input">
                                             <select id="font-size-selector">
-                                                <option value="12"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL'); ?></option>
-                                                <option value="18" selected><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM'); ?></option>
-                                                <option value="24"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE'); ?></option>
+                                                <option value="12"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL') ?></option>
+                                                <option value="18" selected><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM') ?></option>
+                                                <option value="24"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE') ?></option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="grid">
                                         <div class="col span6 label">
-                                            <label for="font-color"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</label>
+                                            <label for="font-color"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_COLOR') ?>:</label>
                                         </div>
                                         <div class="col span6 omega input">
                                             <div id="font-color" data-color="FFF"></div>
@@ -206,7 +206,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     </div>
                                     <div class="grid">
                                         <div class="col span6 label">
-                                            <label for="background-color"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</label>
+                                            <label for="background-color"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_BACKGROUND') ?>:</label>
                                         </div>
                                         <div class="col span6 omega input">
                                             <div id="background-color" data-color="000"></div>
@@ -215,12 +215,12 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     <div class="grid">
                                         <div class="col span12 omega subtitle-settings-preview-container">
                                             <div class="subtitle-settings-preview">
-                                                <div class="test"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
+                                                <div class="test"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_EXAMPLE') ?></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="actions">
-                                        <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_SAVE'); ?></button>
+                                        <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_SAVE') ?></button>
                                     </div>
                                 </div>
                             </div>
@@ -237,16 +237,16 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                 <h3><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS'); ?></h3>
                                 <div class="grid">
                                     <div class="col span6 label">
-                                        <label for="speed"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE'); ?>:</label>
+                                        <label for="speed"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE') ?>:</label>
                                     </div>
                                     <div class="col span6 omega input">
                                         <select id="speed">
-                                            <option value=".25"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_025'); ?></option>
-                                            <option value=".5"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_05'); ?></option>
-                                            <option selected value="1"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL'); ?></option>
-                                            <option value="1.25"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_125'); ?></option>
-                                            <option value="1.5"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_15'); ?></option>
-                                            <option value="2"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_2'); ?></option>
+                                            <option value=".25"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_025') ?></option>
+                                            <option value=".5"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_05') ?></option>
+                                            <option selected value="1"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL') ?></option>
+                                            <option value="1.25"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_125') ?></option>
+                                            <option value="1.5"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_15') ?></option>
+                                            <option value="2"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_2') ?></option>
                                         </select>
                                     </div>
                                 </div>
@@ -262,19 +262,19 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                 </div> -->
                             </div>
                         </a>
-                        <a id="link" class="control" href="javascript:void(0);" title="<?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_THIS_SPOT'); ?>">
+                        <a id="link" class="control" href="javascript:void(0);" title="<?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_THIS_SPOT') ?>">
                             <?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK'); ?>
                             <div class="control-container link-controls">
-                                <h3><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_TO_VIDEO'); ?> <span><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_TO_VIDEO_AT_POSITION'); ?></span></h3>
+                                <h3><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_TO_VIDEO') ?> <span><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_TO_VIDEO_AT_POSITION') ?></span></h3>
                                 <div class="grid">
                                     <div class="col span12 omega">
                                         <input type="text" value="ss" />
-                                        <span class="hint"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_HINT'); ?></span>
+                                        <span class="hint"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_HINT') ?></span>
                                     </div>
                                 </div>
                             </div>
                         </a>
-                        <a id="switch" class="control" href="javascript:void(0);" title="<?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SWITCH_VIDEO_SLIDES'); ?>"><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SWITCH'); ?></a>
+                        <a id="switch" class="control" href="javascript:void(0);" title="<?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SWITCH_VIDEO_SLIDES') ?>"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SWITCH') ?></a>
                     </div>
                 </div>
             </div><!-- /#control-box -->
@@ -285,7 +285,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
         <div id="presenter-right">
             <div id="media" class="<?php echo $cls; ?>">
                 <?php if (strtolower($presentation->type) == 'video') : ?>
-                    <video id="player" preload="auto" controls="controls" data-mediaid="<?php echo (isset($this->entityId)) ? $this->entityId : 0; ?>" data-mediatype="<?php echo (isset($this->entityType)) ? $this->entityType : ''; ?>">
+                    <video id="player" preload="auto" controls="controls" data-mediaid="<?= (isset($this->entityId)) ? $this->entityId : 0 ?>" data-mediatype="<?= (isset($this->entityType)) ? $this->entityType : '' ?>">
                         <?php foreach ($presentation->media as $source) : ?>
                             <?php
                                 $type = '';
@@ -302,9 +302,9 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     break;
                             }
                             ?>
-                            <source src="<?php echo with(new Moderator($content_folder . DS . $source->source))->getUrl(); ?>" type="<?php echo $type; ?>">
+                            <source src="<?= with(new Moderator($content_folder . DS . $source->source))->getUrl() ?>" type="<?= $type ?>">
                         <?php endforeach; ?>
-                        <a href="<?php echo with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl(); ?>" id="flowplayer"></a>
+                        <a href="<?= with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl() ?>" id="flowplayer"></a>
 
                         <?php if (isset($subs) && count($subs) > 0) : ?>
                             <?php foreach ($subs as $sub) : ?>
@@ -312,7 +312,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     data-autoplay="<?php echo (int) $sub->autoplay; ?>"
                                     data-type="subtitle"
                                     data-lang="<?php echo $this->escape($sub->name); ?>"
-                                    data-src="<?php echo $this->escape($sub->source); ?>?v=<?php echo(is_file($sub->source) ? filemtime($sub->source) : 0); ?>"></div>
+                                    data-src="<?= $this->escape($sub->source) ?>?v=<?= (is_file($sub->source) ? filemtime($sub->source) : 0) ?>"></div>
                             <?php endforeach; ?>
                         <?php endif; ?>
 
@@ -320,9 +320,9 @@ if (isset($this->entityId) && isset($this->entityType)) {
                 <?php else : ?>
                     <audio id="player" preload="auto" controls="controls">
                         <?php foreach ($presentation->media as $source) : ?>
-                            <source src="<?php echo with(new Moderator($content_folder . DS . $source->source))->getUrl(); ?>" />
+                            <source src="<?= with(new Moderator($content_folder . DS . $source->source))->getUrl() ?>" />
                         <?php endforeach; ?>
-                        <a href="<?php echo with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl(); ?>" id="flowplayer" duration="<?php echo isset($presentation->duration) && $presentation->duration ? $this->escape($presentation->duration) : ''; ?>"></a>
+                        <a href="<?= with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl() ?>" id="flowplayer" duration="<?= isset($presentation->duration) && $presentation->duration ? $this->escape($presentation->duration) : '' ?>"></a>
                     </audio>
                 <?php endif; ?>
                 <div id="video-subtitles"></div>
@@ -346,7 +346,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     $thumb = $content_folder . DS . $slide->media;
                                 }
                                 ?>
-                                <img src="<?php echo with(new Moderator($thumb))->getUrl(); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
+                                <img src="<?= with(new Moderator($thumb))->getUrl() ?>" alt="<?= $this->escape($slide->title) ?>" />
                                 <span>
                                     <?php
                                         $num++;

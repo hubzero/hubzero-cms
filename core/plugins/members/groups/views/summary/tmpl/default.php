@@ -40,42 +40,42 @@ $this
 <?php if ($this->total) { ?>
     <div class="container">
         <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
-            <ul class="entries-menu order-options" data-label="<?php echo Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_STATE'); ?>">
+            <ul class="entries-menu order-options" data-label="<?= Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_STATE') ?>">
                 <li>
-                    <a class="sort-title<?php echo ($this->state == 'active') ? ' active' : ''; ?>" href="<?php echo Route::url($base . '&filter=' . $this->filter); ?>">
+                    <a class="sort-title<?= ($this->state == 'active') ? ' active' : '' ?>" href="<?= Route::url($base . '&filter=' . $this->filter) ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ACTIVE'); ?>
                     </a>
                 </li>
                 <li>
-                    <a class="sort-alias<?php echo ($this->state == 'archived') ? ' active' : ''; ?>" href="<?php echo Route::url($base . '&filter=' . $this->filter . '&state=archived'); ?>">
+                    <a class="sort-alias<?= ($this->state == 'archived') ? ' active' : '' ?>" href="<?= Route::url($base . '&filter=' . $this->filter . '&state=archived') ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED'); ?>
                     </a>
                 </li>
             </ul>
 
-            <ul class="entries-menu filter-options" data-label="<?php echo Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_MEMBERSHIP'); ?>">
+            <ul class="entries-menu filter-options" data-label="<?= Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_MEMBERSHIP') ?>">
                 <li>
-                    <a<?php echo ($this->filter == '') ? ' class="active"' : ''; ?> data-status="all" href="<?php echo Route::url($base); ?>">
+                    <a<?= ($this->filter == '') ? ' class="active"' : '' ?> data-status="all" href="<?= Route::url($base) ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_ALL', $this->total); ?>
                     </a>
                 </li>
                 <li>
-                    <a<?php echo ($this->filter == 'managers') ? ' class="active"' : ''; ?> data-status="manager" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=managers'); ?>">
+                    <a<?= ($this->filter == 'managers') ? ' class="active"' : '' ?> data-status="manager" href="<?= Route::url($base . '&state=' . $this->state . '&filter=managers') ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MANAGER'); ?>
                     </a>
                 </li>
                 <li>
-                    <a<?php echo ($this->filter == 'members') ? ' class="active"' : ''; ?> data-status="member" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=members'); ?>">
+                    <a<?= ($this->filter == 'members') ? ' class="active"' : '' ?> data-status="member" href="<?= Route::url($base . '&state=' . $this->state . '&filter=members') ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MEMBER'); ?>
                     </a>
                 </li>
                 <li>
-                    <a<?php echo ($this->filter == 'applicants') ? ' class="active"' : ''; ?> data-status="applicant" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=applicants'); ?>">
+                    <a<?= ($this->filter == 'applicants') ? ' class="active"' : '' ?> data-status="applicant" href="<?= Route::url($base . '&state=' . $this->state . '&filter=applicants') ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_APPLICANT'); ?>
                     </a>
                 </li>
                 <li>
-                    <a<?php echo ($this->filter == 'invitees') ? ' class="active"' : ''; ?> data-status="invitee" href="<?php echo Route::url($base . '&state=' . $this->state . '&filter=invitees'); ?>">
+                    <a<?= ($this->filter == 'invitees') ? ' class="active"' : '' ?> data-status="invitee" href="<?= Route::url($base . '&state=' . $this->state . '&filter=invitees') ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_INVITEES'); ?>
                     </a>
                 </li>
@@ -119,13 +119,13 @@ $this
                 // are we published
                 $published = ($group->published) ? true : false;
                 ?>
-                <div class="group <?php echo (!$published) ? 'notpublished' : ($group->published == 2 ? 'archived' : 'published'); ?>" id="group<?php echo $group->gidNumber; ?>"
+                <div class="group <?= (!$published) ? 'notpublished' : ($group->published == 2 ? 'archived' : 'published') ?>" id="group<?= $group->gidNumber ?>"
                     data-id="<?php echo $group->gidNumber; ?>"
                     data-status="<?php echo $this->escape($status); ?>"
                     data-title="<?php echo $this->escape(stripslashes($group->description) . ' ' . $group->cn); ?>">
                     <div class="group-contents">
                         <?php if ($published) : ?>
-                            <a class="group-identity" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn); ?>">
+                            <a class="group-identity" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn) ?>">
                         <?php else : ?>
                             <div class="group-identity">
                         <?php endif; ?>
@@ -134,7 +134,7 @@ $this
 
                             if ($group->logo && is_file($path)) :
                                 ?>
-                                <img src="<?php echo with(new Hubzero\Content\Moderator($path))->getUrl(); ?>" alt="<?php echo $this->escape(stripslashes($group->description)); ?>" />
+                                <img src="<?= with(new Hubzero\Content\Moderator($path))->getUrl() ?>" alt="<?= $this->escape(stripslashes($group->description)) ?>" />
                             <?php else : ?>
                                 <span><?php echo $this->escape(stripslashes($group->description)); ?></span>
                             <?php endif; ?>
@@ -147,12 +147,12 @@ $this
                         <div class="group-details">
                             <span class="group-alias"><?php echo $this->escape($group->cn); ?></span>
                             <?php if ($published) : ?>
-                                <a class="group-title" rel="<?php echo $group->gidNumber; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn); ?>">
-                                    <?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->description), 60)); ?>
+                                <a class="group-title" rel="<?= $group->gidNumber ?>" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn) ?>">
+                                    <?= $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->description), 60)) ?>
                                 </a>
                             <?php else : ?>
                                 <span class="group-title">
-                                    <?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->description), 60)); ?>
+                                    <?= $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->description), 60)) ?>
                                 </span>
                             <?php endif; ?>
 
@@ -182,23 +182,23 @@ $this
 
                         <?php if (!$published) : ?>
                             <div class="group-meta">
-                                <span class="not-published group-status"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NOT_PUBLISHED_GROUP'); ?></span>
+                                <span class="not-published group-status"><?= Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NOT_PUBLISHED_GROUP') ?></span>
                             </div>
                         <?php elseif (!$approved) : ?>
                             <div class="group-meta">
-                                <span class="pending-approval group-status"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP'); ?></span>
+                                <span class="pending-approval group-status"><?= Lang::txt('PLG_MEMBERS_GROUPS_STATUS_NEW_GROUP') ?></span>
                             </div>
                         <?php else : ?>
                             <div class="group-meta">
                                 <?php if ($group->registered && !$group->regconfirmed) : ?>
                                     <?php echo Lang::txt('Membership request requires approval.'); ?>
                                 <?php elseif (!$group->registered && $group->regconfirmed) : ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept'); ?>" class="btn btn-success accept tooltips" title="<?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT'); ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') ?>" class="btn btn-success accept tooltips" title="<?= Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') ?>"><?= Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT') ?></button>
                                 <?php else : ?>
                                     <div class="grid">
                                         <div class="col span6">
                                             <?php if ($group->published == 2) : ?>
-                                                <span><?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED_HINT'); ?></span>
+                                                <span><?= Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED_HINT') ?></span>
                                                 <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED'); ?>
                                             <?php else : ?>
                                                 <span><?php
@@ -267,7 +267,7 @@ $this
         <div class="questions">
             <p><strong><?php echo Lang::txt('PLG_MEMBERS_GROUPS_WHAT_ARE_GROUPS'); ?></strong></p>
             <p><?php echo Lang::txt('PLG_MEMBERS_GROUPS_EXPLANATION'); ?></p>
-            <p><?php echo Lang::txt('PLG_MEMBERS_GROUPS_GO_TO_GROUPS', Route::url('index.php?option=com_groups')); ?></p>
+            <p><?= Lang::txt('PLG_MEMBERS_GROUPS_GO_TO_GROUPS', Route::url('index.php?option=com_groups')) ?></p>
         </div><!-- / .post-type -->
     </div><!-- / #collection-introduction -->
 <?php }

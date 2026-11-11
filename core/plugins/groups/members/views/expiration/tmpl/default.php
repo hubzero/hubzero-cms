@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
 $min = Date::of('now')->modify('+1 day')->format('Y-m-d');
 $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' days')->format('Y-m-d') : '';
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members'); ?>" method="post" id="hubForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members') ?>" method="post" id="hubForm">
     <div class="explaination">
         <p class="info"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_EXPLANATION'); ?></p>
     </div>
@@ -59,7 +59,7 @@ $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' day
 
         <label for="expires">
             <?php echo Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_DATE'); ?>
-            <input type="date" name="expires" id="expires" min="<?php echo $min; ?>"<?php echo $max ? ' max="' . $max . '"' : ''; ?> />
+            <input type="date" name="expires" id="expires" min="<?= $min ?>"<?= $max ? ' max="' . $max . '"' : '' ?> />
         </label>
         <?php if ($this->maxDays > 0) { ?>
             <p class="hint"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_MAX_HINT', $this->maxDays); ?></p>
@@ -73,7 +73,7 @@ $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' day
                     <?php if ($this->maxDays > 0 && $days > $this->maxDays) {
                         continue;
                     } ?>
-                    <option value="<?php echo $days; ?>"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_EXTEND_DAYS', $days); ?></option>
+                    <option value="<?= $days ?>"><?= Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_EXTEND_DAYS', $days) ?></option>
                 <?php endforeach; ?>
             </select>
             <br /><span class="hint"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_EXTEND_HINT'); ?></span>

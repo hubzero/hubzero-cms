@@ -133,9 +133,9 @@ defined('_HZEXEC_') or die();
                         $access,
                     ); ?>
                 <?php else : ?>
-                    <option value="1"<?php echo $this->model->get('access') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?></option>
-                    <option value="2"<?php echo $this->model->get('access') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_REGISTERED'); ?></option>
-                    <option value="5"<?php echo $this->model->get('access') == 5 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?></option>
+                    <option value="1"<?= $this->model->get('access') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC') ?></option>
+                    <option value="2"<?= $this->model->get('access') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_REGISTERED') ?></option>
+                    <option value="5"<?= $this->model->get('access') == 5 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE') ?></option>
                 <?php endif; ?>
             </select>
         </label>

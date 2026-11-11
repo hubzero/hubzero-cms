@@ -67,7 +67,7 @@ $this
     ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -170,7 +170,7 @@ $this
                             <?php echo $this->row->rating . '/5.0 (' . $this->row->times_rated . ')'; ?>
                             <?php if ($this->row->rating != '0.0') { ?>
                                 <input type="button" name="reset_rating" id="reset_rating" value="Reset rating" data-task="resetrating" />
-                                <a class="btn btn-ratings" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ratings&id=' . $this->row->id . '&no_html=1'); ?>"><?php echo Lang::txt('COM_RESOURCES_VIEW'); ?></a>
+                                <a class="btn btn-ratings" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ratings&id=' . $this->row->id . '&no_html=1') ?>"><?= Lang::txt('COM_RESOURCES_VIEW') ?></a>
                             <?php } ?>
                         </td>
                     </tr>
@@ -203,17 +203,17 @@ $this
             echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PUBLISHING'), 'publish-page');
         ?>
             <div class="paramlist">
-                 <input type="hidden" name="fields[standalone]" id="field-standalone" value="<?php echo $this->row->standalone; ?>" />
+                 <input type="hidden" name="fields[standalone]" id="field-standalone" value="<?= $this->row->standalone ?>" />
 
                 <div class="input-wrap">
                     <label for="field-published"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATUS'); ?>:</label><br />
                     <select name="fields[published]" id="field-published">
-                        <option value="2"<?php echo ($this->row->published == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL'); ?></option>
-                        <option value="5"<?php echo ($this->row->published == 5) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_DRAFT_INTERNAL'); ?></option>
-                        <option value="3"<?php echo ($this->row->published == 3) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_PENDING'); ?></option>
-                        <option value="0"<?php echo ($this->row->published == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php echo ($this->row->published == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="4"<?php echo ($this->row->published == 4) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <option value="2"<?= ($this->row->published == 2) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') ?></option>
+                        <option value="5"<?= ($this->row->published == 5) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') ?></option>
+                        <option value="3"<?= ($this->row->published == 3) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_PENDING') ?></option>
+                        <option value="0"<?= ($this->row->published == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= ($this->row->published == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="4"<?= ($this->row->published == 4) ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
                     </select>
                 </div>
                 <?php if ($this->row->standalone == 1) { ?>
@@ -232,12 +232,12 @@ $this
                     </div>
                 <?php // if ($this->row->standalone == 1) {?>
                     <div class="input-wrap">
-                        <label for="publish_up"><?php echo Lang::txt('COM_RESOURCES_FIELD_PUBLISH_UP'); ?>:</label><br />
+                        <label for="publish_up"><?= Lang::txt('COM_RESOURCES_FIELD_PUBLISH_UP') ?>:</label><br />
                         <?php $up = ($this->row->publish_up && $this->row->publish_up != '0000-00-00 00:00:00' ? Date::of($this->row->publish_up)->toLocal('Y-m-d H:i:s') : ''); ?>
                         <?php echo Html::input('calendar', 'fields[publish_up]', $up); ?>
                     </div>
                     <div class="input-wrap">
-                        <label for="publish_down"><?php echo Lang::txt('COM_RESOURCES_FIELD_PUBLISH_DOWN'); ?>:</label><br />
+                        <label for="publish_down"><?= Lang::txt('COM_RESOURCES_FIELD_PUBLISH_DOWN') ?>:</label><br />
                         <?php
                             $down = Lang::txt('COM_RESOURCES_NEVER');
                         if ($this->row->publish_down && $this->row->publish_down != '0000-00-00 00:00:00' && $this->row->publish_down != Lang::txt('COM_RESOURCES_NEVER')) {
@@ -268,17 +268,17 @@ $this
                 <div class="grid">
                     <div class="col span9">
                         <select name="fileoptions" id="fileoptions">
-                            <option value="2"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_MAIN'); ?></option>
+                            <option value="2"><?= Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_MAIN') ?></option>
                             <option value="3"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_IMG'); ?></option>
-                            <option value="4"><?php echo Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_LINKED'); ?></option>
+                            <option value="4"><?= Lang::txt('COM_RESOURCES_FIELD_WITH_SELECTED_LINKED') ?></option>
                         </select>
                     </div>
                     <div class="col span3">
-                        <input type="button" value="<?php echo Lang::txt('COM_RESOURCES_APPLY'); ?>" onclick="doFileoptions();" />
+                        <input type="button" value="<?= Lang::txt('COM_RESOURCES_APPLY') ?>" onclick="doFileoptions();" />
                     </div>
                 </div>
 
-                <iframe width="100%" height="400" name="filer" id="filer" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $path . DS . $dir_id); ?>"></iframe>
+                <iframe width="100%" height="400" name="filer" id="filer" src="<?= Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $path . DS . $dir_id) ?>"></iframe>
                 <input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
             </div>
         <?php
@@ -287,7 +287,7 @@ $this
             ?>
                 <textarea name="tags" id="tags" cols="35" rows="6"><?php echo $this->lists['tags']; ?></textarea>
                 <?php echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_BADGES'), 'badges-page'); ?>
-                <textarea name="badges" id="badges" cols="35" rows="6"><?php echo isset($this->lists['badges']) ? $this->lists['badges'] : ''; ?></textarea>
+                <textarea name="badges" id="badges" cols="35" rows="6"><?= isset($this->lists['badges']) ? $this->lists['badges'] : '' ?></textarea>
                 <?php
                 echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
                 echo '<fieldset class="paramlist">' . $this->params->render() . '</fieldset>';
@@ -295,22 +295,22 @@ $this
             echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
             ?>
                 <div class="input-wrap">
-                    <label for="param-link_action"><?php echo Lang::txt('COM_RESOURCES_FIELD_LINK_ACTION_HINT'); ?>:</label><br />
+                    <label for="param-link_action"><?= Lang::txt('COM_RESOURCES_FIELD_LINK_ACTION_HINT') ?>:</label><br />
                     <select name="params[link_action]" id="param-link_action">
-                        <option value="0"<?php echo !$this->params->get('link_action') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DEFAULT'); ?></option>
-                        <option value="1"<?php echo $this->params->get('link_action') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW'); ?></option>
-                        <option value="2"<?php echo $this->params->get('link_action') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX'); ?></option>
-                        <option value="3"<?php echo $this->params->get('link_action') == 3 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD'); ?></option>
+                        <option value="0"<?= !$this->params->get('link_action') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DEFAULT') ?></option>
+                        <option value="1"<?= $this->params->get('link_action') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW') ?></option>
+                        <option value="2"<?= $this->params->get('link_action') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX') ?></option>
+                        <option value="3"<?= $this->params->get('link_action') == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap">
-                    <label for="param-restrict_direct_access"><?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_HINT'); ?>:</label><br />
+                    <label for="param-restrict_direct_access"><?= Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_HINT') ?>:</label><br />
                     <select name="params[restrict_direct_access]" id="param-link_action">
-                        <option value="0"<?php echo !$this->params->get('restrict_direct_access') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT'); ?></option>
-                        <option value="1"<?php echo $this->params->get('restrict_direct_access') == 1 ? ' selected="selected"' : ''; ?>>
+                        <option value="0"<?= !$this->params->get('restrict_direct_access') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT') ?></option>
+                        <option value="1"<?= $this->params->get('restrict_direct_access') == 1 ? ' selected="selected"' : '' ?>>
                         <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_NO'); ?>
                         </option>
-                        <option value="2"<?php echo $this->params->get('restrict_direct_access') == 2 ? ' selected="selected"' : ''; ?>>
+                        <option value="2"<?= $this->params->get('restrict_direct_access') == 2 ? ' selected="selected"' : '' ?>>
                         <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_YES'); ?>
                         </option>
                     </select>

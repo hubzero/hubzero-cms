@@ -105,7 +105,7 @@ $formAction = Route::url(
                 <?php echo Lang::txt('COM_SUPPORT_STATS_FOR_GROUP'); ?>
             </label>
             <select name="group" id="ticket-group">
-                <option value=""<?php echo !$this->filters['group'] ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
+                <option value=""<?= !$this->filters['group'] ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_NONE') ?></option>
                 <?php
                 if ($this->groups) {
                     foreach ($this->groups as $group) {

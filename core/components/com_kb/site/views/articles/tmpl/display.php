@@ -52,8 +52,8 @@ Document::setTitle(Lang::txt('COM_KB'));
                     <div class="grid">
                         <div class="col span-half">
                             <h4>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=popularity'); ?>">
-                                    <?php echo Lang::txt('COM_KB_POPULAR_ARTICLES'); ?> <span class="more">&raquo;</span>
+                                <a href="<?= Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=popularity') ?>">
+                                    <?= Lang::txt('COM_KB_POPULAR_ARTICLES') ?> <span class="more">&raquo;</span>
                                 </a>
                             </h4>
                             <?php
@@ -80,7 +80,7 @@ Document::setTitle(Lang::txt('COM_KB'));
                         </div><!-- / .col span-half -->
                         <div class="col span-half omega">
                             <h4>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=recent'); ?>">
+                                <a href="<?= Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=recent') ?>">
                                     <?php echo Lang::txt('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
                                 </a>
                             </h4>
@@ -162,7 +162,7 @@ Document::setTitle(Lang::txt('COM_KB'));
                         <div class="col span-half<?php echo $cls; ?>">
                             <h4>
                                 <a href="<?php echo Route::url($row->link()); ?>">
-                                    <?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count">(<?php echo $row->get('articles', 0); ?>)</span> <span class="more">&raquo;</span>
+                                    <?= $this->escape(stripslashes($row->get('title'))) ?> <span class="item-count">(<?= $row->get('articles', 0) ?>)</span> <span class="more">&raquo;</span>
                                 </a>
                             </h4>
                             <?php if ($articles->count() > 0) { ?>

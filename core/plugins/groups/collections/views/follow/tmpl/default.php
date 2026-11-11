@@ -20,7 +20,7 @@ $database = App::get('db');
 $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNumber') . '&active=' . $this->name;
 ?>
 
-<form method="get" action="<?php echo Route::url($base . '&task=' . $this->collection->get('alias')); ?>" id="collections">
+<form method="get" action="<?= Route::url($base . '&task=' . $this->collection->get('alias')) ?>" id="collections">
 
     <p class="overview">
         <span class="title count">
@@ -31,11 +31,11 @@ $base = 'index.php?option=' . $this->option . '&id=' . $this->member->get('uidNu
         </span>
         <?php if (!User::isGuest()) { ?>
             <?php if ($this->rows && $this->params->get('access-create-item')) { ?>
-                <a class="icon-add add btn tooltips" title="<?php echo Lang::txt('New post :: Add a new post to this collection'); ?>" href="<?php echo Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')); ?>">
+                <a class="icon-add add btn tooltips" title="<?= Lang::txt('New post :: Add a new post to this collection') ?>" href="<?= Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')) ?>">
                     <?php echo Lang::txt('New post'); ?>
                 </a>
             <?php } else { ?>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&task=' . $this->collection->get('alias') . '/follow'); ?>" class="icon-follow follow btn tooltips" title="<?php echo Lang::txt('Repost :: Watch this collection'); ?>">
+                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=' . $this->collection->get('alias') . '/follow') ?>" class="icon-follow follow btn tooltips" title="<?= Lang::txt('Repost :: Watch this collection') ?>">
                     <?php echo Lang::txt('Follow'); ?>
                 </button>
             <?php } ?>
@@ -58,7 +58,7 @@ if ($this->rows->total() > 0) {
         // layout() resolves against the templates that are actually here.
         $type = $item->layout(dirname(__DIR__, 2) . DS . 'post' . DS . 'tmpl', 'default_');
         ?>
-        <div class="post <?php echo $type; ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&task=post/' . $row->get('id')); ?>" data-width="600" data-height="350">
+        <div class="post <?= $type ?>" id="b<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>" data-closeup-url="<?= Route::url($base . '&task=post/' . $row->get('id')) ?>" data-width="600" data-height="350">
             <div class="content">
             <?php
                 $this
@@ -90,26 +90,26 @@ if ($this->rows->total() > 0) {
                     <?php if (!User::isGuest()) { ?>
                         <div class="actions">
                         <?php if ($item->get('created_by') == User::get('id')) { ?>
-                            <a class="edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/edit'); ?>">
+                            <a class="edit" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/edit') ?>">
                                 <span><?php echo Lang::txt('Edit'); ?></span>
                             </a>
                         <?php } else { ?>
-                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/vote'); ?>" class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $row->get('id'); ?>" data-text-like="<?php echo Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>">
-                                <span><?php echo ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like'); ?></span>
+                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=post/' . $row->get('id') . '/vote') ?>" class="vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $row->get('id') ?>" data-text-like="<?= Lang::txt('Like') ?>" data-text-unlike="<?= Lang::txt('Unlike') ?>">
+                                <span><?= ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like') ?></span>
                             </button>
                         <?php } ?>
-                            <a class="comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/comment'); ?>">
+                            <a class="comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/comment') ?>">
                                 <span><?php echo Lang::txt('Comment'); ?></span>
                             </a>
-                            <a class="repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/collect'); ?>">
+                            <a class="repost" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/collect') ?>">
                                 <span><?php echo Lang::txt('Collect'); ?></span>
                             </a>
                         <?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
-                            <a class="delete" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/delete'); ?>">
+                            <a class="delete" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/delete') ?>">
                                 <span><?php echo Lang::txt('Delete'); ?></span>
                             </a>
                         <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
-                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&task=post/' . $row->get('id') . '/remove'); ?>" class="unpost" data-id="<?php echo $row->get('id'); ?>">
+                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=post/' . $row->get('id') . '/remove') ?>" class="unpost" data-id="<?= $row->get('id') ?>">
                                 <span><?php echo Lang::txt('Remove'); ?></span>
                             </button>
                         <?php } ?>
@@ -119,39 +119,39 @@ if ($this->rows->total() > 0) {
 
             <?php if ($row->original() || $item->get('created_by') != $this->member->get('uidNumber')) { ?>
                 <div class="convo attribution clearfix">
-                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . $item->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" class="img-link">
-                        <img src="<?php echo $item->creator()->picture(0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>" />
+                    <a href="<?= Route::url('index.php?option=com_members&id=' . $item->get('created_by')) ?>" title="<?= $this->escape(stripslashes($item->creator()->get('name'))) ?>" class="img-link">
+                        <img src="<?= $item->creator()->picture(0) ?>" alt="Profile picture of <?= $this->escape(stripslashes($item->creator()->get('name'))) ?>" />
                     </a>
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=com_members&id=' . $item->get('created_by')); ?>">
+                        <a href="<?= Route::url('index.php?option=com_members&id=' . $item->get('created_by')) ?>">
                             <?php echo $this->escape(stripslashes($item->creator()->get('name'))); ?>
                         </a>
                         posted
                         <br />
                         <span class="entry-date">
-                            <span class="entry-date-at">@</span> <span class="date"><?php echo Date::of($item->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></span>
-                            <span class="entry-date-on">on</span> <span class="time"><?php echo Date::of($item->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+                            <span class="entry-date-at">@</span> <span class="date"><?= Date::of($item->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></span>
+                            <span class="entry-date-on">on</span> <span class="time"><?= Date::of($item->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></span>
                         </span>
                     </p>
                 </div><!-- / .attribution -->
             <?php } ?>
             <?php if (!$row->original()) {//if ($item->get('created_by') != $this->member->get('uidNumber')) {?>
                 <div class="convo attribution reposted clearfix">
-                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . $row->get('created_by')); ?>" title="<?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" class="img-link">
-                        <img src="<?php echo $this->member->picture(0); ?>" alt="Profile picture of <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>" />
+                    <a href="<?= Route::url('index.php?option=com_members&id=' . $row->get('created_by')) ?>" title="<?= $this->escape(stripslashes($row->creator()->get('name'))) ?>" class="img-link">
+                        <img src="<?= $this->member->picture(0) ?>" alt="Profile picture of <?= $this->escape(stripslashes($row->creator()->get('name'))) ?>" />
                     </a>
                     <p>
-                        <a href="<?php echo Route::url('index.php?option=com_members&id=' . $row->get('created_by')); ?>">
+                        <a href="<?= Route::url('index.php?option=com_members&id=' . $row->get('created_by')) ?>">
                             <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
                         </a>
                         onto
-                        <a href="<?php echo Route::url($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))); ?>">
+                        <a href="<?= Route::url($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))) ?>">
                             <?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
                         </a>
                         <br />
                         <span class="entry-date">
-                            <span class="entry-date-at">@</span> <span class="date"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></span>
-                            <span class="entry-date-on">on</span> <span class="time"><?php echo Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></span>
+                            <span class="entry-date-at">@</span> <span class="date"><?= Date::of($row->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></span>
+                            <span class="entry-date-on">on</span> <span class="time"><?= Date::of($row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></span>
                         </span>
                     </p>
                 </div><!-- / .attribution -->

@@ -44,7 +44,7 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
             <label id="<?php echo $elName; ?>-lbl"> <?php if ($required) {
                 ?><span class="required"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REQUIRED'); ?></span><?php
                        } else {
-                            ?><span class="optional"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_OPTIONAL'); ?></span><?php
+                            ?><span class="optional"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_OPTIONAL') ?></span><?php
                        } ?>
                 <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_CITATIONS')); ?>
             </label>
@@ -64,8 +64,8 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
                         ?>
                         <li>
                             <span class="item-options">
-                                    <a href="<?php echo Route::url($this->pub->link('editversionid') . '&active=links&action=newcite&cid=' . $cite->cid . '&p=' . $props); ?>" class="item-edit showinbox" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT'); ?>">&nbsp;</a>
-                                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->cid . '&p=' . $props); ?>" class="item-remove" title="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE'); ?>">&nbsp;</button>
+                                    <a href="<?= Route::url($this->pub->link('editversionid') . '&active=links&action=newcite&cid=' . $cite->cid . '&p=' . $props) ?>" class="item-edit showinbox" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT') ?>">&nbsp;</a>
+                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->cid . '&p=' . $props) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
                             </span>
                             <span class="item-title citation-formatted"><?php echo $citeText; ?></span>
                         </li>
@@ -74,7 +74,7 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
                     </ul>
             <?php  }  ?>
                     <div class="item-new">
-                        <span><a href="<?php echo $selectUrl; ?>" class="item-add showinbox"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATION'); ?></a></span>
+                        <span><a href="<?= $selectUrl ?>" class="item-add showinbox"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATION') ?></a></span>
                     </div>
                 </div>
         </div>

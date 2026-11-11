@@ -135,17 +135,17 @@ $invalidMsg = $this->escape(
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_PROJECTS_FIELD_STATE'); ?>:</label><br />
                     <select name="recipient[state]" id="field-state">
-                        <option value="0"<?php echo $this->row->get('state') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php echo $this->row->get('state') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="2"<?php echo $this->row->get('state') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <option value="0"<?= $this->row->get('state') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= $this->row->get('state') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="2"<?= $this->row->get('state') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
                     </select>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-starred"><?php echo Lang::txt('COM_PROJECTS_FIELD_STARRED'); ?>:</label><br />
                     <select name="recipient[starred]" id="field-starred">
-                        <option value="0"<?php echo $this->row->get('starred') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JNO'); ?></option>
-                        <option value="1"<?php echo $this->row->get('starred') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JYES'); ?></option>
+                        <option value="0"<?= $this->row->get('starred') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
+                        <option value="1"<?= $this->row->get('starred') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JYES') ?></option>
                     </select>
                 </div>
             </fieldset>

@@ -27,10 +27,10 @@ $this
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
-            <a<?php echo $this->controller == 'imports' ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=imports'); ?>"><?php echo Lang::txt('COM_MEMBERS_IMPORT_TITLE_IMPORTS'); ?></a>
+            <a<?= $this->controller == 'imports' ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&controller=imports') ?>"><?= Lang::txt('COM_MEMBERS_IMPORT_TITLE_IMPORTS') ?></a>
         </li>
         <li>
-            <a<?php echo $this->controller == 'importhooks' ? ' class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=importhooks'); ?>"><?php echo Lang::txt('COM_MEMBERS_IMPORT_HOOKS'); ?></a>
+            <a<?= $this->controller == 'importhooks' ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&controller=importhooks') ?>"><?= Lang::txt('COM_MEMBERS_IMPORT_HOOKS') ?></a>
         </li>
     </ul>
 </nav>
@@ -39,7 +39,7 @@ $this
     <p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?php echo Route::url('index.php?option=com_members&controller=imports&task=dorun'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=com_members&controller=imports&task=dorun') ?>" method="post" name="adminForm" id="adminForm">
 
     <fieldset class="adminform import-results">
 
@@ -53,19 +53,19 @@ $this
         <div class="countdown" data-timeout="5">
             <?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_START', '<span>5</span>'); ?>
         </div>
-        <div class="countdown-actions" data-progress="<?php echo Route::url('index.php?option=com_members&controller=imports&task=progress&id=' . $this->import->get('id')); ?>">
+        <div class="countdown-actions" data-progress="<?= Route::url('index.php?option=com_members&controller=imports&task=progress&id=' . $this->import->get('id')) ?>">
             <button type="button" class="start"><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_BUTTON_START'); ?></button>
             <button type="button" class="stop"><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_BUTTON_STOP'); ?></button>
 
-            <button type="button" class="start-over"><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_BUTTON_RERUN'); ?></button>
+            <button type="button" class="start-over"><?= Lang::txt('COM_MEMBERS_IMPORT_RUN_BUTTON_RERUN') ?></button>
             <?php if ($this->dryRun) : ?>
-                <button type="button" class="start-real"><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_BUTTON_REAL'); ?></button>
+                <button type="button" class="start-real"><?= Lang::txt('COM_MEMBERS_IMPORT_RUN_BUTTON_REAL') ?></button>
             <?php endif; ?>
         </div>
 
         <hr />
 
-        <strong><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_PROGRESS'); ?><span class="progress-percentage">0%</span></strong>
+        <strong><?= Lang::txt('COM_MEMBERS_IMPORT_RUN_PROGRESS') ?><span class="progress-percentage">0%</span></strong>
         <div class="progress"></div>
 
         <hr />
@@ -76,8 +76,8 @@ $this
         </div>
         <script id="entry-template" type="text/x-handlebars-template">
             <h3 class="resource-title">
-                {{#if record.errors}}<span class="has-errors"><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSERRORS'); ?></span>{{/if}}
-                {{#if record.notices}}<span class="has-notices"><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSNOTICES'); ?></span>{{/if}}
+                {{#if record.errors}}<span class="has-errors"><?= Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSERRORS') ?></span>{{/if}}
+                {{#if record.notices}}<span class="has-notices"><?= Lang::txt('COM_MEMBERS_IMPORT_RUN_RESULT_CONTAINSNOTICES') ?></span>{{/if}}
                 {{{ record.entry.name }}}
             </h3>
 

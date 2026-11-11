@@ -21,7 +21,7 @@ $this->css();
 </h3>
 <div class="container">
     <p class="section-options">
-        <a class="icon-add add btn" href="<?php echo Route::url($this->resource->link() . '&active=questions&action=new'); ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>
+        <a class="icon-add add btn" href="<?= Route::url($this->resource->link() . '&active=questions&action=new') ?>"><?= Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION') ?></a>
     </p>
     <table class="questions entries">
         <caption>
@@ -78,23 +78,23 @@ $this->css();
                 </th>
                 <td>
                 <?php if (!$row->isReported()) { ?>
-                    <a class="entry-title" href="<?php echo Route::url($row->link()); ?>"><?php echo $this->escape(strip_tags($row->subject)); ?></a><br />
+                    <a class="entry-title" href="<?= Route::url($row->link()) ?>"><?= $this->escape(strip_tags($row->subject)) ?></a><br />
                 <?php } else { ?>
-                    <span class="entry-title"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_QUESTION_UNDER_REVIEW'); ?></span><br />
+                    <span class="entry-title"><?= Lang::txt('PLG_RESOURCES_QUESTIONS_QUESTION_UNDER_REVIEW') ?></span><br />
                 <?php } ?>
                     <span class="entry-details">
                         <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASKED_BY', $name); ?>
                         <span class="entry-date-at"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_AT'); ?></span>
-                        <span class="entry-time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
+                        <span class="entry-time"><time datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
                         <span class="entry-date-on"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ON'); ?></span>
-                        <span class="entry-date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
+                        <span class="entry-date"><time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-state">
-                            <?php echo ($row->get('state') == 1) ? Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_CLOSED') : Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_OPEN'); ?>
+                            <?= ($row->get('state') == 1) ? Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_CLOSED') : Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_OPEN') ?>
                         </span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-comments">
-                            <a href="<?php echo Route::url($row->link() . '#answers'); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_RESPONSES', $row->get('rcount')); ?>">
+                            <a href="<?= Route::url($row->link() . '#answers') ?>" title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_RESPONSES', $row->get('rcount')) ?>">
                                 <?php echo $row->responses->count(); ?>
                             </a>
                         </span>
@@ -103,18 +103,18 @@ $this->css();
             <?php if ($this->banking) { ?>
                 <td class="reward">
                 <?php if ($row->get('reward') == 1 && $this->banking) { ?>
-                    <span class="entry-reward"><?php echo $row->get('points'); ?> <a href="<?php echo $this->infolink; ?>" title="<?php echo Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points', 0)); ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_POINTS'); ?></a></span>
+                    <span class="entry-reward"><?= $row->get('points') ?> <a href="<?= $this->infolink ?>" title="<?= Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points', 0)) ?>"><?= Lang::txt('PLG_RESOURCES_QUESTIONS_POINTS') ?></a></span>
                 <?php } ?>
                 </td>
             <?php } ?>
                 <td class="voting">
                     <span class="vote-like">
                     <?php if (User::isGuest()) { ?>
-                        <span class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP_LOGIN'); ?>">
+                        <span class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP_LOGIN') ?>">
                             <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_LIKES', $row->get('helpful', 0)); ?>
                         </span>
                     <?php } else { ?>
-                        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes'); ?>" class="vote-button <?php echo ($row->get('helpful', 0) > 0) ? 'like' : 'neutral'; ?> tooltips" title="<?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP', $row->get('helpful', 0)); ?>">
+                        <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes') ?>" class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP', $row->get('helpful', 0)) ?>">
                             <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_LIKES', $row->get('helpful', 0)); ?>
                         </button>
                     <?php } ?>

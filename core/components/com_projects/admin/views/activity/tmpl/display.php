@@ -76,15 +76,15 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                     <option value=""><?php
                         echo Lang::txt('COM_PROJECTS_FILTER_ACTION');
                     ?></option>
-                    <option value="created"<?php echo $this->filters['action'] == 'created' ? ' selected="selected"' : ''; ?>>created</option>
-                    <option value="updated"<?php echo $this->filters['action'] == 'updated' ? ' selected="selected"' : ''; ?>>updated</option>
-                    <option value="deleted"<?php echo $this->filters['action'] == 'deleted' ? ' selected="selected"' : ''; ?>>deleted</option>
-                    <option value="joined"<?php echo $this->filters['action'] == 'joined' ? ' selected="selected"' : ''; ?>>joined</option>
-                    <option value="uploaded"<?php echo $this->filters['action'] == 'uploaded' ? ' selected="selected"' : ''; ?>>uploaded</option>
-                    <option value="accepted"<?php echo $this->filters['action'] == 'accepted' ? ' selected="selected"' : ''; ?>>accepted</option>
-                    <option value="cancelled"<?php echo $this->filters['action'] == 'cancelled' ? ' selected="selected"' : ''; ?>>cancelled</option>
-                    <option value="submitted"<?php echo $this->filters['action'] == 'submitted' ? ' selected="selected"' : ''; ?>>submitted</option>
-                    <option value="emailed"<?php echo $this->filters['action'] == 'emailed' ? ' selected="selected"' : ''; ?>>emailed</option>
+                    <option value="created"<?= $this->filters['action'] == 'created' ? ' selected="selected"' : '' ?>>created</option>
+                    <option value="updated"<?= $this->filters['action'] == 'updated' ? ' selected="selected"' : '' ?>>updated</option>
+                    <option value="deleted"<?= $this->filters['action'] == 'deleted' ? ' selected="selected"' : '' ?>>deleted</option>
+                    <option value="joined"<?= $this->filters['action'] == 'joined' ? ' selected="selected"' : '' ?>>joined</option>
+                    <option value="uploaded"<?= $this->filters['action'] == 'uploaded' ? ' selected="selected"' : '' ?>>uploaded</option>
+                    <option value="accepted"<?= $this->filters['action'] == 'accepted' ? ' selected="selected"' : '' ?>>accepted</option>
+                    <option value="cancelled"<?= $this->filters['action'] == 'cancelled' ? ' selected="selected"' : '' ?>>cancelled</option>
+                    <option value="submitted"<?= $this->filters['action'] == 'submitted' ? ' selected="selected"' : '' ?>>submitted</option>
+                    <option value="emailed"<?= $this->filters['action'] == 'emailed' ? ' selected="selected"' : '' ?>>emailed</option>
                 </select>
 
                 <label for="filter_filter"><?php
@@ -98,7 +98,7 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                     <option value=""><?php
                         echo Lang::txt('COM_PROJECTS_FILTER_FILTER');
                     ?></option>
-                    <option value="starred"<?php echo $this->filters['filter'] == 'starred' ? ' selected="selected"' : ''; ?>><?php
+                    <option value="starred"<?= $this->filters['filter'] == 'starred' ? ' selected="selected"' : '' ?>><?php
                         echo Lang::txt('COM_PROJECTS_FILTER_STARRED');
                     ?></option>
                 </select>
@@ -114,9 +114,9 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                     <option value="-1"<?php echo $this->filters['state'] == '-1' ? ' selected="selected"' : ''; ?>><?php
                         echo Lang::txt('COM_PROJECTS_ALL_STATES');
                     ?></option>
-                    <option value="0"<?php echo $this->filters['state'] === 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                    <option value="1"<?php echo $this->filters['state'] === 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                    <option value="2"<?php echo $this->filters['state'] === 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                    <option value="0"<?= $this->filters['state'] === 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                    <option value="1"<?= $this->filters['state'] === 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                    <option value="2"<?= $this->filters['state'] === 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
                 </select>
             </div>
         </div>

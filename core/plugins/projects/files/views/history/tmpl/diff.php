@@ -78,9 +78,9 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
         <?php if (!$this->getError()) { ?>
         <div class="diff-legend">
             <span class="prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF'); ?>:</span>
-            <label><input type="radio" value="side-by-side" name="mode"  <?php echo $this->params['mode'] == 'side-by-side' ? 'checked="checked"' : ''; ?>  /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE'); ?>
+            <label><input type="radio" value="side-by-side" name="mode"  <?= $this->params['mode'] == 'side-by-side' ? 'checked="checked"' : '' ?>  /> <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE') ?>
             </label>
-            <label><input type="radio" value="inline" name="mode" <?php echo $this->params['mode'] == 'inline' ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE'); ?>
+            <label><input type="radio" value="inline" name="mode" <?= $this->params['mode'] == 'inline' ? 'checked="checked"' : '' ?> /> <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE') ?>
             </label>
             <input type="submit" value="Update" id="diff-update" class="btn" />
             <dl>
@@ -108,8 +108,8 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
             <table id="table-diff" class="diff diffSideBySide">
              <thead>
                 <tr>
-                    <th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ')'; ?></th>
-                    <th colspan="2"><?php echo Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ')'; ?></th>
+                    <th colspan="2"><?= Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ')' ?></th>
+                    <th colspan="2"><?= Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ')' ?></th>
                 </tr>
              </thead>
 
@@ -148,7 +148,7 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
                 ?>
                 <div class="diffGit">
                     <h5>
-                    <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ') and @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ') '; ?></h5>
+                    <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_COMPARING') . '  @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ') and @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ') ' ?></h5>
                     <?php if ($this->diff) {
                         echo '<pre>' . $this->diff . '</pre>';
                     } else {  ?>

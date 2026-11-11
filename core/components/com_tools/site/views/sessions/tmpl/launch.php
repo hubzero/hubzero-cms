@@ -61,13 +61,13 @@ $classicUrl = Route::url('index.php?option=com_tools&controller=sessions&app=' .
                 <li id="step-connect" class="wait"><?php echo Lang::txt('COM_TOOLS_LAUNCH_STEP_CONNECT'); ?></li>
             </ol>
 
-            <p id="launch-status" class="tool-launch-status" role="status" aria-live="polite"><?php echo Lang::txt('COM_TOOLS_LAUNCH_STARTING'); ?></p>
+            <p id="launch-status" class="tool-launch-status" role="status" aria-live="polite"><?= Lang::txt('COM_TOOLS_LAUNCH_STARTING') ?></p>
 
             <div id="launch-error" class="tool-launch-error" hidden>
                 <p id="launch-error-msg" class="tool-launch-error-msg"></p>
                 <p class="tool-launch-actions">
                     <a href="#" id="launch-retry" class="btn"><?php echo Lang::txt('COM_TOOLS_LAUNCH_RETRY'); ?></a>
-                    <a href="<?php echo Route::url('index.php?option=com_resources&alias=' . urlencode($this->app)); ?>" class="tool-launch-resource"><?php echo Lang::txt('COM_TOOLS_LAUNCH_RESOURCE', $this->escape($this->toolTitle)); ?></a>
+                    <a href="<?= Route::url('index.php?option=com_resources&alias=' . urlencode($this->app)) ?>" class="tool-launch-resource"><?= Lang::txt('COM_TOOLS_LAUNCH_RESOURCE', $this->escape($this->toolTitle)) ?></a>
                 </p>
             </div>
 

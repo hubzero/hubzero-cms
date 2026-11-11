@@ -40,7 +40,7 @@ Html::behavior('modal', 'a.modals');
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -50,13 +50,13 @@ Html::behavior('modal', 'a.modals');
                     <tbody>
                         <tr>
                             <td>
-                                <h4><?php echo '<a class="modals" href="' . $link . '">' . $this->escape($this->title) . '</a>: '; ?></h4>
+                                <h4><?= '<a class="modals" href="' . $link . '">' . $this->escape($this->title) . '</a>: ' ?></h4>
                                 <?php // The reported body is rendered markup for some sources -- the
                                 // wiki support plugin selects rc.chtml into this column -- so escaping
                                 // it shows an administrator literal <p> and <a> tags. Purify it, which
                                 // is what the site twin (site/views/abuse/tmpl/display.php) does.?>
-                                <p><?php echo (is_object($this->reported)) ? \Hubzero\Utility\Sanitize::html(stripslashes((string) $this->reported->text)) : ''; ?></p>
-                                <?php echo is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject != '' ? '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>' : ''; ?>
+                                <p><?= (is_object($this->reported)) ? \Hubzero\Utility\Sanitize::html(stripslashes((string) $this->reported->text)) : '' ?></p>
+                                <?= is_object($this->reported) && isset($this->reported->subject) && $this->reported->subject != '' ? '<p>' . $this->escape(stripslashes($this->reported->subject)) . '</p>' : '' ?>
                             </td>
                         </tr>
                     </tbody>
@@ -71,11 +71,11 @@ Html::behavior('modal', 'a.modals');
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SUPPORT_REPORT_REPORTED_BY'); ?></th>
-                        <td><?php echo (is_object($reporter) && $reporter->get('username')) ? $this->escape($reporter->get('username')) : Lang::txt('COM_SUPPORT_UNKNOWN'); ?></td>
+                        <td><?= (is_object($reporter) && $reporter->get('username')) ? $this->escape($reporter->get('username')) : Lang::txt('COM_SUPPORT_UNKNOWN') ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SUPPORT_COL_REASON'); ?></th>
-                        <td><?php echo $this->escape(stripslashes($this->report->report ? $this->report->report : $this->report->subject)); ?></td>
+                        <td><?= $this->escape(stripslashes($this->report->report ? $this->report->report : $this->report->subject)) ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -85,26 +85,26 @@ Html::behavior('modal', 'a.modals');
                 <legend><span><?php echo Lang::txt('COM_SUPPORT_REPORT_TAKE_ACTION'); ?></span></legend>
 
                 <?php if ($this->report->state == 0) { ?>
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM_HINT'); ?>">
+                    <div class="input-wrap" data-hint="<?= Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM_HINT') ?>">
                         <input type="radio" name="task" id="field-task-release" value="release" />
-                        <label for="field-task-release"><?php echo Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM'); ?></label>
+                        <label for="field-task-release"><?= Lang::txt('COM_SUPPORT_REPORT_RELEASE_ITEM') ?></label>
                     </div>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM_HINT'); ?>">
+                    <div class="input-wrap" data-hint="<?= Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM_HINT') ?>">
                         <input type="radio" name="task" id="field-task-spam" value="spam" />
                         <label for="field-task-spam"><?php echo Lang::txt('COM_SUPPORT_REPORT_MARK_AS_SPAM'); ?></label>
                     </div>
 
                     <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM_HINT'); ?>">
                         <input type="radio" name="task" id="field-task-remove" value="remove" />
-                        <label for="field-task-remove"><?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM'); ?></label>
+                        <label for="field-task-remove"><?= Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM') ?></label>
                         <span class="hint"><?php echo Lang::txt('COM_SUPPORT_REPORT_DELETE_ITEM_HINT'); ?></span><br />
                         <textarea name="note" id="note" rows="5" cols="25"></textarea>
                     </div>
 
                     <div class="input-wrap">
                         <input type="radio" name="task" value="cancel" id="field-task-cancel" checked="checked" />
-                        <label for="field-task-cancel"><?php echo Lang::txt('COM_SUPPORT_REPORT_DECIDE_LATER'); ?></label>
+                        <label for="field-task-cancel"><?= Lang::txt('COM_SUPPORT_REPORT_DECIDE_LATER') ?></label>
                     </div>
                 <?php } else { ?>
                     <p class="warning"><?php echo Lang::txt('COM_SUPPORT_REPORT_ACTION_TAKEN'); ?></p>

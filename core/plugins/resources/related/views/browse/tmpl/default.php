@@ -47,11 +47,11 @@ defined('_HZEXEC_') or die();
             }
             ?>
             <tr>
-                <td class="ranking"><?php echo number_format($line->ranking, 1); ?> <span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_RESOURCES_RELATED_RANKING'); ?></span></td>
+                <td class="ranking"><?= number_format($line->ranking, 1) ?> <span class="rank-<?= $r ?>"><?= Lang::txt('PLG_RESOURCES_RELATED_RANKING') ?></span></td>
                 <td>
                 <?php if ($line->section != 'Topic') { ?>
                     <?php echo Lang::txt('PLG_RESOURCES_RELATED_PART_OF'); ?>
-                    <a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>
+                    <a href="<?= $sef ?>" class="fixedResourceTip" title="DOM:rsrce<?= $line->id ?>"><?= $this->escape(stripslashes($line->title)) ?></a>
                     <div class="hide" id="rsrce<?php echo $line->id; ?>">
                         <h4><?php echo $this->escape(stripslashes($line->title)); ?></h4>
                         <div>
@@ -63,12 +63,12 @@ defined('_HZEXEC_') or die();
                                     </tr>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_RESOURCES_RELATED_DATE'); ?></th>
-                                        <td><?php echo Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+                                        <td><?= Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <?php echo $this->escape(\Hubzero\Utility\Str::truncate(strip_tags(stripslashes($line->introtext)), 300)); ?>
+                        <?= $this->escape(\Hubzero\Utility\Str::truncate(strip_tags(stripslashes($line->introtext)), 300)) ?>
                     </div>
                 <?php } else { ?>
                     <a href="<?php echo $sef; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>

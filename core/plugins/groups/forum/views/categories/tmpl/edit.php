@@ -98,7 +98,7 @@ if ($this->category->get('section_id') == 0) {
                                     type="checkbox"
                                     name="fields[closed]"
                                     id="field-closed"
-                                    value="3"<?php echo $this->category->get('closed') ? ' checked="checked"' : ''; ?> />
+                                    value="3"<?= $this->category->get('closed') ? ' checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED'); ?>
                             </label>
                         </div>

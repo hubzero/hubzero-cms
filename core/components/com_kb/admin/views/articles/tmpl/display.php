@@ -44,19 +44,19 @@ Toolbar::help('articles');
 $access = Html::access('assetgroups');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span5">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('JSEARCH_FILTER') ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_KB_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
             <div class="col span7">
                 <label for="filter-category"><?php echo Lang::txt('COM_KB_CATEGORY'); ?>:</label>
-                <?php echo Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->filters['category'], 'category', 'filter-category', 'class="filter filter-submit"'); ?>
+                <?= Components\Kb\Admin\Helpers\Html::categories($this->categories, $this->filters['category'], 'category', 'filter-category', 'class="filter filter-submit"') ?>
 
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">
@@ -72,14 +72,14 @@ $access = Html::access('assetgroups');
             <tr>
                 <th scope="col">
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_KB_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_KB_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_KB_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_KB_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_KB_CATEGORY'); ?></th>
                 <th scope="col" class="priority-5"><?php echo Lang::txt('COM_KB_VOTES'); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_KB_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_KB_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -129,17 +129,17 @@ $access = Html::access('assetgroups');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('id') ?>" class="checkbox-toggle" />
+                    <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->get('id') ?></label>
                 </td>
                 <td>
                     <?php if ($row->get('checked_out') && $row->get('checked_out') != User::get('id')) { ?>
-                            <span class="checkedout" title="<?php echo Lang::txt('JLIB_HTML_CHECKED_OUT'); ?> :: <?php echo $this->escape($row->get('editor')); ?>">
+                            <span class="checkedout" title="<?= Lang::txt('JLIB_HTML_CHECKED_OUT') ?> :: <?= $this->escape($row->get('editor')) ?>">
                                 <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
                             </span>
                     <?php } else { ?>
                         <?php if ($canDo->get('core.edit')) { ?>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_KB_EDIT_ARTICLE'); ?>">
+                            <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>" title="<?= Lang::txt('COM_KB_EDIT_ARTICLE') ?>">
                                 <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
                             </a>
                         <?php } else { ?>
@@ -154,7 +154,7 @@ $access = Html::access('assetgroups');
                 </td>
                 <td class="priority-2">
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&category=' . $this->filters['category'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_KB_SET_TASK', $task);?>">
+                        <a class="state <?= $class ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&category=' . $this->filters['category'] . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_KB_SET_TASK', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>

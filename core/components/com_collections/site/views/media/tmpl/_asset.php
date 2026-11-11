@@ -16,16 +16,16 @@ defined('_HZEXEC_') or die();
             <span class="asset-handle"></span>
             <span class="asset-file">
             <?php if ($this->asset->get('type') == 'link') { ?>
-                <input type="text" name="assets[<?php echo $this->i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($this->asset->get('filename'))); ?>" placeholder="http://" />
+                <input type="text" name="assets[<?= $this->i ?>][filename]" size="35" value="<?= $this->escape(stripslashes($this->asset->get('filename'))) ?>" placeholder="http://" />
             <?php } else { ?>
                 <?php echo $this->escape(stripslashes($this->asset->get('filename'))); ?>
-                <input type="hidden" name="assets[<?php echo $this->i; ?>][filename]" value="<?php echo $this->escape(stripslashes($this->asset->get('filename'))); ?>" />
+                <input type="hidden" name="assets[<?= $this->i ?>][filename]" value="<?= $this->escape(stripslashes($this->asset->get('filename'))) ?>" />
             <?php } ?>
             </span>
             <span class="asset-description">
-                <input type="hidden" name="assets[<?php echo $this->i; ?>][type]" value="<?php echo $this->asset->get('type'); ?>" />
-                <input type="hidden" name="assets[<?php echo $this->i; ?>][id]" value="<?php echo $this->asset->get('id'); ?>" />
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $this->asset->get('id') . '&no_html=' . $this->no_html); ?>" class="icon-delete delete" data-id="<?php echo $this->asset->get('id'); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_DELETE_ASSET'); ?>">
+                <input type="hidden" name="assets[<?= $this->i ?>][type]" value="<?= $this->asset->get('type') ?>" />
+                <input type="hidden" name="assets[<?= $this->i ?>][id]" value="<?= $this->asset->get('id') ?>" />
+                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $this->asset->get('id') . '&no_html=' . $this->no_html) ?>" class="icon-delete delete" data-id="<?= $this->asset->get('id') ?>" title="<?= Lang::txt('COM_COLLECTIONS_DELETE_ASSET') ?>">
                     <?php echo Lang::txt('COM_COLLECTIONS_DELETE'); ?>
                 </button>
             </span>

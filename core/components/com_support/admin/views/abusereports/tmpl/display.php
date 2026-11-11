@@ -23,13 +23,13 @@ Html::behavior('framework');
 $this->view('_submenu')->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter-state"><?php echo Lang::txt('COM_SUPPORT_SHOW'); ?>:</label>
         <select name="state" id="filter-state" class="filter filter-submit">
-            <option value="0"<?php echo $this->filters['state'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_OUTSTANDING'); ?></option>
-            <option value="1"<?php echo $this->filters['state'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_RELEASED'); ?></option>
-            <option value="2"<?php echo $this->filters['state'] == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_DELETED'); ?></option>
+            <option value="0"<?= $this->filters['state'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_OUTSTANDING') ?></option>
+            <option value="1"<?= $this->filters['state'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_RELEASED') ?></option>
+            <option value="2"<?= $this->filters['state'] == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_DELETED') ?></option>
         </select>
     </fieldset>
 
@@ -72,7 +72,7 @@ $this->view('_submenu')->display();
             <tr class="<?php echo "row$k"; ?>">
                 <td><?php echo $row->id;  ?></td>
                 <td><?php echo $status;  ?></td>
-                <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $row->id . '&cat=' . $row->category); ?>"><?php echo $this->escape($row->category) . ' #' . (int) $row->referenceid; ?></a></td>
+                <td><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $row->id . '&cat=' . $row->category) ?>"><?= $this->escape($row->category) . ' #' . (int) $row->referenceid ?></a></td>
                 <td><?php echo $this->escape($row->subject); ?></td>
                 <td><?php echo $this->escape($user->get('username')); ?></td>
                 <td><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>

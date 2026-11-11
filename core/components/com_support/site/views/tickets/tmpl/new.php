@@ -50,14 +50,14 @@ endif;
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php endif ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new' . $tmpl); ?>" id="hubForm" method="post" enctype="multipart/form-data" <?php echo ($no_html) ? ' class="full"' : ''; ?>>
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new' . $tmpl) ?>" id="hubForm" method="post" enctype="multipart/form-data" <?= ($no_html) ? ' class="full"' : '' ?>>
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
         <input type="hidden" name="task" value="save" />
         <input type="hidden" name="verified" value="<?php echo $this->escape($this->row->get('verified')); ?>" />
 
-        <input type="hidden" name="problem[referer]" value="<?php echo $this->escape($this->row->get('referrer')); ?>" />
+        <input type="hidden" name="problem[referer]" value="<?= $this->escape($this->row->get('referrer')) ?>" />
         <input type="hidden" name="problem[tool]" value="<?php echo $this->escape($this->row->get('tool')); ?>" />
         <input type="hidden" name="problem[short]" value="<?php echo $this->escape($this->row->get('short')); ?>" />
 
@@ -78,14 +78,14 @@ endif;
             <div class="form-group">
                 <label for="reporter_login">
                     <?php echo Lang::txt('COM_SUPPORT_USERNAME'); ?>
-                    <input type="text" name="reporter[login]" class="form-control" value="<?php echo $this->escape($this->row->get('login', $this->row->submitter->get('username'))); ?>" id="reporter_login" />
+                    <input type="text" name="reporter[login]" class="form-control" value="<?= $this->escape($this->row->get('login', $this->row->submitter->get('username'))) ?>" id="reporter_login" />
                 </label>
             </div>
 
             <div class="form-group">
-                <label for="reporter_name"<?php echo ($this->getError() && !$this->row->get('name')) ? ' class="fieldWithErrors"' : ''; ?>>
-                    <?php echo Lang::txt('COM_SUPPORT_NAME'); ?> <span class="required"><?php echo Lang::txt('COM_SUPPORT_REQUIRED'); ?></span>
-                    <input type="text" name="reporter[name]" class="form-control" value="<?php echo $this->escape($this->row->get('name', $this->row->submitter->get('name'))); ?>" id="reporter_name" />
+                <label for="reporter_name"<?= ($this->getError() && !$this->row->get('name')) ? ' class="fieldWithErrors"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_NAME') ?> <span class="required"><?= Lang::txt('COM_SUPPORT_REQUIRED') ?></span>
+                    <input type="text" name="reporter[name]" class="form-control" value="<?= $this->escape($this->row->get('name', $this->row->submitter->get('name'))) ?>" id="reporter_name" />
                 </label>
                 <?php if ($this->getError() && !$this->row->get('name')) : ?>
                     <p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_NAME'); ?></p>
@@ -93,30 +93,30 @@ endif;
             </div>
 
             <div class="form-group">
-                <label for="reporter_email"<?php echo ($this->getError() && !$this->row->get('email')) ? ' class="fieldWithErrors"' : ''; ?>>
-                    <?php echo Lang::txt('COM_SUPPORT_EMAIL'); ?> <span class="required"><?php echo Lang::txt('COM_SUPPORT_REQUIRED'); ?></span>
-                    <input type="email" name="reporter[email]" class="form-control" value="<?php echo $this->escape($this->row->get('email', $this->row->submitter->get('email'))); ?>" id="reporter_email" />
+                <label for="reporter_email"<?= ($this->getError() && !$this->row->get('email')) ? ' class="fieldWithErrors"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_EMAIL') ?> <span class="required"><?= Lang::txt('COM_SUPPORT_REQUIRED') ?></span>
+                    <input type="email" name="reporter[email]" class="form-control" value="<?= $this->escape($this->row->get('email', $this->row->submitter->get('email'))) ?>" id="reporter_email" />
                 </label>
                 <?php if ($this->getError() && !$this->row->get('email')) : ?>
                     <p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_EMAIL'); ?></p>
                 <?php endif; ?>
             </div>
 
-            <input type="hidden" name="reporter[org]" value="<?php echo $this->escape($this->row->get('organization', $this->row->submitter->get('organization'))); ?>" id="reporter_org" />
+            <input type="hidden" name="reporter[org]" value="<?= $this->escape($this->row->get('organization', $this->row->submitter->get('organization'))) ?>" id="reporter_org" />
         </fieldset> 
     <?php else : ?>
-        <input type="hidden" name="reporter[login]" value="<?php echo $this->escape($this->row->get('login', $this->row->submitter->get('username'))); ?>" id="reporter_login" />
-        <input type="hidden" name="reporter[name]" value="<?php echo $this->escape($this->row->get('name', $this->row->submitter->get('name'))); ?>" id="reporter_name" />
-        <input type="hidden" name="reporter[email]" value="<?php echo $this->escape($this->row->get('email', $this->row->submitter->get('email'))); ?>" id="reporter_email" />
+        <input type="hidden" name="reporter[login]" value="<?= $this->escape($this->row->get('login', $this->row->submitter->get('username'))) ?>" id="reporter_login" />
+        <input type="hidden" name="reporter[name]" value="<?= $this->escape($this->row->get('name', $this->row->submitter->get('name'))) ?>" id="reporter_name" />
+        <input type="hidden" name="reporter[email]" value="<?= $this->escape($this->row->get('email', $this->row->submitter->get('email'))) ?>" id="reporter_email" />
     <?php endif; ?>
 
         <fieldset>
             <legend><?php echo Lang::txt('COM_SUPPORT_TROUBLE_YOUR_PROBLEM'); ?></legend>
 
             <div class="form-group">
-                <label for="problem_long"<?php echo ($this->getError() && !$this->row->get('report')) ? ' class="fieldWithErrors"' : ''; ?>>
-                    <?php echo Lang::txt('COM_SUPPORT_TROUBLE_DESCRIPTION'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
-                    <textarea name="problem[long]" cols="40" rows="10" class="form-control" id="problem_long"><?php echo $this->escape($this->row->get('report')); ?></textarea>
+                <label for="problem_long"<?= ($this->getError() && !$this->row->get('report')) ? ' class="fieldWithErrors"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_TROUBLE_DESCRIPTION') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
+                    <textarea name="problem[long]" cols="40" rows="10" class="form-control" id="problem_long"><?= $this->escape($this->row->get('report')) ?></textarea>
                 </label>
                 <?php if ($this->getError() && !$this->row->get('report')) : ?>
                     <p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_DESCRIPTION'); ?></p>
@@ -131,7 +131,7 @@ endif;
                 $jbase = rtrim(Request::base(true), '/');
                 ?>
                 <div class="form-group">
-                    <div id="ajax-uploader" role="group" data-instructions="<?php echo Lang::txt('COM_SUPPORT_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?php echo $tmp; ?>&amp;<?php echo Session::getFormToken(); ?>=1" data-list="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?php echo $tmp; ?>">
+                    <div id="ajax-uploader" role="group" data-instructions="<?= Lang::txt('COM_SUPPORT_CLICK_OR_DROP_FILE') ?>" data-action="<?= $jbase ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?= $tmp ?>&amp;<?= Session::getFormToken() ?>=1" data-list="<?= $jbase ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?= $tmp ?>">
                         <noscript>
                             <div class="form-group">
                                 <label for="upload">
@@ -205,7 +205,7 @@ endif;
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEVERITY'); ?>
                                 <select name="problem[severity]" id="ticket-field-severity" class="form-control">
                                     <?php foreach ($this->lists['severities'] as $severity) : ?>
-                                        <option value="<?php echo $severity; ?>"<?php echo $severity == 'normal' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
+                                        <option value="<?= $severity ?>"<?= $severity == 'normal' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>
@@ -218,15 +218,15 @@ endif;
                                 echo Lang::txt('COM_SUPPORT_COMMENT_STATUS'); ?>:
                                 <select name="problem[status]" id="ticket-field-status" class="form-control">
                                     <optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
-                                        <option value="0" selected="selected"><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_NEW'); ?></option>
+                                        <option value="0" selected="selected"><?= Lang::txt('COM_SUPPORT_COMMENT_OPT_NEW') ?></option>
                                         <?php foreach (Components\Support\Models\Status::allOpen()->rows() as $status) : ?>
-                                            <option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
+                                            <option value="<?= $status->get('id') ?>"><?= $this->escape($status->get('title')) ?></option>
                                         <?php endforeach; ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
-                                        <option value="0"><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
+                                        <option value="0"><?= Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED') ?></option>
                                         <?php foreach (Components\Support\Models\Status::allClosed()->rows() as $status) : ?>
-                                            <option value="<?php echo $status->get('id'); ?>"><?php echo $this->escape($status->get('title')); ?></option>
+                                            <option value="<?= $status->get('id') ?>"><?= $this->escape($status->get('title')) ?></option>
                                         <?php endforeach; ?>
                                     </optgroup>
                                 </select>
@@ -238,7 +238,7 @@ endif;
                 <div class="form-group">
                     <label for="field-target_date">
                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_TARGET_DATE'); ?>:
-                        <input type="text" name="problem[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?php echo(timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="" />
+                        <input type="text" name="problem[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?= (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60) ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="" />
                     </label>
                 </div>
 
@@ -251,7 +251,7 @@ endif;
                                 <?php
                                 foreach ($this->lists['categories'] as $category) :
                                     ?>
-                                    <option value="<?php echo $this->escape($category->alias); ?>"><?php echo $this->escape(stripslashes($category->title)); ?></option>
+                                    <option value="<?= $this->escape($category->alias) ?>"><?= $this->escape(stripslashes($category->title)) ?></option>
                                     <?php
                                 endforeach;
                                 ?>
@@ -268,7 +268,7 @@ endif;
                         if (count($mc) > 0) :
                             echo '<span class="hint">' . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
                         else : ?>
-                            <span class="hint"><?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
+                            <span class="hint"><?= Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS') ?></span>
                             <input type="text" name="cc" id="acmembers" class="form-control" value="" size="35" />
                         <?php endif; ?>
                     </label>
@@ -288,7 +288,7 @@ endif;
                 <legend><?php echo Lang::txt('COM_SUPPORT_HUMAN_CHECK'); ?></legend>
 
                 <label id="fbBotcheck-label" for="fbBotcheck">
-                    <?php echo Lang::txt('COM_SUPPORT_LEAVE_FIELD_BLANK'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                    <?= Lang::txt('COM_SUPPORT_LEAVE_FIELD_BLANK') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
                     <input type="text" name="botcheck" id="fbBotcheck" value="" />
                 </label>
                 <?php
@@ -307,7 +307,7 @@ endif;
         <?php echo Html::input('token'); ?>
 
         <p class="submit">
-            <input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('COM_SUPPORT_SUBMIT'); ?>" />
+            <input class="btn btn-success" type="submit" name="submit" value="<?= Lang::txt('COM_SUPPORT_SUBMIT') ?>" />
         </p>
     </form>
 </section><!-- / .main section -->

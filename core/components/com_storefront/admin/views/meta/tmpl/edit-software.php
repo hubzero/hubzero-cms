@@ -53,8 +53,8 @@ if (empty($this->meta->globalDownloadLimit)) {
             <div class="input-wrap">
                 <label for="eulaRequired"><?php echo 'Is EULA Required?'; ?>:</label>
                 <select name="fields[eulaRequired]" id="eulaRequired">
-                    <option value="0"<?php echo $this->meta->eulaRequired == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
-                    <option value="1"<?php echo $this->meta->eulaRequired == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
+                    <option value="0"<?= $this->meta->eulaRequired == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
+                    <option value="1"<?= $this->meta->eulaRequired == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
                 </select>
             </div>
 

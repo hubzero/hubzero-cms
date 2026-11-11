@@ -49,7 +49,7 @@ $base = $this->offering->link();
             <div class="filters-inner">
                 <ul>
                     <li>
-                        <a class="download btn" href="<?php echo Route::url($base . '&active=notes&action=download&frmt=txt'); ?>">
+                        <a class="download btn" href="<?= Route::url($base . '&active=notes&action=download&frmt=txt') ?>">
                             <span><?php echo Lang::txt('PLG_COURSES_NOTES_DOWNLOAD'); ?></span>
                         </a>
                     </li>
@@ -58,9 +58,9 @@ $base = $this->offering->link();
                 <p>
                     <label for="filter-search">
                         <span><?php echo Lang::txt('PLG_COURSES_NOTES_SEARCH'); ?></span>
-                        <input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_COURSES_NOTES_SEARCH_NOTES'); ?>" />
+                        <input type="text" name="search" id="filter-search" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('PLG_COURSES_NOTES_SEARCH_NOTES') ?>" />
                     </label>
-                    <input type="submit" class="filter-submit" value="<?php echo Lang::txt('PLG_COURSES_NOTES_GO'); ?>" />
+                    <input type="submit" class="filter-submit" value="<?= Lang::txt('PLG_COURSES_NOTES_GO') ?>" />
                 </p>
             </div><!-- / .filters-inner -->
         </fieldset>
@@ -91,16 +91,16 @@ $base = $this->offering->link();
             <div class="section">
                 <h3><?php echo $this->escape(stripslashes($lecture->get('title'))); ?></h3>
                 <?php foreach ($notes as $note) : ?>
-                    <div class="jSticky-medium static<?php echo $note->get('access') ? ' annotation' : ''; ?>" id="note-<?php echo $note->get('id'); ?>" data-id="<?php echo $note->get('id'); ?>">
+                    <div class="jSticky-medium static<?= $note->get('access') ? ' annotation' : '' ?>" id="note-<?= $note->get('id') ?>" data-id="<?= $note->get('id') ?>">
                         <div class="jSticky-header">
                             <?php if ($note->get('timestamp') && $note->get('timestamp') != '00:00:00') : ?>
-                                <a href="<?php echo str_replace('%3A', ':', Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias') . '&time=' . $this->escape($note->get('timestamp')))); ?>" class="time"><?php echo $this->escape($note->get('timestamp')); ?></a>
+                                <a href="<?= str_replace('%3A', ':', Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias') . '&time=' . $this->escape($note->get('timestamp')))) ?>" class="time"><?= $this->escape($note->get('timestamp')) ?></a>
                             <?php endif; ?>
                         </div>
                         <div class="jStickyNote">
-                            <textarea name="note_<?php echo $note->get('id'); ?>"><?php echo $this->escape(stripslashes($note->get('content'))); ?></textarea>
+                            <textarea name="note_<?= $note->get('id') ?>"><?= $this->escape(stripslashes($note->get('content'))) ?></textarea>
                         </div>
-                        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&active=notes&action=delete&note=' . $note->get('id')); ?>" class="jSticky-delete" title="<?php echo Lang::txt('PLG_COURSES_NOTES_DELETE_NOTE'); ?>">x</button>
+                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&active=notes&action=delete&note=' . $note->get('id')) ?>" class="jSticky-delete" title="<?= Lang::txt('PLG_COURSES_NOTES_DELETE_NOTE') ?>">x</button>
                     </div>
                 <?php endforeach; ?>
                 <div class="clear"></div>
@@ -111,7 +111,7 @@ $base = $this->offering->link();
         jQuery(document).ready(function(jQuery) {
             var $ = jQuery;
 
-            var url = "<?php echo Request::base(true) . '/' . $this->offering->link() . '&active=notes&no_html=1&note='; ?>";
+            var url = "<?= Request::base(true) . '/' . $this->offering->link() . '&active=notes&no_html=1&note=' ?>";
 
             $('#page_content textarea').each(function(i, el) {
                 var hgt = $(this).parent().parent().height();

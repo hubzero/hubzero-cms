@@ -66,16 +66,16 @@ Toolbar::help('tool');
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_TOOLS_FIELD_STATE'); ?>:</label><br />
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?php echo $this->row->state == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php echo $this->row->state == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED'); ?></option>
-                        <option value="2"<?php echo $this->row->state == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_CREATED'); ?></option>
-                        <option value="3"<?php echo $this->row->state == 3 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED'); ?></option>
-                        <option value="4"<?php echo $this->row->state == 4 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED'); ?></option>
-                        <option value="5"<?php echo $this->row->state == 5 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_UPDATED'); ?></option>
-                        <option value="6"<?php echo $this->row->state == 6 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_APPROVED'); ?></option>
-                        <option value="7"<?php echo $this->row->state == 7 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="8"<?php echo $this->row->state == 8 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_RETIRED'); ?></option>
-                        <option value="9"<?php echo $this->row->state == 9 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_ABANDONED'); ?></option>
+                        <option value="0"<?= $this->row->state == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= $this->row->state == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_REGISTERED') ?></option>
+                        <option value="2"<?= $this->row->state == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_CREATED') ?></option>
+                        <option value="3"<?= $this->row->state == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_UPLOADED') ?></option>
+                        <option value="4"<?= $this->row->state == 4 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_INSTALLED') ?></option>
+                        <option value="5"<?= $this->row->state == 5 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_UPDATED') ?></option>
+                        <option value="6"<?= $this->row->state == 6 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_APPROVED') ?></option>
+                        <option value="7"<?= $this->row->state == 7 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="8"<?= $this->row->state == 8 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_RETIRED') ?></option>
+                        <option value="9"<?= $this->row->state == 9 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_ABANDONED') ?></option>
                     </select>
                 </div>
             </fieldset>

@@ -31,14 +31,14 @@ $this
 <section class="main section">
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
+            <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=categories&task=search') ?>" method="get">
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_FORUM_SEARCH'); ?>" />
+                    <input class="entry-search-submit" type="submit" value="<?= Lang::txt('COM_FORUM_SEARCH') ?>" />
                     <fieldset class="entry-search">
                         <legend><span><?php echo Lang::txt('COM_FORUM_SEARCH_LEGEND'); ?></span></legend>
 
                         <label for="entry-search-field"><?php echo Lang::txt('COM_FORUM_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_FORUM_SEARCH_PLACEHOLDER'); ?>" />
+                        <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_FORUM_SEARCH_PLACEHOLDER') ?>" />
                     </fieldset>
                 </div><!-- / .container -->
 
@@ -94,29 +94,29 @@ $this
                                     ?>
                                     <tr<?php echo count($cls) > 0 ? ' class="' . implode(' ', $cls) . '"' : ''; ?>>
                                         <th class="priority-5" scope="row">
-                                            <span class="entry-identifier <?php echo $icn; ?>"><?php echo $this->escape($row->get('id')); ?></span>
+                                            <span class="entry-identifier <?= $icn ?>"><?= $this->escape($row->get('id')) ?></span>
                                         </th>
                                         <td>
-                                            <a class="entry-title" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $secalias . '&category=' . $catalias . '&thread=' . $row->get('thread') . '&q=' . $this->filters['search']); ?>">
+                                            <a class="entry-title" href="<?= Route::url('index.php?option=' . $this->option . '&section=' . $secalias . '&category=' . $catalias . '&thread=' . $row->get('thread') . '&q=' . $this->filters['search']) ?>">
                                                 <span><?php echo $title; ?></span>
                                             </a>
                                             <span class="entry-details">
                                                 <span class="entry-date">
                                                     <?php echo $row->created('date'); ?>
                                                 </span>
-                                                <?php echo Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
+                                                <?= Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>') ?>
                                             </span>
                                         </td>
                                         <td class="priority-4">
                                             <span><?php echo Lang::txt('COM_FORUM_SECTION'); ?></span>
                                             <span class="entry-details section-name">
-                                                <?php echo $this->escape(\Hubzero\Utility\Str::truncate($section, 100, ['exact' => true])); ?>
+                                                <?= $this->escape(\Hubzero\Utility\Str::truncate($section, 100, ['exact' => true])) ?>
                                             </span>
                                         </td>
                                         <td class="priority-3">
                                             <span><?php echo Lang::txt('COM_FORUM_CATEGORY'); ?></span>
                                             <span class="entry-details category-name">
-                                                <?php echo $this->escape(\Hubzero\Utility\Str::truncate($category, 100, ['exact' => true])); ?>
+                                                <?= $this->escape(\Hubzero\Utility\Str::truncate($category, 100, ['exact' => true])) ?>
                                             </span>
                                         </td>
                                     </tr>
@@ -145,7 +145,7 @@ $this
                         <?php echo Lang::txt('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
                     </p>
                     <p>
-                        <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_FORUM_NEW_DISCUSSION'); ?></a>
+                        <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('COM_FORUM_NEW_DISCUSSION') ?></a>
                     </p>
                 </div><!-- / .container -->
             <?php } ?>

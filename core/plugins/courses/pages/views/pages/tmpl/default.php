@@ -60,10 +60,10 @@ if (!$this->page) {
     <?php if ($authorized) { ?>
         <ul class="manager-options">
             <li>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&unit=' . $this->page->get('url') . '&b=delete'); ?>" class="icon-delete delete" title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>" data-confirm="<?php echo Lang::txt('PLG_COURSES_PAGES_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&unit=' . $this->page->get('url') . '&b=delete') ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_COURSES_PAGES_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?></button>
             </li>
             <li>
-                <a class="icon-edit edit" href="<?php echo Route::url($base . '&unit=' . $this->page->get('url') . '&b=edit'); ?>" title="<?php echo Lang::txt('PLG_COURSES_PAGES_EDIT'); ?>">
+                <a class="icon-edit edit" href="<?= Route::url($base . '&unit=' . $this->page->get('url') . '&b=edit') ?>" title="<?= Lang::txt('PLG_COURSES_PAGES_EDIT') ?>">
                     <?php echo Lang::txt('PLG_COURSES_PAGES_EDIT'); ?>
                 </a>
             </li>

@@ -11,7 +11,7 @@ defined('_HZEXEC_') or die();
 
 ?>
 
-<form action="<?php echo isset($this->form_action) ? $this->escape($this->form_action) : ''; ?>" id="oauth_form" method="post">
+<form action="<?= isset($this->form_action) ? $this->escape($this->form_action) : '' ?>" id="oauth_form" method="post">
 
     <input id="oauth_token" name="oauth_token" type="hidden" value="<?php echo $this->escape($this->oauth_token);?>" />
 

@@ -129,7 +129,7 @@ $this->js();
                                 <time datetime="<?php echo $replyDatetime; ?>"><?php echo $replyDate; ?></time>
                             </span>
                         </p>
-                        <p><?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($reply->get('content')), 300)); ?></p>
+                        <p><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($reply->get('content')), 300)) ?></p>
                     </blockquote>
                         <?php
                     }

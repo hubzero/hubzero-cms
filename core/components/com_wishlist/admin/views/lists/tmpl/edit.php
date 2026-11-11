@@ -158,17 +158,17 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_WISHLIST_STATE'); ?></label>
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?php echo $this->row->get('state') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php echo $this->row->get('state') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="2"<?php echo $this->row->get('state') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <option value="0"<?= $this->row->get('state') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= $this->row->get('state') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="2"<?= $this->row->get('state') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
                     </select>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-public"><?php echo Lang::txt('COM_WISHLIST_PRIVACY'); ?></label>
                     <select name="fields[public]" id="field-public">
-                        <option value="0"<?php echo $this->row->get('public') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_PRIVATE'); ?></option>
-                        <option value="1"<?php echo $this->row->get('public') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_PUBLIC'); ?></option>
+                        <option value="0"<?= $this->row->get('public') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_PRIVATE') ?></option>
+                        <option value="1"<?= $this->row->get('public') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_PUBLIC') ?></option>
                     </select>
                 </div>
             </fieldset>

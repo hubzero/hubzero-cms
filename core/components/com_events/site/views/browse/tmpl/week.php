@@ -22,7 +22,7 @@ $this->css();
     <?php if ($this->authorized) { ?>
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li class="last"><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=add'); ?>"><?php echo Lang::txt('EVENTS_ADD_EVENT'); ?></a></li>
+            <li class="last"><a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=add') ?>"><?= Lang::txt('EVENTS_ADD_EVENT') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
     <?php } ?>
@@ -30,10 +30,10 @@ $this->css();
 
 <nav>
     <ul class="sub-menu">
-        <li<?php echo $this->task == 'year' ? ' class="active"' : ''; ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_YEAR'); ?></span></a></li>
-        <li<?php echo $this->task == 'month' ? ' class="active"' : ''; ?>><a rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_MONTH'); ?></span></a></li>
-        <li<?php echo $this->task == 'week' ? ' class="active"' : ''; ?>><a rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_WEEK'); ?></span></a></li>
-        <li<?php echo $this->task == 'day' ? ' class="active"' : ''; ?>><a rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_DAY'); ?></span></a></li>
+        <li<?= $this->task == 'year' ? ' class="active"' : '' ?>><a href="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year) ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_YEAR') ?></span></a></li>
+        <li<?= $this->task == 'month' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month) ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_MONTH') ?></span></a></li>
+        <li<?= $this->task == 'week' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week') ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_WEEK') ?></span></a></li>
+        <li<?= $this->task == 'day' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day) ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_DAY') ?></span></a></li>
     </ul>
 </nav>
 
@@ -58,7 +58,7 @@ $this->css();
             ?>
                 <li<?php echo $cls; ?>>
                     <div class="event-details">
-                        <div class="event-date"><?php echo Date::of($rows['week']['year'] . '-' . $rows['week']['month'] . '-' . $rows['week']['day'] . ' 00:00:00', date('T'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></div>
+                        <div class="event-date"><?= Date::of($rows['week']['year'] . '-' . $rows['week']['month'] . '-' . $rows['week']['day'] . ' 00:00:00', date('T'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></div>
                     </div>
                     <div class="ewrap">
                 <?php
@@ -104,11 +104,11 @@ $this->css();
         ?>
         </ul>
     <?php } else { ?>
-        <p class="warning"><?php echo Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' <strong>' . \Components\Events\Helpers\Html::getDateFormat($this->year, $this->month, '', 3) . '</strong>'; ?></p>
+        <p class="warning"><?= Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' <strong>' . \Components\Events\Helpers\Html::getDateFormat($this->year, $this->month, '', 3) . '</strong>' ?></p>
     <?php } ?>
         </div><!-- / .subject -->
         <div class="aside">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'); ?>" method="get" id="event-categories">
+            <form action="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week') ?>" method="get" id="event-categories">
                 <fieldset>
                 <legend class="sr-only"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></legend>
                     <label for="event-category"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></label>
@@ -119,7 +119,7 @@ $this->css();
                         if ($this->categories) {
                             foreach ($this->categories as $id => $title) {
                                 ?>
-                                <option value="<?php echo $id; ?>"<?php echo $this->category == $id ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($title)); ?></option>
+                                <option value="<?= $id ?>"<?= $this->category == $id ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($title)) ?></option>
                                 <?php
                             }
                         }
@@ -169,8 +169,8 @@ $this->css();
                     }
 
                     ?>
-                    <a class="prv" rel="nofollow" href="<?php echo $prev;?>" title="<?php echo $prev_text; ?>" aria-label="<?php echo $prev_text; ?>">&lsaquo;</a>
-                    <a class="nxt" rel="nofollow" href="<?php echo $next;?>" title="<?php echo $next_text; ?>" aria-label="<?php echo $next_text; ?>">&rsaquo;</a>
+                    <a class="prv" rel="nofollow" href="<?= $prev ?>" title="<?= $prev_text ?>" aria-label="<?= $prev_text ?>">&lsaquo;</a>
+                    <a class="nxt" rel="nofollow" href="<?= $next ?>" title="<?= $next_text ?>" aria-label="<?= $next_text ?>">&rsaquo;</a>
                     <?php echo $this->year; ?>
                 </p>
             </div><!-- / .calendarwrap -->
@@ -223,12 +223,12 @@ $this->css();
                     }
                     ?>
                     <?php if ($prev_week_url) { ?>
-                        <a class="prv" rel="nofollow" href="<?php echo $prev_week_url; ?>" title="<?php echo $prev_week_text; ?>" aria-label="<?php echo $prev_week_text; ?>">&lsaquo;</a>
+                        <a class="prv" rel="nofollow" href="<?= $prev_week_url ?>" title="<?= $prev_week_text ?>" aria-label="<?= $prev_week_text ?>">&lsaquo;</a>
                     <?php } else { ?>
                         <span class="prv" aria-disabled="true" title="<?php echo $prev_week_text; ?>">&lsaquo;</span>
                     <?php } ?>
                     <?php if ($next_week_url) { ?>
-                        <a class="nxt" rel="nofollow" href="<?php echo $next_week_url; ?>" title="<?php echo $next_week_text; ?>" aria-label="<?php echo $next_week_text; ?>">&rsaquo;</a>
+                        <a class="nxt" rel="nofollow" href="<?= $next_week_url ?>" title="<?= $next_week_text ?>" aria-label="<?= $next_week_text ?>">&rsaquo;</a>
                     <?php } else { ?>
                         <span class="nxt" aria-disabled="true" title="<?php echo $next_week_text; ?>">&rsaquo;</span>
                     <?php } ?>

@@ -45,7 +45,7 @@ $elName = "authorList";
                         <span class="item-order"><?php echo $i; ?></span>
                         <span class="item-title"><?php echo $this->escape($name); ?> 
                             <?php if ($author->repository_contact == 1 && !empty($dept) && !empty($org) && !empty($email)) { ?>
-                            <span class="item-subtext"><?php echo ' - ' . $this->escape($dept) . ' - ' . $this->escape($org) . ' - ' . $this->escape($email); ?></span>
+                            <span class="item-subtext"><?= ' - ' . $this->escape($dept) . ' - ' . $this->escape($org) . ' - ' . $this->escape($email) ?></span>
                             <?php } else {?>
                             <span class="item-subtext"><?php echo $org ? ' - ' . $this->escape($org) : ''; ?></span>
                             <?php }?>

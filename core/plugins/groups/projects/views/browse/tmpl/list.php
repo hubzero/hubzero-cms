@@ -34,7 +34,7 @@ switch ($this->which) {
 <?php if (count($this->rows) > 0) { ?>
         <thead>
             <tr>
-                <th class="th_image" colspan="2"><span class="sr-only"><?php echo Lang::txt('PLG_GROUPS_PROJECTS_TITLE'); ?></span></th>
+                <th class="th_image" colspan="2"><span class="sr-only"><?= Lang::txt('PLG_GROUPS_PROJECTS_TITLE') ?></span></th>
                 <th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_TITLE'); ?></th>
                 <th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_STATUS'); ?></th>
                 <th><?php echo Lang::txt('PLG_GROUPS_PROJECTS_MY_ROLE'); ?></th>
@@ -60,11 +60,11 @@ switch ($this->which) {
                 <tr class="mline">
                     <td class="th_image">
                         <?php if ($row->access('member') || $row->access('readonly')) { ?>
-                            <a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $this->escape($row->get('alias')) . ')'; ?>">
-                                <img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>" class="project-image" />
+                            <a href="<?= Route::url($row->link()) ?>" title="<?= $this->escape($row->get('title')) . ' (' . $this->escape($row->get('alias')) . ')' ?>">
+                                <img src="<?= Route::url($row->link('thumb')) ?>" alt="<?= $this->escape($row->get('title')) ?>" class="project-image" />
                             </a>
                         <?php } else { ?>
-                            <img src="<?php echo Route::url($row->link('thumb')); ?>" alt="<?php echo $this->escape($row->get('title')); ?>" class="project-image" />
+                            <img src="<?= Route::url($row->link('thumb')) ?>" alt="<?= $this->escape($row->get('title')) ?>" class="project-image" />
                         <?php } ?>
                         <?php if ($row->get('newactivity') && $row->isActive() && !$setup) { ?>
                             <span class="s-new"><?php echo $row->get('newactivity'); ?></span>
@@ -75,14 +75,14 @@ switch ($this->which) {
                     </td>
                     <td class="th_title">
                         <?php if ($row->access('member') || $row->access('readonly')) { ?>
-                            <a href="<?php echo Route::url($row->link()); ?>" title="<?php echo $this->escape($row->get('title')) . ' (' . $this->escape($row->get('alias')) . ')'; ?>">
+                            <a href="<?= Route::url($row->link()) ?>" title="<?= $this->escape($row->get('title')) . ' (' . $this->escape($row->get('alias')) . ')' ?>">
                                 <?php echo $this->escape($row->get('title')); ?>
                             </a>
                         <?php } else { ?>
                             <?php echo $this->escape($row->get('title')); ?>
                         <?php } ?>
                         <?php if ($this->which != 'owned') { ?>
-                            <span class="block"><?php echo $this->escape($row->groupOwner() ? $row->groupOwner('description') : $row->owner('name')); ?></span>
+                            <span class="block"><?= $this->escape($row->groupOwner() ? $row->groupOwner('description') : $row->owner('name')) ?></span>
                         <?php } ?>
                     </td>
                     <td class="th_status">
@@ -110,7 +110,7 @@ switch ($this->which) {
                         <?php echo $role; ?>
                     </td>
                     <td class="th_membership">
-                        <?php echo ($row->get('sync_group')) ? '<span class="synced">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SYNCED') . '</span>' : '<span class="selected">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SELECTED') . '</span>'; ?>
+                        <?= ($row->get('sync_group')) ? '<span class="synced">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SYNCED') . '</span>' : '<span class="selected">' . Lang::txt('PLG_GROUPS_PROJECTS_GROUP_SELECTED') . '</span>' ?>
                     </td>
                 </tr>
                 <?php

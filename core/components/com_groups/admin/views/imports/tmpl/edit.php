@@ -296,7 +296,7 @@ $this->js();
                                 <?php
                                 $file = ltrim($file, DS);
                                 $sel = ($this->import->get('file') == $file) ? 'selected="selected"' : ''; ?>
-                                <option <?php echo $sel; ?> value="<?php echo $this->escape($file); ?>"><?php echo $this->escape($file); ?></option>
+                                <option <?= $sel ?> value="<?= $this->escape($file) ?>"><?= $this->escape($file) ?></option>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </select>
@@ -318,7 +318,7 @@ $this->js();
                         <option value="UPDATE">
                             <?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_DATA_MODE_UPDATE'); ?>
                         </option>
-                        <option <?php echo $this->import->get('mode') == 'PATCH' ? 'selected="selected"' : ''; ?> value="PATCH">
+                        <option <?= $this->import->get('mode') == 'PATCH' ? 'selected="selected"' : '' ?> value="PATCH">
                             <?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_DATA_MODE_PATCH'); ?>
                         </option>
                     </select>

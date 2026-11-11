@@ -29,24 +29,24 @@ $rows = $this->todo->entries('list', $this->filters);
     <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
         <ul class="entries-menu order-options">
             <li>
-                <a class="sort-content<?php echo $this->filters['sortby'] == 'content' ? ' active' : ''; ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=content'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_CONTENT'); ?>">
+                <a class="sort-content<?= $this->filters['sortby'] == 'content' ? ' active' : '' ?>" href="<?= Route::url($url . $sortAppend . '&sortby=content') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_CONTENT') ?>">
                     &darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_CONTENT'); ?>
                 </a>
             </li>
             <li>
-                <a class="sort-project<?php echo $this->filters['sortby'] == 'project' ? ' active' : ''; ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=project'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_PROJECT'); ?>">
+                <a class="sort-project<?= $this->filters['sortby'] == 'project' ? ' active' : '' ?>" href="<?= Route::url($url . $sortAppend . '&sortby=project') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_PROJECT') ?>">
                     &darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_PROJECT'); ?>
                 </a>
             </li>
             <?php if ($this->filters['state']  == 1) { ?>
             <li>
-                <a class="sort-due<?php echo $this->filters['sortby'] == 'complete' ? ' active' : ''; ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=complete'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_COMPLETE'); ?>">
+                <a class="sort-due<?= $this->filters['sortby'] == 'complete' ? ' active' : '' ?>" href="<?= Route::url($url . $sortAppend . '&sortby=complete') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_COMPLETE') ?>">
                     &darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_COMPLETE'); ?>
                 </a>
             </li>
             <?php } else { ?>
             <li>
-                <a class="sort-complete<?php echo $this->filters['sortby'] == 'due' ? ' active' : ''; ?>" href="<?php echo Route::url($url . $sortAppend . '&sortby=due'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_SORTBY_DUE'); ?>">
+                <a class="sort-complete<?= $this->filters['sortby'] == 'due' ? ' active' : '' ?>" href="<?= Route::url($url . $sortAppend . '&sortby=due') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_DUE') ?>">
                     &darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_DUE'); ?>
                 </a>
             </li>
@@ -54,9 +54,9 @@ $rows = $this->todo->entries('list', $this->filters);
         </ul>
 
         <ul class="entries-menu filter-options">
-            <li><a href="<?php echo Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=0&state=0'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE'); ?>" class="filter-active<?php echo !$this->filters['mine'] && !$this->filters['state'] ? ' active' : ''; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE'); ?></a></li>
-            <li><a href="<?php echo Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=1'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE'); ?>" class="filter-mine<?php echo $this->filters['mine'] == 1 ? ' active' : ''; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE'); ?></a></li>
-            <li><a href="<?php echo Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&state=1'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE'); ?>" class="filter-complete<?php echo $this->filters['state'] == 1 ? ' active' : ''; ?>"><?php echo Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE'); ?></a></li>
+            <li><a href="<?= Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=0&state=0') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE') ?>" class="filter-active<?= !$this->filters['mine'] && !$this->filters['state'] ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE') ?></a></li>
+            <li><a href="<?= Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=1') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?>" class="filter-mine<?= $this->filters['mine'] == 1 ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?></a></li>
+            <li><a href="<?= Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&state=1') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?>" class="filter-complete<?= $this->filters['state'] == 1 ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?></a></li>
         </ul>
     </nav>
 </div>
@@ -67,7 +67,7 @@ $rows = $this->todo->entries('list', $this->filters);
             <th class="primarycolumn"><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ITEM'); ?></th>
             <th class="primarycolumn"><?php echo Lang::txt('PLG_PROJECTS_TODO_PROJECT'); ?></th>
             <th><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ASSIGNED'); ?></th>
-            <th><?php echo ($this->filters['state']) ? Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMPLETED') : Lang::txt('PLG_PROJECTS_TODO_COLUMN_DUE'); ?></th>
+            <th><?= ($this->filters['state']) ? Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMPLETED') : Lang::txt('PLG_PROJECTS_TODO_COLUMN_DUE') ?></th>
             <th aria-label="<?php echo Lang::txt('Options'); ?>"><span class="sr-only">Options</span></th>
         </tr>
     </thead>
@@ -82,13 +82,13 @@ $rows = $this->todo->entries('list', $this->filters);
             ?>
         <tr class="pin_grey" id="todo-<?php echo $row->get('id'); ?>">
             <td><span class="ordernum"><?php echo $order; ?></span></td>
-            <td><a href="<?php echo Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')); ?>"><?php echo \Hubzero\Utility\Str::truncate($row->get('content'), 200); ?></a>
-                <span class="block mini faded"><?php echo Lang::txt('PLG_PROJECTS_TODO_CREATED') . ' ' . $row->created('date') . ' ' . strtolower(Lang::txt('PLG_PROJECTS_TODO_BY')) . ' ' . $row->creator('name'); ?>
-                    | <?php echo Lang::txt('PLG_PROJECTS_TODO_COMMENTS'); ?>: <a href="<?php echo Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')); ?>"><?php echo $row->comments('count'); ?></a></span>
+            <td><a href="<?= Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')) ?>"><?= \Hubzero\Utility\Str::truncate($row->get('content'), 200) ?></a>
+                <span class="block mini faded"><?= Lang::txt('PLG_PROJECTS_TODO_CREATED') . ' ' . $row->created('date') . ' ' . strtolower(Lang::txt('PLG_PROJECTS_TODO_BY')) . ' ' . $row->creator('name') ?>
+                    | <?= Lang::txt('PLG_PROJECTS_TODO_COMMENTS') ?>: <a href="<?= Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')) ?>"><?= $row->comments('count') ?></a></span>
             </td>
-            <td><a href="<?php echo Route::url($row->project()->link('todo')); ?>"><?php echo $this->escape($row->project('title')); ?></a></td>
+            <td><a href="<?= Route::url($row->project()->link('todo')) ?>"><?= $this->escape($row->project('title')) ?></a></td>
             <td class="mini faded"><?php echo $row->isComplete() ? $row->closer('name') : $row->owner('name'); ?></td>
-            <td class="mini nowrap"><?php echo $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote;?></td>
+            <td class="mini nowrap"><?= $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote ?></td>
             <td></td>
         </tr>
             <?php $order++;

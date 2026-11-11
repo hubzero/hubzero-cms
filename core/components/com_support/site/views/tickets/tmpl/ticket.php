@@ -97,19 +97,19 @@ $cc = [];
         <ul id="useroptions">
         <?php if ($prev) { ?>
             <li>
-                <a class="icon-prev prev btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+                <a class="icon-prev prev btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>">
                     <?php echo Lang::txt('COM_SUPPORT_PREV'); ?>
                 </a>
             </li>
         <?php } ?>
             <li>
-                <a class="browse btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+                <a class="browse btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>">
                     <?php echo Lang::txt('COM_SUPPORT_TICKETS'); ?>
                 </a>
             </li>
         <?php if ($next) { ?>
             <li>
-                <a class="icon-next next opposite btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>">
+                <a class="icon-next next opposite btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>">
                     <?php echo Lang::txt('COM_SUPPORT_NEXT'); ?>
                 </a>
             </li>
@@ -133,11 +133,11 @@ $cc = [];
                 <div class="entry-content">
                     <p class="entry-title">
                         <strong><?php echo $name; ?></strong>
-                        <a class="permalink" href="<?php echo Route::url($this->row->link()); ?>" title="<?php echo Lang::txt('COM_SUPPORT_PERMALINK'); ?>">
+                        <a class="permalink" href="<?= Route::url($this->row->link()) ?>" title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
                             <span class="entry-date-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-                            <span class="time"><time datetime="<?php echo $this->row->created(); ?>"><?php echo $this->row->created('time'); ?></time></span>
+                            <span class="time"><time datetime="<?= $this->row->created() ?>"><?= $this->row->created('time') ?></time></span>
                             <span class="entry-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-                            <span class="date"><time datetime="<?php echo $this->row->created(); ?>"><?php echo $this->row->created('date'); ?></time></span>
+                            <span class="date"><time datetime="<?= $this->row->created() ?>"><?= $this->row->created('date') ?></time></span>
                         </a>
                     </p><!-- / .entry-title -->
                     <div class="entry-body">
@@ -159,11 +159,11 @@ $cc = [];
                                         echo $img;
                                     } else {
                                         ?>
-                                        <a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
-                                            <p class="attachment-description"><?php echo $this->escape($attachment->get('description')); ?></p>
+                                        <a class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>" href="<?= Route::url($attachment->link()) ?>" title="<?= $this->escape($attachment->get('description')) ?>">
+                                            <p class="attachment-description"><?= $this->escape($attachment->get('description')) ?></p>
                                             <p class="attachment-meta">
-                                                <span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-                                                <span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
+                                                <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
+                                                <span class="attachment-action"><?= Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') ?></span>
                                             </p>
                                         </a>
                                         <?php
@@ -181,29 +181,29 @@ $cc = [];
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_EMAIL'); ?>:</th>
                                     <td><?php if ($this->row->get('email')) {
-                                        ?><a href="mailto:<?php echo $this->escape($this->row->get('email')); ?>"><?php echo $this->escape($this->row->get('email')); ?></a><?php
+                                        ?><a href="mailto:<?= $this->escape($this->row->get('email')) ?>"><?= $this->escape($this->row->get('email')) ?></a><?php
                                         } else {
                                             echo Lang::txt('COM_SUPPORT_UNKNOWN');
                                         } ?></td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_USERTYPE'); ?>:</th>
+                                    <th scope="row"><?= Lang::txt('COM_SUPPORT_TICKET_DETAILS_USERTYPE') ?>:</th>
                                     <td><?php echo $this->escape($usertype); ?></td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_OS'); ?>:</th>
-                                    <td><?php echo $this->escape($this->row->get('os')); ?> / <?php echo $this->escape($this->row->get('browser')); ?> (<?php echo ($this->row->get('cookies')) ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED') : Lang::txt('COM_SUPPORT_COOKIES_DISABLED'); ?>)</td>
+                                    <td><?= $this->escape($this->row->get('os')) ?> / <?= $this->escape($this->row->get('browser')) ?> (<?= ($this->row->get('cookies')) ? Lang::txt('COM_SUPPORT_COOKIES_ENABLED') : Lang::txt('COM_SUPPORT_COOKIES_DISABLED') ?>)</td>
                                 </tr>
                                 <tr>
                                     <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_IP'); ?>:</th>
-                                    <td><?php echo $this->escape($this->row->get('ip')); ?> (<?php echo $this->escape($this->row->get('hostname')); ?>)</td>
+                                    <td><?= $this->escape($this->row->get('ip')) ?> (<?= $this->escape($this->row->get('hostname')) ?>)</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_REFERRER'); ?>:</th>
+                                    <th scope="row"><?= Lang::txt('COM_SUPPORT_TICKET_DETAILS_REFERRER') ?>:</th>
                                     <td><?php echo $this->escape($this->row->get('referrer', ' ')); ?></td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_INSTANCES'); ?>:</th>
+                                    <th scope="row"><?= Lang::txt('COM_SUPPORT_TICKET_DETAILS_INSTANCES') ?>:</th>
                                     <td><?php echo $this->escape($this->row->get('instances')); ?></td>
                                 </tr>
                                 <?php if ($uas = $this->row->get('uas')) { ?>
@@ -220,7 +220,7 @@ $cc = [];
         <aside class="aside">
         <div class="ticket-status">
             <p class="<?php echo (!$this->row->isOpen()) ? 'closed' : 'open'; ?>">
-                <strong><?php echo (!$this->row->isOpen()) ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED_TICKET') : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN_TICKET'); ?></strong>
+                <strong><?= (!$this->row->isOpen()) ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED_TICKET') : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN_TICKET') ?></strong>
             </p>
             <?php if (!$this->row->isOpen()) { ?>
                 <p><?php echo Lang::txt('COM_SUPPORT_NOTE_TO_REOPEN'); ?></p>
@@ -231,10 +231,10 @@ $cc = [];
             <?php if ($this->row->isWatching()) { ?>
                 <div id="watching">
                     <p><?php echo Lang::txt('COM_SUPPORT_CURRENTLY_WATCHING'); ?></p>
-                    <p><a class="stop-watching btn" href="<?php echo Route::url($this->row->link('stopWatching') . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>"><?php echo Lang::txt('COM_SUPPORT_STOP_WATCHING'); ?></a></p>
+                    <p><a class="stop-watching btn" href="<?= Route::url($this->row->link('stopWatching') . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>"><?= Lang::txt('COM_SUPPORT_STOP_WATCHING') ?></a></p>
                 </div>
             <?php } else { ?>
-                <p><a class="start-watching btn" href="<?php echo Route::url($this->row->link('startWatching') . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']); ?>"><?php echo Lang::txt('COM_SUPPORT_WATCHING_TICKET'); ?></a></p>
+                <p><a class="start-watching btn" href="<?= Route::url($this->row->link('startWatching') . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>"><?= Lang::txt('COM_SUPPORT_WATCHING_TICKET') ?></a></p>
             <?php } ?>
             <p><?php echo Lang::txt('COM_SUPPORT_WATCHING_EXPLANATION'); ?></p>
         </div>
@@ -295,13 +295,13 @@ $cc = [];
                                 <?php echo $name; ?>
                             </strong>
                             <div class="comment-meta">
-                                <a class="permalink" href="<?php echo Route::url($comment->link()); ?>" title="<?php echo Lang::txt('COM_SUPPORT_PERMALINK'); ?>">
+                                <a class="permalink" href="<?= Route::url($comment->link()) ?>" title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
                                     <span class="comment-date-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-                                    <span class="time"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('time'); ?></time></span>
+                                    <span class="time"><time datetime="<?= $this->escape($comment->created()) ?>"><?= $comment->created('time') ?></time></span>
                                     <span class="comment-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-                                    <span class="date"><time datetime="<?php echo $this->escape($comment->created()); ?>"><?php echo $comment->created('date'); ?></time></span>
+                                    <span class="date"><time datetime="<?= $this->escape($comment->created()) ?>"><?= $comment->created('date') ?></time></span>
                                 </a>
-                            <a class="copy-link show-hover-target" href="<?php echo $protocol . Request::getHttpHost() . Route::url($comment->link()); ?>">
+                            <a class="copy-link show-hover-target" href="<?= $protocol . Request::getHttpHost() . Route::url($comment->link()) ?>">
                                 <span class="lbl show-hover-child">Copy link</span>
                                 <?php echo Html::asset('icon', 'link'); ?>
                             </a>
@@ -332,22 +332,22 @@ $cc = [];
                                         echo $img;
                                     } else {
                                         ?>
-                                        <a class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" href="<?php echo Route::url($attachment->link()); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
-                                            <p class="attachment-description"><?php echo $this->escape($attachment->get('description')); ?></p>
+                                        <a class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>" href="<?= Route::url($attachment->link()) ?>" title="<?= $this->escape($attachment->get('description')) ?>">
+                                            <p class="attachment-description"><?= $this->escape($attachment->get('description')) ?></p>
                                             <p class="attachment-meta">
-                                                <span class="attachment-size"><?php echo Hubzero\Utility\Number::formatBytes($attachment->size()); ?></span>
-                                                <span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD'); ?></span>
+                                                <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
+                                                <span class="attachment-action"><?= Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') ?></span>
                                             </p>
                                         </a>
                                         <?php
                                     }
                                 } else {
                                     ?>
-                                    <div class="attachment <?php echo Filesystem::extension($attachment->get('filename')); ?>" title="<?php echo $this->escape($attachment->get('description')); ?>">
-                                        <p class="attachment-description"><?php echo $this->escape($attachment->get('description')); ?></p>
+                                    <div class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>" title="<?= $this->escape($attachment->get('description')) ?>">
+                                        <p class="attachment-description"><?= $this->escape($attachment->get('description')) ?></p>
                                         <p class="attachment-meta">
-                                            <span class="attachment-size"><?php echo $this->escape($attachment->get('filename')); ?></span>
-                                            <span class="attachment-action"><?php echo Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND'); ?></span>
+                                            <span class="attachment-size"><?= $this->escape($attachment->get('filename')) ?></span>
+                                            <span class="attachment-action"><?= Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND') ?></span>
                                         </p>
                                     </div>
                                     <?php
@@ -387,7 +387,7 @@ $cc = [];
             <h3>
                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_FORM'); ?>
             </h3>
-            <form action="<?php echo Route::url($this->row->link('update')); ?>" method="post" id="commentform" enctype="multipart/form-data">
+            <form action="<?= Route::url($this->row->link('update')) ?>" method="post" id="commentform" enctype="multipart/form-data">
                 <p class="comment-member-photo">
                     <span class="comment-anchor"></span>
                     <?php
@@ -412,7 +412,7 @@ $cc = [];
                     <input type="hidden" name="search" value="<?php echo $this->escape($this->filters['search']); ?>" />
                     <input type="hidden" name="show" value="<?php echo $this->escape($this->filters['show']); ?>" />
                     <input type="hidden" name="limit" value="<?php echo $this->escape($this->filters['limit']); ?>" />
-                    <input type="hidden" name="limistart" value="<?php echo $this->escape($this->filters['start']); ?>" />
+                    <input type="hidden" name="limistart" value="<?= $this->escape($this->filters['start']) ?>" />
                     <?php if (!$this->row->access('create', 'private_comments')) { ?>
                         <input type="hidden" name="access" value="0" />
                     <?php } ?>
@@ -431,7 +431,7 @@ $cc = [];
                                 if (count($tf) > 0) {
                                     echo $tf[0];
                                 } else { ?>
-                                    <input type="text" name="tags" id="tags" class="form-control" value="<?php echo $this->escape($this->row->tags('string')); ?>" />
+                                    <input type="text" name="tags" id="tags" class="form-control" value="<?= $this->escape($this->row->tags('string')) ?>" />
                                 <?php } ?>
                             </label>
                         </div>
@@ -453,7 +453,7 @@ $cc = [];
                                         if (count($gc) > 0) {
                                             echo $gc[0];
                                         } else { ?>
-                                            <input type="text" name="ticket[group_id]" value="<?php echo $this->row->get('group_id'); ?>" class="form-control" id="acgroup" autocomplete="off" />
+                                            <input type="text" name="ticket[group_id]" value="<?= $this->row->get('group_id') ?>" class="form-control" id="acgroup" autocomplete="off" />
                                         <?php } ?>
                                     </label>
                                 </div>
@@ -471,10 +471,10 @@ $cc = [];
                         <div class="grid">
                             <div class="col span6">
                                 <label for="ticket-field-severity">
-                                    <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEVERITY'); ?>: <a class="icon-help tooltips popup" href="<?php echo Route::url('index.php?option=com_help&component=support&page=ticket#severity'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP'); ?>"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP'); ?></a>
+                                    <?= Lang::txt('COM_SUPPORT_COMMENT_SEVERITY') ?>: <a class="icon-help tooltips popup" href="<?= Route::url('index.php?option=com_help&component=support&page=ticket#severity') ?>" title="<?= Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP') ?>"><?= Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP') ?></a>
                                     <select name="ticket[severity]" id="ticket-field-severity" class="form-control">
                                         <?php foreach ($this->lists['severities'] as $severity) { ?>
-                                            <option value="<?php echo $severity; ?>"<?php echo $severity == $this->row->get('severity') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
+                                            <option value="<?= $severity ?>"<?= $severity == $this->row->get('severity') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)) ?></option>
                                         <?php } ?>
                                     </select>
                                 </label>
@@ -486,20 +486,20 @@ $cc = [];
                                         <select name="ticket[status]" id="status" class="form-control">
                                             <optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
                                                 <?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
-                                                    <option value="<?php echo $status->get('id'); ?>"<?php echo $this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape($status->get('title')); ?></option>
+                                                    <option value="<?= $status->get('id') ?>"<?= $this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
                                                 <?php } ?>
                                             </optgroup>
                                             <optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
-                                                <option value="0"<?php echo !$this->row->isOpen() && $this->row->get('status') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
+                                                <option value="0"<?= !$this->row->isOpen() && $this->row->get('status') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED') ?></option>
                                                 <?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
-                                                    <option value="<?php echo $status->get('id'); ?>"<?php echo !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape($status->get('title')); ?></option>
+                                                    <option value="<?= $status->get('id') ?>"<?= !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
                                                 <?php } ?>
                                             </optgroup>
                                         </select>
                                     </label>
                                 </div>
                     <?php } else { ?>
-                            <input type="hidden" name="tags" value="<?php echo $this->escape($this->row->tags('string')); ?>" />
+                            <input type="hidden" name="tags" value="<?= $this->escape($this->row->tags('string')) ?>" />
 
                         <?php if ($this->row->isSubmitter()) { ?>
                             <?php if (!$this->row->isOpen()) { ?>
@@ -527,7 +527,7 @@ $cc = [];
                         <div class="form-group">
                             <label for="field-target_date">
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_TARGET_DATE'); ?>:
-                                <input type="text" name="ticket[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?php echo(timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60); ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="<?php echo ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00') ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
+                                <input type="text" name="ticket[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?= (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot()) / 60) ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="<?= ($this->row->get('target_date') && $this->row->get('target_date') != '0000-00-00 00:00:00') ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s')) : '' ?>" />
                             </label>
                         </div>
 
@@ -540,7 +540,7 @@ $cc = [];
                                         <?php
                                         foreach ($this->lists['categories'] as $category) {
                                             ?>
-                                            <option value="<?php echo $this->escape($category->alias); ?>"<?php echo $this->row->get('category') == $category->alias ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+                                            <option value="<?= $this->escape($category->alias) ?>"<?= $this->row->get('category') == $category->alias ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($category->title)) ?></option>
                                             <?php
                                         }
                                         ?>
@@ -567,14 +567,14 @@ $cc = [];
                     <?php } ?>
                         <?php if ($this->row->access('create', 'comments') > 0) { ?>
                             <div class="form-group">
-                                <label for="messages" class="sr-only"><?php echo Lang::txt('COM_SUPPORT_COMMENT_MESSAGES'); ?></label>
-                                    <select name="messages" id="messages" class="form-control" aria-label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_MESSAGES'); ?>">
-                                        <option value="mc"><?php echo Lang::txt('COM_SUPPORT_COMMENT_CUSTOM'); ?></option>
+                                <label for="messages" class="sr-only"><?= Lang::txt('COM_SUPPORT_COMMENT_MESSAGES') ?></label>
+                                    <select name="messages" id="messages" class="form-control" aria-label="<?= Lang::txt('COM_SUPPORT_COMMENT_MESSAGES') ?>">
+                                        <option value="mc"><?= Lang::txt('COM_SUPPORT_COMMENT_CUSTOM') ?></option>
                                         <?php
                                         $hi = [];
                                         foreach ($this->lists['messages'] as $message) {
                                             ?>
-                                            <option value="m<?php echo $message->id; ?>"><?php echo $this->escape(stripslashes($message->title)); ?></option>
+                                            <option value="m<?= $message->id ?>"><?= $this->escape(stripslashes($message->title)) ?></option>
                                             <?php
                                             $hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape($message->transformMessage($this->row->get('id'))) . '" />' . "\n";
                                         }
@@ -597,7 +597,7 @@ $cc = [];
                     <?php } ?>
                         <div class="form-group">
                             <label for="comment" class="sr-only"><?php echo Lang::txt('COM_SUPPORT_COMMENT'); ?></label>
-                            <textarea name="comment" id="comment" class="form-control" rows="13" cols="35"><?php echo $this->comment->get('comment'); ?></textarea>
+                            <textarea name="comment" id="comment" class="form-control" rows="13" cols="35"><?= $this->comment->get('comment') ?></textarea>
                         </div>
 
                         <?php if ($this->row->access('create', 'comments') > 0) { ?>
@@ -619,7 +619,7 @@ $cc = [];
                         $this->js('jquery.fileuploader.js', 'system');
                         $jbase = rtrim(Request::base(true), '/');
                         ?>
-                        <div id="ajax-uploader" data-action="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?php echo $this->row->get('id'); ?>&amp;comment=<?php echo $tmp; ?>&amp;<?php echo Session::getFormToken(); ?>=1" data-list="<?php echo $jbase; ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?php echo $this->row->get('id'); ?>&amp;comment=<?php echo $tmp; ?>">
+                        <div id="ajax-uploader" data-action="<?= $jbase ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?= $this->row->get('id') ?>&amp;comment=<?= $tmp ?>&amp;<?= Session::getFormToken() ?>=1" data-list="<?= $jbase ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?= $this->row->get('id') ?>&amp;comment=<?= $tmp ?>">
                             <noscript>
                                 <div class="form-group">
                                     <label for="upload">
@@ -678,8 +678,8 @@ $cc = [];
                                 if (count($mc) > 0) {
                                     echo '<span class="hint">' . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
                                 } else {
-                                    ?> <span class="hint"><?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS'); ?></span>
-                                <input type="text" name="cc" id="acmembers" class="form-control" value="<?php echo implode(', ', $cc); ?>" size="35" />
+                                    ?> <span class="hint"><?= Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS') ?></span>
+                                <input type="text" name="cc" id="acmembers" class="form-control" value="<?= implode(', ', $cc) ?>" size="35" />
                                 <?php } ?>
                             </label>
                         </div>
@@ -693,7 +693,7 @@ $cc = [];
                     <?php echo Html::input('token'); ?>
 
                     <p class="submit">
-                        <input type="submit" class="btn btn-success" value="<?php echo Lang::txt('COM_SUPPORT_SUBMIT_COMMENT'); ?>" />
+                        <input type="submit" class="btn btn-success" value="<?= Lang::txt('COM_SUPPORT_SUBMIT_COMMENT') ?>" />
                     </p>
                 </fieldset>
             </form>

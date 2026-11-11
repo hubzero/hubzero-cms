@@ -122,12 +122,12 @@ if ($this->results) {
             ?>
             <tr>
             <?php if ($this->config->get('show_ranking')) { ?>
-                <td class="ranking"><?php echo number_format($line->ranking, 1); ?> <span class="rank-<?php echo $r; ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RANKING'); ?></span></td>
+                <td class="ranking"><?= number_format($line->ranking, 1) ?> <span class="rank-<?= $r ?>"><?= Lang::txt('PLG_GROUPS_RESOURCES_RANKING') ?></span></td>
             <?php } elseif ($this->config->get('show_rating')) { ?>
-                <td class="rating"><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating); ?></span>&nbsp;</span></td>
+                <td class="rating"><span class="avgrating<?= $class ?>"><span><?= Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating) ?></span>&nbsp;</span></td>
             <?php } ?>
                 <td>
-                    <a href="<?php echo $line->href; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $this->escape($line->title); ?></a>
+                    <a href="<?= $line->href ?>" class="fixedResourceTip" title="DOM:rsrce<?= $line->id ?>"><?= $this->escape($line->title) ?></a>
                     <div class="hide" id="rsrce<?php echo $line->id; ?>">
                         <h4><?php echo $this->escape($line->title); ?></h4>
                         <div>
@@ -151,28 +151,28 @@ if ($this->results) {
                             <?php } ?>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_DATE'); ?></th>
-                                        <td><?php echo Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+                                        <td><?= Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></td>
                                     </tr>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_AVG_RATING'); ?></th>
-                                        <td><span class="avgrating<?php echo $class; ?>"><span><?php echo Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating); ?></span>&nbsp;</span> (<?php echo $line->times_rated; ?>)</td>
+                                        <td><span class="avgrating<?= $class ?>"><span><?= Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating) ?></span>&nbsp;</span> (<?= $line->times_rated ?>)</td>
                                     </tr>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATE_THIS'); ?></th>
                                         <td>
                                             <ul class="starsz<?php echo $myclass; ?>">
-                                                <li class="str1"><a href="<?php echo $line->href . $d; ?>task=addreview&amp;myrating=1#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_POOR'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_1_STAR'); ?></a></li>
-                                                <li class="str2"><a href="<?php echo $line->href . $d; ?>task=addreview&amp;myrating=2#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_FAIR'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_2_STARS'); ?></a></li>
-                                                <li class="str3"><a href="<?php echo $line->href . $d; ?>task=addreview&amp;myrating=3#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_GOOD'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_3_STARS'); ?></a></li>
-                                                <li class="str4"><a href="<?php echo $line->href . $d; ?>task=addreview&amp;myrating=4#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_VERY_GOOD'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_4_STARS'); ?></a></li>
-                                                <li class="str5"><a href="<?php echo $line->href . $d; ?>task=addreview&amp;myrating=5#reviewform" title="<?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_EXCELLENT'); ?>"><?php echo Lang::txt('PLG_GROUPS_RESOURCES_RATING_5_STARS'); ?></a></li>
+                                                <li class="str1"><a href="<?= $line->href . $d ?>task=addreview&amp;myrating=1#reviewform" title="<?= Lang::txt('PLG_GROUPS_RESOURCES_RATING_POOR') ?>"><?= Lang::txt('PLG_GROUPS_RESOURCES_RATING_1_STAR') ?></a></li>
+                                                <li class="str2"><a href="<?= $line->href . $d ?>task=addreview&amp;myrating=2#reviewform" title="<?= Lang::txt('PLG_GROUPS_RESOURCES_RATING_FAIR') ?>"><?= Lang::txt('PLG_GROUPS_RESOURCES_RATING_2_STARS') ?></a></li>
+                                                <li class="str3"><a href="<?= $line->href . $d ?>task=addreview&amp;myrating=3#reviewform" title="<?= Lang::txt('PLG_GROUPS_RESOURCES_RATING_GOOD') ?>"><?= Lang::txt('PLG_GROUPS_RESOURCES_RATING_3_STARS') ?></a></li>
+                                                <li class="str4"><a href="<?= $line->href . $d ?>task=addreview&amp;myrating=4#reviewform" title="<?= Lang::txt('PLG_GROUPS_RESOURCES_RATING_VERY_GOOD') ?>"><?= Lang::txt('PLG_GROUPS_RESOURCES_RATING_4_STARS') ?></a></li>
+                                                <li class="str5"><a href="<?= $line->href . $d ?>task=addreview&amp;myrating=5#reviewform" title="<?= Lang::txt('PLG_GROUPS_RESOURCES_RATING_EXCELLENT') ?>"><?= Lang::txt('PLG_GROUPS_RESOURCES_RATING_5_STARS') ?></a></li>
                                             </ul>
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                    <?php echo $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags((string) $line->itext), ENT_QUOTES, 'UTF-8'), 300)); ?>
+                    <?= $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags((string) $line->itext), ENT_QUOTES, 'UTF-8'), 300)) ?>
                     </div>
                 </td>
                 <td class="type"><?php echo $line->area; ?></td>

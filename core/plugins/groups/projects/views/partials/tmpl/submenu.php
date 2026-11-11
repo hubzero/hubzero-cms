@@ -38,13 +38,13 @@ $groupProjectPlugins = Event::trigger('groups.onGroupProjects', [$this->group]);
         );
         ?>
         <a href="<?php echo $updatesUrl; ?>">
-            <?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php echo $this->newcount ? '<span class="s-new">' . $this->newcount . '</span>' : ''; ?>
+            <?= Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED') ?> <?= $this->newcount ? '<span class="s-new">' . $this->newcount . '</span>' : '' ?>
         </a>
     </li>
     <?php foreach ($groupProjectPlugins as $plugin) { ?>
         <li <?php echo $this->tab == $plugin->name ? 'class="active"' : ''; ?> >
             <a href="<?php echo $plugin->pathRoute ?>">
-                <?php echo $plugin->title ?> <?php echo $plugin->newcount ? '<span class="s-new">' . $plugin->newcount . '</span>' : ''; ?>
+                <?php echo $plugin->title ?> <?= $plugin->newcount ? '<span class="s-new">' . $plugin->newcount . '</span>' : '' ?>
             </a>
         </li>
     <?php } ?>

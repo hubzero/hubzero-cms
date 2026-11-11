@@ -22,20 +22,20 @@ $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 ?>
 <h2 class="modal-title"><?php echo Lang::txt('Users'); ?></h2>
-<form action="<?php echo Route::url('index.php?option=com_members&controllers=members&task=modal&tmpl=component&groups=' . Request::getString('groups', '') . '&excluded=' . Request::getString('excluded', ''));?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=com_members&controllers=members&task=modal&tmpl=component&groups=' . Request::getString('groups', '') . '&excluded=' . Request::getString('excluded', '')) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar" class="filter clearfix">
         <div class="grid">
             <div class="col span8">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" size="40" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_IN_NAME'); ?>" />
+                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" size="40" placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_IN_NAME') ?>" />
 
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" flass="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-                <button type="button" onclick="if (window.parent) window.parent.<?php echo $this->escape($function); ?>('', '<?php echo Lang::txt('JLIB_FORM_SELECT_USER') ?>');"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
+                <button type="button" onclick="if (window.parent) window.parent.<?= $this->escape($function) ?>('', '<?php echo Lang::txt('JLIB_FORM_SELECT_USER') ?>');"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
             </div>
             <div class="col span4">
                 <label for="filter_group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USER_GROUP'); ?></label>
-                <?php echo Html::access('usergroup', 'filter_group_id', $this->filters['group_id'], 'class="filter filter-submit"'); ?>
+                <?= Html::access('usergroup', 'filter_group_id', $this->filters['group_id'], 'class="filter filter-submit"') ?>
             </div>
         </div>
     </fieldset>
@@ -50,7 +50,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                     <?php echo Html::grid('sort', 'JGLOBAL_USERNAME', 'a.username', $listDirn, $listOrder); ?>
                 </th>
                 <th>
-                    <?php echo Html::grid('sort', 'COM_MEMBERS_HEADING_GROUPS', 'group_names', $listDirn, $listOrder); ?>
+                    <?= Html::grid('sort', 'COM_MEMBERS_HEADING_GROUPS', 'group_names', $listDirn, $listOrder) ?>
                 </th>
             </tr>
         </thead>
@@ -67,7 +67,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
         foreach ($this->rows as $row) : ?>
             <tr class="row<?php echo $i % 2; ?>">
                 <td>
-                    <a class="pointer" onclick="if (window.parent) window.parent.<?php echo $this->escape($function); ?>('<?php echo $row->get('id'); ?>', '<?php echo $this->escape(addslashes($row->get('name'))); ?>');">
+                    <a class="pointer" onclick="if (window.parent) window.parent.<?= $this->escape($function) ?>('<?= $row->get('id') ?>', '<?= $this->escape(addslashes($row->get('name'))) ?>');">
                         <?php echo $this->escape($row->get('name')); ?>
                     </a>
                 </td>

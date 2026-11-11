@@ -17,6 +17,6 @@ $title = $this->model->get('title') ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ':
 ?>
 <header id="content-header">
     <h2><?php echo $title; ?> <?php if ($this->model->groupOwner() && $cn = $this->model->groupOwner('cn')) {
-        ?> <?php echo Lang::txt('COM_PROJECTS_FOR') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_GROUP')); ?> <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $cn); ?>"><?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->model->groupOwner('description'), 50)); ?></a><?php
+        ?> <?= Lang::txt('COM_PROJECTS_FOR') . ' ' . ucfirst(Lang::txt('COM_PROJECTS_GROUP')) ?> <a href="<?= Route::url('index.php?option=com_groups&cn=' . $cn) ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate($this->model->groupOwner('description'), 50)) ?></a><?php
         } ?></h2>
 </header><!-- / #content-header -->

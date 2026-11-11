@@ -25,7 +25,7 @@ $this
     <?php if (User::authorise('core.create', $this->option)) : ?>
         <div id="content-header-extra">
             <p>
-                <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+                <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=new') ?>">
                     <?php echo Lang::txt('COM_GROUPS_NEW'); ?>
                 </a>
             </p>
@@ -40,23 +40,23 @@ foreach ($this->notifications as $notification) {
 ?>
 
 <section id="introduction" class="section">
-    <form class="section-inner" action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get">
+    <form class="section-inner" action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" method="get">
         <div class="grid">
             <div class="col span8">
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH'); ?>" />
+                    <input class="entry-search-submit" type="submit" value="<?= Lang::txt('COM_GROUPS_BROWSE_SEARCH') ?>" />
                     <fieldset class="entry-search">
                         <legend class="sr-only"><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP'); ?></legend>
                         <label for="gsearch"><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP'); ?></label>
-                        <input type="text" name="search" id="gsearch" value="" placeholder="<?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER'); ?>" />
+                        <input type="text" name="search" id="gsearch" value="" placeholder="<?= Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER') ?>" />
                     </fieldset>
                 </div><!-- / .container -->
                 <p><?php echo Lang::txt('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_DESC'); ?></p>
-                <p><a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>"><?php echo Lang::txt('COM_GROUPS_INTRO_NEED_HELP'); ?></a></p>
+                <p><a class="popup" href="<?= Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index') ?>"><?= Lang::txt('COM_GROUPS_INTRO_NEED_HELP') ?></a></p>
             </div>
             <div class="col span3 offset1 omega">
                 <div>
-                    <a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>">
+                    <a class="btn icon-browse" href="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>">
                         <?php echo Lang::txt('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_BUTTON_TEXT'); ?>
                     </a>
                 </div>
@@ -76,7 +76,7 @@ foreach ($this->notifications as $notification) {
                     </div>
                     <ul>
                         <?php foreach ($this->mygroups['invitees'] as $invite) : ?>
-                            <li><?php echo $this->escape($invite->description); ?><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $invite->cn . '&task=accept'); ?>">Accept Invite</button></li>
+                            <li><?= $this->escape($invite->description) ?><button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $invite->cn . '&task=accept') ?>">Accept Invite</button></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
@@ -90,7 +90,7 @@ foreach ($this->notifications as $notification) {
                     </div>
                     <ul>
                         <?php foreach ($this->mygroups['applicants'] as $applicant) : ?>
-                            <li><?php echo $this->escape($applicant->description); ?><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $applicant->cn . '&task=cancel'); ?>">Cancel Request</button></li>
+                            <li><?= $this->escape($applicant->description) ?><button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $applicant->cn . '&task=cancel') ?>">Cancel Request</button></li>
                         <?php endforeach; ?>
                     </ul>
                 </div>

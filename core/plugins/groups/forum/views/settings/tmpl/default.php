@@ -32,8 +32,8 @@ $this
                 <label for="param-threading">
                     <?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING'); ?>
                     <select name="params[threading]" id="param-threading" class="form-control">
-                        <option value="list"<?php echo $this->config->get('threading', 'list') == 'list' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST'); ?></option>
-                        <option value="tree"<?php echo $this->config->get('threading', 'list') == 'tree' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE'); ?></option>
+                        <option value="list"<?= $this->config->get('threading', 'list') == 'list' ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST') ?></option>
+                        <option value="tree"<?= $this->config->get('threading', 'list') == 'tree' ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE') ?></option>
                     </select>
                     <span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_HINT'); ?></span>
                 </label>
@@ -88,7 +88,7 @@ $this
                             class="form-check-input"
                             name="params[allow_anonymous]"
                             id="param-allow_anonymous-no"
-                            value="0" <?php echo !$this->config->get('allow_anonymous') ? ' checked="checked"' : ''; ?> />
+                            value="0" <?= !$this->config->get('allow_anonymous') ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('JNO'); ?>
                     </label>
                 </div>
@@ -98,7 +98,7 @@ $this
                             class="form-check-input"
                             name="params[allow_anonymous]"
                             id="param-allow_anonymous-yes"
-                            value="1" <?php echo $this->config->get('allow_anonymous') ? ' checked="checked"' : ''; ?> />
+                            value="1" <?= $this->config->get('allow_anonymous') ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('JYES'); ?>
                     </label>
                 </div>

@@ -110,7 +110,7 @@ $site = rtrim(Request::base(), '/');
             $st = new \Components\Support\Models\Tags($ticket->id);
             $tags = $st->render('string');
             ?>
-            <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor['critical']; ?>; background: <?php echo $bgcolor['critical']; ?>; font-size: 0.9em; line-height: 1.6em;
+            <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?= $bdcolor['critical'] ?>; background: <?= $bgcolor['critical'] ?>; font-size: 0.9em; line-height: 1.6em;
                 background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));
                 background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
                 background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
@@ -122,7 +122,7 @@ $site = rtrim(Request::base(), '/');
                 background-size: 30px 30px;">
                 <thead>
                     <tr>
-                        <th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor['critical']; ?>; padding: 8px; text-align: left" align="left">
+                        <th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?= $bdcolor['critical'] ?>; padding: 8px; text-align: left" align="left">
                             <?php echo $this->escape($ticket->summary); ?>
                         </th>
                     </tr>
@@ -138,28 +138,28 @@ $site = rtrim(Request::base(), '/');
                                 <?php if (!$this->config->get('email_terse')) { ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->created; ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $ticket->created ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo '--'; ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= '--' ?></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->name ? $ticket->name : 'Unknown'); ?> <?php echo $ticket->login ? '(' . $this->escape($ticket->login) . ')' : ''; ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->name ? $ticket->name : 'Unknown') ?> <?= $ticket->login ? '(' . $this->escape($ticket->login) . ')' : '' ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->severity); ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->severity) ?></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $tags ? $tags : '--'; ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
                                     </tr>
                                 <?php } ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $ticket->status; ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $ticket->status ?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -206,7 +206,7 @@ $site = rtrim(Request::base(), '/');
             $st = new \Components\Support\Models\Tags($ticket->id);
             $tags = $st->render('string');
             ?>
-            <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor['major']; ?>; background: <?php echo $bgcolor['major']; ?>; font-size: 0.9em; line-height: 1.6em;
+            <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?= $bdcolor['major'] ?>; background: <?= $bgcolor['major'] ?>; font-size: 0.9em; line-height: 1.6em;
                 background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));
                 background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
                 background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
@@ -218,7 +218,7 @@ $site = rtrim(Request::base(), '/');
                 background-size: 30px 30px;">
                 <thead>
                     <tr>
-                        <th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor['critical']; ?>; padding: 8px; text-align: left" align="left">
+                        <th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?= $bdcolor['critical'] ?>; padding: 8px; text-align: left" align="left">
                             <?php echo $this->escape($ticket->summary); ?>
                         </th>
                     </tr>
@@ -234,28 +234,28 @@ $site = rtrim(Request::base(), '/');
                                 <?php if (!$this->config->get('email_terse')) { ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->created; ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $ticket->created ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo '--'; ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= '--' ?></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->name ? $ticket->name : 'Unknown'); ?> <?php echo $ticket->login ? '(' . $this->escape($ticket->login) . ')' : ''; ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->name ? $ticket->name : 'Unknown') ?> <?= $ticket->login ? '(' . $this->escape($ticket->login) . ')' : '' ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->severity); ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->severity) ?></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $tags ? $tags : '--'; ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
                                     </tr>
                                 <?php } ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $ticket->status; ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $ticket->status ?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -335,7 +335,7 @@ $site = rtrim(Request::base(), '/');
             $st = new \Components\Support\Models\Tags($ticket->id);
             $tags = $st->render('string');
             ?>
-            <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?php echo $bdcolor[$severity]; ?>; background: <?php echo $bgcolor[$severity]; ?>; font-size: 0.9em; line-height: 1.6em;
+            <table id="ticket-info" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; border: 1px solid <?= $bdcolor[$severity] ?>; background: <?= $bgcolor[$severity] ?>; font-size: 0.9em; line-height: 1.6em;
                 background-image: -webkit-gradient(linear, 0 0, 100% 100%, color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent), color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)), color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent), to(transparent));
                 background-image: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
                 background-image: -moz-linear-gradient(-45deg, rgba(255, 255, 255, .075) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .075) 50%, rgba(255, 255, 255, .075) 75%, transparent 75%, transparent);
@@ -347,7 +347,7 @@ $site = rtrim(Request::base(), '/');
                 background-size: 30px 30px;">
                 <thead>
                     <tr>
-                        <th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor['critical']; ?>; padding: 8px; text-align: left" align="left">
+                        <th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?= $bdcolor['critical'] ?>; padding: 8px; text-align: left" align="left">
                             <?php echo $this->escape($ticket->summary); ?>
                         </th>
                     </tr>
@@ -363,28 +363,28 @@ $site = rtrim(Request::base(), '/');
                                 <?php if (!$this->config->get('email_terse')) { ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $ticket->created; ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $ticket->created ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo '--'; ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= '--' ?></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->name ? $ticket->name : 'Unknown'); ?> <?php echo $ticket->login ? '(' . $this->escape($ticket->login) . ')' : ''; ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->name ? $ticket->name : 'Unknown') ?> <?= $ticket->login ? '(' . $this->escape($ticket->login) . ')' : '' ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?php echo $this->escape($ticket->severity); ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->severity) ?></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $tags ? $tags : '--'; ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
                                     </tr>
                                 <?php } ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?php echo $ticket->status; ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $ticket->status ?></td>
                                     </tr>
                                 </tbody>
                             </table>

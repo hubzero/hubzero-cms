@@ -21,10 +21,10 @@ Toolbar::deleteList();
 
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER'); ?>" />
+        <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER') ?>" />
 
         <input type="submit" value="<?php echo Lang::txt('COM_EVENTS_SEARCH_GO'); ?>" />
     </fieldset>
@@ -33,7 +33,7 @@ Toolbar::deleteList();
         <thead>
             <tr>
                 <th colspan="6">
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id); ?>">
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id) ?>">
                         <?php echo $this->escape(stripslashes($this->event->title)); ?>
                     </a>
                 </th>
@@ -41,7 +41,7 @@ Toolbar::deleteList();
             <tr>
                 <th>
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th><?php echo Lang::txt('COM_EVENTS_ID'); ?></th>
                 <th><?php echo Lang::txt('COM_EVENTS_TITLE'); ?></th>
@@ -68,16 +68,16 @@ Toolbar::deleteList();
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
                     <td>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>" class="checkbox-toggle" />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     </td>
                     <td><?php echo $row->id; ?></td>
-                    <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&event_id=' . $this->event->id); ?>"><?php echo $this->escape(stripslashes($row->title)) . ' (' . $this->escape(stripslashes($row->alias)) . ')'; ?></a></td>
+                    <td><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&event_id=' . $this->event->id) ?>"><?= $this->escape(stripslashes($row->title)) . ' (' . $this->escape(stripslashes($row->alias)) . ')' ?></a></td>
                     <td>
                         <?php echo $pageNav->orderUpIcon($i, ($row->ordering != ($orderings[$i - 1] ?? null))); ?>
                     </td>
                     <td>
-                        <?php echo $pageNav->orderDownIcon($i, $pageNav->total, ($row->ordering != ($orderings[$i + 1] ?? null))); ?>
+                        <?= $pageNav->orderDownIcon($i, $pageNav->total, ($row->ordering != ($orderings[$i + 1] ?? null))) ?>
                     </td>
                     <td><?php echo $row->ordering; ?></td>
                 </tr>

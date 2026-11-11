@@ -53,8 +53,8 @@ $this
             <select class="option" name="action">
                 <option value=""><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_WITH_SELECTED'); ?></option>
                 <option value="markasread"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_READ'); ?></option>
-                <option value="markasunread"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_UNREAD'); ?></option>
-                <option value="sendtoarchive"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE'); ?></option>
+                <option value="markasunread"><?= Lang::txt('PLG_MEMBERS_MESSAGES_MSG_MARK_AS_UNREAD') ?></option>
+                <option value="sendtoarchive"><?= Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_ARCHIVE') ?></option>
                 <option value="sendtotrash"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_SEND_TO_TRASH'); ?></option>
             </select>
             <input type="hidden"name="activetab" value="inbox" />
@@ -119,13 +119,13 @@ $this
                     ?>
                     <tr>
                         <td class="check">
-                            <input class="chkbox" type="checkbox" id="msg<?php echo $row->id; ?>" value="<?php echo $row->id; ?>" name="mid[]" />
+                            <input class="chkbox" type="checkbox" id="msg<?= $row->id ?>" value="<?= $row->id ?>" name="mid[]" />
                         </td>
                         <td class="status">
                             <?php echo $status; ?>
                         </td>
                         <td>
-                            <a class="<?php echo $subject_cls; ?>" href="<?php echo Route::url($this->member->link() . '&active=messages&msg=' . $row->id); ?>">
+                            <a class="<?= $subject_cls ?>" href="<?= Route::url($this->member->link() . '&active=messages&msg=' . $row->id) ?>">
                                 <?php echo $this->escape(stripslashes($subject)); ?>
                             </a>
                         </td>
@@ -144,10 +144,10 @@ $this
                             ?>
                         </td>
                         <td>
-                            <time datetime="<?php echo $row->created; ?>"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time>
+                            <time datetime="<?= $row->created ?>"><?= Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
                         </td>
                         <td>
-                            <a title="<?php echo Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE'); ?>" class="trash tooltips" href="<?php echo Route::url($this->member->link() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=inbox&' . Session::getFormToken() . '=1'); ?>">
+                            <a title="<?= Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE') ?>" class="trash tooltips" href="<?= Route::url($this->member->link() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=inbox&' . Session::getFormToken() . '=1') ?>">
                                 <?php echo Lang::txt('PLG_MEMBERS_MESSAGES_TRASH'); ?>
                             </a>
                         </td>

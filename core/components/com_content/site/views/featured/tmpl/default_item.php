@@ -187,7 +187,7 @@ $canEdit = $this->item->params->get('access-edit');
 
     <div class="img-intro-<?php echo htmlspecialchars($imgfloat); ?>">
     <img
-        <?php echo $images->image_intro_caption ? 'class="caption" title="' . htmlspecialchars($images->image_intro_caption) . '"' : ''; ?>
+        <?= $images->image_intro_caption ? 'class="caption" title="' . htmlspecialchars($images->image_intro_caption) . '"' : '' ?>
         src="<?php echo htmlspecialchars($images->image_intro); ?>"
         alt="<?php echo htmlspecialchars($images->image_intro_alt); ?>"
     />

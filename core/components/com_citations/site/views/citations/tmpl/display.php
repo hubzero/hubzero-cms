@@ -49,7 +49,7 @@ $this
             $this->allow_import == 1 || $this->allow_bulk_import == 1
                      || ($this->allow_import == 2 && $this->isAdmin) || ($this->allow_bulk_import == 2 && $this->isAdmin)
 ) : ?>
-            <p><?php echo Lang::txt('COM_CITATIONS_SUBMIT_CITATIONS_DESC', Route::url('index.php?option=' . $this->option . '&task=add')); ?></p>
+            <p><?= Lang::txt('COM_CITATIONS_SUBMIT_CITATIONS_DESC', Route::url('index.php?option=' . $this->option . '&task=add')) ?></p>
             <?php else : ?>
                 <p><?php echo Lang::txt('COM_CITATIONS_SUBMIT_CITATIONS_DESC_NOTALLOWED', '/support'); ?></p>
             <?php endif; ?>
@@ -65,12 +65,12 @@ $this
         </div><!-- / .col span3 -->
         <div class="col span9 omega">
             <div class="col span-half">
-                <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" method="get" class="search">
+                <form action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" method="get" class="search">
                     <fieldset>
                         <legend class="sr-only"><?php echo Lang::txt('COM_CITATIONS_FIND_CITATION'); ?></legend>
                         <p class="hz-v-align">
                             <span class="hz-input-combo">
-                                <input type="text" name="search" id="csearch" value="" aria-label="<?php echo Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD'); ?>" />
+                                <input type="text" name="search" id="csearch" value="" aria-label="<?= Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD') ?>" />
                                 <input type="submit" value="<?php echo Lang::txt('COM_CITATIONS_SEARCH'); ?>" />
                             </span>
                         </p>
@@ -79,7 +79,7 @@ $this
             </div><!-- / .col span-half -->
             <div class="col span-half omega">
                 <div class="browse">
-                    <p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_CITATIONS_BROWSE'); ?></a></p>
+                    <p><a href="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>"><?= Lang::txt('COM_CITATIONS_BROWSE') ?></a></p>
                 </div><!-- / .browse -->
             </div><!-- / .col span-half -->
         </div><!-- / .col span9 -->

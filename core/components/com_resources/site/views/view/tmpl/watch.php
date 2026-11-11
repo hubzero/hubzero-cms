@@ -178,7 +178,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
                     <optgroup label="<?php echo $this->escape($parent->title); ?>">
                         <?php foreach ($children as $c) : ?>
                             <?php if (Date::toSql() > $c->publish_up || User::authorise('core.admin')) : ?>
-                                <option <?php echo $c->title == $rr->title ? "selected" : ''; ?> value="<?php echo $c->id; ?>"><?php echo $this->escape($c->title); ?></option>
+                                <option <?= $c->title == $rr->title ? "selected" : '' ?> value="<?= $c->id ?>"><?= $this->escape($c->title) ?></option>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </optgroup>
@@ -205,17 +205,17 @@ $presentation->subtitles = array_values($presentation->subtitles);
                 <ul class="no-js">
                     <?php $counter = 0; ?>
                     <?php foreach ($presentation->slides as $slide) : ?>
-                        <li id="slide_<?php echo $counter; ?>" title="<?php echo $this->escape($slide->title); ?>" time="<?php echo $this->escape($slide->time); ?>">
+                        <li id="slide_<?= $counter ?>" title="<?= $this->escape($slide->title) ?>" time="<?= $this->escape($slide->time) ?>">
                             <?php if ($slide->type == 'Image') : ?>
-                                <img src="<?php echo $this->escape($content_url . DS . $slide->media); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
+                                <img src="<?= $this->escape($content_url . DS . $slide->media) ?>" alt="<?= $this->escape($slide->title) ?>" />
                             <?php else : ?>
                                 <video class="slidevideo" preload="metadata" muted>
                                     <?php foreach ($slide->media as $source) : ?>
-                                        <source src="<?php echo $this->escape($content_url . DS . $source->source); ?>" />
+                                        <source src="<?= $this->escape($content_url . DS . $source->source) ?>" />
                                     <?php endforeach; ?>
-                                    <a href="<?php echo $this->escape($content_url . DS . $slide->media[0]->source); ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
+                                    <a href="<?= $this->escape($content_url . DS . $slide->media[0]->source) ?>" class="flowplayer_slide" id="flowplayer_slide_<?= $counter ?>"></a>
                                 </video>
-                                <img src="<?php echo $this->escape($content_url . DS . $slide->media[3]->source); ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement">
+                                <img src="<?= $this->escape($content_url . DS . $slide->media[3]->source) ?>" alt="<?= $this->escape($slide->title) ?>" class="imagereplacement">
                             <?php endif; ?>
                         </li>
                         <?php $counter++; ?>
@@ -456,7 +456,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                 }
                             }
                             ?>
-                            <source src="<?php echo $this->escape($source); ?>" type="<?php echo $this->escape($type); ?>">
+                            <source src="<?= $this->escape($source) ?>" type="<?= $this->escape($type) ?>">
                         <?php endforeach; ?>
 
                         <a href="<?php echo $this->escape($mp4); ?>" 
@@ -481,7 +481,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                     data-autoplay="<?php echo $auto; ?>"
                                     data-type="subtitle"
                                     data-lang="<?php echo $this->escape($subtitle->name); ?>" 
-                                    data-src="<?php echo $this->escape($source_url); ?>?v=<?php echo $modified; ?>"></div>
+                                    data-src="<?= $this->escape($source_url) ?>?v=<?= $modified ?>"></div>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </video>
@@ -499,13 +499,13 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                     break;
                             }
                             ?>
-                            <source src="<?php echo $content_url . DS . $source->source; ?>" type="<?php echo $type; ?>" />
+                            <source src="<?= $content_url . DS . $source->source ?>" type="<?= $type ?>" />
                         <?php endforeach; ?>
-                        <a href="<?php echo $content_url . DS . $presentation->media[0]->source; ?>" id="flowplayer" duration="<?php echo isset($presentation->duration) && $presentation->duration ? $presentation->duration : ''; ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
+                        <a href="<?= $content_url . DS . $presentation->media[0]->source ?>" id="flowplayer" duration="<?= isset($presentation->duration) && $presentation->duration ? $presentation->duration : '' ?>" data-mediaid="<?= $rr->id ?>"></a>
                     </audio>
 
                     <?php if (isset($presentation->placeholder) && $presentation->placeholder) : ?>
-                        <img src="<?php echo $content_url . DS . $presentation->placeholder; ?>" alt="Audio presentation placeholder" id="placeholder" />
+                        <img src="<?= $content_url . DS . $presentation->placeholder ?>" alt="Audio presentation placeholder" id="placeholder" />
                     <?php endif; ?>
                 <?php endif; ?>
                 <div id="video-subtitles" role="region" aria-label="Closed captions" aria-live="polite" aria-atomic="true"></div>

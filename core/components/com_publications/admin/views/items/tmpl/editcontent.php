@@ -31,17 +31,17 @@ if ($tmpl != 'component') {
     <p class="error"><?php echo $this->getError(); ?></p>
     <?php return;
 } ?>
-<p class="crumbs"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER'); ?></a> &raquo; <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->get('id') . '&version=' . $this->pub->get('version_number')); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->get('id'); ?></a> &raquo; <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO'); ?></p>
+<p class="crumbs"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->get('id') . '&version=' . $this->pub->get('version_number')) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->get('id') ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO') ?></p>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">
                 <?php if (!$this->getError()) { ?>
-                    <button type="button" onclick="submitbutton('savecontent');"><?php echo Lang::txt('JSAVE');?></button>
+                    <button type="button" onclick="submitbutton('savecontent');"><?= Lang::txt('JSAVE') ?></button>
                 <?php } ?>
-                <button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?php echo Lang::txt('Cancel');?></button>
+                <button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?= Lang::txt('Cancel') ?></button>
             </div>
 
             <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT') ?>
@@ -101,18 +101,18 @@ if ($tmpl != 'component') {
                     <?php if ($attachments && count($attachments) > 1 && $multiZip) { ?>
                     <div class="input-wrap">
                         <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE_NAME'); ?>:</label>
-                        <input type="text" name="params[element<?php echo $this->elementId; ?>bundlename]" maxlength="250" value="<?php echo $this->escape($bundleName); ?>" />
+                        <input type="text" name="params[element<?= $this->elementId ?>bundlename]" maxlength="250" value="<?= $this->escape($bundleName) ?>" />
                     </div>
                     <?php } ?>
                     <?php if ($attachments) { ?>
                         <?php foreach ($attachments as $attach) { ?>
                             <div class="input-wrap withdivider">
-                                <p>[<?php echo $this->escape($attach->type); ?>] <?php echo $this->escape($attach->path); ?></p>
+                                <p>[<?= $this->escape($attach->type) ?>] <?= $this->escape($attach->path) ?></p>
                                 <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_TITLE'); ?>:</label>
-                                <input type="text" name="attachments[<?php echo $attach->id; ?>][title]" maxlength="250" value="<?php echo $this->escape($attach->title); ?>" />
+                                <input type="text" name="attachments[<?= $attach->id ?>][title]" maxlength="250" value="<?= $this->escape($attach->title) ?>" />
                                 <?php if ($attach->role == 3) { ?>
-                                    <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_GALLERY_DESCRIPTION'); ?>:</label>
-                                    <textarea name="attachments[<?php echo $attach->id; ?>][attribs]" rows="10" cols="60" maxlength="5000" value="<?php echo $this->escape($attach->attribs); ?>" placeholder="Enter up to 5000 characters..."><?php echo $this->escape($attach->attribs); ?></textarea>
+                                    <label><?= Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_GALLERY_DESCRIPTION') ?>:</label>
+                                    <textarea name="attachments[<?= $attach->id ?>][attribs]" rows="10" cols="60" maxlength="5000" value="<?= $this->escape($attach->attribs) ?>" placeholder="Enter up to 5000 characters..."><?= $this->escape($attach->attribs) ?></textarea>
                                 <?php } ?>
                             </div>
                         <?php } ?>
@@ -140,7 +140,7 @@ if ($tmpl != 'component') {
                     <tr>
                         <td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE'); ?></td>
                         <td>
-                            <?php echo $element->params->role == 1 ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_PRIMARY') : ($element->params->role == 2 ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_SECOND') : ($element->params->role == 3 ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_GALLERY') : "")); ?>
+                            <?= $element->params->role == 1 ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_PRIMARY') : ($element->params->role == 2 ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_SECOND') : ($element->params->role == 3 ? Lang::txt('COM_PUBLICATIONS_ELEMENT_ROLE_GALLERY') : "")) ?>
                         </td> 
                     </tr>
                 </tbody>

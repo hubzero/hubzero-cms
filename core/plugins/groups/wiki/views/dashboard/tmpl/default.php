@@ -38,8 +38,8 @@ if ($this->rows) { ?>
             ?>
             <tr class="<?php echo $cls; ?>">
                 <th scope="row"><span class="<?php echo $c; ?>"><?php echo $t; ?></span></th>
-                <td><a href="<?php echo Route::url('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope); ?>"><?php echo $this->escape(stripslashes($row->title)); ?></a></td>
-                <td class="author"><a href="<?php echo Route::url('index.php?option=com_members&id=' . $row->created_by); ?>"><?php echo $name; ?></a></td>
+                <td><a href="<?= Route::url('index.php?option=' . $this->option . '&pagename=' . $row->pagename . '&scope=' . $row->scope) ?>"><?= $this->escape(stripslashes($row->title)) ?></a></td>
+                <td class="author"><a href="<?= Route::url('index.php?option=com_members&id=' . $row->created_by) ?>"><?= $name ?></a></td>
                 <td class="date"><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
             </tr>
             <?php

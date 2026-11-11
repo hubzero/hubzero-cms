@@ -37,9 +37,9 @@ if ($this->getError()) {
 <form action="<?php echo Route::url($this->project->link('publications')); ?>" method="post" id="plg-form" >
     <div id="plg-header">
     <?php if ($this->project->isProvisioned()) { ?>
-        <h3 class="prov-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo Route::url($this->pub->link('editversion')); ?>">"<?php echo $this->escape($this->pub->title); ?>"</a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></h3>
+        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')) ?></h3>
     <?php } else { ?>
-        <h3 class="publications"><a href="<?php echo Route::url($this->project->link('publications')); ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo Route::url($this->pub->link('editversion')); ?>">"<?php echo $this->escape($this->pub->title); ?>"</a></span> <span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')); ?></span>
+        <h3 class="publications"><a href="<?= Route::url($this->project->link('publications')) ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> <span class="indlist"> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')) ?></span>
         </h3>
     <?php } ?>
     </div>
@@ -51,17 +51,17 @@ if ($this->getError()) {
         <input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" id="projectid" />
         <input type="hidden" name="active" value="publications" />
         <input type="hidden" name="action" value="savenew" />
-        <input type="hidden" name="option" value="<?php echo $this->project->isProvisioned() ? 'com_publications' : $this->option; ?>" />
+        <input type="hidden" name="option" value="<?= $this->project->isProvisioned() ? 'com_publications' : $this->option ?>" />
         <input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
         <input type="hidden" name="selected_version" value="<?php echo $this->selected_version; ?>" />
-        <input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->isProvisioned() ? 1 : 0; ?>" />
+        <input type="hidden" name="provisioned" id="provisioned" value="<?= $this->project->isProvisioned() ? 1 : 0 ?>" />
         <?php if ($this->project->isProvisioned()) { ?>
         <input type="hidden" name="task" value="submit" />
         <?php } ?>
     </fieldset>
     <div <?php echo !$this->ajax ? 'class="vform"' : ''; ?>>
         <p>
-            <span class="faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PREVIOUS_LABEL')); ?></span> <?php echo $this->escape($this->pub->version_label); ?>
+            <span class="faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PREVIOUS_LABEL')) ?></span> <?= $this->escape($this->pub->version_label) ?>
         </p>
         <label>
             <span class="faded block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION_LABEL'); ?></span>
@@ -69,13 +69,13 @@ if ($this->getError()) {
         </label>
     </div>
         <p class="submitarea">
-            <input type="submit" class="btn active btn-success" value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_NEW_VERSION'); ?>" />
+            <input type="submit" class="btn active btn-success" value="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_NEW_VERSION') ?>" />
                 <?php if ($this->ajax) { ?>
-                <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?= Lang::txt('JCANCEL') ?>" />
                 <?php } else {
                     $rtn = Request::getString('HTTP_REFERER', Route::url($this->pub->link('editversion')), 'server');
                     ?>
-                <span class="btn btncancel"><a href="<?php echo $this->escape($rtn); ?>"><?php echo Lang::txt('JCANCEL'); ?></a></span>
+                <span class="btn btncancel"><a href="<?= $this->escape($rtn) ?>"><?= Lang::txt('JCANCEL') ?></a></span>
                 <?php } ?>
         </p>
 </form>

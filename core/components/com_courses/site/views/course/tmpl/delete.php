@@ -21,7 +21,7 @@ $this
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li class="last"><a class="course" href="<?php echo Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias')); ?>"><?php echo Lang::txt('Back to Course'); ?></a></li>
+            <li class="last"><a class="course" href="<?= Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias')) ?>"><?= Lang::txt('Back to Course') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header>
@@ -40,17 +40,17 @@ $this
 
             <p><strong>Alternative to deleting</strong></p>
             <p>You could set the course join policy to closed to restrict further membership activity and set the discoverability to hidden so the course is hidden to the world but still there later if you decide you want to use the course again.</p>
-            <p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&task=edit'); ?>">&raquo; Click here to edit course settings</a></p>
+            <p><a href="<?= Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&task=edit') ?>">&raquo; Click here to edit course settings</a></p>
         </div>
         <fieldset>
             <h3><?php echo Lang::txt('COURSES_DELETE_HEADER'); ?></h3>
 
-            <p class="warning"><?php echo Lang::txt('COURSES_DELETE_WARNING', $this->escape($this->course->get('description'))) . '<br /><br />' . $this->log; ?></p>
+            <p class="warning"><?= Lang::txt('COURSES_DELETE_WARNING', $this->escape($this->course->get('description'))) . '<br /><br />' . $this->log ?></p>
 
             <div class="form-group">
                 <label for="msg">
                     <?php echo Lang::txt('COURSES_DELETE_MESSAGE'); ?>
-                    <textarea name="msg" id="msg" rows="12" class="form-control" cols="50"><?php echo $this->escape($this->msg); ?></textarea>
+                    <textarea name="msg" id="msg" rows="12" class="form-control" cols="50"><?= $this->escape($this->msg) ?></textarea>
                 </label>
             </div>
 

@@ -46,7 +46,7 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
                 <?php // Show published date and category
                     echo \Components\Publications\Helpers\Html::showSubInfo($this->publication);
                 ?>
-                <h3><?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->publication->title), 150)); ?></h3>
+                <h3><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->publication->title), 150)) ?></h3>
                 <?php
                 // Display authors
                 if ($this->publication->params->get('show_authors')) {
@@ -67,7 +67,7 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
                 // Display mini abstract
                 if ($this->publication->abstract) {
                     ?>
-                    <p class="ataglance"><?php echo $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->publication->abstract), 250)); ?></p>
+                    <p class="ataglance"><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($this->publication->abstract), 250)) ?></p>
                     <?php
                 }
                 ?>

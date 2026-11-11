@@ -86,24 +86,24 @@ switch ($this->comment->get('rating')) {
                         <?php echo Lang::txt('JANONYMOUS'); ?>
                     <?php } ?>
                     </strong>
-                    <a class="permalink" href="<?php echo $this->url . '#c' . $this->comment->get('id'); ?>" title="<?php echo Lang::txt('PLG_COURSES_REVIEWS_PERMALINK'); ?>">
+                    <a class="permalink" href="<?= $this->url . '#c' . $this->comment->get('id') ?>" title="<?= Lang::txt('PLG_COURSES_REVIEWS_PERMALINK') ?>">
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
-                        <span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
+                        <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
-                        <span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
+                        <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
                         <?php if ($this->comment->wasModified()) { ?>
                             &mdash; <?php echo Lang::txt('Edited'); ?>
                             <span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
-                            <span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span>
+                            <span class="time"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('time') ?></time></span>
                             <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
-                            <span class="date"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('date'); ?></time></span>
+                            <span class="date"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('date') ?></time></span>
                         <?php } ?>
                     </a>
                 </p>
                 <div class="comment-body">
                     <?php if ($this->comment->get('rating')) { ?>
                         <p class="avgrating <?php echo $rating; ?>">
-                            <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $this->comment->get('rating')); ?>
+                            <?= Lang::txt('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $this->comment->get('rating')) ?>
                         </p>
                     <?php } ?>
                     <?php
@@ -117,26 +117,26 @@ switch ($this->comment->get('rating')) {
 
             <?php if ($this->comment->get('filename')) { ?>
                 <div class="attachment">
-                    <p><?php echo Lang::txt('PLG_COURSES_REVIEWS_ATTACHED_FILE'); ?> <a href="<?php echo Request::base() . 'site/comments/' . $this->comment->get('filename'); ?>"><?php echo $this->escape($this->comment->get('filename')); ?></a></p>
+                    <p><?= Lang::txt('PLG_COURSES_REVIEWS_ATTACHED_FILE') ?> <a href="<?= Request::base() . 'site/comments/' . $this->comment->get('filename') ?>"><?= $this->escape($this->comment->get('filename')) ?></a></p>
                 </div>
             <?php } ?>
 
             <?php if (!$this->comment->isReported()) { ?>
                 <div class="comment-options">
                 <?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
-                    <a class="icon-edit edit" href="<?php echo Route::url($rtrn . 'editcomment=' . $this->comment->get('id') . '#post-comment'); ?>"><!--
+                    <a class="icon-edit edit" href="<?= Route::url($rtrn . 'editcomment=' . $this->comment->get('id') . '#post-comment') ?>"><!--
                         --><?php echo Lang::txt('PLG_COURSES_REVIEWS_EDIT'); ?><!--
                     --></a>
                 <?php } ?>
                 <?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
-                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($rtrn . 'action=delete&comment=' . $this->comment->get('id')); ?>" class="icon-delete delete"><?php echo Lang::txt('PLG_COURSES_REVIEWS_DELETE'); ?></button>
+                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($rtrn . 'action=delete&comment=' . $this->comment->get('id')) ?>" class="icon-delete delete"><?= Lang::txt('PLG_COURSES_REVIEWS_DELETE') ?></button>
                 <?php } ?>
                 <?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-                    <a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLY'); ?>" href="<?php echo Route::url($rtrn . 'replyto=' . $this->comment->get('id') . '#post-comment'); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_COURSES_REVIEWS_REPLY') ?>" href="<?= Route::url($rtrn . 'replyto=' . $this->comment->get('id') . '#post-comment') ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
                         --><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLY'); ?><!--
                     --></a>
                 <?php } ?>
-                    <a class="icon-abuse abuse" href="<?php echo Route::url('index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->comment->get('id') . '&parent=' . $this->obj->get('id')); ?>"><!--
+                    <a class="icon-abuse abuse" href="<?= Route::url('index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->comment->get('id') . '&parent=' . $this->obj->get('id')) ?>"><!--
                         --><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPORT_ABUSE'); ?><!--
                     --></a>
                 </div><!-- / .comment-options -->
@@ -146,12 +146,12 @@ switch ($this->comment->get('rating')) {
                 <div class="addcomment hide" id="comment-form<?php echo $this->comment->get('id'); ?>">
                     <form action="<?php echo Route::url($this->url); ?>" method="post" enctype="multipart/form-data">
                         <fieldset>
-                            <legend><span><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->creator()->get('name') : Lang::txt('JANONYMOUS'))); ?></span></legend>
+                            <legend><span><?= Lang::txt('PLG_COURSES_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->creator()->get('name') : Lang::txt('JANONYMOUS'))) ?></span></legend>
 
                             <input type="hidden" name="comment[id]" value="0" />
                             <input type="hidden" name="comment[item_id]" value="<?php echo $this->obj->get('id'); ?>" />
                             <input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
-                            <input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
+                            <input type="hidden" name="comment[parent]" value="<?= $this->comment->get('id') ?>" />
                             <input type="hidden" name="comment[created]" value="" />
                             <input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -160,13 +160,13 @@ switch ($this->comment->get('rating')) {
                             <?php echo Html::input('token'); ?>
 
                             <label for="comment-<?php echo $this->comment->get('id'); ?>-content">
-                                <span class="label-text"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ENTER_COMMENTS'); ?></span>
-                                <?php echo $this->editor('comment[content]', '', 35, 4, 'comment-' . $this->comment->get('id') . '-content', ['class' => 'minimal no-footer']); ?>
+                                <span class="label-text"><?= Lang::txt('PLG_COURSES_REVIEWS_ENTER_COMMENTS') ?></span>
+                                <?= $this->editor('comment[content]', '', 35, 4, 'comment-' . $this->comment->get('id') . '-content', ['class' => 'minimal no-footer']) ?>
                             </label>
 
-                            <label class="reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
+                            <label class="reply-anonymous-label" for="comment-<?= $this->comment->get('id') ?>-anonymous">
                                 <?php if ($this->params->get('comments_anon', 1)) { ?>
-                                    <input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+                                    <input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?= $this->comment->get('id') ?>-anonymous" value="1" />
                                     <?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
                                 <?php } else { ?>
                                     &nbsp; <input class="option" type="hidden" name="comment[anonymous]" value="0" />
@@ -174,7 +174,7 @@ switch ($this->comment->get('rating')) {
                             </label>
 
                             <p class="submit">
-                                <input type="submit" value="<?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT'); ?>" />
+                                <input type="submit" value="<?= Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT') ?>" />
                             </p>
                         </fieldset>
                     </form>

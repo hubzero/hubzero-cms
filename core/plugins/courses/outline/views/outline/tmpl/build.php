@@ -87,7 +87,7 @@ endforeach;
                     <div class="unit-edit-wrap">
                         <form action="<?php echo Request::base(true); ?>/api/courses/unit/save" class="unit-edit-form">
                             <label for="title">Title:</label>
-                            <input class="unit-edit-text" name="title" type="text" value="<?php echo $this->escape($unit->get('title')); ?>" placeholder="title" />
+                            <input class="unit-edit-text" name="title" type="text" value="<?= $this->escape($unit->get('title')) ?>" placeholder="title" />
                             <input class="unit-edit-save" type="submit" value="Save" />
                             <input class="unit-edit-reset" type="reset" value="Cancel" />
                             <input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
@@ -138,7 +138,7 @@ endforeach;
                                 <div class="label-input-pair">
                                     <label for="description">Short Description:</label>
                                     <input type="text" name="description" value="<?php echo $this->escape($agt->get('description')) ?>">
-                                    <span><?php echo Lang::txt('PLG_COURSES_OUTLINE_FIELD_SHORT_DESCRIPTION_HINT'); ?></span>
+                                    <span><?= Lang::txt('PLG_COURSES_OUTLINE_FIELD_SHORT_DESCRIPTION_HINT') ?></span>
                                 </div>
                                 <input class="asset-group-title-save" type="submit" value="Save" />
                                 <input class="asset-group-title-cancel" type="reset" value="Cancel" />
@@ -175,10 +175,10 @@ endforeach;
                 ?>
 
                                 <li class="add-new asset-group-item">
-                                    Add a new <?php echo $this->escape((substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's'))); ?>
+                                    Add a new <?= $this->escape((substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's'))) ?>
                                     <form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
-                                        <input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
-                                        <input type="hidden" name="offering" value="<?php echo $offering->alias(); ?>" />
+                                        <input type="hidden" name="course_id" value="<?= $course->get('id') ?>" />
+                                        <input type="hidden" name="offering" value="<?= $offering->alias() ?>" />
                                         <input type="hidden" name="unit_id" value="<?php echo $unit->get('id'); ?>" />
                                         <input type="hidden" name="parent" value="<?php echo $agt->get('id'); ?>" />
                                     </form>
@@ -227,5 +227,5 @@ endforeach;
 <div class="session-expired">
     <h3>Session Expired</h3>
     <p>Sorry. Your session has expired. You must login again to proceed.</p>
-    <p><a href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])); ?>" class="btn btn-warning">Login</a>
+    <p><a href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])) ?>" class="btn btn-warning">Login</a>
 </div>

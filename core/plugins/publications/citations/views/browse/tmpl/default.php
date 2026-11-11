@@ -62,8 +62,8 @@ if ($this->citations) {
 <h3 id="citations">
     <?php echo Lang::txt('PLG_PUBLICATION_CITATIONS'); ?>
     <span>
-        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=citations&v=' . $this->publication->version_number . '#nonaffiliated'); ?>"><?php echo Lang::txt('PLG_PUBLICATION_CITATIONS_NONAFF'); ?> (<?php echo $numnon; ?>)</a> |
-        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=citations&v=' . $this->publication->version_number . '#affiliated'); ?>"><?php echo Lang::txt('PLG_PUBLICATION_CITATIONS_AFF'); ?> (<?php echo $numaff; ?>)</a>
+        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=citations&v=' . $this->publication->version_number . '#nonaffiliated') ?>"><?= Lang::txt('PLG_PUBLICATION_CITATIONS_NONAFF') ?> (<?= $numnon ?>)</a> |
+        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=citations&v=' . $this->publication->version_number . '#affiliated') ?>"><?= Lang::txt('PLG_PUBLICATION_CITATIONS_AFF') ?> (<?= $numaff ?>)</a>
     </span>
 </h3>
 <?php if ($this->citations) { ?>

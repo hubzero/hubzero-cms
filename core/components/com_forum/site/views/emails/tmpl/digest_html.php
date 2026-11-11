@@ -34,7 +34,7 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
     . ' across ' . $groups . ' of your group' . ($groups != 1 ? 's' : '') . '.';
 ?>
 <!-- Start Preheader -->
-<span style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; max-height:0; max-width:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px;"><?php echo $this->escape($preheader); ?></span>
+<span style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; max-height:0; max-width:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px;"><?= $this->escape($preheader) ?></span>
 <!-- End Preheader -->
 
 <!-- Start Header -->
@@ -72,12 +72,12 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
 <table id="digest-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: #f7f7f8; border: 1px solid #dddddd; border-radius: 6px;">
     <tr>
         <td width="85" style="padding: 0 0 0 15px; opacity: 0.8;">
-            <img width="80" src="<?php echo $base . '/core/components/com_forum/site/assets/img/group.png'; ?>" alt="" />
+            <img width="80" src="<?= $base . '/core/components/com_forum/site/assets/img/group.png' ?>" alt="" />
         </td>
         <td width="565" style="padding: 14px;">
-            <span style="font-weight: bold; font-size: 14px; color: #333;">Your <?php echo $this->escape($this->interval); ?> group discussion digest</span>
+            <span style="font-weight: bold; font-size: 14px; color: #333;">Your <?= $this->escape($this->interval) ?> group discussion digest</span>
             <hr style="border: none; border-top: 1px solid #dddddd; margin: 8px 0;" />
-            <span>You have <strong><?php echo $posts; ?></strong> new post<?php echo($posts != 1 ? 's' : ''); ?> across <strong><?php echo $groups; ?></strong> of your group<?php echo($groups != 1 ? 's' : ''); ?>.</span>
+            <span>You have <strong><?= $posts ?></strong> new post<?= ($posts != 1 ? 's' : '') ?> across <strong><?= $groups ?></strong> of your group<?= ($groups != 1 ? 's' : '') ?>.</span>
         </td>
     </tr>
 </table>
@@ -106,7 +106,7 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
         <tr>
             <td colspan="2" style="text-align: center; font-size: 14px; padding: 14px 0 4px;">
                 <strong><?php echo $this->escape($group->get('description')); ?></strong>
-                <span style="color: #999;">&mdash; <?php echo $posts->count(); ?> new post<?php echo($posts->count() != 1 ? 's' : ''); ?></span>
+                <span style="color: #999;">&mdash; <?= $posts->count() ?> new post<?= ($posts->count() != 1 ? 's' : '') ?></span>
             </td>
         </tr>
         <tr>
@@ -115,7 +115,7 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
                     <table width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                         <tr>
                             <td width="75" valign="top" style="padding: 10px 0;">
-                                <img width="50" height="50" style="border-radius: 50%;" src="<?php echo $base . '/members/' . $post->created_by . '/Image:thumb.png'; ?>" alt="" />
+                                <img width="50" height="50" style="border-radius: 50%;" src="<?= $base . '/members/' . $post->created_by . '/Image:thumb.png' ?>" alt="" />
                             </td>
                             <td style="padding: 10px 0;">
                                 <div style="border: 1px solid #dddddd; padding: 12px; border-radius: 6px; background: #ffffff;">
@@ -126,7 +126,7 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
                                             $name = User::getInstance($post->created_by)->get('name');
                                         }
                                         ?>
-                                        <strong style="color: #555;"><?php echo $this->escape($name); ?></strong> &middot; <?php echo Date::of($post->created)->toLocal('M j, Y g:i a'); ?>
+                                        <strong style="color: #555;"><?= $this->escape($name) ?></strong> &middot; <?= Date::of($post->created)->toLocal('M j, Y g:i a') ?>
                                     </div>
                                     <div style="color: #333;">
                                         <?php echo $post->comment; ?>
@@ -136,7 +136,7 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
                                     $link = $base . '/' . trim($sef, '/');
                                     ?>
                                     <div style="margin-top: 10px; text-align: right;">
-                                        <a href="<?php echo $link; ?>" style="display: inline-block; padding: 6px 14px; font-size: 11px; color: #ffffff; background-color: <?php echo $accent; ?>; text-decoration: none; border-radius: 4px;">View this post &rsaquo;</a>
+                                        <a href="<?= $link ?>" style="display: inline-block; padding: 6px 14px; font-size: 11px; color: #ffffff; background-color: <?= $accent ?>; text-decoration: none; border-radius: 4px;">View this post &rsaquo;</a>
                                     </div>
                                 </div>
                             </td>

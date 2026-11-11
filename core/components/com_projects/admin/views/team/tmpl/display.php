@@ -38,7 +38,7 @@ Html::behavior('tooltip');
 $this->css();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <?php if ($groupSynced) { ?>
         <fieldset id="filter-bar">
             <p class="warning">
@@ -53,23 +53,23 @@ $this->css();
     <table class="adminlist">
         <thead>
             <tr>
-                <th colspan="8"><a href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_PROJECTS'); ?></a>  > (<?php echo $this->escape(stripslashes($this->project->get('alias'))); ?>) <?php echo $this->escape(stripslashes($this->project->get('title'))); ?></th>
+                <th colspan="8"><a href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('COM_PROJECTS') ?></a>  > (<?= $this->escape(stripslashes($this->project->get('alias'))) ?>) <?= $this->escape(stripslashes($this->project->get('title'))) ?></th>
             </tr>
             <tr>
                 <?php //if (!$groupSynced) {?>
                     <th scope="col">
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <?php //}?>
                 <?php // the controller names these sortby/sortdir (sort/sort_Dir were never set)?>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_USERID', 'uidNumber', $this->filters['sortdir'], $this->filters['sortby']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_NAME', 'name', $this->filters['sortdir'], $this->filters['sortby']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_PROJECTS_TEAM_USERNAME', 'username', $this->filters['sortdir'], $this->filters['sortby']); ?></th>
+                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_PROJECTS_TEAM_USERID', 'uidNumber', $this->filters['sortdir'], $this->filters['sortby']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_PROJECTS_TEAM_NAME', 'name', $this->filters['sortdir'], $this->filters['sortby']) ?></th>
+                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_PROJECTS_TEAM_USERNAME', 'username', $this->filters['sortdir'], $this->filters['sortby']) ?></th>
                 <th scope="col" class="priority-5"><?php echo Lang::txt('COM_PROJECTS_TEAM_ROLE'); ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_PROJECTS_TEAM_JOINED'); ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_PROJECTS_TEAM_LAST_VISIT'); ?></th>
-                <th scope="col" class="priority-4"><?php echo Lang::txt('COM_PROJECTS_TEAM_ADDED_AS_PART_OF_GROUP'); ?></th>
+                <th scope="col" class="priority-4"><?= Lang::txt('COM_PROJECTS_TEAM_ADDED_AS_PART_OF_GROUP') ?></th>
                 <?php /*if (!$groupSynced) { ?>
                     <th scope="col"><?php echo Lang::txt('COM_PROJECTS_TEAM_ACTION'); ?></th>
                 <?php }*/ ?>
@@ -116,10 +116,10 @@ $this->css();
                 <?php //if (!$groupSynced) {?>
                     <td>
                         <?php if ($disabled) { ?>
-                            <!-- <input type="hidden" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" /> -->
+                            <!-- <input type="hidden" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>" /> -->
                         <?php } else { ?>
-                            <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
-                            <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
+                            <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>" class="checkbox-toggle" />
+                            <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->id ?></label>
                         <?php } ?>
                     </td>
                 <?php //}?>
@@ -128,7 +128,7 @@ $this->css();
                 </td>
                 <td>
                     <?php if (isset($row->username)) : ?>
-                        <a href="<?php echo Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->userid); ?>">
+                        <a href="<?= Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->userid) ?>">
                             <?php echo $this->escape(stripslashes($row->fullname)); ?>
                         </a>
                     <?php else : ?>
@@ -146,18 +146,18 @@ $this->css();
                     <span>
                         <?php //echo ($creator && !$this->project->groupOwner() ? '<span class="prominent">' . Lang::txt('COM_PROJECTS_TEAM_OWNER') . '</span> / ' : '') . $this->escape($role);?>
                     <?php if ($creator) { ?>
-                        <span class="prominent"><?php echo Lang::txt('COM_PROJECTS_TEAM_OWNER') . ' / ' . $this->escape($role); ?></span>
+                        <span class="prominent"><?= Lang::txt('COM_PROJECTS_TEAM_OWNER') . ' / ' . $this->escape($role) ?></span>
                     <?php } else { ?>
                         <select name="role[<?php echo $row->userid; ?>]" onchange="Hubzero.submitbutton('update');">
-                            <option value="1"<?php echo $row->role == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER'); ?></option>
-                            <option value="0"<?php echo $row->role == \Components\Projects\Models\Orm\Owner::ROLE_INVITEE || !$row->role ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR'); ?></option>
-                            <option value="5"<?php echo $row->role == \Components\Projects\Models\Orm\Owner::ROLE_REVIEWER ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_REVIEWER'); ?></option>
+                            <option value="1"<?= $row->role == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER') ?></option>
+                            <option value="0"<?= $row->role == \Components\Projects\Models\Orm\Owner::ROLE_INVITEE || !$row->role ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR') ?></option>
+                            <option value="5"<?= $row->role == \Components\Projects\Models\Orm\Owner::ROLE_REVIEWER ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_TEAM_LABEL_REVIEWER') ?></option>
                         </select>
                     <?php } ?>
                     </span>
                 </td>
                 <td class="priority-4">
-                    <?php echo $row->status == 1 ? Date::of($row->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('COM_PROJECTS_TEAM_INVITED') . '</span>'; ?>
+                    <?= $row->status == 1 ? Date::of($row->added)->toLocal('M d, Y') : '<span class="invited">' . Lang::txt('COM_PROJECTS_TEAM_INVITED') . '</span>' ?>
                 </td>
                 <td class="priority-4">
                     <?php
@@ -169,8 +169,8 @@ $this->css();
                     ?>
                 </td>
                 <td>
-                    <?php echo $row->groupdesc ? $this->escape(\Hubzero\Utility\Str::truncate($row->groupdesc, 30)) : ''; ?>
-                    <span class="block mini short prominent"><?php echo ($row->groupname) ? $row->groupname : Lang::txt('COM_PROJECTS_NONE'); ?></span>
+                    <?= $row->groupdesc ? $this->escape(\Hubzero\Utility\Str::truncate($row->groupdesc, 30)) : '' ?>
+                    <span class="block mini short prominent"><?= ($row->groupname) ? $row->groupname : Lang::txt('COM_PROJECTS_NONE') ?></span>
                 </td>
                 <?php /*if (!$groupSynced) { ?>
                     <td>

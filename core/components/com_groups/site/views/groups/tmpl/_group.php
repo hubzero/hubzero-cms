@@ -49,7 +49,7 @@ if ($group->get('published') == 1 && !User::isGuest()) {
 
 $published = ($group->get('published')) ? true : false;
 ?>
-<div class="group <?php echo (!$published) ? 'notpublished' : ($group->get('published') == 2 ? 'archived' : 'published'); ?>" id="group<?php echo $group->get('gidNumber'); ?>" role="group" aria-label="<?php echo $this->escape(stripslashes($group->get('description'))); ?>"
+<div class="group <?= (!$published) ? 'notpublished' : ($group->get('published') == 2 ? 'archived' : 'published') ?>" id="group<?= $group->get('gidNumber') ?>" role="group" aria-label="<?= $this->escape(stripslashes($group->get('description'))) ?>"
     data-id="<?php echo $group->get('gidNumber'); ?>"
     data-status="<?php echo $this->escape($status); ?>"
     data-title="<?php echo $this->escape(stripslashes($group->get('description')) . ' ' . $group->get('cn')); ?>">
@@ -61,14 +61,14 @@ $published = ($group->get('published')) ? true : false;
         <?php if ($published) : ?>
             <a class="group-identity group-link" href="<?php echo $groupUrl; ?>">
                 <?php if ($group->get('logo') && is_file($path)) : ?>
-                    <img src="<?php echo with(new Hubzero\Content\Moderator($path))->getUrl(); ?>" alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?>" />
+                    <img src="<?= with(new Hubzero\Content\Moderator($path))->getUrl() ?>" alt="<?= $this->escape(stripslashes($group->get('description'))) ?>" />
                 <?php else : ?>
-                    <span class="group-img-placeholder"><span class="sr-only"><?php echo $this->escape(stripslashes($group->get('description'))); ?></span></span>
+                    <span class="group-img-placeholder"><span class="sr-only"><?= $this->escape(stripslashes($group->get('description'))) ?></span></span>
                 <?php endif; ?>
                 <span class="group-details">
                     <span class="group-alias"><?php echo $this->escape($group->get('cn')); ?></span>
                     <span class="group-title" data-id="<?php echo $group->get('gidNumber'); ?>">
-                        <?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->get('description')), 60)); ?>
+                        <?= $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->get('description')), 60)) ?>
                     </span>
                 </span>
             </a>
@@ -97,22 +97,22 @@ $published = ($group->get('published')) ? true : false;
         <?php else : ?>
             <div class="group-identity">
                 <?php if ($group->get('logo') && is_file($path)) : ?>
-                    <img src="<?php echo with(new Hubzero\Content\Moderator($path))->getUrl(); ?>" alt="<?php echo $this->escape(stripslashes($group->get('description'))); ?>" />
+                    <img src="<?= with(new Hubzero\Content\Moderator($path))->getUrl() ?>" alt="<?= $this->escape(stripslashes($group->get('description'))) ?>" />
                 <?php else : ?>
-                    <span><span class="sr-only"><?php echo $this->escape(stripslashes($group->get('description'))); ?></span></span>
+                    <span><span class="sr-only"><?= $this->escape(stripslashes($group->get('description'))) ?></span></span>
                 <?php endif; ?>
             </div>
             <div class="group-details">
                 <span class="group-alias"><?php echo $this->escape($group->get('cn')); ?></span>
                 <span class="group-title">
-                    <?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->get('description')), 60)); ?>
+                    <?= $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->get('description')), 60)) ?>
                 </span>
             </div>
         <?php endif; ?>
 
         <?php if (!$published) : ?>
             <div class="group-meta">
-                <span class="not-published group-status"><?php echo Lang::txt('COM_GROUPS_STATUS_NOT_PUBLISHED_GROUP'); ?></span>
+                <span class="not-published group-status"><?= Lang::txt('COM_GROUPS_STATUS_NOT_PUBLISHED_GROUP') ?></span>
             </div>
         <?php else : ?>
             <?php
@@ -124,7 +124,7 @@ $published = ($group->get('published')) ? true : false;
                     <?php if ($status == 'pending') : ?>
                         <?php echo Lang::txt('Membership request requires approval.'); ?>
                     <?php elseif ($status == 'invitee') : ?>
-                        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=accept'); ?>" class="btn btn-success accept tooltips" title="<?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?></button>
+                        <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=accept') ?>" class="btn btn-success accept tooltips" title="<?= Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT') ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT') ?></button>
                     <?php else : ?>
                         <div>
                             <div>
@@ -177,9 +177,9 @@ $published = ($group->get('published')) ? true : false;
                         <div>
                             <div>
                                 <?php if (!$group->get('join_policy')) : ?>
-                                    <span class="open join-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN'); ?></span>
+                                    <span class="open join-policy"><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN') ?></span>
                                 <?php elseif ($group->get('join_policy') == 1) : ?>
-                                    <span class="open join-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED'); ?></span>
+                                    <span class="open join-policy"><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED') ?></span>
                                 <?php endif; ?>
                                 <?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
                             </div>
@@ -189,17 +189,17 @@ $published = ($group->get('published')) ? true : false;
                                 $joinLabel = Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': ' . $this->escape(stripslashes($group->get('description'))) . ' (' . $this->escape($group->get('cn')) . ')';
                                 ?>
                                 <?php if (!$group->get('join_policy')) : ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?php echo $joinUrl; ?>" class="btn btn-success" aria-label="<?php echo $joinLabel; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $joinUrl ?>" class="btn btn-success" aria-label="<?= $joinLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></button>
                                 <?php else : ?>
-                                    <a class="btn btn-success" href="<?php echo $joinUrl; ?>" aria-label="<?php echo $joinLabel; ?>"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?></a>
+                                    <a class="btn btn-success" href="<?= $joinUrl ?>" aria-label="<?= $joinLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></a>
                                 <?php endif; ?>
                             </div>
                         </div>
                     <?php elseif ($group->get('join_policy') == 3) : ?>
-                        <span class="closed join-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED'); ?></span>
+                        <span class="closed join-policy"><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED') ?></span>
                         <?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
                     <?php elseif ($group->get('join_policy') == 2) : ?>
-                        <span class="inviteonly join-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY'); ?></span>
+                        <span class="inviteonly join-policy"><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY') ?></span>
                         <?php echo Lang::txt('COM_GROUPS_INFO_JOIN_POLICY'); ?>
                     <?php endif; ?>
                 <?php endif; ?>

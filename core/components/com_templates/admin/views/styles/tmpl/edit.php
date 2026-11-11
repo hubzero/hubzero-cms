@@ -102,8 +102,8 @@ $homeLabel = Lang::txt('COM_TEMPLATES_FIELD_HOME_LABEL');
                             <?php echo $homeLabel; ?>:
                         </label><br />
                         <select name="fields[home]" id="field-home">
-                            <option value="0"<?php echo $this->item->home == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JNO'); ?></option>
-                            <option value="1"<?php echo $this->item->home == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JALL'); ?></option>
+                            <option value="0"<?= $this->item->home == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
+                            <option value="1"<?= $this->item->home == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JALL') ?></option>
                         </select>
                         <span class="hint"><?php echo Lang::txt('COM_TEMPLATES_FIELD_HOME_SITE_DESC'); ?></span>
                     </div>

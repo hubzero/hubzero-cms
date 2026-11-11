@@ -57,11 +57,11 @@ $dubCore = [
                         <li>
                             <div class="entry key-value-pair" data-idx="<?php echo $i; ?>">
                                 <div class="entry-label">
-                                    <input class="dublin" type="text" name="key[<?php echo $i; ?>]" maxlength="250" value="<?php echo $this->escape($element); ?>" readonly />
+                                    <input class="dublin" type="text" name="key[<?= $i ?>]" maxlength="250" value="<?= $this->escape($element) ?>" readonly />
                                 </div>
                                 <div class="separator">:</div>
                                 <div class="entry-value">
-                                    <input type="text" name="value[<?php echo $i; ?>]" value="<?php echo (isset($this->metadata[$element])) ? $this->escape($this->metadata[$element]) : ''; ?>" />
+                                    <input type="text" name="value[<?= $i ?>]" value="<?= (isset($this->metadata[$element])) ? $this->escape($this->metadata[$element]) : '' ?>" />
                                 </div>
                             </div>
                         </li>
@@ -75,11 +75,11 @@ $dubCore = [
                             <li>
                                 <div class="entry key-value-pair" data-idx="<?php echo $i; ?>">
                                     <div class="entry-label">
-                                        <input type="text" name="key[<?php echo $i; ?>]" maxlength="250" value="<?php echo $this->escape($metadata); ?>" />
+                                        <input type="text" name="key[<?= $i ?>]" maxlength="250" value="<?= $this->escape($metadata) ?>" />
                                     </div>
                                     <div class="separator">:</div>
                                     <div class="entry-value">
-                                        <input type="text" name="value[<?php echo $i; ?>]" value="<?php echo $this->escape($value); ?>" />
+                                        <input type="text" name="value[<?= $i ?>]" value="<?= $this->escape($value) ?>" />
                                     </div>
                                 </div>
                             </li>
@@ -105,7 +105,7 @@ $dubCore = [
 
                 <div class="buttons">
                     <input type="submit" class="btn" value="<?php echo Lang::txt('PLG_PROJECTS_FILES_SAVE'); ?>" />
-                    <input type="reset" class="btn btn-cancel" id="cancel-action" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                    <input type="reset" class="btn btn-cancel" id="cancel-action" value="<?= Lang::txt('JCANCEL') ?>" />
                 </div>
             </fieldset>
         </form>

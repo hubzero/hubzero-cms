@@ -46,14 +46,14 @@ $db->setQuery($query->toString());
 $access_levels = $db->loadAssocList();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="scopeinfo"><?php echo Lang::txt('COM_FORUM_FILTER_SCOPE'); ?>:</label>
                 <select name="scopeinfo" id="scopeinfo" class="filter filter-submit">
-                    <option value=""<?php echo $this->filters['scopeinfo'] == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_FILTER_SCOPE_SELECT'); ?></option>
-                    <option value="site:0"<?php echo $this->filters['scopeinfo'] == 'site:0' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_NONE'); ?></option>
+                    <option value=""<?= $this->filters['scopeinfo'] == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_FORUM_FILTER_SCOPE_SELECT') ?></option>
+                    <option value="site:0"<?= $this->filters['scopeinfo'] == 'site:0' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_FORUM_NONE') ?></option>
                     <?php
                     $list = [];
                     foreach ($this->scopes as $result) {
@@ -90,7 +90,7 @@ $access_levels = $db->loadAssocList();
                         <?php
                         foreach ($this->sections as $section) {
                             ?>
-                            <option value="<?php echo $section->id; ?>"<?php echo $this->filters['section_id'] == $section->id ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
+                            <option value="<?= $section->id ?>"<?= $this->filters['section_id'] == $section->id ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($section->title)) ?></option>
                             <?php
                         }
                         ?>
@@ -104,7 +104,7 @@ $access_levels = $db->loadAssocList();
                         <?php
                         foreach ($this->categories as $category) {
                             ?>
-                            <option value="<?php echo $category->id; ?>"<?php echo $this->filters['category_id'] == $category->id ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+                            <option value="<?= $category->id ?>"<?= $this->filters['category_id'] == $category->id ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($category->title)) ?></option>
                             <?php
                         }
                         ?>
@@ -114,16 +114,16 @@ $access_levels = $db->loadAssocList();
             <div class="col span6 align-right">
                 <label for="filter-state"><?php echo Lang::txt('COM_FORUM_FIELD_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit"">
-                    <option value="-1"<?php echo $this->filters['state'] == '-1' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ALL_STATES'); ?></option>
-                    <option value="0"<?php echo $this->filters['state'] === 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                    <option value="1"<?php echo $this->filters['state'] === 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                    <option value="2"<?php echo $this->filters['state'] === 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                    <option value="-1"<?= $this->filters['state'] == '-1' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_FORUM_ALL_STATES') ?></option>
+                    <option value="0"<?= $this->filters['state'] === 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                    <option value="1"<?= $this->filters['state'] === 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                    <option value="2"<?= $this->filters['state'] === 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
                 </select>
 
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">
                     <option value="-1"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
-                    <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']); ?>
+                    <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->filters['access']) ?>
                 </select>
             </div>
         </div>
@@ -134,16 +134,16 @@ $access_levels = $db->loadAssocList();
             <tr>
                 <th scope="col">
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_FORUM_COL_STICKY', 'sticky', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_FORUM_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_FORUM_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_FORUM_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_FORUM_COL_STICKY', 'sticky', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_FORUM_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_FORUM_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_FORUM_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -225,20 +225,20 @@ $access_levels = $db->loadAssocList();
                 ?>
                 <tr class="<?php echo "row$k" . ($row->state == 2 ? ' archived' : ''); ?>">
                     <td>
-                        <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>" class="checkbox-toggle" />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     </td>
                     <td class="priority-5">
                         <?php echo $row->id; ?>
                     </td>
                     <td>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=thread&thread=' . $row->thread); ?>">
+                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=thread&thread=' . $row->thread) ?>">
                             <?php echo $this->escape(stripslashes($row->title)); ?>
                         </a>
                     </td>
                     <td>
                         <?php if ($canDo->get('core.edit.state')) { ?>
-                            <a class="state <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $task); ?>">
+                            <a class="state <?= $cls ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $task) ?>">
                                 <span><?php echo $alt; ?></span>
                             </a>
                         <?php } else { ?>
@@ -249,7 +249,7 @@ $access_levels = $db->loadAssocList();
                     </td>
                     <td class="priority-4">
                         <?php if ($canDo->get('core.edit.state')) { ?>
-                            <a class="state <?php echo $scls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=sticky&sticky=' . $stickyTask . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_FORUM_SET_TO', $stickyTitle); ?>">
+                            <a class="state <?= $scls ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=sticky&sticky=' . $stickyTask . '&id=' . $row->id . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $stickyTitle) ?>">
                                 <span><?php echo $stickyAlt; ?></span>
                             </a>
                         <?php } else { ?>
@@ -265,7 +265,7 @@ $access_levels = $db->loadAssocList();
                     </td>
                     <td class="priority-3">
                         <span class="scope">
-                            <span><?php echo $row->scope . ' (' . (isset($list[$row->scope][$row->scope_id]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : $this->escape($row->scope_id)) . ')'; ?></span>
+                            <span><?= $row->scope . ' (' . (isset($list[$row->scope][$row->scope_id]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : $this->escape($row->scope_id)) . ')' ?></span>
                         </span>
                     </td>
                     <td class="priority-5">

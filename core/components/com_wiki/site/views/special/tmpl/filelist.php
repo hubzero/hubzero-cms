@@ -59,13 +59,13 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
             <thead>
                 <tr>
                     <th scope="col">
-                        <a<?php echo $sort == 'created' ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->page->link() . '&sort=created&dir=' . $altdir); ?>">
-                            <?php echo $sort == 'created' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_DATE'); ?>
+                        <a<?= $sort == 'created' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=created&dir=' . $altdir) ?>">
+                            <?= $sort == 'created' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_DATE') ?>
                         </a>
                     </th>
                     <th scope="col">
-                        <a<?php echo $sort == 'filename' ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->page->link() . '&sort=filename&dir=' . $altdir); ?>">
-                            <?php echo $sort == 'filename' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_NAME'); ?>
+                        <a<?= $sort == 'filename' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=filename&dir=' . $altdir) ?>">
+                            <?= $sort == 'filename' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_NAME') ?>
                         </a>
                     </th>
                     <th scope="col">
@@ -78,14 +78,14 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         <a<?php echo $sort == 'created_by' ? ' class="active"' : ''; ?> href="<?php
                               echo Route::url($this->page->link() . '&sort=created_by&dir=' . $altdir);
                         ?>">
-                            <?php echo $sort == 'created_by' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_UPLOADER'); ?>
+                            <?= $sort == 'created_by' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_UPLOADER') ?>
                         </a>
                     </th>
                     <th scope="col">
                         <a<?php echo $sort == 'description' ? ' class="active"' : ''; ?> href="<?php
                               echo Route::url($this->page->link() . '&sort=description&dir=' . $altdir);
                         ?>">
-                            <?php echo $sort == 'description' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_DESCRIPTION'); ?>
+                            <?= $sort == 'description' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_DESCRIPTION') ?>
                         </a>
                     </th>
                 </tr>

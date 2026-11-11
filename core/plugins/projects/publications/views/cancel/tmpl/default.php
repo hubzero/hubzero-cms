@@ -35,9 +35,9 @@ $crumbs = $draft
 <form action="<?php echo Route::url($this->pub->link('editversion')); ?>" method="post" id="plg-form" >
     <div id="plg-header">
     <?php if ($this->project->isProvisioned()) { ?>
-        <h3 class="prov-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')); ?></a> &raquo; <a href="<?php echo Route::url($this->pub->link('editversion')); ?>">"<?php echo $this->escape($this->pub->title); ?>"</a> &raquo; <?php echo $crumbs; ?></h3>
+        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= $crumbs ?></h3>
     <?php } else { ?>
-        <h3 class="publications"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo $this->title; ?></a> &raquo; <span class="restype indlist"><?php echo $typetitle; ?></span> <span class="indlist"><a href="<?php echo Route::url($this->pub->link('editversion')); ?>">"<?php echo $this->escape($this->pub->title); ?>"</a></span> <span class="indlist"> &raquo; <?php echo $crumbs; ?></span>
+        <h3 class="publications"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> <span class="indlist"> &raquo; <?= $crumbs ?></span>
         </h3>
     <?php } ?>
     </div>
@@ -53,7 +53,7 @@ $crumbs = $draft
         
         <input type="hidden" name="version" value="<?php echo $this->pub->versionAlias; ?>" />
         <input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
-        <input type="hidden" name="provisioned" id="provisioned" value="<?php echo $this->project->isProvisioned() ? 1 : 0; ?>" />
+        <input type="hidden" name="provisioned" id="provisioned" value="<?= $this->project->isProvisioned() ? 1 : 0 ?>" />
         <?php if ($this->project->isProvisioned()) { ?>
             <input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
             <input type="hidden" name="task" value="submit" />
@@ -83,7 +83,7 @@ $crumbs = $draft
             ?>
         <p class="warning"><?php echo $warning; ?></p>
         <?php } ?>
-        <p><span><input type="submit" value="<?php echo $crumbs; ?>" class="btn btn-success active" /></span><span><a href="<?php echo Route::url($this->pub->link('editversion')); ?>" class="btn btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></a></span></p>
+        <p><span><input type="submit" value="<?= $crumbs ?>" class="btn btn-success active" /></span><span><a href="<?= Route::url($this->pub->link('editversion')) ?>" class="btn btn-cancel"><?= Lang::txt('JCANCEL') ?></a></span></p>
     <?php } ?>
 </form>
 </div>

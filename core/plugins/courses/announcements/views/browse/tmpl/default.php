@@ -36,11 +36,11 @@ $base = $this->offering->link() . '&active=announcements';
 
     <form action="<?php echo Route::url($base); ?>" method="post">
         <div class="container data-entry">
-            <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH'); ?>" />
+            <input class="entry-search-submit" type="submit" value="<?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH') ?>" />
             <fieldset class="entry-search">
                 <legend><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH_LEGEND'); ?></legend>
-                <label for="entry-search-field"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH_LABEL'); ?></label>
-                <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH_PLACEHOLDER'); ?>"/>
+                <label for="entry-search-field"><?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH_LABEL') ?></label>
+                <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_SEARCH_PLACEHOLDER') ?>"/>
             </fieldset>
         </div><!-- / .container -->
 
@@ -77,10 +77,10 @@ $base = $this->offering->link() . '&active=announcements';
                     <?php if ($manager) { ?>
                             <dd class="entry-options">
                             <?php if (User::get('id') == $row->get('created_by')) { ?>
-                                <a class="icon-edit edit" href="<?php echo Route::url($base . '&action=edit&entry=' . $row->get('id')); ?>" title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>">
+                                <a class="icon-edit edit" href="<?= Route::url($base . '&action=edit&entry=' . $row->get('id')) ?>" title="<?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_EDIT') ?>">
                                     <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_EDIT'); ?>
                                 </a>
-                                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&action=delete&entry=' . $row->get('id')); ?>" class="icon-delete delete" title="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?>" data-confirm="<?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE'); ?></button>
+                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&action=delete&entry=' . $row->get('id')) ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_COURSES_ANNOUNCEMENTS_DELETE') ?></button>
                             <?php } ?>
                             </dd>
                     <?php } ?>

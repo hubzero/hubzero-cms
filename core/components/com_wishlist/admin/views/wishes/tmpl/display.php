@@ -38,30 +38,30 @@ Toolbar::help('wishes');
 $this->css();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('COM_WISHLIST_SEARCH'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER'); ?>" />
+                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER') ?>" />
                 <input type="submit" value="<?php echo Lang::txt('COM_WISHLIST_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
             <div class="col span6">
                 <label for="filter-status"><?php echo Lang::txt('COM_WISHLIST_FILTER_STATUS'); ?>:</label>
                 <select name="status" id="filter-status" class="filter filter-submit">
-                    <option value="all"<?php echo ($this->filters['status'] == 'all') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_ALL'); ?></option>
-                    <option value="granted"<?php echo ($this->filters['status'] == 'granted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_GRANTED'); ?></option>
-                    <option value="open"<?php echo ($this->filters['status'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_OPEN'); ?></option>
-                    <option value="accepted"<?php echo ($this->filters['status'] == 'accepted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_ACCEPTED'); ?></option>
-                    <option value="pending"<?php echo ($this->filters['status'] == 'pending') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_PENDING'); ?></option>
-                    <option value="rejected"<?php echo ($this->filters['status'] == 'rejected') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_REJECTED'); ?></option>
-                    <option value="withdrawn"<?php echo ($this->filters['status'] == 'withdrawn') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_WITHDRAWN'); ?></option>
-                    <option value="deleted"<?php echo ($this->filters['status'] == 'deleted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_DELETED'); ?></option>
-                    <option value="useraccepted"<?php echo ($this->filters['status'] == 'useraccepted') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_USER_ACCEPTED'); ?></option>
-                    <option value="private"<?php echo ($this->filters['status'] == 'private') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_PRIVATE'); ?></option>
-                    <option value="public"<?php echo ($this->filters['status'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_PUBLIC'); ?></option>
-                    <option value="assigned"<?php echo ($this->filters['status'] == 'assigned') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WISHLIST_STATE_ASSIGNED'); ?></option>
+                    <option value="all"<?= ($this->filters['status'] == 'all') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_ALL') ?></option>
+                    <option value="granted"<?= ($this->filters['status'] == 'granted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_GRANTED') ?></option>
+                    <option value="open"<?= ($this->filters['status'] == 'open') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_OPEN') ?></option>
+                    <option value="accepted"<?= ($this->filters['status'] == 'accepted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_ACCEPTED') ?></option>
+                    <option value="pending"<?= ($this->filters['status'] == 'pending') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_PENDING') ?></option>
+                    <option value="rejected"<?= ($this->filters['status'] == 'rejected') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_REJECTED') ?></option>
+                    <option value="withdrawn"<?= ($this->filters['status'] == 'withdrawn') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_WITHDRAWN') ?></option>
+                    <option value="deleted"<?= ($this->filters['status'] == 'deleted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_DELETED') ?></option>
+                    <option value="useraccepted"<?= ($this->filters['status'] == 'useraccepted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_USER_ACCEPTED') ?></option>
+                    <option value="private"<?= ($this->filters['status'] == 'private') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_PRIVATE') ?></option>
+                    <option value="public"<?= ($this->filters['status'] == 'public') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_PUBLIC') ?></option>
+                    <option value="assigned"<?= ($this->filters['status'] == 'assigned') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_ASSIGNED') ?></option>
                 </select>
             </div>
         </div>
@@ -72,25 +72,25 @@ $this->css();
             <?php if ($this->wishlist->id) { ?>
                 <tr>
                     <th colspan="<?php echo (!$this->wishlist->id) ? 9 : 8; ?>">
-                        (<?php echo $this->escape(stripslashes($this->wishlist->category)); ?>) &nbsp; <?php echo $this->escape(stripslashes($this->wishlist->title)); ?>
+                        (<?= $this->escape(stripslashes($this->wishlist->category)) ?>) &nbsp; <?= $this->escape(stripslashes($this->wishlist->title)) ?>
                     </th>
                 </tr>
             <?php } ?>
             <tr>
                 <th scope="col">
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WISHLIST_WISH_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_WISHLIST_TITLE', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_WISHLIST_WISH_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_WISHLIST_TITLE', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <?php if (!$this->wishlist->id) { ?>
-                    <th scope="col"><?php echo Html::grid('sort', 'COM_WISHLIST_WISHLIST_ID', 'wishlist', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                    <th scope="col"><?= Html::grid('sort', 'COM_WISHLIST_WISHLIST_ID', 'wishlist', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <?php } ?>
-                <th scope="col" class="priority-4"><?php echo Html::grid('sort', 'COM_WISHLIST_PROPOSED_BY', 'proposed_by', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-5"><?php echo Html::grid('sort', 'COM_WISHLIST_PROPOSED', 'proposed', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_WISHLIST_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-3"><?php echo Html::grid('sort', 'COM_WISHLIST_ACCESS', 'private', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_WISHLIST_COMMENTS', 'numreplies', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_WISHLIST_PROPOSED_BY', 'proposed_by', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_WISHLIST_PROPOSED', 'proposed', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_WISHLIST_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_WISHLIST_ACCESS', 'private', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_WISHLIST_COMMENTS', 'numreplies', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -157,7 +157,7 @@ $this->css();
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->id; ?>" class="checkbox-toggle" />
+                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>" class="checkbox-toggle" />
                     <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                 </td>
                 <td class="priority-5">
@@ -165,7 +165,7 @@ $this->css();
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id); ?>">
+                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id) ?>">
                             <span><?php echo $this->escape(stripslashes($row->subject)); ?></span>
                         </a>
                     <?php } else { ?>
@@ -187,7 +187,7 @@ $this->css();
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_WISHLIST_SET_TASK', $task); ?>">
+                        <a class="state <?= $class ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_WISHLIST_SET_TASK', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -198,7 +198,7 @@ $this->css();
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" class="<?php echo $color_access; ?>" title="<?php echo Lang::txt('COM_WISHLIST_CHANGE_ACCESS'); ?>">
+                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . '&' . Session::getFormToken() . '=1') ?>" class="<?= $color_access ?>" title="<?= Lang::txt('COM_WISHLIST_CHANGE_ACCESS') ?>">
                             <?php echo $groupname; ?>
                         </a>
                     <?php } else { ?>
@@ -208,7 +208,7 @@ $this->css();
                     <?php } ?>
                 </td>
                 <td class="priority-2">
-                    <a class="glyph comment" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=comments&wish=' . $row->id); ?>">
+                    <a class="glyph comment" href="<?= Route::url('index.php?option=' . $this->option . '&controller=comments&wish=' . $row->id) ?>">
                         <span><?php echo $this->escape($row->comments()->total()); ?></span>
                     </a>
                 </td>

@@ -315,7 +315,7 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
         <div class="inner<?php echo $this->countModules('left or right') ? ' withmenu' : ''; ?>">
             <?php if ($this->countModules('left or right')) : ?>
             <section class="main section">
-                <div class="section-inner<?php echo $this->countModules('left or right') ? ' hz-layout-with-aside' : ''; ?>">
+                <div class="section-inner<?= $this->countModules('left or right') ? ' hz-layout-with-aside' : '' ?>">
             <?php endif; ?>
 
                     <?php if ($this->countModules('left')) : ?>

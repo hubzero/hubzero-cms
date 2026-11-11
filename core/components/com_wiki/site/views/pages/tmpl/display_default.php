@@ -85,7 +85,7 @@ $this->js();
             <?php echo $this->revision->get('pagehtml'); ?>
 
             <p class="timestamp">
-                <?php echo Lang::txt('COM_WIKI_PAGE_CREATED') . ' <time datetime="' . $this->page->created() . '">' . $this->page->created('date') . '</time>, ' . Lang::txt('COM_WIKI_PAGE_LAST_MODIFIED') . ' <time datetime="' . $this->revision->created() . '">' . $this->revision->created('date') . '</time>'; ?>
+                <?= Lang::txt('COM_WIKI_PAGE_CREATED') . ' <time datetime="' . $this->page->created() . '">' . $this->page->created('date') . '</time>, ' . Lang::txt('COM_WIKI_PAGE_LAST_MODIFIED') . ' <time datetime="' . $this->revision->created() . '">' . $this->revision->created('date') . '</time>' ?>
             </p>
             <?php if ($this->page->tags('cloud')) { ?>
                 <div class="article-tags">

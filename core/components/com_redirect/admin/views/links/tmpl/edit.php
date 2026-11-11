@@ -238,10 +238,10 @@ $sel302 = (($hasNewUrl && !$statusCode) || $statusCode == 302)
                         </span>
                     </label>
                     <select name="fields[published]" id="fields-published">
-                        <option value="1"<?php echo $this->row->published == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JENABLED'); ?></option>
-                        <option value="0"<?php echo $this->row->published == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JDISABLED'); ?></option>
-                        <option value="2"<?php echo $this->row->published == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JARCHIVED'); ?></option>
-                        <option value="-2"<?php echo $this->row->published == -2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <option value="1"<?= $this->row->published == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JENABLED') ?></option>
+                        <option value="0"<?= $this->row->published == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JDISABLED') ?></option>
+                        <option value="2"<?= $this->row->published == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JARCHIVED') ?></option>
+                        <option value="-2"<?= $this->row->published == -2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
                     </select>
                 </div>
             </fieldset>

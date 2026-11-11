@@ -84,7 +84,7 @@ $searchCategory = $this->pub->config('search_category', 1);
                     <div class="pubtype-block">
                         <input type="radio"
                             name="pubtype"
-                            value="<?php echo $cat->id; ?>" <?php echo $this->pub->category == $cat->id ? 'checked="checked"' : ''; ?> class="radio" />
+                            value="<?= $cat->id ?>" <?= $this->pub->category == $cat->id ? 'checked="checked"' : '' ?> class="radio" />
                         <?php echo $cat->name; ?>
                         <span><?php echo $cat->description; ?></span>
                     </div>

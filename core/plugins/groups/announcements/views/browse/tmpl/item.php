@@ -83,17 +83,17 @@ if ($closed == 'closed' && $this->showClose == true) {
                 <?php if ($this->authorized == 'manager' && !$this->showClose) : ?>
                     <dd class="entry-options">
                         <?php if (User::get('id') == $this->announcement->get('created_by') || $this->authorized == 'manager') : ?>
-                            <a class="icon-edit edit" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=edit&id=' . $this->announcement->get('id')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>">
+                            <a class="icon-edit edit" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=edit&id=' . $this->announcement->get('id')) ?>" title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT') ?>">
                                 <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EDIT'); ?>
                             </a>
-                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=delete&id=' . $this->announcement->get('id')); ?>" class="icon-delete delete" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?>" data-confirm="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE'); ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements&action=delete&id=' . $this->announcement->get('id')) ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE') ?></button>
                         <?php endif; ?>
                     </dd>
                 <?php endif; ?>
             <?php endif; ?>
         </dl>
         <?php if ($this->showClose) : ?>
-            <a class="close" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements'); ?>" data-id="<?php echo $this->announcement->get('id'); ?>" data-duration="30" title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE'); ?>" aria-label="<?php echo $this->escape(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE')); ?>">
+            <a class="close" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements') ?>" data-id="<?= $this->announcement->get('id') ?>" data-duration="30" title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE') ?>" aria-label="<?= $this->escape(Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE_TITLE')) ?>">
                 <span><?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CLOSE'); ?></span>
             </a>
         <?php endif; ?>

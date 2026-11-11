@@ -13,11 +13,11 @@ defined('_HZEXEC_') or die();
 $i = 1;
 $skipFields = ['license_type', 'state', 'main', 'secret', 'access'];
 ?>
-<p id="recordcount"><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_NUMBER_RECORDS'); ?>: <?php echo count($this->items); ?></p>
+<p id="recordcount"><?= Lang::txt('COM_PUBLICATIONS_BATCH_NUMBER_RECORDS') ?>: <?= count($this->items) ?></p>
 <ul class="pubitems" id="resultlist">
 <?php foreach ($this->items as $item) { ?>
     <li<?php echo count($item['errors']) > 0 ? ' class="problem"' : ''; ?>>
-        <h5><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_RECORD') . ' ' . $i . ': ' . $this->escape($item['version']->title); ?></h5>
+        <h5><?= Lang::txt('COM_PUBLICATIONS_BATCH_RECORD') . ' ' . $i . ': ' . $this->escape($item['version']->title) ?></h5>
         <table class="records">
             <tbody>
                 <tr>
@@ -73,9 +73,9 @@ $skipFields = ['license_type', 'state', 'main', 'secret', 'access'];
                                 <?php foreach ($item['authors'] as $authorRecord) { ?>
                                     <tr<?php echo $authorRecord['error'] ? ' class="missing"' : ''; ?>>
                                         <td><?php echo (int) $authorRecord['author']->user_id; ?></td>
-                                        <td><?php echo $authorRecord['error'] ? ' <span class="block prominent">' . $this->escape($authorRecord['error']) . '</span>' : ''; ?><?php echo $this->escape($authorRecord['author']->name); ?></td>
+                                        <td><?= $authorRecord['error'] ? ' <span class="block prominent">' . $this->escape($authorRecord['error']) . '</span>' : '' ?><?= $this->escape($authorRecord['author']->name) ?></td>
                                         <td><?php echo $this->escape($authorRecord['author']->organization); ?></td>
-                                        <td><?php echo $authorRecord['owner'] ? Lang::txt('JYES') : Lang::txt('JNO'); ?></td>
+                                        <td><?= $authorRecord['owner'] ? Lang::txt('JYES') : Lang::txt('JNO') ?></td>
                                     </tr>
                                 <?php } ?>
                             <?php } ?>
@@ -101,7 +101,7 @@ $skipFields = ['license_type', 'state', 'main', 'secret', 'access'];
                                     <tr<?php echo $filerecord['error'] ? ' class="missing"' : ''; ?>>
                                         <td><?php echo $this->escape($filerecord['type']); ?></td>
                                         <td><?php echo $this->escape($filerecord['subtype']); ?></td>
-                                        <td><?php echo $filerecord['error'] ? ' <span class="block prominent">' . $this->escape($filerecord['error']) . '</span>' : ''; ?><?php echo $this->escape($filerecord['attachment']->path); ?></td>
+                                        <td><?= $filerecord['error'] ? ' <span class="block prominent">' . $this->escape($filerecord['error']) . '</span>' : '' ?><?= $this->escape($filerecord['attachment']->path) ?></td>
                                         <td><?php echo $this->escape($filerecord['attachment']->title); ?></td>
                                     </tr>
                                 <?php } ?>

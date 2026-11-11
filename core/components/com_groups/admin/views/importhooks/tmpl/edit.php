@@ -62,10 +62,10 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                         <option value="postparse">
                             <?php echo Lang::txt('COM_GROUPS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTPARSE'); ?>
                         </option>
-                        <option <?php echo $this->hook->get('event') == 'postmap' ? 'selected="selected"' : ''; ?> value="postmap">
+                        <option <?= $this->hook->get('event') == 'postmap' ? 'selected="selected"' : '' ?> value="postmap">
                             <?php echo Lang::txt('COM_GROUPS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTMAP'); ?>
                         </option>
-                        <option <?php echo $this->hook->get('event') == 'postconvert' ? 'selected="selected"' : ''; ?> value="postconvert">
+                        <option <?= $this->hook->get('event') == 'postconvert' ? 'selected="selected"' : '' ?> value="postconvert">
                             <?php echo Lang::txt('COM_GROUPS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTCONVERT'); ?>
                         </option>
                     </select>

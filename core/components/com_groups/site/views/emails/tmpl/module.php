@@ -99,7 +99,7 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                             </tr>
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left">@ <?php echo Date::of($this->object->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?> on <?php echo Date::of($this->object->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+                                <td style="text-align: left; padding: 0 0.5em;" align="left">@ <?= Date::of($this->object->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?> on <?= Date::of($this->object->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></td>
                             </tr>
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created By:</th>
@@ -113,7 +113,7 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Status:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
-                                    <?php echo ($this->object->get('approved') == 1) ? Lang::txt('Approved') : Lang::txt('Unapproved'); ?>
+                                    <?= ($this->object->get('approved') == 1) ? Lang::txt('Approved') : Lang::txt('Unapproved') ?>
                                 </td>
                             </tr>
                             <tr>
@@ -172,7 +172,7 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
         <tbody>
             <tr>
                 <td align="left" valign="bottom">
-                    <span><?php echo Config::get('sitename'); ?> sent this email because you are listed as a group page approver for this hub. Visit our <a href="<?php echo rtrim($base, '/'); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo rtrim($base, '/'); ?>/support">Support Center</a> if you have any questions.</span>
+                    <span><?= Config::get('sitename') ?> sent this email because you are listed as a group page approver for this hub. Visit our <a href="<?= rtrim($base, '/') ?>/legal/privacy">Privacy Policy</a> and <a href="<?= rtrim($base, '/') ?>/support">Support Center</a> if you have any questions.</span>
                 </td>
             </tr>
         </tbody>

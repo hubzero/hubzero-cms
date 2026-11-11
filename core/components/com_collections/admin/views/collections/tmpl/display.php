@@ -61,10 +61,10 @@ Toolbar::help('collections');
             <div class="col span6">
                 <label for="filter-state"><?php echo Lang::txt('COM_COLLECTIONS_FIELD_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
-                    <option value="-1"<?php echo $this->filters['state'] == -1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COLLECTIONS_ALL_STATES'); ?></option>
-                    <option value="0"<?php echo $this->filters['state'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                    <option value="1"<?php echo $this->filters['state'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                    <option value="2"<?php echo $this->filters['state'] == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                    <option value="-1"<?= $this->filters['state'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COLLECTIONS_ALL_STATES') ?></option>
+                    <option value="0"<?= $this->filters['state'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                    <option value="1"<?= $this->filters['state'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                    <option value="2"<?= $this->filters['state'] == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
                 </select>
 
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
@@ -74,9 +74,9 @@ Toolbar::help('collections');
                     // echo Html::select('options', Html::access('assetgroups'),
                     //     'value', 'text', $this->filters['access']);
                     ?>
-                    <option value="0"<?php echo $this->filters['access'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_PUBLIC'); ?></option>
-                    <option value="1"<?php echo $this->filters['access'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED'); ?></option>
-                    <option value="4"<?php echo $this->filters['access'] == 4 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COLLECTIONS_ACCESS_PRIVATE'); ?></option>
+                    <option value="0"<?= $this->filters['access'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COLLECTIONS_ACCESS_PUBLIC') ?></option>
+                    <option value="1"<?= $this->filters['access'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED') ?></option>
+                    <option value="4"<?= $this->filters['access'] == 4 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COLLECTIONS_ACCESS_PRIVATE') ?></option>
                 </select>
             </div>
         </div>

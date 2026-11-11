@@ -148,7 +148,7 @@ $legacy = [
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<div id="profile-page-content" data-url="<?php echo Route::url('index.php?option=com_members&id=' . $this->profile->get('uidNumber') . '&active=profile'); ?>">
+<div id="profile-page-content" data-url="<?= Route::url('index.php?option=com_members&id=' . $this->profile->get('uidNumber') . '&active=profile') ?>">
     <h3 class="section-header">
         <?php echo Lang::txt('PLG_MEMBERS_PROFILE'); ?>
     </h3>
@@ -181,10 +181,10 @@ $legacy = [
             <li id="member-profile-completeness" class="hide">
                 <?php echo Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS'); ?>
                 <div id="meter">
-                    <span id="meter-percent" data-percent="<?php echo $this->completeness; ?>" data-percent-level="<?php echo !isset($this->completeness_level) ? '' : $this->completeness_level; ?>"></span>
+                    <span id="meter-percent" data-percent="<?= $this->completeness ?>" data-percent-level="<?= !isset($this->completeness_level) ? '' : $this->completeness_level ?>"></span>
                 </div>
                 <?php if ($isUser && $isIncrementalEnabled) : ?>
-                    <span id="completeness-info"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS_MEANS'); ?></span>
+                    <span id="completeness-info"><?= Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS_MEANS') ?></span>
                 <?php endif; ?>
             </li>
         </ul>
@@ -222,7 +222,7 @@ $legacy = [
 
     <?php if (isset($update_missing) && in_array("usageAgreement", array_keys($update_missing))) : ?>
         <div id="usage-agreement-popup">
-            <form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
+            <form action="<?= Route::url('index.php?option=com_members') ?>" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
                 <h2><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NEW_TERMS_OF_USE'); ?></h2>
                 <div id="usage-agreement-box">
                     <?php /*<iframe id="usage-agreement" src="<?php echo Request::base(true); ?>/legal/terms?tmpl=component"></iframe>*/ ?>
@@ -249,12 +249,12 @@ $legacy = [
                     </div>
                 </div>
                 <div id="usage-agreement-buttons">
-                    <button class="section-edit-cancel usage-agreement-do-not-agree"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_TERMS_NOT_AGREE'); ?></button>
-                    <button class="section-edit-submit"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_TERMS_AGREE'); ?></button>
+                    <button class="section-edit-cancel usage-agreement-do-not-agree"><?= Lang::txt('PLG_MEMBERS_PROFILE_TERMS_NOT_AGREE') ?></button>
+                    <button class="section-edit-submit"><?= Lang::txt('PLG_MEMBERS_PROFILE_TERMS_AGREE') ?></button>
                 </div>
                 <div id="usage-agreement-last-chance-buttons">
-                    <button class="section-edit-cancel usage-agreement-back-to-agree"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_TERMS_GO_BACK'); ?></button>
-                    <button class="section-edit-cancel usage-agreement-dont-accept"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_TERMS_I_DO_NOT_AGREE'); ?></button>
+                    <button class="section-edit-cancel usage-agreement-back-to-agree"><?= Lang::txt('PLG_MEMBERS_PROFILE_TERMS_GO_BACK') ?></button>
+                    <button class="section-edit-cancel usage-agreement-dont-accept"><?= Lang::txt('PLG_MEMBERS_PROFILE_TERMS_I_DO_NOT_AGREE') ?></button>
                 </div>
                 <input type="hidden" name="declinetou" value="0" />
                 <input type="hidden" name="usageAgreement" value="1" />
@@ -352,7 +352,7 @@ $legacy = [
                         <br class="clear" />
                         <div class="section-edit-container">
                             <div class="section-edit-content">
-                                <form action="<?php echo Route::url('index.php?option=com_members'); ?>" method="post" data-section-registration="password" data-section-profile="password">
+                                <form action="<?= Route::url('index.php?option=com_members') ?>" method="post" data-section-registration="password" data-section-profile="password">
                                     <span class="section-edit-errors"></span>
                                     <?php if ($passtype == 'changelocal' || $passtype == 'changehub') : ?>
                                         <div class="input-wrap">
@@ -373,8 +373,8 @@ $legacy = [
                                         </label>
                                     </div>
                                     <input type="hidden" name="change" value="1" />
-                                    <input type="submit" class="section-edit-submit btn" value="<?php echo Lang::txt('PLG_MEMBERS_PROFILE_SAVE'); ?>" />
-                                    <input type="reset" class="section-edit-cancel btn" value="<?php echo Lang::txt('JCANCEL'); ?>" />
+                                    <input type="submit" class="section-edit-submit btn" value="<?= Lang::txt('PLG_MEMBERS_PROFILE_SAVE') ?>" />
+                                    <input type="reset" class="section-edit-cancel btn" value="<?= Lang::txt('JCANCEL') ?>" />
                                     <input type="hidden" name="option" value="com_members" />
                                     <input type="hidden" name="controller" value="profiles" />
                                     <input type="hidden" name="id" value="<?php echo $this->profile->get('id'); ?>" />
@@ -448,13 +448,13 @@ $legacy = [
                     <div class="section-content">
                         <div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'); ?></div>
                         <div class="value">
-                            <a class="email" href="mailto:<?php echo \Components\Members\Helpers\Html::obfuscate($this->profile->get('email')); ?>" rel="nofollow">
+                            <a class="email" href="mailto:<?= \Components\Members\Helpers\Html::obfuscate($this->profile->get('email')) ?>" rel="nofollow">
                                 <?php echo \Components\Members\Helpers\Html::obfuscate($this->profile->get('email')); ?>
                             </a>
                         </div>
                         <?php if ($isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY) : ?>
                             <br class="clear" />
-                            <input type="hidden" class="input-text" name="email" id="email" value="<?php echo $this->escape($this->profile->get('email')); ?>" />
+                            <input type="hidden" class="input-text" name="email" id="email" value="<?= $this->escape($this->profile->get('email')) ?>" />
                             <?php
                             if ($this->profile->get('access') > 2) {
                                 $access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>';
@@ -719,10 +719,10 @@ $legacy = [
                     $cls[] = 'hidden';
                 }
                 ?>
-                <li class="<?php echo implode(' ', $cls); ?> section" id="input-section-<?php echo $this->escape($field->get('name')); ?>">
+                <li class="<?= implode(' ', $cls) ?> section" id="input-section-<?= $this->escape($field->get('name')) ?>">
                     <div class="section-content">
                         <div class="key"><?php echo $field->get('label'); ?></div>
-                        <div class="value"><?php echo (!empty($val)) ? (is_array($val) ? implode(', ', $val) : $val) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET'); ?></div>
+                        <div class="value"><?= (!empty($val)) ? (is_array($val) ? implode(', ', $val) : $val) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET') ?></div>
                         <br class="clear" />
                         <?php
                         if ($isUser) {

@@ -22,7 +22,7 @@ $hideform = Request::getInt('hideform', 0);
 ?>
     <div id="small-page">
         <?php if (!$hideform) { ?>
-        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
+        <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
             <fieldset>
                 <label>
                     <input type="file" class="option" name="upload" />
@@ -106,18 +106,18 @@ $hideform = Request::getInt('hideform', 0);
                 ?>
                 <tr>
                     <td width="100%">
-                        <span class="ftitle item:name id:<?php echo $child->id; ?>" data-id="<?php echo $child->id; ?>" data-token="<?php echo Session::getFormToken(); ?>">
+                        <span class="ftitle item:name id:<?= $child->id ?>" data-id="<?= $child->id ?>" data-token="<?= Session::getFormToken() ?>">
                             <?php echo $this->escape($child->title); ?>
                         </span>
-                        <?php echo ($isFile) ? \Components\Resources\Helpers\Html::getFileAttribs($url, $base) : '<span class="caption">' . $this->escape($url) . '</span>'; ?>
+                        <?= ($isFile) ? \Components\Resources\Helpers\Html::getFileAttribs($url, $base) : '<span class="caption">' . $this->escape($url) . '</span>' ?>
                     </td>
                     <td>
                         <?php
                         $cs = ($child->access == 1 ? 'registered' : 'public');
                         $st = ($child->access == 1 ? 0 : 1);
                         ?>
-                        <a class="access-<?php echo $cs; ?> access" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=access&amp;access=<?php echo $st; ?>&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;hideform=<?php echo $hideform; ?>&amp;<?php echo Session::getFormToken(); ?>=1" title="<?php echo Lang::txt('COM_CONTRIBUTE_SET_ACCESS_TO', Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_PUBLIC' : 'COM_CONTRIBUTE_ACCESS_REGISTERED')); ?>">
-                            <span><?php echo Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_REGISTERED' : 'COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></span>
+                        <a class="access-<?= $cs ?> access" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=access&amp;access=<?= $st ?>&amp;tmpl=component&amp;id=<?= $child->id ?>&amp;pid=<?= $this->id ?>&amp;hideform=<?= $hideform ?>&amp;<?= Session::getFormToken() ?>=1" title="<?= Lang::txt('COM_CONTRIBUTE_SET_ACCESS_TO', Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_PUBLIC' : 'COM_CONTRIBUTE_ACCESS_REGISTERED')) ?>">
+                            <span><?= Lang::txt($child->access == 1 ? 'COM_CONTRIBUTE_ACCESS_REGISTERED' : 'COM_CONTRIBUTE_ACCESS_PUBLIC') ?></span>
                         </a>
                     </td>
                     <td class="u">
@@ -139,7 +139,7 @@ $hideform = Request::getInt('hideform', 0);
                         ?>
                     </td>
                     <td class="t">
-                        <a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=delete&amp;tmpl=component&amp;id=<?php echo $child->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;hideform=<?php echo $hideform; ?>&amp;<?php echo Session::getFormToken(); ?>=1">
+                        <a class="icon-delete delete" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=delete&amp;tmpl=component&amp;id=<?= $child->id ?>&amp;pid=<?= $this->id ?>&amp;hideform=<?= $hideform ?>&amp;<?= Session::getFormToken() ?>=1">
                             <span><?php echo Lang::txt('COM_CONTRIBUTE_DELETE'); ?></span>
                         </a>
                     </td>

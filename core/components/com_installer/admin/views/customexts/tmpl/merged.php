@@ -22,7 +22,7 @@ Toolbar::custom('display', 'back', 'back', 'COM_INSTALLER_CUSTOMEXTS_BACK', fals
 Html::behavior('tooltip');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
 
     <?php if (!empty($this->success)) : ?>
         <table class="adminlist success">
@@ -59,7 +59,7 @@ Html::behavior('tooltip');
                         <td>
                             <strong>Extension: <?php echo $item['extension']; ?></strong>
                             <hr />
-                            <pre><?php echo implode('<br>', is_array($item['message']) ? $item['message'] : [$item['message']]); ?></pre>
+                            <pre><?= implode('<br>', is_array($item['message']) ? $item['message'] : [$item['message']]) ?></pre>
                         </td>
                     </tr>
                 <?php endforeach; ?>

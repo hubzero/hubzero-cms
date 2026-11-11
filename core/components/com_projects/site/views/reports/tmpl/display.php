@@ -71,7 +71,7 @@ $this
         <?php else : ?>
             <table class="stats-wrap">
                 <tr class="stats-general">
-                    <th scope="row" class="stats-h icon-cogs" rowspan="2"><span><?php echo Lang::txt('Overview'); ?></span></th>
+                    <th scope="row" class="stats-h icon-cogs" rowspan="2"><span><?= Lang::txt('Overview') ?></span></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -205,13 +205,13 @@ $this
                             </li>
                             <?php if ($this->config->get('grantinfo', 0)) : ?>
                                 <li>
-                                    <span class="stats-num-small"><?php echo $this->stats['general']['sponsored']; ?></span>
+                                    <span class="stats-num-small"><?= $this->stats['general']['sponsored'] ?></span>
                                     <?php echo Lang::txt('grant-sponsored projects'); ?>
                                 </li>
                             <?php endif; ?>
                             <?php if ($this->config->get('restricted_data', 0)) : ?>
                                 <li>
-                                    <span class="stats-num-small"><?php echo $this->stats['general']['sensitive']; ?></span>
+                                    <span class="stats-num-small"><?= $this->stats['general']['sensitive'] ?></span>
                                     <?php echo Lang::txt('projects with sensitive data'); ?>
                                 </li>
                             <?php endif; ?>
@@ -222,7 +222,7 @@ $this
 
             <table class="stats-wrap">
                 <tr class="stats-activity">
-                    <th scope="row" class="stats-h icon-bar-chart" rowspan="2"><span><?php echo Lang::txt('Activity'); ?></span></th>
+                    <th scope="row" class="stats-h icon-bar-chart" rowspan="2"><span><?= Lang::txt('Activity') ?></span></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -245,7 +245,7 @@ $this
                     </td>
                     <td>
                         <span class="stats-num"><?php echo $this->stats['activity']['average']; ?></span>
-                        <span class="stats-label"><?php echo Lang::txt('average activity records per project'); ?></span>
+                        <span class="stats-label"><?= Lang::txt('average activity records per project') ?></span>
                     </td>
                     <td>
                         <span class="stats-num"><?php echo $this->stats['activity']['usage']; ?></span>
@@ -303,9 +303,9 @@ $this
                                     $project = new Components\Projects\Models\Project($topProject->scope_id);
                                     ?>
                                     <li>
-                                        <span class="stats-ima-small"><img src="<?php echo $project->picture('thumb'); ?>" alt="" /></span>
+                                        <span class="stats-ima-small"><img src="<?= $project->picture('thumb') ?>" alt="" /></span>
                                         <?php if (!$project->get('private')) : ?>
-                                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $project->get('alias')); ?>">
+                                            <a href="<?= Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $project->get('alias')) ?>">
                                         <?php endif; ?>
                                         <?php echo $this->escape($project->get('title')); ?>
                                         <?php if (!$project->get('private')) : ?>
@@ -315,7 +315,7 @@ $this
                                 <?php endforeach; ?>
                             </ul>
                         <?php else : ?>
-                            <p class="noresults"><?php echo Lang::txt('Detailed information currently unavailable'); ?></p>
+                            <p class="noresults"><?= Lang::txt('Detailed information currently unavailable') ?></p>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -323,7 +323,7 @@ $this
 
             <table class="stats-wrap">
                 <tr class="stats-team">
-                    <th scope="row" class="stats-h icon-group" rowspan="2"><span><?php echo Lang::txt('Team'); ?></span></th>
+                    <th scope="row" class="stats-h icon-group" rowspan="2"><span><?= Lang::txt('Team') ?></span></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -401,11 +401,11 @@ $this
                             <ul>
                                 <?php foreach ($this->stats['topTeamProjects'] as $topProject) : ?>
                                     <li>
-                                        <span class="stats-ima-small"><img src="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $topProject->alias . '&task=media'); ?>" alt="" /></span>
+                                        <span class="stats-ima-small"><img src="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $topProject->alias . '&task=media') ?>" alt="" /></span>
                                         <?php if (!$topProject->private) : ?>
-                                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $topProject->alias); ?>">
+                                            <a href="<?= Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $topProject->alias) ?>">
                                         <?php endif; ?>
-                                        <?php echo $this->escape($topProject->title) . ' (' . $topProject->team . ' ' . Lang::txt('members') . ')'; ?>
+                                        <?= $this->escape($topProject->title) . ' (' . $topProject->team . ' ' . Lang::txt('members') . ')' ?>
                                         <?php if (!$topProject->private) : ?>
                                             </a>
                                         <?php endif; ?>
@@ -415,12 +415,12 @@ $this
                             <span class="block">&nbsp;</span>
                             <ul>
                                 <li>
-                                    <span class="stats-num-small"><?php echo $this->stats['team']['multiusers']; ?></span>
+                                    <span class="stats-num-small"><?= $this->stats['team']['multiusers'] ?></span>
                                     <?php echo Lang::txt('unique users with multiple projects'); ?>
                                 </li>
                             </ul>
                         <?php else : ?>
-                            <p class="noresults"><?php echo Lang::txt('Detailed information currently unavailable'); ?></p>
+                            <p class="noresults"><?= Lang::txt('Detailed information currently unavailable') ?></p>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -504,7 +504,7 @@ $this
                     <td class="stats-more">
                         <ul>
                             <li>
-                                <span class="stats-num-small-unfloat"><?php echo $this->stats['files']['diskspace']; ?></span>
+                                <span class="stats-num-small-unfloat"><?= $this->stats['files']['diskspace'] ?></span>
                                 <?php echo Lang::txt('total used disk space'); ?>
                             </li>
                         </ul>
@@ -515,7 +515,7 @@ $this
             <?php if ($this->publishing) : ?>
                 <table class="stats-wrap">
                     <tr class="stats-publications">
-                        <th scope="row" class="stats-h icon-success-sign" rowspan="2"><span><?php echo Lang::txt('Publications'); ?></span></th>
+                        <th scope="row" class="stats-h icon-success-sign" rowspan="2"><span><?= Lang::txt('Publications') ?></span></th>
                         <th></th>
                         <th></th>
                         <th></th>
@@ -531,7 +531,7 @@ $this
                         </td>
                         <td>
                             <span class="stats-num"><?php echo $this->stats['pub']['average']; ?></span>
-                            <span class="stats-label"><?php echo Lang::txt('average publications per project'); ?></span>
+                            <span class="stats-label"><?= Lang::txt('average publications per project') ?></span>
                         </td>
                         <td>
                             <span class="stats-num"><?php echo $this->stats['pub']['usage']; ?></span>
@@ -584,15 +584,15 @@ $this
                         <td class="stats-more">
                             <ul>
                                 <li>
-                                    <span class="stats-num-small-unfloat"><?php echo $this->stats['pub']['released']; ?></span>
+                                    <span class="stats-num-small-unfloat"><?= $this->stats['pub']['released'] ?></span>
                                     <?php echo Lang::txt('publicly released publications'); ?>
                                 </li>
                                 <li>
-                                    <span class="stats-num-small-unfloat"><?php echo $this->stats['pub']['versions']; ?></span>
+                                    <span class="stats-num-small-unfloat"><?= $this->stats['pub']['versions'] ?></span>
                                     <?php echo Lang::txt('total publication versions'); ?>
                                 </li>
                                 <li>
-                                    <span class="stats-num-small-unfloat"><?php echo $this->stats['files']['pubspace'] ? $this->stats['files']['pubspace'] : 'N/A'; ?></span>
+                                    <span class="stats-num-small-unfloat"><?= $this->stats['files']['pubspace'] ? $this->stats['files']['pubspace'] : 'N/A' ?></span>
                                     <?php echo Lang::txt('allocated to published files'); ?>
                                 </li>
                             </ul>

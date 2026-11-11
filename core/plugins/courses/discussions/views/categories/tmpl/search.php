@@ -24,7 +24,7 @@ $base = $this->offering->alias() . '&active=forum';
                     <legend><?php echo Lang::txt('Search for posts'); ?></legend>
 
                     <label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
-                    <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" />
+                    <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" />
 
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -71,12 +71,12 @@ $base = $this->offering->alias() . '&active=forum';
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>
                                     <td>
-                                        <a class="entry-title" href="<?php echo Route::url($base . '&unit=' . $this->categories[$row->get('category_id')]->get('alias') . '&b=' . $row->get('thread') . '#c' . $row->get('id')); ?>">
+                                        <a class="entry-title" href="<?= Route::url($base . '&unit=' . $this->categories[$row->get('category_id')]->get('alias') . '&b=' . $row->get('thread') . '#c' . $row->get('id')) ?>">
                                             <span><?php echo $title; ?></span>
                                         </a>
                                         <span class="entry-details">
                                             <span class="entry-date">
-                                                <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
+                                                <time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time>
                                             </span>
                                             <?php echo Lang::txt('by'); ?>
                                             <span class="entry-author">
@@ -87,13 +87,13 @@ $base = $this->offering->alias() . '&active=forum';
                                     <td class="priority-4">
                                         <span><?php echo Lang::txt('Section'); ?></span>
                                         <span class="entry-details section-name">
-                                            <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, ['exact' => true])); ?>
+                                            <?= $this->escape(\Hubzero\Utility\Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, ['exact' => true])) ?>
                                         </span>
                                     </td>
                                     <td>
                                         <span><?php echo Lang::txt('Category'); ?></span>
                                         <span class="entry-details category-name">
-                                            <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->categories[$row->get('category_id')]->get('title'), 100, ['exact' => true])); ?>
+                                            <?= $this->escape(\Hubzero\Utility\Str::truncate($this->categories[$row->get('category_id')]->get('title'), 100, ['exact' => true])) ?>
                                         </span>
                                     </td>
                                 </tr>

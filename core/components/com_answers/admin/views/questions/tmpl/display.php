@@ -71,9 +71,9 @@ $formAction = Route::url(
                     <?php echo Lang::txt('COM_ANSWERS_FILTER_BY'); ?>
                 </label>
                 <select name="state" id="filter-state" class="filter filter-submit">
-                    <option value="0"<?php echo $this->filters['state'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_OPEN'); ?></option>
-                    <option value="1"<?php echo $this->filters['state'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_CLOSED'); ?></option>
-                    <option value="-1"<?php echo $this->filters['state'] == -1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ALL'); ?></option>
+                    <option value="0"<?= $this->filters['state'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_ANSWERS_FILTER_BY_OPEN') ?></option>
+                    <option value="1"<?= $this->filters['state'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_ANSWERS_FILTER_BY_CLOSED') ?></option>
+                    <option value="-1"<?= $this->filters['state'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_ANSWERS_FILTER_BY_ALL') ?></option>
                 </select>
             </div>
         </div>

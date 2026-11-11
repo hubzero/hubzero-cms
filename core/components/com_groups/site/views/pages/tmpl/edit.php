@@ -83,24 +83,24 @@ if ($this->page->get('id')) {
         <p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
     <?php } ?>
 
-    <form action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=save'); ?>" method="POST" id="hubForm" class="full">
+    <form action="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=save') ?>" method="POST" id="hubForm" class="full">
 
         <div class="grid">
             <div class="col span9">
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_DETAILS'); ?></legend>
                     <label for="field-title">
-                        <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_TITLE'); ?>:</strong> <span class="required"><?php echo Lang::txt('COM_GROUPS_FIELD_REQUIRED'); ?></span>
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_TITLE') ?>:</strong> <span class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
                         <?php $readonly = ($home) ? 'readonly="readonly"' : ''; ?>
-                        <input type="text" name="page[title]" id="field-title" value="<?php echo $this->escape(stripslashes($title)); ?>" <?php echo $readonly; ?> />
+                        <input type="text" name="page[title]" id="field-title" value="<?= $this->escape(stripslashes($title)) ?>" <?= $readonly ?> />
                     </label>
                     <label for="field-url">
-                        <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_URL'); ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
-                        <input type="text" name="page[alias]" id="field-url" value="<?php echo $this->escape($alias); ?>" <?php echo $readonly; ?> />
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_URL') ?>:</strong> <span class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span>
+                        <input type="text" name="page[alias]" id="field-url" value="<?= $this->escape($alias) ?>" <?= $readonly ?> />
                         <span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_URL_HINT'); ?></span>
                     </label>
                     <label for="pagecontent">
-                        <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CONTENT'); ?>:</strong> <span class="required"><?php echo Lang::txt('COM_GROUPS_FIELD_REQUIRED'); ?></span>
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_CONTENT') ?>:</strong> <span class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
                         <?php
                             $allowPhp      = true;
                             $allowScripts  = true;
@@ -163,15 +163,15 @@ if ($this->page->get('id')) {
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PUBLISH'); ?></legend>
                     <label>
-                        <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS'); ?>:</strong> <span class="required"><?php echo Lang::txt('COM_GROUPS_FIELD_REQUIRED'); ?></span>
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS') ?>:</strong> <span class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
                         <select name="page[state]" class="fancy-select" <?php echo $readonly; ?>>
-                            <option value="1" <?php echo $state == 1 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_PUBLISHED'); ?></option>
-                            <option value="0" <?php echo $state == 0 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_UNPUBLISHED'); ?></option>
+                            <option value="1" <?= $state == 1 ? "selected" : '' ?>><?= Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_PUBLISHED') ?></option>
+                            <option value="0" <?= $state == 0 ? "selected" : '' ?>><?= Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_UNPUBLISHED') ?></option>
                         </select>
                     </label>
 
                     <label>
-                        <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVACY'); ?>:</strong> <span class="required"><?php echo Lang::txt('COM_GROUPS_FIELD_REQUIRED'); ?></span>
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVACY') ?>:</strong> <span class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
                         <?php
                             $access = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'overview');
                         switch ($access) {
@@ -187,29 +187,29 @@ if ($this->page->get('id')) {
                         }
                         ?>
                         <select name="page[privacy]" class="fancy-select">
-                            <option value="default" <?php echo $privacy == "default" ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVACY_INHERIT', $name); ?></option>
-                            <option value="members" <?php echo $privacy == "members" ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVACY_PRIVATE'); ?></option>
+                            <option value="default" <?= $privacy == "default" ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVACY_INHERIT', $name) ?></option>
+                            <option value="members" <?= $privacy == "members" ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVACY_PRIVATE') ?></option>
                         </select>
                     </label>
 
                     <?php if ($this->page->get('id')) : ?>
                         <label>
                             <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_VERSIONS'); ?>:</strong> <br />
-                            <a class="btn icon-history" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $this->page->get('id')); ?>">
-                                <?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_VERSIONS_BROWSE', $this->page->versions()->count()); ?>
+                            <a class="btn icon-history" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $this->page->get('id')) ?>">
+                                <?= Lang::txt('COM_GROUPS_PAGES_PAGE_VERSIONS_BROWSE', $this->page->versions()->count()) ?>
                             </a>
                         </label>
                     <?php endif; ?>
                 </fieldset>
 
                 <div class="form-controls cf">
-                    <a href="<?php echo Route::url($return_link); ?>" class="cancel"><?php echo Lang::txt('JCANCEL'); ?></a>
+                    <a href="<?= Route::url($return_link) ?>" class="cancel"><?= Lang::txt('JCANCEL') ?></a>
                     <div class="btn-group save">
-                        <button type="submit" class="btn btn-info btn-main icon-save"><?php echo Lang::txt('COM_GROUPS_PAGES_SAVE_PAGE'); ?></button>
+                        <button type="submit" class="btn btn-info btn-main icon-save"><?= Lang::txt('COM_GROUPS_PAGES_SAVE_PAGE') ?></button>
                         <span class="btn dropdown-toggle btn-info"></span>
                         <ul class="dropdown-menu">
-                            <li><a class="icon-save active" data-action="save" href="javascript:void(0);"><?php echo Lang::txt('COM_GROUPS_PAGES_SAVE_PAGE'); ?></a></li>
-                            <li><a class="icon-apply" data-action="apply" href="javascript:void(0);"><?php echo Lang::txt('COM_GROUPS_PAGES_APPLY_PAGE'); ?></a></li>
+                            <li><a class="icon-save active" data-action="save" href="javascript:void(0);"><?= Lang::txt('COM_GROUPS_PAGES_SAVE_PAGE') ?></a></li>
+                            <li><a class="icon-apply" data-action="apply" href="javascript:void(0);"><?= Lang::txt('COM_GROUPS_PAGES_APPLY_PAGE') ?></a></li>
                         </ul>
                     </div>
                 </div>
@@ -218,21 +218,21 @@ if ($this->page->get('id')) {
                     <legend><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_SETTINGS'); ?></legend>
 
                     <label for="page-category" class="page-category-label">
-                        <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY'); ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
-                        <select name="page[category]" class="page-category" data-url="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&controller=categories&task=add&no_html=1'); ?>">
-                            <option value=""><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_NULL'); ?></option>
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY') ?>:</strong> <span class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span>
+                        <select name="page[category]" class="page-category" data-url="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&controller=categories&task=add&no_html=1') ?>">
+                            <option value=""><?= Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_NULL') ?></option>
                             <?php foreach ($this->categories as $pageCategory) : ?>
                                 <?php $sel = ($category == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
-                                <option <?php echo $sel; ?> data-color="#<?php echo $this->escape($pageCategory->get('color')); ?>" value="<?php echo (int) $pageCategory->get('id'); ?>"><?php echo $this->escape($pageCategory->get('title')); ?></option>
+                                <option <?= $sel ?> data-color="#<?= $this->escape($pageCategory->get('color')) ?>" value="<?= (int) $pageCategory->get('id') ?>"><?= $this->escape($pageCategory->get('title')) ?></option>
                             <?php endforeach; ?>
-                            <option value="other"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_OTHER'); ?></a>
+                            <option value="other"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_OTHER') ?></a>
                         </select>
                         <span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_HINT'); ?></span>
                     </label>
 
                     <?php if ($this->page->get('home') == 0) : ?>
                         <label for="page-parent" class="page-parent-label">
-                            <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PARENT'); ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
+                            <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_PARENT') ?>:</strong> <span class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span>
                             <select name="page[parent]" class="page-parent">
                                 <?php foreach ($this->pages as $page) : ?>
                                     <?php if ($page->get('id') == $id) {
@@ -240,7 +240,7 @@ if ($this->page->get('id')) {
                                     } ?>
                                     <?php $sel = ($parent == $page->get('id')) ? 'selected="selected"' : ''; ?>
                                     <option <?php echo $sel; ?> value="<?php echo $page->get('id'); ?>">
-                                        <?php echo $page->heirarchyIndicator(' &ndash; ') . $this->escape($page->get('title')); ?>
+                                        <?= $page->heirarchyIndicator(' &ndash; ') . $this->escape($page->get('title')) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -251,11 +251,11 @@ if ($this->page->get('id')) {
 
                     <?php if ($this->page->get('id') && $this->page->get('home') == 0) : ?>
                         <label for="page-ordering">
-                            <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_ORDER'); ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
+                            <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_ORDER') ?>:</strong> <span class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span>
                             <select name="page[left]" class="page-ordering fancy-select">
                                 <?php foreach ($this->pages as $page) : ?>
                                     <?php $sel = ($page->get('title') == $title) ? 'selected="selected"' : ''; ?>
-                                    <option <?php echo $sel; ?> data-parent="<?php echo $page->get('parent'); ?>" value="<?php echo $page->get('lft'); ?>">
+                                    <option <?= $sel ?> data-parent="<?= $page->get('parent') ?>" value="<?= $page->get('lft') ?>">
                                         <?php echo $page->get('lft') . ' ' . $this->escape($page->get('title')); ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -267,12 +267,12 @@ if ($this->page->get('id')) {
                     <hr class="divider" />
 
                     <label>
-                        <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS'); ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS') ?>:</strong> <span class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span>
                         <select name="page[comments]" class="fancy-select">
-                            <option value="3" <?php echo $comments === 3 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_INHERIT', $groupCommentSettingString); ?></option>
-                            <option value="0" <?php echo $comments === 0 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO'); ?></option>
-                            <option value="1" <?php echo $comments === 1 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES'); ?></option>
-                            <option value="2" <?php echo $comments === 2 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK'); ?></option>
+                            <option value="3" <?= $comments === 3 ? "selected" : '' ?>><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_INHERIT', $groupCommentSettingString) ?></option>
+                            <option value="0" <?= $comments === 0 ? "selected" : '' ?>><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO') ?></option>
+                            <option value="1" <?= $comments === 1 ? "selected" : '' ?>><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES') ?></option>
+                            <option value="2" <?= $comments === 2 ? "selected" : '' ?>><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK') ?></option>
                         </select>
                         <span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_HINT'); ?></span>
                     </label>
@@ -281,14 +281,14 @@ if ($this->page->get('id')) {
                         <hr class="divider" />
 
                         <label for="page-template">
-                            <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_TEMPLATE'); ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
+                            <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_TEMPLATE') ?>:</strong> <span class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span>
                             <select name="page[template]" class="fancy-select">
-                                <option value=""><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_TEMPLATE_OPTION_NULL'); ?></option>
+                                <option value=""><?= Lang::txt('COM_GROUPS_PAGES_PAGE_TEMPLATE_OPTION_NULL') ?></option>
                                 <?php foreach ($this->pageTemplates as $name => $file) : ?>
                                     <?php
                                         $tmpl = str_replace('.php', '', $file);
                                         $sel  = ($this->page->get('template') == $tmpl) ? 'selected="selected"' : ''; ?>
-                                    <option <?php echo $sel; ?> value="<?php echo $tmpl; ?>"><?php echo $name; ?></option>
+                                    <option <?= $sel ?> value="<?= $tmpl ?>"><?= $name ?></option>
                                 <?php endforeach;?>
                             </select>
                             <span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_TEMPLATE_HINT'); ?></span>
@@ -303,7 +303,7 @@ if ($this->page->get('id')) {
         <input type="hidden" name="page[id]" value="<?php echo $id; ?>" />
         <input type="hidden" name="option" value="com_groups" />
         <input type="hidden" name="controller" value="pages" />
-        <input type="hidden" name="return" value="<?php echo $this->escape(Request::getString('return', '', 'get')); ?>" />
+        <input type="hidden" name="return" value="<?= $this->escape(Request::getString('return', '', 'get')) ?>" />
         <input type="hidden" name="task" value="save" />
     </form>
 </section>

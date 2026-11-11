@@ -32,13 +32,13 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
             <div class="container">
                 <span class="ordering-controls">
                     <?php if ($i != 0) { ?>
-                        <a class="order-up reorder" href="<?php echo Route::url($base . '&b=' . $section->alias . '&c=orderup'); ?>" title="<?php echo Lang::txt('Move up'); ?>"><?php echo Lang::txt('Move up'); ?></a>
+                        <a class="order-up reorder" href="<?= Route::url($base . '&b=' . $section->alias . '&c=orderup') ?>" title="<?= Lang::txt('Move up') ?>"><?= Lang::txt('Move up') ?></a>
                     <?php } else { ?>
                         <span class="order-up reorder"><?php echo Lang::txt('Move up'); ?></span>
                     <?php } ?>
 
                     <?php if ($i < $ct) { ?>
-                        <a class="order-down reorder" href="<?php echo Route::url($base . '&b=' . $section->alias . '&c=orderdown'); ?>" title="<?php echo Lang::txt('Move down'); ?>"><?php echo Lang::txt('Move down'); ?></a>
+                        <a class="order-down reorder" href="<?= Route::url($base . '&b=' . $section->alias . '&c=orderdown') ?>" title="<?= Lang::txt('Move down') ?>"><?= Lang::txt('Move down') ?></a>
                     <?php } else { ?>
                         <span class="order-down reorder"><?php echo Lang::txt('Move down'); ?></span>
                     <?php } ?>
@@ -50,12 +50,12 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                 <table class="entries categories">
                     <caption>
                         <?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias') && $section->get('id')) { ?>
-                                <!-- <span id="s<?php echo $section->get('id'); ?>"></span> [!] This seems to cause some serious display issues -->
-                                <input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->get('title'))); ?>" />
+                                <!-- <span id="s<?= $section->get('id') ?>"></span> [!] This seems to cause some serious display issues -->
+                                <input type="text" name="fields[title]" value="<?= $this->escape(stripslashes($section->get('title'))) ?>" />
                                 <input type="submit" value="<?php echo Lang::txt('Save'); ?>" />
                                 <input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />
                                 <input type="hidden" name="fields[scope]" value="course" />
-                                <input type="hidden" name="fields[scope_id]" value="<?php echo $section->get('scope_id'); ?>" />
+                                <input type="hidden" name="fields[scope_id]" value="<?= $section->get('scope_id') ?>" />
                                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                                 <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
                                 <input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
@@ -68,10 +68,10 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                         <?php } ?>
                         <?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->get('id')) { ?>
                             <?php if ($this->config->get('access-delete-section')) { ?>
-                                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=delete'); ?>" class="delete" title="<?php echo Lang::txt('Delete'); ?>"><span><?php echo Lang::txt('Delete'); ?></span></button>
+                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=delete') ?>" class="delete" title="<?= Lang::txt('Delete') ?>"><span><?= Lang::txt('Delete') ?></span></button>
                             <?php } ?>
                             <?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias') && $section->get('id')) { ?>
-                                <a class="edit" href="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=edit#s' . $section->get('id')); ?>" title="<?php echo Lang::txt('Edit'); ?>">
+                                <a class="edit" href="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=edit#s' . $section->get('id')) ?>" title="<?= Lang::txt('Edit') ?>">
                                     <span><?php echo Lang::txt('Edit'); ?></span>
                                 </a>
                             <?php } ?>
@@ -81,7 +81,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                         <tfoot>
                             <tr>
                                 <td<?php echo $section->categories()->total() > 0 ? ' colspan="5"' : ''; ?>>
-                                    <a class="icon-add add btn" href="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=new'); ?>">
+                                    <a class="icon-add add btn" href="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=new') ?>">
                                         <span><?php echo Lang::txt('Add Category'); ?></span>
                                     </a>
                                 </td>
@@ -96,7 +96,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>
                                     <td>
-                                        <span class="entry-title" data-href="<?php echo Route::url($base . '&b=' . $row->get('alias')); ?>">
+                                        <span class="entry-title" data-href="<?= Route::url($base . '&b=' . $row->get('alias')) ?>">
                                             <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
                                         </span>
                                         <span class="entry-details">
@@ -128,12 +128,12 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                                     <?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
                                         <td class="entry-options">
                                             <?php if (($row->get('created_by') == User::get('id') || $this->config->get('access-edit-category')) && $section->get('id')) { ?>
-                                                <a class="edit" href="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias') . '/edit'); ?>" title="<?php echo Lang::txt('Edit'); ?>">
+                                                <a class="edit" href="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias') . '/edit') ?>" title="<?= Lang::txt('Edit') ?>">
                                                     <span><?php echo Lang::txt('Edit'); ?></span>
                                                 </a>
                                             <?php } ?>
                                             <?php if ($this->config->get('access-delete-category') && $section->get('id')) { ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias') . '/delete'); ?>" class="delete tooltips" title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY'); ?>"><span><?php echo Lang::txt('Delete'); ?></span></button>
+                                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias') . '/delete') ?>" class="delete tooltips" title="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY') ?>"><span><?= Lang::txt('Delete') ?></span></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>
@@ -176,7 +176,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                         <input type="hidden" name="offering" value="<?php echo $this->offering->alias(); ?>" />
                         <input type="hidden" name="fields[id]" value="" />
                         <input type="hidden" name="fields[scope]" value="course" />
-                        <input type="hidden" name="fields[scope_id]" value="<?php echo $this->course->offering()->get('id'); ?>" />
+                        <input type="hidden" name="fields[scope_id]" value="<?= $this->course->offering()->get('id') ?>" />
                         <input type="hidden" name="fields[state]" value="1" />
                         <input type="hidden" name="active" value="discussions" />
                         <input type="hidden" name="unit" value="manage" />
@@ -195,15 +195,15 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                 <tbody>
                     <tr>
                         <th><?php echo Lang::txt('Categories'); ?></th>
-                        <td><span class="item-count"><?php echo $this->forum->count('categories', $this->filters); ?></span></td>
+                        <td><span class="item-count"><?= $this->forum->count('categories', $this->filters) ?></span></td>
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('Discussions'); ?></th>
-                        <td><span class="item-count"><?php echo $this->forum->count('threads', $this->filters); ?></span></td>
+                        <td><span class="item-count"><?= $this->forum->count('threads', $this->filters) ?></span></td>
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('Posts'); ?></th>
-                        <td><span class="item-count"><?php echo $this->forum->count('posts', $this->filters); ?></span></td>
+                        <td><span class="item-count"><?= $this->forum->count('posts', $this->filters) ?></span></td>
                     </tr>
                 </tbody>
             </table>
@@ -243,9 +243,9 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                     </span>
                     <span class="entry-date">
                         <span class="entry-date-at"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_AT'); ?></span>
-                        <span class="icon-time time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span>
+                        <span class="icon-time time"><time datetime="<?= $post->get('created') ?>"><?= $post->created('time') ?></time></span>
                         <span class="entry-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-                        <span class="icon-date date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
+                        <span class="icon-date date"><time datetime="<?= $post->get('created') ?>"><?= $post->created('date') ?></time></span>
                     </span>
                 <?php } else { ?>
                     <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_NONE'); ?>

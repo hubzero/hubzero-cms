@@ -172,7 +172,7 @@ $groupDefs = $groups->getAllGroups();
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="item-form">
     <fieldset class="adminform">
         <legend><span>Incremental Registration Options</span></legend>
 
@@ -183,12 +183,12 @@ $groupDefs = $groups->getAllGroups();
 
         <div class="input-wrap">
             <label for="field-award-per">Award per field completed</label>
-            <input type="text" name="award-per" id="field-award-per" value="<?php echo str_replace('"', '&quot;', $awardPer ?? ''); ?>" />
+            <input type="text" name="award-per" id="field-award-per" value="<?= str_replace('"', '&quot;', $awardPer ?? '') ?>" />
         </div>
 
         <div class="input-wrap">
             <label for="field-test-group">Test group (name or id number)</label>
-            <input type="text" name="test-group" id="field-test-group" value="<?php echo str_replace('"', '&quot;', $testGroup ?? ''); ?>" />
+            <input type="text" name="test-group" id="field-test-group" value="<?= str_replace('"', '&quot;', $testGroup ?? '') ?>" />
         </div>
 
         <fieldset>
@@ -209,11 +209,11 @@ $groupDefs = $groups->getAllGroups();
                     ?>
                 <li class="reg-group">
                     <p>
-                        Beginning <input name="group-hours-<?php echo $idx; ?>" value="<?php echo $group['hours']; ?>" size="3" />
+                        Beginning <input name="group-hours-<?= $idx ?>" value="<?= $group['hours'] ?>" size="3" />
                         <select name="group-time-unit-<?php echo $idx; ?>">
-                            <option value="hour" <?php echo $unit == 'hour' ? 'selected="selected" ' : ''; ?>>hours</option>
-                            <option value="day" <?php echo $unit == 'day' ? 'selected="selected" ' : ''; ?>>days</option>
-                            <option value="week" <?php echo $unit == 'week' ? 'selected="selected" ' : ''; ?>>weeks</option>
+                            <option value="hour" <?= $unit == 'hour' ? 'selected="selected" ' : '' ?>>hours</option>
+                            <option value="day" <?= $unit == 'day' ? 'selected="selected" ' : '' ?>>days</option>
+                            <option value="week" <?= $unit == 'week' ? 'selected="selected" ' : '' ?>>weeks</option>
                         </select> after registration, prompt for:
                         <ul>
                         <?php foreach ($group['cols'] as $cidx => $col) : ?>
@@ -221,14 +221,14 @@ $groupDefs = $groups->getAllGroups();
                                 <select name="group-cols-<?php echo $idx; ?>[]">
                                     <option value="">Select profile field...</option>
                                 <?php foreach ($possibleCols as $colName => $colLabel) : ?>
-                                    <option value="<?php echo str_replace('"', '&quot;', $colName); ?>"<?php echo $colName == $col ? ' selected="selected"' : ''; ?>><?php echo htmlentities($colLabel); ?></option>
+                                    <option value="<?= str_replace('"', '&quot;', $colName) ?>"<?= $colName == $col ? ' selected="selected"' : '' ?>><?= htmlentities($colLabel) ?></option>
                                 <?php endforeach; ?>
                                 </select>
                                 <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove field</button>
                             </li>
                         <?php endforeach; ?>
                         </ul>
-                        <button class="add-field" onclick="addField(this, <?php echo $idx; ?>); return false;">Add field</button>
+                        <button class="add-field" onclick="addField(this, <?= $idx ?>); return false;">Add field</button>
                     </p>
                     <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); renumberGroups(); return false;">Remove group</button>
                 </li>
@@ -302,8 +302,8 @@ $groupDefs = $groups->getAllGroups();
             </p>
             <p>
                 After reaching the end of this list: <br />
-                <input type="radio" name="repeat-type" value="0" <?php echo $repeatType !== 1 ? 'checked="checked" ' : ''; ?>/> repeat prompting indefinitely using the last delay listed between attempts<br />
-                <input type="radio" name="repeat-type" value="1" <?php echo $repeatType === 1 ? 'checked="checked" ' : ''; ?>/> stop prompting
+                <input type="radio" name="repeat-type" value="0" <?= $repeatType !== 1 ? 'checked="checked" ' : '' ?>/> repeat prompting indefinitely using the last delay listed between attempts<br />
+                <input type="radio" name="repeat-type" value="1" <?= $repeatType === 1 ? 'checked="checked" ' : '' ?>/> stop prompting
             </p>
         </fieldset>
     </fieldset>

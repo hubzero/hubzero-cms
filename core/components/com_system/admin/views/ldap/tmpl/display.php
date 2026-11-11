@@ -28,7 +28,7 @@ $this
     ->js('ldap');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span6">
             <p class="warning"><?php echo Lang::txt('COM_SYSTEM_LDAP_WARNING_IRREVERSIBLE'); ?></p>
@@ -40,20 +40,20 @@ $this
                         <tr>
                             <td class="key"><!-- onclick="submitbutton('exportUsers');" -->
                                 <?php if ($canRun) {
-                                    ?><input type="submit" name="exportUsers" id="exportUsers" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP'); ?>" data-delay="3" data-start="0" data-progress="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=exportusersbatch&' . Session::getFormToken() . '=1&no_html=1&limit=' . $this->config->get('batch_limit', 1000) . '&start='); ?>" /><?php
+                                    ?><input type="submit" name="exportUsers" id="exportUsers" value="<?= Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP') ?>" data-delay="3" data-start="0" data-progress="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=exportusersbatch&' . Session::getFormToken() . '=1&no_html=1&limit=' . $this->config->get('batch_limit', 1000) . '&start=') ?>" /><?php
                                 } ?>
                             </td>
                             <td>
                                 <?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_USERS_TO_LDAP'); ?>
                                 <div class="progress-container">
-                                    <strong><?php echo Lang::txt('COM_SYSTEM_LDAP_RUN_PROGRESS'); ?> <span class="progress-percentage">0%</span></strong>
+                                    <strong><?= Lang::txt('COM_SYSTEM_LDAP_RUN_PROGRESS') ?> <span class="progress-percentage">0%</span></strong>
                                     <div class="progress"></div>
                                 </div>
                             </td>
                         </tr>
                         <tr>
                             <td class="key"><?php if ($canRun) {
-                                ?><input type="submit" name="deleteUsers" id="deleteUsers" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP'); ?>" /><?php
+                                ?><input type="submit" name="deleteUsers" id="deleteUsers" value="<?= Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP') ?>" /><?php
                                             } ?></td>
                             <td><?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_USERS_FROM_LDAP'); ?></td>
                         </tr>
@@ -67,13 +67,13 @@ $this
                     <tbody>
                         <tr>
                             <td class="key"><?php if ($canRun) {
-                                ?><input type="submit" name="exportGroups" id="exportGroups" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP'); ?>" /><?php
+                                ?><input type="submit" name="exportGroups" id="exportGroups" value="<?= Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP') ?>" /><?php
                                             } ?></td>
                             <td><?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_GROUPS_TO_LDAP'); ?></td>
                         </tr>
                         <tr>
                             <td class="key"><?php if ($canRun) {
-                                ?><input type="submit" name="deleteGroups" id="deleteGroups" value="<?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP'); ?>" /><?php
+                                ?><input type="submit" name="deleteGroups" id="deleteGroups" value="<?= Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP') ?>" /><?php
                                             } ?></td>
                             <td><?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_GROUPS_FROM_LDAP'); ?></td>
                         </tr>

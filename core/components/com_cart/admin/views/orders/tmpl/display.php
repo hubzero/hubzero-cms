@@ -36,25 +36,25 @@ $this
     ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span5">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('JSEARCH_FILTER') ?>" />
             </div>
             <div class="col span7 align-right">
                 <label for="filter-reportnotes"><?php echo Lang::txt('COM_CART_SHOW_NOTES'); ?>:</label>
                 <select name="report-notes" id="filter-report-notes" class="filter filter-submit">
-                    <option value="0"<?php echo $this->filters['report-notes'] === 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ALL'); ?></option>
-                    <option value="1"<?php echo $this->filters['report-notes'] === 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ONLY'); ?></option>
+                    <option value="0"<?= $this->filters['report-notes'] === 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CART_SHOW_NOTES_ALL') ?></option>
+                    <option value="1"<?= $this->filters['report-notes'] === 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CART_SHOW_NOTES_ONLY') ?></option>
                 </select>
                 &nbsp;&nbsp;
                 <label for="filter-report-from">From:</label>
-                <input type="text" name="report-from" id="filter-report-from" class="filter" value="<?php echo $this->escape($this->filters['report-from']); ?>" placeholder="<?php echo Lang::txt('From'); ?>" />
+                <input type="text" name="report-from" id="filter-report-from" class="filter" value="<?= $this->escape($this->filters['report-from']) ?>" placeholder="<?= Lang::txt('From') ?>" />
                 &mdash;
                 <label for="filter-report-to">To:</label>
-                <input type="text" name="report-to" id="filter-report-to" class="filter" value="<?php echo $this->escape($this->filters['report-to']); ?>" placeholder="<?php echo Lang::txt('To'); ?>" />
+                <input type="text" name="report-to" id="filter-report-to" class="filter" value="<?= $this->escape($this->filters['report-to']) ?>" placeholder="<?= Lang::txt('To') ?>" />
                 <input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
             </div>
         </div>
@@ -69,17 +69,17 @@ $this
 
                         echo ($user->get('id')) ? $this->escape($user->get('name') . ' (' . $user->get('username') . ')') : Lang::txt('COM_CART_USER_ID') . ': ' . (int) $this->filters['uidNumber'];
                     ?>
-                        <button type="button" id="filter_uidNumber-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
+                        <button type="button" id="filter_uidNumber-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>
                     </th>
                 </tr>
             <?php } ?>
             <tr>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_ID', 'tId', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_CART_ORDER_ID', 'tId', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?php echo LANG::txt('COM_CART_ORDER_TOTAL'); ?></th>
                 <th scope="col"><?php echo LANG::txt('COM_CART_ORDER_NUM_ITEMS'); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDER_PLACED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'Payment method', 'tiPayment', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_CART_ORDER_PLACED', 'tLastUpdated', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_CART_ORDERED_BY', 'Name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col"><?= Html::grid('sort', 'Payment method', 'tiPayment', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -103,7 +103,7 @@ $this
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <span>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $row->tId); ?>">
+                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $row->tId) ?>">
                             <?php echo $this->escape(stripslashes($row->tId)); ?>
                         </a>
                     </span>
@@ -113,7 +113,7 @@ $this
                 </td>
                 <td>
                     <span>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=items&order=' . $row->tId); ?>">
+                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=items&order=' . $row->tId) ?>">
                             <?php echo $this->escape(stripslashes($row->tiItemsQty)); ?>
                         </a>
                     </span>
@@ -123,9 +123,9 @@ $this
                 </td>
                 <td>
                     <?php if ($row->uidNumber) { ?>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber=' . $row->uidNumber); ?>">
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&uidNumber=' . $row->uidNumber) ?>">
                     <?php } ?>
-                        <span><?php echo ($row->name) ? $this->escape(stripslashes($row->name)) : Lang::txt('COM_CART_UNKNOWN'); ?></span>
+                        <span><?= ($row->name) ? $this->escape(stripslashes($row->name)) : Lang::txt('COM_CART_UNKNOWN') ?></span>
                         <?php if ($row->uidNumber) { ?>
                     </a>
                         <?php } ?>

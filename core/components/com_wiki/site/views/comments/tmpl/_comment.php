@@ -90,18 +90,18 @@ $this->comment->set('category', 'answercomment');
                         break;
                 }
                 ?>
-                <p><span class="avgrating<?php echo $rcls; ?>"><span><?php echo Lang::txt('COM_WIKI_COMMENT_RATING', $this->comment->get('rating')); ?></span></span></p>
+                <p><span class="avgrating<?= $rcls ?>"><span><?= Lang::txt('COM_WIKI_COMMENT_RATING', $this->comment->get('rating')) ?></span></span></p>
                 <?php
             }
             ?>
 
             <p class="comment-title">
                 <strong><?php echo $name; ?></strong>
-                <a class="permalink" href="<?php echo Route::url($this->page->link('comments') . '#c' . $this->comment->get('id')); ?>" title="<?php echo Lang::txt('COM_WIKI_PERMALINK'); ?>">
+                <a class="permalink" href="<?= Route::url($this->page->link('comments') . '#c' . $this->comment->get('id')) ?>" title="<?= Lang::txt('COM_WIKI_PERMALINK') ?>">
                     <span class="comment-date-at">@</span>
-                    <span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
+                    <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
                     <span class="comment-date-on"><?php echo Lang::txt('COM_WIKI_ON'); ?></span>
-                    <span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
+                    <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
                 </a>
             </p>
 
@@ -111,7 +111,7 @@ $this->comment->set('category', 'answercomment');
 
             <div class="comment-options">
                 <?php if ($this->page->access('delete', 'comment')) { ?>
-                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->comment->link('delete')); ?>" class="icon-delete delete"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->comment->link('delete')) ?>" class="icon-delete delete"><?= Lang::txt('JACTION_DELETE') ?></button>
                 <?php } ?>
                 <?php if ($this->page->access('edit', 'comment')) { ?>
                     <a class="icon-edit edit" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
@@ -122,44 +122,44 @@ $this->comment->set('category', 'answercomment');
                 <?php if (!$this->comment->isReported()) { ?>
                     <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
                         <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-                        <a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WIKI_REPLY'); ?>" href="<?php echo Route::url($this->comment->link()); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                        <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_WIKI_REPLY') ?>" href="<?= Route::url($this->comment->link()) ?>" data-rel="comment-form<?= $this->comment->get('id') ?>"><!--
                         --><?php echo Lang::txt('JCANCEL'); ?><!--
                     --></a>
                         <?php } else { ?>
-                        <a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_WIKI_REPLY'); ?>" href="<?php echo Route::url($this->comment->link('reply')); ?>" data-rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                        <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_WIKI_REPLY') ?>" href="<?= Route::url($this->comment->link('reply')) ?>" data-rel="comment-form<?= $this->comment->get('id') ?>"><!--
                         --><?php echo Lang::txt('COM_WIKI_REPLY'); ?><!--
                     --></a>
                         <?php } ?>
                     <?php } ?>
-                    <a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('COM_WIKI_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
+                    <a class="icon-abuse abuse" data-txt-flagged="<?= Lang::txt('COM_WIKI_COMMENT_REPORTED_AS_ABUSIVE') ?>" href="<?= Route::url($this->comment->link('report')) ?>"><!--
                         --><?php echo Lang::txt('COM_WIKI_REPORT_ABUSE'); ?><!--
                     --></a>
                 <?php } ?>
             </div>
 
         <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-            <div class="addcomment comment-add<?php echo Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : ''; ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+            <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') ?>">
                 <?php if (User::isGuest()) { ?>
                 <p class="warning">
-                    <?php echo Lang::txt('COM_WIKI_WARNING_LOGIN_REQUIRED', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->page->link('comments'), false, true))) . '">' . Lang::txt('COM_WIKI_LOGIN') . '</a>'); ?>
+                    <?= Lang::txt('COM_WIKI_WARNING_LOGIN_REQUIRED', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->page->link('comments'), false, true))) . '">' . Lang::txt('COM_WIKI_LOGIN') . '</a>') ?>
                 </p>
                 <?php } else { ?>
-                <form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->page->link('comments')); ?>" method="post" enctype="multipart/form-data">
+                <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->page->link('comments')) ?>" method="post" enctype="multipart/form-data">
                     <fieldset id="commentform<?php echo $this->comment->get('id'); ?>">
-                        <legend><span><?php echo Lang::txt('COM_WIKI_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
+                        <legend><span><?= Lang::txt('COM_WIKI_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
 
                         <input type="hidden" name="comment[id]" value="0" />
                         <input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
                         <input type="hidden" name="comment[page_id]" value="<?php echo $this->page->get('id'); ?>" />
                         <input type="hidden" name="comment[created]" value="" />
                         <input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
-                        <input type="hidden" name="comment[version]" value="<?php echo $this->page->version->get('version'); ?>" />
+                        <input type="hidden" name="comment[version]" value="<?= $this->page->version->get('version') ?>" />
                         <input type="hidden" name="comment[state]" value="1" />
 
                         <input type="hidden" name="pagename" value="<?php echo $this->page->pagename; ?>" />
 
                         <?php foreach ($this->page->adapter()->routing('savecomment') as $name => $val) { ?>
-                            <input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+                            <input type="hidden" name="<?= $this->escape($name) ?>" value="<?= $this->escape($val) ?>" />
                         <?php } ?>
 
                         <div class="form-group">
@@ -172,8 +172,8 @@ $this->comment->set('category', 'answercomment');
                         </div>
 
                         <div class="form-group form-check">
-                            <label class="comment-anonymous-label form-check-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
-                                <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
+                            <label class="comment-anonymous-label form-check-label" for="comment_<?= $this->comment->get('id') ?>_anonymous">
+                                <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?= $this->comment->get('id') ?>_anonymous" value="1" />
                                 <?php echo Lang::txt('COM_WIKI_POST_COMMENT_ANONYMOUSLY'); ?>
                             </label>
                         </div>

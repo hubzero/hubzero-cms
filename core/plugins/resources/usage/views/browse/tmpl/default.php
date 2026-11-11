@@ -116,11 +116,11 @@ $bars = [];
             <div class="grid">
                 <div class="col span3">
                     <h4><?php echo Lang::txt('World usage'); ?></h4>
-                    <p><?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP_EXPLANATION', $this->escape(stripslashes($this->resource->title))); ?></p>
+                    <p><?= Lang::txt('PLG_RESOURCES_USAGE_MAP_EXPLANATION', $this->escape(stripslashes($this->resource->title))) ?></p>
                 </div><!-- / .col span3 -->
                 <div class="col span9 omega">
                     <p>
-                        <a href="<?php echo $png; ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP_LARGER'); ?>">
+                        <a href="<?= $png ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_MAP_LARGER') ?>">
                             <img src="<?php echo $gif; ?>" alt="<?php echo Lang::txt('PLG_RESOURCES_USAGE_MAP'); ?>" />
                         </a>
                     </p>
@@ -133,23 +133,23 @@ $bars = [];
         <div id="user-overview-wrap" class="usage-wrap">
             <ul class="dataset-controls" id="set-data">
                 <li>
-                    <a id="monthly" class="dataset<?php echo $this->params->get('defaultDataset', 'cumulative') == 'monthly' ? ' active' : ''; ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=1">
+                    <a id="monthly" class="dataset<?= $this->params->get('defaultDataset', 'cumulative') == 'monthly' ? ' active' : '' ?>" href="<?= $base ?>/index.php?option=com_resources&amp;id=<?= $this->resource->id ?>&amp;active=usage&amp;action=overview&amp;period=1">
                         <?php echo Lang::txt('PLG_RESOURCES_USAGE_MONTHLY'); ?>
                     </a>
                 </li>
                 <li>
-                    <a id="yearly" class="dataset<?php echo $this->params->get('defaultDataset', 'cumulative') == 'yearly' ? ' active' : ''; ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=12">
+                    <a id="yearly" class="dataset<?= $this->params->get('defaultDataset', 'cumulative') == 'yearly' ? ' active' : '' ?>" href="<?= $base ?>/index.php?option=com_resources&amp;id=<?= $this->resource->id ?>&amp;active=usage&amp;action=overview&amp;period=12">
                         <?php echo Lang::txt('PLG_RESOURCES_USAGE_YEARLY'); ?>
                     </a>
                 </li>
                 <li>
-                    <a id="cumulative" class="dataset<?php echo $this->params->get('defaultDataset', 'cumulative') == 'cumulative' ? ' active' : ''; ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=14">
+                    <a id="cumulative" class="dataset<?= $this->params->get('defaultDataset', 'cumulative') == 'cumulative' ? ' active' : '' ?>" href="<?= $base ?>/index.php?option=com_resources&amp;id=<?= $this->resource->id ?>&amp;active=usage&amp;action=overview&amp;period=14">
                         <?php echo Lang::txt('PLG_RESOURCES_USAGE_CUMULATIVE'); ?>
                     </a>
                 </li>
             </ul>
             <p class="usage-download">
-                <a href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=download&amp;period=<?php echo $prd; ?>">
+                <a href="<?= $base ?>/index.php?option=com_resources&amp;id=<?= $this->resource->id ?>&amp;active=usage&amp;action=download&amp;period=<?= $prd ?>">
                     <?php echo Lang::txt('PLG_RESOURCES_USAGE_DOWNLOAD_CSV'); ?>
                 </a>
             </p>
@@ -157,16 +157,16 @@ $bars = [];
             <div class="col span3">
                 <h4 id="sim-users-heading"><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?></h4>
             <p class="total" role="group" aria-labelledby="sim-users-heading">
-                    <span class="total-value" id="users-overview-total"><?php echo number_format($current->users); ?></span>
-                    <span><?php echo $periodWord; ?> <span id="users-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
+                    <span class="total-value" id="users-overview-total"><?= number_format($current->users) ?></span>
+                    <span><?= $periodWord ?> <span id="users-overview-date"><time datetime="<?= $current->datetime ?>"><?= Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span></span>
                 </p>
             </div><!-- / .col span3 -->
             <div class="col span9 omega">
                 <p class="zoom-controls" id="set-selection-users">
                     <?php echo Lang::txt('PLG_RESOURCES_USAGE_ZOOM'); ?>
-                    <a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_YEAR_TO_DATE'); ?>"><?php echo Lang::txt('1y'); ?></a>
-                    <a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS'); ?>"><?php echo Lang::txt('6m'); ?></a>
-                    <a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS'); ?>"><?php echo Lang::txt('3m'); ?></a>
+                    <a class="set-selection selected" rel="<?= $from ?> <?= $to ?>" href="<?= Route::url($url . '&period=12&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_YEAR_TO_DATE') ?>"><?= Lang::txt('1y') ?></a>
+                    <a class="set-selection" rel="<?= $half ?> <?= $to ?>" href="<?= Route::url($url . '&period=13&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS') ?>"><?= Lang::txt('6m') ?></a>
+                    <a class="set-selection" rel="<?= $qrtr ?> <?= $to ?>" href="<?= Route::url($url . '&period=3&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS') ?>"><?= Lang::txt('3m') ?></a>
                 </p>
                 <div id="users-overview">
                 <?php
@@ -216,7 +216,7 @@ $bars = [];
                         <thead>
                             <tr>
                                 <th scope="col"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_TYPE'); ?></th>
-                                <th scope="col" colspan="2" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+                                <th scope="col" colspan="2" class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_USERS') ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -321,28 +321,28 @@ $bars = [];
                                 ?>
                             <tr rel="<?php echo $this->escape($row->name); ?>">
                                 <td class="textual-data"><?php echo $this->escape($row->name); ?></td>
-                                <td><span class="bar-wrap"><span class="bar bar<?php echo $width; ?>"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo $width; ?>)</span></span></td>
+                                <td><span class="bar-wrap"><span class="bar bar<?= $width ?>"></span><span class="value"><?= number_format($row->value) ?> (<?= $width ?>)</span></span></td>
                             </tr>
                                 <?php
                                 $i++;
                             }
                             if ($i == 0) { ?>
                             <tr>
-                                <td class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+                                <td class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?></td>
                                 <td></td>
                             </tr>
                             <?php }
                         } else {
                             ?>
                             <tr>
-                                <td class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+                                <td class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?></td>
                                 <td></td>
                             </tr>
                             <?php
                         }
                         if (empty($dataset) || $cls == 'even') {
                             ?>
-                        <tr><td colspan="3" class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE'); ?></td></tr>
+                        <tr><td colspan="3" class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE') ?></td></tr>
                             <?php
                         }
                         ?>
@@ -366,7 +366,7 @@ $bars = [];
                         <thead>
                             <tr>
                                 <th scope="col"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_COUNTRY'); ?></th>
-                                <th scope="col" colspan="2" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+                                <th scope="col" colspan="2" class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_USERS') ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -441,24 +441,24 @@ $bars = [];
                             <tr rel="<?php echo $this->escape($row->name); ?>">
                                 <td class="textual-data"><?php
                                 if (isset($codes[$row->name])) { ?>
-                                    <img src="<?php echo $base; ?>/components/com_members/site/assets/img/flags/<?php echo strtolower($codes[$row->name]['code']); ?>.gif" alt="<?php echo strtolower($codes[$row->name]['code']); ?>" />
+                                    <img src="<?= $base ?>/components/com_members/site/assets/img/flags/<?= strtolower($codes[$row->name]['code']) ?>.gif" alt="<?= strtolower($codes[$row->name]['code']) ?>" />
                                 <?php }
                                 echo $row->name; ?></td>
-                                <td><span class="bar-wrap"><span class="bar bar<?php echo $width; ?>"></span><span class="value"><?php echo number_format($row->value); ?> (<?php echo $width; ?>%)</span></span></td>
+                                <td><span class="bar-wrap"><span class="bar bar<?= $width ?>"></span><span class="value"><?= number_format($row->value) ?> (<?= $width ?>%)</span></span></td>
                             </tr>
                                 <?php
                                 $i++;
                             }
                             if ($i == 0) { ?>
                                 <tr>
-                                    <td class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+                                    <td class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?></td>
                                     <td></td>
                                 </tr>
                             <?php }
                         } else {
                             ?>
                             <tr>
-                                <td class="textual-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime); ?></td>
+                                <td class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?></td>
                                 <td></td>
                             </tr>
                             <?php
@@ -595,16 +595,16 @@ $bars = [];
                 <div class="col span3">
                     <h4 id="sim-runs-heading"><?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?></h4>
                 <p class="total" role="group" aria-labelledby="sim-runs-heading">
-                        <span class="total-value" id="runs-overview-total"><?php echo number_format($current->jobs); ?></span>
-                        <span><?php echo $periodWord; ?> <span id="runs-overview-date"><time datetime="<?php echo $current->datetime; ?>"><?php echo Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span></span>
+                        <span class="total-value" id="runs-overview-total"><?= number_format($current->jobs) ?></span>
+                        <span><?= $periodWord ?> <span id="runs-overview-date"><time datetime="<?= $current->datetime ?>"><?= Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span></span>
                     </p>
                 </div><!-- / .col span3 -->
                 <div class="col span9 omega">
                     <p class="zoom-controls" id="set-selection-runs">
                         <?php echo Lang::txt('Zoom'); ?>
-                        <a class="set-selection selected" rel="<?php echo $from; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=12&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_YEAR_TO_DATE'); ?>"><?php echo Lang::txt('1y'); ?></a>
-                        <a class="set-selection" rel="<?php echo $half; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=13&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS'); ?>"><?php echo Lang::txt('6m'); ?></a>
-                        <a class="set-selection" rel="<?php echo $qrtr; ?> <?php echo $to; ?>" href="<?php echo Route::url($url . '&period=3&dthis=' . $this->dthis); ?>" title="<?php echo Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS'); ?>"><?php echo Lang::txt('3m'); ?></a>
+                        <a class="set-selection selected" rel="<?= $from ?> <?= $to ?>" href="<?= Route::url($url . '&period=12&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_YEAR_TO_DATE') ?>"><?= Lang::txt('1y') ?></a>
+                        <a class="set-selection" rel="<?= $half ?> <?= $to ?>" href="<?= Route::url($url . '&period=13&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS') ?>"><?= Lang::txt('6m') ?></a>
+                        <a class="set-selection" rel="<?= $qrtr ?> <?= $to ?>" href="<?= Route::url($url . '&period=3&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS') ?>"><?= Lang::txt('3m') ?></a>
                     </p>
                     <div id="runs-overview">
                     <?php
@@ -649,9 +649,9 @@ $bars = [];
                         <caption><?php echo Lang::txt('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?></caption>
                         <thead>
                             <tr>
-                                <td class="numerical-data"><span class="sr-only"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_METRIC'); ?></span></td>
-                                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_AVERAGE'); ?></th>
-                                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_TOTAL'); ?></th>
+                                <td class="numerical-data"><span class="sr-only"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_METRIC') ?></span></td>
+                                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_AVERAGE') ?></th>
+                                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_TOTAL') ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -704,7 +704,7 @@ $bars = [];
 
                 var month_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-                dataurl = '<?php echo $base; ?>/index.php?option=com_resources&id=<?php echo $this->resource->id; ?>&active=usage&action=top&datetime=';
+                dataurl = '<?= $base ?>/index.php?option=com_resources&id=<?= $this->resource->id ?>&active=usage&action=top&datetime=';
 
                 function updateTables(yyyy, mm) {
                     var dt = yyyy + '/' + mm + '/01';
@@ -747,7 +747,7 @@ $bars = [];
                     {
                         tbl.append(
                             '<tr>' +
-                                '<td class="textual-data">' + (data[i]['code'] ? '<img src="<?php echo $base; ?>/components/com_members/site/assets/img/flags/' + data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> ' : '') + data[i]['label'] + '</td>' +
+                                '<td class="textual-data">' + (data[i]['code'] ? '<img src="<?= $base ?>/components/com_members/site/assets/img/flags/' + data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> ' : '') + data[i]['label'] + '</td>' +
                                 '<td><span class="bar-wrap"><span class="bar" style="width: ' + Math.round(((data[i]['data']/total)*100), 2) + '%;"></span><span class="value">' + data[i]['data'] + ' (' + Math.round(((data[i]['data']/total)*100), 2) + '%)</span></span></td>' +
                                 //'<td>' + Math.round(((data[i]['data']/total)*100),2) + '%</td>' +
                             '</tr>'
@@ -860,7 +860,7 @@ $bars = [];
                                     show: true,
                                     lineWidth: 1,
                                     fill: true,
-                                    fillColor: '<?php echo $this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.085)"); ?>'
+                                    fillColor: '<?= $this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.085)") ?>'
                                 },
                                 shadowSize: 0
                             },
@@ -868,7 +868,7 @@ $bars = [];
                                 borderWidth: 1,
                                 borderColor: 'rgba(0, 0, 0, 0.6)'
                             },
-                            xaxis: { mode: "time", min: new Date('<?php echo $min; ?>'), max: new Date('<?php echo $to; ?>'), tickDecimals: 0,
+                            xaxis: { mode: "time", min: new Date('<?= $min ?>'), max: new Date('<?= $to ?>'), tickDecimals: 0,
                                 tickFormatter: function (val, axis) {
                                     var d = new Date(val);
                                     return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
@@ -877,7 +877,7 @@ $bars = [];
                             yaxis: { color: 'transparent', min: 0, autoscaleMargin: 0.1, labelWidth: 25, tickDecimals: 0, minTickSize: 1 },
                             selection: {
                                 mode: "x",
-                                color: '<?php echo $this->params->get("chart_color_selection", "rgba(0, 0, 0, 0.3)"); ?>',
+                                color: '<?= $this->params->get("chart_color_selection", "rgba(0, 0, 0, 0.3)") ?>',
                                 navigate: true
                             }
                         };

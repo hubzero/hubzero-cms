@@ -50,7 +50,7 @@ $i = 1;
             <?php } else { ?>
                 <?php if (!empty($selfAssessmentGuide)) { ?>
                 <li>
-                    <a class="icon-file btn" target="_blank" href="<?php echo $selfAssessmentGuide; ?>"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELF_ASSESSMENT_GUIDE'); ?></a>
+                    <a class="icon-file btn" target="_blank" href="<?= $selfAssessmentGuide ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELF_ASSESSMENT_GUIDE') ?></a>
                 </li>
                 <?php } ?>
                 <li>

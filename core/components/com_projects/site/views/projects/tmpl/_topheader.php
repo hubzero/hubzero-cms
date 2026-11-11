@@ -28,7 +28,7 @@ defined('_HZEXEC_') or die();
                 ?>
             </div>
             <div class="ptitle-container">
-                <h2><?php echo \Hubzero\Utility\Str::truncate($this->escape($this->model->get('title')), 50); ?> <span>(<?php echo $this->model->get('alias'); ?>)</span></h2>
+                <h2><?= \Hubzero\Utility\Str::truncate($this->escape($this->model->get('title')), 50) ?> <span>(<?= $this->model->get('alias') ?>)</span></h2>
 
                 <?php if ($this->model->groupOwner()) { ?>
                     <p>
@@ -64,9 +64,9 @@ defined('_HZEXEC_') or die();
             } else {
                 ?>
                 <ul id="useroptions">
-                    <li><a class="btn icon-browse" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_PROJECTS_ALL_PROJECTS'); ?></a></li>
+                    <li><a class="btn icon-browse" href="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>"><?= Lang::txt('COM_PROJECTS_ALL_PROJECTS') ?></a></li>
                     <?php if (User::authorise('core.create', $this->option)) { ?>
-                        <li><a class="btn icon-add" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=start'); ?>"><?php echo Lang::txt('COM_PROJECTS_START_NEW'); ?></a></li>
+                        <li><a class="btn icon-add" href="<?= Route::url('index.php?option=' . $this->option . '&task=start') ?>"><?= Lang::txt('COM_PROJECTS_START_NEW') ?></a></li>
                     <?php } ?>
                 </ul>
                 <?php

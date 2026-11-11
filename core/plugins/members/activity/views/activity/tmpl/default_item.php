@@ -72,7 +72,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
     id="activity<?php echo $this->row->get('id'); ?>"
     class="activity <?php echo $status . ($this->row->get('starred') ? ' starred' : ''); ?>">
 
-    <div class="activity-actor-picture<?php echo $online ? ' tooltips" title="' . Lang::txt('PLG_MEMBERS_ACTIVITY_ONLINE') : ''; ?>">
+    <div class="activity-actor-picture<?= $online ? ' tooltips" title="' . Lang::txt('PLG_MEMBERS_ACTIVITY_ONLINE') : '' ?>">
         <?php if ($this->row->log->get('created_by') == User::get('id')) { ?>
             <span class="user-img-wrap">
                 <span class="activity-context <?php
@@ -90,14 +90,14 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
             </span>
         <?php } elseif ($creator->get('public')) { ?>
             <a class="user-img-wrap" href="<?php echo Route::url($creator->link()); ?>" title="<?php echo $name; ?>">
-                <img src="<?php echo $creator->picture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
+                <img src="<?= $creator->picture() ?>" alt="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name) ?>" />
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_ONLINE'); ?></span>
                 <?php } ?>
             </a>
         <?php } else { ?>
             <span class="user-img-wrap">
-                <img src="<?php echo $creator->picture(); ?>" alt="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
+                <img src="<?= $creator->picture() ?>" alt="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name) ?>" />
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_ONLINE'); ?></span>
                 <?php } ?>
@@ -105,17 +105,17 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
         <?php } ?>
     </div><!-- / .activity-actor-picture -->
 
-    <div class="activity-content <?php echo $this->escape($this->row->log->get('action')); ?> <?php echo $this->escape(str_replace('.', '-', $this->row->log->get('scope'))); ?>">
+    <div class="activity-content <?= $this->escape($this->row->log->get('action')) ?> <?= $this->escape(str_replace('.', '-', $this->row->log->get('scope'))) ?>">
         <div class="activity-body">
             <div class="activity-details">
                 <span class="activity-actor"><?php echo $name; ?></span>
                 <span class="activity-action"><?php echo $this->escape($this->row->log->get('action')); ?></span>
-                <span class="activity-channel"><?php echo $this->escape($this->row->get('scope') . '.' . $this->row->get('scope_id')); ?></span>
+                <span class="activity-channel"><?= $this->escape($this->row->get('scope') . '.' . $this->row->get('scope_id')) ?></span>
                 <span class="activity-context"><?php
                     $scope = explode('.', $this->row->log->get('scope'));
                     echo $this->escape($scope[0]);
                 ?></span>
-                <span class="activity-time"><time datetime="<?php echo Date::of($this->row->get('created'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php
+                <span class="activity-time"><time datetime="<?= Date::of($this->row->get('created'))->format('Y-m-d\TH:i:s\Z') ?>"><?php
                     $dt = Date::of($this->row->get('created'));
                     $ct = Date::of('now');
 
@@ -143,7 +143,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     if ($group) {
                         ?>
                         <div class="activity-source icon-group">
-                            <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=activity'); ?>"><?php echo $this->escape($group->get('description')); ?></a>
+                            <a href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=activity') ?>"><?= $this->escape($group->get('description')) ?></a>
                         </div>
                         <?php
                     }
@@ -155,7 +155,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     if ($project) {
                         ?>
                         <div class="activity-source icon-project">
-                            <a href="<?php echo Route::url('index.php?option=com_projects&alias=' . $project->get('alias')); ?>"><?php echo $this->escape(stripslashes($project->get('title'))); ?></a>
+                            <a href="<?= Route::url('index.php?option=com_projects&alias=' . $project->get('alias')) ?>"><?= $this->escape(stripslashes($project->get('title'))) ?></a>
                         </div>
                         <?php
                     }
@@ -180,7 +180,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     <?php
                 }
                 ?>
-                <div class="activity-event-content<?php echo ($short) ? ' hide' : ''; ?>" id="activity-event-content<?php echo $this->row->get('id'); ?>">
+                <div class="activity-event-content<?= ($short) ? ' hide' : '' ?>" id="activity-event-content<?= $this->row->get('id') ?>">
                     <?php echo $content; ?>
                 </div>
                 <?php
@@ -213,7 +213,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                             <?php foreach ($duplicates as $dup) { ?>
                                 <li>
                                     <span class="activity-action"><?php echo $dup->log->get('action'); ?></span>
-                                    <span class="activity-time"><time datetime="<?php echo Date::of($dup->log->get('created'))->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($dup->log->get('created'))->toLocal('M j') . ' @ ' . Date::of($dup->log->get('created'))->toLocal('g:i a'); ?></time></span>
+                                    <span class="activity-time"><time datetime="<?= Date::of($dup->log->get('created'))->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($dup->log->get('created'))->toLocal('M j') . ' @ ' . Date::of($dup->log->get('created'))->toLocal('g:i a') ?></time></span>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -230,18 +230,18 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                             <button type="submit" form="hz-post-action"
                                 data-id="activity<?php echo $this->row->get('id'); ?>"
                                 class="icon-starred tooltips"
-                                formaction="<?php echo Route::url($base . '&action=' . ($this->row->get('starred') ? 'un' : '') . 'star&activity=' . $this->row->get('id')); ?>"
-                                data-hrf-active="<?php echo Route::url($base . '&action=unstar&activity=' . $this->row->get('id')); ?>"
-                                data-hrf-inactive="<?php echo Route::url($base . '&action=star&activity=' . $this->row->get('id')); ?>"
+                                formaction="<?= Route::url($base . '&action=' . ($this->row->get('starred') ? 'un' : '') . 'star&activity=' . $this->row->get('id')) ?>"
+                                data-hrf-active="<?= Route::url($base . '&action=unstar&activity=' . $this->row->get('id')) ?>"
+                                data-hrf-inactive="<?= Route::url($base . '&action=star&activity=' . $this->row->get('id')) ?>"
                                 data-txt-active="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR'); ?>"
                                 data-txt-inactive="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?>"
-                                title="<?php echo ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?>"><!--
-                                --><?php echo ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?><!--
+                                title="<?= ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR') ?>"><!--
+                                --><?= ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR') ?><!--
                             --></button>
                         </li>
                     <?php } ?>
                     <li>
-                        <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&action=remove&activity=' . $this->row->get('id')); ?>" class="icon-delete tooltips" title="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE'); ?>" data-id="activity<?php echo $this->row->get('id'); ?>" data-txt-confirm="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE'); ?></button>
+                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&action=remove&activity=' . $this->row->get('id')) ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?></button>
                     </li>
                     <?php /*<li>
                         <a

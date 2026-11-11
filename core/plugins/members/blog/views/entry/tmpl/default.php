@@ -107,10 +107,10 @@ $this
                     <?php echo $this->row->visibility('text'); ?>
                 </dd>
                 <dd class="entry-options">
-                    <a class="edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?>">
+                    <a class="edit" href="<?= Route::url($this->row->link('edit')) ?>" title="<?= Lang::txt('PLG_MEMBERS_BLOG_EDIT') ?>">
                         <span><?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?></span>
                     </a>
-                    <a class="delete" data-confirm="<?php echo Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?>">
+                    <a class="delete" data-confirm="<?= Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE') ?>" href="<?= Route::url($this->row->link('delete')) ?>" title="<?= Lang::txt('PLG_MEMBERS_BLOG_DELETE') ?>">
                         <span><?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?></span>
                     </a>
                 </dd>
@@ -231,24 +231,24 @@ $this
                         <p>
                             <strong><?php echo $name; ?></strong>
                             <span class="comment-date-at"><?php echo Lang::txt('PLG_MEMBERS_BLOG_AT'); ?></span>
-                            <span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
+                            <span class="time"><time datetime="<?= $replyto->get('created') ?>"><?= $replyto->created('time') ?></time></span>
                             <span class="comment-date-on"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ON'); ?></span>
-                            <span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
+                            <span class="date"><time datetime="<?= $replyto->get('created') ?>"><?= $replyto->created('date') ?></time></span>
                         </p>
-                        <p><?php echo $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags(stripslashes($replyto->get('content'))), ENT_QUOTES, 'UTF-8'), 300)); ?></p>
+                        <p><?= $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags(stripslashes($replyto->get('content'))), ENT_QUOTES, 'UTF-8'), 300)) ?></p>
                     </blockquote>
                         <?php
                     }
                     ?>
                     <label>
-                        <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
+                        <?= Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                         <?php
                         if (!User::isGuest()) {
                             echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', ['class' => 'minimal no-footer']);
                         } else {
                             ?>
                         <p class="warning">
-                            <?php echo Lang::txt('PLG_MEMBERS_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_MEMBERS_BLOG_LOG_IN') . '</a>'); ?>
+                            <?= Lang::txt('PLG_MEMBERS_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('PLG_MEMBERS_BLOG_LOG_IN') . '</a>') ?>
                         </p>
                         <?php } ?>
                     </label>
@@ -260,7 +260,7 @@ $this
                     </label>
 
                     <p class="submit">
-                        <input type="submit" name="submit" value="<?php echo Lang::txt('PLG_MEMBERS_BLOG_SUBMIT'); ?>" />
+                        <input type="submit" name="submit" value="<?= Lang::txt('PLG_MEMBERS_BLOG_SUBMIT') ?>" />
                     </p>
                 <?php } ?>
                     <input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />

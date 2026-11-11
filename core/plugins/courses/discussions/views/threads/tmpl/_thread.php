@@ -76,19 +76,19 @@ if (!$this->thread->thread) {
     }
     ?>
     <div class="comment-content">
-        <p class="sticky-thread" title="<?php echo ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_STICKY') : Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_NOT_STICKY'); ?>">
-            <?php echo ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_STICKY') : Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_STICKY'); ?>
+        <p class="sticky-thread" title="<?= ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_STICKY') : Lang::txt('PLG_COURSES_DISCUSSIONS_THREAD_IS_NOT_STICKY') ?>">
+            <?= ($this->thread->sticky) ? Lang::txt('PLG_COURSES_DISCUSSIONS_STICKY') : Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_STICKY') ?>
         </p>
         <?php if ($this->thread->instructor_replied) { ?>
-            <p class="instructor-commented" title="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR_COMMENTED'); ?>">
+            <p class="instructor-commented" title="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR_COMMENTED') ?>">
                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_INSTRUCTOR'); ?>
             </p>
         <?php } ?>
         <p class="comment-title">
-            <span class="date"><time datetime="<?php echo $this->thread->created; ?>"><?php echo Date::of($this->thread->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+            <span class="date"><time datetime="<?= $this->thread->created ?>"><?= Date::of($this->thread->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')) ?></time></span>
         </p>
         <p class="comment-body">
-            <a href="<?php echo Route::url($this->base . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')); ?>"><?php echo $comment; ?></a>
+            <a href="<?= Route::url($this->base . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')) ?>"><?= $comment ?></a>
         </p>
         <p class="comment-author">
             <strong><?php echo $name; ?></strong>

@@ -16,7 +16,7 @@ $this
     ->css()
     ->js('media.js');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
     <?php if ($this->getError()) { ?>
         <p class="error"><?php echo $this->getError(); ?></p>
     <?php } ?>
@@ -42,10 +42,10 @@ $this
                 ?>
                 <tr>
                     <td>
-                        <img src="<?php echo $this->escape($this->webpath . DS . $this->path . DS . $this->file); ?>" alt="" id="conimage" height="<?php echo $mh; ?>" width="<?php echo $mw; ?>" />
+                        <img src="<?= $this->escape($this->webpath . DS . $this->path . DS . $this->file) ?>" alt="" id="conimage" height="<?= $mh ?>" width="<?= $mw ?>" />
                     </td>
                     <td width="100%">
-                        <input type="hidden" name="conimg" value="<?php echo $this->escape($this->webpath . DS . $this->path . DS . $this->file); ?>" />
+                        <input type="hidden" name="conimg" value="<?= $this->escape($this->webpath . DS . $this->path . DS . $this->file) ?>" />
                         <input type="hidden" name="task" value="delete" />
                         <input type="hidden" name="file" id="file" value="<?php echo $this->escape($this->file); ?>" />
                         <input type="submit" name="submit" value="<?php echo Lang::txt('JACTION_DELETE'); ?>" />
@@ -57,7 +57,7 @@ $this
                         <img src="<?php echo $this->default_picture; ?>" alt="" id="oimage" name="oimage" />
                     </td>
                     <td>
-                        <p><?php echo Lang::txt('COM_FEEDBACK_STORY_ADD_PICTURE'); ?><br /><small>(gif/jpg/jpeg/png - 200K max)</small></p>
+                        <p><?= Lang::txt('COM_FEEDBACK_STORY_ADD_PICTURE') ?><br /><small>(gif/jpg/jpeg/png - 200K max)</small></p>
                     </td>
                 </tr>
                 <tr>
@@ -65,7 +65,7 @@ $this
                         <input type="hidden" name="conimg" value="" />
                         <input type="hidden" name="task" value="upload" />
                         <input type="hidden" name="currentfile" value="<?php echo $this->escape($this->file); ?>" />
-                        <input type="file" name="upload" id="upload" size="10" /> <input type="submit" value="<?php echo Lang::txt('COM_FEEDBACK_UPLOAD'); ?>" />
+                        <input type="file" name="upload" id="upload" size="10" /> <input type="submit" value="<?= Lang::txt('COM_FEEDBACK_UPLOAD') ?>" />
                     </td>
                 </tr>
             <?php } ?>

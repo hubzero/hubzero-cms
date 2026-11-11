@@ -51,7 +51,7 @@ foreach ($this->fields as $field) {
                     <div class="input-wrap">
                         <label for="filter-value-name">
                             <?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?>
-                            <input type="text" name="search" id="filter-value-name" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER'); ?>" />
+                            <input type="text" name="search" id="filter-value-name" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
                         </label>
                     </div>
 
@@ -77,14 +77,14 @@ foreach ($this->fields as $field) {
                                         <legend><?php echo $this->escape($field->get('label')); ?></legend>
                                         <?php foreach ($field->options as $option) { ?>
                                             <div class="form-check">
-                                                <label class="option form-check-label" for="filter-value-<?php echo $this->escape($field->get('name') . '-' . $option->get('value')); ?>">
+                                                <label class="option form-check-label" for="filter-value-<?= $this->escape($field->get('name') . '-' . $option->get('value')) ?>">
                                                     <?php
                                                     $checked = '';
                                                     if (in_array($option->get('value'), $value)) {
                                                         $checked = 'checked="checked"';
                                                     }
                                                     ?>
-                                                    <input class="option form-check-input" type="checkbox" name="q[<?php echo $this->escape($field->get('name')); ?>][]" value="<?php echo $this->escape($option->get('value')); ?>" <?php echo $checked; ?> id="filter-value-<?php echo $this->escape($field->get('name') . '-' . $option->get('value')); ?>" />
+                                                    <input class="option form-check-input" type="checkbox" name="q[<?= $this->escape($field->get('name')) ?>][]" value="<?= $this->escape($option->get('value')) ?>" <?= $checked ?> id="filter-value-<?= $this->escape($field->get('name') . '-' . $option->get('value')) ?>" />
                                                     <?php echo $this->escape($option->get('label')); ?>
                                                 </label>
                                             </div>
@@ -93,10 +93,10 @@ foreach ($this->fields as $field) {
                                 <?php } elseif ($field->get('type') == 'select') { ?>
                                     <label for="filter-value-<?php echo $this->escape($field->get('name')); ?>">
                                         <?php echo $this->escape($field->get('label')); ?>
-                                        <select class="form-control" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>">
+                                        <select class="form-control" name="q[<?= $this->escape($field->get('name')) ?>]" id="filter-value-<?= $this->escape($field->get('name')) ?>">
                                             <option value="">- All -</option>
                                             <?php foreach ($field->options as $option) { ?>
-                                                <option value="<?php echo $this->escape($option->get('value')); ?>"<?php echo in_array($option->get('value'), $value) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($option->get('label')); ?></option>
+                                                <option value="<?= $this->escape($option->get('value')) ?>"<?= in_array($option->get('value'), $value) ? ' selected="selected"' : '' ?>><?= $this->escape($option->get('label')) ?></option>
                                             <?php } ?>
                                         </select>
                                     </label>
@@ -104,15 +104,15 @@ foreach ($this->fields as $field) {
                                     <label for="filter-value-<?php echo $this->escape($field->get('name')); ?>">
                                         <?php echo $this->escape($field->get('label')); ?>
                                         <?php if ($field->get('max')) { ?>
-                                            <input type="range" class="form-control" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>" min="<?php echo $field->get('min', 0); ?>" <?php echo $field->get('max') ? ' max="' . $field->get('max') . '"' : ''; ?> step="1" value="<?php echo $this->escape(implode('', $value)); ?>" />
+                                            <input type="range" class="form-control" name="q[<?= $this->escape($field->get('name')) ?>]" id="filter-value-<?= $this->escape($field->get('name')) ?>" min="<?= $field->get('min', 0) ?>" <?= $field->get('max') ? ' max="' . $field->get('max') . '"' : '' ?> step="1" value="<?= $this->escape(implode('', $value)) ?>" />
                                         <?php } else { ?>
-                                            <input type="number" class="form-control" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>" <?php echo $field->get('min') ? ' min="' . $field->get('min') . '"' : ''; ?> <?php echo $field->get('max') ? ' max="' . $field->get('max') . '"' : ''; ?> value="<?php echo $this->escape(implode('', $value)); ?>" />
+                                            <input type="number" class="form-control" name="q[<?= $this->escape($field->get('name')) ?>]" id="filter-value-<?= $this->escape($field->get('name')) ?>" <?= $field->get('min') ? ' min="' . $field->get('min') . '"' : '' ?> <?= $field->get('max') ? ' max="' . $field->get('max') . '"' : '' ?> value="<?= $this->escape(implode('', $value)) ?>" />
                                         <?php } ?>
                                     </label>
                                 <?php } else { ?>
                                     <label for="filter-value-<?php echo $this->escape($field->get('name')); ?>">
                                         <?php echo $this->escape($field->get('label')); ?>
-                                        <input type="text" class="form-control" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>" value="<?php echo $this->escape(implode('', $value)); ?>" />
+                                        <input type="text" class="form-control" name="q[<?= $this->escape($field->get('name')) ?>]" id="filter-value-<?= $this->escape($field->get('name')) ?>" value="<?= $this->escape(implode('', $value)) ?>" />
                                     </label>
                                 <?php } ?>
                             </div>
@@ -128,7 +128,7 @@ foreach ($this->fields as $field) {
                                 <select class="form-control" name="sort" id="filter-value-sort">
                                     <option value="name"><?php echo $this->escape('Name'); ?></option>
                                     <?php foreach ($this->fields as $field) : ?>
-                                        <option value="<?php echo $this->escape($field->get('name')); ?>"<?php echo $field->get('name') == $this->filters['sort'] ? ' selected="selected"' : ''; ?>><?php echo $this->escape($field->get('label')); ?></option>
+                                        <option value="<?= $this->escape($field->get('name')) ?>"<?= $field->get('name') == $this->filters['sort'] ? ' selected="selected"' : '' ?>><?= $this->escape($field->get('label')) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>
@@ -138,14 +138,14 @@ foreach ($this->fields as $field) {
                             <label for="filter-value-sort-dir">
                                 <?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR'); ?>
                                 <select class="form-control" name="sort_Dir" id="filter-value-sort-dir">
-                                    <option value="asc"<?php echo $this->filters['sort_Dir'] == 'asc' ? ' selected="selected"' : ''; ?>><?php echo $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_ASC')); ?></option>
-                                    <option value="desc"<?php echo $this->filters['sort_Dir'] == 'desc' ? ' selected="selected"' : ''; ?>><?php echo $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_DESC')); ?></option>
+                                    <option value="asc"<?= $this->filters['sort_Dir'] == 'asc' ? ' selected="selected"' : '' ?>><?= $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_ASC')) ?></option>
+                                    <option value="desc"<?= $this->filters['sort_Dir'] == 'desc' ? ' selected="selected"' : '' ?>><?= $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_DESC')) ?></option>
                                 </select>
                             </label>
                         </div>
                     </fieldset><!-- / sort -->
 
-                    <p class="members-filter-apply"><input class="btn" type="submit" value="<?php echo Lang::txt('COM_MEMBERS_APPLY'); ?>" /></p>
+                    <p class="members-filter-apply"><input class="btn" type="submit" value="<?= Lang::txt('COM_MEMBERS_APPLY') ?>" /></p>
                 </fieldset>
             </div>
         </aside><!-- / .aside -->
@@ -195,7 +195,7 @@ foreach ($this->fields as $field) {
                                         ?>
                                         <li>
                                             <i><?php echo $q['human_field']; ?></i>: <?php echo $this->escape($val); ?>
-                                            <a href="<?php echo Route::url($route); ?>" class="icon-remove filters-x" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE'); ?>"><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE'); ?></a>
+                                            <a href="<?= Route::url($route) ?>" class="icon-remove filters-x" title="<?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?>"><?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?></a>
                                         </li>
                                         <?php
                                     }
@@ -208,8 +208,8 @@ foreach ($this->fields as $field) {
                                     }
                                     ?>
                                     <li>
-                                        <i><?php echo $q['human_field']; ?></i>: <?php echo $this->escape($q['human_value']); ?>
-                                        <a href="<?php echo Route::url($route); ?>" class="icon-remove filters-x" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE'); ?>"><?php echo Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE'); ?></a>
+                                        <i><?= $q['human_field'] ?></i>: <?= $this->escape($q['human_value']) ?>
+                                        <a href="<?= Route::url($route) ?>" class="icon-remove filters-x" title="<?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?>"><?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?></a>
                                     </li>
                                 <?php } ?>
                             <?php endforeach; ?>
@@ -229,8 +229,8 @@ foreach ($this->fields as $field) {
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                 </svg>
                             </div>
-                            <h3 class="members-search-prompt-title"><?php echo Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH_TITLE', $this->escape(Config::get('sitename'))); ?></h3>
-                            <p class="members-search-prompt-body"><?php echo Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH'); ?></p>
+                            <h3 class="members-search-prompt-title"><?= Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH_TITLE', $this->escape(Config::get('sitename'))) ?></h3>
+                            <p class="members-search-prompt-body"><?= Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH') ?></p>
                         </div>
                     <?php } elseif ($this->rows->count() > 0) {
                         $cols = 2;
@@ -359,15 +359,15 @@ foreach ($this->fields as $field) {
                             }
                                 $_uniqueLabel .= ' (#' . $id . ')';
                             ?>
-                            <div class="result<?php echo ($cls) ? ' ' . $cls : ''; ?>" role="group" aria-label="<?php echo $_uniqueLabel; ?>">
+                            <div class="result<?= ($cls) ? ' ' . $cls : '' ?>" role="group" aria-label="<?= $_uniqueLabel ?>">
                                 <div class="result-body">
                                     <div class="result-img">
-                                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>" aria-label="<?php echo $_uniqueLabel; ?>">
+                                        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $id) ?>" aria-label="<?= $_uniqueLabel ?>">
                                             <img src="<?php echo $row->picture(); ?>" alt="" />
                                         </a>
                                     </div>
                                     <div class="result-title">
-                                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $id); ?>" aria-label="<?php echo $_uniqueLabel; ?>">
+                                        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $id) ?>" aria-label="<?= $_uniqueLabel ?>">
                                             <?php echo $this->escape($name); ?>
                                         </a>
                                         <?php foreach ($this->fields as $c) { ?>
@@ -379,7 +379,7 @@ foreach ($this->fields as $field) {
                                             if ($val = $row->get($c->get('name'))) { ?>
                                                 <span class="result-details">
                                                     <span class="<?php echo $this->escape($c->get('name')); ?>">
-                                                        <?php echo $this->escape(Hubzero\Utility\Str::truncate(stripslashes($val), 60)); ?>
+                                                        <?= $this->escape(Hubzero\Utility\Str::truncate(stripslashes($val), 60)) ?>
                                                     </span>
                                                 </span>
                                             <?php } ?>
@@ -395,8 +395,8 @@ foreach ($this->fields as $field) {
                                             if ($val = $row->get($c->get('name'))) {
                                                 $val = (is_array($val) ? implode(', ', $val) : $val);
                                                 ?>
-                                                <div class="result-snippet-<?php echo $this->escape($c->get('name')); ?>">
-                                                    <?php echo $this->escape(Hubzero\Utility\Str::truncate(strip_tags(stripslashes($val)), 150)); ?>
+                                                <div class="result-snippet-<?= $this->escape($c->get('name')) ?>">
+                                                    <?= $this->escape(Hubzero\Utility\Str::truncate(strip_tags(stripslashes($val)), 150)) ?>
                                                 </div>
                                             <?php } ?>
                                         <?php } ?>
@@ -404,7 +404,7 @@ foreach ($this->fields as $field) {
                                     <?php if ($extras || $messageuser) { ?>
                                         <div class="result-options">
                                             <?php if ($messageuser) { ?>
-                                                <a class="icon-email btn message-member" href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $row->get('id')); ?>" title="<?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)); ?>">
+                                                <a class="icon-email btn message-member" href="<?= Route::url('index.php?option=' . $this->option . '&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $row->get('id')) ?>" title="<?= Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)) ?>">
                                                     <?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE'); ?>
                                                 </a>
                                             <?php } ?>

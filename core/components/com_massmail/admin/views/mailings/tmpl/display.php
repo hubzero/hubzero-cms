@@ -31,12 +31,12 @@ $statuses = \Components\Massmail\Models\Mailing::statuses();
 
 $this->css('display.css', 'com_massmail');
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MASSMAIL_FILTER_SEARCH'); ?>" />
+                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MASSMAIL_FILTER_SEARCH') ?>" />
                 <input type="submit" value="<?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
@@ -45,7 +45,7 @@ $this->css('display.css', 'com_massmail');
                 <select name="status" id="filter-status" class="filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MASSMAIL_ALL_STATUSES'); ?></option>
                     <?php foreach ($statuses as $s) { ?>
-                        <option value="<?php echo $s; ?>"<?php echo($this->filters['status'] === $s ? ' selected="selected"' : ''); ?>><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($s)); ?></option>
+                        <option value="<?= $s ?>"<?= ($this->filters['status'] === $s ? ' selected="selected"' : '') ?>><?= Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($s)) ?></option>
                     <?php } ?>
                 </select>
             </div>
@@ -87,10 +87,10 @@ $this->css('display.css', 'com_massmail');
                 <td>
                     <a href="<?php echo $link; ?>"><?php echo $this->escape(stripslashes($row->get('subject'))); ?></a>
                     <?php if ((int) $row->get('ignore_optout')) {
-                        ?><span class="badge badge-warning" title="<?php echo Lang::txt('COM_MASSMAIL_IGNORES_OPTOUT'); ?>">!</span><?php
+                        ?><span class="badge badge-warning" title="<?= Lang::txt('COM_MASSMAIL_IGNORES_OPTOUT') ?>">!</span><?php
                     } ?>
                 </td>
-                <td><a class="mm-status-link" href="<?php echo $link; ?>"><span class="mm-status mm-status-<?php echo $row->get('status'); ?>"><?php echo Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($row->get('status'))); ?></span></a></td>
+                <td><a class="mm-status-link" href="<?= $link ?>"><span class="mm-status mm-status-<?= $row->get('status') ?>"><?= Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($row->get('status'))) ?></span></a></td>
                 <td>
                     <?php
                     $total = (int) $row->get('total_recipients');
@@ -103,7 +103,7 @@ $this->css('display.css', 'com_massmail');
                     ?>
                 </td>
                 <td class="priority-4"><?php echo $this->escape($row->creator->get('name')); ?></td>
-                <td class="priority-3"><?php echo $row->get('created') ? Date::of($row->get('created'))->toLocal('M j, Y') : '&mdash;'; ?></td>
+                <td class="priority-3"><?= $row->get('created') ? Date::of($row->get('created'))->toLocal('M j, Y') : '&mdash;' ?></td>
             </tr>
             <?php }
         } ?>

@@ -89,7 +89,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
         ?>
         <tr>
             <td class="jobtitle">
-                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->jobs[$i]->code); ?>" title="<?php echo $this->escape(html_entity_decode($model->content('clean', 250), ENT_QUOTES, 'UTF-8')); ?>">
+                <a href="<?= Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->jobs[$i]->code) ?>" title="<?= $this->escape(html_entity_decode($model->content('clean', 250), ENT_QUOTES, 'UTF-8')) ?>">
                     <?php echo $this->escape($this->jobs[$i]->title); ?>
                 </a>
             </td>
@@ -115,16 +115,16 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
             <td class="secondary"><?php echo $curcat; ?></td>
             <td class="secondary"><?php echo $curtype; ?></td>
             <td class="secondary">
-                <span class="datedisplay"><?php echo Date::of($this->jobs[$i]->added)->toLocal('d&\n\b\s\p;M,&\n\b\s\p;20y'); ?></span>
+                <span class="datedisplay"><?= Date::of($this->jobs[$i]->added)->toLocal('d&\n\b\s\p;M,&\n\b\s\p;20y') ?></span>
             </td>
             <td>
                 <?php if ($this->jobs[$i]->applied) { ?>
                     <span class="alreadyapplied">
-                        <?php echo Lang::txt('COM_JOBS_JOB_APPLIED_ON'); ?> <span class="datedisplay"><?php echo Date::of($this->jobs[$i]->applied)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y'); ?></span>
+                        <?= Lang::txt('COM_JOBS_JOB_APPLIED_ON') ?> <span class="datedisplay"><?= Date::of($this->jobs[$i]->applied)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y') ?></span>
                     </span>
                 <?php } elseif ($this->jobs[$i]->withdrawn) { ?>
                     <span class="withdrawn">
-                        <?php echo Lang::txt('COM_JOBS_JOB_WITHDREW_ON'); ?> <span class="datedisplay"><?php echo Date::of($this->jobs[$i]->withdrawn)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y'); ?></span>
+                        <?= Lang::txt('COM_JOBS_JOB_WITHDREW_ON') ?> <span class="datedisplay"><?= Date::of($this->jobs[$i]->withdrawn)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y') ?></span>
                     </span>
                 <?php } else { ?>
                     <?php echo $closedate ? '<span class="datedisplay">' . $closedate . '</span>' : ''; ?>

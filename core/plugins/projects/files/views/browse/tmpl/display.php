@@ -67,7 +67,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
         <legend class="sr-only"><?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY'); ?></legend>
         <input type="hidden" name="subdir" id="subdir" value="<?php echo urlencode($this->subdir); ?>" />
         <input type="hidden" name="sortby" id="sortby" value="<?php echo $this->escape($this->params['sortby']); ?>" />
-        <input type="hidden" name="sortdir" id="sortdir" value="<?php echo $this->escape($this->params['sortdir']); ?>" />
+        <input type="hidden" name="sortdir" id="sortdir" value="<?= $this->escape($this->params['sortdir']) ?>" />
         <input type="hidden" name="id" id="projectid" value="<?php echo $this->model->get('id'); ?>" />
         <input type="hidden" name="sync" id="sync" value="<?php echo $sync; ?>" />
         <input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
@@ -192,7 +192,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
         <thead>
             <tr>
                 <?php if ($this->model->access('content')) { ?>
-                <th scope="col" class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" aria-label="<?php echo Lang::txt('PLG_PROJECTS_FILES_SELECT_ALL'); ?>" class="js" /></th>
+                <th scope="col" class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" aria-label="<?= Lang::txt('PLG_PROJECTS_FILES_SELECT_ALL') ?>" class="js" /></th>
                 <?php } ?>
                 <?php
                 $sortNameUrl = Route::url(
@@ -253,7 +253,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 <?php if ($this->repo->getAdapterName() == 'git') { ?>
                 <th scope="col"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_BY')); ?></th>
                 <?php }; ?>
-                <th scope="col" class="centeralign nojs" aria-label="<?php echo Lang::txt('Options'); ?>"><span class="sr-only">Options</span></th>
+                <th scope="col" class="centeralign nojs" aria-label="<?= Lang::txt('Options') ?>"><span class="sr-only">Options</span></th>
                 <?php if ($this->publishing) { ?>
                 <th scope="col"><?php echo Lang::txt('PLG_PROJECTS_FILES_PUBLISHED'); ?></th>
                 <?php } ?>
@@ -292,7 +292,7 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 // Count actual columns: Name+Type+Size+Modified+Options=5, plus conditionals
                 $cols = 5 + ($this->model->access('content') ? 1 : 0) + ($this->repo->getAdapterName() == 'git' ? 1 : 0) + ($this->publishing ? 1 : 0);
                 ?>
-                <tr><td colspan="<?php echo $cols; ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES'); ?></td></tr>
+                <tr><td colspan="<?= $cols ?>"><?= Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES') ?></td></tr>
             <?php }
                 // Display contents
             if (count($this->items) > 0) {

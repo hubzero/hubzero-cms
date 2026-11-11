@@ -24,7 +24,7 @@ Toolbar::title(Lang::txt('COM_MEMBERS') . ': Manage Points', 'user.png');
          ->display();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span6">
             <fieldset class="adminform">

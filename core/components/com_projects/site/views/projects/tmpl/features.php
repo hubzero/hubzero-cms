@@ -211,7 +211,7 @@ $seeTxt = Lang::txt('COM_PROJECTS_FEATURES_SEE_SUGGESTIONS');
     <div class="feature">
         <div id="feature-publications" class="grid<?php echo !$this->publishing ? ' in-the-works' : ''; ?>">
             <div class="col span3">
-                <h3><?php echo Lang::txt('COM_PROJECTS_FEATURES_PUBLICATIONS'); ?><?php echo !$this->publishing ? '*' : ''; ?></h3>
+                <h3><?= Lang::txt('COM_PROJECTS_FEATURES_PUBLICATIONS') ?><?= !$this->publishing ? '*' : '' ?></h3>
                 <?php if (!$this->publishing) { ?>
                 <p class="wip"><?php echo Lang::txt('COM_PROJECTS_FEATURES_IN_THE_WORKS'); ?></p>
                 <?php } ?>

@@ -30,7 +30,7 @@ endif;
     <div class="curation-history">
         <div class="pubtitle">
             <p>
-                <?php echo $this->escape(\Hubzero\Utility\Str::truncate($this->pub->title, 65)); ?> | <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->escape($this->pub->version_label); ?>
+                <?= $this->escape(\Hubzero\Utility\Str::truncate($this->pub->title, 65)) ?> | <?= Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->escape($this->pub->version_label) ?>
             </p>
         </div>
         <?php if ($history) : ?>
@@ -48,7 +48,7 @@ endif;
                     ?>
                     <div class="history-block <?php echo $trClass; ?> grid">
                         <div class="changelog-time col span3">
-                            <time datetime="<?php echo Date::of($event->created)->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($event->created)->toLocal('M d, Y H:iA'); ?></time>
+                            <time datetime="<?= Date::of($event->created)->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($event->created)->toLocal('M d, Y H:iA') ?></time>
                             <span class="block"><?php echo $this->escape($author); ?></span>
                             <span class="block">(
                             <?php echo ($event->curator)
@@ -62,7 +62,7 @@ endif;
                             </div>
                             <?php if ($event->comment) : ?>
                                 <div class="changelog-comment">
-                                    <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT') . ' <span class="italic">' . $event->comment /* encoded where it is stored (saveHistory) */ . '</span>'; ?>
+                                    <?= Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT') . ' <span class="italic">' . $event->comment /* encoded where it is stored (saveHistory) */ . '</span>' ?>
                                 </div>
                             <?php endif; ?>
                         </div>

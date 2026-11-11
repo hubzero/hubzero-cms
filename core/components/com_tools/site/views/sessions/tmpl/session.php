@@ -70,17 +70,17 @@ if (!$this->app->sess) {
         </p>
     <?php endif; ?>
 
-    <?php echo implode("\n", Event::trigger('tools.onToolSessionViewBefore', [$this->app, $this->output, $readOnly])); ?>
+    <?= implode("\n", Event::trigger('tools.onToolSessionViewBefore', [$this->app, $this->output, $readOnly])) ?>
 
     <div id="app-wrap" style="width: <?php echo $this->output->width; ?>px;">
         <div id="app-header">
-            <h2 id="session-title" class="session-title item:name id:<?php echo $this->app->sess; ?> <?php if (is_object($this->app->owns)) :
+            <h2 id="session-title" class="session-title item:name id:<?= $this->app->sess ?> <?php if (is_object($this->app->owns)) :
                 ?>editable<?php
-                                                                     endif; ?>" rel="<?php echo $this->app->sess; ?>"><?php echo $this->escape($this->app->caption); ?></h2>
+                                                                     endif; ?>" rel="<?= $this->app->sess ?>"><?= $this->escape($this->app->caption) ?></h2>
             <?php if ($this->app->sess) { ?>
                 <ul class="app-toolbar" id="session-options">
                     <li class="timer-li">
-                        <div id="session-timer" hidden data-help="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_TIMER')); ?>" data-sess="<?php echo (int) $this->app->sess; ?>" data-base="<?php echo $this->escape(rtrim(Request::base(true), '/')); ?>"
+                        <div id="session-timer" hidden data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_TIMER')) ?>" data-sess="<?= (int) $this->app->sess ?>" data-base="<?= $this->escape(rtrim(Request::base(true), '/')) ?>"
                              data-warntitle="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_TITLE')); ?>"
                              data-warn5="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_5')); ?>"
                              data-warn1="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_WARN_1')); ?>"
@@ -93,19 +93,19 @@ if (!$this->app->sess) {
                         </div>
                     </li>
                     <li>
-                        <a id="app-btn-keep" class="keep sessiontips icon-only" data-ts-action="leave" data-help="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_KEEP')); ?>" href="<?php echo Route::url('index.php?option=com_members&task=myaccount'); ?>" title="<?php echo $this->escape(Lang::txt('COM_TOOLS_KEEP_FOR_LATER')); ?>" aria-label="<?php echo $this->escape(Lang::txt('COM_TOOLS_KEEP_FOR_LATER')); ?>">
+                        <a id="app-btn-keep" class="keep sessiontips icon-only" data-ts-action="leave" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_KEEP')) ?>" href="<?= Route::url('index.php?option=com_members&task=myaccount') ?>" title="<?= $this->escape(Lang::txt('COM_TOOLS_KEEP_FOR_LATER')) ?>" aria-label="<?= $this->escape(Lang::txt('COM_TOOLS_KEEP_FOR_LATER')) ?>">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
                         </a>
                     </li>
                     <?php if ($this->app->owns) { ?>
                         <li>
-                            <a id="app-btn-close" class="terminate sessiontips icon-only" data-ts-action="terminate" data-help="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_TERMINATE')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=stop&sess=' . $this->app->sess . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>" aria-label="<?php echo $this->escape(Lang::txt('COM_TOOLS_TERMINATE')); ?>">
+                            <a id="app-btn-close" class="terminate sessiontips icon-only" data-ts-action="terminate" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_TERMINATE')) ?>" href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=stop&sess=' . $this->app->sess . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_WARNING') ?>" aria-label="<?= $this->escape(Lang::txt('COM_TOOLS_TERMINATE')) ?>">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
                             </a>
                         </li>
                     <?php } else { ?>
                         <li>
-                            <a id="app-btn-close" class="terminate sessiontips" data-help="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_STOP_SHARING')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_WARNING'); ?>">
+                            <a id="app-btn-close" class="terminate sessiontips" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_STOP_SHARING')) ?>" href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_WARNING') ?>">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
                                 <span><?php echo Lang::txt('COM_TOOLS_STOP_SHARING'); ?></span>
                             </a>
@@ -113,7 +113,7 @@ if (!$this->app->sess) {
                     <?php } ?>
                     <?php if (count($plugins) > 1) { ?>
                         <li>
-                            <a id="app-btn-options" class="options" data-help="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_OPTIONS')); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess); ?>">
+                            <a id="app-btn-options" class="options" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_OPTIONS')) ?>" href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess) ?>">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="2" y1="14" x2="6" y2="14"/><line x1="10" y1="8" x2="14" y2="8"/><line x1="18" y1="16" x2="22" y2="16"/></svg>
                                 <span><?php echo Lang::txt('COM_TOOLS_SESSION_OPTIONS'); ?></span>
                             </a>
@@ -124,7 +124,7 @@ if (!$this->app->sess) {
         </div><!-- #app-header -->
         <?php if (count($plugins) > 1) { ?>
             <div id="app-options">
-                <form method="get" action="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess); ?>">
+                <form method="get" action="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess) ?>">
                     <fieldset>
                         <?php
                         $viewer = ($declared ? $declared : null); //Session::get('tool_viewer'));
@@ -132,7 +132,7 @@ if (!$this->app->sess) {
                             $viewer = $this->output->rendered;
                         }
                         ?>
-                        <?php echo $viewer ? Lang::txt('COM_TOOLS_SESSION_USING_VIEWER', Lang::txt('PLG_TOOLS_' . $viewer . '_TITLE')) : Lang::txt('COM_TOOLS_UNKNOWN_VIEWER'); ?>
+                        <?= $viewer ? Lang::txt('COM_TOOLS_SESSION_USING_VIEWER', Lang::txt('PLG_TOOLS_' . $viewer . '_TITLE')) : Lang::txt('COM_TOOLS_UNKNOWN_VIEWER') ?>
 
                         <span class="input-wrap">
                             <label for="app-viewer">
@@ -144,7 +144,7 @@ if (!$this->app->sess) {
                                         continue;
                                     }
                                     ?>
-                                    <option value="<?php echo $plugin->name; ?>"<?php echo $viewer == $plugin->name ? ' selected="selected"' : ''; ?>><?php echo $this->escape($plugin->title); ?></option>
+                                    <option value="<?= $plugin->name ?>"<?= $viewer == $plugin->name ? ' selected="selected"' : '' ?>><?= $this->escape($plugin->title) ?></option>
                                 <?php } ?>
                             </select>
                         </span>
@@ -164,14 +164,14 @@ if (!$this->app->sess) {
                 </form>
             </div>
         <?php } ?>
-        <div id="app-content" tabindex="1" class="<?php echo $readOnly ? 'view-only' : ''; ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px">
+        <div id="app-content" tabindex="1" class="<?= $readOnly ? 'view-only' : '' ?>" style="width: <?= $this->output->width ?>px; height: <?= $this->output->height ?>px">
             <noscript>
                 <p class="warning">
                     <?php echo Lang::txt('COM_TOOLS_ERROR_NOSCRIPT'); ?>
                 </p>
             </noscript>
-            <input type="hidden" id="app-orig-width" name="apporigwidth" value="<?php echo $this->escape($this->output->width); ?>" />
-            <input type="hidden" id="app-orig-height" name="apporigheight" value="<?php echo $this->escape($this->output->height); ?>" />
+            <input type="hidden" id="app-orig-width" name="apporigwidth" value="<?= $this->escape($this->output->width) ?>" />
+            <input type="hidden" id="app-orig-height" name="apporigheight" value="<?= $this->escape($this->output->height) ?>" />
             <?php
             if ($embedUrl) {
                 // PROTOTYPE: embed the weber/Jupyter page. Cross-origin, so we can
@@ -189,7 +189,7 @@ if (!$this->app->sess) {
             }
             ?>
         </div><!-- / #app-content -->
-        <div id="app-footer" data-more="<?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_MORE')); ?>" data-morehelp="<?php echo $this->escape(Lang::txt('COM_TOOLS_HELP_MORE')); ?>">
+        <div id="app-footer" data-more="<?= $this->escape(Lang::txt('COM_TOOLS_SESSION_MORE')) ?>" data-morehelp="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_MORE')) ?>">
             <?php // Designer mark (dark two-tone), seated on the metal footer?>
             <div id="app-logo" class="brand" aria-hidden="true">
                 <svg viewBox="0 0 48.52 85.7" xmlns="http://www.w3.org/2000/svg" focusable="false">
@@ -232,11 +232,11 @@ if (!$this->app->sess) {
                             <?php } ?>
                         </p>
                         <p>
-                            <?php echo $this->zone->get('description', Lang::txt('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone')))); ?>
+                            <?= $this->zone->get('description', Lang::txt('COM_TOOLS_POWERED_BY_MIRROR', $this->zone->get('title', $this->zone->get('zone')))) ?>
                         </p>
                     </div><!-- / .col span6 -->
                     <div class="col span6 omega">
-                        <form name="share" id="app-zone" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=reinvoke&sess=' . $this->app->sess); ?>">
+                        <form name="share" id="app-zone" method="post" action="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=reinvoke&sess=' . $this->app->sess) ?>">
                             <p><?php echo Lang::txt('COM_TOOLS_ZONE_WARNING_CHANGE'); ?></p>
                             <p><label for="field-zone">
                                 <?php echo Lang::txt('COM_TOOLS_ZONE_RELAUNCH'); ?>
@@ -248,7 +248,7 @@ if (!$this->app->sess) {
                                             continue;
                                         }
                                         ?>
-                                    <option value="<?php echo $zone->get('id'); ?>"><?php echo $this->escape($zone->get('title', $zone->get('zone'))); ?></option>
+                                    <option value="<?= $zone->get('id') ?>"><?= $this->escape($zone->get('title', $zone->get('zone'))) ?></option>
                                     <?php } ?>
                                 </select>
                             </label>
@@ -274,20 +274,20 @@ if (!$this->app->sess) {
         <div id="ts-confirm" class="ts-confirm" hidden role="dialog" aria-modal="true" aria-labelledby="ts-confirm-title">
             <div class="ts-confirm-backdrop" data-ts-close></div>
             <div class="ts-confirm-card" role="document">
-                <h2 id="ts-confirm-title" class="ts-confirm-title"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_CONFIRM_TITLE')); ?></h2>
+                <h2 id="ts-confirm-title" class="ts-confirm-title"><?= $this->escape(Lang::txt('COM_TOOLS_SESSION_CONFIRM_TITLE')) ?></h2>
                 <div class="ts-confirm-choices">
                     <a class="ts-choice ts-choice-leave" data-ts-choice="leave" href="<?php echo $leaveUrl; ?>">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                        <span class="ts-choice-label"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE')); ?></span>
-                        <span class="ts-choice-desc"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE_DESC')); ?></span>
+                        <span class="ts-choice-label"><?= $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE')) ?></span>
+                        <span class="ts-choice-desc"><?= $this->escape(Lang::txt('COM_TOOLS_SESSION_LEAVE_DESC')) ?></span>
                     </a>
-                    <a class="ts-choice ts-choice-terminate" data-ts-choice="terminate" href="<?php echo $terminateUrl; ?>">
+                    <a class="ts-choice ts-choice-terminate" data-ts-choice="terminate" href="<?= $terminateUrl ?>">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
-                        <span class="ts-choice-label"><?php echo $this->escape(Lang::txt('COM_TOOLS_TERMINATE')); ?></span>
-                        <span class="ts-choice-desc"><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_TERMINATE_DESC')); ?></span>
+                        <span class="ts-choice-label"><?= $this->escape(Lang::txt('COM_TOOLS_TERMINATE')) ?></span>
+                        <span class="ts-choice-desc"><?= $this->escape(Lang::txt('COM_TOOLS_SESSION_TERMINATE_DESC')) ?></span>
                     </a>
                 </div>
-                <button type="button" class="ts-confirm-cancel" data-ts-close><?php echo $this->escape(Lang::txt('COM_TOOLS_SESSION_CONFIRM_CANCEL')); ?></button>
+                <button type="button" class="ts-confirm-cancel" data-ts-close><?= $this->escape(Lang::txt('COM_TOOLS_SESSION_CONFIRM_CANCEL')) ?></button>
             </div>
         </div>
         <?php endif; ?>
@@ -301,14 +301,14 @@ if (!$this->app->sess) {
 
     if ($isiPad && $this->config->get('launch_ipad', 0) && $this->config->get('launch_ipad_app')) {
         ?>
-        <p class="tablet-app"><a class="btn icon-tablet" href="<?php echo $this->config->get('launch_ipad_app'); ?>://tools/session/<?php echo $this->app->sess; ?>"><?php echo Lang::txt('Launch in iPad app'); ?></a></p>
+        <p class="tablet-app"><a class="btn icon-tablet" href="<?= $this->config->get('launch_ipad_app') ?>://tools/session/<?= $this->app->sess ?>"><?= Lang::txt('Launch in iPad app') ?></a></p>
         <?php
     }
     ?>
 
     <div class="clear share-divider"></div>
     <?php if ($this->config->get('shareable', 0)) { ?>
-    <form name="share" id="app-share" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess); ?>">
+    <form name="share" id="app-share" method="post" action="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess) ?>">
         <div class="grid">
         <?php if (is_object($this->app->owns)) : ?>
             <div class="col span8">
@@ -326,7 +326,7 @@ if (!$this->app->sess) {
                     <input type="hidden" name="task" value="share" />
                     <input type="hidden" name="sess" value="<?php echo $this->escape($this->app->sess); ?>" />
                     <input type="hidden" name="app" value="<?php echo $this->escape($this->toolname); ?>" />
-                    <input type="hidden" name="return" value="<?php echo base64_encode(Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess)); ?>" />
+                    <input type="hidden" name="return" value="<?= base64_encode(Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess)) ?>" />
 
                     <label for="field-username">
                         <?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_WITH'); ?>
@@ -345,7 +345,7 @@ if (!$this->app->sess) {
                             <option value=""><?php echo Lang::txt('- Select Group &mdash;'); ?></option>
                             <?php if (!empty($this->mygroups)) {
                                 foreach ($this->mygroups as $group) : ?>
-                                <option value="<?php echo $group->gidNumber; ?>"><?php echo $group->description; ?></option>
+                                <option value="<?= $group->gidNumber ?>"><?= $group->description ?></option>
                                 <?php endforeach;
                             } ?>
                         </select>
@@ -410,22 +410,22 @@ if (!$this->app->sess) {
                                 ?>
                         <tr>
                             <th class="entry-img">
-                                <img width="40" height="40" src="<?php echo $p; ?>" alt="<?php echo $this->escape(stripslashes($user->get('name'))); ?>" />
+                                <img width="40" height="40" src="<?= $p ?>" alt="<?= $this->escape(stripslashes($user->get('name'))) ?>" />
                             </th>
                             <td>
-                                <a class="entry-title" href="<?php echo Route::url('index.php?option=com_members&id=' . $id); ?>">
+                                <a class="entry-title" href="<?= Route::url('index.php?option=com_members&id=' . $id) ?>">
                                     <?php echo $this->escape(stripslashes($user->get('name'))); ?>
                                 </a><br />
                                 <span class="entry-details">
-                                    <span class="username"><?php echo $this->escape(stripslashes($user->get('username'))); ?></span>
+                                    <span class="username"><?= $this->escape(stripslashes($user->get('username'))) ?></span>
                                 </span>
                             </td>
                             <td class="entry-actions">
                                 <?php if (is_object($this->app->owns)) : ?>
                                     <?php if (strtolower($row->readonly) == 'yes') : ?>
-                                        <span class="readonly"><?php echo Lang::txt('COM_TOOLS_SESSION_READ_ONLY'); ?></span>
+                                        <span class="readonly"><?= Lang::txt('COM_TOOLS_SESSION_READ_ONLY') ?></span>
                                     <?php endif; ?>
-                                    <a class="entry-remove" href="<?php echo Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess . '&username=' . $row->viewuser . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?>">
+                                    <a class="entry-remove" href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess . '&username=' . $row->viewuser . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER') ?>">
                                         <span><?php echo Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?></span>
                                     </a>
                                 <?php endif; ?>
@@ -445,7 +445,7 @@ if (!$this->app->sess) {
 <?php } ?>
 
 <?php if ($this->config->get('access-manage-session')) { ?>
-    <p id="app-manager"><?php echo Lang::txt('COM_TOOLS_SESSION_ADMIN_INFO', $this->app->username, $this->app->ip, $this->app->sess); ?></p>
+    <p id="app-manager"><?= Lang::txt('COM_TOOLS_SESSION_ADMIN_INFO', $this->app->username, $this->app->ip, $this->app->sess) ?></p>
 <?php } ?>
 
     <?php

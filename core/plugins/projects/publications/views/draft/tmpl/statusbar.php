@@ -27,7 +27,7 @@ $i = 1;
 
 ?>
 <?php if ($this->pub->id) { ?>
-    <p id="version-label" class="version-label<?php echo $active == 'status' ? ' active' : ''; ?><?php echo $this->pub->state == 5 || $this->pub->state == 0 ? ' nobar' : ''; ?>">
+    <p id="version-label" class="version-label<?= $active == 'status' ? ' active' : '' ?><?= $this->pub->state == 5 || $this->pub->state == 0 ? ' nobar' : '' ?>">
         <a href="<?php echo Route::url($this->pub->link('edit') . '&action=versions'); ?>"
             class="versions"
             id="v-picker"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
@@ -103,5 +103,5 @@ if ($this->pub->state == 5 || $this->pub->state == 0 || !$this->pub->project()->
     // The Review tab is always listed above; the page itself only offers the
     // button once every required field is filled.
     if (in_array($this->pub->state, [\Components\Publications\Models\Publication::STATE_DRAFT, \Components\Publications\Models\Publication::STATE_WORKED]) && $active != 'review') { ?>
-        <p class="warning progress-notice"><?php echo Lang::txt($this->pub->isWorked() ? 'PLG_PROJECTS_PUBLICATIONS_PROGRESS_NOTICE_RESUBMIT' : 'PLG_PROJECTS_PUBLICATIONS_PROGRESS_NOTICE'); ?></p>
+        <p class="warning progress-notice"><?= Lang::txt($this->pub->isWorked() ? 'PLG_PROJECTS_PUBLICATIONS_PROGRESS_NOTICE_RESUBMIT' : 'PLG_PROJECTS_PUBLICATIONS_PROGRESS_NOTICE') ?></p>
     <?php } ?>

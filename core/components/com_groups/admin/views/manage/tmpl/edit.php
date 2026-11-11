@@ -66,15 +66,15 @@ $this->js();
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <div id="item-form-wrap">
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
         <nav role="navigation" class="sub-navigation">
             <div id="submenu-box">
                 <div class="submenu-box">
                     <div class="submenu-pad">
                         <ul id="submenu" class="coursesection">
-                            <li><a href="#page-details" onclick="return false;" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-                            <li><a href="#page-files" onclick="return false;" id="files"><?php echo Lang::txt('COM_GROUPS_MEDIA'); ?></a></li>
-                            <!-- <li><a href="#" onclick="return false;" id="pages"><?php echo Lang::txt('COM_COURSES_FIELDSET_PAGES'); ?></a></li> -->
+                            <li><a href="#page-details" onclick="return false;" id="details" class="active"><?= Lang::txt('JDETAILS') ?></a></li>
+                            <li><a href="#page-files" onclick="return false;" id="files"><?= Lang::txt('COM_GROUPS_MEDIA') ?></a></li>
+                            <!-- <li><a href="#" onclick="return false;" id="pages"><?= Lang::txt('COM_COURSES_FIELDSET_PAGES') ?></a></li> -->
                         </ul>
                         <div class="clr"></div>
                     </div>
@@ -91,58 +91,58 @@ $this->js();
                         <fieldset class="adminform">
                             <legend><span><?php echo Lang::txt('COM_GROUPS_DETAILS'); ?></span></legend>
 
-                            <input type="hidden" name="group[gidNumber]" value="<?php echo $this->group->gidNumber; ?>" />
+                            <input type="hidden" name="group[gidNumber]" value="<?= $this->group->gidNumber ?>" />
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
                             <input type="hidden" name="task" value="save" />
 
                             <div class="input-wrap">
-                                <label for="field-type"><?php echo Lang::txt('COM_GROUPS_TYPE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
+                                <label for="field-type"><?= Lang::txt('COM_GROUPS_TYPE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                                 <select name="group[type]" id="field-type" class="required">
-                                    <option value="1"<?php echo ($this->group->type == '1') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_TYPE_HUB'); ?></option>
-                                    <option value="3"<?php echo ($this->group->type == '3') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_TYPE_SUPER'); ?></option>
+                                    <option value="1"<?= ($this->group->type == '1') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_HUB') ?></option>
+                                    <option value="3"<?= ($this->group->type == '3') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_SUPER') ?></option>
                                     <?php if ($canDo->get('core.admin')) { ?>
-                                        <option value="0"<?php echo ($this->group->type == '0') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_TYPE_SYSTEM'); ?></option>
+                                        <option value="0"<?= ($this->group->type == '0') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_SYSTEM') ?></option>
                                     <?php } ?>
-                                    <option value="2"<?php echo ($this->group->type == '2') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_TYPE_PROJECT'); ?></option>
-                                    <option value="4"<?php echo ($this->group->type == '4') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_TYPE_COURSE'); ?></option>
+                                    <option value="2"<?= ($this->group->type == '2') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_PROJECT') ?></option>
+                                    <option value="4"<?= ($this->group->type == '4') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_COURSE') ?></option>
                                 </select>
                             </div>
 
                             <div class="grid">
                                 <div class="col span6">
                                     <div class="input-wrap">
-                                        <label for="field-published"><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?>:</label>
+                                        <label for="field-published"><?= Lang::txt('COM_GROUPS_PUBLISHED') ?>:</label>
                                         <select name="group[published]" id="field-published">
-                                            <option <?php echo $this->group->published == 0 ? 'selected="selected"' : ''; ?> value="0"><?php echo Lang::txt('COM_GROUPS_UNPUBLISHED'); ?></option>
-                                            <option <?php echo $this->group->published == 1 ? 'selected="selected"' : ''; ?> value="1"><?php echo Lang::txt('COM_GROUPS_PUBLISHED'); ?></option>
-                                            <option <?php echo $this->group->published == 2 ? 'selected="selected"' : ''; ?> value="2"><?php echo Lang::txt('COM_GROUPS_ARCHIVED'); ?></option>
+                                            <option <?= $this->group->published == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_UNPUBLISHED') ?></option>
+                                            <option <?= $this->group->published == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PUBLISHED') ?></option>
+                                            <option <?= $this->group->published == 2 ? 'selected="selected"' : '' ?> value="2"><?= Lang::txt('COM_GROUPS_ARCHIVED') ?></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col span6">
                                     <div class="input-wrap">
-                                        <label for="field-approved"><?php echo Lang::txt('COM_GROUPS_APPROVE'); ?>:</label>
+                                        <label for="field-approved"><?= Lang::txt('COM_GROUPS_APPROVE') ?>:</label>
                                         <select name="group[approved]" id="field-approved">
-                                            <option <?php echo $this->group->approved == 0 ? 'selected="selected"' : ''; ?> value="0"><?php echo Lang::txt('COM_GROUPS_UNAPPROVED'); ?></option>
-                                            <option <?php echo $this->group->approved == 1 ? 'selected="selected"' : ''; ?> value="1"><?php echo Lang::txt('COM_GROUPS_APPROVED'); ?></option>
+                                            <option <?= $this->group->approved == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_UNAPPROVED') ?></option>
+                                            <option <?= $this->group->approved == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_APPROVED') ?></option>
                                         </select>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_CN_HINT'); ?>">
-                                <label for="field-cn"><?php echo Lang::txt('COM_GROUPS_CN'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                                <input type="text" name="group[cn]" id="field-cn" class="required" <?php echo $this->group->cn ? ' readonly="readonly"' : ''; ?> value="<?php echo $this->escape(stripslashes($this->group->cn ?? '')); ?>" />
+                                <label for="field-cn"><?= Lang::txt('COM_GROUPS_CN') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                                <input type="text" name="group[cn]" id="field-cn" class="required" <?= $this->group->cn ? ' readonly="readonly"' : '' ?> value="<?= $this->escape(stripslashes($this->group->cn ?? '')) ?>" />
                                 <span class="hint"><?php echo Lang::txt('COM_GROUPS_CN_HINT'); ?></span>
                             </div>
                             <div class="input-wrap">
-                                <label for="field-description"><?php echo Lang::txt('COM_GROUPS_TITLE'); ?>:</label><br />
-                                <input type="text" name="group[description]" id="field-description" value="<?php echo $this->escape(stripslashes($this->group->description ?? '')); ?>" />
+                                <label for="field-description"><?= Lang::txt('COM_GROUPS_TITLE') ?>:</label><br />
+                                <input type="text" name="group[description]" id="field-description" value="<?= $this->escape(stripslashes($this->group->description ?? '')) ?>" />
                             </div>
                             <div class="input-wrap">
                                 <label for="field-logo"><?php echo Lang::txt('COM_GROUPS_LOGO'); ?>:</label><br />
-                                <input type="text" name="group[logo]" id="field-logo" value="<?php echo $this->escape($this->group->logo); ?>" />
+                                <input type="text" name="group[logo]" id="field-logo" value="<?= $this->escape($this->group->logo) ?>" />
                             </div>
 
                             <?php
@@ -192,33 +192,33 @@ $this->js();
                         <fieldset class="adminform">
                             <legend><span><?php echo Lang::txt('COM_GROUPS_PAGE_SETTINGS'); ?></span></legend>
 
-                            <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT_HINT'); ?>">
-                                <label for="param-page_trusted"><?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT'); ?>:</label>
+                            <div class="input-wrap" data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT_HINT') ?>">
+                                <label for="param-page_trusted"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT') ?>:</label>
                                 <select name="group[params][page_trusted]" id="param-page_trusted">
-                                    <option <?php echo $trusted == 0 ? 'selected="selected"' : ''; ?> value="0"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_NO'); ?></option>
-                                    <option <?php echo $trusted == 1 ? 'selected="selected"' : ''; ?> value="1"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_YES'); ?></option>
+                                    <option <?= $trusted == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_NO') ?></option>
+                                    <option <?= $trusted == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_YES') ?></option>
                                 </select>
                             </div>
 
-                            <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT'); ?>">
-                                <label for="param-page_comments"><?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS'); ?>:</label>
+                            <div class="input-wrap" data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT') ?>">
+                                <label for="param-page_comments"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS') ?>:</label>
                                 <select name="group[params][page_comments]" id="param-page_comments">
-                                    <option <?php echo $comments == 0 ? 'selected="selected"' : ''; ?> value="0"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO'); ?></option>
-                                    <option <?php echo $comments == 1 ? 'selected="selected"' : ''; ?> value="1"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES'); ?></option>
-                                    <option <?php echo $comments == 2 ? 'selected="selected"' : ''; ?> value="2"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK'); ?></option>
+                                    <option <?= $comments == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO') ?></option>
+                                    <option <?= $comments == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES') ?></option>
+                                    <option <?= $comments == 2 ? 'selected="selected"' : '' ?> value="2"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK') ?></option>
                                 </select>
                             </div>
 
-                            <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_HINT'); ?>">
-                                <label for="param-page_author"><?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR'); ?>:</label>
+                            <div class="input-wrap" data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_HINT') ?>">
+                                <label for="param-page_author"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR') ?>:</label>
                                 <select name="group[params][page_author]" id="param-page_author">
-                                    <option <?php echo $author == 0 ? 'selected="selected"' : ''; ?> value="0"><?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO'); ?></option>
-                                    <option <?php echo $author == 1 ? 'selected="selected"' : ''; ?> value="1"><?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES'); ?></option>
+                                    <option <?= $author == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO') ?></option>
+                                    <option <?= $author == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES') ?></option>
                                 </select>
                             </div>
                             <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_TEMPLATE_HINT'); ?>">
-                                <label for="param-page_template"><?php echo Lang::txt('COM_GROUPS_TEMPLATE'); ?>:</label>
-                                <input type="text" name="group[params][page_template]" value="<?php echo $this->escape($gparams->get('page_template', ''));?>" id="param-page_template" />
+                                <label for="param-page_template"><?= Lang::txt('COM_GROUPS_TEMPLATE') ?>:</label>
+                                <input type="text" name="group[params][page_template]" value="<?= $this->escape($gparams->get('page_template', '')) ?>" id="param-page_template" />
                                 <span class="hint"><?php echo Lang::txt('COM_GROUPS_TEMPLATE_HINT'); ?></span>
                             </div>
                         </fieldset>
@@ -241,7 +241,7 @@ $this->js();
                                 <?php if ($this->group->created) { ?>
                                     <tr>
                                         <th scope="row"><?php echo Lang::txt('COM_GROUPS_CREATED'); ?></th>
-                                        <td><?php echo $this->escape(date("l F d, Y @ g:ia", strtotime($this->group->created))); ?></td>
+                                        <td><?= $this->escape(date("l F d, Y @ g:ia", strtotime($this->group->created))) ?></td>
                                     </tr>
                                 <?php } ?>
                                 <?php if ($this->group->created_by) { ?>
@@ -262,20 +262,20 @@ $this->js();
                                 <input type="checkbox" name="group[params][membership_control]" id="field-membership_control" value="1" <?php if ($membership_control == 1) {
                                     ?>checked="checked"<?php
                                                                                                                                         } ?> />
-                                <label for="field-membership_control"><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_CONTROL'); ?></label>
+                                <label for="field-membership_control"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_CONTROL') ?></label>
                             </div>
                             <fieldset>
                                 <legend><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY'); ?>:</legend>
                                 <div class="input-wrap">
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy0" value="0"<?php echo $this->group->join_policy == 0 ? ' checked="checked"' : ''; ?> /> <label for="field-join_policy0"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC_DESC'); ?></label><br />
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy1" value="1"<?php echo $this->group->join_policy == 1 ? ' checked="checked"' : ''; ?> /> <label for="field-join_policy1"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED_DESC'); ?></label><br />
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy2" value="2"<?php echo $this->group->join_policy == 2 ? ' checked="checked"' : ''; ?> /> <label for="field-join_policy2"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE_DESC'); ?></label><br />
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy3" value="3"<?php echo $this->group->join_policy == 3 ? ' checked="checked"' : ''; ?> /> <label for="field-join_policy3"><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED_DESC'); ?></label>
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy0" value="0"<?= $this->group->join_policy == 0 ? ' checked="checked"' : '' ?> /> <label for="field-join_policy0"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC_DESC') ?></label><br />
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy1" value="1"<?= $this->group->join_policy == 1 ? ' checked="checked"' : '' ?> /> <label for="field-join_policy1"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED_DESC') ?></label><br />
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy2" value="2"<?= $this->group->join_policy == 2 ? ' checked="checked"' : '' ?> /> <label for="field-join_policy2"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE_DESC') ?></label><br />
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy3" value="3"<?= $this->group->join_policy == 3 ? ' checked="checked"' : '' ?> /> <label for="field-join_policy3"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED_DESC') ?></label>
                                 </div>
                             </fieldset>
                             <div class="input-wrap">
-                                <label for="restrict_msg"><?php echo Lang::txt('COM_GROUPS_EDIT_CREDENTIALS'); ?>:</label><br />
-                                <?php echo $this->editor('group[restrict_msg]', $this->escape(stripslashes($this->group->restrict_msg ? $this->group->restrict_msg : '')), 40, 10, 'restrict_msg', ['class' => 'minimal']); ?>
+                                <label for="restrict_msg"><?= Lang::txt('COM_GROUPS_EDIT_CREDENTIALS') ?>:</label><br />
+                                <?= $this->editor('group[restrict_msg]', $this->escape(stripslashes($this->group->restrict_msg ? $this->group->restrict_msg : '')), 40, 10, 'restrict_msg', ['class' => 'minimal']) ?>
                             </div>
                         </fieldset>
                         <fieldset class="adminform">
@@ -285,25 +285,25 @@ $this->js();
                                 <legend><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY'); ?>:</legend>
 
                                 <div class="input-wrap">
-                                    <input type="radio" name="group[discoverability]" id="field-discoverability0" value="0"<?php echo $this->group->discoverability == 0 ? ' checked="checked"' : ''; ?> />
-                                    <label for="field-discoverability0"><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_VISIBLE'); ?></label>
+                                    <input type="radio" name="group[discoverability]" id="field-discoverability0" value="0"<?= $this->group->discoverability == 0 ? ' checked="checked"' : '' ?> />
+                                    <label for="field-discoverability0"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_VISIBLE') ?></label>
                                     <br />
-                                    <input type="radio" name="group[discoverability]" id="field-discoverability1" value="1"<?php echo $this->group->discoverability == 1 ? ' checked="checked"' : ''; ?> />
-                                    <label for="field-discoverability1"><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_HIDDEN'); ?></label>
+                                    <input type="radio" name="group[discoverability]" id="field-discoverability1" value="1"<?= $this->group->discoverability == 1 ? ' checked="checked"' : '' ?> />
+                                    <label for="field-discoverability1"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_HIDDEN') ?></label>
                                 </div>
                             </fieldset>
 
                             <div class="input-wrap">
-                                <label for="field-plugins"><?php echo Lang::txt('COM_GROUPS_PLUGIN_ACCESS'); ?>:</label><br />
-                                <textarea name="group[plugins]" id="field-plugins" rows="10" cols="50"><?php echo $this->escape($this->group->plugins); ?></textarea>
+                                <label for="field-plugins"><?= Lang::txt('COM_GROUPS_PLUGIN_ACCESS') ?>:</label><br />
+                                <textarea name="group[plugins]" id="field-plugins" rows="10" cols="50"><?= $this->escape($this->group->plugins) ?></textarea>
                             </div>
 
                             <div class="input-wrap">
-                                <label for="display_system_users"><?php echo Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS'); ?>:</label><br />
+                                <label for="display_system_users"><?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS') ?>:</label><br />
                                 <select name="group[params][display_system_users]" id="display_system_users">
-                                    <option <?php echo $display_system_users == 'global' ? 'selected="selected"' : ''; ?> value="global"><?php echo Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_GLOBAL'); ?></option>
-                                    <option <?php echo $display_system_users == 'no' ? 'selected="selected"' : ''; ?> value="no"><?php echo Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_NO'); ?></option>
-                                    <option <?php echo $display_system_users == 'yes' ? 'selected="selected"' : ''; ?> value="yes"><?php echo Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_YES'); ?></option>
+                                    <option <?= $display_system_users == 'global' ? 'selected="selected"' : '' ?> value="global"><?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_GLOBAL') ?></option>
+                                    <option <?= $display_system_users == 'no' ? 'selected="selected"' : '' ?> value="no"><?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_NO') ?></option>
+                                    <option <?= $display_system_users == 'yes' ? 'selected="selected"' : '' ?> value="yes"><?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_YES') ?></option>
                                 </select>
                             </div>
                         </fieldset>
@@ -320,7 +320,7 @@ $this->js();
                                         <input type="checkbox" name="group[discussion_email_autosubscribe]" id="field-membership_control" value="1" <?php if ($autoEmailResponses == 1) {
                                             ?>checked="checked"<?php
                                                                                                                                                     } ?> />
-                                        <label for="field-membership_control"><?php echo Lang::txt('COM_GROUPS_DISCUSSION_EMAIL_AUTOSUBSCRIBE'); ?></label>
+                                        <label for="field-membership_control"><?= Lang::txt('COM_GROUPS_DISCUSSION_EMAIL_AUTOSUBSCRIBE') ?></label>
                                     </div>
                                 </fieldset>
                             </fieldset>
@@ -332,8 +332,8 @@ $this->js();
             <div id="page-files" class="tab">
                 <fieldset class="adminform">
                     <?php if ($this->group->gidNumber) { ?>
-                        <legend><span><?php echo Lang::txt('COM_GROUPS_MEDIA_PATH', substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber')); ?></span></legend>
-                        <iframe width="100%" height="500" name="media" id="media" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&gidNumber=' . $this->group->gidNumber . '&t=' . Date::toUnix()); ?>"></iframe>
+                        <legend><span><?= Lang::txt('COM_GROUPS_MEDIA_PATH', substr(PATH_APP, strlen(PATH_ROOT)) . DS . trim(Component::params('com_groups')->get('uploadpath', '/site/groups'), DS) . DS . $this->group->get('gidNumber')) ?></span></legend>
+                        <iframe width="100%" height="500" name="media" id="media" frameborder="0" src="<?= Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&gidNumber=' . $this->group->gidNumber . '&t=' . Date::toUnix()) ?>"></iframe>
                     <?php } else { ?>
                         <p class="warning"><?php echo Lang::txt('COM_GROUPS_MEDIA_FILES_WARNING'); ?></p>
                     <?php } ?>

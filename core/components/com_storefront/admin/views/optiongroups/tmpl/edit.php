@@ -100,8 +100,8 @@ $nameValue = $this->escape(stripslashes($this->row->getName()));
             <div class="input-wrap">
                 <label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_PUBLISH'); ?>:</label>
                 <select name="fields[state]" id="field-state">
-                    <option value="0"<?php echo $this->row->getActiveStatus() == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                    <option value="1"<?php echo $this->row->getActiveStatus() == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                    <option value="0"<?= $this->row->getActiveStatus() == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                    <option value="1"<?= $this->row->getActiveStatus() == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
                 </select>
             </div>
         </fieldset>

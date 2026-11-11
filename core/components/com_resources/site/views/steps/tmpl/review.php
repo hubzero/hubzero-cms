@@ -27,7 +27,7 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
+            <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=draft') ?>">
                 <?php echo Lang::txt('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
             </a>
         </p>
@@ -51,7 +51,7 @@ $this
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task); ?>" method="post" id="hubForm">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&task=' . $this->task) ?>" method="post" id="hubForm">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
         <input type="hidden" name="task" value="<?php echo $this->task; ?>" />
@@ -62,7 +62,7 @@ $this
 <?php if ($this->progress['submitted'] == 1) { ?>
         <div class="explaination">
             <p class="help">
-                <?php echo Lang::txt('COM_CONTRIBUTE_PASSED_REVIEW'); ?> <a href="<?php echo Route::url('index.php?option=com_resources&id=' . $this->id); ?>"><?php echo Lang::txt('COM_CONTRIBUTE_VIEW_HERE'); ?></a>
+                <?= Lang::txt('COM_CONTRIBUTE_PASSED_REVIEW') ?> <a href="<?= Route::url('index.php?option=com_resources&id=' . $this->id) ?>"><?= Lang::txt('COM_CONTRIBUTE_VIEW_HERE') ?></a>
             </p>
         </div>
         <fieldset>
@@ -79,7 +79,7 @@ $this
                 foreach ($this->licenses as $license) {
                     if (substr($license->name, 0, 6) == 'custom') {
                         ?>
-                    <option value="custom"<?php echo $params->get('license') == $license->name ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Custom'); ?></option>
+                    <option value="custom"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= Lang::txt('Custom') ?></option>
                         <?php
                         $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
                         $c = $this->escape(nl2br($license->text));
@@ -97,7 +97,7 @@ $this
                         continue;
                     } else {
                         ?>
-                    <option value="<?php echo $this->escape($license->name); ?>"<?php echo $params->get('license') == $license->name ? ' selected="selected"' : ''; ?>><?php echo $this->escape($license->title); ?></option>
+                    <option value="<?= $this->escape($license->name) ?>"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= $this->escape($license->title) ?></option>
                         <?php
                     }
                     $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
@@ -111,7 +111,7 @@ $this
                 <?php echo implode("\n", $l); ?>
             </label>
             <?php if ($this->config->get('cc_license_custom')) { ?>
-            <textarea name="license-text" id="license-text" cols="35" rows="10" class="hide"><?php echo $c; ?></textarea>
+            <textarea name="license-text" id="license-text" cols="35" rows="10" class="hide"><?= $c ?></textarea>
             <?php } ?>
 
             <input type="hidden" name="published" value="1" />
@@ -174,7 +174,7 @@ $this
             foreach ($this->licenses as $license) {
                 if (substr($license->name, 0, 6) == 'custom') {
                     ?>
-                        <option value="custom"<?php echo $params->get('license') == $license->name ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Custom'); ?></option>
+                        <option value="custom"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= Lang::txt('Custom') ?></option>
                     <?php
                     $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
                     $c = $this->escape(nl2br($license->text));
@@ -192,7 +192,7 @@ $this
                     continue;
                 } else {
                     ?>
-                        <option value="<?php echo $this->escape($license->name); ?>"<?php echo $params->get('license') == $license->name ? ' selected="selected"' : ''; ?>><?php echo $this->escape($license->title); ?></option>
+                        <option value="<?= $this->escape($license->name) ?>"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= $this->escape($license->title) ?></option>
                     <?php
                 }
                 $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
@@ -206,7 +206,7 @@ $this
                 <?php echo implode("\n", $l); ?>
             </label>
         <?php if ($this->config->get('cc_license_custom')) { ?>
-            <textarea name="license-text" id="license-text" cols="35" rows="10" class="hide"><?php echo $c; ?></textarea>
+            <textarea name="license-text" id="license-text" cols="35" rows="10" class="hide"><?= $c ?></textarea>
         <?php } ?>
     <?php } ?>
 
@@ -219,7 +219,7 @@ $this
 
     <h1 id="preview-header"><?php echo Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW'); ?></h1>
     <div id="preview-pane">
-        <iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" title="<?php echo Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW'); ?>" src="<?php echo Route::url('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview'); ?>"></iframe>
+        <iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" title="<?= Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW') ?>" src="<?= Route::url('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview') ?>"></iframe>
     </div>
 <?php } ?>
 </section><!-- / .main section -->

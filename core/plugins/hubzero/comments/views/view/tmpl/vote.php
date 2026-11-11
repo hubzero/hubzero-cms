@@ -64,23 +64,23 @@ if (!$no_html) { ?>
 <?php } ?>
     <span class="vote-like<?php echo $lcls; ?>">
         <?php if ($this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { // || !$this->params->get('access-vote-comment')) {?>
-            <span class="vote-button <?php echo ($this->item->get('positive', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" title="<?php echo $like_title; ?>">
-                <?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_LIKE'); ?></span>
+            <span class="vote-button <?= ($this->item->get('positive', 0) > 0 ? 'like' : 'neutral') . $cls ?>" title="<?= $like_title ?>">
+                <?= $this->item->get('positive', 0) ?><span> <?= Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_LIKE') ?></span>
             </span>
         <?php } else { ?>
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->url . 'action=commentvote&voteup=' . $this->item->get('id')); ?>" class="vote-button <?php echo ($this->item->get('positive', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" title="<?php echo $like_title; ?>">
-                <?php echo $this->item->get('positive', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_LIKE'); ?></span>
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->url . 'action=commentvote&voteup=' . $this->item->get('id')) ?>" class="vote-button <?= ($this->item->get('positive', 0) > 0 ? 'like' : 'neutral') . $cls ?>" title="<?= $like_title ?>">
+                <?= $this->item->get('positive', 0) ?><span> <?= Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_LIKE') ?></span>
             </button>
         <?php } ?>
     </span>
     <span class="vote-dislike<?php echo $dcls; ?>">
         <?php if ($this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
-            <span class="vote-button <?php echo ($this->item->get('negative', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" title="<?php echo $dislike_title; ?>">
-                <?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE'); ?></span>
+            <span class="vote-button <?= ($this->item->get('negative', 0) > 0 ? 'dislike' : 'neutral') . $cls ?>" title="<?= $dislike_title ?>">
+                <?= $this->item->get('negative', 0) ?><span> <?= Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE') ?></span>
             </span>
         <?php } else { ?>
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->url . 'action=commentvote&votedown=' . $this->item->get('id')); ?>" class="vote-button <?php echo ($this->item->get('negative', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" title="<?php echo $dislike_title; ?>">
-                <?php echo $this->item->get('negative', 0); ?><span> <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE'); ?></span>
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->url . 'action=commentvote&votedown=' . $this->item->get('id')) ?>" class="vote-button <?= ($this->item->get('negative', 0) > 0 ? 'dislike' : 'neutral') . $cls ?>" title="<?= $dislike_title ?>">
+                <?= $this->item->get('negative', 0) ?><span> <?= Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE') ?></span>
             </button>
         <?php } ?>
     </span>

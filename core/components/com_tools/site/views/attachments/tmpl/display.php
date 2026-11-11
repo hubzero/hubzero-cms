@@ -27,7 +27,7 @@ if (!$this->allowupload) { ?>
 <?php } ?>
 
 <?php $this->allowupload = true; ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
         <fieldset>
             <label for="upload">
                 <input type="file" class="option" name="upload" id="upload" />

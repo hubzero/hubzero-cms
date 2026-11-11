@@ -28,7 +28,7 @@ Toolbar::cancel();
 
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn); ?>" name="adminForm" id="item-form" method="post">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn) ?>" name="adminForm" id="item-form" method="post">
     <div class="grid">
         <div class="col span6">
             <fieldset class="adminform">
@@ -36,11 +36,11 @@ Toolbar::cancel();
 
                 <div class="input-wrap">
                     <label for="field-title"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?>:</label>
-                    <input type="text" name="module[title]" id="field-title" value="<?php echo $this->escape($this->module->get('title')); ?>" size="50" />
+                    <input type="text" name="module[title]" id="field-title" value="<?= $this->escape($this->module->get('title')) ?>" size="50" />
                 </div>
                 <div class="input-wrap">
                     <label for="field-position"><?php echo Lang::txt('COM_GROUPS_MODULES_POSITION'); ?>:</label>
-                    <input type="text" name="module[position]" id="field-position" value="<?php echo $this->escape($this->module->get('position')); ?>" size="50" />
+                    <input type="text" name="module[position]" id="field-position" value="<?= $this->escape($this->module->get('position')) ?>" size="50" />
                 </div>
                 <div class="input-wrap">
                     <label for="field-type"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?>:</label>
@@ -64,7 +64,7 @@ Toolbar::cancel();
                     <select name="module[ordering]" id="field-ordering">
                         <?php foreach ($this->order as $k => $order) : ?>
                             <?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>
-                            <option <?php echo $sel; ?> value="<?php echo($k + 1); ?>"><?php echo ($k + 1) . '. ' . $this->escape($order->get('title')); ?></option>
+                            <option <?= $sel ?> value="<?= ($k + 1) ?>"><?= ($k + 1) . '. ' . $this->escape($order->get('title')) ?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -81,10 +81,10 @@ Toolbar::cancel();
                 <legend><span><?php echo Lang::txt('COM_GROUPS_MODULES_MENU_ASSIGNMENT'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-assignment"><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT'); ?>:</label>
+                    <label for="field-assignment"><?= Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT') ?>:</label>
                     <select name="menu[assignment]" id="field-assignment">
                         <option value="0"><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_ALL'); ?></option>
-                        <option <?php echo !in_array(0, $activeMenu) ? 'selected="selected"' : ''; ?> value=""><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_SELECTED'); ?></option>
+                        <option <?= !in_array(0, $activeMenu) ? 'selected="selected"' : '' ?> value=""><?= Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_SELECTED') ?></option>
                     </select>
                 </div>
 
@@ -95,7 +95,7 @@ Toolbar::cancel();
                         <div class="input-wrap">
                             <label for="assigned<?php echo $i; ?>">
                                 <?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu)) ? 'checked="checked"' : ''; ?>
-                                <input type="checkbox" class="option" <?php echo $ckd; ?> name="menu[assigned][]" id="assigned<?php echo $i; ?>" value="<?php echo $page->get('id'); ?>" /> <?php echo $this->escape($page->get('title')); ?>
+                                <input type="checkbox" class="option" <?= $ckd ?> name="menu[assigned][]" id="assigned<?= $i ?>" value="<?= $page->get('id') ?>" /> <?= $this->escape($page->get('title')) ?>
                             </label>
                         </div>
                     <?php endforeach; ?>
@@ -161,7 +161,7 @@ Toolbar::cancel();
 
                 <div class="input-wrap">
                     <label for="field-content"><?php echo Lang::txt('COM_GROUPS_MODULES_CONTENT'); ?>:</label>
-                    <textarea name="module[content]" id="field-content" rows="20"><?php echo $this->escape($this->module->get('content')); ?></textarea>
+                    <textarea name="module[content]" id="field-content" rows="20"><?= $this->escape($this->module->get('content')) ?></textarea>
                 </div>
             </fieldset>
         </div>

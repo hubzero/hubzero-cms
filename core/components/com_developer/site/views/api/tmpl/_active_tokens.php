@@ -34,14 +34,14 @@ if (empty($this->tokens)) {
                                 readonly 
                                 class="token-input"
                             />
-                            <button type="button" class="token-action-btn" title="Show/Hide Token" data-token-toggle="<?php echo $tokenId; ?>">
+                            <button type="button" class="token-action-btn" title="Show/Hide Token" data-token-toggle="<?= $tokenId ?>">
                                 <i class="icon-eye"></i>
                             </button>
-                            <button type="button" class="token-action-btn" title="Copy to Clipboard" data-token-copy="<?php echo $tokenId; ?>">
+                            <button type="button" class="token-action-btn" title="Copy to Clipboard" data-token-copy="<?= $tokenId ?>">
                                 <i class="icon-copy"></i>
                             </button>
                         </div>
-                        <small class="token-expires">Expires: <?php echo \Hubzero\Utility\Date::of($token->expires)->toLocal('M d, Y g:i a'); ?></small>
+                        <small class="token-expires">Expires: <?= \Hubzero\Utility\Date::of($token->expires)->toLocal('M d, Y g:i a') ?></small>
                     </div>
                 </div>
             <?php endforeach; ?>

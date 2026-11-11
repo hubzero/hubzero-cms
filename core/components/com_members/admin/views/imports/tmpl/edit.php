@@ -43,20 +43,20 @@ $this->js();
     <p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?php echo Route::url('index.php?option=com_members&controller=imports&task=save'); ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?= Route::url('index.php?option=com_members&controller=imports&task=save') ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELDSET_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-name"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_NAME'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="import[name]" id="field-name" class="required" value="<?php echo $this->escape($this->import->get('name')); ?>" />
+                    <label for="field-name"><?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_NAME') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                    <input type="text" name="import[name]" id="field-name" class="required" value="<?= $this->escape($this->import->get('name')) ?>" />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-notes"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_NOTES'); ?></label><br />
-                    <textarea name="import[notes]" id="field-notes" rows="5"><?php echo $this->escape($this->import->get('notes')); ?></textarea>
+                    <label for="field-notes"><?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_NOTES') ?></label><br />
+                    <textarea name="import[notes]" id="field-notes" rows="5"><?= $this->escape($this->import->get('notes')) ?></textarea>
                 </div>
             </fieldset>
 
@@ -74,7 +74,7 @@ $this->js();
                 <legend><span><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELDSET_HOOKS'); ?></span></legend>
 
                 <?php if ($this->hooks->count()) { ?>
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>">
+                    <div class="input-wrap" data-hint="<?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_HOOKS_HINT') ?>">
                         <label for="field-name">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_POSTPARSEHOOK'); ?>
                         </label><br />
@@ -82,7 +82,7 @@ $this->js();
                             <?php if (isset($hooks->postparse)) : ?>
                                 <?php foreach ($hooks->postparse as $hook) : ?>
                                     <?php $importHook = $this->hooks->fetch('id', $hook); ?>
-                                    <option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
+                                    <option selected="selected" value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
                                 <?php endforeach; ?>
                             <?php endif; ?>
 
@@ -90,7 +90,7 @@ $this->js();
                                 <?php if ($hook->get('event') != 'postparse' || in_array($hook->get('id'), $hooks->postparse)) {
                                     continue;
                                 } ?>
-                                <option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
+                                <option value="<?= $hook->get('id') ?>"><?= $hook->get('name') ?></option>
                             <?php endforeach; ?>
                         </select>
                         <a class="hook-up" href="#">
@@ -103,21 +103,21 @@ $this->js();
                             <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>
                         </span>
                     </div>
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>">
+                    <div class="input-wrap" data-hint="<?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_HOOKS_HINT') ?>">
                         <label for="field-hookpostmap">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_POSTMAPHOOK'); ?>
                         </label>
                         <select name="hooks[postmap][]" id="field-hookpostmap" multiple="multiple">
                             <?php foreach ($hooks->postmap as $hook) : ?>
                                 <?php $importHook = $this->hooks->fetch('id', $hook); ?>
-                                <option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
+                                <option selected="selected" value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
                             <?php endforeach; ?>
 
                             <?php foreach ($this->hooks as $hook) : ?>
                                 <?php if ($hook->get('event') != 'postmap' || in_array($hook->get('id'), $hooks->postmap)) {
                                     continue;
                                 } ?>
-                                <option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
+                                <option value="<?= $hook->get('id') ?>"><?= $hook->get('name') ?></option>
                             <?php endforeach; ?>
                         </select>
                         <a class="hook-up" href="#">
@@ -130,20 +130,20 @@ $this->js();
                             <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>
                         </span>
                     </div>
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_HOOKS_HINT'); ?>">
+                    <div class="input-wrap" data-hint="<?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_HOOKS_HINT') ?>">
                         <label for="field-hookpostconvert">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_POSTCONVERTHOOK'); ?>
                         </label>
                         <select name="hooks[postconvert][]" id="field-hookpostconvert" multiple="multiple">
                             <?php foreach ($hooks->postconvert as $hook) : ?>
                                 <?php $importHook = $this->hooks->fetch('id', $hook); ?>
-                                <option selected="selected" value="<?php echo $importHook->get('id'); ?>"><?php echo $importHook->get('name'); ?></option>
+                                <option selected="selected" value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
                             <?php endforeach; ?>
                             <?php foreach ($this->hooks as $hook) : ?>
                                 <?php if ($hook->get('event') != 'postconvert' || in_array($hook->get('id'), $hooks->postconvert)) {
                                     continue;
                                 } ?>
-                                <option value="<?php echo $hook->get('id'); ?>"><?php echo $hook->get('name'); ?></option>
+                                <option value="<?= $hook->get('id') ?>"><?= $hook->get('name') ?></option>
                             <?php endforeach; ?>
                         </select>
                         <a class="hook-up" href="#">
@@ -168,24 +168,24 @@ $this->js();
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELDSET_PARAMS'); ?></span></legend>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_APPROVED_HINT'); ?>">
+                <div class="input-wrap" data-hint="<?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_APPROVED_HINT') ?>">
                     <label for="param-approved">
                         <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_APPROVED'); ?>
                     </label>
                     <select name="params[approved]" id="param-approved">
-                        <option value="0"<?php echo ($this->params->get('approved', 1) == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JNO'); ?></option>
-                        <option value="1"<?php echo ($this->params->get('approved', 1) == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JYES'); ?></option>
+                        <option value="0"<?= ($this->params->get('approved', 1) == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
+                        <option value="1"<?= ($this->params->get('approved', 1) == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JYES') ?></option>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_APPROVED_HINT'); ?></span>
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW_HINT'); ?>">
+                <div class="input-wrap" data-hint="<?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW_HINT') ?>">
                     <label for="param-emailnew">
                         <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW'); ?>
                     </label>
                     <select name="params[emailnew]" id="param-emailnew">
-                        <option value="0"<?php echo ($this->params->get('emailnew', 0) == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JNO'); ?></option>
-                        <option value="1"<?php echo ($this->params->get('emailnew', 0) == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JYES'); ?></option>
+                        <option value="0"<?= ($this->params->get('emailnew', 0) == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
+                        <option value="1"<?= ($this->params->get('emailnew', 0) == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JYES') ?></option>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW_HINT'); ?></span>
                 </div>
@@ -242,12 +242,12 @@ $this->js();
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELDSET_DATA'); ?></span></legend>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_HINT', $this->import->fileSpacePath()); ?>">
+                <div class="input-wrap" data-hint="<?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_HINT', $this->import->fileSpacePath()) ?>">
                     <label for="field-importfile">
                         <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE'); ?>
                     </label><br />
                     <select name="import[file]" id="field-importfile">
-                        <option value=""><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_OPTION_NULL'); ?></option>
+                        <option value=""><?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_OPTION_NULL') ?></option>
                         <?php if (isset($this->files)) : ?>
                             <?php foreach ($this->files as $file) : ?>
                                 <?php
@@ -258,11 +258,11 @@ $this->js();
                         <?php endif; ?>
                     </select>
                     <span class="hint">
-                        <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_HINT', $this->import->fileSpacePath()); ?>
+                        <?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_HINT', $this->import->fileSpacePath()) ?>
                     </span>
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo str_replace('<br />', "\n", Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_HINT')); ?>">
+                <div class="input-wrap" data-hint="<?= str_replace('<br />', "\n", Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_HINT')) ?>">
                     <label for="field-importmode">
                         <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE'); ?>
                     </label><br />
@@ -270,7 +270,7 @@ $this->js();
                         <option value="UPDATE">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_UPDATE'); ?>
                         </option>
-                        <option <?php echo $this->import->get('mode') == 'PATCH' ? 'selected="selected"' : ''; ?> value="PATCH">
+                        <option <?= $this->import->get('mode') == 'PATCH' ? 'selected="selected"' : '' ?> value="PATCH">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_PATCH'); ?>
                         </option>
                     </select>

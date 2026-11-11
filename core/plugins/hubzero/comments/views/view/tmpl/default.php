@@ -29,7 +29,7 @@ $this
                     <h3 class="post-comment-title" id="post-comment">
                         <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_A_COMMENT'); ?>
                     </h3>
-                    <form method="post" action="<?php echo Route::url($this->url); ?>" id="commentform" enctype="multipart/form-data">
+                    <form method="post" action="<?= Route::url($this->url) ?>" id="commentform" enctype="multipart/form-data">
                         <p class="comment-member-photo">
                             <?php
                             // commentreply= resolves any comment on the hub; only a
@@ -93,10 +93,10 @@ $this
                                     <blockquote cite="c<?php echo $reply->get('id'); ?>">
                                         <p>
                                             <strong><?php echo $name; ?></strong>
-                                            <span class="comment-date-at"><?php echo Lang::txt('COM_ANSWERS_AT'); ?></span>
-                                            <span class="time"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('time'); ?></time></span>
-                                            <span class="comment-date-on"><?php echo Lang::txt('COM_ANSWERS_ON'); ?></span>
-                                            <span class="date"><time datetime="<?php echo $reply->created(); ?>"><?php echo $reply->created('date'); ?></time></span>
+                                            <span class="comment-date-at"><?= Lang::txt('COM_ANSWERS_AT') ?></span>
+                                            <span class="time"><time datetime="<?= $reply->created() ?>"><?= $reply->created('time') ?></time></span>
+                                            <span class="comment-date-on"><?= Lang::txt('COM_ANSWERS_ON') ?></span>
+                                            <span class="date"><time datetime="<?= $reply->created() ?>"><?= $reply->created('date') ?></time></span>
                                         </p>
                                         <p><?php echo $reply->content; ?></p>
                                     </blockquote>
@@ -123,22 +123,22 @@ $this
                             <div class="form-group">
                                 <div class="form-check">
                                     <label class="comment-anonymous-label" class="form-check-label">
-                                        <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php echo $comment->get('anonymous') ? ' checked="checked"' : ''; ?> />
+                                        <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?= $comment->get('anonymous') ? ' checked="checked"' : '' ?> />
                                         <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_ANONYMOUSLY'); ?>
                                     </label>
                                 </div>
                             </div>
 
                             <p class="submit">
-                                <input type="submit" class="btn btn-success" name="submit" value="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT'); ?>" />
+                                <input type="submit" class="btn btn-success" name="submit" value="<?= Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT') ?>" />
                             </p>
 
                             <input type="hidden" name="comment[id]" value="<?php echo $comment->get('id'); ?>" />
                             <input type="hidden" name="comment[item_id]" value="<?php echo $this->obj_id; ?>" />
                             <input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
-                            <input type="hidden" name="comment[parent]" value="<?php echo $comment->get('parent'); ?>" />
-                            <input type="hidden" name="comment[created_by]" value="<?php echo $comment->get('created_by'); ?>" />
-                            <input type="hidden" name="comment[state]" value="<?php echo $comment->get('state', 1); ?>" />
+                            <input type="hidden" name="comment[parent]" value="<?= $comment->get('parent') ?>" />
+                            <input type="hidden" name="comment[created_by]" value="<?= $comment->get('created_by') ?>" />
+                            <input type="hidden" name="comment[state]" value="<?= $comment->get('state', 1) ?>" />
                             <input type="hidden" name="comment[access]" value="1" />
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                             <input type="hidden" name="action" value="commentsave" />
@@ -170,9 +170,9 @@ $this
                     <form method="post" action="<?php echo Route::url($this->url); ?>" id="commentformcomments">
                     <ul class="entries-menu sort-options">
                         <?php if ($currentOrderDir == 'asc') : ?>
-                            <li><button type="submit" name="orderdir" value="desc" class="as-link"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_DESCENDING'); ?></button></li>
+                            <li><button type="submit" name="orderdir" value="desc" class="as-link"><?= Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_DESCENDING') ?></button></li>
                         <?php else : ?>
-                            <li><button type="submit" name="orderdir" value="asc" class="as-link"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_ASC'); ?></button></li>
+                            <li><button type="submit" name="orderdir" value="asc" class="as-link"><?= Lang::txt('PLG_HUBZERO_COMMENTS_SHOW') . ' ' . Lang::txt('PLG_HUBZERO_COMMENTS_SORTING_ASC') ?></button></li>
                         <?php endif; ?>
                     </ul>
                     </form>

@@ -81,7 +81,7 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 <?php if ($showSidePanel && $this->project->access('content')) { ?>
     <ul id="page_options" class="pluginOptions">
         <li>
-            <a class="icon-add add btn"  href="<?php echo Route::url($url . '&action=new'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>">
+            <a class="icon-add add btn"  href="<?= Route::url($url . '&action=new') ?>" title="<?= Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE') ?>">
                 <?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
             </a>
             <?php if (count($parentNotes) < 2) { ?>
@@ -89,7 +89,7 @@ $listed = $publicStamp ? $publicStamp->listed : false;
                 $base = $page->link();
                 $chr  = strstr($base, '?') ? '&' : '?';
                 ?>
-                <a href="<?php echo Route::url($base . $chr . 'action=new'); ?>" class="icon-add add btn" title="<?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?>"><?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE'); ?></a>
+                <a href="<?= Route::url($base . $chr . 'action=new') ?>" class="icon-add add btn" title="<?= Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE') ?>"><?= Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE') ?></a>
             <?php } ?>
         </li>
     </ul>

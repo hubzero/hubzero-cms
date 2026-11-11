@@ -83,11 +83,11 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
                     <tbody>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Project:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->project->get('title') . ' (' . $this->project->get('alias') . ')'); ?></td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->project->get('title') . ' (' . $this->project->get('alias') . ')') ?></td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -136,20 +136,20 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
                                 $name = $creator->get('name');
                                 ?>
                                 <tr>
-                                    <th style="text-align: right; padding: 1em 0 0 0; white-space: nowrap; color: #999999; font-weight: normal;" align="right"><?php echo Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?> &#64; <?php echo Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></th>
-                                    <td style="text-align: left; ?>; padding: 1em 3em 0 3em;" width="100%" align="left"><span style="color: #8a7460;"><?php echo $name; ?></span> <?php echo $a->action; ?><?php if ($content) {
+                                    <th style="text-align: right; padding: 1em 0 0 0; white-space: nowrap; color: #999999; font-weight: normal;" align="right"><?= Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?> &#64; <?= Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></th>
+                                    <td style="text-align: left; ?>; padding: 1em 3em 0 3em;" width="100%" align="left"><span style="color: #8a7460;"><?= $name ?></span> <?= $a->action ?><?php if ($content) {
                                         ?>:<?php
                                                                                                                                                       } ?></td>
                                 </tr>
                                 <?php if ($content) { ?>
                                     <tr>
                                         <th></th>
-                                        <td style="text-align: <?php echo count($this->activities) > 0 ? 'left' : 'center'; ?>; padding: 0.5em 3em; color: #000000;" width="100%" align="left"><?php echo $content; ?></td>
+                                        <td style="text-align: <?= count($this->activities) > 0 ? 'left' : 'center' ?>; padding: 0.5em 3em; color: #000000;" width="100%" align="left"><?= $content ?></td>
                                     </tr>
                                 <?php } ?>
                                 <tr>
-                                    <th style="text-align: center; padding: 0.5em 1em; <?php echo count($this->activities) > 0 ? 'border-bottom: 1px solid #e9e9e9;' : ''; ?>"></th>
-                                    <td style="text-align: center; padding: 0.5em 1em; <?php echo count($this->activities) > 0 ? 'border-bottom: 1px solid #e9e9e9;' : ''; ?>" width="100%" align="left"></td>
+                                    <th style="text-align: center; padding: 0.5em 1em; <?= count($this->activities) > 0 ? 'border-bottom: 1px solid #e9e9e9;' : '' ?>"></th>
+                                    <td style="text-align: center; padding: 0.5em 1em; <?= count($this->activities) > 0 ? 'border-bottom: 1px solid #e9e9e9;' : '' ?>" width="100%" align="left"></td>
                                 </tr>
                                 <?php
                             }
@@ -179,7 +179,7 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
             <td align="left" valign="bottom">
                 <span>
                     This email was sent to you on behalf of <?php echo $base; ?> because you are subscribed
-                    to watch this project. To unsubscribe, please go to the <a href="<?php echo $link; ?>">project feed</a> and adjust feed notification settings. Visit our <a href="<?php echo Request::base(); ?>/legal/privacy">Privacy Policy</a> and <a href="<?php echo Request::base(); ?>/support">Support Center</a> if you have any questions.
+                    to watch this project. To unsubscribe, please go to the <a href="<?= $link ?>">project feed</a> and adjust feed notification settings. Visit our <a href="<?= Request::base() ?>/legal/privacy">Privacy Policy</a> and <a href="<?= Request::base() ?>/support">Support Center</a> if you have any questions.
                 </span>
             </td>
         </tr>

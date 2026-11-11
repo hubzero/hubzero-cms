@@ -57,7 +57,7 @@ if (strstr($newSession, '?')) {
                 ?>
             <tr class="<?php echo $cls; ?>">
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=session&app=' . $session->appname . '&sess=' . $session->sessnum); ?>" title="<?php echo Lang::txt('COM_TOOLS_RESUME_TITLE'); ?>">
+                    <a href="<?= Route::url('index.php?option=' . $this->option . '&task=session&app=' . $session->appname . '&sess=' . $session->sessnum) ?>" title="<?= Lang::txt('COM_TOOLS_RESUME_TITLE') ?>">
                         <?php echo $this->escape($session->sessname); ?>
                     </a>
                 </td>
@@ -69,16 +69,16 @@ if (strstr($newSession, '?')) {
                 </td>
                 <?php if (User::get('username') == $session->username) { ?>
                 <td>
-                    <a class="closetool" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=stop&app=' . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_TERMINATE_TITLE'); ?>">
+                    <a class="closetool" href="<?= Route::url('index.php?option=' . $this->option . '&task=stop&app=' . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_TITLE') ?>">
                         <?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?>
                     </a>
                 </td>
                 <?php } else { ?>
                 <td>
-                    <a class="disconnect" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=unshare&app=' . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_TOOLS_DISCONNECT_TITLE'); ?>">
+                    <a class="disconnect" href="<?= Route::url('index.php?option=' . $this->option . '&task=unshare&app=' . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_DISCONNECT_TITLE') ?>">
                         <?php echo Lang::txt('COM_TOOLS_DISCONNECT'); ?>
                     </a>
-                    <span class="owner"><?php echo Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username; ?></span>
+                    <span class="owner"><?= Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username ?></span>
                 </td>
                 <?php } ?>
             </tr>

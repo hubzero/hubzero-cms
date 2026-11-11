@@ -314,7 +314,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             data-autoplay="<?php echo $this->escape($auto); ?>"
                             data-type="subtitle"
                             data-lang="<?php echo $this->escape($subtitle->name); ?>"
-                            data-src="<?php echo $this->escape($source); ?>?v=<?php echo $this->escape($modified); ?>"></div>
+                            data-src="<?= $this->escape($source) ?>?v=<?= $this->escape($modified) ?>"></div>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </video>
@@ -324,7 +324,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
             <div id="progress-bar"></div>
             <div id="control-buttons">
                 <div id="control-buttons-left">
-                    <a id="play-pause" class="control" href="javascript:void(0);" role="button" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAY_VIDEO')); ?>" aria-pressed="false">
+                    <a id="play-pause" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAY_VIDEO')) ?>" aria-pressed="false">
                         <svg class="icon-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
                             <rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
@@ -336,7 +336,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                     <div id="media-progress"></div>
                 </div>
                 <div id="control-buttons-right">
-                    <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_SETTINGS')); ?>" aria-haspopup="true" aria-expanded="false">
+                    <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_SETTINGS')) ?>" aria-haspopup="true" aria-expanded="false">
                         <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor" stroke-width="1.75" />
                             <text x="5" y="16.5" font-family="sans-serif" font-size="9" font-weight="700" fill="currentColor" text-anchor="start" dominant-baseline="auto">CC</text>
@@ -345,83 +345,83 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
                             <div class="grid">
                                 <div class="col span4 label">
-                                    <label for="subtitle-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS'); ?>:</label>
+                                    <label for="subtitle-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS') ?>:</label>
                                 </div>
                                 <div class="col span8 omega input">
                                     <select id="subtitle-selector">
-                                        <option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
+                                        <option value=""><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
                                     </select>
                                 </div>
                             </div>
                             <div class="grid">
                                 <div class="col span4 label">
-                                    <label for="transcript-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT'); ?>:</label>
+                                    <label for="transcript-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT') ?>:</label>
                                 </div>
                                 <div class="col span8 omega input">
                                     <select id="transcript-selector" class="transcript-selector">
-                                        <option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
+                                        <option value=""><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
                                     </select>
                                 </div>
                             </div>
-                            <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS'); ?></button>
+                            <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS') ?></button>
                             <div class="subtitle-settings hide" id="subtitle-options">
                                 <div class="grid">
                                     <div class="col span6 label">
-                                        <label for="font-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT'); ?>:</label>
+                                        <label for="font-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT') ?>:</label>
                                     </div>
                                     <div class="col span6 omega input">
                                         <select id="font-selector">
-                                            <option value="Arial" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL'); ?></option>
-                                            <option value="Times New Roman"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES'); ?></option>
-                                            <option value="Tahoma"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA'); ?></option>
-                                            <option value="Trebuchet MS"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET'); ?></option>
-                                            <option value="Verdana"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA'); ?></option>
-                                            <option value="Courier New"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER'); ?></option>
+                                            <option value="Arial" selected><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL') ?></option>
+                                            <option value="Times New Roman"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES') ?></option>
+                                            <option value="Tahoma"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA') ?></option>
+                                            <option value="Trebuchet MS"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET') ?></option>
+                                            <option value="Verdana"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA') ?></option>
+                                            <option value="Courier New"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER') ?></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="grid">
                                     <div class="col span6 label">
-                                        <label for="font-size-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE'); ?>:</label>
+                                        <label for="font-size-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE') ?>:</label>
                                     </div>
                                     <div class="col span6 omega input">
                                         <select id="font-size-selector">
-                                            <option value="12"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL'); ?></option>
-                                            <option value="18" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM'); ?></option>
-                                            <option value="24"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE'); ?></option>
+                                            <option value="12"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL') ?></option>
+                                            <option value="18" selected><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM') ?></option>
+                                            <option value="24"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE') ?></option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="grid">
                                     <div class="col span6 label">
-                                        <span id="font-color-label"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</span>
+                                        <span id="font-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR') ?>:</span>
                                     </div>
                                     <div class="col span6 omega input">
-                                        <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR_PICKER')); ?>"></div>
+                                        <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR_PICKER')) ?>"></div>
                                     </div>
                                 </div>
                                 <div class="grid">
                                     <div class="col span6 label">
-                                        <span id="background-color-label"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</span>
+                                        <span id="background-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND') ?>:</span>
                                     </div>
                                     <div class="col span6 omega input">
-                                        <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND_PICKER')); ?>"></div>
+                                        <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND_PICKER')) ?>"></div>
                                     </div>
                                 </div>
                                 <div class="grid">
                                     <div class="col span12 omega subtitle-settings-preview-container">
                                         <div class="subtitle-settings-preview">
-                                            <div class="test"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
+                                            <div class="test"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE') ?></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="actions">
-                                    <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE'); ?></button>
+                                    <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE') ?></button>
                                 </div>
                             </div>
                         </div>
                     </a>
-                    <a id="volume" class="control" href="javascript:void(0);" role="button" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')); ?>" aria-haspopup="true" aria-expanded="false">
+                    <a id="volume" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>" aria-haspopup="true" aria-expanded="false">
                         <svg class="icon-vol-high" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
                             <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor" />
@@ -441,11 +441,11 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                         </svg>
                         <div class="control-container volume-controls">
-                            <label for="volume-bar" class="sr-only"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME'); ?></label>
-                            <div id="volume-bar" role="slider" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')); ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
+                            <label for="volume-bar" class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME') ?></label>
+                            <div id="volume-bar" role="slider" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
                         </div>
                     </a>
-                    <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAYBACK_SETTINGS')); ?>" aria-haspopup="true" aria-expanded="false">
+                    <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAYBACK_SETTINGS')) ?>" aria-haspopup="true" aria-expanded="false">
                         <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor" />
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M19.4 13a7.6 7.6 0 0 0 .1-1c0-.34-.03-.67-.08-1l2.16-1.68a.5.5 0 0 0 .12-.64l-2.05-3.55a.5.5 0 0 0-.61-.22l-2.55 1.03a7.45 7.45 0 0 0-1.72-1l-.38-2.72A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42L9.13 5.14a7.45 7.45 0 0 0-1.72 1L4.86 5.11a.49.49 0 0 0-.61.22L2.2 8.88a.48.48 0 0 0 .12.64L4.48 11c-.05.33-.08.66-.08 1s.03.67.08 1L2.32 14.68a.5.5 0 0 0-.12.64l2.05 3.55c.12.22.38.3.61.22l2.55-1.03c.53.39 1.1.72 1.72 1l.38 2.72c.06.28.28.42.49.42h4c.22 0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 1.72-1l2.55 1.03c.23.08.49 0 .61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z" fill="currentColor" opacity=".7" />
@@ -453,12 +453,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                         <div class="control-container settings-controls">
                             <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
                             <div class="grid">
-                                <div class="label"><label for="speed"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_SPEED'); ?>:</label></div>
+                                <div class="label"><label for="speed"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_SPEED') ?>:</label></div>
                                 <div class="input">
                                     <select id="speed">
                                         <option value=".25">.25×</option>
                                         <option value=".5">.5×</option>
-                                        <option selected value="1"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL'); ?></option>
+                                        <option selected value="1"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL') ?></option>
                                         <option value="1.25">1.25×</option>
                                         <option value="1.5">1.5×</option>
                                         <option value="2">2×</option>
@@ -467,18 +467,18 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             </div>
                         </div>
                     </a>
-                    <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK_AT_TIME')); ?>" aria-haspopup="true" aria-expanded="false">
+                    <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK_AT_TIME')) ?>" aria-haspopup="true" aria-expanded="false">
                         <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         <div class="control-container link-controls">
-                            <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK'); ?> <span><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_AT_POSITION'); ?></span></h3>
+                            <h3><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK') ?> <span><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_AT_POSITION') ?></span></h3>
                             <div class="grid">
                                 <div class="input">
-                                    <label for="timestamp-link" class="sr-only"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION'); ?></label>
-                                    <input type="text" id="timestamp-link" value="" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION')); ?>" readonly />
-                                    <span class="hint"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_COPY_HINT'); ?></span>
+                                    <label for="timestamp-link" class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION') ?></label>
+                                    <input type="text" id="timestamp-link" value="" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION')) ?>" readonly />
+                                    <span class="hint"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_COPY_HINT') ?></span>
                                 </div>
                             </div>
                         </div>
@@ -492,7 +492,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
     <div id="transcript-container">
         <div id="transcript-toolbar">
             <div id="transcript-select"></div>
-            <input type="text" id="transcript-search" placeholder="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_SEARCH_TRANSCRIPT')); ?>" />
+            <input type="text" id="transcript-search" placeholder="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_SEARCH_TRANSCRIPT')) ?>" />
             <a href="javascript:void(0);" id="font-bigger"></a>
             <a href="javascript:void(0);" id="font-smaller"></a>
         </div>
@@ -520,17 +520,17 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                     <ul class="no-js">
                         <?php $counter = 0; ?>
                         <?php foreach ($presentation->slides as $slide) : ?>
-                            <li id="slide_<?php echo $counter; ?>" title="<?php echo $this->escape($slide->title); ?>" time="<?php echo $this->escape($slide->time); ?>">
+                            <li id="slide_<?= $counter ?>" title="<?= $this->escape($slide->title) ?>" time="<?= $this->escape($slide->time) ?>">
                                 <?php if ($slide->type == 'Image') : ?>
-                                    <img src="<?php echo $this->escape($content_folder . DS . $slide->media); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
+                                    <img src="<?= $this->escape($content_folder . DS . $slide->media) ?>" alt="<?= $this->escape($slide->title) ?>" />
                                 <?php else : ?>
                                     <video class="slidevideo">
                                         <?php foreach ($slide->media as $source) : ?>
-                                            <source src="<?php echo $this->escape($content_folder . DS . $source->source); ?>" />
+                                            <source src="<?= $this->escape($content_folder . DS . $source->source) ?>" />
                                         <?php endforeach; ?>
-                                        <a href="<?php echo $this->escape($content_folder . DS . $slide->media[0]->source); ?>" class="flowplayer_slide" id="flowplayer_slide_<?php echo $counter; ?>"></a>
+                                        <a href="<?= $this->escape($content_folder . DS . $slide->media[0]->source) ?>" class="flowplayer_slide" id="flowplayer_slide_<?= $counter ?>"></a>
                                     </video>
-                                    <img src="<?php echo $this->escape(isset($slide->media[3]) ? $content_folder . DS . $slide->media[3]->source : ''); ?>" alt="<?php echo $this->escape($slide->title); ?>" class="imagereplacement" />
+                                    <img src="<?= $this->escape(isset($slide->media[3]) ? $content_folder . DS . $slide->media[3]->source : '') ?>" alt="<?= $this->escape($slide->title) ?>" class="imagereplacement" />
                                 <?php endif; ?>
                             </li>
                             <?php $counter++; ?>
@@ -542,7 +542,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                     <div id="progress-bar"></div>
                     <div id="control-buttons">
                         <div id="control-buttons-left">
-                            <a id="play-pause" class="control" href="javascript:void(0);" role="button" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAY_VIDEO')); ?>" aria-pressed="false">
+                            <a id="play-pause" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAY_VIDEO')) ?>" aria-pressed="false">
                                 <svg class="icon-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
                                     <rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
@@ -554,7 +554,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <div id="media-progress"></div>
                         </div>
                         <div id="control-buttons-right">
-                            <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_SETTINGS')); ?>" aria-haspopup="true" aria-expanded="false">
+                            <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_SETTINGS')) ?>" aria-haspopup="true" aria-expanded="false">
                                 <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor" stroke-width="1.75" />
                                     <text x="5" y="16.5" font-family="sans-serif" font-size="9" font-weight="700" fill="currentColor" text-anchor="start" dominant-baseline="auto">CC</text>
@@ -563,83 +563,83 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
                                     <div class="grid">
                                         <div class="col span4 label">
-                                            <label for="subtitle-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS'); ?>:</label>
+                                            <label for="subtitle-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS') ?>:</label>
                                         </div>
                                         <div class="col span8 omega input">
                                             <select id="subtitle-selector">
-                                                <option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
+                                                <option value=""><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="grid">
                                         <div class="col span4 label">
-                                            <label for="transcript-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT'); ?>:</label>
+                                            <label for="transcript-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_TRANSCRIPT') ?>:</label>
                                         </div>
                                         <div class="col span8 omega input">
                                             <select id="transcript-selector" class="transcript-selector">
-                                                <option value=""><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF'); ?></option>
+                                                <option value=""><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
                                             </select>
                                         </div>
                                     </div>
-                                    <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS'); ?></button>
+                                    <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS') ?></button>
                                     <div class="subtitle-settings hide" id="subtitle-options">
                                         <div class="grid">
                                             <div class="col span6 label">
-                                                <label for="font-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT'); ?>:</label>
+                                                <label for="font-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT') ?>:</label>
                                             </div>
                                             <div class="col span6 omega input">
                                                 <select id="font-selector">
-                                                    <option value="Arial" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL'); ?></option>
-                                                    <option value="Times New Roman"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES'); ?></option>
-                                                    <option value="Tahoma"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA'); ?></option>
-                                                    <option value="Trebuchet MS"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET'); ?></option>
-                                                    <option value="Verdana"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA'); ?></option>
-                                                    <option value="Courier New"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER'); ?></option>
+                                                    <option value="Arial" selected><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL') ?></option>
+                                                    <option value="Times New Roman"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES') ?></option>
+                                                    <option value="Tahoma"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA') ?></option>
+                                                    <option value="Trebuchet MS"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET') ?></option>
+                                                    <option value="Verdana"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA') ?></option>
+                                                    <option value="Courier New"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER') ?></option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="grid">
                                             <div class="col span6 label">
-                                                <label for="font-size-selector"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE'); ?>:</label>
+                                                <label for="font-size-selector"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE') ?>:</label>
                                             </div>
                                             <div class="col span6 omega input">
                                                 <select id="font-size-selector">
-                                                    <option value="12"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL'); ?></option>
-                                                    <option value="18" selected><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM'); ?></option>
-                                                    <option value="24"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE'); ?></option>
+                                                    <option value="12"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL') ?></option>
+                                                    <option value="18" selected><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM') ?></option>
+                                                    <option value="24"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE') ?></option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="grid">
                                             <div class="col span6 label">
-                                                <span id="font-color-label"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR'); ?>:</span>
+                                                <span id="font-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR') ?>:</span>
                                             </div>
                                             <div class="col span6 omega input">
-                                                <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR_PICKER')); ?>"></div>
+                                                <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR_PICKER')) ?>"></div>
                                             </div>
                                         </div>
                                         <div class="grid">
                                             <div class="col span6 label">
-                                                <span id="background-color-label"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND'); ?>:</span>
+                                                <span id="background-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND') ?>:</span>
                                             </div>
                                             <div class="col span6 omega input">
-                                                <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND_PICKER')); ?>"></div>
+                                                <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND_PICKER')) ?>"></div>
                                             </div>
                                         </div>
                                         <div class="grid">
                                             <div class="col span12 omega subtitle-settings-preview-container">
                                                 <div class="subtitle-settings-preview">
-                                                    <div class="test"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE'); ?></div>
+                                                    <div class="test"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE') ?></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="actions">
-                                            <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE'); ?></button>
+                                            <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE') ?></button>
                                         </div>
                                     </div>
                                 </div>
                             </a>
-                            <a id="volume" class="control" href="javascript:void(0);" role="button" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')); ?>" aria-haspopup="true" aria-expanded="false">
+                            <a id="volume" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>" aria-haspopup="true" aria-expanded="false">
                                 <svg class="icon-vol-high" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
                                     <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor" />
@@ -659,11 +659,11 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
                                 </svg>
                                 <div class="control-container volume-controls">
-                                    <label for="volume-bar" class="sr-only"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME'); ?></label>
-                                    <div id="volume-bar" role="slider" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')); ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
+                                    <label for="volume-bar" class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME') ?></label>
+                                    <div id="volume-bar" role="slider" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
                                 </div>
                             </a>
-                            <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAYBACK_SETTINGS')); ?>" aria-haspopup="true" aria-expanded="false">
+                            <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAYBACK_SETTINGS')) ?>" aria-haspopup="true" aria-expanded="false">
                                 <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor" />
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M19.4 13a7.6 7.6 0 0 0 .1-1c0-.34-.03-.67-.08-1l2.16-1.68a.5.5 0 0 0 .12-.64l-2.05-3.55a.5.5 0 0 0-.61-.22l-2.55 1.03a7.45 7.45 0 0 0-1.72-1l-.38-2.72A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42L9.13 5.14a7.45 7.45 0 0 0-1.72 1L4.86 5.11a.49.49 0 0 0-.61.22L2.2 8.88a.48.48 0 0 0 .12.64L4.48 11c-.05.33-.08.66-.08 1s.03.67.08 1L2.32 14.68a.5.5 0 0 0-.12.64l2.05 3.55c.12.22.38.3.61.22l2.55-1.03c.53.39 1.1.72 1.72 1l.38 2.72c.06.28.28.42.49.42h4c.22 0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 1.72-1l2.55 1.03c.23.08.49 0 .61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z" fill="currentColor" opacity=".7" />
@@ -671,12 +671,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 <div class="control-container settings-controls">
                                     <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
                                     <div class="grid">
-                                        <div class="label"><label for="speed"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_SPEED'); ?>:</label></div>
+                                        <div class="label"><label for="speed"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_SPEED') ?>:</label></div>
                                         <div class="input">
                                             <select id="speed">
                                                 <option value=".25">.25×</option>
                                                 <option value=".5">.5×</option>
-                                                <option selected value="1"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL'); ?></option>
+                                                <option selected value="1"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL') ?></option>
                                                 <option value="1.25">1.25×</option>
                                                 <option value="1.5">1.5×</option>
                                                 <option value="2">2×</option>
@@ -685,18 +685,18 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     </div>
                                 </div>
                             </a>
-                            <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK_AT_TIME')); ?>" aria-haspopup="true" aria-expanded="false">
+                            <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK_AT_TIME')) ?>" aria-haspopup="true" aria-expanded="false">
                                 <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                     <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                 </svg>
                                 <div class="control-container link-controls">
-                                    <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK'); ?> <span><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_AT_POSITION'); ?></span></h3>
+                                    <h3><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK') ?> <span><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_AT_POSITION') ?></span></h3>
                                     <div class="grid">
                                         <div class="input">
-                                            <label for="timestamp-link" class="sr-only"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION'); ?></label>
-                                            <input type="text" id="timestamp-link" value="" aria-label="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION')); ?>" readonly />
-                                            <span class="hint"><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_COPY_HINT'); ?></span>
+                                            <label for="timestamp-link" class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION') ?></label>
+                                            <input type="text" id="timestamp-link" value="" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION')) ?>" readonly />
+                                            <span class="hint"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_COPY_HINT') ?></span>
                                         </div>
                                     </div>
                                 </div>
@@ -711,7 +711,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
             <div id="presenter-right">
                 <div id="media" class="<?php echo $this->escape($cls); ?>">
                     <?php if ($__ptype == 'video') : ?>
-                        <video id="player" preload="auto" controls="controls" data-mediaid="<?php echo $this->asset->get('id'); ?>">
+                        <video id="player" preload="auto" controls="controls" data-mediaid="<?= $this->asset->get('id') ?>">
                             <?php foreach ($__pmedia as $source) : ?>
                                 <?php
                                 switch (strtolower($source->type)) {
@@ -727,9 +727,9 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         break;
                                 }
                                 ?>
-                                <source src="<?php echo $this->escape($content_folder . DS . $source->source); ?>" type='<?php echo $this->escape($type); ?>'>
+                                <source src="<?= $this->escape($content_folder . DS . $source->source) ?>" type='<?= $this->escape($type) ?>'>
                             <?php endforeach; ?>
-                            <a href="<?php echo $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')); ?>" id="flowplayer"></a>
+                            <a href="<?= $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')) ?>" id="flowplayer"></a>
 
                             <?php if (isset($subs) && count($subs) > 0) : ?>
                                 <?php foreach ($subs as $sub) : ?>
@@ -737,7 +737,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         data-autoplay="<?php echo $this->escape($sub->autoplay); ?>"
                                         data-type="subtitle"
                                         data-lang="<?php echo $this->escape($sub->name); ?>"
-                                        data-src="<?php echo $this->escape($sub->source); ?>?v=<?php echo $this->escape((substr($sub->source, 0, 4) != 'http' && file_exists(PATH_ROOT . $sub->source)) ? filemtime(PATH_ROOT . $sub->source) : 0); ?>"></div>
+                                        data-src="<?= $this->escape($sub->source) ?>?v=<?= $this->escape((substr($sub->source, 0, 4) != 'http' && file_exists(PATH_ROOT . $sub->source)) ? filemtime(PATH_ROOT . $sub->source) : 0) ?>"></div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
 
@@ -747,7 +747,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <?php foreach ($__pmedia as $source) : ?>
                                 <source src="<?php echo $this->escape($content_folder . DS . $source->source); ?>" />
                             <?php endforeach; ?>
-                            <a href="<?php echo $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')); ?>" id="flowplayer" duration="<?php echo isset($presentation->duration) && $presentation->duration ? $this->escape($presentation->duration) : ''; ?>"></a>
+                            <a href="<?= $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')) ?>" id="flowplayer" duration="<?= isset($presentation->duration) && $presentation->duration ? $this->escape($presentation->duration) : '' ?>"></a>
                         </audio>
                     <?php endif; ?>
                     <div id="video-subtitles"></div>
@@ -769,7 +769,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         $thumb = $content_folder . DS . $slide->media;
                                     }
                                     ?>
-                                    <img src="<?php echo $this->escape($thumb); ?>" alt="<?php echo $this->escape($slide->title); ?>" />
+                                    <img src="<?= $this->escape($thumb) ?>" alt="<?= $this->escape($slide->title) ?>" />
                                     <span>
                                         <?php
                                             $num++;
@@ -800,7 +800,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
         <div id="transcript-container">
             <div id="transcript-toolbar">
                 <div id="transcript-select"></div>
-                <input type="text" id="transcript-search" placeholder="<?php echo $this->escape(Lang::txt('COM_COURSES_VIDEO_SEARCH_TRANSCRIPT')); ?>" />
+                <input type="text" id="transcript-search" placeholder="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_SEARCH_TRANSCRIPT')) ?>" />
                 <a href="javascript:void(0);" id="font-bigger"></a>
                 <a href="javascript:void(0);" id="font-smaller"></a>
             </div>
@@ -838,5 +838,5 @@ if ($type == 'hubpresenter' || $type == 'html5') {
         </video>
     </div>
 <?php else : ?>
-    <p class="warning"><?php echo (isset($error)) ? $error : Lang::txt('COM_COURSES_VIDEO_ERROR_NO_PLAYABLE_ASSETS'); ?></p>
+    <p class="warning"><?= (isset($error)) ? $error : Lang::txt('COM_COURSES_VIDEO_ERROR_NO_PLAYABLE_ASSETS') ?></p>
 <?php endif;

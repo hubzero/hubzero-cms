@@ -33,14 +33,14 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">
+            <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index') ?>">
                 <span><?php echo Lang::txt('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
             </a>
         </p>
     </div>
 </header>
 
-<form method="get" action="<?php echo Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task); ?>" id="collections">
+<form method="get" action="<?= Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task) ?>" id="collections">
     <?php
     $this
          ->view('_submenu')
@@ -56,7 +56,7 @@ $this
             <span class="input-cell">
                 <label for="filter-search">
                     <span><?php echo Lang::txt('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
-                    <input type="text" name="search" id="filter-search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_COLLECTIONS_SEARCH_PLACEHOLDER'); ?>" />
+                    <input type="text" name="search" id="filter-search" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_COLLECTIONS_SEARCH_PLACEHOLDER') ?>" />
                 </label>
             </span>
             <span class="input-cell">
@@ -67,10 +67,10 @@ $this
 
     <section class="main section">
         <?php if ($this->rows->total() > 0) { ?>
-            <div id="posts" data-base="<?php echo Request::base(true); ?>" class="view-as <?php echo $mode . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin'); ?>">
+            <div id="posts" data-base="<?= Request::base(true) ?>" class="view-as <?= $mode . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
                 <?php if (!User::isGuest() && !Request::getInt('no_html', 0)) { ?>
                     <div class="post new-post">
-                        <a class="icon-add add" href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=collections&task=post/new'); ?>">
+                        <a class="icon-add add" href="<?= Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=collections&task=post/new') ?>">
                             <?php echo Lang::txt('COM_COLLECTIONS_NEW_POST'); ?>
                         </a>
                     </div>
@@ -79,7 +79,7 @@ $this
                 foreach ($this->rows as $row) {
                     $item = $row->item();
                     ?>
-                    <div class="post <?php echo $item->type(); ?>" id="b<?php echo $row->get('id'); ?>" data-id="<?php echo $row->get('id'); ?>" data-closeup-url="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id')); ?>">
+                    <div class="post <?= $item->type() ?>" id="b<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>" data-closeup-url="<?= Route::url($base . '&controller=posts&post=' . $row->get('id')) ?>">
                         <div class="content">
                         <?php
                             $this
@@ -94,7 +94,7 @@ $this
                                     <?php echo $tags; ?>
                                 </div>
                         <?php } ?>
-                            <div class="meta" data-metadata-url="<?php echo Route::url('index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id')); ?>">
+                            <div class="meta" data-metadata-url="<?= Route::url('index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id')) ?>">
                                 <p class="stats">
                                     <span class="likes">
                                     <?php echo Lang::txt('COM_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>
@@ -114,38 +114,38 @@ $this
                                 <div class="actions">
                                     <?php if (!User::isGuest()) { ?>
                                         <?php if ($row->get('created_by') == User::get('id')) { ?>
-                                            <a class="btn edit" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=edit'); ?>">
+                                            <a class="btn edit" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=edit') ?>">
                                                 <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                                             </a>
                                         <?php } else { ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=vote'); ?>" class="btn vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $item->get('id'); ?>" data-text-like="<?php echo Lang::txt('COM_COLLECTIONS_LIKE'); ?>" data-text-unlike="<?php echo Lang::txt('COM_COLLECTIONS_UNLIKE'); ?>">
-                                                <span><?php echo ($item->get('voted')) ? Lang::txt('COM_COLLECTIONS_UNLIKE') : Lang::txt('COM_COLLECTIONS_LIKE'); ?></span>
+                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=vote') ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $item->get('id') ?>" data-text-like="<?= Lang::txt('COM_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('COM_COLLECTIONS_UNLIKE') ?>">
+                                                <span><?= ($item->get('voted')) ? Lang::txt('COM_COLLECTIONS_UNLIKE') : Lang::txt('COM_COLLECTIONS_LIKE') ?></span>
                                             </button>
                                         <?php } ?>
                                         <?php
                                         // Display comment button only if enabled
                                         if ($this->config->get('allow_comments')) :
                                             ?>
-                                            <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=comment'); ?>">
+                                            <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COMMENT'); ?></span>
                                             </a>
                                         <?php endif; ?>
-                                            <a class="btn repost" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=collect'); ?>">
+                                            <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=collect') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                     <?php } else { ?>
-                                            <a class="btn vote like tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task, false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_LIKE'); ?>">
+                                            <a class="btn vote like tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task, false, true)), false) ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_LIKE'); ?></span>
                                             </a>
                                             <?php
                                             // Display comment button only if enabled
                                             if ($this->config->get('allow_comments')) :
                                                 ?>
-                                            <a class="btn comment" data-id="<?php echo $row->get('id'); ?>" href="<?php echo Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=comment'); ?>">
+                                            <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COMMENT'); ?></span>
                                             </a>
                                             <?php endif; ?>
-                                            <a class="btn repost tooltips" href="<?php echo Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task, false, true)), false); ?>" title="<?php echo Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT'); ?>">
+                                            <a class="btn repost tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task, false, true)), false) ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                     <?php } ?>
@@ -156,12 +156,12 @@ $this
                                 $name = $this->escape(stripslashes($row->creator()->get('name')));
 
                                 if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-                                    <a href="<?php echo Route::url($row->creator()->link() . '&active=collections'); ?>" title="<?php echo $name; ?>" class="img-link">
-                                        <img src="<?php echo $row->creator()->picture(); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+                                    <a href="<?= Route::url($row->creator()->link() . '&active=collections') ?>" title="<?= $name ?>" class="img-link">
+                                        <img src="<?= $row->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                                     </a>
                                 <?php } else { ?>
                                     <span class="img-link">
-                                        <img src="<?php echo $row->creator()->picture(); ?>" alt="<?php echo Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name); ?>" />
+                                        <img src="<?= $row->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                                     </span>
                                 <?php } ?>
                                 <p>
@@ -177,10 +177,10 @@ $this
                                     ?>
                                     <br />
                                     <span class="entry-date">
-                                        <span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
-                                        <span class="time"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('time'); ?></time></span>
-                                        <span class="entry-date-on"><?php echo Lang::txt('COM_COLLECTIONS_ON'); ?></span>
-                                        <span class="date"><time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time></span>
+                                        <span class="entry-date-at"><?= Lang::txt('COM_COLLECTIONS_AT') ?></span>
+                                        <span class="time"><time datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
+                                        <span class="entry-date-on"><?= Lang::txt('COM_COLLECTIONS_ON') ?></span>
+                                        <span class="date"><time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
                                     </span>
                                 </p>
                             </div><!-- / .attribution -->

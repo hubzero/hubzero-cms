@@ -41,13 +41,13 @@ $this->css();
 <?php if ($this->model->access('content')) { ?>
     <ul id="page_options" class="pluginOptions">
         <li>
-            <a class="icon-add add btn"  href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=databases&action=create') . '#content'; ?>">
+            <a class="icon-add add btn"  href="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=databases&action=create') . '#content' ?>">
                 <?php echo Lang::txt('PLG_PROJECTS_DATA_START'); ?>
             </a>
         </li>
     </ul>
 <?php } ?>
-<div id="confirm-file-delete" class="confirm-file-delete" title="<?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE_PROJECT_DATABASE'); ?>">
+<div id="confirm-file-delete" class="confirm-file-delete" title="<?= Lang::txt('PLG_PROJECTS_DATABASES_DELETE_PROJECT_DATABASE') ?>">
     <p>
         <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0; color: red;"></span>
         <?php echo Lang::txt('Confirm database deletion.'); ?>
@@ -64,7 +64,7 @@ $this->css();
                 <th><?php echo Lang::txt('Created On'); ?></th>
                 <th><?php echo Lang::txt('Created By'); ?></th>
                 <?php if ($this->model->access('content')) { ?>
-                    <th><?php echo Lang::txt('Update Database'); ?><span class="update-help-icon" title="<?php echo Lang::txt('Click the \'Update\' link to recreate a database using the updated source CSV file from the file repository. Click the help icon for more information.'); ?>"></span></th>
+                    <th><?= Lang::txt('Update Database') ?><span class="update-help-icon" title="<?= Lang::txt('Click the \'Update\' link to recreate a database using the updated source CSV file from the file repository. Click the help icon for more information.') ?>"></span></th>
                     <th><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE'); ?></th>
                 <?php } ?>
             </tr>
@@ -100,10 +100,10 @@ $this->css();
             }
             ?>
             <tr class="mini faded">
-                <td title="<?php echo $this->escape($r['description']); ?>" data-db-title="<?php echo $this->escape($r['title']); ?>" data-db-id="<?php echo $r['id']; ?>">
-                    <a rel="noopener noreferrer" target="_blank" href="/<?php echo $this->dataviewer; ?>/view/<?php echo $this->model->get('alias'); ?>:dsl/<?php echo $r['database_name']; ?>/"><?php echo $this->escape($r['title']); ?></a>
+                <td title="<?= $this->escape($r['description']) ?>" data-db-title="<?= $this->escape($r['title']) ?>" data-db-id="<?= $r['id'] ?>">
+                    <a rel="noopener noreferrer" target="_blank" href="/<?= $this->dataviewer ?>/view/<?= $this->model->get('alias') ?>:dsl/<?= $r['database_name'] ?>/"><?= $this->escape($r['title']) ?></a>
                 <?php if ($this->model->access('content')) { ?>
-                    <span class="db-update" title="<?php echo Lang::txt('PLG_PROJECTS_DATABASES_CLICK_TO_EDIT'); ?>"></span>
+                    <span class="db-update" title="<?= Lang::txt('PLG_PROJECTS_DATABASES_CLICK_TO_EDIT') ?>"></span>
                 <?php } ?>
                 </td>
                 <td <?php  echo $file_extra; ?>>
@@ -113,14 +113,14 @@ $this->css();
                 <?php echo $r['created']; ?>
                 </td>
                 <td>
-                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . $r['created_by']); ?>"><?php echo $this->escape($r['name']); ?></a>
+                    <a href="<?= Route::url('index.php?option=com_members&id=' . $r['created_by']) ?>"><?= $this->escape($r['name']) ?></a>
                 </td>
             <?php if ($this->model->access('content')) { ?>
                 <td>
                     <?php echo $recreate; ?>
                 </td>
                 <td>
-                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=databases&action=delete&db_id=' . $r['id']); ?>" class="delete-db"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE'); ?></button>
+                    <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=databases&action=delete&db_id=' . $r['id']) ?>" class="delete-db"><?= Lang::txt('PLG_PROJECTS_DATABASES_DELETE') ?></button>
                 </td>
             <?php } ?>
             </tr>
@@ -167,7 +167,7 @@ $this->css();
     ?>
 </div>
 <div id="prj-db-update-dialog" class="prj-db-update-dialog dialog" title="Update Title &amp; Description">
-    <form id="prj-db-update-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=databases&action=update'); ?>">
+    <form id="prj-db-update-form" method="post" action="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=databases&action=update') ?>">
         <input type="hidden" name="db_id" />
         <label><?php echo Lang::txt('PLG_PROJECTS_DATABASES_TITLE'); ?>:
             <input type="text" name="db_title" style="width: 550px;" />

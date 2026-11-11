@@ -31,7 +31,7 @@ if (!$no_html) {
         <?php if ($this->getError()) { ?>
             <p class="error"><?php echo $this->getError(); ?></p>
         <?php } ?>
-        <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse'); ?>" method="post" id="hubForm<?php echo $no_html ? '-ajax' : ''; ?>">
+        <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse') ?>" method="post" id="hubForm<?= $no_html ? '-ajax' : '' ?>">
             <?php if (!$no_html) { ?>
             <div class="explaination">
                 <p><?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_EXPLANATION'); ?></p>
@@ -60,8 +60,8 @@ if (!$no_html) {
                             echo ($this->report->anon != 0) ? Lang::txt('JANONYMOUS') : $name;
                             echo ($this->report->href) ? '</a>' : '';
                         ?></p>
-                        <?php echo ($this->report->subject) ? '<p><strong>' . $this->escape(stripslashes($this->report->subject)) . '</strong></p>' : ''; ?>
-                        <blockquote cite="<?php echo ($this->report->anon != 0) ? Lang::txt('COM_SUPPORT_ANONYMOUS') : $name; ?>">
+                        <?= ($this->report->subject) ? '<p><strong>' . $this->escape(stripslashes($this->report->subject)) . '</strong></p>' : '' ?>
+                        <blockquote cite="<?= ($this->report->anon != 0) ? Lang::txt('COM_SUPPORT_ANONYMOUS') : $name ?>">
                             <p><?php echo Sanitize::html($this->report->text); ?></p>
                         </blockquote>
                     </div>
@@ -73,19 +73,19 @@ if (!$no_html) {
 
                     <div class="form-group form-check">
                         <label class="option form-check-label" for="subject1">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject1" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE'); ?>" checked="checked" />
+                            <input type="radio" class="option form-check-input" name="subject" id="subject1" value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE') ?>" checked="checked" />
                             <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE'); ?>
                         </label>
                         <label class="option form-check-label" for="subject2">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject2" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID'); ?>" />
+                            <input type="radio" class="option form-check-input" name="subject" id="subject2" value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID') ?>" />
                             <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID'); ?>
                         </label>
                         <label class="option form-check-label" for="subject3">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject3" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM'); ?>" />
+                            <input type="radio" class="option form-check-input" name="subject" id="subject3" value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM') ?>" />
                             <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM'); ?>
                         </label>
                         <label class="option form-check-label" for="subject4">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject4" value="<?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OTHER'); ?>" />
+                            <input type="radio" class="option form-check-input" name="subject" id="subject4" value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_OTHER') ?>" />
                             <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OTHER'); ?>
                         </label>
                     </div>

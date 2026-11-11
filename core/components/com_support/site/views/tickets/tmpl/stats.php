@@ -165,8 +165,8 @@ $formAction = Route::url(
                 <div class="form-group">
                     <label for="ticket-group"><?php echo Lang::txt('COM_SUPPORT_FILTER_GROUP'); ?></label>
                     <select name="group" id="ticket-group" class="form-control">
-                        <option value=""<?php echo !$this->group ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_ALL'); ?></option>
-                        <option value="_none_"<?php echo $this->group == '_none_' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
+                        <option value=""<?= !$this->group ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_ALL') ?></option>
+                        <option value="_none_"<?= $this->group == '_none_' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_NONE') ?></option>
                         <?php
                         if ($this->groups) {
                             foreach ($this->groups as $group) {

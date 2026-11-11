@@ -334,9 +334,9 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
             <div class="input-wrap" data-hint="<?php echo $approvalHint; ?>">
                 <label id="field_approved-lbl" for="field_approved"><?php echo Lang::txt('Approved User'); ?></label>
                 <select id="field_approved" name="fields[approved]">
-                    <option value="0"<?php echo $this->profile->get('approved') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Not approved'); ?></option>
-                    <option value="1"<?php echo $this->profile->get('approved') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Manually approved'); ?></option>
-                    <option value="2"<?php echo $this->profile->get('approved') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Automatically approved'); ?></option>
+                    <option value="0"<?= $this->profile->get('approved') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('Not approved') ?></option>
+                    <option value="1"<?= $this->profile->get('approved') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('Manually approved') ?></option>
+                    <option value="2"<?= $this->profile->get('approved') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('Automatically approved') ?></option>
                 </select>
                 <span class="hint"><?php echo $approvalHint; ?></span>
             </div>

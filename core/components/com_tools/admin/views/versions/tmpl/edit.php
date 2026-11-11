@@ -30,14 +30,14 @@ Html::behavior('switcher', 'submenu');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
     <nav role="navigation" class="sub-navigation">
         <div id="submenu-box">
             <div class="submenu-box">
                 <div class="submenu-pad">
                     <ul id="submenu">
-                        <li><a href="#page-details" id="details" class="active"><?php echo Lang::txt('JDETAILS'); ?></a></li>
-                        <li><a href="#page-zones" id="zones"><?php echo Lang::txt('COM_TOOLS_FIELDSET_ZONES'); ?></a></li>
+                        <li><a href="#page-details" id="details" class="active"><?= Lang::txt('JDETAILS') ?></a></li>
+                        <li><a href="#page-zones" id="zones"><?= Lang::txt('COM_TOOLS_FIELDSET_ZONES') ?></a></li>
                     </ul>
                     <div class="clr"></div>
                 </div>
@@ -57,40 +57,40 @@ $this->js();
                         <legend><span><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION_DETAILS'); ?></span></legend>
 
                         <div class="input-wrap">
-                            <label for="field-command"><?php echo Lang::txt('COM_TOOLS_FIELD_COMMAND'); ?>:</label><br />
-                            <input type="text" name="fields[vnc_command]" id="field-command" value="<?php echo $this->escape(stripslashes($this->row->vnc_command ?? ''));?>" size="50" />
+                            <label for="field-command"><?= Lang::txt('COM_TOOLS_FIELD_COMMAND') ?>:</label><br />
+                            <input type="text" name="fields[vnc_command]" id="field-command" value="<?= $this->escape(stripslashes($this->row->vnc_command ?? '')) ?>" size="50" />
                         </div>
 
                         <div class="input-wrap">
-                            <label for="field-timeout"><?php echo Lang::txt('COM_TOOLS_FIELD_TIMEOUT'); ?>:</label><br />
-                            <input type="text" name="fields[vnc_timeout]" id="field-timeout" value="<?php echo $this->escape(stripslashes($this->row->vnc_timeout ?: ''));?>" size="50" />
+                            <label for="field-timeout"><?= Lang::txt('COM_TOOLS_FIELD_TIMEOUT') ?>:</label><br />
+                            <input type="text" name="fields[vnc_timeout]" id="field-timeout" value="<?= $this->escape(stripslashes($this->row->vnc_timeout ?: '')) ?>" size="50" />
                         </div>
 
                         <?php list($hardTimeout, $hardTimeoutUnit) = \Components\Tools\Helpers\Duration::fromSeconds($this->row->hardTimeout); ?>
-                        <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_HINT'); ?>">
-                            <label for="field-hardtimeout"><?php echo Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT'); ?>:</label><br />
-                            <input type="number" name="fields[hardTimeout]" id="field-hardtimeout" min="0" step="any" value="<?php echo $this->escape($hardTimeout); ?>" aria-describedby="field-hardtimeout-hint" />
-                            <select name="fields[hardTimeoutUnit]" id="field-hardtimeout-unit" aria-label="<?php echo Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_UNIT'); ?>">
+                        <div class="input-wrap" data-hint="<?= Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_HINT') ?>">
+                            <label for="field-hardtimeout"><?= Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT') ?>:</label><br />
+                            <input type="number" name="fields[hardTimeout]" id="field-hardtimeout" min="0" step="any" value="<?= $this->escape($hardTimeout) ?>" aria-describedby="field-hardtimeout-hint" />
+                            <select name="fields[hardTimeoutUnit]" id="field-hardtimeout-unit" aria-label="<?= Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_UNIT') ?>">
                                 <?php foreach (array_keys(\Components\Tools\Helpers\Duration::UNITS) as $unit) : ?>
-                                    <option value="<?php echo $unit; ?>"<?php echo $unit == $hardTimeoutUnit ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_UNIT_' . strtoupper($unit)); ?></option>
+                                    <option value="<?= $unit ?>"<?= $unit == $hardTimeoutUnit ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_UNIT_' . strtoupper($unit)) ?></option>
                                 <?php endforeach; ?>
                             </select>
-                            <span class="hint" id="field-hardtimeout-hint"><?php echo Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_HINT'); ?></span>
+                            <span class="hint" id="field-hardtimeout-hint"><?= Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_HINT') ?></span>
                         </div>
 
                         <div class="input-wrap">
-                            <label for="field-hostreq"><?php echo Lang::txt('COM_TOOLS_FIELD_HOSTREQ'); ?>:</label><br />
-                            <input type="text" name="fields[hostreq]" id="field-hostreq" value="<?php echo $this->escape(stripslashes(implode(', ', (array) $this->row->hostreq)));?>" size="50" />
+                            <label for="field-hostreq"><?= Lang::txt('COM_TOOLS_FIELD_HOSTREQ') ?>:</label><br />
+                            <input type="text" name="fields[hostreq]" id="field-hostreq" value="<?= $this->escape(stripslashes(implode(', ', (array) $this->row->hostreq))) ?>" size="50" />
                         </div>
 
                         <div class="input-wrap">
                             <label for="field-mw"><?php echo Lang::txt('COM_TOOLS_FIELD_MIDDLEWARE'); ?>:</label><br />
-                            <input type="text" name="fields[mw]" id="field-mw" value="<?php echo $this->escape(stripslashes($this->row->mw ?? ''));?>" size="50" />
+                            <input type="text" name="fields[mw]" id="field-mw" value="<?= $this->escape(stripslashes($this->row->mw ?? '')) ?>" size="50" />
                         </div>
 
                         <div class="input-wrap">
                             <label for="field-params"><?php echo Lang::txt('COM_TOOLS_FIELD_PARAMS'); ?>:</label><br />
-                            <textarea name="fields[params]" id="field-params" cols="50" rows="10"><?php echo $this->escape(stripslashes($this->row->params ?? ''));?></textarea>
+                            <textarea name="fields[params]" id="field-params" cols="50" rows="10"><?= $this->escape(stripslashes($this->row->params ?? '')) ?></textarea>
                         </div>
                     </fieldset>
 
@@ -106,8 +106,8 @@ $this->js();
                                 <div class="grid">
                                     <div class="col span5">
                                         <div class="input-wrap">
-                                            <label for="field-doi_shoulder"><?php echo Lang::txt('COM_TOOLS_FIELD_DOI_SHOULDER'); ?>:</label><br />
-                                            <input type="text" name="doi[doi_shoulder]" id="field-doi_shoulder" value="<?php echo $this->escape($this->doi->doi_shoulder); ?>" />
+                                            <label for="field-doi_shoulder"><?= Lang::txt('COM_TOOLS_FIELD_DOI_SHOULDER') ?>:</label><br />
+                                            <input type="text" name="doi[doi_shoulder]" id="field-doi_shoulder" value="<?= $this->escape($this->doi->doi_shoulder) ?>" />
                                         </div>
                                     </div>
                                     <div class="col span2">
@@ -115,22 +115,22 @@ $this->js();
                                     </div>
                                     <div class="col span5">
                                         <div class="input-wrap">
-                                            <label for="field-doi"><?php echo Lang::txt('COM_TOOLS_FIELD_DOI_DOI'); ?>:</label><br />
-                                            <input type="text" name="doi[doi]" id="field-doi" value="<?php echo $this->escape($this->doi->doi); ?>" />
+                                            <label for="field-doi"><?= Lang::txt('COM_TOOLS_FIELD_DOI_DOI') ?>:</label><br />
+                                            <input type="text" name="doi[doi]" id="field-doi" value="<?= $this->escape($this->doi->doi) ?>" />
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="input-wrap">
-                                    <label for="field-doi_label"><?php echo Lang::txt('COM_TOOLS_FIELD_DOI_LABEL'); ?>:</label><br />
-                                    <input type="text" name="doi[doi_label]" id="field-doi_label" value="<?php echo $this->escape($this->doi->doi_label); ?>" />
+                                    <label for="field-doi_label"><?= Lang::txt('COM_TOOLS_FIELD_DOI_LABEL') ?>:</label><br />
+                                    <input type="text" name="doi[doi_label]" id="field-doi_label" value="<?= $this->escape($this->doi->doi_label) ?>" />
                                 </div>
 
-                                <input type="hidden" name="doi[id]" value="<?php echo $this->escape($this->doi->id); ?>" />
-                                <input type="hidden" name="doi[rid]" value="<?php echo $this->escape($this->doi->rid); ?>" />
-                                <input type="hidden" name="doi[local_revision]" value="<?php echo $this->escape($this->row->revision); ?>" />
-                                <input type="hidden" name="doi[versionid]" value="<?php echo $this->escape($this->row->id); ?>" />
-                                <input type="hidden" name="doi[alias]" value="<?php echo $this->escape($this->row->toolname); ?>" />
+                                <input type="hidden" name="doi[id]" value="<?= $this->escape($this->doi->id) ?>" />
+                                <input type="hidden" name="doi[rid]" value="<?= $this->escape($this->doi->rid) ?>" />
+                                <input type="hidden" name="doi[local_revision]" value="<?= $this->escape($this->row->revision) ?>" />
+                                <input type="hidden" name="doi[versionid]" value="<?= $this->escape($this->row->id) ?>" />
+                                <input type="hidden" name="doi[alias]" value="<?= $this->escape($this->row->toolname) ?>" />
                             <?php endif; ?>
                         </fieldset>
                     <?php endif; ?>
@@ -168,7 +168,7 @@ $this->js();
         <fieldset class="adminform">
             <legend><span><?php echo Lang::txt('COM_TOOLS_FIELDSET_ZONES'); ?></span></legend>
             <?php if ($this->row->get('id')) : ?>
-                <iframe width="100%" height="400" name="zoneslist" id="zoneslist" frameborder="0" src="<?php echo Route::url('index.php?option=' . $this->option . '&controller=versions&task=displayZones&tmpl=component&version=' . $this->row->get('id')); ?>"></iframe>
+                <iframe width="100%" height="400" name="zoneslist" id="zoneslist" frameborder="0" src="<?= Route::url('index.php?option=' . $this->option . '&controller=versions&task=displayZones&tmpl=component&version=' . $this->row->get('id')) ?>"></iframe>
             <?php endif; ?>
         </fieldset>
     </div>

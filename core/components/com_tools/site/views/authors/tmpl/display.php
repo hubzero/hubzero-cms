@@ -16,7 +16,7 @@ $this->css('component.css');
 
 if ($this->version == 'dev') {
     ?>
-    <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>" id="authors-form" method="post" enctype="multipart/form-data">
+    <form action="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>" id="authors-form" method="post" enctype="multipart/form-data">
         <fieldset>
         <?php if ($this->getError()) { ?>
             <p class="error">
@@ -39,14 +39,14 @@ if ($this->version == 'dev') {
                 </div>
                 <div class="col span3">
                     <label>
-                        <span id="new-authors-role-label"><?php echo Lang::txt('COM_TOOLS_AUTHORS_ROLE'); ?></span><br />
+                        <span id="new-authors-role-label"><?= Lang::txt('COM_TOOLS_AUTHORS_ROLE') ?></span><br />
                         <select name="role" id="new-authors-role">
                             <option value=""><?php echo Lang::txt('COM_TOOLS_AUTHOR'); ?></option>
                             <?php
                             if ($this->roles) {
                                 foreach ($this->roles as $role) {
                                     ?>
-                                <option value="<?php echo $this->escape($role->alias); ?>"><?php echo $this->escape($role->title); ?></option>
+                                <option value="<?= $this->escape($role->alias) ?>"><?= $this->escape($role->title) ?></option>
                                     <?php
                                 }
                             }
@@ -79,7 +79,7 @@ if ($this->contributors) {
     $i = 0;
     $n = count($this->contributors);
     ?>
-    <form action="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=update&amp;tmpl=component" id="authors-list" method="post" enctype="multipart/form-data">
+    <form action="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=update&amp;tmpl=component" id="authors-list" method="post" enctype="multipart/form-data">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
         <input type="hidden" name="tmpl" value="component" />
@@ -117,16 +117,16 @@ if ($this->contributors) {
                 <tr>
                     <td width="100%">
                         <?php echo $this->escape($name); ?><br />
-                        <input type="text" name="authors[<?php echo isset($contributor->authorid) ? $contributor->authorid : $contributor->id;  ?>][organization]" size="35" value="<?php echo $this->escape(stripslashes($contributor->organization == null ? '' : $contributor->organization)); ?>" placeholder="<?php echo Lang::txt('COM_TOOLS_AUTHOR_ORGANIZATION'); ?>" />
+                        <input type="text" name="authors[<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>][organization]" size="35" value="<?= $this->escape(stripslashes($contributor->organization == null ? '' : $contributor->organization)) ?>" placeholder="<?= Lang::txt('COM_TOOLS_AUTHOR_ORGANIZATION') ?>" />
                     </td>
                     <td>
-                        <select name="authors[<?php echo isset($contributor->authorid) ? $contributor->authorid : $contributor->id; ?>][role]" id="role-<?php echo isset($contributor->authorid) ? $contributor->authorid : $contributor->id; ?>">
-                            <option value=""<?php echo $contributor->role == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_AUTHOR'); ?></option>
+                        <select name="authors[<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>][role]" id="role-<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>">
+                            <option value=""<?= $contributor->role == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_AUTHOR') ?></option>
                             <?php
                             if ($this->roles) {
                                 foreach ($this->roles as $role) {
                                     ?>
-                                    <option value="<?php echo $this->escape($role->alias); ?>"<?php echo $contributor->role == $role->alias ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                                    <option value="<?= $this->escape($role->alias) ?>"<?= $contributor->role == $role->alias ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($role->title)) ?></option>
                                     <?php
                                 }
                             }
@@ -150,7 +150,7 @@ if ($this->contributors) {
                     }
                     ?></td>
                     <td class="t">
-                        <a class="icon-delete delete" href="index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller; ?>&amp;task=remove&amp;tmpl=component&amp;id=<?php echo isset($contributor->authorid) ? $contributor->authorid : $contributor->id; ?>&amp;pid=<?php echo $this->id; ?>&amp;ver=<?php echo $this->escape($this->version)?>&amp;<?php echo Session::getFormToken(); ?>=1" title="<?php echo Lang::txt('COM_TOOLS_DELETE'); ?>">
+                        <a class="icon-delete delete" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=remove&amp;tmpl=component&amp;id=<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>&amp;pid=<?= $this->id ?>&amp;ver=<?php echo $this->escape($this->version)?>&amp;<?= Session::getFormToken() ?>=1" title="<?= Lang::txt('COM_TOOLS_DELETE') ?>">
                             <span><?php echo Lang::txt('COM_TOOLS_DELETE'); ?></span>
                         </a>
                     </td>

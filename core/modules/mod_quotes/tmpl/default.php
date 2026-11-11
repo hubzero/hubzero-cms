@@ -19,7 +19,7 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
     <div id="content-header-extra">
         <ul id="useroptions">
             <li>
-                <a href="<?php echo Route::url('index.php?option=com_feedback&task=success_story'); ?>" class="icon-add btn add">
+                <a href="<?= Route::url('index.php?option=com_feedback&task=success_story') ?>" class="icon-add btn add">
                     <?php echo Lang::txt('MOD_QUOTES_ADD_YOUR_STORY'); ?>
                 </a>
             </li>
@@ -41,7 +41,7 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                 <?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
                     <div class="breadcrumbs">
                         <p>
-                            <a href="<?php echo $this->escape(rtrim(str_replace('quoteid=' . $this->filters['id'], '', $base), '?')); ?>" class="breadcrumbs"><?php echo Lang::txt('MOD_QUOTES_NOTABLE_QUOTES'); ?></a>
+                            <a href="<?= $this->escape(rtrim(str_replace('quoteid=' . $this->filters['id'], '', $base), '?')) ?>" class="breadcrumbs"><?= Lang::txt('MOD_QUOTES_NOTABLE_QUOTES') ?></a>
                             &rsaquo;
                             <strong><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></strong>
                         </p>
@@ -62,7 +62,7 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                             <?php if ($quote->get('short_quote') != $quote->get('quote')) { ?>
                                 <?php echo rtrim($quote->get('short_quote'), '.'); ?>
                                  &#8230;
-                                <a href="<?php echo $this->escape($base) . (strstr($base, '?') ? '&amp;' : '?'); ?>quoteid=<?php echo $quote->get('id'); ?>" title="<?php echo Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname')))); ?>">
+                                <a href="<?= $this->escape($base) . (strstr($base, '?') ? '&amp;' : '?') ?>quoteid=<?= $quote->get('id') ?>" title="<?= Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname')))) ?>">
                                     <?php echo Lang::txt('MOD_QUOTES_MORE'); ?>
                                 </a>
                             <?php } else { ?>
@@ -77,7 +77,7 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                     $userPicture = $user->picture();
                     echo '<img src="' . $userPicture . '" alt="' . $this->escape($quote->get('fullname')) . '" width="40" height="40" />';
                     ?>
-                    <cite><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?> <span><?php echo $this->escape(stripslashes($quote->get('org'))); ?></span></cite>
+                    <cite><?= $this->escape(stripslashes($quote->get('fullname'))) ?> <span><?= $this->escape(stripslashes($quote->get('org'))) ?></span></cite>
                 </p>
                 <?php
                 $pictures = $quote->files();

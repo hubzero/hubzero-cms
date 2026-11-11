@@ -67,7 +67,7 @@ endif;
     <div id="content-header-extra">
         <ul id="useroptions">
             <li class="last">
-                <a class="btn icon-group" href="<?php echo $link; ?>" title="<?php echo $title; ?>"><?php echo $title; ?></a>
+                <a class="btn icon-group" href="<?= $link ?>" title="<?= $title ?>"><?= $title ?></a>
             </li>
         </ul>
     </div><!-- / #content-header-extra -->
@@ -86,7 +86,7 @@ endif;
         </p>
     <?php endif; ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="hubForm" class="full stepper">
+    <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" id="hubForm" class="full stepper">
         <div class="grid">
             <div class="col span8">
                 <fieldset>
@@ -97,8 +97,8 @@ endif;
                     <?php else : ?>
                         <div class="form-group">
                             <label for="group_cn_field" class="group_cn_label">
-                                <?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_CN'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>
-                                <input name="cn" id="group_cn_field" type="text" size="35" class="form-control" value="<?php echo $this->group->get('cn'); ?>" autocomplete="off" />
+                                <?= Lang::txt('COM_GROUPS_DETAILS_FIELD_CN') ?> <span class="required"><?= Lang::txt('COM_GROUPS_REQUIRED') ?></span>
+                                <input name="cn" id="group_cn_field" type="text" size="35" class="form-control" value="<?= $this->group->get('cn') ?>" autocomplete="off" />
                                 <span class="hint"><?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_CN_HINT'); ?></span>
                             </label>
                         </div>
@@ -106,18 +106,18 @@ endif;
 
                     <div class="form-group">
                         <label for="field-description">
-                            <?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_DESCRIPTION'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span>
-                            <input type="text" name="description" id="field-description" size="35" class="form-control" value="<?php echo $this->escape(stripslashes($this->group->get('description') ? $this->group->get('description') : '')); ?>" />
+                            <?= Lang::txt('COM_GROUPS_DETAILS_FIELD_DESCRIPTION') ?> <span class="required"><?= Lang::txt('COM_GROUPS_REQUIRED') ?></span>
+                            <input type="text" name="description" id="field-description" size="35" class="form-control" value="<?= $this->escape(stripslashes($this->group->get('description') ? $this->group->get('description') : '')) ?>" />
                         </label>
                     </div>
 
                     <div class="form-group">
                         <label for="actags">
-                            <?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_TAGS'); ?> <span class="optional"><?php echo Lang::txt('COM_GROUPS_OPTIONAL'); ?></span>
+                            <?= Lang::txt('COM_GROUPS_DETAILS_FIELD_TAGS') ?> <span class="optional"><?= Lang::txt('COM_GROUPS_OPTIONAL') ?></span>
                             <?php if (count($tf) > 0) :
                                 echo $tf[0];
                             else : ?>
-                                <input type="text" name="tags" id="actags" class="form-control" value="<?php echo $this->escape($this->tags); ?>" />
+                                <input type="text" name="tags" id="actags" class="form-control" value="<?= $this->escape($this->tags) ?>" />
                             <?php endif; ?>
 
                             <span class="hint"><?php echo Lang::txt('COM_GROUPS_DETAILS_FIELD_TAGS_HINT'); ?></span>
@@ -145,14 +145,14 @@ endif;
 
                         <div class="form-group">
                             <label id="group-logo-label">
-                                <select name="group[logo]" id="group_logo" rel="<?php echo $this->group->get('gidNumber'); ?>" aria-label="<?php echo Lang::txt('COM_GROUPS_LOGO'); ?>">
-                                    <option value=""><?php echo Lang::txt('COM_GROUPS_LOGO_FIELD_OPTION_NULL'); ?></option>
+                                <select name="group[logo]" id="group_logo" rel="<?= $this->group->get('gidNumber') ?>" aria-label="<?= Lang::txt('COM_GROUPS_LOGO') ?>">
+                                    <option value=""><?= Lang::txt('COM_GROUPS_LOGO_FIELD_OPTION_NULL') ?></option>
                                     <?php foreach ($this->logos as $logo) : ?>
                                         <?php
                                         $remove = PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
                                         $sel = (str_replace($remove, '', $logo) == $this->group->get('logo')) ? 'selected' : '';
                                         ?>
-                                        <option <?php echo $sel; ?> value="<?php echo rtrim(Request::root(true), '/') . str_replace(PATH_ROOT, '', $logo); ?>"><?php echo str_replace($remove, '', $logo); ?></option>
+                                        <option <?= $sel ?> value="<?= rtrim(Request::root(true), '/') . str_replace(PATH_ROOT, '', $logo) ?>"><?= str_replace($remove, '', $logo) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>
@@ -163,9 +163,9 @@ endif;
                                 <div id="logo_picked">
                                     <?php if ($this->group->get('logo')) : ?>
                                         <?php $selectedPath = substr(PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS . $this->group->get('logo'), strlen(PATH_ROOT)); ?>
-                                        <img src="<?php echo rtrim(Request::root(true), '/') . $selectedPath; ?>" alt="<?php echo $this->group->get('cn') ?>" />
+                                        <img src="<?= rtrim(Request::root(true), '/') . $selectedPath ?>" alt="<?php echo $this->group->get('cn') ?>" />
                                     <?php else : ?>
-                                        <img src="<?php echo rtrim(Request::root(true), '/') . $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" />
+                                        <img src="<?= rtrim(Request::root(true), '/') . $default_logo ?>" alt="<?php echo $this->group->get('cn') ?>" />
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -179,41 +179,41 @@ endif;
                     <p><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_DESC'); ?></p>
 
                     <fieldset>
-                        <legend><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_LEGEND'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span></legend>
+                        <legend><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_LEGEND') ?> <span class="required"><?= Lang::txt('COM_GROUPS_REQUIRED') ?></span></legend>
 
                         <div class="form-group form-check">
                             <label for="join_policy0" class="form-check-label">
-                                <input type="radio" class="option form-check-input" name="join_policy" id="join_policy0" value="0"<?php echo $this->group->get('join_policy') == 0 ? ' checked="checked"' : ''; ?> />
+                                <input type="radio" class="option form-check-input" name="join_policy" id="join_policy0" value="0"<?= $this->group->get('join_policy') == 0 ? ' checked="checked"' : '' ?> />
                                 <strong><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING'); ?></strong>
-                                <br /><span class="indent"><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING_DESC'); ?></span>
+                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_OPEN_SETTING_DESC') ?></span>
                             </label>
                         </div>
                         <div class="form-group form-check">
                             <label for="join_policy1" class="form-check-label">
-                                <input type="radio" class="option form-check-input" name="join_policy" id="join_policy1" value="1"<?php echo $this->group->get('join_policy') == 1 ? ' checked="checked"' : ''; ?> />
-                                <strong><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING'); ?></strong>
-                                <br /><span class="indent"><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_DESC'); ?></span>
+                                <input type="radio" class="option form-check-input" name="join_policy" id="join_policy1" value="1"<?= $this->group->get('join_policy') == 1 ? ' checked="checked"' : '' ?> />
+                                <strong><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING') ?></strong>
+                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_DESC') ?></span>
                             </label>
                         </div>
                         <div class="form-group">
                             <label for="restrict_msg" class="indent">
-                                <strong><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS'); ?></strong>
-                                (<?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS_DESC'); ?>) <span class="optional"><?php echo Lang::txt('COM_GROUPS_OPTIONAL'); ?></span>
-                                <textarea name="restrict_msg" id="restrict_msg" rows="5" cols="50"><?php echo htmlentities(stripslashes($this->group->get('restrict_msg') ? $this->group->get('restrict_msg') : '')); ?></textarea>
+                                <strong><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS') ?></strong>
+                                (<?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS_DESC') ?>) <span class="optional"><?= Lang::txt('COM_GROUPS_OPTIONAL') ?></span>
+                                <textarea name="restrict_msg" id="restrict_msg" rows="5" cols="50"><?= htmlentities(stripslashes($this->group->get('restrict_msg') ? $this->group->get('restrict_msg') : '')) ?></textarea>
                             </label>
                         </div>
                         <div class="form-group form-check">
                             <label for="join_policy2" class="form-check-label">
-                                <input type="radio" class="option form-check-input" name="join_policy" id="join_policy2" value="2"<?php echo $this->group->get('join_policy') == 2 ? ' checked="checked"' : ''; ?> />
-                                <strong><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING'); ?></strong>
-                                <br /><span class="indent"><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING_DESC'); ?></span>
+                                <input type="radio" class="option form-check-input" name="join_policy" id="join_policy2" value="2"<?= $this->group->get('join_policy') == 2 ? ' checked="checked"' : '' ?> />
+                                <strong><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING') ?></strong>
+                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_INVITE_SETTING_DESC') ?></span>
                             </label>
                         </div>
                         <div class="form-group form-check">
                             <label for="join_policy3" class="form-check-label">
-                                <input type="radio" class="option form-check-input" name="join_policy" id="join_policy3" value="3"<?php echo $this->group->get('join_policy') == 3 ? ' checked="checked"' : ''; ?> />
-                                <strong><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING'); ?></strong>
-                                <br /><span class="indent"><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING_DESC'); ?></span>
+                                <input type="radio" class="option form-check-input" name="join_policy" id="join_policy3" value="3"<?= $this->group->get('join_policy') == 3 ? ' checked="checked"' : '' ?> />
+                                <strong><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING') ?></strong>
+                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_CLOSED_SETTING_DESC') ?></span>
                             </label>
                         </div>
                     </fieldset>
@@ -230,12 +230,12 @@ endif;
                         <div class="form-group">
                             <label for="membership_default_term_days">
                                 <?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_DEFAULT'); ?>
-                                <input type="number" min="0" step="1"<?php echo $hubMax > 0 ? ' max="' . $hubMax . '"' : ''; ?>
+                                <input type="number" min="0" step="1"<?= $hubMax > 0 ? ' max="' . $hubMax . '"' : '' ?>
                                     class="form-control" name="params[membership_default_term_days]"
                                     id="membership_default_term_days" value="<?php echo $termDays; ?>" />
-                                <br /><span class="indent"><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_DEFAULT_DESC'); ?></span>
+                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_DEFAULT_DESC') ?></span>
                                 <?php if ($hubMax > 0) : ?>
-                                    <br /><span class="indent"><?php echo Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_HUB_MAX', $hubMax); ?></span>
+                                    <br /><span class="indent"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_HUB_MAX', $hubMax) ?></span>
                                 <?php endif; ?>
                             </label>
                         </div>
@@ -249,20 +249,20 @@ endif;
                     <p><?php echo Lang::txt('COM_GROUPS_PRIVACY_SETTINGS_DESC'); ?></p>
 
                     <fieldset>
-                        <legend><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_LEGEND'); ?> <span class="required"><?php echo Lang::txt('COM_GROUPS_REQUIRED'); ?></span></legend>
+                        <legend><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_LEGEND') ?> <span class="required"><?= Lang::txt('COM_GROUPS_REQUIRED') ?></span></legend>
 
                         <div class="form-group form-check">
                             <label for="discoverability0" class="form-check-label">
-                                <input type="radio" class="option form-check-input" name="discoverability" id="discoverability0" value="0"<?php echo $this->group->get('discoverability') == 0 ? ' checked="checked"' : ''; ?> />
-                                <strong><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING'); ?></strong>
-                                <br /><span class="indent"><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING_DESC'); ?></span>
+                                <input type="radio" class="option form-check-input" name="discoverability" id="discoverability0" value="0"<?= $this->group->get('discoverability') == 0 ? ' checked="checked"' : '' ?> />
+                                <strong><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING') ?></strong>
+                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING_DESC') ?></span>
                             </label>
                         </div>
                         <div class="form-group form-check">
                             <label for="discoverability1" class="form-check-label">
-                                <input type="radio" class="option form-check-input" name="discoverability" id="discoverability1" value="1"<?php echo $this->group->get('discoverability') == 1 ? ' checked="checked"' : ''; ?> />
-                                <strong><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING'); ?></strong>
-                                <br /><span class="indent"><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING_DESC'); ?></span>
+                                <input type="radio" class="option form-check-input" name="discoverability" id="discoverability1" value="1"<?= $this->group->get('discoverability') == 1 ? ' checked="checked"' : '' ?> />
+                                <strong><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING') ?></strong>
+                                <br /><span class="indent"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING_DESC') ?></span>
                             </label>
                         </div>
                     </fieldset>
@@ -278,14 +278,14 @@ endif;
                             <ul id="access">
                                 <?php for ($i = 0; $i < count($this->hub_group_plugins); $i++) : ?>
                                     <?php if ($this->hub_group_plugins[$i]['display_menu_tab']) : ?>
-                                        <li class="group_access_control_<?php echo strtolower($this->hub_group_plugins[$i]['title']); ?>">
-                                            <input type="hidden" name="group_plugin[<?php echo $i; ?>][name]" value="<?php echo $this->hub_group_plugins[$i]['name']; ?>">
-                                            <span class="menu_item_title"><?php echo $this->hub_group_plugins[$i]['title']; ?></span>
-                                            <select name="group_plugin[<?php echo $i; ?>][access]" aria-label="<?php echo $this->escape($this->hub_group_plugins[$i]['title']) . ' ' . Lang::txt('COM_GROUPS_ACCESS'); ?>">
+                                        <li class="group_access_control_<?= strtolower($this->hub_group_plugins[$i]['title']) ?>">
+                                            <input type="hidden" name="group_plugin[<?= $i ?>][name]" value="<?= $this->hub_group_plugins[$i]['name'] ?>">
+                                            <span class="menu_item_title"><?= $this->hub_group_plugins[$i]['title'] ?></span>
+                                            <select name="group_plugin[<?= $i ?>][access]" aria-label="<?= $this->escape($this->hub_group_plugins[$i]['title']) . ' ' . Lang::txt('COM_GROUPS_ACCESS') ?>">
                                                 <?php foreach ($levels as $level => $name) : ?>
                                                     <?php $sel = ($this->group_plugin_access[$this->hub_group_plugins[$i]['name']] == $level) ? 'selected' : ''; ?>
                                                     <?php if (($this->hub_group_plugins[$i]['name'] == 'overview' && $level != 'nobody') || $this->hub_group_plugins[$i]['name'] != 'overview') : ?>
-                                                        <option <?php echo $sel; ?> value="<?php echo $level; ?>"><?php echo $name; ?></option>
+                                                        <option <?= $sel ?> value="<?= $level ?>"><?= $name ?></option>
                                                     <?php endif; ?>
                                                 <?php endforeach; ?>
                                             </select>
@@ -303,7 +303,7 @@ endif;
                         <p><?php echo Lang::txt('COM_GROUPS_EMAIL_SETTINGS_DESC'); ?></p>
 
                         <fieldset>
-                            <legend><?php echo Lang::txt('COM_GROUPS_EMAIL_SETTING_FORUM_SECTION_LEGEND'); ?> <span class="optional"><?php echo Lang::txt('COM_GROUPS_OPTIONAL'); ?></span></legend>
+                            <legend><?= Lang::txt('COM_GROUPS_EMAIL_SETTING_FORUM_SECTION_LEGEND') ?> <span class="optional"><?= Lang::txt('COM_GROUPS_OPTIONAL') ?></span></legend>
 
                             <div class="form-group form-check">
                                 <label for="discussion_email_autosubscribe" class="form-check-label">
@@ -315,7 +315,7 @@ endif;
                                         echo ' checked="checked"';
                                     endif;
                                     ?> />
-                                    <strong><?php echo Lang::txt('COM_GROUPS_EMAIL_SETTING_FORUM_AUTO_SUBSCRIBE'); ?></strong> <br />
+                                    <strong><?= Lang::txt('COM_GROUPS_EMAIL_SETTING_FORUM_AUTO_SUBSCRIBE') ?></strong> <br />
                                     <span class="indent">
                                         <?php echo Lang::txt('COM_GROUPS_EMAIL_SETTINGS_FORUM_AUTO_SUBSCRIBE_NOTE'); ?>
                                     </span>
@@ -341,11 +341,11 @@ endif;
                                 <label for="param_page_comments">
                                     <?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS'); ?>:
                                     <select name="params[page_comments]" id="param_page_comments" class="form-control">
-                                        <option <?php echo $comments == 0 ? 'selected="selected"' : ''; ?> value="0"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO'); ?></option>
-                                        <option <?php echo $comments == 1 ? 'selected="selected"' : ''; ?> value="1"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES'); ?></option>
-                                        <option <?php echo $comments == 2 ? 'selected="selected"' : ''; ?> value="2"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK'); ?></option>
+                                        <option <?= $comments == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO') ?></option>
+                                        <option <?= $comments == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES') ?></option>
+                                        <option <?= $comments == 2 ? 'selected="selected"' : '' ?> value="2"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK') ?></option>
                                     </select>
-                                    <span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT'); ?></span>
+                                    <span class="hint"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT') ?></span>
                                 </label>
                             </div>
                         </div>
@@ -354,10 +354,10 @@ endif;
                                 <label for="param_page_author">
                                     <?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR'); ?>:
                                     <select name="params[page_author]" id="param_page_author" class="form-control">
-                                        <option <?php echo $author == 0 ? 'selected="selected"' : ''; ?> value="0"><?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO'); ?></option>
-                                        <option <?php echo $author == 1 ? 'selected="selected"' : ''; ?> value="1"><?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES'); ?></option>
+                                        <option <?= $author == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO') ?></option>
+                                        <option <?= $author == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES') ?></option>
                                     </select>
-                                    <span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_HINT'); ?></span>
+                                    <span class="hint"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_HINT') ?></span>
                                 </label>
                             </div>
                         </div>
@@ -368,7 +368,7 @@ endif;
             <div class="col span4 omega floating-iframe-col">
                 <?php if ($this->group->get('gidNumber')) : ?>
                     <div class="floating-iframe-container">
-                        <iframe class="floating-iframe" title="<?php echo Lang::txt('COM_GROUPS_MEDIA_BROWSER'); ?>" src="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&controller=media&task=filebrowser&tmpl=component'); ?>"></iframe>
+                        <iframe class="floating-iframe" title="<?= Lang::txt('COM_GROUPS_MEDIA_BROWSER') ?>" src="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&controller=media&task=filebrowser&tmpl=component') ?>"></iframe>
                     </div>
                 <?php else : ?>
                     <p><em><?php echo Lang::txt('COM_GROUPS_EDIT_MUST_SAVE_TO_UPLOAD_IMAGES'); ?></em></p>
@@ -377,13 +377,13 @@ endif;
         </div>
 
         <p class="submit">
-            <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('COM_GROUPS_EDIT_SUBMIT_BTN_TEXT'); ?>" />
+            <input class="btn btn-success" type="submit" value="<?= Lang::txt('COM_GROUPS_EDIT_SUBMIT_BTN_TEXT') ?>" />
         </p>
 
         <?php echo Html::input('token'); ?>
 
         <input type="hidden" name="published" value="<?php echo $this->group->get('published'); ?>" />
-        <input type="hidden" name="gidNumber" value="<?php echo $this->group->get('gidNumber') != '' ? $this->group->get('gidNumber') : 0; ?>" />
+        <input type="hidden" name="gidNumber" value="<?= $this->group->get('gidNumber') != '' ? $this->group->get('gidNumber') : 0 ?>" />
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="task" value="save" />
     </form>

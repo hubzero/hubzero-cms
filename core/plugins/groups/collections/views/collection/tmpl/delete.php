@@ -19,12 +19,12 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?php echo Route::url($base . '&scope=' . $this->collection->get('alias') . '/delete'); ?>" method="post" id="hubForm" class="full">
+    <form action="<?= Route::url($base . '&scope=' . $this->collection->get('alias') . '/delete') ?>" method="post" id="hubForm" class="full">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_HEADER'); ?></legend>
 
             <p class="warning">
-                <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_WARNING', $this->escape(stripslashes($this->collection->get('title')))); ?>
+                <?= Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_WARNING', $this->escape(stripslashes($this->collection->get('title')))) ?>
             </p>
 
             <div class="form-group form-check">
@@ -47,10 +47,10 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
         <?php echo Html::input('token'); ?>
 
         <p class="submit">
-            <input type="submit" class="btn btn-danger" value="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?>" />
+            <input type="submit" class="btn btn-danger" value="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE') ?>" />
 
             <?php if (!$this->no_html) { ?>
-                <a class="btn btn-secondary" href="<?php echo Route::url($base); ?>"><?php echo Lang::txt('JCANCEL'); ?></a>
+                <a class="btn btn-secondary" href="<?= Route::url($base) ?>"><?= Lang::txt('JCANCEL') ?></a>
             <?php } ?>
         </p>
     </form>

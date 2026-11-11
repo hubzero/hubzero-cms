@@ -19,7 +19,7 @@ Toolbar::custom('processImport', 'forward', '', 'COM_SAML_IMPORT_PARSE', false);
 Toolbar::cancel();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset class="adminform">
         <legend><span><?php echo Lang::txt('COM_SAML_IMPORT_METADATA'); ?></span></legend>
 

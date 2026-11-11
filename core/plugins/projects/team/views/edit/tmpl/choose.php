@@ -56,8 +56,8 @@ $totalLabel = ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS'));
             <table id="teamlist" class="listing">
                 <thead>
                     <tr>
-                        <th class="checkbox" aria-label="<?php echo Lang::txt('Select'); ?>"><span class="sr-only">Select</span></th>
-                        <th class="th_image" aria-label="<?php echo Lang::txt('Photo'); ?>"><span class="sr-only">Photo</span></th>
+                        <th class="checkbox" aria-label="<?= Lang::txt('Select') ?>"><span class="sr-only">Select</span></th>
+                        <th class="th_image" aria-label="<?= Lang::txt('Photo') ?>"><span class="sr-only">Photo</span></th>
                         <th class="th_user i_user activesort">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?>
                         </th>

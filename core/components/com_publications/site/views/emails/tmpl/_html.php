@@ -100,11 +100,11 @@ if ($comment) {
                     <tbody>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Publication:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?php echo $this->escape($this->publication->get('title')); ?> v. <?php echo $this->escape($this->publication->get('version_label')); ?>(#<?php echo $this->publication->get('id'); ?>)</td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->publication->get('title')) ?> v. <?= $this->escape($this->publication->get('version_label')) ?>(#<?= $this->publication->get('id') ?>)</td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?php echo $link; ?>"><?php echo $link; ?></a></td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -113,9 +113,9 @@ if ($comment) {
                     <tbody>
                         <tr>
                             <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?php echo $comment; ?>
+                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?= $comment ?>
                                 <?php if (!empty($this->permissionURL) && !empty($this->permissionTxt)) {?>
-                                    <a href="<?php echo $this->permissionURL; ?>"><?php echo $this->permissionTxt; ?></a>
+                                    <a href="<?= $this->permissionURL ?>"><?= $this->permissionTxt ?></a>
                                 <?php } ?>
                                 </div>
                             </td>

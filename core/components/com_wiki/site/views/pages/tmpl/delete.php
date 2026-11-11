@@ -93,11 +93,11 @@ if (!$this->sub) {
                     <?php echo Lang::txt('COM_WIKI_FIELD_CONFIRM_DELETE_HINT'); ?>
                 </p>
 
-                <input type="hidden" name="pagename" value="<?php echo $this->escape(($this->page->get('path') ? $this->page->get('path') . '/' : '') . $this->page->get('pagename')); ?>" />
+                <input type="hidden" name="pagename" value="<?= $this->escape(($this->page->get('path') ? $this->page->get('path') . '/' : '') . $this->page->get('pagename')) ?>" />
                 <input type="hidden" name="page_id" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 
                 <?php foreach ($this->page->adapter()->routing('delete') as $name => $val) { ?>
-                    <input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+                    <input type="hidden" name="<?= $this->escape($name) ?>" value="<?= $this->escape($val) ?>" />
                 <?php } ?>
 
                 <?php echo Html::input('token'); ?>

@@ -25,29 +25,29 @@ if (substr($this->xmessage->type, -8) == '_message') {
 <div class="subject">
     <?php if (!$this->no_html) : ?>
     <ul class="entries-menu">
-        <li><a class="active" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SENT'); ?></span></a></li>
+        <li><a class="active" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages') ?>"><span><?= Lang::txt('PLG_GROUPS_MESSAGES_SENT') ?></span></a></li>
         <?php if ($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
-            <li><a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages&action=new'); ?>"><span><?php echo Lang::txt('PLG_GROUPS_MESSAGES_SEND'); ?></span></a></li>
+            <li><a href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages&action=new') ?>"><span><?= Lang::txt('PLG_GROUPS_MESSAGES_SEND') ?></span></a></li>
         <?php } ?>
     </ul>
     <br class="clear" />
     <?php endif; ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages'); ?>" method="post">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages') ?>" method="post">
         <fieldset class="hub-mail">
             <table class="groups entries">
                 <caption>
                     <?php echo Lang::txt('PLG_GROUPS_MESSAGE'); ?>
                     <?php if (!$this->no_html) : ?>
                         <span>
-                            <small>( <a href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages'); ?>"><?php echo Lang::txt('&lsaquo; Back to Sent Messages'); ?></a> )</small>
+                            <small>( <a href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages') ?>"><?= Lang::txt('&lsaquo; Back to Sent Messages') ?></a> )</small>
                         </span>
                     <?php endif; ?>
                 </caption>
                 <tbody>
                     <tr>
                         <th><?php echo Lang::txt('PLG_GROUPS_MESSAGES_RECEIVED'); ?>:</th>
-                        <td><?php echo Date::of($this->xmessage->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+                        <td><?= Date::of($this->xmessage->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></td>
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('PLG_GROUPS_MESSAGES_FROM'); ?>:</th>

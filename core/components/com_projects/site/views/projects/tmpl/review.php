@@ -50,7 +50,7 @@ if ($this->getError()) {
 } ?>
 
 <?php if ($this->model->exists()) { ?>
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&task=process') . '?reviewer=' . $this->reviewer; ?>" method="post" id="<?php echo $this->ajax ? 'hubForm-ajax' : 'plg-form'; ?>" >
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&task=process') . '?reviewer=' . $this->reviewer ?>" method="post" id="<?= $this->ajax ? 'hubForm-ajax' : 'plg-form' ?>" >
 
     <fieldset>
         <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
@@ -66,8 +66,8 @@ if ($this->getError()) {
         <div class="pthumb"><img src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="" /></div>
         <div class="pinfo">
             <p class="info_title">
-            <?php echo $this->escape($this->model->get('title')); ?> (<span class="aliasname"><?php echo $this->model->get('alias'); ?></span>)</p>
-            <p class="info_title"><span><?php echo Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->escape($this->model->creator('name')); ?></span></p>
+            <?= $this->escape($this->model->get('title')) ?> (<span class="aliasname"><?= $this->model->get('alias') ?></span>)</p>
+            <p class="info_title"><span><?= Lang::txt('COM_PROJECTS_CREATED_BY') . ': ' . $this->escape($this->model->creator('name')) ?></span></p>
         </div>
     </div>
 
@@ -78,33 +78,33 @@ if ($this->getError()) {
             <tr>
                 <td>
                     <label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
-                     <input name="grant_title" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('grant_title')); ?>"  />
+                     <input name="grant_title" maxlength="250" type="text" value="<?= $this->escape($this->params->get('grant_title')) ?>"  />
                     </label>
                 </td>
                 <td class="tdmini"></td>
                 <td>
                     <label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
-                     <input name="grant_PI" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('grant_PI')); ?>"  />
+                     <input name="grant_PI" maxlength="250" type="text" value="<?= $this->escape($this->params->get('grant_PI')) ?>"  />
                     </label>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
-                     <input name="grant_agency" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('grant_agency')); ?>"  />
+                     <input name="grant_agency" maxlength="250" type="text" value="<?= $this->escape($this->params->get('grant_agency')) ?>"  />
                     </label>
                 </td>
                 <td class="tdmini"></td>
                 <td>
                     <label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
-                     <input name="grant_budget" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('grant_budget')); ?>"  />
+                     <input name="grant_budget" maxlength="250" type="text" value="<?= $this->escape($this->params->get('grant_budget')) ?>"  />
                     </label>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:
-                     <input name="award_number" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('award_number')); ?>"  />
+                     <input name="award_number" maxlength="250" type="text" value="<?= $this->escape($this->params->get('award_number')) ?>"  />
                     </label>
                 </td>
             </tr>
@@ -117,18 +117,18 @@ if ($this->getError()) {
                                                        } ?>"><?php echo $approved
                         ? ucfirst(Lang::txt('COM_PROJECTS_APPROVAL_CODE_APPROVED'))
                         : Lang::txt('COM_PROJECTS_APPROVAL_CODE_PROVIDE'); ?>:
-                     <input name="grant_approval" id="grant_approval" maxlength="250" type="text" value="<?php echo $this->escape($this->params->get('grant_approval')); ?>"  />
+                     <input name="grant_approval" id="grant_approval" maxlength="250" type="text" value="<?= $this->escape($this->params->get('grant_approval')) ?>"  />
                     <?php if (!$approved) { ?>
                      <p class="hint mini"><?php echo Lang::txt('COM_PROJECTS_SPS_APPROVAL_HINT'); ?></p>
                     <?php } ?>
                     </label>
                 </td>
-                <td class="tdmini"><?php echo !$approved ? '<span class="or">' . Lang::txt('COM_PROJECTS_OR') . '</span>' : ''; ?></td>
+                <td class="tdmini"><?= !$approved ? '<span class="or">' . Lang::txt('COM_PROJECTS_OR') . '</span>' : '' ?></td>
                 <td>
                     <?php if (!$approved) { ?>
                     <label for="rejected" class="dark">
-                         <input class="option" name="rejected" id="rejected" type="checkbox" value="1" <?php echo $this->params->get('grant_status') == 2 ? 'checked="checked"' : ''; ?> />
-                        <?php echo $this->params->get('grant_status') == 2 ? Lang::txt('COM_PROJECTS_SPS_REJECTED_KEEP') : Lang::txt('COM_PROJECTS_SPS_REJECT'); ?>
+                         <input class="option" name="rejected" id="rejected" type="checkbox" value="1" <?= $this->params->get('grant_status') == 2 ? 'checked="checked"' : '' ?> />
+                        <?= $this->params->get('grant_status') == 2 ? Lang::txt('COM_PROJECTS_SPS_REJECTED_KEEP') : Lang::txt('COM_PROJECTS_SPS_REJECT') ?>
                     </label>
                     <?php } ?>
                 </td>
@@ -139,21 +139,21 @@ if ($this->getError()) {
     <?php if ($this->reviewer == 'sensitive' && ($this->model->isPending() || $this->model->isActive() || $this->model->isRejected())) { ?>
     <div class="sensitivereview">
         <h4><?php echo Lang::txt('COM_PROJECTS_SENSITIVE_APPROVE_OR_REJECT'); ?></h4>
-        <label id="sensitive_project_approve"><input name="sensitive_project_review" type="radio" value="1" <?php echo ($this->model->isActive()) ? 'checked="checked"' : ''; ?>/> <?php echo Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_APPROVE'); ?></label>
-        <label id="sensitive_project_reject"><input name="sensitive_project_review" type="radio" value="0" <?php echo ($this->model->isRejected()) ? 'checked="checked"' : ''; ?>/> <?php echo Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_REJECT'); ?></label>
+        <label id="sensitive_project_approve"><input name="sensitive_project_review" type="radio" value="1" <?= ($this->model->isActive()) ? 'checked="checked"' : '' ?>/> <?= Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_APPROVE') ?></label>
+        <label id="sensitive_project_reject"><input name="sensitive_project_review" type="radio" value="0" <?= ($this->model->isRejected()) ? 'checked="checked"' : '' ?>/> <?= Lang::txt('COM_PROJECTS_SENSITIVE_PROJECT_REJECT') ?></label>
         <!--
-        <label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?php echo ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')); ?></label>-->
+        <label id="sdata-approve"><input class="option" name="approve" type="checkbox" value="1" /> <?= ucfirst(Lang::txt('COM_PROJECTS_APPROVE_PROJECT_CONFIRM')) ?></label>-->
     </div>
     <hr>
     <?php } ?>
 
     <div id="newadmincomment">
-        <h4><?php echo ucfirst(Lang::txt('COM_PROJECTS_ADD_ADMIN_COMMENT')); ?> <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span></h4>
+        <h4><?= ucfirst(Lang::txt('COM_PROJECTS_ADD_ADMIN_COMMENT')) ?> <span class="optional"><?= Lang::txt('OPTIONAL') ?></span></h4>
         <label>
             <textarea name="comment" rows="4" cols="40"></textarea>
         </label>
         <?php if ($this->reviewer == 'sponsored' && !$approved) { ?>
-         <label><input class="option" name="notify" type="checkbox" value="1" /> <?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWERS_ADD_ACTIVITY')); ?></label>
+         <label><input class="option" name="notify" type="checkbox" value="1" /> <?= ucfirst(Lang::txt('COM_PROJECTS_REVIEWERS_ADD_ACTIVITY')) ?></label>
         <?php } ?>
     </div>
     <p class="submitarea">
@@ -161,7 +161,7 @@ if ($this->getError()) {
         <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
     </p>
     <div id="admincommentbox">
-    <h4><?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS')); ?> <span class="hint"> <?php echo ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS_LATEST_FIRST')); ?></span></h4>
+    <h4><?= ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS')) ?> <span class="hint"> <?= ucfirst(Lang::txt('COM_PROJECTS_REVIEWER_COMMENTS_LATEST_FIRST')) ?></span></h4>
     <?php if ($notes) { ?>
         <?php echo $notes; ?>
     <?php } else {  ?>

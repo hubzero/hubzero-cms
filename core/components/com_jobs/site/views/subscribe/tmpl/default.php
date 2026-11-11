@@ -21,15 +21,15 @@ defined('_HZEXEC_') or die();
     <div id="content-header-extra">
         <ul id="useroptions">
             <?php if (User::isGuest()) { ?>
-                <li><?php echo Lang::txt('COM_JOBS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=view&action=login') . '">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS'); ?></li>
+                <li><?= Lang::txt('COM_JOBS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=view&action=login') . '">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS') ?></li>
             <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
-                <li><a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-                <li><a class="shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
+                <li><a class="myjobs btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=dashboard') ?>"><?= Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD') ?></a></li>
+                <li><a class="shortlist btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted' ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
             <?php } elseif ($this->admin) { ?>
                 <li><?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
-                    <a class="myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
+                    <a class="myjobs btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=dashboard') ?>"><?= Lang::txt('COM_JOBS_ADMIN_DASHBOARD') ?></a></li>
             <?php } else { ?>
-                <li><a class="myresume btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addresume'); ?>"><?php echo Lang::txt('COM_JOBS_MY_RESUME'); ?></a></li>
+                <li><a class="myresume btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=addresume') ?>"><?= Lang::txt('COM_JOBS_MY_RESUME') ?></a></li>
             <?php } ?>
         </ul>
     </div><!-- / #content-header-extra -->
@@ -40,7 +40,7 @@ defined('_HZEXEC_') or die();
         <p class="error"><?php echo $this->getError(); ?></p>
     <?php } ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=confirm'); ?>" method="post" id="hubForm">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&task=confirm') ?>" method="post" id="hubForm">
         <div class="explaination">
             <p><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_HINT_EMPLOYER_INFO') ?></p>
         </div>
@@ -50,16 +50,16 @@ defined('_HZEXEC_') or die();
             <label for="companyName">
                 <?php echo Lang::txt('COM_JOBS_EMPLOYER_COMPANY_NAME'); ?>:
                 <span class="required"><?php echo Lang::txt('COM_JOBS_REQUIRED'); ?></span>
-                <input class="inputbox" type="text" id="companyName" name="companyName" size="50" maxlength="100" value="<?php echo $this->escape($this->employer->companyName); ?>" />
+                <input class="inputbox" type="text" id="companyName" name="companyName" size="50" maxlength="100" value="<?= $this->escape($this->employer->companyName) ?>" />
             </label>
             <label for="companyLocation">
                 <?php echo Lang::txt('COM_JOBS_EMPLOYER_COMPANY_LOCATION'); ?>:
                 <span class="required"><?php echo Lang::txt('COM_JOBS_REQUIRED'); ?></span>
-                <input class="inputbox" type="text" id="companyLocation" name="companyLocation" size="50" maxlength="200" value="<?php echo $this->escape($this->employer->companyLocation); ?>" />
+                <input class="inputbox" type="text" id="companyLocation" name="companyLocation" size="50" maxlength="200" value="<?= $this->escape($this->employer->companyLocation) ?>" />
             </label>
             <label for="companyWebsite">
                 <?php echo Lang::txt('COM_JOBS_EMPLOYER_COMPANY_WEBSITE'); ?>:
-                <input class="inputbox" type="text" id="companyWebsite" name="companyWebsite" size="50" maxlength="200" value="<?php echo $this->escape($this->employer->companyWebsite); ?>" />
+                <input class="inputbox" type="text" id="companyWebsite" name="companyWebsite" size="50" maxlength="200" value="<?= $this->escape($this->employer->companyWebsite) ?>" />
             </label>
         </fieldset>
         <div class="clear"></div>
@@ -119,12 +119,12 @@ defined('_HZEXEC_') or die();
                 $iniprice = $thissub ? 0 : $currentService->unitprice;
                 ?>
                 <div class="bindtogether product">
-                    <input class="option service" type="radio" name="serviceid" id="service_<?php echo $currentService->id; ?>" value="<?php echo $currentService->id; ?>"
+                    <input class="option service" type="radio" name="serviceid" id="service_<?= $currentService->id ?>" value="<?= $currentService->id ?>"
                     <?php if ($thissub or ($this->subscription->serviceid == 0 && $this->services->key() == 1)) {
                         echo 'checked="checked"';
                     }
                     echo '> ' . $this->escape($currentService->title) . ' - '; ?>
-                    <span class="priceline"><?php echo $currentService->currency . ' ' . $currentService->unitprice . '  ' . Lang::txt('COM_JOBS_PER') . ' ' . $currentService->unitmeasure; ?></span>
+                    <span class="priceline"><?= $currentService->currency . ' ' . $currentService->unitprice . '  ' . Lang::txt('COM_JOBS_PER') . ' ' . $currentService->unitmeasure ?></span>
                     <span><?php echo $currentService->description; ?></span>
 
                     <div class="subdetails" id="plan_<?php echo $currentService->id; ?>">
@@ -159,19 +159,19 @@ defined('_HZEXEC_') or die();
                     </span>
 
                         <!-- GOOGLE Checkout (TBD) -->
-                        <input type="hidden" class="product-price" value="<?php echo $this->escape($currentService->unitprice); ?>" />
-                        <input type="hidden" class="product-title" value="<?php echo $this->escape($currentService->title); ?>" />
+                        <input type="hidden" class="product-price" value="<?= $this->escape($currentService->unitprice) ?>" />
+                        <input type="hidden" class="product-title" value="<?= $this->escape($currentService->title) ?>" />
 
                     </div>
                 </div>
-                <input type="hidden" name="price_<?php echo $currentService->id; ?>" id="price_<?php echo $currentService->id; ?>" value="<?php echo $this->escape($currentService->unitprice); ?>" />
+                <input type="hidden" name="price_<?= $currentService->id ?>" id="price_<?= $currentService->id ?>" value="<?= $this->escape($currentService->unitprice) ?>" />
                 <?php $this->services->next();
             }
             $btn = $this->subscription->id ? Lang::txt('COM_JOBS_SUBSCRIPTION_SAVE') : Lang::txt('COM_JOBS_SUBSCRIPTION_PROCESS_ORDER');
             ?>
             <label for="contact">
-                <?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_CONTACT_PHONE') . ': <span class="required">' . Lang::txt('COM_JOBS_REQUIRED_WITH_PAYMENT') . '</span>'; ?>
-                <input class="inputbox" type="text" id="contact" name="contact" size="50" maxlength="15" value="<?php echo $this->escape($this->subscription->contact); ?>" />
+                <?= Lang::txt('COM_JOBS_SUBSCRIPTION_CONTACT_PHONE') . ': <span class="required">' . Lang::txt('COM_JOBS_REQUIRED_WITH_PAYMENT') . '</span>' ?>
+                <input class="inputbox" type="text" id="contact" name="contact" size="50" maxlength="15" value="<?= $this->escape($this->subscription->contact) ?>" />
             </label>
 
             <div class="submitblock">

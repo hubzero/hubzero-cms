@@ -21,7 +21,7 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft'); ?>">
+            <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=draft') ?>">
                 <?php echo Lang::txt('COM_CONTRIBUTE_NEW_SUBMISSION'); ?>
             </a>
         </p>
@@ -45,7 +45,7 @@ $this
         <p class="error"><?php echo $this->getError(); ?></p>
     <?php } ?>
 
-    <form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id); ?>" method="post" id="hubForm">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id) ?>" method="post" id="hubForm">
         <div class="explaination">
             <h4><?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_HEADER'); ?></h4>
             <p><?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_EXPLANATION'); ?></p>
@@ -57,7 +57,7 @@ $this
             <div class="grid">
                 <div class="col span6">
                     <label for="group_owner">
-                        <?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_GROUP'); ?>: <span class="optional"><?php echo Lang::txt('COM_CONTRIBUTE_OPTIONAL'); ?></span>
+                        <?= Lang::txt('COM_CONTRIBUTE_GROUPS_GROUP') ?>: <span class="optional"><?= Lang::txt('COM_CONTRIBUTE_OPTIONAL') ?></span>
                         <select name="group_owner" id="group_owner">
                             <option value=""><?php echo Lang::txt('COM_CONTRIBUTE_SELECT_GROUP'); ?></option>
                             <?php
@@ -67,14 +67,14 @@ $this
                                 foreach ($this->groups as $group) {
                                     $listed = $listed || ($owner == $group->cn);
                                     ?>
-                                <option value="<?php echo $this->escape($group->cn); ?>"<?php echo $owner == $group->cn ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
+                                <option value="<?= $this->escape($group->cn) ?>"<?= $owner == $group->cn ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($group->description)) ?></option>
                                     <?php
                                 }
                             }
                             // Keep a group the editor isn't a member of, or it would be dropped on save
                             if ($owner && !$listed) {
                                 ?>
-                                <option value="<?php echo $this->escape($owner); ?>" selected="selected"><?php echo $this->escape($this->row->group_owner->get('description', $owner)); ?></option>
+                                <option value="<?= $this->escape($owner) ?>" selected="selected"><?= $this->escape($this->row->group_owner->get('description', $owner)) ?></option>
                                 <?php
                             }
                             ?>
@@ -83,21 +83,21 @@ $this
                 </div>
                 <div class="col span6 omega">
                     <label for="access">
-                        <?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL'); ?>: <span class="optional"><?php echo Lang::txt('COM_CONTRIBUTE_OPTIONAL'); ?></span>
+                        <?= Lang::txt('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL') ?>: <span class="optional"><?= Lang::txt('COM_CONTRIBUTE_OPTIONAL') ?></span>
                         <select name="access" id="access">
-                            <option value="0"<?php echo $this->row->access == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></option>
-                            <option value="1"<?php echo $this->row->access == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></option>
-                            <option value="3"<?php echo $this->row->access == 3 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></option>
-                            <option value="4"<?php echo $this->row->access == 4 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></option>
+                            <option value="0"<?= $this->row->access == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC') ?></option>
+                            <option value="1"<?= $this->row->access == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?></option>
+                            <option value="3"<?= $this->row->access == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED') ?></option>
+                            <option value="4"<?= $this->row->access == 4 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE') ?></option>
                         </select>
                     </label>
                 </div>
             </div>
             <p>
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION'); ?><br />
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION'); ?><br />
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION'); ?><br />
-                <strong><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></strong> = <?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE_EXPLANATION'); ?>
+                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION') ?><br />
+                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION') ?><br />
+                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION') ?><br />
+                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE_EXPLANATION') ?>
             </p>
         <?php } else { ?>
             <p class="information">
@@ -116,7 +116,7 @@ $this
         <fieldset>
             <legend><?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_AUTHORS'); ?></legend>
             <div class="field-wrap">
-                <iframe width="100%" height="400" frameborder="0" name="authors" id="authors" title="<?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_AUTHORS'); ?>" scrolling="auto" src="/index.php?option=<?php echo $this->option; ?>&amp;controller=authors&amp;id=<?php echo $this->id; ?>&amp;tmpl=component"></iframe>
+                <iframe width="100%" height="400" frameborder="0" name="authors" id="authors" title="<?= Lang::txt('COM_CONTRIBUTE_AUTHORS_AUTHORS') ?>" scrolling="auto" src="/index.php?option=<?= $this->option ?>&amp;controller=authors&amp;id=<?= $this->id ?>&amp;tmpl=component"></iframe>
             </div>
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

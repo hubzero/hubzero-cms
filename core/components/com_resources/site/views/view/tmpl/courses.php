@@ -55,7 +55,7 @@ if ($mode != 'preview') {
                         <h2>
                             <?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
                             <?php if ($this->model->params->get('access-edit-resource')) { ?>
-                                <a class="icon-edit edit btn" href="<?php echo Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id); ?>"><?php echo Lang::txt('COM_RESOURCES_EDIT'); ?></a>
+                                <a class="icon-edit edit btn" href="<?= Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id) ?>"><?= Lang::txt('COM_RESOURCES_EDIT') ?></a>
                             <?php } ?>
                         </h2>
                         <input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />
@@ -86,9 +86,9 @@ if ($mode != 'preview') {
                         ?>
                             <p class="warning">
                                 <?php if (User::isGuest()) : ?>
-                                    <?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())); ?>
+                                    <?= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_LOGGED_IN', base64_encode(Request::path())) ?>
                                 <?php elseif ($this->get('group_owner')) : ?>
-                                    <?php echo Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml); ?>
+                                    <?= Lang::txt('COM_RESOURCES_ERROR_MUST_BE_PART_OF_GROUP') . ' ' . implode(', ', $ghtml) ?>
                                 <?php else : ?>
                                     <?php echo Lang::txt('COM_RESOURCES_ALERTNOTAUTH'); ?>
                                 <?php endif; ?>
@@ -151,9 +151,9 @@ if ($mode != 'preview') {
                         $live_site = rtrim(Request::base(), '/');
                         ?>
                         <p>
-                            <a class="feed" id="resource-audio-feed" href="<?php echo $live_site . '/resources/' . $this->model->id . '/feed.rss?content=audio'; ?>"><?php echo Lang::txt('Audio podcast'); ?></a><br />
-                            <a class="feed" id="resource-video-feed" href="<?php echo $live_site . '/resources/' . $this->model->id . '/feed.rss?content=video'; ?>"><?php echo Lang::txt('Video podcast'); ?></a><br />
-                            <a class="feed" id="resource-slides-feed" href="<?php echo $live_site . '/resources/' . $this->model->id . '/feed.rss?content=slides'; ?>"><?php echo Lang::txt('Slides/Notes podcast'); ?></a>
+                            <a class="feed" id="resource-audio-feed" href="<?= $live_site . '/resources/' . $this->model->id . '/feed.rss?content=audio' ?>"><?= Lang::txt('Audio podcast') ?></a><br />
+                            <a class="feed" id="resource-video-feed" href="<?= $live_site . '/resources/' . $this->model->id . '/feed.rss?content=video' ?>"><?= Lang::txt('Video podcast') ?></a><br />
+                            <a class="feed" id="resource-slides-feed" href="<?= $live_site . '/resources/' . $this->model->id . '/feed.rss?content=slides' ?>"><?= Lang::txt('Slides/Notes podcast') ?></a>
                         </p>
                         <?php
                         if ($this->tab != 'play') {
@@ -351,7 +351,7 @@ if ($mode != 'preview') {
                                 <span class="course-lecture-title"><?php echo $titleHtml; ?></span>
                                 <?php if ($child->get('type') != 31 && $child->introtext) : ?>
                                     <span class="course-lecture-description">
-                                        <?php echo nl2br(\Hubzero\Utility\Str::truncate(stripslashes($child->introtext), 200)); ?>
+                                        <?= nl2br(\Hubzero\Utility\Str::truncate(stripslashes($child->introtext), 200)) ?>
                                     </span>
                                 <?php endif; ?>
                             </button>
@@ -370,7 +370,7 @@ if ($mode != 'preview') {
                                         <?php if ($videoSection) : ?>
                                             <div class="course-subsection">
                                                 <h4><?php echo Lang::txt('Video'); ?></h4>
-                                                <div class="course-subsection-content"><?php echo $videoSection; ?></div>
+                                                <div class="course-subsection-content"><?= $videoSection ?></div>
                                             </div>
                                         <?php endif; ?>
 

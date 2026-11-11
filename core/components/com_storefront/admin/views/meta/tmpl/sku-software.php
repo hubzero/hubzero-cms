@@ -107,8 +107,8 @@ defined('_HZEXEC_') or die();
         <label for="field-serialManagement">Serial Number Management</label>
         <select name="fields[meta][serialManagement]" id="field-serialManagement">
             <option value=""<?php echo !$serialManagement ? ' selected="selected"' : ''; ?>>No management</option>
-            <option value="single"<?php echo $serialManagement == "single" ? ' selected="selected"' : ''; ?>>Single Universal Number</option>
-            <option value="multiple"<?php echo $serialManagement == "multiple" ? ' selected="selected"' : ''; ?>>Multiple Unique Numbers</option>
+            <option value="single"<?= $serialManagement == "single" ? ' selected="selected"' : '' ?>>Single Universal Number</option>
+            <option value="multiple"<?= $serialManagement == "multiple" ? ' selected="selected"' : '' ?>>Multiple Unique Numbers</option>
         </select>
     </div>
 

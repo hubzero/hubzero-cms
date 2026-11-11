@@ -22,7 +22,7 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-info btn popup" href="<?php echo Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index'); ?>">
+            <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index') ?>">
                 <span><?php echo Lang::txt('COM_FORUM_GETTING_STARTED'); ?></span>
             </a>
         </p>
@@ -33,14 +33,14 @@ $this
 <?php if ($this->sections->count()) { ?>
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
+            <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=categories&task=search') ?>" method="get">
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_FORUM_SEARCH'); ?>" />
+                    <input class="entry-search-submit" type="submit" value="<?= Lang::txt('COM_FORUM_SEARCH') ?>" />
                     <fieldset class="entry-search">
                         <legend><span><?php echo Lang::txt('COM_FORUM_SEARCH_LEGEND'); ?></span></legend>
 
                         <label for="entry-search-field"><?php echo Lang::txt('COM_FORUM_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_FORUM_SEARCH_PLACEHOLDER'); ?>" />
+                        <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_FORUM_SEARCH_PLACEHOLDER') ?>" />
                     </fieldset>
                 </div>
             </form>
@@ -58,14 +58,14 @@ $this
                     <table class="entries categories">
                         <caption>
                             <?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias') && $section->get('id')) { ?>
-                                <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" id="s<?php echo $section->get('id'); ?>">
-                                    <input type="text" name="fields[title]" value="<?php echo $this->escape(stripslashes($section->get('title'))); ?>" />
+                                <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" id="s<?= $section->get('id') ?>">
+                                    <input type="text" name="fields[title]" value="<?= $this->escape(stripslashes($section->get('title'))) ?>" />
                                     <input type="submit" value="<?php echo Lang::txt('JSUBMIT'); ?>" />
                                     <input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />
                                     <input type="hidden" name="fields[scope]" value="site" />
                                     <input type="hidden" name="fields[scope_id]" value="0" />
-                                    <input type="hidden" name="fields[access]" value="<?php echo $this->escape($section->get('access')); ?>" />
-                                    <input type="hidden" name="fields[state]" value="<?php echo $this->escape($section->get('state')); ?>" />
+                                    <input type="hidden" name="fields[access]" value="<?= $this->escape($section->get('access')) ?>" />
+                                    <input type="hidden" name="fields[state]" value="<?= $this->escape($section->get('state')) ?>" />
                                     <input type="hidden" name="controller" value="sections" />
                                     <input type="hidden" name="task" value="save" />
                                     <?php echo Html::input('token'); ?>
@@ -76,10 +76,10 @@ $this
 
                             <?php if (($this->config->get('access-edit-section') || $this->config->get('access-delete-section')) && $section->get('id')) { ?>
                                 <?php if ($this->config->get('access-delete-section')) { ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=delete'); ?>" class="icon-delete delete" title="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=delete') ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><span><?= Lang::txt('JACTION_DELETE') ?></span></button>
                                 <?php } ?>
                                 <?php if ($this->config->get('access-edit-section') && $this->edit != $section->get('alias') && $section->get('id')) { ?>
-                                    <a class="icon-edit edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=edit#s' . $section->get('id')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+                                    <a class="icon-edit edit" href="<?= Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=edit#s' . $section->get('id')) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                                         <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                                     </a>
                                 <?php } ?>
@@ -89,7 +89,7 @@ $this
                             <tfoot>
                                 <tr>
                                     <td<?php echo $section->categories()->total() > 0 ? ' colspan="5"' : ''; ?>>
-                                        <a class="icon-add add btn" id="addto-<?php echo $section->get('id'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=new'); ?>">
+                                        <a class="icon-add add btn" id="addto-<?= $section->get('id') ?>" href="<?= Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=new') ?>">
                                             <span><?php echo Lang::txt('COM_FORUM_NEW_CATEGORY'); ?></span>
                                         </a>
                                     </td>
@@ -108,11 +108,11 @@ $this
                                     ?>
                                     <tr<?php echo $row->get('closed') ? ' class="closed"' : ''; ?>>
                                         <th class="priority-5" scope="row">
-                                            <span class="entry-identifier <?php echo $icn; ?>"><?php echo $this->escape($row->get('id')); ?></span>
+                                            <span class="entry-identifier <?= $icn ?>"><?= $this->escape($row->get('id')) ?></span>
                                         </th>
                                         <td>
                                             <a class="entry-title" href="<?php echo Route::url($row->link()); ?>">
-                                                <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+                                                <span><?= $this->escape(stripslashes($row->get('title'))) ?></span>
                                             </a>
                                             <span class="entry-details">
                                                 <span class="entry-description">
@@ -145,12 +145,12 @@ $this
                                     <?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
                                         <td class="entry-options">
                                             <?php if (($row->get('created_by') == User::get('id') || $this->config->get('access-edit-category')) && $section->get('id')) { ?>
-                                                <a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+                                                <a class="icon-edit edit" href="<?= Route::url($row->link('edit')) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                                                     <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                                                 </a>
                                             <?php } ?>
                                             <?php if ($this->config->get('access-delete-category') && $section->get('id')) { ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($row->link('delete')); ?>" class="icon-delete delete tooltips" title="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>"><span><?php echo Lang::txt('JACTION_DELETE'); ?></span></button>
+                                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->link('delete')) ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><span><?= Lang::txt('JACTION_DELETE') ?></span></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>
@@ -175,15 +175,15 @@ $this
                     <tbody>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_FORUM_CATEGORIES'); ?></th>
-                            <td><span class="item-count"><?php echo $this->forum->count('categories', $this->filters); ?></span></td>
+                            <td><span class="item-count"><?= $this->forum->count('categories', $this->filters) ?></span></td>
                         </tr>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_FORUM_DISCUSSIONS'); ?></th>
-                            <td><span class="item-count"><?php echo $this->forum->count('threads', $this->filters); ?></span></td>
+                            <td><span class="item-count"><?= $this->forum->count('threads', $this->filters) ?></span></td>
                         </tr>
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_FORUM_POSTS'); ?></th>
-                            <td><span class="item-count"><?php echo $this->forum->count('posts', $this->filters); ?></span></td>
+                            <td><span class="item-count"><?= $this->forum->count('posts', $this->filters) ?></span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -222,9 +222,9 @@ $this
                         </span>
                         <span class="entry-date">
                             <span class="entry-date-at"><?php echo Lang::txt('COM_FORUM_AT'); ?></span>
-                            <span class="icon-time time"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('time'); ?></time></span>
+                            <span class="icon-time time"><time datetime="<?= $post->get('created') ?>"><?= $post->created('time') ?></time></span>
                             <span class="entry-date-on"><?php echo Lang::txt('COM_FORUM_ON'); ?></span>
-                            <span class="icon-date date"><time datetime="<?php echo $post->get('created'); ?>"><?php echo $post->created('date'); ?></time></span>
+                            <span class="icon-date date"><time datetime="<?= $post->get('created') ?>"><?= $post->created('date') ?></time></span>
                         </span>
                     <?php } else { ?>
                         <?php echo Lang::txt('COM_FORUM_NONE'); ?>
@@ -268,7 +268,7 @@ $this
 <?php } else { ?>
     <div class="instructions icon-comments">
         <?php if ($this->config->get('access-create-section')) { ?>
-            <p class="notification"><?php echo Lang::txt('COM_FORUM_EMPTY_MODERATOR', Route::url('index.php?option=' . $this->option . '&action=populate')); ?></p>
+            <p class="notification"><?= Lang::txt('COM_FORUM_EMPTY_MODERATOR', Route::url('index.php?option=' . $this->option . '&action=populate')) ?></p>
 
             <div class="container">
                 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">
@@ -276,9 +276,9 @@ $this
                         <legend><?php echo Lang::txt('COM_FORUM_NEW_SECTION'); ?></legend>
 
                         <div class="form-group">
-                            <label for="field-title"><span><?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?></span></label>
+                            <label for="field-title"><span><?= Lang::txt('COM_FORUM_FIELD_TITLE') ?></span></label>
                             <span class="input-cell">
-                                <input type="text" class="form-control" name="fields[title]" id="field-title" value="" placeholder="<?php echo Lang::txt('COM_FORUM_ENTER_TITLE'); ?>" />
+                                <input type="text" class="form-control" name="fields[title]" id="field-title" value="" placeholder="<?= Lang::txt('COM_FORUM_ENTER_TITLE') ?>" />
                             </span>
                             <span class="input-cell">
                                 <input type="submit" class="btn" value="<?php echo Lang::txt('JACTION_CREATE'); ?>" />

@@ -35,14 +35,14 @@ $certWarn = 30 * 24 * 60 * 60;
                     <tbody>
                         <tr>
                             <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_ENABLED'); ?>:</th>
-                            <td><?php echo $this->params->get('IdP_enable', 1) ? Lang::txt('JYES') : ('<strong>' . Lang::txt('JNO') . '</strong>'); ?></td>
+                            <td><?= $this->params->get('IdP_enable', 1) ? Lang::txt('JYES') : ('<strong>' . Lang::txt('JNO') . '</strong>') ?></td>
                         </tr>
                         <tr>
                             <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_ENTITY_ID'); ?>:</th>
                             <td>
                                 <code><?php echo $this->escape($this->idp->getEntityID()); ?></code>
                                 <?php if ($this->idp->isIdentityRequestDerived()) { ?>
-                                    <p class="warning"><?php echo Lang::txt('COM_SAML_OVERVIEW_IDENTITY_UNPINNED'); ?></p>
+                                    <p class="warning"><?= Lang::txt('COM_SAML_OVERVIEW_IDENTITY_UNPINNED') ?></p>
                                 <?php } ?>
                             </td>
                         </tr>
@@ -58,7 +58,7 @@ $certWarn = 30 * 24 * 60 * 60;
                             <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_METADATA_URL'); ?>:</th>
                             <td>
                                 <?php if ($this->params->get('enableIdPMetadataEndpoint', 1)) { ?>
-                                    <a href="<?php echo $this->escape($this->idp->getMetadataUrl()); ?>" target="_blank" rel="noopener"><code><?php echo $this->escape($this->idp->getMetadataUrl()); ?></code></a>
+                                    <a href="<?= $this->escape($this->idp->getMetadataUrl()) ?>" target="_blank" rel="noopener"><code><?= $this->escape($this->idp->getMetadataUrl()) ?></code></a>
                                 <?php } else { ?>
                                     <?php echo Lang::txt('COM_SAML_OVERVIEW_METADATA_DISABLED'); ?>
                                 <?php } ?>
@@ -91,11 +91,11 @@ $certWarn = 30 * 24 * 60 * 60;
                             <tr>
                                 <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_CERT_EXPIRES'); ?>:</th>
                                 <td>
-                                    <time datetime="<?php echo gmdate('Y-m-d\TH:i:s\Z', $this->cert['valid_to']); ?>"><?php echo Date::of($this->cert['valid_to'])->toLocal(); ?></time>
+                                    <time datetime="<?= gmdate('Y-m-d\TH:i:s\Z', $this->cert['valid_to']) ?>"><?= Date::of($this->cert['valid_to'])->toLocal() ?></time>
                                     <?php if ($this->cert['valid_to'] < $now) { ?>
                                         <p class="error"><?php echo Lang::txt('COM_SAML_OVERVIEW_CERT_EXPIRED'); ?></p>
                                     <?php } elseif ($this->cert['valid_to'] < ($now + $certWarn)) { ?>
-                                        <p class="warning"><?php echo Lang::txt('COM_SAML_OVERVIEW_CERT_EXPIRING', ceil(($this->cert['valid_to'] - $now) / 86400)); ?></p>
+                                        <p class="warning"><?= Lang::txt('COM_SAML_OVERVIEW_CERT_EXPIRING', ceil(($this->cert['valid_to'] - $now) / 86400)) ?></p>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -121,15 +121,15 @@ $certWarn = 30 * 24 * 60 * 60;
                         <tr>
                             <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_SERVICE_PROVIDERS'); ?>:</th>
                             <td>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=serviceproviders'); ?>">
-                                    <?php echo Lang::txt('COM_SAML_OVERVIEW_SP_COUNT', $this->spEnabled, $this->spTotal); ?>
+                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=serviceproviders') ?>">
+                                    <?= Lang::txt('COM_SAML_OVERVIEW_SP_COUNT', $this->spEnabled, $this->spTotal) ?>
                                 </a>
                             </td>
                         </tr>
                         <tr>
                             <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_ACTIVE_SESSIONS'); ?>:</th>
                             <td>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=sessions'); ?>">
+                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=sessions') ?>">
                                     <?php echo $this->sessionsActive; ?>
                                 </a>
                             </td>

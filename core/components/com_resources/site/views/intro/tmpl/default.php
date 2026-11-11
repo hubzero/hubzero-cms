@@ -46,7 +46,7 @@ $this
         </div>
         <div class="col span3 omega">
             <p>
-                <a class="popup" href="<?php echo Route::url('index.php?option=com_help&component=resources&page=index'); ?>">
+                <a class="popup" href="<?= Route::url('index.php?option=com_help&component=resources&page=index') ?>">
                     <?php echo Lang::txt('COM_RESOURCES_NEED_HELP'); ?>
                 </a>
             </p>
@@ -63,13 +63,13 @@ $this
         <div class="col span9 omega">
             <div class="grid">
                 <div class="col span-half">
-                    <form action="<?php echo Route::url('index.php?option=com_resources&task=browse'); ?>" method="get" class="search">
+                    <form action="<?= Route::url('index.php?option=com_resources&task=browse') ?>" method="get" class="search">
                         <fieldset>
                             <legend class="sr-only"><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE'); ?></legend>
                             <p class="hz-v-align">
-                                <label for="rsearch" class="sr-only"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
+                                <label for="rsearch" class="sr-only"><?= Lang::txt('COM_RESOURCES_SEARCH_LABEL') ?></label>
                                 <span class="hz-input-combo">
-                                <input type="text" name="search" id="rsearch" value="" aria-label="<?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?>" />
+                                <input type="text" name="search" id="rsearch" value="" aria-label="<?= Lang::txt('COM_RESOURCES_SEARCH_LABEL') ?>" />
                                 <input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_SEARCH'); ?>" />
                                 </span>
                             </p>
@@ -78,7 +78,7 @@ $this
                 </div><!-- / .col span-half -->
                 <div class="col span-half omega">
                     <div class="browse">
-                        <p><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>"><?php echo Lang::txt('COM_RESOURCES_BROWSE_LIST'); ?></a></p>
+                        <p><a href="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>"><?= Lang::txt('COM_RESOURCES_BROWSE_LIST') ?></a></p>
                     </div><!-- / .browse -->
                 </div><!-- / .col span-half -->
             </div><!-- / .grid -->
@@ -146,7 +146,7 @@ if ($categories) {
                 <div class="col span-third <?php echo $clm; ?>">
                     <div class="resource-type <?php echo $cls; ?>">
                         <h3>
-                            <a href="<?php echo Route::url('index.php?option=' . $this->option . '&type=' . $category->alias); ?>">
+                            <a href="<?= Route::url('index.php?option=' . $this->option . '&type=' . $category->alias) ?>">
                                 <?php echo $this->escape(strip_tags(stripslashes($category->type))); ?>
                             </a>
                         </h3>

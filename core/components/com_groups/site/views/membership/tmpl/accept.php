@@ -30,12 +30,12 @@ if ($this->token) {
 
 <section class="main section">
     <div class="section-inner">
-        <p class="info"><?php echo Lang::txt('COM_GROUPS_ACCEPT_INVITE_CONFIRM', $this->escape($this->group->get('description'))); ?></p>
+        <p class="info"><?= Lang::txt('COM_GROUPS_ACCEPT_INVITE_CONFIRM', $this->escape($this->group->get('description'))) ?></p>
         <p>
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($accept); ?>" class="btn btn-success">
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($accept) ?>" class="btn btn-success">
                 <?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>
             </button>
-            <a class="btn btn-secondary" href="<?php echo Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>">
+            <a class="btn btn-secondary" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')) ?>">
                 <?php echo Lang::txt('JCANCEL'); ?>
             </a>
         </p>

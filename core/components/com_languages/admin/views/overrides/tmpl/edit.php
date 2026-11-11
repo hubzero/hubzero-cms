@@ -49,42 +49,42 @@ $this
     ->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->item->key); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>" data-cache_expired="<?php echo (Request::getString('cache_expired')) ? 'expired' : ''; ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->item->key) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>" data-cache_expired="<?= (Request::getString('cache_expired')) ? 'expired' : '' ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
-                <legend><span><?php echo empty($this->item->key) ? Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_EDIT_NEW_OVERRIDE_LEGEND') : Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_EDIT_EDIT_OVERRIDE_LEGEND'); ?></span></legend>
+                <legend><span><?= empty($this->item->key) ? Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_EDIT_NEW_OVERRIDE_LEGEND') : Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_EDIT_EDIT_OVERRIDE_LEGEND') ?></span></legend>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_KEY_DESC'); ?>">
-                    <label for="field-key"><?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_KEY_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="fields[key]" id="field-key" class="required" size="60" value="<?php echo $this->escape($this->item->key); ?>" />
+                    <label for="field-key"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_KEY_LABEL') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                    <input type="text" name="fields[key]" id="field-key" class="required" size="60" value="<?= $this->escape($this->item->key) ?>" />
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_OVERRIDE_DESC'); ?>">
-                    <label for="field-override"><?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_OVERRIDE_LABEL'); ?>:</label>
-                    <textarea name="fields[override]" id="field-override" rows="5" cols="50"><?php echo $this->escape($this->item->override); ?></textarea>
+                <div class="input-wrap" data-hint="<?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_OVERRIDE_DESC') ?>">
+                    <label for="field-override"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_OVERRIDE_LABEL') ?>:</label>
+                    <textarea name="fields[override]" id="field-override" rows="5" cols="50"><?= $this->escape($this->item->override) ?></textarea>
                 </div>
 
                 <?php if ($this->item->client == 'administrator') : ?>
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_BOTH_DESC'); ?>">
+                    <div class="input-wrap" data-hint="<?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_BOTH_DESC') ?>">
                         <input type="checkbox" name="fields[both]" id="field-both" value="true" />
-                        <label for="field-override"><?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_BOTH_LABEL'); ?>:</label>
+                        <label for="field-override"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_BOTH_LABEL') ?>:</label>
                     </div>
                 <?php endif; ?>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_LANGUAGE_DESC'); ?>">
-                    <label for="field-language"><?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_LANGUAGE_LABEL'); ?>:</label>
-                    <input type="text" name="fields[language]" id="field-language" size="50" readonly="readonly" value="<?php echo $this->escape($this->item->language); ?>" />
+                <div class="input-wrap" data-hint="<?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_LANGUAGE_DESC') ?>">
+                    <label for="field-language"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_LANGUAGE_LABEL') ?>:</label>
+                    <input type="text" name="fields[language]" id="field-language" size="50" readonly="readonly" value="<?= $this->escape($this->item->language) ?>" />
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_CLIENT_DESC'); ?>">
-                    <label for="field-client"><?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_CLIENT_LABEL'); ?>:</label>
-                    <input type="text" name="fields[client]" id="field-client" size="50" readonly="readonly" value="<?php echo $this->escape($this->item->client); ?>" />
+                <div class="input-wrap" data-hint="<?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_CLIENT_DESC') ?>">
+                    <label for="field-client"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_CLIENT_LABEL') ?>:</label>
+                    <input type="text" name="fields[client]" id="field-client" size="50" readonly="readonly" value="<?= $this->escape($this->item->client) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_FILE_DESC'); ?>">
                     <label for="field-file"><?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_FILE_LABEL'); ?>:</label>
-                    <input type="text" name="fields[file]" id="field-file" size="80" readonly="readonly" value="<?php echo $this->escape($this->item->file); ?>" />
+                    <input type="text" name="fields[file]" id="field-file" size="80" readonly="readonly" value="<?= $this->escape($this->item->file) ?>" />
                 </div>
             </fieldset>
         </div>
@@ -99,17 +99,17 @@ $this
                     <?php echo Lang::txt('COM_LANGUAGES_VIEW_OVERRIDE_REFRESHING'); ?>
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_DESC'); ?>">
-                    <label for="fields_searchtype"><?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_LABEL'); ?>:</label>
+                <div class="input-wrap" data-hint="<?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_DESC') ?>">
+                    <label for="fields_searchtype"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_LABEL') ?>:</label>
                     <fieldset id="fields_searchtype" class="radio inputbox">
                         <ul>
                             <li>
                                 <input type="radio" id="jform_searchtype0" name="fields[searchtype]" value="constant" />
-                                <label for="fields_searchtype0"><?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_CONSTANT'); ?></label>
+                                <label for="fields_searchtype0"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_CONSTANT') ?></label>
                             </li>
                             <li>
                                 <input type="radio" id="jform_searchtype1" name="fields[searchtype]" value="value" checked="checked" />
-                                <label for="fields_searchtype1"><?php echo Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_TEXT'); ?></label>
+                                <label for="fields_searchtype1"><?= Lang::txt('COM_LANGUAGES_OVERRIDE_FIELD_SEARCHTYPE_TEXT') ?></label>
                             </li>
                         </ul>
                     </fieldset>

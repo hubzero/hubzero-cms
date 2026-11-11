@@ -79,7 +79,7 @@ $this->css('usage', 'com_usage');
                 $cls = ($cls == 'even') ? 'odd' : 'even';
                 echo $cls; ?>">
                 <th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_CLUSTERS'); ?>:</th>
-                <td><?php echo Lang::txt('PLG_MEMBERS_USAGE_USERS_IN_COURSES_SERVED', number_format($this->cluster_users), number_format($this->cluster_classes), number_format($this->cluster_schools)); ?></td>
+                <td><?= Lang::txt('PLG_MEMBERS_USAGE_USERS_IN_COURSES_SERVED', number_format($this->cluster_users), number_format($this->cluster_classes), number_format($this->cluster_schools)) ?></td>
             </tr>
         <?php } ?>
         </tbody>
@@ -91,12 +91,12 @@ $this->css('usage', 'com_usage');
             <tr>
                 <th scope="col"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_NUMBER'); ?></th>
                 <th scope="col"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_TOOL_TITLE'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_USERS_YEAR'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_SIM_RUNS_YEAR'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_USERS_TOTAL'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_SIM_RUNS_TOTAL'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CITATIONS'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_PUBLISHED'); ?></th>
+                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_USERS_YEAR') ?></th>
+                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_SIM_RUNS_YEAR') ?></th>
+                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_USERS_TOTAL') ?></th>
+                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_SIM_RUNS_TOTAL') ?></th>
+                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CITATIONS') ?></th>
+                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_PUBLISHED') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -123,11 +123,11 @@ $this->css('usage', 'com_usage');
                     $cls = ($cls == 'even') ? 'odd' : 'even';
                     echo $cls; ?>">
                     <td><?php echo($count + 1); ?></td>
-                    <td class="textual-data"><a href="<?php echo Route::url('index.php?option=com_resources&id=' . $row->id); ?>"><?php echo $row->title; ?></a></td>
-                    <td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12'); ?>"><?php echo (is_numeric($user_count_12)) ? number_format($user_count_12) : $user_count_12; ?></a></td>
-                    <td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12'); ?>"><?php echo (is_numeric($sim_count_12)) ? number_format($sim_count_12) : $sim_count_12; ?></a></td>
-                    <td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14'); ?>"><?php  echo (is_numeric($user_count_14)) ? number_format($user_count_14) : $user_count_14; ?></a></td>
-                    <td><a href="<?php echo Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14'); ?>"><?php echo (is_numeric($sim_count_14)) ? number_format($sim_count_14) : $sim_count_14; ?></a></td>
+                    <td class="textual-data"><a href="<?= Route::url('index.php?option=com_resources&id=' . $row->id) ?>"><?= $row->title ?></a></td>
+                    <td><a href="<?= Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12') ?>"><?= (is_numeric($user_count_12)) ? number_format($user_count_12) : $user_count_12 ?></a></td>
+                    <td><a href="<?= Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=12') ?>"><?= (is_numeric($sim_count_12)) ? number_format($sim_count_12) : $sim_count_12 ?></a></td>
+                    <td><a href="<?= Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14') ?>"><?php  echo (is_numeric($user_count_14)) ? number_format($user_count_14) : $user_count_14; ?></a></td>
+                    <td><a href="<?= Route::url('index.php?option=com_usage&task=tools&id=' . $row->id . '&period=14') ?>"><?= (is_numeric($sim_count_14)) ? number_format($sim_count_14) : $sim_count_14 ?></a></td>
                     <td><?php echo PlgMembersUsage::getCitationcount($row->id, 0); ?></td>
                     <td><?php echo Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
                 </tr>
@@ -162,10 +162,10 @@ $this->css('usage', 'com_usage');
             <tr>
                 <th scope="col"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_NUMBER'); ?></th>
                 <th scope="col"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_RESOURCE_TITLE'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_USERS_YEAR'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_USERS_TOTAL'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CITATIONS'); ?></th>
-                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_PUBLISHED'); ?></th>
+                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_USERS_YEAR') ?></th>
+                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_USERS_TOTAL') ?></th>
+                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_CITATIONS') ?></th>
+                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_MEMBERS_USAGE_TBL_TH_PUBLISHED') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -230,7 +230,7 @@ $this->css('usage', 'com_usage');
                     $cls = ($cls == 'even') ? 'odd' : 'even';
                     echo $cls; ?>">
                     <td><?php echo($count + 1); ?></td>
-                    <td class="textual-data"><a href="<?php echo Route::url('index.php?option=com_resources&id=' . $row->id); ?>"><?php echo $row->title; ?></a> <span class="small"><?php echo $row->type; ?></span></td>
+                    <td class="textual-data"><a href="<?= Route::url('index.php?option=com_resources&id=' . $row->id) ?>"><?= $row->title ?></a> <span class="small"><?= $row->type ?></span></td>
                     <td><?php echo $usercount12; ?></td>
                     <td><?php echo $usercount14; ?></td>
                     <td><?php echo $cites ?></td>
@@ -255,11 +255,11 @@ $this->css('usage', 'com_usage');
                             $cls = ($cls == 'even') ? 'odd' : 'even';
                             echo $cls; ?>">
                             <td class="highlight"><?php echo($count + 1); ?></td>
-                            <td class="highlight textual-data"><span class="child-connector">|-</span> <a href="<?php echo Route::url('index.php?option=com_resources&id=' . $rw->id); ?>"><?php echo $rw->title; ?></a> <span class="small"><?php echo $rw->type; ?></span></td>
+                            <td class="highlight textual-data"><span class="child-connector">|-</span> <a href="<?= Route::url('index.php?option=com_resources&id=' . $rw->id) ?>"><?= $rw->title ?></a> <span class="small"><?= $rw->type ?></span></td>
                             <td class="highlight"><?php echo $usercount12; ?></td>
                             <td class="highlight"><?php echo $usercount14; ?></td>
                             <td class="highlight"><?php echo $cites ?></td>
-                            <td class="highlight"><?php echo Date::of($rw->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
+                            <td class="highlight"><?= Date::of($rw->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></td>
                         </tr>
                         <?php
                         $count++;

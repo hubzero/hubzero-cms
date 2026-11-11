@@ -19,10 +19,10 @@ defined('_HZEXEC_') or die();
     <h2 class="entry-title">
         <?php echo $this->escape(stripslashes($this->row->title)); ?>
         <?php if ($this->authorized || $this->row->created_by == User::get('id')) { ?>
-            <a class="edit" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+            <a class="edit" href="<?= Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                 <?php echo strtolower(Lang::txt('JACTION_EDIT')); ?>
             </a>
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id); ?>" class="delete" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id) ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>">
                 <?php echo strtolower(Lang::txt('JACTION_DELETE')); ?>
             </button>
         <?php } ?>
@@ -32,7 +32,7 @@ defined('_HZEXEC_') or die();
         <div id="sub-sub-menu">
             <ul>
                 <li<?php echo $this->page->alias == '' ? ' class="active"' : ''; ?>>
-                    <a class="tab" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1'); ?>">
+                    <a class="tab" href="<?= Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1') ?>">
                         <span><?php echo Lang::txt('EVENTS_OVERVIEW'); ?></span>
                     </a>
                 </li>
@@ -41,7 +41,7 @@ defined('_HZEXEC_') or die();
                 foreach ($this->pages as $p) {
                     ?>
                 <li<?php echo $this->page->alias == $p->alias ? ' class="active"' : ''; ?>>
-                    <a class="tab" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page=' . $p->alias); ?>">
+                    <a class="tab" href="<?= Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page=' . $p->alias) ?>">
                         <span><?php echo $this->escape(trim(stripslashes($p->title))); ?></span>
                     </a>
                 </li>
@@ -51,7 +51,7 @@ defined('_HZEXEC_') or die();
             ?>
             <?php if ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00') { ?>
                 <li<?php echo $this->page->alias == 'register' ? ' class="active"' : ''; ?>>
-                    <a class="tab" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page=register'); ?>">
+                    <a class="tab" href="<?= Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page=register') ?>">
                         <span><?php echo Lang::txt('EVENTS_REGISTER'); ?></span>
                     </a>
                 </li>
@@ -63,7 +63,7 @@ defined('_HZEXEC_') or die();
 
     <div class="entry-details">
     <?php if ($this->page->alias != '') { ?>
-        <?php echo (trim($this->page->pagetext)) ? stripslashes($this->page->pagetext) : '<p class="warning">' . Lang::txt('EVENTS_NO_INFO_AVAILABLE') . '</p>'; ?>
+        <?= (trim($this->page->pagetext)) ? stripslashes($this->page->pagetext) : '<p class="warning">' . Lang::txt('EVENTS_NO_INFO_AVAILABLE') . '</p>' ?>
     <?php } else { ?>
         <div class="col span6">
             <div class="container">
@@ -154,7 +154,7 @@ defined('_HZEXEC_') or die();
                 <div class="container">
                     <h3><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_EXTRA'); ?></h3>
                     <p class="entry-link">
-                        <a href="<?php echo $this->escape(stripslashes($this->row->extra_info)); ?>"><?php echo $this->escape(stripslashes($this->row->extra_info)); ?></a>
+                        <a href="<?= $this->escape(stripslashes($this->row->extra_info)) ?>"><?= $this->escape(stripslashes($this->row->extra_info)) ?></a>
                     </p>
                 </div>
             <?php } ?>

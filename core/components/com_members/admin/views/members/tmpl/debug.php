@@ -24,12 +24,12 @@ $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debug&id=' . (int) $this->user->get('id')); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debug&id=' . (int) $this->user->get('id')) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="filter-search col span5">
-                <label class="filter-search-lbl" for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_ASSETS'); ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_MEMBERS_SEARCH_USERS'); ?>" />
+                <label class="filter-search-lbl" for="filter_search"><?= Lang::txt('COM_MEMBERS_SEARCH_ASSETS') ?></label>
+                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_USERS') ?>" />
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
             </div>
@@ -45,7 +45,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
 
                 <select name="filter_level_start" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_LEVEL_START');?></option>
-                    <?php echo Html::select('options', $this->levels, 'value', 'text', $this->filters['level_start']); ?>
+                    <?= Html::select('options', $this->levels, 'value', 'text', $this->filters['level_start']) ?>
                 </select>
 
                 <select name="filter_level_end" class="inputbox filter filter-submit">
@@ -60,9 +60,9 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
         <caption>
             <?php echo Lang::txt('COM_MEMBERS_DEBUG_LEGEND'); ?>
             <span class="swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_NO_CHECK', '-');?></span>
-            <span class="check-0 swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_IMPLICIT_DENY', '<span class="state no"><span>-</span></span>');?></span>
-            <span class="check-a swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_ALLOW', '<span class="state yes"><span>&#10003;</span></span>');?></span>
-            <span class="check-d swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_DENY', '<span class="state no"><span>&#10007;</span></span>');?></span>
+            <span class="check-0 swatch"><?= Lang::txt('COM_MEMBERS_DEBUG_IMPLICIT_DENY', '<span class="state no"><span>-</span></span>') ?></span>
+            <span class="check-a swatch"><?= Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_ALLOW', '<span class="state yes"><span>&#10003;</span></span>') ?></span>
+            <span class="check-d swatch"><?= Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_DENY', '<span class="state no"><span>&#10007;</span></span>') ?></span>
         </caption>
         <thead>
             <tr>
@@ -74,7 +74,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                 </th>
                 <?php foreach ($this->actions as $key => $action) : ?>
                     <th>
-                        <span class="hasTip" title="<?php echo htmlspecialchars(Lang::txt($key) . '::' . Lang::txt($action[1]), ENT_COMPAT, 'UTF-8'); ?>"><?php echo Lang::txt($key); ?></span>
+                        <span class="hasTip" title="<?= htmlspecialchars(Lang::txt($key) . '::' . Lang::txt($action[1]), ENT_COMPAT, 'UTF-8') ?>"><?= Lang::txt($key) ?></span>
                     </th>
                 <?php endforeach; ?>
                 <th>

@@ -51,11 +51,11 @@ $this->js();
             </div>
         </div><!-- / .panel-tree -->
         <div class="panel panel-files">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1', true, true); ?>" name="adminForm" id="upload-form" method="post" enctype="multipart/form-data">
+            <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1', true, true) ?>" name="adminForm" id="upload-form" method="post" enctype="multipart/form-data">
                 <div class="media-header">
                     <div class="media-breadcrumbs-block">
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1&folder=/'); ?>" data-folder="/" class="media-breadcrumbs has-next-button folder-link" id="path_root">
-                            <img src="<?php echo Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true); ?>" alt="<?php echo COM_MEDIA_BASEURL; ?>" />
+                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1&folder=/') ?>" data-folder="/" class="media-breadcrumbs has-next-button folder-link" id="path_root">
+                            <img src="<?= Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true) ?>" alt="<?= COM_MEDIA_BASEURL ?>" />
                         </a>
                         <span id="media-breadcrumbs">
                             <?php
@@ -72,21 +72,21 @@ $this->js();
                                 $fld .= '/' . $crumb;
                                 ?>
                                 <span class="icon-chevron-right dir-separator">/</span>
-                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1&folder=' . $fld); ?>" data-folder="<?php echo $this->escape($fld); ?>" class="media-breadcrumbs folder has-next-button" id="path_<?php echo $this->escape($crumb); ?>"><?php echo $this->escape($crumb); ?></a>
+                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1&folder=' . $fld) ?>" data-folder="<?= $this->escape($fld) ?>" class="media-breadcrumbs folder has-next-button" id="path_<?= $this->escape($crumb) ?>"><?= $this->escape($crumb) ?></a>
                                 <?php
                             endforeach;
                             ?>
                         </span>
                     </div>
                     <div class="media-header-buttons">
-                        <a class="icon-th media-files-view thumbs-view hasTip <?php echo !$this->layout || $this->layout == 'thumbs' ? 'active' : ''; ?>" data-view="thumbs" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=thumbs&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_MEDIA_THUMBNAIL_VIEW'); ?>">
+                        <a class="icon-th media-files-view thumbs-view hasTip <?= !$this->layout || $this->layout == 'thumbs' ? 'active' : '' ?>" data-view="thumbs" href="<?= Route::url('index.php?option=' . $this->option . '&layout=thumbs&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_MEDIA_THUMBNAIL_VIEW') ?>">
                             <?php echo Lang::txt('COM_MEDIA_THUMBNAIL_VIEW'); ?>
                         </a>
-                        <a class="icon-align-justify media-files-view hasTip listing-view <?php echo $this->layout == 'list' ? 'active' : ''; ?>" data-view="list" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=list&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_MEDIA_DETAIL_VIEW'); ?>">
+                        <a class="icon-align-justify media-files-view hasTip listing-view <?= $this->layout == 'list' ? 'active' : '' ?>" data-view="list" href="<?= Route::url('index.php?option=' . $this->option . '&layout=list&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_MEDIA_DETAIL_VIEW') ?>">
                             <?php echo Lang::txt('COM_MEDIA_DETAIL_VIEW'); ?>
                         </a>
                         <?php if (User::authorise('core.create', $this->option)) : ?>
-                            <a class="icon-folder-new media-files-action media-folder-new hasTip <?php echo $this->layout == 'list' ? 'active' : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>" data-prompt="<?php echo Lang::txt('COM_MEDIA_FOLDER_NAME'); ?>" title="<?php echo Lang::txt('COM_MEDIA_CREATE_FOLDER'); ?>">
+                            <a class="icon-folder-new media-files-action media-folder-new hasTip <?= $this->layout == 'list' ? 'active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=new&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1') ?>" data-prompt="<?= Lang::txt('COM_MEDIA_FOLDER_NAME') ?>" title="<?= Lang::txt('COM_MEDIA_CREATE_FOLDER') ?>">
                                 <?php echo Lang::txt('COM_MEDIA_CREATE_FOLDER'); ?>
                             </a>
                         <?php endif; ?>
@@ -95,8 +95,8 @@ $this->js();
                             $this->js('jquery.fileuploader.js', 'system');
                             ?>
                             <div id="ajax-uploader"
-                                data-action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=media&task=upload&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>"
-                                data-list="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=display&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>"
+                                data-action="<?= Route::url('index.php?option=' . $this->option . '&controller=media&task=upload&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1') ?>"
+                                data-list="<?= Route::url('index.php?option=' . $this->option . '&controller=medialist&task=display&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1') ?>"
                                 data-instructions="<?php echo Lang::txt('COM_MEDIA_UPLOAD_INSTRUCTIONS'); ?>"
                                 data-instructions-btn="<?php echo Lang::txt('COM_MEDIA_UPLOAD_INSTRUCTIONS_BTN'); ?>">
                                 <noscript>
@@ -113,7 +113,7 @@ $this->js();
                     </div>
                 </div>
                 <div class="media-view">
-                    <div class="media-items" id="media-items" data-tmpl="<?php echo $this->escape($tmpl); ?>" data-list="<?php echo Route::url('index.php?option=' . $this->option . '&controller=medialist&task=display&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>">
+                    <div class="media-items" id="media-items" data-tmpl="<?= $this->escape($tmpl) ?>" data-list="<?= Route::url('index.php?option=' . $this->option . '&controller=medialist&task=display&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1') ?>">
                         <?php
                         $children = Components\Media\Admin\Helpers\MediaHelper::getChildren(COM_MEDIA_BASE, '');
 

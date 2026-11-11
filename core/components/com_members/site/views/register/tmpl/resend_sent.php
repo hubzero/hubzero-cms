@@ -18,6 +18,6 @@ $this
 </header>
 
 <section class="main section">
-    <p class="passed">If an account matching that email address or username exists and still needs verification, a new confirmation email has been sent. Please check your inbox (and your spam folder) and click the link to activate your account on <?php echo $this->escape($this->hubName); ?>.</p>
-    <p>Didn't receive it? You can <a href="<?php echo Route::url('index.php?option=com_members&controller=register&task=resend'); ?>">request another confirmation email</a> in a few minutes.</p>
+    <p class="passed">If an account matching that email address or username exists and still needs verification, a new confirmation email has been sent. Please check your inbox (and your spam folder) and click the link to activate your account on <?= $this->escape($this->hubName) ?>.</p>
+    <p>Didn't receive it? You can <a href="<?= Route::url('index.php?option=com_members&controller=register&task=resend') ?>">request another confirmation email</a> in a few minutes.</p>
 </section><!-- / .section -->

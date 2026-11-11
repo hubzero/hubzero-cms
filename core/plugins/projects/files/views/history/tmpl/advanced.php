@@ -175,20 +175,20 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                     <?php if ($allowDiff) { ?>
                     <td><?php echo '@' . $v; ?></td>
                     <?php } ?>
-                    <td class="commit-actor"><span class="prominent"><?php echo \Components\Projects\Helpers\Html::formatTime($version['date'], true); ?></span>
-                        <span class="block"><?php echo $this->escape($version['author'] ? $version['author'] : $version['email']); ?></span>
+                    <td class="commit-actor"><span class="prominent"><?= \Components\Projects\Helpers\Html::formatTime($version['date'], true) ?></span>
+                        <span class="block"><?= $this->escape($version['author'] ? $version['author'] : $version['email']) ?></span>
                     </td>
                     <?php if ($allowDiff) { ?>
                     <td class="diffing">
                         <?php if (!$version['remote'] && count($this->versions) > 1) { ?>
-                        <input type="radio" value="<?php echo urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']); ?>" name="old" <?php echo $oldest ? 'checked="checked"' : ''; ?> <?php echo $last ? 'disabled="disabled"' : ''; ?> class="diff-old" />
-                        <input type="radio" value="<?php echo urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']); ?>" name="new" <?php echo $last ? 'checked="checked"' : ''; ?> <?php echo $oldest ? 'disabled="disabled"' : ''; ?> class="diff-new" />
+                        <input type="radio" value="<?= urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']) ?>" name="old" <?= $oldest ? 'checked="checked"' : '' ?> <?= $last ? 'disabled="disabled"' : '' ?> class="diff-old" />
+                        <input type="radio" value="<?= urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']) ?>" name="new" <?= $last ? 'checked="checked"' : '' ?> <?= $oldest ? 'disabled="disabled"' : '' ?> class="diff-new" />
                         <?php } ?>
                     </td>
                     <?php } ?>
                     <td class="commit-details">
                             <?php if ($version['movedTo']) { ?>
-                                <span class="moved"><span class="<?php echo $version['movedTo'] == 'remote' ? 'send_to_remote' : 'send_to_local'; ?>"><span>&nbsp;</span></span></span>
+                                <span class="moved"><span class="<?= $version['movedTo'] == 'remote' ? 'send_to_remote' : 'send_to_local' ?>"><span>&nbsp;</span></span></span>
                             <?php } ?>
                         <span class="commitstatus"><?php echo $status; ?></span>
                         <span class="block italic faded">
@@ -213,7 +213,7 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                                                     ?>
                         <?php if ($version['preview'] && $version['commitStatus'] != 'D') { ?>
                             <div id="preview-image">
-                                <img src="<?php echo $version['preview']; ?>" alt="<?php echo Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW'); ?>" />
+                                <img src="<?= $version['preview'] ?>" alt="<?= Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW') ?>" />
                             </div>
                         <?php } ?>
                         </div>

@@ -68,7 +68,7 @@ $this->css('
                         . '&id=' . $document['id']
                         . '&facet=' . $this->facet
                         . '&limit=' . $this->pagination->limit
-                        . '&limitstart=' . $this->pagination->limitstart); ?>"><?php echo Lang::txt('COM_SEARCH_ADD_BLACKLIST'); ?></a>
+                        . '&limitstart=' . $this->pagination->limitstart); ?>"><?= Lang::txt('COM_SEARCH_ADD_BLACKLIST') ?></a>
                     <?php else : ?>
                         <span><?php echo Lang::txt('COM_SEARCH_MARKED_FOR_REMOVAL'); ?></span>
                     <?php endif; ?>

@@ -23,7 +23,7 @@ $this->css('compare.css');
         <div class="grid">
             <div class="col span6">
                 <div class="diff-side diff-lft">
-                    <span class="diff-id"><?php echo '#' . (int) $this->lft->get('publication_id') . ', v' . $this->escape($this->lft->get('version_label')); ?></span>
+                    <span class="diff-id"><?= '#' . (int) $this->lft->get('publication_id') . ', v' . $this->escape($this->lft->get('version_label')) ?></span>
                     <span class="diff-meta">
                         <span class="diff-published"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLISHED'); ?>:
                             <?php if ($this->lft->isPublished()) {
@@ -38,7 +38,7 @@ $this->css('compare.css');
                                     }
                                 }
                                 ?>
-                                <time datetime="<?php echo Date::of($dt)->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($dt)->toLocal(); ?></time></span>
+                                <time datetime="<?= Date::of($dt)->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($dt)->toLocal() ?></time></span>
                             <?php } else { ?>
                                 --
                             <?php } ?>
@@ -48,7 +48,7 @@ $this->css('compare.css');
             </div>
             <div class="col span6 diff-rgt omega">
                 <div class="diff-side diff-rgt">
-                    <span class="diff-id"><?php echo '#' . (int) $this->rgt->get('publication_id') . ', v' . $this->escape($this->rgt->get('version_label')); ?></span>
+                    <span class="diff-id"><?= '#' . (int) $this->rgt->get('publication_id') . ', v' . $this->escape($this->rgt->get('version_label')) ?></span>
                     <span class="diff-meta">
                         <span class="diff-published"><?php echo Lang::txt('COM_PUBLICATIONS_PUBLISHED'); ?>:
                             <?php if ($this->rgt->isPublished()) {
@@ -63,7 +63,7 @@ $this->css('compare.css');
                                     }
                                 }
                                 ?>
-                                <time datetime="<?php echo Date::of($dt)->format('Y-m-d\TH:i:s\Z'); ?>"><?php echo Date::of($dt)->toLocal(); ?></time></span>
+                                <time datetime="<?= Date::of($dt)->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($dt)->toLocal() ?></time></span>
                             <?php } else { ?>
                                 --
                             <?php } ?>
@@ -177,7 +177,7 @@ $this->css('compare.css');
                 $r++;
             }
             ?>
-            <h3 class="diff-area" id="diffed-files"><span><?php echo Lang::txt('COM_PUBLICATIONS_ATTACHMENTS'); ?></span></h3>
+            <h3 class="diff-area" id="diffed-files"><span><?= Lang::txt('COM_PUBLICATIONS_ATTACHMENTS') ?></span></h3>
             <table class="differences differences-sidebyside">
                 <tbody>
                     <?php

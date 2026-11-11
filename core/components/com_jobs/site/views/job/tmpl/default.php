@@ -38,14 +38,14 @@ defined('_HZEXEC_') or die();
         <?php if (User::isGuest()) { ?>
             <li><?php echo Lang::txt('COM_JOBS_PLEASE') . " " ?><a href="<?php Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login' ?>"><?php echo Lang::txt('COM_JOBS_ACTION_LOGIN') ?></a><?php echo " " . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS') ?></li>
         <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
-            <li><a class="icon-dashboard myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD'); ?></a></li>
-            <li><a class="icon-list shortlist btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted'; ?>"><?php echo Lang::txt('COM_JOBS_SHORTLIST'); ?></a></li>
-            <li><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addjob'); ?>"><?php echo Lang::txt('COM_JOBS_ADD_ANOTHER_JOB'); ?></a></li>
+            <li><a class="icon-dashboard myjobs btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=dashboard') ?>"><?= Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD') ?></a></li>
+            <li><a class="icon-list shortlist btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted' ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
+            <li><a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=addjob') ?>"><?= Lang::txt('COM_JOBS_ADD_ANOTHER_JOB') ?></a></li>
         <?php } elseif ($this->admin) { ?>
-            <li><a class="icon-dashboard myjobs btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=dashboard'); ?>"><?php echo Lang::txt('COM_JOBS_ADMIN_DASHBOARD'); ?></a></li>
-            <li><a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addjob'); ?>"><?php echo Lang::txt('COM_JOBS_ADD_ANOTHER_JOB'); ?></a></li>
+            <li><a class="icon-dashboard myjobs btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=dashboard') ?>"><?= Lang::txt('COM_JOBS_ADMIN_DASHBOARD') ?></a></li>
+            <li><a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=addjob') ?>"><?= Lang::txt('COM_JOBS_ADD_ANOTHER_JOB') ?></a></li>
         <?php } else { ?>
-            <li><a class="myresume btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addresume'); ?>"><?php echo Lang::txt('COM_JOBS_MY_RESUME'); ?></a></li>
+            <li><a class="myresume btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=addresume') ?>"><?= Lang::txt('COM_JOBS_MY_RESUME') ?></a></li>
         <?php } ?>
         </ul>
     </div><!-- / #content-header-extra -->
@@ -71,7 +71,7 @@ defined('_HZEXEC_') or die();
             </span>
         <?php } ?>
         <?php if ($owner && ($job->status == 1 || $job->status == 3)) { ?>
-            <span class="edit"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) ?>"><button class="btn btn"><?php echo ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB'); ?></button></a></span> 
+            <span class="edit"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code) ?>"><button class="btn btn"><?= ' ' . Lang::txt('COM_JOBS_ACTION_EDIT_JOB') ?></button></a></span> 
         <?php } ?>
         <?php if ($job->status == 1 && $owner) { ?>
              <span class="unpublish"><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&task=unpublish&code=' . $job->code) ?>" class="btn" title="<?php echo Lang::txt('COM_JOBS_NOTICE_ACCESS_PRESERVED') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_UNPUBLISH_THIS_JOB') ?></button></span>
@@ -153,8 +153,8 @@ defined('_HZEXEC_') or die();
         } ?>
     </div>
     <?php if ($owner) { ?>
-        <span class="review_applicants"><a href="<?php echo Route::url('index.php?option=com_jobs&task=resumes?filterby=applied'); ?>"><button class="btn btn"><?php echo Lang::txt('COM_JOBS_REVIEW_APPLICANTS'); ?></button></a></span>
-        <h3><?php echo Lang::txt('COM_JOBS_APPLICATIONS') . ' (' . count($job->applications) . ' ' . Lang::txt('COM_JOBS_TOTAL') . ')'; ?></h3>
+        <span class="review_applicants"><a href="<?= Route::url('index.php?option=com_jobs&task=resumes?filterby=applied') ?>"><button class="btn btn"><?= Lang::txt('COM_JOBS_REVIEW_APPLICANTS') ?></button></a></span>
+        <h3><?= Lang::txt('COM_JOBS_APPLICATIONS') . ' (' . count($job->applications) . ' ' . Lang::txt('COM_JOBS_TOTAL') . ')' ?></h3>
         <?php if (count($job->applications) <= 0) { ?>
             <p><?php echo Lang::txt('COM_JOBS_NOTICE_APPLICATIONS_NONE'); ?></p>
         <?php } else { ?>
@@ -164,7 +164,7 @@ defined('_HZEXEC_') or die();
                 if ($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {
                     $applied = ($job->applications[$i]->applied && $job->applications[$i]->applied != '0000-00-00 00:00:00') ? Date::of($job->applications[$i]->applied)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('N/A'); ?>
                     <li class="applic">
-                    <span class="countc"><?php echo $k . ". " ?></span><a href="<?php echo Route::url('members/' . $job->applications[$i]->uid . "/resume"); ?>"><?php echo $this->escape($job->applications[$i]->seeker->name) ?></a><?php echo ' ' . Lang::txt('applied on') . ' ' . $applied;
+                    <span class="countc"><?php echo $k . ". " ?></span><a href="<?= Route::url('members/' . $job->applications[$i]->uid . "/resume") ?>"><?php echo $this->escape($job->applications[$i]->seeker->name) ?></a><?php echo ' ' . Lang::txt('applied on') . ' ' . $applied;
                     if ($job->applications[$i]->cover) { ?>
                         <blockquote><?php echo nl2br($this->escape(trim(stripslashes($job->applications[$i]->cover)))) ?></blockquote> 
                     <?php } else {
@@ -190,7 +190,7 @@ defined('_HZEXEC_') or die();
             }?>
             </ul>
             <?php if (count($job->withdrawnlist) > 0) { ?>
-                <p><?php echo count($job->withdrawnlist) . ' ' . Lang::txt('COM_JOBS_NOTICE_CANDIDATES_WITHDREW'); ?></p>
+                <p><?= count($job->withdrawnlist) . ' ' . Lang::txt('COM_JOBS_NOTICE_CANDIDATES_WITHDREW') ?></p>
             <?php } ?>
         <?php }
     } ?>

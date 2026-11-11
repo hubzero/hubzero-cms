@@ -42,12 +42,12 @@ $now = time();
 $certWarn = 30 * 24 * 60 * 60;
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('JSEARCH_FILTER'); ?>" />
+                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('JSEARCH_FILTER') ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -55,9 +55,9 @@ $certWarn = 30 * 24 * 60 * 60;
             <div class="col span6">
                 <label for="filter-state"><?php echo Lang::txt('JSTATUS'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
-                    <option value="-1"<?php echo ($this->filters['state'] < 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SAML_ALL_STATES'); ?></option>
-                    <option value="1"<?php echo ($this->filters['state'] === 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SAML_STATE_ENABLED'); ?></option>
-                    <option value="0"<?php echo ($this->filters['state'] === 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SAML_STATE_DISABLED'); ?></option>
+                    <option value="-1"<?= ($this->filters['state'] < 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_ALL_STATES') ?></option>
+                    <option value="1"<?= ($this->filters['state'] === 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_STATE_ENABLED') ?></option>
+                    <option value="0"<?= ($this->filters['state'] === 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_STATE_DISABLED') ?></option>
                 </select>
             </div>
         </div>
@@ -68,13 +68,13 @@ $certWarn = 30 * 24 * 60 * 60;
             <tr>
                 <th scope="col">
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?php echo Html::grid('sort', 'COM_SAML_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
-                <th scope="col" class="priority-2"><?php echo Html::grid('sort', 'COM_SAML_COL_ENTITY_ID', 'entity_id', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?= Html::grid('sort', 'COM_SAML_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_SAML_COL_ENTITY_ID', 'entity_id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_SAML_COL_ACS'); ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_SAML_COL_CERT_EXPIRES'); ?></th>
-                <th scope="col"><?php echo Html::grid('sort', 'JSTATUS', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']); ?></th>
+                <th scope="col"><?= Html::grid('sort', 'JSTATUS', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -102,12 +102,12 @@ $certWarn = 30 * 24 * 60 * 60;
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>" value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
-                    <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->get('id'); ?></label>
+                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('id') ?>" class="checkbox-toggle" />
+                    <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->get('id') ?></label>
                 </td>
                 <td>
                     <?php if (User::authorise('core.edit', $this->option)) { ?>
-                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
+                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
                             <span><?php echo $this->escape(stripslashes($row->get('name'))); ?></span>
                         </a>
                     <?php } else { ?>
@@ -127,7 +127,7 @@ $certWarn = 30 * 24 * 60 * 60;
                         <?php } elseif ($cert['valid_to'] < ($now + $certWarn)) { ?>
                             <span class="warning"><?php echo Date::of($cert['valid_to'])->toLocal('Y-m-d'); ?></span>
                         <?php } else { ?>
-                            <time datetime="<?php echo gmdate('Y-m-d\TH:i:s\Z', $cert['valid_to']); ?>"><?php echo Date::of($cert['valid_to'])->toLocal('Y-m-d'); ?></time>
+                            <time datetime="<?= gmdate('Y-m-d\TH:i:s\Z', $cert['valid_to']) ?>"><?= Date::of($cert['valid_to'])->toLocal('Y-m-d') ?></time>
                         <?php } ?>
                     <?php } else { ?>
                         <span class="warning"><?php echo Lang::txt('COM_SAML_CERT_NONE'); ?></span>
@@ -135,7 +135,7 @@ $certWarn = 30 * 24 * 60 * 60;
                 </td>
                 <td>
                     <?php if (User::authorise('core.edit.state', $this->option)) { ?>
-                        <a class="state <?php echo $class; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_SAML_SET_STATE', $task); ?>">
+                        <a class="state <?= $class ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_SAML_SET_STATE', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>

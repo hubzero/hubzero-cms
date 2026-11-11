@@ -60,7 +60,7 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $first->link('original'); ?>"
                         data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $first->link('thumb'); ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
+                        <img src="<?= $first->link('thumb') ?>" alt="<?= $alt ?>" class="img" height="<?= $height ?>" />
                     </a>
                 </div>
             <?php else : ?>
@@ -70,7 +70,7 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $imgPath; ?>"
                         data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $imgPath; ?>" alt="<?php echo $alt; ?>" class="img" height="<?php echo $height; ?>" />
+                        <img src="<?= $imgPath ?>" alt="<?= $alt ?>" class="img" height="<?= $height ?>" />
                     </a>
                 </div>
             <?php endif;
@@ -93,7 +93,7 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $asset->link('original'); ?>"
                         data-downloadtext="<?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?php echo $asset->link('thumb'); ?>" alt="<?php echo $this->escape(stripslashes($asset->get('description', ''))); ?>" class="img" width="50" height="50" />
+                        <img src="<?= $asset->link('thumb') ?>" alt="<?= $this->escape(stripslashes($asset->get('description', ''))) ?>" class="img" width="50" height="50" />
                     </a>
                     <?php
                 }
@@ -125,7 +125,7 @@ if ($assets->total() > 0) {
                 }
                 ?>
                 <li class="type-<?php echo $asset->get('type'); ?>">
-                    <a href="<?php echo $this->escape($assetHref); ?>" <?php echo ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : ''; ?>>
+                    <a href="<?= $this->escape($assetHref) ?>" <?= ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : '' ?>>
                         <?php echo $this->escape($asset->get('filename')); ?>
                     </a>
                     <span class="file-meta">

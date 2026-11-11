@@ -55,23 +55,23 @@ $vote_link = 'index.php?option=' . $this->option . '&id=' . $this->item->get('re
 <?php if (!$this->item->get('vote')) { ?>
     <?php if (User::isGuest() || $this->item->get('user_id') == User::get('id')) { ?>
         <span class="vote-like<?php echo $lcls; ?>">
-            <span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" title="<?php echo $like_title; ?>">
+            <span class="vote-button <?= ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls ?>" title="<?= $like_title ?>">
                 <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_VOTE_LIKE', $this->item->get('helpful', 0)); ?>
             </span>
         </span>
         <span class="vote-dislike<?php echo $dcls; ?>">
-            <span class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" title="<?php echo $dislike_title; ?>">
+            <span class="vote-button <?= ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls ?>" title="<?= $dislike_title ?>">
                 <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_VOTE_DISLIKE', $this->item->get('nothelpful', 0)); ?>
             </span>
         </span>
     <?php } else { ?>
         <span class="vote-like<?php echo $lcls; ?>">
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($vote_link . '&vote=yes'); ?>" class="vote-button <?php echo ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" title="<?php echo $like_title; ?>">
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($vote_link . '&vote=yes') ?>" class="vote-button <?= ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls ?>" title="<?= $like_title ?>">
                 <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_VOTE_LIKE', $this->item->get('helpful', 0)); ?>
             </button>
         </span>
         <span class="vote-dislike<?php echo $dcls; ?>">
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($vote_link . '&vote=no'); ?>" class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" title="<?php echo $dislike_title; ?>">
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($vote_link . '&vote=no') ?>" class="vote-button <?= ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls ?>" title="<?= $dislike_title ?>">
                 <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_VOTE_DISLIKE', $this->item->get('nothelpful', 0)); ?>
             </button>
         </span>
@@ -79,23 +79,23 @@ $vote_link = 'index.php?option=' . $this->option . '&id=' . $this->item->get('re
 <?php } else { ?>
     <?php if (trim($lcls) == 'chosen') { ?>
         <span class="vote-like<?php echo $lcls; ?>">
-            <span class="vote-button <?php echo ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" title="<?php echo $like_title; ?>">
+            <span class="vote-button <?= ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls ?>" title="<?= $like_title ?>">
                 <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_VOTE_LIKE', $this->item->get('helpful', 0)); ?>
             </span>
         </span>
         <span class="vote-dislike<?php echo $dcls; ?>">
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($vote_link . '&vote=no'); ?>" class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" title="<?php echo $dislike_title; ?>">
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($vote_link . '&vote=no') ?>" class="vote-button <?= ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls ?>" title="<?= $dislike_title ?>">
                 <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_VOTE_DISLIKE', $this->item->get('nothelpful', 0)); ?>
             </button>
         </span>
     <?php } else { ?>
         <span class="vote-like<?php echo $lcls; ?>">
-            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($vote_link . '&vote=yes'); ?>" class="vote-button <?php echo ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls; ?>" title="<?php echo $like_title; ?>">
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($vote_link . '&vote=yes') ?>" class="vote-button <?= ($this->item->get('helpful', 0) > 0 ? 'like' : 'neutral') . $cls ?>" title="<?= $like_title ?>">
                 <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_VOTE_LIKE', $this->item->get('helpful', 0)); ?>
             </button>
         </span>
         <span class="vote-dislike<?php echo $dcls; ?>">
-            <span class="vote-button <?php echo ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls; ?>" title="<?php echo $dislike_title; ?>">
+            <span class="vote-button <?= ($this->item->get('nothelpful', 0) > 0 ? 'dislike' : 'neutral') . $cls ?>" title="<?= $dislike_title ?>">
                 <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_VOTE_DISLIKE', $this->item->get('nothelpful', 0)); ?>
             </span>
         </span>

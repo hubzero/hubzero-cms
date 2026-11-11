@@ -59,7 +59,7 @@ if ($mark = $this->params->get('onCommentMark')) {
                         <?php if (!$this->comment->get('anonymous')) { ?>
                             <?php if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels())) { ?>
                                 <a href="<?php echo Route::url($this->comment->creator->link()); ?>"><!--
-                                    --><?php echo $this->escape(stripslashes($this->comment->creator->get('name'))); ?><!--
+                                    --><?= $this->escape(stripslashes($this->comment->creator->get('name'))) ?><!--
                                 --></a>
                             <?php } else { ?>
                                 <?php echo $this->escape(stripslashes($this->comment->creator->get('name'))); ?>
@@ -68,11 +68,11 @@ if ($mark = $this->params->get('onCommentMark')) {
                             <?php echo Lang::txt('JANONYMOUS'); ?>
                         <?php } ?>
                     </strong>
-                    <a class="permalink" href="<?php echo $this->comment->link(); ?>" title="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_PERMALINK'); ?>">
+                    <a class="permalink" href="<?= $this->comment->link() ?>" title="<?= Lang::txt('PLG_HUBZERO_COMMENTS_PERMALINK') ?>">
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_AT'); ?></span>
-                        <span class="time"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('time'); ?></time></span>
+                        <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ON'); ?></span>
-                        <span class="date"><time datetime="<?php echo $this->comment->created(); ?>"><?php echo $this->comment->created('date'); ?></time></span>
+                        <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
                     </a>
                 </p>
 
@@ -132,47 +132,47 @@ if ($mark = $this->params->get('onCommentMark')) {
                 <?php if (!$this->comment->isReported()) { ?>
                     <div class="comment-options">
                         <?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
-                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->comment->link('delete')); ?>" class="icon-delete delete" data-txt-confirm="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_CONFIRM'); ?>"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_DELETE'); ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->comment->link('delete')) ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_HUBZERO_COMMENTS_CONFIRM') ?>"><?= Lang::txt('PLG_HUBZERO_COMMENTS_DELETE') ?></button>
                         <?php } ?>
                         <?php if (($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
-                            <a class="icon-edit edit" href="<?php echo Route::url($this->comment->link('edit')); ?>"><!--
+                            <a class="icon-edit edit" href="<?= Route::url($this->comment->link('edit')) ?>"><!--
                                 --><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_EDIT'); ?><!--
                             --></a>
                         <?php } ?>
                         <?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-                            <a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_CANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPLY'); ?>"href="<?php echo Route::url($this->comment->link('reply')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                            <a class="icon-reply reply" data-txt-active="<?= Lang::txt('PLG_HUBZERO_COMMENTS_CANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_HUBZERO_COMMENTS_REPLY') ?>"href="<?= Route::url($this->comment->link('reply')) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
                                 --><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPLY'); ?><!--
                             --></a>
                         <?php } ?>
-                            <a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url($this->comment->link('report')); ?>"><!--
+                            <a class="icon-abuse abuse" data-txt-flagged="<?= Lang::txt('PLG_HUBZERO_COMMENTS_REPORTED_AS_ABUSIVE') ?>" href="<?= Route::url($this->comment->link('report')) ?>"><!--
                                 --><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPORT_ABUSE'); ?><!--
                             --></a>
                     </div><!-- / .comment-options -->
                 <?php } ?>
                 <?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
                     <div class="addcomment hide" id="comment-form<?php echo $this->comment->get('id'); ?>">
-                        <form action="<?php echo Route::url($this->comment->link('base')); ?>" method="post" enctype="multipart/form-data">
+                        <form action="<?= Route::url($this->comment->link('base')) ?>" method="post" enctype="multipart/form-data">
                             <fieldset>
                                 <legend>
-                                    <span><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->get('name') : Lang::txt('JANONYMOUS'))); ?></span>
+                                    <span><?= Lang::txt('PLG_HUBZERO_COMMENTS_REPLYING_TO', (!$this->comment->get('anonymous') ? $this->comment->get('name') : Lang::txt('JANONYMOUS'))) ?></span>
                                 </legend>
 
                                 <input type="hidden" name="comment[id]" value="0" />
-                                <input type="hidden" name="comment[item_id]" value="<?php echo $this->escape($this->comment->get('item_id')); ?>" />
-                                <input type="hidden" name="comment[item_type]" value="<?php echo $this->escape($this->comment->get('item_type')); ?>" />
-                                <input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
+                                <input type="hidden" name="comment[item_id]" value="<?= $this->escape($this->comment->get('item_id')) ?>" />
+                                <input type="hidden" name="comment[item_type]" value="<?= $this->escape($this->comment->get('item_type')) ?>" />
+                                <input type="hidden" name="comment[parent]" value="<?= $this->comment->get('id') ?>" />
                                 <input type="hidden" name="comment[created]" value="" />
-                                <input type="hidden" name="comment[created_by]" value="<?php echo $this->escape(User::get('id')); ?>" />
+                                <input type="hidden" name="comment[created_by]" value="<?= $this->escape(User::get('id')) ?>" />
                                 <input type="hidden" name="comment[state]" value="1" />
                                 <input type="hidden" name="comment[access]" value="1" />
-                                <input type="hidden" name="option" value="<?php echo $this->escape($this->option); ?>" />
+                                <input type="hidden" name="option" value="<?= $this->escape($this->option) ?>" />
                                 <input type="hidden" name="action" value="commentsave" />
 
                                 <?php echo Html::input('token'); ?>
 
                                 <div class="form-group">
                                     <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
-                                        <span class="label-text"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ENTER_COMMENTS'); ?></span>
+                                        <span class="label-text"><?= Lang::txt('PLG_HUBZERO_COMMENTS_ENTER_COMMENTS') ?></span>
                                         <?php
                                         echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'form-control minimal no-footer']);
                                         ?>
@@ -180,23 +180,23 @@ if ($mark = $this->params->get('onCommentMark')) {
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-check-label comment-<?php echo $this->comment->get('id'); ?>-file" for="comment-<?php echo $this->comment->get('id'); ?>-file">
-                                        <span class="label-text"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>:</span>
-                                        <input type="file" class="form-control-file" name="comment_file" id="comment-<?php echo $this->comment->get('id'); ?>-file" />
+                                    <label class="form-check-label comment-<?= $this->comment->get('id') ?>-file" for="comment-<?= $this->comment->get('id') ?>-file">
+                                        <span class="label-text"><?= Lang::txt('PLG_HUBZERO_COMMENTS_ATTACH_FILE') ?>:</span>
+                                        <input type="file" class="form-control-file" name="comment_file" id="comment-<?= $this->comment->get('id') ?>-file" />
                                     </label>
                                 </div>
 
                                 <div class="form-group">
                                     <div class="form-check">
-                                        <label class="form-check-label reply-anonymous-label" for="comment-<?php echo $this->comment->get('id'); ?>-anonymous">
-                                            <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-<?php echo $this->comment->get('id'); ?>-anonymous" value="1" />
+                                        <label class="form-check-label reply-anonymous-label" for="comment-<?= $this->comment->get('id') ?>-anonymous">
+                                            <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-<?= $this->comment->get('id') ?>-anonymous" value="1" />
                                             <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT_ANONYMOUSLY'); ?>
                                         </label>
                                     </div>
                                 </div>
 
                                 <p class="submit">
-                                    <input type="submit" class="btn btn-success" value="<?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT'); ?>" />
+                                    <input type="submit" class="btn btn-success" value="<?= Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT') ?>" />
                                 </p>
                             </fieldset>
                         </form>

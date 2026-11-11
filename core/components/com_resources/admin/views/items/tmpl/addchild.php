@@ -20,7 +20,7 @@ Toolbar::cancel();
 
 Request::setVar('hidemainmenu', 1);
 ?>
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
     <h3><?php echo $this->escape(stripslashes($this->parent->title)); ?></h3>
 
     <fieldset class="adminform">
@@ -56,5 +56,5 @@ Request::setVar('hidemainmenu', 1);
         <?php echo Html::input('token'); ?>
     </fieldset>
 
-    <p class="align-center"><input type="submit" name="Submit" value="<?php echo Lang::txt('COM_RESOURCES_NEXT'); ?>" /></p>
+    <p class="align-center"><input type="submit" name="Submit" value="<?= Lang::txt('COM_RESOURCES_NEXT') ?>" /></p>
 </form>

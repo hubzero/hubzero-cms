@@ -44,16 +44,16 @@ $jbase = rtrim(Request::base(true), '/');
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?php echo Route::url($base . '&scope=post/save' . ($this->no_html ? '&no_html=' . $this->no_html : '')); ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
+<form action="<?= Route::url($base . '&scope=post/save' . ($this->no_html ? '&no_html=' . $this->no_html : '')) ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
     <fieldset>
-        <legend><?php echo $item->get('id') ? ($this->entry->get('original') ? Lang::txt('Edit post') : Lang::txt('Edit repost')) : Lang::txt('New post'); ?></legend>
+        <legend><?= $item->get('id') ? ($this->entry->get('original') ? Lang::txt('Edit post') : Lang::txt('Edit repost')) : Lang::txt('New post') ?></legend>
 
         <?php if ($this->entry->get('original')) { ?>
             <div class="field-wrap">
                 <div class="asset-uploader">
                     <div class="grid">
                         <div class="col span-half">
-                            <div id="ajax-uploader" data-txt-instructions="<?php echo Lang::txt('Click or drop file'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //&amp;dir=echo $dir;?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir;?>">
+                            <div id="ajax-uploader" data-txt-instructions="<?= Lang::txt('Click or drop file') ?>" data-action="<?= $jbase ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //&amp;dir=echo $dir;?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir;?>">
                                 <noscript>
                                     <div class="form-group">
                                         <label for="upload">
@@ -65,7 +65,7 @@ $jbase = rtrim(Request::base(true), '/');
                             </div>
                         </div><!-- / .col span-half -->
                         <div class="col span-half omega">
-                            <div id="link-adder" data-base="<?php echo rtrim(Request::base(true), '/'); ?>" data-txt-delete="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-txt-instructions="<?php echo Lang::txt('Click to add link'); ?>" data-action="<?php echo $jbase; ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir;?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir;?>">
+                            <div id="link-adder" data-base="<?= rtrim(Request::base(true), '/') ?>" data-txt-delete="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-instructions="<?= Lang::txt('Click to add link') ?>" data-action="<?= $jbase ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir;?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir;?>">
                                 <noscript>
                                     <div class="form-group">
                                         <label for="add-link">
@@ -99,24 +99,24 @@ $jbase = rtrim(Request::base(true), '/');
                             </span>
                             <span class="asset-file">
                                 <?php if ($asset->get('type') == 'link') { ?>
-                                <input type="text" name="assets[<?php echo $i; ?>][filename]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" placeholder="http://" />
+                                <input type="text" name="assets[<?= $i ?>][filename]" size="35" value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>" placeholder="http://" />
                                 <?php } else { ?>
                                     <?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
-                                <input type="hidden" name="assets[<?php echo $i; ?>][filename]" value="<?php echo $this->escape(stripslashes($asset->get('filename'))); ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][filename]" value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>" />
                                 <?php } ?>
                             </span>
                             <span class="asset-description">
-                                <input type="hidden" name="assets[<?php echo $i; ?>][type]" value="<?php echo $this->escape(stripslashes($asset->get('type'))); ?>" />
-                                <input type="hidden" name="assets[<?php echo $i; ?>][id]" value="<?php echo $this->escape($asset->get('id')); ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][type]" value="<?= $this->escape(stripslashes($asset->get('type'))) ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][id]" value="<?= $this->escape($asset->get('id')) ?>" />
                                 <?php // The asset hangs off the item, so removing it removes it from
                                   // every repost too. The controller allows that only to the item's
                                   // owner; offering the link to anyone else is a 403 waiting to happen.
                                 if ($item->get('created_by') == User::get('id')) { ?>
-                                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=post/' . $this->entry->get('id') . '/edit&remove=' . $asset->get('id')); ?>" class="delete" data-id="<?php echo $this->escape($asset->get('id')); ?>" title="<?php echo Lang::txt('Delete this asset'); ?>">
+                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=post/' . $this->entry->get('id') . '/edit&remove=' . $asset->get('id')) ?>" class="delete" data-id="<?= $this->escape($asset->get('id')) ?>" title="<?= Lang::txt('Delete this asset') ?>">
                                       <?php echo Lang::txt('delete'); ?>
                                 </button>
                                 <?php } ?>
-                                <!-- <input type="text" name="assets[<?php echo $i; ?>][description]" size="35" value="<?php echo $this->escape(stripslashes($asset->get('description'))); ?>" placeholder="Brief description" /> -->
+                                <!-- <input type="text" name="assets[<?= $i ?>][description]" size="35" value="<?= $this->escape(stripslashes($asset->get('description'))) ?>" placeholder="Brief description" /> -->
                             </span>
                         </p>
                                 <?php
@@ -129,7 +129,7 @@ $jbase = rtrim(Request::base(true), '/');
                     <div class="form-group">
                         <label for="field-title">
                             <?php echo Lang::txt('Title'); ?>
-                            <input type="text" name="fields[title]" id="field-title" class="form-control" size="35" value="<?php echo $this->escape(stripslashes($item->get('title', ''))); ?>" />
+                            <input type="text" name="fields[title]" id="field-title" class="form-control" size="35" value="<?= $this->escape(stripslashes($item->get('title', ''))) ?>" />
                         </label>
                     </div>
                     <input type="hidden" name="fields[type]" value="file" />
@@ -137,7 +137,7 @@ $jbase = rtrim(Request::base(true), '/');
                     <div class="form-group">
                         <label for="field-title">
                             <?php echo Lang::txt('Title'); ?>
-                            <input type="text" name="fieldstitle" id="field-title" class="form-control disabled" disabled="disabled" value="<?php echo $this->escape(stripslashes($item->get('title'))); ?>" />
+                            <input type="text" name="fieldstitle" id="field-title" class="form-control disabled" disabled="disabled" value="<?= $this->escape(stripslashes($item->get('title'))) ?>" />
                         </label>
                     </div>
                 <?php } ?>
@@ -146,15 +146,15 @@ $jbase = rtrim(Request::base(true), '/');
                     <label for="field_description">
                         <?php echo Lang::txt('Description'); ?>
                         <?php if ($this->entry->get('original')) { ?>
-                            <?php echo $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', ['class' => 'form-control minimal no-footer']); ?>
+                            <?= $this->editor('fields[description]', $this->escape(stripslashes($item->description('raw'))), 35, 5, 'field_description', ['class' => 'form-control minimal no-footer']) ?>
                         <?php } else { ?>
-                            <?php echo $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', ['class' => 'form-control minimal no-footer']); ?>
+                            <?= $this->editor('post[description]', $this->escape(stripslashes($this->entry->description('raw'))), 35, 5, 'field_description', ['class' => 'form-control minimal no-footer']) ?>
                         <?php } ?>
                     </label>
                 </div>
 
                 <?php if ($this->task == 'save' && !$item->get('description')) { ?>
-                    <p class="error"><?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT'); ?></p>
+                    <p class="error"><?= Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT') ?></p>
                 <?php } ?>
             </div><!-- / #post-file -->
         </div><!-- / #post-type-form -->
@@ -167,10 +167,10 @@ $jbase = rtrim(Request::base(true), '/');
         <?php if ($this->collections->total() > 0) { ?>
             <div class="form-group">
                 <label for="post-collection_id">
-                    <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                    <?= Lang::txt('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
                     <select name="post[collection_id]" id="post-collection_id" class="form-control">
                     <?php foreach ($this->collections as $collection) { ?>
-                        <option value="<?php echo $this->escape($collection->get('id')); ?>"<?php echo $this->collection->get('id') == $collection->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($collection->get('title'))); ?></option>
+                        <option value="<?= $this->escape($collection->get('id')) ?>"<?= $this->collection->get('id') == $collection->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($collection->get('title'))) ?></option>
                     <?php } ?>
                     </select>
                     <span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION_HINT'); ?></span>
@@ -179,7 +179,7 @@ $jbase = rtrim(Request::base(true), '/');
         <?php } else { ?>
             <div class="form-group">
                 <label for="post-collection_title">
-                    <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                    <?= Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
                     <input type="text" name="collection_title" id="post-collection_title" class="form-control" value="" />
                     <span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_COLLECTION_HINT'); ?></span>
                 </label>
@@ -192,8 +192,8 @@ $jbase = rtrim(Request::base(true), '/');
                 <div class="form-group">
                     <label for="actags">
                         <?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS'); ?>
-                        <?php echo $this->autocompleter('tags', 'tags', $this->escape($item->tags('string')), 'actags'); ?>
-                        <span class="hint"><?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT'); ?></span>
+                        <?= $this->autocompleter('tags', 'tags', $this->escape($item->tags('string')), 'actags') ?>
+                        <span class="hint"><?= Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT') ?></span>
                     </label>
                 </div>
             </div>
@@ -207,10 +207,10 @@ $jbase = rtrim(Request::base(true), '/');
     <input type="hidden" name="fields[created]" value="<?php echo $this->escape($item->get('created')); ?>" />
     <input type="hidden" name="fields[created_by]" value="<?php echo $this->escape($item->get('created_by')); ?>" />
     <input type="hidden" name="fields[dir]" id="field-dir" value="<?php echo $this->escape($dir); ?>" />
-    <input type="hidden" name="fields[access]" id="field-access" value="<?php echo $this->escape($item->get('access', 0)); ?>" />
+    <input type="hidden" name="fields[access]" id="field-access" value="<?= $this->escape($item->get('access', 0)) ?>" />
 
     <input type="hidden" name="post[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
-    <input type="hidden" name="post[item_id]" id="post-item_id" value="<?php echo $this->escape($this->entry->get('item_id')); ?>" />
+    <input type="hidden" name="post[item_id]" id="post-item_id" value="<?= $this->escape($this->entry->get('item_id')) ?>" />
 
     <input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -221,10 +221,10 @@ $jbase = rtrim(Request::base(true), '/');
     <?php echo Html::input('token'); ?>
 
     <p class="submit">
-        <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE'); ?>" />
+        <input class="btn btn-success" type="submit" value="<?= Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_SAVE') ?>" />
 
         <?php if ($item->get('id')) { ?>
-            <a class="btn btn-secondary" href="<?php echo Route::url($base . ($item->get('id') ? '&scope=' . $this->collection->get('alias') : '')); ?>">
+            <a class="btn btn-secondary" href="<?= Route::url($base . ($item->get('id') ? '&scope=' . $this->collection->get('alias') : '')) ?>">
                 <?php echo Lang::txt('Cancel'); ?>
             </a>
         <?php } ?>

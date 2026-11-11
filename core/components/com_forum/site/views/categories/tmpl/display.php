@@ -49,37 +49,37 @@ $this->category->set('section_alias', $this->filters['section']);
 <section class="main section">
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-            <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=categories&task=search'); ?>" method="get">
+            <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=categories&task=search') ?>" method="get">
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_FORUM_SEARCH'); ?>" />
+                    <input class="entry-search-submit" type="submit" value="<?= Lang::txt('COM_FORUM_SEARCH') ?>" />
                     <fieldset class="entry-search">
                         <legend><span><?php echo Lang::txt('COM_FORUM_SEARCH_LEGEND'); ?></span></legend>
 
                         <label for="entry-search-field"><?php echo Lang::txt('COM_FORUM_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="q" id="entry-search-field" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('COM_FORUM_SEARCH_PLACEHOLDER'); ?>" />
+                        <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_FORUM_SEARCH_PLACEHOLDER') ?>" />
                     </fieldset>
                 </div><!-- / .container -->
 
                 <div class="container">
-                    <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
+                    <nav class="entries-filters" aria-label="<?= Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS') ?>">
                         <ul class="entries-menu order-options">
                             <li>
-                                <a class="<?php echo ($this->filters['sortby'] == 'created') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=created&sortdir=' . $sortDir($this->filters, 'created'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_CREATED'); ?>" rel="nofollow">
+                                <a class="<?= ($this->filters['sortby'] == 'created') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= Route::url($this->category->link('here', '&sortby=created&sortdir=' . $sortDir($this->filters, 'created'))) ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_CREATED') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_CREATED'); ?>
                                 </a>
                             </li>
                             <li>
-                                <a class="<?php echo ($this->filters['sortby'] == 'activity') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=activity&sortdir=' . $sortDir($this->filters, 'activity'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_ACTIVITY'); ?>" rel="nofollow">
+                                <a class="<?= ($this->filters['sortby'] == 'activity') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= Route::url($this->category->link('here', '&sortby=activity&sortdir=' . $sortDir($this->filters, 'activity'))) ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_ACTIVITY') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_ACTIVITY'); ?>
                                 </a>
                             </li>
                             <li>
-                                <a class="<?php echo ($this->filters['sortby'] == 'replies') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=replies&sortdir=' . $sortDir($this->filters, 'replies'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS'); ?>" rel="nofollow">
+                                <a class="<?= ($this->filters['sortby'] == 'replies') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= Route::url($this->category->link('here', '&sortby=replies&sortdir=' . $sortDir($this->filters, 'replies'))) ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_NUM_POSTS'); ?>
                                 </a>
                             </li>
                             <li>
-                                <a class="<?php echo ($this->filters['sortby'] == 'title') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-up'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=title&sortdir=' . $sortDir($this->filters, 'title', 'ASC'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_TITLE'); ?>" rel="nofollow">
+                                <a class="<?= ($this->filters['sortby'] == 'title') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-up' ?>" href="<?= Route::url($this->category->link('here', '&sortby=title&sortdir=' . $sortDir($this->filters, 'title', 'ASC'))) ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_TITLE') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_TITLE'); ?>
                                 </a>
                             </li>
@@ -127,17 +127,17 @@ $this->category->set('section_alias', $this->filters['section']);
                                     ?>
                                     <tr<?php echo count($cls) > 0 ? ' class="' . implode(' ', $cls) . '"' : ''; ?>>
                                         <th class="priority-5" scope="row">
-                                            <span class="entry-identifier <?php echo $icn; ?>"><?php echo $this->escape($row->get('id')); ?></span>
+                                            <span class="entry-identifier <?= $icn ?>"><?= $this->escape($row->get('id')) ?></span>
                                         </th>
                                         <td>
                                             <a class="entry-title" href="<?php echo Route::url($row->link()); ?>">
-                                                <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
+                                                <span><?= $this->escape(stripslashes($row->get('title'))) ?></span>
                                             </a>
                                             <span class="entry-details">
                                                 <span class="entry-date">
-                                                    <time datetime="<?php echo $row->created(); ?>"><?php echo $row->created('date'); ?></time>
+                                                    <time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time>
                                                 </span>
-                                                <?php echo Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>'); ?>
+                                                <?= Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $name . '</span>') ?>
                                             </span>
                                         </td>
                                         <td class="priority-4">
@@ -167,9 +167,9 @@ $this->category->set('section_alias', $this->filters['section']);
                                                     }
                                                     ?>
                                                     <span class="entry-date">
-                                                        <time datetime="<?php echo $lastpost->created(); ?>"><?php echo $lastpost->created('date'); ?></time>
+                                                        <time datetime="<?= $lastpost->created() ?>"><?= $lastpost->created('date') ?></time>
                                                     </span>
-                                                    <?php echo Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $lname . '</span>'); ?>
+                                                    <?= Lang::txt('COM_FORUM_BY_USER', '<span class="entry-author">' . $lname . '</span>') ?>
                                                 <?php } else { ?>
                                                     <?php echo Lang::txt('COM_FORUM_NONE'); ?>
                                                 <?php } ?>
@@ -178,12 +178,12 @@ $this->category->set('section_alias', $this->filters['section']);
                                         <?php if ($this->config->get('access-manage-thread') || $this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
                                             <td class="entry-options">
                                                 <?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->get('created_by') == User::get('id'))) { ?>
-                                                    <a class="icon-edit edit" href="<?php echo Route::url($row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+                                                    <a class="icon-edit edit" href="<?= Route::url($row->link('edit')) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                                                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                                                     </a>
                                                 <?php } ?>
                                                 <?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-delete-thread') && $row->get('created_by') == User::get('id'))) { ?>
-                                                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($row->link('delete')); ?>" class="icon-delete delete" title="<?php echo Lang::txt('JACTION_DELETE'); ?>" data-txt-confirm="<?php echo Lang::txt('COM_FORUM_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+                                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->link('delete')) ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                                 <?php } ?>
                                             </td>
                                         <?php } ?>
@@ -233,9 +233,9 @@ $this->category->set('section_alias', $this->filters['section']);
                         </span>
                         <span class="entry-date">
                             <span class="entry-date-at"><?php echo Lang::txt('COM_FORUM_AT'); ?></span>
-                            <span class="icon-time time"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('time'); ?></time></span>
+                            <span class="icon-time time"><time datetime="<?= $last->created() ?>"><?= $last->created('time') ?></time></span>
                             <span class="entry-date-on"><?php echo Lang::txt('COM_FORUM_ON'); ?></span>
-                            <span class="icon-date date"><time datetime="<?php echo $last->created(); ?>"><?php echo $last->created('date'); ?></time></span>
+                            <span class="icon-date date"><time datetime="<?= $last->created() ?>"><?= $last->created('date') ?></time></span>
                         </span>
                     <?php } else { ?>
                         <?php echo Lang::txt('COM_FORUM_NONE'); ?>
@@ -251,7 +251,7 @@ $this->category->set('section_alias', $this->filters['section']);
                             <?php echo Lang::txt('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
                         </p>
                         <p>
-                            <a class="icon-add add btn" href="<?php echo Route::url($this->category->link('newthread')); ?>"><?php echo Lang::txt('COM_FORUM_NEW_DISCUSSION'); ?></a>
+                            <a class="icon-add add btn" href="<?= Route::url($this->category->link('newthread')) ?>"><?= Lang::txt('COM_FORUM_NEW_DISCUSSION') ?></a>
                         </p>
                     <?php } else { ?>
                         <p class="warning">

@@ -47,7 +47,7 @@ if (count($inst) > 0) {
 <?php endif; ?>
 <?php if ($this->course->access('manage', 'offering')) { ?>
     <div id="manager-options">
-        <p><a class="btn" href="<?php echo Route::url($base . '&unit=manage'); ?>"><?php echo Lang::txt('Manage'); ?></a></p>
+        <p><a class="btn" href="<?= Route::url($base . '&unit=manage') ?>"><?= Lang::txt('Manage') ?></a></p>
     </div>
 <?php } ?>
 <div id="comments-container">
@@ -60,14 +60,14 @@ if (count($inst) > 0) {
                         <?php echo Lang::txt('%s Discussions', $this->stats->threads); ?>
                     </p>
                     <p class="comments-controls">
-                        <a class="add active" href="<?php echo Route::url($base); ?>" title="<?php echo Lang::txt('Start a new discussion'); ?>"><?php echo Lang::txt('New'); ?></a>
+                        <a class="add active" href="<?= Route::url($base) ?>" title="<?= Lang::txt('Start a new discussion') ?>"><?= Lang::txt('New') ?></a>
                     </p>
                 </div><!-- / .comments-toolbar -->
 
                 <div class="comments-options-bar">
                     <form class="comments-search" action="<?php echo Route::url($base); ?>" method="get">
                         <fieldset>
-                            <input type="text" name="search" class="search" value="<?php echo $this->escape($this->filters['search']); ?>" placeholder="<?php echo Lang::txt('search ...'); ?>" />
+                            <input type="text" name="search" class="search" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('search ...') ?>" />
                             <input type="submit" class="submit" value="<?php echo Lang::txt('Go'); ?>" />
 
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -159,18 +159,18 @@ if (count($inst) > 0) {
                         <?php foreach ($this->sections as $section) { ?>
                                 <div class="category category-results closed" id="sc<?php echo $section->get('id'); ?>">
                                     <div class="category-header">
-                                        <span class="category-title"><?php echo $this->escape(stripslashes($section->get('title'))); ?></span>
-                                        <span class="category-discussions count"><?php echo $section->get('threads'); ?></span>
+                                        <span class="category-title"><?= $this->escape(stripslashes($section->get('title'))) ?></span>
+                                        <span class="category-discussions count"><?= $section->get('threads') ?></span>
                                     </div><!-- / .category-header -->
                                     <div class="category-content">
                                     <?php
                                     if ($section->categories) {
                                         foreach ($section->categories as $row) {
                                             ?>
-                                            <div class="thread closed" id="ct<?php echo $row->get('id'); ?>" data-category="<?php echo $row->get('id'); ?>">
+                                            <div class="thread closed" id="ct<?= $row->get('id') ?>" data-category="<?= $row->get('id') ?>">
                                                 <div class="thread-header">
-                                                    <span class="thread-title"><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
-                                                    <span class="thread-discussions count"><?php echo $row->get('threads'); ?></span>
+                                                    <span class="thread-title"><?= $this->escape(stripslashes($row->get('title'))) ?></span>
+                                                    <span class="thread-discussions count"><?= $row->get('threads') ?></span>
                                                 </div><!-- / .thread-header -->
                                                 <div class="thread-content">
                                                     <?php
@@ -209,7 +209,7 @@ if (count($inst) > 0) {
 
             <div class="comments-panel">
                 <div class="comments-toolbar">
-                    <p><span class="comments" data-comments="%s comments" data-add="<?php echo Lang::txt('Start a discussion'); ?>"><?php echo Lang::txt('Start a discussion'); ?></span></p>
+                    <p><span class="comments" data-comments="%s comments" data-add="<?= Lang::txt('Start a discussion') ?>"><?= Lang::txt('Start a discussion') ?></span></p>
                 </div><!-- / .comments-toolbar -->
                 <div class="comments-frame">
 
@@ -223,7 +223,7 @@ if (count($inst) > 0) {
                     if ($c) {
                         ?>
 
-                    <form action="<?php echo Route::url($base); ?>" method="post" id="commentform"<?php echo $this->data ? ' class="hide"' : ''; ?> enctype="multipart/form-data">
+                    <form action="<?= Route::url($base) ?>" method="post" id="commentform"<?= $this->data ? ' class="hide"' : '' ?> enctype="multipart/form-data">
                         <p class="comment-member-photo">
                             <?php
                             $anon = 1;
@@ -232,27 +232,27 @@ if (count($inst) > 0) {
                             }
                             $now = Date::getRoot();
                             ?>
-                            <img src="<?php echo User::picture($anon); ?>" alt="<?php echo Lang::txt('User photo'); ?>" />
+                            <img src="<?= User::picture($anon) ?>" alt="<?= Lang::txt('User photo') ?>" />
                         </p>
 
                         <fieldset>
                         <?php if (User::isGuest()) { ?>
-                            <p class="warning"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE'); ?></p>
+                            <p class="warning"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_COMMENT_NOTICE') ?></p>
                         <?php } else { ?>
                             <p class="comment-title">
                                 <strong>
-                                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(User::get('name')); ?></a>
+                                    <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>"><?= $this->escape(User::get('name')) ?></a>
                                 </strong>
                                 <span class="permalink">
                                     <span class="comment-date-at">@</span>
-                                    <span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1')); ?></time></span>
-                                    <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-                                    <span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1')); ?></time></span>
+                                    <span class="time"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('TIME_FORMAt_HZ1')) ?></time></span>
+                                    <span class="comment-date-on"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_ON') ?></span>
+                                    <span class="date"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('DATE_FORMAt_HZ1')) ?></time></span>
                                 </span>
                             </p>
 
                             <label for="field_comment">
-                                <span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS'); ?></span>
+                                <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS') ?></span>
                                 <?php
                                 echo $this->editor('fields[comment]', '', 35, 5, 'field_comment', ['class' => 'minimal no-footer']);
                                 ?>
@@ -261,27 +261,27 @@ if (count($inst) > 0) {
                             <div class="grid">
                                 <div class="col span-half">
                             <label for="field-upload" id="comment-upload">
-                                <span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS'); ?>:</span>
+                                <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_LEGEND_ATTACHMENTS') ?>:</span>
                                 <input type="file" name="upload" id="field-upload" />
                             </label>
                                 </div>
                                 <div class="col span-half omega">
                                     <label for="field-category_id">
-                                    <span class="label-text"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY'); ?></span>
+                                    <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY') ?></span>
                                     <select name="fields[category_id]" id="field-category_id">
-                                        <option value="0"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT'); ?></option>
+                                        <option value="0"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT') ?></option>
                                         <?php
                                         foreach ($this->sections as $section) {
                                             if ($section->categories) {
                                                 ?>
-                                                <optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
+                                                <optgroup label="<?= $this->escape(stripslashes($section->get('title'))) ?>">
                                                 <?php
                                                 foreach ($section->categories as $category) {
                                                     if ($category->get('closed')) {
                                                         continue;
                                                     }
                                                     ?>
-                                                    <option value="<?php echo $category->get('id'); ?>"><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+                                                    <option value="<?= $category->get('id') ?>"><?= $this->escape(stripslashes($category->get('title'))) ?></option>
                                                     <?php
                                                 }
                                                 ?>
@@ -301,15 +301,15 @@ if (count($inst) > 0) {
                             </label>
 
                             <p class="submit">
-                                <input type="submit" value="<?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_SUBMIT'); ?>" />
+                                <input type="submit" value="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_SUBMIT') ?>" />
                             </p>
                         <?php } ?>
                         </fieldset>
                         <input type="hidden" name="fields[parent]" id="field-parent" value="0" />
                         <input type="hidden" name="fields[state]" id="field-state" value="1" />
                         <input type="hidden" name="fields[scope]" id="field-scope" value="course" />
-                        <input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?php echo $this->filters['scope_id']; ?>" />
-                        <input type="hidden" name="fields[scope_sub_id]" id="field-scope_sub_id" value="<?php echo $this->filters['scope_sub_id']; ?>" />
+                        <input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?= $this->filters['scope_id'] ?>" />
+                        <input type="hidden" name="fields[scope_sub_id]" id="field-scope_sub_id" value="<?= $this->filters['scope_sub_id'] ?>" />
                         <input type="hidden" name="fields[id]" id="field-id" value="" />
                         <input type="hidden" name="fields[object_id]" id="field-object_id" value="" />
 
@@ -322,15 +322,15 @@ if (count($inst) > 0) {
                         <?php echo Html::input('token'); ?>
 
                         <p class="instructions">
-                            <?php echo Lang::txt('Click on a section and category to the left to view a list of comments.'); ?><br /><br />
-                            <?php echo Lang::txt('Click on a comment on the left to view a discussion or start your own above.'); ?>
+                            <?= Lang::txt('Click on a section and category to the left to view a list of comments.') ?><br /><br />
+                            <?= Lang::txt('Click on a comment on the left to view a discussion or start your own above.') ?>
                         </p>
                     </form>
                     <?php } else { ?>
                         <p class="instructions">
-                            <?php echo Lang::txt('This forum is currently empty and requires some set-up by the course managers before it can be used.'); ?>
+                            <?= Lang::txt('This forum is currently empty and requires some set-up by the course managers before it can be used.') ?>
                             <?php if ($this->course->access('manage', 'offering')) { ?>
-                                <br /><br /><?php echo Lang::txt('Discussions require at least one section and category before posts can be made. Click the "manage" button to set up this forum.'); ?>
+                                <br /><br /><?= Lang::txt('Discussions require at least one section and category before posts can be made. Click the "manage" button to set up this forum.') ?>
                             <?php } ?>
                         </p>
                     <?php } ?>

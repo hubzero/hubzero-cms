@@ -48,9 +48,9 @@ $formAction = Route::url(
     <fieldset id="filter-bar">
         <label for="filter-open"><?php echo Lang::txt('COM_SUPPORT_FILTER_FOR'); ?>:</label>
         <select name="open" id="filter-open" class="filter filter-submit">
-            <option value="-1"<?php echo $this->filters['open'] < 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_FOR_ALL'); ?></option>
-            <option value="0"<?php echo $this->filters['open'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_FOR_CLOSED'); ?></option>
-            <option value="1"<?php echo $this->filters['open'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_FOR_OPEN'); ?></option>
+            <option value="-1"<?= $this->filters['open'] < 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_FOR_ALL') ?></option>
+            <option value="0"<?= $this->filters['open'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_FOR_CLOSED') ?></option>
+            <option value="1"<?= $this->filters['open'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_FOR_OPEN') ?></option>
         </select>
     </fieldset>
 

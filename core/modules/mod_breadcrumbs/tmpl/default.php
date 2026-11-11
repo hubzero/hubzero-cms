@@ -11,7 +11,7 @@ use Hubzero\Facades\Lang;
 // no direct access
 defined('_HZEXEC_') or die;
 ?>
-<nav class="breadcrumbs<?php echo $moduleclass_sfx; ?> pathway<?php echo $moduleclass_sfx; ?>" aria-label="<?php echo Lang::txt('MOD_BREADCRUMBS'); ?>">
+<nav class="breadcrumbs<?= $moduleclass_sfx ?> pathway<?= $moduleclass_sfx ?>" aria-label="<?= Lang::txt('MOD_BREADCRUMBS') ?>">
     <?php
     if ($params->get('showHere', 1)) {
         echo '<span class="showHere">' . Lang::txt('MOD_BREADCRUMBS_HERE') . '</span>';

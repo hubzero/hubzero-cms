@@ -22,7 +22,7 @@ foreach ($this->modules as $module) {
 ?>
 <ul class="toolbar toolbar-modules">
     <li class="new">
-        <a class="btn icon-add" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=add'); ?>">
+        <a class="btn icon-add" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=add') ?>">
             <?php echo Lang::txt('COM_GROUPS_PAGES_NEW_MODULE'); ?>
         </a>
     </li>
@@ -52,7 +52,7 @@ foreach ($this->modules as $module) {
             <li>
                 <div class="item-container <?php echo $class; ?>">
                     <div class="item-title">
-                        <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=edit&moduleid=' . $module->get('id')); ?>">
+                        <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=edit&moduleid=' . $module->get('id')) ?>">
                             <?php echo $this->escape($module->get('title')); ?>
                         </a>
 
@@ -82,27 +82,27 @@ foreach ($this->modules as $module) {
 
                     <div class="item-state">
                         <?php if ($module->get('state') == 0) : ?>
-                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=publish&moduleid=' . $module->get('id')); ?>" class="unpublished tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=publish&moduleid=' . $module->get('id')) ?>" class="unpublished tooltips" title="<?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE') ?>"> <?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE') ?></button>
                         <?php else : ?>
-                            <button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=unpublish&moduleid=' . $module->get('id')); ?>" class="published tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=unpublish&moduleid=' . $module->get('id')) ?>" class="published tooltips" title="<?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE') ?>"> <?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE') ?></button>
                         <?php endif; ?>
                     </div>
 
                     <div class="item-controls btn-group dropdown">
-                        <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=edit&moduleid=' . $module->get('id')); ?>" class="btn">
+                        <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=edit&moduleid=' . $module->get('id')) ?>" class="btn">
                             <?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_MODULE'); ?>
                         </a>
                         <span class="btn dropdown-toggle"></span>
                         <ul class="dropdown-menu">
-                            <li><a class="icon-edit" href="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=edit&moduleid=' . $module->get('id')); ?>"> <?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_MODULE'); ?></a></li>
+                            <li><a class="icon-edit" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=edit&moduleid=' . $module->get('id')) ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_MODULE') ?></a></li>
                             <li class="divider"></li>
                             <?php if ($module->get('state') == 0) : ?>
-                                <li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=publish&moduleid=' . $module->get('id')); ?>" class="icon-ban-circle"> <?php echo Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE'); ?></button></li>
+                                <li><button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=publish&moduleid=' . $module->get('id')) ?>" class="icon-ban-circle"> <?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE') ?></button></li>
                             <?php else : ?>
-                                <li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=unpublish&moduleid=' . $module->get('id')); ?>" class="icon-success"> <?php echo Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE'); ?></button></li>
+                                <li><button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=unpublish&moduleid=' . $module->get('id')) ?>" class="icon-success"> <?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE') ?></button></li>
                             <?php endif; ?>
                             <li class="divider"></li>
-                            <li><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=delete&moduleid=' . $module->get('id')); ?>" class="icon-delete"> <?php echo Lang::txt('COM_GROUPS_PAGES_DELETE_MODULE'); ?></button></li>
+                            <li><button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=delete&moduleid=' . $module->get('id')) ?>" class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_MODULE') ?></button></li>
                         </ul>
                     </div>
                 </div>

@@ -35,7 +35,7 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -45,25 +45,25 @@ $this->js();
                     <div class="col span6">
                         <div class="input-wrap">
                             <label for="field-scope"><?php echo Lang::txt('COM_FORUM_FIELD_SCOPE'); ?>:</label><br />
-                            <input type="text" name="fields[scope]" id="field-scope" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('scope'))); ?>" />
+                            <input type="text" name="fields[scope]" id="field-scope" size="30" maxlength="250" value="<?= $this->escape(stripslashes($this->row->get('scope'))) ?>" />
                         </div>
                     </div>
                     <div class="col span6">
                         <div class="input-wrap">
-                            <label for="field-scope_id"><?php echo Lang::txt('COM_FORUM_FIELD_SCOPE_ID'); ?>:</label><br />
-                            <input type="text" name="fields[scope_id]" id="field-scope_id" size="30" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('scope_id'))); ?>" />
+                            <label for="field-scope_id"><?= Lang::txt('COM_FORUM_FIELD_SCOPE_ID') ?>:</label><br />
+                            <input type="text" name="fields[scope_id]" id="field-scope_id" size="30" maxlength="250" value="<?= $this->escape(stripslashes($this->row->get('scope_id'))) ?>" />
                         </div>
                     </div>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?php echo Lang::txt('COM_FORUM_FIELD_TITLE'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" class="required" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('title'))); ?>" />
+                    <label for="field-title"><?= Lang::txt('COM_FORUM_FIELD_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="fields[title]" id="field-title" class="required" maxlength="250" value="<?= $this->escape(stripslashes($this->row->get('title'))) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_FORUM_FIELD_ALIAS_HINT'); ?>">
                     <label for="field-alias"><?php echo Lang::txt('COM_FORUM_FIELD_ALIAS'); ?>:</label><br />
-                    <input type="text" name="fields[alias]" id="field-alias" maxlength="250" value="<?php echo $this->escape(stripslashes($this->row->get('alias'))); ?>" />
+                    <input type="text" name="fields[alias]" id="field-alias" maxlength="250" value="<?= $this->escape(stripslashes($this->row->get('alias'))) ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_FORUM_FIELD_ALIAS_HINT'); ?></span>
                 </div>
             </fieldset>
@@ -75,14 +75,14 @@ $this->js();
                         <th scope="row"><?php echo Lang::txt('COM_FORUM_FIELD_CREATOR'); ?>:</th>
                         <td>
                             <?php echo $this->escape($this->row->creator->get('name')); ?>
-                            <input type="hidden" name="fields[created_by]" id="field-created_by" value="<?php echo $this->row->get('created_by'); ?>" />
+                            <input type="hidden" name="fields[created_by]" id="field-created_by" value="<?= $this->row->get('created_by') ?>" />
                         </td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_FORUM_FIELD_CREATED'); ?>:</th>
                         <td>
                             <?php echo Date::of($this->row->get('created'))->toLocal(); ?>
-                            <input type="hidden" name="fields[created]" id="field-created" value="<?php echo $this->row->get('created'); ?>" />
+                            <input type="hidden" name="fields[created]" id="field-created" value="<?= $this->row->get('created') ?>" />
                         </td>
                     </tr>
                 </tbody>
@@ -94,16 +94,16 @@ $this->js();
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_FORUM_FIELD_STATE'); ?>:</label><br />
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?php echo ($this->row->get('state') == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php echo ($this->row->get('state') == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="2"<?php echo ($this->row->get('state') == 2) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <option value="0"<?= ($this->row->get('state') == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= ($this->row->get('state') == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="2"<?= ($this->row->get('state') == 2) ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
                     </select>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-access"><?php echo Lang::txt('COM_FORUM_FIELD_ACCESS'); ?>:</label><br />
                     <select name="fields[access]" id="field-access">
-                        <?php echo Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->row->get('access')); ?>
+                        <?= Html::select('options', Html::access('assetgroups'), 'value', 'text', $this->row->get('access')) ?>
                     </select>
                 </div>
             </fieldset>

@@ -24,7 +24,7 @@ $creator = $this->model->access('owner') ? 1 : 0;
 $i = 0;
 ?>
 <div id="plg-header">
-    <h3 class="files"><a href="<?php echo Route::url($this->model->link('files')); ?>"><?php echo $this->title; ?></a> &raquo; <span class="subheader"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT'); ?></span></h3>
+    <h3 class="files"><a href="<?= Route::url($this->model->link('files')) ?>"><?= $this->title ?></a> &raquo; <span class="subheader"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT') ?></span></h3>
 </div>
 
 <p><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_EXPLAIN'); ?></p>
@@ -63,10 +63,10 @@ $i = 0;
         <?php if ($service['on'] && $allowed) { ?>
         <div class="connect-info">
             <?php if ($connected && $service['active']) { ?>
-                <p><span class="connected"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_CONNECTED')); ?></span></p>
+                <p><span class="connected"><?= ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_CONNECTED')) ?></span></p>
                 <p><?php echo $this->oparams->get($servicename . '_email'); ?></p>
             <?php } else { ?>
-                <p class="connect-action"><a href="<?php echo Route::url($this->model->link('files') . '&action=connect&service=' . $servicename); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT'); ?></a></p>
+                <p class="connect-action"><a href="<?= Route::url($this->model->link('files') . '&action=connect&service=' . $servicename) ?>"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT') ?></a></p>
             <?php } ?>
         </div>
         <?php } ?>
@@ -76,9 +76,9 @@ $i = 0;
             <p><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_SERVICE_OFF'); ?></p>
             <?php } elseif ($service['active'] || $connected) { ?>
             <p class="green prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_SERVICE_ACTIVE'); ?></p>
-            <p><span class="prominent darker"><?php echo count($numConnected) . ' ' . Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $teamCount . ' ' . Lang::txt('COM_PROJECTS_TEAM_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_FILES_CONNECTED'); ?></span></p>
+            <p><span class="prominent darker"><?= count($numConnected) . ' ' . Lang::txt('COM_PROJECTS_OUT_OF') . ' ' . $teamCount . ' ' . Lang::txt('COM_PROJECTS_TEAM_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_FILES_CONNECTED') ?></span></p>
             <p>
-                <span><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_REMOTE_DIR'); ?>:</span> <span class="prominent darker"><?php echo $service['remote_dir']; ?></span> <?php if ($connected && $openUrl) {
+                <span><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT_REMOTE_DIR') ?>:</span> <span class="prominent darker"><?= $service['remote_dir'] ?></span> <?php if ($connected && $openUrl) {
                     ?><span><a href="<?php echo $openUrl; ?>" rel="external">[open]</a></span><?php
                       } ?>
             </p>
@@ -87,11 +87,11 @@ $i = 0;
                     <?php $removeData = $creator ? '&removedata=1' : '';  ?>
             <p>
                 <span class=" <?php echo $creator ? ' creator' : ''; ?>">
-                    <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->model->link('files') . '&action=disconnect&service=' . $servicename . $removeData); ?>" id="disconnect"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')); ?> &raquo;</button>
+                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->model->link('files') . '&action=disconnect&service=' . $servicename . $removeData) ?>" id="disconnect"><?= ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')) ?> &raquo;</button>
                 </span>
                 &nbsp; &nbsp;
                 <span>
-                    <a href="<?php echo Route::url($this->model->link('files') . '&action=connect&reauth=1&service=' . $servicename); ?>"><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_REAUTH'); ?> &raquo;</a>
+                    <a href="<?= Route::url($this->model->link('files') . '&action=connect&reauth=1&service=' . $servicename) ?>"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT_REAUTH') ?> &raquo;</a>
                 </span>
             </p>
                 <?php } ?>

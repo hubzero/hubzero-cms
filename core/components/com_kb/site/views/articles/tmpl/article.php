@@ -43,7 +43,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-main main-page btn" href="<?php echo Route::url('index.php?option=' . $this->option); ?>"><?php echo Lang::txt('COM_KB_MAIN'); ?></a>
+            <a class="icon-main main-page btn" href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('COM_KB_MAIN') ?></a>
         </p>
     </div>
 </header>
@@ -83,9 +83,9 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                     <p class="entry-details">
                         <?php echo Lang::txt('COM_KB_LAST_MODIFIED'); ?>
                         <span class="entry-date-at"><?php echo Lang::txt('COM_KB_DATETIME_AT'); ?></span>
-                        <span class="entry-time"><time datetime="<?php echo $this->article->modified(); ?>"><?php echo $this->article->modified('time'); ?></time></span>
+                        <span class="entry-time"><time datetime="<?= $this->article->modified() ?>"><?= $this->article->modified('time') ?></time></span>
                         <span class="entry-date-on"><?php echo Lang::txt('COM_KB_DATETIME_ON'); ?></span>
-                        <span class="entry-date"><time datetime="<?php echo $this->article->modified(); ?>"><?php echo $this->article->modified('date'); ?></time></span>
+                        <span class="entry-date"><time datetime="<?= $this->article->modified() ?>"><?= $this->article->modified('date') ?></time></span>
                     </p>
                 </div><!-- / .container-block -->
             </article><!-- / .container -->
@@ -96,7 +96,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                     <h3><?php echo Lang::txt('COM_KB_CATEGORIES'); ?></h3>
                     <ul class="categories">
                         <li>
-                            <a<?php echo $this->catid <= 0 ? ' class="active" aria-current="page"' : ''; ?> href="<?php echo Route::url('index.php?option=' . $this->option . '&section=all'); ?>">
+                            <a<?= $this->catid <= 0 ? ' class="active" aria-current="page"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&section=all') ?>">
                                 <?php echo Lang::txt('COM_KB_ALL_ARTICLES'); ?>
                             </a>
                         </li>
@@ -113,15 +113,15 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                             $children = $row->children($filters)->rows();
                             ?>
                             <li>
-                                <a <?php echo $this->catid == $row->get('id') ? 'class="active" aria-current="page" ' : ''; ?> href="<?php echo Route::url($row->link()); ?>">
-                                    <?php echo $this->escape(stripslashes($row->get('title'))); ?> <span class="item-count"><?php echo $row->get('articles', 0); ?></span>
+                                <a <?= $this->catid == $row->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= Route::url($row->link()) ?>">
+                                    <?= $this->escape(stripslashes($row->get('title'))) ?> <span class="item-count"><?= $row->get('articles', 0) ?></span>
                                 </a>
                                 <?php if ($this->catid == $row->get('id') && count($children) > 0) { ?>
                                     <ul class="categories">
                                     <?php foreach ($children as $cat) { ?>
                                         <li>
-                                            <a <?php echo $this->category->get('id') == $cat->get('id') ? 'class="active" aria-current="page" ' : ''; ?> href="<?php echo Route::url($cat->link()); ?>">
-                                                <?php echo $this->escape(stripslashes($cat->get('title'))); ?> <span class="item-count"><?php echo $cat->get('articles', 0); ?></span>
+                                            <a <?= $this->category->get('id') == $cat->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= Route::url($cat->link()) ?>">
+                                                <?= $this->escape(stripslashes($cat->get('title'))) ?> <span class="item-count"><?= $cat->get('articles', 0) ?></span>
                                             </a>
                                         </li>
                                     <?php } ?>
@@ -212,9 +212,9 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                                 <p>
                                     <strong><?php echo $name; ?></strong>
                                     <span class="comment-date-at"><?php echo Lang::txt('COM_KB_DATETIME_AT'); ?></span>
-                                    <span class="time"><time datetime="<?php echo $replyto->created(); ?>"><?php echo $replyto->created('time'); ?></time></span>
+                                    <span class="time"><time datetime="<?= $replyto->created() ?>"><?= $replyto->created('time') ?></time></span>
                                     <span class="comment-date-on"><?php echo Lang::txt('COM_KB_DATETIME_ON'); ?></span>
-                                    <span class="date"><time datetime="<?php echo $replyto->created(); ?>"><?php echo $replyto->created('date'); ?></time></span>
+                                    <span class="date"><time datetime="<?= $replyto->created() ?>"><?= $replyto->created('date') ?></time></span>
                                 </p>
                                 <p>
                                     <?php echo \Hubzero\Utility\Sanitize::html((string) $replyto->get('content')); ?>
@@ -228,7 +228,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                     <?php if ($this->article->commentsOpen()) { ?>
                         <div class="form-group">
                             <label for="commentcontent">
-                                <?php echo Lang::txt('COM_KB_YOUR_COMMENTS'); ?> <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
+                                <?= Lang::txt('COM_KB_YOUR_COMMENTS') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
                                 <?php
                                 if (!User::isGuest()) {
                                     echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', ['class' => 'minimal']);
@@ -236,7 +236,7 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                                     $rtrn = Route::url($this->article->link() . '#post-comment', false, true);
                                     ?>
                                     <p class="warning">
-                                        <?php echo Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)); ?>
+                                        <?= Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn), false)) ?>
                                     </p>
                                     <?php
                                 }
@@ -263,10 +263,10 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                     <?php } ?>
 
                     <input type="hidden" name="comment[id]" value="0" />
-                    <input type="hidden" name="comment[entry_id]" value="<?php echo $this->escape($this->article->get('id')); ?>" />
-                    <input type="hidden" name="comment[parent]" value="<?php echo($replyto->get('id') ? $this->escape($replyto->get('id')) : ''); ?>" />
+                    <input type="hidden" name="comment[entry_id]" value="<?= $this->escape($this->article->get('id')) ?>" />
+                    <input type="hidden" name="comment[parent]" value="<?= ($replyto->get('id') ? $this->escape($replyto->get('id')) : '') ?>" />
                     <input type="hidden" name="comment[created]" value="" />
-                    <input type="hidden" name="comment[created_by]" value="<?php echo $this->escape(User::get('id')); ?>" />
+                    <input type="hidden" name="comment[created_by]" value="<?= $this->escape(User::get('id')) ?>" />
                     <input type="hidden" name="comment[state]" value="1" />
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="task" value="savecomment" />

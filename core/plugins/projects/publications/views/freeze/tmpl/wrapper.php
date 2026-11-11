@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
             <div class="block-aside">
                 <div class="block-info">
                     <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LOCKED'); ?>
-                    <?php echo $this->pub->isPublished() ? ' <a href="' . Route::url($this->pub->link('edit')) . '/?action=newversion">' . ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')) . '</a>' : ''; ?>
+                    <?= $this->pub->isPublished() ? ' <a href="' . Route::url($this->pub->link('edit')) . '/?action=newversion">' . ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')) . '</a>' : '' ?>
                     </p>
                 </div>
             </div>

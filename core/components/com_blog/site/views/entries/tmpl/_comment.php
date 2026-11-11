@@ -37,17 +37,17 @@ if ($this->comment->isReported()) {
         <div class="comment-content">
             <p class="comment-title">
                 <strong><?php echo $name; ?></strong>
-                <a class="permalink" href="<?php echo Route::url($this->base . '#c' . $this->comment->get('id')); ?>" title="<?php echo Lang::txt('COM_BLOG_PERMALINK'); ?>">
+                <a class="permalink" href="<?= Route::url($this->base . '#c' . $this->comment->get('id')) ?>" title="<?= Lang::txt('COM_BLOG_PERMALINK') ?>">
                     <span class="comment-date-at"><?php echo Lang::txt('COM_BLOG_AT'); ?></span>
-                    <span class="time"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo $this->comment->created('time'); ?></time></span>
+                    <span class="time"><time datetime="<?= $this->comment->get('created') ?>"><?= $this->comment->created('time') ?></time></span>
                     <span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span>
-                    <span class="date"><time datetime="<?php echo $this->comment->get('created'); ?>"><?php echo $this->comment->created('date'); ?></time></span>
+                    <span class="date"><time datetime="<?= $this->comment->get('created') ?>"><?= $this->comment->created('date') ?></time></span>
                     <?php if ($this->comment->wasModified()) { ?>
                         &mdash; <?php echo Lang::txt('COM_BLOG_EDITED'); ?>
                         <span class="comment-date-at"><?php echo Lang::txt('COM_BLOG_AT'); ?></span> 
-                        <span class="time"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('time'); ?></time></span> 
+                        <span class="time"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('time') ?></time></span> 
                         <span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span> 
-                        <span class="date"><time datetime="<?php echo $this->comment->modified(); ?>"><?php echo $this->comment->modified('date'); ?></time></span>
+                        <span class="date"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('date') ?></time></span>
                     <?php } ?>
                 </a>
             </p>
@@ -57,15 +57,15 @@ if ($this->comment->isReported()) {
                 && Request::getInt('comment') == $this->comment->get('id')
                 && ($this->config->get('access-edit-comment') || User::get('id') == $this->comment->get('created_by'))
 ) { ?>
-            <form id="cform<?php echo $this->comment->get('id'); ?>" class="comment-edit" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
+            <form id="cform<?= $this->comment->get('id') ?>" class="comment-edit" action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
                 <fieldset>
                     <legend><span><?php echo Lang::txt('COM_BLOG_COMMENT_EDIT'); ?></span></legend>
 
                     <input type="hidden" name="comment[id]" value="<?php echo $this->comment->get('id'); ?>" />
-                    <input type="hidden" name="comment[entry_id]" value="<?php echo $this->comment->get('entry_id'); ?>" />
+                    <input type="hidden" name="comment[entry_id]" value="<?= $this->comment->get('entry_id') ?>" />
                     <input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('parent'); ?>" />
-                    <input type="hidden" name="comment[created]" value="<?php echo $this->comment->get('created'); ?>" />
-                    <input type="hidden" name="comment[created_by]" value="<?php echo $this->comment->get('created_by'); ?>" />
+                    <input type="hidden" name="comment[created]" value="<?= $this->comment->get('created') ?>" />
+                    <input type="hidden" name="comment[created_by]" value="<?= $this->comment->get('created_by') ?>" />
                     <input type="hidden" name="comment[state]" value="1" />
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="task" value="savecomment" />
@@ -83,8 +83,8 @@ if ($this->comment->isReported()) {
 
                     <div class="form-group">
                         <div class="form-check">
-                            <label class="form-check-label comment-anonymous" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
-                                <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" <?php echo $this->comment->get('anonymous') ? ' checked="checked"' : ''; ?> />
+                            <label class="form-check-label comment-anonymous" for="comment_<?= $this->comment->get('id') ?>_anonymous">
+                                <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?= $this->comment->get('id') ?>_anonymous" value="1" <?= $this->comment->get('anonymous') ? ' checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
                             </label>
                         </div>
@@ -102,39 +102,39 @@ if ($this->comment->isReported()) {
 
             <div class="comment-options">
             <?php if ($this->config->get('access-delete-comment')) { ?>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($this->base . '&action=deletecomment&comment=' . $this->comment->get('id')); ?>" class="icon-delete delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>"><?php echo Lang::txt('JACTION_DELETE'); ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->base . '&action=deletecomment&comment=' . $this->comment->get('id')) ?>" class="icon-delete delete" data-confirm="<?= Lang::txt('COM_BLOG_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
             <?php } ?>
             <?php if (!$this->comment->isReported()) { ?>
                 <?php if ($this->config->get('access-edit-comment') || User::get('id') == $this->comment->get('created_by')) { ?>
-                    <a class="icon-edit edit" href="<?php echo Route::url($this->base . '&action=editcomment&comment=' . $this->comment->get('id')); ?>"><!--
+                    <a class="icon-edit edit" href="<?= Route::url($this->base . '&action=editcomment&comment=' . $this->comment->get('id')) ?>"><!--
                         --><?php echo Lang::txt('JACTION_EDIT'); ?><!--
                     --></a>
                 <?php } ?>
                 <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
                     <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-                    <a class="icon-reply reply active" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_BLOG_REPLY'); ?>" href="<?php echo Route::url($this->base); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_BLOG_REPLY') ?>" href="<?= Route::url($this->base) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('JCANCEL'); ?><!--
                 --></a>
                     <?php } else { ?>
-                    <a class="icon-reply reply" data-txt-active="<?php echo Lang::txt('JCANCEL'); ?>" data-txt-inactive="<?php echo Lang::txt('COM_BLOG_REPLY'); ?>" href="<?php echo Route::url($this->base . '&reply=' . $this->comment->get('id')); ?>" rel="comment-form<?php echo $this->comment->get('id'); ?>"><!--
+                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_BLOG_REPLY') ?>" href="<?= Route::url($this->base . '&reply=' . $this->comment->get('id')) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('COM_BLOG_REPLY'); ?><!--
                 --></a>
                     <?php } ?>
                 <?php } ?>
-                <a class="icon-abuse abuse" data-txt-flagged="<?php echo Lang::txt('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE'); ?>" href="<?php echo Route::url('index.php?option=com_support&task=reportabuse&category=blogcomment&id=' . $this->comment->get('id') . '&parent=' . $this->comment->get('entry_id')); ?>"><!--
+                <a class="icon-abuse abuse" data-txt-flagged="<?= Lang::txt('COM_BLOG_COMMENT_REPORTED_AS_ABUSIVE') ?>" href="<?= Route::url('index.php?option=com_support&task=reportabuse&category=blogcomment&id=' . $this->comment->get('id') . '&parent=' . $this->comment->get('entry_id')) ?>"><!--
                     --><?php echo Lang::txt('COM_BLOG_REPORT_ABUSE'); ?><!--
                 --></a>
             <?php } ?>
             </div>
 
             <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-            <div class="addcomment comment-add<?php echo Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : ''; ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
-                <form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
+            <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') ?>">
+                <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
                     <fieldset>
-                        <legend><span><?php echo Lang::txt('COM_BLOG_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>
+                        <legend><span><?= Lang::txt('COM_BLOG_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
 
                         <input type="hidden" name="comment[id]" value="0" />
-                        <input type="hidden" name="comment[entry_id]" value="<?php echo $this->comment->get('entry_id'); ?>" />
+                        <input type="hidden" name="comment[entry_id]" value="<?= $this->comment->get('entry_id') ?>" />
                         <input type="hidden" name="comment[parent]" value="<?php echo $this->comment->get('id'); ?>" />
                         <input type="hidden" name="comment[created]" value="" />
                         <input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
@@ -155,8 +155,8 @@ if ($this->comment->isReported()) {
 
                         <div class="form-group">
                             <div class="form-check">
-                                <label class="form-check-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
-                                    <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" />
+                                <label class="form-check-label" for="comment_<?= $this->comment->get('id') ?>_anonymous">
+                                    <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?= $this->comment->get('id') ?>_anonymous" value="1" />
                                     <?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
                                 </label>
                             </div>

@@ -30,11 +30,11 @@ Toolbar::cancel('cancel');
 Toolbar::help('JHELP_COMPONENTS_MESSAGING_WRITE');
 ?>
 
-<form action="<?php echo Route::url('index.php?option=com_messages'); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?= Route::url('index.php?option=com_messages') ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
 
     <fieldset class="adminform">
         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MESSAGES_FIELD_USER_ID_TO_DESC'); ?>">
-            <label for="field-user_id_to"><?php echo Lang::txt('COM_MESSAGES_FIELD_USER_ID_TO_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
+            <label for="field-user_id_to"><?= Lang::txt('COM_MESSAGES_FIELD_USER_ID_TO_LABEL') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
             <?php
             $mc = Event::trigger('hubzero.onGetSingleEntry', [
                 [
@@ -48,18 +48,18 @@ Toolbar::help('JHELP_COMPONENTS_MESSAGING_WRITE');
             if (count($mc) > 0) {
                 echo $mc[0];
             } else { ?>
-                <input type="text" name="fields[user_id_to]" id="field-user_id_to" class="required" value="<?php echo $this->escape($this->item->get('user_id_to')); ?>" />
+                <input type="text" name="fields[user_id_to]" id="field-user_id_to" class="required" value="<?= $this->escape($this->item->get('user_id_to')) ?>" />
             <?php } ?>
         </div>
 
         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MESSAGES_FIELD_SUBJECT_DESC'); ?>">
-            <label for="field-subject"><?php echo Lang::txt('COM_MESSAGES_FIELD_SUBJECT_LABEL'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-            <input type="text" name="fields[subject]" id="field-subject" maxlength="250" class="required" value="<?php echo $this->escape($this->item->get('subject')); ?>" />
+            <label for="field-subject"><?= Lang::txt('COM_MESSAGES_FIELD_SUBJECT_LABEL') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+            <input type="text" name="fields[subject]" id="field-subject" maxlength="250" class="required" value="<?= $this->escape($this->item->get('subject')) ?>" />
         </div>
 
         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MESSAGES_FIELD_MESSAGE_DESC'); ?>">
             <label for="field-message"><?php echo Lang::txt('COM_MESSAGES_FIELD_MESSAGE_LABEL'); ?>:</label>
-            <textarea name="fields[message]" id="field-message" cols="80" rows="10"><?php echo $this->escape($this->item->get('message')); ?></textarea>
+            <textarea name="fields[message]" id="field-message" cols="80" rows="10"><?= $this->escape($this->item->get('message')) ?></textarea>
         </div>
     </fieldset>
 

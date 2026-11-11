@@ -66,25 +66,25 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
             <thead>
                 <tr>
                     <th scope="col">
-                        <a<?php echo $sort == 'created' ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->page->link() . '&sort=created&dir=' . $altdir); ?>">
-                            <?php echo $sort == 'created' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_DATE'); ?>
+                        <a<?= $sort == 'created' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=created&dir=' . $altdir) ?>">
+                            <?= $sort == 'created' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_DATE') ?>
                         </a>
                     </th>
                     <th scope="col">
-                        <a<?php echo $sort == 'title' ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->page->link() . '&sort=title&dir=' . $altdir); ?>">
-                            <?php echo $sort == 'title' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_TITLE'); ?>
+                        <a<?= $sort == 'title' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=title&dir=' . $altdir) ?>">
+                            <?= $sort == 'title' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_TITLE') ?>
                         </a>
                     </th>
                     <th scope="col">
                         <a<?php echo $sort == 'created_by' ? ' class="active"' : ''; ?> href="<?php
                               echo Route::url($this->page->link() . '&sort=created_by&dir=' . $altdir);
                         ?>">
-                            <?php echo $sort == 'created_by' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_CREATOR'); ?>
+                            <?= $sort == 'created_by' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_CREATOR') ?>
                         </a>
                     </th>
                     <th scope="col">
-                        <a<?php echo $sort == 'summary' ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->page->link() . '&sort=summary&dir=' . $altdir); ?>">
-                            <?php echo $sort == 'summary' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_EDIT_SUMMARY'); ?>
+                        <a<?= $sort == 'summary' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=summary&dir=' . $altdir) ?>">
+                            <?= $sort == 'summary' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_EDIT_SUMMARY') ?>
                         </a>
                     </th>
                 </tr>

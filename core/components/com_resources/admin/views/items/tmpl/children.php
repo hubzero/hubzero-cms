@@ -55,20 +55,20 @@ if ($this->filters['parent_id'] > 0) {
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <?php if ($this->filters['parent_id'] > 0) { ?>
                 <tr>
                     <th colspan="9">
-                        <?php echo '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->filters['parent_id']) . '">' . $this->escape(stripslashes($this->parent->title)) . '</a>'; ?>
+                        <?= '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->filters['parent_id']) . '">' . $this->escape(stripslashes($this->parent->title)) . '</a>' ?>
                     </th>
                 </tr>
             <?php } ?>
             <tr>
                 <th>
                     <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?php echo Lang::txt('JGLOBAL_CHECK_ALL'); ?></label>
+                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th><?php echo Lang::txt('COM_RESOURCES_COL_ID'); ?></th>
                 <th><?php echo Lang::txt('COM_RESOURCES_COL_TITLE'); ?></th>
@@ -212,15 +212,15 @@ if ($this->filters['parent_id'] > 0) {
                 </td>
                 <td>
                     <?php if ((($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) { ?>
-                        <span class="editlinktip hasTip" title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
+                        <span class="editlinktip hasTip" title="<?= Lang::txt('COM_RESOURCES_PUBLISH_INFO') ?>::<?= $info ?>">
                             <?php echo $this->escape(stripslashes($row->title)); ?>
                         </span>
-                        <?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $this->escape($row->path) . '</small>' : ''; ?>
+                        <?= ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $this->escape($row->path) . '</small>' : '' ?>
                     <?php } else { ?>
-                        <a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&pid=' . $this->filters['parent_id']); ?>" title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
+                        <a class="editlinktip hasTip" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&pid=' . $this->filters['parent_id']) ?>" title="<?= Lang::txt('COM_RESOURCES_PUBLISH_INFO') ?>::<?= $info ?>">
                             <?php echo $this->escape(stripslashes($row->title)); ?>
                         </a>
-                        <?php echo ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $this->escape($row->path) . '</small>' : ''; ?>
+                        <?= ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $this->escape($row->path) . '</small>' : '' ?>
                     <?php } ?>
                 </td>
                 <td>
@@ -229,7 +229,7 @@ if ($this->filters['parent_id'] > 0) {
                             <span><?php echo $alt; ?></span>
                         </span>
                     <?php } else { ?>
-                        <a class="state <?php echo $class;?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_SET_TASK_TO', $task); ?>">
+                        <a class="state <?= $class ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_RESOURCES_SET_TASK_TO', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } ?>
@@ -240,7 +240,7 @@ if ($this->filters['parent_id'] > 0) {
                             <span><?php echo Lang::txt($row->groupname); ?></span>
                         </span>
                     <?php } else { ?>
-                        <a class="access <?php echo $color_access; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_RESOURCES_CHANGE_ACCESS'); ?>">
+                        <a class="access <?= $color_access ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_RESOURCES_CHANGE_ACCESS') ?>">
                             <span><?php echo Lang::txt($row->groupname); ?></span>
                         </a>
                     <?php } ?>
@@ -250,10 +250,10 @@ if ($this->filters['parent_id'] > 0) {
                 </td>
                 <?php if ($this->filters['parent_id'] > 0) { ?>
                     <td>
-                        <?php echo $pageNav->orderUpIcon($i, isset($orderings[$i - 1]) ? ($row->associative_ordering != $orderings[$i - 1]) : true); ?>
+                        <?= $pageNav->orderUpIcon($i, isset($orderings[$i - 1]) ? ($row->associative_ordering != $orderings[$i - 1]) : true) ?>
                     </td>
                     <td>
-                        <?php echo $pageNav->orderDownIcon($i, $pageNav->total, isset($ordering[$i + 1]) ? ($row->associative_ordering != $orderings[$i + 1]) : true); ?>
+                        <?= $pageNav->orderDownIcon($i, $pageNav->total, isset($ordering[$i + 1]) ? ($row->associative_ordering != $orderings[$i + 1]) : true) ?>
                     </td>
                     <td>
                         <?php echo $row->associative_ordering; ?>

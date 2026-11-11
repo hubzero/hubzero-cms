@@ -73,7 +73,7 @@ $revokeLabel = Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_REVOKE_TOKEN');
                     <?php foreach ($tokens as $token) : ?>
                         <li>
                             <h4>
-                                <?php echo $this->escape(Hubzero\User\User::oneOrNew($token->get('uidNumber'))->get('name')); ?>
+                                <?= $this->escape(Hubzero\User\User::oneOrNew($token->get('uidNumber'))->get('name')) ?>
                             </h4>
 
                             <?php

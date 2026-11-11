@@ -61,20 +61,20 @@ $connection = \Components\Projects\Models\Orm\Connection::oneOrFail(Request::get
         $allowed = $selected ? ' freeze' : $allowed;
 
         ?>
-        <li class="<?php echo $item->isDir() ? 'type-folder collapsed' : 'type-file'; ?><?php echo $parentCss; ?><?php echo $selected ? ' selectedfilter preselected' : ''; ?><?php echo $allowed; ?>" id="<?php echo $liId; ?>" data-path="<?php echo $this->escape($item->getPath()); ?>" data-connection="<?php echo $connection->id; ?>">
+        <li class="<?= $item->isDir() ? 'type-folder collapsed' : 'type-file' ?><?= $parentCss ?><?= $selected ? ' selectedfilter preselected' : '' ?><?= $allowed ?>" id="<?= $liId ?>" data-path="<?= $this->escape($item->getPath()) ?>" data-connection="<?= $connection->id ?>">
             <span class="item-info"><?php echo $item->isFile() ? $item->getSize() : ''; ?></span>
-            <span class="item-wrap <?php echo ($item->isDir() ? 'collapsor ' : ' ') . $levelCss; ?>" id="<?php echo urlencode($connection->id . '://' . $item->getPath()); ?>">
+            <span class="item-wrap <?= ($item->isDir() ? 'collapsor ' : ' ') . $levelCss ?>" id="<?= urlencode($connection->id . '://' . $item->getPath()) ?>">
                 <?php if ($item->isDir()) {
                     ?><span class="collapsor-indicator">&nbsp;</span><?php
                 } ?>
                 <?php echo \Components\Projects\Models\File::drawIcon($item->getExtension()); ?>
-                <span title="<?php echo $this->escape($item->getPath()); ?>"><?php echo $this->escape(\Components\Projects\Helpers\Html::shortenFileName($item->getDisplayName(), 50)); ?></span>
+                <span title="<?= $this->escape($item->getPath()) ?>"><?= $this->escape(\Components\Projects\Helpers\Html::shortenFileName($item->getDisplayName(), 50)) ?></span>
             </span>
 
         </li>
     <?php } ?>
 <?php else : ?>
-    <li class="noresults <?php echo ($parent = Request::getString('parent', '')) ? 'parent-' . $this->escape($parent) : ''; ?>"><?php echo $this->model->isProvisioned() ? Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND_PROV') : Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND'); ?></li>
+    <li class="noresults <?= ($parent = Request::getString('parent', '')) ? 'parent-' . $this->escape($parent) : '' ?>"><?= $this->model->isProvisioned() ? Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND_PROV') : Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND') ?></li>
 <?php endif; ?>
 
 <?php if (!isset($this->noUl) || !$this->noUl) : ?>

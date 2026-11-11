@@ -68,11 +68,11 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
         ?>
         <dl class="rankinfo">
             <dt class="ranking">
-                <span class="rank"><span class="rank-<?php echo $r; ?>" id="rank-<?php echo $this->publication->id; ?>">This publication has a</span></span> <?php echo number_format($rank, 1); ?> Ranking
+                <span class="rank"><span class="rank-<?= $r ?>" id="rank-<?= $this->publication->id ?>">This publication has a</span></span> <?= number_format($rank, 1) ?> Ranking
             </dt>
             <dd>
                 <p>
-                    Ranking is calculated from a formula comprised of <a href="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews'); ?>">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>
+                    Ranking is calculated from a formula comprised of <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=reviews') ?>">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>
                 </p>
                 <div></div>
             </dd>
@@ -121,7 +121,7 @@ if ($this->params->get('show_ranking') || $this->params->get('show_audience') ||
         <p>
             <?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE'); ?>
             [<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id='
-                    . $this->publication->id . '&v=' . $this->lastPubRelease->version_number); ?>"><?php echo $this->escape($this->lastPubRelease->version_label); ?></a>]
+                    . $this->publication->id . '&v=' . $this->lastPubRelease->version_number); ?>"><?= $this->escape($this->lastPubRelease->version_label) ?></a>]
             <?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE_INFO'); ?>
         </p>
     <?php }

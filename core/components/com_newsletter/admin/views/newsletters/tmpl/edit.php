@@ -64,33 +64,33 @@ if ($secondaries->count() > 0) {
 }
 ?>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-formwatcher-message="<?php echo Lang::txt('COM_NEWSLETTER_WANRING_UNSAVED_CHANGES'); ?>" data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-formwatcher-message="<?= Lang::txt('COM_NEWSLETTER_WANRING_UNSAVED_CHANGES') ?>" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span6">
             <fieldset class="adminform">
                 <legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_DETAILS'); ?></legend>
 
                 <div class="input-wrap">
-                    <label for="newsletter-name"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_NAME'); ?>: <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span></label>
-                    <input type="text" name="newsletter[name]" id="newsletter-name" class="required" value="<?php echo $this->escape($this->newsletter->name); ?>" />
+                    <label for="newsletter-name"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_NAME') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                    <input type="text" name="newsletter[name]" id="newsletter-name" class="required" value="<?= $this->escape($this->newsletter->name) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ALIAS_HINT'); ?>">
                     <label for="newsletter-alias"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ALIAS'); ?>:</label>
-                    <input type="text" name="newsletter[alias]" id="newsletter-alias" value="<?php echo $this->escape($this->newsletter->alias); ?>" />
+                    <input type="text" name="newsletter[alias]" id="newsletter-alias" value="<?= $this->escape($this->newsletter->alias) ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ALIAS_HINT'); ?></span>
                 </div>
 
                 <div class="grid">
                     <div class="col span6">
                         <div class="input-wrap">
-                            <label for="newsletter-issue"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_ISSUE'); ?>:</label>
-                            <input type="text" name="newsletter[issue]" id="newsletter-issue" value="<?php echo $this->escape($this->newsletter->issue); ?>" />
+                            <label for="newsletter-issue"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_ISSUE') ?>:</label>
+                            <input type="text" name="newsletter[issue]" id="newsletter-issue" value="<?= $this->escape($this->newsletter->issue) ?>" />
                         </div>
                     </div>
                     <div class="col span6">
                         <div class="input-wrap">
-                            <label for="newsletter-type"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_FORMAT'); ?>:</label>
+                            <label for="newsletter-type"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_FORMAT') ?>:</label>
                             <select name="newsletter[type]" id="newsletter-type">
                                 <option value="html" <?php if ($this->newsletter->type == 'html') :
                                     ?>selected="selected"<?php
@@ -108,7 +108,7 @@ if ($secondaries->count() > 0) {
                 </div>
 
                 <div class="input-wrap">
-                    <label for="newsletter-template_id"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE'); ?>:</label>
+                    <label for="newsletter-template_id"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE') ?>:</label>
                     <select name="newsletter[template_id]" id="newsletter-template_id">
                         <option value=""><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_DEFAULT'); ?></option>
                         <option value="-1" <?php if ($this->newsletter->template_id == '-1') :
@@ -117,7 +117,7 @@ if ($secondaries->count() > 0) {
                             <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_TEMPLATE_NONE'); ?>
                         </option>
                         <?php foreach ($this->templates as $t) : ?>
-                            <?php echo $sel = ($t->id == $this->newsletter->template_id) ? 'selected="selected"' : ''; ?>
+                            <?= $sel = ($t->id == $this->newsletter->template_id) ? 'selected="selected"' : '' ?>
                             <option <?php echo $sel; ?> value="<?php echo $t->id; ?>">
                                 <?php echo $this->escape($t->name); ?>
                             </option>
@@ -126,7 +126,7 @@ if ($secondaries->count() > 0) {
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW_HINT'); ?>">
-                    <label for="newsletter-published"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW'); ?>:</label>
+                    <label for="newsletter-published"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_SHOW') ?>:</label>
                     <select name="newsletter[published]" id="newsletter-published">
                         <option value="1" <?php if ($this->newsletter->published == '1') :
                             ?>selected="selected"<?php
@@ -149,7 +149,7 @@ if ($secondaries->count() > 0) {
                     $hint = Lang::txt('COM_NEWSLETTER_NEWSLETTER_WHAT_IS_TRACKING', $link);
                 ?>
                 <div class="input-wrap" data-hint="<?php echo $this->escape(strip_tags($hint)); ?>">
-                    <label for="newsletter-tracking"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_TRACKING'); ?>:</label>
+                    <label for="newsletter-tracking"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_TRACKING') ?>:</label>
                     <select name="newsletter[tracking]" id="newsletter-tracking">
                         <option value="1" <?php if ($this->newsletter->tracking) :
                             ?>selected="selected"<?php
@@ -167,8 +167,8 @@ if ($secondaries->count() > 0) {
                     </span>
                 </div>
 
-                <div class="input-wrap" data-hint="<?php echo $this->escape(Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_AUTOGEN_HINT')); ?>">
-                    <label for="newsletter-autogen"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_AUTOGEN'); ?>:</label>
+                <div class="input-wrap" data-hint="<?= $this->escape(Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_AUTOGEN_HINT')) ?>">
+                    <label for="newsletter-autogen"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_EMAIL_AUTOGEN') ?>:</label>
                     <select name="newsletter[autogen]" id="newsletter-autogen">
                         <option value="0" <?php if ($this->newsletter->autogen == 0) :
                             ?>selected="selected"<?php
@@ -214,7 +214,7 @@ if ($secondaries->count() > 0) {
                                 <th scope="row"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_DATE'); ?>:</th>
                                 <td>
                                     <?php echo Date::of($this->newsletter->created)->toLocal('F d, Y @ g:ia'); ?>
-                                    <input type="hidden" name="newsletter[created]" value="<?php echo $this->newsletter->created; ?>" />
+                                    <input type="hidden" name="newsletter[created]" value="<?= $this->newsletter->created ?>" />
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -227,30 +227,30 @@ if ($secondaries->count() > 0) {
                                         $user = User::getInstance($this->newsletter->created_by);
                                         echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
                                     ?>
-                                    <input type="hidden" name="newsletter[created_by]" value="<?php echo $this->newsletter->created_by; ?>" />
+                                    <input type="hidden" name="newsletter[created_by]" value="<?= $this->newsletter->created_by ?>" />
                                 </td>
                             </tr>
                         <?php endif; ?>
 
                         <?php if ($this->newsletter->modified) : ?>
                             <tr>
-                                <th scope="row"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED'); ?>:</th>
+                                <th scope="row"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED') ?>:</th>
                                 <td>
                                     <?php echo Date::of($this->newsletter->modified)->toLocal('F d, Y @ g:ia'); ?>
-                                    <input type="hidden" name="newsletter[modified]" value="<?php echo $this->newsletter->modified; ?>" />
+                                    <input type="hidden" name="newsletter[modified]" value="<?= $this->newsletter->modified ?>" />
                                 </td>
                             </tr>
                         <?php endif; ?>
 
                         <?php if ($this->newsletter->modified_by) : ?>
                             <tr>
-                                <th scope="row"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED_BY'); ?>:</th>
+                                <th scope="row"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED_BY') ?>:</th>
                                 <td>
                                     <?php
                                         $user = User::getInstance($this->newsletter->modified_by);
                                         echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
                                     ?>
-                                    <input type="hidden" name="newsletter[modified_by]" value="<?php echo $this->newsletter->modified_by; ?>" />
+                                    <input type="hidden" name="newsletter[modified_by]" value="<?= $this->newsletter->modified_by ?>" />
                                 </td>
                             </tr>
                         <?php endif; ?>
@@ -264,23 +264,23 @@ if ($secondaries->count() > 0) {
                     <legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_DETAILS'); ?></legend>
 
                     <div class="input-wrap">
-                        <label for="param-from_name"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_NAME'); ?>:</label>
-                        <input type="text" name="params[from_name]" id="param-from_name" value="<?php echo $this->escape($params->get('from_name')); ?>" />
+                        <label for="param-from_name"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_NAME') ?>:</label>
+                        <input type="text" name="params[from_name]" id="param-from_name" value="<?= $this->escape($params->get('from_name')) ?>" />
                     </div>
 
                     <div class="input-wrap">
-                        <label for="param-from_address"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_EMAIL'); ?>:</label>
-                        <input type="text" name="params[from_address]" id="param-from_address" value="<?php echo $this->escape($params->get('from_address')); ?>" />
+                        <label for="param-from_address"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_FROM_EMAIL') ?>:</label>
+                        <input type="text" name="params[from_address]" id="param-from_address" value="<?= $this->escape($params->get('from_address')) ?>" />
                     </div>
 
                     <div class="input-wrap">
-                        <label for="param-replyto_name"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_NAME'); ?>:</label>
-                        <input type="text" name="params[replyto_name]" id="param-replyto_name" value="<?php echo $this->escape($params->get('replyto_name')); ?>" />
+                        <label for="param-replyto_name"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_NAME') ?>:</label>
+                        <input type="text" name="params[replyto_name]" id="param-replyto_name" value="<?= $this->escape($params->get('replyto_name')) ?>" />
                     </div>
 
                     <div class="input-wrap">
-                        <label for="param-replyto_address"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_EMAIL'); ?>:</label>
-                        <input type="text" name="params[replyto_address]" id="param-replyto_address" value="<?php echo $this->escape($params->get('replyto_address')); ?>" />
+                        <label for="param-replyto_address"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_REPLYTO_EMAIL') ?>:</label>
+                        <input type="text" name="params[replyto_address]" id="param-replyto_address" value="<?= $this->escape($params->get('replyto_address')) ?>" />
                     </div>
                 </fieldset>
             <?php else : ?>
@@ -299,16 +299,16 @@ if ($secondaries->count() > 0) {
                 <fieldset class="adminform">
                     <legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT'); ?></legend>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT'); ?>">
-                        <label for="newsletter-html_content"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML'); ?></label>
-                        <textarea name="newsletter[html_content]" id="newsletter-html_content" cols="100" rows="20"><?php echo $this->escape($this->newsletter->html_content); ?></textarea>
-                        <span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT'); ?></span>
+                    <div class="input-wrap" data-hint="<?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT') ?>">
+                        <label for="newsletter-html_content"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML') ?></label>
+                        <textarea name="newsletter[html_content]" id="newsletter-html_content" cols="100" rows="20"><?= $this->escape($this->newsletter->html_content) ?></textarea>
+                        <span class="hint"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_HTML_HINT') ?></span>
                     </div>
 
-                    <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT'); ?>">
-                        <label for="newsletter-plain_content"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN'); ?></label>
-                        <textarea name="newsletter[plain_content]" id="newsletter-plain_content" cols="100" rows="20"><?php echo $this->escape($this->newsletter->plain_content); ?></textarea>
-                        <span class="hint"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT'); ?></span>
+                    <div class="input-wrap" data-hint="<?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT') ?>">
+                        <label for="newsletter-plain_content"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN') ?></label>
+                        <textarea name="newsletter[plain_content]" id="newsletter-plain_content" cols="100" rows="20"><?= $this->escape($this->newsletter->plain_content) ?></textarea>
+                        <span class="hint"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_CONTENT_PLAIN_HINT') ?></span>
                     </div>
                 </fieldset>
             <?php else : ?>
@@ -316,12 +316,12 @@ if ($secondaries->count() > 0) {
                     <legend>
                         <?php if ($this->newsletter->autogen == 0) : ?>
                             <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES'); ?>
-                            <a class="fltrt add-story" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=add&type=primary'); ?>">
+                            <a class="fltrt add-story" href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=add&type=primary') ?>">
                                 <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_PRIMARY_STORIES_ADD'); ?>
                             </a>
                         <?php else : ?>
                             <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_AUTOGEN_STORIES'); ?>
-                            <a class="fltrt add-story" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=add&type=autogen'); ?>">
+                            <a class="fltrt add-story" href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=add&type=autogen') ?>">
                                 <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_AUTOGEN_STORIES_ADD'); ?>
                             </a>
                         <?php endif; ?>
@@ -330,47 +330,47 @@ if ($secondaries->count() > 0) {
                     <?php echo Html::sliders('start', 'content-pane'); ?>
                         <?php $i = 0; ?>
                         <?php foreach ($primaries as $primary) : ?>
-                            <?php echo Html::sliders('panel', ($i + 1) . ". " . $primary->title, "pstory-" . ($i + 1)); ?>
+                            <?= Html::sliders('panel', ($i + 1) . ". " . $primary->title, "pstory-" . ($i + 1)) ?>
                                 <table class="admintable">
                                     <tbody>
                                         <tr>
                                             <td colspan="2">
-                                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=edit&type=primary&sid=' . $primary->id); ?>">
+                                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=edit&type=primary&sid=' . $primary->id) ?>">
                                                     <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EDIT_STORY'); ?>
                                                 </a> |
-                                                <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=delete&type=primary&sid=' . $primary->id . '&' . Session::getFormToken() . '=1'); ?>">
+                                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=delete&type=primary&sid=' . $primary->id . '&' . Session::getFormToken() . '=1') ?>">
                                                     <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_DELETE_STORY'); ?>
                                                 </a>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE'); ?>:</td>
+                                            <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE') ?>:</td>
                                             <td><?php echo $this->escape($primary->title); ?></td>
                                         </tr>
                                         <tr>
-                                            <td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</td>
+                                            <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER') ?>:</td>
                                             <td>
-                                                <input type="text" readonly="readonly" value="<?php echo $primary->order; ?>" class="align-center" size="3" />
+                                                <input type="text" readonly="readonly" value="<?= $primary->order ?>" class="align-center" size="3" />
 
                                                 <?php if ($primary->order > 1) : ?>
-                                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=up&type=primary&sid=' . $primary->id . '&' . Session::getFormToken() . '=1'); ?>">
-                                                        <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP'); ?>
+                                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=up&type=primary&sid=' . $primary->id . '&' . Session::getFormToken() . '=1') ?>">
+                                                        <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP') ?>
                                                     </a>
                                                 <?php endif ?>
                                                 <?php if ($primary->order < $primary_highest_order) : ?>
-                                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=down&type=primary&sid=' . $primary->id . '&' . Session::getFormToken() . '=1'); ?>">
-                                                        <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN'); ?>
+                                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=down&type=primary&sid=' . $primary->id . '&' . Session::getFormToken() . '=1') ?>">
+                                                        <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN') ?>
                                                     </a>
                                                 <?php endif; ?>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY'); ?>:</td>
+                                            <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY') ?>:</td>
                                             <td><?php echo nl2br(stripslashes($primary->story)); ?></td>
                                         </tr>
                                         <tr>
-                                            <td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?>:</td>
-                                            <td><strong><?php echo $primary->readmore_title; ?></strong> - <?php echo $primary->readmore_link; ?></td>
+                                            <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE') ?>:</td>
+                                            <td><strong><?= $primary->readmore_title ?></strong> - <?= $primary->readmore_link ?></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -386,7 +386,7 @@ if ($secondaries->count() > 0) {
                     <fieldset class="adminform" id="secondary-stories">
                         <legend>
                         <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES'); ?>
-                            <a class="fltrt add-story" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=add&type=secondary'); ?>">
+                            <a class="fltrt add-story" href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=add&type=secondary') ?>">
                             <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_SECONDARY_STORIES_ADD'); ?>
                             </a>
                         </legend>
@@ -394,47 +394,47 @@ if ($secondaries->count() > 0) {
                     <?php echo Html::sliders('start', 'content-pane2'); ?>
                         <?php $i = 0; ?>
                         <?php foreach ($secondaries as $secondary) : ?>
-                                <?php echo Html::sliders('panel', ($i + 1) . ". " . $secondary->title, "sstory-" . ($i + 1)); ?>
+                                <?= Html::sliders('panel', ($i + 1) . ". " . $secondary->title, "sstory-" . ($i + 1)) ?>
                                     <table class="admintable">
                                         <tbody>
                                             <tr>
                                                 <td colspan="2">
-                                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=edit&type=secondary&sid=' . $secondary->id); ?>">
+                                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=edit&type=secondary&sid=' . $secondary->id) ?>">
                                                         <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_EDIT_STORY'); ?>
                                                     </a> |
-                                                    <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=delete&type=secondary&sid=' . $secondary->id . '&' . Session::getFormToken() . '=1'); ?>">
-                                                        <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_DELETE_STORY'); ?>
+                                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=delete&type=secondary&sid=' . $secondary->id . '&' . Session::getFormToken() . '=1') ?>">
+                                                        <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_DELETE_STORY') ?>
                                                     </a>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE'); ?>:</td>
+                                                <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE') ?>:</td>
                                                 <td><?php echo $secondary->title; ?></td>
                                             </tr>
                                             <tr>
-                                                <td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER'); ?>:</td>
+                                                <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER') ?>:</td>
                                                 <td>
-                                                    <input type="text" readonly="readonly" value="<?php echo $secondary->order; ?>" class="align-center" size="3" />
+                                                    <input type="text" readonly="readonly" value="<?= $secondary->order ?>" class="align-center" size="3" />
                                                     <?php if ($secondary->order > 1) : ?>
-                                                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=up&type=secondary&sid=' . $secondary->id . '&' . Session::getFormToken() . '=1'); ?>">
-                                                            <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP'); ?>
+                                                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=up&type=secondary&sid=' . $secondary->id . '&' . Session::getFormToken() . '=1') ?>">
+                                                            <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP') ?>
                                                         </a>
                                                     <?php endif; ?>
 
                                                     <?php if ($secondary->order < $secondary_highest_order) : ?>
-                                                        <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=down&type=secondary&sid=' . $secondary->id . '&' . Session::getFormToken() . '=1'); ?>">
-                                                            <?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN'); ?>
+                                                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=stories&nid=' . $this->newsletter->id . '&task=reorder&direction=down&type=secondary&sid=' . $secondary->id . '&' . Session::getFormToken() . '=1') ?>">
+                                                            <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_DOWN') ?>
                                                         </a>
                                                     <?php endif; ?>
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY'); ?>:</td>
+                                                <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY') ?>:</td>
                                                 <td><?php echo nl2br(stripslashes($secondary->story)); ?></td>
                                             </tr>
                                             <tr>
-                                                <td class="key"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE'); ?>:</td>
-                                                <td><strong><?php echo $secondary->readmore_title; ?></strong> - <?php echo $secondary->readmore_link; ?></td>
+                                                <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE') ?>:</td>
+                                                <td><strong><?= $secondary->readmore_title ?></strong> - <?= $secondary->readmore_link ?></td>
                                             </tr>
                                         </tbody>
                                     </table>

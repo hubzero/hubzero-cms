@@ -156,7 +156,7 @@ $this->js('managers.js');
                     <td>
                         <select name="entries[<?php echo $i; ?>][role_id]" class="entry-role">
                     <?php foreach ($roles as $role) { ?>
-                            <option value="<?php echo $role->id; ?>"<?php echo $manager->get('role_id') == $role->id ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                            <option value="<?= $role->id ?>"<?= $manager->get('role_id') == $role->id ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($role->title)) ?></option>
                     <?php } ?>
                     <?php
                     foreach ($offerings as $offering) {
@@ -169,7 +169,7 @@ $this->js('managers.js');
                             <optgroup label="<?php echo $txt . ': ' . $this->escape($offering->get('title')); ?>">
                         <?php foreach ($oroles as $role) { ?>
                                 <?php $val = $role->id; ?>
-                                <option value="<?php echo $val; ?>"<?php echo $manager->get('role_id') == $role->id ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                                <option value="<?= $val ?>"<?= $manager->get('role_id') == $role->id ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($role->title)) ?></option>
                         <?php } ?>
                             </optgroup>
                     <?php } ?>

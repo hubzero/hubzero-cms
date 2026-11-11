@@ -127,12 +127,12 @@ $now = Date::of('now')->toSql();
                 <h3 class="post-comment-title">
                     <?php echo Lang::txt('COM_FORUM_ADD_COMMENT'); ?>
                 </h3>
-                <form action="<?php echo Route::url($this->thread->link()); ?>" method="post" id="commentform" enctype="multipart/form-data">
+                <form action="<?= Route::url($this->thread->link()) ?>" method="post" id="commentform" enctype="multipart/form-data">
                     <p class="comment-member-photo">
                         <?php
                         $anon = (!User::isGuest() ? 0 : 1);
                         ?>
-                        <img src="<?php echo User::picture($anon); ?>" alt="<?php echo Lang::txt('COM_FORUM_USER_PHOTO'); ?>" />
+                        <img src="<?= User::picture($anon) ?>" alt="<?= Lang::txt('COM_FORUM_USER_PHOTO') ?>" />
                     </p>
 
                     <fieldset>
@@ -141,13 +141,13 @@ $now = Date::of('now')->toSql();
                         <?php } elseif ($this->config->get('access-create-post')) { ?>
                             <p class="comment-title">
                                 <strong>
-                                    <a href="<?php echo Route::url('index.php?option=com_members&id=' . User::get('id')); ?>"><?php echo $this->escape(stripslashes(User::get('name'))); ?></a>
+                                    <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>"><?= $this->escape(stripslashes(User::get('name'))) ?></a>
                                 </strong>
                                 <span class="permalink">
                                     <span class="comment-date-at"><?php echo Lang::txt('COM_FORUM_AT'); ?></span>
-                                    <span class="time"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')); ?></time></span>
+                                    <span class="time"><time datetime="<?= $now ?>"><?= Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
                                     <span class="comment-date-on"><?php echo Lang::txt('COM_FORUM_ON'); ?></span>
-                                    <span class="date"><time datetime="<?php echo $now; ?>"><?php echo Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></time></span>
+                                    <span class="date"><time datetime="<?= $now ?>"><?= Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
                                 </span>
                             </p>
 
@@ -233,7 +233,7 @@ $now = Date::of('now')->toSql();
                             </p>
                         </div>
                     </fieldset>
-                    <input type="hidden" name="fields[category_id]" value="<?php echo $this->thread->get('category_id'); ?>" />
+                    <input type="hidden" name="fields[category_id]" value="<?= $this->thread->get('category_id') ?>" />
                     <input type="hidden" name="fields[parent]" value="<?php echo $this->thread->get('id'); ?>" />
                     <input type="hidden" name="fields[state]" value="1" />
                     <input type="hidden" name="fields[access]" value="<?php echo $this->thread->get('access', 0); ?>" />
@@ -241,8 +241,8 @@ $now = Date::of('now')->toSql();
                     <input type="hidden" name="fields[scope]" value="site" />
                     <input type="hidden" name="fields[scope_id]" value="0" />
                     <input type="hidden" name="fields[thread]" value="<?php echo $this->thread->get('id'); ?>" />
-                    <input type="hidden" name="fields[scope_sub_id]" value="<?php echo $this->thread->get('scope_sub_id'); ?>" />
-                    <input type="hidden" name="fields[object_id]" value="<?php echo $this->thread->get('object_id'); ?>" />
+                    <input type="hidden" name="fields[scope_sub_id]" value="<?= $this->thread->get('scope_sub_id') ?>" />
+                    <input type="hidden" name="fields[object_id]" value="<?= $this->thread->get('object_id') ?>" />
 
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="controller" value="threads" />
@@ -280,8 +280,8 @@ $now = Date::of('now')->toSql();
                             if (!$participant->get('anonymous')) {
                                 ?>
                                 <li>
-                                    <a class="member" href="<?php echo Route::url('index.php?option=com_members&id=' . $participant->get('created_by')); ?>">
-                                        <?php echo $this->escape(stripslashes($participant->get('name'))) ?: Lang::txt('COM_FORUM_ANONYMOUS'); ?>
+                                    <a class="member" href="<?= Route::url('index.php?option=com_members&id=' . $participant->get('created_by')) ?>">
+                                        <?= $this->escape(stripslashes($participant->get('name'))) ?: Lang::txt('COM_FORUM_ANONYMOUS') ?>
                                     </a>
                                 </li>
                                 <?php
@@ -327,7 +327,7 @@ $now = Date::of('now')->toSql();
                                 }
                                 ?>
                             <li>
-                                <a class="<?php echo $cls; ?> attachment" href="<?php echo Route::url($this->thread->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename')); ?>">
+                                <a class="<?= $cls ?> attachment" href="<?= Route::url($this->thread->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename')) ?>">
                                     <?php echo $this->escape(stripslashes($title)); ?>
                                 </a>
                             </li>

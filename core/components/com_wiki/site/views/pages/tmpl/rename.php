@@ -89,16 +89,16 @@ if (!$this->sub) {
                     <div class="form-group">
                         <label for="newpagename">
                             <?php echo Lang::txt('COM_WIKI_FIELD_PAGENAME'); ?>:
-                            <input type="text" name="newpagename" id="newpagename"  class="form-control" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
+                            <input type="text" name="newpagename" id="newpagename"  class="form-control" value="<?= $this->escape($this->page->get('pagename')) ?>" />
                             <span><?php echo Lang::txt('COM_WIKI_FIELD_PAGENAME_HINT'); ?></span>
                         </label>
                     </div>
 
-                    <input type="hidden" name="oldpagename" value="<?php echo $this->escape($this->page->get('pagename')); ?>" />
+                    <input type="hidden" name="oldpagename" value="<?= $this->escape($this->page->get('pagename')) ?>" />
                     <input type="hidden" name="page_id" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 
                     <?php foreach ($this->page->adapter()->routing('saverename') as $name => $val) { ?>
-                        <input type="hidden" name="<?php echo $this->escape($name); ?>" value="<?php echo $this->escape($val); ?>" />
+                        <input type="hidden" name="<?= $this->escape($name) ?>" value="<?= $this->escape($val) ?>" />
                     <?php } ?>
 
                     <?php echo Html::input('token'); ?>

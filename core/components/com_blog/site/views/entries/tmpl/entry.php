@@ -57,7 +57,7 @@ $first = $this->archive
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-archive archive btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=archive'); ?>">
+            <a class="icon-archive archive btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=archive') ?>">
                 <?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?>
             </a>
         </p>
@@ -133,10 +133,10 @@ $first = $this->archive
                         <?php echo $this->row->visibility('text'); ?>
                     </dd>
                     <dd class="entry-options">
-                        <a class="icon-edit edit" href="<?php echo Route::url($this->row->link('edit')); ?>" title="<?php echo Lang::txt('JACTION_EDIT'); ?>">
+                        <a class="icon-edit edit" href="<?= Route::url($this->row->link('edit')) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                             <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                         </a>
-                        <a class="icon-trash delete" data-confirm="<?php echo Lang::txt('COM_BLOG_CONFIRM_DELETE'); ?>" href="<?php echo Route::url($this->row->link('delete')); ?>" title="<?php echo Lang::txt('JACTION_DELETE'); ?>">
+                        <a class="icon-trash delete" data-confirm="<?= Lang::txt('COM_BLOG_CONFIRM_DELETE') ?>" href="<?= Route::url($this->row->link('delete')) ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                         </a>
                     </dd>
@@ -189,7 +189,7 @@ $first = $this->archive
         <aside class="aside hide6">
             <?php if ($this->config->get('access-create-entry')) { ?>
                 <p>
-                    <a class="icon-add add btn" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new'); ?>">
+                    <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=new') ?>">
                         <?php echo Lang::txt('COM_BLOG_NEW_ENTRY'); ?>
                     </a>
                 </p>
@@ -235,7 +235,7 @@ $first = $this->archive
                                         if (intval($key) <= $entry_month) {
                                             ?>
                                         <li>
-                                            <a <?php echo $entry_month == $key ? 'class="active" ' : ''; ?>href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . $key); ?>">
+                                            <a <?= $entry_month == $key ? 'class="active" ' : '' ?>href="<?= Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . $key) ?>">
                                                 <?php echo $month; ?>
                                             </a>
                                         </li>
@@ -352,12 +352,12 @@ $first = $this->archive
                             <p>
                                 <strong><?php echo $name; ?></strong>
                                 <span class="comment-date-at"><?php echo Lang::txt('COM_BLOG_AT'); ?></span>
-                                <span class="time"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('time'); ?></time></span>
+                                <span class="time"><time datetime="<?= $replyto->get('created') ?>"><?= $replyto->created('time') ?></time></span>
                                 <span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span>
-                                <span class="date"><time datetime="<?php echo $replyto->get('created'); ?>"><?php echo $replyto->created('date'); ?></time></span>
+                                <span class="date"><time datetime="<?= $replyto->get('created') ?>"><?= $replyto->created('date') ?></time></span>
                             </p>
                             <p>
-                                <?php echo $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags(stripslashes($replyto->get('content'))), ENT_QUOTES, 'UTF-8'), 300)); ?>
+                                <?= $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags(stripslashes($replyto->get('content'))), ENT_QUOTES, 'UTF-8'), 300)) ?>
                             </p>
                         </blockquote>
                             <?php
@@ -376,7 +376,7 @@ $first = $this->archive
                     <input type="hidden" name="comment[content]" id="commentcontent" value="" />
 
                     <p class="warning">
-                        <?php echo Lang::txt('COM_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('COM_BLOG_LOG_IN') . '</a>'); ?>
+                        <?= Lang::txt('COM_BLOG_MUST_LOG_IN', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->row->link() . '#post-comment', false, true))) . '">' . Lang::txt('COM_BLOG_LOG_IN') . '</a>') ?>
                     </p>
                     <?php } ?>
 
@@ -427,7 +427,7 @@ $first = $this->archive
                     }
                         $feed = str_replace('https:://', 'http://', $feed);
                     ?>
-                    <a class="icon-feed feed btn" href="<?php echo $feed; ?>"><?php echo Lang::txt('COM_BLOG_FEED'); ?></a>
+                    <a class="icon-feed feed btn" href="<?= $feed ?>"><?= Lang::txt('COM_BLOG_FEED') ?></a>
                 </p>
             </div>
         </aside><!-- / .aside -->

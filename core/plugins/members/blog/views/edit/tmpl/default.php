@@ -43,14 +43,14 @@ $this
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-    <form action="<?php echo Route::url($this->member->link() . '&active=blog&task=save'); ?>" method="post" id="hubForm" class="full">
+    <form action="<?= Route::url($this->member->link() . '&active=blog&task=save') ?>" method="post" id="hubForm" class="full">
         <fieldset>
-            <legend><?php echo Lang::txt($this->entry->isNew() ? 'PLG_MEMBERS_BLOG_NEW_ENTRY' : 'PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
+            <legend><?= Lang::txt($this->entry->isNew() ? 'PLG_MEMBERS_BLOG_NEW_ENTRY' : 'PLG_MEMBERS_BLOG_EDIT_DETAILS') ?></legend>
 
             <div class="form-group">
-                <label for="field-title"<?php echo $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : ''; ?>>
-                    <?php echo Lang::txt('PLG_MEMBERS_BLOG_TITLE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                    <input type="text" class="form-control" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title', ''))); ?>" />
+                <label for="field-title"<?= $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '' ?>>
+                    <?= Lang::txt('PLG_MEMBERS_BLOG_TITLE') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                    <input type="text" class="form-control" name="entry[title]" id="field-title" size="35" value="<?= $this->escape(stripslashes($this->entry->get('title', ''))) ?>" />
                 </label>
                 <?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
                     <p class="error"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
@@ -59,8 +59,8 @@ $this
 
             <div class="form-group">
                 <label for="entrycontent">
-                    <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                    <?php echo $this->editor('entry[content]', $this->entry->get('content'), 50, 30, 'entrycontent', ['class' => 'form-control']); ?>
+                    <?= Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                    <?= $this->editor('entry[content]', $this->entry->get('content'), 50, 30, 'entrycontent', ['class' => 'form-control']) ?>
                 </label>
                 <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
                     <p class="error"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ERROR_PROVIDE_CONTENT'); ?></p>
@@ -70,7 +70,7 @@ $this
             <fieldset>
                 <legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES'); ?></legend>
                 <div class="field-wrap">
-                    <iframe width="100%" height="370" name="filer" id="filer" title="<?php echo Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES'); ?>" src="<?php echo Request::base(true) . '/index.php?option=com_blog&controller=media&id=' . $this->member->get('id') . '&scope=member&tmpl=component'; ?>"></iframe>
+                    <iframe width="100%" height="370" name="filer" id="filer" title="<?= Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES') ?>" src="<?= Request::base(true) . '/index.php?option=com_blog&controller=media&id=' . $this->member->get('id') . '&scope=member&tmpl=component' ?>"></iframe>
                 </div>
             </fieldset>
 
@@ -80,7 +80,7 @@ $this
                     <?php if (count($tf) > 0) {
                         echo implode("\n", $tf);
                     } else { ?>
-                        <input type="text" class="form-control" name="tags" id="actags" value="<?php echo $this->escape($this->entry->tags('string')); ?>" />
+                        <input type="text" class="form-control" name="tags" id="actags" value="<?= $this->escape($this->entry->tags('string')) ?>" />
                     <?php } ?>
                     <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_TAGS_HINT'); ?></span>
                 </label>
@@ -90,7 +90,7 @@ $this
                 <div class="col span6">
                     <div class="form-group">
                         <label for="field-allow_comments">
-                            <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php echo $this->entry->get('allow_comments') == 1 ? ' checked="checked"' : ''; ?> />
+                            <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?= $this->entry->get('allow_comments') == 1 ? ' checked="checked"' : '' ?> />
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
                         </label>
                     </div>
@@ -100,9 +100,9 @@ $this
                         <label for="field-state">
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY'); ?>
                             <select class="form-control" name="entry[access]" id="field-access">
-                                <option value="1"<?php echo $this->entry->get('access') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
-                                <option value="2"<?php echo $this->entry->get('access') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
-                                <option value="5"<?php echo $this->entry->get('access') > 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
+                                <option value="1"<?= $this->entry->get('access') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PUBLIC') ?></option>
+                                <option value="2"<?= $this->entry->get('access') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_REGISTERED') ?></option>
+                                <option value="5"<?= $this->entry->get('access') > 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PRIVATE') ?></option>
                             </select>
                         </label>
                     </div>
@@ -114,7 +114,7 @@ $this
                     <div class="form-group">
                         <label for="field-publish_up">
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_PUBLISH_UP'); ?>
-                            <input type="text" class="form-control" name="entry[publish_up]" id="field-publish_up" data-timezone="<?php echo(timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_up')) ? $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
+                            <input type="text" class="form-control" name="entry[publish_up]" id="field-publish_up" data-timezone="<?= (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60) ?>" value="<?= ($this->entry->get('publish_up')) ? $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s')) : '' ?>" />
                             <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
                         </label>
                     </div>
@@ -123,7 +123,7 @@ $this
                     <div class="form-group">
                         <label for="field-publish_down">
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_PUBLISH_DOWN'); ?>
-                            <input type="text" class="form-control" name="entry[publish_down]" id="field-publish_down" data-timezone="<?php echo(timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60); ?>" value="<?php echo ($this->entry->get('publish_down')) ? $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s')) : ''; ?>" />
+                            <input type="text" class="form-control" name="entry[publish_down]" id="field-publish_down" data-timezone="<?= (timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::of('now')) / 60) ?>" value="<?= ($this->entry->get('publish_down')) ? $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s')) : '' ?>" />
                             <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
                         </label>
                     </div>
@@ -136,7 +136,7 @@ $this
         <input type="hidden" name="entry[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
         <input type="hidden" name="entry[alias]" value="<?php echo $this->escape($this->entry->get('alias')); ?>" />
         <input type="hidden" name="entry[created]" value="<?php echo $this->escape($this->entry->get('created')); ?>" />
-        <input type="hidden" name="entry[created_by]" value="<?php echo $this->escape($this->entry->get('created_by')); ?>" />
+        <input type="hidden" name="entry[created_by]" value="<?= $this->escape($this->entry->get('created_by')) ?>" />
         <input type="hidden" name="entry[scope]" value="member" />
         <input type="hidden" name="entry[scope_id]" value="<?php echo $this->entry->get('scope_id'); ?>" />
         <input type="hidden" name="entry[state]" value="<?php echo $this->entry->get('state', 1); ?>" />

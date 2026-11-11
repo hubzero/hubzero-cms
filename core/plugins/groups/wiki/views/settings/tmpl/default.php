@@ -37,19 +37,19 @@ $crumbOptions = [
 <div class="container">
     <h3><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS'); ?></h3>
 
-    <form action="<?php echo Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=wiki'); ?>" method="post">
+    <form action="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=wiki') ?>" method="post">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_LEGEND'); ?></legend>
 
             <label for="automatic_toc"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_AUTOMATIC_TOC'); ?></label>
             <select name="automatic_toc" id="automatic_toc">
                 <?php foreach ($modes as $v => $label) { ?>
-                    <option value="<?php echo $this->escape($v); ?>"<?php echo (string) $mode === (string) $v ? ' selected="selected"' : ''; ?>><?php echo $this->escape($label); ?></option>
+                    <option value="<?= $this->escape($v) ?>"<?= (string) $mode === (string) $v ? ' selected="selected"' : '' ?>><?= $this->escape($label) ?></option>
                 <?php } ?>
             </select>
 
             <label for="toc_threshold"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD'); ?></label>
-            <input type="text" name="toc_threshold" id="toc_threshold" value="<?php echo $this->escape($threshold); ?>" placeholder="<?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD_DEFAULT', $defThresh); ?>" />
+            <input type="text" name="toc_threshold" id="toc_threshold" value="<?= $this->escape($threshold) ?>" placeholder="<?= Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD_DEFAULT', $defThresh) ?>" />
         </fieldset>
 
         <fieldset>
@@ -58,7 +58,7 @@ $crumbOptions = [
             <label for="wiki_crumbs"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS'); ?></label>
             <select name="wiki_crumbs" id="wiki_crumbs">
                 <?php foreach ($crumbOptions as $v => $label) { ?>
-                    <option value="<?php echo $this->escape($v); ?>"<?php echo (string) $crumbs === (string) $v ? ' selected="selected"' : ''; ?>><?php echo $this->escape($label); ?></option>
+                    <option value="<?= $this->escape($v) ?>"<?= (string) $crumbs === (string) $v ? ' selected="selected"' : '' ?>><?= $this->escape($label) ?></option>
                 <?php } ?>
             </select>
             <p class="hint"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_HINT'); ?></p>

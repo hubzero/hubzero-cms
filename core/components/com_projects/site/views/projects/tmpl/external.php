@@ -33,11 +33,11 @@ $this->css('theme' . $theme . '.css');
 <div id="project-wrap" class="theme publicview">
     <?php if ($this->model->access('member') && !$this->reviewer) { // Public preview for authorized users?>
         <div id="project-preview">
-            <p><?php echo Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW'); ?> <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')); ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_PAGE'); ?></a></span></p>
+            <p><?= Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW') ?> <span><?= Lang::txt('COM_PROJECTS_RETURN_TO') ?> <a href="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')) ?>"><?= Lang::txt('COM_PROJECTS_PROJECT_PAGE') ?></a></span></p>
         </div>
     <?php } elseif ($this->reviewer) { ?>
         <div id="project-preview">
-            <p><?php echo Lang::txt('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW'); ?> <span><?php echo Lang::txt('COM_PROJECTS_RETURN_TO'); ?> <a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $this->reviewer); ?>"><?php echo Lang::txt('COM_PROJECTS_PROJECT_LIST'); ?></a></span></p>
+            <p><?= Lang::txt('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW') ?> <span><?= Lang::txt('COM_PROJECTS_RETURN_TO') ?> <a href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $this->reviewer) ?>"><?= Lang::txt('COM_PROJECTS_PROJECT_LIST') ?></a></span></p>
         </div>
     <?php } ?>
 
@@ -69,11 +69,11 @@ $this->css('theme' . $theme . '.css');
             <?php if ($this->model->allowMembershipRequest()) : ?>
                 <?php if (!$member || $member->status == 2) : ?>
                     <div class="btn-container tooltips span4">
-                        <a href="<?php echo $link;?>" class="tooltips btn btn-success"><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');?></a>
+                        <a href="<?= $link ?>" class="tooltips btn btn-success"><?= Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ?></a>
                     </div>
                 <?php elseif ($member->get('status') == 3) : ?>
                     <div class="btn-container tooltips span4" title="Membership Request Pending">
-                        <a href="<?php echo $link; ?>" class="tooltips btn btn-success" disabled><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');?></a>
+                        <a href="<?= $link ?>" class="tooltips btn btn-success" disabled><?= Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ?></a>
                     </div>
                 <?php elseif ($member->get('status') == 4) : ?>
                     <?php
@@ -84,7 +84,7 @@ $this->css('theme' . $theme . '.css');
                     ?>
 
                     <div class="btn-container tooltips span4" title="<?php echo $this->escape($denyMessage);?>">
-                        <a href="<?php echo $link; ?>" class="btn btn-success" disabled><?php echo Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP');?></a>
+                        <a href="<?= $link ?>" class="btn btn-success" disabled><?= Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ?></a>
                     </div>
                 <?php endif; ?>
             <?php endif; ?>
