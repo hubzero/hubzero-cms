@@ -189,7 +189,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/views/course/tmpl/display.php:704`](../../../core/components/com_courses/site/views/course/tmpl/display.php#L704) with `[$this->course]`
+- [`core/components/com_courses/site/views/course/tmpl/display.php:718`](../../../core/components/com_courses/site/views/course/tmpl/display.php#L718) with `[$this->course]`
 
 Listeners:
 

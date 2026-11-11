@@ -67,6 +67,6 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_tools/site/views/sessions/tmpl/session.php:493`](../../../core/components/com_tools/site/views/sessions/tmpl/session.php#L493) with `[ $this->option, $this->toolname, $this->app->sess, ]`
+- [`core/components/com_tools/site/views/sessions/tmpl/session.php:501`](../../../core/components/com_tools/site/views/sessions/tmpl/session.php#L501) with `[ $this->option, $this->toolname, $this->app->sess, ]`
 
 No plugin in the source tree listens for this event.

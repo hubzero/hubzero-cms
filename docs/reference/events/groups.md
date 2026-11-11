@@ -73,8 +73,8 @@ Fired from:
 - [`core/components/com_groups/api/controllers/groupsv1r1.php:402`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L402) with `[]`
 - [`core/components/com_groups/helpers/view.php:86`](../../../core/components/com_groups/helpers/view.php#L86) with `[]`
 - [`core/components/com_groups/site/controllers/groups.php:508`](../../../core/components/com_groups/site/controllers/groups.php#L508) with `[]`
-- [`core/components/com_groups/site/views/emails/tmpl/saved.php:435`](../../../core/components/com_groups/site/views/emails/tmpl/saved.php#L435) with `[]`
-- [`core/components/com_groups/site/views/emails/tmpl/saved_plain.php:127`](../../../core/components/com_groups/site/views/emails/tmpl/saved_plain.php#L127) with `[]`
+- [`core/components/com_groups/site/views/emails/tmpl/saved.php:453`](../../../core/components/com_groups/site/views/emails/tmpl/saved.php#L453) with `[]`
+- [`core/components/com_groups/site/views/emails/tmpl/saved_plain.php:139`](../../../core/components/com_groups/site/views/emails/tmpl/saved_plain.php#L139) with `[]`
 - [`core/libraries/Hubzero/User/Group/Helper.php:285`](../../../core/libraries/Hubzero/User/Group/Helper.php#L285) with `[]`
 
 No plugin in the source tree listens for this event.
