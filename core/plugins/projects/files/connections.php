@@ -1090,8 +1090,12 @@ class Connections
                     // Init the destination file (format <filename.ext>.part<#chunk>)
                     // The file is stored in a temporary directory identified by the
                     // project ID, the base64 encoded destination and the filename
-                    // Without an identifier there is no directory to collect the chunks in
-                    if (!isset($_POST['flowIdentifier']) || trim($_POST['flowIdentifier']) == '') {
+                    // Without an identifier there is no directory to collect the chunks in,
+                    // and without a name (or one that cleaning left empty) nothing to save
+                    if (
+                        !isset($_POST['flowIdentifier']) || trim($_POST['flowIdentifier']) == ''
+                        || !isset($_POST['flowFilename']) || $_POST['flowFilename'] == ''
+                    ) {
                         header("HTTP/1.0 404 Error Uploading File");
                         exit();
                     }
