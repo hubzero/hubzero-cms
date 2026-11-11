@@ -360,7 +360,7 @@ and gives the <em>Display #</em> select a real <code>&lt;label for&gt;</code>.</
 <p>The <strong>site</strong> branch labels its arrows:</p>
 <pre><code class="language-php">      &lt;li class=&quot;pagination-prev prev&quot;&gt;
           &lt;?php if ($this-&gt;pages-&gt;previous-&gt;base !== null) { ?&gt;
-              &lt;?php echo paginator_item_active($this-&gt;pages-&gt;previous, $this-&gt;prefix); ?&gt;
+              &lt;?php echo $itemLink($this-&gt;pages-&gt;previous, $this-&gt;prefix); ?&gt;
           &lt;?php } else { ?&gt;
               &lt;span class=&quot;pagenav&quot;&gt;&lt;?php echo $this-&gt;pages-&gt;previous-&gt;text; ?&gt;&lt;/span&gt;
           &lt;?php } ?&gt;

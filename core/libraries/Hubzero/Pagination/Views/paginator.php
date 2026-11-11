@@ -21,24 +21,21 @@ if ($this->limits) {
     }
 }
 
-if (!function_exists('paginator_item_active')) {
-    /**
-     * Method to create an active pagination link to the item
-     *
-     * @param   Item    $item  The object with which to make an active link.
-     * @return  string  HTML link
-     */
-    function paginator_item_active($item, $prefix)
-    {
-        if (App::isAdmin()) {
-            return '<a data-prefix="' . htmlspecialchars((string) $prefix, ENT_QUOTES, 'UTF-8') . '"'
-                . ' data-start="' . ($item->base > 0 ? $item->base : 0) . '">' . $item->text . '</a>';
-        } else {
-            return '<a href="' . $item->link . '" ' . ($item->rel ? 'rel="' . $item->rel . '" ' : '')
-                . 'class="pagenav">' . $item->text . '</a>';
-        }
+/**
+ * Method to create an active pagination link to the item
+ *
+ * @param   Item    $item  The object with which to make an active link.
+ * @return  string  HTML link
+ */
+$itemLink = function ($item, $prefix) {
+    if (App::isAdmin()) {
+        return '<a data-prefix="' . htmlspecialchars((string) $prefix, ENT_QUOTES, 'UTF-8') . '"'
+            . ' data-start="' . ($item->base > 0 ? $item->base : 0) . '">' . $item->text . '</a>';
+    } else {
+        return '<a href="' . $item->link . '" ' . ($item->rel ? 'rel="' . $item->rel . '" ' : '')
+            . 'class="pagenav">' . $item->text . '</a>';
     }
-}
+};
 ?>
 <nav class="pagination" aria-label="<?php echo Lang::txt('JGLOBAL_PAGINATION_LABEL'); ?>">
     <ul class="list-footer">
@@ -97,12 +94,12 @@ if (!function_exists('paginator_item_active')) {
                 && $this->pages->start->base !== $this->pages->previous->base
             ) { ?>
             <li class="pagination-start start">
-                    <?php echo paginator_item_active($this->pages->start, $this->prefix); ?>
+                    <?php echo $itemLink($this->pages->start, $this->prefix); ?>
             </li>
             <?php } ?>
         <li class="pagination-prev prev">
             <?php if ($this->pages->previous->base !== null) { ?>
-                <?php echo paginator_item_active($this->pages->previous, $this->prefix); ?>
+                <?php echo $itemLink($this->pages->previous, $this->prefix); ?>
             <?php } else { ?>
                 <span class="pagenav"><?php echo $this->pages->previous->text; ?></span>
             <?php } ?>
@@ -122,7 +119,7 @@ if (!function_exists('paginator_item_active')) {
 // Show page 1 link and ellipsis
             $firstPage = isset($this->pages->pages[1]) ? $this->pages->pages[1] : null;
             if ($firstPage && $firstPage->base !== null) { ?>
-                <li class="page"><?php echo paginator_item_active($firstPage, $this->prefix); ?></li>
+                <li class="page"><?php echo $itemLink($firstPage, $this->prefix); ?></li>
             <?php } ?>
             <li class="page ellipsis" aria-hidden="true"><span>&hellip;</span></li>
         <?php } ?>
@@ -132,7 +129,7 @@ if (!function_exists('paginator_item_active')) {
                 $page = $this->pages->pages[$this->pages->i];
                 if ($page->base !== null) {
                     ?>
-                    <li class="page"><?php echo paginator_item_active($page, $this->prefix); ?></li>
+                    <li class="page"><?php echo $itemLink($page, $this->prefix); ?></li>
                     <?php
                 } else {
                     ?>
@@ -150,20 +147,20 @@ if (!function_exists('paginator_item_active')) {
                 ? $this->pages->pages[$this->pages->total]
                 : null;
             if ($lastPage && $lastPage->base !== null) { ?>
-                <li class="page"><?php echo paginator_item_active($lastPage, $this->prefix); ?></li>
+                <li class="page"><?php echo $itemLink($lastPage, $this->prefix); ?></li>
             <?php } ?>
         <?php } ?>
         <?php if (App::isAdmin()) { ?>
         <li class="pagination-next next">
             <?php if ($this->pages->next->base !== null) { ?>
-                <?php echo paginator_item_active($this->pages->next, $this->prefix); ?>
+                <?php echo $itemLink($this->pages->next, $this->prefix); ?>
             <?php } else { ?>
                 <span class="pagenav"><?php echo $this->pages->next->text; ?></span>
             <?php } ?>
         </li>
             <?php if ($this->pages->end->base !== null && $this->pages->end->base !== $this->pages->next->base) { ?>
             <li class="pagination-end end">
-                    <?php echo paginator_item_active($this->pages->end, $this->prefix); ?>
+                    <?php echo $itemLink($this->pages->end, $this->prefix); ?>
             </li>
             <?php } ?>
         <?php } else { ?>

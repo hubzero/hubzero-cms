@@ -61,8 +61,7 @@ $paths = $paths ?: $defaults;
  * @param   string  $root  Repository root
  * @return  array<string,bool>
  */
-function definedKeys($root)
-{
+$definedKeys = function ($root) {
     $keys = [];
     foreach (['core', 'app'] as $tree) {
         $base = $root . '/' . $tree;
@@ -84,7 +83,7 @@ function definedKeys($root)
         }
     }
     return $keys;
-}
+};
 
 /**
  * Every literal key a file passes to Lang::txt() or Lang::txts().
@@ -92,8 +91,7 @@ function definedKeys($root)
  * @param   string  $path  File to read
  * @return  array  List of [key, line]
  */
-function requestedKeys($path)
-{
+$requestedKeys = function ($path) {
     $tokens = @token_get_all(file_get_contents($path));
     if (!$tokens) {
         return [];
@@ -130,9 +128,9 @@ function requestedKeys($path)
         }
     }
     return $found;
-}
+};
 
-$defined = definedKeys($root);
+$defined = $definedKeys($root);
 if (!$defined) {
     fwrite(STDERR, "no language files found\n");
     exit(2);
@@ -159,7 +157,7 @@ foreach ($paths as $spec) {
     }
     sort($files);
     foreach ($files as $path) {
-        foreach (requestedKeys($path) as [$key, $line]) {
+        foreach ($requestedKeys($path) as [$key, $line]) {
             if (!isset($defined[$key])) {
                 $missing[$key][] = substr($path, strlen($root) + 1) . ':' . $line;
             }

@@ -123,7 +123,7 @@ Two things to know:
 
 - The **site** branch labels its arrows:
 
-  <!--include: core/libraries/Hubzero/Pagination/Views/paginator.php:103-118-->
+  <!--include: core/libraries/Hubzero/Pagination/Views/paginator.php:100-115-->
 
   The labels are language keys, `JLIB_HTML_PAGINATION_PREVIOUS_PAGE` and
   `JLIB_HTML_PAGINATION_NEXT_PAGE`, defined in both clients' `en-GB.ini`

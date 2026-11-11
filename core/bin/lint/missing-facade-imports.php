@@ -76,8 +76,7 @@ $paths = $paths ?: $defaults;
  * @param   string  $root  Repository root
  * @return  array<string,bool>
  */
-function facadeNames($root)
-{
+$facadeNames = function ($root) {
     $names = [];
     foreach (glob($root . '/core/bootstrap/*/aliases.php') as $file) {
         if (preg_match_all("/'(\\w+)'\\s*=>\\s*'[\\w\\\\]+'/", file_get_contents($file), $m)) {
@@ -87,7 +86,7 @@ function facadeNames($root)
         }
     }
     return $names;
-}
+};
 
 /**
  * Every PHP file under the given paths, vendor directories excluded.
@@ -96,8 +95,7 @@ function facadeNames($root)
  * @param   array   $paths  Repo-relative paths
  * @return  array
  */
-function phpFiles($root, array $paths)
-{
+$phpFiles = function ($root, array $paths) {
     $files = [];
     foreach ($paths as $spec) {
         $base = $root . '/' . trim($spec, '/');
@@ -121,7 +119,7 @@ function phpFiles($root, array $paths)
     $files = array_unique($files);
     sort($files);
     return $files;
-}
+};
 
 /**
  * Read one file's namespace, imported short names, declared classes, and
@@ -131,8 +129,7 @@ function phpFiles($root, array $paths)
  * @param   array   $facades  Facade names to look for
  * @return  array|null
  */
-function inspect($path, array $facades)
-{
+$inspect = function ($path, array $facades) {
     $source = file_get_contents($path);
     if ($source === false) {
         return null;
@@ -267,7 +264,7 @@ function inspect($path, array $facades)
         'declared'  => $declared,
         'calls'     => $calls,
     ];
-}
+};
 
 /**
  * Insert the missing use statements after the file's existing use block.
@@ -276,8 +273,7 @@ function inspect($path, array $facades)
  * @param   array   $missing  Facade names to import
  * @return  boolean
  */
-function addImports($path, array $missing)
-{
+$addImports = function ($path, array $missing) {
     $source = file_get_contents($path);
     $lines  = preg_split('/\R/', $source);
     $eol    = strpos($source, "\r\n") !== false ? "\r\n" : "\n";
@@ -314,24 +310,24 @@ function addImports($path, array $missing)
     array_splice($lines, $at + 1, 0, $additions);
     file_put_contents($path, implode($eol, $lines));
     return true;
-}
+};
 
 // ---------------------------------------------------------------- run
 
-$facades = facadeNames($root);
+$facades = $facadeNames($root);
 if (!$facades) {
     fwrite(STDERR, "no aliases found under core/bootstrap/*/aliases.php\n");
     exit(2);
 }
 
-$files = phpFiles($root, $paths);
+$files = $phpFiles($root, $paths);
 
 // Pass one: what every namespace declares, so a component's own Config or
 // User class is not mistaken for the facade of that name.
 $inspected  = [];
 $namespaced = [];
 foreach ($files as $path) {
-    $info = inspect($path, $facades);
+    $info = $inspect($path, $facades);
     if ($info === null || $info['namespace'] === '') {
         continue;                                       // root namespace: aliases resolve
     }
@@ -370,7 +366,7 @@ foreach ($inspected as $path => $info) {
         }
         echo substr($path, strlen($root) + 1), ': ', implode(', ', $detail), "\n";
     }
-    if ($fix && addImports($path, $missing)) {
+    if ($fix && $addImports($path, $missing)) {
         $fixedFiles++;
     }
 }
