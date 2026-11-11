@@ -19,13 +19,6 @@ use Hubzero\Html\Parameter;
 class Excel implements Adapter
 {
     /**
-     * Not really used in this case
-     *
-     * @var  integer
-     */
-    private $key = '';
-
-    /**
      * Array to hold processed data
      *
      * @var  array
@@ -69,7 +62,7 @@ class Excel implements Adapter
     public function count(Import $import)
     {
         // create iterator
-        $iterator = new Reader($import->getDatapath(), $this->key);
+        $iterator = new Reader($import->getDatapath());
 
         // return count
         return $iterator->total();
@@ -84,7 +77,7 @@ class Excel implements Adapter
     public function headers(Import $import)
     {
         // create iterator
-        $iterator = new Reader($import->getDataPath(), $this->key);
+        $iterator = new Reader($import->getDataPath());
 
         return $iterator->headers();
     }
@@ -100,7 +93,7 @@ class Excel implements Adapter
     public function process(Import $import, array $callbacks, $dryRun)
     {
         // create new iterator
-        $iterator = new Reader($import->getDatapath(), $this->key);
+        $iterator = new Reader($import->getDatapath());
 
         // get the import params
         $options = new Parameter($import->get('params'));

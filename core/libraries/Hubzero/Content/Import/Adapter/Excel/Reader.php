@@ -67,10 +67,9 @@ class Reader implements Iterator
      * Constructor
      *
      * @param   string  $file File we want to use
-     * @param   string  $key  Not currently used
      * @return  void
      */
-    public function __construct($file, $key = '')
+    public function __construct($file)
     {
         $this->position = 0;
         $this->file     = $file;
