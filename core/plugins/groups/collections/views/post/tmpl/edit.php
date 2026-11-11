@@ -69,7 +69,11 @@ $idSelected = function ($value) use ($view) {
                 <div class="asset-uploader">
                     <div class="grid">
                         <div class="col span-half">
-                            <div id="ajax-uploader" data-txt-instructions="<?= Lang::txt('Click or drop file') ?>" data-action="<?= $jbase ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload<?php //&amp;dir=echo $dir;?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir;?>">
+                            <?php
+                            // &amp;dir=echo $dir;
+                            // echo $dir;
+                            ?>
+                            <div id="ajax-uploader" data-txt-instructions="<?= Lang::txt('Click or drop file') ?>" data-action="<?= $jbase ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=">
                                 <noscript>
                                     <div class="form-group">
                                         <label for="upload">
@@ -81,7 +85,11 @@ $idSelected = function ($value) use ($view) {
                             </div>
                         </div><!-- / .col span-half -->
                         <div class="col span-half omega">
-                            <div id="link-adder" data-base="<?= rtrim(Request::base(true), '/') ?>" data-txt-delete="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-instructions="<?= Lang::txt('Click to add link') ?>" data-action="<?= $jbase ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=<?php //echo $dir;?>" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=<?php //echo $dir;?>">
+                            <?php
+                            // echo $dir;
+                            // echo $dir;
+                            ?>
+                            <div id="link-adder" data-base="<?= rtrim(Request::base(true), '/') ?>" data-txt-delete="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-instructions="<?= Lang::txt('Click to add link') ?>" data-action="<?= $jbase ?>/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=">
                                 <noscript>
                                     <div class="form-group">
                                         <label for="add-link">

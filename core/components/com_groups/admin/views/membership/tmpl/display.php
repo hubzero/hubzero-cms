@@ -178,7 +178,10 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                 <label for="filter-status"><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?>:</label>
                 <select name="status" id="filter-status" class="filter filter-submit">
                     <option value=""<?= $statusSelected('') ?>><?= Lang::txt('COM_GROUPS_MEMBER_STATUS') ?></option>
-                    <!-- <option value="member"<?php //echo ($this->filters['status'] == 'member') ? ' selected="selected"' : '';?>>Member</option> -->
+                    <?php
+                    // echo ($this->filters['status'] == 'member') ? ' selected="selected"' : '';
+                    ?>
+                    <!-- <option value="member">Member</option> -->
                     <option value="manager"<?= $statusSelected('manager') ?>><?= Lang::txt('Manager') ?></option>
                     <option value="applicant"<?= $statusSelected('applicant') ?>><?= Lang::txt('Applicant') ?></option>
                     <option value="invitee"<?= $statusSelected('invitee') ?>><?= Lang::txt('Invitee') ?></option>
