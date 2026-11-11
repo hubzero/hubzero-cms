@@ -123,7 +123,7 @@ Two things to know:
 
 - The **site** branch labels its arrows:
 
-  <!--include: core/libraries/Hubzero/Pagination/Views/paginator.php:87-101-->
+  <!--include: core/libraries/Hubzero/Pagination/Views/paginator.php:103-118-->
 
   The strings are passed to `Lang::txt()` as literal English — `'Previous page'`
   and `'Next page'` — and no such keys exist in any `en-GB.ini`, so `Lang::txt()`
@@ -233,7 +233,7 @@ of the three icon systems for that reason. See
 runs user-submitted HTML through HTML Purifier, and its whitelist explicitly
 keeps ARIA:
 
-<!--include: core/libraries/Hubzero/Utility/Sanitize.php:512-524-->
+<!--include: core/libraries/Hubzero/Utility/Sanitize.php:516-528-->
 
 So `role`, `aria-label`, `aria-labelledby` and `aria-describedby` survive on
 `a`, `div`, `span`, `img`, `table`, `ul`, `ol`, `li`, `nav`, `section` and

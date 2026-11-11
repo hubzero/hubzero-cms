@@ -138,7 +138,7 @@ A macro adds one method to the filesystem object. It implements
 — usually by extending `Hubzero\Filesystem\Macro\Base`, which supplies
 `setFilesystem()` — and provides `getMethod()` and `handle()`:
 
-<!--include: core/libraries/Hubzero/Filesystem/Macro/Files.php:14-51-->
+<!--include: core/libraries/Hubzero/Filesystem/Macro/Files.php:14-61-->
 
 `getMethod()` names the call; `handle()` receives whatever arguments the
 call was given, with `$this->filesystem` already set. Register it and call

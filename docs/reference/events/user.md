@@ -240,7 +240,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Auth/Manager.php:100`](../../../core/libraries/Hubzero/Auth/Manager.php#L100) with `[(array) $response, $options]`
+- [`core/libraries/Hubzero/Auth/Manager.php:98`](../../../core/libraries/Hubzero/Auth/Manager.php#L98) with `[(array) $response, $options]`
 - [`core/libraries/Hubzero/User/User.php:645`](../../../core/libraries/Hubzero/User/User.php#L645) with `[$data]`
 
 Listeners:
@@ -257,7 +257,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Auth/Manager.php:136`](../../../core/libraries/Hubzero/Auth/Manager.php#L136) with `[(array) $response]`
+- [`core/libraries/Hubzero/Auth/Manager.php:140`](../../../core/libraries/Hubzero/Auth/Manager.php#L140) with `[(array) $response]`
 
 Listeners:
 
@@ -269,7 +269,7 @@ Fired from:
 
 - [`core/components/com_login/site/controllers/auth.php:831`](../../../core/components/com_login/site/controllers/auth.php#L831) with `[$parameters, $options]`
 - [`core/components/com_users/site/controllers/auth.php:892`](../../../core/components/com_users/site/controllers/auth.php#L892) with `[$parameters, $options]`
-- [`core/libraries/Hubzero/Auth/Manager.php:173`](../../../core/libraries/Hubzero/Auth/Manager.php#L173) with `[$parameters, $options]`
+- [`core/libraries/Hubzero/Auth/Manager.php:177`](../../../core/libraries/Hubzero/Auth/Manager.php#L177) with `[$parameters, $options]`
 
 Listeners:
 
@@ -282,6 +282,6 @@ Fired from:
 
 - [`core/components/com_login/site/controllers/auth.php:841`](../../../core/components/com_login/site/controllers/auth.php#L841) with `[$parameters]`
 - [`core/components/com_users/site/controllers/auth.php:902`](../../../core/components/com_users/site/controllers/auth.php#L902) with `[$parameters]`
-- [`core/libraries/Hubzero/Auth/Manager.php:187`](../../../core/libraries/Hubzero/Auth/Manager.php#L187) with `[$parameters]`
+- [`core/libraries/Hubzero/Auth/Manager.php:191`](../../../core/libraries/Hubzero/Auth/Manager.php#L191) with `[$parameters]`
 
 No plugin in the source tree listens for this event.

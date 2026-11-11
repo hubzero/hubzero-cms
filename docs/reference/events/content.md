@@ -35,8 +35,8 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_content/site/controllers/articles.php:190`](../../../core/components/com_content/site/controllers/articles.php#L190) with `['com_content.article', &$item, &$params, $offset]`
-- [`core/components/com_content/site/controllers/articles.php:806`](../../../core/components/com_content/site/controllers/articles.php#L806) with `['com_content.featured', &$item, &$item->params, 0]`
-- [`core/components/com_content/site/controllers/articles.php:1271`](../../../core/components/com_content/site/controllers/articles.php#L1271) with `['com_content.category', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:808`](../../../core/components/com_content/site/controllers/articles.php#L808) with `['com_content.featured', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:1272`](../../../core/components/com_content/site/controllers/articles.php#L1272) with `['com_content.category', &$item, &$item->params, 0]`
 
 Listeners:
 
@@ -58,8 +58,8 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_content/site/controllers/articles.php:184`](../../../core/components/com_content/site/controllers/articles.php#L184) with `['com_content.article', &$item, &$params, $offset]`
-- [`core/components/com_content/site/controllers/articles.php:794`](../../../core/components/com_content/site/controllers/articles.php#L794) with `['com_content.featured', &$item, &$item->params, 0]`
-- [`core/components/com_content/site/controllers/articles.php:1259`](../../../core/components/com_content/site/controllers/articles.php#L1259) with `['com_content.category', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:796`](../../../core/components/com_content/site/controllers/articles.php#L796) with `['com_content.featured', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:1260`](../../../core/components/com_content/site/controllers/articles.php#L1260) with `['com_content.category', &$item, &$item->params, 0]`
 
 No plugin in the source tree listens for this event.
 
@@ -81,8 +81,8 @@ Listeners:
 Fired from:
 
 - [`core/components/com_content/site/controllers/articles.php:187`](../../../core/components/com_content/site/controllers/articles.php#L187) with `['com_content.article', &$item, &$params, $offset]`
-- [`core/components/com_content/site/controllers/articles.php:800`](../../../core/components/com_content/site/controllers/articles.php#L800) with `['com_content.featured', &$item, &$item->params, 0]`
-- [`core/components/com_content/site/controllers/articles.php:1265`](../../../core/components/com_content/site/controllers/articles.php#L1265) with `['com_content.category', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:802`](../../../core/components/com_content/site/controllers/articles.php#L802) with `['com_content.featured', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:1266`](../../../core/components/com_content/site/controllers/articles.php#L1266) with `['com_content.category', &$item, &$item->params, 0]`
 
 Listeners:
 
@@ -119,8 +119,8 @@ Listeners:
 Fired from:
 
 - [`core/components/com_content/site/controllers/articles.php:181`](../../../core/components/com_content/site/controllers/articles.php#L181) with `['com_content.article', &$item, &$params, $offset]`
-- [`core/components/com_content/site/controllers/articles.php:789`](../../../core/components/com_content/site/controllers/articles.php#L789) with `['com_content.featured', &$item, &$params, 0]`
-- [`core/components/com_content/site/controllers/articles.php:1254`](../../../core/components/com_content/site/controllers/articles.php#L1254) with `['com_content.category', &$item, &$item->params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:791`](../../../core/components/com_content/site/controllers/articles.php#L791) with `['com_content.featured', &$item, &$params, 0]`
+- [`core/components/com_content/site/controllers/articles.php:1255`](../../../core/components/com_content/site/controllers/articles.php#L1255) with `['com_content.category', &$item, &$item->params, 0]`
 - [`core/components/com_courses/site/views/assets/tmpl/text_wiki.php:29`](../../../core/components/com_courses/site/views/assets/tmpl/text_wiki.php#L29) with `[ 'com_courses.asset.content', &$this->model, &$config, ]`
 - [`core/components/com_publications/models/publication.php:1338`](../../../core/components/com_publications/models/publication.php#L1338) with `[ 'com_publications.publication.description', &$this, &$config, ]`
 - [`core/components/com_publications/models/publication.php:1408`](../../../core/components/com_publications/models/publication.php#L1408) with `[ 'com_publications.publication.release_notes', &$this, &$config, ]`

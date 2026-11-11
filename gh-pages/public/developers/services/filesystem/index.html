@@ -460,9 +460,19 @@ characters of Unicode:</p>
      * @param   array    $exclude  Array with names of files which should not be shown in the result.
      * @return  array
      */
-    public function handle($path, $filter = '.', $recursive = false, $full = false, $exclude = ['.svn', '.git',
-        'CVS', '.DS_Store', '__MACOSX'])
-    {
+    public function handle(
+        $path,
+        $filter = '.',
+        $recursive = false,
+        $full = false,
+        $exclude = [
+            '.svn',
+            '.git',
+            'CVS',
+            '.DS_Store',
+            '__MACOSX',
+        ],
+    ) {
         $result = [];
 
         $contents = $this-&gt;filesystem-&gt;listContents($path, $filter, $recursive, $full, $exclude);

@@ -68,9 +68,9 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/api/controllers/groupsv1r0.php:383`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L383) with `[]`
-- [`core/components/com_groups/api/controllers/groupsv1r1.php:371`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L371)
-- [`core/components/com_groups/api/controllers/groupsv1r1.php:393`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L393) with `[]`
+- [`core/components/com_groups/api/controllers/groupsv1r0.php:392`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L392) with `[]`
+- [`core/components/com_groups/api/controllers/groupsv1r1.php:380`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L380)
+- [`core/components/com_groups/api/controllers/groupsv1r1.php:402`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L402) with `[]`
 - [`core/components/com_groups/helpers/view.php:86`](../../../core/components/com_groups/helpers/view.php#L86) with `[]`
 - [`core/components/com_groups/site/controllers/groups.php:508`](../../../core/components/com_groups/site/controllers/groups.php#L508) with `[]`
 - [`core/components/com_groups/site/views/emails/tmpl/saved.php:425`](../../../core/components/com_groups/site/views/emails/tmpl/saved.php#L425) with `[]`

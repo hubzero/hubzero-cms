@@ -351,6 +351,15 @@ missing quote costs you the parameter — the explorer records <em>Unable to par
 parameter info</em>, and the reference generator falls back to a loose regular
 expression that may pick up some fields and not others. Neither says anything
 on the page itself.</p>
+<p>A JSON string cannot span lines, so a <code>description</code> or <code>allowedValues</code> too
+long for the 120-column line limit is written as an array of strings
+instead. Both readers join the pieces with single spaces, so break where a
+space falls:</p>
+<pre><code class="language-php"> *      &quot;description&quot;:   [
+ *          &quot;Filter by a list of recipients (type:id) the activity was sent to.&quot;,
+ *          &quot;Example: recipients=user:1000,project:2413&quot;
+ *      ],
+</code></pre>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The two readers are separate implementations of the same
 convention. <code>Generator</code> uses <code>phpDocumentor</code>'s reflection over the loaded

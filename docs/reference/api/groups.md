@@ -30,7 +30,7 @@ Endpoints under `/api/groups`, from the `com_groups` API controllers. Authentica
 
 Create a group
 
-API version 1.0, task `create` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L114).
+API version 1.0, task `create` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L117).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -46,7 +46,7 @@ API version 1.0, task `create` in [`groupsv1r0.php`](../../../core/components/co
 
 Create a group
 
-API version 1.1, task `create` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L114).
+API version 1.1, task `create` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L117).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -152,7 +152,7 @@ API version 1.0, task `read` in [`pluginsv1r0.php`](../../../core/components/com
 
 Delete a group
 
-API version 1.0, task `delete` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L612).
+API version 1.0, task `delete` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L621).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -162,7 +162,7 @@ API version 1.0, task `delete` in [`groupsv1r0.php`](../../../core/components/co
 
 Delete a group
 
-API version 1.1, task `delete` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L637).
+API version 1.1, task `delete` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L646).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -172,7 +172,7 @@ API version 1.1, task `delete` in [`groupsv1r1.php`](../../../core/components/co
 
 Retrieve a group record
 
-API version 1.0, task `read` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L295).
+API version 1.0, task `read` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L301).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -183,7 +183,7 @@ API version 1.0, task `read` in [`groupsv1r0.php`](../../../core/components/com_
 
 Retrieve a group record
 
-API version 1.1, task `read` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L295).
+API version 1.1, task `read` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L301).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -194,7 +194,7 @@ API version 1.1, task `read` in [`groupsv1r1.php`](../../../core/components/com_
 
 Update a group
 
-API version 1.0, task `update` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L444).
+API version 1.0, task `update` in [`groupsv1r0.php`](../../../core/components/com_groups/api/controllers/groupsv1r0.php#L453).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -210,7 +210,7 @@ API version 1.0, task `update` in [`groupsv1r0.php`](../../../core/components/co
 
 Update a group
 
-API version 1.1, task `update` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L469).
+API version 1.1, task `update` in [`groupsv1r1.php`](../../../core/components/com_groups/api/controllers/groupsv1r1.php#L478).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

@@ -268,7 +268,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/models/project.php:1385`](../../../core/components/com_projects/models/project.php#L1385) with `[$this, $class, [$aid], User::get('id')]`
+- [`core/components/com_projects/models/project.php:1405`](../../../core/components/com_projects/models/project.php#L1405) with `[$this, $class, [$aid], User::get('id')]`
 - [`core/plugins/projects/feed/feed.php:450`](../../../core/plugins/projects/feed/feed.php#L450) with `[ $this->model, ($row->get('parent') ? 'quote' : 'blog'), [$row->get('id')], User::get('id'), ]`
 
 Listeners:
