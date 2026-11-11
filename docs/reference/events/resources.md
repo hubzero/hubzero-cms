@@ -100,11 +100,11 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/views/view/tmpl/courses.php:231`](../../../core/components/com_resources/site/views/view/tmpl/courses.php#L231) with `[$this->model, $this->option, 1]`
-- [`core/components/com_resources/site/views/view/tmpl/default.php:201`](../../../core/components/com_resources/site/views/view/tmpl/default.php#L201) with `[$this->model, $this->option, 1]`
+- [`core/components/com_resources/site/views/view/tmpl/courses.php:236`](../../../core/components/com_resources/site/views/view/tmpl/courses.php#L236) with `[$this->model, $this->option, 1]`
+- [`core/components/com_resources/site/views/view/tmpl/default.php:206`](../../../core/components/com_resources/site/views/view/tmpl/default.php#L206) with `[$this->model, $this->option, 1]`
 - [`core/components/com_resources/site/views/view/tmpl/series.php:290`](../../../core/components/com_resources/site/views/view/tmpl/series.php#L290) with `[$this->model, $this->option, 1]`
-- [`core/components/com_resources/site/views/view/tmpl/tools.php:337`](../../../core/components/com_resources/site/views/view/tmpl/tools.php#L337) with `[$this->model, $this->option, 1]`
-- [`core/components/com_resources/site/views/view/tmpl/workshops.php:260`](../../../core/components/com_resources/site/views/view/tmpl/workshops.php#L260) with `[$this->model, $this->option, 1]`
+- [`core/components/com_resources/site/views/view/tmpl/tools.php:342`](../../../core/components/com_resources/site/views/view/tmpl/tools.php#L342) with `[$this->model, $this->option, 1]`
+- [`core/components/com_resources/site/views/view/tmpl/workshops.php:265`](../../../core/components/com_resources/site/views/view/tmpl/workshops.php#L265) with `[$this->model, $this->option, 1]`
 
 Listeners:
 

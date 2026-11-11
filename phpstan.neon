@@ -4,25 +4,25 @@ parameters:
         - phpstan-bootstrap.php
     scanDirectories:
         - core/libraries/Hubzero
+    # Every PHP file outside vendor: tests, migrations and templates included
     paths:
-        - core/components
-        - core/libraries
-        - core/plugins
-        - core/modules
+        - core
+        - index.php
+        - phpstan-bootstrap.php
     excludePaths:
         analyseAndScan:
             - core/vendor
-        analyse:
-            - '*/Tests/*'
-            - '*/tests/*'
-            - core/libraries/Hubzero/Spam/Tests
-            - core/libraries/Hubzero/Geocode
+            - core/cache
+            - core/components/com_search/site/assets
     ignoreErrors:
         # A hub writes its own app/config/*.php when it is installed; git
         # ignores them, so a checkout has none. Both includes check first.
+        # Whether PHPStan resolves these paths depends on which files define
+        # PATH_APP in the analysed set, so the rule may go unused.
         -
             identifier: include.fileNotFound
             message: '#/app/config/[a-z_]+\.php#'
+            reportUnmatched: false
             paths:
                 - core/components/com_templates/models/style.php
                 - core/libraries/Hubzero/Console/Command/Install.php

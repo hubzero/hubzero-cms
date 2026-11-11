@@ -396,7 +396,7 @@ vendor/bin/phpunit -c phpunit.xml.dist
 |---|---|---|
 | phpcs | [`phpcs.xml.dist`](../../../phpcs.xml.dist) | The PSR-12 rules above, across `core/bootstrap`, `components`, `libraries`, `migrations`, `modules`, `plugins` and `templates`. Test directories are excluded. Warnings are not shown, except that two PSR-12 MUSTs phpcs reports as warnings are raised to errors: an underscore-prefixed property name and a constant without visibility. It does not check the PER-CS additions; PHP-CS-Fixer's `@PER-CS3.0` set checks some of them, and none of the 3.1 additions. |
 | phpcbf | the same | Fixes most of what phpcs reports. Run it on the files you changed and read the diff. |
-| PHPStan | [`phpstan.neon`](../../../phpstan.neon) | At level 0: classes, functions and methods that do not exist, wrong argument counts, undefined variables, includes that point nowhere. The tree has no findings. |
+| PHPStan | [`phpstan.neon`](../../../phpstan.neon) | At level 0, over every PHP file outside `core/vendor` (tests, migrations and templates included): classes, functions and methods that do not exist, wrong argument counts, undefined variables, includes that point nowhere. The tree has no findings. |
 | `missing-facade-imports.php` | none | A facade called without a `use`. Takes `--fix` to insert the missing imports, and any path to narrow the scan. |
 
 A phpcs finding in a file you touched is yours to fix, including one on a line

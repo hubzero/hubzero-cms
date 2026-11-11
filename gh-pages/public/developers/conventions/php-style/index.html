@@ -511,7 +511,7 @@ vendor/bin/phpunit -c phpunit.xml.dist
 <tr>
 <td>PHPStan</td>
 <td><a href="https://github.com/hubzero/hubzero-cms/blob/2.4-main/phpstan.neon"><code>phpstan.neon</code></a></td>
-<td>At level 0: classes, functions and methods that do not exist, wrong argument counts, undefined variables, includes that point nowhere. The tree has no findings.</td>
+<td>At level 0, over every PHP file outside <code>core/vendor</code> (tests, migrations and templates included): classes, functions and methods that do not exist, wrong argument counts, undefined variables, includes that point nowhere. The tree has no findings.</td>
 </tr>
 <tr>
 <td><code>missing-facade-imports.php</code></td>
