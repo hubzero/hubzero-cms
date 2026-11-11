@@ -2271,11 +2271,14 @@ class Resources extends SiteController
 
         $accessLevel = (isset($parent) && ($parent->access > $resource->access)) ? $parent->access : $resource->access;
 
+        // Where to come back to after logging in, if the server gives no request URI
+        $here = 'index.php?option=' . $this->option . '&id=' . $resource->get('id') . '&d=' . $d;
+
         if ($accessLevel == 1 && $user->isGuest()) {
             $return = base64_encode(
                 Request::getString(
                     'REQUEST_URI',
-                    Route::url('index.php?option=' . $this->option . '&id=' . $this->id . '&d=' . $d, false, true),
+                    Route::url($here, false, true),
                     'server',
                 ),
             );
@@ -2297,7 +2300,7 @@ class Resources extends SiteController
                 $return = base64_encode(
                     Request::getString(
                         'REQUEST_URI',
-                        Route::url('index.php?option=' . $this->option . '&id=' . $this->id . '&d=' . $d, false, true),
+                        Route::url($here, false, true),
                         'server',
                     ),
                 );
