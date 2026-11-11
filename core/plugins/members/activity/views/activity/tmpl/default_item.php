@@ -114,7 +114,11 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
         <?php } ?>
     </div><!-- / .activity-actor-picture -->
 
-    <div class="activity-content <?= $this->escape($this->row->log->get('action')) ?> <?= $this->escape(str_replace('.', '-', $this->row->log->get('scope'))) ?>">
+    <?php
+    $classes = 'activity-content ' . $this->escape($this->row->log->get('action')) . ' '
+        . $this->escape(str_replace('.', '-', $this->row->log->get('scope')));
+    ?>
+    <div class="<?= $classes ?>">
         <div class="activity-body">
             <div class="activity-details">
                 <span class="activity-actor"><?php echo $name; ?></span>

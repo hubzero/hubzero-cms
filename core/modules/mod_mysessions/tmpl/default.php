@@ -26,7 +26,11 @@ $this->js();
 
 $base = rtrim(Request::base(true), '/');
 ?>
-<div class="<?= $this->module->module . ' ' . $this->params->get('moduleclass_sfx', '') ?> session-list <?= !$this->params->get('show_storage', 1) ? 'without-storage' : '' ?>">
+<?php
+$classes = $this->module->module . ' ' . $this->params->get('moduleclass_sfx', '') . ' session-list '
+    . (!$this->params->get('show_storage', 1) ? 'without-storage' : '');
+?>
+<div class="<?= $classes ?>">
     <ul>
         <?php if (count($this->sessions) > 0) : ?>
             <?php foreach ($this->sessions as $k => $session) : ?>
