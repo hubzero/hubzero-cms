@@ -224,7 +224,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/site/views/projects/tmpl/external.php:125`](../../../core/components/com_projects/site/views/projects/tmpl/external.php#L125) with `[$this->model]`
+- [`core/components/com_projects/site/views/projects/tmpl/external.php:129`](../../../core/components/com_projects/site/views/projects/tmpl/external.php#L129) with `[$this->model]`
 
 Listeners:
 
@@ -237,7 +237,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/site/views/projects/tmpl/_item.php:333`](../../../core/components/com_projects/site/views/projects/tmpl/_item.php#L333) with `[$this->row]`
+- [`core/components/com_projects/site/views/projects/tmpl/_item.php:334`](../../../core/components/com_projects/site/views/projects/tmpl/_item.php#L334) with `[$this->row]`
 
 No plugin in the source tree listens for this event.
 
