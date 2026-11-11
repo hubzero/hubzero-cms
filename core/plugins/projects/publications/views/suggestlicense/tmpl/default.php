@@ -36,7 +36,10 @@ if ($this->getError()) {
 <form action="<?php echo Route::url($this->pub->link('editbase')); ?>" method="post" id="plg-form" >
     <div id="plg-header">
     <?php if ($this->project->isProvisioned()) { ?>
-        <h3 class="prov-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS'));?>
+        <?php
+        $linkText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS'));
+        ?>
+        <h3 class="prov-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?= $linkText ?>
         </a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'));?></h3>
     <?php } else { ?>
         <h3 class="publications"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo $this->title;?>

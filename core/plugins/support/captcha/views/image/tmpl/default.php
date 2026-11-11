@@ -39,9 +39,12 @@ if (Request::isSecure()) {
                     &amp;controller=<?php echo $this->controller;?>&amp;task=<?php echo $this->task; ?>
                     &amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total;?>"
                     alt="CAPTCHA Image" />
+                <?php
+                $titleText = Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA');
+                ?>
                 <a class="tooltips" href="#"
                     onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;"
-                    title="<?php echo Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?>"><?php echo Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA');?></a>
+                    title="<?= $titleText ?>"><?php echo Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA');?></a>
                 <script type="text/javascript">
                     //<![CDATA[
                     function reloadCapthcha<?php echo $this->total; ?>(instanceNo) {

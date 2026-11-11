@@ -25,5 +25,8 @@ defined('_HZEXEC_') or die();
         }
         ?>
     </a>
-    (<a href="<?php echo Route::url($this->publication->link('questions') . '&action=new#ask'); ?>"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION');?></a>)
+    <?php
+    $newUrl = Route::url($this->publication->link('questions') . '&action=new#ask');
+    ?>
+    (<a href="<?= $newUrl ?>"><?php echo Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION');?></a>)
 </p>

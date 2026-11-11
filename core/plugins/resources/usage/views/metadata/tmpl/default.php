@@ -12,7 +12,10 @@ defined('_HZEXEC_') or die();
 ?>
 <p class="usage">
     <?php if ($this->resource->type == 7) : ?>
-        <a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS_DETAILED', $this->stats->users);?></a>
+        <?php
+        $linkText = Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS_DETAILED', $this->stats->users);
+        ?>
+        <a href="<?php echo $this->url; ?>"><?= $linkText ?></a>
     <?php elseif ($this->stats->users) : ?>
         <?php echo Lang::txt('PLG_RESOURCES_USAGE_NUM_USERS', $this->stats->users); ?>
     <?php endif; ?>

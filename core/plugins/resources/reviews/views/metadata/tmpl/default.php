@@ -12,7 +12,10 @@ defined('_HZEXEC_') or die();
 ?>
 
 <p class="review">
-    <a href="<?php echo $this->url; ?>"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_NUM_REVIEWS', count($this->reviews));?></a>
+    <?php
+    $linkText = Lang::txt('PLG_RESOURCES_REVIEWS_NUM_REVIEWS', count($this->reviews));
+    ?>
+    <a href="<?php echo $this->url; ?>"><?= $linkText ?></a>
     <?php if (!$this->isAuthor) { ?>
         (<a href="<?php echo $this->url2; ?>"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_REVIEW_THIS'); ?></a>)
     <?php } ?>
