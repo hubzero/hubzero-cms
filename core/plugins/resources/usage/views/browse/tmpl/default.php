@@ -840,7 +840,12 @@ $bars = [];
                     {
                         tbl.append(
                             '<tr>' +
-                                '<td class="textual-data">' + (data[i]['code'] ? '<img src="<?= $base ?>/components/com_members/site/assets/img/flags/' + data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> ' : '') + data[i]['label'] + '</td>' +
+                                '<td class="textual-data">' +
+                                    (data[i]['code']
+                                        ? '<img src="<?= $base ?>/components/com_members/site/assets/img/flags/' +
+                                            data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> '
+                                        : '') +
+                                    data[i]['label'] + '</td>' +
                                 '<td><span class="bar-wrap"><span class="bar" style="width: ' + Math.round(((data[i]['data']/total)*100), 2) + '%;"></span><span class="value">' + data[i]['data'] + ' (' + Math.round(((data[i]['data']/total)*100), 2) + '%)</span></span></td>' +
                                 //'<td>' + Math.round(((data[i]['data']/total)*100),2) + '%</td>' +
                             '</tr>'
@@ -852,14 +857,18 @@ $bars = [];
                 $(function () {
                     var datasets = [
                         {
-                            lines: { fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; //$this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.1)");?>' },
-                            color: '<?php echo "#656565"; //$this->params->get("chart_color_line", "#999");?>', //#93ACCA
+                            <?php //$this->params->get("chart_color_fill", "rgba(0, 0, 0, 0.1)"); ?>
+                            lines: { fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; ?>' },
+                            <?php //$this->params->get("chart_color_line", "#999"); ?>
+                            color: '<?php echo "#656565"; ?>', //#93ACCA
                             label: "<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_USERS'); ?>",
                             data: [<?php echo implode(',', $users); ?>]
                         },
                         {
-                            lines: {fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; //$this->params->get("chart_color_fill2", "rgba(207, 207, 171, 0.3)");?>' },
-                            color: '<?php echo "#656565"; //$this->params->get("chart_color_line2", "#CFCFAB");?>', //#CFCFAB
+                            <?php //$this->params->get("chart_color_fill2", "rgba(207, 207, 171, 0.3)"); ?>
+                            lines: {fillColor: '<?php echo "rgba(0, 0, 0, 0.1)"; ?>' },
+                            <?php //$this->params->get("chart_color_line2", "#CFCFAB"); ?>
+                            color: '<?php echo "#656565"; ?>', //#CFCFAB
                             label: "<?php echo Lang::txt('PLG_RESOURCES_USAGE_SIMULATION_RUNS'); ?>",
                             data: [<?php echo implode(',', $runs); ?>]
                         }
@@ -892,7 +901,8 @@ $bars = [];
                             tickFormatter: function (val, axis) {
                                 var d = new Date(val);
                                 //d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
-                                return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);
+                                return month_short[d.getUTCMonth()] + " '"
+                                    + d.getUTCFullYear().toString().substr(2);
                             },
                             tickDecimals: 0
                         },
@@ -966,11 +976,14 @@ $bars = [];
                                 borderWidth: 1,
                                 borderColor: 'rgba(0, 0, 0, 0.6)'
                             },
-                            xaxis: { mode: "time", min: new Date('<?= $min ?>'), max: new Date('<?= $to ?>'), tickDecimals: 0,
+                            xaxis: {
+                                mode: "time", min: new Date('<?= $min ?>'), max: new Date('<?= $to ?>'),
+                                tickDecimals: 0,
                                 tickFormatter: function (val, axis) {
                                     var d = new Date(val);
                                     //d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
-                                    return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);
+                                    return month_short[d.getUTCMonth()] + " '"
+                                        + d.getUTCFullYear().toString().substr(2);
                                 }
                             },
                             yaxis: {
@@ -1145,8 +1158,10 @@ $bars = [];
                                         new Date(data.points[i].datetime),
                                         parseInt(data.points[i].jobs)
                                     ]);
-                                    //userstop = (parseInt(data.points[i].users) > userstop ? parseInt(data.points[i].users) : userstop);
-                                    //runstop  = (parseInt(data.points[i].jobs) > runstop   ? parseInt(data.points[i].jobs)  : runstop);
+                                    //userstop = (parseInt(data.points[i].users) > userstop
+                                    //    ? parseInt(data.points[i].users) : userstop);
+                                    //runstop  = (parseInt(data.points[i].jobs) > runstop
+                                    //    ? parseInt(data.points[i].jobs)  : runstop);
                                 }
                                 datasets[0].data = users;
                                 datasets[1].data = runs;

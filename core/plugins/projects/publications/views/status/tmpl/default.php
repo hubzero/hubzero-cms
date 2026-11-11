@@ -295,9 +295,11 @@ if ($revertAllowed && $this->pub->accepted()) {
                             <li id="next-cancel"><p>
                                 <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_PUBLISHED_UNPUBLISH')
                                 . ' <a href="' . Route::url($this->pub->link('editversion') . '&action=cancel') . '">'
-                                . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISH_VERSION') . ' &raquo;</a> ';  ?></p></li>
+                                . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISH_VERSION')
+                                . ' &raquo;</a> ';  ?></p></li>
                             <?php } ?>
-                            <li id="next-usage"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_STATS')
+                            <li id="next-usage"><p><?php
+                            echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_STATS')
                             . ' <strong>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_USAGE_STATS') . '</strong> '
                             . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_FOLLOW_FEEDBACK');  ?>
                                 <?php
@@ -329,12 +331,14 @@ if ($revertAllowed && $this->pub->accepted()) {
                                 $this->pub->versionProperty('version_label', 'dev')
                                 && $this->pub->versionProperty('version_label', 'dev') != $this->pub->versionAlias
                             ) { ?>
-                            <li id="next-draft"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_VERSION_STARTED')
+                            <li id="next-draft"><p><?php
+                            echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_VERSION_STARTED')
                             . ' (<strong>v.'
                             . $this->pub->versionProperty('version_label', 'dev')
                             . '</strong>)  <span class="block"><a href="'
                             . Route::url($this->pub->link('edit') . '&version=dev') . '">'
-                            . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION_CONTINUE') . '</a></span>';  ?></p></li>
+                            . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION_CONTINUE')
+                            . '</a></span>';  ?></p></li>
                             <?php } elseif (!$this->pub->versionProperty('version_label', 'dev')) {
                                 ?>
                             <li id="next-edit">
@@ -356,7 +360,14 @@ if ($revertAllowed && $this->pub->accepted()) {
                                         . '</a> <span class="block and_or">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_OR')
                                         . '</span>';
                                 }
-                                echo ' <a href="' . Route::url($this->pub->link('edit') . '&action=newversion&ajax=1&selected_version=' . $this->selected_version) . '" class="showinbox btn icon-add">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION') . '</a> ';  ?>
+                                echo ' <a href="'
+                                    . Route::url(
+                                        $this->pub->link('edit') . '&action=newversion&ajax=1&selected_version='
+                                            . $this->selected_version,
+                                    )
+                                    . '" class="showinbox btn icon-add">'
+                                    . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION')
+                                    . '</a> ';  ?>
                                 </span>
                                 </p></li>
                             <?php } ?>
