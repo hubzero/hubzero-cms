@@ -79,7 +79,11 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
                                     background-size: 30px 30px;">
         <thead>
             <tr>
-                <th colspan="2" style="font-weight: bold; border-bottom: 1px solid #e1e1e1; padding: 8px; text-align: left; font-style: italic;" align="left">
+                <?php
+                $thStyle = 'font-weight: bold; border-bottom: 1px solid #e1e1e1; padding: 8px; text-align: left; '
+                    . 'font-style: italic;';
+                ?>
+                <th colspan="2" style="<?= $thStyle ?>" align="left">
                     <?php echo $this->escape($page->get('title')); ?>
                 </th>
             </tr>
@@ -95,7 +99,11 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
                     <table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Group:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Group:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <a href="<?php echo $groupLink; ?>">
                                         <?php echo $this->escape($this->group->get('description')); ?>
@@ -103,7 +111,11 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Created:</th>
                                 <?php
                                 $cellText = Date::of($page->version()->get('created'))->toLocal(
                                     Lang::txt('TIME_FORMAT_HZ1'),
@@ -116,7 +128,11 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
                                     align="left">@ <?= $cellText ?> on <?= $dateText ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created By:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Created By:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php
                                         $profile = User::getInstance($page->version()->get('created_by'));
@@ -125,7 +141,11 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Status:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Status:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?= ($page->version()->get('approved') == 1)
                                         ? Lang::txt('Approved')
@@ -133,7 +153,11 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Page Link:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Page Link:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <a href="<?php echo $groupLink . DS . $this->object->get('alias'); ?>">
                                         <?php echo $groupLink . DS . $this->object->get('alias'); ?>
@@ -141,7 +165,11 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Approve Link:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Approve Link:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <a href="<?php echo $adminLink; ?>">
                                         <?php echo $adminLink; ?>

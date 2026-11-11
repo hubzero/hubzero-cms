@@ -57,7 +57,11 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 <table class="tbl-message" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tbody>
         <tr>
-            <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center; font-size: 1.5em;" colspan="2">
+            <?php
+            $tdStyle = 'border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center; '
+                . 'font-size: 1.5em;';
+            ?>
+            <td align="left" valign="bottom" style="<?= $tdStyle ?>" colspan="2">
                 <?php echo $this->subject; ?>
             </td>
         </tr>
@@ -154,7 +158,12 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
                                 $name = $creator->get('name');
                                 ?>
                                 <tr>
-                                    <th style="text-align: right; padding: 1em 0 0 0; white-space: nowrap; color: #999999; font-weight: normal;" align="right"><?= Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?> &#64; <?= Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></th>
+                                    <?php
+                                    $thStyle = 'text-align: right; padding: 1em 0 0 0; white-space: nowrap; color: '
+                                        . '#999999; font-weight: normal;';
+                                    $headerText = Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                    ?>
+                                    <th style="<?= $thStyle ?>" align="right"><?= $headerText ?> &#64; <?= Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></th>
                                     <td style="text-align: left; ?>; padding: 1em 3em 0 3em;" width="100%" align="left"><span style="color: #8a7460;"><?= $name ?></span> <?= $a->action ?><?php if ($content) {
                                         ?>:<?php
                                                                                                                                                       } ?></td>
@@ -162,12 +171,24 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
                                 <?php if ($content) { ?>
                                     <tr>
                                         <th></th>
-                                        <td style="text-align: <?= count($this->activities) > 0 ? 'left' : 'center' ?>; padding: 0.5em 3em; color: #000000;" width="100%" align="left"><?= $content ?></td>
+                                        <?php
+                                        $tdStyle = 'text-align: ' . (count($this->activities) > 0 ? 'left' : 'center')
+                                            . '; padding: 0.5em 3em; color: #000000;';
+                                        ?>
+                                        <td style="<?= $tdStyle ?>" width="100%" align="left"><?= $content ?></td>
                                     </tr>
                                 <?php } ?>
                                 <tr>
-                                    <th style="text-align: center; padding: 0.5em 1em; <?= count($this->activities) > 0 ? 'border-bottom: 1px solid #e9e9e9;' : '' ?>"></th>
-                                    <td style="text-align: center; padding: 0.5em 1em; <?= count($this->activities) > 0 ? 'border-bottom: 1px solid #e9e9e9;' : '' ?>" width="100%" align="left"></td>
+                                    <?php
+                                    $thStyle = 'text-align: center; padding: 0.5em 1em; '
+                                        . (count($this->activities) > 0 ? 'border-bottom: 1px solid #e9e9e9;' : '');
+                                    ?>
+                                    <th style="<?= $thStyle ?>"></th>
+                                    <?php
+                                    $tdStyle = 'text-align: center; padding: 0.5em 1em; '
+                                        . (count($this->activities) > 0 ? 'border-bottom: 1px solid #e9e9e9;' : '');
+                                    ?>
+                                    <td style="<?= $tdStyle ?>" width="100%" align="left"></td>
                                 </tr>
                                 <?php
                             }

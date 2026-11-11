@@ -136,14 +136,22 @@ $site = rtrim(Request::base(), '/');
                 background-size: 30px 30px;">
                 <thead>
                     <tr>
-                        <th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?= $bdcolor['critical'] ?>; padding: 8px; text-align: left" align="left">
+                        <?php
+                        $thStyle = 'font-weight: normal; border-bottom: 1px solid ' . $bdcolor['critical']
+                            . '; padding: 8px; text-align: left';
+                        ?>
+                        <th colspan="2" style="<?= $thStyle ?>" align="left">
                             <?php echo $this->escape($ticket->summary); ?>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="25%" style="padding: 8px; font-size: 2em; font-weight: bold; text-align: center; vertical-align: middle; padding: 8px 30px;" valign="middle" align="center">
+                        <?php
+                        $tdStyle = 'padding: 8px; font-size: 2em; font-weight: bold; text-align: center; '
+                            . 'vertical-align: middle; padding: 8px 30px;';
+                        ?>
+                        <td width="25%" style="<?= $tdStyle ?>" valign="middle" align="center">
                             #<?php echo $ticket->id; ?>
                         </td>
                         <td width="75%" style="padding: 8px;">
@@ -152,34 +160,62 @@ $site = rtrim(Request::base(), '/');
                                 <tbody>
                                 <?php if (!$this->config->get('email_terse')) { ?>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Created:</th>
                                         <td style="text-align: left; padding: 0 0.5em;"
                                             align="left"><?= $ticket->created ?></td>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Last activity:</th>
                                         <td style="text-align: left; padding: 0 0.5em;" align="left"><?= '--' ?></td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Creator:</th>
                                         <td style="text-align: left; padding: 0 0.5em;"
                                             align="left"><?= $this->escape($ticket->name ? $ticket->name : 'Unknown') ?>
                                             <?= $ticket->login ? '(' . $this->escape($ticket->login) . ')' : '' ?></td>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Severity:</th>
                                         <td style="text-align: left; padding: 0 0.5em;"
                                             align="left"><?= $this->escape($ticket->severity) ?></td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Tags:</th>
                                         <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
                                             valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
                                     </tr>
                                 <?php } ?>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Link:</th>
                                         <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
                                             valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Status:</th>
                                         <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
                                             valign="top" align="left"><?= $ticket->status ?></td>
                                     </tr>
@@ -253,14 +289,22 @@ $site = rtrim(Request::base(), '/');
                 background-size: 30px 30px;">
                 <thead>
                     <tr>
-                        <th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?= $bdcolor['critical'] ?>; padding: 8px; text-align: left" align="left">
+                        <?php
+                        $thStyle = 'font-weight: normal; border-bottom: 1px solid ' . $bdcolor['critical']
+                            . '; padding: 8px; text-align: left';
+                        ?>
+                        <th colspan="2" style="<?= $thStyle ?>" align="left">
                             <?php echo $this->escape($ticket->summary); ?>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="25%" style="padding: 8px; font-size: 2em; font-weight: bold; text-align: center; vertical-align: middle; padding: 8px 30px;" valign="middle" align="center">
+                        <?php
+                        $tdStyle = 'padding: 8px; font-size: 2em; font-weight: bold; text-align: center; '
+                            . 'vertical-align: middle; padding: 8px 30px;';
+                        ?>
+                        <td width="25%" style="<?= $tdStyle ?>" valign="middle" align="center">
                             #<?php echo $ticket->id; ?>
                         </td>
                         <td width="75%" style="padding: 8px;">
@@ -269,34 +313,62 @@ $site = rtrim(Request::base(), '/');
                                 <tbody>
                                 <?php if (!$this->config->get('email_terse')) { ?>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Created:</th>
                                         <td style="text-align: left; padding: 0 0.5em;"
                                             align="left"><?= $ticket->created ?></td>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Last activity:</th>
                                         <td style="text-align: left; padding: 0 0.5em;" align="left"><?= '--' ?></td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Creator:</th>
                                         <td style="text-align: left; padding: 0 0.5em;"
                                             align="left"><?= $this->escape($ticket->name ? $ticket->name : 'Unknown') ?>
                                             <?= $ticket->login ? '(' . $this->escape($ticket->login) . ')' : '' ?></td>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Severity:</th>
                                         <td style="text-align: left; padding: 0 0.5em;"
                                             align="left"><?= $this->escape($ticket->severity) ?></td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Tags:</th>
                                         <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
                                             valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
                                     </tr>
                                 <?php } ?>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Link:</th>
                                         <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
                                             valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Status:</th>
                                         <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
                                             valign="top" align="left"><?= $ticket->status ?></td>
                                     </tr>
@@ -403,14 +475,22 @@ $site = rtrim(Request::base(), '/');
                 background-size: 30px 30px;">
                 <thead>
                     <tr>
-                        <th colspan="2" style="font-weight: normal; border-bottom: 1px solid <?= $bdcolor['critical'] ?>; padding: 8px; text-align: left" align="left">
+                        <?php
+                        $thStyle = 'font-weight: normal; border-bottom: 1px solid ' . $bdcolor['critical']
+                            . '; padding: 8px; text-align: left';
+                        ?>
+                        <th colspan="2" style="<?= $thStyle ?>" align="left">
                             <?php echo $this->escape($ticket->summary); ?>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td width="25%" style="padding: 8px; font-size: 2em; font-weight: bold; text-align: center; vertical-align: middle; padding: 8px 30px;" valign="middle" align="center">
+                        <?php
+                        $tdStyle = 'padding: 8px; font-size: 2em; font-weight: bold; text-align: center; '
+                            . 'vertical-align: middle; padding: 8px 30px;';
+                        ?>
+                        <td width="25%" style="<?= $tdStyle ?>" valign="middle" align="center">
                             #<?php echo $ticket->id; ?>
                         </td>
                         <td width="75%" style="padding: 8px;">
@@ -419,34 +499,62 @@ $site = rtrim(Request::base(), '/');
                                 <tbody>
                                 <?php if (!$this->config->get('email_terse')) { ?>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Created:</th>
                                         <td style="text-align: left; padding: 0 0.5em;"
                                             align="left"><?= $ticket->created ?></td>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Last activity:</th>
                                         <td style="text-align: left; padding: 0 0.5em;" align="left"><?= '--' ?></td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Creator:</th>
                                         <td style="text-align: left; padding: 0 0.5em;"
                                             align="left"><?= $this->escape($ticket->name ? $ticket->name : 'Unknown') ?>
                                             <?= $ticket->login ? '(' . $this->escape($ticket->login) . ')' : '' ?></td>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Severity:</th>
                                         <td style="text-align: left; padding: 0 0.5em;"
                                             align="left"><?= $this->escape($ticket->severity) ?></td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Tags:</th>
                                         <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
                                             valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
                                     </tr>
                                 <?php } ?>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Link:</th>
                                         <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
                                             valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                                     </tr>
                                     <tr>
-                                        <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
+                                        <?php
+                                        $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; '
+                                            . 'white-space: nowrap;';
+                                        ?>
+                                        <th style="<?= $thStyle ?>" align="right">Status:</th>
                                         <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
                                             valign="top" align="left"><?= $ticket->status ?></td>
                                     </tr>

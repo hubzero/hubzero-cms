@@ -86,7 +86,11 @@ $link = str_replace('/administrator', '', $link);
                                     background-size: 30px 30px;">
         <tbody>
             <tr>
-                <td style="font-weight: bold; border-bottom: 1px solid #c2e1e3; padding: 16px 30px; text-align: center; font-size: 1.5em; color: #e96c6c;" align="left">
+                <?php
+                $tdStyle = 'font-weight: bold; border-bottom: 1px solid #c2e1e3; padding: 16px 30px; text-align: '
+                    . 'center; font-size: 1.5em; color: #e96c6c;';
+                ?>
+                <td style="<?= $tdStyle ?>" align="left">
                     <?php echo Lang::txt('COM_MEMBERS_REGISTER_EMAIL_CONFIRMATION'); ?>
                 </td>
             </tr>
@@ -132,7 +136,11 @@ $link = str_replace('/administrator', '', $link);
                             </tr>
                         </tbody>
                     </table>
-                    <table width="100%" style="margin: 18px 0 0 0; border-top: 2px solid #e9e9e9; border-collapse: collapse; font-size: 1em;">
+                    <?php
+                    $tableStyle = 'margin: 18px 0 0 0; border-top: 2px solid #e9e9e9; border-collapse: collapse; '
+                        . 'font-size: 1em;';
+                    ?>
+                    <table width="100%" style="<?= $tableStyle ?>">
                         <tbody>
                             <tr>
                                 <td style="text-align: left; padding: 1em 0.5em 0 0.5em;" align="left">
@@ -143,7 +151,12 @@ $link = str_replace('/administrator', '', $link);
                             </tr>
                             <tr>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
-                                    <p style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; font-size: 1.2em;"><a href="<?= $link ?>"><?= Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_LINK_TEXT') ?></a></p>
+                                    <?php
+                                    $pStyle = 'line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left; '
+                                        . 'font-size: 1.2em;';
+                                    $linkText = Lang::txt('COM_MEMBERS_EMAIL_CONFIRM_LINK_TEXT');
+                                    ?>
+                                    <p style="<?= $pStyle ?>"><a href="<?= $link ?>"><?= $linkText ?></a></p>
                                 </td>
                             </tr>
                         </tbody>

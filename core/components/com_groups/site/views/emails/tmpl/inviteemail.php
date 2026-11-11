@@ -87,7 +87,11 @@ $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&control
                                     background-size: 30px 30px;">
         <thead>
             <tr>
-                <th colspan="2" style="font-weight: bold; border-bottom: 1px solid #e1e1e1; padding: 8px; text-align: left; font-style: italic;" align="left">
+                <?php
+                $thStyle = 'font-weight: bold; border-bottom: 1px solid #e1e1e1; padding: 8px; text-align: left; '
+                    . 'font-style: italic;';
+                ?>
+                <th colspan="2" style="<?= $thStyle ?>" align="left">
                     <?php echo Lang::txt('Group Overview'); ?>
                 </th>
             </tr>
@@ -103,19 +107,31 @@ $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&control
                     <table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?= Lang::txt('Group:') ?></th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right"><?= Lang::txt('Group:') ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php echo $this->escape($this->group->get('description')); ?>
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?= Lang::txt('Alias:') ?></th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right"><?= Lang::txt('Alias:') ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php echo $this->group->get('cn'); ?>
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?= Lang::txt('Link:') ?></th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right"><?= Lang::txt('Link:') ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <a href="<?php echo $group; ?>">
                                         <?php echo $group; ?>
@@ -123,7 +139,11 @@ $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&control
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right"><?= Lang::txt('Invited by:') ?></th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right"><?= Lang::txt('Invited by:') ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php echo $this->user->get('name'); ?>
                                 </td>
@@ -145,11 +165,20 @@ $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&control
                             <tr>
                                 <td style="text-align: left; padding: 1em 0.5em 0 0.5em;" align="left">
                                     <?php if ($this->msg) { ?>
-                                        <p style="font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; max-width: 100%; word-break: break-word; margin-bottom: 2rem;">
+                                        <?php
+                                        $pStyle = 'font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; max-width: '
+                                            . '100%; word-break: break-word; margin-bottom: 2rem;';
+                                        ?>
+                                        <p style="<?= $pStyle ?>">
                                             <?php echo nl2br($this->escape($this->msg)); ?>
                                         </p>
                                     <?php } else { ?>
-                                        <p style="font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; text-align: center; max-width: 100%; word-break: break-word; margin-bottom: 2rem;">
+                                        <?php
+                                        $pStyle = 'font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; '
+                                            . 'text-align: center; max-width: 100%; word-break: break-word; '
+                                            . 'margin-bottom: 2rem;';
+                                        ?>
+                                        <p style="<?= $pStyle ?>">
                                             <?= Lang::txt(
                                                 'You\'ve been invited to the "%s" group!',
                                                 $this->escape($this->group->get('description')),
@@ -157,22 +186,51 @@ $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&control
                                         </p>
                                     <?php } ?>
                                     <div style="text-align: center; margin: 2rem 0 1rem;">
-                                        <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; mso-table-lspace: 0pt; mso-table-rspace: 0pt; background: #439fe0; border-bottom: 2px solid #3286b1; padding: 1em 2em; display: inline-block;">
+                                        <?php
+                                        $tableStyle = 'border-collapse: collapse; mso-table-lspace: 0pt; '
+                                            . 'mso-table-rspace: 0pt; background: #439fe0; border-bottom: 2px solid '
+                                            . '#3286b1; padding: 1em 2em; display: inline-block;';
+                                        ?>
+                                        <table cellpadding="0" cellspacing="0" style="<?= $tableStyle ?>">
                                             <tr>
                                                 <td style="border-collapse: collapse;">
-                                                    <a style="color: white; font-weight: normal; text-decoration: none; word-break: break-word; display: inline-block; letter-spacing: 1px; font-size: 1.5em; text-shadow: 0 1px 1px rgba(0,0,0,0.25);" align="center" href="<?= $accept ?>"><?= Lang::txt('Accept Invite') ?></a>
+                                                    <?php
+                                                    $aStyle = 'color: white; font-weight: normal; text-decoration: '
+                                                        . 'none; word-break: break-word; display: inline-block; '
+                                                        . 'letter-spacing: 1px; font-size: 1.5em; text-shadow: 0 1px '
+                                                        . '1px rgba(0,0,0,0.25);';
+                                                    ?>
+                                                    <a style="<?= $aStyle ?>" align="center" href="<?= $accept ?>"><?= Lang::txt('Accept Invite') ?></a>
                                                 </td>
                                             </tr>
                                         </table>
-                                        <p style="font-size: 1em; line-height: 1.6em; margin: 1rem auto 1rem; color: #AAA; text-align: center; max-width: 100%; word-break: break-word; margin-bottom: 2rem;">
+                                        <?php
+                                        $pStyle = 'font-size: 1em; line-height: 1.6em; margin: 1rem auto 1rem; color: '
+                                            . '#AAA; text-align: center; max-width: 100%; word-break: break-word; '
+                                            . 'margin-bottom: 2rem;';
+                                        ?>
+                                        <p style="<?= $pStyle ?>">
                                             <?= Lang::txt('You may copy/paste this link into your browser:') ?><br />
-                                            <a href="<?= $accept ?>" style="font-weight: bold; text-decoration: none; word-break: break-word;"><?= $accept ?></a>
+                                            <?php
+                                            $aStyle = 'font-weight: bold; text-decoration: none; word-break: '
+                                                . 'break-word;';
+                                            ?>
+                                            <a href="<?= $accept ?>" style="<?= $aStyle ?>"><?= $accept ?></a>
                                         </p>
                                     </div>
                                     <div style="text-align: center; margin: 2rem 0 1rem;">
-                                        <p style="font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; color: #AAA; text-align: center; max-width: 100%; word-break: break-word; margin-bottom: 2rem;">
+                                        <?php
+                                        $pStyle = 'font-size: 1em; line-height: 1.6em; margin: 0 auto 1rem; color: '
+                                            . '#AAA; text-align: center; max-width: 100%; word-break: break-word; '
+                                            . 'margin-bottom: 2rem;';
+                                        ?>
+                                        <p style="<?= $pStyle ?>">
                                             <?= Lang::txt('Don\'t already have an account? Register one here:') ?><br />
-                                            <a href="<?= $register ?>" style="font-weight: bold; text-decoration: none; word-break: break-word;"><?= $register ?></a>
+                                            <?php
+                                            $aStyle = 'font-weight: bold; text-decoration: none; word-break: '
+                                                . 'break-word;';
+                                            ?>
+                                            <a href="<?= $register ?>" style="<?= $aStyle ?>"><?= $register ?></a>
                                         </p>
                                     </div>
                                 </td>

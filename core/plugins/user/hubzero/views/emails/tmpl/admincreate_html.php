@@ -61,7 +61,10 @@ $base = rtrim($base, '/');
             <td class="mobilehide" width="80%" align="left" valign="bottom"
                 style="line-height: 1; padding: 0 0 5px 10px;">
                 <span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-                    <a href="<?= $base ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?= $this->sitename ?></a>
+                    <?php
+                    $aStyle = 'color: #666; font-weight: bold; text-decoration: none; border: none;';
+                    ?>
+                    <a href="<?= $base ?>" style="<?= $aStyle ?>"><?= $this->sitename ?></a>
                 </span>
                 <br />
                 <?php
@@ -69,7 +72,11 @@ $base = rtrim($base, '/');
                 ?>
                 <span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?= $spanText ?></span>
             </td>
-            <td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
+            <?php
+            $tdStyle = 'border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; '
+                . 'text-align: right; vertical-align: bottom;';
+            ?>
+            <td width="10%" nowrap="nowrap" align="right" valign="bottom" style="<?= $tdStyle ?>">
                 <?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ACCOUNTS'); ?>
             </td>
         </tr>
@@ -89,7 +96,11 @@ $base = rtrim($base, '/');
 <table id="account-header" width="100%"  cellpadding="0" cellspacing="0" border="0">
     <tbody>
         <tr>
-            <td style="font-weight: bold; border-bottom: 1px solid #c2e1e3; padding: 16px 30px; text-align: center; font-size: 1.5em; color: #e96c6c;" align="left">
+            <?php
+            $tdStyle = 'font-weight: bold; border-bottom: 1px solid #c2e1e3; padding: 16px 30px; text-align: center; '
+                . 'font-size: 1.5em; color: #e96c6c;';
+            ?>
+            <td style="<?= $tdStyle ?>" align="left">
                 <?php echo Lang::txt('PLG_USER_HUBZERO_EMAIL_ACCOUNT_CREATION_NOTIFICATION'); ?>
             </td>
         </tr>

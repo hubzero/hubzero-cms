@@ -93,7 +93,11 @@ if ($comment) {
     style="border-collapse: collapse; line-height: 1.6em;">
     <tbody>
         <tr>
-            <td class="mobilehide" style="font-size: 2.5em; font-weight: bold; text-align: center; padding: 0 30px 8px 0; vertical-align: top;" align="center" valing="top">
+            <?php
+            $tdStyle = 'font-size: 2.5em; font-weight: bold; text-align: center; padding: 0 30px 8px 0; '
+                . 'vertical-align: top;';
+            ?>
+            <td class="mobilehide" style="<?= $tdStyle ?>" align="center" valing="top">
             </td>
             <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
                 <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0"
@@ -119,7 +123,11 @@ if ($comment) {
                             </td>
                         </tr>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Project:</th>
+                            <?php
+                            $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; '
+                                . 'vertical-align: top;';
+                            ?>
+                            <th style="<?= $thStyle ?>" align="right">Project:</th>
                             <td style="text-align: left; padding: 0 0.5em;"
                                 align="left"><?= $this->escape($this->project->get('title')) ?>
                                 (<?= $this->escape($this->project->get('alias')) ?>
@@ -134,7 +142,11 @@ if ($comment) {
                     </tbody>
                 </table>
 
-                <table width="100%" style="margin: 18px 0 0 0; border-top: 2px solid #e9e9e9; border-collapse: collapse; font-size: 1em;">
+                <?php
+                $tableStyle = 'margin: 18px 0 0 0; border-top: 2px solid #e9e9e9; border-collapse: collapse; '
+                    . 'font-size: 1em;';
+                ?>
+                <table width="100%" style="<?= $tableStyle ?>">
                     <tbody>
                         <tr>
                             <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">

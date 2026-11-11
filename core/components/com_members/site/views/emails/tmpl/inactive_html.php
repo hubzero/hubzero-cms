@@ -57,7 +57,10 @@ $this->css($css);
             <td class="mobilehide" width="80%" align="left" valign="bottom"
                 style="line-height: 1; padding: 0 0 5px 10px;">
                 <span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
-                    <a href="<?= $this->baseUrl ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?= $this->baseUrl ?></a>
+                    <?php
+                    $aStyle = 'color: #666; font-weight: bold; text-decoration: none; border: none;';
+                    ?>
+                    <a href="<?= $this->baseUrl ?>" style="<?= $aStyle ?>"><?= $this->baseUrl ?></a>
                 </span>
                 <br />
                 <?php
@@ -65,7 +68,11 @@ $this->css($css);
                 ?>
                 <span style="font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;"><?= $spanText ?></span>
             </td>
-            <td width="10%" nowrap="nowrap" align="right" valign="bottom" style="border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; text-align: right; vertical-align: bottom;">
+            <?php
+            $tdStyle = 'border-left: 1px solid #e1e1e1; font-size: 1.2em; color: #999; padding: 0 0 5px 10px; '
+                . 'text-align: right; vertical-align: bottom;';
+            ?>
+            <td width="10%" nowrap="nowrap" align="right" valign="bottom" style="<?= $tdStyle ?>">
                 <?php echo Lang::txt('COM_MEMBERS'); ?>
             </td>
         </tr>
@@ -85,7 +92,11 @@ $this->css($css);
 <table id="account-header" width="100%"  cellpadding="0" cellspacing="0" border="0">
     <tbody>
         <tr>
-            <td style="font-weight: bold; border-bottom: 1px solid #c2e1e3; padding: 16px 30px; text-align: center; font-size: 1.5em; color: #e96c6c;" align="left">
+            <?php
+            $tdStyle = 'font-weight: bold; border-bottom: 1px solid #c2e1e3; padding: 16px 30px; text-align: center; '
+                . 'font-size: 1.5em; color: #e96c6c;';
+            ?>
+            <td style="<?= $tdStyle ?>" align="left">
                 Password Reset Not Available
             </td>
         </tr>

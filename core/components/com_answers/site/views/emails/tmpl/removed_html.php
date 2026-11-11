@@ -82,8 +82,15 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
         style="border-collapse: collapse; line-height: 1.6em;">
         <tbody>
             <tr>
-                <td class="mobilehide" style="font-size: 2.5em; font-weight: bold; text-align: center; padding: 0 30px 8px 0; vertical-align: top;" align="center" valing="top">
-                    <p style="display: block; border: 1px solid #e9bcbc; background: #ffd3d4; margin:0; padding: 1em;">?</p>
+                <?php
+                $tdStyle = 'font-size: 2.5em; font-weight: bold; text-align: center; padding: 0 30px 8px 0; '
+                    . 'vertical-align: top;';
+                ?>
+                <td class="mobilehide" style="<?= $tdStyle ?>" align="center" valing="top">
+                    <?php
+                    $pStyle = 'display: block; border: 1px solid #e9bcbc; background: #ffd3d4; margin:0; padding: 1em;';
+                    ?>
+                    <p style="<?= $pStyle ?>">?</p>
                 </td>
                 <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
                     <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0"
@@ -118,7 +125,11 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
                                     width="100%" align="left"><?= Lang::txt('removed') ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Tags:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Tags:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" width="100%"
                                     align="left"><?= $this->escape($this->question->tags('string')) ?></td>
                             </tr>
@@ -131,7 +142,11 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
                         </tbody>
                     </table>
 
-                    <table width="100%" style="margin: 18px 0 0 0; border-top: 2px solid #e9e9e9; border-collapse: collapse; font-size: 1em;">
+                    <?php
+                    $tableStyle = 'margin: 18px 0 0 0; border-top: 2px solid #e9e9e9; border-collapse: collapse; '
+                        . 'font-size: 1em;';
+                    ?>
+                    <table width="100%" style="<?= $tableStyle ?>">
                         <tbody>
                             <tr>
                                 <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0"

@@ -34,7 +34,11 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
     . ' across ' . $groups . ' of your group' . ($groups != 1 ? 's' : '') . '.';
 ?>
 <!-- Start Preheader -->
-<span style="display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; max-height:0; max-width:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px;"><?= $this->escape($preheader) ?></span>
+<?php
+$spanStyle = 'display:none !important; visibility:hidden; opacity:0; color:transparent; height:0; width:0; '
+    . 'max-height:0; max-width:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px;';
+?>
+<span style="<?= $spanStyle ?>"><?= $this->escape($preheader) ?></span>
 <!-- End Preheader -->
 
 <!-- Start Header -->
@@ -126,7 +130,11 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
                                     src="<?= $base . '/members/' . $post->created_by . '/Image:thumb.png' ?>" alt="" />
                             </td>
                             <td style="padding: 10px 0;">
-                                <div style="border: 1px solid #dddddd; padding: 12px; border-radius: 6px; background: #ffffff;">
+                                <?php
+                                $divStyle = 'border: 1px solid #dddddd; padding: 12px; border-radius: 6px; background: '
+                                    . '#ffffff;';
+                                ?>
+                                <div style="<?= $divStyle ?>">
                                     <div style="color: #999999; font-size: 11px; padding-bottom: 6px;">
                                         <?php
                                         $name = Lang::txt('JANONYMOUS');
@@ -148,7 +156,12 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
                                     $link = $base . '/' . trim($sef, '/');
                                     ?>
                                     <div style="margin-top: 10px; text-align: right;">
-                                        <a href="<?= $link ?>" style="display: inline-block; padding: 6px 14px; font-size: 11px; color: #ffffff; background-color: <?= $accent ?>; text-decoration: none; border-radius: 4px;">View this post &rsaquo;</a>
+                                        <?php
+                                        $aStyle = 'display: inline-block; padding: 6px 14px; font-size: 11px; color: '
+                                            . '#ffffff; background-color: ' . $accent
+                                            . '; text-decoration: none; border-radius: 4px;';
+                                        ?>
+                                        <a href="<?= $link ?>" style="<?= $aStyle ?>">View this post &rsaquo;</a>
                                     </div>
                                 </div>
                             </td>

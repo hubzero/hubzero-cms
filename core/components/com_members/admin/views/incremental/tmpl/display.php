@@ -227,14 +227,21 @@ $groupDefs = $groups->getAllGroups();
                                     <option value="<?= str_replace('"', '&quot;', $colName) ?>"<?= $colName == $col ? ' selected="selected"' : '' ?>><?= htmlentities($colLabel) ?></option>
                                 <?php endforeach; ?>
                                 </select>
-                                <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove field</button>
+                                <?php
+                                $onclick = 'this.parentNode.parentNode.removeChild(this.parentNode); return false';
+                                ?>
+                                <button onclick="<?= $onclick ?>">Remove field</button>
                             </li>
                         <?php endforeach; ?>
                         </ul>
                         <button class="add-field"
                             onclick="addField(this, <?= $idx ?>); return false;">Add field</button>
                     </p>
-                    <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); renumberGroups(); return false;">Remove group</button>
+                    <?php
+                    $onclick = 'this.parentNode.parentNode.removeChild(this.parentNode); renumberGroups(); return '
+                        . 'false;';
+                    ?>
+                    <button onclick="<?= $onclick ?>">Remove group</button>
                 </li>
                 <?php endforeach; ?>
             </ol>

@@ -366,7 +366,11 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                 <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor"/>
                                 <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z"
                                     fill="currentColor"/>
-                                <path d="M14 3.23v2.06A7 7 0 0 1 19 12a7 7 0 0 1-5 6.71v2.06A9 9 0 0 0 21 12 9 9 0 0 0 14 3.23z" fill="currentColor"/>
+                                <?php
+                                $pathData = 'M14 3.23v2.06A7 7 0 0 1 19 12a7 7 0 0 1-5 6.71v2.06A9 9 0 0 0 21 12 9 9 0 '
+                                    . '0 0 14 3.23z';
+                                ?>
+                                <path d="<?= $pathData ?>" fill="currentColor"/>
                             </svg>
                             <svg class="icon-vol-medium" aria-hidden="true" focusable="false" viewBox="0 0 24 24"
                                 fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
@@ -397,7 +401,17 @@ $presentation->subtitles = array_values($presentation->subtitles);
                             <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor"/>
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M19.4 13a7.6 7.6 0 0 0 .1-1c0-.34-.03-.67-.08-1l2.16-1.68a.5.5 0 0 0 .12-.64l-2.05-3.55a.5.5 0 0 0-.61-.22l-2.55 1.03a7.45 7.45 0 0 0-1.72-1l-.38-2.72A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42L9.13 5.14a7.45 7.45 0 0 0-1.72 1L4.86 5.11a.49.49 0 0 0-.61.22L2.2 8.88a.48.48 0 0 0 .12.64L4.48 11c-.05.33-.08.66-.08 1s.03.67.08 1L2.32 14.68a.5.5 0 0 0-.12.64l2.05 3.55c.12.22.38.3.61.22l2.55-1.03c.53.39 1.1.72 1.72 1l.38 2.72c.06.28.28.42.49.42h4c.22 0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 1.72-1l2.55 1.03c.23.08.49 0 .61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z" fill="currentColor" opacity=".7"/>
+                                <?php
+                                $pathData = 'M19.4 13a7.6 7.6 0 0 0 .1-1c0-.34-.03-.67-.08-1l2.16-1.68a.5.5 0 0 0 '
+                                    . '.12-.64l-2.05-3.55a.5.5 0 0 0-.61-.22l-2.55 1.03a7.45 7.45 0 0 '
+                                    . '0-1.72-1l-.38-2.72A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42L9.13 5.14a7.45 7.45 '
+                                    . '0 0 0-1.72 1L4.86 5.11a.49.49 0 0 0-.61.22L2.2 8.88a.48.48 0 0 0 .12.64L4.48 '
+                                    . '11c-.05.33-.08.66-.08 1s.03.67.08 1L2.32 14.68a.5.5 0 0 0-.12.64l2.05 '
+                                    . '3.55c.12.22.38.3.61.22l2.55-1.03c.53.39 1.1.72 1.72 1l.38 '
+                                    . '2.72c.06.28.28.42.49.42h4c.22 0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 '
+                                    . '1.72-1l2.55 1.03c.23.08.49 0 .61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z';
+                                ?>
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="<?= $pathData ?>" fill="currentColor" opacity=".7"/>
                             </svg>
                             <div class="control-container settings-controls">
                                 <h3>Settings</h3>
@@ -453,24 +467,34 @@ $presentation->subtitles = array_values($presentation->subtitles);
                             aria-label="Enter fullscreen">
                             <svg class="icon-enter-fs" aria-hidden="true" focusable="false" viewBox="0 0 24 24"
                                 fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <?php
+                                $pathData = 'M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 '
+                                    . '16v3a2 2 0 0 0 2 2h3';
+                                ?>
+                                <path d="<?= $pathData ?>" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <svg class="icon-exit-fs" aria-hidden="true" focusable="false" viewBox="0 0 24 24"
                                 fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
-                                <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <?php
+                                $pathData = 'M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 '
+                                    . '16h3a2 2 0 0 1 2 2v3';
+                                ?>
+                                <path d="<?= $pathData ?>" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                         </a>
                     </div>
                 </div>
             </div><!-- /#control-box -->
         </div><!-- /#left -->
-        <?php $cls = (
+        <?php
+        $cls = (
             isset($presentation->videoPosition)
             && $presentation->videoPosition == "left"
             && strtolower($presentation->type) == 'video'
         )
             ? "move-left"
-            : ""; ?>
+            : "";
+        ?>
         <div id="presenter-right">
             <div id="media" class="<?php echo $cls; ?>">
                 <?php if (strtolower($presentation->type) == 'video') : ?>

@@ -77,7 +77,11 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                                     background-size: 30px 30px;">
         <thead>
             <tr>
-                <th colspan="2" style="font-weight: bold; border-bottom: 1px solid #e1e1e1; padding: 8px; text-align: left; font-style: italic;" align="left">
+                <?php
+                $thStyle = 'font-weight: bold; border-bottom: 1px solid #e1e1e1; padding: 8px; text-align: left; '
+                    . 'font-style: italic;';
+                ?>
+                <th colspan="2" style="<?= $thStyle ?>" align="left">
                     <?php echo $this->escape($this->object->get('title')); ?>
                 </th>
             </tr>
@@ -93,7 +97,11 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                     <table style="border-collapse: collapse;" cellpadding="0" cellspacing="0" border="0">
                         <tbody>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Group:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Group:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <a href="<?php echo $groupLink; ?>">
                                         <?php echo $this->escape($this->group->get('description')); ?>
@@ -101,7 +109,11 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Created:</th>
                                 <?php
                                 $cellText = Date::of($this->object->get('created'))->toLocal(
                                     Lang::txt('TIME_FORMAT_HZ1'),
@@ -114,7 +126,11 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                                     align="left">@ <?= $cellText ?> on <?= $dateText ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created By:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Created By:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php
                                         $profile = User::getInstance($this->object->get('created_by'));
@@ -123,7 +139,11 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Status:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Status:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?= ($this->object->get('approved') == 1)
                                         ? Lang::txt('Approved')
@@ -131,7 +151,11 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                                 </td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Approve Link:</th>
+                                <?php
+                                $thStyle = 'text-align: right; padding: 0 0.5em; font-weight: bold; white-space: '
+                                    . 'nowrap; vertical-align: top;';
+                                ?>
+                                <th style="<?= $thStyle ?>" align="right">Approve Link:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <a href="<?php echo $adminLink; ?>">
                                         <?php echo $adminLink; ?>
