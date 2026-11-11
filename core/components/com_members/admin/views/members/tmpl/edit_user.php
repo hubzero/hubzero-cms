@@ -356,7 +356,9 @@ $approvedSelected = function ($value) use ($view) {
                 <?php if ($this->profile->get('email')) : ?>
                     <?php
                     if ($this->profile->get('activation') == 1) {
-                        $confirmed = '<label for="activation"><input type="checkbox" name="activation" id="activation" value="1" checked="checked" /> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED') . '</label>';
+                        $confirmed = '<label for="activation"><input type="checkbox" name="activation" id="activation" '
+                            . 'value="1" checked="checked" '
+                            . '/> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED') . '</label>';
                     } elseif ($this->profile->get('activation') == 2) {
                         $confirmed = Lang::txt('COM_MEMBERS_FIELD_EMAIL_GRANDFATHERED')
                             . '<input type="hidden" name="activation" id="activation" value="2" />';
@@ -384,7 +386,9 @@ $approvedSelected = function ($value) use ($view) {
                                 . '<br />[code: '
                                 . -$this->profile->get('activation')
                                 . ']</span>';
-                            $confirmed .= '<label for="activation"><input type="checkbox" name="activation" id="activation" value="1" /> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
+                            $confirmed .= '<label for="activation"><input type="checkbox" name="activation" '
+                                . 'id="activation" value="1" '
+                                . '/> ' . Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRM') . '</label>';
                             $return = base64_encode(Route::url(
                                 'index.php?option=' . $this->option
                                     . '&controller=' . $this->controller

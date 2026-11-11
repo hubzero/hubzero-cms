@@ -58,7 +58,8 @@ if ($this->authNames != null) {
 if (count($this->authNames) > 1) {
     $html .= '<input type="hidden" value="" name="list" id="neworder" />';
     $html .= '<p class="tip">' . Lang::txt('COM_PUBLICATIONS_AUTHORS_REORDER_TIP') . '</p>';
-    $html .= '<input type="button" onclick="submitbutton(\'saveorder\');" class="btn" value="Save Order" id="saveorder" />';
+    $html .= '<input type="button" onclick="submitbutton(\'saveorder\');" class="btn" value="Save Order" '
+        . 'id="saveorder" />';
 }
 
 echo $html;

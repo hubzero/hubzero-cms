@@ -165,7 +165,8 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                             . '" />';
                         if ($this->pub->submitter()->user_id != User::get('id')) {
                             $submitter  = '<select name="submitter">' . "\n";
-                            $submitter .= '<option value="' . User::get('id') . '" selected="selected">' . $this->escape(User::get('name'))
+                            $submitter .= '<option value="' . User::get('id') . '" '
+                                . 'selected="selected">' . $this->escape(User::get('name'))
                                 . '</option>' . "\n";
                             $submitter .= '<option value="' . $this->pub->submitter()->user_id . '">'
                                 . $this->escape($this->pub->submitter()->name) . '</option>' . "\n";
@@ -216,7 +217,8 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                                 
                                 <?php if (empty($dept) || empty($org) || empty($email)) {?>
                                     <?php if (empty($dept) && empty($org) && empty($email)) {
-                                        $missingItem = "affiliated department, affiliated organization and email address";
+                                        $missingItem = "affiliated department, affiliated organization and email "
+                                            . "address";
                                     } elseif (empty($dept) && empty($org) && !empty($email)) {
                                         $missingItem = "affiliated department and affiliated organization";
                                     } elseif (empty($dept) && !empty($org) && empty($email)) {

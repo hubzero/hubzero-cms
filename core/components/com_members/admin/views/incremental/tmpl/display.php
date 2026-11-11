@@ -19,7 +19,8 @@ Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION') . ': ' . Lang::txt('Increme
 Toolbar::save();
 
 $dbh = App::get('db');
-$dbh->setQuery('SELECT popover_text, award_per, test_group, repeat_type FROM `#__incremental_registration_options` ORDER BY added DESC LIMIT 1');
+$dbh->setQuery('SELECT popover_text, award_per, test_group, repeat_type FROM `#__incremental_registration_options` '
+    . 'ORDER BY added DESC LIMIT 1');
 list($popoverText, $awardPer, $testGroup, $repeatType) = $dbh->loadRow();
 $repeatType = (int) $repeatType;
 $dbh->setQuery('SELECT hours FROM `#__incremental_registration_popover_recurrence` ORDER BY idx');
