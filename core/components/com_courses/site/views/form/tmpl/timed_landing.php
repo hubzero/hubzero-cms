@@ -13,11 +13,11 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 ?>
 <p>
-    You have <strong><?php echo Form::timeDiff($realLimit * 60) ?></strong> to complete this form.
-    There are <strong><?php echo $this->pdf->getQuestionCount() ?></strong> questions.
+    You have <strong><?php echo Form::timeDiff($realLimit * 60); ?></strong> to complete this form.
+    There are <strong><?php echo $this->pdf->getQuestionCount(); ?></strong> questions.
     <?php if ($this->dep->getAllowedAttempts() > 1) : ?>
-        You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
-        This is your <strong><?php echo Form::toOrdinal((int) $this->resp->getAttemptNumber()) ?></strong> attempt.
+        You are allowed <strong><?php echo $this->dep->getAllowedAttempts(); ?></strong> attempts.
+        This is your <strong><?php echo Form::toOrdinal((int) $this->resp->getAttemptNumber()); ?></strong> attempt.
     <?php endif; ?>
 </p>
 <?php if ($realLimit == $limit) : ?>
@@ -28,8 +28,8 @@ defined('_HZEXEC_') or die();
 <form action="<?php echo Route::url($this->base); ?>" method="post">
     <fieldset>
         <input type="hidden" name="task" value="startWork" />
-        <input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
-        <input type="hidden" name="attempt" value="<?php echo (int) $this->resp->getAttemptNumber() ?>" />
+        <input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb(); ?>" />
+        <input type="hidden" name="attempt" value="<?php echo (int) $this->resp->getAttemptNumber(); ?>" />
         <input type="hidden" name="controller" value="form" />
         <?php
         echo (isset($_GET['tmpl']) && is_scalar($_GET['tmpl']))

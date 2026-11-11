@@ -25,7 +25,7 @@ $version = $record['summary']['version'];
 ?>
 
 <header id="content-header">
-    <h2>Results: <?php echo $this->title ?></h2>
+    <h2>Results: <?php echo $this->title; ?></h2>
 
     <div id="content-header-extra">
         <p>
@@ -38,17 +38,17 @@ $version = $record['summary']['version'];
 
 <section class="main section">
     <p>Completed <?php echo Date::of($resp->getEndTime())->toLocal('r'); ?></p>
-    <p>Score <strong><?php echo $record['summary']['score'] ?>%</strong></p>
+    <p>Score <strong><?php echo $record['summary']['score']; ?>%</strong></p>
 
     <?php if ($this->dep->getAllowedAttempts() > 1) : ?>
         <?php $attempt = $resp->getAttemptNumber(); ?>
         <p>
-            You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
+            You are allowed <strong><?php echo $this->dep->getAllowedAttempts(); ?></strong> attempts.
             <?php $val = \Components\Courses\Helpers\Form::toOrdinal((int) $attempt); ?>
             This was your <strong><?php echo $val; ?></strong> attempt.
         </p>
-        <form action="<?php echo Route::url($this->base . '&task=form.complete') ?>">
-            <input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
+        <form action="<?php echo Route::url($this->base . '&task=form.complete'); ?>">
+            <input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb(); ?>" />
             <?php $completedAttempts = $resp->getCompletedAttempts(); ?>
             <?php if ($completedAttempts && count($completedAttempts) > 0) : ?>
                 <p>
@@ -57,8 +57,8 @@ $version = $record['summary']['version'];
                         <?php foreach ($completedAttempts as $completedAttempt) : ?>
                             <?php $selected = ($completedAttempt == $attempt) ? ' selected="selected"' : ''; ?>
                             <?php $ordinal = \Components\Courses\Helpers\Form::toOrdinal($completedAttempt); ?>
-                            <option value="<?php echo $completedAttempt ?>"<?php echo $selected; ?>>
-                                <?php echo $ordinal ?> attempt
+                            <option value="<?php echo $completedAttempt; ?>"<?php echo $selected; ?>>
+                                <?php echo $ordinal; ?> attempt
                             </option>
                         <?php endforeach; ?>
                     </select>
@@ -90,7 +90,7 @@ $version = $record['summary']['version'];
     <ol id="pages" class="complete">
     <?php $pdf->eachPage(function ($url, $idx) use ($layout, $record) { ?>
         <li>
-            <img src="<?php echo $url ?>" />
+            <img src="<?php echo $url; ?>" />
             <?php
             if (isset($layout[$idx - 1])) :
                 $qidx = 0;

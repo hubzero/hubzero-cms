@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 // Push the module CSS to the template
 $this->css();
 ?>
-<div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
+<div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
     <div id="allgroups<?php echo $this->module->id; ?>" class="tab_panel active">
         <?php
         $total = count($this->allgroups);

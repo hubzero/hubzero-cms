@@ -120,7 +120,7 @@ $privacySelected = function ($value) use ($view) {
                                     $tmpl = str_replace('.php', '', $file);
                                     $sel  = ($this->page->get('template') == $tmpl) ? 'selected="selected"' : ''; ?>
                                 <option <?php echo $sel; ?> value="<?php echo $tmpl; ?>"><?php echo $name; ?></option>
-                            <?php endforeach;?>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                 <?php endif; ?>

@@ -21,7 +21,7 @@ defined('_HZEXEC_') or die();
 
     <?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
         <p><?php echo $this->escape(Lang::txt($fieldSet->description)); ?></p>
-    <?php endif;?>
+    <?php endif; ?>
 
     <fieldset class="panelform">
         <?php foreach ($this->form->getFieldset($name) as $field) : ?>

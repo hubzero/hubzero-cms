@@ -54,13 +54,13 @@ Html::behavior('framework');
             <div class="configuration" >
                 <div class="fltrt configuration-options">
                     <button type="button" onclick="submitbutton('uploadcsv');">
-                        <?php echo Lang::txt('Import');?>
+                        <?php echo Lang::txt('Import'); ?>
                     </button>
                     <button type="button" onclick="window.parent.$.fancybox.close();">
-                        <?php echo Lang::txt('Cancel');?>
+                        <?php echo Lang::txt('Cancel'); ?>
                     </button>
                 </div>
-                <?php echo Lang::txt('Uplaod a file with serial numbers') ?>
+                <?php echo Lang::txt('Uplaod a file with serial numbers'); ?>
             </div>
         </fieldset>
     <?php } ?>

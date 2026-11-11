@@ -41,7 +41,7 @@ $sortDirection = $this->sortDirection;
     <tfoot>
         <tr>
             <td colspan="9">
-                <?php echo $boosts->pagination ?>
+                <?php echo $boosts->pagination; ?>
             </td>
         </tr>
     </tfoot>

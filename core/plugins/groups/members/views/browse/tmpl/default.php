@@ -895,7 +895,7 @@ $option = 'com_groups';
                 </ul>
             <?php } else { ?>
                 <p class="starter"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_NO_ROLES_FOUND'); ?></p>
-            <?php }?>
+            <?php } ?>
         </div><!-- / .container -->
     </aside>
 </section><!--/ #group_members -->

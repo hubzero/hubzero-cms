@@ -63,7 +63,7 @@ $time = $this->time;
                     )
                     == '')
                             ? 'selected="selected"'
-                            : '';?>><?php
+                            : ''; ?>><?php
                     echo
                     Lang::txt('COM_RESOURCES_NONE');
 ?></option>

@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
             <p>You have successfully granted permission to manage the ORICD record.</p>
             <?php } else { ?>
             <p><?php echo Lang::txt('COM_MEMBERS_REDIRECT_ORCID_YOUR_ORCID'); ?><img
-                src="<?php echo Request::root()?>/core/components/com_members/site/assets/img/orcid_16x16.png"
+                src="<?php echo Request::root(); ?>/core/components/com_members/site/assets/img/orcid_16x16.png"
                 class="logo"
                 width="16"
                 height="16"

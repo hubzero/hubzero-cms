@@ -118,9 +118,9 @@ $this->css('import');
                     <tr>
                         <td>
                             <?php if ($canDo->get('core.admin')) { ?>
-                                <?php $val = $i;?>" value="<?php echo $import->get('id'); ?>
+                                <?php $val = $i; ?>" value="<?php echo $import->get('id'); ?>
                                 <input type="checkbox" name="id[]" id="cb<?php echo $val; ?>" class="checkbox-toggle" />
-                                <?php $val = $i;?>" class="sr-only visually-hidden"><?php echo $import->get('id'); ?>
+                                <?php $val = $i; ?>" class="sr-only visually-hidden"><?php echo $import->get('id'); ?>
                                 <label for="cb<?php echo $val; ?></label>
                             <?php } ?>
                         </td>
@@ -210,7 +210,7 @@ $this->css('import');
         </tbody>
     </table>
 
-    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
     <input type="hidden" name="task" value="" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />

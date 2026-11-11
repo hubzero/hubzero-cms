@@ -46,7 +46,7 @@ if ($this->roles) {
                         == $role->alias)
             ) {
                 echo ' selected="selected"';
-            }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+            } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
         <?php
     }
 }

@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
 
 $this->css('template.css');
 ?>
-<div class="mod-languages<?php echo $moduleclass_sfx ?>">
+<div class="mod-languages<?php echo $moduleclass_sfx; ?>">
 <?php if ($headerText) : ?>
     <div class="pretext"><p><?php echo $headerText; ?></p></div>
 <?php endif; ?>
@@ -35,14 +35,14 @@ $this->css('template.css');
                     value="<?php echo $language->link; ?>"
                     <?php echo $selected; ?>
                 >
-                <?php echo $language->title_native;?></option>
+                <?php echo $language->title_native; ?></option>
             <?php endforeach; ?>
         </select>
     </form>
 <?php else : ?>
-    <ul class="<?php echo $params->get('inline', 1) ? 'lang-inline' : 'lang-block';?>">
+    <ul class="<?php echo $params->get('inline', 1) ? 'lang-inline' : 'lang-block'; ?>">
         <?php foreach ($list as $language) : ?>
-            <?php if ($params->get('show_active', 0) || !$language->active) :?>
+            <?php if ($params->get('show_active', 0) || !$language->active) : ?>
                 <?php
                 $activeClass = $language->active ? 'lang-active' : '';
                 $langDir = Lang::getInstance($language->lang_code)->isRTL()
@@ -52,8 +52,8 @@ $this->css('template.css');
                 <li class="<?php echo $activeClass; ?>"
                     dir="<?php echo $langDir; ?>"
                 >
-                    <a href="<?php echo $language->link;?>">
-                        <?php if ($params->get('image', 1)) :?>
+                    <a href="<?php echo $language->link; ?>">
+                        <?php if ($params->get('image', 1)) : ?>
                             <img src="<?php echo $this->img($language->image . '.gif'); ?>"
                                 alt="<?php echo $language->title_native; ?>"
                             />
@@ -66,8 +66,8 @@ $this->css('template.css');
                         <?php endif; ?>
                     </a>
                 </li>
-            <?php endif;?>
-        <?php endforeach;?>
+            <?php endif; ?>
+        <?php endforeach; ?>
     </ul>
 <?php endif; ?>
 

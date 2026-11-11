@@ -151,7 +151,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 </fieldset>
             <?php endif; ?>
 
-            <?php if ($this->item->client_id == 0) :?>
+            <?php if ($this->item->client_id == 0) : ?>
                 <?php echo $this->loadTemplate('assignment'); ?>
             <?php endif; ?>
         </div>

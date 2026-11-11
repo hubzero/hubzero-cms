@@ -62,10 +62,10 @@ $this
 </section>
 
 <section class="comms-notice">
-    <?php echo $hubname;?> is a community-driven, grant-funded project and we continually strive
+    <?php echo $hubname; ?> is a community-driven, grant-funded project and we continually strive
     to improve our services. Additionally, we need to share the impact of our
     work with our sponsors. We will periodically send you information about
-    outages, terms of usage changes, and <?php echo $hubname;?> improvement surveys and
+    outages, terms of usage changes, and <?php echo $hubname; ?> improvement surveys and
     assessment communications. For more information regarding communications from
-    <?php echo $hubname;?>, see our <a href="/legal/privacy">privacy policy</a>.
+    <?php echo $hubname; ?>, see our <a href="/legal/privacy">privacy policy</a>.
 </section>

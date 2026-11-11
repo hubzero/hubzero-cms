@@ -230,7 +230,7 @@ $formAction = Route::url(
                                     title="<?php echo $editTitle; ?>">
                                     <?php echo $modAccess; ?>
                                 </a>
-                            <?php else :?>
+                            <?php else : ?>
                                 <?php
                                 echo Lang::txt(
                                     'COM_MENUS_MODULE_ACCESS_POSITION',

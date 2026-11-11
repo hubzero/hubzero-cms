@@ -194,7 +194,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                 </th>
                 <th>
                     <?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'lft', $listDirn, $listOrder); ?>
-                    <?php if ($canOrder && $saveOrder) :?>
+                    <?php if ($canOrder && $saveOrder) : ?>
                         <?php echo Html::grid('order', $this->rows, 'filesave.png', 'items.saveorder'); ?>
                     <?php endif; ?>
                 </th>
@@ -263,7 +263,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                     <?php echo Html::grid('id', $i, $item->get('id')); ?>
                 </td>
                 <td>
-                    <?php echo str_repeat('<span class="gi">|&mdash;</span>', $item->get('level') - 1) ?>
+                    <?php echo str_repeat('<span class="gi">|&mdash;</span>', $item->get('level') - 1); ?>
                     <?php if ($item->get('checked_out')) : ?>
                         <?php
                         echo Html::grid(
@@ -292,7 +292,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                     <?php endif; ?>
                     <?php $itemPath = $this->escape($item->get('path')); ?>
                     <p class="smallsub" title="<?php echo $itemPath; ?>">
-                        <?php echo str_repeat('<span class="gtr">|&mdash;</span>', $item->get('level') - 1) ?>
+                        <?php echo str_repeat('<span class="gtr">|&mdash;</span>', $item->get('level') - 1); ?>
                         <?php if ($item->get('type') != 'url') : ?>
                             <?php if (empty($item->get('note'))) : ?>
                                 <?php
@@ -352,11 +352,11 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                         <?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
                         <input type="text" name="order[]" size="5"
                             value="<?php echo $orderkey + 1; ?>"
-                            <?php echo $disabled ?>
+                            <?php echo $disabled; ?>
                             class="text-area-order" />
                         <?php $originalOrders[] = $orderkey + 1; ?>
                     <?php else : ?>
-                        <?php echo $orderkey + 1;?>
+                        <?php echo $orderkey + 1; ?>
                     <?php endif; ?>
                 </td>
                 <td class="center priority-4">
@@ -436,22 +436,22 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                 <td class="center">
                     <?php if ($item->get('association')) : ?>
                         <?php echo Html::menus('association', $item->get('id')); ?>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </td>
-                <?php endif;?>
+                <?php endif; ?>
                 <td class="center priority-6">
                     <?php if ($item->get('language') == '') : ?>
                         <?php echo Lang::txt('JDEFAULT'); ?>
                     <?php elseif ($item->get('language') == '*') : ?>
                         <?php echo Lang::txt('JALL', 'language'); ?>
-                    <?php else :?>
+                    <?php else : ?>
                         <?php
                         $langTitleText = $item->get('language_title');
                         echo $langTitleText
                             ? $this->escape($langTitleText)
                             : Lang::txt('JUNDEFINED');
                         ?>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </td>
                 <td class="center priority-6">
                     <?php

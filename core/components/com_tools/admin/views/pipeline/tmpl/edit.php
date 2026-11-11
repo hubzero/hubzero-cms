@@ -96,7 +96,7 @@ $stateSelected = function ($value) use ($view) {
                 <tbody>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_TOOLS_FIELD_ID'); ?>:</th>
-                        <td><?php echo $this->escape($this->row->id);?></td>
+                        <td><?php echo $this->escape($this->row->id); ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_TOOLS_FIELD_NAME'); ?>:</th>

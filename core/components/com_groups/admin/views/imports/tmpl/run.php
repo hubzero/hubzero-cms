@@ -186,7 +186,7 @@ $this
 
     </fieldset>
 
-    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
     <input type="hidden" name="task" value="dorun" />
     <input type="hidden" name="id" value="<?php echo $this->import->get('id'); ?>" />

@@ -70,7 +70,7 @@ $stateSelected = function ($value) use ($view) {
     name="adminForm"
     id="item-form"
     class="editform form-validate"
-    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')); ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -107,7 +107,7 @@ $stateSelected = function ($value) use ($view) {
                 <div class="input-wrap">
                     <label for="field-category_id"><?php echo Lang::txt('COM_MEMBERS_FIELD_CATEGORY'); ?>:</label>
                     <select name="fields[catid]" id="field-category_id">
-                        <option value="0"><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
+                        <option value="0"><?php echo Lang::txt('JOPTION_SELECT_CATEGORY'); ?></option>
                         <?php
                         $val = Html::select(
                             'options',

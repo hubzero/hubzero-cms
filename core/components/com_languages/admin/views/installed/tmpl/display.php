@@ -124,7 +124,7 @@ $pagination = $this->rows->pagination;
                     <?php echo $client; ?>
                 </td>
                 <td>
-                    <?php echo Html::grid('isdefault', $row->published, $i, '', !$row->published && $canChange);?>
+                    <?php echo Html::grid('isdefault', $row->published, $i, '', !$row->published && $canChange); ?>
                 </td>
                 <td class="priority-5">
                     <?php echo $this->escape($row->version); ?>
@@ -139,7 +139,7 @@ $pagination = $this->rows->pagination;
                     <?php echo $this->escape($row->authorEmail); ?>
                 </td>
             </tr>
-        <?php endforeach;?>
+        <?php endforeach; ?>
         </tbody>
     </table>
 

@@ -182,7 +182,7 @@ $this
                             </td>
                         </tr>
                     </thead>
-                    <?php if (count($this->threads) > 10) {?>
+                    <?php if (count($this->threads) > 10) { ?>
                     <tfoot>
                         <tr>
                             <?php

@@ -92,7 +92,7 @@ if (
                         type="text"
                         value="<?php echo $grantTitleInput; ?>"
                     />
-                <?php endif ?>
+                <?php endif; ?>
             </label>
         </div>
 
@@ -150,7 +150,7 @@ if (
                         type="text"
                         value="<?php echo $awardNumInput; ?>"
                     />
-                <?php endif ?>
+                <?php endif; ?>
             </label>
         </div>
 
@@ -179,7 +179,7 @@ if (
                         type="text"
                         value="<?php echo $agencyInput; ?>"
                     />
-                <?php endif ?>
+                <?php endif; ?>
             </label>
         </div>
 

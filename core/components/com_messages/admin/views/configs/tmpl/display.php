@@ -26,10 +26,10 @@ $this->js('config.js');
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">
-                <button type="button" id="action_save"><?php echo Lang::txt('JSAVE');?></button>
-                <button type="button" id="action_cancel"><?php echo Lang::txt('JCANCEL');?></button>
+                <button type="button" id="action_save"><?php echo Lang::txt('JSAVE'); ?></button>
+                <button type="button" id="action_cancel"><?php echo Lang::txt('JCANCEL'); ?></button>
             </div>
-            <?php echo Lang::txt('COM_MESSAGES_MY_SETTINGS') ?>
+            <?php echo Lang::txt('COM_MESSAGES_MY_SETTINGS'); ?>
         </div>
     </fieldset>
 

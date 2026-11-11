@@ -36,7 +36,7 @@ $showDescBlock  = ($showLogoutDesc && str_replace(' ', '', $logoutDesc) != '') |
 $logoutUrl      = Route::url('index.php?option=' . $this->option . '&task=user.logout');
 $returnVal      = base64_encode($this->params->get('logout_redirect_url', $this->form->getValue('return')));
 ?>
-<div class="logout<?php echo $this->pageclass_sfx?>">
+<div class="logout<?php echo $this->pageclass_sfx; ?>">
     <?php if ($this->params->get('show_page_heading')) : ?>
         <h1>
             <?php echo $this->escape($this->params->get('page_heading')); ?>
@@ -51,7 +51,7 @@ $returnVal      = base64_encode($this->params->get('logout_redirect_url', $this-
             <?php echo $logoutDesc; ?>
         <?php endif; ?>
 
-        <?php if ($logoutImage != '') :?>
+        <?php if ($logoutImage != '') : ?>
             <img
                 src="<?php echo $this->escape($logoutImage); ?>"
                 class="logout-image"

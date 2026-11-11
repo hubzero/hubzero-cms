@@ -40,7 +40,7 @@ if (
 <?php endif; ?>
 
 <section class="main section">
-    <div class="section-inner category-list<?php echo $this->pageclass_sfx;?>">
+    <div class="section-inner category-list<?php echo $this->pageclass_sfx; ?>">
 
         <?php if (!empty($this->children[$this->category->id]) && $this->maxLevel != 0) : ?>
             <div class="subject">

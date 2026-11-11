@@ -68,7 +68,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
     class="editform form-validate"
     data-invalid-msg="<?php echo $invalidMsg; ?>">
     <fieldset class="adminform">
-        <legend><span><?php echo Lang::txt('COM_MENUS_MENU_DETAILS');?></span></legend>
+        <legend><span><?php echo Lang::txt('COM_MENUS_MENU_DETAILS'); ?></span></legend>
 
         <div class="input-wrap">
             <?php echo $this->form->getLabel('title'); ?>

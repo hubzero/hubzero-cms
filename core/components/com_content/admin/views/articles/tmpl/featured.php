@@ -169,7 +169,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                 </th>
                 <th class="priority-3">
                     <?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'fp.ordering', $listDirn, $listOrder); ?>
-                    <?php if ($canOrder && $saveOrder) :?>
+                    <?php if ($canOrder && $saveOrder) : ?>
                         <?php echo Html::grid('order', $this->items, 'filesave.png', 'featured.saveorder'); ?>
                     <?php endif; ?>
                 </th>
@@ -268,7 +268,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                 </td>
                 <td class="order priority-3">
                     <?php if ($canChange) : ?>
-                        <?php if ($saveOrder) :?>
+                        <?php if ($saveOrder) : ?>
                             <?php if ($listDirn == 'asc') : ?>
                                 <?php
                                 $upIcon = $this->pagination->orderUpIcon(

@@ -33,7 +33,7 @@ $this->js('media.js');
             <span>
                 <?php echo Lang::txt('Path') . ': ' . DS . trim($this->config->get('uploadpath', '/site/courses'), DS)
                         . DS . ($this->course_id ? $this->course_id . DS : '') . 'pagefiles'
-                        . ($this->listdir ? DS . $this->listdir : '')
+                        . ($this->listdir ? DS . $this->listdir : '');
                 ?>
             </span>
         </legend>

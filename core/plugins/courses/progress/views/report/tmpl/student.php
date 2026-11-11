@@ -322,8 +322,8 @@ $progress_timeline .= '</div>';
 <div class="progress">
     <?php if ($this->course->access('manage')) : ?>
         <div class="extra">
-            <a href="<?php echo Route::url($this->base . '&active=progress') ?>"
-                class="back btn icon-back"><?php echo Lang::txt('Back to all students') ?></a>
+            <a href="<?php echo Route::url($this->base . '&active=progress'); ?>"
+                class="back btn icon-back"><?php echo Lang::txt('Back to all students'); ?></a>
         </div>
     <?php endif; ?>
 
@@ -334,17 +334,17 @@ $progress_timeline .= '</div>';
             : '';
         ?>
         <?= $nameText ?>
-        <?php echo $h3 ?>
+        <?php echo $h3; ?>
     </h3>
-    <h4><?php echo Lang::txt('Unit %d of %d', $current_i, $num_units) ?></h4>
+    <h4><?php echo Lang::txt('Unit %d of %d', $current_i, $num_units); ?></h4>
 
-    <?php echo $progress_timeline ?>
+    <?php echo $progress_timeline; ?>
 
     <div class="clear"></div>
 
 <?php if ($this->course->offering()->section()->badge()->isAvailable() && $student->badge()->hasEarned()) : ?>
     <div class="recognition badge earned">
-        <img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" />
+        <img src="<?php echo $this->course->offering()->section()->badge()->get('img_url'); ?>" width="125" />
         <?php if ($student->badge()->get('action') == 'accept') : ?>
             <h3>Congratulations! You've got the badge!</h3>
             <p>
@@ -372,7 +372,7 @@ $progress_timeline .= '</div>';
             <h3>Congratulations! You've earned the badge...and you deserve it!</h3>
             <p>
                 You've completed all of the requirements of
-                    <?php echo $this->escape(stripslashes($this->course->get('title'))) ?>, qualifying you to receive
+                    <?php echo $this->escape(stripslashes($this->course->get('title'))); ?>, qualifying you to receive
                 a special badge.
             </p>
             <?php if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
@@ -415,8 +415,8 @@ $progress_timeline .= '</div>';
     <div class="grades">
         <div class="current-score">
             <div class="current-score-inner">
-                <p class="grading-policy"><?php echo Lang::txt('grading policy') ?></p>
-                <p class="title"><?php echo Lang::txt('Your current score') ?></p>
+                <p class="grading-policy"><?php echo Lang::txt('grading policy'); ?></p>
+                <p class="title"><?php echo Lang::txt('Your current score'); ?></p>
                 <?php
                     $cls = '';
                 if ($passing === 1) {
@@ -425,11 +425,11 @@ $progress_timeline .= '</div>';
                     $cls = ' failing';
                 }
                 ?>
-                <p class="score<?php echo $cls ?>">
+                <p class="score<?php echo $cls; ?>">
                     <?php
                         echo (isset($grades[$this->member->get('id')]['course'][$this->course->get('id')]))
                             ? $grades[$this->member->get('id')]['course'][$this->course->get('id')] . '%'
-                            : '--'
+                            : '--';
                     ?>
                 </p>
             </div>
@@ -437,25 +437,25 @@ $progress_timeline .= '</div>';
 
         <div class="quizzes">
             <div class="quizzes-inner">
-                <p class="title"><?php echo Lang::txt('Quizzes taken') ?></p>
-                <p class="score"><?php echo $details['quizzes_taken'] ?></p>
-                <p><?php echo Lang::txt('out of %d', $details['quizzes_total']) ?></p>
+                <p class="title"><?php echo Lang::txt('Quizzes taken'); ?></p>
+                <p class="score"><?php echo $details['quizzes_taken']; ?></p>
+                <p><?php echo Lang::txt('out of %d', $details['quizzes_total']); ?></p>
             </div>
         </div>
 
         <div class="homeworks">
             <div class="homeworks-inner">
-                <p class="title"><?php echo Lang::txt('Homeworks submitted') ?></p>
-                <p class="score"><?php echo $details['homeworks_submitted'] ?></p>
-                <p><?php echo Lang::txt('out of %d', $details['homeworks_total']) ?></p>
+                <p class="title"><?php echo Lang::txt('Homeworks submitted'); ?></p>
+                <p class="score"><?php echo $details['homeworks_submitted']; ?></p>
+                <p><?php echo Lang::txt('out of %d', $details['homeworks_total']); ?></p>
             </div>
         </div>
 
         <div class="exams">
             <div class="exams-inner">
-                <p class="title"><?php echo Lang::txt('Exams taken') ?></p>
-                <p class="score"><?php echo $details['exams_taken'] ?></p>
-                <p><?php echo Lang::txt('out of %d', $details['exams_total']) ?></p>
+                <p class="title"><?php echo Lang::txt('Exams taken'); ?></p>
+                <p class="score"><?php echo $details['exams_taken']; ?></p>
+                <p><?php echo Lang::txt('out of %d', $details['exams_total']); ?></p>
             </div>
         </div>
     </div>
@@ -463,7 +463,7 @@ $progress_timeline .= '</div>';
     <div class="clear"></div>
 
     <p class="info grading-policy-explanation">
-        <?php echo $gradePolicy->get('description') ?>
+        <?php echo $gradePolicy->get('description'); ?>
     </p>
 
     <div class="units">
@@ -475,7 +475,7 @@ $progress_timeline .= '</div>';
                     <?php
                         echo (isset($grades[$this->member->get('id')]['units'][$unit->get('id')]))
                             ? $grades[$this->member->get('id')]['units'][$unit->get('id')] . '%'
-                            : '--'
+                            : '--';
                     ?>
                 </div>
             </div>
@@ -483,9 +483,9 @@ $progress_timeline .= '</div>';
                 <table>
                     <thead>
                         <tr>
-                            <td class="grade-details-title"><?php echo Lang::txt('Assignment') ?></td>
-                            <td class="grade-details-score"><?php echo Lang::txt('Score') ?></td>
-                            <td class="grade-details-date"><?php echo Lang::txt('Date taken') ?></td>
+                            <td class="grade-details-title"><?php echo Lang::txt('Assignment'); ?></td>
+                            <td class="grade-details-score"><?php echo Lang::txt('Score'); ?></td>
+                            <td class="grade-details-date"><?php echo Lang::txt('Date taken'); ?></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -506,16 +506,16 @@ $progress_timeline .= '</div>';
                                     $class = 'neutral';
                                 }
                                 ?>
-                                <tr class="<?php echo $class ?>">
+                                <tr class="<?php echo $class; ?>">
                                     <?php
                                     $linkUrl = $this->escape($form['url']);
                                     ?>
                                     <td class="grade-details-title"><a
-                                        href="<?= $linkUrl ?>"><?php echo $this->escape($form['title']) ?></a></td>
+                                        href="<?= $linkUrl ?>"><?php echo $this->escape($form['title']); ?></a></td>
                                     <td class="grade-details-score">
-                                        <?php echo $form['score'] . (is_numeric($form['score']) ? '%' : '') ?>
+                                        <?php echo $form['score'] . (is_numeric($form['score']) ? '%' : ''); ?>
                                     </td>
-                                    <td class="grade-details-date"><?php echo $form['date'] ?></td>
+                                    <td class="grade-details-date"><?php echo $form['date']; ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php else : ?>
@@ -540,9 +540,9 @@ $progress_timeline .= '</div>';
                 <table>
                     <thead>
                         <tr>
-                            <td class="grade-details-title"><?php echo Lang::txt('Assignment') ?></td>
-                            <td class="grade-details-score"><?php echo Lang::txt('Score') ?></td>
-                            <td class="grade-details-date"><?php echo Lang::txt('Date recorded') ?></td>
+                            <td class="grade-details-title"><?php echo Lang::txt('Assignment'); ?></td>
+                            <td class="grade-details-score"><?php echo Lang::txt('Score'); ?></td>
+                            <td class="grade-details-date"><?php echo Lang::txt('Date recorded'); ?></td>
                         </tr>
                     </thead>
                     <tbody>
@@ -563,12 +563,12 @@ $progress_timeline .= '</div>';
                                 $class = 'neutral';
                             }
                             ?>
-                            <tr class="<?php echo $class ?>">
-                                <td class="grade-details-title"><?php echo $this->escape($aux['title']) ?></td>
+                            <tr class="<?php echo $class; ?>">
+                                <td class="grade-details-title"><?php echo $this->escape($aux['title']); ?></td>
                                 <td class="grade-details-score">
-                                    <?php echo $aux['score'] . (is_numeric($aux['score']) ? '%' : '') ?>
+                                    <?php echo $aux['score'] . (is_numeric($aux['score']) ? '%' : ''); ?>
                                 </td>
-                                <td class="grade-details-date"><?php echo $aux['date'] ?></td>
+                                <td class="grade-details-date"><?php echo $aux['date']; ?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -581,12 +581,12 @@ $progress_timeline .= '</div>';
 
     <?php if ($this->course->offering()->section()->badge()->isAvailable() && !$student->badge()->hasEarned()) : ?>
         <div class="recognition badge">
-            <img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125"
+            <img src="<?php echo $this->course->offering()->section()->badge()->get('img_url'); ?>" width="125"
                 alt="Badge" />
             <h3>Work hard. Earn a badge.</h3>
             <p>
                 Upon successful completion of this course, you will be awarded a special
-                    <?php echo $this->escape(stripslashes($this->course->get('title'))) ?> badge.
+                    <?php echo $this->escape(stripslashes($this->course->get('title'))); ?> badge.
                 This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open
                     Badges Backpack.
                 To learn more about Purdue's Passport initiative, please visit the

@@ -177,7 +177,7 @@ if ($this->group->isSuperGroup()) {
         }
         ?>
         <li>
-            <div class="btn-group <?php echo ($isManager) ? "manager" : "member" ?>">
+            <div class="btn-group <?php echo ($isManager) ? "manager" : "member"; ?>">
                 <button type="button" class="btn dropdown-label" aria-expanded="false" aria-haspopup="true">
                     <?php
                     $toolbarManagerText = ($isManager)

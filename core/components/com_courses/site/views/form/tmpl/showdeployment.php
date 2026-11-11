@@ -21,7 +21,7 @@ $this
      ->js('jquery.tablesorter.min', 'system');
 ?>
 <header id="content-header">
-    <h2>Deployment: <?php echo $this->escape($this->title) ?></h2>
+    <h2>Deployment: <?php echo $this->escape($this->title); ?></h2>
 </header>
 
 <?php $link = Route::url($this->base . '&task=form.complete&crumb=' . $this->dep->getCrumb()); ?>
@@ -30,9 +30,9 @@ $this
     <?php $depState = $this->dep->getState(); ?>
     <p class="distribution-link">
         Link to distribute:
-        <a href="<?php echo $link ?>"><?php echo $link ?></a>
-        <span class="state <?php echo $depState ?>">
-            <?php echo $depState ?>
+        <a href="<?php echo $link; ?>"><?php echo $link; ?></a>
+        <span class="state <?php echo $depState; ?>">
+            <?php echo $depState; ?>
         </span>
     </p>
     <form action="<?php echo Route::url($this->base); ?>" method="post" id="deployment">
@@ -40,11 +40,11 @@ $this
         <fieldset>
             <input type="hidden" name="controller" value="form" />
             <input type="hidden" name="task" value="updateDeployment" />
-            <input type="hidden" name="formId" value="<?php echo $this->pdf->getId() ?>" />
-            <input type="hidden" name="deploymentId" value="<?php echo $this->dep->getId() ?>" />
-            <input type="hidden" name="id" value="<?php echo $this->dep->getId() ?>" />
+            <input type="hidden" name="formId" value="<?php echo $this->pdf->getId(); ?>" />
+            <input type="hidden" name="deploymentId" value="<?php echo $this->dep->getId(); ?>" />
+            <input type="hidden" name="id" value="<?php echo $this->dep->getId(); ?>" />
             <?php if ($tmpl = Request::getWord('tmpl', false)) : ?>
-                <input type="hidden" name="tmpl" value="<?php echo $this->escape($tmpl) ?>" />
+                <input type="hidden" name="tmpl" value="<?php echo $this->escape($tmpl); ?>" />
             <?php endif; ?>
             <div class="navbar">
                 <div><a href="<?php echo Request::base(true); ?>/courses/form" id="done">Done</a></div>

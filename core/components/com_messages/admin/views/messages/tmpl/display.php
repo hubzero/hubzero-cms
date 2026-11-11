@@ -78,7 +78,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
             </div>
             <div class="col span6 filter-select">
                 <select name="filter_state" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
+                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
                     <?= Html::select(
                         'options',
                         Components\Messages\Helpers\Utilities::getStateOptions(),
@@ -151,7 +151,7 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
         </tbody>
     </table>
 
-    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
     <input type="hidden" name="task" value="" />
     <input type="hidden" name="boxchecked" value="0" />

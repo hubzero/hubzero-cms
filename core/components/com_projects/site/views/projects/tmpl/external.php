@@ -98,7 +98,7 @@ $this->css('theme' . $theme . '.css');
                         $denyMessage .= $params->get('denyMessage');
                     ?>
 
-                    <div class="btn-container tooltips span4" title="<?php echo $this->escape($denyMessage);?>">
+                    <div class="btn-container tooltips span4" title="<?php echo $this->escape($denyMessage); ?>">
                         <a href="<?= $link ?>" class="btn btn-success"
                             disabled><?= Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ?></a>
                     </div>

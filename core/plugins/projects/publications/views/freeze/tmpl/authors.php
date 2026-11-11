@@ -53,9 +53,9 @@ $elName = "authorList";
                                     . $this->escape($email);
                                 ?>
                             <span class="item-subtext"><?= $itemSubtextText ?></span>
-                            <?php } else {?>
+                            <?php } else { ?>
                             <span class="item-subtext"><?php echo $org ? ' - ' . $this->escape($org) : ''; ?></span>
-                            <?php }?>
+                            <?php } ?>
                         </span>
                         <span class="item-details"><?php echo $this->escape($details); ?></span>
                     </li>

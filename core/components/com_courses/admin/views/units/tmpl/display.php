@@ -222,7 +222,7 @@ $stateSelected = function ($value) use ($view) {
                         <a
                             class="state <?php echo $class; ?>"
                             href="<?php echo $routeUrl; ?>"
-                            title="<?php echo Lang::txt('COM_COURSES_SET_TASK', $task);?>">
+                            title="<?php echo Lang::txt('COM_COURSES_SET_TASK', $task); ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>

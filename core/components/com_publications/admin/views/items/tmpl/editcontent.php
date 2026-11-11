@@ -63,7 +63,7 @@ $crumbsText = Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO');
                     onclick="window.parent.document.getElementById('sbox-window').close();"><?= $buttonText ?></button>
             </div>
 
-            <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT') ?>
+            <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT'); ?>
         </div>
     </fieldset>
 <?php } ?>

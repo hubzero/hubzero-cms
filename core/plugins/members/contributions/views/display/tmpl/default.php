@@ -106,7 +106,7 @@ foreach ($this->cats as $cat) {
 </h3>
 
 <form method="get" action="<?php echo Route::url($this->member->link() . '&active=contributions'); ?>">
-    <input type="hidden" name="area" value="<?php echo $this->escape($this->active) ?>" />
+    <input type="hidden" name="area" value="<?php echo $this->escape($this->active); ?>" />
 
     <div class="container">
         <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">

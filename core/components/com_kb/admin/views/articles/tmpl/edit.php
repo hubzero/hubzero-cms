@@ -187,7 +187,7 @@ $stateSelected = function ($value) use ($view) {
                         </tr>
                         <?php
                         $modifier = User::getInstance($this->row->get('modified_by'));
-                        if (is_object($modifier)) {?>
+                        if (is_object($modifier)) { ?>
                             <tr>
                                 <th class="key"><?php echo Lang::txt('COM_KB_MODIFIER'); ?>:</th>
                                 <td>

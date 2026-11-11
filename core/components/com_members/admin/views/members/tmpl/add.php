@@ -34,7 +34,7 @@ Toolbar::cancel();
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_MEMBERS_PROFILE'); ?></span></legend>
 
-                <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+                <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                 <input type="hidden" name="task" value="edit" />
                 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
 

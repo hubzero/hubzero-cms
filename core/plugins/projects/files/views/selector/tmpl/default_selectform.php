@@ -20,7 +20,7 @@ defined('_HZEXEC_') or die();
             <?php foreach ($this->hiddenFields as $field) : ?>
                 <input type="hidden" name="<?= $this->escape($field['name']) ?>"
                     value="<?= $this->escape($field['value']) ?>"
-                    <?php echo !empty($field['value']) ? 'id="' . $this->escape($field['value']) . '"' : '';?> />
+                    <?php echo !empty($field['value']) ? 'id="' . $this->escape($field['value']) . '"' : ''; ?> />
             <?php endforeach; ?>
         </fieldset>
 

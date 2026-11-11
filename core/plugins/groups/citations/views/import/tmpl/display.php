@@ -28,12 +28,12 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
         <?php endif; ?>
         <ul id="steps">
             <li><a href="<?php echo Route::url($base . '&action=import'); ?>"
-                class="active"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1');?>
-            <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1_NAME');?></span></a></li>
+                class="active"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1'); ?>
+            <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1_NAME'); ?></span></a></li>
             <li><a><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2'); ?>
-            <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2_NAME');?></span></a></li>
+            <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2_NAME'); ?></span></a></li>
             <li><a><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3'); ?>
-            <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3_NAME');?></span></a></li>
+            <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP3_NAME'); ?></span></a></li>
         </ul><!-- / #steps -->
 
         <form id="hubForm"
@@ -48,7 +48,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
                     <div class="col span6">
                         <label for="citations_file">
                             <?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_UPLOAD_FILE'); ?>
-                            : <span class="required"><?php echo Lang::txt('JREQUIRED');?></span>
+                            : <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
                             <input type="file" name="citations_file" id="citations_file" />
                             <span class="hint"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_UPLOAD_MAX'); ?></span>
                         </label>

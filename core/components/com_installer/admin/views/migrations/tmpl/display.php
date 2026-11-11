@@ -177,8 +177,8 @@ $formAction = Route::url(
         </tbody>
     </table>
 
-    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
-    <input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
+    <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
     <input type="hidden" name="task" value="" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="folder" value="<?php echo urlencode($this->filters['folder']); ?>" />

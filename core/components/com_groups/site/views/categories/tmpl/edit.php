@@ -56,7 +56,7 @@ endif;
                 <label for="field-category-title">
                     <?php $txt1 = Lang::txt('COM_GROUPS_PAGES_CATEGORY_TITLE'); ?>
                     <?php $txt = Lang::txt('COM_GROUPS_FIELD_REQUIRED'); ?>
-                    <?php echo $txt1?>: <span class="required"><?php echo $txt; ?></span>
+                    <?php echo $txt1; ?>: <span class="required"><?php echo $txt; ?></span>
                     <input
                         type="text"
                         name="category[title]"
@@ -70,7 +70,7 @@ endif;
                 <label for="field-category-color">
                     <?php $txt1 = Lang::txt('COM_GROUPS_PAGES_CATEGORY_COLOR'); ?>
                     <?php $txt = Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?>
-                    <?php echo $txt1?>: <span class="optional"><?php echo $txt; ?></span>
+                    <?php echo $txt1; ?>: <span class="optional"><?php echo $txt; ?></span>
                     <input
                         type="text"
                         maxlength="6"

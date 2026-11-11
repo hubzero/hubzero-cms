@@ -23,7 +23,7 @@ Html::behavior('framework');
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="component-form">
     <fieldset>
         <div class="configuration" >
-            <?php echo Lang::txt('Add new users') ?>
+            <?php echo Lang::txt('Add new users'); ?>
         </div>
     </fieldset>
 

@@ -59,7 +59,7 @@ foreach ($fieldSets as $name => $fieldSet) :
                     </div>
             <?php endforeach; ?>
         </fieldset>
-<?php endforeach;?>
+<?php endforeach; ?>
 <?php
 
     $fieldSets = $this->form->getFieldsets('associations');

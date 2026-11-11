@@ -33,15 +33,15 @@ $assetTitle = $this->escape(
     stripslashes($this->a->get('title')),
 );
 ?>
-<li id="asset_<?php echo $assetId ?>"
-    class="asset-item asset <?php echo $assetType ?> <?php echo $assetSubtype ?><?php echo $stateClass ?>">
+<li id="asset_<?php echo $assetId; ?>"
+    class="asset-item asset <?php echo $assetType; ?> <?php echo $assetSubtype; ?><?php echo $stateClass; ?>">
     <div class="sortable-assets-handle"></div>
     <div class="asset-item-title title toggle-editable">
-        <?php echo $assetTitle ?>
+        <?php echo $assetTitle; ?>
     </div>
     <div class="title-edit">
         <form action="<?php echo Request::base(true); ?>/api/courses/asset/save" class="asset-title-form">
-            <input class="title-text" name="title" type="text" value="<?php echo $this->a->get('title') ?>" />
+            <input class="title-text" name="title" type="text" value="<?php echo $this->a->get('title'); ?>" />
             <input class="asset-title-save" type="submit" value="Save" />
             <input class="asset-title-reset" type="reset" value="Cancel" />
             <input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
@@ -49,7 +49,7 @@ $assetTitle = $this->escape(
             <input type="hidden" name="id" value="<?php echo $this->a->get('id'); ?>" />
         </form>
     </div>
-    <a class="asset-preview" href="<?php echo $href ?>" title="preview"></a>
+    <a class="asset-preview" href="<?php echo $href; ?>" title="preview"></a>
     <a class="asset-edit" href="#" title="edit"></a>
     <?php if ($this->a->get('type') == 'form') : ?>
         <a class="asset-edit-deployment <?php echo ($this->a->get('state') != 1) ? 'hide' : ''; ?>"
@@ -67,13 +67,13 @@ $assetTitle = $this->escape(
                     : 'Published';
                 ?>
                 <span class="published-label-text">
-                    <?php echo $pubLabelTxt ?>
+                    <?php echo $pubLabelTxt; ?>
                 </span>
                 <input
                     class="published-checkbox"
                     name="published"
                     type="checkbox"
-                    <?php echo ($this->a->get('state') == 0) ? '' : 'checked="checked"' ?> />
+                    <?php echo ($this->a->get('state') == 0) ? '' : 'checked="checked"'; ?> />
                 <input type="hidden" class="asset_id" name="id" value="<?php echo $this->a->get('id'); ?>" />
                 <input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
                 <input type="hidden" name="scope_id" value="<?php echo $this->ag->get('id'); ?>" />

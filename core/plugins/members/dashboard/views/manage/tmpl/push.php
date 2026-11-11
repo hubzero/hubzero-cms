@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
         <fieldset class="adminform">
             <div class="input-wrap">
                 <label><?php echo Lang::txt('PLG_MEMBERS_DASHBOARD_PUSH_MODULE_TITLE'); ?>
-                <span class="required"><?php echo Lang::txt('required');?></span></label><br />
+                <span class="required"><?php echo Lang::txt('required'); ?></span></label><br />
                 <select name="module">
                     <option value=""><?php echo Lang::txt('- Select Module to Push -'); ?></option>
                     <?php foreach ($this->modules as $module) : ?>

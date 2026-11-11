@@ -854,7 +854,7 @@ $categoryChecked = function ($value) use ($view) {
     <section class="below section" id="section-comments">
         <div class="subject">
             <h3>
-                <?php echo Lang::txt('COM_WISHLIST_COMMENTS');?> (<?php echo $comments->count(); ?>)
+                <?php echo Lang::txt('COM_WISHLIST_COMMENTS'); ?> (<?php echo $comments->count(); ?>)
             </h3>
                 <?php
                 if ($comments->count() > 0) {
@@ -889,7 +889,7 @@ $categoryChecked = function ($value) use ($view) {
                     $link = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($link));
                 }
                 ?>
-                <a class="icon-add add btn" href="<?php echo $link;?>">
+                <a class="icon-add add btn" href="<?php echo $link; ?>">
                     <?php echo Lang::txt('COM_WISHLIST_ADD_A_COMMENT'); ?>
                 </a>
             </p>

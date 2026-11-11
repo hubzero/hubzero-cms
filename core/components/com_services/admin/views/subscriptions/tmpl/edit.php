@@ -88,10 +88,10 @@ $priceline .= ($service->get('pointsprice') > 0)
 
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_SERVICES_FIELD_PROFILE'); ?>:</label><br />
-                    <?php echo Lang::txt('Login'); ?>: <?php echo $this->customer->get('username') ?> <br />
-                    <?php echo Lang::txt('Name'); ?>: <?php echo $this->escape($this->customer->get('name')) ?> <br />
-                    <?php echo Lang::txt('Email'); ?>: <?php echo $this->escape($this->customer->get('email')) ?> <br />
-                    <?php echo Lang::txt('Tel.'); ?>: <?php echo $this->escape($this->customer->get('phone')) ?>
+                    <?php echo Lang::txt('Login'); ?>: <?php echo $this->customer->get('username'); ?> <br />
+                    <?php echo Lang::txt('Name'); ?>: <?php echo $this->escape($this->customer->get('name')); ?> <br />
+                    <?php echo Lang::txt('Email'); ?>: <?= $this->escape($this->customer->get('email')) ?> <br />
+                    <?php echo Lang::txt('Tel.'); ?>: <?php echo $this->escape($this->customer->get('phone')); ?>
                 </div>
 
                 <div class="input-wrap">
@@ -114,19 +114,19 @@ $priceline .= ($service->get('pointsprice') > 0)
                 <tbody>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_STATUS'); ?>:</th>
-                        <td><?php echo $status ?></td>
+                        <td><?php echo $status; ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_ADDED'); ?>:</th>
-                        <td><?php echo $added ?></td>
+                        <td><?php echo $added; ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_EXPIRES'); ?>:</th>
-                        <td><?php echo $expires ?></td>
+                        <td><?php echo $expires; ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_LAST_UPDATED'); ?>:</th>
-                        <td><?php echo $updated ?></td>
+                        <td><?php echo $updated; ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SERVICES_COL_TOTAL_PAID'); ?>:</th>
@@ -189,7 +189,7 @@ $priceline .= ($service->get('pointsprice') > 0)
                         ?>
                         <label for="field-received_refund"><?= $labelText ?>:</label><br />
                         <input type="text" name="received_refund" id="field-received_refund"
-                            value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
+                            value="<?php echo $this->escape($this->subscription->pendingpayment); ?>" />
                         <?php if ($this->subscription->usepoints) {
                             echo Lang::txt('COM_SERVICES_POINTS');
                         } else {
@@ -209,7 +209,7 @@ $priceline .= ($service->get('pointsprice') > 0)
                     <label for="field-received_payment"><?= $labelText ?>:</label><br />
                     <?php if ($this->subscription->pendingpayment > 0) { ?>
                         <input type="text" name="received_payment" id="field-received_payment"
-                            value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
+                            value="<?php echo $this->escape($this->subscription->pendingpayment); ?>" />
                     <?php } else {
                         echo $this->subscription->pendingpayment;
                     } ?>
@@ -223,7 +223,7 @@ $priceline .= ($service->get('pointsprice') > 0)
                     <label for="field-newunits"><?= Lang::txt('COM_SERVICES_FIELD_ACTIVE_UNITS') ?>:</label><br />
                     <?php if ($this->subscription->pendingunits > 0 or $this->subscription->expires < $now) { ?>
                         <input type="text" name="newunits" id="field-newunits"
-                            value="<?php echo $this->escape($this->subscription->pendingunits) ?>" />
+                            value="<?php echo $this->escape($this->subscription->pendingunits); ?>" />
                     <?php } else {
                         echo $this->subscription->pendingunits;
                     } ?>

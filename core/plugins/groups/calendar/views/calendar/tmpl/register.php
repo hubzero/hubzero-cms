@@ -437,7 +437,7 @@ $registerUrl = Route::url(
                             value="<?= (isset($this->arrival['time'])) ? $this->arrival['time'] : '' ?>" />
                     </label>
                 </fieldset>
-            <?php endif ?>
+            <?php endif; ?>
 
             <?php if ($this->params->get('show_departure')) : ?>
             <fieldset>

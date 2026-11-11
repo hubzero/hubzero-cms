@@ -85,7 +85,7 @@ $homeSelected = function ($value) use ($view) {
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
-                <legend><span><?php echo Lang::txt('JDETAILS');?></span></legend>
+                <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
                     <label for="field-title">
@@ -160,11 +160,11 @@ $homeSelected = function ($value) use ($view) {
                 <?php endif; ?>
             </fieldset>
 
-            <?php if (User::authorise('core.edit', 'com_menu') && $this->item->client_id == 0) :?>
+            <?php if (User::authorise('core.edit', 'com_menu') && $this->item->client_id == 0) : ?>
                 <?php if ($canDo->get('core.edit.state')) : ?>
                     <?php echo $this->loadTemplate('assignment'); ?>
                 <?php endif; ?>
-            <?php endif;?>
+            <?php endif; ?>
 
             <input
                 type="hidden"

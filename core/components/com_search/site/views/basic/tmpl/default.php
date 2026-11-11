@@ -87,7 +87,7 @@ $show_weight = array_key_exists('show_weight', $_GET);
                                 <p class="details">
                                     <?php if (($section = $res->getSection())) {
                                         ?><span class="section"><?php echo $this->escape($section); ?></span><?php
-                                    }?>
+                                    } ?>
                                     <?php if (($date = $res->getDate())) {
                                         ?><span class="date"><?php echo Date::of($date)->format('j M Y'); ?></span><?php
                                     } ?>

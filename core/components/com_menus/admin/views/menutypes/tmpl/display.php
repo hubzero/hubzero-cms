@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
     <?php foreach ($this->types as $name => $list) : ?>
         <li>
             <dl class="menu_type">
-                <dt><?php echo Lang::txt($name);?></dt>
+                <dt><?php echo Lang::txt($name); ?></dt>
                 <dd><ul>
                         <?php foreach ($list as $item) : ?>
                             <?php
@@ -39,7 +39,7 @@ defined('_HZEXEC_') or die();
                             <a class="choose_type" href="#"
                                 title="<?php echo $descTitle; ?>"
                                 onclick="javascript:setmenutype('<?php echo $encoded; ?>')">
-                                <?php echo Lang::txt($item->title);?>
+                                <?php echo Lang::txt($item->title); ?>
                             </a>
                         </li>
                         <?php endforeach; ?>

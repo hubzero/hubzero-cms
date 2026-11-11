@@ -32,7 +32,7 @@ if (
             <h2>
                 <?php echo $this->escape($this->params->get('page_subheading')); ?>
                 <?php if ($this->params->get('show_category_title')) : ?>
-                    <span class="subheading-category"><?php echo $this->escape($this->category->title);?></span>
+                    <span class="subheading-category"><?php echo $this->escape($this->category->title); ?></span>
                 <?php endif; ?>
             </h2>
         <?php endif; ?>

@@ -18,7 +18,7 @@ $this
      ->css()
      ->js();
 ?>
-<div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
+<div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
     <ul class="tab_titles">
         <?php $recentActive = (count($this->recentgroups) > 0) ? ' active' : ''; ?>
         <li rel="recentgroups<?php echo $this->module->id; ?>"

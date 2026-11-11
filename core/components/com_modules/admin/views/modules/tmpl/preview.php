@@ -12,7 +12,7 @@ defined('_HZEXEC_') or die();
 $this->js('preview');
 ?>
 
-<table class="center" width="90%" id="preview-body" data-parent-text="<?php echo $this->editor->getContent('text') ?>">
+<table class="center" width="90%" id="preview-body" data-parent-text="<?php echo $this->editor->getContent('text'); ?>">
     <tbody>
         <tr>
             <td class="contentheading" colspan="2"><span id="preview-title"></span></td>

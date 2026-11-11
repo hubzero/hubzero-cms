@@ -198,10 +198,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                             strlen(PATH_ROOT),
                                         ); ?>
                                         <img src="<?= rtrim(Request::root(true), '/') . $selectedPath ?>"
-                                            alt="<?php echo $this->group->get('cn') ?>" />
+                                            alt="<?php echo $this->group->get('cn'); ?>" />
                                     <?php else : ?>
                                         <img src="<?= rtrim(Request::root(true), '/') . $default_logo ?>"
-                                            alt="<?php echo $this->group->get('cn') ?>" />
+                                            alt="<?php echo $this->group->get('cn'); ?>" />
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -354,7 +354,7 @@ $discoverabilityChecked = function ($value) use ($view) {
                         <fieldset class="preview">
                             <legend><?php echo Lang::txt('COM_GROUPS_ACCESS_SETTINGS_DESC_DESC'); ?></legend>
 
-                            <img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn') ?>" >
+                            <img src="<?php echo $default_logo; ?>" alt="<?php echo $this->group->get('cn'); ?>" >
                             <ul id="access">
                                 <?php for ($i = 0; $i < count($this->hub_group_plugins); $i++) : ?>
                                     <?php if ($this->hub_group_plugins[$i]['display_menu_tab']) : ?>

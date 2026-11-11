@@ -174,7 +174,7 @@ $checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
                 </th>
                 <th scope="col" class="priority-2">
                     <?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
-                    <?php if ($canOrder && $saveOrder) :?>
+                    <?php if ($canOrder && $saveOrder) : ?>
                         <?php echo Html::grid('order', $this->items, 'filesave.png', 'plugins.saveorder'); ?>
                     <?php endif; ?>
                 </th>
@@ -303,7 +303,7 @@ $checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
                     </td>
                     <td class="priority-2 order">
                         <?php if ($canChange) : ?>
-                            <?php if ($saveOrder) :?>
+                            <?php if ($saveOrder) : ?>
                                 <?php if ($listDirn == 'asc') : ?>
                                     <span><?php echo $orderUpAsc; ?></span>
                                     <span><?php echo $orderDownAsc; ?></span>
@@ -318,7 +318,7 @@ $checkAllLabel = Lang::txt('JGLOBAL_CHECK_ALL');
                                 id="order<?php echo $i; ?>"
                                 size="5"
                                 value="<?php echo $item->ordering; ?>"
-                                <?php echo $disabled ?>
+                                <?php echo $disabled; ?>
                                 class="text-area-order"
                             />
                             <label

@@ -35,16 +35,16 @@ Toolbar::help('JHELP_COMPONENTS_MESSAGING_READ');
     <fieldset>
         <ul class="adminformlist">
             <li><?php echo Lang::txt('COM_MESSAGES_FIELD_USER_ID_FROM_LABEL'); ?>
-            <?php echo $this->escape($this->item->from->get('name'));?></li>
+            <?php echo $this->escape($this->item->from->get('name')); ?></li>
 
             <li><?php echo Lang::txt('COM_MESSAGES_FIELD_DATE_TIME_LABEL'); ?>
-            <?php echo Date::of($this->item->date_time)->toSql();?></li>
+            <?php echo Date::of($this->item->date_time)->toSql(); ?></li>
 
             <li><?php echo Lang::txt('COM_MESSAGES_FIELD_SUBJECT_LABEL'); ?>
-            <?php echo $this->escape($this->item->subject);?></li>
+            <?php echo $this->escape($this->item->subject); ?></li>
 
             <li><?php echo Lang::txt('COM_MESSAGES_FIELD_MESSAGE_LABEL'); ?>
-            <pre class="pre_message"><?php echo $this->escape($this->item->message);?></pre></li>
+            <pre class="pre_message"><?php echo $this->escape($this->item->message); ?></pre></li>
         </ul>
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

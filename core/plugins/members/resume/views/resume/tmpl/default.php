@@ -86,7 +86,7 @@ $this->css('jobs', 'com_jobs');
                         </span>
                     </label>
                     <label>
-                        <?php echo Lang::txt('PLG_MEMBERS_RESUME_WEBSITE');?>
+                        <?php echo Lang::txt('PLG_MEMBERS_RESUME_WEBSITE'); ?>
                         <span class="selectgroup">
                             <input type="text" class="inputtxt" maxlength="190" name="url"
                                 value="<?= ($this->js->url) ? $this->js->url : $this->member->get('url') ?>"

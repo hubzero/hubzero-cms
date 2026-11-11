@@ -14,11 +14,11 @@ defined('_HZEXEC_') or die('Restricted access');
 
 $this
     ->css()
-    ->js()
+    ->js();
 ?>
 
 <header id="content-header">
-    <h2><?php echo Lang::txt('COM_CART_ORDERS') ?></h2>
+    <h2><?php echo Lang::txt('COM_CART_ORDERS'); ?></h2>
 </header>
 
 <?php $formUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>

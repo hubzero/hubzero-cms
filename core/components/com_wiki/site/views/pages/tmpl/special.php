@@ -67,7 +67,7 @@ $this->js();
                 ->set('task', $this->task)
                 ->set('sub', $this->sub)
                 ->set('book', $this->book)
-                ->display()
+                ->display();
             ?>
         </article>
     </div>

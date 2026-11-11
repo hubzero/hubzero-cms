@@ -272,7 +272,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                                     <?php echo Lang::txt('COM_ANSWERS_TOTAL_MARKET_VALUE'); ?>
                                 </th>
                                 <td>
-                                    <?php echo $this->question->reward('totalmarketvalue') ?>
+                                    <?php echo $this->question->reward('totalmarketvalue'); ?>
                                 </td>
                                 <td><?php echo Lang::txt('COM_ANSWERS_TOTAL'); ?></td>
                             </tr>

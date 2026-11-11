@@ -71,7 +71,7 @@ defined('_HZEXEC_') or die();
                 <?php foreach ($this->result['_childDocuments_'] as $tag) : ?>
                     <?php if (!empty($tag['title'][0])) : ?>
                     <li>
-                        <?php $description = !empty($tag['description']) ? $tag['description'] : $tag['title'][0];?>
+                        <?php $description = !empty($tag['description']) ? $tag['description'] : $tag['title'][0]; ?>
                         <a class="tag" href="<?= $baseTagUrl . '&tags=' . urlencode($description) ?>"
                             data-tag="<?= $this->escape($description) ?>">
                             <?php echo $this->escape($tag['title'][0]); ?>

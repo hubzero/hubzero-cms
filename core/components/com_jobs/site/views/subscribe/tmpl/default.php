@@ -62,7 +62,7 @@ defined('_HZEXEC_') or die();
 
     <form action="<?= Route::url('index.php?option=' . $this->option . '&task=confirm') ?>" method="post" id="hubForm">
         <div class="explaination">
-            <p><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_HINT_EMPLOYER_INFO') ?></p>
+            <p><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_HINT_EMPLOYER_INFO'); ?></p>
         </div>
         <fieldset id="subForm">
             <legend><?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION'); ?></legend>
@@ -88,9 +88,9 @@ defined('_HZEXEC_') or die();
         <div class="clear"></div>
 
         <div class="explaination">
-            <p><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_HINT_PICK') ?></p>
-            <h4><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_NEXT_STEP') ?></h4>
-            <p><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_HINT_PAYMENT') ?></p>
+            <p><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_HINT_PICK'); ?></p>
+            <h4><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_NEXT_STEP'); ?></h4>
+            <p><?php echo Lang::txt('COM_JOBS_SUBSCRIBE_HINT_PAYMENT'); ?></p>
         </div>
         <fieldset>
             <legend><?php echo Lang::txt('COM_JOBS_SUBSCRIPTION_DETAILS'); ?></legend>

@@ -65,7 +65,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
         <p>
             <?php if ($this->model->access('content')) : ?>
                 <span id="manage_assets">
-                    <?php if ($this->connection->provider->alias != 'github') {?>
+                    <?php if ($this->connection->provider->alias != 'github') { ?>
                         <?php
                         $uploadUrl = Route::url(
                             $this->model->link('files') . '&connection=' . $this->connection->id . '&action=upload'
@@ -86,7 +86,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                             id="a-folder" title="<?= Lang::txt('PLG_PROJECTS_FILES_FOLDER_TOOLTIP') ?>" class="fmanage">
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_NEW_FOLDER'); ?></span>
                     </a>
-                    <?php }?>
+                    <?php } ?>
                     <?php
                     $downloadUrl = Route::url(
                         $this->model->link('files') . '&connection=' . $this->connection->id . '&action=download'
@@ -98,7 +98,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                              title="<?= Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_TOOLTIP') ?>">
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD'); ?></span>
                     </a>
-                    <?php if ($this->connection->provider->alias != 'github') {?>
+                    <?php if ($this->connection->provider->alias != 'github') { ?>
                         <?php
                         $moveUrl = Route::url(
                             $this->model->link('files') . '&connection=' . $this->connection->id . '&action=move'
@@ -129,7 +129,7 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                         class="fmanage js" id="a-rename" title="<?= Lang::txt('PLG_PROJECTS_FILES_RENAME_TOOLTIP') ?>">
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_RENAME'); ?></span>
                     </a>
-                    <?php }?>
+                    <?php } ?>
                     <?php if (count($metadata)) :
                         $annotateUrl = Route::url(
                             $this->model->link('files') . '&connection=' . $this->connection->id . '&action=annotate'

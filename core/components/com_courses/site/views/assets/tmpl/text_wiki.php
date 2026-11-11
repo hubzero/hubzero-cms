@@ -34,7 +34,7 @@ Event::trigger('content.onContentPrepare', [
 ?>
 
 <header id="content-header">
-    <h2><?php echo $this->escape($this->asset->title) ?></h2>
+    <h2><?php echo $this->escape($this->asset->title); ?></h2>
 
     <div id="content-header-extra">
         <p>

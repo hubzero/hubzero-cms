@@ -150,7 +150,7 @@ $filterStateSelected = function ($value) use ($view) {
 
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">
-                    <option value="-1"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+                    <option value="-1"><?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?></option>
                     <?php echo Html::select(
                         'options',
                         Html::access('assetgroups'),

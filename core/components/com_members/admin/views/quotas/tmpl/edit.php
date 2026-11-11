@@ -43,7 +43,7 @@ $base = str_replace('/administrator', '', rtrim(Request::base(true), '/'));
     name="adminForm"
     id="item-form"
     class="editform form-validate"
-    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')); ?>">
     <?php if ($this->getError()) : ?>
         <p class="error"><?php echo $this->getError(); ?></p>
     <?php endif; ?>

@@ -54,7 +54,7 @@ $this->css();
             </label>
             <label>
                 <?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MESSAGE'); ?>
-                <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED');?></span>
+                <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
                 <textarea name="message" id="msg-message" rows="12" cols="50"></textarea>
             </label>
             <p class="submit">

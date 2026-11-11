@@ -28,7 +28,7 @@ defined('_HZEXEC_') or die();
 
             <?php $val = $this->sitename; ?>
             <p>
-                Our sponsors ask us who uses the <?php echo $this->sitename;?> and what they use it for. Registration
+                Our sponsors ask us who uses the <?php echo $this->sitename; ?> and what they use it for. Registration
                 helps us answer these questions. Usage statistics also focus our attention on improvements, making the
                 <?php echo $val; ?> experience better for <em>you</em>.
             </p>

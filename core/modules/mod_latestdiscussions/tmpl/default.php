@@ -71,7 +71,7 @@ $c = 0;
                                 echo '<a href="' . $creatorUrl . '">'
                                     . $creatorName . '</a>';
                             }
-                                echo ', in&nbsp;'
+                                echo ', in&nbsp;';
                             ?>
                         </span>
                         <span class="discussion-location">

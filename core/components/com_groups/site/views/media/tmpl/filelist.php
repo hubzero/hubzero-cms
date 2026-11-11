@@ -277,6 +277,6 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
         <?php endforeach; ?>
         <?php if (count($this->folders) == 0 && count($this->files) == 0) : ?>
             <li><em><?php echo Lang::txt('COM_GROUPS_MEDIA_NO_FILES'); ?></em></li>
-        <?php endif;?>
+        <?php endif; ?>
     </ul>
 </div>

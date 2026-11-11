@@ -148,7 +148,7 @@ $repohostChecked = function ($value) use ($view) {
 
                 <div class="form-group">
                     <label for="t_title">
-                        <?php echo Lang::txt('COM_TOOLS_TITLE') ?>: <span
+                        <?php echo Lang::txt('COM_TOOLS_TITLE'); ?>: <span
                             class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                         <input type="text" name="tool[title]" id="t_title" maxlength="127" class="form-control"
                             value="<?= $this->escape(stripslashes($this->defaults['title'])) ?>" />
@@ -158,7 +158,7 @@ $repohostChecked = function ($value) use ($view) {
 
                 <div class="form-group">
                     <label for="t_version">
-                        <?php echo Lang::txt('COM_TOOLS_VERSION') ?>:
+                        <?php echo Lang::txt('COM_TOOLS_VERSION'); ?>:
                         <?php if ($this->editversion == 'current') { ?>
                             <input type="hidden" name="tool[version]" id="t_version"
                                 value="<?= $this->escape($this->defaults['version']) ?>" />
@@ -174,7 +174,7 @@ $repohostChecked = function ($value) use ($view) {
 
                 <div class="form-group">
                     <label for="t_description">
-                        <?php echo Lang::txt('COM_TOOLS_AT_A_GLANCE') ?>: <span
+                        <?php echo Lang::txt('COM_TOOLS_AT_A_GLANCE'); ?>: <span
                             class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                         <input type="text" name="tool[description]" id="t_description" maxlength="256"
                             class="form-control"
@@ -192,7 +192,7 @@ $repohostChecked = function ($value) use ($view) {
                         );
                         ?>
                         <a class="icon-preview btn btn-secondary"
-                            href="<?= $linkUrl ?>"><?php echo Lang::txt('COM_TOOLS_PREVIEW') ?></a> 
+                            href="<?= $linkUrl ?>"><?php echo Lang::txt('COM_TOOLS_PREVIEW'); ?></a> 
                         <?php
                         $resourceUrl = Route::url(
                             'index.php?option=' . $this->option . '&controller=' . $this->controller
@@ -200,7 +200,7 @@ $repohostChecked = function ($value) use ($view) {
                         );
                         ?>
                         <a class="icon-edit btn btn-secondary"
-                            href="<?= $resourceUrl ?>"><?php echo Lang::txt('Edit Resource Page') ?></a>
+                            href="<?= $resourceUrl ?>"><?php echo Lang::txt('Edit Resource Page'); ?></a>
                     </p>
                 <?php } ?>
 
@@ -227,7 +227,7 @@ $repohostChecked = function ($value) use ($view) {
                 <?php if ($this->config->get('access-admin-component')) { ?>
                     <div class="form-group">
                         <label for="t_hostreq">
-                            <?php echo Lang::txt('COM_TOOLS_HOSTREQ') ?>:</span>
+                            <?php echo Lang::txt('COM_TOOLS_HOSTREQ'); ?>:</span>
                             <input type="text" name="tool[hostreq]" id="t_hostreq"  class="form-control"
                                 value="<?= $this->escape(stripslashes($this->defaults['hostreq'])) ?>" />
                             <span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_HOSTREQ'); ?></span>
@@ -298,7 +298,7 @@ $repohostChecked = function ($value) use ($view) {
                     <fieldset class="hidden">
                         <legend><?php echo Lang::txt('COM_TOOLS_EDIT_GIT_URL'); ?>:</legend>
                         <label for="github">
-                            <?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE') ?>: 
+                            <?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE'); ?>: 
                             <input readonly type="text" name="tool[github]" id="github"
                                 placeholder="<?= Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE') ?>"
                                 value="<?= $this->escape($this->defaults['github']) ?>" />
@@ -401,7 +401,7 @@ $repohostChecked = function ($value) use ($view) {
                     <fieldset id="gitExternalInput">
                         <legend><?php echo Lang::txt('COM_TOOLS_EDIT_GIT_URL'); ?>:</legend>
                         <label for="github">
-                            <?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE') ?>:  <span
+                            <?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE'); ?>:  <span
                                 class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                             <input type="text" name="tool[github]" id="github"
                                 placeholder="<?= Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE') ?>"

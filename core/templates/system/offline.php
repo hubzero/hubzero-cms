@@ -19,8 +19,8 @@ defined('_HZEXEC_') or die();
     class="<?php echo $this->direction; ?>">
     <head>
         <jdoc:include type="head" />
-        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/system/css/general.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl ?>/templates/system/css/offline.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/system/css/general.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo $this->baseurl; ?>/templates/system/css/offline.css" />
     </head>
     <body>
         <jdoc:include type="message" />
@@ -50,30 +50,30 @@ defined('_HZEXEC_') or die();
             <form action="<?php echo Route::url('index.php', true); ?>" method="post" id="form-login">
                 <fieldset class="input">
                     <p id="form-login-username">
-                        <label for="username"><?php echo Lang::txt('JGLOBAL_USERNAME') ?></label>
+                        <label for="username"><?php echo Lang::txt('JGLOBAL_USERNAME'); ?></label>
                         <input name="username" id="username" type="text" class="inputbox"
-                            alt="<?php echo Lang::txt('JGLOBAL_USERNAME') ?>" size="18" />
+                            alt="<?php echo Lang::txt('JGLOBAL_USERNAME'); ?>" size="18" />
                     </p>
                     <p id="form-login-password">
-                        <label for="passwd"><?php echo Lang::txt('JGLOBAL_PASSWORD') ?></label>
+                        <label for="passwd"><?php echo Lang::txt('JGLOBAL_PASSWORD'); ?></label>
                         <input type="password" name="passwd" class="inputbox" size="18"
-                            alt="<?php echo Lang::txt('JGLOBAL_PASSWORD') ?>" id="password" />
+                            alt="<?php echo Lang::txt('JGLOBAL_PASSWORD'); ?>" id="password" />
                     </p>
                     <?php if (Plugin::isEnabled('system', 'remember')) : ?>
                     <p id="form-login-remember">
-                        <label for="remember"><?php echo Lang::txt('JGLOBAL_REMEMBER_ME') ?></label>
+                        <label for="remember"><?php echo Lang::txt('JGLOBAL_REMEMBER_ME'); ?></label>
                         <input type="checkbox" name="remember" class="inputbox" value="yes"
-                            alt="<?php echo Lang::txt('JGLOBAL_REMEMBER_ME') ?>" id="remember" />
+                            alt="<?php echo Lang::txt('JGLOBAL_REMEMBER_ME'); ?>" id="remember" />
                     </p>
                     <?php  endif; ?>
                     <p id="submit-buton">
                         <label>&nbsp;</label>
                         <input type="submit" name="Submit" class="button login"
-                            value="<?php echo Lang::txt('JLOGIN') ?>" />
+                            value="<?php echo Lang::txt('JLOGIN'); ?>" />
                     </p>
                     <input type="hidden" name="option" value="com_users" />
                     <input type="hidden" name="task" value="user.login" />
-                    <input type="hidden" name="return" value="<?php echo base64_encode(Request::base()) ?>" />
+                    <input type="hidden" name="return" value="<?php echo base64_encode(Request::base()); ?>" />
                     <?php echo Html::input('token'); ?>
                 </fieldset>
             </form>

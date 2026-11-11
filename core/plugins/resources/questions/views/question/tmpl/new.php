@@ -66,7 +66,7 @@ $this->css();
 
             <label for="field-subject">
                 <?php echo Lang::txt('COM_ANSWERS_ASK_ONE_LINER'); ?>
-                : <span class="required"><?php echo Lang::txt('COM_ANSWERS_REQUIRED');?></span><br />
+                : <span class="required"><?php echo Lang::txt('COM_ANSWERS_REQUIRED'); ?></span><br />
                 <input type="text"
                     name="question[subject]"
                     id="field-subject"
@@ -97,7 +97,7 @@ $this->css();
                         value=""
                         size="5" <?php echo (int) $this->funds <= 0 ? 'disabled="disabled" ' : ''; ?>/>
                     <?php echo Lang::txt('COM_ANSWERS_YOU_HAVE'); ?> <strong><?php echo $this->escape($this->funds); ?>
-                    </strong> <?php echo Lang::txt('COM_ANSWERS_POINTS_TO_SPEND');?>
+                    </strong> <?php echo Lang::txt('COM_ANSWERS_POINTS_TO_SPEND'); ?>
                 </label>
             <?php } else { ?>
                 <input type="hidden" name="question[reward]" value="0" />

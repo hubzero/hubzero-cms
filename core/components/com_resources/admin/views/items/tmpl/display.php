@@ -155,7 +155,7 @@ $this->css();
                             ($this->filters['license']
                             == 'all')
                             ? 'selected="selected"'
-                            : '';?>><?php
+                            : ''; ?>><?php
                             echo
                             Lang::txt('COM_RESOURCES_FILTER_LICENSE_ALL');
 ?></option>
@@ -454,7 +454,7 @@ $this->css();
                     ?>
                     <a class="editlinktip hasTip"
                        href="<?php echo $hrefUrl; ?>"
-                       title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO');?>::<?php echo $info; ?>">
+                       title="<?php echo Lang::txt('COM_RESOURCES_PUBLISH_INFO'); ?>::<?php echo $info; ?>">
                         <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
                     </a>
                 </td>

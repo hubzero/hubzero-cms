@@ -204,7 +204,7 @@ $prioritySelected = function ($value) use ($view) {
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_VNC_GEOMETRY'); ?></th>
-                            <td><?php echo $this->status['vncGeometryX'] . 'x' . $this->status['vncGeometryY'];?></td>
+                            <td><?php echo $this->status['vncGeometryX'] . 'x' . $this->status['vncGeometryY']; ?></td>
                         </tr>
                         <?php if ($this->config->get('access-admin-component')) { ?>
                             <tr>
@@ -397,7 +397,7 @@ $prioritySelected = function ($value) use ($view) {
                     ?>
                     <form action="<?= $statusUrl ?>" method="post" id="hubForm" class="full">
                         <fieldset>
-                            <legend><?php echo Lang::txt('COM_TOOLS_ADMIN_CONTROLS');?></legend>
+                            <legend><?php echo Lang::txt('COM_TOOLS_ADMIN_CONTROLS'); ?></legend>
 
                             <div class="admin grid">
                                 <?php
@@ -458,7 +458,7 @@ $prioritySelected = function ($value) use ($view) {
                                 <div class="col span6">
                                     <div class="form-group">
                                         <label for="tool-newstate">
-                                            <?php echo Lang::txt('COM_TOOLS_FLIP_STATUS');?>:
+                                            <?php echo Lang::txt('COM_TOOLS_FLIP_STATUS'); ?>:
                                             <select name="newstate" id="tool-newstate" class="form-control">
                                                 <option value="1"<?= $stateSelected(1) ?>>
                                                     <?= Lang::txt('COM_TOOLS_REGISTERED') ?>
@@ -495,7 +495,7 @@ $prioritySelected = function ($value) use ($view) {
                                 <div class="col span6 omega">
                                     <div class="form-group">
                                         <label for="tool-priority">
-                                            <?php echo Lang::txt('COM_TOOLS_PRIORITY');?>:
+                                            <?php echo Lang::txt('COM_TOOLS_PRIORITY'); ?>:
                                             <select name="priority" id="tool-priority" class="form-control">
                                                 <option value="3"<?= $prioritySelected(3) ?>>
                                                     <?= Lang::txt('COM_TOOLS_NORMAL') ?>
@@ -546,7 +546,7 @@ $prioritySelected = function ($value) use ($view) {
         </div><!-- / .col span-half -->
         <div class="col span5 omega">
             <div id="whatsnext">
-                <h2 class="nextaction"><?php echo Lang::txt('COM_TOOLS_WHAT_NEXT');?></h2>
+                <h2 class="nextaction"><?php echo Lang::txt('COM_TOOLS_WHAT_NEXT'); ?></h2>
                 <?php
                 $statusUrl = Route::url(
                     'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='
@@ -555,11 +555,11 @@ $prioritySelected = function ($value) use ($view) {
                 ?>
                 <form action="<?= $statusUrl ?>" method="post" id="statusForm">
                     <fieldset>
-                        <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+                        <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                         <input type="hidden" name="task" value="update" />
                         <?php echo Html::input('token'); ?>
-                        <input type="hidden" name="id" value="<?php echo $this->status['toolid']?>" />
-                        <input type="hidden" name="toolname" value="<?php echo $this->status['toolname']?>" />
+                        <input type="hidden" name="id" value="<?php echo $this->status['toolid']; ?>" />
+                        <input type="hidden" name="toolname" value="<?php echo $this->status['toolname']; ?>" />
                         <input type="hidden" name="newstate" id="newstate" value="" />
                     </fieldset>
                 </form>

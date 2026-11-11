@@ -310,7 +310,7 @@ $roles = [
                 </td>
                 <td class="priority-5">
                     <?php if ($owner->status == 1) : ?>
-                        <time datetime="<?php echo Date::of($owner->added)->format('Y-m-d\TH:i:s\Z');?>">
+                        <time datetime="<?php echo Date::of($owner->added)->format('Y-m-d\TH:i:s\Z'); ?>">
                             <?php echo Date::of($owner->added)->toLocal('M d, Y'); ?>
                         </time>
                     <?php elseif ($owner->status == 3) : ?>

@@ -212,7 +212,7 @@ $checkAllTitle = Lang::txt('JGLOBAL_CHECK_ALL');
                         type="checkbox"
                         name="id[]"
                         id="cb<?php echo $i; ?>"
-                        value="<?php echo $item->id ?>"
+                        value="<?php echo $item->id; ?>"
                         class="checkbox-toggle"
                     />
                 </td>
@@ -268,7 +268,7 @@ $checkAllTitle = Lang::txt('JGLOBAL_CHECK_ALL');
         <?php echo $this->loadTemplate('addform'); ?>
     <?php endif; ?>
 
-    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
     <input type="hidden" name="task" value="" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />

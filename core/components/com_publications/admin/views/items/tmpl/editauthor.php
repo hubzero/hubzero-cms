@@ -68,7 +68,7 @@ $linkText = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id;
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">
-                <button type="button" onclick="submitbutton('addusers');"><?php echo Lang::txt('JSAVE');?></button>
+                <button type="button" onclick="submitbutton('addusers');"><?php echo Lang::txt('JSAVE'); ?></button>
                 <?php
                 $buttonText = Lang::txt('Cancel');
                 ?>
@@ -76,7 +76,7 @@ $linkText = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id;
                     onclick="window.parent.document.getElementById('sbox-window').close();"><?= $buttonText ?></button>
             </div>
 
-            <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR') ?>
+            <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR'); ?>
         </div>
     </fieldset>
 <?php } ?>

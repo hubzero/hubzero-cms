@@ -92,8 +92,8 @@ if (document.body && document.body.id === 'component-body') {
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">
-                <button type="button" id="btn-apply"><?php echo Lang::txt('JAPPLY');?></button>
-                <button type="button" id="btn-save"><?php echo Lang::txt('JSAVE');?></button>
+                <button type="button" id="btn-apply"><?php echo Lang::txt('JAPPLY'); ?></button>
+                <button type="button" id="btn-save"><?php echo Lang::txt('JSAVE'); ?></button>
                 <?php
                 $dataRefreshAttr = Request::getBool('refresh', 0) ? ' data-refresh="1"' : '';
                 ?>

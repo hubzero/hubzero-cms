@@ -41,9 +41,9 @@ Html::behavior('tooltip');
     <fieldset>
         <div class="configuration">
             <div class="fltrt configuration-options">
-                <button type="button" onclick="submitbutton('add');"><?php echo Lang::txt('JACTION_CREATE');?></button>
+                <button type="button" onclick="submitbutton('add');"><?php echo Lang::txt('JACTION_CREATE'); ?></button>
                 <?php $txt = Lang::txt('JACTION_DELETE'); ?>
-                <button type="button" onclick="submitbutton('remove');"><?php echo $txt;?></button>
+                <button type="button" onclick="submitbutton('remove');"><?php echo $txt; ?></button>
             </div>
             <?php echo Lang::txt('COM_GROUPS_ROLES'); ?>
         </div>

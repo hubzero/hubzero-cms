@@ -71,7 +71,7 @@ defined('_HZEXEC_') or die();
                             <li class="pass-empty"><?php echo $rule; ?></li>
                         <?php endif; ?>
                     <?php endif; ?>
-                <?php endforeach ?>
+                <?php endforeach; ?>
             </ul>
         <?php endif; ?>
     </div>

@@ -220,7 +220,7 @@ if (!$tmpl && !$no_html) {
                 <input type="submit" value="<?php echo Lang::txt('COM_SUPPORT_QUERY_SAVE'); ?>" />
             </span>
             <span class="configuration">
-                <?php echo Lang::txt('COM_SUPPORT_QUERY_BUILDER') ?>
+                <?php echo Lang::txt('COM_SUPPORT_QUERY_BUILDER'); ?>
             </span>
         </h3>
         <fieldset class="wrapper">

@@ -15,13 +15,13 @@ defined('_HZEXEC_') or die();
 $published = $this->filters['published'];
 ?>
 <fieldset class="batch">
-    <legend><?php echo Lang::txt('COM_CONTENT_BATCH_OPTIONS');?></legend>
+    <legend><?php echo Lang::txt('COM_CONTENT_BATCH_OPTIONS'); ?></legend>
     <p><?php echo Lang::txt('COM_CONTENT_BATCH_TIP'); ?></p>
 
     <div class="grid">
         <div class="col span6">
             <div class="input-wrap">
-                <?php echo Html::batch('access');?>
+                <?php echo Html::batch('access'); ?>
             </div>
 
             <div class="input-wrap">
@@ -30,7 +30,7 @@ $published = $this->filters['published'];
         </div>
         <div class="col span6">
             <?php if ($published >= 0) : ?>
-                <?php echo Html::batch('item', 'com_content');?>
+                <?php echo Html::batch('item', 'com_content'); ?>
             <?php endif; ?>
 
             <div class="input-wrap">

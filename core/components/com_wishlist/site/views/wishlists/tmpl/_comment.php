@@ -234,7 +234,7 @@ $permalinkTxt = Lang::txt('COM_WISHLIST_PERMALINK');
 
                         <input type="hidden"
                             name="comment[item_type]"
-                            value="<?php echo $this->comment->get('item_type') ?>" />
+                            value="<?php echo $this->comment->get('item_type'); ?>" />
                         <input type="hidden"
                             name="comment[item_id]"
                             value="<?php echo $this->comment->get('item_id'); ?>" />

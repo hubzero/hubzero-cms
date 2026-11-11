@@ -102,7 +102,7 @@ Toolbar::cancel();
                                                         == $role->alias
                                             ) {
                                                 echo ' selected="selected"';
-                                            }?>><?php
+                                            } ?>><?php
                                                 echo $this->escape(stripslashes($role->title));
 ?></option>
                                             <?php

@@ -254,7 +254,7 @@ foreach ($this->rows as $row) {
                     <a
                         class="state <?php echo $class; ?>"
                         href="<?php echo $stateUrl; ?>"
-                        title="<?php echo $stateTitle;?>"
+                        title="<?php echo $stateTitle; ?>"
                     >
                         <span><?php echo $alt; ?></span>
                     </a>
@@ -310,7 +310,7 @@ foreach ($this->rows as $row) {
         </tbody>
     </table>
 
-    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
     <input type="hidden" name="task" value="<?php echo $this->task; ?>" />
     <input type="hidden" name="boxchecked" value="0" />

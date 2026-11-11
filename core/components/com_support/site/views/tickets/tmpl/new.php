@@ -49,7 +49,7 @@ endif;
 
     <?php if ($this->getError()) : ?>
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
-    <?php endif ?>
+    <?php endif; ?>
 
     <?php
     $newUrl = Route::url(
@@ -78,7 +78,7 @@ endif;
         <div class="explaination">
             <p><?php echo Lang::txt('COM_SUPPORT_TROUBLE_OTHER_OPTIONS'); ?></p>
         </div>
-        <?php endif ?>
+        <?php endif; ?>
         <fieldset>
             <legend><?php echo Lang::txt('COM_SUPPORT_TROUBLE_USER_INFORMATION'); ?></legend>
 

@@ -75,7 +75,7 @@ endforeach;
     <ul class="unit">
 
         <?php foreach ($units as $unit) : ?>
-        <li class="unit-item" id="unit_<?php echo $unit->get('id') ?>">
+        <li class="unit-item" id="unit_<?php echo $unit->get('id'); ?>">
             <div class="unit-title-arrow"></div>
             <div class="unit-edit-container">
                 <div class="title unit-title">
@@ -131,7 +131,7 @@ endforeach;
                                 <div class="label-input-pair">
                                     <label for="title">Title:</label>
                                     <input class="" name="title" type="text"
-                                        value="<?php echo $this->escape($agt->get('title')) ?>" />
+                                        value="<?php echo $this->escape($agt->get('title')); ?>" />
                                 </div>
                                 <div class="label-input-pair">
                                     <label for="state">Published:</label>
@@ -149,14 +149,14 @@ endforeach;
                                 <div class="label-input-pair">
                                     <label for="description">Short Description:</label>
                                     <input type="text" name="description"
-                                        value="<?php echo $this->escape($agt->get('description')) ?>">
+                                        value="<?php echo $this->escape($agt->get('description')); ?>">
                                     <span><?= Lang::txt('PLG_COURSES_OUTLINE_FIELD_SHORT_DESCRIPTION_HINT') ?></span>
                                 </div>
                                 <input class="asset-group-title-save" type="submit" value="Save" />
                                 <input class="asset-group-title-cancel" type="reset" value="Cancel" />
-                                <input type="hidden" name="course_id" value="<?php echo $course->get('id') ?>" />
-                                <input type="hidden" name="offering" value="<?php echo $offering->get('alias') ?>" />
-                                <input type="hidden" name="id" value="<?php echo $agt->get('id') ?>" />
+                                <input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
+                                <input type="hidden" name="offering" value="<?php echo $offering->get('alias'); ?>" />
+                                <input type="hidden" name="id" value="<?php echo $agt->get('id'); ?>" />
                             </form>
                         </div>
                         <div class="asset-group-container">

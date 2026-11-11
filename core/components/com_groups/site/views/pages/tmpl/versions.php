@@ -64,7 +64,7 @@ $this
                     </a>
                     <span class="version-jumpto-container">
                         <select class="btn version-jumpto icon-prev">
-                            <?php foreach ($this->page->versions() as $version) :?>
+                            <?php foreach ($this->page->versions() as $version) : ?>
                                 <?php $v1 = $version->get('version'); ?>
                                 <?php $v0 = $version->get('version'); ?>
                                 <option value="<?php echo $v1; ?>"><?php echo $v0; ?></option>

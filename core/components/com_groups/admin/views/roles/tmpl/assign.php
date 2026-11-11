@@ -61,7 +61,7 @@ $redirectUrl = Route::url(
                 <button type="button" id="btn-save"><?php echo Lang::txt('COM_GROUPS_MEMBER_SAVE'); ?></button>
                 <button type="button" id="btn-cancel"><?php echo Lang::txt('COM_GROUPS_MEMBER_CANCEL'); ?></button>
             </div>
-            <?php echo Lang::txt('COM_GROUPS_ROLE_ASSIGN') ?>
+            <?php echo Lang::txt('COM_GROUPS_ROLE_ASSIGN'); ?>
         </div>
     </fieldset>
 <?php } ?>

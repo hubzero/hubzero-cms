@@ -103,7 +103,7 @@ $this
                             <input type="hidden" name="toolname"
                                 value="<?= $this->escape($this->status['toolname']) ?>" />
                             <?php echo Html::input('token'); ?>
-                            <input type="submit" value="<?php echo $submitlabel ?>" />
+                            <input type="submit" value="<?php echo $submitlabel; ?>" />
                         </fieldset>
                     </form>
             <?php } ?>

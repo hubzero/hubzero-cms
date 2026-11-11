@@ -12,7 +12,7 @@
 defined('_HZEXEC_') or die();
 ?>
 
-<ul class="file-selector" id="file-selector" data-projectid="<?php echo $this->model->get('id');?>">
+<ul class="file-selector" id="file-selector" data-projectid="<?php echo $this->model->get('id'); ?>">
     <?php $id = 'dir-' . strtolower(\Components\Projects\Helpers\Html::generateCode(5, 5, 0, 1, 1)); ?>
     <li class="type-folder collapsed connection" id="<?php echo $id; ?>" data-connection="-1" data-path=".">
         <span class="item-info"></span>
@@ -29,7 +29,7 @@ defined('_HZEXEC_') or die();
         <?php $id = 'dir-' . strtolower(\Components\Projects\Helpers\Html::generateCode(5, 5, 0, 1, 1)); ?>
         <li class="type-folder collapsed connection"
             id="<?php echo $id; ?>"
-            data-connection="<?php echo $connection->id ?>"
+            data-connection="<?php echo $connection->id; ?>"
             data-path=".">
             <span class="item-info"></span>
             <span class="item-wrap collapsor">

@@ -35,7 +35,7 @@ if ($this->disabled) : ?>
             </ul>
         </div>
         <?php
-        if ($this->showDoc && !empty($this->ftpDoc)) :?>     
+        if ($this->showDoc && !empty($this->ftpDoc)) : ?>     
             <p class="ftpDoc"><a href="<?= $this->ftpDoc ?>" target="_blank"><?= Lang::txt('Download Guide') ?></a></p>
         <?php endif; ?>
     <?php else : ?>

@@ -55,13 +55,13 @@ $elementVal = $this->escape($this->item->element);
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
-                <legend><span><?php echo Lang::txt('JDETAILS') ?></span></legend>
+                <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <!--
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('name'); ?><br />
                     <?php echo $this->form->getInput('name'); ?>
-                    <span class="readonly plg-name"><?php echo Lang::txt($this->item->name);?></span>
+                    <span class="readonly plg-name"><?php echo Lang::txt($this->item->name); ?></span>
                 </div>
                 -->
 

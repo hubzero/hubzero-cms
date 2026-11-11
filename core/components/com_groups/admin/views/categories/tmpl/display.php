@@ -68,11 +68,11 @@ $formAction = Route::url(
                             <?php if ($canDo->get('core.edit')) : ?>
                                 <input type="checkbox"
                                     name="id[]"
-                                    id="cb<?php echo $k;?>"
+                                    id="cb<?php echo $k; ?>"
                                     value="<?php echo $category->get('id'); ?>"
                                     class="checkbox-toggle"
                                 />
-                                <label for="cb<?php echo $k;?>" class="sr-only visually-hidden">
+                                <label for="cb<?php echo $k; ?>" class="sr-only visually-hidden">
                                     <?php echo $category->get('id'); ?>
                                 </label>
                             <?php endif; ?>

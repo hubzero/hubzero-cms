@@ -75,7 +75,7 @@ $formAction = Route::url(
             </div>
             <div class="filter-select col span7">
                 <select name="filter_component" class="inputbox" class="filter filter-submit">
-                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_COMPONENT');?></option>
+                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_COMPONENT'); ?></option>
                     <?php
                     if (!empty($this->components)) :
                         echo Html::select('options', $this->components, 'value', 'text', $this->filters['component']);
@@ -87,7 +87,7 @@ $formAction = Route::url(
                     name="filter_level_start"
                     class="inputbox filter filter-submit"
                 >
-                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_LEVEL_START');?></option>
+                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_LEVEL_START'); ?></option>
                     <?php echo Html::select(
                         'options',
                         $this->levels,
@@ -98,7 +98,7 @@ $formAction = Route::url(
                 </select>
 
                 <select name="filter_level_end" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_LEVEL_END');?></option>
+                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_LEVEL_END'); ?></option>
                     <?php echo Html::select('options', $this->levels, 'value', 'text', $this->filters['level_end']); ?>
                 </select>
             </div>
@@ -108,10 +108,10 @@ $formAction = Route::url(
     <table class="adminlist">
         <caption>
             <?php echo Lang::txt('COM_MEMBERS_DEBUG_LEGEND'); ?>
-            <span class="swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_NO_CHECK', '-');?></span>
-            <span class="check-0 swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_IMPLICIT_DENY', '-');?></span>
-            <span class="check-a swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_ALLOW', '&#10003;');?></span>
-            <span class="check-d swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_DENY', '&#10007;');?></span>
+            <span class="swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_NO_CHECK', '-'); ?></span>
+            <span class="check-0 swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_IMPLICIT_DENY', '-'); ?></span>
+            <span class="check-a swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_ALLOW', '&#10003;'); ?></span>
+            <span class="check-d swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_EXPLICIT_DENY', '&#10007;'); ?></span>
         </caption>
         <thead>
             <tr>

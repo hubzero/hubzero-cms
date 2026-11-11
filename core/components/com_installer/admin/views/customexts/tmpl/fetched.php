@@ -112,7 +112,7 @@ $formAction = Route::url(
         </table>
     <?php endif; ?>
 
-    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
     <input type="hidden" name="task" value="doupdate" />
     <input type="hidden" name="boxchecked" value="0" />

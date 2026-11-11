@@ -43,7 +43,7 @@ $modalUrl = Route::url(
                 $onclick = 'if (window.parent) window.parent.' . $this->escape($function) . '(\'\', \''
                     . Lang::txt('JLIB_FORM_SELECT_USER') . '\');';
                 ?>
-                <button type="button" onclick="<?= $onclick ?>"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
+                <button type="button" onclick="<?= $onclick ?>"><?php echo Lang::txt('JOPTION_NO_USER'); ?></button>
             </div>
             <div class="col span4">
                 <label for="filter_group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USER_GROUP'); ?></label>

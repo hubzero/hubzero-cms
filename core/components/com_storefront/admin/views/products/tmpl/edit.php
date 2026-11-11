@@ -76,13 +76,13 @@ $activeStatusSelected = function ($value) use ($view) {
 
         // do field validation
         if (document.getElementById('field-title').value == ''){
-            alert("<?php echo 'Title cannot be empty' ?>");
+            alert("<?php echo 'Title cannot be empty'; ?>");
         }
         else if (document.getElementById('field-pTagline').value == ''){
-            alert("<?php echo 'Tagline cannot be empty' ?>");
+            alert("<?php echo 'Tagline cannot be empty'; ?>");
         }
         else if (document.getElementById('field-description').value == ''){
-            alert("<?php echo 'Description cannot be empty' ?>");
+            alert("<?php echo 'Description cannot be empty'; ?>");
         }
         else {
             submitform(pressbutton);

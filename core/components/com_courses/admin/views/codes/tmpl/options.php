@@ -68,11 +68,11 @@ $nextDay   = date("d", mktime(0, 0, 0, $month + 1, $day, $year));
                 <button
                     type="button"
                     id="btn-generate"
-                    data-redirect="<?php echo $routeUrl; ?>"><?php echo Lang::txt('COM_COURSES_GENERATE');?></button>
-                <button type="button" id="btn-cancel"><?php echo Lang::txt('JCANCEL');?></button>
+                    data-redirect="<?php echo $routeUrl; ?>"><?php echo Lang::txt('COM_COURSES_GENERATE'); ?></button>
+                <button type="button" id="btn-cancel"><?php echo Lang::txt('JCANCEL'); ?></button>
             </div>
 
-            <?php echo Lang::txt('COM_COURSES_GENERATE_CODES') ?>
+            <?php echo Lang::txt('COM_COURSES_GENERATE_CODES'); ?>
         </div>
     </fieldset>
 <?php } ?>

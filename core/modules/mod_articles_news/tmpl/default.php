@@ -10,7 +10,7 @@
 defined('_HZEXEC_') or die;
 ?>
 <div class="newsflash<?php echo $moduleclass_sfx; ?>">
-    <?php foreach ($list as $item) :?>
+    <?php foreach ($list as $item) : ?>
         <?php require $this->getLayoutPath('_item'); ?>
     <?php endforeach; ?>
 </div>

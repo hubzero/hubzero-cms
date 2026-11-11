@@ -48,7 +48,7 @@ $typeSelectLabel = Lang::txt('COM_SEARCH_FIELDS_BOOST_TYPE');
             <input name="boost[strength]"
                 type="number"
                 step="1"
-                value="<?php echo $boost->getStrength();?>" />
+                value="<?php echo $boost->getStrength(); ?>" />
         </label>
     </div>
 </fieldset>

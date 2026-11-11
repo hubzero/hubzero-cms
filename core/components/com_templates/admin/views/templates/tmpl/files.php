@@ -44,7 +44,7 @@ $editBaseUrl = 'index.php?option=com_templates'
                 id="adminForm"
             >
                 <fieldset class="adminform" id="template-manager-description">
-                    <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION');?></legend>
+                    <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_DESCRIPTION'); ?></legend>
 
                     <div class="input-wrap">
                         <?php
@@ -59,7 +59,7 @@ $editBaseUrl = 'index.php?option=com_templates'
                     </div>
                 </fieldset>
                 <fieldset class="adminform" id="template-manager-files">
-                    <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_MASTER_FILES');?></legend>
+                    <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_MASTER_FILES'); ?></legend>
 
                     <ul class="item-list layout">
                         <?php foreach (($this->files['main'] ?? []) as $key => $file) : ?>
@@ -97,7 +97,7 @@ $editBaseUrl = 'index.php?option=com_templates'
                 name="copyForm"
             >
                 <fieldset class="adminform" id="template-manager-css">
-                    <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY');?></legend>
+                    <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_COPY'); ?></legend>
                     <div class="input-wrap">
                         <label
                             id="new_name"
@@ -118,7 +118,7 @@ $editBaseUrl = 'index.php?option=com_templates'
 
             <?php echo Html::sliders('panel', Lang::txt('COM_TEMPLATES_TEMPLATE_ASSETS'), 'tmeplate-assets'); ?>
             <!-- <fieldset class="adminform" id="template-manager-css">
-                <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_ASSETS');?></legend> -->
+                <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_ASSETS'); ?></legend> -->
 
                 <?php if (!empty($this->files['clo'])) : ?>
                     <ul class="item-list css">
@@ -139,7 +139,7 @@ $editBaseUrl = 'index.php?option=com_templates'
 
             <?php echo Html::sliders('panel', Lang::txt('COM_TEMPLATES_TEMPLATE_HTML'), 'tmeplate-html'); ?>
             <!-- <fieldset class="adminform" id="template-manager-html">
-                <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_HTML');?></legend> -->
+                <legend><?php echo Lang::txt('COM_TEMPLATES_TEMPLATE_HTML'); ?></legend> -->
 
                 <?php if (!empty($this->files['html'])) : ?>
                     <ul class="item-list css">

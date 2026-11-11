@@ -25,10 +25,10 @@ defined('_HZEXEC_') or die();
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($this->config as $key => $value) :?>
+            <?php foreach ($this->config as $key => $value) : ?>
                 <tr>
                     <td>
-                        <?php echo $key;?>
+                        <?php echo $key; ?>
                     </td>
                     <td>
                         <?php
@@ -54,7 +54,7 @@ defined('_HZEXEC_') or die();
                         ?>
                     </td>
                 </tr>
-            <?php endforeach;?>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </fieldset>

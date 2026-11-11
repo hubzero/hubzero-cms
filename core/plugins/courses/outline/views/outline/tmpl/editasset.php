@@ -55,7 +55,7 @@ $tool_path = $config->get('tool_path');
         <?php if ($asset->get('type') != 'form') : ?>
         <p>
             <label for="title">URL:</label>
-            <input type="text" name="url" value="<?php echo $this->escape($asset->get('url')) ?>"
+            <input type="text" name="url" value="<?php echo $this->escape($asset->get('url')); ?>"
                 placeholder="Asset URL" />
         </p>
         <?php endif; ?>
@@ -119,7 +119,7 @@ $tool_path = $config->get('tool_path');
             <select name="scope_id">
                 <?php foreach ($assetgroups as $assetgroup) : ?>
                     <?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>>
+                    <option value="<?php echo $assetgroup['id']; ?>" <?php echo $selected; ?>>
                         <?= $this->escape($assetgroup['title']) ?>
                     </option>
                 <?php endforeach; ?>
@@ -167,8 +167,8 @@ $tool_path = $config->get('tool_path');
                             ? 'selected="selected"'
                             : '';
                         ?>
-                        <option value="<?php echo $this->escape($tool->alias) ?>" <?php echo $selected ?>>
-                            <?php echo $this->escape($tool->title) ?>
+                        <option value="<?php echo $this->escape($tool->alias); ?>" <?php echo $selected; ?>>
+                            <?php echo $this->escape($tool->title); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -188,11 +188,11 @@ $tool_path = $config->get('tool_path');
             ?>
         </div>
 
-        <input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
-        <input type="hidden" name="original_scope_id" value="<?php echo $this->scope_id ?>" />
+        <input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
+        <input type="hidden" name="original_scope_id" value="<?php echo $this->scope_id; ?>" />
         <input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
         <input type="hidden" name="section_id" value="<?php echo $this->course->offering()->section()->get('id'); ?>" />
-        <input type="hidden" name="id" value="<?php echo $asset->get('id') ?>" />
+        <input type="hidden" name="id" value="<?php echo $asset->get('id'); ?>" />
 
         <input type="button" value="Cancel" class="cancel" />
         <input type="submit" value="Submit" class="submit" />

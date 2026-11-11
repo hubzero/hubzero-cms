@@ -18,7 +18,7 @@ $dep  = $this->dep;
 ?>
 
 <header id="content-header">
-    <h2>Results: <?php echo $this->title ?></h2>
+    <h2>Results: <?php echo $this->title; ?></h2>
 
     <div id="content-header-extra">
         <p>
@@ -69,12 +69,12 @@ $dep  = $this->dep;
     <?php if ($this->dep->getAllowedAttempts() > 1) : ?>
         <?php $attempt = $resp->getAttemptNumber(); ?>
         <p>
-            You are allowed <strong><?php echo $this->dep->getAllowedAttempts() ?></strong> attempts.
+            You are allowed <strong><?php echo $this->dep->getAllowedAttempts(); ?></strong> attempts.
             <?php $val = \Components\Courses\Helpers\Form::toOrdinal((int) $attempt); ?>
             This was your <strong><?php echo $val; ?></strong> attempt.
         </p>
-        <form action="<?php echo Route::url($this->base . '&task=form.complete') ?>">
-            <input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
+        <form action="<?php echo Route::url($this->base . '&task=form.complete'); ?>">
+            <input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb(); ?>" />
             <?php $completedAttempts = $resp->getCompletedAttempts(); ?>
             <?php if ($completedAttempts && count($completedAttempts) > 0) : ?>
                 <p>

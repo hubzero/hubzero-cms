@@ -105,7 +105,7 @@ $attModel = new \Components\Publications\Models\Attachments($this->database);
                 echo \Components\Publications\Helpers\Html::showLicense(
                     $this->publication,
                     'play',
-                ) ?>
+                ); ?>
             </div>
         </div>
         <div class="col span2 omega">

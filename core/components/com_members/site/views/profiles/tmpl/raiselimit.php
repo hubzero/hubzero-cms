@@ -68,7 +68,7 @@ $this->css();
                                 name="login"
                                 id="login"
                                 type="hidden"
-                                value="<?php echo $this->escape($this->profile->get('username'));?>"/>
+                                value="<?php echo $this->escape($this->profile->get('username')); ?>"/>
                         </td>
                     </tr>
                     <?php } ?>

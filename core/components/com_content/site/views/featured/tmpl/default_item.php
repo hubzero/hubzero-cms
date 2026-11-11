@@ -160,7 +160,7 @@ $canEdit = $this->item->params->get('access-edit');
                     . $author . '</a>';
                 echo Lang::txt('COM_CONTENT_WRITTEN_BY', $authorLink);
                 ?>
-            <?php else :?>
+            <?php else : ?>
                 <?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
             <?php endif; ?>
         </dd>

@@ -113,7 +113,7 @@ endforeach;
             <select name="scope_id">
                 <?php foreach ($assetgroups as $assetgroup) : ?>
                     <?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>>
+                    <option value="<?php echo $assetgroup['id']; ?>" <?php echo $selected; ?>>
                         <?= $this->escape($assetgroup['title']) ?>
                     </option>
                 <?php endforeach; ?>
@@ -148,11 +148,11 @@ endforeach;
             </div>
         <?php endif; ?>
 
-        <input type="hidden" name="original_scope_id" value="<?php echo $this->scope_id ?>" />
-        <input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
+        <input type="hidden" name="original_scope_id" value="<?php echo $this->scope_id; ?>" />
+        <input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
         <input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
         <input type="hidden" name="section_id" value="<?php echo $this->course->offering()->section()->get('id'); ?>" />
-        <input type="hidden" name="id" id="asset_id" value="<?php echo $id ?>" />
+        <input type="hidden" name="id" id="asset_id" value="<?php echo $id; ?>" />
         <input type="hidden" name="type" value="wiki" />
 
         <input type="submit" value="Submit" class="wiki-submit submit" />

@@ -39,8 +39,8 @@ $this
                     <th scope="col"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_SENT_WHEN'); ?></th>
                 <?php foreach ($this->notimethods as $notimethod) { ?>
                     <th scope="col"><input type="checkbox" name="override[<?php echo $notimethod; ?>]" value="all"
-                        onclick="HUB.MembersMsg.checkAll(this, 'opt-<?php echo $notimethod;?>');" />
-                        <?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_' . strtoupper($notimethod));?></th>
+                        onclick="HUB.MembersMsg.checkAll(this, 'opt-<?php echo $notimethod; ?>');" />
+                        <?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_' . strtoupper($notimethod)); ?></th>
                 <?php } ?>
                 </tr>
             </thead>

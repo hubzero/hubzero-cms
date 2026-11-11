@@ -79,7 +79,7 @@ foreach ($this->calendars as $calendar) {
                     $cals[] = $calendar->get('id');
                 }
                 ?>
-                <label <?php echo (!$enabled) ? 'class="disabled"' : '' ?>>
+                <label <?php echo (!$enabled) ? 'class="disabled"' : ''; ?>>
                     <input <?php echo (!$enabled) ? 'disabled="disabled"' : 'checked="checked"'; ?>
                         name="subscribe[]"
                         type="checkbox"

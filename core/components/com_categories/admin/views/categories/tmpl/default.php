@@ -94,13 +94,13 @@ $formAction = Route::url(
             </div>
 
             <div class="filter-select span8 align-right">
-                <label for="filter_level"><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></label>
+                <label for="filter_level"><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS'); ?></label>
                 <select name="filter_level" id="filter_level" class="inputbox" class="filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS');?></option>
-                    <?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->filters['level']);?>
+                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_MAX_LEVELS'); ?></option>
+                    <?php echo Html::select('options', $this->f_levels, 'value', 'text', $this->filters['level']); ?>
                 </select>
 
-                <label for="filter_published"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></label>
+                <label for="filter_published"><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></label>
                 <?php
                 $pubOptions = Html::grid('publishedOptions');
                 $pubFilter = $this->filters['published'];
@@ -122,7 +122,7 @@ $formAction = Route::url(
                     ); ?>
                 </select>
 
-                <label for="filter_access"><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></label>
+                <label for="filter_access"><?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?></label>
                 <?php $accessFilter = $this->filters['access']; ?>
                 <select name="filter_access"
                     id="filter_access"
@@ -140,7 +140,7 @@ $formAction = Route::url(
                     ); ?>
                 </select>
 
-                <label for="filter_language"><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE');?></label>
+                <label for="filter_language"><?php echo Lang::txt('JOPTION_SELECT_LANGUAGE'); ?></label>
                 <?php
                 $langOptions = Html::contentlanguage(
                     'existing',
@@ -192,7 +192,7 @@ $formAction = Route::url(
                 </th>
                 <th class="priority-2">
                     <?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'lft', $listDirn, $listOrder); ?>
-                    <?php if ($saveOrder) :?>
+                    <?php if ($saveOrder) : ?>
                         <?php echo Html::grid('order', $this->items, 'filesave.png', 'categories.saveorder'); ?>
                     <?php endif; ?>
                 </th>
@@ -269,7 +269,7 @@ $formAction = Route::url(
                         <?php else : ?>
                             <?php echo $this->escape($item->title); ?>
                         <?php endif; ?>
-                        <p class="smallsub" title="<?php echo $this->escape($item->path);?>">
+                        <p class="smallsub" title="<?php echo $this->escape($item->path); ?>">
                             <?php
                             if ($item->level - 1  > 0) {
                                 echo str_repeat('<span class="gi">|&mdash;</span>', $item->level - 1);
@@ -293,7 +293,7 @@ $formAction = Route::url(
                         </p>
                     </td>
                     <td class="priority-2 center">
-                        <?php echo Html::grid('published', $item->get('published'), $i, 'categories.', $canChange);?>
+                        <?php echo Html::grid('published', $item->get('published'), $i, 'categories.', $canChange); ?>
                     </td>
                     <td class="priority-2 order">
                         <?php if ($canChange) : ?>
@@ -339,25 +339,25 @@ $formAction = Route::url(
                             />
                             <?php $originalOrders[] = $orderkey + 1; ?>
                         <?php else : ?>
-                            <?php echo $orderkey + 1;?>
+                            <?php echo $orderkey + 1; ?>
                         <?php endif; ?>
                     </td>
                     <td class="priority-3 center">
                         <?php echo $this->escape($item->level); ?>
                     </td>
                     <td class="priority-4 center nowrap">
-                        <?php if ($item->language == '*') :?>
+                        <?php if ($item->language == '*') : ?>
                             <?php echo Lang::txt('JALL', 'language'); ?>
-                        <?php else :?>
+                        <?php else : ?>
                             <?php
                             echo $item->language_title
                                 ? $this->escape($item->language_title)
                                 : Lang::txt('JUNDEFINED');
                             ?>
-                        <?php endif;?>
+                        <?php endif; ?>
                     </td>
                     <td class="priority-4 center">
-                        <span title="<?php echo sprintf('%d-%d', $item->lft, $item->rgt);?>">
+                        <span title="<?php echo sprintf('%d-%d', $item->lft, $item->rgt); ?>">
                             <?php echo (int) $item->id; ?>
                         </span>
                     </td>
@@ -373,9 +373,9 @@ $formAction = Route::url(
     ?>
     <?php if ($canCreate & $canEditExt && $canEditState) : ?>
         <?php echo $this->loadTemplate('batch'); ?>
-    <?php endif;?>
+    <?php endif; ?>
 
-    <input type="hidden" name="extension" value="<?php echo $this->escape($extension);?>" />
+    <input type="hidden" name="extension" value="<?php echo $this->escape($extension); ?>" />
     <input type="hidden" name="task" value="" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="filter_order" value="<?php echo $this->escape($listOrder); ?>" />

@@ -24,5 +24,5 @@ defined('_HZEXEC_') or die();
     <?php
     $newUrl = Route::url($this->resource->link() . '&active=questions&action=new');
     ?>
-    (<a href="<?= $newUrl ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION');?></a>)
+    (<a href="<?= $newUrl ?>"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION'); ?></a>)
 </p>

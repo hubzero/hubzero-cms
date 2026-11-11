@@ -51,17 +51,17 @@ $this
         <?php foreach (\Components\Courses\Models\PdfForm::getActiveList() as $form) : ?>
             <tr>
                 <td>
-                    <span class="title"><?php echo $form['title'] ?></span>
+                    <span class="title"><?php echo $form['title']; ?></span>
                     <?php $routeUrl = Route::url('index.php?option=com_courses&controller=form'); ?>
                     <form action="<?php echo $routeUrl; ?>" method="get">
                         <input type="hidden" name="task" value="deploy" />
-                        <input type="hidden" name="formId" value="<?php echo $form['id'] ?>" />
+                        <input type="hidden" name="formId" value="<?php echo $form['id']; ?>" />
                         <button type="submit"><?php echo Lang::txt('COM_COURSES_DEPLOY'); ?></button>
                     </form>
                     <?php $routeUrl = Route::url('index.php?option=com_courses&controller=form'); ?>
                     <form action="<?php echo $routeUrl; ?>" method="get">
                         <input type="hidden" name="task" value="layout" />
-                        <input type="hidden" name="formId" value="<?php echo $form['id'] ?>" />
+                        <input type="hidden" name="formId" value="<?php echo $form['id']; ?>" />
                         <button type="submit"><?php echo Lang::txt('JACTION_EDIT'); ?></button>
                     </form>
                     <br />
@@ -79,7 +79,7 @@ $this
                         <?php foreach ($deps as $dep) : ?>
                             <tr>
                                 <td>
-                                    <span class="state"><?php echo $dep->getState() ?></span>
+                                    <span class="state"><?php echo $dep->getState(); ?></span>
                                     <?php
                                         $routeUrl = Route::url(
                                             $this->base . '&task=showDeployment&id=' . $dep->getId() . '&formId='
@@ -87,15 +87,15 @@ $this
                                         );
                                     ?>
                                     <a href="<?php echo $routeUrl; ?>">
-                                        <?php echo $dep->getLink() ?>
+                                        <?php echo $dep->getLink(); ?>
                                     </a>
                                 </td>
                                 <td>
                                     <?php $val = date('Y-m-d H:i', strtotime($dep->getStartTime())); ?>
-                                    <?php echo $this->escape($dep->getUserName()) ?></td><td><?php echo $val; ?>
+                                    <?php echo $this->escape($dep->getUserName()); ?></td><td><?php echo $val; ?>
                                 </td>
                                 <td>
-                                    <?php echo date('Y-m-d H:i', strtotime($dep->getEndTime())) ?>
+                                    <?php echo date('Y-m-d H:i', strtotime($dep->getEndTime())); ?>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -103,8 +103,8 @@ $this
                     </table>
                     <?php endif; ?>
                 </td>
-                <td><?php echo date('Y-m-d H:i', strtotime($form['created'])) ?></td>
-                <td><?php echo date('Y-m-d H:i', strtotime($form['updated'])) ?></td>
+                <td><?php echo date('Y-m-d H:i', strtotime($form['created'])); ?></td>
+                <td><?php echo date('Y-m-d H:i', strtotime($form['updated'])); ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>

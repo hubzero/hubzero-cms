@@ -52,7 +52,7 @@ $saveOrder = $listOrder == 'ordering';
 
         <div class="filter-select fltrt">
             <select name="filter_state" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
+                <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
                 <?php echo Html::select(
                     'options',
                     \Components\Plugins\Helpers\Plugins::stateOptions(),
@@ -60,11 +60,11 @@ $saveOrder = $listOrder == 'ordering';
                     'text',
                     $this->filters['state'],
                     true,
-                );?>
+                ); ?>
             </select>
 
             <select name="filter_access" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+                <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?></option>
                 <?php
                 $val = Html::select(
                     'options',
@@ -98,7 +98,7 @@ $saveOrder = $listOrder == 'ordering';
                 </th>
                 <th scope="col" class="priority-2">
                     <?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
-                    <?php if ($canOrder && $saveOrder) :?>
+                    <?php if ($canOrder && $saveOrder) : ?>
                         <?php echo Html::grid('order', $this->items, 'filesave.png', 'plugins.saveorder'); ?>
                     <?php endif; ?>
                 </th>
@@ -171,7 +171,7 @@ $saveOrder = $listOrder == 'ordering';
                     </td>
                     <td class="priority-2 order">
                         <?php if ($canChange) : ?>
-                            <?php if ($saveOrder) :?>
+                            <?php if ($saveOrder) : ?>
                                 <?php if ($listDirn == 'asc') : ?>
                                     <span><?php echo $this->items->pagination->orderUpIcon($i, (@$folders[$i - 1]
                                         == $item->folder), 'orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
@@ -208,7 +208,7 @@ $saveOrder = $listOrder == 'ordering';
                                 name="order[]"
                                 size="5"
                                 value="<?php echo $item->ordering; ?>"
-                                <?php echo $disabled ?> class="text-area-order"/>
+                                <?php echo $disabled; ?> class="text-area-order"/>
                         <?php else : ?>
                             <?php echo $item->ordering; ?>
                         <?php endif; ?>

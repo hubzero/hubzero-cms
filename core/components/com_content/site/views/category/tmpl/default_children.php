@@ -47,7 +47,7 @@ $class = ' class="first"';
                         <?php endif; ?>
                     </a>
                 </span>
-                <?php if ($this->params->get('show_subcat_desc') == 1) :?>
+                <?php if ($this->params->get('show_subcat_desc') == 1) : ?>
                     <?php if ($child->description) : ?>
                         <div class="category-desc">
                             <?php echo Html::content('prepare', $child->description, '', 'com_content.category'); ?>

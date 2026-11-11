@@ -76,8 +76,8 @@ $newauthorUrl = Route::url($this->publication->link('editversionid') . '&active=
     </div>
     </form>
     <p class="newauthor-question"><span><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_AUTHOR_NOT_PART_OF_TEAM'); ?>
-    <a href="<?php echo $newauthorUrl;?>" class="add"
-        id="newauthor-question"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ADD_AUTHOR');?>
+    <a href="<?php echo $newauthorUrl; ?>" class="add"
+        id="newauthor-question"><?php echo Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_ADD_AUTHOR'); ?>
     </a></span></p>
 </div>
 </div>

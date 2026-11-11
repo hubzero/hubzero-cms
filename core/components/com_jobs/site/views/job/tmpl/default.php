@@ -44,8 +44,8 @@ defined('_HZEXEC_') or die();
             $loginUrl = Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login';
             $viewOptionsText = " " . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS');
             ?>
-            <li><?php echo Lang::txt('COM_JOBS_PLEASE') . " " ?><a
-                href="<?= $loginUrl ?>"><?php echo Lang::txt('COM_JOBS_ACTION_LOGIN') ?></a><?= $viewOptionsText ?></li>
+            <li><?php echo Lang::txt('COM_JOBS_PLEASE') . " "; ?><a
+                href="<?= $loginUrl ?>"><?= Lang::txt('COM_JOBS_ACTION_LOGIN') ?></a><?= $viewOptionsText ?></li>
         <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
             <?php
             $linkUrl = Route::url('index.php?option=' . $this->option . '&task=dashboard');
@@ -94,22 +94,22 @@ defined('_HZEXEC_') or die();
             $applyUrl = Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code);
             ?>
             <span class="apply"><a href="<?= $applyUrl ?>"><button
-                class="btn btn-success"><?php echo Lang::txt('COM_JOBS_APPLY_NOW') ?></button></a></span> 
+                class="btn btn-success"><?php echo Lang::txt('COM_JOBS_APPLY_NOW'); ?></button></a></span> 
         <?php } ?>
         <?php if ($job->withdrawn && $job->status == 1) {
             $applyUrl = Route::url('index.php?option=' . $this->option . '&task=apply&code=' . $job->code);
             ?>
             <span class="apply"><a href="<?= $applyUrl ?>"><button
-                class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_REAPPLY') ?></button></a></span>
+                class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_REAPPLY'); ?></button></a></span>
         <?php } ?>
         <?php if ($job->applied) {
             $withdrawUrl = Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code);
             $editappUrl = Route::url('index.php?option=' . $this->option . '&task=editapp&code=' . $job->code);
             ?>
             <span class="applied"><a href="<?= $editappUrl ?>"><button
-                class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION') ?></button></a><button
+                class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION'); ?></button></a><button
                 type="submit" form="hz-post-action" formaction="<?= $withdrawUrl ?>" id="showconfirm"
-                class="btn btn-danger"><?php echo Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION') ?></button>
+                class="btn btn-danger"><?php echo Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION'); ?></button>
             </span>
         <?php } ?>
         <?php if ($owner && ($job->status == 1 || $job->status == 3)) {
@@ -124,7 +124,7 @@ defined('_HZEXEC_') or die();
             ?>
              <span class="unpublish"><button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>"
                  class="btn"
-                 title="<?= $titleText ?>"><?php echo Lang::txt('COM_JOBS_ACTION_UNPUBLISH_THIS_JOB') ?></button></span>
+                 title="<?= $titleText ?>"><?= Lang::txt('COM_JOBS_ACTION_UNPUBLISH_THIS_JOB') ?></button></span>
         <?php } ?>
         <?php if ($job->status == 3) {
             $reopenUrl = Route::url('index.php?option=' . $this->option . '&task=reopen&code=' . $job->code);
@@ -137,7 +137,7 @@ defined('_HZEXEC_') or die();
             ?>
             <span class="manageroptions"><button type="submit" form="hz-post-action" formaction="<?= $reopenUrl ?>"
                 class="btn"
-                title="<?= $titleText ?>"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button><button
+                title="<?= $titleText ?>"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS'); ?></button><button
                 type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="btn"
                 title="<?= $buttonTitleText ?>"><?= $thisJobText ?></button></span>
         <?php } ?>
@@ -157,12 +157,12 @@ defined('_HZEXEC_') or die();
             <?php
             $spanText = Lang::txt('COM_JOBS_JOB_REFERENCE_CODE') . ': ' . $job->code;
             ?>
-            <span><?= $spanText ?></span><?php $job->title . ' - ' ?>
+            <span><?= $spanText ?></span><?php $job->title . ' - '; ?>
             <?php if (preg_match('#^https?://#i', (string) $job->companyWebsite)) { ?>
                 <?php
                 $linkUrl = $this->escape($job->companyWebsite);
                 ?>
-                <a href="<?= $linkUrl ?>"><?php echo $this->escape($job->companyName) ?></a>
+                <a href="<?= $linkUrl ?>"><?php echo $this->escape($job->companyName); ?></a>
             <?php } else {
                 echo $this->escape($job->companyName);
             }
@@ -172,9 +172,9 @@ defined('_HZEXEC_') or die();
             } else {
                 echo '';
             } ?>
-        </h3><?php echo "\n";?>
+        </h3><?php echo "\n"; ?>
 
-        <div class="clear"></div><?php echo "\n" ?>
+        <div class="clear"></div><?php echo "\n"; ?>
         <div class="apply">
         <p>
             <?php if ($job->applied) { ?>
@@ -194,19 +194,19 @@ defined('_HZEXEC_') or die();
         </div>
 
         <div>
-            <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_CATEGORY') ?></span>
-                <p><?php echo $this->escape($jobcat) ?></p>
-            <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_TYPE') ?></span>
-                <p><?php echo $this->escape($jobtype) ?></p>
-            <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_START_DATE') ?></span>
-                <p><?php echo $startdate ?></p>
-            <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_EXPIRES') ?></span>
-                <p><?php echo $closedate ?></p>
+            <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_CATEGORY'); ?></span>
+                <p><?php echo $this->escape($jobcat); ?></p>
+            <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_TYPE'); ?></span>
+                <p><?php echo $this->escape($jobtype); ?></p>
+            <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_START_DATE'); ?></span>
+                <p><?php echo $startdate; ?></p>
+            <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_TABLE_EXPIRES'); ?></span>
+                <p><?php echo $closedate; ?></p>
         <div class="reg details"><?php echo $maintext;
         if ($job->contactName) { ?>
-            <p class="reg details"><?php echo Lang::txt('COM_JOBS_JOB_INFO_CONTACT') ?>:</p><?php echo "\n"; ?>
+            <p class="reg details"><?php echo Lang::txt('COM_JOBS_JOB_INFO_CONTACT'); ?>:</p><?php echo "\n"; ?>
             <p class="reg"><?php echo "\n"; ?>
-            <span class="contactname"><?php echo $this->escape($job->contactName) ?></span><?php echo "\n";
+            <span class="contactname"><?php echo $this->escape($job->contactName); ?></span><?php echo "\n";
             if ($job->contactPhone) { ?>
                 <?php
                 $contactinfoText = Lang::txt('COM_JOBS_JOB_TABLE_TEL') . ': ' . $this->escape($job->contactPhone);
@@ -238,17 +238,17 @@ defined('_HZEXEC_') or die();
                     ?>
                     <span class="makechanges"><button type="submit" form="hz-post-action"
                         formaction="<?= $confirmjobUrl ?>"
-                        class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_PUBLISH_AD') ?></button></span>
+                        class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_PUBLISH_AD'); ?></button></span>
                     <?php
                     $linkUrl = Route::url('index.php?option=' . $this->option . '&task=editjob&code=' . $job->code);
                     ?>
                     <span class="makechanges"><a href="<?= $linkUrl ?>"><button
-                        class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_MAKE_CHANGES') ?></button></a></span>
+                        class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_MAKE_CHANGES'); ?></button></a></span>
                     <?php
                     $actionUrl = Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code);
                     ?>
                     <span class="makechanges"><button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>"
-                        class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_REMOVE_AD') ?></button></span>
+                        class="btn"><?php echo Lang::txt('COM_JOBS_ACTION_REMOVE_AD'); ?></button></span>
                 </p>
             <?php }
         } ?>
@@ -309,7 +309,7 @@ defined('_HZEXEC_') or die();
                     $n = $k;
                     $n++;
                 }
-            }?>
+            } ?>
             </ul>
             <?php if (count($job->withdrawnlist) > 0) { ?>
                 <p><?= count($job->withdrawnlist) . ' ' . Lang::txt('COM_JOBS_NOTICE_CANDIDATES_WITHDREW') ?></p>

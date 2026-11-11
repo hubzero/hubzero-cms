@@ -200,7 +200,7 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
     <input type="hidden" name="no_html" value="<?php echo $no_html; ?>" />
     <input type="hidden" name="tmpl" value="<?php echo $tmpl; ?>" />
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
-    <input type="hidden" name="controller" value="<?php echo $this->controller ?>" />
+    <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
     <input type="hidden" name="task" value="savefolder" />
 
     <?php echo Html::input('token'); ?>

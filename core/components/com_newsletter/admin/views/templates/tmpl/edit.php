@@ -107,7 +107,7 @@ Toolbar::help('index.php?option=com_help&component=com_newsletter&page=template'
 
                 <div class="input-wrap">
                     <label for="field-template">
-                        <?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TEMPLATE') ?>:
+                        <?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TEMPLATE'); ?>:
                     </label><br />
                     <textarea
                         name="fields[template]"
@@ -122,7 +122,7 @@ Toolbar::help('index.php?option=com_help&component=com_newsletter&page=template'
             <?php if ($this->config->get('template_tips')) : ?>
                 <?php $tipsUrl = $this->config->get('template_tips'); ?>
                 <span class="hint">
-                    <?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TIPS') ?><br />
+                    <?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TIPS'); ?><br />
                     <a href="<?php echo $tipsUrl; ?>">
                         <?php echo Lang::txt('COM_NEWSLETTER_TEMPLATE_TIPS_HINT'); ?>
                     </a>

@@ -31,7 +31,7 @@ defined('_HZEXEC_') or die();
                     <?php echo Lang::txt('COM_SYSTEM_INFO_PHP_BUILT_ON'); ?>
                 </th>
                 <td>
-                    <?php echo $this->info['php'];?>
+                    <?php echo $this->info['php']; ?>
                 </td>
             </tr>
             <tr>
@@ -39,7 +39,7 @@ defined('_HZEXEC_') or die();
                     <?php echo Lang::txt('COM_SYSTEM_INFO_DATABASE_VERSION'); ?>
                 </th>
                 <td>
-                    <?php echo $this->info['dbversion'];?>
+                    <?php echo $this->info['dbversion']; ?>
                 </td>
             </tr>
             <tr>
@@ -47,7 +47,7 @@ defined('_HZEXEC_') or die();
                     <?php echo Lang::txt('COM_SYSTEM_INFO_DATABASE_COLLATION'); ?>
                 </th>
                 <td>
-                    <?php echo $this->info['dbcollation'];?>
+                    <?php echo $this->info['dbcollation']; ?>
                 </td>
             </tr>
             <tr>
@@ -55,7 +55,7 @@ defined('_HZEXEC_') or die();
                     <?php echo Lang::txt('COM_SYSTEM_INFO_PHP_VERSION'); ?>
                 </th>
                 <td>
-                    <?php echo $this->info['phpversion'];?>
+                    <?php echo $this->info['phpversion']; ?>
                 </td>
             </tr>
             <tr>
@@ -71,7 +71,7 @@ defined('_HZEXEC_') or die();
                     <?php echo Lang::txt('COM_SYSTEM_INFO_WEBSERVER_TO_PHP_INTERFACE'); ?>
                 </th>
                 <td>
-                    <?php echo $this->info['sapi_name'];?>
+                    <?php echo $this->info['sapi_name']; ?>
                 </td>
             </tr>
             <tr>
@@ -79,7 +79,7 @@ defined('_HZEXEC_') or die();
                     <?php echo Lang::txt('COM_SYSTEM_INFO_CMS_VERSION'); ?>
                 </th>
                 <td>
-                    <?php echo $this->info['version'];?>
+                    <?php echo $this->info['version']; ?>
                 </td>
             </tr>
             <tr>
@@ -87,7 +87,7 @@ defined('_HZEXEC_') or die();
                     <?php echo Lang::txt('COM_SYSTEM_INFO_PLATFORM_VERSION'); ?>
                 </th>
                 <td>
-                    <?php echo $this->info['platform'];?>
+                    <?php echo $this->info['platform']; ?>
                 </td>
             </tr>
             <tr>
@@ -95,7 +95,7 @@ defined('_HZEXEC_') or die();
                     <?php echo Lang::txt('COM_SYSTEM_INFO_USER_AGENT'); ?>
                 </th>
                 <td>
-                    <?php echo htmlspecialchars($this->info['useragent']);?>
+                    <?php echo htmlspecialchars($this->info['useragent']); ?>
                 </td>
             </tr>
         </tbody>

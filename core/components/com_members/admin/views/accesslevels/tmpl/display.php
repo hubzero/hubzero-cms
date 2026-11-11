@@ -113,7 +113,7 @@ Html::behavior('multiselect');
                         $this->filters['sort_Dir'],
                         $this->filters['sort'],
                     ); ?>
-                    <?php if ($canOrder && $saveOrder) :?>
+                    <?php if ($canOrder && $saveOrder) : ?>
                         <?php echo Html::grid('order', $this->rows); ?>
                     <?php endif; ?>
                 </th>
@@ -155,7 +155,7 @@ Html::behavior('multiselect');
                 </td>
                 <td class="order">
                     <?php if ($canChange) : ?>
-                        <?php if ($saveOrder) :?>
+                        <?php if ($saveOrder) : ?>
                             <?php if ($listDirn == 'asc') : ?>
                                 <?php
                                 $orderUpIcon = ($i > 0)
@@ -204,7 +204,7 @@ Html::behavior('multiselect');
                             name="order[]"
                             size="5"
                             value="<?php echo $row->get('ordering'); ?>"
-                            <?php echo $disabled ?> class="text-area-order"/>
+                            <?php echo $disabled; ?> class="text-area-order"/>
                     <?php else : ?>
                         <?php echo $row->get('ordering'); ?>
                     <?php endif; ?>

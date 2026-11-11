@@ -8,7 +8,7 @@
 
 defined('_HZEXEC_') or die;
 
-if (!empty($list)) :?>
+if (!empty($list)) : ?>
     <ul class="archive-module<?php echo $moduleclass_sfx; ?>">
         <?php foreach ($list as $item) : ?>
             <li>

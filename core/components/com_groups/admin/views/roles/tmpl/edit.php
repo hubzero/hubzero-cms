@@ -44,13 +44,13 @@ $this->js();
     name="adminForm"
     id="item-form"
     class="editform form-validate"
-    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')); ?>">
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
             <div class="fltrt configuration-options">
-                <button type="button" id="btn-save"><?php echo Lang::txt('JTOOLBAR_SAVE');?></button>
-                <button type="button" id="btn-cancel"><?php echo Lang::txt('COM_GROUPS_MEMBER_CANCEL');?></button>
+                <button type="button" id="btn-save"><?php echo Lang::txt('JTOOLBAR_SAVE'); ?></button>
+                <button type="button" id="btn-cancel"><?php echo Lang::txt('COM_GROUPS_MEMBER_CANCEL'); ?></button>
             </div>
             <?php echo Lang::txt('COM_GROUPS_ROLES') . ': ' . $text; ?>
         </div>

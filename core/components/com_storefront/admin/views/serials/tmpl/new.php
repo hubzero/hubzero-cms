@@ -71,13 +71,13 @@ jQuery(document).ready(function($){
         <div class="configuration" >
             <div class="fltrt configuration-options">
                 <button type="button" onclick="submitbutton('addserials');">
-                    <?php echo Lang::txt('Save');?>
+                    <?php echo Lang::txt('Save'); ?>
                 </button>
                 <button type="button" onclick="window.parent.$.fancybox.close();">
-                    <?php echo Lang::txt('Cancel');?>
+                    <?php echo Lang::txt('Cancel'); ?>
                 </button>
             </div>
-            <?php echo Lang::txt('Add new serial numbers') ?>
+            <?php echo Lang::txt('Add new serial numbers'); ?>
         </div>
     </fieldset>
 <?php } ?>

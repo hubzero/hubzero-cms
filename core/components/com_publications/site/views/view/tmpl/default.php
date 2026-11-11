@@ -85,9 +85,9 @@ if ($this->config->get('launcher_layout', 0)) {
                             <?php $langTxt = Lang::txt('COM_PUBLICATIONS_DOWNLOAD_DATASET_DISABLED'); ?>
                             <?php $langTxt2 = Lang::txt('COM_PUBLICATIONS_PLEASE'); ?>
                             <?php echo $langTxt;
-                            echo Lang::txt('COM_PUBLICATIONS_PLEASE')?>
+                            echo Lang::txt('COM_PUBLICATIONS_PLEASE'); ?>
                             <?php $langTxt = Lang::txt('COM_PUBLICATIONS_SUBMIT_TICKET'); ?>
-                            <a href="/support/ticket/new" target="_blank"><?php echo $langTxt;?></a>
+                            <a href="/support/ticket/new" target="_blank"><?php echo $langTxt; ?></a>
                             <?php echo Lang::txt('COM_PUBLICATIONS_TO_INQUIRE_DATASET_STATUS'); ?>
                         </p>
                 <?php else : ?>

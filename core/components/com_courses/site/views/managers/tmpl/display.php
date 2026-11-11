@@ -142,7 +142,7 @@ if (count($managers) > 0) {
                     <td class="paramlist_key">
                         <a href="<?php echo Route::url('index.php?option=com_members&id=' . $u->get('id')); ?>">
                     <?php echo $u->get('name') ? $this->escape($u->get('name')) . ' ('
-                            . $this->escape($u->get('username')) . ')' : Lang::txt('COM_COURSES_UNKNOWN')
+                            . $this->escape($u->get('username')) . ')' : Lang::txt('COM_COURSES_UNKNOWN');
                     ?>
                         </a>
                     </td>

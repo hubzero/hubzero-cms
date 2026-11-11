@@ -49,9 +49,9 @@ Html::behavior('framework');
         <fieldset>
             <div class="configuration" >
                 <div class="fltrt configuration-options">
-                    <button type="button" onclick="closeAndRefresh();"><?php echo Lang::txt('Close');?></button>
+                    <button type="button" onclick="closeAndRefresh();"><?php echo Lang::txt('Close'); ?></button>
                 </div>
-                <?php echo Lang::txt('Upload a file with serial numbers') ?>
+                <?php echo Lang::txt('Upload a file with serial numbers'); ?>
             </div>
         </fieldset>
     <?php } ?>

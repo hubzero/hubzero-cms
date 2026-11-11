@@ -98,7 +98,7 @@ $sort = Request::getString('filter_order', 'id');
                 <td>
                     <input type="checkbox"
                         name="id[]"
-                        id="cb<?php echo $i;?>"
+                        id="cb<?php echo $i; ?>"
                         value="<?php echo $component->get('id'); ?>"
                         class="checkbox-toggle"
                     />
@@ -164,7 +164,7 @@ $sort = Request::getString('filter_order', 'id');
                         );
                     ?>
                     <?php if ($componentCount > 0) : ?>
-                    <a href="<?php echo $componentLink;?>">
+                    <a href="<?php echo $componentLink; ?>">
                         <?php echo $componentCount; ?>
                     </a>
                     <?php else : ?>
@@ -183,9 +183,9 @@ $sort = Request::getString('filter_order', 'id');
                             );
                         ?>
                         <a class="button unpublishtask"
-                            data-link="<?php echo $componentLink;?>"
+                            data-link="<?php echo $componentLink; ?>"
                             data-linktext="Rebuild Index"
-                            href="<?php echo $rebuildUrl;?>"
+                            href="<?php echo $rebuildUrl; ?>"
                         >
                             Rebuild Index
                         </a>

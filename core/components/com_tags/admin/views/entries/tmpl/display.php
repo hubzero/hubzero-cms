@@ -181,7 +181,7 @@ $bySelected = function ($value) use ($view) {
                     <?php } ?>
                 </td>
                 <td class="priority-2">
-                    <span><?php echo $calt ?></span>
+                    <span><?php echo $calt; ?></span>
                 </td>
                 <td class="priority-3">
                     <a href="<?php echo $taggedUrl; ?>">

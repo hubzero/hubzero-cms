@@ -36,12 +36,12 @@ $notes = \Components\Projects\Helpers\Html::getAdminNotes($this->model->get('adm
 ?>
 <?php if (!$this->ajax) { ?>
     <div id="content-header">
-        <h2><?php echo $title ?></h2>
+        <h2><?php echo $title; ?></h2>
     </div>
 <?php } ?>
 <div id="abox-content" class="reviewer">
 <?php if ($this->ajax) { ?>
-<h3><?php echo $title ?></h3>
+<h3><?php echo $title; ?></h3>
 <?php } ?>
 <?php
 // Display error  message

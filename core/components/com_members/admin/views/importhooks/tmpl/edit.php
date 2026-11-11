@@ -54,7 +54,7 @@ $eventSelected = function ($value) use ($view) {
     id="item-form"
     enctype="multipart/form-data"
     class="editform form-validate"
-    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')); ?>">
     <div class="grid">
         <div class="col span8">
             <fieldset class="adminform">
@@ -152,7 +152,7 @@ $eventSelected = function ($value) use ($view) {
         </div>
     </div>
 
-    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
     <input type="hidden" name="task" value="save" />
     <input type="hidden" name="hook[id]" value="<?php echo $this->hook->get('id'); ?>" />

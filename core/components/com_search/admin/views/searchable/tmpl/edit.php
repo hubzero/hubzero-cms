@@ -87,7 +87,7 @@ $this
     </div><!-- /.grid -->
     <div class="grid">
         <div id="page-1" class="fb-editor col span7">
-            <h3><?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTERS_LIST');?></h3>
+            <h3><?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTERS_LIST'); ?></h3>
             <?php $filterSchema = $this->escape(json_encode($this->filters)); ?>
             <input type="hidden"
                 name="filter-schema"
@@ -97,15 +97,15 @@ $this
             </div>
         </div>
         <div class="col span5">
-            <h3><?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTER_ADD');?></h3>
+            <h3><?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTER_ADD'); ?></h3>
             <div class="input-wrap">
                 <label for="searchable-filter-field">
-                    <?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTER_FIELD');?>
+                    <?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTER_FIELD'); ?>
                 </label>
                 <?php if (!empty($this->availableFields)) : ?>
                     <select name="add-filter" id="searchable-filter-field">
                         <?php foreach ($this->availableFields as $field) : ?>
-                        <option value="<?php echo $field;?>"><?php echo $field;?></option>
+                        <option value="<?php echo $field; ?>"><?php echo $field; ?></option>
                         <?php endforeach; ?>
                     </select>
                 <?php else : ?>
@@ -114,7 +114,7 @@ $this
             </div>
             <div class="input-wrap">
                 <label for="filter-type">
-                    <?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTER_TYPE');?>
+                    <?php echo Lang::txt('COM_SEARCH_COMPONENT_FILTER_TYPE'); ?>
                 </label>
                 <select id="filter-type" name="filter-type">
                     <option value="list">List</option>

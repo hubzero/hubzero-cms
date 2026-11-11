@@ -230,7 +230,7 @@ $ferpaDataChecked = function ($value) use ($view) {
                             <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_SENSITIVE_DATA_AGREE'); ?>
                         </label>
                     </div>
-                <?php endif ?>
+                <?php endif; ?>
             </fieldset>
             <div class="clear" aria-hidden="true"></div>
 

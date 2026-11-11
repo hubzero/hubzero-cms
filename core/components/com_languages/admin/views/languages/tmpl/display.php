@@ -98,7 +98,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
 
         <div class="filter-select fltrt">
             <select name="filter_published" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
+                <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
                 <?php
                 echo Html::select(
                     'options',
@@ -111,7 +111,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                 ?>
             </select>
             <select name="filter_access" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+                <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?></option>
                 <?php
                 echo Html::select(
                     'options',
@@ -193,7 +193,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                 </th>
                 <th>
                     <?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
-                    <?php if ($canOrder && $saveOrder) :?>
+                    <?php if ($canOrder && $saveOrder) : ?>
                         <?php echo Html::grid('order', $this->items, 'filesave', 'saveorder'); ?>
                     <?php endif; ?>
                 </th>
@@ -267,7 +267,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                 </td>
                 <td class="order">
                     <?php if ($canChange) : ?>
-                        <?php if ($saveOrder) :?>
+                        <?php if ($saveOrder) : ?>
                             <?php if ($listDirn == 'asc') : ?>
                                 <?php
                                 $upIcon = $pagination->orderUpIcon(
@@ -328,10 +328,10 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                 </td>
                 <td class="priority-4">
                     <?php if ($item->home == '1') : ?>
-                        <?php echo Lang::txt('JYES');?>
-                    <?php else :?>
-                        <?php echo Lang::txt('JNO');?>
-                    <?php endif;?>
+                        <?php echo Lang::txt('JYES'); ?>
+                    <?php else : ?>
+                        <?php echo Lang::txt('JNO'); ?>
+                    <?php endif; ?>
                 </td>
                 <td class="priority-5">
                     <?php echo $this->escape($item->lang_id); ?>

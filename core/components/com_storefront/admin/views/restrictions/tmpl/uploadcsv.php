@@ -54,9 +54,9 @@ $redirectUrl = Route::url(
         <fieldset>
             <div class="configuration" >
                 <div class="fltrt configuration-options">
-                    <button type="button" onclick="closeAndRefresh();"><?php echo Lang::txt('Close');?></button>
+                    <button type="button" onclick="closeAndRefresh();"><?php echo Lang::txt('Close'); ?></button>
                 </div>
-                <?php echo Lang::txt('Upload a file with users') ?>
+                <?php echo Lang::txt('Upload a file with users'); ?>
             </div>
         </fieldset>
     <?php } ?>

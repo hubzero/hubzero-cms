@@ -44,7 +44,7 @@ $action = Route::url(
     id="item-form"
     class="editform form-validate"
     data-confirm="<?php echo Lang::txt('COM_GROUPS_PAGES_MARK_SCANNED_CONFIRM'); ?>"
-    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')); ?>">
     <input type="hidden" name="page[id]" value="<?php echo $this->page->get('id'); ?>">
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

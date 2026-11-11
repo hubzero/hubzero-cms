@@ -78,7 +78,7 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
 
             <div id="menu-assignment">
 
-            <?php echo Html::tabs('start', 'module-menu-assignment-tabs', ['useCookie' => 1]);?>
+            <?php echo Html::tabs('start', 'module-menu-assignment-tabs', ['useCookie' => 1]); ?>
 
             <?php foreach ($menuTypes as &$type) :
                 echo Html::tabs('panel', $type->title ? $type->title : $type->menutype, $type->menutype . '-details');
@@ -146,11 +146,11 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
                             id="link<?php echo $linkVal; ?>"
                             <?php echo $checked; ?>
                         />
-                        <label for="link<?php echo (int) $link->value;?>">
+                        <label for="link<?php echo (int) $link->value; ?>">
                             <?php echo $link->text; ?>
                         </label>
                     </li>
-                        <?php if ($count > 20 && ++$i == ceil($count / 2)) :?>
+                        <?php if ($count > 20 && ++$i == ceil($count / 2)) : ?>
                     </ul><ul class="menu-links">
                         <?php endif; ?>
                     <?php endforeach; ?>
@@ -159,7 +159,7 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
                 <?php endif; ?>
             <?php endforeach; ?>
 
-            <?php echo Html::tabs('end');?>
+            <?php echo Html::tabs('end'); ?>
 
             </div>
         </fieldset>

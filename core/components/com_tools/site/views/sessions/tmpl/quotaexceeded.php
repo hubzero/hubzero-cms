@@ -24,7 +24,7 @@ $this->css('tools.css');
     echo ' hide';
                             } else {
                                 echo '';
-                            }?>" id="mysessions-section">
+                            } ?>" id="mysessions-section">
     <p class="warning"><?php echo Lang::txt('COM_TOOLS_ERROR_QUOTAEXCEEDED'); ?></p>
     <table class="sessions">
         <thead>

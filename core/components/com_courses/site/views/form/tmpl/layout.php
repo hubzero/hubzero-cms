@@ -41,14 +41,14 @@ $this
                     type="text"
                     class="required"
                     id="title"
-                    value="<?php echo str_replace('"', '&quot;', $this->title ?? '') ?>" />
+                    value="<?php echo str_replace('"', '&quot;', $this->title ?? ''); ?>" />
             <?php else : ?>
-                <?php echo $this->title ?>
+                <?php echo $this->title; ?>
             <?php endif; ?>
                 <span>
             <p id="title-error" class="error"></p>
         </label>
-        <ol id="pages"<?php echo ($this->readonly) ? ' class="readonly"' : '' ?>>
+        <ol id="pages"<?php echo ($this->readonly) ? ' class="readonly"' : ''; ?>>
             <?php
                 $tabs = [];
                 $layout = $this->pdf->getPageLayout();
@@ -109,12 +109,12 @@ $this
                     <span>Upload New PDF</span>
                 </div>
             <?php endif; ?>
-            <div><a href="/courses/form" id="done"><?php echo ($this->readonly) ? 'Done' : 'Cancel' ?></a></div>
+            <div><a href="/courses/form" id="done"><?php echo ($this->readonly) ? 'Done' : 'Cancel'; ?></a></div>
             <?php if (!$this->readonly) : ?>
                 <div class="question-info">
                     <p>
                         <span class="questions-total">
-                            <?php echo $this->pdf->getQuestionCount() ?>
+                            <?php echo $this->pdf->getQuestionCount(); ?>
                         </span> question(s) total,
                         <span class="questions-unsaved">0</span> changes unsaved
                     </p>

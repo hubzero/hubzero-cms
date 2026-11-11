@@ -36,7 +36,7 @@ $html = str_replace(
     <?php
     $linkText = Lang::txt('PLG_PROJECTS_NOTES_BACK_TO_PROJECT');
     ?>
-    <span class="goback"><a href="<?php echo $this->model->link();?>"><?= $linkText ?></a></span></p>
+    <span class="goback"><a href="<?php echo $this->model->link(); ?>"><?= $linkText ?></a></span></p>
     <div class="wiki-content">
         <h1 class="page-title"><?php echo $this->escape($this->page->get('title')); ?></h1>
         <div class="wikipage"><?php echo $html; ?></div>

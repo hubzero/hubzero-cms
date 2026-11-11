@@ -207,7 +207,7 @@ if (
             <?php echo $this->loadTemplate('links'); ?>
         <?php endif; ?>
 
-        <?php if ($params->get('access-view')) :?>
+        <?php if ($params->get('access-view')) : ?>
             <?php if (isset($images->image_fulltext) && !empty($images->image_fulltext)) : ?>
                 <?php
                 $imgfloat = (empty($images->float_fulltext))
@@ -264,7 +264,7 @@ if (
             <?php //Optional link to let them register to see the whole article.?>
             <?php if ($params->get('show_readmore') && $this->item->fulltext != null) :
                 $link1 = Route::url('index.php?option=com_login');
-                $link = new Hubzero\Utility\Uri($link1);?>
+                $link = new Hubzero\Utility\Uri($link1); ?>
                 <p class="readmore">
                     <a href="<?php echo $link; ?>">
                     <?php $attribs = json_decode($this->item->attribs); ?>

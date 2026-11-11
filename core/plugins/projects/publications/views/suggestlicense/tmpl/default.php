@@ -40,11 +40,11 @@ if ($this->getError()) {
         $linkText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS'));
         ?>
         <h3 class="prov-header"><a href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?= $linkText ?>
-        </a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'));?></h3>
+        </a> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')); ?></h3>
     <?php } else { ?>
         <h3 class="publications"><a
-            href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo $this->title;?>
-        </a><span class="indlist"> &raquo; <?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE'));?>
+            href="<?php echo Route::url($this->pub->link('editbase')); ?>"><?php echo $this->title; ?>
+        </a><span class="indlist"> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUGGEST_LICENSE')) ?>
         </span>
         </h3>
     <?php } ?>

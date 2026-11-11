@@ -34,7 +34,7 @@ $actionUrl = Route::url(
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="cn" value="<?php echo $this->group->get('cn'); ?>" />
     <input type="hidden" name="action" value="savememberoptions" />
-    <input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID;?>" />
+    <input type="hidden" name="memberoptionid" value="<?php echo $this->recvEmailOptionID; ?>" />
 
     <div class="group-content-header">
         <h3><?php echo Lang::txt('GROUP_MEMBEROPTIONS'); ?></h3>

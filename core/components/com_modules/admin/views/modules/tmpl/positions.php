@@ -127,7 +127,7 @@ $formAction = Route::url(
                     <?php if (!empty($templates)) : ?>
                         <a class="pointer" onclick="<?php echo $onclick; ?>">
                             <ul>
-                            <?php foreach ($templates as $template => $label) :?>
+                            <?php foreach ($templates as $template => $label) : ?>
                                 <li><?php
                                 if ($lang->hasKey($label)) {
                                     echo Lang::txt(
@@ -139,10 +139,10 @@ $formAction = Route::url(
                                     echo Lang::txt($template);
                                 }
                                 ?></li>
-                            <?php endforeach;?>
+                            <?php endforeach; ?>
                             </ul>
                         </a>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </td>
             </tr>
         <?php endforeach; ?>

@@ -87,12 +87,12 @@ if ($attachments) {
             </ul>
             <?php } else { ?>
             <p class="warning"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_SELECTOR_NONE'); ?>
-            <span class="block"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO');?>
+            <span class="block"><?php echo Lang::txt('PLG_PROJECTS_DATABASES_GO_TO'); ?>
                 <?php
                 $linkUrl = Route::url($this->model->link('databases'));
                 ?>
-            <a href="<?= $linkUrl ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES');?>
-            </a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE');?></span></p>
+            <a href="<?= $linkUrl ?>"><?php echo Lang::txt('PLG_PROJECTS_DATABASES'); ?>
+            </a> <?php echo Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE'); ?></span></p>
             <?php } ?>
         </form>
     </div>

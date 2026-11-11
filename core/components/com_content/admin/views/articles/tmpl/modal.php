@@ -213,15 +213,15 @@ $formAction = Route::url(
                         <?php echo $this->escape($item->category->title); ?>
                     </td>
                     <td class="center">
-                        <?php if ($item->language == '*') :?>
+                        <?php if ($item->language == '*') : ?>
                             <?php echo Lang::txt('JALL', 'language'); ?>
-                        <?php else :?>
+                        <?php else : ?>
                             <?php
                             echo $item->language_title
                                 ? $this->escape($item->language_title)
                                 : Lang::txt('JUNDEFINED');
                             ?>
-                        <?php endif;?>
+                        <?php endif; ?>
                     </td>
                     <td class="center nowrap">
                         <?php echo Date::of($item->created)->toLocal(Lang::txt('DATE_FORMAT_LC4')); ?>

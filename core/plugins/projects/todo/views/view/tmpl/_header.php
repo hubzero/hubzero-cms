@@ -26,7 +26,7 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
                      } ?>
     <?php if ($this->listName) {
         ?> &raquo; <a href="<?php echo Route::url($url) . '/?list=' . $this->filters['todolist']; ?>"><span
-            class="indlist <?php echo 'pin_' . $this->filters['todolist']?>"><?php echo $this->listName; ?>
+            class="indlist <?php echo 'pin_' . $this->filters['todolist']; ?>"><?php echo $this->listName; ?>
         </span></a> <?php
     } ?>
     <?php if ($this->filters['assignedto']) {

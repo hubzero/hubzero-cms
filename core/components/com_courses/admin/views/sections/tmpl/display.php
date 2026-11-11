@@ -216,7 +216,7 @@ $stateSelected = function ($value) use ($view) {
                     <input
                         type="checkbox"
                         name="id[]"
-                        id="cb<?php echo $i;?>"
+                        id="cb<?php echo $i; ?>"
                         value="<?php echo $row->get('id'); ?>"
                         class="checkbox-toggle" />
                     <label

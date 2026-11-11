@@ -138,7 +138,7 @@ $cls = [
                     <!-- Content ends -->
 
                     <noscript>
-                        <?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
+                        <?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT'); ?>
                     </noscript>
                 </section><!-- / #main -->
             </section><!-- / #component-content -->

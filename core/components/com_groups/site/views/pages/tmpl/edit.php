@@ -375,7 +375,7 @@ if ($this->page->get('id')) {
                                         $tmpl = str_replace('.php', '', $file);
                                         $sel  = ($this->page->get('template') == $tmpl) ? 'selected="selected"' : ''; ?>
                                     <option <?= $sel ?> value="<?= $tmpl ?>"><?= $name ?></option>
-                                <?php endforeach;?>
+                                <?php endforeach; ?>
                             </select>
                             <span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_TEMPLATE_HINT'); ?></span>
                         </label>

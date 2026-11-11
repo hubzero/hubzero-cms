@@ -34,8 +34,8 @@ $acos = [
         <input
             type="checkbox"
             name="id[]"
-            id="cb<?php echo $i;?>"
-            value="<?php echo $row->id ?>"
+            id="cb<?php echo $i; ?>"
+            value="<?php echo $row->id; ?>"
             class="checkbox-toggle"
         />
     </td>

@@ -92,7 +92,7 @@ $filterbySelected = function ($value) use ($view) {
                     <li><a<?= ($this->filters['sortby'] == 'grant_status') ? ' class="active"' : '' ?>
                         href="<?= $browseUrl ?>" title="<?= $titleText ?>"
                         rel="nofollow">&darr; <?= Lang::txt('COM_PROJECTS_SPS_APPROVAL_STATUS') ?></a></li>
-                    <?php endif;?>
+                    <?php endif; ?>
                     <?php
                     $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs);
                     ?>
@@ -158,7 +158,7 @@ $filterbySelected = function ($value) use ($view) {
                 ?>
                 <?php echo $pagenavhtml; ?>
                 <?php if (!empty($this->filters['reviewer'])) : ?>
-                    <input type="hidden" name="reviewer" value="<?php echo $this->filters['reviewer'];?>" />
+                    <input type="hidden" name="reviewer" value="<?php echo $this->filters['reviewer']; ?>" />
                 <?php endif; ?>
                 <div class="clear" aria-hidden="true"></div>
                 <?php

@@ -23,7 +23,7 @@ defined('_HZEXEC_') or die();
             <jdoc:include type="message" />
             <jdoc:include type="component" />
             <noscript>
-                <?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
+                <?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT'); ?>
             </noscript>
         </div>
     </body>

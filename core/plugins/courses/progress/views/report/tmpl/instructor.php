@@ -49,7 +49,7 @@ $base = $this->course->offering()->link() . '&active=progress';
                 </div>
                 <button type="submit">Submit</button>
                 <a class="restore-defaults"
-                    href="<?php echo Route::url($base . '&action=restoredefaults') ?>">Restore Defaults</a>
+                    href="<?php echo Route::url($base . '&action=restoredefaults'); ?>">Restore Defaults</a>
             {{else}}
                 <p class="warning">Sorry, you do not have permission to edit the grade policy for this course</p>
             {{/if}}
@@ -123,7 +123,7 @@ $base = $this->course->offering()->link() . '&active=progress';
                     <div class="picture">
                         <img src="<?php /*echo Request::base();*/ ?>{{this.full}}" />
                         <a class="more-details"
-                            href="<?php echo Route::url($base . '&id=') ?>{{this.user_id}}">More details</a>
+                            href="<?php echo Route::url($base . '&id='); ?>{{this.user_id}}">More details</a>
                     </div>
                     <div class="extended-info-extra">
                         <h6>Joined Course</h6>

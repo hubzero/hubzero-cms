@@ -235,7 +235,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                 </th>
                 <th class="priority-3">
                     <?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
-                    <?php if ($saveOrder) :?>
+                    <?php if ($saveOrder) : ?>
                         <?php echo Html::grid('order', $this->items, 'filesave.png', 'saveorder'); ?>
                     <?php endif; ?>
                 </th>
@@ -314,7 +314,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                         <?php echo $this->escape($item->title); ?>
                     <?php endif; ?>
                     <p class="smallsub">
-                        <?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?>
+                        <?php echo Lang::txt('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                     </p>
                 </td>
                 <td class="center">
@@ -339,7 +339,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                 </td>
                 <td class="priority-3 order">
                     <?php if ($canChange) : ?>
-                        <?php if ($saveOrder) :?>
+                        <?php if ($saveOrder) : ?>
                             <?php if ($listDirn == 'asc') : ?>
                                 <?php
                                 $prevMatch = ($item->catid == @$this->items[$i - 1]->catid);
@@ -443,15 +443,15 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                 </td>
                 -->
                 <td class="priority-6 center">
-                    <?php if ($item->language == '*') :?>
+                    <?php if ($item->language == '*') : ?>
                         <?php echo Lang::txt('JALL', 'language'); ?>
-                    <?php else :?>
+                    <?php else : ?>
                         <?php
                         echo $item->language_title
                             ? $this->escape($item->language_title)
                             : Lang::txt('JUNDEFINED');
                         ?>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </td>
                 <td class="priority-5 center">
                     <?php echo (int) $item->id; ?>
@@ -469,7 +469,7 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
     ?>
     <?php if ($canBatch) : ?>
         <?php echo $this->loadTemplate('batch'); ?>
-    <?php endif;?>
+    <?php endif; ?>
 
     <input type="hidden" name="task" value="" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />

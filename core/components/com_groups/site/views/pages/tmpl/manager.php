@@ -80,7 +80,7 @@ if (file_exists(PATH_APP . DS . $this->group->getBasePath() . DS . 'pages' . DS 
                 ); ?>
                 <?php $val = Lang::txt('COM_GROUPS_PAGES_MANAGE_MODULES'); ?>
                 <li><a data-tab="modules" href="<?php echo $val1; ?>"><?php echo $val; ?></a></li>
-            <?php endif;?>
+            <?php endif; ?>
         </ul>
 
         <?php $url = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')); ?>

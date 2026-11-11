@@ -131,7 +131,7 @@ Html::behavior('multiselect');
                     <?php echo (int) $row->id; ?>
                 </td>
                 <td>
-                    <?php echo str_repeat('<span class="gi">|&mdash;</span>', $level) ?>
+                    <?php echo str_repeat('<span class="gi">|&mdash;</span>', $level); ?>
                     <?php if ($canEdit) : ?>
                         <?php
                         $editUrl = Route::url(
@@ -153,7 +153,7 @@ Html::behavior('multiselect');
                         );
                         ?>
                         <a class="button fltrt" href="<?php echo $debugUrl; ?>">
-                            <?php echo Lang::txt('COM_MEMBERS_DEBUG_GROUP');?>
+                            <?php echo Lang::txt('COM_MEMBERS_DEBUG_GROUP'); ?>
                         </a>
                     <?php endif; ?>
                 </td>

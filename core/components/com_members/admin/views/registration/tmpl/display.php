@@ -42,7 +42,7 @@ $this->js();
     name="adminForm"
     id="adminForm"
     class="editform form-validate"
-    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')); ?>">
     <fieldset>
         <table class="adminlist">
             <thead>

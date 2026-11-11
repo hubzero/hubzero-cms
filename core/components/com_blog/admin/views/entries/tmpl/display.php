@@ -110,7 +110,7 @@ $formAction = Route::url(
 
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?></option>
                     <?php
                     echo Html::select(
                         'options',
@@ -170,7 +170,7 @@ $formAction = Route::url(
             <tr>
                 <td colspan="9"><?php
                 // Initiate paging
-                echo $this->rows->pagination
+                echo $this->rows->pagination;
                 ?></td>
             </tr>
         </tfoot>
@@ -254,7 +254,7 @@ $formAction = Route::url(
                     <input type="checkbox"
                         name="id[]"
                         id="cb<?php echo $i; ?>"
-                        value="<?php echo $row->get('id') ?>"
+                        value="<?php echo $row->get('id'); ?>"
                         class="checkbox-toggle"
                     />
                     <label for="cb<?php echo $i; ?>"
@@ -376,7 +376,7 @@ $formAction = Route::url(
         </tbody>
     </table>
 
-    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
     <input type="hidden" name="task" value="" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />

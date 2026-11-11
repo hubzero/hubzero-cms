@@ -33,7 +33,7 @@ if (!User::isGuest()) {
     return;
 }
 ?>
-<div class="logout<?php echo $this->pageclass_sfx?>">
+<div class="logout<?php echo $this->pageclass_sfx; ?>">
     <?php if ($this->params->get('show_page_heading')) : ?>
         <h1>
             <?php echo $this->escape($this->params->get('page_heading')); ?>
@@ -48,7 +48,7 @@ if (!User::isGuest()) {
             <?php echo $this->params->get('logout_description'); ?>
         <?php endif; ?>
 
-        <?php if (($this->params->get('logout_image') != '')) :?>
+        <?php if (($this->params->get('logout_image') != '')) : ?>
             <?php $logoutImgAlt = Lang::txt('COM_USER_LOGOUT_IMAGE_ALT'); ?>
             <img src="<?php echo $this->escape($this->params->get('logout_image')); ?>"
                 class="logout-image" alt="<?php echo $logoutImgAlt; ?>" />

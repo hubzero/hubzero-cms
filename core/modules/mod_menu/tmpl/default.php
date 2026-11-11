@@ -20,7 +20,7 @@ $ariaControlTarget = '';
 // Note. It is important to remove spaces between elements.
 ?>
 
-<ul class="<?php echo $classnames ?>"<?php
+<ul class="<?php echo $classnames; ?>"<?php
     $tag = '';
 if ($params->get('tag_id') != null) {
     $tag = $params->get('tag_id') . '';

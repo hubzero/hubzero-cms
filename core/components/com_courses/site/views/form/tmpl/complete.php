@@ -39,7 +39,7 @@ if ($this->resp->getStartTime()) {
 ?>
 
 <header id="content-header">
-    <h2><?php echo $this->escape($this->title) ?></h2>
+    <h2><?php echo $this->escape($this->title); ?></h2>
 </header>
 
 <section class="main section">
@@ -62,7 +62,7 @@ if ($this->resp->getStartTime()) {
         <ol id="pages" class="complete">
             <?php $pdf->eachPage(function ($url, $idx) use ($view, $layout, $progress, $incomplete) { ?>
             <li>
-                <img src="<?php echo $url ?>" alt="" />
+                <img src="<?php echo $url; ?>" alt="" />
                 <?php
                 if (isset($layout[$idx - 1])) :
                     $qidx = 0;
@@ -111,8 +111,8 @@ if ($this->resp->getStartTime()) {
                 <input type="hidden" name="task" value="submit" />
                 <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
                 <input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
-                <input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb() ?>" />
-                <input type="hidden" name="attempt" value="<?php echo $this->resp->getAttemptNumber() ?>" />
+                <input type="hidden" name="crumb" value="<?php echo $this->dep->getCrumb(); ?>" />
+                <input type="hidden" name="attempt" value="<?php echo $this->resp->getAttemptNumber(); ?>" />
                 <button class="btn btn-primary" type="submit"><?php echo Lang::txt('COM_COURSES_SUBMIT'); ?></button>
             </p>
         </fieldset>

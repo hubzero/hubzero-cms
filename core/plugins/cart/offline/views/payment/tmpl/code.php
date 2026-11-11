@@ -12,7 +12,7 @@ use Hubzero\Facades\Request;
 defined('_HZEXEC_') or die();
 ?>
 
-<?php echo '<form method="post" action="' . rtrim(Request::root(), '/') . '/cart/test/pay">' ?>
+<?php echo '<form method="post" action="' . rtrim(Request::root(), '/') . '/cart/test/pay">'; ?>
 
     <?php
 

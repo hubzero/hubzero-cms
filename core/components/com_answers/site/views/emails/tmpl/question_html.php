@@ -127,7 +127,7 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
                                     align="right"><?= Lang::txt('Status:') ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" width="100%"
-                                    align="left"><?php echo $status ?></td>
+                                    align="left"><?php echo $status; ?></td>
                             </tr>
                             <tr>
                                 <?php

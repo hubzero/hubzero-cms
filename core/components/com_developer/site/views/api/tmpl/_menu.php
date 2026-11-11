@@ -141,7 +141,7 @@ $activeCls = $this->active ? 'inactive' : 'active';
                 </h3>
                 <div class="toc-content">
                     <ul>
-                <?php foreach ($this->documentation['sections'] as $component => $endpoints) :?>
+                <?php foreach ($this->documentation['sections'] as $component => $endpoints) : ?>
                         <?php
                         $compCls = ($component == $this->active) ? 'active' : 'inactive';
                         $compUrl = Route::url($base . '&task=endpoint&active=' . $component);

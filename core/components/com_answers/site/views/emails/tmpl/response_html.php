@@ -273,7 +273,7 @@ $questionInfoCellStyle = 'font-size: 2.5em; font-weight: bold;'
                                     width="100%"
                                     align="left"
                                 >
-                                    <?php echo $status ?>
+                                    <?php echo $status; ?>
                                 </td>
                             </tr>
                             <tr>

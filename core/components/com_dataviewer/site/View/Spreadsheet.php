@@ -324,7 +324,7 @@ class Spreadsheet
                         $pd_id = 0;
                         foreach ($dd['charts_list'] as $cl) :
                             ?>
-                    <option value="<?php print $pd_id?>"><?php print $cl['title']; ?></option>
+                    <option value="<?php print $pd_id; ?>"><?php print $cl['title']; ?></option>
                             <?php
                             $pd_id++;
                         endforeach;
@@ -576,9 +576,9 @@ class Spreadsheet
             dv_data = <?php print $f_data; ?>;
             dv_settings = <?php print json_encode(DvConfig::$dv_conf['settings']); ?>;
             dv_show_filters = <?php print $dv_show_filters; ?>;
-            dv_settings.show_charts = <?php print Request::getInt('show_chart', 'undefined');?>;
-            dv_show_customizer = <?php print ($show_customizer) ? 'true' : 'false';?>;
-            var dv_show_maps = <?php print Request::getString('show_map', 'undefined');?>;
+            dv_settings.show_charts = <?php print Request::getInt('show_chart', 'undefined'); ?>;
+            dv_show_customizer = <?php print ($show_customizer) ? 'true' : 'false'; ?>;
+            var dv_show_maps = <?php print Request::getString('show_map', 'undefined'); ?>;
         </script>
 
             <?php

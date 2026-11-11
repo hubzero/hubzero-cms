@@ -61,7 +61,7 @@ $this
                                     );
                                     $memberName = User::getInstance($entry->$key)->name;
                                 ?>
-                                <a href="<?php echo $memberUrl;?>">
+                                <a href="<?php echo $memberUrl; ?>">
                                     <?php echo $memberName; ?>
                                 </a>
                             </td>

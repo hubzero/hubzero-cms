@@ -70,11 +70,11 @@ class Gallery
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <title>Dataview: Image gallery</title>
         <link rel="stylesheet" type="text/css"
-            href="<?php echo DvConfig::$html_path?>/ui/themes/smoothness/jquery-ui.css" />
-        <link rel="stylesheet" href="<?php echo DvConfig::$html_path?>/dv_gallery.css" type="text/css" />
-        <script type="text/javascript" src="<?php echo DvConfig::$html_path?>/jquery.min.js"></script>
-        <script type="text/javascript" src="<?php echo DvConfig::$html_path?>/ui/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="<?php echo DvConfig::$html_path?>/dv_gallery.js"></script>
+            href="<?php echo DvConfig::$html_path; ?>/ui/themes/smoothness/jquery-ui.css" />
+        <link rel="stylesheet" href="<?php echo DvConfig::$html_path; ?>/dv_gallery.css" type="text/css" />
+        <script type="text/javascript" src="<?php echo DvConfig::$html_path; ?>/jquery.min.js"></script>
+        <script type="text/javascript" src="<?php echo DvConfig::$html_path; ?>/ui/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="<?php echo DvConfig::$html_path; ?>/dv_gallery.js"></script>
         <style type="text/css">
             .dv_gallery_toolbar { font: 62.5% "Trebuchet MS", sans-serif;}
         </style>
@@ -84,14 +84,14 @@ class Gallery
         <div id="dv_gallery_list" class="ui-widget ui-widget-header ui-corner-top">
             <table style="padding:0px; margin:0px;">
                 <tr>
-                    <td><?php echo implode("</td><td>", $image_list);?></td>
+                    <td><?php echo implode("</td><td>", $image_list); ?></td>
                 </tr>
             </table>
         </div>
 
         <div id="dv_gallery_viewer">
             <br />
-            <?php echo implode("\n", $image_viewer);?>
+            <?php echo implode("\n", $image_viewer); ?>
             <br style="line-haight: 5px;" />
             <div id="dv_gallery_desc" class="ui-widget ui-widget-content ui-corner-all"
                 style="display:none; margin: 0px 20px 0px 20px; border-style: inset;">
@@ -103,7 +103,7 @@ class Gallery
         <div class="dv_gallery_toolbar ui-widget ui-widget-header ui-corner-bottom">
             <span id="dv_gallery_dl_image">
                 <a href="" target="_blank">
-                    <img src="<?php echo DvConfig::$html_path?>/download-l.png"
+                    <img src="<?php echo DvConfig::$html_path; ?>/download-l.png"
                         alt="Click here to download the full size image."
                         title="Download Original Image (Right click and save image)"
                         style="border: 1px #DDD solid;" />

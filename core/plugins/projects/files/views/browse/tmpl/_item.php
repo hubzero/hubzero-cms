@@ -89,7 +89,7 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
         <input type="checkbox" value="<?= urlencode($this->item->get('name')) ?>"
             name="<?= $this->item->get('type') == 'file' ? 'asset[]' : 'folder[]' ?>"
             aria-label="<?= $this->escape($this->item->get('name')) ?>"
-            class="checkasset js<?php echo $checkasset ?>" />
+            class="checkasset js<?php echo $checkasset; ?>" />
     </td>
     <?php } ?>
     <td class="middle_valign nobsp is-relative">

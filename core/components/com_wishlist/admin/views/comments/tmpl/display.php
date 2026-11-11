@@ -284,7 +284,7 @@ $sortAnon = Html::grid(
         </tbody>
     </table>
 
-    <input type="hidden" name="option" value="<?php echo $this->option ?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
     <input type="hidden" name="task" value="<?php echo $this->task; ?>" autocomplete="off" />
     <input type="hidden" name="wish" value="<?php echo $this->filters['wish']; ?>" />

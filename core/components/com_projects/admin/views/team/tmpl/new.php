@@ -84,7 +84,7 @@ $routeUrl = Route::url('index.php?option=' . $this->option);
                         onclick="window.parent.$.fancybox.close();"
                     ><?php echo Lang::txt('JCANCEL'); ?></button>
                 </div>
-                <?php echo Lang::txt('COM_PROJECTS') ?>
+                <?php echo Lang::txt('COM_PROJECTS'); ?>
             </div>
         </fieldset>
     <?php } ?>

@@ -57,10 +57,10 @@ $invalidMsg = Lang::txt('COM_GROUPS_ERROR_MISSING_INFORMATION');
     <fieldset>
         <div class="configuration" >
             <div class="fltrt configuration-options">
-                <button type="button" id="btn-save"><?php echo Lang::txt('COM_GROUPS_MEMBER_SAVE');?></button>
-                <button type="button" id="btn-cancel"><?php echo Lang::txt('COM_GROUPS_MEMBER_CANCEL');?></button>
+                <button type="button" id="btn-save"><?php echo Lang::txt('COM_GROUPS_MEMBER_SAVE'); ?></button>
+                <button type="button" id="btn-cancel"><?php echo Lang::txt('COM_GROUPS_MEMBER_CANCEL'); ?></button>
             </div>
-            <?php echo Lang::txt('COM_GROUPS_MEMBER_ADD') ?>
+            <?php echo Lang::txt('COM_GROUPS_MEMBER_ADD'); ?>
         </div>
     </fieldset>
 <?php } ?>

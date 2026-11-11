@@ -34,7 +34,7 @@ $this
     name="adminForm"
     id="item-form"
     class="editform form-validate"
-    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')); ?>">
     <div class="grid">
         <div class="col span5">
             <fieldset class="adminform">

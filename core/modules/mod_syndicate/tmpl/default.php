@@ -12,7 +12,7 @@ use Hubzero\Facades\Lang;
 // no direct access
 defined('_HZEXEC_') or die;
 ?>
-<a href="<?php echo $link ?>" class="syndicate-module<?php echo $moduleclass_sfx; ?>">
+<a href="<?php echo $link; ?>" class="syndicate-module<?php echo $moduleclass_sfx; ?>">
     <?php echo Html::asset('icon', 'feed'); ?>
     <?php if ($params->get('display_text', 1)) : ?>
         <span>

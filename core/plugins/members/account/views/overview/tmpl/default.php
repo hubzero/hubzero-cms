@@ -149,7 +149,7 @@ $this
                                 $this->passinfo['max'],
                             );
                             ?>
-                        <?php endif ?>
+                        <?php endif; ?>
                     </p>
                 <?php } ?>
                 <p class="error" id="section-edit-errors"></p>

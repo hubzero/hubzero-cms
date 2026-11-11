@@ -26,7 +26,7 @@ defined('_HZEXEC_') or die();
                 <?php echo Lang::txt('MOD_LATEST_CREATED'); ?>
             </th>
             <th scope="col">
-                <?php echo Lang::txt('MOD_LATEST_CREATED_BY');?>
+                <?php echo Lang::txt('MOD_LATEST_CREATED_BY'); ?>
             </th>
         </tr>
     </thead>

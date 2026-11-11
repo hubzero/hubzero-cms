@@ -255,7 +255,7 @@ $this
                         <span class="stats-num"><?php echo $this->stats['activity']['usage']; ?></span>
                         <span class="stats-label"><?php echo Lang::txt('projects active in past 30 days'); ?></span>
                     </td>
-                    <?php if ($this->monthly) :?>
+                    <?php if ($this->monthly) : ?>
                         <?php
                         $y         = 0;
                         $xdata     = '';

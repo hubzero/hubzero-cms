@@ -72,7 +72,7 @@ Toolbar::help('notes');
 
             <div class="col span6">
                 <select name="filter_category_id" id="filter_category_id" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY');?></option>
+                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_CATEGORY'); ?></option>
                     <?php
                     $val = Html::select(
                         'options',
@@ -86,7 +86,7 @@ Toolbar::help('notes');
                 </select>
 
                 <select name="filter_published" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
+                    <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
                     <?php
                     $val = Html::select(
                         'options',
@@ -193,7 +193,7 @@ Toolbar::help('notes');
                     <?php endif; ?>
                     <?php if ($canDo->get('core.edit')) : ?>
                         <a href="<?php echo Route::url('index.php?option=' . $this->option . '&controller='
-                            . $this->controller . '&task=edit&id=' . $row->get('id'));?>">
+                            . $this->controller . '&task=edit&id=' . $row->get('id')); ?>">
                             <?php echo $this->escape($row->member->get('name')); ?></a>
                     <?php else : ?>
                         <?php echo $this->escape($row->member->get('name')); ?>

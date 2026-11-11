@@ -40,7 +40,7 @@ $listDirn  = $this->escape($this->filters['direction']);
             || $this->params->get('show_pagination_limit')
         ) : ?>
             <fieldset>
-                <?php if ($this->params->get('filter_field') != 'hide') :?>
+                <?php if ($this->params->get('filter_field') != 'hide') : ?>
                     <div class="container data-entry">
                         <input class="entry-search-submit" type="submit"
                             value="<?= Lang::txt('JGLOBAL_FILTER_LABEL') ?>" />
@@ -78,7 +78,7 @@ $listDirn  = $this->escape($this->filters['direction']);
         <?php endif; ?>
 
         <table class="category">
-            <?php if ($this->params->get('show_headings')) :?>
+            <?php if ($this->params->get('show_headings')) : ?>
                 <thead>
                     <tr>
                         <th class="list-title" id="tableOrdering">
@@ -169,15 +169,15 @@ $listDirn  = $this->escape($this->filters['direction']);
                         <?php if ($this->params->get('list_show_author', 1)) : ?>
                         <td class="list-author">
                             <?php if (!empty($article->author) || !empty($article->created_by_alias)) : ?>
-                                <?php $author =  $article->author ?>
-                                <?php $author = ($article->created_by_alias ? $article->created_by_alias : $author);?>
+                                <?php $author =  $article->author; ?>
+                                <?php $author = ($article->created_by_alias ? $article->created_by_alias : $author); ?>
 
-                                <?php if (!empty($article->contactid) &&  $this->params->get('link_author') == true) :?>
+                                <?php if (!empty($article->contactid) && $this->params->get('link_author') == true) : ?>
                                     <?= '<a href="'
                                         . Route::url(
                                             'index.php?option=com_contact&view=contact&id=' . $article->contactid,
                                         ) . '">' . $author . '</a>' ?>
-                                <?php else :?>
+                                <?php else : ?>
                                     <?php echo Lang::txt('COM_CONTENT_WRITTEN_BY', $author); ?>
                                 <?php endif; ?>
                             <?php endif; ?>

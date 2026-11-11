@@ -16,7 +16,7 @@ defined('_HZEXEC_') or die();
 Html::behavior('tooltip');
 ?>
 
-<h2 class="modal-title"><?php echo Lang::txt('COM_MODULES_TYPE_CHOOSE')?></h2>
+<h2 class="modal-title"><?php echo Lang::txt('COM_MODULES_TYPE_CHOOSE'); ?></h2>
 
 <table id="new-modules-list" class="adminlist">
     <thead>

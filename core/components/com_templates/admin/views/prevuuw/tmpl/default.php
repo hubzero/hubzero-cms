@@ -53,8 +53,8 @@ $previewUrl = $this->url . 'index.php?tp=' . $this->tp
 
     <input type="hidden" name="id" value="<?php echo $this->id; ?>" />
     <input type="hidden" name="template" value="<?php echo $this->template; ?>" />
-    <input type="hidden" name="option" value="<?php echo $this->option;?>" />
+    <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="task" value="" />
-    <input type="hidden" name="client" value="<?php echo $this->client->id;?>" />
+    <input type="hidden" name="client" value="<?php echo $this->client->id; ?>" />
     <?php echo Html::input('token'); ?>
 </form>

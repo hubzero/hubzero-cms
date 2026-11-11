@@ -266,7 +266,7 @@ $this->css('usage', 'com_usage');
                     </td>
                     <td><?php echo $usercount12; ?></td>
                     <td><?php echo $usercount14; ?></td>
-                    <td><?php echo $cites ?></td>
+                    <td><?php echo $cites; ?></td>
                     <td><?php echo Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>
                 </tr>
                 <?php
@@ -296,7 +296,7 @@ $this->css('usage', 'com_usage');
                                 class="small"><?= $rw->type ?></span></td>
                             <td class="highlight"><?php echo $usercount12; ?></td>
                             <td class="highlight"><?php echo $usercount14; ?></td>
-                            <td class="highlight"><?php echo $cites ?></td>
+                            <td class="highlight"><?php echo $cites; ?></td>
                             <td class="highlight">
                                 <?= Date::of($rw->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?>
                             </td>

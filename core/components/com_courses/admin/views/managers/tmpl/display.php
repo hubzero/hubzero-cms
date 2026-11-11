@@ -136,7 +136,7 @@ if (count($managers) > 0) {
                         ?>
                         <a href="<?php echo $routeUrl; ?>" target="_parent">
                     <?php echo $u->get('name') ? $this->escape($u->get('name')) . ' ('
-                            . $this->escape($u->get('username')) . ')' : Lang::txt('COM_COURSES_UNKNOWN')
+                            . $this->escape($u->get('username')) . ')' : Lang::txt('COM_COURSES_UNKNOWN');
                     ?>
                         </a>
                     </td>

@@ -266,7 +266,7 @@ if ($this->filters['parent_id'] > 0) {
                         || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
                         || !$canDo->get('core.edit.state')
                     ) { ?>
-                        <span class="state <?php echo $class;?>">
+                        <span class="state <?php echo $class; ?>">
                             <span><?php echo $alt; ?></span>
                         </span>
                     <?php } else { ?>

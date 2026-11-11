@@ -62,7 +62,7 @@ $invalidMsg = $this->escape(
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
-                <legend><span><?php echo Lang::txt('COM_CATEGORIES_FIELDSET_DETAILS');?></span></legend>
+                <legend><span><?php echo Lang::txt('COM_CATEGORIES_FIELDSET_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('title'); ?>
@@ -163,7 +163,7 @@ $invalidMsg = $this->escape(
                             </td>
                         </tr>
                         <tr>
-                            <th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_MODIFIED');?></th>
+                            <th scope="row"><?php echo Lang::txt('COM_CATEGORIES_FIELD_MODIFIED'); ?></th>
                             <td>
                                 <?php echo Date::of($this->item->get('modified_time'))->toLocal(); ?>
                             </td>
@@ -199,7 +199,7 @@ $invalidMsg = $this->escape(
                                 </div>
                             <?php endforeach; ?>
                         </fieldset>
-                    <?php endif ?>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php echo Html::sliders('end'); ?>
         </div>

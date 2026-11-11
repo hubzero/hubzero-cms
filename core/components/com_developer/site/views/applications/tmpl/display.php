@@ -42,7 +42,7 @@ $newAppUrl = Route::url('index.php?option=com_developer&controller=applications&
                         <li>
                             <h4>
                                 <a href="<?php echo Route::url($application->link()); ?>">
-                                    <?php echo $this->escape($application->get('name')) ?>
+                                    <?php echo $this->escape($application->get('name')); ?>
                                 </a>
                             </h4>
                             <dl class="meta">
@@ -75,7 +75,7 @@ $newAppUrl = Route::url('index.php?option=com_developer&controller=applications&
                         <li>
                             <?php $application = $token->application; ?>
                             <h4>
-                                <?php echo $this->escape($application->get('name')) ?>
+                                <?php echo $this->escape($application->get('name')); ?>
                             </h4>
                             <?php
                             $revokeConfirm = Lang::txt(

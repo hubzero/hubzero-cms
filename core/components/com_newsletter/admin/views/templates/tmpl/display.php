@@ -73,7 +73,7 @@ if ($this->getError()) {
                             <input
                                 type="checkbox"
                                 name="id[]"
-                                id="cb<?php echo $k;?>"
+                                id="cb<?php echo $k; ?>"
                                 value="<?php echo $template->id; ?>"
                                 class="checkbox-toggle"
                             />

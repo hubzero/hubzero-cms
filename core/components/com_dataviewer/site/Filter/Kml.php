@@ -22,8 +22,8 @@ class Kml
         ?>
 <kml xmlns="http://earth.google.com/kml/2.2">
 <Document>
-    <name><?php echo $dd['title']?></name>
-    <description><![CDATA[<?php echo $dd['title']?>]]></description>
+    <name><?php echo $dd['title']; ?></name>
+    <description><![CDATA[<?php echo $dd['title']; ?>]]></description>
     <Style id="style0">
         <IconStyle>
             <Icon>

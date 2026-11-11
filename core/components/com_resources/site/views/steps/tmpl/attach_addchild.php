@@ -18,12 +18,12 @@ $actionUrl = $baseUrl . '&task=create&' . Session::getFormToken() . '=1';
            type="text"
            autocomplete="off"
            placeholder="Search Resources by ID or Title."
-           data-script="<?php echo '/api/v1.1' . Route::url('index.php?option=com_resources&task=autocomplete');?>"
+           data-script="<?php echo '/api/v1.1' . Route::url('index.php?option=com_resources&task=autocomplete'); ?>"
            />
-    <a href="<?php echo $actionUrl;?>"
+    <a href="<?php echo $actionUrl; ?>"
        class="btn"
        id="add-child"
-       data-pid="<?php echo $this->id;?>"
+       data-pid="<?php echo $this->id; ?>"
        data-childid=""
        disabled>Add</a>
 </div>

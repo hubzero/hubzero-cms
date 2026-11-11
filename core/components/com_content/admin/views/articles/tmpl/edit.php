@@ -176,8 +176,8 @@ $editUrl = Route::url(
             <table class="meta">
                 <tbody>
                     <tr>
-                        <th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_ID_LABEL');?></th>
-                        <td><?php echo $this->item->get('id', 0);?>
+                        <th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_ID_LABEL'); ?></th>
+                        <td><?php echo $this->item->get('id', 0); ?>
                             <input type="hidden" name="id" value="<?= $this->escape($this->item->get('id')) ?>" />
                         </td>
                     </tr>
@@ -228,7 +228,11 @@ $editUrl = Route::url(
                 $params['show_publishing_options']
                 || ($params['show_publishing_options'] = '' && !empty($editoroptions))
             ) : ?>
-                <?php echo Html::sliders('panel', Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'), 'publishing-details');?>
+                <?php echo Html::sliders(
+                    'panel',
+                    Lang::txt('COM_CONTENT_FIELDSET_PUBLISHING'),
+                    'publishing-details',
+                ); ?>
                 <fieldset class="panelform">
                     <div class="form-group input-wrap">
                         <?php echo $this->form->getLabel('publish_up') . " " . $abbrTimeZoneString; ?>
@@ -273,7 +277,7 @@ $editUrl = Route::url(
                     <?php if ($name != 'editorConfig' && $name != 'basic-limited') : ?>
                         <?php echo Html::sliders('panel', Lang::txt($fieldSet->label), $name . '-options'); ?>
                         <?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
-                            <p class="tip"><?php echo $this->escape(Lang::txt($fieldSet->description));?></p>
+                            <p class="tip"><?php echo $this->escape(Lang::txt($fieldSet->description)); ?></p>
                         <?php endif; ?>
                         <fieldset class="panelform">
                             <?php foreach ($this->form->getFieldset($name) as $field) : ?>
@@ -283,7 +287,7 @@ $editUrl = Route::url(
                                 </div>
                             <?php endforeach; ?>
                         </fieldset>
-                    <?php endif ?>
+                    <?php endif; ?>
                     <?php
                     // If we are not showing the options we need to use the hidden fields so the values are not lost.
                     ?>
@@ -316,7 +320,7 @@ $editUrl = Route::url(
                         </div>
                     <?php endforeach; ?>
                 </fieldset>
-            <?php endif ?>
+            <?php endif; ?>
 
             <?php // The url and images fields only show if the configuration is set to allow them.?>
             <?php // This is for legacy reasons.?>

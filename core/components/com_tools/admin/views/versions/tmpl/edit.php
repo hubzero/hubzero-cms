@@ -172,15 +172,15 @@ $this->js();
                         <tbody>
                             <tr>
                                 <th><?php echo Lang::txt('COM_TOOLS_FIELD_TITLE'); ?>:</th>
-                                <td><?php echo $this->escape(stripslashes($this->parent->title ?? ''));?></td>
+                                <td><?php echo $this->escape(stripslashes($this->parent->title ?? '')); ?></td>
                             </tr>
                             <tr>
                                 <th><?php echo Lang::txt('COM_TOOLS_FIELD_TOOLNAME'); ?>:</th>
-                                <td><?php echo $this->escape(stripslashes($this->parent->toolname ?? ''));?></td>
+                                <td><?php echo $this->escape(stripslashes($this->parent->toolname ?? '')); ?></td>
                             </tr>
                             <tr>
                                 <th><?php echo Lang::txt('COM_TOOLS_FIELD_VERSION'); ?>:</th>
-                                <td><?php echo $this->escape($this->row->id);?></td>
+                                <td><?php echo $this->escape($this->row->id); ?></td>
                             </tr>
                         </tbody>
                     </table>

@@ -190,7 +190,7 @@ foreach ($menus as $menu) {
 
                     <label for="field-state">
                         <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_STATUS') ?>:</strong> <span
-                            class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL')?></span>
+                            class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
                         <select name="module[state]" id="field-state" class="fancy-select">
                             <option value="1"><?= Lang::txt('COM_GROUPS_PAGES_MODULE_STATUS_PUBLISHED') ?></option>
                             <option value="0"><?= Lang::txt('COM_GROUPS_PAGES_MODULE_STATUS_UNPUBLISHED') ?></option>
@@ -209,14 +209,14 @@ foreach ($menus as $menu) {
                     <legend><?php echo Lang::txt('COM_GROUPS_PAGES_MODULE_SETTINGS'); ?></legend>
                     <label for="field-position">
                         <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_POSITION') ?>:</strong> <span
-                            class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL')?></span>
+                            class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
                         <input type="text" name="module[position]" id="field-position"
                             value="<?= $this->escape(stripslashes($this->module->get('position'))) ?>" />
                     </label>
                     <?php if ($this->module->get('id')) : ?>
                         <label for="field-ordering">
                             <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_ORDERING') ?>:</strong> <span
-                                class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL')?></span>
+                                class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
                             <select name="module[ordering]" id="field-ordering" class="fancy-select">
                                 <?php foreach ($this->order as $k => $order) : ?>
                                     <?php $sel = ($order->get('title') == $this->module->get('title'))
@@ -228,7 +228,7 @@ foreach ($menus as $menu) {
                                 <?php endforeach; ?>
                             </select>
                         </label>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </fieldset>
             </div>
         </div>

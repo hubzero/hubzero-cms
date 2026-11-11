@@ -117,7 +117,7 @@ $activationSelected = function ($value) use ($view) {
                 ?>
                 <label for="filter-access"><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS');?></option>
+                    <option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS'); ?></option>
                     <?= Html::select(
                         'options',
                         Html::access('assetgroups'),
@@ -129,7 +129,7 @@ $activationSelected = function ($value) use ($view) {
 
                 <label for="filter-state"><?php echo Lang::txt('COM_MEMBERS_FILTER_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="inputbox filter filter-submit">
-                    <option value="*"><?php echo Lang::txt('COM_MEMBERS_FILTER_STATE');?></option>
+                    <option value="*"><?php echo Lang::txt('COM_MEMBERS_FILTER_STATE'); ?></option>
                     <?= Html::select(
                         'options',
                         Components\Members\Helpers\Admin::getStateOptions(),
@@ -141,7 +141,7 @@ $activationSelected = function ($value) use ($view) {
 
                 <label for="filter-approved"><?php echo Lang::txt('COM_MEMBERS_FILTER_APPROVED'); ?>:</label>
                 <select name="approved" id="filter-approved" class="inputbox filter filter-submit">
-                    <option value="*"><?php echo Lang::txt('COM_MEMBERS_FILTER_APPROVED');?></option>
+                    <option value="*"><?php echo Lang::txt('COM_MEMBERS_FILTER_APPROVED'); ?></option>
                     <?= Html::select(
                         'options',
                         Components\Members\Helpers\Admin::getApprovedOptions(),
@@ -153,7 +153,7 @@ $activationSelected = function ($value) use ($view) {
 
                 <label for="filter-group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USERGROUP'); ?>:</label>
                 <select name="group_id" id="filter-group_id" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_USERGROUP');?></option>
+                    <option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_USERGROUP'); ?></option>
                     <?= Html::select(
                         'options',
                         Components\Members\Helpers\Admin::getAccessGroups(),
@@ -165,7 +165,7 @@ $activationSelected = function ($value) use ($view) {
 
                 <label for="filter-range"><?php echo Lang::txt('COM_MEMBERS_OPTION_FILTER_DATE'); ?>:</label>
                 <select name="range" id="filter-range" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_FILTER_DATE');?></option>
+                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_FILTER_DATE'); ?></option>
                     <?= Html::select(
                         'options',
                         Components\Members\Helpers\Admin::getRangeOptions(),
@@ -403,7 +403,7 @@ $activationSelected = function ($value) use ($view) {
                         );
                         ?>
                         <a class="permissions button" href="<?= $debugUrl ?>">
-                            <?php echo Lang::txt('COM_MEMBERS_DEBUG_USER');?>
+                            <?php echo Lang::txt('COM_MEMBERS_DEBUG_USER'); ?>
                         </a>
                     <?php endif; ?>
                 </td>
@@ -558,7 +558,7 @@ $activationSelected = function ($value) use ($view) {
         && User::authorise('core.edit.state', $this->option)
     ) : ?>
         <?php echo $this->loadTemplate('batch'); ?>
-    <?php endif;?>
+    <?php endif; ?>
 
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

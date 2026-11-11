@@ -443,7 +443,7 @@ if ($secondaries->count() > 0) {
                                                     <a href="<?= $reorderUrl ?>">
                                                         <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_MOVE_UP') ?>
                                                     </a>
-                                                <?php endif ?>
+                                                <?php endif; ?>
                                                 <?php if ($primary->order < $primary_highest_order) : ?>
                                                     <?php
                                                     $reorderUrl = Route::url(

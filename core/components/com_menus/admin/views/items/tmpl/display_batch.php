@@ -26,14 +26,14 @@ $published = $this->filters['published'];
 $hasMenuTarget = ($published === '' || $published === null || $published >= 0);
 ?>
 <fieldset class="batch">
-    <legend><?php echo Lang::txt('COM_MENUS_BATCH_OPTIONS');?></legend>
+    <legend><?php echo Lang::txt('COM_MENUS_BATCH_OPTIONS'); ?></legend>
 
     <p><?php echo Lang::txt('COM_MENUS_BATCH_TIP'); ?></p>
 
     <div class="grid">
         <div class="col span6">
             <div class="input-wrap">
-                <?php echo Html::batch('access');?>
+                <?php echo Html::batch('access'); ?>
             </div>
 
             <div class="input-wrap">
@@ -49,7 +49,7 @@ $hasMenuTarget = ($published === '' || $published === null || $published >= 0);
                     <div class="grid">
                         <div class="col span6">
                             <select name="batch[menu_id]" class="inputbox" id="batch-menu-id">
-                                <option value=""><?php echo Lang::txt('JSELECT') ?></option>
+                                <option value=""><?php echo Lang::txt('JSELECT'); ?></option>
                                 <?php
                                 $menuItems = Html::menu('menuitems', ['published' => $published]);
                                 echo Html::select('options', $menuItems);

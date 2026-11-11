@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
                 <?php echo Lang::txt('MOD_POPULAR_CREATED'); ?>
             </th>
             <th scope="col">
-                <?php echo Lang::txt('JGLOBAL_HITS');?>
+                <?php echo Lang::txt('JGLOBAL_HITS'); ?>
             </th>
         </tr>
     </thead>
@@ -35,7 +35,7 @@ defined('_HZEXEC_') or die();
                     <?php echo Html::grid('checkedout', $i, $item->editor->get('name'), $item->checked_out_time); ?>
                 <?php endif; ?>
 
-                <?php if ($item->link) :?>
+                <?php if ($item->link) : ?>
                     <a href="<?php echo $item->link; ?>">
                         <?php echo $this->escape($item->title); ?>
                     </a>

@@ -19,5 +19,5 @@ defined('_HZEXEC_') or die();
     <?php
     $addUrl = Route::url('index.php?option=com_wishlist&id=' . $this->wishlistid . '&task=add');
     ?>
-    (<a href="<?= $addUrl ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_WISHLIST_ADD_NEW_WISH');?></a>)
+    (<a href="<?= $addUrl ?>"><?php echo Lang::txt('PLG_PUBLICATIONS_WISHLIST_ADD_NEW_WISH'); ?></a>)
 </p>

@@ -136,7 +136,7 @@ if ($comment) {
                                 $divStyle = 'line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;';
                                 ?>
                                 <div style="<?= $divStyle ?>"><?= $comment ?>
-                                <?php if (!empty($this->permissionURL) && !empty($this->permissionTxt)) {?>
+                                <?php if (!empty($this->permissionURL) && !empty($this->permissionTxt)) { ?>
                                     <a href="<?= $this->permissionURL ?>"><?= $this->permissionTxt ?></a>
                                 <?php } ?>
                                 </div>

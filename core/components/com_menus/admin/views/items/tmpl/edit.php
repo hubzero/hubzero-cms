@@ -92,7 +92,7 @@ $formAction = Route::url(
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
-                <legend><span><?php echo Lang::txt('COM_MENUS_ITEM_DETAILS');?></span></legend>
+                <legend><span><?php echo Lang::txt('COM_MENUS_ITEM_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('type'); ?>
@@ -105,7 +105,7 @@ $formAction = Route::url(
                 </div>
 
                 <?php if ($this->item->type == 'url') : ?>
-                    <?php $this->form->setFieldAttribute('link', 'readonly', 'false');?>
+                    <?php $this->form->setFieldAttribute('link', 'readonly', 'false'); ?>
                     <div class="input-wrap">
                         <?php echo $this->form->getLabel('link'); ?>
                         <?php echo $this->form->getInput('link'); ?>
@@ -149,7 +149,7 @@ $formAction = Route::url(
                         <?php echo $this->form->getLabel('link'); ?>
                         <?php echo $this->form->getInput('link'); ?>
                     </div>
-                <?php endif ?>
+                <?php endif; ?>
 
                 <div class="grid">
                     <div class="col span6">

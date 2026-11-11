@@ -17,6 +17,6 @@ if ($params->get('backgroundimage')) {
 	');
 }
 ?>
-<div class="custom<?php echo $moduleclass_sfx ?>">
+<div class="custom<?php echo $moduleclass_sfx; ?>">
     <?php echo $module->content; ?>
 </div>

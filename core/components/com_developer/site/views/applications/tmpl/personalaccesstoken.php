@@ -18,7 +18,7 @@ defined('_HZEXEC_') or die();
         </h3>
         <div class="tokens access-tokens">
         <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_NEW_PERSONAL_APPLICATION_TOKEN'); ?>: 
-        <b><?php echo $this->accesstoken ?></b></br>
+        <b><?php echo $this->accesstoken; ?></b></br>
         <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TOKENS_MAKE_SURE_PERSONAL_APPLICATION_TOKEN'); ?>
         </div>
     </div>

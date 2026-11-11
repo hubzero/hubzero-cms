@@ -186,7 +186,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
                                 }
                                 $selected = $type->id == $this->model->get('type') ? ' selected="selected"' : '';
                                 ?>
-                                <option value="<?= $type->id ?>" <?= $selected ?>><?php echo $type->type ?></option>
+                                <option value="<?= $type->id ?>" <?= $selected ?>><?php echo $type->type; ?></option>
                             <?php } ?>
                         </select>
                     </div>
@@ -480,7 +480,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
                                 <?= $activity ?>
                             <?php } else {
                                 echo Lang::txt('COM_PROJECTS_NA');
-                            }?>
+                            } ?>
                         </td>
                     </tr>
                 </tbody>

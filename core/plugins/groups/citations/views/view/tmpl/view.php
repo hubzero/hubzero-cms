@@ -162,7 +162,7 @@ $area = Request::getString('area', 'about');
                 }
                 ?>
             </div>
-        <?php endif;?>
+        <?php endif; ?>
 
         <div class="citation-citation">
             <?php
@@ -287,119 +287,119 @@ $area = Request::getString('area', 'about');
                         <th><?php echo Lang::txt('COM_CITATIONS_JOURNAL'); ?></th>
                         <td><?php echo $this->escape($citation->journal); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->publisher) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_PUBLISHER'); ?></th>
                         <td><?php echo $this->escape($citation->publisher); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->booktitle) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_BOOK_TITLE'); ?></th>
                         <td><?php echo $this->escape($citation->booktitle); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->short_title) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_SHORT_TITLE'); ?></th>
                         <td><?php echo $this->escape($citation->short_title); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->editor) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_EDITORS'); ?></th>
                         <td><?php echo $this->escape($citation->editor); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->cite) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_CITE_KEY'); ?></th>
                         <td><?php echo $this->escape($citation->cite); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->ref_type) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_REF_TYPE'); ?></th>
                         <td><?php echo $this->escape($citation->ref_type); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->date_submit && $citation->date_submit != '0000-00-00 00:00:00') : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_DATE_SUBMITTED'); ?></th>
                         <td><?php echo date("F d, Y", strtotime($citation->date_submit)); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->date_accept && $citation->date_accept != '0000-00-00 00:00:00') : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_DATE_ACCEPTED'); ?></th>
                         <td><?php echo date("F d, Y", strtotime($citation->date_accept)); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->date_publish && $citation->date_publish != '0000-00-00 00:00:00') : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_DATE_PUBLISHED'); ?></th>
                         <td><?php echo date("F d, Y", strtotime($citation->date_publish)); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->year) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_YEAR'); ?></th>
                         <td><?php echo $this->escape($citation->year); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->month) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_MONTH'); ?></th>
                         <td><?php echo $this->escape($citation->month); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->author_address) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_AUTHOR_ADDRESS'); ?></th>
                         <td><?php echo nl2br($this->escape($citation->author_address)); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->volume) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_VOLUME'); ?></th>
                         <td><?php echo $this->escape($citation->volume); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->number) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_ISSUE'); ?></th>
                         <td><?php echo $this->escape($citation->number); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->pages) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_PAGES'); ?></th>
                         <td><?php echo $this->escape($citation->pages); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->isbn) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_ISBN'); ?></th>
                         <td><?php echo $this->escape($citation->isbn); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->doi) : ?>
                      <tr>
@@ -410,105 +410,105 @@ $area = Request::getString('area', 'about');
                             </a>
                         </td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->call_number) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_CALL_NUMBER'); ?></th>
                         <td><?php echo $this->escape($citation->call_number); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->accession_number) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_ACCESSION_NUMBER'); ?></th>
                         <td><?php echo $this->escape($citation->accession_number); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->series) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_SERIES'); ?></th>
                         <td><?php echo $this->escape($citation->series); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->edition) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_EDITION'); ?></th>
                         <td><?php echo $this->escape($citation->edition); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->school) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_SCHOOL'); ?></th>
                         <td><?php echo $this->escape($citation->school); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->institution) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_INSTITUTION'); ?></th>
                         <td><?php echo $this->escape($citation->institution); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->address) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_ADDRESS'); ?></th>
                         <td><?php echo $this->escape($citation->address); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->location) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_LOCATION'); ?></th>
                         <td><?php echo $this->escape($citation->location); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->howpublished) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_PUBLISH_METHOD'); ?></th>
                         <td><?php echo $this->escape($citation->howpublished); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->language) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_LANGUAGE'); ?></th>
                         <td><?php echo $this->escape($citation->language); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->label) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_LABEL'); ?></th>
                         <td><?php echo $this->escape($citation->label); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->notes) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_NOTES'); ?></th>
                         <td><?php echo nl2br($this->escape($citation->notes)); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->research_notes) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_RESEARCH_NOTES'); ?></th>
                         <td><?php echo nl2br($this->escape($citation->research_notes)); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if ($citation->keywords) : ?>
                      <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_KEYWORDS'); ?></th>
                         <td><?php echo nl2br($this->escape($citation->keywords)); ?></td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
 
                 <?php if (is_array($tags) && count($tags) > 0 && $showTags == 'yes') : ?>
                     <tr>
@@ -551,7 +551,7 @@ $area = Request::getString('area', 'about');
             </tbody>
         </table>
     </section>
-<?php endif;?>
+<?php endif; ?>
 
 <?php if ($area == 'resources') : ?>
     <section class="main section citation-section" id="resources">
@@ -567,7 +567,7 @@ $area = Request::getString('area', 'about');
             <p><?php echo Lang::txt('COM_CITATIONS_CITED_NONE'); ?></p>
         <?php endif; ?>
     </section>
-<?php endif;?>
+<?php endif; ?>
 
 <?php if ($area == 'reviews') : ?>
     <section class="main section citation-section" id="reviews">
@@ -600,7 +600,7 @@ $area = Request::getString('area', 'about');
                             </a>
                         </td>
                     </tr>
-                <?php endif;?>
+                <?php endif; ?>
                 <?php if ($config->get('citation_openurl', 1)) : ?>
                     <tr>
                         <th><?php echo Lang::txt('COM_CITATIONS_LOCAL_LIBRARY'); ?></th>

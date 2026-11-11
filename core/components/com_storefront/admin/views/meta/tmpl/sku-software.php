@@ -14,7 +14,7 @@ defined('_HZEXEC_') or die();
     <legend><span>General Software-related Options</span></legend>
 
     <div class="input-wrap">
-        <label for="eula"><?php echo 'EULA (overrides product-level EULA)' ?>: </label><br />
+        <label for="eula"><?php echo 'EULA (overrides product-level EULA)'; ?>: </label><br />
         <?php
         $skuMeta = $this->skuMeta;
 

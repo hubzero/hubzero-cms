@@ -34,14 +34,14 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     $titleText = Lang::txt('PLG_GROUPS_COURSES_SORT_BY_TITLE');
                     ?>
                     <li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?>
-                    href="<?php echo Route::url($base . '&sortby=title' . $qs);?>"
-                        title="<?= $titleText ?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_TITLE');?></a></li>
+                    href="<?php echo Route::url($base . '&sortby=title' . $qs); ?>"
+                        title="<?= $titleText ?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_TITLE'); ?></a></li>
                     <?php
                     $titleText = Lang::txt('PLG_GROUPS_COURSES_SORT_BY_ENROLLED');
                     ?>
                     <li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?>
-                    href="<?php echo Route::url($base . '&sortby=popularity' . $qs);?>"
-                        title="<?= $titleText ?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_ENROLLED');?></a></li>
+                    href="<?php echo Route::url($base . '&sortby=popularity' . $qs); ?>"
+                        title="<?= $titleText ?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_ENROLLED'); ?></a></li>
                 </ul>
             </nav>
 

@@ -22,12 +22,12 @@ $this->css('jquery.ui.css', 'system');
                     min="0"
                     class="minutes"
                     name="deployment[timeLimit]"
-                    value="<?php echo htmlentities(($val = $this->dep->getTimeLimit()) ? $val : '') ?>" /> minutes
+                    value="<?php echo htmlentities(($val = $this->dep->getTimeLimit()) ? $val : ''); ?>" /> minutes
             </label>
             <?php if ($showErrors && $this->dep->hasErrors('timeLimit')) : ?>
             <ul class="error">
                 <?php foreach ($this->dep->getErrors('timeLimit') as $err) : ?>
-                <li><?php echo $err ?></li>
+                <li><?php echo $err; ?></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>
@@ -46,7 +46,7 @@ $this->css('jquery.ui.css', 'system');
             <?php if ($showErrors && $this->dep->hasErrors('allowedAttempts')) : ?>
             <ul class="error">
                 <?php foreach ($this->dep->getErrors('allowedAttempts') as $err) : ?>
-                <li><?php echo $err ?></li>
+                <li><?php echo $err; ?></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>
@@ -94,7 +94,7 @@ $this->css('jquery.ui.css', 'system');
             <?php if ($showErrors && $this->dep->hasErrors('resultsOpen')) : ?>
             <ul class="error">
                 <?php foreach ($this->dep->getErrors('resultsOpen') as $err) : ?>
-                <li><?php echo $err ?></li>
+                <li><?php echo $err; ?></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>
@@ -130,7 +130,7 @@ $this->css('jquery.ui.css', 'system');
             <?php if ($showErrors && $this->dep->hasErrors('resultsClosed')) : ?>
             <ul class="error">
                 <?php foreach ($this->dep->getErrors('resultsClosed') as $err) : ?>
-                <li><?php echo $err ?></li>
+                <li><?php echo $err; ?></li>
                 <?php endforeach; ?>
             </ul>
             <?php endif; ?>

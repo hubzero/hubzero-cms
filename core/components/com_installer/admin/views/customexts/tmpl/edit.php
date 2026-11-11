@@ -68,7 +68,7 @@ $this->js();
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('type'); ?><br />
                     <select name="fields[type]" class="required" id="field-type">
-                        <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT');?></option>
+                        <option value=""><?php echo Lang::txt('COM_INSTALLER_CUSTOMEXTS_VALUE_TYPE_SELECT'); ?></option>
                         <?= Html::select(
                             'options',
                             Components\Installer\Admin\Helpers\Installer::typeOptions(),

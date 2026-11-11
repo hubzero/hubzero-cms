@@ -17,7 +17,7 @@ defined('_HZEXEC_') or die();
 $this->css();
 
 ?>
-<div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : '';?>>
+<div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
     <?php if ($this->params->get('button_show_all', 1)) { ?>
     <ul class="module-nav">
         <li>

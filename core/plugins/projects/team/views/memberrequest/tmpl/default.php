@@ -30,11 +30,11 @@ $i = 1;
             <fieldset>
                 <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
                 <input type="hidden" name="action" value="denymembership" />
-                <input type="hidden" name="owner" value="<?php echo $this->owner->userid;?>" />
+                <input type="hidden" name="owner" value="<?php echo $this->owner->userid; ?>" />
                 <p class="anote"><?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_MEMBERREQUEST_NOTE'); ?></p>
                 <p><?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_MEMBERREQUEST_PROMPT'); ?></p>
                 <p class="prominent"> 
-                    <?php echo $this->owner->user->name;?>
+                    <?php echo $this->owner->user->name; ?>
                 </p>
                 <label>Reason:</label>
                 <textarea name="message"></textarea>

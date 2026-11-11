@@ -46,8 +46,8 @@ $groupProjectPlugins = Event::trigger('groups.onGroupProjects', [$this->group]);
     </li>
     <?php foreach ($groupProjectPlugins as $plugin) { ?>
         <li <?php echo $this->tab == $plugin->name ? 'class="active"' : ''; ?> >
-            <a href="<?php echo $plugin->pathRoute ?>">
-                <?php echo $plugin->title ?>
+            <a href="<?php echo $plugin->pathRoute; ?>">
+                <?php echo $plugin->title; ?>
                     <?= $plugin->newcount ? '<span class="s-new">' . $plugin->newcount . '</span>' : '' ?>
             </a>
         </li>

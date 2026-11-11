@@ -13,7 +13,7 @@ defined('_HZEXEC_') or die();
 
 <form action="<?= isset($this->form_action) ? $this->escape($this->form_action) : '' ?>" id="oauth_form" method="post">
 
-    <input id="oauth_token" name="oauth_token" type="hidden" value="<?php echo $this->escape($this->oauth_token);?>" />
+    <input id="oauth_token" name="oauth_token" type="hidden" value="<?php echo $this->escape($this->oauth_token); ?>" />
 
     <fieldset class="sign-in">
         <legend>Sign in to HUBzero</legend>

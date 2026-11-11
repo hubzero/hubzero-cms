@@ -20,14 +20,14 @@ $published = $this->filters['published'];
 $extension = $this->filters['extension'];
 ?>
 <fieldset class="batch">
-    <legend><?php echo Lang::txt('COM_CATEGORIES_BATCH_OPTIONS');?></legend>
+    <legend><?php echo Lang::txt('COM_CATEGORIES_BATCH_OPTIONS'); ?></legend>
 
     <p><?php echo Lang::txt('COM_CATEGORIES_BATCH_TIP'); ?></p>
 
     <div class="grid">
         <div class="col span6">
             <div class="input-wrap">
-                <?php echo Html::batch('access');?>
+                <?php echo Html::batch('access'); ?>
             </div>
 
             <div class="input-wrap">

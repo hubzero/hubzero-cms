@@ -46,12 +46,12 @@ if (Request::isSecure()) {
                 ?>
                 <a class="tooltips" href="#"
                     onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;"
-                    title="<?= $titleText ?>"><?php echo Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA');?></a>
+                    title="<?= $titleText ?>"><?php echo Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?></a>
                 <script type="text/javascript">
                     //<![CDATA[
                     function reloadCapthcha<?php echo $this->total; ?>(instanceNo) {
                         var captchaSrc = "<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>
-                        &controller=<?php echo $this->controller;?>&task=<?php echo $this->task; ?>
+                        &controller=<?php echo $this->controller; ?>&task=<?php echo $this->task; ?>
                         &no_html=1&showCaptcha=True&instanceNo=" + instanceNo + "&time=" + new Date().getTime();
                         document.getElementById('captchaCode' + instanceNo).src = captchaSrc;
                     }

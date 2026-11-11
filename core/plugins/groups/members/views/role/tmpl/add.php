@@ -45,7 +45,7 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&cn=' . $this->gr
             <legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_PERMISSIONS'); ?></legend>
             <?php foreach ($this->available_permissions as $perm => $label) : ?>
                 <label>
-                    <?php $ckd = ($this->role->permissions->get($perm)) ? 'checked="checked"' : '' ?>
+                    <?php $ckd = ($this->role->permissions->get($perm)) ? 'checked="checked"' : ''; ?>
                     <input type="hidden" name="role[permissions][<?php echo $perm; ?>]" value="0" />
                     <input class="option" type="checkbox" <?= $ckd ?> name="role[permissions][<?= $perm ?>]"
                         value="1"> <?= $label ?>

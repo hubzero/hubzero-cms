@@ -60,7 +60,7 @@ $cls = [
         <div id="wrap">
             <nav role="navigation" class="main-navigation">
                 <a class="btn dashboard" href="<?php echo Route::url('index.php'); ?>">
-                    <?php echo Lang::txt('TPL_KAMELEON_CONTROL_PANEL') ?>
+                    <?php echo Lang::txt('TPL_KAMELEON_CONTROL_PANEL'); ?>
                 </a>
                 <a class="btn help" href="<?php echo Route::url('index.php?option=com_help'); ?>">
                     <?php echo Lang::txt('TPL_KAMELEON_HELP'); ?>
@@ -73,7 +73,7 @@ $cls = [
                     <p class="error"><?php echo $this->error->getMessage(); ?></p>
 
                     <noscript>
-                        <?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT') ?>
+                        <?php echo Lang::txt('JGLOBAL_WARNJAVASCRIPT'); ?>
                     </noscript>
                 </div>
 

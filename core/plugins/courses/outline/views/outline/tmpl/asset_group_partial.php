@@ -13,8 +13,8 @@ use Hubzero\Facades\Request;
 defined('_HZEXEC_') or die();
 ?>
 
-<li class="asset-group-item <?php echo ($this->ag->isPublished()) ? 'published' : 'unpublished' ?>"
-    id="assetgroupitem_<?php echo $this->ag->get('id') ?>">
+<li class="asset-group-item <?php echo ($this->ag->isPublished()) ? 'published' : 'unpublished'; ?>"
+    id="assetgroupitem_<?php echo $this->ag->get('id'); ?>">
     <div class="asset-group-controls">
         <div class="sortable-handle"></div>
         <div class="asset-group-edit"></div>
@@ -54,7 +54,7 @@ defined('_HZEXEC_') or die();
         </form>
     </div>
     <div class="asset-group-item-container">
-        <div class="asset-group-item-title title toggle-editable"><?php echo $this->ag->get('title') ?></div>
+        <div class="asset-group-item-title title toggle-editable"><?php echo $this->ag->get('title'); ?></div>
         <div class="title-edit">
             <form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save" class="assetgroup-title-form">
                 <input class="title-text" name="title" type="text" value="<?php echo $this->ag->get('title'); ?>" />

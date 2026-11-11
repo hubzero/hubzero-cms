@@ -89,14 +89,14 @@ $searchPlaceholder = Lang::txt(
                     'id',
                     @$this->filters['sort_Dir'],
                     @$this->filters['sort'],
-                );?></th>
+                ); ?></th>
                 <th scope="col"><?php echo Html::grid(
                     'sort',
                     'COM_NEWSLETTER_CAMPAIGN_NAME',
                     'title',
                     @$this->filters['sort_Dir'],
                     @$this->filters['sort'],
-                );?></th>
+                ); ?></th>
                 <th scope="col" class="priority-3"><?php echo Html::grid(
                     'sort',
                     'COM_NEWSLETTER_CAMPAIGN_EXPIRE_DATE',
@@ -104,7 +104,7 @@ $searchPlaceholder = Lang::txt(
                     @$this->filters['sort_Dir'],
                     @$this->filters['sort'],
                 ); ?></th>
-                <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_CAMPAIGN_DESCRIPTION');?></th>
+                <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_CAMPAIGN_DESCRIPTION'); ?></th>
                 <th scope="col" class="priority-3"><?php echo Html::grid(
                     'sort',
                     'COM_NEWSLETTER_CAMPAIGN_DATE',

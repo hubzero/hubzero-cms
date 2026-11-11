@@ -15,7 +15,7 @@ setlocale(LC_MONETARY, 'en_US.UTF-8');
 
 $this
      ->css()
-     ->js()
+     ->js();
 ?>
 
 <header id="content-header">

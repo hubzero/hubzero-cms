@@ -165,7 +165,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                     </td>
                     <td class="priority-5">
                         <?php if ($owner->status == 1) : ?>
-                            <time datetime="<?php echo Date::of($owner->added)->format('Y-m-d\TH:i:s\Z');?>">
+                            <time datetime="<?php echo Date::of($owner->added)->format('Y-m-d\TH:i:s\Z'); ?>">
                                 <?php echo Date::of($owner->added)->toLocal('M d, Y'); ?>
                             </time>
                         <?php elseif ($owner->status == 3) : ?>
@@ -192,7 +192,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                                     . '&task=team&action=denymembership&owner=' . $owner->userid,
                             );
                             ?>
-                            <a id="<?php echo 'form-deny-' . $owner->id;?>"
+                            <a id="<?php echo 'form-deny-' . $owner->id; ?>"
                                 href="<?= $teamUrl ?>"
                                 class="btn btn-danger modal">
                                 <?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>

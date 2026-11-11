@@ -124,7 +124,7 @@ if (count($this->notifications) > 0) {
                     </div>
                     <div class="col span4 omega"></div>
                 </div>
-            <?php endif ?>
+            <?php endif; ?>
             </div><!-- / .popularcourses clearfix top -->
         <?php } else { ?>
             <p class="info"><?php echo Lang::txt('COM_COURSES_NO_POPULAR_COURSES'); ?></p>

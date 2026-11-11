@@ -98,7 +98,7 @@ $saveOrder = $listOrder == 'ordering';
             <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
         </div>
         <div class="filter-select fltrt">
-            <label for="filter_client_id"><?php echo Lang::txt('COM_MODULES_CLIENT');?></label>
+            <label for="filter_client_id"><?php echo Lang::txt('COM_MODULES_CLIENT'); ?></label>
             <select name="filter_client_id" id="filter_client_id" class="inputbox filter filter-submit">
                 <?php
                 $clientOptions = \Components\Modules\Helpers\Modules::getClientOptions();
@@ -222,7 +222,7 @@ $saveOrder = $listOrder == 'ordering';
                 </th>
                 <th scope="col" class="priority-3">
                     <?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
-                    <?php if ($canOrder && $saveOrder) :?>
+                    <?php if ($canOrder && $saveOrder) : ?>
                         <?php echo Html::grid('order', $this->items, 'filesave.png', 'saveorder'); ?>
                     <?php endif; ?>
                 </th>
@@ -337,7 +337,7 @@ $saveOrder = $listOrder == 'ordering';
                 </td>
                 <td class="priority-3 order">
                     <?php if ($canChange) : ?>
-                        <?php if ($saveOrder) :?>
+                        <?php if ($saveOrder) : ?>
                             <?php
                             $prevMatch = (@$positions[$i - 1] == $item->position);
                             $nextMatch = (@$positions[$i + 1] == $item->position);
@@ -419,17 +419,17 @@ $saveOrder = $listOrder == 'ordering';
                     <?php echo $this->escape($item->access_level); ?>
                 </td>
                 <td class="priority-5 center">
-                    <?php if ($item->language == '') :?>
+                    <?php if ($item->language == '') : ?>
                         <?php echo Lang::txt('JDEFAULT'); ?>
-                    <?php elseif ($item->language == '*') :?>
+                    <?php elseif ($item->language == '*') : ?>
                         <?php echo Lang::txt('JALL', 'language'); ?>
-                    <?php else :?>
+                    <?php else : ?>
                         <?php
                         echo $item->language_title
                             ? $this->escape($item->language_title)
                             : Lang::txt('JUNDEFINED');
                         ?>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </td>
                 <td class="priority-6 center">
                     <?php echo (int) $item->id; ?>
@@ -450,7 +450,7 @@ $saveOrder = $listOrder == 'ordering';
     ?>
     <?php if ($canBatch) : ?>
         <?php echo $this->loadTemplate('batch'); ?>
-    <?php endif;?>
+    <?php endif; ?>
 
     <input type="hidden" name="task" value="" autocomplete="off" />
     <input type="hidden" name="boxchecked" value="0" />

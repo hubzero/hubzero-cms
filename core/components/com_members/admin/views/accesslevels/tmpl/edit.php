@@ -45,7 +45,7 @@ $this->js();
     name="adminForm"
     id="item-form"
     class="editform form-validate"
-    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));?>">
+    data-invalid-msg="<?php echo $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')); ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -65,7 +65,7 @@ $this->js();
             </fieldset>
 
             <fieldset class="adminform">
-                <legend><span><?php echo Lang::txt('COM_MEMBERS_USER_GROUPS_HAVING_ACCESS');?></span></legend>
+                <legend><span><?php echo Lang::txt('COM_MEMBERS_USER_GROUPS_HAVING_ACCESS'); ?></span></legend>
 
                 <div class="input-wrap">
                     <?php echo Html::access('usergroups', 'fields[rules]', $this->row->get('rules')); ?>

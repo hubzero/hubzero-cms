@@ -107,7 +107,7 @@ $this->css('
 <div class="reviews-summary">
     <p class="avgrating <?php echo $cls; ?>">
         <strong><span><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_OUT_OF_5_STARS', $avg); ?>
-        </span> (<?php echo $total;?>)</strong>
+        </span> (<?php echo $total; ?>)</strong>
     </p>
     <table class="reviews-distribution">
         <caption><?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_DISTRIBUTION'); ?></caption>

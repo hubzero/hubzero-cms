@@ -47,7 +47,7 @@ $debugUrl = Route::url(
             </div>
             <div class="filter-select col span7">
                 <select name="filter_component" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_COMPONENT');?></option>
+                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_COMPONENT'); ?></option>
                     <?php
                     if (!empty($this->components)) {
                         echo Html::select('options', $this->components, 'value', 'text', $this->filters['component']);
@@ -56,12 +56,12 @@ $debugUrl = Route::url(
                 </select>
 
                 <select name="filter_level_start" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_LEVEL_START');?></option>
+                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_LEVEL_START'); ?></option>
                     <?= Html::select('options', $this->levels, 'value', 'text', $this->filters['level_start']) ?>
                 </select>
 
                 <select name="filter_level_end" class="inputbox filter filter-submit">
-                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_LEVEL_END');?></option>
+                    <option value=""><?php echo Lang::txt('COM_MEMBERS_OPTION_SELECT_LEVEL_END'); ?></option>
                     <?php echo Html::select('options', $this->levels, 'value', 'text', $this->filters['level_end']); ?>
                 </select>
             </div>
@@ -71,7 +71,7 @@ $debugUrl = Route::url(
     <table class="adminlist">
         <caption>
             <?php echo Lang::txt('COM_MEMBERS_DEBUG_LEGEND'); ?>
-            <span class="swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_NO_CHECK', '-');?></span>
+            <span class="swatch"><?php echo Lang::txt('COM_MEMBERS_DEBUG_NO_CHECK', '-'); ?></span>
             <?php
             $check0Text = Lang::txt('COM_MEMBERS_DEBUG_IMPLICIT_DENY', '<span class="state no"><span>-</span></span>');
             ?>

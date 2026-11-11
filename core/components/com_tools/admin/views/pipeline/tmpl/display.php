@@ -202,7 +202,7 @@ $filterStateSelected = function ($value) use ($view) {
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="radio" name="id" id="cb<?= $i ?>" value="<?php echo $row['id'] ?>"
+                    <input type="radio" name="id" id="cb<?= $i ?>" value="<?php echo $row['id']; ?>"
                         class="checkbox-toggle" />
                 </td>
                 <td class="priority-5">

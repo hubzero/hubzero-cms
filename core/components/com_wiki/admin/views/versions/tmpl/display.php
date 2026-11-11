@@ -134,7 +134,7 @@ Toolbar::help('revisions');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?php echo $i;?>"
+                    <input type="checkbox" name="id[]" id="cb<?php echo $i; ?>"
                         value="<?php echo $row->get('id'); ?>" class="checkbox-toggle" />
                     <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden">
                         <?php echo $row->get('id'); ?>

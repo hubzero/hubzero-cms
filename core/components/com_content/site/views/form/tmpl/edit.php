@@ -223,16 +223,16 @@ endif;
                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                 <input type="hidden" name="task" value="" />
                 <input type="hidden" name="return" value="<?php echo $this->return_page; ?>" />
-                <?php if ($this->params->get('enable_category', 0) == 1) :?>
+                <?php if ($this->params->get('enable_category', 0) == 1) : ?>
                     <input type="hidden" name="fields[catid]" value="<?php echo $this->params->get('catid', 1); ?>"/>
-                <?php endif;?>
+                <?php endif; ?>
                 <?php echo Html::input('token'); ?>
             </fieldset>
 
             <div class="formelm-buttons submit">
-                <input type="submit" class="btn btn-success" id="btn-save" value="<?php echo Lang::txt('JSAVE') ?>" />
+                <input type="submit" class="btn btn-success" id="btn-save" value="<?php echo Lang::txt('JSAVE'); ?>" />
                 <button type="button" class="btn btn-secondary" id="btn-cancel">
-                    <?php echo Lang::txt('JCANCEL') ?>
+                    <?php echo Lang::txt('JCANCEL'); ?>
                 </button>
             </div>
         </form>

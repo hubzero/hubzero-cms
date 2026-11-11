@@ -166,7 +166,7 @@ endif;
                                     $this->terms,
                                     $this->childTermsString,
                                     $this->filters,
-                                );?>
+                                ); ?>
                             </ul>
                         <?php endif; ?>
                     </div><!-- / .container -->

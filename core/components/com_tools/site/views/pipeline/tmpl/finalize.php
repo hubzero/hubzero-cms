@@ -71,9 +71,9 @@ $this
                     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
                     <input type="hidden" name="task" value="finalizeversion" />
                     <input type="hidden" name="newstate"
-                        value="<?php echo \Components\Tools\Helpers\Html::getStatusNum('Approved') ?>" />
-                    <input type="hidden" name="id" value="<?php echo $this->status['toolid'] ?>" />
-                    <input type="hidden" name="app" value="<?php echo $this->status['toolname'] ?>" />
+                        value="<?php echo \Components\Tools\Helpers\Html::getStatusNum('Approved'); ?>" />
+                    <input type="hidden" name="id" value="<?php echo $this->status['toolid']; ?>" />
+                    <input type="hidden" name="app" value="<?php echo $this->status['toolname']; ?>" />
                     <?php echo Html::input('token'); ?>
                     <div>
                         <?php

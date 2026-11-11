@@ -51,7 +51,7 @@ $saveOrder = $listOrder == 'ordering';
 
         <div class="filter-select fltrt">
             <select name="filter_state" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED');?></option>
+                <option value=""><?php echo Lang::txt('JOPTION_SELECT_PUBLISHED'); ?></option>
                 <?php
                 echo Html::select(
                     'options',
@@ -65,7 +65,7 @@ $saveOrder = $listOrder == 'ordering';
             </select>
 
             <select name="filter_access" class="inputbox filter filter-submit">
-                <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS');?></option>
+                <option value=""><?php echo Lang::txt('JOPTION_SELECT_ACCESS'); ?></option>
                 <?php
                 echo Html::select(
                     'options',
@@ -98,7 +98,7 @@ $saveOrder = $listOrder == 'ordering';
                 </th>
                 <th scope="col" class="priority-2">
                     <?php echo Html::grid('sort', 'JGRID_HEADING_ORDERING', 'ordering', $listDirn, $listOrder); ?>
-                    <?php if ($canOrder && $saveOrder) :?>
+                    <?php if ($canOrder && $saveOrder) : ?>
                         <?php echo Html::grid('order', $this->items, 'filesave.png', 'plugins.saveorder'); ?>
                     <?php endif; ?>
                 </th>
@@ -173,7 +173,7 @@ $saveOrder = $listOrder == 'ordering';
                     </td>
                     <td class="priority-2 order">
                         <?php if ($canChange) : ?>
-                            <?php if ($saveOrder) :?>
+                            <?php if ($saveOrder) : ?>
                                 <?php
                                 $prevFolder = @$folders[$i - 1] == $item->folder;
                                 $nextFolder = @$folders[$i + 1] == $item->folder;

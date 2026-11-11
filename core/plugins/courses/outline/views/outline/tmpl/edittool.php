@@ -69,8 +69,8 @@ $tool_path = $config->get('tool_path');
                     <?php $selected = ($substr && isset($substr[1]) && $substr[1] == $tool->alias)
                         ? 'selected="selected"'
                         : ''; ?>
-                    <option value="<?php echo $this->escape($tool->alias) ?>" <?php echo $selected ?>>
-                        <?php echo $this->escape($tool->title) ?>
+                    <option value="<?php echo $this->escape($tool->alias); ?>" <?php echo $selected; ?>>
+                        <?php echo $this->escape($tool->title); ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -88,8 +88,8 @@ $tool_path = $config->get('tool_path');
                 <select id="project-selector">
                     <option value="">Select a Project...</option>
                     <?php foreach ($projects as $project) : ?>
-                        <option value="<?php echo $this->escape($project->get('alias'));?>">
-                            <?php echo $this->escape($project->get('title'));?> 
+                        <option value="<?php echo $this->escape($project->get('alias')); ?>">
+                            <?php echo $this->escape($project->get('title')); ?> 
                         </option>
                     <?php endforeach; ?>
                 </select>
@@ -117,7 +117,7 @@ $tool_path = $config->get('tool_path');
             <select name="scope_id">
                 <?php foreach ($assetgroups as $assetgroup) : ?>
                     <?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>>
+                    <option value="<?php echo $assetgroup['id']; ?>" <?php echo $selected; ?>>
                         <?= $this->escape($assetgroup['title']) ?>
                     </option>
                 <?php endforeach; ?>
@@ -152,11 +152,11 @@ $tool_path = $config->get('tool_path');
             </div>
         <?php endif; ?>
 
-        <input type="hidden" name="original_scope_id" value="<?php echo $this->scope_id ?>" />
-        <input type="hidden" name="course_id" value="<?php echo $this->course->get('id') ?>" />
+        <input type="hidden" name="original_scope_id" value="<?php echo $this->scope_id; ?>" />
+        <input type="hidden" name="course_id" value="<?php echo $this->course->get('id'); ?>" />
         <input type="hidden" name="offering" value="<?php echo $this->course->offering()->alias(); ?>" />
         <input type="hidden" name="section_id" value="<?php echo $this->course->offering()->section()->get('id'); ?>" />
-        <input type="hidden" name="id" id="asset_id" value="<?php echo $id ?>" />
+        <input type="hidden" name="id" id="asset_id" value="<?php echo $id; ?>" />
         <input type="hidden" name="type" value="tool" />
         <input type="hidden" name="subtype" value="tool" />
 

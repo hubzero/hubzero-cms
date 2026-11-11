@@ -98,13 +98,13 @@ $restrictedSelected = function ($value) use ($template) {
 
         // do field validation
         if (document.getElementById('field-title').value == ''){
-            alert("<?php echo 'Title cannot be empty' ?>");
+            alert("<?php echo 'Title cannot be empty'; ?>");
         }
         <?php
         if (0 && $this->pInfo->ptModel == 'software') {
             ?>
         else if (document.getElementById('field-download-file').value == ''){
-            alert("<?php echo 'Download file cannot be empty' ?>");
+            alert("<?php echo 'Download file cannot be empty'; ?>");
         }
             <?php
         }

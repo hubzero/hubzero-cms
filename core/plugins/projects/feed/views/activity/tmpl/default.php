@@ -58,7 +58,7 @@ if (count($this->activities) > 0) { ?>
         $linkUrl = Route::url($this->model->link('feed') . '&limit=' . $limit);
         ?>
         <p><a
-                href="<?= $linkUrl ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES');?></a>
+                href="<?= $linkUrl ?>"><?php echo Lang::txt('PLG_PROJECTS_BLOG_VIEW_OLDER_ENTRIES'); ?></a>
         </p>
         <?php
     } else {

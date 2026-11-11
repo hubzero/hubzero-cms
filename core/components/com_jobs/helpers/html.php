@@ -61,8 +61,8 @@ class Html
                 <p class="warning"><?php echo Lang::txt('COM_JOBS_CONFIRM_ARE_YOU_SURE') . " " . $what; ?>
                 </p>
                 <p><span class="yes"><button type="submit" form="hz-post-action"
-                    formaction="<?php echo htmlspecialchars($actionurl); ?>"><?php echo $yes ?></button></span> <span
-                    class="no"><a href="<?php echo htmlspecialchars($returnurl); ?>"><?php echo $no ?></a></span></p>
+                    formaction="<?php echo htmlspecialchars($actionurl); ?>"><?php echo $yes; ?></button></span> <span
+                    class="no"><a href="<?php echo htmlspecialchars($returnurl); ?>"><?php echo $no; ?></a></span></p>
             </div>
         </div>
         <?php

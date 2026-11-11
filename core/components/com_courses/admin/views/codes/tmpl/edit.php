@@ -154,7 +154,7 @@ $this->js();
                     <?php } else { ?>
                         <tr>
                             <td>
-                                <?php echo Lang::txt('COM_COURSES_CODE_NOT_REDEEMED') ?>
+                                <?php echo Lang::txt('COM_COURSES_CODE_NOT_REDEEMED'); ?>
                             </td>
                         </tr>
                     <?php } ?>

@@ -264,14 +264,14 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                         . '&controller=templates&id=' . (int) $item->e_id,
                     );
                     ?>
-                    <label for="cb<?php echo $i;?>">
+                    <label for="cb<?php echo $i; ?>">
                         <a href="<?php echo $templateUrl; ?>">
                             <?php echo ucfirst($this->escape($item->template)); ?>
                         </a>
                     </label>
                 </td>
                 <td class="center priority-3">
-                    <?php if ($item->home == '0' || $item->home == '1') :?>
+                    <?php if ($item->home == '0' || $item->home == '1') : ?>
                         <?php
                         echo Html::grid(
                             'isdefault',
@@ -313,7 +313,7 @@ $filterClient = Lang::txt('JGLOBAL_FILTER_CLIENT');
                             ['title' => $item->language_title],
                             true,
                         ); ?>
-                    <?php endif;?>
+                    <?php endif; ?>
                 </td>
                 <td class="center priority-4">
                     <?php if ($item->assigned > 0) :
