@@ -70,7 +70,11 @@ if ($cell->cell_type == 'code') :
                         if ($output->output_type == 'pyout') :
                             ?>
                             <?php if (isset($output->png)) : ?>
-                                <div class="output_img"><img src="data:image/png;base64,<?= preg_replace('/[^A-Za-z0-9+\/=]/', '', (string) $output->png) ?>" alt="<?= $this->escape(isset($output->text) ? $text($output->text) : '') ?>" /></div>
+                                <?php
+                                $sourceUrl = 'data:image/png;base64,'
+                                    . preg_replace('/[^A-Za-z0-9+\/=]/', '', (string) $output->png);
+                                ?>
+                                <div class="output_img"><img src="<?= $sourceUrl ?>" alt="<?= $this->escape(isset($output->text) ? $text($output->text) : '') ?>" /></div>
                             <?php else : ?>
                                 <pre class="output"><?= $this->escape(isset($output->text) ? $text($output->text) : '') ?></pre>
                             <?php endif; ?>

@@ -292,7 +292,11 @@ $privacySelected = function ($value) use ($view) {
                                         ?>
                                     </td>
                                     <td>
-                                        <a class="version" href="<?= $base ?>&amp;task=raw&amp;pageid=<?= $this->page->get('id') ?>&amp;version=<?= $version->get('version') ?>">
+                                        <?php
+                                        $linkUrl = $base . '&amp;task=raw&amp;pageid=' . $this->page->get('id')
+                                            . '&amp;version=' . $version->get('version');
+                                        ?>
+                                        <a class="version" href="<?= $linkUrl ?>">
                                             <?php echo Lang::txt('COM_GROUPS_PAGES_VERSION_VIEW_RAW'); ?>
                                         </a>
                                     </td>

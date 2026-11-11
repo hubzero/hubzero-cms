@@ -194,7 +194,11 @@ Html::behavior('tooltip');
                             class="sr-only visually-hidden"><?= $this->escape($row->sessnum) ?></label>
                     </td>
                     <td>
-                        <span class="editlinktip hasTip" title="<?= $this->escape(stripslashes($row->sessname)) ?>::Host: <?= $this->escape($row->exechost) ?>&lt;br /&gt;IP: <?= $this->escape($row->remoteip) ?>">
+                        <?php
+                        $titleText = $this->escape(stripslashes($row->sessname)) . '::Host: '
+                            . $this->escape($row->exechost) . '&lt;br /&gt;IP: ' . $this->escape($row->remoteip);
+                        ?>
+                        <span class="editlinktip hasTip" title="<?= $titleText ?>">
                             <span><?php echo $this->escape($row->sessnum); ?></span>
                         </span>
                     </td>

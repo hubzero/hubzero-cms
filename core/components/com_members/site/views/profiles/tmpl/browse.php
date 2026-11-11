@@ -91,14 +91,24 @@ $sortDirSelected = function ($value) use ($view) {
                                         <legend><?php echo $this->escape($field->get('label')); ?></legend>
                                         <?php foreach ($field->options as $option) { ?>
                                             <div class="form-check">
-                                                <label class="option form-check-label" for="filter-value-<?= $this->escape($field->get('name') . '-' . $option->get('value')) ?>">
+                                                <?php
+                                                $for = 'filter-value-'
+                                                    . $this->escape($field->get('name') . '-' . $option->get('value'));
+                                                ?>
+                                                <label class="option form-check-label" for="<?= $for ?>">
                                                     <?php
                                                     $checked = '';
                                                     if (in_array($option->get('value'), $value)) {
                                                         $checked = 'checked="checked"';
                                                     }
                                                     ?>
-                                                    <input class="option form-check-input" type="checkbox" name="q[<?= $this->escape($field->get('name')) ?>][]" value="<?= $this->escape($option->get('value')) ?>" <?= $checked ?> id="filter-value-<?= $this->escape($field->get('name') . '-' . $option->get('value')) ?>" />
+                                                    <?php
+                                                    $elementId = 'filter-value-'
+                                                        . $this->escape(
+                                                            $field->get('name') . '-' . $option->get('value'),
+                                                        );
+                                                    ?>
+                                                    <input class="option form-check-input" type="checkbox" name="q[<?= $this->escape($field->get('name')) ?>][]" value="<?= $this->escape($option->get('value')) ?>" <?= $checked ?> id="<?= $elementId ?>" />
                                                     <?php echo $this->escape($option->get('label')); ?>
                                                 </label>
                                             </div>

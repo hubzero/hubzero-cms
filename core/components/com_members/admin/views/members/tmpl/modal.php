@@ -39,7 +39,11 @@ $modalUrl = Route::url(
 
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" flass="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
-                <button type="button" onclick="if (window.parent) window.parent.<?= $this->escape($function) ?>('', '<?php echo Lang::txt('JLIB_FORM_SELECT_USER') ?>');"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
+                <?php
+                $onclick = 'if (window.parent) window.parent.' . $this->escape($function) . '(\'\', \''
+                    . Lang::txt('JLIB_FORM_SELECT_USER') . '\');';
+                ?>
+                <button type="button" onclick="<?= $onclick ?>"><?php echo Lang::txt('JOPTION_NO_USER')?></button>
             </div>
             <div class="col span4">
                 <label for="filter_group_id"><?php echo Lang::txt('COM_MEMBERS_FILTER_USER_GROUP'); ?></label>
@@ -80,7 +84,11 @@ $modalUrl = Route::url(
         foreach ($this->rows as $row) : ?>
             <tr class="row<?php echo $i % 2; ?>">
                 <td>
-                    <a class="pointer" onclick="if (window.parent) window.parent.<?= $this->escape($function) ?>('<?= $row->get('id') ?>', '<?= $this->escape(addslashes($row->get('name'))) ?>');">
+                    <?php
+                    $onclick = 'if (window.parent) window.parent.' . $this->escape($function) . '(\'' . $row->get('id')
+                        . '\', \'' . $this->escape(addslashes($row->get('name'))) . '\');';
+                    ?>
+                    <a class="pointer" onclick="<?= $onclick ?>">
                         <?php echo $this->escape($row->get('name')); ?>
                     </a>
                 </td>

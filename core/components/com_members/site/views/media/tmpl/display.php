@@ -65,7 +65,12 @@ defined('_HZEXEC_') or die();
                 </tr>
                 <tr>
                     <td><input type="hidden" name="currentfile" value="<?php echo $this->file; ?>" /></td>
-                    <td><a href="index.php?option=<?= $this->option ?>&amp;controller=media&amp;task=deleteimg&amp;file=<?= urlencode($this->file) ?>&amp;id=<?= (int) $this->id ?>&amp;no_html=1&amp;<?= Session::getFormToken() ?>=1">[ <?= Lang::txt('JACTION_DELETE') ?> ]</a></td>
+                    <?php
+                    $linkUrl = 'index.php?option=' . $this->option
+                        . '&amp;controller=media&amp;task=deleteimg&amp;file=' . urlencode($this->file) . '&amp;id='
+                        . ((int) $this->id) . '&amp;no_html=1&amp;' . Session::getFormToken() . '=1';
+                    ?>
+                    <td><a href="<?= $linkUrl ?>">[ <?= Lang::txt('JACTION_DELETE') ?> ]</a></td>
                 </tr>
             <?php } else { ?>
                 <tr>

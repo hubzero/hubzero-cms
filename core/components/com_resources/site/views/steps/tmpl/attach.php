@@ -90,7 +90,11 @@ $this
                             ?>
                         <?php endif; ?>
                     </div>
-                    <iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" title="<?= Lang::txt('COM_CONTRIBUTE_ATTACH_CONTENT') ?>" src="index.php?option=<?= $this->option ?>&amp;controller=attachments&amp;id=<?= $this->id ?>&amp;tmpl=component"></iframe>
+                    <?php
+                    $sourceUrl = 'index.php?option=' . $this->option . '&amp;controller=attachments&amp;id=' . $this->id
+                        . '&amp;tmpl=component';
+                    ?>
+                    <iframe width="100%" height="500" frameborder="0" name="attaches" id="attaches" title="<?= Lang::txt('COM_CONTRIBUTE_ATTACH_CONTENT') ?>" src="<?= $sourceUrl ?>"></iframe>
                 </div><!-- / .asset-uploader -->
             </div><!-- / .field-wrap -->
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

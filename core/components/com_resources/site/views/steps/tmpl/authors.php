@@ -163,7 +163,11 @@ $accessSelected = function ($value) use ($view) {
         <fieldset>
             <legend><?php echo Lang::txt('COM_CONTRIBUTE_AUTHORS_AUTHORS'); ?></legend>
             <div class="field-wrap">
-                <iframe width="100%" height="400" frameborder="0" name="authors" id="authors" title="<?= Lang::txt('COM_CONTRIBUTE_AUTHORS_AUTHORS') ?>" scrolling="auto" src="/index.php?option=<?= $this->option ?>&amp;controller=authors&amp;id=<?= $this->id ?>&amp;tmpl=component"></iframe>
+                <?php
+                $sourceUrl = '/index.php?option=' . $this->option . '&amp;controller=authors&amp;id=' . $this->id
+                    . '&amp;tmpl=component';
+                ?>
+                <iframe width="100%" height="400" frameborder="0" name="authors" id="authors" title="<?= Lang::txt('COM_CONTRIBUTE_AUTHORS_AUTHORS') ?>" scrolling="auto" src="<?= $sourceUrl ?>"></iframe>
             </div>
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

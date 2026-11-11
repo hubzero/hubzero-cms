@@ -44,7 +44,13 @@ if (!$no_html) {
                                 <span><?php echo $this->escape(stripslashes($name)); ?></span>
                             </td>
                             <td>
-                                <a class="icon-delete delete" href="<?= $base ?>/index.php?option=<?= $this->option ?>&amp;controller=media&amp;task=deletefile&amp;file=<?= $name ?>&amp;listdir=<?= $this->listdir ?>&amp;<?= (!$no_html) ? 'tmpl=component' : 'no_html=1' ?>&amp;<?= Session::getFormToken() ?>=1" <?php if (!$no_html) {
+                                <?php
+                                $linkUrl = $base . '/index.php?option=' . $this->option
+                                    . '&amp;controller=media&amp;task=deletefile&amp;file=' . $name . '&amp;listdir='
+                                    . $this->listdir . '&amp;' . ((!$no_html) ? 'tmpl=component' : 'no_html=1')
+                                    . '&amp;' . Session::getFormToken() . '=1';
+                                ?>
+                                <a class="icon-delete delete" href="<?= $linkUrl ?>" <?php if (!$no_html) {
                                     ?>target="filer" data-confirm="<?= Lang::txt('Delete file %s?', $name) ?>"<?php
                                                                     } ?> title="<?= Lang::txt('JACTION_DELETE') ?>">
                                     <?php echo Lang::txt('JACTION_DELETE'); ?>

@@ -146,23 +146,42 @@ $bars = [];
         <div id="user-overview-wrap" class="usage-wrap">
             <ul class="dataset-controls" id="set-data">
                 <li>
-                    <a id="monthly" class="dataset<?= $this->params->get('defaultDataset', 'cumulative') == 'monthly' ? ' active' : '' ?>" href="<?= $base ?>/index.php?option=com_resources&amp;id=<?= $this->resource->id ?>&amp;active=usage&amp;action=overview&amp;period=1">
+                    <?php
+                    $activeClass = $this->params->get('defaultDataset', 'cumulative') == 'monthly' ? ' active' : '';
+                    $linkUrl = $base . '/index.php?option=com_resources&amp;id=' . $this->resource->id
+                        . '&amp;active=usage&amp;action=overview&amp;period=1';
+                    ?>
+                    <a id="monthly" class="dataset<?= $activeClass ?>" href="<?= $linkUrl ?>">
                         <?php echo Lang::txt('PLG_RESOURCES_USAGE_MONTHLY'); ?>
                     </a>
                 </li>
                 <li>
-                    <a id="yearly" class="dataset<?= $this->params->get('defaultDataset', 'cumulative') == 'yearly' ? ' active' : '' ?>" href="<?= $base ?>/index.php?option=com_resources&amp;id=<?= $this->resource->id ?>&amp;active=usage&amp;action=overview&amp;period=12">
+                    <?php
+                    $activeClass = $this->params->get('defaultDataset', 'cumulative') == 'yearly' ? ' active' : '';
+                    $linkUrl = $base . '/index.php?option=com_resources&amp;id=' . $this->resource->id
+                        . '&amp;active=usage&amp;action=overview&amp;period=12';
+                    ?>
+                    <a id="yearly" class="dataset<?= $activeClass ?>" href="<?= $linkUrl ?>">
                         <?php echo Lang::txt('PLG_RESOURCES_USAGE_YEARLY'); ?>
                     </a>
                 </li>
                 <li>
-                    <a id="cumulative" class="dataset<?= $this->params->get('defaultDataset', 'cumulative') == 'cumulative' ? ' active' : '' ?>" href="<?= $base ?>/index.php?option=com_resources&amp;id=<?= $this->resource->id ?>&amp;active=usage&amp;action=overview&amp;period=14">
+                    <?php
+                    $activeClass = $this->params->get('defaultDataset', 'cumulative') == 'cumulative' ? ' active' : '';
+                    $linkUrl = $base . '/index.php?option=com_resources&amp;id=' . $this->resource->id
+                        . '&amp;active=usage&amp;action=overview&amp;period=14';
+                    ?>
+                    <a id="cumulative" class="dataset<?= $activeClass ?>" href="<?= $linkUrl ?>">
                         <?php echo Lang::txt('PLG_RESOURCES_USAGE_CUMULATIVE'); ?>
                     </a>
                 </li>
             </ul>
             <p class="usage-download">
-                <a href="<?= $base ?>/index.php?option=com_resources&amp;id=<?= $this->resource->id ?>&amp;active=usage&amp;action=download&amp;period=<?= $prd ?>">
+                <?php
+                $linkUrl = $base . '/index.php?option=com_resources&amp;id=' . $this->resource->id
+                    . '&amp;active=usage&amp;action=download&amp;period=' . $prd;
+                ?>
+                <a href="<?= $linkUrl ?>">
                     <?php echo Lang::txt('PLG_RESOURCES_USAGE_DOWNLOAD_CSV'); ?>
                 </a>
             </p>
@@ -484,7 +503,11 @@ $bars = [];
                             <tr rel="<?php echo $this->escape($row->name); ?>">
                                 <td class="textual-data"><?php
                                 if (isset($codes[$row->name])) { ?>
-                                    <img src="<?= $base ?>/components/com_members/site/assets/img/flags/<?= strtolower($codes[$row->name]['code']) ?>.gif" alt="<?= strtolower($codes[$row->name]['code']) ?>" />
+                                    <?php
+                                    $sourceUrl = $base . '/components/com_members/site/assets/img/flags/'
+                                        . strtolower($codes[$row->name]['code']) . '.gif';
+                                    ?>
+                                    <img src="<?= $sourceUrl ?>" alt="<?= strtolower($codes[$row->name]['code']) ?>" />
                                 <?php }
                                 echo $row->name; ?></td>
                                 <td><span class="bar-wrap"><span class="bar bar<?= $width ?>"></span><span

@@ -166,7 +166,15 @@ endif;
                 $jbase = rtrim(Request::base(true), '/');
                 ?>
                 <div class="form-group">
-                    <div id="ajax-uploader" role="group" data-instructions="<?= Lang::txt('COM_SUPPORT_CLICK_OR_DROP_FILE') ?>" data-action="<?= $jbase ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket=<?= $tmp ?>&amp;<?= Session::getFormToken() ?>=1" data-list="<?= $jbase ?>/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket=<?= $tmp ?>">
+                    <?php
+                    $dataActionUrl = $jbase
+                        . '/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=upload&amp;ticket='
+                        . $tmp . '&amp;' . Session::getFormToken() . '=1';
+                    $dataList = $jbase
+                        . '/index.php?option=com_support&amp;no_html=1&amp;controller=media&amp;task=list&amp;ticket='
+                        . $tmp;
+                    ?>
+                    <div id="ajax-uploader" role="group" data-instructions="<?= Lang::txt('COM_SUPPORT_CLICK_OR_DROP_FILE') ?>" data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
                         <noscript>
                             <div class="form-group">
                                 <label for="upload">

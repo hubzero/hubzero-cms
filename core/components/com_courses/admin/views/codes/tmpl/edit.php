@@ -64,7 +64,10 @@ $this->js();
                                 $j = 0;
                                 foreach ($course->offerings() as $i => $offering) {
                                     ?>
-                                    <optgroup label="&nbsp; &nbsp; <?= $this->escape(stripslashes($offering->get('title'))) ?>">
+                                    <?php
+                                    $label = '&nbsp; &nbsp; ' . $this->escape(stripslashes($offering->get('title')));
+                                    ?>
+                                    <optgroup label="<?= $label ?>">
                                     <?php
                                     foreach ($offering->sections() as $section) {
                                         ?>

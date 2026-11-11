@@ -72,9 +72,21 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
                             </ul>
                         </div>
                     </div>
-                    <script src="<?= rtrim(Request::base(true), '/') ?>/core/plugins/projects/files/assets/js/jquery.fileuploader.js"></script>
-                    <script src="<?= rtrim(Request::base(true), '/') ?>/core/plugins/projects/files/assets/js/jquery.queueuploader.js"></script>
-                    <script src="<?= rtrim(Request::base(true), '/') ?>/core/plugins/projects/files/assets/js/fileupload.jquery.js"></script>
+                    <?php
+                    $sourceUrl = rtrim(Request::base(true), '/')
+                        . '/core/plugins/projects/files/assets/js/jquery.fileuploader.js';
+                    ?>
+                    <script src="<?= $sourceUrl ?>"></script>
+                    <?php
+                    $sourceUrl = rtrim(Request::base(true), '/')
+                        . '/core/plugins/projects/files/assets/js/jquery.queueuploader.js';
+                    ?>
+                    <script src="<?= $sourceUrl ?>"></script>
+                    <?php
+                    $sourceUrl = rtrim(Request::base(true), '/')
+                        . '/core/plugins/projects/files/assets/js/fileupload.jquery.js';
+                    ?>
+                    <script src="<?= $sourceUrl ?>"></script>
                     <?php
                         /* @TODO: this needs to be handle in a more standard site configuration way */
                         $acceptedFormatsJS = PATH_APP . '/acceptedFormats.js';

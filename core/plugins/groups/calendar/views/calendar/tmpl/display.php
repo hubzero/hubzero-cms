@@ -65,7 +65,11 @@ $timezone = $userLocalizer->getTimezone();
     <option value="0"><?php echo Lang::txt('All Calendars'); ?></option>
     <?php foreach ($this->calendars as $calendar) : ?>
         <?php $sel = ($calendar->get('id') == $this->calendar) ? 'selected="selected"' : ''; ?>
-        <option <?= $sel ?> data-img="<?= Request::base(true) ?>/core/plugins/groups/calendar/assets/img/swatch-<?= ($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray' ?>.png" value="<?= $calendar->get('id') ?>" class="calendar-picker-option"><?= $this->escape($calendar->get('title')) ?></option>
+        <?php
+        $dataImg = Request::base(true) . '/core/plugins/groups/calendar/assets/img/swatch-'
+            . (($calendar->get('color')) ? strtolower($calendar->get('color')) : 'gray') . '.png';
+        ?>
+        <option <?= $sel ?> data-img="<?= $dataImg ?>" value="<?= $calendar->get('id') ?>" class="calendar-picker-option"><?= $this->escape($calendar->get('title')) ?></option>
     <?php endforeach; ?>
 </select>
 

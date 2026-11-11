@@ -107,7 +107,11 @@ $this
                 <legend><?php echo Lang::txt('COM_CONTRIBUTE_MEDIA_MANAGER'); ?></legend>
                 <p><?php echo Lang::txt('COM_CONTRIBUTE_MEDIA_EXPLANATION'); ?></p>
                 <div class="field-wrap">
-                    <iframe width="100%" height="160" name="filer" id="filer" title="<?= Lang::txt('COM_CONTRIBUTE_MEDIA_MANAGER') ?>" src="<?= Request::base(true) ?>/index.php?option=<?= $this->option ?>&amp;controller=media&amp;tmpl=component&amp;resource=<?= $this->row->id ?>"></iframe>
+                    <?php
+                    $sourceUrl = Request::base(true) . '/index.php?option=' . $this->option
+                        . '&amp;controller=media&amp;tmpl=component&amp;resource=' . $this->row->id;
+                    ?>
+                    <iframe width="100%" height="160" name="filer" id="filer" title="<?= Lang::txt('COM_CONTRIBUTE_MEDIA_MANAGER') ?>" src="<?= $sourceUrl ?>"></iframe>
                 </div>
             </fieldset>
         </fieldset><div class="clear"></div>

@@ -137,7 +137,10 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                                     foreach ($options as $option) {
                                         ?>
                                         <div class="input-wrap">
-                                            <label for="memberoption-<?= $this->escape($option->id) ?>"><?= $this->escape($option->optionname) ?></label>
+                                            <?php
+                                            $for = 'memberoption-' . $this->escape($option->id);
+                                            ?>
+                                            <label for="<?= $for ?>"><?= $this->escape($option->optionname) ?></label>
                                             <input name="memberoption[<?= $this->escape($option->id) ?>]"
                                                 id="memberoption-<?= $this->escape($option->id) ?>" size="3"
                                                 value="<?= $this->escape($option->optionvalue) ?>" />

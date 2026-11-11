@@ -98,7 +98,11 @@ $this->js();
                     <p class="warning">
                         <?php // remove takes the repositories[] list by POST with the form's token?>
                         <input type="hidden" name="repositories[]" value="<?php echo $this->escape($this->alias); ?>" />
-                        <button type="button" class="button" onclick="if (confirm(<?= $this->escape(json_encode(Lang::txt('Remove Repository') . '?')) ?>)) { Joomla.submitform('remove', document.getElementById('item-form')); }"><?= Lang::txt('Remove Repository') ?></button>
+                        <?php
+                        $onclick = 'if (confirm(' . $this->escape(json_encode(Lang::txt('Remove Repository') . '?'))
+                            . ')) { Joomla.submitform(\'remove\', document.getElementById(\'item-form\')); }';
+                        ?>
+                        <button type="button" class="button" onclick="<?= $onclick ?>"><?= Lang::txt('Remove Repository') ?></button>
                     </p>
                 <?php endif; ?>
             </div>

@@ -116,13 +116,21 @@ if (!$this->comment->get('item_id')) {
                     <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) {
                         $linkUrl = Route::url($this->comment->link());
                         ?>
-                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= $linkUrl ?>" data-rel="comment-form<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>"><!--
+                        <?php
+                        $dataRel = 'comment-form' . $this->depth . $this->comment->get('item_type')
+                            . $this->comment->get('id');
+                        ?>
+                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= $linkUrl ?>" data-rel="<?= $dataRel ?>"><!--
                     --><?php echo Lang::txt('JCANCEL'); ?><!--
                 --></a>
                     <?php } else {
                         $linkUrl = Route::url($this->comment->link('reply'));
                         ?>
-                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= $linkUrl ?>" data-rel="comment-form<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>"><!--
+                        <?php
+                        $dataRel = 'comment-form' . $this->depth . $this->comment->get('item_type')
+                            . $this->comment->get('id');
+                        ?>
+                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_ANSWERS_REPLY') ?>" href="<?= $linkUrl ?>" data-rel="<?= $dataRel ?>"><!--
                     --><?php echo Lang::txt('COM_ANSWERS_REPLY'); ?><!--
                 --></a>
                     <?php } ?>

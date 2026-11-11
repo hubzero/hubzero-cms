@@ -82,7 +82,11 @@ if ($this->contributors) {
     $i = 0;
     $n = count($this->contributors);
     ?>
-    <form action="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=update&amp;tmpl=component" id="authors-list" method="post" enctype="multipart/form-data">
+    <?php
+    $actionUrl = 'index.php?option=' . $this->option . '&amp;controller=' . $this->controller
+        . '&amp;task=update&amp;tmpl=component';
+    ?>
+    <form action="<?= $actionUrl ?>" id="authors-list" method="post" enctype="multipart/form-data">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
         <input type="hidden" name="tmpl" value="component" />
@@ -123,7 +127,11 @@ if ($this->contributors) {
                         <input type="text" name="authors[<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>][organization]" size="35" value="<?= $this->escape(stripslashes($contributor->organization == null ? '' : $contributor->organization)) ?>" placeholder="<?= Lang::txt('COM_TOOLS_AUTHOR_ORGANIZATION') ?>" />
                     </td>
                     <td>
-                        <select name="authors[<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>][role]" id="role-<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>">
+                        <?php
+                        $fieldName = 'authors['
+                            . (isset($contributor->authorid) ? $contributor->authorid : $contributor->id) . '][role]';
+                        ?>
+                        <select name="<?= $fieldName ?>" id="role-<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>">
                             <option value=""<?= $contributor->role == '' ? ' selected="selected"' : '' ?>>
                                 <?= Lang::txt('COM_TOOLS_AUTHOR') ?>
                             </option>
@@ -169,7 +177,14 @@ if ($this->contributors) {
                     }
                     ?></td>
                     <td class="t">
-                        <a class="icon-delete delete" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=remove&amp;tmpl=component&amp;id=<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>&amp;pid=<?= $this->id ?>&amp;ver=<?php echo $this->escape($this->version)?>&amp;<?= Session::getFormToken() ?>=1" title="<?= Lang::txt('COM_TOOLS_DELETE') ?>">
+                        <?php
+                        $linkUrl = 'index.php?option=' . $this->option . '&amp;controller=' . $this->controller
+                            . '&amp;task=remove&amp;tmpl=component&amp;id='
+                            . (isset($contributor->authorid) ? $contributor->authorid : $contributor->id) . '&amp;pid='
+                            . $this->id . '&amp;ver=' . $this->escape($this->version) . '&amp;'
+                            . Session::getFormToken() . '=1';
+                        ?>
+                        <a class="icon-delete delete" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TOOLS_DELETE') ?>">
                             <span><?php echo Lang::txt('COM_TOOLS_DELETE'); ?></span>
                         </a>
                     </td>

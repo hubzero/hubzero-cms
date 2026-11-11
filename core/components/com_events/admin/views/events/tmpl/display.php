@@ -171,7 +171,12 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
 
                     if ($times) {
                         ?>
-                        <a class="state <?php echo $row->state ? (($row->state == 2) ? 'trash' : 'publish') : 'unpublish' ?> hasTip" href="javascript:void(0);" onclick="return listItemTask('cb<?= $i ?>','<?php echo $row->state ? 'unpublish' : 'publish' ?>')" title="<?= Lang::txt('COM_EVENTS_EVENT_PUBLISH_INFO') ?>::<?= $times ?>">
+                        <?php
+                        $trashClass = $row->state ? (($row->state == 2) ? 'trash' : 'publish') : 'unpublish';
+                        $onclick = 'return listItemTask(\'cb' . $i . '\',\'' . ($row->state ? 'unpublish' : 'publish')
+                            . '\')';
+                        ?>
+                        <a class="state <?= $trashClass ?> hasTip" href="javascript:void(0);" onclick="<?= $onclick ?>" title="<?= Lang::txt('COM_EVENTS_EVENT_PUBLISH_INFO') ?>::<?= $times ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } ?>

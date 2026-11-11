@@ -160,7 +160,12 @@ $hideform = Request::getInt('hideform', 0);
                         ?>
                     </td>
                     <td class="t">
-                        <a class="icon-delete delete" href="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=delete&amp;tmpl=component&amp;id=<?= $child->id ?>&amp;pid=<?= $this->id ?>&amp;hideform=<?= $hideform ?>&amp;<?= Session::getFormToken() ?>=1">
+                        <?php
+                        $linkUrl = 'index.php?option=' . $this->option . '&amp;controller=' . $this->controller
+                            . '&amp;task=delete&amp;tmpl=component&amp;id=' . $child->id . '&amp;pid=' . $this->id
+                            . '&amp;hideform=' . $hideform . '&amp;' . Session::getFormToken() . '=1';
+                        ?>
+                        <a class="icon-delete delete" href="<?= $linkUrl ?>">
                             <span><?php echo Lang::txt('COM_CONTRIBUTE_DELETE'); ?></span>
                         </a>
                     </td>

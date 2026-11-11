@@ -77,7 +77,11 @@ if ($this->contributors) {
     $i = 0;
     $n = $this->contributors->count();
     ?>
-    <form action="<?= Request::base(true) ?>/index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=update&amp;tmpl=component" id="authors-list" method="post" enctype="multipart/form-data">
+    <?php
+    $actionUrl = Request::base(true) . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller
+        . '&amp;task=update&amp;tmpl=component';
+    ?>
+    <form action="<?= $actionUrl ?>" id="authors-list" method="post" enctype="multipart/form-data">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
         <input type="hidden" name="tmpl" value="component" />
@@ -164,7 +168,12 @@ if ($this->contributors) {
                     }
                     ?></td>
                     <td class="t">
-                        <a class="icon-delete delete" href="<?= Request::base(true) ?>/index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>&amp;task=remove&amp;tmpl=component&amp;id=<?= $contributor->authorid ?>&amp;pid=<?= $this->id ?>&amp;<?= Session::getFormToken() ?>=1" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                        <?php
+                        $linkUrl = Request::base(true) . '/index.php?option=' . $this->option . '&amp;controller='
+                            . $this->controller . '&amp;task=remove&amp;tmpl=component&amp;id=' . $contributor->authorid
+                            . '&amp;pid=' . $this->id . '&amp;' . Session::getFormToken() . '=1';
+                        ?>
+                        <a class="icon-delete delete" href="<?= $linkUrl ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                         </a>
                     </td>

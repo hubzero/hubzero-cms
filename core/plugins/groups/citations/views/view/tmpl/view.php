@@ -633,7 +633,11 @@ $area = Request::getString('area', 'about');
                         ?>
                         <a rel="nofollow external" title="Google Scholar Search Results"
                             href="http://scholar.google.com/scholar?q=<?= urlencode($query) ?>">
-                            <img src="<?= Request::base(true) ?>/core/components/com_citations/assets/img/googlescholar.gif" alt="Google Scholar Search Results" width="100" />
+                            <?php
+                            $sourceUrl = Request::base(true)
+                                . '/core/components/com_citations/assets/img/googlescholar.gif';
+                            ?>
+                            <img src="<?= $sourceUrl ?>" alt="Google Scholar Search Results" width="100" />
                         </a>
                     </td>
                 </tr>

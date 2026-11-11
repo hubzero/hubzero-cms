@@ -172,7 +172,11 @@ $access = Html::access('assetgroups');
                 </td>
                 <td>
                     <?php if ($row->get('checked_out') && $row->get('checked_out') != User::get('id')) { ?>
-                            <span class="checkedout" title="<?= Lang::txt('JLIB_HTML_CHECKED_OUT') ?> :: <?= $this->escape($row->get('editor')) ?>">
+                            <?php
+                            $titleText = Lang::txt('JLIB_HTML_CHECKED_OUT') . ' :: '
+                                . $this->escape($row->get('editor'));
+                            ?>
+                            <span class="checkedout" title="<?= $titleText ?>">
                                 <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
                             </span>
                     <?php } else { ?>

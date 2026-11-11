@@ -60,7 +60,11 @@ $base = rtrim(Request::base(true), '/');
                     <div class="session-title-bar">
                         <?php if ($this->params->get('show_screenshots', 1)) : ?>
                             <?php if ($this->params->get('quick_launch', 1)) : ?>
-                                <a class="session-title-quicklaunch tooltips" title="<?= Lang::txt('MOD_MYSESSIONS_QUICK_LAUNCH') ?> :: <?= Lang::txt('MOD_MYSESSIONS_RESUME_TITLE') ?>" href="<?= $resumeLink ?>">
+                                <?php
+                                $titleText = Lang::txt('MOD_MYSESSIONS_QUICK_LAUNCH') . ' :: '
+                                    . Lang::txt('MOD_MYSESSIONS_RESUME_TITLE');
+                                ?>
+                                <a class="session-title-quicklaunch tooltips" title="<?= $titleText ?>" href="<?= $resumeLink ?>">
                                     <img class="snapshot" data-src="<?php echo $snapshot; ?>" />
                                 </a>
                             <?php else : ?>
