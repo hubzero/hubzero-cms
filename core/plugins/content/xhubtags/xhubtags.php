@@ -228,21 +228,17 @@ class Xhubtags extends Plugin
 
         $regex = "/component\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
 
-        if (!preg_match($regex, $options, $component)) {
-            $regex = "/module\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
-
-            preg_match($regex, $options, $module);
+        if (preg_match($regex, $options, $component)) {
+            return substr(\Hubzero\Document\Assets::getComponentImage($component[2], $file[2]), 1);
         }
 
-        if (empty($component) && empty($module)) {
-            return ''; //substr(\Hubzero\Document\Assets::getHubImage($file[2]), 1);
-        } elseif (!empty($component)) {
-            return substr(\Hubzero\Document\Assets::getComponentImage($component[2], $file[2]), 1);
-        } elseif (!empty($module)) {
+        $regex = "/module\s*=\s*(\"|&quot;)([^\"&]+)(\"|&quot;)/i";
+
+        if (preg_match($regex, $options, $module)) {
             return substr(\Hubzero\Document\Assets::getModuleImage($module[2], $file[2]), 1);
         }
 
-        return '';
+        return ''; //substr(\Hubzero\Document\Assets::getHubImage($file[2]), 1);
     }
 
     /**

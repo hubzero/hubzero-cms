@@ -169,17 +169,13 @@ class Opengraph extends Plugin
         // Other
         if ($other = $this->params->get('other', '')) {
             $other = explode(';', $other);
-            if (!empty($other)) {
-                foreach ($other as $v) {
-                    if ($v != '') {
-                        $vother = explode('=', $v);
-                        if (!empty($vother)) {
-                            if (isset($vother[0]) && isset($vother[1])) {
-                                $metaName = htmlspecialchars(strip_tags($vother[0]));
-                                $metaValue = htmlspecialchars($vother[1]);
-                                Document::setMetaData($metaName, $metaValue);
-                            }
-                        }
+            foreach ($other as $v) {
+                if ($v != '') {
+                    $vother = explode('=', $v);
+                    if (isset($vother[0]) && isset($vother[1])) {
+                        $metaName = htmlspecialchars(strip_tags($vother[0]));
+                        $metaValue = htmlspecialchars($vother[1]);
+                        Document::setMetaData($metaName, $metaValue);
                     }
                 }
             }

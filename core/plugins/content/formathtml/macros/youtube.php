@@ -84,6 +84,7 @@ class Youtube extends Macro
             // foreach query string parts
             // explode at equals sign
             // check to see if v is the first part and if it is set the second part to the video id
+            $video_id = '';
             foreach ($query_string_parts as $qsp) {
                 $pairs_parts = explode("%3D", $qsp);
                 if ($pairs_parts[0] == 'v') {

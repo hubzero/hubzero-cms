@@ -53,6 +53,7 @@ class Div extends Macro
         $attribs = explode(',', $et);
         $text = array_shift($attribs);
 
+        $div = '';
         if (trim($text) == 'start') {
             $atts = [];
             if (!empty($attribs) && count($attribs) > 0) {
