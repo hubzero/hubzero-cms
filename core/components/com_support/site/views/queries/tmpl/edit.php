@@ -60,6 +60,9 @@ if (!$tmpl && !$no_html) {
     $this->css('conditions.css');
     ?>
     <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="item-form">
+        <?php if ($this->getError()) : ?>
+            <p class="error"><?php echo nl2br($this->escape(implode("\n", $this->getErrors()))); ?></p>
+        <?php endif; ?>
         <div class="col span12">
             <fieldset class="adminform">
                 <legend><?php echo Lang::txt('JDETAILS'); ?></legend>
@@ -205,6 +208,9 @@ if (!$tmpl && !$no_html) {
     }
     ?>
     <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="queryForm">
+        <?php if ($this->getError()) : ?>
+            <p class="error"><?php echo nl2br($this->escape(implode("\n", $this->getErrors()))); ?></p>
+        <?php endif; ?>
         <h3>
             <span class="configuration-options">
                 <input type="submit" value="<?php echo Lang::txt('COM_SUPPORT_QUERY_SAVE'); ?>" />

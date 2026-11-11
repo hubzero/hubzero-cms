@@ -92,6 +92,7 @@ class Queries extends SiteController
             ->set('row', $row)
             ->set('conditions', $conditions)
             ->setLayout('edit')
+            ->setErrors($this->getErrors())
             ->display();
     }
 
