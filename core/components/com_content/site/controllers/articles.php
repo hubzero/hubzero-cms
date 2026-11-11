@@ -1528,7 +1528,7 @@ class Articles extends SiteController
 
         $form = $item->getForm('site');
 
-        if (!empty($item) && isset($item->id)) {
+        if (isset($item->id)) {
             $item->images = json_decode($item->images);
             $item->urls   = json_decode($item->urls);
 

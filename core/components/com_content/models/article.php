@@ -1093,13 +1093,11 @@ class Article extends Relational implements \Hubzero\Search\Searchable
                 ->where($authorWhere[0], $authorWhere[1], $authorWhere[2], 1)
                 ->orWhere($authorAliasWhere[0], $authorAliasWhere[1], $authorAliasWhere[2], 1)
                 ->resetDepth();
-        } elseif (empty($authorWhere) && empty($authorAliasWhere)) {
-            // If both are empty we don't want to add to the query
         } elseif (!empty($authorWhere)) {
-            // One of these is empty, the other is not so we just add both
+            // Only the author filter is set
             $query->where($authorWhere[0], $authorWhere[1], $authorWhere[2]);
         } elseif (!empty($authorAliasWhere)) {
-            // One of these is empty, the other is not so we just add both
+            // Only the author alias filter is set
             $query->where($authorAliasWhere[0], $authorAliasWhere[1], $authorAliasWhere[2]);
         }
 
