@@ -13,6 +13,10 @@ use Hubzero\Facades\Facade;
 /**
  * Mock BadFacade
  *
+ * It names no accessor, so any call through it throws; the test relies on that.
+ *
+ * @method static mixed bar()
+ *
  * @codeCoverageIgnore
  */
 class BadFacade extends Facade

@@ -12,6 +12,8 @@ use Hubzero\Database\Relational;
 
 /**
  * User test model for multi-database testing
+ *
+ * @method string getFirstName() Through __call(), from helperGetFirstName()
  */
 class User extends Relational
 {

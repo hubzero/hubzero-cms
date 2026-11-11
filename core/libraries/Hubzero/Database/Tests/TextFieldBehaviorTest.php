@@ -210,19 +210,16 @@ class TextFieldBehaviorTest extends AbstractDriverTestCase
         $this->assertContains(
             $text,
             $acceptable,
-            true,
             "{$dbName}: body_text should preserve empty string, normalize to NULL, or pad to space",
         );
         $this->assertContains(
             $medium,
             $acceptable,
-            true,
             "{$dbName}: body_medium should preserve empty string, normalize to NULL, or pad to space",
         );
         $this->assertContains(
             $long,
             $acceptable,
-            true,
             "{$dbName}: body_long should preserve empty string, normalize to NULL, or pad to space",
         );
     }

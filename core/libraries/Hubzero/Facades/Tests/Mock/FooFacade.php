@@ -13,6 +13,9 @@ use Hubzero\Facades\Facade;
 /**
  * Mock Foo facade
  *
+ * @method static string bar()
+ * @method static int    multiArg(mixed ...$args)
+ *
  * @codeCoverageIgnore
  */
 class FooFacade extends Facade
