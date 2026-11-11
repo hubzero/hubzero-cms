@@ -384,8 +384,7 @@ $this
                                     <span class="ticket-id">
                                         # <?php echo $row->get('id'); ?>
                                     </span>
-                                    <span class="<?= $row->status->get('alias') ?> status hasTip" title="<?= Lang::txt('COM_SUPPORT_TICKET_DETAILS') ?> :: <?php echo '<strong>' . Lang::txt('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $row->status->get('title');
-                                    echo !$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>">
+                                    <span class="<?= $row->status->get('alias') ?> status hasTip" title="<?= Lang::txt('COM_SUPPORT_TICKET_DETAILS') ?> :: <?= '<strong>' . Lang::txt('COM_SUPPORT_COL_STATUS') . ':</strong> ' . $row->status->get('title') ?><?= !$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : '' ?>">
                                             <?php echo $row->status->get('title');
                                             echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
                                     </span>
