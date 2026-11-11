@@ -56,7 +56,10 @@ $crumbsText = Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO');
                 <?php if (!$this->getError()) { ?>
                     <button type="button" onclick="submitbutton('savecontent');"><?= Lang::txt('JSAVE') ?></button>
                 <?php } ?>
-                <button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?= Lang::txt('Cancel') ?></button>
+                <?php
+                $buttonText = Lang::txt('Cancel');
+                ?>
+                <button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?= $buttonText ?></button>
             </div>
 
             <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT') ?>

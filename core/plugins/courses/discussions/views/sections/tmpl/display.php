@@ -193,8 +193,10 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                                                     $base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias')
                                                         . '/delete',
                                                 );
+                                                $titleText = Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY');
+                                                $spanText = Lang::txt('Delete');
                                                 ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete tooltips" title="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY') ?>"><span><?= Lang::txt('Delete') ?></span></button>
+                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete tooltips" title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>
