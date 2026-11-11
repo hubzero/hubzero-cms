@@ -212,7 +212,9 @@ $this
                         </a>
                     </li>
                     <?php /* <li>
-                        <a class="icon-batch" id="new-batch" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=tickets&task=batch&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_BATCH_PROCESS'); ?>">
+                        <a class="icon-batch" id="new-batch" href="<?php echo Route::url('index.php?option=' .
+                            $this->option . '&controller=tickets&task=batch&' . Session::getFormToken() . '=1'); ?>"
+                            title="<?php echo Lang::txt('COM_SUPPORT_BATCH_PROCESS'); ?>">
                             <?php echo Lang::txt('COM_SUPPORT_BATCH_PROCESS'); ?>
                         </a>
                     </li> */ ?>

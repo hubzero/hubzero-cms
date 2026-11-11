@@ -54,7 +54,8 @@ $bcrumb = '';
 {
     foreach ($parentNotes as $parent)
     {
-        $bcrumb .= ' &raquo; <span class="subheader"><a href="'.Route::url($url . '&scope=' . $parent->scope . '&pagename=' . $parent->pagename) . '">' . $parent->title . '</a></span>';
+        $bcrumb .= ' &raquo; <span class="subheader"><a href="'.Route::url($url . '&scope=' . $parent->scope .
+            '&pagename=' . $parent->pagename) . '">' . $parent->title . '</a></span>';
     }
 }*/
 if ($this->task == 'new') {

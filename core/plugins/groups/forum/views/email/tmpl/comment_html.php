@@ -110,7 +110,8 @@ $bdcolor = '#e1e1e1';
                                     background-size: 30px 30px;">
         <?php /*<thead class="mobilehide">
             <tr>
-                <th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px; text-align: left" align="left">
+                <th style="font-weight: normal; border-bottom: 1px solid <?php echo $bdcolor; ?>; padding: 8px;
+                    text-align: left" align="left">
                     <?php echo $this->escape($this->thread->get('title')); ?>
                 </th>
             </tr>

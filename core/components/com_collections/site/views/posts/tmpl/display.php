@@ -344,7 +344,8 @@ if (!$no_html) {
                                 <?= Lang::txt('COM_COLLECTIONS_NUM_LIKES', $this->collection->get('positive', 0)) ?>
                             </span>
                             <?php /*<span class="reposts">
-                                <?php echo Lang::txt('COM_COLLECTIONS_NUM_REPOSTS', $this->collection->get('reposts', 0)); ?>
+                                <?php echo Lang::txt('COM_COLLECTIONS_NUM_REPOSTS', $this->collection->get('reposts',
+                                    0)); ?>
                             </span> */ ?>
                             <span class="posts">
                                 <?php echo Lang::txt('COM_COLLECTIONS_NUM_POSTS', $this->collection->count('post')); ?>
@@ -513,7 +514,8 @@ if (!$no_html) {
                                     <?= Lang::txt('COM_COLLECTIONS_NUM_LIKES', $collection->get('positive', 0)) ?>
                                 </span>
                                 <?php /*<span class="reposts">
-                                    <?php echo Lang::txt('COM_COLLECTIONS_NUM_REPOSTS', $collection->count('reposts')); ?>
+                                    <?php echo Lang::txt('COM_COLLECTIONS_NUM_REPOSTS', $collection->count('reposts'));
+                                        ?>
                                 </span>*/ ?>
                                 <span class="posts">
                                     <?php echo Lang::txt('COM_COLLECTIONS_NUM_POSTS', $collection->count('posts')); ?>

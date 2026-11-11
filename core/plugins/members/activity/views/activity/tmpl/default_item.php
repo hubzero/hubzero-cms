@@ -34,7 +34,8 @@ $online = false;
 // If the user was the current logged-in user...
 if ($this->row->log->get('created_by') == User::get('id')) {
     // Same user so go ahead and link to profile
-    /*$name = '<a href="' . Route::url($creator->link()) . '">' . $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN')))) . '</a>';
+    /*$name = '<a href="' . Route::url($creator->link()) . '">' . $this->escape(stripslashes($creator->get('name',
+        Lang::txt('PLG_MEMBERS_ACTIVITY_UNKNOWN')))) . '</a>';
 
     // If they posted as anonymous, indicate it
     if ($this->row->log->get('anonymous'))
@@ -307,8 +308,12 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                             --><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_OPTIONS'); ?><!--
                         --></a>
                         <ul class="activity-options-more" id="moreoptions<?php echo $this->row->get('id'); ?>">
-                            <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($base . '&action=unsubscribe&scope=' . $this->row->get('scope')); ?>"><?php echo Lang::txt('Hide all like this'); ?></a></li>
-                            <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($base . '&action=share&activity=' . $this->row->get('id')); ?>"><?php echo Lang::txt('Share'); ?></a></li>
+                            <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo
+                                Route::url($base . '&action=unsubscribe&scope=' . $this->row->get('scope')); ?>"><?php
+                                echo Lang::txt('Hide all like this'); ?></a></li>
+                            <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo
+                                Route::url($base . '&action=share&activity=' . $this->row->get('id')); ?>"><?php echo
+                                Lang::txt('Share'); ?></a></li>
                         </ul>
                     </li>*/ ?>
                 </ul>

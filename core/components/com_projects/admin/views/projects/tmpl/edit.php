@@ -255,9 +255,12 @@ $paramsLayoutSelected = function ($value) use ($view) {
                 <div class="input-wrap">
                     <?php /*<label><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
                     <select name="private">
-                        <option value="-1" <?php if ($this->model->get('private') < 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_OPEN'); ?></option>
-                        <option value="0" <?php if ($this->model->get('private') == 0) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
-                        <option value="1" <?php if (!$this->model->isPublic()) { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVATE'); ?></option>
+                        <option value="-1" <?php if ($this->model->get('private') < 0) { echo ' selected="selected"'; }
+                            ?>><?php echo Lang::txt('COM_PROJECTS_OPEN'); ?></option>
+                        <option value="0" <?php if ($this->model->get('private') == 0) { echo ' selected="selected"'; }
+                            ?>><?php echo Lang::txt('COM_PROJECTS_PUBLIC'); ?></option>
+                        <option value="1" <?php if (!$this->model->isPublic()) { echo ' selected="selected"'; } ?>><?php
+                            echo Lang::txt('COM_PROJECTS_PRIVATE'); ?></option>
                     </select>*/ ?>
                     <label for="field-access"><?php echo Lang::txt('COM_PROJECTS_PRIVACY'); ?>:</label>
                     <select name="access" id="field-access">

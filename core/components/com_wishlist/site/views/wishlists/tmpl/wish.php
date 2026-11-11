@@ -104,7 +104,8 @@ $categoryChecked = function ($value) use ($view) {
             <ul id="useroptions">
                 <li>
                 if ($prv = $this->wish->neighbor('prev')) { ?>
-                    <a class="icon-prev prev btn" href="<?php echo Route::url($this->wishlist->link('permalink', array_merge($this->filters, array('wishid' => $prv)))); ?>">
+                    <a class="icon-prev prev btn" href="<?php echo Route::url($this->wishlist->link('permalink',
+                        array_merge($this->filters, array('wishid' => $prv)))); ?>">
                         <span><?php echo Lang::txt('COM_WISHLIST_PREV'); ?></span>
                     </a>
                 <?php } else { ?>
@@ -114,13 +115,16 @@ $categoryChecked = function ($value) use ($view) {
                 <?php } ?>
                 </li>
                 <li>
-                    <a class="all btn" href="<?php echo Route::url($this->wishlist->link('permalink', $this->filters)); ?>">
+                    <a class="all btn" href="<?php echo Route::url($this->wishlist->link('permalink', $this->filters));
+                        ?>">
                         <span><?php echo Lang::txt('COM_WISHLIST_All'); ?></span>
                     </a>
                 </li>
                 <li class="last">
                 <?php if ($nxt = $this->wish->neighbor('next')) { ?>
-                    <a class="icon-next next opposite btn" href="<?php echo Route::url($this->wishlist->link('permalink', array_merge($this->filters, array('wishid' => $nxt)))); ?>">
+                    <a class="icon-next next opposite btn" href="<?php echo
+                        Route::url($this->wishlist->link('permalink', array_merge($this->filters, array('wishid' =>
+                        $nxt)))); ?>">
                         <span><?php echo Lang::txt('COM_WISHLIST_NEXT'); ?></span>
                     </a>
                 <?php } else { ?>
@@ -230,7 +234,9 @@ $categoryChecked = function ($value) use ($view) {
                     $voters = ($this->wish->votes()->total() <= count($eligible))
                         ? count($eligible)
                         : $this->wish->votes()->total();
-                    //$html .= "\t\t\t".'<div class="wishpriority">'.Lang::txt('PRIORITY').': '.$this->wish->ranking.' <span>('.$this->wish->num_votes.' '.Lang::txt('NOTICE_OUT_OF').' '.$voters.' '.Lang::txt('VOTES').')</span>';
+                    //$html .= "\t\t\t".'<div class="wishpriority">'.Lang::txt('PRIORITY').': '.$this->wish->ranking.'
+                    //    <span>('.$this->wish->num_votes.' '.Lang::txt('NOTICE_OUT_OF').' '.$voters.'
+                    //    '.Lang::txt('VOTES').')</span>';
                     $html = '';
                     if (
                         $this->wish->due()
@@ -596,7 +602,9 @@ $categoryChecked = function ($value) use ($view) {
                                         <?php echo Lang::txt('COM_WISHLIST_IN'); ?>
                                         <select name="vid" id="vid">
                                     <?php foreach ($this->wish->versions() as $v) {
-                                        $v_label = $v->state == 3 ? Lang::txt('COM_WISHLIST_NEXT_TOOL_RELEASE') : Lang::txt('COM_WISHLIST_VERSION').' '.$v->version.' ('.Lang::txt('COM_WISHLIST_REVISION').' '.$v->revision.')';
+                                        $v_label = $v->state == 3 ? Lang::txt('COM_WISHLIST_NEXT_TOOL_RELEASE') :
+                                            Lang::txt('COM_WISHLIST_VERSION').' '.$v->version.'
+                                            ('.Lang::txt('COM_WISHLIST_REVISION').' '.$v->revision.')';
                                     ?>
                                             <option value="<?php echo $v->id; ?>"><?php echo $v_label; ?></option>
                                     <?php } ?>

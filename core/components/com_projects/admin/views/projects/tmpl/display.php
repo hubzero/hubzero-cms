@@ -108,9 +108,12 @@ $quotaSelected = function ($value) use ($view) {
 
                 <?php /*<label for="filter-private"><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY'); ?>:</label>
                 <select name="private" id="filter-private" class="filter filter-submit">
-                    <option value="-1"<?php echo ($this->filters['private'] == '') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_ALL'); ?></option>
-                    <option value="1"<?php echo ($this->filters['private'] == 1) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_PRIVATE'); ?></option>
-                    <option value="0"<?php echo ($this->filters['private'] == 0) ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_PUBLIC'); ?></option>
+                    <option value="-1"<?php echo ($this->filters['private'] == '') ? ' selected="selected"' : '';
+                        ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_ALL'); ?></option>
+                    <option value="1"<?php echo ($this->filters['private'] == 1) ? ' selected="selected"' : ''; ?>><?php
+                        echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_PRIVATE'); ?></option>
+                    <option value="0"<?php echo ($this->filters['private'] == 0) ? ' selected="selected"' : ''; ?>><?php
+                        echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY_PUBLIC'); ?></option>
                 </select>*/ ?>
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="filter filter-submit">
@@ -353,7 +356,9 @@ $quotaSelected = function ($value) use ($view) {
                         </td>
                         <td class="priority-4">
                             <?php /*if (User::authorise('core.edit.state', $this->option)) { ?>
-                                <a class="privacy <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_TOGGLE_PRIVACY'); ?>">
+                                <a class="privacy <?php echo $cls; ?>" href="<?php echo Route::url('index.php?option=' .
+                                    $this->option . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken()
+                                    . '=1'); ?>" title="<?php echo Lang::txt('COM_PROJECTS_TOGGLE_PRIVACY'); ?>">
                                     <span><?php echo Lang::txt('COM_PROJECTS_FLAG_' . strtoupper($cls)); ?></span>
                                 </a>
                             <?php } else {*/ ?>

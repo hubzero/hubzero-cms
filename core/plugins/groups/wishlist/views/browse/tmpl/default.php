@@ -260,7 +260,8 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                             . $this->escape($this->filters['tag']) . '">'
                                             . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
                                     } elseif (isset($item->ranked) && $item->ranked) {
-                                        //$html .= Lang::txt('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
+                                        //$html .= Lang::txt('WISH_PRIORITY').': <span
+                                        //    class="priority">'.$item->ranking.'</span>'."\n";
                                         $this->css('
 												.priority-level-' . $item->id . ' {
 													width: ' . (($item->ranking / 50) * 100) . '%;
@@ -282,7 +283,8 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                     $html .= '<span class="granted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED')
                                         . '</span>';
                                     /*if ($item->granted && $item->granted != '0000-00-00 00:00:00') {
-                                        $html .= ' <span class="mini">'.strtolower(Lang::txt('ON')).' '.Date::of($item->granted)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</span>';
+                                        $html .= ' <span class="mini">'.strtolower(Lang::txt('ON')).'
+                                            '.Date::of($item->granted)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</span>';
                                     }*/
                                     break;
                                 case 3:

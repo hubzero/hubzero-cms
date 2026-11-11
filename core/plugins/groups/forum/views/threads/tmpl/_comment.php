@@ -169,7 +169,9 @@ if ($this->comment->isReported()) {
                     }
 
                     if ($attachment->exists()) {
-                        $link = $attachment->link(); //$this->comment->link() . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename');
+                        $link = $attachment->link();
+                        //$this->comment->link() . '/' . $attachment->get('post_id') . '/' .
+                        //    $attachment->get('filename');
 
                         if ($attachment->isImage()) {
                             if ($attachment->width() > 400) {

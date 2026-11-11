@@ -413,7 +413,8 @@ if (User::authorise('core.manage', 'com_content')) {
         $menu->getParent();
     }
     /*$menu->addChild(
-        new Node(Lang::txt('MOD_MENU_COM_CONTENT_FEATURED'), 'index.php?option=com_content&view=featured', 'class:featured')
+        new Node(Lang::txt('MOD_MENU_COM_CONTENT_FEATURED'), 'index.php?option=com_content&view=featured',
+            'class:featured')
     );
     */
     if (User::authorise('core.manage', 'com_media')) {
@@ -565,7 +566,8 @@ if ($params->get('showhelp', 0) == 1) {
     $menu->addSeparator();
 
     /*$menu->addChild(
-        new Node(Lang::txt('MOD_MENU_HELP_SUPPORT_OFFICIAL_FORUM'), 'http://hubzero.org/answers', 'class:help-forum', false, '_blank')
+        new Node(Lang::txt('MOD_MENU_HELP_SUPPORT_OFFICIAL_FORUM'), 'http://hubzero.org/answers', 'class:help-forum',
+            false, '_blank')
     );*/
     if ($forum_url = $params->get('forum_url')) {
         $menu->addChild(
@@ -573,12 +575,15 @@ if ($params->get('showhelp', 0) == 1) {
         );
     }
     /*$debug = $lang->setDebug(false);
-    if ($lang->hasKey('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM_VALUE') && Lang::txt('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM_VALUE') != '')
+    if ($lang->hasKey('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM_VALUE') &&
+        Lang::txt('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM_VALUE') != '')
     {
-        $forum_url = 'http://hubzero.org/forum/?f=' . (int) Lang::txt('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM_VALUE');
+        $forum_url = 'http://hubzero.org/forum/?f=' . (int)
+            Lang::txt('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM_VALUE');
         $lang->setDebug($debug);
         $menu->addChild(
-            new Node(Lang::txt('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM'), $forum_url, 'class:help-forum', false, '_blank')
+            new Node(Lang::txt('MOD_MENU_HELP_SUPPORT_OFFICIAL_LANGUAGE_FORUM'), $forum_url, 'class:help-forum', false,
+                '_blank')
         );
     }
     $lang->setDebug($debug);*/
@@ -599,22 +604,28 @@ if ($params->get('showhelp', 0) == 1) {
         new Node(Lang::txt('MOD_MENU_HELP_LINKS'), '#', 'class:weblinks'), true
     );
     $menu->addChild(
-        new Node(Lang::txt('MOD_MENU_HELP_EXTENSIONS'), 'http://hubzero.org/extensions=', 'class:help-jed', false, '_blank')
+        new Node(Lang::txt('MOD_MENU_HELP_EXTENSIONS'), 'http://hubzero.org/extensions=', 'class:help-jed', false,
+            '_blank')
     );
     $menu->addChild(
-        new Node(Lang::txt('MOD_MENU_HELP_TRANSLATIONS'), 'http://hubzero.org/translations', 'class:help-trans', false, '_blank')
+        new Node(Lang::txt('MOD_MENU_HELP_TRANSLATIONS'), 'http://hubzero.org/translations', 'class:help-trans', false,
+            '_blank')
     );
     $menu->addChild(
-        new Node(Lang::txt('MOD_MENU_HELP_RESOURCES'), 'https://help.hubzero.org/documentation', 'class:help-jrd', false, '_blank')
+        new Node(Lang::txt('MOD_MENU_HELP_RESOURCES'), 'https://help.hubzero.org/documentation', 'class:help-jrd',
+            false, '_blank')
     );
     $menu->addChild(
-        new Node(Lang::txt('MOD_MENU_HELP_COMMUNITY'), 'http://hubzero.org/community', 'class:help-community', false, '_blank')
+        new Node(Lang::txt('MOD_MENU_HELP_COMMUNITY'), 'http://hubzero.org/community', 'class:help-community', false,
+            '_blank')
     );
     $menu->addChild(
-        new Node(Lang::txt('MOD_MENU_HELP_SECURITY'), 'http://hubzero.org/security', 'class:help-security', false, '_blank')
+        new Node(Lang::txt('MOD_MENU_HELP_SECURITY'), 'http://hubzero.org/security', 'class:help-security', false,
+            '_blank')
     );
     $menu->addChild(
-        new Node(Lang::txt('MOD_MENU_HELP_DEVELOPER'), 'http://hubzero.org/developer', 'class:help-dev', false, '_blank')
+        new Node(Lang::txt('MOD_MENU_HELP_DEVELOPER'), 'http://hubzero.org/developer', 'class:help-dev', false,
+            '_blank')
     );
     $menu->addChild(
         new Node(Lang::txt('MOD_MENU_HELP_SHOP'), 'http://hubzero.org/store', 'class:help-shop', false, '_blank')

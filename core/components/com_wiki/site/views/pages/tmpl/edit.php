@@ -180,10 +180,19 @@ $allowCommentsChecked = function ($value) use ($view) {
                     <?php /*if (!$this->sub) { ?>
         <div class="explaination">
             <?php if ($this->page->exists() && $this->page->access('edit')) { ?>
-                <p><?php echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))); ?></p>
+                <p><?php echo Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename')));
+                    ?></p>
             <?php } ?>
-            <div id="file-manager" data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>" data-action="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo $lid; ?>" data-list="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo $lid; ?>">
-                <iframe name="filer" id="filer" src="<?php echo rtrim(Request::base(true), '/'); ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename'); ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
+            <div id="file-manager" data-instructions="<?php echo Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE'); ?>"
+                data-action="<?php echo rtrim(Request::base(true), '/');
+                ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=upload&amp;listdir=<?php echo
+                $lid; ?>" data-list="<?php echo rtrim(Request::base(true), '/');
+                ?>/index.php?option=com_wiki&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=<?php echo
+                $lid; ?>">
+                <iframe name="filer" id="filer" src="<?php echo rtrim(Request::base(true), '/');
+                    ?>/index.php?option=com_wiki&amp;tmpl=component&amp;controller=media&amp;scope=<?php echo
+                    $this->page->get('scope'); ?>&amp;pagename=<?php echo $this->page->get('pagename');
+                    ?>&amp;listdir=<?php echo $lid; ?>"></iframe>
             </div>
             <div id="file-uploader-list"></div>
         </div>

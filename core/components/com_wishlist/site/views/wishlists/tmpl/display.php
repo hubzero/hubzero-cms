@@ -503,7 +503,8 @@ if ($this->wishlist->get('id')) {
                                                             . Route::url($item->link('rank', $filters)) . '">'
                                                             . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
                                                     } elseif ($item->get('ranked')) {
-                                                        //$html .= Lang::txt('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
+                                                        //$html .= Lang::txt('WISH_PRIORITY').': <span
+                                                        //    class="priority">'.$item->ranking.'</span>'."\n";
                                                         $this->css('
 															.priority-level-' . $item->get('id') . ' {
 																width: ' . (($item->get('ranking', 0) / 50) * 100) . '%;

@@ -264,7 +264,10 @@ $this->css();
                         {
                             case '1': // Owner
                                 ?>
-                                    <a class="state demote" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=demote&project=' . $this->filters['project'] . '&id=' . $row->userid . '&' . Session::getFormToken() . '=1'); ?>">
+                                    <a class="state demote" href="<?php echo Route::url('index.php?option=' .
+                                        $this->option . '&controller=' . $this->controller . '&task=demote&project=' .
+                                        $this->filters['project'] . '&id=' . $row->userid . '&' .
+                                        Session::getFormToken() . '=1'); ?>">
                                         <span><?php echo Lang::txt('COM_PROJECTS_TEAM_DEMOTE'); ?></span>
                                     </a>
                                 <?php
@@ -273,7 +276,11 @@ $this->css();
                             case '2': // Collaborator
                             default:
                                 ?>
-                                    <a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&project=' . $this->filters['project'] . '&id=' . $row->userid . '&' . Session::getFormToken() . '=1'); ?>">
+                                    <a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return
+                                        true;}else{return false;}" href="<?php echo Route::url('index.php?option=' .
+                                        $this->option . '&controller=' . $this->controller . '&task=delete&project=' .
+                                        $this->filters['project'] . '&id=' . $row->userid . '&' .
+                                        Session::getFormToken() . '=1'); ?>">
                                         <span><?php echo Lang::txt('COM_PROJECTS_TEAM_REMOVE'); ?></span>
                                     </a>
                                 <?php

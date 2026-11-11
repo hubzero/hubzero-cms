@@ -553,10 +553,13 @@ $bars = [];
                         <caption><?php echo Lang::txt('PLG_RESOURCES_USAGE_TBL_4_CAPTION'); ?></caption>
                         <thead>
                             <tr>
-                                <!-- <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_NUM'); ?></th> -->
+                                <!-- <th scope="col" class="numerical-data"><?php echo
+                                    Lang::txt('PLG_RESOURCES_USAGE_COL_NUM'); ?></th> -->
                                 <th scope="col"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_DOMAINS'); ?></th>
-                                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
-                                <th scope="col" class="numerical-data"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
+                                <th scope="col" class="numerical-data"><?php echo
+                                    Lang::txt('PLG_RESOURCES_USAGE_COL_USERS'); ?></th>
+                                <th scope="col" class="numerical-data"><?php echo
+                                    Lang::txt('PLG_RESOURCES_USAGE_COL_PERCENT'); ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -567,7 +570,8 @@ $bars = [];
                             {
                                 $results = plgResourcesUsage::getTopValue($this->resource->id, 2, $tid, $datetime);
 
-                                Cache::put('resources.usage' . $this->resource->id . 'domains', $results, intval($this->params->get('cache_time', 15)));
+                                Cache::put('resources.usage' . $this->resource->id . 'domains', $results,
+                                    intval($this->params->get('cache_time', 15)));
                             }
                         }
                         else
@@ -596,7 +600,8 @@ $bars = [];
                                 {
                                     $i = 0;
                                 }
-                                $r[$ky][] = '{label: \''.addslashes($row->name).'\', data: '.number_format($row->value).', color: \''.$colors[$i].'\'}';
+                                $r[$ky][] = '{label: \''.addslashes($row->name).'\', data:
+                                    '.number_format($row->value).', color: \''.$colors[$i].'\'}';
 
                                 if ($row->rank != '0')
                                 {
@@ -637,7 +642,8 @@ $bars = [];
                         {
                     ?>
                             <tr>
-                                <td colspan="3" class="textual-data"><?php echo Lang::txt('No data found for the month of %s', $datetime); ?></td>
+                                <td colspan="3" class="textual-data"><?php echo Lang::txt('No data found for the month
+                                    of %s', $datetime); ?></td>
                             </tr>
                     <?php
                         }

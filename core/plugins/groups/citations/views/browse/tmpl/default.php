@@ -377,7 +377,8 @@ if (isset($this->messages)) {
                     <?php
                     /* [!] - zooley: Removed as doesn't seem to be used and 'limit=' in the referer URL can override
                              pagination settings
-                    <input type="hidden" name="referer" value="<?php echo urlencode($this->escape(@$_SERVER['HTTP_REFERER'])); ?>" />
+                    <input type="hidden" name="referer" value="<?php echo
+                        urlencode($this->escape(@$_SERVER['HTTP_REFERER'])); ?>" />
                     */
                     ?>
                     <input type="hidden" name="action" value="browse" />

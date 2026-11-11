@@ -228,7 +228,8 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 <?php /*
             <label for="author">
                 <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS'); ?>:
-                <input type="text" name="author" id="author" size="30" value="<?php echo $this->escape($this->row->author); ?>" />
+                <input type="text" name="author" id="author" size="30" value="<?php echo
+                    $this->escape($this->row->author); ?>" />
                 <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_AUTHORS_HINT'); ?></span>
             </label>
             */ ?>

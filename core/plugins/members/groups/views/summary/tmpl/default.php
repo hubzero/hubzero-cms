@@ -104,12 +104,18 @@ $this
                 if ($group->manager) {
                     $status = 'manager';
 
-                    //$options  = '<a class="manage tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&active=members') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_MANAGE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
+                    //$options  = '<a class="manage tooltips" href="' . Route::url('index.php?option=' . $this->option .
+                    //    '&cn=' . $group->cn . '&active=members') .'" title="' .
+                    //    Lang::txt('PLG_MEMBERS_GROUPS_ACTION_MANAGE_TITLE') .
+                    //    '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
                     $options .= ' <a class="customize tooltips" href="'
                         . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit')
                         . '" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_EDIT_TITLE') . '">'
                         . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_EDIT') . '</a>';
-                    //$options .= ' <a class="delete tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=delete') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DELETE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
+                    //$options .= ' <a class="delete tooltips" href="' . Route::url('index.php?option=' . $this->option
+                    //    . '&cn=' . $group->cn . '&task=delete') .'" title="' .
+                    //    Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DELETE_TITLE') .
+                    //    '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
                 } elseif ($group->registered && $group->regconfirmed) {
                     $status = 'member';
 
@@ -127,7 +133,10 @@ $this
                 } elseif (!$group->registered && $group->regconfirmed) {
                     $status = 'invitee';
 
-                    //$options  = '<a class="accept tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
+                    //$options  = '<a class="accept tooltips" href="' . Route::url('index.php?option=' . $this->option .
+                    //    '&cn=' . $group->cn . '&task=accept') .'" title="' .
+                    //    Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') .
+                    //    '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
                     $options .= ' <button type="submit" form="hz-post-action" formaction="'
                         . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel')
                         . '" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE_TITLE')

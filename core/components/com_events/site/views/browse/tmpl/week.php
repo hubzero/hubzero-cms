@@ -113,7 +113,8 @@ $categorySelected = function ($value) use ($template) {
                         $event_up->month = sprintf( "%02d", $event_up->month);
                         $event_up->year  = sprintf( "%4d",  $event_up->year);*/
 
-                        //$checkprint = new \Components\Events\Helpers\EventsRepeat($row, $rows['week']['year'], $rows['week']['month'], $rows['week']['day']);
+                        //$checkprint = new \Components\Events\Helpers\EventsRepeat($row, $rows['week']['year'],
+                        //    $rows['week']['month'], $rows['week']['day']);
                         //if ($checkprint->viewable == true) {
                             $view = $this
                                      ->view('item')
@@ -124,7 +125,8 @@ $categorySelected = function ($value) use ($template) {
                                      ->set('categories', $this->categories)
                                      ->set('showdate', 0);
                             $e[] = $view->loadTemplate();
-                            //$e[] = \Components\Events\Helpers\Html::eventRow($row, $event_up, $this->option, $this->fields, $categories, 0);
+                            //$e[] = \Components\Events\Helpers\Html::eventRow($row, $event_up, $this->option,
+                            //    $this->fields, $categories, 0);
                             $countprint++;
                         //}
                     }

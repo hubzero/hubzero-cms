@@ -135,7 +135,8 @@ $this
                     // get wiki access text
                     $wikiaccess = \Components\Tools\Helpers\Html::getWikiAccess($t->wikiaccess);
 
-                    //$handle = (isset($t->doi) && $t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi : '';
+                    //$handle = (isset($t->doi) && $t->doi) ? $hubDOIpath.'r'.$this->status['resourceid'].'.'.$t->doi :
+                    //    '';
                     $handle = '';
 
                     if (isset($t->doi) && $t->doi && $tconfig->get('doi_shoulder')) {

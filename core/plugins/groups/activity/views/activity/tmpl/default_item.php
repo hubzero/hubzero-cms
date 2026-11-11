@@ -308,10 +308,17 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                     </li>
                     <?php } ?>
                     <?php /*<li>
-                        <a data-id="activity<?php echo $this->row->get('id'); ?>" class="icon-options tooltips" href="#moreoptions<?php echo $this->row->get('id'); ?>" title="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_OPTIONS'); ?>"><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_OPTIONS'); ?></a>
+                        <a data-id="activity<?php echo $this->row->get('id'); ?>" class="icon-options tooltips"
+                            href="#moreoptions<?php echo $this->row->get('id'); ?>" title="<?php echo
+                            Lang::txt('PLG_GROUPS_ACTIVITY_OPTIONS'); ?>"><?php echo
+                            Lang::txt('PLG_GROUPS_ACTIVITY_OPTIONS'); ?></a>
                         <ul class="activity-options-more" id="moreoptions<?php echo $this->row->get('id'); ?>">
-                            <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($base . '&action=unsubscribe&scope=' . $this->row->get('scope')); ?>">Hide all like this</a></li>
-                            <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo Route::url($base . '&action=share&activity=' . $this->row->get('id')); ?>">Share</a></li>
+                            <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo
+                                Route::url($base . '&action=unsubscribe&scope=' . $this->row->get('scope')); ?>">Hide
+                                all like this</a></li>
+                            <li><a data-id="activity<?php echo $this->row->get('id'); ?>" href="<?php echo
+                                Route::url($base . '&action=share&activity=' . $this->row->get('id'));
+                                ?>">Share</a></li>
                         </ul>
                     </li>*/ ?>
                 </ul>

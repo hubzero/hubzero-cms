@@ -68,11 +68,13 @@ $pa = new \Components\Publications\Tables\Author($database);
                 /*$info = $item->info;
                 if ($item->url)
                 {
-                $info .= ' <a href="' . $item->url . '" rel="nofollow external">' . Lang::txt('Read license terms &rsaquo;') . '</a>';
+                $info .= ' <a href="' . $item->url . '" rel="nofollow external">' . Lang::txt('Read license terms
+                    &rsaquo;') . '</a>';
                 }
 
                 $icon = $item->icon;
-                $icon = str_replace('/components/com_publications/assets/img/', '/core/components/com_publications/site/assets/img/', $icon);
+                $icon = str_replace('/components/com_publications/assets/img/',
+                    '/core/components/com_publications/site/assets/img/', $icon);
                 */
                 $authors = $pa->getAuthors($item->get('version_id'));
 

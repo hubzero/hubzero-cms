@@ -88,26 +88,37 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
     <?php /*if (!User::isGuest()) { ?>
             <div class="actions">
         <?php if ($item->get('created_by') == User::get('id')) { ?>
-                <a class="edit" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/edit'); ?>">
+                <a class="edit" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base .
+                    '&scope=post/' . $this->post->get('id') . '/edit'); ?>">
                     <span><?php echo Lang::txt('Edit'); ?></span>
                 </a>
         <?php } else { ?>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/vote'); ?>" class="vote <?php echo ($item->get('voted')) ? 'unlike' : 'like'; ?>" data-id="<?php echo $this->post->get('id'); ?>" data-text-like="<?php echo Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>">
+                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=post/' .
+                    $this->post->get('id') . '/vote'); ?>" class="vote <?php echo ($item->get('voted')) ? 'unlike' :
+                    'like'; ?>" data-id="<?php echo $this->post->get('id'); ?>" data-text-like="<?php echo
+                    Lang::txt('Like'); ?>" data-text-unlike="<?php echo Lang::txt('Unlike'); ?>">
                     <span><?php echo ($item->get('voted')) ? Lang::txt('Unlike') : Lang::txt('Like'); ?></span>
                 </button>
         <?php } ?>
-                <a class="comment" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/comment'); ?>">
+                <a class="comment" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base .
+                    '&scope=post/' . $this->post->get('id') . '/comment'); ?>">
                     <span><?php echo Lang::txt('Comment'); ?></span>
                 </a>
-                <a class="repost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/collect'); ?>">
+                <a class="repost" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base .
+                    '&scope=post/' . $this->post->get('id') . '/collect'); ?>">
                     <span><?php echo Lang::txt('Collect'); ?></span>
                 </a>
-        <?php if ($this->post->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
-                <a class="delete" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/delete'); ?>">
+        <?php if ($this->post->get('original') && ($item->get('created_by') == User::get('id') ||
+            $this->params->get('access-delete-item'))) { ?>
+                <a class="delete" data-id="<?php echo $this->post->get('id'); ?>" href="<?php echo Route::url($base .
+                    '&scope=post/' . $this->post->get('id') . '/delete'); ?>">
                     <span><?php echo Lang::txt('Delete'); ?></span>
                 </a>
-        <?php } else if ($this->post->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
-                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=post/' . $this->post->get('id') . '/remove'); ?>" class="unpost" data-id="<?php echo $this->post->get('id'); ?>">
+        <?php } else if ($this->post->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) {
+            ?>
+                <button type="submit" form="hz-post-action" formaction="<?php echo Route::url($base . '&scope=post/' .
+                    $this->post->get('id') . '/remove'); ?>" class="unpost" data-id="<?php echo $this->post->get('id');
+                    ?>">
                     <span><?php echo Lang::txt('Remove'); ?></span>
                 </button>
         <?php } ?>
