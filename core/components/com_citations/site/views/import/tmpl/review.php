@@ -84,7 +84,10 @@ $no_show = ["errors","duplicate"];
                             <tr>
                                 <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
                                 <td>
-                                    <span class="citation-title"><u><?= Lang::txt('COM_CITATIONS_IMPORT_DUPLICATE') ?></u>: <?= $this->escape(html_entity_decode((string) $c['title'])) ?></span>
+                                    <?php
+                                    $importDuplicateText = Lang::txt('COM_CITATIONS_IMPORT_DUPLICATE');
+                                    ?>
+                                    <span class="citation-title"><u><?= $importDuplicateText ?></u>: <?= $this->escape(html_entity_decode((string) $c['title'])) ?></span>
                                     <?php
                                     $clickMoreText = Lang::txt('COM_CITATIONS_IMPORT_SHOW_CITATION_DETAILS');
                                     ?>

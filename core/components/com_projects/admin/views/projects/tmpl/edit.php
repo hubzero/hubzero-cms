@@ -370,7 +370,13 @@ $paramsLayoutSelected = function ($value) use ($view) {
                     <?php } ?>
 
                     <div class="input-wrap">
-                        <?= Lang::txt('Maintenance options:') ?> &nbsp; <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=gitgc&id=' . $this->model->get('id')) ?>"><?= Lang::txt('git gc --aggressive') ?></a> [<?= Lang::txt('Takes minutes to run') ?>]
+                        <?php
+                        $gitgcUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=gitgc&id='
+                                . $this->model->get('id'),
+                        );
+                        ?>
+                        <?= Lang::txt('Maintenance options:') ?> &nbsp; <a href="<?= $gitgcUrl ?>"><?= Lang::txt('git gc --aggressive') ?></a> [<?= Lang::txt('Takes minutes to run') ?>]
                     </div>
 
                     <?php if ($cEnabled) { ?>

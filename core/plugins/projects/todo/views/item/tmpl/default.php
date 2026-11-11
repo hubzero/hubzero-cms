@@ -133,7 +133,11 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
             <?php foreach ($this->row->comments() as $comment) { ?>
                 <li>
                     <p><?php echo $comment->content('parsed'); ?></p>
-                    <p class="todo-assigned"><?= $comment->creator('name') ?> <span class="date"> &middot; <?= ProjectsHtml::timeAgo($comment->get('created')) . ' ' . Lang::txt('PLG_PROJECTS_TODO_AGO') ?> </span> <?php if ($comment->get('created_by') == $this->uid) {
+                    <?php
+                    $dateText = ProjectsHtml::timeAgo($comment->get('created')) . ' '
+                        . Lang::txt('PLG_PROJECTS_TODO_AGO');
+                    ?>
+                    <p class="todo-assigned"><?= $comment->creator('name') ?> <span class="date"> &middot; <?= $dateText ?> </span> <?php if ($comment->get('created_by') == $this->uid) {
                         ?><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=deletecomment') . '/?todoid=' . $this->row->get('id') . '&amp;cid=' . $comment->get('id') ?>" class="confirm-it" id="delc-<?= $comment->get('id') ?>">[<?= Lang::txt('PLG_PROJECTS_TODO_DELETE') ?>]</button><?php
                                              } ?></p>
                 </li>
