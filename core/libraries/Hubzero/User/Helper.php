@@ -262,7 +262,7 @@ class Helper
      * @param   string  $uid
      * @param   string  $type
      * @param   string  $cat
-     * @return  boolean
+     * @return  array    Group records, or membership lists keyed by type; empty if there are none
      */
     public static function getGroups($uid, $type = 'all', $cat = null)
     {

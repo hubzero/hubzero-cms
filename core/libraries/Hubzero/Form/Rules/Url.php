@@ -28,7 +28,7 @@ class Url extends Rule
      * @param   object   &$input    An optional Registry object with the entire data set to
      * validate against the entire form.
      * @param   object   &$form     The form object for which the field is being tested.
-     * @return  boolean  True if the value is valid, false otherwise.
+     * @return  bool     True if the value is valid, false otherwise.
      */
     public function test(&$element, $value, $group = null, &$input = null, &$form = null)
     {
@@ -171,7 +171,7 @@ class Url extends Rule
      * Note: this function has been modified to simple return true or false.
      *
      * @param   string   $str  UTF-8 encoded string.
-     * @return  boolean  true if valid
+     * @return  bool     true if valid
      */
     public static function valid($str)
     {

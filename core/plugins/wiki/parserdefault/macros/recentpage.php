@@ -25,7 +25,7 @@ class RecentPage extends WikiMacro
     /**
      * Returns description of macro, use, and accepted arguments
      *
-     * @return  array
+     * @return  string
      */
     public function description()
     {

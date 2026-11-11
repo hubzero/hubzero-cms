@@ -32,7 +32,7 @@ abstract class Base extends Obj
     /**
      * URL segments
      *
-     * @var  string
+     * @var  array
      */
     protected $segments = [];
 

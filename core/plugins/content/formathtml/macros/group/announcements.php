@@ -22,14 +22,14 @@ class Announcements extends GroupMacro
     /**
      * Allow macro in partial parsing?
      *
-     * @var string
+     * @var bool
      */
     public $allowPartial = true;
 
     /**
      * Returns description of macro, use, and accepted arguments
      *
-     * @return  array
+     * @return  string
      */
     public function description()
     {

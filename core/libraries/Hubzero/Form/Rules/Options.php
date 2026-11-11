@@ -28,7 +28,7 @@ class Options extends Rule
      * @param   object   &$input    An optional Registry object with the entire data set to
      * validate against the entire form.
      * @param   object   &$form     The form object for which the field is being tested.
-     * @return  boolean  True if the value is valid, false otherwise.
+     * @return  bool     True if the value is valid, false otherwise.
      * @throws  Exception on invalid rule.
      */
     public function test(&$element, $value, $group = null, &$input = null, &$form = null)

@@ -29,7 +29,7 @@ class Image extends WikiMacro
     /**
      * Allow macro in partial parsing?
      *
-     * @var string
+     * @var bool
      */
     public $allowPartial = true;
 
