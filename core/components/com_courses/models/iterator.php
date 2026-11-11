@@ -83,6 +83,7 @@ class Iterator implements \Countable, \Iterator
     {
         // Get cursor position
         $cur = $this->pos;
+        $res = null;
         // Is it a number?
         if (is_numeric($key)) {
             // Set the cursor

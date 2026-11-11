@@ -344,7 +344,7 @@ class Codes extends AdminController
     /**
      * Quote a value for a CSV file
      *
-     * @param   string  $val
+     * @param   string|int|null  $val
      * @return  string
      */
     public static function quoteCsv($val)

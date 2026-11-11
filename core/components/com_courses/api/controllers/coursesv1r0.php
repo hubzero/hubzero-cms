@@ -55,7 +55,6 @@ class Coursesv1r0 extends Base
         $admin = false;
         if (User::authorise('core.admin')) {
             $admin = true;
-            $searchable = Request::getBool('searchable', false);
         }
 
         $db = App::get('db');
@@ -65,7 +64,7 @@ class Coursesv1r0 extends Base
 
         $records = [];
         foreach ($courses as $course) {
-            if ($admin == true && isset($searchable)) {
+            if ($admin == true) {
                 $entry = new stdClass();
                 $entry->hubtype = 'course';
                 $entry->title = $course->title;

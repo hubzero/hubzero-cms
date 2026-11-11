@@ -226,6 +226,7 @@ class Course extends Table
 					OR LOWER(c.alias) LIKE " . $this->db->quote('%' . strtolower($filters['search']) . '%') . ")";
         }
 
+        $tags = [];
         if (isset($filters['tag']) && $filters['tag'] != '') {
             $tagging = new \Components\Courses\Models\Tags();
             $tags = $tagging->parseTags($filters['tag']);

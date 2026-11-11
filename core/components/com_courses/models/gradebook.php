@@ -768,36 +768,34 @@ class GradeBook extends Base
 
         $return = [];
 
-        if (isset($counts)) {
-            if (!is_null($member_id) && !is_array($member_id)) {
-                $member_id = (array) $member_id;
-            } else {
-                $member_id = [];
-                foreach ($this->course->offering()->section()->members() as $m) {
-                    $member_id[] = $m->get('id');
-                }
+        if (!is_null($member_id) && !is_array($member_id)) {
+            $member_id = (array) $member_id;
+        } else {
+            $member_id = [];
+            foreach ($this->course->offering()->section()->members() as $m) {
+                $member_id[] = $m->get('id');
             }
+        }
 
-            // Loop though the users
-            foreach ($member_id as $m) {
-                $passing = $this->passing(true, $m);
+        // Loop though the users
+        foreach ($member_id as $m) {
+            $passing = $this->passing(true, $m);
 
-                $examComplete = isset($counts[$m]['exam']) && $totals['exam'] == $counts[$m]['exam'];
-                $examWeightPredicate = ($exam_weight == 0 || ($exam_weight > 0 && $examComplete));
+            $examComplete = isset($counts[$m]['exam']) && $totals['exam'] == $counts[$m]['exam'];
+            $examWeightPredicate = ($exam_weight == 0 || ($exam_weight > 0 && $examComplete));
 
-                $quizComplete = isset($counts[$m]['quiz']) && $totals['quiz'] == $counts[$m]['quiz'];
-                $quizWeightPredicate = ($quiz_weight == 0 || ($quiz_weight > 0 && $quizComplete));
+            $quizComplete = isset($counts[$m]['quiz']) && $totals['quiz'] == $counts[$m]['quiz'];
+            $quizWeightPredicate = ($quiz_weight == 0 || ($quiz_weight > 0 && $quizComplete));
 
-                $hwComplete = isset($counts[$m]['homework'])
-                    && $totals['homework'] == $counts[$m]['homework'];
-                $homeworkWeightPredicate = ($homework_weight == 0 || ($homework_weight > 0 && $hwComplete));
+            $hwComplete = isset($counts[$m]['homework'])
+                && $totals['homework'] == $counts[$m]['homework'];
+            $homeworkWeightPredicate = ($homework_weight == 0 || ($homework_weight > 0 && $hwComplete));
 
-                $passingPredicate = isset($passing[$m]) && $passing[$m];
+            $passingPredicate = isset($passing[$m]) && $passing[$m];
 
-                // Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
-                if ($examWeightPredicate && $quizWeightPredicate && $homeworkWeightPredicate && $passingPredicate) {
-                    $return[] = $m;
-                }
+            // Now make sure they've taken all required exams/quizzes/homeworks, and that they passed
+            if ($examWeightPredicate && $quizWeightPredicate && $homeworkWeightPredicate && $passingPredicate) {
+                $return[] = $m;
             }
         }
 

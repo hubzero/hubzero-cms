@@ -68,9 +68,9 @@ class Prerequisite extends Base
     /**
      * Constructor
      *
-     * @param  (int) $section_id
-     * @param  (obj) $gradebook
-     * @param  (int) $member_id
+     * @param  int       $section_id
+     * @param  object    $gradebook
+     * @param  int|null  $member_id
      * @return void
      */
     public function __construct($section_id, $gradebook, $member_id)

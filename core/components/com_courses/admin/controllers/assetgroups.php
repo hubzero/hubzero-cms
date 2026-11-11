@@ -400,16 +400,10 @@ class Assetgroups extends AdminController
         }
 
         // Set message
-        switch ($state) {
-            case '-1':
-                $message = Lang::txt('COM_COURSES_ARCHIVED', count($ids));
-                break;
-            case '1':
-                $message = Lang::txt('COM_COURSES_PUBLISHED', count($ids));
-                break;
-            case '0':
-                $message = Lang::txt('COM_COURSES_UNPUBLISHED', count($ids));
-                break;
+        if ($state == 1) {
+            $message = Lang::txt('COM_COURSES_PUBLISHED', count($ids));
+        } else {
+            $message = Lang::txt('COM_COURSES_UNPUBLISHED', count($ids));
         }
 
         // Set the redirect

@@ -263,7 +263,7 @@ class Logo extends AdminController
         // Check that the file type is allowed
         $allowed = ['png', 'gif', 'jpg', 'jpeg', 'jpe', 'jp2', 'jpx'];
 
-        if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
+        if (!in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
             return $this->displayTask();
         }

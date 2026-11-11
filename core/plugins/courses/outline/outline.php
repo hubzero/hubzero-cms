@@ -124,19 +124,18 @@ class Outline extends Plugin
      */
     private function displayOutline()
     {
-        if (($unit = Request::getString('unit', ''))) {
+        $unit = Request::getString('unit', '');
+        $group = Request::getString('group', '');
+
+        if ($unit) {
             $this->view->setLayout('unit');
         }
-        if (($group = Request::getString('group', ''))) {
+        if ($group) {
             $this->view->setLayout('lecture');
         }
 
-        if (isset($unit)) {
-            $this->view->unit = $unit;
-        }
-        if (isset($group)) {
-            $this->view->group = $group;
-        }
+        $this->view->unit = $unit;
+        $this->view->group = $group;
     }
 
     /**

@@ -45,6 +45,7 @@ class Enrollment extends AdminController
         $m = Request::getString('usernames', '', 'post');
         $mbrs = explode(',', $m);
 
+        $users = [];
         foreach ($mbrs as $mbr) {
             // Retrieve user's account info
             $mbr = trim($mbr);

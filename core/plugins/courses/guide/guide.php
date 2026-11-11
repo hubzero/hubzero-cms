@@ -85,7 +85,7 @@ class Guide extends Plugin
         }
 
         $tmpl = Request::getWord('tmpl', null);
-        if (!isset($tmpl) || $tmpl != 'component') {
+        if ($tmpl != 'component') {
             $this
                 ->css()
                 ->js('jquery.fancybox', 'system')

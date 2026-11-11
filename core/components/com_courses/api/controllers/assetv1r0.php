@@ -135,6 +135,10 @@ class Assetv1r0 extends Base
                 case 'tool':
                     $ext = 'tool';
                     break;
+                default:
+                    // No handler responds to an unknown type
+                    $ext = null;
+                    break;
             }
         } else {
             App::abort(400, 'No assets given');
@@ -603,7 +607,7 @@ class Assetv1r0 extends Base
             'asset_subtype'  => $asset->get('subtype'),
             'asset_url'      => $url,
             'asset_state'    => $asset->get('state'),
-            'scope_id'       => (isset($row) && isset($row->scope_id)) ? $row->scope_id : '',
+            'scope_id'       => isset($row->scope_id) ? $row->scope_id : '',
             'course_id'      => $this->course_id,
             'offering_alias' => Request::getCmd('offering', ''),
         ];

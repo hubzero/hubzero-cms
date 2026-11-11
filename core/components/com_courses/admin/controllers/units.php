@@ -221,11 +221,6 @@ class Units extends AdminController
         // Incoming
         $id = Request::getInt('id', 0);
 
-        // Get the single ID we're working with
-        if (is_array($id)) {
-            $id = (!empty($id)) ? $id[0] : 0;
-        }
-
         if (!$id) {
             $url = 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller
@@ -355,16 +350,10 @@ class Units extends AdminController
         }
 
         // Set message
-        switch ($state) {
-            case '-1':
-                $message = Lang::txt('COM_COURSES_ARCHIVED', count($ids));
-                break;
-            case '1':
-                $message = Lang::txt('COM_COURSES_PUBLISHED', count($ids));
-                break;
-            case '0':
-                $message = Lang::txt('COM_COURSES_UNPUBLISHED', count($ids));
-                break;
+        if ($state == 1) {
+            $message = Lang::txt('COM_COURSES_PUBLISHED', count($ids));
+        } else {
+            $message = Lang::txt('COM_COURSES_UNPUBLISHED', count($ids));
         }
 
         // Set the redirect

@@ -340,6 +340,8 @@ class PdfForm
             $num = $im->getNumberImages();
 
             // First we need to loop through the images and see what trim is going to do (i.e. figure out the margins)
+            $widths = [];
+            $crop = [];
             for ($this->pages = 0; $this->pages < $num; ++$this->pages) {
                 $im = new imagick();
                 $im->setResolution(300, 300);

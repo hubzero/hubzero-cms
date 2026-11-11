@@ -225,11 +225,6 @@ class Offerings extends AdminController
         // Incoming
         $id = Request::getInt('id', 0);
 
-        // Get the single ID we're working with
-        if (is_array($id)) {
-            $id = (!empty($id)) ? $id[0] : 0;
-        }
-
         if (!$id) {
             App::redirect(
                 Route::url(

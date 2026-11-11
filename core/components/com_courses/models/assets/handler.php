@@ -221,7 +221,7 @@ class Handler
         }
 
         // Make sure the class exists and has a create method
-        if (isset($handler) && method_exists($handler, 'create')) {
+        if (method_exists($handler, 'create')) {
             // Run create and return the results
             $object = $handler::newWithoutHandlers($this->db);
             return $object->create();
