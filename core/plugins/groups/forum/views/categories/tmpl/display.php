@@ -14,23 +14,20 @@ defined('_HZEXEC_') or die();
 
 $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'];
 
-if (!function_exists('sortDir')) {
-    /**
-     * Returns opposite of how it was sorted
-     *
-     * @param  array  $filters  Array of filters
-     * @param  string $current
-     * @param  string $dir      Direction of order
-     * @return string
-     */
-    function sortDir($filters, $current, $dir = 'DESC')
-    {
-        if ($filters['sortby'] == $current && $filters['sort_Dir'] == $dir) {
-            $dir = ($dir == 'ASC' ? 'DESC' : 'ASC');
-        }
-        return strtolower($dir);
+/**
+ * Returns opposite of how it was sorted
+ *
+ * @param  array  $filters  Array of filters
+ * @param  string $current
+ * @param  string $dir      Direction of order
+ * @return string
+ */
+$sortDir = function ($filters, $current, $dir = 'DESC') {
+    if ($filters['sortby'] == $current && $filters['sort_Dir'] == $dir) {
+        $dir = ($dir == 'ASC' ? 'DESC' : 'ASC');
     }
-}
+    return strtolower($dir);
+};
 
 // prepare the URL parameters for the delete URLS to retain the sorting
 $sortingValues = (object) ['sortdir' => $this->filters['sort_Dir'], 'sortby' => $this->filters['sortby'], 'start' => $this->filters['start'], 'limit' => $this->filters['limit']];
@@ -77,22 +74,22 @@ $this
             <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
                 <ul class="entries-menu order-options">
                     <li>
-                        <a class="<?php echo $this->filters['sortby'] == 'created' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'created'); ?>" href="<?php echo Route::url($base . '&sortby=created&sortdir=' . sortDir($this->filters, 'created')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_CREATED'); ?>">
+                        <a class="<?php echo $this->filters['sortby'] == 'created' ? 'active ' . strtolower($this->filters['sort_Dir']) : $sortDir($this->filters, 'created'); ?>" href="<?php echo Route::url($base . '&sortby=created&sortdir=' . $sortDir($this->filters, 'created')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_CREATED'); ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_CREATED'); ?>
                         </a>
                     </li>
                     <li>
-                        <a class="<?php echo $this->filters['sortby'] == 'activity' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'activity'); ?>" href="<?php echo Route::url($base . '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY'); ?>">
+                        <a class="<?php echo $this->filters['sortby'] == 'activity' ? 'active ' . strtolower($this->filters['sort_Dir']) : $sortDir($this->filters, 'activity'); ?>" href="<?php echo Route::url($base . '&sortby=activity&sortdir=' . $sortDir($this->filters, 'activity')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY'); ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_ACTIVITY'); ?>
                         </a>
                     </li>
                     <li>
-                        <a class="<?php echo $this->filters['sortby'] == 'replies' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'replies'); ?>" href="<?php echo Route::url($base . '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS'); ?>">
+                        <a class="<?php echo $this->filters['sortby'] == 'replies' ? 'active ' . strtolower($this->filters['sort_Dir']) : $sortDir($this->filters, 'replies'); ?>" href="<?php echo Route::url($base . '&sortby=replies&sortdir=' . $sortDir($this->filters, 'replies')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS'); ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_NUM_POSTS'); ?>
                         </a>
                     </li>
                     <li>
-                        <a class="<?php echo $this->filters['sortby'] == 'title' ? 'active ' . strtolower($this->filters['sort_Dir']) : sortDir($this->filters, 'title', 'ASC'); ?>" href="<?php echo Route::url($base . '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_TITLE'); ?>">
+                        <a class="<?php echo $this->filters['sortby'] == 'title' ? 'active ' . strtolower($this->filters['sort_Dir']) : $sortDir($this->filters, 'title', 'ASC'); ?>" href="<?php echo Route::url($base . '&sortby=title&sortdir=' . $sortDir($this->filters, 'title', 'ASC')); ?>" title="<?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_BY_TITLE'); ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_TITLE'); ?>
                         </a>
                     </li>

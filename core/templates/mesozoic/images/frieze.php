@@ -20,6 +20,12 @@
  * contrast a reader actually gets, overlapping shapes included.
  */
 
+// Command-line tool only: this directory sits under the web root
+if (PHP_SAPI !== 'cli') {
+    http_response_code(404);
+    exit(1);
+}
+
 // The shapes belong to the sample data repository, which this template draws
 // with but does not own. HUBZERO_SAMPLEDATA names it, the way it does for the
 // pack itself; failing that, look for it beside this checkout, which is where

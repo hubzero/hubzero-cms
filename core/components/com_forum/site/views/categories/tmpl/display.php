@@ -16,23 +16,20 @@ $this
      ->css()
      ->js();
 
-if (!function_exists('sortDir')) {
-    /**
-     * Filters directory
-     *
-     * @param   array   $filters
-     * @param   string  $current
-     * @param   string  $dir
-     * @return  string
-     */
-    function sortDir($filters, $current, $dir = 'DESC')
-    {
-        if ($filters['sortby'] == $current && $filters['sort_Dir'] == $dir) {
-            $dir = ($dir == 'ASC' ? 'DESC' : 'ASC');
-        }
-        return strtolower($dir);
+/**
+ * Filters directory
+ *
+ * @param   array   $filters
+ * @param   string  $current
+ * @param   string  $dir
+ * @return  string
+ */
+$sortDir = function ($filters, $current, $dir = 'DESC') {
+    if ($filters['sortby'] == $current && $filters['sort_Dir'] == $dir) {
+        $dir = ($dir == 'ASC' ? 'DESC' : 'ASC');
     }
-}
+    return strtolower($dir);
+};
 
 $this->category->set('section_alias', $this->filters['section']);
 ?>
@@ -67,22 +64,22 @@ $this->category->set('section_alias', $this->filters['section']);
                     <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
                         <ul class="entries-menu order-options">
                             <li>
-                                <a class="<?php echo ($this->filters['sortby'] == 'created') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=created&sortdir=' . sortDir($this->filters, 'created'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_CREATED'); ?>" rel="nofollow">
+                                <a class="<?php echo ($this->filters['sortby'] == 'created') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=created&sortdir=' . $sortDir($this->filters, 'created'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_CREATED'); ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_CREATED'); ?>
                                 </a>
                             </li>
                             <li>
-                                <a class="<?php echo ($this->filters['sortby'] == 'activity') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=activity&sortdir=' . sortDir($this->filters, 'activity'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_ACTIVITY'); ?>" rel="nofollow">
+                                <a class="<?php echo ($this->filters['sortby'] == 'activity') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=activity&sortdir=' . $sortDir($this->filters, 'activity'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_ACTIVITY'); ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_ACTIVITY'); ?>
                                 </a>
                             </li>
                             <li>
-                                <a class="<?php echo ($this->filters['sortby'] == 'replies') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=replies&sortdir=' . sortDir($this->filters, 'replies'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS'); ?>" rel="nofollow">
+                                <a class="<?php echo ($this->filters['sortby'] == 'replies') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=replies&sortdir=' . $sortDir($this->filters, 'replies'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS'); ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_NUM_POSTS'); ?>
                                 </a>
                             </li>
                             <li>
-                                <a class="<?php echo ($this->filters['sortby'] == 'title') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-up'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=title&sortdir=' . sortDir($this->filters, 'title', 'ASC'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_TITLE'); ?>" rel="nofollow">
+                                <a class="<?php echo ($this->filters['sortby'] == 'title') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-up'; ?>" href="<?php echo Route::url($this->category->link('here', '&sortby=title&sortdir=' . $sortDir($this->filters, 'title', 'ASC'))); ?>" title="<?php echo Lang::txt('COM_FORUM_SORT_BY_TITLE'); ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_TITLE'); ?>
                                 </a>
                             </li>

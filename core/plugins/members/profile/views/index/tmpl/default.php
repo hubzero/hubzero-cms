@@ -111,33 +111,30 @@ foreach ($profiles as $profile) {
  * @param  string  $v
  * @return string
  */
-if (!function_exists('renderIfJson')) :
-    function renderIfJson($v)
-    {
-        if (strstr($v == null ? '' : $v, '{')) {
-            $v = json_decode((string) $v, true);
+$renderIfJson = function ($v) {
+    if (strstr($v == null ? '' : $v, '{')) {
+        $v = json_decode((string) $v, true);
 
-            if (!$v || json_last_error() !== JSON_ERROR_NONE) {
-                return $v;
-            }
-
-            $o = [];
-            $o[] = '<table>';
-            $o[] = '<tbody>';
-            foreach ($v as $nm => $vl) {
-                if (!trim($vl)) {
-                    continue;
-                }
-                $o[] = '<tr><th>' . htmlspecialchars((string) $nm, ENT_QUOTES, 'UTF-8') . ':</th><td>' . htmlspecialchars((string) $vl, ENT_QUOTES, 'UTF-8') . '</td></tr>';
-            }
-            $o[] = '</tbody>';
-            $o[] = '</table>';
-
-            $v = implode("\n", $o);
+        if (!$v || json_last_error() !== JSON_ERROR_NONE) {
+            return $v;
         }
-        return $v;
+
+        $o = [];
+        $o[] = '<table>';
+        $o[] = '<tbody>';
+        foreach ($v as $nm => $vl) {
+            if (!trim($vl)) {
+                continue;
+            }
+            $o[] = '<tr><th>' . htmlspecialchars((string) $nm, ENT_QUOTES, 'UTF-8') . ':</th><td>' . htmlspecialchars((string) $vl, ENT_QUOTES, 'UTF-8') . '</td></tr>';
+        }
+        $o[] = '</tbody>';
+        $o[] = '</table>';
+
+        $v = implode("\n", $o);
     }
-endif;
+    return $v;
+};
 
 // Legacy access values for profile fields
 $legacy = [
@@ -690,7 +687,7 @@ $legacy = [
 
                     $val = [];
                     foreach ($value as $k => $v) {
-                        $val[$k] = (is_string($v) && strpos($v, '{') === false) ? $this->escape($v) : renderIfJson($v);
+                        $val[$k] = (is_string($v) && strpos($v, '{') === false) ? $this->escape($v) : $renderIfJson($v);
                     }
                     $val = implode('<br />', $val);
                 } else {
@@ -701,7 +698,7 @@ $legacy = [
                     if (is_string($value) && strpos($value, '{') === false && !in_array($field->get('type'), ['url', 'textarea', 'tags'])) {
                         $val = $this->escape($value);
                     } else {
-                        $val = renderIfJson($value);
+                        $val = $renderIfJson($value);
                     }
                 }
 

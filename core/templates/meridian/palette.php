@@ -8,9 +8,6 @@
 
 namespace Templates\Meridian;
 
-// No Direct Access stuff, whatever, just keep it there
-defined('_HZEXEC_') or die();
-
 /**
  * Every shade Meridian needs, worked out from the one colour a hub picked
  *
