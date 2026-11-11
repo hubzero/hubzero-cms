@@ -158,10 +158,16 @@ class Tickets extends SiteController
             return;
         }
 
+        // Only those who may read tickets get the statistics (the list offers
+        // its link only to them); send anyone else to their own tickets
         if (!$this->acl->check('read', 'tickets')) {
-            $this->_return = Route::url(
-                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets',
+            App::redirect(
+                Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets',
+                    false,
+                ),
             );
+            return;
         }
 
         // Set the page title
