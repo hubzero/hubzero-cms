@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Config;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
@@ -13,9 +14,10 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$host = $_SERVER['HTTP_HOST'];
+$siteUrl = rtrim(trim((string) Config::get('live_site', '')) ?: Request::root(), '/');
+$host = (string) parse_url($siteUrl, PHP_URL_HOST);
 list($base) = explode('.', $host);
-$url = 'https://' . $host;
+$url = $siteUrl;
 
 // include needed css and js
 $this

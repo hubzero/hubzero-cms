@@ -6,11 +6,14 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Request;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
-$eventLink = 'http://'
-    . $_SERVER['HTTP_HOST']
+// The hub's own address, not the one the request claimed to be for.
+$eventLink = rtrim(trim((string) Config::get('live_site', '')) ?: Request::root(), '/')
     . DS
     . 'groups'
     . DS

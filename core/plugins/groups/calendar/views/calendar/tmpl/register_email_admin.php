@@ -6,6 +6,9 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Config;
+use Hubzero\Facades\Request;
+
 // No direct access
 defined('_HZEXEC_') or die();
 
@@ -15,8 +18,8 @@ $message  = 'Group "'
     . $this->event->title
     . '"'
     . "\n\n";
-$message .= 'http://'
-    . $_SERVER['HTTP_HOST']
+// The hub's own address, not the one the request claimed to be for.
+$message .= rtrim(trim((string) Config::get('live_site', '')) ?: Request::root(), '/')
     . DS
     . 'groups'
     . DS

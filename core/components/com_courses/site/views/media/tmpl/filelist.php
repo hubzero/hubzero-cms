@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Config;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
@@ -13,6 +14,9 @@ use Hubzero\Facades\Route;
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+// The hub's own address, for the file paths shown to copy.
+$siteUrl = rtrim(trim((string) Config::get('live_site', '')) ?: Request::root(), '/');
 
 Html::behavior('framework', true);
 
@@ -97,7 +101,7 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                         <td>
                             <?php if (is_object($course)) : ?>
                                 <?php
-                                $dataPath = 'https://' . $_SERVER['HTTP_HOST'] . DS . 'courses' . DS
+                                $dataPath = $siteUrl . DS . 'courses' . DS
                                     . $course->get('cn') . DS . 'File:' . $docs[$doc_name];
                                 ?>
                                 <a href="#" class="icon-path filepath" data-path="<?= $dataPath ?>"
@@ -138,7 +142,7 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                         <td>
                             <?php if (is_object($course)) : ?>
                                 <?php
-                                $dataPath = 'https://' . $_SERVER['HTTP_HOST'] . DS . 'courses' . DS
+                                $dataPath = $siteUrl . DS . 'courses' . DS
                                     . $course->get('cn') . DS . 'Image:' . $images[$image_name];
                                 ?>
                                 <a href="#" class="icon-path filepath" data-path="<?= $dataPath ?>"

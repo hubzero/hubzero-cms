@@ -6,8 +6,10 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Config;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
 
@@ -135,7 +137,7 @@ $isEmpty = $noFilters && !$rows->count();
                             $path .= ($this->filters['year']) ? '&year=' . $this->filters['year'] : '';
                             $path .= ($this->filters['month']) ? '&month=' . $this->filters['month'] : '';
                             $feed = Route::url($path);
-                            $live_site = 'https://' . $_SERVER['HTTP_HOST'];
+                            $live_site = rtrim(trim((string) Config::get('live_site', '')) ?: Request::root(), '/');
                             if (substr($feed, 0, 4) != 'http') {
                                 $feed = rtrim($live_site, '/') . '/' . ltrim($feed, '/');
                             }

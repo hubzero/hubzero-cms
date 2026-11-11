@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Hubzero\Facades\Config;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
@@ -102,7 +103,8 @@ foreach ($this->calendars as $calendar) {
             <?php endforeach; ?>
 
             <?php
-                $link = $_SERVER['HTTP_HOST']
+                $siteUrl = rtrim(trim((string) Config::get('live_site', '')) ?: Request::root(), '/');
+                $link = preg_replace('#^https?://#', '', $siteUrl)
                     . DS
                     . 'groups'
                     . DS
