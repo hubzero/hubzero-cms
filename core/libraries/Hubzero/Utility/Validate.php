@@ -651,6 +651,8 @@ class Validate
     /**
      * Check that a value is a valid phone number.
      *
+     * @see http://en.wikipedia.org/wiki/North_American_Numbering_Plan#List_of_NANPA_countries_and_territories
+     *
      * @param  string|array $check   Value to check (string or array)
      * @param  string       $regex   Regular expression to use
      * @param  string       $country Country code (defaults to 'all')
@@ -669,9 +671,8 @@ class Validate
                 case 'us':
                 case 'ca':
                 case 'can': // deprecated three-letter-code
-                // 'all' includes all NANPA members. See
-                // http://en.wikipedia.org/wiki/North_American_Numbering_Plan#List_of_NANPA_countries_and_territories
                 case 'all':
+                    // includes all NANPA members (see the link above).
                     $regex = '/^(?:(?:\+?1\s*(?:[.-]\s*)?)?';
 
                     // Area code 555, X11 is not allowed.

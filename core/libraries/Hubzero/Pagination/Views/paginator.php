@@ -43,14 +43,14 @@ $itemLink = function ($item, $prefix) {
             <?php
             $fromResult = $this->start + 1;
 
-// If the limit is reached before the end of the list.
+            // If the limit is reached before the end of the list.
             if ($this->start + $this->limit < $this->total) {
                 $toResult = $this->start + $this->limit;
             } else {
                 $toResult = $this->total;
             }
 
-// If there are results found.
+            // If there are results found.
             if ($this->total > 0) {
                 echo Lang::txt('JLIB_HTML_RESULTS_OF', $fromResult, $toResult, $this->total);
             } else {
@@ -63,7 +63,7 @@ $itemLink = function ($item, $prefix) {
                 echo Lang::txt('JGLOBAL_DISPLAY_NUM');
             ?></label>
             <?php
-// Build the select list.
+            // Build the select list.
             $selected = $this->viewall ? 0 : $this->limit;
 
             if (App::isAdmin()) {
@@ -116,7 +116,7 @@ $itemLink = function ($item, $prefix) {
         <?php } ?>
         <?php if ($this->pages->ellipsis && $this->pages->i > 1) { ?>
             <?php
-// Show page 1 link and ellipsis
+            // Show page 1 link and ellipsis
             $firstPage = isset($this->pages->pages[1]) ? $this->pages->pages[1] : null;
             if ($firstPage && $firstPage->base !== null) { ?>
                 <li class="page"><?php echo $itemLink($firstPage, $this->prefix); ?></li>
