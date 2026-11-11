@@ -159,20 +159,40 @@ $this
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                                 <?php if ($row->isFollowing()) { ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=' . $row->get('alias') . '/unfollow') ?>" class="btn unfollow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW') ?>">
+                                    <?php
+                                    $actionUrl = Route::url($base . '&task=' . $row->get('alias') . '/unfollow');
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn unfollow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?></span>
                                     </button>
                                 <?php } else { ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=' . $row->get('alias') . '/follow') ?>" class="btn follow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW') ?>">
+                                    <?php
+                                    $actionUrl = Route::url($base . '&task=' . $row->get('alias') . '/follow');
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn follow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?></span>
                                     </button>
                                 <?php } ?>
                             <?php } ?>
                         <?php } else { ?>
-                            <a class="btn repost tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&task=' . $row->get('alias'), false, true)), false) ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=com_users&view=login&return='
+                                    . base64_encode(Route::url($base . '&task=' . $row->get('alias'), false, true)),
+                                false,
+                            );
+                            ?>
+                            <a class="btn repost tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                 <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                             </a>
-                            <a class="btn follow tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&task=' . $row->get('alias'), false, true)), false) ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=com_users&view=login&return='
+                                    . base64_encode(Route::url($base . '&task=' . $row->get('alias'), false, true)),
+                                false,
+                            );
+                            ?>
+                            <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>">
                                 <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW'); ?></span>
                             </a>
                         <?php } ?>

@@ -181,7 +181,13 @@ $statusSelected = function ($value) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->id,
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <span><?php echo $this->escape(stripslashes($row->subject)); ?></span>
                         </a>
                     <?php } else { ?>
@@ -203,7 +209,13 @@ $statusSelected = function ($value) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?= $class ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_WISHLIST_SET_TASK', $task) ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task
+                                . '&id=' . $row->id . '&' . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WISHLIST_SET_TASK', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -214,7 +226,13 @@ $statusSelected = function ($value) {
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . '&' . Session::getFormToken() . '=1') ?>" class="<?= $color_access ?>" title="<?= Lang::txt('COM_WISHLIST_CHANGE_ACCESS') ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task='
+                                . $task_access . '&id=' . $row->id . '&' . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a href="<?= $linkUrl ?>" class="<?= $color_access ?>" title="<?= Lang::txt('COM_WISHLIST_CHANGE_ACCESS') ?>">
                             <?php echo $groupname; ?>
                         </a>
                     <?php } else { ?>
@@ -224,7 +242,12 @@ $statusSelected = function ($value) {
                     <?php } ?>
                 </td>
                 <td class="priority-2">
-                    <a class="glyph comment" href="<?= Route::url('index.php?option=' . $this->option . '&controller=comments&wish=' . $row->id) ?>">
+                    <?php
+                    $linkUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=comments&wish=' . $row->id,
+                    );
+                    ?>
+                    <a class="glyph comment" href="<?= $linkUrl ?>">
                         <span><?php echo $this->escape($row->comments()->total()); ?></span>
                     </a>
                 </td>

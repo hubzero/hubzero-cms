@@ -32,13 +32,23 @@ $this
         <ul id="useroptions">
         <?php if ($this->acl->check('read', 'tickets')) { ?>
             <li>
-                <a class="icon-stats stats btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats') ?>">
+                <?php
+                $statsUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=stats',
+                );
+                ?>
+                <a class="icon-stats stats btn" href="<?= $statsUrl ?>">
                     <?php echo Lang::txt('COM_SUPPORT_STATS'); ?>
                 </a>
             </li>
         <?php } ?>
             <li class="last">
-                <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new') ?>">
+                <?php
+                $newUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new',
+                );
+                ?>
+                <a class="icon-add add btn" href="<?= $newUrl ?>">
                     <?php echo Lang::txt('COM_SUPPORT_NEW_TICKET'); ?>
                 </a>
             </li>
@@ -49,7 +59,13 @@ $this
 <section class="panel tickets">
     <div class="panel-row">
 
-        <div class="pane pane-queries" id="queries" data-update="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=saveordering&' . Session::getFormToken() . '=1') ?>">
+        <?php
+        $saveorderingUrl = Route::url(
+            'index.php?option=' . $this->option . '&controller=queries&task=saveordering&' . Session::getFormToken()
+                . '=1',
+        );
+        ?>
+        <div class="pane pane-queries" id="queries" data-update="<?= $saveorderingUrl ?>">
             <div class="pane-inner">
 
                 <?php if ($this->acl->check('read', 'tickets')) { ?>
@@ -58,12 +74,26 @@ $this
                             <span class="icon-watch folder"><?php echo Lang::txt('COM_SUPPORT_WATCH_LIST'); ?></span>
                             <ul id="queries_watching" class="wqueries">
                                 <li<?php echo intval($this->filters['show']) == -1 ? ' class="active"' : ''; ?>>
-                                    <a class="aquery" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')) ?>">
+                                    <?php
+                                    $displayUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                            . '&task=display&show=-1&limitstart=0'
+                                            . (intval($this->filters['show']) != -1 ? '&search=' : ''),
+                                    );
+                                    ?>
+                                    <a class="aquery" href="<?= $displayUrl ?>">
                                         <?= $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_OPEN')) ?> <span><?= $this->watch['open'] ?></span>
                                     </a>
                                 </li>
                                 <li<?php echo intval($this->filters['show']) == -2 ? ' class="active"' : ''; ?>>
-                                    <a class="aquery" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-2&limitstart=0' . (intval($this->filters['show']) != -2 ? '&search=' : '')) ?>">
+                                    <?php
+                                    $displayUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                            . '&task=display&show=-2&limitstart=0'
+                                            . (intval($this->filters['show']) != -2 ? '&search=' : ''),
+                                    );
+                                    ?>
+                                    <a class="aquery" href="<?= $displayUrl ?>">
                                         <?= $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_CLOSED')) ?> <span><?= $this->watch['closed'] ?></span>
                                     </a>
                                 </li>
@@ -79,10 +109,23 @@ $this
                                 <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title" data-id="<?= $this->escape($folder->id) ?>"><?= $this->escape($folder->title) ?></span>
                                 <?php if ($this->acl->check('read', 'tickets')) { ?>
                                     <span class="folder-options">
-                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id) ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
+                                        <?php
+                                        $removefolderUrl = Route::url(
+                                            'index.php?option=' . $this->option
+                                                . '&controller=queries&task=removefolder&id=' . $folder->id,
+                                        );
+                                        ?>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $removefolderUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
                                             <?php echo Lang::txt('JACTION_DELETE'); ?>
                                         </button>
-                                        <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=editfolder&id=' . $folder->id . '&tmpl=component&' . Session::getFormToken() . '=1') ?>" data-href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id) ?>" data-name="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                                        <?php
+                                        $editfolderUrl = Route::url(
+                                            'index.php?option=' . $this->option
+                                                . '&controller=queries&task=editfolder&id=' . $folder->id
+                                                . '&tmpl=component&' . Session::getFormToken() . '=1',
+                                        );
+                                        ?>
+                                        <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>" data-href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id) ?>" data-name="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                                             <?php echo Lang::txt('JACTION_EDIT'); ?>
                                         </a>
                                     </span>
@@ -90,15 +133,39 @@ $this
                                 <ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
                                     <?php foreach ($folder->queries as $query) { ?>
                                         <li id="query_<?= $this->escape($query->id) ?>" <?= intval($this->filters['show']) == $query->id ? ' class="active"' : '' ?>>
-                                            <a class="aquery" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')) ?>">
+                                            <?php
+                                            $displayUrl = Route::url(
+                                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                    . '&task=display&show=' . $query->id
+                                                    . (
+                                                        intval($this->filters['show']) != $query->id
+                                                            ? '&search=&limitstart=0'
+                                                            : ''
+                                                    ),
+                                            );
+                                            ?>
+                                            <a class="aquery" href="<?= $displayUrl ?>">
                                                 <?= $this->escape(stripslashes($query->title)) ?> <span><?= $query->get('count') ?></span>
                                             </a>
                                             <?php if ($this->acl->check('read', 'tickets')) { ?>
                                                 <span class="query-options">
-                                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id) ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
+                                                    <?php
+                                                    $removeUrl = Route::url(
+                                                        'index.php?option=' . $this->option
+                                                            . '&controller=queries&task=remove&id=' . $query->id,
+                                                    );
+                                                    ?>
+                                                    <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
                                                         <?php echo Lang::txt('JACTION_DELETE'); ?>
                                                     </button>
-                                                    <a class="modal edit" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id . '&tmpl=component&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('JACTION_EDIT') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+                                                    <?php
+                                                    $editUrl = Route::url(
+                                                        'index.php?option=' . $this->option
+                                                            . '&controller=queries&task=edit&id=' . $query->id
+                                                            . '&tmpl=component&' . Session::getFormToken() . '=1',
+                                                    );
+                                                    ?>
+                                                    <a class="modal edit" href="<?= $editUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
                                                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                                                     </a>
                                                 </span>
@@ -113,12 +180,24 @@ $this
                 <?php if ($this->acl->check('read', 'tickets')) { ?>
                     <ul class="controls">
                         <li>
-                            <a class="icon-list modal" id="new-query" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=add&' . Session::getFormToken() . '=1') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}" title="<?= Lang::txt('COM_SUPPORT_ADD_QUERY') ?>">
+                            <?php
+                            $addUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=queries&task=add&'
+                                    . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                            <a class="icon-list modal" id="new-query" href="<?= $addUrl ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}" title="<?= Lang::txt('COM_SUPPORT_ADD_QUERY') ?>">
                                 <?php echo Lang::txt('COM_SUPPORT_ADD_QUERY'); ?>
                             </a>
                         </li>
                         <li>
-                            <a class="icon-folder" id="new-folder" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=addfolder&' . Session::getFormToken() . '=1') ?>" data-href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1') ?>" data-name="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>" title="<?= Lang::txt('COM_SUPPORT_ADD_FOLDER') ?>">
+                            <?php
+                            $savefolderUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=queries&task=savefolder&'
+                                    . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                            <a class="icon-folder" id="new-folder" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=addfolder&' . Session::getFormToken() . '=1') ?>" data-href="<?= $savefolderUrl ?>" data-name="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>" title="<?= Lang::txt('COM_SUPPORT_ADD_FOLDER') ?>">
                                 <?php echo Lang::txt('COM_SUPPORT_ADD_FOLDER'); ?>
                             </a>
                         </li>
@@ -129,7 +208,12 @@ $this
         </div><!-- / .pane -->
         <div class="pane pane-list">
             <div class="pane-inner" id="tickets">
-                <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display') ?>" method="post" id="ticketForm">
+                <?php
+                $displayUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display',
+                );
+                ?>
+                <form action="<?= $displayUrl ?>" method="post" id="ticketForm">
                     <div class="list-options">
                         <?php $direction = (strtolower($this->filters['sortdir']) == 'desc') ? 'asc' : 'desc'; ?>
                         <ul class="sort-options">
@@ -137,32 +221,80 @@ $this
                                 <span class="sort-header"><?php echo Lang::txt('COM_SUPPORT_SORT_RESULTS'); ?></span>
                                 <ul>
                                     <li>
-                                        <a class="sort-age<?= $this->filters['sort'] == 'created' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=created&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0') ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <?php
+                                        $displayUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                . '&task=display&show=' . $this->filters['show'] . '&search='
+                                                . $this->filters['search'] . '&sort=created&sortdir=' . $direction
+                                                . '&limit=' . $this->filters['limit'] . '&limitstart=0',
+                                        );
+                                        ?>
+                                        <a class="sort-age<?= $this->filters['sort'] == 'created' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_AGE'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-status<?= $this->filters['sort'] == 'status' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=status&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0') ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <?php
+                                        $displayUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                . '&task=display&show=' . $this->filters['show'] . '&search='
+                                                . $this->filters['search'] . '&sort=status&sortdir=' . $direction
+                                                . '&limit=' . $this->filters['limit'] . '&limitstart=0',
+                                        );
+                                        ?>
+                                        <a class="sort-status<?= $this->filters['sort'] == 'status' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_STATUS'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-severity<?= $this->filters['sort'] == 'severity' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=severity&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0') ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <?php
+                                        $displayUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                . '&task=display&show=' . $this->filters['show'] . '&search='
+                                                . $this->filters['search'] . '&sort=severity&sortdir=' . $direction
+                                                . '&limit=' . $this->filters['limit'] . '&limitstart=0',
+                                        );
+                                        ?>
+                                        <a class="sort-severity<?= $this->filters['sort'] == 'severity' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SEVERITY'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-summary<?= $this->filters['sort'] == 'summary' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=summary&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0') ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <?php
+                                        $displayUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                . '&task=display&show=' . $this->filters['show'] . '&search='
+                                                . $this->filters['search'] . '&sort=summary&sortdir=' . $direction
+                                                . '&limit=' . $this->filters['limit'] . '&limitstart=0',
+                                        );
+                                        ?>
+                                        <a class="sort-summary<?= $this->filters['sort'] == 'summary' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SUMMARY'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-group<?= $this->filters['sort'] == 'group' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=group&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0') ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <?php
+                                        $displayUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                . '&task=display&show=' . $this->filters['show'] . '&search='
+                                                . $this->filters['search'] . '&sort=group&sortdir=' . $direction
+                                                . '&limit=' . $this->filters['limit'] . '&limitstart=0',
+                                        );
+                                        ?>
+                                        <a class="sort-group<?= $this->filters['sort'] == 'group' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_GROUP'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-owner<?= $this->filters['sort'] == 'owner' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=owner&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0') ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <?php
+                                        $displayUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                . '&task=display&show=' . $this->filters['show'] . '&search='
+                                                . $this->filters['search'] . '&sort=owner&sortdir=' . $direction
+                                                . '&limit=' . $this->filters['limit'] . '&limitstart=0',
+                                        );
+                                        ?>
+                                        <a class="sort-owner<?= $this->filters['sort'] == 'owner' ? ' active ' . strtolower($this->filters['sortdir']) : '' ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_OWNER'); ?>
                                         </a>
                                     </li>
@@ -278,7 +410,14 @@ $this
                                         <?php } ?>
                                     </p>
                                     <p>
-                                        <a class="ticket-content" title="<?= $this->escape(str_replace(['<br />', '&amp;'], ['', '&'], $row->content)) ?>" href="<?= Route::url($row->link() . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>">
+                                        <?php
+                                        $linkUrl = Route::url(
+                                            $row->link() . '&show=' . $this->filters['show'] . '&search='
+                                                . $this->filters['search'] . '&limit=' . $this->filters['limit']
+                                                . '&limitstart=' . $this->filters['start'],
+                                        );
+                                        ?>
+                                        <a class="ticket-content" title="<?= $this->escape(str_replace(['<br />', '&amp;'], ['', '&'], $row->content)) ?>" href="<?= $linkUrl ?>">
                                             <?= $row->content
                                                 ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200)
                                                 : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND') ?>
@@ -315,7 +454,10 @@ $this
                                         <span><?php echo $this->escape($row->get('severity', 'normal')); ?></span>
                                     </span>
                                     <?php if ($this->acl->check('delete', 'tickets')) { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->link('delete')) ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                        <?php
+                                        $actionUrl = Route::url($row->link('delete'));
+                                        ?>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                     <?php } ?>
                                 </td>
                             </tr>

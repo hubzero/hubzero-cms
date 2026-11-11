@@ -24,7 +24,10 @@ defined('_HZEXEC_') or die();
                 title="<?= Lang::txt('JACTION_EDIT') ?>">
                 <?php echo strtolower(Lang::txt('JACTION_EDIT')); ?>
             </a>
-            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id) ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>">
+            <?php
+            $deleteUrl = Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id);
+            ?>
+            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>">
                 <?php echo strtolower(Lang::txt('JACTION_DELETE')); ?>
             </button>
         <?php } ?>
@@ -34,7 +37,12 @@ defined('_HZEXEC_') or die();
         <div id="sub-sub-menu">
             <ul>
                 <li<?php echo $this->page->alias == '' ? ' class="active"' : ''; ?>>
-                    <a class="tab" href="<?= Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1') ?>">
+                    <?php
+                    $detailsUrl = Route::url(
+                        'index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1',
+                    );
+                    ?>
+                    <a class="tab" href="<?= $detailsUrl ?>">
                         <span><?php echo Lang::txt('EVENTS_OVERVIEW'); ?></span>
                     </a>
                 </li>
@@ -43,7 +51,13 @@ defined('_HZEXEC_') or die();
                 foreach ($this->pages as $p) {
                     ?>
                 <li<?php echo $this->page->alias == $p->alias ? ' class="active"' : ''; ?>>
-                    <a class="tab" href="<?= Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page=' . $p->alias) ?>">
+                    <?php
+                    $detailsUrl = Route::url(
+                        'index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page='
+                            . $p->alias,
+                    );
+                    ?>
+                    <a class="tab" href="<?= $detailsUrl ?>">
                         <span><?php echo $this->escape(trim(stripslashes($p->title))); ?></span>
                     </a>
                 </li>
@@ -53,7 +67,13 @@ defined('_HZEXEC_') or die();
             ?>
             <?php if ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00') { ?>
                 <li<?php echo $this->page->alias == 'register' ? ' class="active"' : ''; ?>>
-                    <a class="tab" href="<?= Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page=register') ?>">
+                    <?php
+                    $detailsUrl = Route::url(
+                        'index.php?option=' . $this->option . '&task=details&id=' . $this->row->id
+                            . '&no_html=1&page=register',
+                    );
+                    ?>
+                    <a class="tab" href="<?= $detailsUrl ?>">
                         <span><?php echo Lang::txt('EVENTS_REGISTER'); ?></span>
                     </a>
                 </li>

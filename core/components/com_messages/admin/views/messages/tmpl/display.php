@@ -128,7 +128,12 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
                         <?php echo Html::grid('id', $i, $item->message_id); ?>
                     </td>
                     <td>
-                        <a href="<?= Route::url('index.php?option=com_messages&task=view&message_id=' . (int) $item->message_id) ?>">
+                        <?php
+                        $viewUrl = Route::url(
+                            'index.php?option=com_messages&task=view&message_id=' . (int) $item->message_id,
+                        );
+                        ?>
+                        <a href="<?= $viewUrl ?>">
                             <?php echo $this->escape($item->subject); ?>
                         </a>
                     </td>

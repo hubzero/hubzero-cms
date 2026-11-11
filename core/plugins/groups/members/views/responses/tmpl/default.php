@@ -35,7 +35,10 @@ if (count($this->users)) {
     </li>
 </ul>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members') ?>" method="post" id="hubForm" class="full deny-responses">
+<?php
+$actionUrl = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members');
+?>
+<form action="<?= $actionUrl ?>" method="post" id="hubForm" class="full deny-responses">
     <div class="explaination">
         <p class="info"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSES_EXPLANATION'); ?></p>
     </div>

@@ -24,11 +24,28 @@ $this
 
 <p class="section-options">
     <?php if (User::isGuest()) { ?>
-        <a class="icon-add add btn" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#commentform'))) ?>">
+        <?php
+        $addreviewUrl = Route::url(
+            'index.php?option=com_users&view=login&return='
+                . base64_encode(
+                    Route::url(
+                        'index.php?option=' . $this->option . '&id=' . $this->resource->id
+                            . '&active=reviews&action=addreview#commentform',
+                    ),
+                ),
+        );
+        ?>
+        <a class="icon-add add btn" href="<?= $addreviewUrl ?>">
             <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
         </a>
     <?php } elseif (!$this->isAuthor) { ?>
-        <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=reviews&action=addreview#commentform') ?>">
+        <?php
+        $addreviewUrl = Route::url(
+            'index.php?option=' . $this->option . '&id=' . $this->resource->id
+                . '&active=reviews&action=addreview#commentform',
+        );
+        ?>
+        <a class="icon-add add btn" href="<?= $addreviewUrl ?>">
             <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_WRITE_A_REVIEW'); ?>
         </a>
     <?php } ?>

@@ -38,7 +38,10 @@ $this
             <?php if (User::isGuest()) { ?>
             <h3><?php echo Lang::txt('COM_TOOLS_HELP'); ?></h3>
             <ul>
-                <li><a href="<?= Route::url('index.php?option=com_members&controller=register') ?>"><?= Lang::txt('COM_TOOLS_SIGN_UP_FREE') ?></a></li>
+                <?php
+                $linkUrl = Route::url('index.php?option=com_members&controller=register');
+                ?>
+                <li><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_SIGN_UP_FREE') ?></a></li>
             </ul>
             <?php } ?>
         </div>
@@ -88,8 +91,18 @@ $this
                     ?>
                     <tr class="<?php $cls = ($cls == 'even') ? 'odd' : 'even';
                     echo $cls; ?>">
-                        <td><a href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki') ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($project->title), 50)) ?></a></td>
-                        <td><a href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki') ?>"><?= $this->escape($project->toolname) ?></a></td>
+                        <?php
+                        $wikiUrl = Route::url(
+                            'index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki',
+                        );
+                        ?>
+                        <td><a href="<?= $wikiUrl ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($project->title), 50)) ?></a></td>
+                        <?php
+                        $wikiUrl = Route::url(
+                            'index.php?option=' . $this->option . '&app=' . $project->toolname . '&task=wiki',
+                        );
+                        ?>
+                        <td><a href="<?= $wikiUrl ?>"><?= $this->escape($project->toolname) ?></a></td>
                         <td>
                             <span class="<?php echo $this->escape($status); ?>-code"><?php echo $status; ?></span>
                             <?php if ($pipeline) { ?>

@@ -192,7 +192,12 @@ $activeStatusSelected = function ($value) {
             if ($this->metaNeeded) {
                 ?>
                 <p>
-                    <a class="options-link" href="<?= Route::url('index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId()) ?>">Edit type-related options (save product first if you updated the type)</a></p>
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=meta&task=edit&id=' . $this->row->getId(),
+                    );
+                    ?>
+                    <a class="options-link" href="<?= $editUrl ?>">Edit type-related options (save product first if you updated the type)</a></p>
                 <?php
             }
             ?>
@@ -370,9 +375,21 @@ $activeStatusSelected = function ($value) {
                 }
                 ?>
                 <div class="uploader-wrap">
-                    <div id="ajax-uploader" data-action="<?= Route::url('index.php?option=' . $this->option . '&controller=images&task=upload&type=product&id=' . $this->row->getId() . '&no_html=1&' . Session::getFormToken() . '=1') ?>">
+                    <?php
+                    $uploadUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=images&task=upload&type=product&id='
+                            . $this->row->getId() . '&no_html=1&' . Session::getFormToken() . '=1',
+                    );
+                    ?>
+                    <div id="ajax-uploader" data-action="<?= $uploadUrl ?>">
                         <noscript>
-                            <iframe height="350" name="filer" id="filer" src="<?= Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&file=' . $file . '&type=product&id=' . $this->row->getId()) ?>"></iframe>
+                            <?php
+                            $sourceUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=images&tmpl=component&file=' . $file
+                                    . '&type=product&id=' . $this->row->getId(),
+                            );
+                            ?>
+                            <iframe height="350" name="filer" id="filer" src="<?= $sourceUrl ?>"></iframe>
                         </noscript>
                     </div>
                 </div>

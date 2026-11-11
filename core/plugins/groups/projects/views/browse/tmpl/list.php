@@ -65,7 +65,10 @@ switch ($this->which) {
                 <tr class="mline">
                     <td class="th_image">
                         <?php if ($row->access('member') || $row->access('readonly')) { ?>
-                            <a href="<?= Route::url($row->link()) ?>" title="<?= $this->escape($row->get('title')) . ' (' . $this->escape($row->get('alias')) . ')' ?>">
+                            <?php
+                            $linkUrl = Route::url($row->link());
+                            ?>
+                            <a href="<?= $linkUrl ?>" title="<?= $this->escape($row->get('title')) . ' (' . $this->escape($row->get('alias')) . ')' ?>">
                                 <img src="<?= Route::url($row->link('thumb')) ?>"
                                     alt="<?= $this->escape($row->get('title')) ?>" class="project-image" />
                             </a>
@@ -82,7 +85,10 @@ switch ($this->which) {
                     </td>
                     <td class="th_title">
                         <?php if ($row->access('member') || $row->access('readonly')) { ?>
-                            <a href="<?= Route::url($row->link()) ?>" title="<?= $this->escape($row->get('title')) . ' (' . $this->escape($row->get('alias')) . ')' ?>">
+                            <?php
+                            $linkUrl = Route::url($row->link());
+                            ?>
+                            <a href="<?= $linkUrl ?>" title="<?= $this->escape($row->get('title')) . ' (' . $this->escape($row->get('alias')) . ')' ?>">
                                 <?php echo $this->escape($row->get('title')); ?>
                             </a>
                         <?php } else { ?>

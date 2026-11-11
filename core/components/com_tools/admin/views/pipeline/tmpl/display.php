@@ -151,12 +151,24 @@ $filterStateSelected = function ($value) {
                     <?php echo $this->escape($row['id']); ?>
                 </td>
                 <td>
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row['id']) ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row['id'],
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>">
                         <?php echo $this->escape(stripslashes($row['toolname'])); ?>
                     </a>
                 </td>
                 <td class="priority-4">
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row['id']) ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row['id'],
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>">
                         <?php echo $this->escape(stripslashes($row['title'])); ?>
                     </a>
                 </td>
@@ -173,7 +185,12 @@ $filterStateSelected = function ($value) {
                     <time><?php echo $this->escape($row['state_changed']); ?></time>
                 </td>
                 <td>
-                    <a class="glyph menulist" href="<?= Route::url('index.php?option=' . $this->option . '&controller=versions&id=' . $row['id']) ?>">
+                    <?php
+                    $linkUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=versions&id=' . $row['id'],
+                    );
+                    ?>
+                    <a class="glyph menulist" href="<?= $linkUrl ?>">
                         <span><?php echo $this->escape($row['versions']); ?></span>
                     </a>
                 </td>

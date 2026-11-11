@@ -241,7 +241,12 @@ $this->js('edit.js', 'com_massmail');
                                     <span class="mm-clip">&#128206;</span> <?= $this->escape($att->get('filename')) ?>
                                     <span class="mm-kb">(<?php echo round($att->get('size') / 1024) . ' KB'; ?>)</span>
                                     <?php if (!$isNew) { ?>
-                                        <button type="submit" form="mm-action" class="mm-chip-x" title="<?= $this->escape(Lang::txt('JACTION_DELETE')) ?>" formaction="<?= Route::url($base . '&task=removeattachment&attachment=' . $att->get('id')) ?>">&times;</button>
+                                        <?php
+                                        $removeattachmentUrl = Route::url(
+                                            $base . '&task=removeattachment&attachment=' . $att->get('id'),
+                                        );
+                                        ?>
+                                        <button type="submit" form="mm-action" class="mm-chip-x" title="<?= $this->escape(Lang::txt('JACTION_DELETE')) ?>" formaction="<?= $removeattachmentUrl ?>">&times;</button>
                                     <?php } ?>
                                 </li>
                             <?php } ?>
@@ -277,7 +282,10 @@ $this->js('edit.js', 'com_massmail');
                     <button type="button" class="btn mm-btn-neutral mm-submit"
                         data-task="save"><?= $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT') ?></button>
                     <?php if (!$isNew) { ?>
-                        <button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')) ?>" formaction="<?= Route::url($base . '&task=discard&id=' . (int) $this->row->get('id')) ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DISCARD') ?></button>
+                        <?php
+                        $discardUrl = Route::url($base . '&task=discard&id=' . (int) $this->row->get('id'));
+                        ?>
+                        <button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')) ?>" formaction="<?= $discardUrl ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DISCARD') ?></button>
                     <?php } ?>
                 </div>
                 <?php } ?>
@@ -391,16 +399,25 @@ $this->js('edit.js', 'com_massmail');
                         if (
                             $this->row->canReturnToDraft() && ($canDo->get('core.edit') || $canDo->get('core.create'))
                         ) { ?>
-                            <button type="submit" form="mm-action" class="btn mm-edit-draft" formaction="<?= Route::url($base . '&task=todraft&id=' . $this->row->get('id')) ?>"><?= $icEdit . Lang::txt('COM_MASSMAIL_EDIT_DRAFT') ?></button>
+                            <?php
+                            $todraftUrl = Route::url($base . '&task=todraft&id=' . $this->row->get('id'));
+                            ?>
+                            <button type="submit" form="mm-action" class="btn mm-edit-draft" formaction="<?= $todraftUrl ?>"><?= $icEdit . Lang::txt('COM_MASSMAIL_EDIT_DRAFT') ?></button>
                         <?php } ?>
                         <?php
                         if (
                             $status == constant($Mailing . '::STATUS_PENDING_APPROVAL') && $canDo->get('core.approve')
                         ) { ?>
-                            <button type="submit" form="mm-action" class="btn btn-success" formaction="<?= Route::url($base . '&task=approve&id=' . $this->row->get('id')) ?>"><?= $icCheck . Lang::txt('COM_MASSMAIL_APPROVE') ?></button>
+                            <?php
+                            $approveUrl = Route::url($base . '&task=approve&id=' . $this->row->get('id'));
+                            ?>
+                            <button type="submit" form="mm-action" class="btn btn-success" formaction="<?= $approveUrl ?>"><?= $icCheck . Lang::txt('COM_MASSMAIL_APPROVE') ?></button>
                         <?php } ?>
                         <?php if ($status == constant($Mailing . '::STATUS_HELD') && $canDo->get('core.release')) { ?>
-                            <button type="submit" form="mm-action" class="btn btn-success" formaction="<?= Route::url($base . '&task=release&id=' . $this->row->get('id')) ?>"><?= $icSend . Lang::txt('COM_MASSMAIL_RELEASE') ?></button>
+                            <?php
+                            $releaseUrl = Route::url($base . '&task=release&id=' . $this->row->get('id'));
+                            ?>
+                            <button type="submit" form="mm-action" class="btn btn-success" formaction="<?= $releaseUrl ?>"><?= $icSend . Lang::txt('COM_MASSMAIL_RELEASE') ?></button>
                         <?php } ?>
                         <?php
                         if (
@@ -410,13 +427,19 @@ $this->js('edit.js', 'com_massmail');
                             )
                             && $canDo->get('core.edit.state')
                         ) { ?>
-                            <button type="submit" form="mm-action" class="btn" formaction="<?= Route::url($base . '&task=pause&id=' . $this->row->get('id')) ?>"><?= $icPause . Lang::txt('COM_MASSMAIL_PAUSE') ?></button>
+                            <?php
+                            $pauseUrl = Route::url($base . '&task=pause&id=' . $this->row->get('id'));
+                            ?>
+                            <button type="submit" form="mm-action" class="btn" formaction="<?= $pauseUrl ?>"><?= $icPause . Lang::txt('COM_MASSMAIL_PAUSE') ?></button>
                         <?php } ?>
                         <?php
                         if (
                             $status == constant($Mailing . '::STATUS_PAUSED') && $canDo->get('core.edit.state')
                         ) { ?>
-                            <button type="submit" form="mm-action" class="btn" formaction="<?= Route::url($base . '&task=resume&id=' . $this->row->get('id')) ?>"><?= $icPlay . Lang::txt('COM_MASSMAIL_RESUME') ?></button>
+                            <?php
+                            $resumeUrl = Route::url($base . '&task=resume&id=' . $this->row->get('id'));
+                            ?>
+                            <button type="submit" form="mm-action" class="btn" formaction="<?= $resumeUrl ?>"><?= $icPlay . Lang::txt('COM_MASSMAIL_RESUME') ?></button>
                         <?php } ?>
                         <?php
                         if (
@@ -433,7 +456,10 @@ $this->js('edit.js', 'com_massmail');
                             )
                             && $canDo->get('core.edit.state')
                         ) { ?>
-                            <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL')) ?>" formaction="<?= Route::url($base . '&task=stop&id=' . $this->row->get('id')) ?>"><?= $icX . Lang::txt('COM_MASSMAIL_CANCEL_MAILING') ?></button>
+                            <?php
+                            $stopUrl = Route::url($base . '&task=stop&id=' . $this->row->get('id'));
+                            ?>
+                            <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_CANCEL')) ?>" formaction="<?= $stopUrl ?>"><?= $icX . Lang::txt('COM_MASSMAIL_CANCEL_MAILING') ?></button>
                         <?php } ?>
                         <?php // Permanent delete -- only for mailings that never started sending
                               // (a sent/in-flight mailing keeps its record and can only be
@@ -442,7 +468,10 @@ $this->js('edit.js', 'com_massmail');
                               // so we only surface Delete on the read-only deletable states
                               // (held / pending / scheduled) which have no Discard button.?>
                         <?php if (!$editable && $this->row->isDeletable() && $canDo->get('core.delete')) { ?>
-                            <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DELETE_ONE')) ?>" formaction="<?= Route::url($base . '&task=delete&id=' . $this->row->get('id')) ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DELETE_MAILING') ?></button>
+                            <?php
+                            $deleteUrl = Route::url($base . '&task=delete&id=' . $this->row->get('id'));
+                            ?>
+                            <button type="submit" form="mm-action" class="btn btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DELETE_ONE')) ?>" formaction="<?= $deleteUrl ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DELETE_MAILING') ?></button>
                         <?php } ?>
                     </div>
 

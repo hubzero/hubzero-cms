@@ -49,14 +49,23 @@ Document::addScript('/core/plugins/projects/databases/res/spectrum/spectrum.js')
 
 ?>
 <div id="plg-header">
-<h3 class="databases c-header"><a href="<?= Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias')) ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> &raquo; <span class="indlist"><?= isset($this->db_id) ? Lang::txt('PLG_PROJECTS_DATABASES_UPDATE_DATABASE') : Lang::txt('PLG_PROJECTS_DATA_START') ?></span></h3>
+<?php
+$linkUrl = Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias'));
+?>
+<h3 class="databases c-header"><a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> &raquo; <span class="indlist"><?= isset($this->db_id) ? Lang::txt('PLG_PROJECTS_DATABASES_UPDATE_DATABASE') : Lang::txt('PLG_PROJECTS_DATA_START') ?></span></h3>
 </div>
 <div id="prj-db-step-1" class="prj-db-step">
 <?php
 if (count($this->files) > 0 && (!isset($this->db_id))) {
     ?>
     <h3><?php echo Lang::txt('Step 1: Select a file'); ?></h3>
-    <form id="prj-db-select-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=preview_data&raw_op=1')?>">
+    <?php
+    $previewDataUrl = Route::url(
+        'index.php?option=' . $this->option . '&id=' . $this->model->get('id')
+            . '&active=databases&action=preview_data&raw_op=1',
+    );
+    ?>
+    <form id="prj-db-select-form" method="post" action="<?= $previewDataUrl ?>">
         <select id="prj-db-select-src" title="<?= Lang::txt('Select a CSV file to convert in to a database') ?>">
     <?php foreach ($this->files as $dir => $files) : ?>
             <?php
@@ -81,7 +90,13 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
 } elseif (isset($this->db_id) && $this->db_id) {
     ?>
     <h3><?php echo Lang::txt('Loading database'); ?>: <em><?php echo $this->escape($this->title)?></em>...</h3>
-    <form style="display: none;" id="prj-db-select-form" method="POST" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=preview_data&raw_op=1')?>">
+    <?php
+    $previewDataUrl = Route::url(
+        'index.php?option=' . $this->option . '&id=' . $this->model->get('id')
+            . '&active=databases&action=preview_data&raw_op=1',
+    );
+    ?>
+    <form style="display: none;" id="prj-db-select-form" method="POST" action="<?= $previewDataUrl ?>">
         <select id="prj-db-select-src">
             <option selected data-dir="<?php echo $this->escape($this->dir)?>"
                 value="<?php echo $this->escape($this->file)?>"
@@ -117,7 +132,13 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
 <div id="prj-db-step-3" class="prj-db-step" style="display: none;">
     <input type="submit" value="&laquo; Back" class="prj-db-back btn rightfloat" data-step='3' />
     <h3><?php echo Lang::txt('Step 3: Title &amp; Description, Finish'); ?></h3>
-    <form id="prj-db-finish-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=create_database&raw_op=1&' . Session::getFormToken() . '=1')?>">
+    <?php
+    $createDatabaseUrl = Route::url(
+        'index.php?option=' . $this->option . '&id=' . $this->model->get('id')
+            . '&active=databases&action=create_database&raw_op=1&' . Session::getFormToken() . '=1',
+    );
+    ?>
+    <form id="prj-db-finish-form" method="post" action="<?= $createDatabaseUrl ?>">
         <label for="prj-db-title"><?= Lang::txt('Title') ?>:<input type="text" name="prj-db-title"
             id="prj-db-title" /></label>
         <label for="prj-db-desc"><?= Lang::txt('Description') ?>:<textarea name="prj-db-desc" id="prj-db-desc" cols="5"

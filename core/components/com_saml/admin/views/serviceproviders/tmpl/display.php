@@ -122,7 +122,13 @@ $stateSelected = function ($value) {
                 </td>
                 <td>
                     <?php if (User::authorise('core.edit', $this->option)) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->get('id'),
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <span><?php echo $this->escape(stripslashes($row->get('name'))); ?></span>
                         </a>
                     <?php } else { ?>
@@ -150,7 +156,13 @@ $stateSelected = function ($value) {
                 </td>
                 <td>
                     <?php if (User::authorise('core.edit.state', $this->option)) { ?>
-                        <a class="state <?= $class ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_SAML_SET_STATE', $task) ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task
+                                . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_SAML_SET_STATE', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>

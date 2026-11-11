@@ -173,8 +173,20 @@ $area = Request::getString('area', 'about');
                 echo strip_tags($cf->formatCitation($citation, null, false, $config));
             ?>
             <div class="download">
-                <a class="" href="<?= Route::url('index.php?option=com_citations&task=download&citationFormat=bibtex&id=' . $citation->id . '&no_html=1') ?>" title="Download in BibTex Format"><?= Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX') ?></a> |
-                <a class="" href="<?= Route::url('index.php?option=com_citations&task=download&citationFormat=endnote&id=' . $citation->id . '&no_html=1') ?>" title="Download in Endnote Format"><?= Lang::txt('COM_CITATIONS_DOWNLOAD_ENDNOTE') ?></a>
+                <?php
+                $downloadUrl = Route::url(
+                    'index.php?option=com_citations&task=download&citationFormat=bibtex&id=' . $citation->id
+                        . '&no_html=1',
+                );
+                ?>
+                <a class="" href="<?= $downloadUrl ?>" title="Download in BibTex Format"><?= Lang::txt('COM_CITATIONS_DOWNLOAD_BIBTEX') ?></a> |
+                <?php
+                $downloadUrl = Route::url(
+                    'index.php?option=com_citations&task=download&citationFormat=endnote&id=' . $citation->id
+                        . '&no_html=1',
+                );
+                ?>
+                <a class="" href="<?= $downloadUrl ?>" title="Download in Endnote Format"><?= Lang::txt('COM_CITATIONS_DOWNLOAD_ENDNOTE') ?></a>
             </div>
         </div>
 
@@ -187,13 +199,21 @@ $area = Request::getString('area', 'about');
             </a>
             <ul class="secondary">
                 <li>
-                    <a class="locate" rel="" href="<?= Route::url('index.php?option=com_citations&task=view&id=' . $citation->id . '&area=find#find') ?>">
+                    <?php
+                    $viewUrl = Route::url(
+                        'index.php?option=com_citations&task=view&id=' . $citation->id . '&area=find#find',
+                    );
+                    ?>
+                    <a class="locate" rel="" href="<?= $viewUrl ?>">
                         <?php echo Lang::txt('COM_CITATIONS_FINDTHISTEXT'); ?>
                     </a>
                 </li>
             </ul>
         <?php else : ?>
-            <a class="primary" rel="" href="<?= Route::url('index.php?option=com_citations&task=view&id=' . $citation->id . '&area=find#find') ?>">
+            <?php
+            $viewUrl = Route::url('index.php?option=com_citations&task=view&id=' . $citation->id . '&area=find#find');
+            ?>
+            <a class="primary" rel="" href="<?= $viewUrl ?>">
                 <?php echo Lang::txt('COM_CITATIONS_FINDTHISTEXT'); ?>
             </a>
         <?php endif; ?>
@@ -235,7 +255,10 @@ $area = Request::getString('area', 'about');
                 $cls = ($k == $area) ? 'active' : '';
             ?>
             <li class="<?php echo $cls; ?>">
-                <a class="tab" href="<?= Route::url('index.php?option=com_citations&task=view&id=' . $citation->id . '&area=' . $k) ?>">
+                <?php
+                $viewUrl = Route::url('index.php?option=com_citations&task=view&id=' . $citation->id . '&area=' . $k);
+                ?>
+                <a class="tab" href="<?= $viewUrl ?>">
                     <span><?php echo $v; ?></span>
                 </a>
             </li>
@@ -250,7 +273,10 @@ $area = Request::getString('area', 'about');
                 <tr>
                     <th><?php echo Lang::txt('COM_CITATIONS_TYPE'); ?></th>
                     <td>
-                        <a href="<?= Route::url('index.php?option=com_citations&task=browse&type=' . $type->get('id')) ?>"><?= $type->get('type_title') ?></a>
+                        <?php
+                        $browseUrl = Route::url('index.php?option=com_citations&task=browse&type=' . $type->get('id'));
+                        ?>
+                        <a href="<?= $browseUrl ?>"><?= $type->get('type_title') ?></a>
                     </td>
                 </tr>
 

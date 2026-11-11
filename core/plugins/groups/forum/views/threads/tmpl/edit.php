@@ -42,7 +42,10 @@ $aliasSelected = function ($value) {
 ?>
 <ul id="page_options">
     <li>
-        <a class="icon-comments comments btn" href="<?= Route::url($base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias')) ?>">
+        <?php
+        $linkUrl = Route::url($base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias'));
+        ?>
+        <a class="icon-comments comments btn" href="<?= $linkUrl ?>">
             <?php echo Lang::txt('PLG_GROUPS_FORUM_ALL_DISCUSSIONS'); ?>
         </a>
     </li>

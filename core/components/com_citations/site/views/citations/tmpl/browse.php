@@ -97,9 +97,24 @@ if ($label == 'none') {
                                 }
                             }
                             ?>
-                            <li><a <?= $this->filters['filter'] == '' ? 'class="active"' : '' ?> href="<?= Route::url('index.php?option=com_citations&task=browse' . $queryString . '&filter=') ?>"><?= Lang::txt('COM_CITATIONS_ALL') ?></a></li>
-                            <li><a <?= $this->filters['filter'] == 'aff' ? 'class="active"' : '' ?> href="<?= Route::url('index.php?option=com_citations&task=browse' . $queryString . '&filter=aff') ?>"><?= Lang::txt('COM_CITATIONS_AFFILIATED') ?></a></li>
-                            <li><a <?= $this->filters['filter'] == 'nonaff' ? 'class="active"' : '' ?> href="<?= Route::url('index.php?option=com_citations&task=browse' . $queryString . '&filter=nonaff') ?>"><?= Lang::txt('COM_CITATIONS_NONAFFILIATED') ?></a></li>
+                            <?php
+                            $browseUrl = Route::url(
+                                'index.php?option=com_citations&task=browse' . $queryString . '&filter=',
+                            );
+                            ?>
+                            <li><a <?= $this->filters['filter'] == '' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= Lang::txt('COM_CITATIONS_ALL') ?></a></li>
+                            <?php
+                            $browseUrl = Route::url(
+                                'index.php?option=com_citations&task=browse' . $queryString . '&filter=aff',
+                            );
+                            ?>
+                            <li><a <?= $this->filters['filter'] == 'aff' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= Lang::txt('COM_CITATIONS_AFFILIATED') ?></a></li>
+                            <?php
+                            $browseUrl = Route::url(
+                                'index.php?option=com_citations&task=browse' . $queryString . '&filter=nonaff',
+                            );
+                            ?>
+                            <li><a <?= $this->filters['filter'] == 'nonaff' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= Lang::txt('COM_CITATIONS_NONAFFILIATED') ?></a></li>
                         </ul>
                     </nav>
 
@@ -249,7 +264,12 @@ if ($label == 'none') {
                                         </td>
                                         <?php if ($this->isAdmin === true) : ?>
                                             <td class="col-edit">
-                                                <a class="icon-edit" href="<?= Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $citeId) ?>">
+                                                <?php
+                                                $editUrl = Route::url(
+                                                    'index.php?option=' . $this->option . '&task=edit&id=' . $citeId,
+                                                );
+                                                ?>
+                                                <a class="icon-edit" href="<?= $editUrl ?>">
                                                     <?php echo Lang::txt('JACTION_EDIT'); ?>
                                                 </a>
                                             </td>

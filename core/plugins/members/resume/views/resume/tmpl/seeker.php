@@ -83,11 +83,19 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
 
     <?php if ($this->seeker->mine) { ?>
         <span class="editbt">
-            <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=editprefs') ?>" title="<?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_EDIT_MY_PROFILE') ?>">&nbsp;</a>
+            <?php
+            $editprefsUrl = Route::url(
+                'index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=editprefs',
+            );
+            ?>
+            <a href="<?= $editprefsUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_EDIT_MY_PROFILE') ?>">&nbsp;</a>
         </span>
     <?php } elseif ($this->emp or $this->admin) { ?>
         <span id="o<?php echo $this->seeker->uid; ?>">
-            <a href="<?= Route::url('index.php?option=com_jobs&oid=' . $this->seeker->uid . '&task=shortlist') ?>" class="favvit" title="<?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : Lang::txt('PLG_MEMBERS_RESUME_ACTION_ADD_TO_SHORTLIST') ?>">
+            <?php
+            $shortlistUrl = Route::url('index.php?option=com_jobs&oid=' . $this->seeker->uid . '&task=shortlist');
+            ?>
+            <a href="<?= $shortlistUrl ?>" class="favvit" title="<?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : Lang::txt('PLG_MEMBERS_RESUME_ACTION_ADD_TO_SHORTLIST') ?>">
                 <?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted
                     ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_REMOVE_FROM_SHORTLIST')
                     : Lang::txt('PLG_MEMBERS_RESUME_ACTION_ADD_TO_SHORTLIST') ?>
@@ -98,7 +106,12 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
     <div class="clear leftclear"></div>
     <span class="indented">
         <?php if ($resume) { ?>
-            <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download') ?>" class="resume getit" title="<?= $this->escape($title) ?>">
+            <?php
+            $downloadUrl = Route::url(
+                'index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download',
+            );
+            ?>
+            <a href="<?= $downloadUrl ?>" class="resume getit" title="<?= $this->escape($title) ?>">
                 <?php echo ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME')); ?>
             </a>
             <span class="mini"><?= Lang::txt('PLG_MEMBERS_RESUME_LAST_UPDATE') ?>: <?= plgMembersResume::nicetime($this->seeker->created) ?></span>

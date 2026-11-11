@@ -69,7 +69,13 @@ Toolbar::help('messages');
                 <td class="priority-4"><?php echo $this->escape($row->get('id')); ?></td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->get('id'),
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                     <?php } ?>
                             <?php echo $this->escape($row->get('title')); ?>
                     <?php if ($canDo->get('core.edit')) { ?>

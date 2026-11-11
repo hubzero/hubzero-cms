@@ -181,8 +181,25 @@ if ($this->comment->get('publication_id')) {
             <div class="comment-options">
         <?php if (!$this->comment->isReported() && !stristr($comment, 'class="warning"')) { ?>
             <?php if (User::get('id') == $this->comment->get('created_by')) { ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->base . '&action=delete' . ($this->comment->get('publication_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')) ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_DELETE') ?></button>
-                    <a class="icon-edit edit" href="<?= Route::url($this->base . '&action=edit' . ($this->comment->get('publication_id') ? 'review' : '') . '&comment=' . $this->comment->get('id') . ($this->comment->get('publication_id') ? '#commentform' : '#c' . $this->comment->get('id'))) ?>"><!--
+                    <?php
+                    $deleteUrl = Route::url(
+                        $this->base . '&action=delete' . ($this->comment->get('publication_id') ? 'review' : 'reply')
+                            . '&comment=' . $this->comment->get('id'),
+                    );
+                    ?>
+                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_DELETE') ?></button>
+                    <?php
+                    $editUrl = Route::url(
+                        $this->base . '&action=edit' . ($this->comment->get('publication_id') ? 'review' : '')
+                            . '&comment=' . $this->comment->get('id')
+                            . (
+                                $this->comment->get('publication_id')
+                                    ? '#commentform'
+                                    : '#c' . $this->comment->get('id')
+                            ),
+                    );
+                    ?>
+                    <a class="icon-edit edit" href="<?= $editUrl ?>"><!--
                         --><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDIT'); ?><!--
                     --></a>
             <?php } ?>

@@ -21,7 +21,12 @@ if ($this->review->get('id')) {
 }
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->review->get('resource_id') . '&active=reviews') ?>" method="post" id="commentform">
+<?php
+$actionUrl = Route::url(
+    'index.php?option=' . $this->option . '&id=' . $this->review->get('resource_id') . '&active=reviews',
+);
+?>
+<form action="<?= $actionUrl ?>" method="post" id="commentform">
     <section class="below section">
         <h3 id="reviewform-title">
             <?php echo $title; ?>

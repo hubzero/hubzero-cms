@@ -60,7 +60,12 @@ $revision = $this->revision;
                         <h2>
                             <?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
                             <?php if ($this->model->params->get('access-edit-resource')) { ?>
-                                <a class="icon-edit edit btn" href="<?= Route::url('index.php?option=com_tools&task=resource&step=1&app=' . $this->model->alias) ?>"><?= Lang::txt('COM_RESOURCES_EDIT') ?></a>
+                                <?php
+                                $resourceUrl = Route::url(
+                                    'index.php?option=com_tools&task=resource&step=1&app=' . $this->model->alias,
+                                );
+                                ?>
+                                <a class="icon-edit edit btn" href="<?= $resourceUrl ?>"><?= Lang::txt('COM_RESOURCES_EDIT') ?></a>
                             <?php } ?>
                         </h2>
                         <input type="hidden" name="rid" id="rid" value="<?php echo $this->model->id; ?>" />

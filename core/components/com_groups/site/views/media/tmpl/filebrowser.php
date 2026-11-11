@@ -46,7 +46,13 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
             <div class="title"><?php echo Lang::txt('COM_GROUPS_MEDIA_GROUP_FILES'); ?></div>
             <?php if ($this->authorized) : ?>
                 <div class="buttons">
-                    <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=addfolder&tmpl=component') ?>" class="icon-add action-addfolder"></a>
+                    <?php
+                    $addfolderUrl = Route::url(
+                        'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                            . '&controller=media&task=addfolder&tmpl=component',
+                    );
+                    ?>
+                    <a href="<?= $addfolderUrl ?>" class="icon-add action-addfolder"></a>
                 </div>
             <?php endif; ?>
         </div>
@@ -59,7 +65,13 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
         <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post"
             enctype="multipart/form-data" class="upload-browser-uploader">
             <fieldset>
-                <div id="ajax-uploader" data-instructions="<?= Lang::txt('Click or drop file') ?>" data-action="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=ajaxupload&no_html=1&' . Session::getFormToken() . '=1') ?>">
+                <?php
+                $ajaxuploadUrl = Route::url(
+                    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                        . '&controller=media&task=ajaxupload&no_html=1&' . Session::getFormToken() . '=1',
+                );
+                ?>
+                <div id="ajax-uploader" data-instructions="<?= Lang::txt('Click or drop file') ?>" data-action="<?= $ajaxuploadUrl ?>">
                     <noscript>
                         <p><input type="file" name="upload" id="upload" /></p>
                         <p><input type="submit" value="<?php echo Lang::txt('UPLOAD'); ?>" /></p>
@@ -77,6 +89,12 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
         </form>
     </div>
     <div class="upload-browser-col right">
-        <iframe class="upload-browser-filelist-iframe" title="File list" src="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=listfiles&tmpl=component&type=' . $editorQuery) ?>"></iframe>
+        <?php
+        $listfilesUrl = Route::url(
+            'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                . '&controller=media&task=listfiles&tmpl=component&type=' . $editorQuery,
+        );
+        ?>
+        <iframe class="upload-browser-filelist-iframe" title="File list" src="<?= $listfilesUrl ?>"></iframe>
     </div>
 </div>

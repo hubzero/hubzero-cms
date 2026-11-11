@@ -126,14 +126,23 @@ $this->css();
                 <?php echo $r['created']; ?>
                 </td>
                 <td>
-                    <a href="<?= Route::url('index.php?option=com_members&id=' . $r['created_by']) ?>"><?= $this->escape($r['name']) ?></a>
+                    <?php
+                    $linkUrl = Route::url('index.php?option=com_members&id=' . $r['created_by']);
+                    ?>
+                    <a href="<?= $linkUrl ?>"><?= $this->escape($r['name']) ?></a>
                 </td>
             <?php if ($this->model->access('content')) { ?>
                 <td>
                     <?php echo $recreate; ?>
                 </td>
                 <td>
-                    <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=databases&action=delete&db_id=' . $r['id']) ?>" class="delete-db"><?= Lang::txt('PLG_PROJECTS_DATABASES_DELETE') ?></button>
+                    <?php
+                    $deleteUrl = Route::url(
+                        'index.php?option=com_projects&alias=' . $this->model->get('alias')
+                            . '&active=databases&action=delete&db_id=' . $r['id'],
+                    );
+                    ?>
+                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete-db"><?= Lang::txt('PLG_PROJECTS_DATABASES_DELETE') ?></button>
                 </td>
             <?php } ?>
             </tr>
@@ -184,7 +193,13 @@ $this->css();
     ?>
 </div>
 <div id="prj-db-update-dialog" class="prj-db-update-dialog dialog" title="Update Title &amp; Description">
-    <form id="prj-db-update-form" method="post" action="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=databases&action=update') ?>">
+    <?php
+    $updateUrl = Route::url(
+        'index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')
+            . '&active=databases&action=update',
+    );
+    ?>
+    <form id="prj-db-update-form" method="post" action="<?= $updateUrl ?>">
         <input type="hidden" name="db_id" />
         <label><?php echo Lang::txt('PLG_PROJECTS_DATABASES_TITLE'); ?>:
             <input type="text" name="db_title" style="width: 550px;" />

@@ -94,14 +94,24 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                         <ul>
                             <?php if ($this->edit && $this->model->access('manager')) { ?>
                                 <li id="pu_<?php echo $comment->id; ?>_edit">
-                                    <a class="icon-edit edit tooltips" data-form="comment-form<?= $comment->id ?>" data-content="activity-event-content<?= $comment->id ?>" href="<?= Route::url($this->model->link('feed') . '&action=editcomment&cid=' . $comment->id) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>"><!--
+                                    <?php
+                                    $editcommentUrl = Route::url(
+                                        $this->model->link('feed') . '&action=editcomment&cid=' . $comment->id,
+                                    );
+                                    ?>
+                                    <a class="icon-edit edit tooltips" data-form="comment-form<?= $comment->id ?>" data-content="activity-event-content<?= $comment->id ?>" href="<?= $editcommentUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>"><!--
                                         --><?php echo Lang::txt('JACTION_EDIT'); ?><!--
                                     --></a>
                                 </li>
                             <?php } ?>
                             <?php if ($deletable) { ?>
                                 <li id="pu_<?php echo $comment->id; ?>_delete">
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->model->link('feed') . '&action=deletecomment&cid=' . $comment->id) ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                    <?php
+                                    $deletecommentUrl = Route::url(
+                                        $this->model->link('feed') . '&action=deletecomment&cid=' . $comment->id,
+                                    );
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                 </li>
                             <?php } ?>
                         </ul>

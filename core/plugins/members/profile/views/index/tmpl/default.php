@@ -149,7 +149,10 @@ $legacy = [
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-<div id="profile-page-content" data-url="<?= Route::url('index.php?option=com_members&id=' . $this->profile->get('uidNumber') . '&active=profile') ?>">
+<?php
+$dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->get('uidNumber') . '&active=profile');
+?>
+<div id="profile-page-content" data-url="<?= $dataUrlUrl ?>">
     <h3 class="section-header">
         <?php echo Lang::txt('PLG_MEMBERS_PROFILE'); ?>
     </h3>

@@ -83,5 +83,8 @@ if (count($items) > 0) { ?>
 <?php } ?>
 
 <?php if (!$this->model->isProvisioned()) { ?>
-    <p class="addnew"><?= Lang::txt('PLG_PROJECTS_DATABASES_GO_TO') ?> <a href="<?= Route::url($route . '&active=databases') ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> <?= Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE') ?></p>
+    <?php
+    $linkUrl = Route::url($route . '&active=databases');
+    ?>
+    <p class="addnew"><?= Lang::txt('PLG_PROJECTS_DATABASES_GO_TO') ?> <a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> <?= Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE') ?></p>
 <?php }

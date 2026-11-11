@@ -25,7 +25,12 @@ Toolbar::spacer();
 Toolbar::cancel();
 
 ?>
-<p class="crumbs"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_VERSIONS') ?></p>
+<?php
+$editUrl = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id,
+);
+?>
+<p class="crumbs"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= $editUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_VERSIONS') ?></p>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
     name="adminForm">
@@ -68,7 +73,13 @@ Toolbar::cancel();
                     ?>
                 </td>
                 <td><?php echo $this->escape($doi_notice); ?></td>
-                <td><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id . '&version=' . $v->version_number) ?>"><?= Lang::txt('COM_PUBLICATIONS_MANAGE_VERSION') ?></a></td>
+                <?php
+                $editUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]='
+                        . $this->pub->id . '&version=' . $v->version_number,
+                );
+                ?>
+                <td><a href="<?= $editUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_MANAGE_VERSION') ?></a></td>
             </tr>
             <?php
         endforeach;

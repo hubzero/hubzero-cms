@@ -94,7 +94,13 @@ foreach ($this->rows as $row) {
                 <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid=' . $row->id) ?>"><?= $this->escape($row->name) ?></a>
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&cid='
+                            . $row->id,
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>"><?= $this->escape($row->name) ?></a>
                 </td>
                 <td class="priority-2">
                 <?php echo $this->escape($row->collection->name); ?>
@@ -103,7 +109,13 @@ foreach ($this->rows as $row) {
                     <input type="text" name="order[]" size="5" value="<?= $row->ordering ?>" class="text_area" />
                 </td>
                 <td class="priority-1">
-                    <a class="state <?= $class ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&cid=' . $row->id . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_BILLBOARDS_SET_TO', $task) ?>">
+                    <?php
+                    $linkUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task
+                            . '&cid=' . $row->id . '&' . Session::getFormToken() . '=1',
+                    );
+                    ?>
+                    <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_BILLBOARDS_SET_TO', $task) ?>">
                         <span><?php echo $alt; ?></span>
                     </a>
                 </td>

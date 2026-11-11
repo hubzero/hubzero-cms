@@ -64,7 +64,10 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
 <div class="hz_user">
 
 <?php if ($primary && $primary != 'hubzero') : ?>
-    <a class="primary" href="<?= Route::url('index.php?option=com_users&view=login&authenticator=' . $primary . $returnQueryString) ?>">
+    <?php
+    $linkUrl = Route::url('index.php?option=com_users&view=login&authenticator=' . $primary . $returnQueryString);
+    ?>
+    <a class="primary" href="<?= $linkUrl ?>">
         <div class="<?php echo $primary; ?> upper"></div>
         <div class="auth">
             <div class="person">
@@ -93,7 +96,12 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
             </div>
             <div class="or"></div>
             <div class="local">
-                <a href="<?= Route::url('index.php?option=com_users&view=login&primary=hubzero&reset=1' . $returnQueryString) ?>">
+                <?php
+                $linkUrl = Route::url(
+                    'index.php?option=com_users&view=login&primary=hubzero&reset=1' . $returnQueryString,
+                );
+                ?>
+                <a href="<?= $linkUrl ?>">
                     <?= Lang::txt(
                         'MOD_LOGIN_SIGN_IN_WITH_ACCOUNT',
                         ((isset($site_display)) ? $site_display : Config::get('sitename')),
@@ -140,9 +148,15 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                 </div>
                 <div class="forgots">
                     <?php if (!isset($user)) : ?>
-                        <a class="forgot-username" href="<?= Route::url('index.php?option=com_members&task=remind') ?>"><?= Lang::txt('MOD_LOGIN_REMIND') ?></a>
+                        <?php
+                        $remindUrl = Route::url('index.php?option=com_members&task=remind');
+                        ?>
+                        <a class="forgot-username" href="<?= $remindUrl ?>"><?= Lang::txt('MOD_LOGIN_REMIND') ?></a>
                     <?php endif; ?>
-                    <a class="forgot-password" href="<?= Route::url('index.php?option=com_members&task=reset') ?>"><?= Lang::txt('MOD_LOGIN_RESET') ?></a>
+                    <?php
+                    $resetUrl = Route::url('index.php?option=com_members&task=reset');
+                    ?>
+                    <a class="forgot-password" href="<?= $resetUrl ?>"><?= Lang::txt('MOD_LOGIN_RESET') ?></a>
                 </div>
                 <input type="hidden" name="option" value="com_login" />
                 <input type="hidden" name="authenticator" value="hubzero" />

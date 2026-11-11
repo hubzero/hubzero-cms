@@ -66,9 +66,20 @@ $repohostChecked = function ($value) {
     <div id="content-header-extra">
         <ul id="useroptions">
         <?php if ($this->id) { ?>
-            <li><a class="icon-status status btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->defaults['toolname']) ?>"><?= Lang::txt('COM_TOOLS_TOOL_STATUS') ?></a></li>
+            <?php
+            $statusUrl = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='
+                    . $this->defaults['toolname'],
+            );
+            ?>
+            <li><a class="icon-status status btn" href="<?= $statusUrl ?>"><?= Lang::txt('COM_TOOLS_TOOL_STATUS') ?></a></li>
         <?php } ?>
-            <li class="last"><a class="icon-main main-page btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline') ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_ALL_TOOLS') ?></a></li>
+            <?php
+            $pipelineUrl = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline',
+            );
+            ?>
+            <li class="last"><a class="icon-main main-page btn" href="<?= $pipelineUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_ALL_TOOLS') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -107,7 +118,13 @@ $repohostChecked = function ($value) {
                                 value="<?= $this->escape($this->defaults['toolname']) ?>" />
                             <strong><?= $this->escape($this->defaults['toolname']) ?> (<?= ($this->editversion == 'current') ? Lang::txt('COM_TOOLS_CURRENT_VERSION') : Lang::txt('COM_TOOLS_DEV_VERSION') ?>)</strong>
                             <?php if (isset($this->defaults['published']) && $this->defaults['published']) { ?>
-                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app=' . $this->defaults['toolname']) ?>"><?= Lang::txt('COM_TOOLS_ALL_VERSIONS') ?></a>
+                                <?php
+                                $versionsUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&task=versions&app=' . $this->defaults['toolname'],
+                                );
+                                ?>
+                                <a href="<?= $versionsUrl ?>"><?= Lang::txt('COM_TOOLS_ALL_VERSIONS') ?></a>
                             <?php } ?>
                         <?php } else { ?>
                             <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
@@ -158,8 +175,19 @@ $repohostChecked = function ($value) {
                 <?php if ($this->id && isset($this->defaults['resourceid'])) { ?>
                     <p>
                         <?php echo Lang::txt('COM_TOOLS_DESCRIPTION'); ?>:
-                        <a class="icon-preview btn btn-secondary" href="<?= Route::url('index.php?option=com_resources&id=' . $this->defaults['resourceid'] . '&rev=dev') ?>"><?php echo Lang::txt('COM_TOOLS_PREVIEW') ?></a> 
-                        <a class="icon-edit btn btn-secondary" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=resource&app=' . $this->defaults['toolname']) ?>"><?php echo Lang::txt('Edit Resource Page') ?></a>
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=com_resources&id=' . $this->defaults['resourceid'] . '&rev=dev',
+                        );
+                        ?>
+                        <a class="icon-preview btn btn-secondary" href="<?= $linkUrl ?>"><?php echo Lang::txt('COM_TOOLS_PREVIEW') ?></a> 
+                        <?php
+                        $resourceUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=resource&app=' . $this->defaults['toolname'],
+                        );
+                        ?>
+                        <a class="icon-edit btn btn-secondary" href="<?= $resourceUrl ?>"><?php echo Lang::txt('Edit Resource Page') ?></a>
                     </p>
                 <?php } ?>
 
@@ -441,7 +469,13 @@ $repohostChecked = function ($value) {
                 <input type="submit" class="btn btn-success" value="<?= (!$this->id) ? Lang::txt('COM_TOOLS_REGISTER_TOOL') : Lang::txt('COM_TOOLS_SAVE_CHANGES') ?>" />
 
                 <?php if ($this->id) { ?>
-                    <a class="btn btn-secondary" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->defaults['toolname']) ?>" title="<?= Lang::txt('COM_TOOLS_HINT_CANCEL') ?>">
+                    <?php
+                    $statusUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='
+                            . $this->defaults['toolname'],
+                    );
+                    ?>
+                    <a class="btn btn-secondary" href="<?= $statusUrl ?>" title="<?= Lang::txt('COM_TOOLS_HINT_CANCEL') ?>">
                         <?php echo Lang::txt('JCANCEL'); ?>
                     </a>
                 <?php } ?>

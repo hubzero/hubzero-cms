@@ -92,7 +92,13 @@ $this->js('status.js', 'com_massmail');
         <?php // Send-pipeline health (sending toggle + delivery cron) is shown as a
               // single traffic-light status pill on the sub-navigation (see massmail.php).?>
         <?php if ($this->heldMailings > 0) { ?>
-            <a class="mm-sending held" href="<?= Route::url('index.php?option=com_massmail&controller=mailings&status=' . \Components\Massmail\Models\Mailing::STATUS_HELD) ?>"><?= Lang::txt('COM_MASSMAIL_DASH_HELD', number_format($this->heldMailings)) ?></a>
+            <?php
+            $linkUrl = Route::url(
+                'index.php?option=com_massmail&controller=mailings&status='
+                    . \Components\Massmail\Models\Mailing::STATUS_HELD,
+            );
+            ?>
+            <a class="mm-sending held" href="<?= $linkUrl ?>"><?= Lang::txt('COM_MASSMAIL_DASH_HELD', number_format($this->heldMailings)) ?></a>
         <?php } ?>
         <span><?= Lang::txt('COM_MASSMAIL_DASH_HOURLY_LIMIT') ?>: <strong><?= number_format($this->hourly) ?>/hr</strong></span>
         <span><?= Lang::txt('COM_MASSMAIL_DASH_PER_RUN') ?>: <strong><?= number_format($this->perRun) ?></strong> <span class="mm-muted"><?= Lang::txt('COM_MASSMAIL_DASH_PER_RUN_HINT', number_format($this->ticksPerHour)) ?></span></span>

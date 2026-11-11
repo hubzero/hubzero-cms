@@ -91,7 +91,13 @@ Toolbar::help('roles');
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->id,
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <span><?php echo $this->escape(stripslashes($row->alias)); ?></span>
                         </a>
                     <?php } else { ?>
@@ -102,7 +108,13 @@ Toolbar::help('roles');
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->id,
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
                         </a>
                     <?php } else { ?>

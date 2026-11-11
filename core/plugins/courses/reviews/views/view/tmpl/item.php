@@ -132,7 +132,10 @@ switch ($this->comment->get('rating')) {
                     ($this->params->get('access-edit-comment') && $this->comment->get('created_by') == User::get('id'))
                     || $this->params->get('access-manage-comment')
                 ) { ?>
-                    <a class="icon-edit edit" href="<?= Route::url($rtrn . 'editcomment=' . $this->comment->get('id') . '#post-comment') ?>"><!--
+                    <?php
+                    $linkUrl = Route::url($rtrn . 'editcomment=' . $this->comment->get('id') . '#post-comment');
+                    ?>
+                    <a class="icon-edit edit" href="<?= $linkUrl ?>"><!--
                         --><?php echo Lang::txt('PLG_COURSES_REVIEWS_EDIT'); ?><!--
                     --></a>
                 <?php } ?>
@@ -160,7 +163,13 @@ switch ($this->comment->get('rating')) {
                         --><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLY'); ?><!--
                     --></a>
                 <?php } ?>
-                    <a class="icon-abuse abuse" href="<?= Route::url('index.php?option=com_support&task=reportabuse&category=itemcomment&id=' . $this->comment->get('id') . '&parent=' . $this->obj->get('id')) ?>"><!--
+                    <?php
+                    $reportabuseUrl = Route::url(
+                        'index.php?option=com_support&task=reportabuse&category=itemcomment&id='
+                            . $this->comment->get('id') . '&parent=' . $this->obj->get('id'),
+                    );
+                    ?>
+                    <a class="icon-abuse abuse" href="<?= $reportabuseUrl ?>"><!--
                         --><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPORT_ABUSE'); ?><!--
                     --></a>
                 </div><!-- / .comment-options -->

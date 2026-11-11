@@ -27,7 +27,13 @@ defined('_HZEXEC_') or die();
             <span class="asset-description">
                 <input type="hidden" name="assets[<?= $this->i ?>][type]" value="<?= $this->asset->get('type') ?>" />
                 <input type="hidden" name="assets[<?= $this->i ?>][id]" value="<?= $this->asset->get('id') ?>" />
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset=' . $this->asset->get('id') . '&no_html=' . $this->no_html) ?>" class="icon-delete delete" data-id="<?= $this->asset->get('id') ?>" title="<?= Lang::txt('COM_COLLECTIONS_DELETE_ASSET') ?>">
+                <?php
+                $deleteUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&asset='
+                        . $this->asset->get('id') . '&no_html=' . $this->no_html,
+                );
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" data-id="<?= $this->asset->get('id') ?>" title="<?= Lang::txt('COM_COLLECTIONS_DELETE_ASSET') ?>">
                     <?php echo Lang::txt('COM_COLLECTIONS_DELETE'); ?>
                 </button>
             </span>

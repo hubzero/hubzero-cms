@@ -22,10 +22,21 @@ if (count($this->folders) > 0) { ?>
             <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title"
                 data-id="<?= $this->escape($folder->id) ?>"><?= $this->escape($folder->title) ?></span>
             <span class="folder-options">
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id) ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
+                <?php
+                $removefolderUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id,
+                );
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $removefolderUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
                     <?php echo Lang::txt('JACTION_DELETE'); ?>
                 </button>
-                <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=editfolder&id=' . $folder->id . '&tmpl=component&' . Session::getFormToken() . '=1') ?>" data-href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                <?php
+                $editfolderUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=queries&task=editfolder&id=' . $folder->id
+                        . '&tmpl=component&' . Session::getFormToken() . '=1',
+                );
+                ?>
+                <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>" data-href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                     <?php echo Lang::txt('JACTION_EDIT'); ?>
                 </a>
             </span>
@@ -33,14 +44,32 @@ if (count($this->folders) > 0) { ?>
                 <?php
                 foreach ($folder->queries()->order('ordering', 'asc')->rows() as $query) { ?>
                     <li id="query_<?= $this->escape($query->id) ?>" <?= $this->show == $query->id ? ' class="active"' : '' ?>>
-                        <a class="aquery" href="<?= Route::url('index.php?option=' . $this->option . '&controller=tickets&task=display&show=' . $query->id . (intval($this->show) != $query->id ? '&search=' : '')) ?>">
+                        <?php
+                        $displayUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=tickets&task=display&show=' . $query->id
+                                . (intval($this->show) != $query->id ? '&search=' : ''),
+                        );
+                        ?>
+                        <a class="aquery" href="<?= $displayUrl ?>">
                             <?= $this->escape(stripslashes($query->title)) ?> <span><?= Components\Support\Models\Ticket::countWithQuery($query, []) ?></span>
                         </a>
                         <span class="query-options">
-                            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id) ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
+                            <?php
+                            $removeUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=queries&task=remove&id='
+                                    . $query->id,
+                            );
+                            ?>
+                            <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
                                 <?php echo Lang::txt('JACTION_DELETE'); ?>
                             </button>
-                            <a class="modal edit" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id . '&tmpl=component&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('JACTION_EDIT') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id
+                                    . '&tmpl=component&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                            <a class="modal edit" href="<?= $editUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
                                 <?php echo Lang::txt('JACTION_EDIT'); ?>
                             </a>
                         </span>

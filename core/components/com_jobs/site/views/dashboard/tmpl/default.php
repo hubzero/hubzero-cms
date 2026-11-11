@@ -149,7 +149,10 @@ if ($this->masterAdmin) {
                 } ?>
             <?php if ($this->subscription->status == 1 or $this->masterAdmin) { ?>
                 <p class="reg">
-                    <a class="add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=addjob') ?>"><?= Lang::txt('COM_JOBS_DASHBOARD_AD_NEW_JOB') ?></a>
+                    <?php
+                    $addjobUrl = Route::url('index.php?option=' . $this->option . '&task=addjob');
+                    ?>
+                    <a class="add btn" href="<?= $addjobUrl ?>"><?= Lang::txt('COM_JOBS_DASHBOARD_AD_NEW_JOB') ?></a>
                 </p>
             <?php } ?>
             </div>

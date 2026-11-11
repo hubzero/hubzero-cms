@@ -443,7 +443,10 @@ $categoryChecked = function ($value) {
                                             $this->wish->get('bonus', 0) > 0
                                             && ($this->wish->isOpen() or $this->wish->isAccepted())
                                         ) { ?>
-                                            <a class="bonus tooltips" href="<?= Route::url($this->wish->link('addbonus')) ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') ?>">+ <?= $this->wish->get('bonus', 0) ?></a>
+                                            <?php
+                                            $linkUrl = Route::url($this->wish->link('addbonus'));
+                                            ?>
+                                            <a class="bonus tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') ?>">+ <?= $this->wish->get('bonus', 0) ?></a>
                                         <?php } elseif ($this->wish->isOpen() or $this->wish->isAccepted()) { ?>
                                             <a class="no-bonus tooltips"
                                                 href="<?= Route::url($this->wish->link('addbonus')) ?>"
@@ -612,7 +615,12 @@ $categoryChecked = function ($value) {
                                         <input class="option form-control" type="text" maxlength="4" name="amount" id="field-amount" value=""<?= ($this->wish->get('funds') <= 0) ? ' disabled="disabled"' : '' ?> />
                                         <span>
                                             (<?= Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') ?> <?= $this->wish->get('funds') ?> <?= Lang::txt('COM_WISHLIST_NOTICE_POINTS_AVAILABLE') ?>
-                                            <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=points') ?>"><?= Lang::txt('COM_WISHLIST_ACCOUNT') ?></a>)
+                                            <?php
+                                            $linkUrl = Route::url(
+                                                'index.php?option=com_members&id=' . User::get('id') . '&active=points',
+                                            );
+                                            ?>
+                                            <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_WISHLIST_ACCOUNT') ?></a>)
                                         </span>
                                     </label>
                                 </div>

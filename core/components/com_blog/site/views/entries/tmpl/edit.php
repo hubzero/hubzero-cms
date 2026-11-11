@@ -81,7 +81,10 @@ $accessSelected = function ($value) {
         <form action="<?= Route::url('index.php?option=' . $this->option . '&task=save') ?>" method="post" id="hubForm">
             <div class="explaination">
                 <h4 id="files-header"><?php echo Lang::txt('COM_BLOG_FIELD_FILES'); ?></h4>
-                <iframe width="100%" height="370" name="filer" id="filer" title="<?= Lang::txt('COM_BLOG_FIELD_FILES') ?>" src="<?= Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=media') ?>"></iframe>
+                <?php
+                $sourceUrl = Route::url('index.php?option=' . $this->option . '&tmpl=component&controller=media');
+                ?>
+                <iframe width="100%" height="370" name="filer" id="filer" title="<?= Lang::txt('COM_BLOG_FIELD_FILES') ?>" src="<?= $sourceUrl ?>"></iframe>
             </div>
             <fieldset>
                 <legend><?= Lang::txt($this->entry->isNew() ? 'COM_BLOG_NEW_ENTRY' : 'COM_BLOG_EDIT_DETAILS') ?></legend>

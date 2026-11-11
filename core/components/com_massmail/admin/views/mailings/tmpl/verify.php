@@ -81,11 +81,17 @@ $this->js('verify.js', 'com_massmail');
             <div class="mm-verify-actions">
                 <button type="button" class="btn mm-btn-accept mm-submit"
                     data-task="launch"><?= $icSend . Lang::txt('COM_MASSMAIL_ACCEPT_SEND') ?></button>
-                <a class="btn mm-btn-neutral" href="<?= Route::url($base . '&task=edit&id=' . (int) $row->get('id')) ?>"><?= $icEdit . Lang::txt('COM_MASSMAIL_EDIT_MESSAGE') ?></a>
+                <?php
+                $editUrl = Route::url($base . '&task=edit&id=' . (int) $row->get('id'));
+                ?>
+                <a class="btn mm-btn-neutral" href="<?= $editUrl ?>"><?= $icEdit . Lang::txt('COM_MASSMAIL_EDIT_MESSAGE') ?></a>
                 <span class="spacer"></span>
                 <a class="btn mm-btn-neutral"
                     href="<?= Route::url($base) ?>"><?= $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT') ?></a>
-                <button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')) ?>" formaction="<?= Route::url($base . '&task=discard&id=' . (int) $row->get('id')) ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DISCARD') ?></button>
+                <?php
+                $discardUrl = Route::url($base . '&task=discard&id=' . (int) $row->get('id'));
+                ?>
+                <button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')) ?>" formaction="<?= $discardUrl ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DISCARD') ?></button>
             </div>
         </div>
 

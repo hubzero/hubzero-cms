@@ -22,7 +22,10 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index') ?>">
+            <?php
+            $linkUrl = Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index');
+            ?>
+            <a class="icon-info btn popup" href="<?= $linkUrl ?>">
                 <span><?php echo Lang::txt('COM_FORUM_GETTING_STARTED'); ?></span>
             </a>
         </p>
@@ -95,7 +98,13 @@ $this
                                 && $section->get('id')
                             ) { ?>
                                 <?php if ($this->config->get('access-delete-section')) { ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=delete') ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><span><?= Lang::txt('JACTION_DELETE') ?></span></button>
+                                    <?php
+                                    $deleteUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&section=' . $section->get('alias')
+                                            . '&task=delete',
+                                    );
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><span><?= Lang::txt('JACTION_DELETE') ?></span></button>
                                 <?php } ?>
                                 <?php
                                 if (
@@ -103,7 +112,13 @@ $this
                                     && $this->edit != $section->get('alias')
                                     && $section->get('id')
                                 ) { ?>
-                                    <a class="icon-edit edit" href="<?= Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=edit#s' . $section->get('id')) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                                    <?php
+                                    $editUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&section=' . $section->get('alias')
+                                            . '&task=edit#s' . $section->get('id'),
+                                    );
+                                    ?>
+                                    <a class="icon-edit edit" href="<?= $editUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                                         <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                                     </a>
                                 <?php } ?>
@@ -113,7 +128,13 @@ $this
                             <tfoot>
                                 <tr>
                                     <td<?php echo $section->categories()->total() > 0 ? ' colspan="5"' : ''; ?>>
-                                        <a class="icon-add add btn" id="addto-<?= $section->get('id') ?>" href="<?= Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=new') ?>">
+                                        <?php
+                                        $newUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&section=' . $section->get('alias')
+                                                . '&task=new',
+                                        );
+                                        ?>
+                                        <a class="icon-add add btn" id="addto-<?= $section->get('id') ?>" href="<?= $newUrl ?>">
                                             <span><?php echo Lang::txt('COM_FORUM_NEW_CATEGORY'); ?></span>
                                         </a>
                                     </td>
@@ -189,7 +210,10 @@ $this
                                             if (
                                                 $this->config->get('access-delete-category') && $section->get('id')
                                             ) { ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->link('delete')) ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><span><?= Lang::txt('JACTION_DELETE') ?></span></button>
+                                                <?php
+                                                $actionUrl = Route::url($row->link('delete'));
+                                                ?>
+                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><span><?= Lang::txt('JACTION_DELETE') ?></span></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>

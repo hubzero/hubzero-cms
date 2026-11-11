@@ -95,7 +95,10 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
         ?>
         <tr>
             <td class="jobtitle">
-                <a href="<?= Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->jobs[$i]->code) ?>" title="<?= $this->escape(html_entity_decode($model->content('clean', 250), ENT_QUOTES, 'UTF-8')) ?>">
+                <?php
+                $jobUrl = Route::url('index.php?option=' . $this->option . '&task=job&code=' . $this->jobs[$i]->code);
+                ?>
+                <a href="<?= $jobUrl ?>" title="<?= $this->escape(html_entity_decode($model->content('clean', 250), ENT_QUOTES, 'UTF-8')) ?>">
                     <?php echo $this->escape($this->jobs[$i]->title); ?>
                 </a>
             </td>

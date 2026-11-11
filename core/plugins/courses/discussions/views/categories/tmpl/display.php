@@ -71,7 +71,10 @@ $base = $this->offering->link() . '&active=forum';
                         <tfoot>
                             <tr>
                                 <td colspan="<?= ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4' ?>">
-                                    <a class="add btn" href="<?= Route::url($base . '&unit=' . $this->filters['category'] . '&b=new') ?>">
+                                    <?php
+                                    $linkUrl = Route::url($base . '&unit=' . $this->filters['category'] . '&b=new');
+                                    ?>
+                                    <a class="add btn" href="<?= $linkUrl ?>">
                                         <?php echo Lang::txt('Add Discussion'); ?>
                                     </a>
                                 </td>
@@ -105,7 +108,12 @@ $base = $this->offering->link() . '&active=forum';
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>
                                     <td>
-                                        <a class="entry-title" href="<?= Route::url($base . '&unit=' . $this->filters['category'] . '&b=' . $row->get('id')) ?>">
+                                        <?php
+                                        $linkUrl = Route::url(
+                                            $base . '&unit=' . $this->filters['category'] . '&b=' . $row->get('id'),
+                                        );
+                                        ?>
+                                        <a class="entry-title" href="<?= $linkUrl ?>">
                                             <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
                                         </a>
                                         <span class="entry-details">
@@ -175,12 +183,24 @@ $base = $this->offering->link() . '&active=forum';
                                                 $row->get('created_by') == User::get('id')
                                                 || $this->config->get('access-edit-thread')
                                             ) { ?>
-                                                <a class="edit" href="<?= Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=edit') ?>">
+                                                <?php
+                                                $linkUrl = Route::url(
+                                                    $base . '&scope=' . $this->filters['category'] . '&b='
+                                                        . $row->get('id') . '&c=edit',
+                                                );
+                                                ?>
+                                                <a class="edit" href="<?= $linkUrl ?>">
                                                     <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDIT'); ?>
                                                 </a>
                                             <?php } ?>
                                             <?php if ($this->config->get('access-delete-thread')) { ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=' . $this->filters['category'] . '&b=' . $row->get('id') . '&c=delete') ?>" class="delete"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE') ?></button>
+                                                <?php
+                                                $actionUrl = Route::url(
+                                                    $base . '&scope=' . $this->filters['category'] . '&b='
+                                                        . $row->get('id') . '&c=delete',
+                                                );
+                                                ?>
+                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE') ?></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>

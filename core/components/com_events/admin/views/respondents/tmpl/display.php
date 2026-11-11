@@ -69,7 +69,13 @@ Toolbar::cancel();
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     </td>
                     <td>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=respondent&id=' . $row->id . '&event_id=' . $this->event->id) ?>">
+                        <?php
+                        $respondentUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=respondent&id=' . $row->id . '&event_id=' . $this->event->id,
+                        );
+                        ?>
+                        <a href="<?= $respondentUrl ?>">
                             <?php echo $this->escape(stripslashes($row->last_name . ', ' . $row->first_name)); ?>
                         </a>
                     </td>

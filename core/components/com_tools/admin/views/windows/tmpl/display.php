@@ -78,17 +78,35 @@ Html::behavior('tooltip');
                     <?php echo $this->escape($row->get('id')); ?>
                 </td>
                 <td>
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row->get('id'),
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>">
                         <?php echo $this->escape(stripslashes($row->get('alias'))); ?>
                     </a>
                 </td>
                 <td class="priority-4">
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row->get('id'),
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>">
                         <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                     </a>
                 </td>
                 <td class="priority-3">
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row->get('id'),
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>">
                         <?php echo $this->escape(stripslashes($row->get('path'))); ?>
                     </a>
                 </td>

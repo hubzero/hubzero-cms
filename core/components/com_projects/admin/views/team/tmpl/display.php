@@ -67,7 +67,10 @@ $this->css();
     <table class="adminlist">
         <thead>
             <tr>
-                <th colspan="8"><a href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('COM_PROJECTS') ?></a>  > (<?= $this->escape(stripslashes($this->project->get('alias'))) ?>) <?= $this->escape(stripslashes($this->project->get('title'))) ?></th>
+                <?php
+                $linkUrl = Route::url('index.php?option=' . $this->option);
+                ?>
+                <th colspan="8"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PROJECTS') ?></a>  > (<?= $this->escape(stripslashes($this->project->get('alias'))) ?>) <?= $this->escape(stripslashes($this->project->get('title'))) ?></th>
             </tr>
             <tr>
                 <?php //if (!$groupSynced) {?>
@@ -151,7 +154,12 @@ $this->css();
                 </td>
                 <td>
                     <?php if (isset($row->username)) : ?>
-                        <a href="<?= Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->userid) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=com_members&controller=members&task=edit&id=' . $row->userid,
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <?php echo $this->escape(stripslashes($row->fullname)); ?>
                         </a>
                     <?php else : ?>

@@ -75,7 +75,10 @@ $classicUrl = Route::url(
                 <p id="launch-error-msg" class="tool-launch-error-msg"></p>
                 <p class="tool-launch-actions">
                     <a href="#" id="launch-retry" class="btn"><?php echo Lang::txt('COM_TOOLS_LAUNCH_RETRY'); ?></a>
-                    <a href="<?= Route::url('index.php?option=com_resources&alias=' . urlencode($this->app)) ?>" class="tool-launch-resource"><?= Lang::txt('COM_TOOLS_LAUNCH_RESOURCE', $this->escape($this->toolTitle)) ?></a>
+                    <?php
+                    $linkUrl = Route::url('index.php?option=com_resources&alias=' . urlencode($this->app));
+                    ?>
+                    <a href="<?= $linkUrl ?>" class="tool-launch-resource"><?= Lang::txt('COM_TOOLS_LAUNCH_RESOURCE', $this->escape($this->toolTitle)) ?></a>
                 </p>
             </div>
 

@@ -26,11 +26,22 @@ $timezone = $userLocalizer->getTimezone();
 <?php if ($this->group->published == 1 && in_array(User::get('id'), $this->members)) : ?>
     <ul id="page_options">
         <li>
-            <a class="icon-add btn add" title="<?= Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT') ?>" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=add') ?>">
+            <?php
+            $addUrl = Route::url(
+                'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=add',
+            );
+            ?>
+            <a class="icon-add btn add" title="<?= Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT') ?>" href="<?= $addUrl ?>">
                 <?php echo Lang::txt('PLG_GROUPS_CALENDAR_ADD_NEW_LINK_TEXT'); ?>
             </a>
             <?php if ($this->authorized == 'manager') : ?>
-                <a class="icon-date btn date" title="<?= Lang::txt('Manage Calendars') ?>" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=calendars') ?>">
+                <?php
+                $calendarsUrl = Route::url(
+                    'index.php?option=' . $this->option . '&cn=' . $this->group->cn
+                        . '&active=calendar&action=calendars',
+                );
+                ?>
+                <a class="icon-date btn date" title="<?= Lang::txt('Manage Calendars') ?>" href="<?= $calendarsUrl ?>">
                     <?php echo Lang::txt('Manage Calendars'); ?>
                 </a>
             <?php endif; ?>

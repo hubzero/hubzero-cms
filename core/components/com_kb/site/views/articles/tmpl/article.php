@@ -97,7 +97,10 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                     <h3><?php echo Lang::txt('COM_KB_CATEGORIES'); ?></h3>
                     <ul class="categories">
                         <li>
-                            <a<?= $this->catid <= 0 ? ' class="active" aria-current="page"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&section=all') ?>">
+                            <?php
+                            $linkUrl = Route::url('index.php?option=' . $this->option . '&section=all');
+                            ?>
+                            <a<?= $this->catid <= 0 ? ' class="active" aria-current="page"' : '' ?> href="<?= $linkUrl ?>">
                                 <?php echo Lang::txt('COM_KB_ALL_ARTICLES'); ?>
                             </a>
                         </li>
@@ -117,7 +120,10 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                             $children = $row->children($filters)->rows();
                             ?>
                             <li>
-                                <a <?= $this->catid == $row->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= Route::url($row->link()) ?>">
+                                <?php
+                                $linkUrl = Route::url($row->link());
+                                ?>
+                                <a <?= $this->catid == $row->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= $linkUrl ?>">
                                     <?= $this->escape(stripslashes($row->get('title'))) ?> <span
                                         class="item-count"><?= $row->get('articles', 0) ?></span>
                                 </a>
@@ -125,7 +131,10 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                                     <ul class="categories">
                                     <?php foreach ($children as $cat) { ?>
                                         <li>
-                                            <a <?= $this->category->get('id') == $cat->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= Route::url($cat->link()) ?>">
+                                            <?php
+                                            $linkUrl = Route::url($cat->link());
+                                            ?>
+                                            <a <?= $this->category->get('id') == $cat->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= $linkUrl ?>">
                                                 <?= $this->escape(stripslashes($cat->get('title'))) ?> <span
                                                     class="item-count"><?= $cat->get('articles', 0) ?></span>
                                             </a>

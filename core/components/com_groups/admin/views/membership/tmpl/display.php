@@ -195,7 +195,12 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                 <input type="submit" value="<?php echo Lang::txt('COM_GROUPS_GO'); ?>" />
             </div>
             <div class="col span4">
-                <a class="button modal" href="<?= Route::url('index.php?option=com_groups&controller=roles&tmpl=component&gid=' . $this->filters['gid']) ?>" rel="{size: {width: 570, height: 170}, onClose: function() {}}">
+                <?php
+                $linkUrl = Route::url(
+                    'index.php?option=com_groups&controller=roles&tmpl=component&gid=' . $this->filters['gid'],
+                );
+                ?>
+                <a class="button modal" href="<?= $linkUrl ?>" rel="{size: {width: 570, height: 170}, onClose: function() {}}">
                     <span class="icon-32-new"><?php echo Lang::txt('Roles'); ?></span>
                 </a>
             </div>
@@ -205,7 +210,10 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
     <table class="adminlist">
         <thead>
             <tr>
-                <th colspan="8"><a href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('COM_GROUPS') ?></a> > (<?= $this->escape(stripslashes($this->group->get('cn'))) ?>) <?= $this->escape(stripslashes($this->group->get('description'))) ?></th>
+                <?php
+                $linkUrl = Route::url('index.php?option=' . $this->option);
+                ?>
+                <th colspan="8"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_GROUPS') ?></a> > (<?= $this->escape(stripslashes($this->group->get('cn'))) ?>) <?= $this->escape(stripslashes($this->group->get('description'))) ?></th>
             </tr>
             <tr>
                 <th scope="col">
@@ -269,7 +277,12 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit') && isset($row->username)) : ?>
-                        <a href="<?= Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->uidNumber) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=com_members&controller=members&task=edit&id=' . $row->uidNumber,
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <?php echo $this->escape(stripslashes($row->name)); ?>
                         </a>
                     <?php else : ?>
@@ -332,7 +345,15 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                     case 'invitee':
                     case 'inviteemail':
                         ?>
-                        <a class="state unpublish" onclick="javascript:if (confirm('Cancel invitation?')){return true;}else{return false;}" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=uninvite&gid=' . $this->filters['gid'] . '&id=' . (isset($row->uidNumber) ? $row->uidNumber : $row->email) . '&' . Session::getFormToken() . '=1') ?>">
+                        <?php
+                        $uninviteUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=uninvite&gid=' . $this->filters['gid'] . '&id='
+                                . (isset($row->uidNumber) ? $row->uidNumber : $row->email) . '&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state unpublish" onclick="javascript:if (confirm('Cancel invitation?')){return true;}else{return false;}" href="<?= $uninviteUrl ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_UNINVITE'); ?></span>
                         </a>
                     </td>
@@ -341,19 +362,40 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                         break;
                     case 'applicant':
                         ?>
-                        <a class="state publish" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=approve&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1') ?>">
+                        <?php
+                        $approveUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=approve&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state publish" href="<?= $approveUrl ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_APPROVE'); ?></span>
                         </a>
                     </td>
                     <td>
-                        <a class="state unpublish" onclick="javascript:if (confirm('Deny membership?')){return true;}else{return false;}" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deny&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1') ?>">
+                        <?php
+                        $denyUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=deny&gid='
+                                . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken()
+                                . '=1',
+                        );
+                        ?>
+                        <a class="state unpublish" onclick="javascript:if (confirm('Deny membership?')){return true;}else{return false;}" href="<?= $denyUrl ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_DENY'); ?></span>
                         </a>
                         <?php
                         break;
                     case 'manager':
                         ?>
-                        <a class="state demote" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=demote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1') ?>">
+                        <?php
+                        $demoteUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=demote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state demote" href="<?= $demoteUrl ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_DEMOTE'); ?></span>
                         </a>
                     </td>
@@ -364,12 +406,26 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                     default:
                     case 'member':
                         ?>
-                        <a class="state promote" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=promote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1') ?>">
+                        <?php
+                        $promoteUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=promote&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state promote" href="<?= $promoteUrl ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_PROMOTE'); ?></span>
                         </a>
                     </td>
                     <td>
-                        <a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=delete&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&' . Session::getFormToken() . '=1') ?>">
+                        <?php
+                        $deleteUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=delete&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state trash" onclick="javascript:if (confirm('Cancel membership?')){return true;}else{return false;}" href="<?= $deleteUrl ?>">
                             <span><?php echo Lang::txt('COM_GROUPS_MEMBER_REMOVE'); ?></span>
                         </a>
                         <?php

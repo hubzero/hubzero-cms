@@ -155,7 +155,10 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                             alt="Profile picture of <?= $this->escape(stripslashes($cuser->get('name'))) ?>" />
                     </a>
                     <p>
-                        <a href="<?= Route::url($cuser->link()) ?>"><?= $this->escape(stripslashes($cuser->get('name'))) ?></a> said <br />
+                        <?php
+                        $linkUrl = Route::url($cuser->link());
+                        ?>
+                        <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($cuser->get('name'))) ?></a> said <br />
                         <span class="entry-date">
                             <span class="entry-date-at">@</span>
                             <span class="time"><time datetime="<?= $comment->get('created') ?>"><?= $comment->created('time') ?></time></span>
@@ -184,7 +187,10 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                         alt="Profile picture of <?= $this->escape(stripslashes(User::get('name'))) ?>" />
                 </a>
                 <p>
-                    <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>"><?= $this->escape(stripslashes(User::get('name'))) ?></a> will say <br />
+                    <?php
+                    $linkUrl = Route::url('index.php?option=com_members&id=' . User::get('id'));
+                    ?>
+                    <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes(User::get('name'))) ?></a> will say <br />
                     <span class="entry-date">
                         <span class="entry-date-at">@</span>
                         <span class="time"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>

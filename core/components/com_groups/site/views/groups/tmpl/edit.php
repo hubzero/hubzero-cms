@@ -414,7 +414,13 @@ $discoverabilityChecked = function ($value) {
             <div class="col span4 omega floating-iframe-col">
                 <?php if ($this->group->get('gidNumber')) : ?>
                     <div class="floating-iframe-container">
-                        <iframe class="floating-iframe" title="<?= Lang::txt('COM_GROUPS_MEDIA_BROWSER') ?>" src="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&controller=media&task=filebrowser&tmpl=component') ?>"></iframe>
+                        <?php
+                        $filebrowserUrl = Route::url(
+                            'index.php?option=com_groups&cn=' . $this->group->get('gidNumber')
+                                . '&controller=media&task=filebrowser&tmpl=component',
+                        );
+                        ?>
+                        <iframe class="floating-iframe" title="<?= Lang::txt('COM_GROUPS_MEDIA_BROWSER') ?>" src="<?= $filebrowserUrl ?>"></iframe>
                     </div>
                 <?php else : ?>
                     <p><em><?php echo Lang::txt('COM_GROUPS_EDIT_MUST_SAVE_TO_UPLOAD_IMAGES'); ?></em></p>

@@ -97,7 +97,13 @@ if (!$this->thread->thread) {
             <span class="date"><time datetime="<?= $this->thread->created ?>"><?= Date::of($this->thread->created)->toLocal(Lang::txt('DATE_FORMAt_HZ1')) ?></time></span>
         </p>
         <p class="comment-body">
-            <a href="<?= Route::url($this->base . '&thread=' . $this->thread->id . ($this->search ? '&action=search&search=' . $this->search : '')) ?>"><?= $comment ?></a>
+            <?php
+            $searchUrl = Route::url(
+                $this->base . '&thread=' . $this->thread->id
+                    . ($this->search ? '&action=search&search=' . $this->search : ''),
+            );
+            ?>
+            <a href="<?= $searchUrl ?>"><?= $comment ?></a>
         </p>
         <p class="comment-author">
             <strong><?php echo $name; ?></strong>

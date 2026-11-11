@@ -358,7 +358,13 @@ $paramsLayoutSelected = function ($value) {
                         <div class="input-wrap">
                             <?= Lang::txt('COM_PROJECTS_CONNECTIONS') ?>: <strong><?= $connected ? $service : 'not connected' ?></strong> &nbsp;
                             <?php if ($connected) { ?>
-                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=fixsync&id=' . $this->model->get('id')) ?>"><?= Lang::txt('download sync log') ?></a> &nbsp; [<?= Lang::txt('Also fixes stalled sync') ?>]
+                                <?php
+                                $fixsyncUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&task=fixsync&id=' . $this->model->get('id'),
+                                );
+                                ?>
+                                <a href="<?= $fixsyncUrl ?>"><?= Lang::txt('download sync log') ?></a> &nbsp; [<?= Lang::txt('Also fixes stalled sync') ?>]
                             <?php } ?>
                         </div>
                     <?php } ?>
@@ -502,7 +508,13 @@ $paramsLayoutSelected = function ($value) {
         </div>
     </div>
 
-    <p class="notice"><a class="button" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id=' . $this->model->get('id')) ?>"><?= Lang::txt('COM_PROJECTS_ERASE_PROJECT') ?></a> <?= Lang::txt('COM_PROJECTS_ERASE_NOTICE') ?></p>
+    <?php
+    $eraseUrl = Route::url(
+        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=erase&id='
+            . $this->model->get('id'),
+    );
+    ?>
+    <p class="notice"><a class="button" href="<?= $eraseUrl ?>"><?= Lang::txt('COM_PROJECTS_ERASE_PROJECT') ?></a> <?= Lang::txt('COM_PROJECTS_ERASE_NOTICE') ?></p>
 
         </div>
         <div id="page-images" class="tab">

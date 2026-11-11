@@ -76,7 +76,13 @@ $base = $this->offering->alias() . '&active=forum';
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>
                                     <td>
-                                        <a class="entry-title" href="<?= Route::url($base . '&unit=' . $this->categories[$row->get('category_id')]->get('alias') . '&b=' . $row->get('thread') . '#c' . $row->get('id')) ?>">
+                                        <?php
+                                        $linkUrl = Route::url(
+                                            $base . '&unit=' . $this->categories[$row->get('category_id')]->get('alias')
+                                                . '&b=' . $row->get('thread') . '#c' . $row->get('id'),
+                                        );
+                                        ?>
+                                        <a class="entry-title" href="<?= $linkUrl ?>">
                                             <span><?php echo $title; ?></span>
                                         </a>
                                         <span class="entry-details">

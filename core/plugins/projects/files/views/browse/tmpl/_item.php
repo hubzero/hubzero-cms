@@ -108,7 +108,12 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
                 <?php endif; ?>
             </div>
         <?php } else { ?>
-            <a href="<?= Route::url($this->model->link('files') . '/&action=browse&subdir=' . urlencode($this->item->get('localPath'))) ?>" class="dir:<?= urlencode($name) ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $name ?>"><?= \Components\Projects\Helpers\Html::shortenFileName($name, 60) ?></a>
+            <?php
+            $browseUrl = Route::url(
+                $this->model->link('files') . '/&action=browse&subdir=' . urlencode($this->item->get('localPath')),
+            );
+            ?>
+            <a href="<?= $browseUrl ?>" class="dir:<?= urlencode($name) ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $name ?>"><?= \Components\Projects\Helpers\Html::shortenFileName($name, 60) ?></a>
         <?php } ?>
     </td>
     <td class="shrinked middle_valign"></td>
@@ -116,7 +121,13 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
     <td class="shrinked middle_valign">
     <?php if (!$this->item->get('untracked')) { ?>
         <?php if ($this->item->get('type') == 'file' && $this->params['versionTracking'] == '1') { ?>
-            <a href="<?= Route::url($this->model->link('files') . '&action=history' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))) ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_HISTORY_TOOLTIP') ?>"><?= $when ?></a>
+            <?php
+            $historyUrl = Route::url(
+                $this->model->link('files') . '&action=history' . $subdirPath . '&asset='
+                    . urlencode($this->item->get('name')),
+            );
+            ?>
+            <a href="<?= $historyUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_HISTORY_TOOLTIP') ?>"><?= $when ?></a>
         <?php } else { ?>
             <?php echo $when; ?>
         <?php } ?>
@@ -130,8 +141,20 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
     <td class="shrinked middle_valign nojs">
         <?php if ($this->model->access('content')) { ?>
             <?php // A link, not a form: these rows sit inside #plg-form. Delete by GET only shows the confirmation, which posts with a token?>
-            <a href="<?= Route::url($this->model->link('files') . '&action=delete' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))) ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP') ?>" class="i-delete">&nbsp;</a>
-            <a href="<?= Route::url($this->model->link('files') . '&action=move' . $subdirPath . '&asset=' . urlencode($this->item->get('name'))) ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP') ?>" class="i-move">&nbsp;</a>
+            <?php
+            $deleteUrl = Route::url(
+                $this->model->link('files') . '&action=delete' . $subdirPath . '&asset='
+                    . urlencode($this->item->get('name')),
+            );
+            ?>
+            <a href="<?= $deleteUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_DELETE_TOOLTIP') ?>" class="i-delete">&nbsp;</a>
+            <?php
+            $moveUrl = Route::url(
+                $this->model->link('files') . '&action=move' . $subdirPath . '&asset='
+                    . urlencode($this->item->get('name')),
+            );
+            ?>
+            <a href="<?= $moveUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_MOVE_TOOLTIP') ?>" class="i-move">&nbsp;</a>
         <?php } ?>
     </td>
     <?php if ($this->publishing) { ?>

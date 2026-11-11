@@ -98,7 +98,10 @@ $listed = $publicStamp ? $publicStamp->listed : false;
                 $base = $page->link();
                 $chr  = strstr($base, '?') ? '&' : '?';
                 ?>
-                <a href="<?= Route::url($base . $chr . 'action=new') ?>" class="icon-add add btn" title="<?= Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE') ?>"><?= Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE') ?></a>
+                <?php
+                $linkUrl = Route::url($base . $chr . 'action=new');
+                ?>
+                <a href="<?= $linkUrl ?>" class="icon-add add btn" title="<?= Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE') ?>"><?= Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE') ?></a>
             <?php } ?>
         </li>
     </ul>

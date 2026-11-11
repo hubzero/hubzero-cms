@@ -69,7 +69,13 @@ $this
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php } ?>
 
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn . '&id=' . $this->id) ?>" method="post" id="hubForm" accept-charset="utf-8">
+    <?php
+    $draftUrl = Route::url(
+        'index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&group=' . $this->group_cn
+            . '&id=' . $this->id,
+    );
+    ?>
+    <form action="<?= $draftUrl ?>" method="post" id="hubForm" accept-charset="utf-8">
         <div class="explaination">
             <p><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_EXPLANATION'); ?></p>
 

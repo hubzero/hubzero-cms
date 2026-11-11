@@ -31,7 +31,13 @@ if (isset($this->version) && $this->version->get('approved') == 0) {
         <?php if ($this->page->get('privacy') == 'members') : ?>
             <span class="icon-lock tooltips" title="<?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVATE'); ?>"></span>
         <?php endif; ?>
-        <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id')) ?>">
+        <?php
+        $editUrl = Route::url(
+            'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid='
+                . $this->page->get('id'),
+        );
+        ?>
+        <a href="<?= $editUrl ?>">
             <?php echo $this->escape($this->page->get('title')); ?>
         </a>
     </div>
@@ -57,37 +63,97 @@ if (isset($this->version) && $this->version->get('approved') == 0) {
     <?php if ($this->page->get('home') == 0) : ?>
         <div class="item-state">
             <?php if ($this->page->get('state') == 0) : ?>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=publish&pageid=' . $this->page->get('id')) ?>" class="unpublished tooltips" title="<?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?>"><?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?></button>
+                <?php
+                $publishUrl = Route::url(
+                    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                        . '&controller=pages&task=publish&pageid=' . $this->page->get('id'),
+                );
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="unpublished tooltips" title="<?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?>"><?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?></button>
             <?php else : ?>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=unpublish&pageid=' . $this->page->get('id')) ?>" class="published tooltips" title="<?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?>"><?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?></button>
+                <?php
+                $unpublishUrl = Route::url(
+                    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                        . '&controller=pages&task=unpublish&pageid=' . $this->page->get('id'),
+                );
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>" class="published tooltips" title="<?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?>"><?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?></button>
             <?php endif; ?>
         </div>
     <?php endif; ?>
 
     <div class="item-preview">
-        <a class="tooltips page-preview" title="<?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?>" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=preview&pageid=' . $this->page->get('id')) ?>"><?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?></a>
+        <?php
+        $previewUrl = Route::url(
+            'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=preview&pageid='
+                . $this->page->get('id'),
+        );
+        ?>
+        <a class="tooltips page-preview" title="<?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?>" href="<?= $previewUrl ?>"><?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?></a>
     </div>
 
     <div class="item-controls btn-group dropdown">
-        <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id')) ?>" class="btn"><?= Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGE') ?></a>
+        <?php
+        $editUrl = Route::url(
+            'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid='
+                . $this->page->get('id'),
+        );
+        ?>
+        <a href="<?= $editUrl ?>" class="btn"><?= Lang::txt('COM_GROUPS_PAGES_MANAGE_PAGE') ?></a>
         <span class="btn dropdown-toggle"></span>
         <ul class="dropdown-menu">
-            <li><a class="icon-edit" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id')) ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE_BACK') ?></a></li>
-            <li><a class="icon-search page-preview" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=preview&pageid=' . $this->page->get('id')) ?>"> <?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?></a></li>
+            <?php
+            $editUrl = Route::url(
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid='
+                    . $this->page->get('id'),
+            );
+            ?>
+            <li><a class="icon-edit" href="<?= $editUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE_BACK') ?></a></li>
+            <?php
+            $previewUrl = Route::url(
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=preview&pageid='
+                    . $this->page->get('id'),
+            );
+            ?>
+            <li><a class="icon-search page-preview" href="<?= $previewUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_PREVIEW_PAGE') ?></a></li>
             <?php if ($this->page->get('home') == 0) : ?>
                 <?php if ($this->page->get('state') == 0) : ?>
-                    <li><button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=publish&pageid=' . $this->page->get('id')) ?>" class="icon-ban-circle"> <?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?></button></li>
+                    <?php
+                    $publishUrl = Route::url(
+                        'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                            . '&controller=pages&task=publish&pageid=' . $this->page->get('id'),
+                    );
+                    ?>
+                    <li><button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="icon-ban-circle"> <?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?></button></li>
                 <?php else : ?>
-                    <li><button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=unpublish&pageid=' . $this->page->get('id')) ?>" class="icon-success"> <?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?></button></li>
+                    <?php
+                    $unpublishUrl = Route::url(
+                        'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                            . '&controller=pages&task=unpublish&pageid=' . $this->page->get('id'),
+                    );
+                    ?>
+                    <li><button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>" class="icon-success"> <?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?></button></li>
                 <?php endif; ?>
             <?php endif; ?>
             <li class="divider"></li>
-            <li><a class="icon-history page-history" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $this->page->get('id')) ?>"> <?= Lang::txt('COM_GROUPS_PAGES_VERSION_HISTORY_PAGE') ?></a></li>
+            <?php
+            $versionsUrl = Route::url(
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid='
+                    . $this->page->get('id'),
+            );
+            ?>
+            <li><a class="icon-history page-history" href="<?= $versionsUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_VERSION_HISTORY_PAGE') ?></a></li>
             
 
             <?php if ($this->page->get('home') == 0) : ?>
                 <li class="divider"></li>
-                <li><button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=delete&pageid=' . $this->page->get('id')) ?>" class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_PAGE') ?></button></li>
+                <?php
+                $deleteUrl = Route::url(
+                    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                        . '&controller=pages&task=delete&pageid=' . $this->page->get('id'),
+                );
+                ?>
+                <li><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_PAGE') ?></button></li>
             <?php endif; ?>
         </ul>
     </div>

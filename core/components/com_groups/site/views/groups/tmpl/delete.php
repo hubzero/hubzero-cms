@@ -44,7 +44,12 @@ $this
             <p><strong><?php echo Lang::txt('COM_GROUPS_DELETE_ALTERNATIVE_TITLE'); ?></strong></p>
             <p><?php echo Lang::txt('COM_GROUPS_DELETE_ALTERNATIVE_DESC'); ?></p>
             <p>
-                <a class="config btn" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&task=edit') ?>">
+                <?php
+                $editUrl = Route::url(
+                    'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&task=edit',
+                );
+                ?>
+                <a class="config btn" href="<?= $editUrl ?>">
                     <?php echo Lang::txt('COM_GROUPS_DELETE_ALTERNATIVE_BTN_TEXT'); ?>
                 </a>
             </p>

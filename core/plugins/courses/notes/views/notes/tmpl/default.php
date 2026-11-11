@@ -107,7 +107,10 @@ $base = $this->offering->link();
                         <div class="jStickyNote">
                             <textarea name="note_<?= $note->get('id') ?>"><?= $this->escape(stripslashes($note->get('content'))) ?></textarea>
                         </div>
-                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&active=notes&action=delete&note=' . $note->get('id')) ?>" class="jSticky-delete" title="<?= Lang::txt('PLG_COURSES_NOTES_DELETE_NOTE') ?>">x</button>
+                        <?php
+                        $deleteUrl = Route::url($base . '&active=notes&action=delete&note=' . $note->get('id'));
+                        ?>
+                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="jSticky-delete" title="<?= Lang::txt('PLG_COURSES_NOTES_DELETE_NOTE') ?>">x</button>
                     </div>
                 <?php endforeach; ?>
                 <div class="clear"></div>

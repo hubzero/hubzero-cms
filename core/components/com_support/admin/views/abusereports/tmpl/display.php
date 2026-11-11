@@ -82,7 +82,13 @@ $stateSelected = function ($value) {
             <tr class="<?php echo "row$k"; ?>">
                 <td><?php echo $row->id;  ?></td>
                 <td><?php echo $status;  ?></td>
-                <td><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $row->id . '&cat=' . $row->category) ?>"><?= $this->escape($row->category) . ' #' . (int) $row->referenceid ?></a></td>
+                <?php
+                $viewUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id='
+                        . $row->id . '&cat=' . $row->category,
+                );
+                ?>
+                <td><a href="<?= $viewUrl ?>"><?= $this->escape($row->category) . ' #' . (int) $row->referenceid ?></a></td>
                 <td><?php echo $this->escape($row->subject); ?></td>
                 <td><?php echo $this->escape($user->get('username')); ?></td>
                 <td><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>

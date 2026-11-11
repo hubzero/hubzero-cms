@@ -28,7 +28,12 @@ Toolbar::cancel();
 
 <?php require_once dirname(dirname(__DIR__)) . DS . 'pages' . DS . 'tmpl' . DS . 'menu.php'; ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn) ?>" name="adminForm" id="item-form" method="post">
+<?php
+$actionUrl = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn,
+);
+?>
+<form action="<?= $actionUrl ?>" name="adminForm" id="item-form" method="post">
     <div class="grid">
         <div class="col span6">
             <fieldset class="adminform">

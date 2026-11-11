@@ -53,7 +53,12 @@ $email = $this->author->p_email ? $this->author->p_email : $this->author->invite
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<p class="crumbs"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?> &raquo; <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id ?></a> &raquo; <?= $pageTitle ?></p>
+<?php
+$editUrl = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id,
+);
+?>
+<p class="crumbs"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?> &raquo; <a href="<?= $editUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id ?></a> &raquo; <?= $pageTitle ?></p>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
     name="adminForm" id="item-form">

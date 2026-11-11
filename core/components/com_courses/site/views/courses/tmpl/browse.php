@@ -22,7 +22,10 @@ $this->css('browse.css');
     <?php if ($this->config->get('access-create-course')) { ?>
         <div id="content-header-extra">
             <p>
-                <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=course&task=new') ?>"><?= Lang::txt('COM_COURSES_CREATE_COURSE') ?></a>
+                <?php
+                $newUrl = Route::url('index.php?option=' . $this->option . '&controller=course&task=new');
+                ?>
+                <a class="icon-add add btn" href="<?= $newUrl ?>"><?= Lang::txt('COM_COURSES_CREATE_COURSE') ?></a>
             </p>
         </div><!-- / #content-header-extra -->
     <?php } ?>
@@ -33,7 +36,10 @@ $this->css('browse.css');
 <?php } ?>
 
 <section class="main section">
-    <form class="section-inner hz-layout-with-aside" action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse') ?>" method="get">
+    <?php
+    $browseUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse');
+    ?>
+    <form class="section-inner hz-layout-with-aside" action="<?= $browseUrl ?>" method="get">
         <div class="subject">
 
             <div class="container data-entry">
@@ -62,7 +68,12 @@ $this->css('browse.css');
                         foreach ($tags as $tag) {
                             ?>
                             <li>
-                                <a href="<?= Route::url($url . '&tag=' . implode(',', $this->model->parseTags($this->filters['tag'], $tag))) ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    $url . '&tag=' . implode(',', $this->model->parseTags($this->filters['tag'], $tag)),
+                                );
+                                ?>
+                                <a href="<?= $linkUrl ?>">
                                     <?php echo $this->escape(stripslashes($tag)); ?>
                                     <span class="remove">x</a>
                                 </a>
@@ -87,7 +98,12 @@ $this->css('browse.css');
                         $atts = ($width > $height ? 'height="50"' : 'width="50"');
                         ?>
                         <p class="course-group-img">
-                            <a href="<?= Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')) ?>">
+                            <?php
+                            $browseUrl = Route::url(
+                                'index.php?option=com_courses&task=browse&group=' . $group->get('cn'),
+                            );
+                            ?>
+                            <a href="<?= $browseUrl ?>">
                                 <img src="<?= $group->getLogo() ?>" <?= $atts ?> alt="<?= $this->escape($group->get('description')) ?>" />
                             </a>
                         </p>
@@ -95,7 +111,12 @@ $this->css('browse.css');
                             <?php echo Lang::txt('COM_COURSES_BROUGHT_BY_GROUP'); ?>
                         </p>
                         <h3 class="course-group-title">
-                            <a href="<?= Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')) ?>">
+                            <?php
+                            $browseUrl = Route::url(
+                                'index.php?option=com_courses&task=browse&group=' . $group->get('cn'),
+                            );
+                            ?>
+                            <a href="<?= $browseUrl ?>">
                                 <?php echo $this->escape($group->get('description')); ?>
                             </a>
                         </h3>
@@ -114,9 +135,24 @@ $this->css('browse.css');
                     $qs .= ($this->filters['group'] ? '&group=' . $this->escape($this->filters['group']) : '');
                     ?>
                     <ul class="entries-menu order-options">
-                        <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs) ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_TITLE') ?>" rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_TITLE') ?></a></li>
-                        <li><a<?= ($this->filters['sortby'] == 'alias') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=alias' . $qs) ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_ALIAS') ?>" rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_ALIAS') ?></a></li>
-                        <li><a<?= ($this->filters['sortby'] == 'popularity') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=popularity' . $qs) ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_POPULARITY') ?>" rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_POPULARITY') ?></a></li>
+                        <?php
+                        $browseUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs,
+                        );
+                        ?>
+                        <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_TITLE') ?>" rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_TITLE') ?></a></li>
+                        <?php
+                        $browseUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=browse&sortby=alias' . $qs,
+                        );
+                        ?>
+                        <li><a<?= ($this->filters['sortby'] == 'alias') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_ALIAS') ?>" rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_ALIAS') ?></a></li>
+                        <?php
+                        $browseUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=browse&sortby=popularity' . $qs,
+                        );
+                        ?>
+                        <li><a<?= ($this->filters['sortby'] == 'popularity') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_POPULARITY') ?>" rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_POPULARITY') ?></a></li>
                     </ul>
                 </nav>
 

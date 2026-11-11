@@ -183,8 +183,21 @@ if ($this->comment->get('resource_id')) {
             if (
                 User::get('id') == $this->comment->get('created_by') || User::authorise('core.manage', 'com_resources')
             ) { ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply') . '&comment=' . $this->comment->get('id')) ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_RESOURCES_REVIEWS_DELETE') ?></button>
-                    <a class="icon-edit edit" href="<?= Route::url($this->base . '&action=edit' . ($this->comment->get('resource_id') ? 'review' : '') . '&comment=' . $this->comment->get('id') . ($this->comment->get('resource_id') ? '#commentform' : '')) ?>"><!--
+                    <?php
+                    $deleteUrl = Route::url(
+                        $this->base . '&action=delete' . ($this->comment->get('resource_id') ? 'review' : 'reply')
+                            . '&comment=' . $this->comment->get('id'),
+                    );
+                    ?>
+                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_RESOURCES_REVIEWS_DELETE') ?></button>
+                    <?php
+                    $editUrl = Route::url(
+                        $this->base . '&action=edit' . ($this->comment->get('resource_id') ? 'review' : '')
+                            . '&comment=' . $this->comment->get('id')
+                            . ($this->comment->get('resource_id') ? '#commentform' : ''),
+                    );
+                    ?>
+                    <a class="icon-edit edit" href="<?= $editUrl ?>"><!--
                         --><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_EDIT'); ?><!--
                     --></a>
             <?php } ?>

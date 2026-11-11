@@ -227,7 +227,14 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                                     }
                                     ?>
                                     <span style="display:none" id=<?php echo $this->escape($author->id) . "_missing_item" ?> class="item-msg"><?php echo "The contact is required to include $missingItem. Please " ?>
-                                    <a href="<?= Route::url($this->pub->link('editversionid') . '&active=publications&action=editauthor&aid=' . $author->id . '&p=' . $props) ?>" class="showinbox item-edit"><?= "edit" ?></a>
+                                    <?php
+                                    $editauthorUrl = Route::url(
+                                        $this->pub->link('editversionid')
+                                            . '&active=publications&action=editauthor&aid=' . $author->id . '&p='
+                                            . $props,
+                                    );
+                                    ?>
+                                    <a href="<?= $editauthorUrl ?>" class="showinbox item-edit"><?= "edit" ?></a>
                                     <?php echo "the author."; ?>
                                     </span> 
                                 <?php } ?>                              

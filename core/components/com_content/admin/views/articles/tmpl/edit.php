@@ -76,7 +76,12 @@ $dateModified->setTimezone($userTZ);
 $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id) ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<?php
+$editUrl = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . (int) $this->item->id,
+);
+?>
+<form action="<?= $editUrl ?>" method="post" name="adminForm" id="item-form" class="form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">

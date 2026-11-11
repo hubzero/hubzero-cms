@@ -165,7 +165,12 @@ $this
                         if (!$participant->get('anonymous')) {
                             ?>
                             <li>
-                                <a class="member" href="<?= Route::url('index.php?option=com_members&id=' . $participant->get('created_by')) ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    'index.php?option=com_members&id=' . $participant->get('created_by'),
+                                );
+                                ?>
+                                <a class="member" href="<?= $linkUrl ?>">
                                     <?= $this->escape(stripslashes($participant->get('name'))) ?: Lang::txt('PLG_GROUPS_FORUM_ANONYMOUS') ?>
                                 </a>
                             </li>
@@ -212,7 +217,12 @@ $this
                             }
                             ?>
                             <li>
-                                <a class="<?= $cls ?> attachment" href="<?= Route::url($base . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename')) ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    $base . '/' . $attachment->get('post_id') . '/' . $attachment->get('filename'),
+                                );
+                                ?>
+                                <a class="<?= $cls ?> attachment" href="<?= $linkUrl ?>">
                                     <?php echo $this->escape(stripslashes($title)); ?>
                                 </a>
                             </li>
@@ -246,7 +256,10 @@ $this
             <?php } else { ?>
                 <p class="comment-title">
                     <strong>
-                        <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>"><?= $this->escape(User::get('name')) ?></a>
+                        <?php
+                        $linkUrl = Route::url('index.php?option=com_members&id=' . User::get('id'));
+                        ?>
+                        <a href="<?= $linkUrl ?>"><?= $this->escape(User::get('name')) ?></a>
                     </strong>
                     <span class="permalink">
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?></span>

@@ -87,7 +87,10 @@ if (!$no_html) {
         ->js('ticket.js');
 }
 ?>
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" <?= (!$no_html) ? 'name="adminForm" id="item-form"' : 'name="ajaxForm" id="ajax-form"' ?> enctype="multipart/form-data">
+<?php
+$actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+?>
+<form action="<?= $actionUrl ?>" method="post" <?= (!$no_html) ? 'name="adminForm" id="item-form"' : 'name="ajaxForm" id="ajax-form"' ?> enctype="multipart/form-data">
     <?php if (!$no_html) { ?>
     <div class="grid">
     <div class="col span8">
@@ -113,7 +116,12 @@ if (!$no_html) {
                     <strong>
                         <?php echo $name; ?>
                     </strong>
-                    <a class="permalink" href="<?= Route::url('index.php?option=com_support&controller=tickets&task=edit&id=' . $this->row->get('id')) ?>" title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=com_support&controller=tickets&task=edit&id=' . $this->row->get('id'),
+                    );
+                    ?>
+                    <a class="permalink" href="<?= $editUrl ?>" title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
                         <span class="time-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
                         <span class="time"><time datetime="<?= $this->row->get('created') ?>"><?= Date::of($this->row->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
                         <span class="date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
@@ -232,10 +240,22 @@ if (!$no_html) {
             <?php if ($this->row->isWatching()) { ?>
                 <div id="watching">
                     <p><?php echo Lang::txt('COM_SUPPORT_WATCH_TICKET_IN_LIST'); ?></p>
-                    <p><a class="stop-watching btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->get('id') . '&watch=stop') ?>"><?= Lang::txt('COM_SUPPORT_WATCH_TICKET_STOP_WATCHING') ?></a></p>
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $this->row->get('id') . '&watch=stop',
+                    );
+                    ?>
+                    <p><a class="stop-watching btn" href="<?= $editUrl ?>"><?= Lang::txt('COM_SUPPORT_WATCH_TICKET_STOP_WATCHING') ?></a></p>
                 </div>
             <?php } else { ?>
-                <p><a class="start-watching btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->row->get('id') . '&watch=start') ?>"><?= Lang::txt('COM_SUPPORT_WATCH_TICKET_START_WATCHING') ?></a></p>
+                <?php
+                $editUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                        . $this->row->get('id') . '&watch=start',
+                );
+                ?>
+                <p><a class="start-watching btn" href="<?= $editUrl ?>"><?= Lang::txt('COM_SUPPORT_WATCH_TICKET_START_WATCHING') ?></a></p>
             <?php } ?>
             <p><?php echo Lang::txt('COM_SUPPORT_WATCH_TICKET_ABOUT'); ?></p>
         </div>
@@ -368,7 +388,12 @@ if (!$no_html) {
 
                 <fieldset class="ticket-head">
                     <strong>
-                        <a rel="profile" href="<?= Route::url('index.php?option=com_members&task=edit&id=' . $this->escape($user->get('id'))) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=com_members&task=edit&id=' . $this->escape($user->get('id')),
+                        );
+                        ?>
+                        <a rel="profile" href="<?= $editUrl ?>">
                             <?= $this->escape($user->get('name')) ?> (<?= $this->escape($user->get('username')) ?>)
                         </a>
                     </strong>

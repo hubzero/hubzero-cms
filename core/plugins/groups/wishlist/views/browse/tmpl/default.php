@@ -35,7 +35,13 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
 <?php if ($this->admin != 0) { ?>
     <?php if ($this->group->published == 1) { ?>
         <p id="page_options">
-            <a class="icon-add add btn" href="<?= Route::url('index.php?option=com_wishlist&task=add&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid) ?>">
+            <?php
+            $addUrl = Route::url(
+                'index.php?option=com_wishlist&task=add&category=' . $this->wishlist->category . '&rid='
+                    . $this->wishlist->referenceid,
+            );
+            ?>
+            <a class="icon-add add btn" href="<?= $addUrl ?>">
                 <?php echo Lang::txt('COM_WISHLIST_ADD_NEW_WISH'); ?>
             </a>
         </p>
@@ -116,7 +122,15 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                         </th>
                         <td>
                         <?php if ($item->status != 7) { ?>
-                            <a class="entry-title" href="<?= Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']) ?>"><?= $item->subject ?></a><br />
+                            <?php
+                            $wishUrl = Route::url(
+                                'index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category
+                                    . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby='
+                                    . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags='
+                                    . $this->filters['tag'],
+                            );
+                            ?>
+                            <a class="entry-title" href="<?= $wishUrl ?>"><?= $item->subject ?></a><br />
                             <span class="entry-details">
                                 <?php echo Lang::txt('COM_WISHLIST_WISH_PROPOSED_BY'); ?> <?php echo $name; ?>
                                 <span class="entry-time-at"><?php echo Lang::txt('COM_WISHLIST_DATETIME_AT'); ?></span>
@@ -125,7 +139,15 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                 <span class="entry-date"><time datetime="<?= $item->proposed ?>"><?= Date::of($item->proposed)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
                                 <span class="entry-details-divider">&bull;</span>
                                 <span class="entry-comments">
-                                    <a href="<?= Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&com=1&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#comments') ?>" title="<?= $item->numreplies ?> <?= Lang::txt('COM_WISHLIST_COMMENTS') ?>">
+                                    <?php
+                                    $wishUrl = Route::url(
+                                        'index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category
+                                            . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id
+                                            . '&com=1&filterby=' . $this->filters['filterby'] . '&sortby='
+                                            . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#comments',
+                                    );
+                                    ?>
+                                    <a href="<?= $wishUrl ?>" title="<?= $item->numreplies ?> <?= Lang::txt('COM_WISHLIST_COMMENTS') ?>">
                                         <?php echo $item->numreplies; ?>
                                     </a>
                                 </span>
@@ -141,11 +163,27 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                             if (
                                 isset($item->bonus) && $item->bonus > 0 && ($item->status == 0 or $item->status == 6)
                             ) { ?>
-                                <a class="bonus tooltips" href="<?= Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action') ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' ::' . $this->escape($item->bonusgivenby) . ' ' . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->bonus . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS') ?>">
+                                <?php
+                                $wishUrl = Route::url(
+                                    'index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category
+                                        . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id
+                                        . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby='
+                                        . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action',
+                                );
+                                ?>
+                                <a class="bonus tooltips" href="<?= $wishUrl ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' ::' . $this->escape($item->bonusgivenby) . ' ' . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->bonus . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS') ?>">
                                     <?= $item->bonus ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span>
                                 </a>
                             <?php } elseif ($item->status == 0 || $item->status == 6) { ?>
-                                <a class="nobonus tooltips" href="<?= Route::url('index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action') ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED') ?>">
+                                <?php
+                                $wishUrl = Route::url(
+                                    'index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category
+                                        . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id
+                                        . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby='
+                                        . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action',
+                                );
+                                ?>
+                                <a class="nobonus tooltips" href="<?= $wishUrl ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED') ?>">
                                     <?= $item->bonus ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span>
                                 </a>
                             <?php } else { ?>

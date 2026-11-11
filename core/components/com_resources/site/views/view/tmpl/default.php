@@ -54,7 +54,12 @@ if ($mode != 'preview') {
                         <h2>
                             <?php echo $txt . $this->escape(stripslashes($this->model->title)); ?>
                             <?php if ($this->model->params->get('access-edit-resource')) { ?>
-                                <a class="icon-edit edit btn" href="<?= Route::url('index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id) ?>">
+                                <?php
+                                $draftUrl = Route::url(
+                                    'index.php?option=com_resources&task=draft&step=1&id=' . $this->model->id,
+                                );
+                                ?>
+                                <a class="icon-edit edit btn" href="<?= $draftUrl ?>">
                                     <?php echo Lang::txt('COM_RESOURCES_EDIT'); ?>
                                 </a>
                             <?php } ?>

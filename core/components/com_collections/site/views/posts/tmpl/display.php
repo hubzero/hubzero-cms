@@ -31,7 +31,10 @@ if (!$no_html) {
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index') ?>">
+            <?php
+            $linkUrl = Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index');
+            ?>
+            <a class="icon-info btn popup" href="<?= $linkUrl ?>">
                 <span><?php echo Lang::txt('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
             </a>
         </p>
@@ -216,7 +219,13 @@ if (!$no_html) {
                     </ol>
                 <?php } ?>
                 <?php if (!User::isGuest()) { ?>
-                    <form action="<?= Route::url($base . '&post=' . $this->post->get('id') . '&task=savecomment' . ($this->no_html ? '&no_html=' . $this->no_html : '')) ?>" method="post" id="commentform" enctype="multipart/form-data">
+                    <?php
+                    $savecommentUrl = Route::url(
+                        $base . '&post=' . $this->post->get('id') . '&task=savecomment'
+                            . ($this->no_html ? '&no_html=' . $this->no_html : ''),
+                    );
+                    ?>
+                    <form action="<?= $savecommentUrl ?>" method="post" id="commentform" enctype="multipart/form-data">
                         <p class="comment-member-photo">
                             <img src="<?= User::picture(0) ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes(User::get('name')))) ?>" />
                         </p>
@@ -276,7 +285,10 @@ if (!$no_html) {
 
         </div>
         <div class="col span4 omega">
-            <div class="post full collection" id="b<?= $this->collection->get('id') ?>" data-id="<?= $this->collection->get('id') ?>" data-closeup-url="<?= Route::url($base . '&controller=posts&collection=' . $this->collection->get('id')) ?>">
+            <?php
+            $dataCloseupUrlUrl = Route::url($base . '&controller=posts&collection=' . $this->collection->get('id'));
+            ?>
+            <div class="post full collection" id="b<?= $this->collection->get('id') ?>" data-id="<?= $this->collection->get('id') ?>" data-closeup-url="<?= $dataCloseupUrlUrl ?>">
                 <div class="content">
                     <?php
                         $this
@@ -320,7 +332,13 @@ if (!$no_html) {
                                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                                         </a>
                                 <?php } else { ?>
-                                        <a class="btn repost" data-id="<?= $this->collection->get('id') ?>" href="<?= Route::url($base . '&controller=posts&board=' . $this->collection->get('id') . '&task=collect') ?>">
+                                        <?php
+                                        $collectUrl = Route::url(
+                                            $base . '&controller=posts&board=' . $this->collection->get('id')
+                                                . '&task=collect',
+                                        );
+                                        ?>
+                                        <a class="btn repost" data-id="<?= $this->collection->get('id') ?>" href="<?= $collectUrl ?>">
                                             <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                         </a>
                                     <?php if ($this->collection->isFollowing()) { ?>
@@ -342,10 +360,31 @@ if (!$no_html) {
                                     <?php } ?>
                                 <?php } ?>
                             <?php } else { ?>
-                                <a class="btn repost tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $this->collection->get('id') . '&task=collect', false, true)), false) ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($this->collection->get('title')) ?>">
+                                <?php
+                                $collectUrl = Route::url(
+                                    'index.php?option=com_users&view=login&return='
+                                        . base64_encode(
+                                            Route::url(
+                                                $base . '&controller=posts&board=' . $this->collection->get('id')
+                                                    . '&task=collect',
+                                                false,
+                                                true,
+                                            ),
+                                        ),
+                                    false,
+                                );
+                                ?>
+                                <a class="btn repost tooltips" href="<?= $collectUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($this->collection->get('title')) ?>">
                                     <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                 </a>
-                                <a class="btn follow tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->collection->link(), false, true)), false) ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($this->collection->get('title')) ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    'index.php?option=com_users&view=login&return='
+                                        . base64_encode(Route::url($this->collection->link(), false, true)),
+                                    false,
+                                );
+                                ?>
+                                <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($this->collection->get('title')) ?>">
                                     <span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
                                 </a>
                             <?php } ?>
@@ -445,7 +484,13 @@ if (!$no_html) {
                                                 <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                                             </a>
                                     <?php } else { ?>
-                                            <a class="btn repost" data-id="<?= $collection->get('id') ?>" href="<?= Route::url($base . '&controller=posts&board=' . $collection->get('id') . '&task=collect') ?>">
+                                            <?php
+                                            $collectUrl = Route::url(
+                                                $base . '&controller=posts&board=' . $collection->get('id')
+                                                    . '&task=collect',
+                                            );
+                                            ?>
+                                            <a class="btn repost" data-id="<?= $collection->get('id') ?>" href="<?= $collectUrl ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                         <?php if ($collection->isFollowing()) { ?>
@@ -467,10 +512,31 @@ if (!$no_html) {
                                         <?php } ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <a class="btn repost tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=posts&board=' . $collection->get('id') . '&task=collect', false, true)), false) ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($collection->get('title')) ?>">
+                                    <?php
+                                    $collectUrl = Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(
+                                                Route::url(
+                                                    $base . '&controller=posts&board=' . $collection->get('id')
+                                                        . '&task=collect',
+                                                    false,
+                                                    true,
+                                                ),
+                                            ),
+                                        false,
+                                    );
+                                    ?>
+                                    <a class="btn repost tooltips" href="<?= $collectUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($collection->get('title')) ?>">
                                         <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
-                                    <a class="btn follow tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($collection->link(), false, true)), false) ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($collection->get('title')) ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(Route::url($collection->link(), false, true)),
+                                        false,
+                                    );
+                                    ?>
+                                    <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($collection->get('title')) ?>">
                                         <span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
                                     </a>
                                 <?php } ?>

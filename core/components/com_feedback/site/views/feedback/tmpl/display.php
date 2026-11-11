@@ -29,9 +29,18 @@ $this
         <div class="col span4 omega">
             <h3><?php echo Lang::txt('COM_FEEDBACK_PARTICIPATE'); ?></h3>
             <ul>
-                <li><a href="<?= Route::url('index.php?option=com_answers') ?>"><?= Lang::txt('COM_FEEDBACK_LINK_ANSWERS') ?></a></li>
-                <li><a href="<?= Route::url('index.php?option=com_forum') ?>"><?= Lang::txt('COM_FEEDBACK_LINK_FORUM') ?></a></li>
-                <li><a href="<?= Route::url('index.php?option=com_groups') ?>"><?= Lang::txt('COM_FEEDBACK_LINK_GROUPS') ?></a></li>
+                <?php
+                $linkUrl = Route::url('index.php?option=com_answers');
+                ?>
+                <li><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_FEEDBACK_LINK_ANSWERS') ?></a></li>
+                <?php
+                $linkUrl = Route::url('index.php?option=com_forum');
+                ?>
+                <li><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_FEEDBACK_LINK_FORUM') ?></a></li>
+                <?php
+                $linkUrl = Route::url('index.php?option=com_groups');
+                ?>
+                <li><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_FEEDBACK_LINK_GROUPS') ?></a></li>
             </ul>
         </div>
     </div>
@@ -46,16 +55,28 @@ $this
             <div class="grid">
                 <div class="col span6">
                     <div class="story">
-                        <h3><a href="<?= Route::url('index.php?option=' . $this->option . '&task=success_story') ?>"><?= Lang::txt('COM_FEEDBACK_STORY_HEADER') ?></a></h3>
+                        <?php
+                        $successStoryUrl = Route::url('index.php?option=' . $this->option . '&task=success_story');
+                        ?>
+                        <h3><a href="<?= $successStoryUrl ?>"><?= Lang::txt('COM_FEEDBACK_STORY_HEADER') ?></a></h3>
                         <p><?php echo Lang::txt('COM_FEEDBACK_STORY_OTHER_OPTIONS'); ?></p>
-                        <p><a class="more btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=success_story') ?>"><?= Lang::txt('COM_FEEDBACK_STORY_BUTTON') ?></a></p>
+                        <?php
+                        $successStoryUrl = Route::url('index.php?option=' . $this->option . '&task=success_story');
+                        ?>
+                        <p><a class="more btn" href="<?= $successStoryUrl ?>"><?= Lang::txt('COM_FEEDBACK_STORY_BUTTON') ?></a></p>
                     </div>
                 </div><!-- / .col span6 -->
                 <div class="col span6 omega">
                     <div class="report">
-                        <h3><a href="<?= Route::url('index.php?option=com_support&controller=tickets&task=new') ?>"><?= Lang::txt('COM_FEEDBACK_TROUBLE_HEADER') ?></a></h3>
+                        <?php
+                        $newUrl = Route::url('index.php?option=com_support&controller=tickets&task=new');
+                        ?>
+                        <h3><a href="<?= $newUrl ?>"><?= Lang::txt('COM_FEEDBACK_TROUBLE_HEADER') ?></a></h3>
                         <p><?php echo Lang::txt('COM_FEEDBACK_TROUBLE_INTRO'); ?></p>
-                        <p><a class="more btn" href="<?= Route::url('index.php?option=com_support&controller=tickets&task=new') ?>"><?= Lang::txt('COM_FEEDBACK_TROUBLE_BUTTON') ?></a></p>
+                        <?php
+                        $newUrl = Route::url('index.php?option=com_support&controller=tickets&task=new');
+                        ?>
+                        <p><a class="more btn" href="<?= $newUrl ?>"><?= Lang::txt('COM_FEEDBACK_TROUBLE_BUTTON') ?></a></p>
                     </div>
                 </div><!-- / .col span6 omega -->
             </div><!-- / .grid -->
@@ -64,18 +85,30 @@ $this
                     <div class="col span6">
                     <?php if ($this->wishlist) { ?>
                         <div class="wish">
-                            <h3><a href="<?= Route::url('index.php?option=com_wishlist') ?>"><?= Lang::txt('COM_FEEDBACK_WISHLIST_HEADER') ?></a></h3>
+                            <?php
+                            $linkUrl = Route::url('index.php?option=com_wishlist');
+                            ?>
+                            <h3><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_FEEDBACK_WISHLIST_HEADER') ?></a></h3>
                             <p><?php echo Lang::txt('COM_FEEDBACK_WISHLIST_DESCRIPTION'); ?></p>
-                            <p><a class="more btn" href="<?= Route::url('index.php?option=com_wishlist') ?>"><?= Lang::txt('COM_FEEDBACK_WISHLIST_BUTTON') ?></a></p>
+                            <?php
+                            $linkUrl = Route::url('index.php?option=com_wishlist');
+                            ?>
+                            <p><a class="more btn" href="<?= $linkUrl ?>"><?= Lang::txt('COM_FEEDBACK_WISHLIST_BUTTON') ?></a></p>
                         </div>
                     <?php } ?>
                     </div><!-- / .col span6 -->
                     <div class="col span6 omega">
                     <?php if ($this->poll) { ?>
                         <div class="poll">
-                            <h3><a href="<?= Route::url('index.php?option=' . $this->option . '&task=poll') ?>"><?= Lang::txt('COM_FEEDBACK_POLL_HEADER') ?></a></h3>
+                            <?php
+                            $pollUrl = Route::url('index.php?option=' . $this->option . '&task=poll');
+                            ?>
+                            <h3><a href="<?= $pollUrl ?>"><?= Lang::txt('COM_FEEDBACK_POLL_HEADER') ?></a></h3>
                             <p><?php echo Lang::txt('COM_FEEDBACK_POLL_DESCRIPTION'); ?></p>
-                            <p><a class="more btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=poll') ?>"><?= Lang::txt('COM_FEEDBACK_POLL_BUTTON') ?></a></p>
+                            <?php
+                            $pollUrl = Route::url('index.php?option=' . $this->option . '&task=poll');
+                            ?>
+                            <p><a class="more btn" href="<?= $pollUrl ?>"><?= Lang::txt('COM_FEEDBACK_POLL_BUTTON') ?></a></p>
                         </div>
                     <?php } ?>
                     </div><!-- / .col span6 omega -->

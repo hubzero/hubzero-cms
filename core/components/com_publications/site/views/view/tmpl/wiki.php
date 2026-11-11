@@ -26,7 +26,10 @@ $html = str_replace('projects/projects/', 'projects/', $html);
 $html = str_replace($this->page->scope . DS . $this->page->pagename, 'wiki/' . $this->page->id, $html);
 ?>
 <div class="wiki-wrap">
-    <p class="wiki-back"><a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id) ?>"><?= Lang::txt('COM_PUBLICATIONS_BACK_TO_PUBLICATION') ?>  &ldquo;<?= $this->escape($this->publication->title) ?>&rdquo;</a></p>
+    <?php
+    $linkUrl = Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id);
+    ?>
+    <p class="wiki-back"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_BACK_TO_PUBLICATION') ?>  &ldquo;<?= $this->escape($this->publication->title) ?>&rdquo;</a></p>
     <div class="wiki-content">
         <h1 class="page-title"><?php echo $this->escape($this->page->title); ?></h1>
         <div class="wikipage"><?php echo $html; ?></div>

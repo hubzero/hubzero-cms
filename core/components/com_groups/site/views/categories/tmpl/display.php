@@ -14,7 +14,12 @@ defined('_HZEXEC_') or die();
 ?>
 <ul class="toolbar toolbar-categories">
     <li class="new">
-        <a class="btn icon-add" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=categories&task=add') ?>">
+        <?php
+        $addUrl = Route::url(
+            'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=categories&task=add',
+        );
+        ?>
+        <a class="btn icon-add" href="<?= $addUrl ?>">
             <?php echo Lang::txt('COM_GROUPS_PAGES_NEW_CATEGORY'); ?>
         </a>
     </li>
@@ -26,7 +31,13 @@ defined('_HZEXEC_') or die();
             <li>
                 <div class="item-container">
                     <div class="item-title">
-                        <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=categories&task=edit&categoryid=' . $category->get('id')) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                . '&controller=categories&task=edit&categoryid=' . $category->get('id'),
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <?php echo $this->escape($category->get('title')); ?>
                         </a>
                     </div>
@@ -42,14 +53,32 @@ defined('_HZEXEC_') or die();
                     <div class="item-color category-<?php echo $category->get('id'); ?>"></div>
 
                     <div class="item-controls btn-group dropdown">
-                        <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=categories&task=edit&categoryid=' . $category->get('id')) ?>" class="btn">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                . '&controller=categories&task=edit&categoryid=' . $category->get('id'),
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>" class="btn">
                             <?php echo Lang::txt('COM_GROUPS_PAGES_MANAGE_CATEGORY'); ?>
                         </a>
                         <span class="btn dropdown-toggle"></span>
                         <ul class="dropdown-menu">
-                            <li><a class="icon-edit" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=categories&task=edit&categoryid=' . $category->get('id')) ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_CATEGORY') ?></a></li>
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                    . '&controller=categories&task=edit&categoryid=' . $category->get('id'),
+                            );
+                            ?>
+                            <li><a class="icon-edit" href="<?= $editUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_CATEGORY') ?></a></li>
                             <li class="divider"></li>
-                            <li><button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=categories&task=delete&categoryid=' . $category->get('id')) ?>" class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_CATEGORY') ?></button></li>
+                            <?php
+                            $deleteUrl = Route::url(
+                                'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                    . '&controller=categories&task=delete&categoryid=' . $category->get('id'),
+                            );
+                            ?>
+                            <li><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete"> <?= Lang::txt('COM_GROUPS_PAGES_DELETE_CATEGORY') ?></button></li>
                         </ul>
                     </div>
                 </div>

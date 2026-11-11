@@ -153,7 +153,13 @@ $stateSelected = function ($value) {
                     cols="35"><?= $this->escape(stripslashes($this->row->get('content'))) ?></textarea>
             </div>
 
-            <iframe width="100%" height="225" name="filelist" id="filelist" frameborder="0" src="<?= Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $id . '&course=' . $this->escape($this->course_id)) ?>"></iframe>
+            <?php
+            $sourceUrl = Route::url(
+                'index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $id . '&course='
+                    . $this->escape($this->course_id),
+            );
+            ?>
+            <iframe width="100%" height="225" name="filelist" id="filelist" frameborder="0" src="<?= $sourceUrl ?>"></iframe>
         </fieldset>
     </div>
 

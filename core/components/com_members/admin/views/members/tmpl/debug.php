@@ -27,7 +27,13 @@ $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debug&id=' . (int) $this->user->get('id')) ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$debugUrl = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debug&id='
+        . (int) $this->user->get('id'),
+);
+?>
+<form action="<?= $debugUrl ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="filter-search col span5">

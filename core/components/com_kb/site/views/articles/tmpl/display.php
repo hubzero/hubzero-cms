@@ -52,7 +52,12 @@ Document::setTitle(Lang::txt('COM_KB'));
                     <div class="grid">
                         <div class="col span-half">
                             <h4>
-                                <a href="<?= Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=popularity') ?>">
+                                <?php
+                                $articleUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&task=article&section=all&order=popularity',
+                                );
+                                ?>
+                                <a href="<?= $articleUrl ?>">
                                     <?= Lang::txt('COM_KB_POPULAR_ARTICLES') ?> <span class="more">&raquo;</span>
                                 </a>
                             </h4>
@@ -80,7 +85,12 @@ Document::setTitle(Lang::txt('COM_KB'));
                         </div><!-- / .col span-half -->
                         <div class="col span-half omega">
                             <h4>
-                                <a href="<?= Route::url('index.php?option=' . $this->option . '&task=article&section=all&order=recent') ?>">
+                                <?php
+                                $articleUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&task=article&section=all&order=recent',
+                                );
+                                ?>
+                                <a href="<?= $articleUrl ?>">
                                     <?php echo Lang::txt('COM_KB_RECENT_ARTICLES'); ?> <span class="more">&raquo;</span>
                                 </a>
                             </h4>

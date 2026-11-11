@@ -135,7 +135,13 @@ if (!$this->dependency) {
                             <label for="cb<?= $k ?>" class="sr-only visually-hidden"><?= $newsletter->id ?></label>
                         </td>
                         <td>
-                            <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $newsletter->id) ?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=edit&id=' . $newsletter->id,
+                            );
+                            ?>
+                            <a href="<?= $editUrl ?>">
                                 <?php echo $this->escape($newsletter->name); ?>
                             </a>
                         </td>
@@ -160,11 +166,24 @@ if (!$this->dependency) {
                         </td>
                         <td class="priority-2">
                             <?php if ($newsletter->published) : ?>
-                                <a class="state yes" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unpublish&id=' . $newsletter->id . '&' . Session::getFormToken() . '=1') ?>">
+                                <?php
+                                $unpublishUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&task=unpublish&id=' . $newsletter->id . '&' . Session::getFormToken()
+                                        . '=1',
+                                );
+                                ?>
+                                <a class="state yes" href="<?= $unpublishUrl ?>">
                                     <span><?php echo Lang::txt('JYES'); ?></span>
                                 </a>
                             <?php else : ?>
-                                <a class="state no" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=publish&id=' . $newsletter->id . '&' . Session::getFormToken() . '=1') ?>">
+                                <?php
+                                $publishUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&task=publish&id=' . $newsletter->id . '&' . Session::getFormToken() . '=1',
+                                );
+                                ?>
+                                <a class="state no" href="<?= $publishUrl ?>">
                                     <span><?php echo Lang::txt('JNO'); ?></span>
                                 </a>
                             <?php endif; ?>

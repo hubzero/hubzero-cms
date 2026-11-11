@@ -181,8 +181,14 @@ if (isset($this->messages)) {
                                             href="<?= Route::url($base . '&action=edit&cid=' . $cite->id) ?>"></span>
                                             <span><?php echo Lang::txt('PLG_MEMBERS_CITATIONS_EDIT'); ?></span>
                                         </a></td>
-                                        <td class="col-delete"><button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&action=delete&cid=' . $cite->id) ?>" class="icon-delete delete individual protected" data-confirm="<?= Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE') ?>"><span><?= Lang::txt('PLG_MEMBERS_CITATIONS_DELETE') ?></span></button></td>
-                                        <td class="col-publish"><button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&action=publish&cid=' . $cite->id) ?>" class="icon-window-publish individual publish"><span><?= ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_MEMBERS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH') . '</strong>' ?></span></button></td>
+                                        <?php
+                                        $deleteUrl = Route::url($base . '&action=delete&cid=' . $cite->id);
+                                        ?>
+                                        <td class="col-delete"><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete individual protected" data-confirm="<?= Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE') ?>"><span><?= Lang::txt('PLG_MEMBERS_CITATIONS_DELETE') ?></span></button></td>
+                                        <?php
+                                        $publishUrl = Route::url($base . '&action=publish&cid=' . $cite->id);
+                                        ?>
+                                        <td class="col-publish"><button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="icon-window-publish individual publish"><span><?= ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_MEMBERS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH') . '</strong>' ?></span></button></td>
                                     <?php endif; ?>
                                 </tr>
                                 <tr>
@@ -277,7 +283,12 @@ if (isset($this->messages)) {
                     <div class="btn-cluster">
                         <input type="submit" class="btn btn-success"
                             value="<?= Lang::txt('PLG_MEMBERS_CITATIONS_FILTER') ?>" />
-                        <a href="<?= Route::url('index.php?option=com_members&id=' . $this->member->get('id') . '&active=citations') ?>" class="btn">Reset</a>
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=com_members&id=' . $this->member->get('id') . '&active=citations',
+                        );
+                        ?>
+                        <a href="<?= $linkUrl ?>" class="btn">Reset</a>
                     </div>
                 </fieldset>
             </div><!-- /.aside -->

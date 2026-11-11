@@ -28,7 +28,13 @@ $this
                     <caption>
                         <span class="icon-home home">
                             <?php if (count($this->dirtree) > 0) { ?>
-                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component') ?>"><?= Lang::txt('COM_TOOLS_HOME') ?></a>
+                                <?php
+                                $filelistUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&task=filelist&tmpl=component',
+                                );
+                                ?>
+                                <a href="<?= $filelistUrl ?>"><?= Lang::txt('COM_TOOLS_HOME') ?></a>
                             <?php } else { ?>
                                 <span><?php echo Lang::txt('COM_TOOLS_HOME'); ?></span>
                             <?php } ?>
@@ -45,7 +51,13 @@ $this
                                     <span class="arrow">&raquo;</span>
                                     <span class="icon-folder folder">
                                         <?php if ($i != count($this->dirtree)) { ?>
-                                            <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&listdir=' . $path) ?>"><?= ucfirst($branch) ?></a>
+                                            <?php
+                                            $filelistUrl = Route::url(
+                                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                    . '&task=filelist&tmpl=component&listdir=' . $path,
+                                            );
+                                            ?>
+                                            <a href="<?= $filelistUrl ?>"><?= ucfirst($branch) ?></a>
                                         <?php } else { ?>
                                             <span><?php echo ucfirst($branch); ?></span>
                                         <?php } ?>
@@ -69,7 +81,13 @@ $this
                         ?>
                         <tr>
                             <td width="100%">
-                                <a class="icon-folder" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component&listdir=' . urlencode($d)) ?>">
+                                <?php
+                                $filelistUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&task=filelist&tmpl=component&listdir=' . urlencode($d),
+                                );
+                                ?>
+                                <a class="icon-folder" href="<?= $filelistUrl ?>">
                                     <?php echo $dir; ?>
                                 </a>
                             </td>

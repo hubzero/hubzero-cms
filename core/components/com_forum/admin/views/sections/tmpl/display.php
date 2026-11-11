@@ -233,7 +233,13 @@ $filterStateSelected = function ($value) {
                     </td>
                     <td>
                         <?php if ($canDo->get('core.edit')) { ?>
-                            <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=edit&id=' . $row->get('id'),
+                            );
+                            ?>
+                            <a href="<?= $editUrl ?>">
                                 <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                             </a>
                         <?php } else { ?>
@@ -244,7 +250,13 @@ $filterStateSelected = function ($value) {
                     </td>
                     <td class="priority-2">
                         <?php if ($canDo->get('core.edit.state')) { ?>
-                            <a class="state <?= $cls ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $task) ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task='
+                                    . $task . '&id=' . $row->get('id') . '&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                            <a class="state <?= $cls ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $task) ?>">
                                 <span><?php echo $alt; ?></span>
                             </a>
                         <?php } else { ?>
@@ -263,7 +275,13 @@ $filterStateSelected = function ($value) {
                     </td>
                     <td>
                         <?php if ($cat > 0) { ?>
-                            <a class="glyph category" href="<?= Route::url('index.php?option=' . $this->option . '&controller=categories&section_id=' . $row->get('id')) ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=categories&section_id='
+                                    . $row->get('id'),
+                            );
+                            ?>
+                            <a class="glyph category" href="<?= $linkUrl ?>">
                                 <span><?php echo $cat; ?></span>
                             </a>
                         <?php } else { ?>

@@ -44,12 +44,18 @@ if ($this->group->isSuperGroup()) {
     <?php elseif (in_array(User::get("id"), $this->group->get("invitees"))) : ?>
         <?php if ($membership_control == 1) : ?>
             <li>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept') ?>" class="invited btn btn-success icon">
+                <?php
+                $acceptUrl = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=accept');
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>" class="invited btn btn-success icon">
                     <?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>
                 </button>
             </li>
             <li>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=cancel') ?>" class="invited btn btn-secondary"><?= Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') ?></button>
+                <?php
+                $cancelUrl = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=cancel');
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $cancelUrl ?>" class="invited btn btn-secondary"><?= Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') ?></button>
             </li>
         <?php endif; ?>
     <?php elseif ($this->group->get('join_policy') == 3 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
@@ -63,7 +69,10 @@ if ($this->group->isSuperGroup()) {
     <?php elseif ($this->group->get('join_policy') == 0 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
         <?php if ($membership_control == 1) : ?>
             <li>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=join') ?>" class="join btn"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></button>
+                <?php
+                $joinUrl = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=join');
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $joinUrl ?>" class="join btn"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></button>
             </li>
         <?php endif; ?>
     <?php elseif ($this->group->get('join_policy') == 1 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
@@ -72,7 +81,10 @@ if ($this->group->isSuperGroup()) {
                 <li><span class="pending" role="status"><?= Lang::txt('COM_GROUPS_TOOLBAR_PENDING') ?></span></li>
             <?php else : ?>
                 <li>
-                    <a class="request btn" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=join') ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_REQUEST') ?></a>
+                    <?php
+                    $joinUrl = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=join');
+                    ?>
+                    <a class="request btn" href="<?= $joinUrl ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_REQUEST') ?></a>
                 </li>
             <?php endif; ?>
         <?php endif; ?>

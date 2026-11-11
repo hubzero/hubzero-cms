@@ -26,22 +26,43 @@ if (substr($this->xmessage->type, -8) == '_message') {
 <div class="subject">
     <?php if (!$this->no_html) : ?>
     <ul class="entries-menu">
-        <li><a class="active" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages') ?>"><span><?= Lang::txt('PLG_GROUPS_MESSAGES_SENT') ?></span></a></li>
+        <?php
+        $linkUrl = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages',
+        );
+        ?>
+        <li><a class="active" href="<?= $linkUrl ?>"><span><?= Lang::txt('PLG_GROUPS_MESSAGES_SENT') ?></span></a></li>
         <?php if ($this->authorized == 'admin' || $this->authorized == 'manager') { ?>
-            <li><a href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages&action=new') ?>"><span><?= Lang::txt('PLG_GROUPS_MESSAGES_SEND') ?></span></a></li>
+            <?php
+            $newUrl = Route::url(
+                'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages&action=new',
+            );
+            ?>
+            <li><a href="<?= $newUrl ?>"><span><?= Lang::txt('PLG_GROUPS_MESSAGES_SEND') ?></span></a></li>
         <?php } ?>
     </ul>
     <br class="clear" />
     <?php endif; ?>
 
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages') ?>" method="post">
+    <?php
+    $actionUrl = Route::url(
+        'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages',
+    );
+    ?>
+    <form action="<?= $actionUrl ?>" method="post">
         <fieldset class="hub-mail">
             <table class="groups entries">
                 <caption>
                     <?php echo Lang::txt('PLG_GROUPS_MESSAGE'); ?>
                     <?php if (!$this->no_html) : ?>
                         <span>
-                            <small>( <a href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages') ?>"><?= Lang::txt('&lsaquo; Back to Sent Messages') ?></a> )</small>
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')
+                                    . '&active=messages',
+                            );
+                            ?>
+                            <small>( <a href="<?= $linkUrl ?>"><?= Lang::txt('&lsaquo; Back to Sent Messages') ?></a> )</small>
                         </span>
                     <?php endif; ?>
                 </caption>

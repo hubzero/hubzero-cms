@@ -110,7 +110,13 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                             <?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
                         </span>
                     <?php } else { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->id,
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
                         </a>
                     <?php } ?>
@@ -194,7 +200,12 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                     <?php endif; ?>
                 </td>
                 <td>
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=pages&event_id=' . $row->id) ?>">
+                    <?php
+                    $linkUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=pages&event_id=' . $row->id,
+                    );
+                    ?>
+                    <a href="<?= $linkUrl ?>">
                         <?php echo Lang::txt('COM_EVENTS_EVENT_NUMBER_OF_PAGES', $pages); ?>
                     </a>
                 </td>

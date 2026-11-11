@@ -142,7 +142,10 @@ $now = Date::of('now')->toSql();
                         <?php } elseif ($this->config->get('access-create-post')) { ?>
                             <p class="comment-title">
                                 <strong>
-                                    <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>"><?= $this->escape(stripslashes(User::get('name'))) ?></a>
+                                    <?php
+                                    $linkUrl = Route::url('index.php?option=com_members&id=' . User::get('id'));
+                                    ?>
+                                    <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes(User::get('name'))) ?></a>
                                 </strong>
                                 <span class="permalink">
                                     <span class="comment-date-at"><?php echo Lang::txt('COM_FORUM_AT'); ?></span>
@@ -289,7 +292,12 @@ $now = Date::of('now')->toSql();
                             if (!$participant->get('anonymous')) {
                                 ?>
                                 <li>
-                                    <a class="member" href="<?= Route::url('index.php?option=com_members&id=' . $participant->get('created_by')) ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=com_members&id=' . $participant->get('created_by'),
+                                    );
+                                    ?>
+                                    <a class="member" href="<?= $linkUrl ?>">
                                         <?= $this->escape(stripslashes($participant->get('name'))) ?: Lang::txt('COM_FORUM_ANONYMOUS') ?>
                                     </a>
                                 </li>
@@ -336,7 +344,13 @@ $now = Date::of('now')->toSql();
                                 }
                                 ?>
                             <li>
-                                <a class="<?= $cls ?> attachment" href="<?= Route::url($this->thread->link() . '&post=' . $attachment->get('post_id') . '&file=' . $attachment->get('filename')) ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    $this->thread->link() . '&post=' . $attachment->get('post_id') . '&file='
+                                        . $attachment->get('filename'),
+                                );
+                                ?>
+                                <a class="<?= $cls ?> attachment" href="<?= $linkUrl ?>">
                                     <?php echo $this->escape(stripslashes($title)); ?>
                                 </a>
                             </li>

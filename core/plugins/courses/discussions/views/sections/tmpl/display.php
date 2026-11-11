@@ -98,7 +98,12 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                                 && $this->edit != $section->get('alias')
                                 && $section->get('id')
                             ) { ?>
-                                <a class="edit" href="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=edit#s' . $section->get('id')) ?>" title="<?= Lang::txt('Edit') ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    $base . '&b=' . $section->get('alias') . '&c=edit#s' . $section->get('id'),
+                                );
+                                ?>
+                                <a class="edit" href="<?= $linkUrl ?>" title="<?= Lang::txt('Edit') ?>">
                                     <span><?php echo Lang::txt('Edit'); ?></span>
                                 </a>
                             <?php } ?>
@@ -168,7 +173,13 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                                                 )
                                                 && $section->get('id')
                                             ) { ?>
-                                                <a class="edit" href="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias') . '/edit') ?>" title="<?= Lang::txt('Edit') ?>">
+                                                <?php
+                                                $linkUrl = Route::url(
+                                                    $base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias')
+                                                        . '/edit',
+                                                );
+                                                ?>
+                                                <a class="edit" href="<?= $linkUrl ?>" title="<?= Lang::txt('Edit') ?>">
                                                     <span><?php echo Lang::txt('Edit'); ?></span>
                                                 </a>
                                             <?php } ?>
@@ -176,7 +187,13 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                                             if (
                                                 $this->config->get('access-delete-category') && $section->get('id')
                                             ) { ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias') . '/delete') ?>" class="delete tooltips" title="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY') ?>"><span><?= Lang::txt('Delete') ?></span></button>
+                                                <?php
+                                                $actionUrl = Route::url(
+                                                    $base . '&b=' . $section->get('alias') . '&c=' . $row->get('alias')
+                                                        . '/delete',
+                                                );
+                                                ?>
+                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete tooltips" title="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE_CATEGORY') ?>"><span><?= Lang::txt('Delete') ?></span></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>

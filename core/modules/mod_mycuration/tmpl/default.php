@@ -17,7 +17,10 @@ $this->css();
 ?>
 <div<?php echo ($this->moduleclass) ? ' class="' . $this->moduleclass . '"' : ''; ?>>
     <ul class="module-nav">
-        <li><a class="icon-browse" href="<?= Route::url('index.php?option=com_publications&controller=curation') ?>"><?= Lang::txt('MOD_MYCURATION_ALL_TASKS') ?></a></li>
+        <?php
+        $linkUrl = Route::url('index.php?option=com_publications&controller=curation');
+        ?>
+        <li><a class="icon-browse" href="<?= $linkUrl ?>"><?= Lang::txt('MOD_MYCURATION_ALL_TASKS') ?></a></li>
     </ul>
 
     <h4>

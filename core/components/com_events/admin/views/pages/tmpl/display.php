@@ -36,7 +36,10 @@ Toolbar::deleteList();
         <thead>
             <tr>
                 <th colspan="6">
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id) ?>">
+                    <?php
+                    $editUrl = Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->event->id);
+                    ?>
+                    <a href="<?= $editUrl ?>">
                         <?php echo $this->escape(stripslashes($this->event->title)); ?>
                     </a>
                 </th>
@@ -78,7 +81,13 @@ Toolbar::deleteList();
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     </td>
                     <td><?php echo $row->id; ?></td>
-                    <td><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&event_id=' . $this->event->id) ?>"><?= $this->escape(stripslashes($row->title)) . ' (' . $this->escape(stripslashes($row->alias)) . ')' ?></a></td>
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row->id . '&event_id=' . $this->event->id,
+                    );
+                    ?>
+                    <td><a href="<?= $editUrl ?>"><?= $this->escape(stripslashes($row->title)) . ' (' . $this->escape(stripslashes($row->alias)) . ')' ?></a></td>
                     <td>
                         <?php echo $pageNav->orderUpIcon($i, ($row->ordering != ($orderings[$i - 1] ?? null))); ?>
                     </td>

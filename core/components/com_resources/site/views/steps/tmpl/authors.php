@@ -54,7 +54,12 @@ $accessSelected = function ($value) {
         <p class="error"><?php echo $this->getError(); ?></p>
     <?php } ?>
 
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id) ?>" method="post" id="hubForm">
+    <?php
+    $draftUrl = Route::url(
+        'index.php?option=' . $this->option . '&task=draft&step=' . $this->next_step . '&id=' . $this->id,
+    );
+    ?>
+    <form action="<?= $draftUrl ?>" method="post" id="hubForm">
         <div class="explaination">
             <h4><?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_HEADER'); ?></h4>
             <p><?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_EXPLANATION'); ?></p>

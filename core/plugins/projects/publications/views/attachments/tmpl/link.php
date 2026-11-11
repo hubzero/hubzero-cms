@@ -28,7 +28,12 @@ $viewer  = $this->data->viewer;
                 <a href="<?= Route::url($data->editUrl . '&action=edititem&aid=' . $data->id . '&p=' . $data->props) ?>"
                     class="showinbox item-edit"
                     title="<?= strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE')) ?>">&nbsp;</a>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
+                <?php
+                $deleteitemUrl = Route::url(
+                    $data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props,
+                );
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
             </span>
         <?php } ?>
         </span>

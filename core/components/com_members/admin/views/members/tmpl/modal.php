@@ -22,7 +22,13 @@ $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 ?>
 <h2 class="modal-title"><?php echo Lang::txt('Users'); ?></h2>
-<form action="<?= Route::url('index.php?option=com_members&controllers=members&task=modal&tmpl=component&groups=' . Request::getString('groups', '') . '&excluded=' . Request::getString('excluded', '')) ?>" method="post" name="adminForm" id="adminForm">
+<?php
+$modalUrl = Route::url(
+    'index.php?option=com_members&controllers=members&task=modal&tmpl=component&groups='
+        . Request::getString('groups', '') . '&excluded=' . Request::getString('excluded', ''),
+);
+?>
+<form action="<?= $modalUrl ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar" class="filter clearfix">
         <div class="grid">
             <div class="col span8">

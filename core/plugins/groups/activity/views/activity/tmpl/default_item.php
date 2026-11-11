@@ -256,7 +256,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                     <?php } ?>
                     <?php if ($this->canModerate || $this->plugin->isOwnContent($this->row->log)) { ?>
                     <li>
-                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&action=remove&activity=' . $this->row->get('id')) ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_GROUPS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_GROUPS_ACTIVITY_DELETE') ?></button>
+                        <?php
+                        $removeUrl = Route::url($base . '&action=remove&activity=' . $this->row->get('id'));
+                        ?>
+                        <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_GROUPS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_GROUPS_ACTIVITY_DELETE') ?></button>
                     </li>
                     <?php } ?>
                     <?php /*<li>

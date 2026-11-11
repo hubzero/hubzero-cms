@@ -120,19 +120,37 @@ $classAliasSelected = function ($value) {
         $i = 0;
         foreach ($this->rows as $row) {
             ?>
-            <tr class="<?= "row$k quota-row" ?>" data-quota="<?= Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage&id=' . $row->get('id'), false) ?>">
+            <?php
+            $getQuotaUsageUrl = Route::url(
+                'index.php?option=com_members&controller=quotas&task=getQuotaUsage&id=' . $row->get('id'),
+                false,
+            );
+            ?>
+            <tr class="<?= "row$k quota-row" ?>" data-quota="<?= $getQuotaUsageUrl ?>">
                 <td>
                     <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('user_id') ?>"
                         class="checkbox-toggle" />
                     <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->get('user_id') ?></label>
                 </td>
                 <td class="priority-5">
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row->get('id'),
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>">
                         <?php echo $this->escape($row->get('user_id')); ?>
                     </a>
                 </td>
                 <td class="priority-4">
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row->get('id'),
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>">
                         <?php echo $this->escape($row->get('username')); ?>
                     </a>
                 </td>

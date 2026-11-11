@@ -251,7 +251,10 @@ if (count($inst) > 0) {
                         <?php } else { ?>
                             <p class="comment-title">
                                 <strong>
-                                    <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>"><?= $this->escape(User::get('name')) ?></a>
+                                    <?php
+                                    $linkUrl = Route::url('index.php?option=com_members&id=' . User::get('id'));
+                                    ?>
+                                    <a href="<?= $linkUrl ?>"><?= $this->escape(User::get('name')) ?></a>
                                 </strong>
                                 <span class="permalink">
                                     <span class="comment-date-at">@</span>

@@ -25,7 +25,12 @@ $viewer  = $this->data->viewer;
         <span class="item-options">
         <?php if ($viewer == 'edit') { ?>
             <span>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
+                <?php
+                $deleteitemUrl = Route::url(
+                    $data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props,
+                );
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
             </span>
         <?php } ?>
         </span>

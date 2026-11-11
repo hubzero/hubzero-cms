@@ -155,7 +155,13 @@ $this
                             <time datetime="<?= $row->created ?>"><?= Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
                         </td>
                         <td>
-                            <a title="<?= Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE') ?>" class="trash tooltips" href="<?= Route::url($this->member->link() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=inbox&' . Session::getFormToken() . '=1') ?>">
+                            <?php
+                            $sendtotrashUrl = Route::url(
+                                $this->member->link() . '&active=messages&mid[]=' . $row->id
+                                    . '&action=sendtotrash&activetab=inbox&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                            <a title="<?= Lang::txt('PLG_MEMBERS_MESSAGES_DELETE_TITLE') ?>" class="trash tooltips" href="<?= $sendtotrashUrl ?>">
                                 <?php echo Lang::txt('PLG_MEMBERS_MESSAGES_TRASH'); ?>
                             </a>
                         </td>

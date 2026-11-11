@@ -80,7 +80,10 @@ $this
             <div class="clear"></div>
         </div><!-- / #tagbrowser -->
 
-        <p id="viewalltools"><a href="<?= Route::url('index.php?option=' . $this->option . '&type=' . $this->filters['type']) ?>"><?= Lang::txt('COM_RESOURCES_VIEW_MORE') ?></a></p>
+        <?php
+        $linkUrl = Route::url('index.php?option=' . $this->option . '&type=' . $this->filters['type']);
+        ?>
+        <p id="viewalltools"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_RESOURCES_VIEW_MORE') ?></a></p>
         <div class="clear"></div>
 
         <?php

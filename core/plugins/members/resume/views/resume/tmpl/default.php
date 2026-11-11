@@ -37,7 +37,13 @@ $this->css('jobs', 'com_jobs');
 
         <?php if (!$this->editpref) { ?>
                 <span class="includeme">
-                    <a href="<?= Route::url($this->member->link() . '&active=resume&action=activate' . '&on=' . ($this->js->active && $this->file ? 0 : 1)) ?>">
+                    <?php
+                    $activateUrl = Route::url(
+                        $this->member->link() . '&active=resume&action=activate' . '&on='
+                            . ($this->js->active && $this->file ? 0 : 1),
+                    );
+                    ?>
+                    <a href="<?= $activateUrl ?>">
                 <?php if ($this->js->active && $this->file) { ?>
                     [-] <?php echo Lang::txt('PLG_MEMBERS_RESUME_ACTION_HIDE'); ?>
                 <?php } elseif ($this->file) { ?>
@@ -215,7 +221,10 @@ $this->css('jobs', 'com_jobs');
                             <time datetime="<?= $this->resume->created ?>"><?= Date::of($this->resume->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
                         </td>
                         <td>
-                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->member->link() . '&active=resume&action=deleteresume') ?>" class="trash" title="<?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME') ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE') ?></button>
+                            <?php
+                            $deleteresumeUrl = Route::url($this->member->link() . '&active=resume&action=deleteresume');
+                            ?>
+                            <button type="submit" form="hz-post-action" formaction="<?= $deleteresumeUrl ?>" class="trash" title="<?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME') ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE') ?></button>
                         </td>
                     </tr>
                 </tbody>

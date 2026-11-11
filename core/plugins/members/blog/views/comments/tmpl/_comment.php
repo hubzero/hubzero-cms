@@ -112,14 +112,24 @@ if ($this->comment->isReported()) {
 
             <div class="comment-options">
             <?php if ($this->config->get('access-delete-comment')) { ?>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->base . '&action=deletecomment&comment=' . $this->comment->get('id')) ?>" class="icon-delete delete" data-confirm="<?= Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_MEMBERS_BLOG_DELETE') ?></button>
+                <?php
+                $deletecommentUrl = Route::url(
+                    $this->base . '&action=deletecomment&comment=' . $this->comment->get('id'),
+                );
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete" data-confirm="<?= Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_MEMBERS_BLOG_DELETE') ?></button>
             <?php } ?>
             <?php if (!$this->comment->isReported()) { ?>
                 <?php
                 if (
                     $this->config->get('access-edit-comment') || User::get('id') == $this->comment->get('created_by')
                 ) { ?>
-                    <a class="icon-edit edit" href="<?= Route::url($this->base . '&action=editcomment&comment=' . $this->comment->get('id')) ?>"><!--
+                    <?php
+                    $editcommentUrl = Route::url(
+                        $this->base . '&action=editcomment&comment=' . $this->comment->get('id'),
+                    );
+                    ?>
+                    <a class="icon-edit edit" href="<?= $editcommentUrl ?>"><!--
                         --><?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?><!--
                     --></a>
                 <?php } ?>
@@ -139,7 +149,13 @@ if ($this->comment->isReported()) {
                 --></a>
                     <?php } ?>
                 <?php } ?>
-                <a class="icon-abuse abuse" href="<?= Route::url('index.php?option=com_support&task=reportabuse&category=blog&id=' . $this->comment->get('id') . '&parent=' . $this->comment->get('entry_id')) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                <?php
+                $reportabuseUrl = Route::url(
+                    'index.php?option=com_support&task=reportabuse&category=blog&id=' . $this->comment->get('id')
+                        . '&parent=' . $this->comment->get('entry_id'),
+                );
+                ?>
+                <a class="icon-abuse abuse" href="<?= $reportabuseUrl ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('PLG_MEMBERS_BLOG_REPORT_ABUSE'); ?><!--
                 --></a>
             <?php } ?>

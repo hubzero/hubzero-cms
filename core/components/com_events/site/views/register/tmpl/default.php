@@ -24,7 +24,10 @@ $this
     <?php if ($this->authorized) { ?>
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li class="last"><a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=add') ?>"><?= Lang::txt('EVENTS_ADD_EVENT') ?></a></li>
+            <?php
+            $addUrl = Route::url('index.php?option=' . $this->option . '&task=add');
+            ?>
+            <li class="last"><a class="icon-add add btn" href="<?= $addUrl ?>"><?= Lang::txt('EVENTS_ADD_EVENT') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
     <?php } ?>
@@ -32,10 +35,28 @@ $this
 
 <nav>
     <ul class="sub-menu">
-        <li<?= $this->task == 'year' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year) ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_YEAR') ?></span></a></li>
-        <li<?= $this->task == 'month' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month) ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_MONTH') ?></span></a></li>
-        <li<?= $this->task == 'week' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week') ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_WEEK') ?></span></a></li>
-        <li<?= $this->task == 'day' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day) ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_DAY') ?></span></a></li>
+        <?php
+        $linkUrl = Route::url('index.php?option=' . $this->option . '&year=' . $this->year);
+        ?>
+        <li<?= $this->task == 'year' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= $linkUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_YEAR') ?></span></a></li>
+        <?php
+        $linkUrl = Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month);
+        ?>
+        <li<?= $this->task == 'month' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= $linkUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_MONTH') ?></span></a></li>
+        <?php
+        $weekUrl = Route::url(
+            'index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day='
+                . $this->day . '&task=week',
+        );
+        ?>
+        <li<?= $this->task == 'week' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= $weekUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_WEEK') ?></span></a></li>
+        <?php
+        $linkUrl = Route::url(
+            'index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day='
+                . $this->day,
+        );
+        ?>
+        <li<?= $this->task == 'day' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= $linkUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_DAY') ?></span></a></li>
     </ul>
 </nav>
 

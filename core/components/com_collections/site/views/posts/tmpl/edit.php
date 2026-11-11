@@ -59,7 +59,10 @@ $idSelected = function ($value) {
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index') ?>">
+            <?php
+            $linkUrl = Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index');
+            ?>
+            <a class="icon-info btn popup" href="<?= $linkUrl ?>">
                 <span><?php echo Lang::txt('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
             </a>
         </p>
@@ -166,7 +169,13 @@ $idSelected = function ($value) {
                                   // every repost too. The controller allows that only to the item's
                                   // owner; offering the link to anyone else is a 403 waiting to happen.
                             if ($item->get('created_by') == User::get('id')) { ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&post=' . $this->entry->get('id') . '&task=edit&remove=' . $asset->get('id')) ?>" class="icon-delete delete" title="<?= Lang::txt('COM_COLLECTIONS_DELETE_ASSET') ?>">
+                                <?php
+                                $editUrl = Route::url(
+                                    $base . '&post=' . $this->entry->get('id') . '&task=edit&remove='
+                                        . $asset->get('id'),
+                                );
+                                ?>
+                                <button type="submit" form="hz-post-action" formaction="<?= $editUrl ?>" class="icon-delete delete" title="<?= Lang::txt('COM_COLLECTIONS_DELETE_ASSET') ?>">
                                     <?php echo Lang::txt('COM_COLLECTIONS_DELETE'); ?>
                                 </button>
                             <?php } ?>
@@ -267,7 +276,10 @@ $idSelected = function ($value) {
             <input class="btn btn-success" type="submit"
                 value="<?= Lang::txt(strtoupper($this->option) . '_SAVE') ?>" />
             <?php if ($item->get('id')) { ?>
-                <a class="btn btn-secondary" href="<?= Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')) ?>">
+                <?php
+                $linkUrl = Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : ''));
+                ?>
+                <a class="btn btn-secondary" href="<?= $linkUrl ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>
                 </a>
             <?php } ?>

@@ -100,18 +100,35 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                 <?php } ?>
             <?php } ?>
             <span class="options sort-options">
-                <a href="<?= Route::url($this->collection->link() . '&sort=created&viewas=' . $viewas) ?>" class="icon-created<?= $this->filters['sort'] == 'created' ? ' selected' : '' ?>" data-view="sort-created" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_CREATED_SORT') ?>"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_CREATED_SORT') ?></a>
-                <a href="<?= Route::url($this->collection->link() . '&sort=ordering&viewas=' . $viewas) ?>" class="icon-ordering<?= $this->filters['sort'] == 'ordering' ? ' selected' : '' ?>" data-view="sort-ordering" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_ORDERING_SORT') ?>"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_ORDERING_SORT') ?></a>
+                <?php
+                $linkUrl = Route::url($this->collection->link() . '&sort=created&viewas=' . $viewas);
+                ?>
+                <a href="<?= $linkUrl ?>" class="icon-created<?= $this->filters['sort'] == 'created' ? ' selected' : '' ?>" data-view="sort-created" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_CREATED_SORT') ?>"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_CREATED_SORT') ?></a>
+                <?php
+                $linkUrl = Route::url($this->collection->link() . '&sort=ordering&viewas=' . $viewas);
+                ?>
+                <a href="<?= $linkUrl ?>" class="icon-ordering<?= $this->filters['sort'] == 'ordering' ? ' selected' : '' ?>" data-view="sort-ordering" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_ORDERING_SORT') ?>"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_ORDERING_SORT') ?></a>
             </span>
             <span class="options view-options">
-                <a href="<?= Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=grid') ?>" class="icon-grid<?= $viewas == 'grid' ? ' selected' : '' ?>" data-view="view-grid" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_GRID_VIEW') ?>"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_GRID_VIEW') ?></a>
-                <a href="<?= Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=list') ?>" class="icon-list<?= $viewas == 'list' ? ' selected' : '' ?>" data-view="view-list" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIST_VIEW') ?>"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIST_VIEW') ?></a>
+                <?php
+                $linkUrl = Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=grid');
+                ?>
+                <a href="<?= $linkUrl ?>" class="icon-grid<?= $viewas == 'grid' ? ' selected' : '' ?>" data-view="view-grid" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_GRID_VIEW') ?>"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_GRID_VIEW') ?></a>
+                <?php
+                $linkUrl = Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=list');
+                ?>
+                <a href="<?= $linkUrl ?>" class="icon-list<?= $viewas == 'list' ? ' selected' : '' ?>" data-view="view-list" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIST_VIEW') ?>"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIST_VIEW') ?></a>
             </span>
         </p>
     <?php } ?>
 
     <?php if ($this->rows->total() > 0) { ?>
-        <div id="posts" data-base="<?= rtrim(Request::base(true), '/') ?>" data-update="<?= Route::url('index.php?option=com_collections&controller=posts&task=reorder&' . Session::getFormToken() . '=1') ?>" class="view-<?= $viewas . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
+        <?php
+        $reorderUrl = Route::url(
+            'index.php?option=com_collections&controller=posts&task=reorder&' . Session::getFormToken() . '=1',
+        );
+        ?>
+        <div id="posts" data-base="<?= rtrim(Request::base(true), '/') ?>" data-update="<?= $reorderUrl ?>" class="view-<?= $viewas . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
             <?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
                 <div class="post new-post" id="post_0">
                     <a class="icon-add add"
@@ -146,7 +163,12 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                             <?php echo $tags; ?>
                         </div>
                     <?php } ?>
-                    <div class="meta" data-metadata-url="<?= Route::url('index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id')) ?>">
+                    <?php
+                    $metadataUrl = Route::url(
+                        'index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id'),
+                    );
+                    ?>
+                    <div class="meta" data-metadata-url="<?= $metadataUrl ?>">
                         <p class="stats">
                             <span class="likes">
                                 <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>
@@ -172,7 +194,10 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
                                     </a>
                                 <?php } else { ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=post/' . $row->get('id') . '/vote') ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $row->get('id') ?>" data-text-like="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('Unlike') ?>">
+                                    <?php
+                                    $postUrl = Route::url($base . '&task=post/' . $row->get('id') . '/vote');
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $row->get('id') ?>" data-text-like="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('Unlike') ?>">
                                         <span><?= ($item->get('voted')) ? Lang::txt('PLG_MEMBERS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?></span>
                                     </button>
                                 <?php } ?>
@@ -201,12 +226,28 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
                                     </a>
                                 <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=post/' . $row->get('id') . '/remove') ?>" class="btn unpost" data-id="<?= $row->get('id') ?>">
+                                    <?php
+                                    $postUrl = Route::url($base . '&task=post/' . $row->get('id') . '/remove');
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>" class="btn unpost" data-id="<?= $row->get('id') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_REMOVE'); ?></span>
                                     </button>
                                 <?php } ?>
                             <?php } else { ?>
-                                    <a class="btn vote like tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&task=' . $this->collection->get('alias'), false, true)), false) ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(
+                                                Route::url(
+                                                    $base . '&task=' . $this->collection->get('alias'),
+                                                    false,
+                                                    true,
+                                                ),
+                                            ),
+                                        false,
+                                    );
+                                    ?>
+                                    <a class="btn vote like tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE'); ?></span>
                                     </a>
                                 <?php
@@ -217,7 +258,20 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                 <?php endif; ?>
-                                    <a class="btn repost tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&task=' . $this->collection->get('alias'), false, true)), false) ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(
+                                                Route::url(
+                                                    $base . '&task=' . $this->collection->get('alias'),
+                                                    false,
+                                                    true,
+                                                ),
+                                            ),
+                                        false,
+                                    );
+                                    ?>
+                                    <a class="btn repost tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                             <?php } ?>

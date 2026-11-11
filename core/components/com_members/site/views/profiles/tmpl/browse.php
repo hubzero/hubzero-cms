@@ -211,7 +211,10 @@ $sortDirSelected = function ($value) {
                                         ?>
                                         <li>
                                             <i><?php echo $q['human_field']; ?></i>: <?php echo $this->escape($val); ?>
-                                            <a href="<?= Route::url($route) ?>" class="icon-remove filters-x" title="<?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?>"><?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?></a>
+                                            <?php
+                                            $linkUrl = Route::url($route);
+                                            ?>
+                                            <a href="<?= $linkUrl ?>" class="icon-remove filters-x" title="<?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?>"><?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?></a>
                                         </li>
                                         <?php
                                     }
@@ -225,7 +228,10 @@ $sortDirSelected = function ($value) {
                                     ?>
                                     <li>
                                         <i><?= $q['human_field'] ?></i>: <?= $this->escape($q['human_value']) ?>
-                                        <a href="<?= Route::url($route) ?>" class="icon-remove filters-x" title="<?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?>"><?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?></a>
+                                        <?php
+                                        $linkUrl = Route::url($route);
+                                        ?>
+                                        <a href="<?= $linkUrl ?>" class="icon-remove filters-x" title="<?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?>"><?= Lang::txt('COM_MEMBERS_BROWSE_FILTER_REMOVE') ?></a>
                                     </li>
                                 <?php } ?>
                             <?php endforeach; ?>
@@ -437,7 +443,13 @@ $sortDirSelected = function ($value) {
                                     <?php if ($extras || $messageuser) { ?>
                                         <div class="result-options">
                                             <?php if ($messageuser) { ?>
-                                                <a class="icon-email btn message-member" href="<?= Route::url('index.php?option=' . $this->option . '&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $row->get('id')) ?>" title="<?= Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)) ?>">
+                                                <?php
+                                                $newUrl = Route::url(
+                                                    'index.php?option=' . $this->option . '&id=' . User::get('id')
+                                                        . '&active=messages&task=new&to[]=' . $row->get('id'),
+                                                );
+                                                ?>
+                                                <a class="icon-email btn message-member" href="<?= $newUrl ?>" title="<?= Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)) ?>">
                                                     <?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE'); ?>
                                                 </a>
                                             <?php } ?>

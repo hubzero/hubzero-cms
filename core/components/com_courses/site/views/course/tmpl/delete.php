@@ -21,7 +21,10 @@ $this
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li class="last"><a class="course" href="<?= Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias')) ?>"><?= Lang::txt('Back to Course') ?></a></li>
+            <?php
+            $linkUrl = Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias'));
+            ?>
+            <li class="last"><a class="course" href="<?= $linkUrl ?>"><?= Lang::txt('Back to Course') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header>
@@ -40,7 +43,12 @@ $this
 
             <p><strong>Alternative to deleting</strong></p>
             <p>You could set the course join policy to closed to restrict further membership activity and set the discoverability to hidden so the course is hidden to the world but still there later if you decide you want to use the course again.</p>
-            <p><a href="<?= Route::url('index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&task=edit') ?>">&raquo; Click here to edit course settings</a></p>
+            <?php
+            $editUrl = Route::url(
+                'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&task=edit',
+            );
+            ?>
+            <p><a href="<?= $editUrl ?>">&raquo; Click here to edit course settings</a></p>
         </div>
         <fieldset>
             <h3><?php echo Lang::txt('COURSES_DELETE_HEADER'); ?></h3>

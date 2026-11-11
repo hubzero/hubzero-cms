@@ -62,7 +62,13 @@ $publishedSelected = function ($value) {
 };
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&lang_id=' . (int) $this->item->lang_id) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<?php
+$editUrl = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&lang_id='
+        . (int) $this->item->lang_id,
+);
+?>
+<form action="<?= $editUrl ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">

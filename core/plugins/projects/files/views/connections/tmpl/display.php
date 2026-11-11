@@ -86,16 +86,36 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
             ?>
             <?php if ($mayActOnConnection) : ?>
             <div class="connection-actions">
-                <a class="connection-refresh icon-refresh" title="<?= Lang::txt('Refresh Connection Credentials') ?>" href="<?= Route::url($this->model->link('files') . '&action=refreshaccess&connection=' . $connection->id) ?>">
+                <?php
+                $refreshaccessUrl = Route::url(
+                    $this->model->link('files') . '&action=refreshaccess&connection=' . $connection->id,
+                );
+                ?>
+                <a class="connection-refresh icon-refresh" title="<?= Lang::txt('Refresh Connection Credentials') ?>" href="<?= $refreshaccessUrl ?>">
                     <?php echo Lang::txt('Refresh Connection Credentials'); ?>
                 </a>
-                <a class="connection-refreshpath icon-folder" title="<?= Lang::txt('Refresh Connection Path') ?>" href="<?= Route::url($this->model->link('files') . '&action=refreshpath&connection=' . $connection->id) ?>">
+                <?php
+                $refreshpathUrl = Route::url(
+                    $this->model->link('files') . '&action=refreshpath&connection=' . $connection->id,
+                );
+                ?>
+                <a class="connection-refreshpath icon-folder" title="<?= Lang::txt('Refresh Connection Path') ?>" href="<?= $refreshpathUrl ?>">
                     <?php echo Lang::txt('Refresh Connection Path'); ?>
                 </a>
-                <a class="connection-edit icon-edit" title="<?= Lang::txt('Edit Connection') ?>" href="<?= Route::url($this->model->link('files') . '&action=editconnection&connection=' . $connection->id) ?>">
+                <?php
+                $editconnectionUrl = Route::url(
+                    $this->model->link('files') . '&action=editconnection&connection=' . $connection->id,
+                );
+                ?>
+                <a class="connection-edit icon-edit" title="<?= Lang::txt('Edit Connection') ?>" href="<?= $editconnectionUrl ?>">
                     <?php echo Lang::txt('Edit'); ?>
                 </a>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->model->link('files') . '&action=deleteconnection&connection=' . $connection->id) ?>" class="connection-delete icon-delete" title="<?= Lang::txt('Delete Connection') ?>" data-confirm="<?= Lang::txt('Are you sure you want to delete this connection?') ?>"><?= Lang::txt('Delete') ?></button>
+                <?php
+                $deleteconnectionUrl = Route::url(
+                    $this->model->link('files') . '&action=deleteconnection&connection=' . $connection->id,
+                );
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $deleteconnectionUrl ?>" class="connection-delete icon-delete" title="<?= Lang::txt('Delete Connection') ?>" data-confirm="<?= Lang::txt('Are you sure you want to delete this connection?') ?>"><?= Lang::txt('Delete') ?></button>
             </div>
             <?php endif; ?>
         </div>

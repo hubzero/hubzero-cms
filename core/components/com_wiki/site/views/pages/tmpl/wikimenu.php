@@ -91,12 +91,18 @@ if ($showtoc) {
             <h3><?php echo Lang::txt('COM_WIKI'); ?></h3>
             <ul id="useroptions">
                 <li class="page-main">
-                    <a href="<?= Route::url($this->page->link('base')) ?>" aria-label="<?= $this->escape(Lang::txt('COM_WIKI_MAIN_PAGE')) . ' — ' . $this->escape(Lang::txt('COM_WIKI')) ?>">
+                    <?php
+                    $linkUrl = Route::url($this->page->link('base'));
+                    ?>
+                    <a href="<?= $linkUrl ?>" aria-label="<?= $this->escape(Lang::txt('COM_WIKI_MAIN_PAGE')) . ' — ' . $this->escape(Lang::txt('COM_WIKI')) ?>">
                         <?php echo Lang::txt('COM_WIKI_MAIN_PAGE'); ?>
                     </a>
                 </li>
                 <li class="page-help">
-                    <a href="<?= Route::url($this->page->link('base') . '&pagename=Help:Index') ?>" aria-label="<?= $this->escape(Lang::txt('COM_WIKI_HELP')) . ' — ' . $this->escape(Lang::txt('COM_WIKI')) ?>">
+                    <?php
+                    $linkUrl = Route::url($this->page->link('base') . '&pagename=Help:Index');
+                    ?>
+                    <a href="<?= $linkUrl ?>" aria-label="<?= $this->escape(Lang::txt('COM_WIKI_HELP')) . ' — ' . $this->escape(Lang::txt('COM_WIKI')) ?>">
                         <?php echo Lang::txt('COM_WIKI_HELP'); ?>
                     </a>
                 </li>
@@ -133,12 +139,24 @@ if ($showtoc) {
             <h3><?php echo Lang::txt('COM_WIKI_TOOLS'); ?></h3>
             <ul>
                 <li class="page-links">
-                    <a href="<?= Route::url($this->page->link('base') . '&pagename=Special:Links&page=' . $this->page->get('pagename') . '&version=' . $this->page->get('version_id')) ?>">
+                    <?php
+                    $linkUrl = Route::url(
+                        $this->page->link('base') . '&pagename=Special:Links&page=' . $this->page->get('pagename')
+                            . '&version=' . $this->page->get('version_id'),
+                    );
+                    ?>
+                    <a href="<?= $linkUrl ?>">
                         <?php echo Lang::txt('COM_WIKI_SPECIAL_LINKS'); ?>
                     </a>
                 </li>
                 <li class="page-cite">
-                    <a href="<?= Route::url($this->page->link('base') . '&pagename=Special:Cite&page=' . $this->page->get('pagename') . '&version=' . $this->page->get('version_id') . '&path=' . $this->page->get('path')) ?>">
+                    <?php
+                    $linkUrl = Route::url(
+                        $this->page->link('base') . '&pagename=Special:Cite&page=' . $this->page->get('pagename')
+                            . '&version=' . $this->page->get('version_id') . '&path=' . $this->page->get('path'),
+                    );
+                    ?>
+                    <a href="<?= $linkUrl ?>">
                         <?php echo Lang::txt('COM_WIKI_SPECIAL_CITE'); ?>
                     </a>
                 </li>
@@ -149,7 +167,13 @@ if ($showtoc) {
                 </li>
                 <?php if (!User::isGuest() && $this->page->access('create')) { ?>
                     <li class="page-new" data-title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>">
-                        <a href="<?= Route::url($this->page->link('base') . '&' . ($this->page->get('scope') != 'site' ? 'action' : 'task') . '=new') ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            $this->page->link('base') . '&' . ($this->page->get('scope') != 'site' ? 'action' : 'task')
+                                . '=new',
+                        );
+                        ?>
+                        <a href="<?= $linkUrl ?>">
                             <?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>
                         </a>
                     </li>
@@ -162,7 +186,13 @@ if ($showtoc) {
                 <h3><?php echo Lang::txt('COM_WIKI_TOOLS'); ?></h3>
                 <ul>
                     <li class="page-new" data-title="<?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>">
-                        <a href="<?= Route::url($this->page->link('base') . '&' . ($this->page->get('scope') != 'site' ? 'action' : 'task') . '=new') ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            $this->page->link('base') . '&' . ($this->page->get('scope') != 'site' ? 'action' : 'task')
+                                . '=new',
+                        );
+                        ?>
+                        <a href="<?= $linkUrl ?>">
                             <?php echo Lang::txt('COM_WIKI_NEW_PAGE'); ?>
                         </a>
                     </li>

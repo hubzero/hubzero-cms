@@ -38,9 +38,15 @@ $crumbs = $draft
 <form action="<?php echo Route::url($this->pub->link('editversion')); ?>" method="post" id="plg-form" >
     <div id="plg-header">
     <?php if ($this->project->isProvisioned()) { ?>
-        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= $crumbs ?></h3>
+        <?php
+        $linkUrl = Route::url($this->pub->link('editversion'));
+        ?>
+        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= $crumbs ?></h3>
     <?php } else { ?>
-        <h3 class="publications"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> <span class="indlist"> &raquo; <?= $crumbs ?></span>
+        <?php
+        $linkUrl = Route::url($this->pub->link('editversion'));
+        ?>
+        <h3 class="publications"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> <span class="indlist"> &raquo; <?= $crumbs ?></span>
         </h3>
     <?php } ?>
     </div>

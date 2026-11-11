@@ -24,7 +24,12 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
     <?php } ?>
 
     <?php if ($canDo) { ?>
-        <form action="<?= Route::url('index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id) ?>" method="post">
+        <?php
+        $actionUrl = Route::url(
+            'index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id,
+        );
+        ?>
+        <form action="<?= $actionUrl ?>" method="post">
             <table>
                 <tbody>
                     <tr>
@@ -65,7 +70,12 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
         <br />
     <?php } ?>
 
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id) ?>" method="post">
+    <?php
+    $actionUrl = Route::url(
+        'index.php?option=' . $this->option . '&controller' . $this->controller . '&id=' . $this->id,
+    );
+    ?>
+    <form action="<?= $actionUrl ?>" method="post">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>">
         <input type="hidden" name="tmpl" value="component" />
@@ -105,7 +115,12 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                         <tr>
                             <td>
                                 <?php if ($canDo && User::authorise('core.edit', 'com_groups')) { ?>
-                                    <a href="<?= Route::url('index.php?option=com_groups&controller=manage&task=edit&id=' . $group->cn) ?>" target="_parent">
+                                    <?php
+                                    $editUrl = Route::url(
+                                        'index.php?option=com_groups&controller=manage&task=edit&id=' . $group->cn,
+                                    );
+                                    ?>
+                                    <a href="<?= $editUrl ?>" target="_parent">
                                         <?= $this->escape($group->description) . ' (' . $this->escape($group->cn)
                                             . ')' ?>
                                     </a>
@@ -153,7 +168,14 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                             </td>
                             <td>
                                 <?php if ($canDo) { ?>
-                                    <a class="state trash icon-trash" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&tmpl=component&id=' . $this->id . '&gid=' . $group->cn . '&' . Session::getFormToken() . '=1') ?>">
+                                    <?php
+                                    $removeUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                            . '&task=remove&tmpl=component&id=' . $this->id . '&gid=' . $group->cn . '&'
+                                            . Session::getFormToken() . '=1',
+                                    );
+                                    ?>
+                                    <a class="state trash icon-trash" href="<?= $removeUrl ?>">
                                         <span><?php echo Lang::txt('COM_MEMBERS_GROUPS_REMOVE'); ?></span>
                                     </a>
                                 <?php } ?>

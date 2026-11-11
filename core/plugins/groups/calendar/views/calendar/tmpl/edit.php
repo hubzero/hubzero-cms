@@ -41,11 +41,23 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 <ul id="page_options">
     <li>
         <?php if (Request::getString('action') == 'edit') : ?>
-            <a class="icon-prev btn back" title="" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=details&event_id=' . $this->event->get('id')) ?>">
+            <?php
+            $detailsUrl = Route::url(
+                'index.php?option=' . $this->option . '&cn=' . $this->group->cn
+                    . '&active=calendar&action=details&event_id=' . $this->event->get('id'),
+            );
+            ?>
+            <a class="icon-prev btn back" title="" href="<?= $detailsUrl ?>">
                 <?php echo Lang::txt('Back to Event'); ?>
             </a>
         <?php else : ?>
-            <a class="icon-prev btn back" title="" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&year=' . $this->year . '&month=' . $this->month) ?>">
+            <?php
+            $linkUrl = Route::url(
+                'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&year=' . $this->year
+                    . '&month=' . $this->month,
+            );
+            ?>
+            <a class="icon-prev btn back" title="" href="<?= $linkUrl ?>">
                 <?php echo Lang::txt('Back to Events Calendar'); ?>
             </a>
         <?php endif; ?>
@@ -54,7 +66,10 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
 <div class="grid">
     <div class="col <?php echo ($showImport) ? 'span9' : 'span12'; ?>">
-        <form name="editevent" action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar') ?>" method="post" id="hubForm" class="full">
+        <?php
+        $actionUrl = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar');
+        ?>
+        <form name="editevent" action="<?= $actionUrl ?>" method="post" id="hubForm" class="full">
             <fieldset>
                 <legend><?php echo $formTitle; ?></legend>
 
@@ -389,7 +404,12 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
     <?php if ($showImport) : ?>
         <div class="col span3 omega">
-            <form name="importevent" action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar') ?>" method="post" id="hubForm" enctype="multipart/form-data">
+            <?php
+            $actionUrl = Route::url(
+                'index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar',
+            );
+            ?>
+            <form name="importevent" action="<?= $actionUrl ?>" method="post" id="hubForm" enctype="multipart/form-data">
                 <fieldset>
                     <legend><?php echo Lang::txt('Import Event'); ?></legend>
 

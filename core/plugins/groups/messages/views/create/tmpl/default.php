@@ -43,13 +43,28 @@ if ($this->params->get('stamp_logo')) {
 <div class="subject">
     <?php if (!$this->no_html) : ?>
     <ul class="entries-menu">
-        <li><a href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages') ?>"><span><?= Lang::txt('PLG_GROUPS_MESSAGES_SENT') ?></span></a></li>
-        <li><a class="active" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages&action=new') ?>"><span><?= Lang::txt('PLG_GROUPS_MESSAGES_SEND') ?></span></a></li>
+        <?php
+        $linkUrl = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages',
+        );
+        ?>
+        <li><a href="<?= $linkUrl ?>"><span><?= Lang::txt('PLG_GROUPS_MESSAGES_SENT') ?></span></a></li>
+        <?php
+        $newUrl = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages&action=new',
+        );
+        ?>
+        <li><a class="active" href="<?= $newUrl ?>"><span><?= Lang::txt('PLG_GROUPS_MESSAGES_SEND') ?></span></a></li>
     </ul>
     <br class="clear" />
     <?php endif; ?>
 
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages') ?>" method="post" id="hubForm<?= $this->no_html ? '-ajax' : '' ?>">
+    <?php
+    $actionUrl = Route::url(
+        'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=messages',
+    );
+    ?>
+    <form action="<?= $actionUrl ?>" method="post" id="hubForm<?= $this->no_html ? '-ajax' : '' ?>">
         <?php echo Html::input('token'); ?>
         <fieldset class="hub-mail">
             <div class="cont">

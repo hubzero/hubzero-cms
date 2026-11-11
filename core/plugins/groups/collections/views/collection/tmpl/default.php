@@ -74,7 +74,10 @@ if (!in_array($viewas, ['grid', 'list'])) {
             </span>
             <?php if (!User::isGuest()) { ?>
                 <?php if ($this->collection->isFollowing()) { ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=' . $this->collection->get('alias') . '/unfollow') ?>" class="icon-unfollow unfollow btn tooltips" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW') ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW_TITLE') ?>">
+                    <?php
+                    $actionUrl = Route::url($base . '&scope=' . $this->collection->get('alias') . '/unfollow');
+                    ?>
+                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-unfollow unfollow btn tooltips" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW') ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW_TITLE') ?>">
                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
                     </button>
                 <?php } else { ?>
@@ -87,23 +90,43 @@ if (!in_array($viewas, ['grid', 'list'])) {
                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
                     </button>
                 <?php } ?>
-                <!-- <a class="repost btn tooltips" title="<?= Lang::txt('Repost :: Collect this collection') ?>" href="<?= Route::url($base . '&scope=' . $this->collection->get('alias') . '/collect') ?>">
+                <?php
+                $linkUrl = Route::url($base . '&scope=' . $this->collection->get('alias') . '/collect');
+                ?>
+                <!-- <a class="repost btn tooltips" title="<?= Lang::txt('Repost :: Collect this collection') ?>" href="<?= $linkUrl ?>">
                     <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
                 </a> -->
             <?php } ?>
             <span class="options sort-options">
-                <a href="<?= Route::url($this->collection->link() . '&sort=created&viewas=' . $viewas) ?>" class="icon-created<?= $this->filters['sort'] == 'created' ? ' selected' : '' ?>" data-view="sort-created" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_CREATED_SORT') ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_CREATED_SORT') ?></a>
-                <a href="<?= Route::url($this->collection->link() . '&sort=ordering&viewas=' . $viewas) ?>" class="icon-ordering<?= $this->filters['sort'] == 'ordering' ? ' selected' : '' ?>" data-view="sort-ordering" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_ORDERING_SORT') ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_ORDERING_SORT') ?></a>
+                <?php
+                $linkUrl = Route::url($this->collection->link() . '&sort=created&viewas=' . $viewas);
+                ?>
+                <a href="<?= $linkUrl ?>" class="icon-created<?= $this->filters['sort'] == 'created' ? ' selected' : '' ?>" data-view="sort-created" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_CREATED_SORT') ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_CREATED_SORT') ?></a>
+                <?php
+                $linkUrl = Route::url($this->collection->link() . '&sort=ordering&viewas=' . $viewas);
+                ?>
+                <a href="<?= $linkUrl ?>" class="icon-ordering<?= $this->filters['sort'] == 'ordering' ? ' selected' : '' ?>" data-view="sort-ordering" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_ORDERING_SORT') ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_ORDERING_SORT') ?></a>
             </span>
             <span class="options view-options">
-                <a href="<?= Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=grid') ?>" class="icon-grid<?= $viewas == 'grid' ? ' selected' : '' ?>" data-view="view-grid" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW') ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW') ?></a>
-                <a href="<?= Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=list') ?>" class="icon-list<?= $viewas == 'list' ? ' selected' : '' ?>" data-view="view-list" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW') ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW') ?></a>
+                <?php
+                $linkUrl = Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=grid');
+                ?>
+                <a href="<?= $linkUrl ?>" class="icon-grid<?= $viewas == 'grid' ? ' selected' : '' ?>" data-view="view-grid" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW') ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW') ?></a>
+                <?php
+                $linkUrl = Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=list');
+                ?>
+                <a href="<?= $linkUrl ?>" class="icon-list<?= $viewas == 'list' ? ' selected' : '' ?>" data-view="view-list" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW') ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW') ?></a>
             </span>
         </p>
     <?php } ?>
 
     <?php if ($this->rows->total() > 0) { ?>
-        <div id="posts" data-base="<?= rtrim(Request::base(true), '/') ?>" data-update="<?= Route::url('index.php?option=com_collections&controller=posts&task=reorder&' . Session::getFormToken() . '=1') ?>" class="view-<?= $viewas . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
+        <?php
+        $reorderUrl = Route::url(
+            'index.php?option=com_collections&controller=posts&task=reorder&' . Session::getFormToken() . '=1',
+        );
+        ?>
+        <div id="posts" data-base="<?= rtrim(Request::base(true), '/') ?>" data-update="<?= $reorderUrl ?>" class="view-<?= $viewas . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
             <?php if ($this->params->get('access-create-item') && !Request::getInt('no_html', 0)) { ?>
                 <div class="post new-post" id="post_0">
                     <a class="icon-add add"
@@ -138,7 +161,12 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                 <?php echo $tags; ?>
                             </div>
                         <?php } ?>
-                        <div class="meta" data-metadata-url="<?= Route::url('index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id')) ?>">
+                        <?php
+                        $metadataUrl = Route::url(
+                            'index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id'),
+                        );
+                        ?>
+                        <div class="meta" data-metadata-url="<?= $metadataUrl ?>">
                             <p class="stats">
                                 <span class="likes">
                                     <?= Lang::txt('PLG_GROUPS_COLLECTIONS_POST_LIKES', $item->get('positive', 0)) ?>
@@ -154,7 +182,10 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                 <?php if (!User::isGuest()) { ?>
                                     <?php if ($this->group->published == 1) { ?>
                                         <?php if ($item->get('created_by') != User::get('id')) { ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=post/' . $row->get('id') . '/vote') ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $row->get('id') ?>" data-text-like="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE') ?>">
+                                            <?php
+                                            $actionUrl = Route::url($base . '&scope=post/' . $row->get('id') . '/vote');
+                                            ?>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $row->get('id') ?>" data-text-like="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE') ?>">
                                                 <span><?= ($item->get('voted')) ? Lang::txt('PLG_GROUPS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE') ?></span>
                                             </button>
                                         <?php } ?>
@@ -173,7 +204,10 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                               // only reach a 403. Moderation is the Delete and Remove
                                               // controls below, which they keep.
                                         if ($row->get('created_by') == User::get('id')) { ?>
-                                            <a class="btn edit" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&scope=post/' . $row->get('id') . '/edit') ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT') ?>">
+                                            <?php
+                                            $linkUrl = Route::url($base . '&scope=post/' . $row->get('id') . '/edit');
+                                            ?>
+                                            <a class="btn edit" data-id="<?= $row->get('id') ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT'); ?></span>
                                             </a>
                                         <?php } ?>
@@ -185,23 +219,57 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                                 || $this->params->get('access-manage-collection')
                                             )
                                         ) { ?>
-                                            <a class="btn delete" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&scope=post/' . $row->get('id') . '/delete') ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE') ?>">
+                                            <?php
+                                            $linkUrl = Route::url($base . '&scope=post/' . $row->get('id') . '/delete');
+                                            ?>
+                                            <a class="btn delete" data-id="<?= $row->get('id') ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
                                             </a>
                                         <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-manage-collection')) { ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=post/' . $row->get('id') . '/remove') ?>" class="btn unpost" data-id="<?= $row->get('id') ?>">
+                                            <?php
+                                            $actionUrl = Route::url(
+                                                $base . '&scope=post/' . $row->get('id') . '/remove',
+                                            );
+                                            ?>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn unpost" data-id="<?= $row->get('id') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_REMOVE'); ?></span>
                                             </button>
                                         <?php } ?>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <a class="btn vote like tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $this->collection->get('alias'), false, true)), false) ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(
+                                                Route::url(
+                                                    $base . '&scope=' . $this->collection->get('alias'),
+                                                    false,
+                                                    true,
+                                                ),
+                                            ),
+                                        false,
+                                    );
+                                    ?>
+                                    <a class="btn vote like tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?></span>
                                     </a>
                                     <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment');?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
-                                    <a class="btn repost tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $this->collection->get('alias'), false, true)), false) ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(
+                                                Route::url(
+                                                    $base . '&scope=' . $this->collection->get('alias'),
+                                                    false,
+                                                    true,
+                                                ),
+                                            ),
+                                        false,
+                                    );
+                                    ?>
+                                    <a class="btn repost tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                                 <?php } ?>
@@ -287,7 +355,10 @@ if (!in_array($viewas, ['grid', 'list'])) {
                         <li><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_INSTRUCT_POST_STEP4'); ?></li>
                     </ol>
                     <div class="new-post">
-                        <a class="icon-add add" href="<?= Route::url($base . '&scope=post/new&board=' . $this->collection->get('alias')) ?>">
+                        <?php
+                        $linkUrl = Route::url($base . '&scope=post/new&board=' . $this->collection->get('alias'));
+                        ?>
+                        <a class="icon-add add" href="<?= $linkUrl ?>">
                             <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_POST'); ?>
                         </a>
                     </div>

@@ -59,16 +59,33 @@ $this
         <p>
             <?php if ($this->course->access('edit', 'course') && $this->course->access('create', 'course')) { ?>
                 <?php if ($manager && $manager->get('id')) { ?>
-                    <a class="btn icon-copy copy" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&task=copy') ?>">
+                    <?php
+                    $copyUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid='
+                            . $this->course->get('alias') . '&task=copy',
+                    );
+                    ?>
+                    <a class="btn icon-copy copy" href="<?= $copyUrl ?>">
                         <?php echo Lang::txt('COM_COURSES_COPY'); ?>
                     </a>
                 <?php } elseif ($this->course->config('allow_forks')) { ?>
-                    <a class="btn icon-fork fork" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->course->get('alias') . '&task=fork') ?>">
+                    <?php
+                    $forkUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid='
+                            . $this->course->get('alias') . '&task=fork',
+                    );
+                    ?>
+                    <a class="btn icon-fork fork" href="<?= $forkUrl ?>">
                         <?php echo Lang::txt('COM_COURSES_FORK'); ?>
                     </a>
                 <?php } ?>
             <?php } ?>
-            <a class="btn icon-browse browse" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse') ?>">
+            <?php
+            $browseUrl = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=browse',
+            );
+            ?>
+            <a class="btn icon-browse browse" href="<?= $browseUrl ?>">
                 <?php echo Lang::txt('COM_COURSES_CATALOG'); ?>
             </a>
         </p>
@@ -179,7 +196,12 @@ $this
                         $atts = ($width > $height ? 'height="50"' : 'width="50"');
                         ?>
                         <p class="course-group-img">
-                            <a href="<?= Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')) ?>">
+                            <?php
+                            $browseUrl = Route::url(
+                                'index.php?option=com_courses&task=browse&group=' . $group->get('cn'),
+                            );
+                            ?>
+                            <a href="<?= $browseUrl ?>">
                                 <img src="<?= $group->getLogo() ?>" <?= $atts ?> alt="<?= $this->escape(stripslashes($group->get('description'))) ?>" />
                             </a>
                         </p>
@@ -187,7 +209,12 @@ $this
                             <?php echo Lang::txt('COM_COURSES_BROUGHT_BY_GROUP'); ?>
                         </p>
                         <h3 class="course-group-title">
-                            <a href="<?= Route::url('index.php?option=com_courses&task=browse&group=' . $group->get('cn')) ?>">
+                            <?php
+                            $browseUrl = Route::url(
+                                'index.php?option=com_courses&task=browse&group=' . $group->get('cn'),
+                            );
+                            ?>
+                            <a href="<?= $browseUrl ?>">
                                 <?php echo $this->escape(stripslashes($group->get('description'))); ?>
                             </a>
                         </h3>
@@ -372,10 +399,20 @@ $this
                         <div class="inner-section" id="<?php echo $plugin->get('name'); ?>-section">
                             <?php if ($this->course->access('edit', 'course') && $plugin->get('isPage')) { ?>
                                 <div class="manager-options">
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage') ?>" class="icon-error btn btn-secondary btn-danger">
+                                    <?php
+                                    $deletepageUrl = Route::url(
+                                        $this->course->link() . '&active=' . $plugin->get('name') . '&task=deletepage',
+                                    );
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $deletepageUrl ?>" class="icon-error btn btn-secondary btn-danger">
                                         <?php echo Lang::txt('COM_COURSES_DELETE'); ?>
                                     </button>
-                                    <a class="icon-edit btn btn-secondary" href="<?= Route::url($this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage') ?>">
+                                    <?php
+                                    $editpageUrl = Route::url(
+                                        $this->course->link() . '&active=' . $plugin->get('name') . '&action=editpage',
+                                    );
+                                    ?>
+                                    <a class="icon-edit btn btn-secondary" href="<?= $editpageUrl ?>">
                                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                                     </a>
                                     <span><strong><?php echo Lang::txt('COM_COURSES_PAGE_CONTENTS'); ?></strong></span>

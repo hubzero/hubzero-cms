@@ -76,8 +76,20 @@ if ($this->citations) {
 <h3 id="citations">
     <?php echo Lang::txt('PLG_PUBLICATION_CITATIONS'); ?>
     <span>
-        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=citations&v=' . $this->publication->version_number . '#nonaffiliated') ?>"><?= Lang::txt('PLG_PUBLICATION_CITATIONS_NONAFF') ?> (<?= $numnon ?>)</a> |
-        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=citations&v=' . $this->publication->version_number . '#affiliated') ?>"><?= Lang::txt('PLG_PUBLICATION_CITATIONS_AFF') ?> (<?= $numaff ?>)</a>
+        <?php
+        $linkUrl = Route::url(
+            'index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=citations&v='
+                . $this->publication->version_number . '#nonaffiliated',
+        );
+        ?>
+        <a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PUBLICATION_CITATIONS_NONAFF') ?> (<?= $numnon ?>)</a> |
+        <?php
+        $linkUrl = Route::url(
+            'index.php?option=' . $this->option . '&id=' . $this->publication->id . '&active=citations&v='
+                . $this->publication->version_number . '#affiliated',
+        );
+        ?>
+        <a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PUBLICATION_CITATIONS_AFF') ?> (<?= $numaff ?>)</a>
     </span>
 </h3>
 <?php if ($this->citations) { ?>

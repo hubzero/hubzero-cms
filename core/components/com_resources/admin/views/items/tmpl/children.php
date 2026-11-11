@@ -242,7 +242,13 @@ if ($this->filters['parent_id'] > 0) {
                             ? '<br /><small>' . $this->escape($row->path) . '</small>'
                             : '' ?>
                     <?php } else { ?>
-                        <a class="editlinktip hasTip" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . '&pid=' . $this->filters['parent_id']) ?>" title="<?= Lang::txt('COM_RESOURCES_PUBLISH_INFO') ?>::<?= $info ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->id . '&pid=' . $this->filters['parent_id'],
+                        );
+                        ?>
+                        <a class="editlinktip hasTip" href="<?= $editUrl ?>" title="<?= Lang::txt('COM_RESOURCES_PUBLISH_INFO') ?>::<?= $info ?>">
                             <?php echo $this->escape(stripslashes($row->title)); ?>
                         </a>
                         <?= ($row->standalone != 1 && $row->path != '')
@@ -261,7 +267,14 @@ if ($this->filters['parent_id'] > 0) {
                             <span><?php echo $alt; ?></span>
                         </span>
                     <?php } else { ?>
-                        <a class="state <?= $class ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_RESOURCES_SET_TASK_TO', $task) ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task
+                                . '&id=' . $row->id . '&pid=' . $this->filters['parent_id'] . '&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_RESOURCES_SET_TASK_TO', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } ?>
@@ -277,7 +290,14 @@ if ($this->filters['parent_id'] > 0) {
                             <span><?php echo Lang::txt($row->groupname); ?></span>
                         </span>
                     <?php } else { ?>
-                        <a class="access <?= $color_access ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task_access . '&id=' . $row->id . '&pid=' . $this->filters['parent_id'] . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_RESOURCES_CHANGE_ACCESS') ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task='
+                                . $task_access . '&id=' . $row->id . '&pid=' . $this->filters['parent_id'] . '&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="access <?= $color_access ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_RESOURCES_CHANGE_ACCESS') ?>">
                             <span><?php echo Lang::txt($row->groupname); ?></span>
                         </a>
                     <?php } ?>

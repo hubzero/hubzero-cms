@@ -67,7 +67,10 @@ $i = 0;
                 <p><span class="connected"><?= ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_CONNECTED')) ?></span></p>
                 <p><?php echo $this->oparams->get($servicename . '_email'); ?></p>
             <?php } else { ?>
-                <p class="connect-action"><a href="<?= Route::url($this->model->link('files') . '&action=connect&service=' . $servicename) ?>"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT') ?></a></p>
+                <?php
+                $connectUrl = Route::url($this->model->link('files') . '&action=connect&service=' . $servicename);
+                ?>
+                <p class="connect-action"><a href="<?= $connectUrl ?>"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT') ?></a></p>
             <?php } ?>
         </div>
         <?php } ?>
@@ -88,11 +91,21 @@ $i = 0;
                     <?php $removeData = $creator ? '&removedata=1' : '';  ?>
             <p>
                 <span class=" <?php echo $creator ? ' creator' : ''; ?>">
-                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->model->link('files') . '&action=disconnect&service=' . $servicename . $removeData) ?>" id="disconnect"><?= ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')) ?> &raquo;</button>
+                    <?php
+                    $disconnectUrl = Route::url(
+                        $this->model->link('files') . '&action=disconnect&service=' . $servicename . $removeData,
+                    );
+                    ?>
+                    <button type="submit" form="hz-post-action" formaction="<?= $disconnectUrl ?>" id="disconnect"><?= ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT')) ?> &raquo;</button>
                 </span>
                 &nbsp; &nbsp;
                 <span>
-                    <a href="<?= Route::url($this->model->link('files') . '&action=connect&reauth=1&service=' . $servicename) ?>"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT_REAUTH') ?> &raquo;</a>
+                    <?php
+                    $connectUrl = Route::url(
+                        $this->model->link('files') . '&action=connect&reauth=1&service=' . $servicename,
+                    );
+                    ?>
+                    <a href="<?= $connectUrl ?>"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT_REAUTH') ?> &raquo;</a>
                 </span>
             </p>
                 <?php } ?>

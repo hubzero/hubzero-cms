@@ -19,13 +19,22 @@ $this->css();
 ?>
 <div class="sidebox<?php echo count($this->items) == 0 ? ' suggestions' : ''; ?>">
     <h4>
-        <a href="<?= Route::url($this->model->link('publications')) ?>" class="hlink" title="<?= Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')) ?>"><?= ucfirst(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')) ?></a>
+        <?php
+        $linkUrl = Route::url($this->model->link('publications'));
+        ?>
+        <a href="<?= $linkUrl ?>" class="hlink" title="<?= Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')) ?>"><?= ucfirst(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')) ?></a>
         <?php if (count($this->items) > 0) { ?>
-            <span><a href="<?= Route::url($this->model->link('publications')) ?>"><?= ucfirst(Lang::txt('COM_PROJECTS_SEE_ALL')) ?> </a></span>
+            <?php
+            $linkUrl = Route::url($this->model->link('publications'));
+            ?>
+            <span><a href="<?= $linkUrl ?>"><?= ucfirst(Lang::txt('COM_PROJECTS_SEE_ALL')) ?> </a></span>
         <?php } ?>
     </h4>
     <?php if (count($this->items) == 0) { ?>
-        <p class="s-publications"><a href="<?= Route::url($this->model->link('publications') . '&action=start') ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION') ?></a></p>
+        <?php
+        $startUrl = Route::url($this->model->link('publications') . '&action=start');
+        ?>
+        <p class="s-publications"><a href="<?= $startUrl ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION') ?></a></p>
     <?php } else { ?>
         <ul>
             <?php foreach ($this->items as $pub) {
@@ -34,7 +43,10 @@ $this->css();
             <li>
                 <span class="pub-thumb"><img src="<?php echo Route::url($pub->link('thumb')); ?>" alt=""/></span>
                 <span class="pub-details">
-                    <a href="<?= Route::url($pub->link('editversion')) ?>" title="<?= $this->escape($pub->get('title')) ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($pub->get('title')), 100)) ?></a>
+                    <?php
+                    $linkUrl = Route::url($pub->link('editversion'));
+                    ?>
+                    <a href="<?= $linkUrl ?>" title="<?= $this->escape($pub->get('title')) ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($pub->get('title')), 100)) ?></a>
                      <span class="block faded mini">
                         <span>v. <?= $this->escape($pub->get('version_label')) ?> (<?= $this->escape($status) ?>)</span>
                     </span>

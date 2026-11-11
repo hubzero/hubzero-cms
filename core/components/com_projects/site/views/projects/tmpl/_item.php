@@ -251,12 +251,24 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
 
                                 ?>
                                 <span class="block">
-                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']) ?>" class="showinbox"><?= $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS') ?></a>
+                                    <?php
+                                    $processUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&task=process&id='
+                                            . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer'],
+                                    );
+                                    ?>
+                                    <a href="<?= $processUrl ?>" class="showinbox"><?= $commentCount . ' ' . Lang::txt('COM_PROJECTS_COMMENTS') ?></a>
                                 </span>
 
                                 <?php if ($this->row->isPending()) : ?>
                                     <span class="manage">
-                                        <a href="<?= Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer']) ?>" class="showinbox"><?= Lang::txt('COM_PROJECTS_APPROVE') ?></a>
+                                        <?php
+                                        $processUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&task=process&id='
+                                                . $this->row->get('id') . '&reviewer=' . $this->filters['reviewer'],
+                                        );
+                                        ?>
+                                        <a href="<?= $processUrl ?>" class="showinbox"><?= Lang::txt('COM_PROJECTS_APPROVE') ?></a>
                                     </span>
                                 <?php endif; ?>
                             </div>

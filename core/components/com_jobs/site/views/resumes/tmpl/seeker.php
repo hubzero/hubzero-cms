@@ -77,11 +77,19 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
 
     <?php if ($this->seeker->mine) { ?>
         <span class="editbt">
-            <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=editprefs') ?>" title="<?= Lang::txt('COM_JOBS_ACTION_EDIT_MY_PROFILE') ?>">&nbsp;</a>
+            <?php
+            $editprefsUrl = Route::url(
+                'index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=editprefs',
+            );
+            ?>
+            <a href="<?= $editprefsUrl ?>" title="<?= Lang::txt('COM_JOBS_ACTION_EDIT_MY_PROFILE') ?>">&nbsp;</a>
         </span>
     <?php } elseif ($this->emp or $this->admin) { ?>
         <span id="o<?php echo $this->seeker->uid; ?>">
-            <a href="<?= Route::url('index.php?option=com_jobs&oid=' . $this->seeker->uid . '&task=shortlist') ?>" class="favvit" title="<?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST') : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST') ?>">
+            <?php
+            $shortlistUrl = Route::url('index.php?option=com_jobs&oid=' . $this->seeker->uid . '&task=shortlist');
+            ?>
+            <a href="<?= $shortlistUrl ?>" class="favvit" title="<?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST') : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST') ?>">
                 <?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted
                     ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST')
                     : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST') ?>
@@ -92,7 +100,12 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
     <div class="clear leftclear"></div>
     <span class="indented">
         <?php if ($resume) { ?>
-            <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download') ?>" class="resume getit" title="<?= $this->escape($title) ?>">
+            <?php
+            $downloadUrl = Route::url(
+                'index.php?option=' . $this->option . '&id=' . $this->seeker->uid . '&active=resume&action=download',
+            );
+            ?>
+            <a href="<?= $downloadUrl ?>" class="resume getit" title="<?= $this->escape($title) ?>">
                 <?php echo ucfirst(Lang::txt('COM_JOBS_RESUME')); ?>
             </a>
             <span class="mini"><?= Lang::txt('COM_JOBS_LAST_UPDATE') ?>: <?= $this->seeker->created ?></span>

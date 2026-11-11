@@ -40,7 +40,12 @@ defined('_HZEXEC_') or die();
                     : null;
                 ?>
             <li class="wishlist">
-                <a href="<?= Route::url('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id) ?>" class="tooltips" title="<?= $title ?>">
+                <?php
+                $wishUrl = Route::url(
+                    'index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id,
+                );
+                ?>
+                <a href="<?= $wishUrl ?>" class="tooltips" title="<?= $title ?>">
                     #<?= $row->id ?>: <?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($row->subject), 35)) ?>
                 </a>
                 <span>
@@ -84,7 +89,12 @@ defined('_HZEXEC_') or die();
                     : null;
                 ?>
             <li class="wishlist">
-                <a href="<?= Route::url('index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id) ?>" class="tooltips" title="<?= $title ?>">
+                <?php
+                $wishUrl = Route::url(
+                    'index.php?option=com_wishlist&task=wish&id=' . $row->wishlist . '&wishid=' . $row->id,
+                );
+                ?>
+                <a href="<?= $wishUrl ?>" class="tooltips" title="<?= $title ?>">
                     #<?= $row->id ?>: <?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($row->subject), 35)) ?>
                 </a>
                 <span>

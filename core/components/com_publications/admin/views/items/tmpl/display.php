@@ -185,7 +185,13 @@ $statusSelected = function ($value) {
                     <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <a class="editlinktip hasTip" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . $filterstring) ?>" title="<?= Lang::txt('COM_PUBLICATIONS_PUBLISH_INFO') ?>::<?= $info ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row->id . $filterstring,
+                    );
+                    ?>
+                    <a class="editlinktip hasTip" href="<?= $editUrl ?>" title="<?= Lang::txt('COM_PUBLICATIONS_PUBLISH_INFO') ?>::<?= $info ?>">
                         <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
                     </a><?php echo $checkedInfo ? $checkedInfo : ''; ?>
                 </td>
@@ -196,10 +202,19 @@ $statusSelected = function ($value) {
                     <span class="<?php echo $class; ?> hasTip" title="<?php echo $status; ?>">&nbsp;</span>
                 </td>
                 <td class="priority-2">
-                    <a href="<?= Route::url('index.php?option=com_projects&task=edit&id=' . $row->project_id) ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate($row->project_title, 50)) ?></a>
+                    <?php
+                    $editUrl = Route::url('index.php?option=com_projects&task=edit&id=' . $row->project_id);
+                    ?>
+                    <a href="<?= $editUrl ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate($row->project_title, 50)) ?></a>
                 </td>
                 <td class="priority-4">
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&id=' . $row->id . $filterstring) ?>"><?= $this->escape($row->versions) ?></a>
+                    <?php
+                    $versionsUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&id='
+                            . $row->id . $filterstring,
+                    );
+                    ?>
+                    <a href="<?= $versionsUrl ?>"><?= $this->escape($row->versions) ?></a>
                 </td>
                 <td class="priority-4">
                     <?php echo $this->escape($row->base); ?>

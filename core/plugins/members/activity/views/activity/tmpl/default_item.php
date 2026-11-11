@@ -149,7 +149,12 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     if ($group) {
                         ?>
                         <div class="activity-source icon-group">
-                            <a href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=activity') ?>"><?= $this->escape($group->get('description')) ?></a>
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=activity',
+                            );
+                            ?>
+                            <a href="<?= $linkUrl ?>"><?= $this->escape($group->get('description')) ?></a>
                         </div>
                         <?php
                     }
@@ -161,7 +166,10 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     if ($project) {
                         ?>
                         <div class="activity-source icon-project">
-                            <a href="<?= Route::url('index.php?option=com_projects&alias=' . $project->get('alias')) ?>"><?= $this->escape(stripslashes($project->get('title'))) ?></a>
+                            <?php
+                            $linkUrl = Route::url('index.php?option=com_projects&alias=' . $project->get('alias'));
+                            ?>
+                            <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($project->get('title'))) ?></a>
                         </div>
                         <?php
                     }
@@ -253,7 +261,10 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                         </li>
                     <?php } ?>
                     <li>
-                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&action=remove&activity=' . $this->row->get('id')) ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?></button>
+                        <?php
+                        $removeUrl = Route::url($base . '&action=remove&activity=' . $this->row->get('id'));
+                        ?>
+                        <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?></button>
                     </li>
                     <?php /*<li>
                         <a

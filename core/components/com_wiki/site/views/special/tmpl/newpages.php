@@ -66,12 +66,18 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
             <thead>
                 <tr>
                     <th scope="col">
-                        <a<?= $sort == 'created' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=created&dir=' . $altdir) ?>">
+                        <?php
+                        $linkUrl = Route::url($this->page->link() . '&sort=created&dir=' . $altdir);
+                        ?>
+                        <a<?= $sort == 'created' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>">
                             <?= $sort == 'created' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_DATE') ?>
                         </a>
                     </th>
                     <th scope="col">
-                        <a<?= $sort == 'title' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=title&dir=' . $altdir) ?>">
+                        <?php
+                        $linkUrl = Route::url($this->page->link() . '&sort=title&dir=' . $altdir);
+                        ?>
+                        <a<?= $sort == 'title' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>">
                             <?= $sort == 'title' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_TITLE') ?>
                         </a>
                     </th>
@@ -83,7 +89,10 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         </a>
                     </th>
                     <th scope="col">
-                        <a<?= $sort == 'summary' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=summary&dir=' . $altdir) ?>">
+                        <?php
+                        $linkUrl = Route::url($this->page->link() . '&sort=summary&dir=' . $altdir);
+                        ?>
+                        <a<?= $sort == 'summary' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>">
                             <?= $sort == 'summary' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_EDIT_SUMMARY') ?>
                         </a>
                     </th>

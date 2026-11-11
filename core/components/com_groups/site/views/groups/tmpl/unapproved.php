@@ -28,12 +28,20 @@ $this->css();
 
         <?php if (in_array(User::get('id'), $this->group->get('invitees'))) : ?>
             <hr />
-            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&controller=groups&cn=' . $this->group->get('cn') . '&task=accept') ?>" class="group-invited">
+            <?php
+            $acceptUrl = Route::url(
+                'index.php?option=com_groups&controller=groups&cn=' . $this->group->get('cn') . '&task=accept',
+            );
+            ?>
+            <button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>" class="group-invited">
                 <?php echo Lang::txt('COM_GROUPS_ACCEPT_INVITE'); ?>
             </button>
             <hr />
         <?php endif; ?>
 
-        <p><a class="all-groups" href="<?= Route::url('index.php?option=com_groups') ?>"><?= Lang::txt('COM_GROUPS_ALL_GROUPS') ?></a> | <a class="my-groups" href="<?= Route::url('index.php?option=com_members&task=myaccount&active=groups') ?>"><?= Lang::txt('COM_GROUPS_MY_GROUPS') ?></a></p>
+        <?php
+        $myaccountUrl = Route::url('index.php?option=com_members&task=myaccount&active=groups');
+        ?>
+        <p><a class="all-groups" href="<?= Route::url('index.php?option=com_groups') ?>"><?= Lang::txt('COM_GROUPS_ALL_GROUPS') ?></a> | <a class="my-groups" href="<?= $myaccountUrl ?>"><?= Lang::txt('COM_GROUPS_MY_GROUPS') ?></a></p>
     </div>
 </section>

@@ -24,8 +24,19 @@ $this
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="icon-status status btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']) ?>"><?= Lang::txt('COM_TOOLS_TOOL_STATUS') ?></a></li>
-            <li><a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create') ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
+            <?php
+            $statusUrl = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='
+                    . $this->status['toolname'],
+            );
+            ?>
+            <li><a class="icon-status status btn" href="<?= $statusUrl ?>"><?= Lang::txt('COM_TOOLS_TOOL_STATUS') ?></a></li>
+            <?php
+            $createUrl = Route::url(
+                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create',
+            );
+            ?>
+            <li><a class="icon-add add btn" href="<?= $createUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -66,7 +77,13 @@ $this
                 <?php } elseif ($this->action == 'new' && $this->status['toolname']) { // new version is required?>
                     <h4><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_ENTER_UNIQUE_VERSION'); ?>:</h4>
                 <?php } ?>
-                    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=saveversion&app=' . $this->status['toolname']) ?>" method="post" id="versionForm">
+                    <?php
+                    $saveversionUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                            . '&task=saveversion&app=' . $this->status['toolname'],
+                    );
+                    ?>
+                    <form action="<?= $saveversionUrl ?>" method="post" id="versionForm">
                         <fieldset class="versionfield">
                             <label for="newversion"><?php echo ucfirst(Lang::txt('COM_TOOLS_VERSION')); ?>: </label>
                             <input type="text" name="newversion" id="newversion"
@@ -159,11 +176,23 @@ $this
                         <td>
                         <?php if ($t->state == 1 && $this->admin) { ?>
                                 <span class="actionlink">
-                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=current') ?>"><?= Lang::txt('COM_TOOLS_EDIT') ?></a>
+                                    <?php
+                                    $editUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                            . '&task=edit&app=' . $this->status['toolname'] . '&editversion=current',
+                                    );
+                                    ?>
+                                    <a href="<?= $editUrl ?>"><?= Lang::txt('COM_TOOLS_EDIT') ?></a>
                                 </span>
                         <?php } elseif ($t->state == 3) { ?>
                                 <span class="actionlink">
-                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname'] . '&editversion=dev') ?>"><?= Lang::txt('COM_TOOLS_EDIT') ?></a>
+                                    <?php
+                                    $editUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                            . '&task=edit&app=' . $this->status['toolname'] . '&editversion=dev',
+                                    );
+                                    ?>
+                                    <a href="<?= $editUrl ?>"><?= Lang::txt('COM_TOOLS_EDIT') ?></a>
                                 </span>
                         <?php } ?>
                         </td>

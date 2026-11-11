@@ -161,7 +161,10 @@ $this->comment->set('url', $rtrn);
                             )
                             || $this->params->get('access-manage-comment')
                         ) { ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->comment->link('delete')) ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_HUBZERO_COMMENTS_CONFIRM') ?>"><?= Lang::txt('PLG_HUBZERO_COMMENTS_DELETE') ?></button>
+                            <?php
+                            $actionUrl = Route::url($this->comment->link('delete'));
+                            ?>
+                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" data-txt-confirm="<?= Lang::txt('PLG_HUBZERO_COMMENTS_CONFIRM') ?>"><?= Lang::txt('PLG_HUBZERO_COMMENTS_DELETE') ?></button>
                         <?php } ?>
                         <?php
                         if (

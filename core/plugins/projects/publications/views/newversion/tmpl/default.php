@@ -40,9 +40,15 @@ if ($this->getError()) {
 <form action="<?php echo Route::url($this->project->link('publications')); ?>" method="post" id="plg-form" >
     <div id="plg-header">
     <?php if ($this->project->isProvisioned()) { ?>
-        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')) ?></h3>
+        <?php
+        $linkUrl = Route::url($this->pub->link('editversion'));
+        ?>
+        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')) ?></h3>
     <?php } else { ?>
-        <h3 class="publications"><a href="<?= Route::url($this->project->link('publications')) ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> <span class="indlist"> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')) ?></span>
+        <?php
+        $linkUrl = Route::url($this->project->link('publications'));
+        ?>
+        <h3 class="publications"><a href="<?= $linkUrl ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> <span class="indlist"> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')) ?></span>
         </h3>
     <?php } ?>
     </div>

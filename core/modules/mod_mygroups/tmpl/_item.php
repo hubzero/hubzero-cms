@@ -13,7 +13,10 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 ?>
 <li class="group<?php echo $group->published == 2 ? ' archived' : ''; ?>">
-    <a href="<?= Route::url('index.php?option=com_groups&cn=' . $group->cn) ?>"><?= $this->escape(stripslashes($group->description)) ?></a>
+    <?php
+    $linkUrl = Route::url('index.php?option=com_groups&cn=' . $group->cn);
+    ?>
+    <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($group->description)) ?></a>
     <span><span
         class="<?= $status ?> status"><?= Lang::txt('MOD_MYGROUPS_STATUS_' . strtoupper($status)) ?></span></span>
     <?php if (!$group->approved) : ?>

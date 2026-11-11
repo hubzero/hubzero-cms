@@ -62,9 +62,25 @@ $rows = $this->todo->entries('list', $this->filters);
         </ul>
 
         <ul class="entries-menu filter-options">
-            <li><a href="<?= Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=0&state=0') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE') ?>" class="filter-active<?= !$this->filters['mine'] && !$this->filters['state'] ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE') ?></a></li>
-            <li><a href="<?= Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=1') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?>" class="filter-mine<?= $this->filters['mine'] == 1 ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?></a></li>
-            <li><a href="<?= Route::url($url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&state=1') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?>" class="filter-complete<?= $this->filters['state'] == 1 ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?></a></li>
+            <?php
+            $linkUrl = Route::url(
+                $url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby']
+                    . '&mine=0&state=0',
+            );
+            ?>
+            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE') ?>" class="filter-active<?= !$this->filters['mine'] && !$this->filters['state'] ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE') ?></a></li>
+            <?php
+            $linkUrl = Route::url(
+                $url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=1',
+            );
+            ?>
+            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?>" class="filter-mine<?= $this->filters['mine'] == 1 ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?></a></li>
+            <?php
+            $linkUrl = Route::url(
+                $url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&state=1',
+            );
+            ?>
+            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?>" class="filter-complete<?= $this->filters['state'] == 1 ? ' active' : '' ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?></a></li>
         </ul>
     </nav>
 </div>
@@ -90,11 +106,17 @@ $rows = $this->todo->entries('list', $this->filters);
             ?>
         <tr class="pin_grey" id="todo-<?php echo $row->get('id'); ?>">
             <td><span class="ordernum"><?php echo $order; ?></span></td>
-            <td><a href="<?= Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')) ?>"><?= \Hubzero\Utility\Str::truncate($row->get('content'), 200) ?></a>
+            <?php
+            $viewUrl = Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id'));
+            ?>
+            <td><a href="<?= $viewUrl ?>"><?= \Hubzero\Utility\Str::truncate($row->get('content'), 200) ?></a>
                 <span class="block mini faded"><?= Lang::txt('PLG_PROJECTS_TODO_CREATED') . ' ' . $row->created('date') . ' ' . strtolower(Lang::txt('PLG_PROJECTS_TODO_BY')) . ' ' . $row->creator('name') ?>
                     | <?= Lang::txt('PLG_PROJECTS_TODO_COMMENTS') ?>: <a href="<?= Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')) ?>"><?= $row->comments('count') ?></a></span>
             </td>
-            <td><a href="<?= Route::url($row->project()->link('todo')) ?>"><?= $this->escape($row->project('title')) ?></a></td>
+            <?php
+            $linkUrl = Route::url($row->project()->link('todo'));
+            ?>
+            <td><a href="<?= $linkUrl ?>"><?= $this->escape($row->project('title')) ?></a></td>
             <td class="mini faded"><?php echo $row->isComplete() ? $row->closer('name') : $row->owner('name'); ?></td>
             <td class="mini nowrap"><?= $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote ?></td>
             <td></td>

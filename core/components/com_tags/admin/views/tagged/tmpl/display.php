@@ -100,7 +100,13 @@ $tblSelected = function ($value) {
                 </td>
                 <td class="priority-5">
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->get('id'),
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <?php echo $this->escape($row->get('id')); ?>
                         </a>
                     <?php } else { ?>
@@ -112,7 +118,13 @@ $tblSelected = function ($value) {
                 <?php if (!$this->filters['tagid']) { ?>
                     <td>
                         <?php if ($canDo->get('core.edit')) { ?>
-                            <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=edit&id=' . $row->get('id'),
+                            );
+                            ?>
+                            <a href="<?= $editUrl ?>">
                                 <?php echo $this->escape($row->get('tagid')); ?>
                             </a>
                         <?php } else { ?>
@@ -124,7 +136,13 @@ $tblSelected = function ($value) {
                 <?php } ?>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->get('id'),
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <?php echo $this->escape($row->get('tbl')); ?>
                         </a>
                     <?php } else { ?>
@@ -135,7 +153,13 @@ $tblSelected = function ($value) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->get('id'),
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <?php echo $this->escape($row->get('objectid')); ?>
                         </a>
                     <?php } else { ?>
@@ -149,7 +173,12 @@ $tblSelected = function ($value) {
                 </td>
                 <td class="priority-4">
                     <?php if ($row->get('taggerid')) { ?>
-                        <a href="<?= Route::url('index.php?option=com_members&controller=members&task=edit&id=' . $row->get('taggerid')) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=com_members&controller=members&task=edit&id=' . $row->get('taggerid'),
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <?php echo $this->escape($row->creator->get('name', Lang::txt('COM_TAGS_UNKNOWN'))); ?>
                         </a>
                     <?php } else { ?>

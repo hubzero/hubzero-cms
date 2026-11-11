@@ -22,9 +22,15 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
 <form action="<?php echo Route::url($this->pub->link('editbase')); ?>" method="post" id="plg-form" >
     <div id="plg-header">
     <?php if ($this->project->isProvisioned()) { ?>
-        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')) ?></h3>
+        <?php
+        $linkUrl = Route::url($this->pub->link('editversion'));
+        ?>
+        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')) ?></h3>
     <?php } else { ?>
-        <h3 class="publications c-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> &raquo; <span class="indlist"> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')) ?></span>
+        <?php
+        $linkUrl = Route::url($this->pub->link('editversion'));
+        ?>
+        <h3 class="publications c-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a></span> &raquo; <span class="indlist"> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS')) ?></span>
         </h3>
     <?php } ?>
     </div>

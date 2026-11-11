@@ -80,8 +80,16 @@ if (isset($this->messages)) {
                                 }
                             }
                             ?>
-                            <li><a <?= $this->filters['filter'] == '' || $this->filters['filter'] == 'all' ? 'class="active"' : '' ?> href="<?= Route::url($base . '&action=browse' . $queryString . '&filters[filter]=all') ?>"><?= Lang::txt('PLG_GROUPS_CITATIONS_ALL') ?></a></li>
-                            <li><a <?= $this->filters['filter'] == 'member' ? 'class="active"' : '' ?> href="<?= Route::url($base . '&action=browse' . $queryString . '&filters[filter]=member') ?>"><?= Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED') ?></a></li>
+                            <?php
+                            $browseUrl = Route::url($base . '&action=browse' . $queryString . '&filters[filter]=all');
+                            ?>
+                            <li><a <?= $this->filters['filter'] == '' || $this->filters['filter'] == 'all' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= Lang::txt('PLG_GROUPS_CITATIONS_ALL') ?></a></li>
+                            <?php
+                            $browseUrl = Route::url(
+                                $base . '&action=browse' . $queryString . '&filters[filter]=member',
+                            );
+                            ?>
+                            <li><a <?= $this->filters['filter'] == 'member' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED') ?></a></li>
                         </ul>
                     </nav>
                     <?php endif; ?>
@@ -230,10 +238,16 @@ if (isset($this->messages)) {
                                             </a>
                                         </td>
                                         <td class="col-delete">
-                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&action=delete&id=' . $cite->id) ?>" class="icon-delete delete individual protected" title="<?= Lang::txt('PLG_GROUPS_CITATIONS_DELETE') ?>"><span><?= Lang::txt('PLG_GROUPS_CITATIONS_DELETE') ?></span></button>
+                                            <?php
+                                            $deleteUrl = Route::url($base . '&action=delete&id=' . $cite->id);
+                                            ?>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete individual protected" title="<?= Lang::txt('PLG_GROUPS_CITATIONS_DELETE') ?>"><span><?= Lang::txt('PLG_GROUPS_CITATIONS_DELETE') ?></span></button>
                                         </td>
                                         <td class="col-publish">
-                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&action=publish&id=' . $cite->id) ?>" class="icon-window-publish individual publish" title="<?= ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') ?>"><span><?= ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>' ?></span></button>
+                                            <?php
+                                            $publishUrl = Route::url($base . '&action=publish&id=' . $cite->id);
+                                            ?>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="icon-window-publish individual publish" title="<?= ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') ?>"><span><?= ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>' ?></span></button>
                                         </td>
                                     <?php endif; ?>
                                 </tr>
@@ -324,7 +338,12 @@ if (isset($this->messages)) {
                     <div class="btn-cluster">
                         <input type="submit" class="btn btn-success"
                             value="<?= Lang::txt('PLG_GROUPS_CITATIONS_FILTER') ?>" />
-                        <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations') ?>" class="btn">Reset</a>
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations',
+                        );
+                        ?>
+                        <a href="<?= $linkUrl ?>" class="btn">Reset</a>
                     </div>
                 </fieldset>
             </div><!-- /.aside -->

@@ -50,7 +50,12 @@ endif;
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php endif ?>
 
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new' . $tmpl) ?>" id="hubForm" method="post" enctype="multipart/form-data" <?= ($no_html) ? ' class="full"' : '' ?>>
+    <?php
+    $newUrl = Route::url(
+        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=new' . $tmpl,
+    );
+    ?>
+    <form action="<?= $newUrl ?>" id="hubForm" method="post" enctype="multipart/form-data" <?= ($no_html) ? ' class="full"' : '' ?>>
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />

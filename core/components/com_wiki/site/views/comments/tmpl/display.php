@@ -114,7 +114,10 @@ $ratingChecked = function ($value) {
                 <ul class="dropdown-menu">
                     <?php if ($this->version) { ?>
                         <li>
-                            <a href="<?= Route::url($this->page->link('comments')) ?>"><?= Lang::txt('COM_WIKI_ALL') ?></a>
+                            <?php
+                            $linkUrl = Route::url($this->page->link('comments'));
+                            ?>
+                            <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_WIKI_ALL') ?></a>
                         </li>
                     <?php } ?>
                     <?php
@@ -124,7 +127,10 @@ $ratingChecked = function ($value) {
                         }
                         ?>
                         <li>
-                            <a href="<?= Route::url($this->page->link('comments') . '&version=' . $ver->get('version')) ?>"><?= Lang::txt('COM_WIKI_VERSION_NUM', $ver->get('version')) ?></a>
+                            <?php
+                            $linkUrl = Route::url($this->page->link('comments') . '&version=' . $ver->get('version'));
+                            ?>
+                            <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_WIKI_VERSION_NUM', $ver->get('version')) ?></a>
                         </li>
                     <?php } ?>
                 </ul>

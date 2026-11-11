@@ -62,13 +62,21 @@ if ($this->config->get('access-manage-section')) {
                 <?php if ($this->config->get('access-edit-section')) { ?>
                     <span class="ordering-controls">
                         <?php if ($i != 0) { ?>
-                            <a class="order-up reorder" href="<?= Route::url($base . '&section=' . $section->get('alias') . '&action=orderup') ?>" title="<?= Lang::txt('Move up') ?>"><?= Lang::txt('Move up') ?></a>
+                            <?php
+                            $orderupUrl = Route::url($base . '&section=' . $section->get('alias') . '&action=orderup');
+                            ?>
+                            <a class="order-up reorder" href="<?= $orderupUrl ?>" title="<?= Lang::txt('Move up') ?>"><?= Lang::txt('Move up') ?></a>
                         <?php } else { ?>
                             <span class="order-up reorder"><?php echo Lang::txt('Move up'); ?></span>
                         <?php } ?>
 
                         <?php if ($i < $ct) { ?>
-                            <a class="order-down reorder" href="<?= Route::url($base . '&section=' . $section->get('alias') . '&action=orderdown') ?>" title="<?= Lang::txt('Move down') ?>"><?= Lang::txt('Move down') ?></a>
+                            <?php
+                            $orderdownUrl = Route::url(
+                                $base . '&section=' . $section->get('alias') . '&action=orderdown',
+                            );
+                            ?>
+                            <a class="order-down reorder" href="<?= $orderdownUrl ?>" title="<?= Lang::txt('Move down') ?>"><?= Lang::txt('Move down') ?></a>
                         <?php } else { ?>
                             <span class="order-down reorder"><?php echo Lang::txt('Move down'); ?></span>
                         <?php } ?>
@@ -105,13 +113,21 @@ if ($this->config->get('access-manage-section')) {
                             $this->config->get('access-edit-section') || $this->config->get('access-delete-section')
                         ) { ?>
                             <?php if ($this->config->get('access-delete-section')) { ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=' . $section->get('alias') . '/delete') ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?>"><span><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></span></button>
+                                <?php
+                                $actionUrl = Route::url($base . '&scope=' . $section->get('alias') . '/delete');
+                                ?>
+                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?>"><span><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></span></button>
                             <?php } ?>
                             <?php
                             if (
                                 $this->config->get('access-edit-section') && $this->edit != $section->get('alias')
                             ) { ?>
-                                <a class="icon-edit edit" href="<?= Route::url($base . '&scope=' . $section->get('alias') . '/edit#s' . $section->get('id')) ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_EDIT') ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    $base . '&scope=' . $section->get('alias') . '/edit#s' . $section->get('id'),
+                                );
+                                ?>
+                                <a class="icon-edit edit" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_EDIT') ?>">
                                     <span><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?></span>
                                 </a>
                             <?php } ?>
@@ -183,7 +199,10 @@ if ($this->config->get('access-manage-section')) {
                                             </a>
                                         <?php } ?>
                                         <?php if ($this->config->get('access-delete-category')) { ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->link('delete')) ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('PLG_GROUPS_FORUM_DELETE_CATEGORY') ?>"><span><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></span></button>
+                                            <?php
+                                            $actionUrl = Route::url($row->link('delete'));
+                                            ?>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('PLG_GROUPS_FORUM_DELETE_CATEGORY') ?>"><span><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></span></button>
                                         <?php } ?>
                                     </td>
                                 <?php } ?>

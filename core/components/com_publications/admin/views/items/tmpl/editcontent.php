@@ -35,7 +35,13 @@ if ($tmpl != 'component') {
     <p class="error"><?php echo $this->getError(); ?></p>
     <?php return;
 } ?>
-<p class="crumbs"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->get('id') . '&version=' . $this->pub->get('version_number')) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->get('id') ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO') ?></p>
+<?php
+$editUrl = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]='
+        . $this->pub->get('id') . '&version=' . $this->pub->get('version_number'),
+);
+?>
+<p class="crumbs"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= $editUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->get('id') ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO') ?></p>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
     name="adminForm" id="item-form">

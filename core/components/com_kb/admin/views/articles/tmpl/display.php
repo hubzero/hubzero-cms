@@ -151,7 +151,13 @@ $access = Html::access('assetgroups');
                             </span>
                     <?php } else { ?>
                         <?php if ($canDo->get('core.edit')) { ?>
-                            <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>" title="<?= Lang::txt('COM_KB_EDIT_ARTICLE') ?>">
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=edit&id=' . $row->get('id'),
+                            );
+                            ?>
+                            <a href="<?= $editUrl ?>" title="<?= Lang::txt('COM_KB_EDIT_ARTICLE') ?>">
                                 <span><?php echo $this->escape(stripslashes($row->get('title'))); ?></span>
                             </a>
                         <?php } else { ?>
@@ -166,7 +172,14 @@ $access = Html::access('assetgroups');
                 </td>
                 <td class="priority-2">
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?= $class ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task . '&id=' . $row->get('id') . '&category=' . $this->filters['category'] . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_KB_SET_TASK', $task) ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=' . $task
+                                . '&id=' . $row->get('id') . '&category=' . $this->filters['category'] . '&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state <?= $class ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_KB_SET_TASK', $task) ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>

@@ -24,7 +24,10 @@ if (count($this->items) > 0) { ?>
             <li>
                 <span class="pub-thumb"><img src="<?php echo Route::url($pub->link('thumb')); ?>" alt="" /></span>
                 <span class="pub-details">
-                    <a href="<?= Route::url($pub->link('version')) ?>" title="<?= $this->escape($pub->get('title')) ?>"><?= $this->escape(stripslashes($pub->get('title'))) . ' v.' . $this->escape($pub->get('version_label')) ?></a>
+                    <?php
+                    $linkUrl = Route::url($pub->link('version'));
+                    ?>
+                    <a href="<?= $linkUrl ?>" title="<?= $this->escape($pub->get('title')) ?>"><?= $this->escape(stripslashes($pub->get('title'))) . ' v.' . $this->escape($pub->get('version_label')) ?></a>
                     <span class="public-list-info">
                         - <?= Lang::txt('COM_PROJECTS_PUBLISHED') . ' ' . $pub->published('date') . ' ' . Lang::txt('COM_PROJECTS_IN') . ' <a href="' . Route::url($pub->link('category')) . '">' . $pub->category()->name . '</a>' ?>
                     </span>

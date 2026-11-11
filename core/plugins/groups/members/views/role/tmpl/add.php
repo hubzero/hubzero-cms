@@ -19,13 +19,21 @@ defined('_HZEXEC_') or die();
 
 <ul id="page_options">
     <li>
-        <a class="icon-browse btn" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members') ?>">
+        <?php
+        $linkUrl = Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members',
+        );
+        ?>
+        <a class="icon-browse btn" href="<?= $linkUrl ?>">
             <?php echo Lang::txt('PLG_GROUPS_MEMBERS'); ?>
         </a>
     </li>
 </ul>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members') ?>" method="post" id="hubForm" class="full">
+<?php
+$actionUrl = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members');
+?>
+<form action="<?= $actionUrl ?>" method="post" id="hubForm" class="full">
     <fieldset>
         <legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_DETAILS'); ?></legend>
         <label>

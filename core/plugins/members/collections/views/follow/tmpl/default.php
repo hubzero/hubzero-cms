@@ -169,7 +169,12 @@ if ($this->rows->total() > 0) {
                             <?php echo $this->escape(stripslashes($row->creator()->get('name'))); ?>
                         </a>
                         onto
-                        <a href="<?= Route::url($base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias'))) ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            $base . ($this->collection->get('is_default') ? '' : '/' . $this->collection->get('alias')),
+                        );
+                        ?>
+                        <a href="<?= $linkUrl ?>">
                             <?php echo $this->escape(stripslashes($this->collection->get('title'))); ?>
                         </a>
                         <br />

@@ -74,7 +74,13 @@ $this->css();
                     <?php echo $row->id; ?>
                 </td>
                 <td>
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id) ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row->id,
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>">
                         <span><?php echo $this->escape($row->name); ?></span>
                     </a>
                     <span class="block">

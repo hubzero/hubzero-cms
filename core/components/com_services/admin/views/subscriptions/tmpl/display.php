@@ -120,7 +120,13 @@ $statusSelected = function ($value) {
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id) ?>" title="<?= Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS') ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row->id,
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>" title="<?= Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS') ?>">
                         <?php echo $row->id . ' -- ' . $row->code; ?>
                     </a>
                 </td>
@@ -128,7 +134,13 @@ $statusSelected = function ($value) {
                     <?php echo $status; ?>
                 </td>
                 <td>
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id) ?>" title="<?= Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS') ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                            . $row->id,
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>" title="<?= Lang::txt('COM_SERVICES_VIEW_SUBSCRIPTION_DETAILS') ?>">
                         <span><?= $this->escape($service->get('category')) . ' -- ' . $this->escape($service->get('title')) ?></span>
                     </a>
                 </td>

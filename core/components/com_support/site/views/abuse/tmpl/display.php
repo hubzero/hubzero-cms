@@ -31,7 +31,12 @@ if (!$no_html) {
         <?php if ($this->getError()) { ?>
             <p class="error"><?php echo $this->getError(); ?></p>
         <?php } ?>
-        <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse') ?>" method="post" id="hubForm<?= $no_html ? '-ajax' : '' ?>">
+        <?php
+        $reportabuseUrl = Route::url(
+            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=reportabuse',
+        );
+        ?>
+        <form action="<?= $reportabuseUrl ?>" method="post" id="hubForm<?= $no_html ? '-ajax' : '' ?>">
             <?php if (!$no_html) { ?>
             <div class="explaination">
                 <p><?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_EXPLANATION'); ?></p>

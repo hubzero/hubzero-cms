@@ -33,11 +33,17 @@ $this->css('theme' . $theme . '.css');
 <div id="project-wrap" class="theme publicview">
     <?php if ($this->model->access('member') && !$this->reviewer) { // Public preview for authorized users?>
         <div id="project-preview">
-            <p><?= Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW') ?> <span><?= Lang::txt('COM_PROJECTS_RETURN_TO') ?> <a href="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')) ?>"><?= Lang::txt('COM_PROJECTS_PROJECT_PAGE') ?></a></span></p>
+            <?php
+            $linkUrl = Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias'));
+            ?>
+            <p><?= Lang::txt('COM_PROJECTS_THIS_IS_PROJECT_PREVIEW') ?> <span><?= Lang::txt('COM_PROJECTS_RETURN_TO') ?> <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PROJECTS_PROJECT_PAGE') ?></a></span></p>
         </div>
     <?php } elseif ($this->reviewer) { ?>
         <div id="project-preview">
-            <p><?= Lang::txt('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW') ?> <span><?= Lang::txt('COM_PROJECTS_RETURN_TO') ?> <a href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $this->reviewer) ?>"><?= Lang::txt('COM_PROJECTS_PROJECT_LIST') ?></a></span></p>
+            <?php
+            $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse&reviewer=' . $this->reviewer);
+            ?>
+            <p><?= Lang::txt('COM_PROJECTS_REVIEWER_PROJECT_PREVIEW') ?> <span><?= Lang::txt('COM_PROJECTS_RETURN_TO') ?> <a href="<?= $browseUrl ?>"><?= Lang::txt('COM_PROJECTS_PROJECT_LIST') ?></a></span></p>
         </div>
     <?php } ?>
 

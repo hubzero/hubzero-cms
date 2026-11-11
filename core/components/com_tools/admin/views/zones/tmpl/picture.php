@@ -82,7 +82,14 @@ defined('_HZEXEC_') or die();
                 </tr>
                 <tr>
                     <td><input type="hidden" name="currentfile" value="<?php echo $this->escape($file); ?>" /></td>
-                    <td><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=removefile&id=' . $this->zone->get('id') . '&' . Session::getFormToken() . '=1') ?>">[ <?= Lang::txt('JDELETE') ?> ]</a></td>
+                    <?php
+                    $removefileUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                            . '&tmpl=component&task=removefile&id=' . $this->zone->get('id') . '&'
+                            . Session::getFormToken() . '=1',
+                    );
+                    ?>
+                    <td><a href="<?= $removefileUrl ?>">[ <?= Lang::txt('JDELETE') ?> ]</a></td>
                 </tr>
             <?php } else { ?>
                 <tr>

@@ -44,7 +44,10 @@ if (count($inst) > 0) {
                         <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS'); ?>
                     </p>
                     <p class="comments-controls">
-                        <a class="add active" href="<?= Route::url($base . '&active=discussions') ?>" title="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC') ?>"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_NEW') ?></a>
+                        <?php
+                        $linkUrl = Route::url($base . '&active=discussions');
+                        ?>
+                        <a class="add active" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC') ?>"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_NEW') ?></a>
                     </p>
                 </div><!-- / .comments-toolbar -->
 
@@ -188,7 +191,10 @@ if (count($inst) > 0) {
                         <?php } else { ?>
                             <p class="comment-title">
                                 <strong>
-                                    <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>"><?= $this->escape(User::get('name')) ?></a>
+                                    <?php
+                                    $linkUrl = Route::url('index.php?option=com_members&id=' . User::get('id'));
+                                    ?>
+                                    <a href="<?= $linkUrl ?>"><?= $this->escape(User::get('name')) ?></a>
                                 </strong>
                                 <span class="permalink">
                                     <span class="comment-date-at">@</span>

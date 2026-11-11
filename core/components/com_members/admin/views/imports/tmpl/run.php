@@ -27,10 +27,16 @@ $this
 <nav role="navigation" class="sub sub-navigation">
     <ul>
         <li>
-            <a<?= $this->controller == 'imports' ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&controller=imports') ?>"><?= Lang::txt('COM_MEMBERS_IMPORT_TITLE_IMPORTS') ?></a>
+            <?php
+            $linkUrl = Route::url('index.php?option=' . $this->option . '&controller=imports');
+            ?>
+            <a<?= $this->controller == 'imports' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>"><?= Lang::txt('COM_MEMBERS_IMPORT_TITLE_IMPORTS') ?></a>
         </li>
         <li>
-            <a<?= $this->controller == 'importhooks' ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&controller=importhooks') ?>"><?= Lang::txt('COM_MEMBERS_IMPORT_HOOKS') ?></a>
+            <?php
+            $linkUrl = Route::url('index.php?option=' . $this->option . '&controller=importhooks');
+            ?>
+            <a<?= $this->controller == 'importhooks' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>"><?= Lang::txt('COM_MEMBERS_IMPORT_HOOKS') ?></a>
         </li>
     </ul>
 </nav>
@@ -54,7 +60,12 @@ $this
         <div class="countdown" data-timeout="5">
             <?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_START', '<span>5</span>'); ?>
         </div>
-        <div class="countdown-actions" data-progress="<?= Route::url('index.php?option=com_members&controller=imports&task=progress&id=' . $this->import->get('id')) ?>">
+        <?php
+        $progressUrl = Route::url(
+            'index.php?option=com_members&controller=imports&task=progress&id=' . $this->import->get('id'),
+        );
+        ?>
+        <div class="countdown-actions" data-progress="<?= $progressUrl ?>">
             <button type="button" class="start"><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_BUTTON_START'); ?></button>
             <button type="button" class="stop"><?php echo Lang::txt('COM_MEMBERS_IMPORT_RUN_BUTTON_STOP'); ?></button>
 

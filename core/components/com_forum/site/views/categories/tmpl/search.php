@@ -105,7 +105,14 @@ $this
                                             <span class="entry-identifier <?= $icn ?>"><?= $this->escape($row->get('id')) ?></span>
                                         </th>
                                         <td>
-                                            <a class="entry-title" href="<?= Route::url('index.php?option=' . $this->option . '&section=' . $secalias . '&category=' . $catalias . '&thread=' . $row->get('thread') . '&q=' . $this->filters['search']) ?>">
+                                            <?php
+                                            $linkUrl = Route::url(
+                                                'index.php?option=' . $this->option . '&section=' . $secalias
+                                                    . '&category=' . $catalias . '&thread=' . $row->get('thread')
+                                                    . '&q=' . $this->filters['search'],
+                                            );
+                                            ?>
+                                            <a class="entry-title" href="<?= $linkUrl ?>">
                                                 <span><?php echo $title; ?></span>
                                             </a>
                                             <span class="entry-details">
@@ -160,7 +167,10 @@ $this
                         <?php echo Lang::txt('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
                     </p>
                     <p>
-                        <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('COM_FORUM_NEW_DISCUSSION') ?></a>
+                        <?php
+                        $linkUrl = Route::url('index.php?option=' . $this->option);
+                        ?>
+                        <a class="icon-add add btn" href="<?= $linkUrl ?>"><?= Lang::txt('COM_FORUM_NEW_DISCUSSION') ?></a>
                     </p>
                 </div><!-- / .container -->
             <?php } ?>

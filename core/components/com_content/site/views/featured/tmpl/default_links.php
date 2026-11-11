@@ -17,7 +17,12 @@ defined('_HZEXEC_') or die();
 <ol>
     <?php foreach ($this->link_items as &$item) : ?>
         <li>
-            <a href="<?= Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($item->slug, $item->catslug, $item->language)) ?>">
+            <?php
+            $linkUrl = Route::url(
+                Components\Content\Site\Helpers\Route::getArticleRoute($item->slug, $item->catslug, $item->language),
+            );
+            ?>
+            <a href="<?= $linkUrl ?>">
                 <?php echo $this->escape($item->title); ?>
             </a>
         </li>

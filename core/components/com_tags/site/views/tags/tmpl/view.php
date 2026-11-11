@@ -154,12 +154,26 @@ foreach ($cats as $cat) {
                 <nav class="entries-filters">
                     <ul class="entries-menu order-options">
                         <li>
-                            <a<?= ($this->filters['sort'] == 'title') ? ' class="active"' : '' ?> rel="nofollow" href="<?= Route::url('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&parent=' . $this->parent . '&sort=title&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start']) ?>" title="<?= Lang::txt('COM_TAGS_OPT_SORT_BY_TITLE') ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area='
+                                    . $this->active . '&parent=' . $this->parent . '&sort=title&limit='
+                                    . $this->filters['limit'] . '&start=' . $this->filters['start'],
+                            );
+                            ?>
+                            <a<?= ($this->filters['sort'] == 'title') ? ' class="active"' : '' ?> rel="nofollow" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TAGS_OPT_SORT_BY_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_OPT_TITLE'); ?>
                             </a>
                         </li>
                         <li>
-                            <a<?= ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : '' ?> rel="nofollow" href="<?= Route::url('index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area=' . $this->active . '&parent=' . $this->parent . '&sort=date&limit=' . $this->filters['limit'] . '&start=' . $this->filters['start']) ?>" title="<?= Lang::txt('COM_TAGS_OPT_SORT_BY_DATE') ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&tag=' . $this->tagstring . '&area='
+                                    . $this->active . '&parent=' . $this->parent . '&sort=date&limit='
+                                    . $this->filters['limit'] . '&start=' . $this->filters['start'],
+                            );
+                            ?>
+                            <a<?= ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : '' ?> rel="nofollow" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TAGS_OPT_SORT_BY_DATE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_OPT_DATE'); ?>
                             </a>
                         </li>

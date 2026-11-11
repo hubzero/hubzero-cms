@@ -286,26 +286,56 @@ $activationSelected = function ($value) {
                 <td>
                     <div class="fltrt">
                         <?php if ($count = $row->notes->count()) : ?>
-                            <a class="state filter" href="<?= Route::url('index.php?option=' . $this->option . '&controller=notes&search=uid%3A' . (int) $row->get('id')) ?>" title="<?= Lang::txt('COM_MEMBERS_FILTER_NOTES') ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=notes&search=uid%3A'
+                                    . (int) $row->get('id'),
+                            );
+                            ?>
+                            <a class="state filter" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_MEMBERS_FILTER_NOTES') ?>">
                                 <span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
                             </a>
-                            <a class="modal state notes" href="<?= Route::url('index.php?option=' . $this->option . '&controller=notes&tmpl=component&task=modal&id=' . (int) $row->get('id')) ?>" rel="{handler: 'iframe', size: {x: 800, y: 450}}" title="<?= Lang::txts('COM_MEMBERS_N_USER_NOTES', $count) ?>">
+                            <?php
+                            $modalUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=notes&tmpl=component&task=modal&id='
+                                    . (int) $row->get('id'),
+                            );
+                            ?>
+                            <a class="modal state notes" href="<?= $modalUrl ?>" rel="{handler: 'iframe', size: {x: 800, y: 450}}" title="<?= Lang::txts('COM_MEMBERS_N_USER_NOTES', $count) ?>">
                                 <span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
                             </a>
                         <?php endif; ?>
-                        <a class="state notes" href="<?= Route::url('index.php?option=' . $this->option . '&controller=notes&task=add&user_id=' . (int) $row->get('id')) ?>" title="<?= Lang::txt('COM_MEMBERS_ADD_NOTE') ?>">
+                        <?php
+                        $addUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=notes&task=add&user_id='
+                                . (int) $row->get('id'),
+                        );
+                        ?>
+                        <a class="state notes" href="<?= $addUrl ?>" title="<?= Lang::txt('COM_MEMBERS_ADD_NOTE') ?>">
                             <span><?php echo Lang::txt('COM_MEMBERS_NOTES'); ?></span>
                         </a>
                     </div>
                     <?php if ($canEdit) : ?>
-                        <a class="editlinktip hasTip" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>" title="<?php echo $this->escape(stripslashes($row->get('name')));/* ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; /><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; </span>*/?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->get('id'),
+                        );
+                        ?>
+                        <a class="editlinktip hasTip" href="<?= $editUrl ?>" title="<?php echo $this->escape(stripslashes($row->get('name')));/* ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; /><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; </span>*/?>">
                             <?php echo $this->escape($row->get('name')); ?>
                         </a>
                     <?php else : ?>
                         <?php echo $this->escape($row->get('name')); ?>
                     <?php endif; ?>
                     <?php if (Config::get('debug')) : ?>
-                        <a class="permissions button" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debug&id=' . $row->get('id')) ?>">
+                        <?php
+                        $debugUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=debug&id='
+                                . $row->get('id'),
+                        );
+                        ?>
+                        <a class="permissions button" href="<?= $debugUrl ?>">
                             <?php echo Lang::txt('COM_MEMBERS_DEBUG_USER');?>
                         </a>
                     <?php endif; ?>

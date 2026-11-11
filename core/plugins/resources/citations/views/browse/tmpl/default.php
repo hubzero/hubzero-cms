@@ -74,8 +74,18 @@ if ($this->citations) {
 <h3>
     <?php echo Lang::txt('PLG_RESOURCES_CITATIONS'); ?>
     <span>
-        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=citations#nonaffiliated') ?>"><?= Lang::txt('PLG_RESOURCES_CITATIONS_NONAFF') ?> (<?= $numnon ?>)</a> |
-        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=citations#affiliated') ?>"><?= Lang::txt('PLG_RESOURCES_CITATIONS_AFF') ?> (<?= $numaff ?>)</a>
+        <?php
+        $linkUrl = Route::url(
+            'index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=citations#nonaffiliated',
+        );
+        ?>
+        <a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_RESOURCES_CITATIONS_NONAFF') ?> (<?= $numnon ?>)</a> |
+        <?php
+        $linkUrl = Route::url(
+            'index.php?option=' . $this->option . '&id=' . $this->resource->id . '&active=citations#affiliated',
+        );
+        ?>
+        <a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_RESOURCES_CITATIONS_AFF') ?> (<?= $numaff ?>)</a>
     </span>
 </h3>
 <?php if ($this->citations) { ?>

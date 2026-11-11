@@ -132,7 +132,12 @@ $this
                             ?>
                             <tr class="<?php echo $cls; ?>">
                                 <td>
-                                    <a class="tag <?= $row->get('admin') ? ' admin' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&tag=' . $row->get('tag')) ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&tag=' . $row->get('tag'),
+                                    );
+                                    ?>
+                                    <a class="tag <?= $row->get('admin') ? ' admin' : '' ?>" href="<?= $linkUrl ?>">
                                         <?php echo $this->escape(stripslashes($row->get('raw_tag'))); ?>
                                     </a>
                                 </td>
@@ -151,12 +156,30 @@ $this
                                 ) { ?>
                                     <td>
                                         <?php if ($this->config->get('access-delete-tag')) { ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&task=delete&id[]=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>" class="icon-delete delete delete-tag" data-confirm="<?= Lang::txt('COM_TAGS_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                            <?php
+                                            $deleteUrl = Route::url(
+                                                'index.php?option=' . $this->option . '&task=delete&id[]='
+                                                    . $row->get('id') . '&search=' . urlencode($this->filters['search'])
+                                                    . '&sort=' . $this->filters['sort'] . '&sortdir='
+                                                    . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit']
+                                                    . '&limitstart=' . $this->filters['start'],
+                                            );
+                                            ?>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete delete-tag" data-confirm="<?= Lang::txt('COM_TAGS_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                         <?php } ?>
                                     </td>
                                     <td>
                                         <?php if ($this->config->get('access-edit-tag')) { ?>
-                                            <a class="icon-edit edit" href="<?= Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id') . '&search=' . urlencode($this->filters['search']) . '&sort=' . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>" title="<?= Lang::txt('COM_TAGS_EDIT_TAG', $this->escape(stripslashes($row->get('raw_tag')))) ?>">
+                                            <?php
+                                            $editUrl = Route::url(
+                                                'index.php?option=' . $this->option . '&task=edit&id=' . $row->get('id')
+                                                    . '&search=' . urlencode($this->filters['search']) . '&sort='
+                                                    . $this->filters['sort'] . '&sortdir=' . $this->filters['sort_Dir']
+                                                    . '&limit=' . $this->filters['limit'] . '&limitstart='
+                                                    . $this->filters['start'],
+                                            );
+                                            ?>
+                                            <a class="icon-edit edit" href="<?= $editUrl ?>" title="<?= Lang::txt('COM_TAGS_EDIT_TAG', $this->escape(stripslashes($row->get('raw_tag')))) ?>">
                                                 <?php echo Lang::txt('JACTION_EDIT'); ?>
                                             </a>
                                         <?php } ?>

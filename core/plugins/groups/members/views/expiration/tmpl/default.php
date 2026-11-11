@@ -18,7 +18,10 @@ defined('_HZEXEC_') or die();
 $min = Date::of('now')->modify('+1 day')->format('Y-m-d');
 $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' days')->format('Y-m-d') : '';
 ?>
-<form action="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members') ?>" method="post" id="hubForm">
+<?php
+$actionUrl = Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members');
+?>
+<form action="<?= $actionUrl ?>" method="post" id="hubForm">
     <div class="explaination">
         <p class="info"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_EXPLANATION'); ?></p>
     </div>

@@ -59,12 +59,18 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
             <thead>
                 <tr>
                     <th scope="col">
-                        <a<?= $sort == 'created' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=created&dir=' . $altdir) ?>">
+                        <?php
+                        $linkUrl = Route::url($this->page->link() . '&sort=created&dir=' . $altdir);
+                        ?>
+                        <a<?= $sort == 'created' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>">
                             <?= $sort == 'created' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_DATE') ?>
                         </a>
                     </th>
                     <th scope="col">
-                        <a<?= $sort == 'filename' ? ' class="active"' : '' ?> href="<?= Route::url($this->page->link() . '&sort=filename&dir=' . $altdir) ?>">
+                        <?php
+                        $linkUrl = Route::url($this->page->link() . '&sort=filename&dir=' . $altdir);
+                        ?>
+                        <a<?= $sort == 'filename' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>">
                             <?= $sort == 'filename' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_NAME') ?>
                         </a>
                     </th>

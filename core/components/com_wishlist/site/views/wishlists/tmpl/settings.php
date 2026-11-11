@@ -141,7 +141,13 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                                 <td><?php echo count($members); ?></td>
                                 <td>
                                     <?php if ($n > 1 && !in_array($groups[$i], $native['groups'])) { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->wishlist->link('savesettings') . '&action=delete&group=' . $groups[$i]) ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
+                                        <?php
+                                        $deleteUrl = Route::url(
+                                            $this->wishlist->link('savesettings') . '&action=delete&group='
+                                                . $groups[$i],
+                                        );
+                                        ?>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -208,7 +214,13 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                                 <td><?php echo $this->escape($kuser->get('username')); ?></td>
                                 <td>
                                     <?php if ($n > 1 && !in_array($individuals[$i], $native['individuals'])) { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $individuals[$i]) ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
+                                        <?php
+                                        $deleteUrl = Route::url(
+                                            $this->wishlist->link('savesettings') . '&action=delete&user='
+                                                . $individuals[$i],
+                                        );
+                                        ?>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
                                     <?php } ?>
                                 </td>
                             </tr>
@@ -276,7 +288,13 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                                     <td><?php echo $this->escape($quser->get('name')); ?></td>
                                     <td><?php echo $this->escape($quser->get('username')); ?></td>
                                     <td>
-                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->wishlist->link('savesettings') . '&action=delete&user=' . $advisory[$i]) ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
+                                        <?php
+                                        $deleteUrl = Route::url(
+                                            $this->wishlist->link('savesettings') . '&action=delete&user='
+                                                . $advisory[$i],
+                                        );
+                                        ?>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="delete"><?= Lang::txt('COM_WISHLIST_OPTION_REMOVE') ?></button>
                                     </td>
                                 </tr>
                                     <?php

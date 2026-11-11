@@ -231,5 +231,8 @@ endforeach;
 <div class="session-expired">
     <h3>Session Expired</h3>
     <p>Sorry. Your session has expired. You must login again to proceed.</p>
-    <p><a href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI'])) ?>" class="btn btn-warning">Login</a>
+    <?php
+    $linkUrl = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($_SERVER['REQUEST_URI']));
+    ?>
+    <p><a href="<?= $linkUrl ?>" class="btn btn-warning">Login</a>
 </div>

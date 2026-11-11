@@ -81,8 +81,20 @@ $idSelected = function ($value) {
                             <?php if (count($this->pub->authors()) > 1) { ?>
                             <span class="hint-reorder"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_DRAG_TO_REORDER') ?></span>
                             <?php } ?>
-                            <a href="<?= Route::url($this->pub->link('editversionid') . '&active=publications&action=editauthor&aid=' . $author->id . '&p=' . $props) ?>" class="showinbox item-edit" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT') ?>">&nbsp;</a>
-                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->pub->link('editversion') . '&active=publications&action=deleteitem&aid=' . $author->id . '&p=' . $props) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
+                            <?php
+                            $editauthorUrl = Route::url(
+                                $this->pub->link('editversionid') . '&active=publications&action=editauthor&aid='
+                                    . $author->id . '&p=' . $props,
+                            );
+                            ?>
+                            <a href="<?= $editauthorUrl ?>" class="showinbox item-edit" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT') ?>">&nbsp;</a>
+                            <?php
+                            $deleteitemUrl = Route::url(
+                                $this->pub->link('editversion') . '&active=publications&action=deleteitem&aid='
+                                    . $author->id . '&p=' . $props,
+                            );
+                            ?>
+                            <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
                         </span>
                     </span>
                     <span class="item-order"><?php echo $i; ?></span>

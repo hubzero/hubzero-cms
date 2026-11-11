@@ -48,7 +48,12 @@ foreach ($menus as $menu) {
         <p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
     <?php } ?>
 
-    <form action="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=save') ?>" method="post" id="hubForm" class="full">
+    <?php
+    $saveUrl = Route::url(
+        'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=modules&task=save',
+    );
+    ?>
+    <form action="<?= $saveUrl ?>" method="post" id="hubForm" class="full">
         <div class="grid">
             <div class="col span9">
                 <fieldset>

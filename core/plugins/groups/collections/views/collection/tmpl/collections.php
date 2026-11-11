@@ -113,35 +113,68 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                             <div class="actions">
                                 <?php if (!User::isGuest()) { ?>
                                     <?php if ($row->isFollowing()) { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=' . $row->get('alias') . '/unfollow') ?>" class="btn unfollow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW') ?>">
+                                        <?php
+                                        $actionUrl = Route::url($base . '&scope=' . $row->get('alias') . '/unfollow');
+                                        ?>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn unfollow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW') ?>">
                                             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
                                         </button>
                                     <?php } else { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=' . $row->get('alias') . '/follow') ?>" class="btn follow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW') ?>">
+                                        <?php
+                                        $actionUrl = Route::url($base . '&scope=' . $row->get('alias') . '/follow');
+                                        ?>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn follow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW') ?>">
                                             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
                                         </button>
                                     <?php } ?>
                                     <?php if ($this->params->get('access-manage-collection')) { ?>
                                         <?php if ($this->params->get('access-edit-collection')) { ?>
-                                            <a class="btn edit" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&scope=' . $row->get('alias') . '/edit') ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT') ?>">
+                                            <?php
+                                            $linkUrl = Route::url($base . '&scope=' . $row->get('alias') . '/edit');
+                                            ?>
+                                            <a class="btn edit" data-id="<?= $row->get('id') ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_EDIT'); ?></span>
                                             </a>
                                         <?php } ?>
                                         <?php if ($this->params->get('access-delete-collection')) { ?>
-                                            <a class="btn delete" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&scope=' . $row->get('alias') . '/delete') ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE') ?>">
+                                            <?php
+                                            $linkUrl = Route::url($base . '&scope=' . $row->get('alias') . '/delete');
+                                            ?>
+                                            <a class="btn delete" data-id="<?= $row->get('id') ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
                                             </a>
                                         <?php } ?>
                                     <?php } else { ?>
-                                            <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&scope=' . $row->get('alias') . '/collect') ?>">
+                                            <?php
+                                            $linkUrl = Route::url($base . '&scope=' . $row->get('alias') . '/collect');
+                                            ?>
+                                            <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= $linkUrl ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                     <?php } ?>
                                 <?php } else { ?>
-                                    <a class="btn repost tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $row->get('alias'), false, true)), false) ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(
+                                                Route::url($base . '&scope=' . $row->get('alias'), false, true),
+                                            ),
+                                        false,
+                                    );
+                                    ?>
+                                    <a class="btn repost tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
-                                    <a class="btn follow tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&scope=' . $row->get('alias'), false, true)), false) ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(
+                                                Route::url($base . '&scope=' . $row->get('alias'), false, true),
+                                            ),
+                                        false,
+                                    );
+                                    ?>
+                                    <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
                                     </a>
                                 <?php } ?>

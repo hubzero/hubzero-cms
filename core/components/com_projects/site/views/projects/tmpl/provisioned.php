@@ -57,14 +57,22 @@ $this
                             <span class="desc"><?php echo Lang::txt('COM_PROJECTS_ACTIVATE_GET_WIKI'); ?></span>
                         </li>
                         <li id="andmore">
-                            <a href="<?= Route::url('index.php?option=' . $this->option . '&task=features') ?>"><?= Lang::txt('COM_PROJECTS_ACTIVATE_AND_MORE') ?></a>
+                            <?php
+                            $featuresUrl = Route::url('index.php?option=' . $this->option . '&task=features');
+                            ?>
+                            <a href="<?= $featuresUrl ?>"><?= Lang::txt('COM_PROJECTS_ACTIVATE_AND_MORE') ?></a>
                         </li>
                     </ul>
                 </div>
                 <div class="col span6 omega">
                     <div id="activate-body">
                         <h3><?php echo Lang::txt('COM_PROJECTS_ACTIVATE_YOUR_NEW_PROJECT'); ?></h3>
-                        <form action="<?= Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=activate') ?>" method="post" id="activate-form" enctype="multipart/form-data">
+                        <?php
+                        $activateUrl = Route::url(
+                            'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=activate',
+                        );
+                        ?>
+                        <form action="<?= $activateUrl ?>" method="post" id="activate-form" enctype="multipart/form-data">
                             <fieldset>
                                 <input type="hidden" name="id" value="<?= $this->model->get('id') ?>" id="projectid" />
                                 <input type="hidden" name="task" value="activate" />

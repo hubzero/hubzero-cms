@@ -100,7 +100,10 @@ if (
     <div class="group-content-header">
         <h3><?php echo Lang::txt('COM_GROUPS_OVERVIEW_MEMBERS_HEADING'); ?></h3>
         <div class="group-content-header-extra">
-            <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members') ?>">
+            <?php
+            $linkUrl = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members');
+            ?>
+            <a href="<?= $linkUrl ?>">
                 <?php echo Lang::txt('COM_GROUPS_OVERVIEW_MEMBERS_BTN_TEXT') . ' &rarr;'; ?>
             </a>
         </div>
@@ -121,7 +124,10 @@ if (
                     in_array($profile->get('access'), User::getAuthorisedViewLevels())
                     && ($profile->get('activation') > 0)
                 ) { ?>
-                    <a href="<?= Route::url($profile->link()) ?>" class="member" title="<?= $this->escape(Lang::txt('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name')))) ?>">
+                    <?php
+                    $linkUrl = Route::url($profile->link());
+                    ?>
+                    <a href="<?= $linkUrl ?>" class="member" title="<?= $this->escape(Lang::txt('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name')))) ?>">
                 <?php } else { ?>
                     <div class="member">
                 <?php } ?>

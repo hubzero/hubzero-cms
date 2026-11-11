@@ -35,7 +35,13 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                                 <?php $description = !empty($badge['description'])
                                     ? $badge['description']
                                     : $badge['title'][0]; ?>
-                                <a class="tag" href="<?= Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . urlencode($description)) ?>" data-tag="<?= $this->escape($description) ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    'index.php?option=com_search&terms=' . $this->terms . '&tags='
+                                        . urlencode($description),
+                                );
+                                ?>
+                                <a class="tag" href="<?= $linkUrl ?>" data-tag="<?= $this->escape($description) ?>">
                                     <?php echo $this->escape($badge['title'][0]); ?>
                                 </a>
                                 <?php unset($this->result['_childDocuments_'][$index]); ?>
@@ -115,7 +121,13 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                             <?php $description = !empty($tag['description'])
                                 ? $tag['description']
                                 : $tag['title'][0]; ?>
-                            <a class="tag" href="<?= Route::url('index.php?option=com_search&terms=' . $this->terms . '&tags=' . urlencode($description)) ?>" data-tag="<?= $this->escape($description) ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=com_search&terms=' . $this->terms . '&tags='
+                                    . urlencode($description),
+                            );
+                            ?>
+                            <a class="tag" href="<?= $linkUrl ?>" data-tag="<?= $this->escape($description) ?>">
                                 <?php echo $this->escape($tag['title'][0]); ?>
                             </a>
                         </li>

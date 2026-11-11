@@ -100,8 +100,19 @@ $sectionIdSelected = function ($value) {
                 <div class="field-wrap">
                     <div class="grid file-manager">
                         <div class="col span-half">
-                            <div id="file-uploader" data-instructions="<?= Lang::txt('PLG_COURSES_PAGES_UPLOAD_INSTRUCTIONS') ?>" data-action="<?= Route::url($base . '&action=upload&no_html=1&' . Session::getFormToken() . '=1&section_id=') ?>" data-section="<?= $this->model->get('section_id') ?>" data-list="<?= Route::url($base . '&action=list&no_html=1&section_id=') ?>">
-                                <iframe width="100%" height="370" name="filer" id="filer" src="<?= Route::url($base . '&action=list&tmpl=component&page=' . $this->model->get('id') . '&section_id=' . $this->model->get('section_id')) ?>"></iframe>
+                            <?php
+                            $uploadUrl = Route::url(
+                                $base . '&action=upload&no_html=1&' . Session::getFormToken() . '=1&section_id=',
+                            );
+                            ?>
+                            <div id="file-uploader" data-instructions="<?= Lang::txt('PLG_COURSES_PAGES_UPLOAD_INSTRUCTIONS') ?>" data-action="<?= $uploadUrl ?>" data-section="<?= $this->model->get('section_id') ?>" data-list="<?= Route::url($base . '&action=list&no_html=1&section_id=') ?>">
+                                <?php
+                                $listUrl = Route::url(
+                                    $base . '&action=list&tmpl=component&page=' . $this->model->get('id')
+                                        . '&section_id=' . $this->model->get('section_id'),
+                                );
+                                ?>
+                                <iframe width="100%" height="370" name="filer" id="filer" src="<?= $listUrl ?>"></iframe>
                             </div>
                         </div>
                         <div class="col span-half omega">

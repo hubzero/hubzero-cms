@@ -89,8 +89,18 @@ foreach ($this->notifications as $notification) {
                                 : '';
                         ?>
                         <ul class="entries-menu order-options" data-label="<?= Lang::txt('COM_GROUPS_BROWSE_SORT') ?>">
-                            <li><a class="sort-title<?= ($this->filters['sortby'] == 'title') ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $fltrs) ?>" title="<?= Lang::txt('COM_GROUPS_BROWSE_SORT_BY_TITLE') ?>" rel="nofollow"><?= Lang::txt('COM_GROUPS_GROUP_TITLE') ?></a></li>
-                            <li><a class="sort-alias<?= ($this->filters['sortby'] == 'alias') ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=alias' . $fltrs) ?>" title="<?= Lang::txt('COM_GROUPS_BROWSE_SORT_BY_ALIAS') ?>" rel="nofollow"><?= Lang::txt('COM_GROUPS_GROUP_ALIAS') ?></a></li>
+                            <?php
+                            $browseUrl = Route::url(
+                                'index.php?option=' . $this->option . '&task=browse&sortby=title' . $fltrs,
+                            );
+                            ?>
+                            <li><a class="sort-title<?= ($this->filters['sortby'] == 'title') ? ' active' : '' ?>" href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_GROUPS_BROWSE_SORT_BY_TITLE') ?>" rel="nofollow"><?= Lang::txt('COM_GROUPS_GROUP_TITLE') ?></a></li>
+                            <?php
+                            $browseUrl = Route::url(
+                                'index.php?option=' . $this->option . '&task=browse&sortby=alias' . $fltrs,
+                            );
+                            ?>
+                            <li><a class="sort-alias<?= ($this->filters['sortby'] == 'alias') ? ' active' : '' ?>" href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_GROUPS_BROWSE_SORT_BY_ALIAS') ?>" rel="nofollow"><?= Lang::txt('COM_GROUPS_GROUP_ALIAS') ?></a></li>
                         </ul>
                         <?php
                         $fltrs  = ($this->filters['index']) ? '&index=' . $this->escape($this->filters['index']) : '';

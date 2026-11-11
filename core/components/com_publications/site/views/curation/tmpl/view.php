@@ -36,7 +36,10 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li><a class="btn icon-browse" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LIST') ?></a></li>
+            <?php
+            $linkUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+            ?>
+            <li><a class="btn icon-browse" href="<?= $linkUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LIST') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
@@ -46,7 +49,13 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
         method="post" id="curation-form" name="curation-form">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
-        <input type="hidden" name="id" id="pid" value="<?= $this->pub->id ?>" data-route="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&id=' . $this->pub->id . '&task=save') ?>" />
+        <?php
+        $saveUrl = Route::url(
+            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&id=' . $this->pub->id
+                . '&task=save',
+        );
+        ?>
+        <input type="hidden" name="id" id="pid" value="<?= $this->pub->id ?>" data-route="<?= $saveUrl ?>" />
         <input type="hidden" name="vid" id="vid" value="<?php echo $this->pub->version_id; ?>" />
         <input type="hidden" name="task" id="task" value="save" />
 

@@ -121,7 +121,12 @@ $certWarn = 30 * 24 * 60 * 60;
                         <tr>
                             <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_SERVICE_PROVIDERS'); ?>:</th>
                             <td>
-                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=serviceproviders') ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=serviceproviders',
+                                );
+                                ?>
+                                <a href="<?= $linkUrl ?>">
                                     <?= Lang::txt('COM_SAML_OVERVIEW_SP_COUNT', $this->spEnabled, $this->spTotal) ?>
                                 </a>
                             </td>
@@ -129,7 +134,10 @@ $certWarn = 30 * 24 * 60 * 60;
                         <tr>
                             <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_ACTIVE_SESSIONS'); ?>:</th>
                             <td>
-                                <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=sessions') ?>">
+                                <?php
+                                $linkUrl = Route::url('index.php?option=' . $this->option . '&controller=sessions');
+                                ?>
+                                <a href="<?= $linkUrl ?>">
                                     <?php echo $this->sessionsActive; ?>
                                 </a>
                             </td>

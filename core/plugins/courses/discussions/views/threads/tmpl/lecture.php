@@ -21,7 +21,12 @@ $this
 
 $base = $this->course->offering()->link();
 ?>
-<div id="comments-container" data-action="<?= Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')) ?>">
+<?php
+$dataActionUrl = Route::url(
+    $base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias'),
+);
+?>
+<div id="comments-container" data-action="<?= $dataActionUrl ?>">
 
     <div class="comments-wrap">
 
@@ -32,12 +37,24 @@ $base = $this->course->offering()->link();
                         <?php echo Lang::txt('%s Discussions', count($this->threads)); ?>
                     </p>
                     <p class="comments-controls">
-                        <a class="add<?= !$this->thread ? ' active' : '' ?>" href="<?= Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')) ?>" title="<?= Lang::txt('Start a new discussion') ?>"><?= Lang::txt('New') ?></a>
+                        <?php
+                        $linkUrl = Route::url(
+                            $base . '&active=outline&unit=' . $this->unit->get('alias') . '&b='
+                                . $this->lecture->get('alias'),
+                        );
+                        ?>
+                        <a class="add<?= !$this->thread ? ' active' : '' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('Start a new discussion') ?>"><?= Lang::txt('New') ?></a>
                     </p>
                 </div><!-- / .comments-toolbar -->
 
                 <div class="comments-options-bar">
-                    <form class="comments-search" action="<?= Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')) ?>" method="get">
+                    <?php
+                    $actionUrl = Route::url(
+                        $base . '&active=outline&unit=' . $this->unit->get('alias') . '&b='
+                            . $this->lecture->get('alias'),
+                    );
+                    ?>
+                    <form class="comments-search" action="<?= $actionUrl ?>" method="get">
                         <fieldset>
                             <input type="text" name="search" class="search"
                                 value="<?= $this->escape($this->filters['search']) ?>"
@@ -101,7 +118,13 @@ $base = $this->course->offering()->link();
                 </div>
                 <div class="comments-frame">
 
-                    <form action="<?= Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')) ?>" method="post" id="commentform"<?= $this->data ? ' class="hide"' : '' ?> enctype="multipart/form-data">
+                    <?php
+                    $actionUrl = Route::url(
+                        $base . '&active=outline&unit=' . $this->unit->get('alias') . '&b='
+                            . $this->lecture->get('alias'),
+                    );
+                    ?>
+                    <form action="<?= $actionUrl ?>" method="post" id="commentform"<?= $this->data ? ' class="hide"' : '' ?> enctype="multipart/form-data">
 
                         <p class="comment-member-photo">
                             <a class="comment-anchor" name="commentform"></a>
@@ -120,7 +143,10 @@ $base = $this->course->offering()->link();
                         <?php } else { ?>
                             <p class="comment-title">
                                 <strong>
-                                    <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>"><?= $this->escape(User::get('name')) ?></a>
+                                    <?php
+                                    $linkUrl = Route::url('index.php?option=com_members&id=' . User::get('id'));
+                                    ?>
+                                    <a href="<?= $linkUrl ?>"><?= $this->escape(User::get('name')) ?></a>
                                 </strong>
                                 <span class="permalink">
                                     <span class="comment-date-at">@</span>

@@ -83,7 +83,10 @@ if ($this->page->get('id')) {
         <p class="<?php echo $notification['type']; ?>"><?php echo $notification['message']; ?></p>
     <?php } ?>
 
-    <form action="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=save') ?>" method="POST" id="hubForm" class="full">
+    <?php
+    $saveUrl = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=save');
+    ?>
+    <form action="<?= $saveUrl ?>" method="POST" id="hubForm" class="full">
 
         <div class="grid">
             <div class="col span9">
@@ -232,7 +235,13 @@ if ($this->page->get('id')) {
                     <?php if ($this->page->get('id')) : ?>
                         <label>
                             <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_VERSIONS'); ?>:</strong> <br />
-                            <a class="btn icon-history" href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=versions&pageid=' . $this->page->get('id')) ?>">
+                            <?php
+                            $versionsUrl = Route::url(
+                                'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                    . '&controller=pages&task=versions&pageid=' . $this->page->get('id'),
+                            );
+                            ?>
+                            <a class="btn icon-history" href="<?= $versionsUrl ?>">
                                 <?= Lang::txt(
                                     'COM_GROUPS_PAGES_PAGE_VERSIONS_BROWSE',
                                     $this->page->versions()->count(),
@@ -262,7 +271,13 @@ if ($this->page->get('id')) {
                     <label for="page-category" class="page-category-label">
                         <strong><?= Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY') ?>:</strong> <span
                             class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span>
-                        <select name="page[category]" class="page-category" data-url="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('gidNumber') . '&controller=categories&task=add&no_html=1') ?>">
+                        <?php
+                        $addUrl = Route::url(
+                            'index.php?option=com_groups&cn=' . $this->group->get('gidNumber')
+                                . '&controller=categories&task=add&no_html=1',
+                        );
+                        ?>
+                        <select name="page[category]" class="page-category" data-url="<?= $addUrl ?>">
                             <option value=""><?= Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_NULL') ?></option>
                             <?php foreach ($this->categories as $pageCategory) : ?>
                                 <?php $sel = ($category == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>

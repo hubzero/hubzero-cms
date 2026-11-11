@@ -225,7 +225,13 @@ $quotaSelected = function ($value) {
                                 height="30" alt="<?= $this->escape($row->alias) ?>" />
                         </td>
                         <td>
-                            <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring) ?>"><?= $this->escape($row->title) ?></a><br />
+                            <?php
+                            $editUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=edit&id[]=' . $row->id . $filterstring,
+                            );
+                            ?>
+                            <a href="<?= $editUrl ?>"><?= $this->escape($row->title) ?></a><br />
                             <strong><?php echo $this->escape($row->alias); ?></strong>
                             <?php if ($tags) { ?>
                                 <span class="project-tags block">
@@ -239,7 +245,13 @@ $quotaSelected = function ($value) {
                         <td class="priority-4">
                             <?php if ($row->featured) : ?>
                                 <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
-                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unfeature&id=' . $row->id . '&' . Session::getFormToken() . '=1') ?>">
+                                    <?php
+                                    $unfeatureUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                            . '&task=unfeature&id=' . $row->id . '&' . Session::getFormToken() . '=1',
+                                    );
+                                    ?>
+                                    <a href="<?= $unfeatureUrl ?>">
                                 <?php endif; ?>
                                 <span class="state default"><span class="text"><?= Lang::txt('JYES') ?></span></span>
                                 <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
@@ -247,7 +259,13 @@ $quotaSelected = function ($value) {
                                 <?php endif; ?>
                             <?php else : ?>
                                 <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
-                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=feature&id=' . $row->id . '&' . Session::getFormToken() . '=1') ?>">
+                                    <?php
+                                    $featureUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                            . '&task=feature&id=' . $row->id . '&' . Session::getFormToken() . '=1',
+                                    );
+                                    ?>
+                                    <a href="<?= $featureUrl ?>">
                                 <?php endif; ?>
                                 <span class="state notdefault"><span class="text"><?= Lang::txt('JNO') ?></span></span>
                                 <?php if (User::authorise('core.edit.state', $this->option . '.component')) : ?>
@@ -256,7 +274,12 @@ $quotaSelected = function ($value) {
                             <?php endif; ?>
                         </td>
                         <td class="priority-3">
-                            <a class="state <?= ($row->owned_by_group && $row->sync_group) ? 'synced' : 'not-synced' ?> team hasTip" title="<?= ($row->owned_by_group && $row->sync_group) ? Lang::txt('This team is synced with a group.') : Lang::txt('This team is comprised of selected individuals.') ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=team&project=' . $row->id) ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=team&project=' . $row->id,
+                            );
+                            ?>
+                            <a class="state <?= ($row->owned_by_group && $row->sync_group) ? 'synced' : 'not-synced' ?> team hasTip" title="<?= ($row->owned_by_group && $row->sync_group) ? Lang::txt('This team is synced with a group.') : Lang::txt('This team is comprised of selected individuals.') ?>" href="<?= $linkUrl ?>">
                                 <span><?php echo Lang::txt('COM_PROJECTS_TEAM'); ?></span>
                             </a>
                         </td>
@@ -278,7 +301,12 @@ $quotaSelected = function ($value) {
                             <?php echo $quota . 'GB'; ?>
                         </td>
                         <td class="priority-3">
-                            <a class="state activity hasTip" title="<?= Lang::txt('COM_PROJECTS_ACTIVITY_TITLE') ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=activity&project=' . $row->id) ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=activity&project=' . $row->id,
+                            );
+                            ?>
+                            <a class="state activity hasTip" title="<?= Lang::txt('COM_PROJECTS_ACTIVITY_TITLE') ?>" href="<?= $linkUrl ?>">
                                 <span><?php echo Lang::txt('COM_PROJECTS_ACTIVITY'); ?></span>
                             </a>
                         </td>

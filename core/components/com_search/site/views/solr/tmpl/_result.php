@@ -86,7 +86,10 @@ defined('_HZEXEC_') or die();
         <div class="result-tags">
             <ul class="tags">
                 <?php foreach ($this->result['tags'] as $tag) : ?>
-                    <li><a class="tag" href="<?= Route::url('index.php?option=com_search&terms=' . urlencode($tag)) ?>"><?= $this->escape($tag) ?></a></li>
+                    <?php
+                    $linkUrl = Route::url('index.php?option=com_search&terms=' . urlencode($tag));
+                    ?>
+                    <li><a class="tag" href="<?= $linkUrl ?>"><?= $this->escape($tag) ?></a></li>
                 <?php endforeach; ?>
             </ul>
         </div>

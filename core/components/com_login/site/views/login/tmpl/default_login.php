@@ -120,7 +120,12 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                 <?php if (isset($this->local) && $this->local) : ?>
                     <div class="or"></div>
                     <div class="local">
-                        <a href="<?= Route::url('index.php?option=com_login&primary=hubzero&reset=1' . $this->returnQueryString) ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=com_login&primary=hubzero&reset=1' . $this->returnQueryString,
+                        );
+                        ?>
+                        <a href="<?= $linkUrl ?>">
                             <?= Lang::txt(
                                 'COM_LOGIN_LOGIN_SIGN_IN_WITH_ACCOUNT',
                                 ((isset($this->site_display)) ? $this->site_display : Config::get('sitename')),
@@ -174,9 +179,15 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                     </div>
                     <div class="forgots">
                         <?php if (!isset($user)) : ?>
-                            <a class="forgot-username" href="<?= Route::url('index.php?option=com_members&task=remind') ?>"><?= Lang::txt('COM_LOGIN_LOGIN_REMIND') ?></a>
+                            <?php
+                            $remindUrl = Route::url('index.php?option=com_members&task=remind');
+                            ?>
+                            <a class="forgot-username" href="<?= $remindUrl ?>"><?= Lang::txt('COM_LOGIN_LOGIN_REMIND') ?></a>
                         <?php endif; ?>
-                        <a class="forgot-password" href="<?= Route::url('index.php?option=com_members&task=reset') ?>"><?= Lang::txt('COM_LOGIN_LOGIN_RESET') ?></a>
+                        <?php
+                        $resetUrl = Route::url('index.php?option=com_members&task=reset');
+                        ?>
+                        <a class="forgot-password" href="<?= $resetUrl ?>"><?= Lang::txt('COM_LOGIN_LOGIN_RESET') ?></a>
                     </div>
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="authenticator" value="hubzero" />

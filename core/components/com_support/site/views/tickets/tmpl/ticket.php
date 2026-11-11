@@ -113,19 +113,40 @@ $categorySelected = function ($value) {
         <ul id="useroptions">
         <?php if ($prev) { ?>
             <li>
-                <a class="icon-prev prev btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>">
+                <?php
+                $ticketUrl = Route::url(
+                    'index.php?option=' . $this->option . '&task=ticket&id=' . $prev->id . '&show='
+                        . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='
+                        . $this->filters['limit'] . '&limitstart=' . $this->filters['start'],
+                );
+                ?>
+                <a class="icon-prev prev btn" href="<?= $ticketUrl ?>">
                     <?php echo Lang::txt('COM_SUPPORT_PREV'); ?>
                 </a>
             </li>
         <?php } ?>
             <li>
-                <a class="browse btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>">
+                <?php
+                $ticketsUrl = Route::url(
+                    'index.php?option=' . $this->option . '&task=tickets&show=' . $this->filters['show'] . '&search='
+                        . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart='
+                        . $this->filters['start'],
+                );
+                ?>
+                <a class="browse btn" href="<?= $ticketsUrl ?>">
                     <?php echo Lang::txt('COM_SUPPORT_TICKETS'); ?>
                 </a>
             </li>
         <?php if ($next) { ?>
             <li>
-                <a class="icon-next next opposite btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>">
+                <?php
+                $ticketUrl = Route::url(
+                    'index.php?option=' . $this->option . '&task=ticket&id=' . $next->id . '&show='
+                        . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit='
+                        . $this->filters['limit'] . '&limitstart=' . $this->filters['start'],
+                );
+                ?>
+                <a class="icon-next next opposite btn" href="<?= $ticketUrl ?>">
                     <?php echo Lang::txt('COM_SUPPORT_NEXT'); ?>
                 </a>
             </li>
@@ -256,10 +277,24 @@ $categorySelected = function ($value) {
             <?php if ($this->row->isWatching()) { ?>
                 <div id="watching">
                     <p><?php echo Lang::txt('COM_SUPPORT_CURRENTLY_WATCHING'); ?></p>
-                    <p><a class="stop-watching btn" href="<?= Route::url($this->row->link('stopWatching') . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>"><?= Lang::txt('COM_SUPPORT_STOP_WATCHING') ?></a></p>
+                    <?php
+                    $linkUrl = Route::url(
+                        $this->row->link('stopWatching') . '&show=' . $this->filters['show'] . '&search='
+                            . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart='
+                            . $this->filters['start'],
+                    );
+                    ?>
+                    <p><a class="stop-watching btn" href="<?= $linkUrl ?>"><?= Lang::txt('COM_SUPPORT_STOP_WATCHING') ?></a></p>
                 </div>
             <?php } else { ?>
-                <p><a class="start-watching btn" href="<?= Route::url($this->row->link('startWatching') . '&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart=' . $this->filters['start']) ?>"><?= Lang::txt('COM_SUPPORT_WATCHING_TICKET') ?></a></p>
+                <?php
+                $linkUrl = Route::url(
+                    $this->row->link('startWatching') . '&show=' . $this->filters['show'] . '&search='
+                        . $this->filters['search'] . '&limit=' . $this->filters['limit'] . '&limitstart='
+                        . $this->filters['start'],
+                );
+                ?>
+                <p><a class="start-watching btn" href="<?= $linkUrl ?>"><?= Lang::txt('COM_SUPPORT_WATCHING_TICKET') ?></a></p>
             <?php } ?>
             <p><?php echo Lang::txt('COM_SUPPORT_WATCHING_EXPLANATION'); ?></p>
         </div>

@@ -67,22 +67,54 @@ $this->category->set('section_alias', $this->filters['section']);
                     <nav class="entries-filters" aria-label="<?= Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS') ?>">
                         <ul class="entries-menu order-options">
                             <li>
-                                <a class="<?= ($this->filters['sortby'] == 'created') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= Route::url($this->category->link('here', '&sortby=created&sortdir=' . $sortDir($this->filters, 'created'))) ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_CREATED') ?>" rel="nofollow">
+                                <?php
+                                $linkUrl = Route::url(
+                                    $this->category->link(
+                                        'here',
+                                        '&sortby=created&sortdir=' . $sortDir($this->filters, 'created'),
+                                    ),
+                                );
+                                ?>
+                                <a class="<?= ($this->filters['sortby'] == 'created') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_CREATED') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_CREATED'); ?>
                                 </a>
                             </li>
                             <li>
-                                <a class="<?= ($this->filters['sortby'] == 'activity') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= Route::url($this->category->link('here', '&sortby=activity&sortdir=' . $sortDir($this->filters, 'activity'))) ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_ACTIVITY') ?>" rel="nofollow">
+                                <?php
+                                $linkUrl = Route::url(
+                                    $this->category->link(
+                                        'here',
+                                        '&sortby=activity&sortdir=' . $sortDir($this->filters, 'activity'),
+                                    ),
+                                );
+                                ?>
+                                <a class="<?= ($this->filters['sortby'] == 'activity') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_ACTIVITY') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_ACTIVITY'); ?>
                                 </a>
                             </li>
                             <li>
-                                <a class="<?= ($this->filters['sortby'] == 'replies') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= Route::url($this->category->link('here', '&sortby=replies&sortdir=' . $sortDir($this->filters, 'replies'))) ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS') ?>" rel="nofollow">
+                                <?php
+                                $linkUrl = Route::url(
+                                    $this->category->link(
+                                        'here',
+                                        '&sortby=replies&sortdir=' . $sortDir($this->filters, 'replies'),
+                                    ),
+                                );
+                                ?>
+                                <a class="<?= ($this->filters['sortby'] == 'replies') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_NUM_POSTS'); ?>
                                 </a>
                             </li>
                             <li>
-                                <a class="<?= ($this->filters['sortby'] == 'title') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-up' ?>" href="<?= Route::url($this->category->link('here', '&sortby=title&sortdir=' . $sortDir($this->filters, 'title', 'ASC'))) ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_TITLE') ?>" rel="nofollow">
+                                <?php
+                                $linkUrl = Route::url(
+                                    $this->category->link(
+                                        'here',
+                                        '&sortby=title&sortdir=' . $sortDir($this->filters, 'title', 'ASC'),
+                                    ),
+                                );
+                                ?>
+                                <a class="<?= ($this->filters['sortby'] == 'title') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-up' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_TITLE') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_TITLE'); ?>
                                 </a>
                             </li>
@@ -230,7 +262,10 @@ $this->category->set('section_alias', $this->filters['section']);
                                                         && $row->get('created_by') == User::get('id')
                                                     )
                                                 ) { ?>
-                                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->link('delete')) ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                                    <?php
+                                                    $actionUrl = Route::url($row->link('delete'));
+                                                    ?>
+                                                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                                 <?php } ?>
                                             </td>
                                         <?php } ?>
@@ -300,7 +335,10 @@ $this->category->set('section_alias', $this->filters['section']);
                             <?php echo Lang::txt('COM_FORUM_CREATE_YOUR_OWN_DISCUSSION'); ?>
                         </p>
                         <p>
-                            <a class="icon-add add btn" href="<?= Route::url($this->category->link('newthread')) ?>"><?= Lang::txt('COM_FORUM_NEW_DISCUSSION') ?></a>
+                            <?php
+                            $linkUrl = Route::url($this->category->link('newthread'));
+                            ?>
+                            <a class="icon-add add btn" href="<?= $linkUrl ?>"><?= Lang::txt('COM_FORUM_NEW_DISCUSSION') ?></a>
                         </p>
                     <?php } else { ?>
                         <p class="warning">

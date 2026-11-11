@@ -231,7 +231,10 @@ $this
 
     <h1 id="preview-header"><?php echo Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW'); ?></h1>
     <div id="preview-pane">
-        <iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" title="<?= Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW') ?>" src="<?= Route::url('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview') ?>"></iframe>
+        <?php
+        $sourceUrl = Route::url('index.php?option=com_resources&id=' . $this->id . '&tmpl=component&mode=preview');
+        ?>
+        <iframe id="preview-frame" name="preview-frame" width="100%" frameborder="0" title="<?= Lang::txt('COM_CONTRIBUTE_REVIEW_PREVIEW') ?>" src="<?= $sourceUrl ?>"></iframe>
     </div>
 <?php } ?>
 </section><!-- / .main section -->

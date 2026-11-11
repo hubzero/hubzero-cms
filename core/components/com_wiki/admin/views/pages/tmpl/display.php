@@ -148,7 +148,13 @@ $namespaceSelected = function ($value) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                        <?php
+                        $editUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
+                                . $row->get('id'),
+                        );
+                        ?>
+                        <a href="<?= $editUrl ?>">
                             <?php echo $this->escape(stripslashes($row->get('title', Lang::txt('COM_WIKI_NONE')))); ?>
                         </a>
                     <?php } else { ?>
@@ -165,7 +171,13 @@ $namespaceSelected = function ($value) {
                 </td>
                 <td>
                     <?php if ($canDo->get('core.edit.state')) { ?>
-                        <a class="state <?= $cls ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=state&id=' . $row->get('id') . '&state=' . $task . '&' . Session::getFormToken() . '=1') ?>">
+                        <?php
+                        $stateUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=state&id='
+                                . $row->get('id') . '&state=' . $task . '&' . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state <?= $cls ?>" href="<?= $stateUrl ?>">
                             <span><?php echo $alt; ?></span>
                         </a>
                     <?php } else { ?>
@@ -191,13 +203,23 @@ $namespaceSelected = function ($value) {
                     </span>
                 </td>
                 <td class="priority-2">
-                    <a class="revisions" href="<?= Route::url('index.php?option=' . $this->option . '&controller=versions&pageid=' . $row->get('id')) ?>">
+                    <?php
+                    $linkUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=versions&pageid=' . $row->get('id'),
+                    );
+                    ?>
+                    <a class="revisions" href="<?= $linkUrl ?>">
                         <span><?php echo Lang::txt('COM_WIKI_NUM_REVISIONS', $row->versions->count()); ?></span>
                     </a>
                 </td>
                 <td class="priority-3">
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <a class="comment" href="<?= Route::url('index.php?option=' . $this->option . '&controller=comments&page_id=' . $row->get('id')) ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=comments&page_id=' . $row->get('id'),
+                        );
+                        ?>
+                        <a class="comment" href="<?= $linkUrl ?>">
                             <?php echo Lang::txt('COM_WIKI_NUM_COMMENTS', $row->comments->count()); ?>
                         </a>
                     <?php } else { ?>

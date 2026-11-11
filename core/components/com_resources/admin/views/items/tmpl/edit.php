@@ -199,7 +199,13 @@ $this
                             <?php if ($this->row->rating != '0.0') { ?>
                                 <input type="button" name="reset_rating" id="reset_rating" value="Reset rating"
                                     data-task="resetrating" />
-                                <a class="btn btn-ratings" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ratings&id=' . $this->row->id . '&no_html=1') ?>"><?= Lang::txt('COM_RESOURCES_VIEW') ?></a>
+                                <?php
+                                $ratingsUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&task=ratings&id=' . $this->row->id . '&no_html=1',
+                                );
+                                ?>
+                                <a class="btn btn-ratings" href="<?= $ratingsUrl ?>"><?= Lang::txt('COM_RESOURCES_VIEW') ?></a>
                             <?php } ?>
                         </td>
                     </tr>
@@ -318,7 +324,13 @@ $this
                     </div>
                 </div>
 
-                <iframe width="100%" height="400" name="filer" id="filer" src="<?= Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $path . DS . $dir_id) ?>"></iframe>
+                <?php
+                $sourceUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $path . DS
+                        . $dir_id,
+                );
+                ?>
+                <iframe width="100%" height="400" name="filer" id="filer" src="<?= $sourceUrl ?>"></iframe>
                 <input type="hidden" name="tmpid" value="<?php echo $dir_id; ?>" />
             </div>
         <?php

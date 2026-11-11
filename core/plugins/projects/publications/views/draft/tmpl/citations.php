@@ -64,8 +64,20 @@ $citationFormat = $this->pub->config('citation_format', 'apa');
                         ?>
                         <li>
                             <span class="item-options">
-                                    <a href="<?= Route::url($this->pub->link('editversionid') . '&active=links&action=newcite&cid=' . $cite->cid . '&p=' . $props) ?>" class="item-edit showinbox" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT') ?>">&nbsp;</a>
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->cid . '&p=' . $props) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
+                                    <?php
+                                    $newciteUrl = Route::url(
+                                        $this->pub->link('editversionid') . '&active=links&action=newcite&cid='
+                                            . $cite->cid . '&p=' . $props,
+                                    );
+                                    ?>
+                                    <a href="<?= $newciteUrl ?>" class="item-edit showinbox" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT') ?>">&nbsp;</a>
+                                    <?php
+                                    $deleteitemUrl = Route::url(
+                                        $this->pub->link('editversionid') . '&action=deleteitem&cid=' . $cite->cid
+                                            . '&p=' . $props,
+                                    );
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
                             </span>
                             <span class="item-title citation-formatted"><?php echo $citeText; ?></span>
                         </li>

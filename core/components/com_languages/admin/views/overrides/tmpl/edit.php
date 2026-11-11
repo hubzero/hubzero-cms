@@ -49,7 +49,12 @@ $this
     ->js();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->item->key) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>" data-cache_expired="<?= (Request::getString('cache_expired')) ? 'expired' : '' ?>">
+<?php
+$editUrl = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $this->item->key,
+);
+?>
+<form action="<?= $editUrl ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>" data-cache_expired="<?= (Request::getString('cache_expired')) ? 'expired' : '' ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">

@@ -69,7 +69,12 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                             </li>
                             <?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
                                 <li class="preview">
-                                    <a class="preview" href="<?= Route::url($base . '&task=preview&moduleid=' . $needsAttention->get('id')) ?>" class="btn">
+                                    <?php
+                                    $previewUrl = Route::url(
+                                        $base . '&task=preview&moduleid=' . $needsAttention->get('id'),
+                                    );
+                                    ?>
+                                    <a class="preview" href="<?= $previewUrl ?>" class="btn">
                                         <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_RENDER_PREVIEW'); ?>
                                     </a>
                                 </li>
@@ -107,7 +112,13 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                         <ol class="attention-actions">
                             <?php if ($needsAttention->get('checked_errors') && $needsAttention->get('scanned')) : ?>
                                 <li class="approve">
-                                    <a href="<?= Route::url($base . '&task=approve&id=' . $needsAttention->get('id') . '&' . Session::getFormToken() . '=1') ?>" class="btn">
+                                    <?php
+                                    $approveUrl = Route::url(
+                                        $base . '&task=approve&id=' . $needsAttention->get('id') . '&'
+                                            . Session::getFormToken() . '=1',
+                                    );
+                                    ?>
+                                    <a href="<?= $approveUrl ?>" class="btn">
                                         <strong><?= Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE') ?></strong>
                                     </a>
                                 </li>
@@ -123,7 +134,12 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
     <br />
 <?php endif; ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn) ?>" name="adminForm" id="adminForm" method="post">
+<?php
+$actionUrl = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn,
+);
+?>
+<form action="<?= $actionUrl ?>" name="adminForm" id="adminForm" method="post">
     <table class="adminlist">
         <thead>
             <tr>
@@ -148,7 +164,13 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                     <label for="cb<?= $k ?>" class="sr-only visually-hidden"><?= $module->get('id') ?></label>
                 </td>
                 <td>
-                    <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&gid=' . $this->group->cn . '&id=' . $module->get('id')) ?>">
+                    <?php
+                    $editUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&gid='
+                            . $this->group->cn . '&id=' . $module->get('id'),
+                    );
+                    ?>
+                    <a href="<?= $editUrl ?>">
                         <?php echo $this->escape($module->get('title')); ?>
                     </a><br />
                     <span class="hint">

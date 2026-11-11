@@ -86,7 +86,10 @@ $this
             </div><!-- / .col span-half -->
             <div class="col span-half omega">
                 <div class="browse">
-                    <p><a href="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>"><?= Lang::txt('COM_CITATIONS_BROWSE') ?></a></p>
+                    <?php
+                    $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse');
+                    ?>
+                    <p><a href="<?= $browseUrl ?>"><?= Lang::txt('COM_CITATIONS_BROWSE') ?></a></p>
                 </div><!-- / .browse -->
             </div><!-- / .col span-half -->
         </div><!-- / .col span9 -->

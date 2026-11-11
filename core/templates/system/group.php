@@ -124,11 +124,17 @@ $membership_control = $params->get('membership_control', 1);
                                 <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_INVITE_ONLY'); ?></span>
                             </a>
                         <?php elseif ($group->get('join_policy') == 1 && $membership_control == 1) : ?>
-                            <a href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=join') ?>" class="restricted">
+                            <?php
+                            $joinUrl = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=join');
+                            ?>
+                            <a href="<?= $joinUrl ?>" class="restricted">
                                 <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_RESTRICTED'); ?></span>
                             </a>
                         <?php elseif ($group->get('join_policy') == 0 && $membership_control == 1) : ?>
-                            <a href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=join') ?>" class="open">
+                            <?php
+                            $joinUrl = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=join');
+                            ?>
+                            <a href="<?= $joinUrl ?>" class="open">
                                 <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_JOIN'); ?></span>
                             </a>
                         <?php endif; ?>
@@ -139,7 +145,10 @@ $membership_control = $params->get('membership_control', 1);
                             <ul class="menu loggedin">
                                 <li>
                                     <div id="account-info">
-                                        <a class="account-details" href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>">
+                                        <?php
+                                        $linkUrl = Route::url('index.php?option=com_members&id=' . User::get('id'));
+                                        ?>
+                                        <a class="account-details" href="<?= $linkUrl ?>">
                                             <img src="<?= User::picture() ?>" alt="<?= User::get('name') ?>" />
                                             <span class="account-name"><?= stripslashes(User::get('name')) ?></span>
                                             <span class="account-email"><?php echo User::get('email'); ?></span>
@@ -147,22 +156,46 @@ $membership_control = $params->get('membership_control', 1);
                                     </div>
                                     <ul>
                                         <li id="account-dashboard">
-                                            <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=dashboard') ?>">
+                                            <?php
+                                            $linkUrl = Route::url(
+                                                'index.php?option=com_members&id=' . User::get('id')
+                                                    . '&active=dashboard',
+                                            );
+                                            ?>
+                                            <a href="<?= $linkUrl ?>">
                                                 <span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_DASHBOARD'); ?></span>
                                             </a>
                                         </li>
                                         <li id="account-profile">
-                                            <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=profile') ?>">
+                                            <?php
+                                            $linkUrl = Route::url(
+                                                'index.php?option=com_members&id=' . User::get('id')
+                                                    . '&active=profile',
+                                            );
+                                            ?>
+                                            <a href="<?= $linkUrl ?>">
                                                 <span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_PROFILE'); ?></span>
                                             </a>
                                         </li>
                                         <li id="account-messages">
-                                            <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages') ?>">
+                                            <?php
+                                            $linkUrl = Route::url(
+                                                'index.php?option=com_members&id=' . User::get('id')
+                                                    . '&active=messages',
+                                            );
+                                            ?>
+                                            <a href="<?= $linkUrl ?>">
                                                 <span><?php echo Lang::txt('TPL_SYSTEM_ACCOUNT_MESSAGES'); ?></span>
                                             </a>
                                         </li>
                                         <li id="account-logout">
-                                            <a href="<?= Route::url('index.php?option=com_users&view=logout&return=' . base64_encode($return)) ?>">
+                                            <?php
+                                            $linkUrl = Route::url(
+                                                'index.php?option=com_users&view=logout&return='
+                                                    . base64_encode($return),
+                                            );
+                                            ?>
+                                            <a href="<?= $linkUrl ?>">
                                                 <span><?php echo Lang::txt('TPL_SYSTEM_LOGOUT'); ?></span>
                                             </a>
                                         </li>
@@ -173,13 +206,25 @@ $membership_control = $params->get('membership_control', 1);
                             <ul class="menu loggedout">
                                 <?php if (Component::params('com_members')->get('allowUserRegistration') != '0') : ?>
                                     <li id="account-register">
-                                        <a href="<?= Route::url('index.php?option=com_members&controller=register&return=' . base64_encode($return)) ?>" title="<?= Lang::txt('TPL_SYSTEM_REGISTER') ?>">
+                                        <?php
+                                        $linkUrl = Route::url(
+                                            'index.php?option=com_members&controller=register&return='
+                                                . base64_encode($return),
+                                        );
+                                        ?>
+                                        <a href="<?= $linkUrl ?>" title="<?= Lang::txt('TPL_SYSTEM_REGISTER') ?>">
                                             <?php echo Lang::txt('TPL_SYSTEM_REGISTER'); ?>
                                         </a>
                                     </li>
                                 <?php endif; ?>
                                 <li id="account-login">
-                                    <a href="<?= Route::url('index.php?option=com_groups&cn=' . Request::getCmd('cn', '') . '&task=login&return=' . base64_encode($return)) ?>" title="<?= Lang::txt('TPL_SYSTEM_LOGIN') ?>">
+                                    <?php
+                                    $loginUrl = Route::url(
+                                        'index.php?option=com_groups&cn=' . Request::getCmd('cn', '')
+                                            . '&task=login&return=' . base64_encode($return),
+                                    );
+                                    ?>
+                                    <a href="<?= $loginUrl ?>" title="<?= Lang::txt('TPL_SYSTEM_LOGIN') ?>">
                                         <?php echo Lang::txt('TPL_SYSTEM_LOGIN'); ?>
                                     </a>
                                 </li>
@@ -213,7 +258,10 @@ $membership_control = $params->get('membership_control', 1);
 
                 <?php if ($isInvitee && $membership_control == 1) : ?>
                     <li>
-                        <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=accept') ?>" class="accept">
+                        <?php
+                        $acceptUrl = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=accept');
+                        ?>
+                        <button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>" class="accept">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_ACCEPT'); ?>
                             <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_ACCEPT_DESC'); ?></span>
                         </button>
@@ -222,7 +270,10 @@ $membership_control = $params->get('membership_control', 1);
 
                 <?php if ($isPending && $membership_control == 1) : ?>
                     <li>
-                        <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=cancel') ?>" class="cancel-request">
+                        <?php
+                        $cancelUrl = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=cancel');
+                        ?>
+                        <button type="submit" form="hz-post-action" formaction="<?= $cancelUrl ?>" class="cancel-request">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_REQUEST'); ?>
                             <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_REQUEST_DESC'); ?></span>
                         </button>
@@ -241,7 +292,12 @@ $membership_control = $params->get('membership_control', 1);
                     && $membership_control == 1
                 ) : ?>
                     <li>
-                        <a class="membership" href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&active=members') ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=com_groups&cn=' . $group->get('cn') . '&active=members',
+                        );
+                        ?>
+                        <a class="membership" href="<?= $linkUrl ?>">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_INVITE'); ?>
                             <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_INVITE_DESC'); ?></span>
                         </a>
@@ -254,7 +310,10 @@ $membership_control = $params->get('membership_control', 1);
                     || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($group, 'group.edit')
                 ) : ?>
                     <li>
-                        <a class="settings" href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=edit') ?>">
+                        <?php
+                        $editUrl = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=edit');
+                        ?>
+                        <a class="settings" href="<?= $editUrl ?>">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_EDIT'); ?>
                             <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_EDIT_DESC'); ?></span>
                         </a>
@@ -267,7 +326,10 @@ $membership_control = $params->get('membership_control', 1);
                     || \Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($group, 'group.pages')
                 ) : ?>
                     <li>
-                        <a class="pages" href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=pages') ?>">
+                        <?php
+                        $pagesUrl = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=pages');
+                        ?>
+                        <a class="pages" href="<?= $pagesUrl ?>">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_PAGES'); ?>
                             <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_PAGES_DESC'); ?></span>
                         </a>
@@ -279,7 +341,10 @@ $membership_control = $params->get('membership_control', 1);
                     ($isMember || ($isManager && count($group->get('managers')) > 1)) && $membership_control == 1
                 ) : ?>
                     <li>
-                        <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=cancel') ?>" class="cancel">
+                        <?php
+                        $cancelUrl = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=cancel');
+                        ?>
+                        <button type="submit" form="hz-post-action" formaction="<?= $cancelUrl ?>" class="cancel">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL'); ?>
                             <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_CANCEL_DESC'); ?></span>
                         </button>
@@ -288,7 +353,10 @@ $membership_control = $params->get('membership_control', 1);
 
                 <?php if ($isManager && $membership_control == 1) : ?>
                     <li>
-                        <a class="delete danger" href="<?= Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=delete') ?>">
+                        <?php
+                        $deleteUrl = Route::url('index.php?option=com_groups&cn=' . $group->get('cn') . '&task=delete');
+                        ?>
+                        <a class="delete danger" href="<?= $deleteUrl ?>">
                             <?php echo Lang::txt('TPL_SYSTEM_GROUP_DELETE'); ?>
                             <span><?php echo Lang::txt('TPL_SYSTEM_GROUP_DELETE_DESC'); ?></span>
                         </a>

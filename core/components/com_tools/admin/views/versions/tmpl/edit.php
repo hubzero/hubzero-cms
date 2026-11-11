@@ -187,7 +187,13 @@ $this->js();
         <fieldset class="adminform">
             <legend><span><?php echo Lang::txt('COM_TOOLS_FIELDSET_ZONES'); ?></span></legend>
             <?php if ($this->row->get('id')) : ?>
-                <iframe width="100%" height="400" name="zoneslist" id="zoneslist" frameborder="0" src="<?= Route::url('index.php?option=' . $this->option . '&controller=versions&task=displayZones&tmpl=component&version=' . $this->row->get('id')) ?>"></iframe>
+                <?php
+                $displayZonesUrl = Route::url(
+                    'index.php?option=' . $this->option
+                        . '&controller=versions&task=displayZones&tmpl=component&version=' . $this->row->get('id'),
+                );
+                ?>
+                <iframe width="100%" height="400" name="zoneslist" id="zoneslist" frameborder="0" src="<?= $displayZonesUrl ?>"></iframe>
             <?php endif; ?>
         </fieldset>
     </div>

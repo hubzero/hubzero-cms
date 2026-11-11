@@ -40,13 +40,21 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
     <div id="content-header-extra">
         <ul id="useroptions">
-            <li class="last"><a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=create') ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
+            <?php
+            $createUrl = Route::url('index.php?option=' . $this->option . '&task=create');
+            ?>
+            <li class="last"><a class="icon-add add btn" href="<?= $createUrl ?>"><?= Lang::txt('COM_TOOLS_CONTRIBTOOL_NEW_TOOL') ?></a></li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->
 
 <section class="main section">
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline') ?>" method="get">
+    <?php
+    $pipelineUrl = Route::url(
+        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=pipeline',
+    );
+    ?>
+    <form action="<?= $pipelineUrl ?>" method="get">
         <div class="container data-entry">
             <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TOOLS_SEARCH'); ?>" />
             <fieldset class="entry-search">
@@ -71,35 +79,80 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                 <ul class="entries-menu order-options" data-label="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY') ?>">
                     <?php if ($this->admin) { ?>
                     <li>
-                        <a class="sort-status<?= $this->filters['sortby'] == 'f.state, f.priority, f.toolname' ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.priority, f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))) ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS') ?>" rel="nofollow">
+                        <?php
+                        $pipelineUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit']
+                                . '&filterby=' . $this->filters['filterby'] . '&sortby='
+                                . urlencode('f.state, f.priority, f.toolname') . '&search='
+                                . $this->escape(urlencode($this->filters['search'])),
+                        );
+                        ?>
+                        <a class="sort-status<?= $this->filters['sortby'] == 'f.state, f.priority, f.toolname' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_STATUS'); ?>
                         </a>
                     </li>
                     <?php } else { ?>
                     <li>
-                        <a class="sort-status<?= $this->filters['sortby'] == 'f.state, f.registered' ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state, f.registered') . '&search=' . $this->escape(urlencode($this->filters['search']))) ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS') ?>" rel="nofollow">
+                        <?php
+                        $pipelineUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit']
+                                . '&filterby=' . $this->filters['filterby'] . '&sortby='
+                                . urlencode('f.state, f.registered') . '&search='
+                                . $this->escape(urlencode($this->filters['search'])),
+                        );
+                        ?>
+                        <a class="sort-status<?= $this->filters['sortby'] == 'f.state, f.registered' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_STATUS'); ?>
                         </a>
                     </li>
                     <?php } ?>
                     <li>
-                        <a class="sort-date<?= $this->filters['sortby'] == 'f.registered' ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.registered') . '&search=' . $this->escape(urlencode($this->filters['search']))) ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_REG') ?>" rel="nofollow">
+                        <?php
+                        $pipelineUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit']
+                                . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.registered')
+                                . '&search=' . $this->escape(urlencode($this->filters['search'])),
+                        );
+                        ?>
+                        <a class="sort-date<?= $this->filters['sortby'] == 'f.registered' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_REG') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_DATE'); ?>
                         </a>
                     </li>
                     <li>
-                        <a class="sort-name<?= $this->filters['sortby'] == 'f.toolname' ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.toolname') . '&search=' . $this->escape(urlencode($this->filters['search']))) ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_NAME') ?>" rel="nofollow">
+                        <?php
+                        $pipelineUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit']
+                                . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.toolname')
+                                . '&search=' . $this->escape(urlencode($this->filters['search'])),
+                        );
+                        ?>
+                        <a class="sort-name<?= $this->filters['sortby'] == 'f.toolname' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_NAME') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_ALIAS'); ?>
                         </a>
                     </li>
                     <?php if ($this->admin) { ?>
                     <li>
-                        <a class="sort-priority<?= $this->filters['sortby'] == 'f.priority' ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.priority') . '&search=' . $this->escape(urlencode($this->filters['search']))) ?>" title="<?= Lang::txt('COM_TOOLS_PRIORITY') ?>" rel="nofollow">
+                        <?php
+                        $pipelineUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit']
+                                . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.priority')
+                                . '&search=' . $this->escape(urlencode($this->filters['search'])),
+                        );
+                        ?>
+                        <a class="sort-priority<?= $this->filters['sortby'] == 'f.priority' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_PRIORITY') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_PRIORITY'); ?>
                         </a>
                     </li>
                     <li>
-                        <a class="sort-change <?= $this->filters['sortby'] == 'f.state_changed DESC' ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=' . $this->filters['filterby'] . '&sortby=' . urlencode('f.state_changed DESC') . '&search=' . $this->escape(urlencode($this->filters['search']))) ?>" title="<?= Lang::txt('COM_TOOLS_LAST_STATUS_CHANGE') ?>" rel="nofollow">
+                        <?php
+                        $pipelineUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit']
+                                . '&filterby=' . $this->filters['filterby'] . '&sortby='
+                                . urlencode('f.state_changed DESC') . '&search='
+                                . $this->escape(urlencode($this->filters['search'])),
+                        );
+                        ?>
+                        <a class="sort-change <?= $this->filters['sortby'] == 'f.state_changed DESC' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_LAST_STATUS_CHANGE') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_STATUS_CHANGE'); ?>
                         </a>
                     </li>
@@ -108,23 +161,51 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
 
                 <ul class="entries-menu filter-options" data-label="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER') ?>">
                     <li>
-                        <a class="filter-all<?= $this->filters['filterby'] == 'all' ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=all&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))) ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_ALL') ?>" rel="nofollow">
+                        <?php
+                        $pipelineUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit']
+                                . '&filterby=all&sortby=' . urlencode($this->filters['sortby']) . '&search='
+                                . $this->escape(urlencode($this->filters['search'])),
+                        );
+                        ?>
+                        <a class="filter-all<?= $this->filters['filterby'] == 'all' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_ALL') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_ALL'); ?>
                         </a>
                     </li>
                     <li>
-                        <a class="filter-mine<?= $this->filters['filterby'] == 'mine' ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=mine&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))) ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_MINE') ?>" rel="nofollow">
+                        <?php
+                        $pipelineUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit']
+                                . '&filterby=mine&sortby=' . urlencode($this->filters['sortby']) . '&search='
+                                . $this->escape(urlencode($this->filters['search'])),
+                        );
+                        ?>
+                        <a class="filter-mine<?= $this->filters['filterby'] == 'mine' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_MINE') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_MINE'); ?>
                         </a>
                     </li>
                     <li>
-                        <a class="filter-published<?= $this->filters['filterby'] == 'published' ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=published&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))) ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_PUBLISHED') ?>" rel="nofollow">
+                        <?php
+                        $pipelineUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit']
+                                . '&filterby=published&sortby=' . urlencode($this->filters['sortby']) . '&search='
+                                . $this->escape(urlencode($this->filters['search'])),
+                        );
+                        ?>
+                        <a class="filter-published<?= $this->filters['filterby'] == 'published' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_PUBLISHED') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_PUBLISHED'); ?>
                         </a>
                     </li>
                     <?php if ($this->admin) { ?>
                     <li>
-                        <a class="filter-dev<?= $this->filters['filterby'] == 'dev' ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit'] . '&filterby=dev&sortby=' . urlencode($this->filters['sortby']) . '&search=' . $this->escape(urlencode($this->filters['search']))) ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_DEV') ?>" rel="nofollow">
+                        <?php
+                        $pipelineUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=pipeline&limit=' . $this->filters['limit']
+                                . '&filterby=dev&sortby=' . urlencode($this->filters['sortby']) . '&search='
+                                . $this->escape(urlencode($this->filters['search'])),
+                        );
+                        ?>
+                        <a class="filter-dev<?= $this->filters['filterby'] == 'dev' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_DEV') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_DEVELOPMENT'); ?>
                         </a>
                     </li>
@@ -173,7 +254,13 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                             </span>
                         </th>
                         <td>
-                            <a class="entry-title" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $row->toolname) ?>">
+                            <?php
+                            $statusUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=status&app=' . $row->toolname,
+                            );
+                            ?>
+                            <a class="entry-title" href="<?= $statusUrl ?>">
                                 <?php echo $this->escape(stripslashes($row->title)); ?>
                             </a><br />
                             <span class="entry-details">
@@ -182,12 +269,24 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                             </span>
                         </td>
                         <td class="priority-4">
-                            <a class="entry-alias" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $row->toolname) ?>">
+                            <?php
+                            $statusUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=status&app=' . $row->toolname,
+                            );
+                            ?>
+                            <a class="entry-alias" href="<?= $statusUrl ?>">
                                 <?php echo $this->escape($row->toolname); ?>
                             </a>
                         </td>
                         <td class="priority-3">
-                            <a class="entry-status" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $row->toolname) ?>">
+                            <?php
+                            $statusUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=status&app=' . $row->toolname,
+                            );
+                            ?>
+                            <a class="entry-status" href="<?= $statusUrl ?>">
                                 <?php echo $status; ?>
                             </a><br />
                             <span class="entry-details">
@@ -200,12 +299,20 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                     <?php echo Lang::txt('COM_TOOLS_RESOURCE'); ?>
                                 </span>
                             <?php } else { ?>
-                                <a class="entry-page" href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $row->toolname) ?>">
+                                <?php
+                                $linkUrl = Route::url('index.php?option=' . $this->option . '&app=' . $row->toolname);
+                                ?>
+                                <a class="entry-page" href="<?= $linkUrl ?>">
                                     <?php echo Lang::txt('COM_TOOLS_RESOURCE'); ?>
                                 </a>
                             <?php } ?>
                                 |
-                                <a class="entry-history" href="<?= Route::url('index.php?option=com_support&task=ticket&id=' . $row->ticketid) ?>">
+                                <?php
+                                $ticketUrl = Route::url(
+                                    'index.php?option=com_support&task=ticket&id=' . $row->ticketid,
+                                );
+                                ?>
+                                <a class="entry-history" href="<?= $ticketUrl ?>">
                                     <?php echo strtolower(Lang::txt('COM_TOOLS_HISTORY')); ?>
                                 </a>
                                 |

@@ -21,7 +21,10 @@ $this->css();
 
 <div class="container">
     <p class="section-options">
-        <a class="icon-add add btn" href="<?= Route::url($this->publication->link('questions') . '&action=new#ask') ?>"><?= Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION') ?></a>
+        <?php
+        $newUrl = Route::url($this->publication->link('questions') . '&action=new#ask');
+        ?>
+        <a class="icon-add add btn" href="<?= $newUrl ?>"><?= Lang::txt('PLG_PUBLICATION_QUESTIONS_ASK_A_QUESTION') ?></a>
     </p>
     <table class="questions entries">
         <caption>
@@ -58,7 +61,10 @@ $this->css();
                 </th>
                 <td>
                     <?php if (!$row->isReported()) { ?>
-                        <a class="entry-title" href="<?= Route::url($row->link()) ?>"><?= $this->escape(strip_tags($row->get('subject'))) ?></a><br />
+                        <?php
+                        $linkUrl = Route::url($row->link());
+                        ?>
+                        <a class="entry-title" href="<?= $linkUrl ?>"><?= $this->escape(strip_tags($row->get('subject'))) ?></a><br />
                     <?php } else { ?>
                         <span class="entry-title"><?= Lang::txt('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW') ?></span><br />
                     <?php } ?>
@@ -76,7 +82,10 @@ $this->css();
                         </span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-comments">
-                            <a href="<?= Route::url($row->link() . '#answers') ?>" title="<?= Lang::txt('There are %s responses to this question.', $row->get('rcount')) ?>">
+                            <?php
+                            $linkUrl = Route::url($row->link() . '#answers');
+                            ?>
+                            <a href="<?= $linkUrl ?>" title="<?= Lang::txt('There are %s responses to this question.', $row->get('rcount')) ?>">
                                 <?php echo $row->responses->count(); ?>
                             </a>
                         </span>
@@ -97,7 +106,13 @@ $this->css();
                                 <?php echo $row->get('helpful', 0); ?><span> Like</span>
                             </span>
                         <?php } else { ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes') ?>" class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="Vote this up :: <?= $row->get('helpful', 0) ?> people liked this">
+                            <?php
+                            $voteUrl = Route::url(
+                                'index.php?option=com_answers&task=vote&id=' . $row->get('id')
+                                    . '&category=question&vote=yes',
+                            );
+                            ?>
+                            <button type="submit" form="hz-post-action" formaction="<?= $voteUrl ?>" class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="Vote this up :: <?= $row->get('helpful', 0) ?> people liked this">
                                 <?php echo $row->get('helpful', 0); ?><span> Like</span>
                             </button>
                         <?php } ?>

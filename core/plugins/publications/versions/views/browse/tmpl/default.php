@@ -55,7 +55,13 @@ $url = Route::url($route . '&pid=' . $this->publication->id);
                     <td><?= ($v->published_up && $v->published_up != '0000-00-00 00:00:00') ? Date::of($v->published_up)->toLocal('M d, Y') : Lang::txt('COM_PUBLICATIONS_NA') ?></td>
                     <td><?php echo $v->doi ? $v->doi : Lang::txt('COM_PUBLICATIONS_NA'); ?></td>
                     <td class="<?= $v->state == 1 ? 'state_published' : 'state_unpublished' ?>"><?= $v->state == 1 ? Lang::txt('PLG_PUBLICATION_VERSIONS_PUBLISHED') : Lang::txt('PLG_PUBLICATION_VERSIONS_UNPUBLISHED') ?></td>
-                    <td><a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&v=' . $v->version_number) ?>"><?= Lang::txt('PLG_PUBLICATION_VERSIONS_VIEW') ?></a></td>
+                    <?php
+                    $linkUrl = Route::url(
+                        'index.php?option=' . $this->option . '&id=' . $this->publication->id . '&v='
+                            . $v->version_number,
+                    );
+                    ?>
+                    <td><a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PUBLICATION_VERSIONS_VIEW') ?></a></td>
                 </tr>
                 <?php
             }
@@ -68,7 +74,12 @@ $url = Route::url($route . '&pid=' . $this->publication->id);
                     <td><?php echo Lang::txt('COM_PUBLICATIONS_NA'); ?></td>
                     <td><?php echo $this->publication->master_doi; ?></td>
                     <td class="state_unpublished"><?php echo Lang::txt('PLG_PUBLICATION_VERSIONS_PUBLISHED'); ?></td>
-                    <td><a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->publication->id . '&task=main') ?>"><?= Lang::txt('PLG_PUBLICATION_VERSIONS_VIEW') ?></a></td>
+                    <?php
+                    $mainUrl = Route::url(
+                        'index.php?option=' . $this->option . '&id=' . $this->publication->id . '&task=main',
+                    );
+                    ?>
+                    <td><a href="<?= $mainUrl ?>"><?= Lang::txt('PLG_PUBLICATION_VERSIONS_VIEW') ?></a></td>
                 </tr>
                 <?php
             }

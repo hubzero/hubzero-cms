@@ -79,7 +79,12 @@ $this
                             <?php echo $item->tags('render'); ?>
                         </div>
                     <?php } ?>
-                    <div class="meta" data-metadata-url="<?= Route::url('index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id')) ?>">
+                    <?php
+                    $metadataUrl = Route::url(
+                        'index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id'),
+                    );
+                    ?>
+                    <div class="meta" data-metadata-url="<?= $metadataUrl ?>">
                         <p class="stats">
                             <span class="likes">
                                 <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>
@@ -99,7 +104,10 @@ $this
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
                                     </a>
                                 <?php } else { ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=post/' . $row->get('id') . '/vote') ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $row->get('id') ?>" data-text-like="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNLIKE') ?>">
+                                    <?php
+                                    $postUrl = Route::url($base . '&task=post/' . $row->get('id') . '/vote');
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>" class="btn vote <?= ($item->get('voted')) ? 'unlike' : 'like' ?>" data-id="<?= $row->get('id') ?>" data-text-like="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?>" data-text-unlike="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNLIKE') ?>">
                                         <span><?= ($item->get('voted')) ? Lang::txt('PLG_MEMBERS_COLLECTIONS_UNLIKE') : Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE') ?></span>
                                     </button>
                                 <?php } ?>
@@ -117,13 +125,33 @@ $this
                                     </a>
                                 <?php } ?>
                             <?php } else { ?>
-                                    <a class="btn vote like tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base, false, true)), false) ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(Route::url($base, false, true)),
+                                        false,
+                                    );
+                                    ?>
+                                    <a class="btn vote like tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE'); ?></span>
                                     </a>
                                     <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&task=post/' . $row->get('id') . '/comment');?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
-                                    <a class="btn repost tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&task=post/' . $row->get('id') . '/collect', false, true)), false) ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
+                                    <?php
+                                    $postUrl = Route::url(
+                                        'index.php?option=com_users&view=login&return='
+                                            . base64_encode(
+                                                Route::url(
+                                                    $base . '&task=post/' . $row->get('id') . '/collect',
+                                                    false,
+                                                    true,
+                                                ),
+                                            ),
+                                        false,
+                                    );
+                                    ?>
+                                    <a class="btn repost tooltips" href="<?= $postUrl ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                             <?php } ?>

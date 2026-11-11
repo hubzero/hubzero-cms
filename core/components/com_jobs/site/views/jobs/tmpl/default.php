@@ -27,15 +27,24 @@ if ($this->subscriptionCode && $this->employer) {
             <?php if (User::isGuest()) { ?>
                 <li><?= Lang::txt('COM_JOBS_PLEASE') . ' <a class="btn" href="' . Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS') ?></li>
             <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
-                <li><a class="myjobs btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=dashboard') ?>"><?= Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD') ?></a></li>
+                <?php
+                $dashboardUrl = Route::url('index.php?option=' . $this->option . '&task=dashboard');
+                ?>
+                <li><a class="myjobs btn" href="<?= $dashboardUrl ?>"><?= Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD') ?></a></li>
                 <li><a class="shortlist btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted' ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
             <?php } elseif ($this->admin) { ?>
                 <li>
                     <?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
-                    <a class="icon-dashboard btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=dashboard') ?>"><?= Lang::txt('COM_JOBS_ADMIN_DASHBOARD') ?></a>
+                    <?php
+                    $dashboardUrl = Route::url('index.php?option=' . $this->option . '&task=dashboard');
+                    ?>
+                    <a class="icon-dashboard btn" href="<?= $dashboardUrl ?>"><?= Lang::txt('COM_JOBS_ADMIN_DASHBOARD') ?></a>
                 </li>
             <?php } else { ?>
-                <li><a class="myresume btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=addresume') ?>"><?= Lang::txt('COM_JOBS_MY_RESUME') ?></a></li>
+                <?php
+                $addresumeUrl = Route::url('index.php?option=' . $this->option . '&task=addresume');
+                ?>
+                <li><a class="myresume btn" href="<?= $addresumeUrl ?>"><?= Lang::txt('COM_JOBS_MY_RESUME') ?></a></li>
             <?php } ?>
         </ul>
     </div><!-- / #content-header-extra -->

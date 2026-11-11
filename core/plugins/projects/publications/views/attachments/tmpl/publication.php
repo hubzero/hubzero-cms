@@ -32,9 +32,24 @@ $details = rtrim(Request::base(), '/') . '/' . ltrim($row->path, '/');
         <span class="item-options">
             <?php if ($viewer == 'edit') { ?>
                 <span>
-                    <a href="<?= Route::url($data->editUrl . '&action=orderdown&aid=' . $data->id . '&p=' . $data->props) ?>" class="item-movedown" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEDOWN') ?>">&darr;</a>
-                    <a href="<?= Route::url($data->editUrl . '&action=orderup&aid=' . $data->id . '&p=' . $data->props) ?>" class="item-moveup" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEUP') ?>">&uarr;</a>
-                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
+                    <?php
+                    $orderdownUrl = Route::url(
+                        $data->editUrl . '&action=orderdown&aid=' . $data->id . '&p=' . $data->props,
+                    );
+                    ?>
+                    <a href="<?= $orderdownUrl ?>" class="item-movedown" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEDOWN') ?>">&darr;</a>
+                    <?php
+                    $orderupUrl = Route::url(
+                        $data->editUrl . '&action=orderup&aid=' . $data->id . '&p=' . $data->props,
+                    );
+                    ?>
+                    <a href="<?= $orderupUrl ?>" class="item-moveup" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MOVEUP') ?>">&uarr;</a>
+                    <?php
+                    $deleteitemUrl = Route::url(
+                        $data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props,
+                    );
+                    ?>
+                    <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
                 </span>
             <?php } ?>
         </span>

@@ -191,13 +191,24 @@ foreach ($profiles as $profile) {
 
         <fieldset id="memberpicture">
             <legend><?php echo Lang::txt('MEMBER_PICTURE'); ?></legend>
-            <iframe width="100%" height="350" border="0" name="filer" id="filer" title="<?= Lang::txt('MEMBER_PICTURE') ?>" src="<?= Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&file=' . stripslashes($this->profile->get('picture') ?? '') . '&amp;id=' . $this->profile->get('id')) ?>"></iframe>
+            <?php
+            $sourceUrl = Route::url(
+                'index.php?option=' . $this->option . '&controller=media&tmpl=component&file='
+                    . stripslashes($this->profile->get('picture') ?? '') . '&amp;id=' . $this->profile->get('id'),
+            );
+            ?>
+            <iframe width="100%" height="350" border="0" name="filer" id="filer" title="<?= Lang::txt('MEMBER_PICTURE') ?>" src="<?= $sourceUrl ?>"></iframe>
         </fieldset><div class="clear"></div>
 
         <?php echo Html::input('token'); ?>
         <p class="submit">
             <input class="btn btn-success" type="submit" name="submit" value="<?php echo Lang::txt('SAVE'); ?>" />
-            <a class="btn secondary" href="<?= Route::url('index.php?option=' . $this->option . '&task=cancel&id=' . $this->profile->get('id')) ?>"><?= Lang::txt('CANCEL') ?></a>
+            <?php
+            $cancelUrl = Route::url(
+                'index.php?option=' . $this->option . '&task=cancel&id=' . $this->profile->get('id'),
+            );
+            ?>
+            <a class="btn secondary" href="<?= $cancelUrl ?>"><?= Lang::txt('CANCEL') ?></a>
         </p>
     </form>
 </section>

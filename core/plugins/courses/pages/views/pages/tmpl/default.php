@@ -60,7 +60,10 @@ if (!$this->page) {
     <?php if ($authorized) { ?>
         <ul class="manager-options">
             <li>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&unit=' . $this->page->get('url') . '&b=delete') ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_COURSES_PAGES_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?></button>
+                <?php
+                $actionUrl = Route::url($base . '&unit=' . $this->page->get('url') . '&b=delete');
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_COURSES_PAGES_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?></button>
             </li>
             <li>
                 <a class="icon-edit edit"

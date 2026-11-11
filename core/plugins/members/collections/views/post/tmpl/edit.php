@@ -137,7 +137,13 @@ $idSelected = function ($value) {
                                   // every repost too. The controller allows that only to the item's
                                   // owner; offering the link to anyone else is a 403 waiting to happen.
                             if ($item->get('created_by') == User::get('id')) { ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=post/' . $this->entry->get('id') . '/edit&remove=' . $asset->get('id')) ?>" class="delete" data-id="<?= $this->escape($asset->get('id')) ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE') ?>">
+                                <?php
+                                $postUrl = Route::url(
+                                    $base . '&task=post/' . $this->entry->get('id') . '/edit&remove='
+                                        . $asset->get('id'),
+                                );
+                                ?>
+                                <button type="submit" form="hz-post-action" formaction="<?= $postUrl ?>" class="delete" data-id="<?= $this->escape($asset->get('id')) ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE') ?>">
                                     <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?>
                                 </button>
                             <?php } ?>

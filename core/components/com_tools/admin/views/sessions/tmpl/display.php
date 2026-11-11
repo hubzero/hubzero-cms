@@ -80,7 +80,13 @@ Html::behavior('tooltip');
             ?>
         </select>
 
-        <a class="refresh button" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&username=&appname=&exechost=&start=0') ?>">
+        <?php
+        $linkUrl = Route::url(
+            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                . '&username=&appname=&exechost=&start=0',
+        );
+        ?>
+        <a class="refresh button" href="<?= $linkUrl ?>">
             <span><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></span>
         </a>
     </fieldset>
@@ -137,7 +143,13 @@ Html::behavior('tooltip');
                         </span>
                     </td>
                     <td class="priority-2">
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&username=' . $row->username) ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&username='
+                                . $row->username,
+                        );
+                        ?>
+                        <a href="<?= $linkUrl ?>">
                             <span><?php echo $this->escape($row->username); ?></span>
                         </a>
                     </td>
@@ -155,17 +167,35 @@ Html::behavior('tooltip');
                         </time>
                     </td>
                     <td class="priority-3">
-                        <a class="tool" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&appname=' . $row->appname) ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&appname='
+                                . $row->appname,
+                        );
+                        ?>
+                        <a class="tool" href="<?= $linkUrl ?>">
                             <span><?php echo $this->escape($row->appname); ?></span>
                         </a>
                     </td>
                     <td class="priority-4">
-                        <a class="tool" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&exechost=' . $row->exechost) ?>">
+                        <?php
+                        $linkUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&exechost='
+                                . $row->exechost,
+                        );
+                        ?>
+                        <a class="tool" href="<?= $linkUrl ?>">
                             <span><?php echo $this->escape($row->exechost); ?></span>
                         </a>
                     </td>
                     <td>
-                        <a class="state trash" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=remove&id=' . $row->sessnum . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE') ?>">
+                        <?php
+                        $removeUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=remove&id=' . $row->sessnum . '&' . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="state trash" href="<?= $removeUrl ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE') ?>">
                             <span><?php echo Lang::txt('COM_TOOLS_TERMINATE'); ?></span>
                         </a>
                     </td>

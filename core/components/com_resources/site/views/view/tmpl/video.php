@@ -47,7 +47,10 @@ $this->css('
     <div class="video-page-header">
         <h2><?php echo $this->escape(isset($this->parent) ? $this->parent->title : $this->resource->title); ?></h2>
         <?php if (isset($this->parent)) : ?>
-            <p class="video-page-back"><a href="<?= Route::url('index.php?option=com_resources&id=' . $this->parent->id) ?>">&larr; Back to resource</a></p>
+            <?php
+            $linkUrl = Route::url('index.php?option=com_resources&id=' . $this->parent->id);
+            ?>
+            <p class="video-page-back"><a href="<?= $linkUrl ?>">&larr; Back to resource</a></p>
         <?php endif; ?>
     </div>
 

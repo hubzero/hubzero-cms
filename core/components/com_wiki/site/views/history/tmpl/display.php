@@ -185,12 +185,22 @@ $revisions = $this->page
                                     <td><?php /* [a11y] new-version radio placeholder */ ?></td>
                                 <?php } ?>
                                 <td>
-                                    <a href="<?= Route::url($this->page->link('', 'version=' . $revision->get('version'))) ?>" class="tooltips" title="<?= Lang::txt('COM_WIKI_REVISION_SUMMARY') . ' :: ' . $this->escape(strip_tags((string) $summary)) ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        $this->page->link('', 'version=' . $revision->get('version')),
+                                    );
+                                    ?>
+                                    <a href="<?= $linkUrl ?>" class="tooltips" title="<?= Lang::txt('COM_WIKI_REVISION_SUMMARY') . ' :: ' . $this->escape(strip_tags((string) $summary)) ?>">
                                         <time datetime="<?= $revision->get('created') ?>"><?= $this->escape(Date::of($revision->get('created'))->toLocal('Y-m-d H:i:s')) ?></time>
                                     </a>
                                 </td>
                                 <td>
-                                    <a class="tooltips markup icon-file-alt-text" href="<?= Route::url($this->page->link('', 'version=' . $revision->get('version') . '&format=raw')) ?>" title="<?= Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE') ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        $this->page->link('', 'version=' . $revision->get('version') . '&format=raw'),
+                                    );
+                                    ?>
+                                    <a class="tooltips markup icon-file-alt-text" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WIKI_HISTORY_MARKUP_TITLE') ?>">
                                         <?php echo Lang::txt('COM_WIKI_HISTORY_MARKUP'); ?>
                                     </a>
                                 </td>
@@ -204,7 +214,12 @@ $revisions = $this->page
                                     <?php echo $status; ?>
                                     <?php if (!$revision->get('approved') && $this->page->access('manage')) { ?>
                                         <br />
-                                        <a href="<?= Route::url($this->page->link('approve', 'oldid=' . $revision->get('id'))) ?>">
+                                        <?php
+                                        $linkUrl = Route::url(
+                                            $this->page->link('approve', 'oldid=' . $revision->get('id')),
+                                        );
+                                        ?>
+                                        <a href="<?= $linkUrl ?>">
                                             <?php echo Lang::txt('COM_WIKI_ACTION_APPROVED'); ?>
                                         </a>
                                     <?php } ?>
@@ -220,13 +235,26 @@ $revisions = $this->page
                                     </td>
                                     <?php } else { ?>
                                     <td>
-                                        <a class="icon-circle-arrow-up" href="<?= Route::url($this->page->link('setcurrentrevision', 'version_id=' . $revision->get('id'))) ?>" title="<?= Lang::txt('COM_WIKI_REVISION_DELETE') ?>">
+                                        <?php
+                                        $linkUrl = Route::url(
+                                            $this->page->link(
+                                                'setcurrentrevision',
+                                                'version_id=' . $revision->get('id'),
+                                            ),
+                                        );
+                                        ?>
+                                        <a class="icon-circle-arrow-up" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WIKI_REVISION_DELETE') ?>">
                                             <?php echo Lang::txt('COM_WIKI_HISTORY_SET_CURRENT'); ?>
                                         </a>
                                     </td>
                                     <?php } ?>
                                 <td>
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->page->link('deleterevision', 'oldid=' . $revision->get('id'))) ?>" class="icon-trash delete" title="<?= Lang::txt('COM_WIKI_REVISION_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                    <?php
+                                    $actionUrl = Route::url(
+                                        $this->page->link('deleterevision', 'oldid=' . $revision->get('id')),
+                                    );
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-trash delete" title="<?= Lang::txt('COM_WIKI_REVISION_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                 </td>
                                 <?php } ?>
                             </tr>

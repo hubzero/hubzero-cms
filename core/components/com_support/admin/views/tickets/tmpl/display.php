@@ -36,7 +36,13 @@ $this
 <div class="panel" id="panes">
     <div class="panel-row">
 
-        <div class="pane pane-queries" id="queries" data-update="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=saveordering&' . Session::getFormToken() . '=1') ?>">
+        <?php
+        $saveorderingUrl = Route::url(
+            'index.php?option=' . $this->option . '&controller=queries&task=saveordering&' . Session::getFormToken()
+                . '=1',
+        );
+        ?>
+        <div class="pane pane-queries" id="queries" data-update="<?= $saveorderingUrl ?>">
             <div class="pane-inner">
 
                 <ul id="watch-list">
@@ -44,12 +50,26 @@ $this
                         <span class="icon-watch folder"><?php echo Lang::txt('COM_SUPPORT_QUERIES_WATCHING'); ?></span>
                         <ul id="queries_watching" class="wqueries">
                             <li<?php echo intval($this->filters['show']) == -1 ? ' class="active"' : ''; ?>>
-                                <a class="query" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')) ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&show=-1&limitstart=0'
+                                        . (intval($this->filters['show']) != -1 ? '&search=' : ''),
+                                );
+                                ?>
+                                <a class="query" href="<?= $linkUrl ?>">
                                     <?= $this->escape(Lang::txt('COM_SUPPORT_QUERIES_WATCHING_OPEN')) ?> <span><?= $this->watch['open'] ?></span>
                                 </a>
                             </li>
                             <li<?php echo intval($this->filters['show']) == -2 ? ' class="active"' : ''; ?>>
-                                <a class="query" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=-2&limitstart=0' . (intval($this->filters['show']) != -2 ? '&search=' : '')) ?>">
+                                <?php
+                                $linkUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&show=-2&limitstart=0'
+                                        . (intval($this->filters['show']) != -2 ? '&search=' : ''),
+                                );
+                                ?>
+                                <a class="query" href="<?= $linkUrl ?>">
                                     <?= $this->escape(Lang::txt('COM_SUPPORT_QUERIES_WATCHING_CLOSED')) ?> <span><?= $this->watch['closed'] ?></span>
                                 </a>
                             </li>
@@ -63,24 +83,62 @@ $this
                             <li id="folder_<?php echo $this->escape($folder->id); ?>" class="open">
                                 <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title" data-id="<?= $this->escape($folder->id) ?>"><?= $this->escape($folder->title) ?></span>
                                 <span class="folder-options">
-                                    <a class="delete" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                                    <?php
+                                    $removefolderUrl = Route::url(
+                                        'index.php?option=' . $this->option
+                                            . '&controller=queries&task=removefolder&id=' . $folder->id . '&'
+                                            . Session::getFormToken() . '=1',
+                                    );
+                                    ?>
+                                    <a class="delete" href="<?= $removefolderUrl ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
                                         <?php echo Lang::txt('JACTION_DELETE'); ?>
                                     </a>
-                                    <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=editfolder&id=' . $folder->id . '&tmpl=component&' . Session::getFormToken() . '=1') ?>" data-href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                                    <?php
+                                    $editfolderUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&controller=queries&task=editfolder&id='
+                                            . $folder->id . '&tmpl=component&' . Session::getFormToken() . '=1',
+                                    );
+                                    ?>
+                                    <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>" data-href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                                     </a>
                                 </span>
                                 <ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
                                     <?php foreach ($folder->queries as $query) { ?>
                                         <li id="query_<?= $this->escape($query->id) ?>" <?= intval($this->filters['show']) == $query->id ? ' class="active"' : '' ?>>
-                                            <a class="query" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')) ?>">
+                                            <?php
+                                            $linkUrl = Route::url(
+                                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                                    . '&show=' . $query->id
+                                                    . (
+                                                        intval($this->filters['show']) != $query->id
+                                                            ? '&search=&limitstart=0'
+                                                            : ''
+                                                    ),
+                                            );
+                                            ?>
+                                            <a class="query" href="<?= $linkUrl ?>">
                                                 <?= $this->escape(stripslashes($query->title)) ?> <span><?= $query->count ?></span>
                                             </a>
                                             <span class="query-options">
-                                                <a class="delete" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=remove&id=' . $query->id . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
+                                                <?php
+                                                $removeUrl = Route::url(
+                                                    'index.php?option=' . $this->option
+                                                        . '&controller=queries&task=remove&id=' . $query->id . '&'
+                                                        . Session::getFormToken() . '=1',
+                                                );
+                                                ?>
+                                                <a class="delete" href="<?= $removeUrl ?>" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
                                                     <?php echo Lang::txt('JACTION_DELETE'); ?>
                                                 </a>
-                                                <a class="modal edit" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=edit&id=' . $query->id . '&tmpl=component&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('JACTION_EDIT') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
+                                                <?php
+                                                $editUrl = Route::url(
+                                                    'index.php?option=' . $this->option
+                                                        . '&controller=queries&task=edit&id=' . $query->id
+                                                        . '&tmpl=component&' . Session::getFormToken() . '=1',
+                                                );
+                                                ?>
+                                                <a class="modal edit" href="<?= $editUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}">
                                                     <?php echo Lang::txt('JACTION_EDIT'); ?>
                                                 </a>
                                             </span>
@@ -94,12 +152,24 @@ $this
 
                 <ul class="controls">
                     <li>
-                        <a class="icon-list modal" id="new-query" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=add&tmpl=component&' . Session::getFormToken() . '=1') ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}" title="<?= Lang::txt('COM_SUPPORT_ADD_CUSTOM_QUERY') ?>">
+                        <?php
+                        $addUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=queries&task=add&tmpl=component&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="icon-list modal" id="new-query" href="<?= $addUrl ?>" rel="{handler: 'iframe', size: {x: 570, y: 550}}" title="<?= Lang::txt('COM_SUPPORT_ADD_CUSTOM_QUERY') ?>">
                             <?php echo Lang::txt('COM_SUPPORT_ADD_CUSTOM_QUERY'); ?>
                         </a>
                     </li>
                     <li>
-                        <a class="icon-folder" id="new-folder" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=addfolder&' . Session::getFormToken() . '=1') ?>" data-href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_SUPPORT_ADD_FOLDER') ?>" data-ptompt="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>">
+                        <?php
+                        $savefolderUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=queries&task=savefolder&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        ?>
+                        <a class="icon-folder" id="new-folder" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=addfolder&' . Session::getFormToken() . '=1') ?>" data-href="<?= $savefolderUrl ?>" title="<?= Lang::txt('COM_SUPPORT_ADD_FOLDER') ?>" data-ptompt="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>">
                             <?php echo Lang::txt('COM_SUPPORT_ADD_FOLDER'); ?>
                         </a>
                     </li>
@@ -265,7 +335,13 @@ $this
                                     </span>
                                 </p>
                                 <p>
-                                    <a class="ticket-content" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->get('id')) ?>">
+                                    <?php
+                                    $editUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                            . '&task=edit&id=' . $row->get('id'),
+                                    );
+                                    ?>
+                                    <a class="ticket-content" href="<?= $editUrl ?>">
                                             <?= $this->escape(
                                                 $row->get('summary', Lang::txt('COM_SUPPORT_TICKET_NO_CONTENT')),
                                             ) ?>

@@ -21,7 +21,10 @@ $this->css();
 </h3>
 <div class="container">
     <p class="section-options">
-        <a class="icon-add add btn" href="<?= Route::url($this->resource->link() . '&active=questions&action=new') ?>"><?= Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION') ?></a>
+        <?php
+        $newUrl = Route::url($this->resource->link() . '&active=questions&action=new');
+        ?>
+        <a class="icon-add add btn" href="<?= $newUrl ?>"><?= Lang::txt('PLG_RESOURCES_QUESTIONS_ASK_A_QUESTION') ?></a>
     </p>
     <table class="questions entries">
         <caption>
@@ -121,7 +124,13 @@ $this->css();
                             <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_LIKES', $row->get('helpful', 0)); ?>
                         </span>
                     <?php } else { ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=com_answers&task=vote&id=' . $row->get('id') . '&category=question&vote=yes') ?>" class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP', $row->get('helpful', 0)) ?>">
+                        <?php
+                        $voteUrl = Route::url(
+                            'index.php?option=com_answers&task=vote&id=' . $row->get('id')
+                                . '&category=question&vote=yes',
+                        );
+                        ?>
+                        <button type="submit" form="hz-post-action" formaction="<?= $voteUrl ?>" class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP', $row->get('helpful', 0)) ?>">
                             <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_LIKES', $row->get('helpful', 0)); ?>
                         </button>
                     <?php } ?>

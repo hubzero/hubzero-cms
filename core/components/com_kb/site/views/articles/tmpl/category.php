@@ -65,18 +65,29 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                 <?php if ($search) { ?>
                     <p class="search-results-for">
                         <?php echo Lang::txt('COM_KB_SEARCH_RESULTS_FOR', $this->escape($search)); ?>
-                        <a href="<?= Route::url($this->category->link() . ($this->filters['sort'] ? '&sort=' . $this->filters['sort'] : '')) ?>"><?= Lang::txt('COM_KB_SEARCH_CLEAR') ?></a>
+                        <?php
+                        $linkUrl = Route::url(
+                            $this->category->link() . ($this->filters['sort'] ? '&sort=' . $this->filters['sort'] : ''),
+                        );
+                        ?>
+                        <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_KB_SEARCH_CLEAR') ?></a>
                     </p>
                 <?php } ?>
                 <nav class="entries-filters" aria-label="<?php echo Lang::txt('COM_KB_SORT_LABEL'); ?>">
                     <ul class="entries-menu">
                         <li>
-                            <a<?= ($this->filters['sort'] == 'popularity') ? ' class="active" aria-current="page"' : '' ?> href="<?= Route::url($this->category->link() . '&sort=popularity' . $carry) ?>" title="<?= Lang::txt('COM_KB_SORT_BY_POPULAR') ?>">
+                            <?php
+                            $linkUrl = Route::url($this->category->link() . '&sort=popularity' . $carry);
+                            ?>
+                            <a<?= ($this->filters['sort'] == 'popularity') ? ' class="active" aria-current="page"' : '' ?> href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_KB_SORT_BY_POPULAR') ?>">
                                 <?php echo Lang::txt('COM_KB_SORT_POPULAR'); ?>
                             </a>
                         </li>
                         <li>
-                            <a<?= ($this->filters['sort'] == 'recent') ? ' class="active" aria-current="page"' : '' ?> href="<?= Route::url($this->category->link() . '&sort=recent' . $carry) ?>" title="<?= Lang::txt('COM_KB_SORT_BY_RECENT') ?>">
+                            <?php
+                            $linkUrl = Route::url($this->category->link() . '&sort=recent' . $carry);
+                            ?>
+                            <a<?= ($this->filters['sort'] == 'recent') ? ' class="active" aria-current="page"' : '' ?> href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_KB_SORT_BY_RECENT') ?>">
                                 <?php echo Lang::txt('COM_KB_SORT_RECENT'); ?>
                             </a>
                         </li>
@@ -147,7 +158,10 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                     <?php if ($grouped) { ?>
                     <h3 class="articles-group-title">
                         <?php if ($group['category']->get('id')) { ?>
-                            <a href="<?= Route::url($group['category']->link() . $carry) ?>"><?= $this->escape(stripslashes($group['category']->get('title'))) ?></a>
+                            <?php
+                            $linkUrl = Route::url($group['category']->link() . $carry);
+                            ?>
+                            <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($group['category']->get('title'))) ?></a>
                         <?php } else { ?>
                             <?php echo Lang::txt('COM_KB_ARTICLES'); ?>
                         <?php } ?>
@@ -169,7 +183,10 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                                 <span class="entry-identifier icon-file"><?php echo $row->get('id'); ?></span>
                             </td>
                             <td>
-                                <a class="entry-title" href="<?= Route::url($row->link()) ?>"><?= $this->escape(stripslashes($row->get('title', ''))) ?></a><br />
+                                <?php
+                                $linkUrl = Route::url($row->link());
+                                ?>
+                                <a class="entry-title" href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($row->get('title', ''))) ?></a><br />
                                 <?php if ($search && ($snippet = $row->snippet($search))) { ?>
                                     <span class="entry-snippet"><?php echo $snippet; ?></span>
                                 <?php } ?>

@@ -81,7 +81,10 @@ $this
                 </div><!-- / .col span-half -->
                 <div class="col span-half omega">
                     <div class="browse">
-                        <p><a href="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>"><?= Lang::txt('COM_RESOURCES_BROWSE_LIST') ?></a></p>
+                        <?php
+                        $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse');
+                        ?>
+                        <p><a href="<?= $browseUrl ?>"><?= Lang::txt('COM_RESOURCES_BROWSE_LIST') ?></a></p>
                     </div><!-- / .browse -->
                 </div><!-- / .col span-half -->
             </div><!-- / .grid -->
@@ -151,7 +154,10 @@ if ($categories) {
                 <div class="col span-third <?php echo $clm; ?>">
                     <div class="resource-type <?php echo $cls; ?>">
                         <h3>
-                            <a href="<?= Route::url('index.php?option=' . $this->option . '&type=' . $category->alias) ?>">
+                            <?php
+                            $linkUrl = Route::url('index.php?option=' . $this->option . '&type=' . $category->alias);
+                            ?>
+                            <a href="<?= $linkUrl ?>">
                                 <?php echo $this->escape(strip_tags(stripslashes($category->type))); ?>
                             </a>
                         </h3>

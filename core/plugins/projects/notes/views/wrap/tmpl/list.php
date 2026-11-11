@@ -58,7 +58,14 @@ if ($pNotes) {
                     foreach ($parent as $entry) {
                         ?>
                         <li <?php echo $entry->pagename == $this->page->get('pagename') ? 'class="active"' : ''; ?>>
-                            <a href="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes&pagename=' . ($entry->path ? $entry->path . '/' : '') . $entry->pagename) ?>" class="note wikilevel_<?= $level ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate($entry->title, 35)) ?></a>
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&alias=' . $this->project->get('alias')
+                                    . '&active=notes&pagename=' . ($entry->path ? $entry->path . '/' : '')
+                                    . $entry->pagename,
+                            );
+                            ?>
+                            <a href="<?= $linkUrl ?>" class="note wikilevel_<?= $level ?>"><?= $this->escape(\Hubzero\Utility\Str::truncate($entry->title, 35)) ?></a>
                         </li>
                         <?php
                         // Third level of notes
@@ -66,7 +73,14 @@ if ($pNotes) {
                             foreach ($thirdlevel[$entry->pagename] as $subpage) {
                                 ?>
                                 <li <?= $subpage->pagename == $this->page->get('pagename') ? 'class="active"' : '' ?>>
-                                    <a href="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $this->project->get('alias') . '&active=notes&pagename=' . ($subpage->path ? $subpage->path . '/' : '') . $subpage->pagename) ?>" class="note wikilevel_3"><?= $this->escape(\Hubzero\Utility\Str::truncate($subpage->title, 35)) ?></a>
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&alias=' . $this->project->get('alias')
+                                            . '&active=notes&pagename=' . ($subpage->path ? $subpage->path . '/' : '')
+                                            . $subpage->pagename,
+                                    );
+                                    ?>
+                                    <a href="<?= $linkUrl ?>" class="note wikilevel_3"><?= $this->escape(\Hubzero\Utility\Str::truncate($subpage->title, 35)) ?></a>
                                 </li>
                                 <?php
                             }

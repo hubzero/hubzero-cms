@@ -307,7 +307,13 @@ $this
                                         <span class="stats-ima-small"><img src="<?= $project->picture('thumb') ?>"
                                             alt="" /></span>
                                         <?php if (!$project->get('private')) : ?>
-                                            <a href="<?= Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $project->get('alias')) ?>">
+                                            <?php
+                                            $viewUrl = Route::url(
+                                                'index.php?option=' . $this->option . '&task=view&alias='
+                                                    . $project->get('alias'),
+                                            );
+                                            ?>
+                                            <a href="<?= $viewUrl ?>">
                                         <?php endif; ?>
                                         <?php echo $this->escape($project->get('title')); ?>
                                         <?php if (!$project->get('private')) : ?>
@@ -403,9 +409,21 @@ $this
                             <ul>
                                 <?php foreach ($this->stats['topTeamProjects'] as $topProject) : ?>
                                     <li>
-                                        <span class="stats-ima-small"><img src="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $topProject->alias . '&task=media') ?>" alt="" /></span>
+                                        <?php
+                                        $mediaUrl = Route::url(
+                                            'index.php?option=' . $this->option . '&alias=' . $topProject->alias
+                                                . '&task=media',
+                                        );
+                                        ?>
+                                        <span class="stats-ima-small"><img src="<?= $mediaUrl ?>" alt="" /></span>
                                         <?php if (!$topProject->private) : ?>
-                                            <a href="<?= Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $topProject->alias) ?>">
+                                            <?php
+                                            $viewUrl = Route::url(
+                                                'index.php?option=' . $this->option . '&task=view&alias='
+                                                    . $topProject->alias,
+                                            );
+                                            ?>
+                                            <a href="<?= $viewUrl ?>">
                                         <?php endif; ?>
                                         <?= $this->escape($topProject->title) . ' (' . $topProject->team . ' '
                                             . Lang::txt('members') . ')' ?>

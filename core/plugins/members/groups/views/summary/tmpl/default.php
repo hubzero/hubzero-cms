@@ -221,7 +221,12 @@ $this
                                 <?php if ($group->registered && !$group->regconfirmed) : ?>
                                     <?php echo Lang::txt('Membership request requires approval.'); ?>
                                 <?php elseif (!$group->registered && $group->regconfirmed) : ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') ?>" class="btn btn-success accept tooltips" title="<?= Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') ?>"><?= Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT') ?></button>
+                                    <?php
+                                    $acceptUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept',
+                                    );
+                                    ?>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>" class="btn btn-success accept tooltips" title="<?= Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') ?>"><?= Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT') ?></button>
                                 <?php else : ?>
                                     <div class="grid">
                                         <div class="col span6">
