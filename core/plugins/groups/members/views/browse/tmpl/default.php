@@ -66,7 +66,10 @@ $option = 'com_groups';
                     <?php if (
                     $this->authorized == 'manager'
                         || $this->authorized == 'admin'
-                        || Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.invite')
+                        || Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction(
+                            $this->group,
+                            'group.invite',
+                        )
 ) : ?>
                     <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite') ?>">
                         <?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_MEMBERS'); ?>

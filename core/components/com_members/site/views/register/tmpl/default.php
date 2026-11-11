@@ -234,7 +234,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                         <?= Lang::txt('COM_MEMBERS_REGISTER_PASSWORD') ?> <?= $this->registrationPassword == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
                                         <input name="password" id="password" class="form-control" type="password" value="<?= $this->escape($this->registration['password']) ?>" autocomplete="off"<?= ($this->registrationPassword == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= !empty($this->xregistration->invalid['password']) ? ' aria-invalid="true"' : '' ?> aria-describedby="passrules" />
                                         <?php echo !empty($this->xregistration->invalid['password']) && !is_array($this->xregistration->invalid['password'])
-                                                    ? '<span class="error" role="alert">' . $this->xregistration->invalid['password'] . '</span>'
+                                                    ? '<span class="error" role="alert">'
+                                                        . $this->xregistration->invalid['password'] . '</span>'
                                                     : ''; ?>
                                     </label>
                                 </div>

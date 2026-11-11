@@ -30,7 +30,8 @@ Pathway::append(
 );
 Pathway::append(
     $this->row->published('m'),
-    'index.php?option=' . $this->option . '&year=' . $this->row->published('Y') . '&month=' . sprintf("%02d", $this->row->published('m')),
+    'index.php?option=' . $this->option . '&year=' . $this->row->published('Y') . '&month='
+        . sprintf("%02d", $this->row->published('m')),
 );
 Pathway::append(
     stripslashes($this->row->get('title')),

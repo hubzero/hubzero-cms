@@ -47,7 +47,11 @@ switch ($this->which) {
             $i = 0;
             foreach ($this->rows as $row) {
                 $role = $row->access('member')
-                    ? ($row->access('manager') ? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_MANAGER') : Lang::txt('PLG_GROUPS_PROJECTS_STATUS_COLLABORATOR'))
+                    ? (
+                        $row->access('manager')
+                            ? Lang::txt('PLG_GROUPS_PROJECTS_STATUS_MANAGER')
+                            : Lang::txt('PLG_GROUPS_PROJECTS_STATUS_COLLABORATOR')
+                    )
                     : Lang::txt('PLG_GROUPS_PROJECTS_STATUS_NOTMEMBER');
 
                 $role = $row->access('readonly') && !$row->isArchived()

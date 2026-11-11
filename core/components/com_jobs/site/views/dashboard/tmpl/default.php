@@ -42,7 +42,9 @@ switch ($this->subscription->status) {
                 ? $this->subscription->pendingunits
                 : $this->subscription->units;
     $pending = $this->subscription->pendingunits && $this->subscription->status == 1
-                ? ' <span class="no">(' . $this->subscription->pendingunits . ' ' . Lang::txt('COM_JOBS_ADDITIONAL') . ' ' . $this->service->unitmeasure . 'MULTIPLE_S' . ' ' . Lang::txt('COM_JOBS_MONTHS_PENDING') . ')</span>'
+                ? ' <span class="no">(' . $this->subscription->pendingunits . ' ' . Lang::txt('COM_JOBS_ADDITIONAL')
+                    . ' ' . $this->service->unitmeasure . 'MULTIPLE_S' . ' ' . Lang::txt('COM_JOBS_MONTHS_PENDING')
+                    . ')</span>'
                 : '';
     $expiredate = $this->subscription->expires
                 ? Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))

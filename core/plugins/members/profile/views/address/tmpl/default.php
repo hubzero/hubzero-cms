@@ -51,7 +51,8 @@ if (count($this->addresses) < 1) {
         //do we have a country && its not USA
         if (
             isset($address->addressCountry) && $address->addressCountry != '' && $address->addressCountry != 'US'
-            && $address->addressCountry != 'USA' && $address->addressCountry != 'United States' && $address->addressCountry != 'United States of America'
+            && $address->addressCountry != 'USA' && $address->addressCountry != 'United States'
+            && $address->addressCountry != 'United States of America'
         ) {
             $formattedAddresses .= $this->escape($address->addressCountry) . '<br />';
         }

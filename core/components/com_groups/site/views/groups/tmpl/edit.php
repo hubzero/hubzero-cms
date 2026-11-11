@@ -331,7 +331,10 @@ endif;
                                     <input type="checkbox" class="option form-check-input" name="discussion_email_autosubscribe" id="discussion_email_autosubscribe" value="1" <?php
                                     if (
                                         $this->group->get('discussion_email_autosubscribe', null) == 1
-                                         || ($this->group->get('discussion_email_autosubscribe', null) == null && $autoEmailResponses)
+                                         || (
+                                             $this->group->get('discussion_email_autosubscribe', null) == null
+                                             && $autoEmailResponses
+                                         )
                                     ) :
                                         echo ' checked="checked"';
                                     endif;

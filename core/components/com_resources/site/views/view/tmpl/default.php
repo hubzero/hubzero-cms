@@ -98,7 +98,11 @@ if ($mode != 'preview') {
                         : '';
 
                     $html .= $children && count($children) > 1
-                           ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
+                           ? \Components\Resources\Helpers\Html::sortSupportingDocs(
+                               $this->model,
+                               $this->option,
+                               $children,
+                           )
                            : '';
 
                     if (trim($html) || ($this->tab != 'play' && $this->model->license())) {

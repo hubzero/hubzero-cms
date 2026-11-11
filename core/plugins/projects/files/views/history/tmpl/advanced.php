@@ -134,7 +134,8 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
 
                         if ($this->connected && $last == true) {
                             $action  = '<a href="' . $url . '" class="open_file" title="'
-                            . Lang::txt('PLG_PROJECTS_FILES_REMOTE_OPEN') . '" target="_blank" rel="noopener noreferrer external">&nbsp;</a>';
+                            . Lang::txt('PLG_PROJECTS_FILES_REMOTE_OPEN')
+                            . '" target="_blank" rel="noopener noreferrer external">&nbsp;</a>';
                         } else {
                             $action  = '';
                         }
@@ -143,7 +144,8 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                         . '/?asset=' . urlencode($version['name'])
                         . '&amp;action=download&amp;hash=' . $version['hash'];
                         $action = (in_array($version['commitStatus'], ['A', 'M', 'R', 'W']))
-                        ? '<a href="' . $url . '" class="download_file" title="' . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD') . '" >&nbsp;</a>'
+                        ? '<a href="' . $url . '" class="download_file" title="'
+                            . Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD') . '" >&nbsp;</a>'
                         : '';
                     }
 

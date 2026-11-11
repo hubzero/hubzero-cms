@@ -201,7 +201,8 @@ if ($this->filters['parent_id'] > 0) {
                 $checked .= '<span class="checkedout"></span>' . '</span>';
 
                 $info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
-                         ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': ' . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
+                         ? Lang::txt('COM_RESOURCES_CHECKED_OUT') . ': '
+                             . Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />'
                          : '';
                 if ($row->editor) {
                     $info .= Lang::txt('COM_RESOURCES_CHECKED_OUT_BY') . ': ' . $this->escape($row->editor);

@@ -51,7 +51,8 @@ $this
             <h3><?php echo Lang::txt('COM_CITATIONS_SUBMIT_CITATIONS'); ?></h3>
             <?php if (
             $this->allow_import == 1 || $this->allow_bulk_import == 1
-                     || ($this->allow_import == 2 && $this->isAdmin) || ($this->allow_bulk_import == 2 && $this->isAdmin)
+                     || ($this->allow_import == 2 && $this->isAdmin)
+                         || ($this->allow_bulk_import == 2 && $this->isAdmin)
 ) : ?>
             <p><?= Lang::txt('COM_CITATIONS_SUBMIT_CITATIONS_DESC', Route::url('index.php?option=' . $this->option . '&task=add')) ?></p>
             <?php else : ?>

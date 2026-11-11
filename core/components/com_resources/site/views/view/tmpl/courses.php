@@ -146,7 +146,11 @@ if ($mode != 'preview') {
 
                         // Sort out supporting docs
                         $html .= $children && count($children) > 1
-                               ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
+                               ? \Components\Resources\Helpers\Html::sortSupportingDocs(
+                                   $this->model,
+                                   $this->option,
+                                   $children,
+                               )
                                : '';
 
                         echo $html;

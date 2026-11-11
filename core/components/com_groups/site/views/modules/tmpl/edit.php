@@ -97,8 +97,14 @@ foreach ($menus as $menu) {
                                 'sourceViewButton'            => $showSourceBtn,
                                 'contentCss'                  => $this->stylesheets,
                                 'fileBrowserWindowWidth'      => 1200,
-                                'fileBrowserBrowseUrl'        => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=filebrowser&tmpl=component'),
-                                'fileBrowserImageBrowseUrl'   => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=filebrowser&tmpl=component'),
+                                'fileBrowserBrowseUrl'        => Route::url(
+                                    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                        . '&controller=media&task=filebrowser&tmpl=component',
+                                ),
+                                'fileBrowserImageBrowseUrl'   => Route::url(
+                                    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                        . '&controller=media&task=filebrowser&tmpl=component',
+                                ),
                                 'allowPhpTags'                => $allowPhp,
                                 'allowScriptTags'             => $allowScripts,
                             ];

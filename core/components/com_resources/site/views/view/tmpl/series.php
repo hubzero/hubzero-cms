@@ -370,7 +370,8 @@ if ($mode != 'preview') {
             $resourceTable = $this->model->getTableName();
 
             $childrenQuery->select(
-                '(SELECT rs.users FROM ' . $statsTable . ' AS rs WHERE rs.resid=' . $resourceTable . '.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1)',
+                '(SELECT rs.users FROM ' . $statsTable . ' AS rs WHERE rs.resid=' . $resourceTable
+                    . '.id AND rs.period=14 ORDER BY rs.datetime DESC LIMIT 1)',
                 'users',
             );
         }

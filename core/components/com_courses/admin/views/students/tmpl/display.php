@@ -163,7 +163,8 @@ Html::behavior('tooltip');
                 </a>:
                 <?php
                     $routeUrl = Route::url(
-                        'index.php?option=' . $this->option . '&controller=offerings&course=' . $this->course->get('id'),
+                        'index.php?option=' . $this->option . '&controller=offerings&course='
+                            . $this->course->get('id'),
                     );
                 ?>
                 <a href="<?php echo $routeUrl; ?>">

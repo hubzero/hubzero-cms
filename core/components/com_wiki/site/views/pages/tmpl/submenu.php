@@ -114,7 +114,10 @@ if ($tmpl != 'component' && $this->sub) { ?>
             <?php
             if (
                 ($this->page->isLocked() && $this->page->access('manage', 'page'))
-                    || ((!$this->page->isLocked() && $this->page->access('delete', 'page')) || $this->page->access('manage'))
+                    || (
+                        (!$this->page->isLocked() && $this->page->access('delete', 'page'))
+                        || $this->page->access('manage')
+                    )
             ) { ?>
                 <li class="page-delete<?= $this->controller == 'pages' && $this->task == 'delete' ? ' active' : '' ?>">
                     <a href="<?php echo Route::url($this->page->link('delete')); ?>">

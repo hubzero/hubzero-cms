@@ -19,7 +19,11 @@ $isReviewer = (isset($this->filters['reviewer']) && in_array($this->filters['rev
 $src = Route::url($this->row->picture('master'));
 
 $role = $this->row->access('member')
-    ? ($this->row->access('manager') ? Lang::txt('COM_PROJECTS_LABEL_OWNER') : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR'))
+    ? (
+        $this->row->access('manager')
+            ? Lang::txt('COM_PROJECTS_LABEL_OWNER')
+            : Lang::txt('COM_PROJECTS_LABEL_COLLABORATOR')
+    )
     : '';
 
 $role = $this->row->access('readonly') && !$this->row->isArchived()

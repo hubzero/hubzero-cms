@@ -182,7 +182,12 @@ if (count($inst) > 0) {
                                                              ->view('_threads', 'threads')
                                                              ->set('category', 'category' . $row->get('id'))
                                                              ->set('option', $this->option)
-                                                             ->set('threads', isset($threads[$row->get('id')]) ? $threads[$row->get('id')] : null)
+                                                             ->set(
+                                                                 'threads',
+                                                                 isset($threads[$row->get('id')])
+                                                                     ? $threads[$row->get('id')]
+                                                                     : null,
+                                                             )
                                                              ->set('unit', $row->get('alias'))
                                                              ->set('lecture', $row->get('id'))
                                                              ->set('config', $this->config)

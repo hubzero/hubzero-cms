@@ -133,7 +133,15 @@ if ($label == 'none') {
                                 if ($cite->doi) {
                                     $formatted = str_replace(
                                         'doi:' . $cite->doi,
-                                        '<a href="' . $this->escape(preg_match('/^(?:javascript|vbscript|data):/i', preg_replace('/[\x00-\x20]+/', '', (string) $cite->url)) ? '' : $cite->url) . '" rel="external">' . 'doi:' . $this->escape($cite->doi) . '</a>',
+                                        '<a href="'
+                                            . $this->escape(
+                                                preg_match(
+                                                    '/^(?:javascript|vbscript|data):/i',
+                                                    preg_replace('/[\x00-\x20]+/', '', (string) $cite->url),
+                                                )
+                                                    ? ''
+                                                    : $cite->url,
+                                            ) . '" rel="external">' . 'doi:' . $this->escape($cite->doi) . '</a>',
                                         $formatted,
                                     );
                                 }

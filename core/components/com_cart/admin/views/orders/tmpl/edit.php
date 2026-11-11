@@ -201,7 +201,8 @@ $this
                 $notes[] = [
                     'object' => 'transactionItem',
                     'objectId' => $item['info']->sId,
-                    'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
+                    'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', '
+                        . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
                     'notes' => $meta->checkoutNotes,
                 ];
             }

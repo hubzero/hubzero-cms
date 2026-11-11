@@ -88,7 +88,11 @@ $this
                         <div class="content">
                         <?php
                             $this
-                                 ->view('display_' . $item->layout(dirname(__DIR__, 2) . DS . 'posts' . DS . 'tmpl', 'display_'), 'posts')
+                                 ->view(
+                                     'display_'
+                                         . $item->layout(dirname(__DIR__, 2) . DS . 'posts' . DS . 'tmpl', 'display_'),
+                                     'posts',
+                                 )
                                  ->set('option', $this->option)
                                  ->set('params', $this->config)
                                  ->set('row', $row)

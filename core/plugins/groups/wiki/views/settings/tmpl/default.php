@@ -22,14 +22,20 @@ $defThresh = (int) $this->defaults->get('toc_threshold', 4);
 $defCrumbs = $this->defaults->get('wiki_crumbs', 0) ? 'YES' : 'NO';
 
 $modes = [
-    ''        => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_DEFAULT', Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_' . strtoupper($defMode))),
+    ''        => Lang::txt(
+        'PLG_GROUPS_WIKI_SETTINGS_TOC_DEFAULT',
+        Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_' . strtoupper($defMode)),
+    ),
     'inline'  => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_INLINE'),
     'sidebar' => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_SIDEBAR'),
     'off'     => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_OFF'),
 ];
 
 $crumbOptions = [
-    ''  => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_DEFAULT', Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_' . $defCrumbs)),
+    ''  => Lang::txt(
+        'PLG_GROUPS_WIKI_SETTINGS_TOC_DEFAULT',
+        Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_' . $defCrumbs),
+    ),
     '1' => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_YES'),
     '0' => Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_NO'),
 ];

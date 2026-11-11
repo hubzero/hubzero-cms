@@ -201,7 +201,8 @@ $this
             if (!empty($meta->checkoutNotes)) {
                 $notes[] = [
                     //'label' => '<strong>' . $item['info']->pName . ', ' . $item['info']->sSku . '</strong>',
-                    'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', ' . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
+                    'label' => '<strong>' . $this->tInfo->tiItems[$sId]['info']->pName . ', '
+                        . $this->tInfo->tiItems[$sId]['info']->sSku . '</strong>',
                     'notes' => $meta->checkoutNotes,
                 ];
             }

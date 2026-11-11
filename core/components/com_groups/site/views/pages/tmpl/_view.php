@@ -71,7 +71,10 @@ if (
 
     <?php if (
     $newerVersion
-            && ($this->authorized == 'manager' || Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages'))
+            && (
+                $this->authorized == 'manager'
+                || Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages')
+            )
 ) : ?>
         <div class="group-page group-page-notice notice-info">
             <h4><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_VERSION_PENDING_APPROVAL'); ?></h4>

@@ -146,7 +146,8 @@ defined('_HZEXEC_') or die();
                         . $this->row->stop_time . '<br />';
                 } else {
                     echo Lang::txt('EVENTS_CAL_LANG_FROM') . ' ' . $this->row->start_date . '&nbsp;-&nbsp;' . $this->row->start_time . '<br />'
-                        . Lang::txt('EVENTS_CAL_LANG_TO') . ' ' . $this->row->stop_date . '&nbsp;-&nbsp;' . $this->row->stop_time . '<br />';
+                        . Lang::txt('EVENTS_CAL_LANG_TO') . ' ' . $this->row->stop_date . '&nbsp;-&nbsp;'
+                        . $this->row->stop_time . '<br />';
                 }
                 ?>
                 </p>

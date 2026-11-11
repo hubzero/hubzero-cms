@@ -61,7 +61,11 @@ $this
                 <div class="content">
                     <?php
                         $this
-                             ->view('default_' . $item->layout(dirname(__DIR__, 2) . DS . 'post' . DS . 'tmpl', 'default_'), 'post')
+                             ->view(
+                                 'default_'
+                                     . $item->layout(dirname(__DIR__, 2) . DS . 'post' . DS . 'tmpl', 'default_'),
+                                 'post',
+                             )
                              ->set('name', $this->name)
                              ->set('option', $this->option)
                              ->set('member', $this->member)

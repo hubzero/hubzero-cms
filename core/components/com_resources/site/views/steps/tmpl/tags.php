@@ -75,7 +75,8 @@ $this
             echo '<input class="option" class="' . ($multiple ? 'checkbox' : 'radio') . '" type="' . ($multiple
             ? 'checkbox'
             : 'radio') . '" ' . (isset($existing[strtolower($fa['raw_tag'])]) ? 'checked="checked" ' : '')
-            . 'id="tagfa-' . $idx . '-' . $fa['tag'] . '" name="tagfa-' . $idx . ($parent ? '-' . $parent : '') . '[]" value="' . $fa['tag'] . '"';
+            . 'id="tagfa-' . $idx . '-' . $fa['tag'] . '" name="tagfa-' . $idx . ($parent ? '-' . $parent : '')
+            . '[]" value="' . $fa['tag'] . '"';
             echo ' /><label for="tagfa-' . $idx . '-' . $fa['tag'] . '"' . ($fa['description'] ? ' title="'
             . htmlentities($fa['description']) . '" class="tooltips"' : '') . '>' . $fa['raw_tag'] . '</label>';
             if ($fa['children']) {

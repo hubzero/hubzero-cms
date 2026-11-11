@@ -251,7 +251,8 @@ if ($revertAllowed && $this->pub->accepted()) {
                             <?php if ($this->pub->versionProperty('version_label', 'dev') && $this->pub->versionProperty('version_label', 'dev') != $this->pub->versionAlias) { ?>
                             <li id="next-draft"><p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_VERSION_STARTED')
                             . ' (<strong>v.'
-                            . $this->pub->versionProperty('version_label', 'dev') . '</strong>)  <span class="block"><a href="'
+                            . $this->pub->versionProperty('version_label', 'dev')
+                            . '</strong>)  <span class="block"><a href="'
                             . Route::url($this->pub->link('edit') . '&version=dev') . '">'
                             . Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_NEW_VERSION_CONTINUE') . '</a></span>';  ?></p></li>
                             <?php } elseif (!$this->pub->versionProperty('version_label', 'dev')) {

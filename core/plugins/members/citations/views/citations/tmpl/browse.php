@@ -140,7 +140,8 @@ if (isset($this->messages)) {
                                         if ($cite->doi) {
                                             $formatted = str_replace(
                                                 'doi:' . $cite->doi,
-                                                '<a href="' . $this->escape($cite->url) . '" rel="external">' . 'doi:' . $this->escape($cite->doi) . '</a>',
+                                                '<a href="' . $this->escape($cite->url) . '" rel="external">' . 'doi:'
+                                                    . $this->escape($cite->doi) . '</a>',
                                                 $formatted,
                                             );
                                         }

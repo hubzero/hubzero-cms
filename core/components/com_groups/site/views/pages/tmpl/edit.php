@@ -143,9 +143,24 @@ if ($this->page->get('id')) {
                                 //'autoGrowMinHeight'           => 500,
                                 'height'                      => '500px',
                                 'fileBrowserWindowWidth'      => 1200,
-                                'fileBrowserBrowseUrl'        => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken() . '=1', false),
-                                'fileBrowserImageBrowseUrl'   => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken() . '=1', false),
-                                'fileBrowserUploadUrl'        => Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=editorupload&tmpl=component&' . Session::getFormToken() . '=1', false),
+                                'fileBrowserBrowseUrl'        => Route::url(
+                                    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                        . '&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken()
+                                        . '=1',
+                                    false,
+                                ),
+                                'fileBrowserImageBrowseUrl'   => Route::url(
+                                    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                        . '&controller=media&task=filebrowser&tmpl=component&' . Session::getFormToken()
+                                        . '=1',
+                                    false,
+                                ),
+                                'fileBrowserUploadUrl'        => Route::url(
+                                    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                        . '&controller=media&task=editorupload&tmpl=component&'
+                                        . Session::getFormToken() . '=1',
+                                    false,
+                                ),
                                 'allowPhpTags'                => $allowPhp,
                                 'allowScriptTags'             => $allowScripts,
                             ];

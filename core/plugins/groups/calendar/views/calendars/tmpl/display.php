@@ -165,7 +165,8 @@ defined('_HZEXEC_') or die();
                                 <span>Last Fetched:</span>
                                 <?php
                                 if (
-                                    !$calendar->get('last_fetched') || $calendar->get('last_fetched') == '0000-00-00 00:00:00'
+                                    !$calendar->get('last_fetched')
+                                        || $calendar->get('last_fetched') == '0000-00-00 00:00:00'
                                 ) {
                                     echo 'Never';
                                 } else {

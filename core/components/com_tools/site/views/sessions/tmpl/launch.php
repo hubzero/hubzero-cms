@@ -24,7 +24,10 @@ $config = [
     'mode'    => $this->mode,
     'base'    => $base,
     // Routed (SEF) viewer URL with a placeholder the JS fills in with the sess
-    'viewerUrl' => Route::url('index.php?option=com_tools&controller=sessions&app=' . urlencode($this->app) . '&task=session&sess=__SESS__', false),
+    'viewerUrl' => Route::url(
+        'index.php?option=com_tools&controller=sessions&app=' . urlencode($this->app) . '&task=session&sess=__SESS__',
+        false,
+    ),
     'strings' => [
         'starting'    => Lang::txt('COM_TOOLS_LAUNCH_STARTING'),
         'waiting'     => Lang::txt('COM_TOOLS_LAUNCH_WAITING'),

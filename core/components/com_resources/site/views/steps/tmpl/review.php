@@ -132,16 +132,20 @@ $this
             <p>
                 <?php echo Lang::txt(
                     'COM_CONTRIBUTE_WHAT_HAPPENS_AFTER_SUBMIT_ANSWER',
-                    '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . Lang::txt('resources') . '</a>',
-                    '<a href="' . Route::url('index.php?option=com_whatsnew') . '">' . Lang::txt('What\'s New') . '</a>',
+                    '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . Lang::txt('resources')
+                        . '</a>',
+                    '<a href="' . Route::url('index.php?option=com_whatsnew') . '">' . Lang::txt('What\'s New')
+                        . '</a>',
                 ); ?>
             </p>
         <?php } else { ?>
             <p>
                 <?php echo Lang::txt(
                     'COM_CONTRIBUTE_WHAT_HAPPENS_AFTER_SUBMIT_AUTOAPPROVED_ANSWER',
-                    '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . Lang::txt('resources') . '</a>',
-                    '<a href="' . Route::url('index.php?option=com_whatsnew') . '">' . Lang::txt('What\'s New') . '</a>',
+                    '<a href="' . Route::url('index.php?option=' . $this->option) . '">' . Lang::txt('resources')
+                        . '</a>',
+                    '<a href="' . Route::url('index.php?option=com_whatsnew') . '">' . Lang::txt('What\'s New')
+                        . '</a>',
                 ); ?>
             </p>
         <?php } ?>
@@ -163,7 +167,8 @@ $this
                 <?php echo Lang::txt(
                     'COM_CONTRIBUTE_AUTHORIZATION_MUST_ATTRIBUTE',
                     Config::get('sitename'),
-                    '<a class="popup 760x560" href="' . Request::base(true) . '/legal/license">' . Lang::txt('COM_CONTRIBUTE_THE_FULL_LICENSE') . '</a>',
+                    '<a class="popup 760x560" href="' . Request::base(true) . '/legal/license">'
+                        . Lang::txt('COM_CONTRIBUTE_THE_FULL_LICENSE') . '</a>',
                 ); ?>
             </label>
     <?php if ($this->config->get('cc_license')) { ?>
