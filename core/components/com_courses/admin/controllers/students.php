@@ -280,6 +280,8 @@ class Students extends AdminController
                 $this->editTask($model);
                 return;
             }
+
+            $c++;
         }
 
         if (count($user_ids) > 1) {

@@ -323,13 +323,6 @@ class Products extends AdminController
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 Lang::txt('COM_STOREFRONT_PRODUCT_SAVED'),
             );
-
-            if ($warnings) {
-                foreach ($warnings as $warning) {
-                    Notify::warning($warning);
-                }
-            }
-            return;
         }
         Notify::success(Lang::txt('COM_STOREFRONT_PRODUCT_SAVED'));
 

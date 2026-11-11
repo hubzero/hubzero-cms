@@ -232,7 +232,7 @@ $editUrl = Route::url(
             <?php
             if (
                 $params['show_publishing_options']
-                || ($params['show_publishing_options'] = '' && !empty($editoroptions))
+                || ($params['show_publishing_options'] == '' && !empty($editoroptions))
             ) : ?>
                 <?php echo Html::sliders(
                     'panel',

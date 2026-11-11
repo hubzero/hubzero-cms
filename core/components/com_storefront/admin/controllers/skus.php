@@ -306,7 +306,7 @@ class Skus extends AdminController
                             $sku->delete();
                         } catch (\Exception $e) {
                             $url = 'index.php?option=' . $this->option . '&controller='
-                                . $this->controller . '&task=dispaly&id=' . $pId;
+                                . $this->controller . '&task=display&id=' . $pId;
                             App::redirect(
                                 Route::url($url, false),
                                 $e->getMessage(),
@@ -321,7 +321,7 @@ class Skus extends AdminController
 
                 // Set the redirect
                 $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
-                    . '&task=dispaly&id=' . $pId;
+                    . '&task=display&id=' . $pId;
                 App::redirect(
                     Route::url($url, false),
                     $msg,

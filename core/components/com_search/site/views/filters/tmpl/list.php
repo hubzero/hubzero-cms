@@ -22,7 +22,7 @@ defined('_HZEXEC_') or die();
             <?php $checked = in_array($option->value, $this->selectedOptions) ? 'checked' : ''; ?>
             <input type="checkbox"
                 class="checkbox"
-                name="filters[<?php echo $this->filter->field; ?>][<?php $option->id; ?>]"
+                name="filters[<?php echo $this->filter->field; ?>][<?php echo $option->id; ?>]"
                 value="<?php echo $option->value; ?>"
                 <?php echo $checked; ?>
             />

@@ -309,7 +309,7 @@ class Job extends Table
     public function deleteOpening($jid)
     {
         if ($jid === null) {
-            $jid == $this->id;
+            $jid = $this->id;
         }
         if ($jid === null) {
             return false;

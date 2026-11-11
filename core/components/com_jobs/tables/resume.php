@@ -85,7 +85,7 @@ class Resume extends Table
     public function deleteResume($id = null)
     {
         if ($id === null) {
-            $id == $this->id;
+            $id = $this->id;
         }
         if ($id === null) {
             return false;

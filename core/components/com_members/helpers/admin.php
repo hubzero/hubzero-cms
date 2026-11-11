@@ -43,7 +43,7 @@ class Admin
             $path = dirname(__DIR__) . '/config/access.xml';
 
             $actions = \Hubzero\Access\Access::getActionsFromFile($path);
-            $actions ?: [];
+            $actions = $actions ?: [];
 
             foreach ($actions as $action) {
                 self::$actions->set($action->name, User::authorise($action->name, 'com_members'));

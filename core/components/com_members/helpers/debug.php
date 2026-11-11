@@ -73,7 +73,7 @@ class Debug
             $path = Component::path($component) . '/config/access.xml';
 
             $component_actions = \Hubzero\Access\Access::getActionsFromFile($path);
-            $component_actions ?: [];
+            $component_actions = $component_actions ?: [];
 
             if (!empty($component_actions)) {
                 foreach ($component_actions as &$action) {
@@ -99,7 +99,6 @@ class Debug
                                         (string) $action['description'],
                                     ];
                                 }
-                                break;
                                 break;
                             }
                         }

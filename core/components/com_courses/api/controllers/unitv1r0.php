@@ -137,7 +137,7 @@ class Unitv1r0 extends Base
             // Get the courses config
             $config = Component::params('com_courses');
             $asset_groups = explode(',', $config->get('default_asset_groups', 'Lectures, Homework, Exam'));
-            array_map('trim', $asset_groups);
+            $asset_groups = array_map('trim', $asset_groups);
 
             foreach ($asset_groups as $key) {
                 // Get our asset group object

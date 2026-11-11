@@ -39,7 +39,7 @@ class Redirect
         $path = dirname(__DIR__) . '/config/access.xml';
 
         $actions = \Hubzero\Access\Access::getActionsFromFile($path);
-        $actions ?: [];
+        $actions = $actions ?: [];
 
         $result  = new Obj();
 

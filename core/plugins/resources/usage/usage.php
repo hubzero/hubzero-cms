@@ -79,7 +79,7 @@ class Usage extends Plugin
         // Display only for tools
         if (!$model->isTool()) {
             //return $arr;
-            $rtrn == 'metadata';
+            $rtrn = 'metadata';
         }
 
         // Check if we have a needed database table

@@ -95,7 +95,7 @@ class Access extends Table
         } else {
             $query .= " JOIN #__publication_versions AS V ON V.id=A.publication_version_id ";
             $query .= " WHERE V.publication_id=" . $this->db->quote($pid);
-            if ($version == 'default' or $version == 'current' && $version == 'main') {
+            if (in_array($version, ['default', 'current', 'main'])) {
                 $query .= " AND V.main=1 ";
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";

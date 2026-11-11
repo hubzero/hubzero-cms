@@ -531,7 +531,7 @@ class Git
         $tagname = 'cmsrollbackpoint-' . $rollbackPoint;
 
         // Make sure the tag exists first
-        if (substr($this->call('show', [$tagname]), 0, 5 == 'fatal')) {
+        if (substr($this->call('show', [$tagname]), 0, 5) == 'fatal') {
             return false;
         }
 

@@ -245,7 +245,7 @@ class Options extends AdminController
                 // Make sure we have ID(s) to work with
                 if (empty($oIds)) {
                     $url = 'index.php?option=' . $this->option . '&controller='
-                        . $this->controller . '&task=dispaly&id=' . $ogId;
+                        . $this->controller . '&task=display&id=' . $ogId;
                     App::redirect(
                         Route::url($url, false),
                         Lang::txt('COM_STOREFRONT_NO_ID'),
@@ -278,7 +278,7 @@ class Options extends AdminController
                             }
                         } catch (\Exception $e) {
                             $url = 'index.php?option=' . $this->option . '&controller='
-                                . $this->controller . '&task=dispaly&id=' . $ogId;
+                                . $this->controller . '&task=display&id=' . $ogId;
                             App::redirect(
                                 Route::url($url, false),
                                 $e->getMessage(),
@@ -293,18 +293,17 @@ class Options extends AdminController
 
                 // Set the redirect
                 $url = 'index.php?option=' . $this->option . '&controller='
-                    . $this->controller . '&task=dispaly&ogId=' . $ogId;
-                App::redirect(
-                    Route::url($url, false),
-                    $msg,
-                    $type,
-                );
-
+                    . $this->controller . '&task=display&ogId=' . $ogId;
                 if (!empty($warnings)) {
                     foreach ($warnings as $warning) {
                         Notify::warning($warning);
                     }
                 }
+                App::redirect(
+                    Route::url($url, false),
+                    $msg,
+                    $type,
+                );
                 break;
         }
     }

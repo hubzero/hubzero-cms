@@ -115,7 +115,7 @@ class Whitelist extends AdminController
         $type = 'message';
 
         $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
-            . '&task=dispaly&id=' . $sId;
+            . '&task=display&id=' . $sId;
         App::redirect(
             Route::url($url, false),
             $msg,

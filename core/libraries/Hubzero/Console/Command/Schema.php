@@ -750,8 +750,8 @@ class Schema extends Base implements CommandInterface
                 $this->snapshotImport();
                 break;
             default:
-                $this->output->error("Unknown snapshot action: {$action}");
                 $this->output->addLine("Available actions: save, list, show, compare, drift, delete, import");
+                $this->output->error("Unknown snapshot action: {$action}");
                 break;
         }
     }

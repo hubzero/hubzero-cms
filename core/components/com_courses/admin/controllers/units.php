@@ -180,7 +180,7 @@ class Units extends AdminController
 
         if ($model->get('id') && $model->assetgroups()->total() <= 0) {
             $asset_groups = explode(',', $this->config->get('default_asset_groups', 'Lectures, Homework, Exam'));
-            array_map('trim', $asset_groups);
+            $asset_groups = array_map('trim', $asset_groups);
 
             foreach ($asset_groups as $key) {
                 // Get our asset group object

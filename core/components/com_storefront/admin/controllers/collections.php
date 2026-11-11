@@ -247,7 +247,7 @@ class Collections extends AdminController
                             $collection->delete();
                         } catch (\Exception $e) {
                             $url = 'index.php?option=' . $this->option . '&controller='
-                                . $this->controller . '&task=dispaly';
+                                . $this->controller . '&task=display';
                             App::redirect(
                                 Route::url($url, false),
                                 $e->getMessage(),
@@ -262,7 +262,7 @@ class Collections extends AdminController
 
                 // Set the redirect
                 $url = 'index.php?option=' . $this->option . '&controller='
-                    . $this->controller . '&task=dispaly';
+                    . $this->controller . '&task=display';
                 App::redirect(
                     Route::url($url, false),
                     $msg,

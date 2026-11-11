@@ -58,7 +58,7 @@ $actionUrl = Route::url(
             <tr>
                 <td class="lines"><?php echo $lineCode; ?></td>
                 <td class="code">
-                    <?php echo highlight_string($content); ?>
+                    <?php echo highlight_string($content, true); ?>
                 </td>
             </tr>
         </table>

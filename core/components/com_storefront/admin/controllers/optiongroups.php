@@ -237,7 +237,7 @@ class Optiongroups extends AdminController
                 // Make sure we have ID(s) to work with
                 if (empty($ogIds)) {
                     $url = 'index.php?option=' . $this->option . '&controller='
-                        . $this->controller . '&task=dispaly';
+                        . $this->controller . '&task=display';
                     App::redirect(
                         Route::url($url, false),
                         Lang::txt('COM_STOREFRONT_NO_ID'),
@@ -249,10 +249,10 @@ class Optiongroups extends AdminController
 
                 $msg = "Delete canceled";
                 $type = 'error';
+                $warnings = [];
                 if ($delete) {
                     // Do the delete
                     $obj = new Archive();
-                    $warnings = [];
 
                     foreach ($ogIds as $ogId) {
                         // Delete option group
@@ -270,7 +270,7 @@ class Optiongroups extends AdminController
                             }
                         } catch (\Exception $e) {
                             $url = 'index.php?option=' . $this->option . '&controller='
-                                . $this->controller . '&task=dispaly';
+                                . $this->controller . '&task=display';
                             App::redirect(
                                 Route::url($url, false),
                                 $e->getMessage(),
@@ -285,17 +285,17 @@ class Optiongroups extends AdminController
 
                 // Set the redirect
                 $url = 'index.php?option=' . $this->option . '&controller='
-                    . $this->controller . '&task=dispaly';
-                App::redirect(
-                    Route::url($url, false),
-                    $msg,
-                    $type,
-                );
+                    . $this->controller . '&task=display';
                 if ($warnings) {
                     foreach ($warnings as $warning) {
                         Notify::warning($warning);
                     }
                 }
+                App::redirect(
+                    Route::url($url, false),
+                    $msg,
+                    $type,
+                );
                 break;
         }
     }

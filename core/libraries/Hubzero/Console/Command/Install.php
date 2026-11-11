@@ -298,8 +298,8 @@ class Install extends Base implements CommandInterface
         // Check if database config exists
         $configPath = PATH_APP . '/config/database.php';
         if (!file_exists($configPath)) {
-            $this->output->error('Database configuration not found at ' . $configPath);
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
+            $this->output->error('Database configuration not found at ' . $configPath);
             return;
         }
 
@@ -381,8 +381,8 @@ class Install extends Base implements CommandInterface
         // Check if database config exists
         $configPath = PATH_APP . '/config/database.php';
         if (!file_exists($configPath)) {
-            $this->output->error('Database configuration not found at ' . $configPath);
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
+            $this->output->error('Database configuration not found at ' . $configPath);
             return;
         }
 
@@ -436,8 +436,8 @@ class Install extends Base implements CommandInterface
         $configPath = PATH_APP . '/config/database.php';
 
         if (!file_exists($configPath)) {
-            $this->output->error('Database configuration not found at ' . $configPath);
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
+            $this->output->error('Database configuration not found at ' . $configPath);
             return;
         }
 
@@ -473,8 +473,8 @@ class Install extends Base implements CommandInterface
         $configPath = PATH_APP . '/config/database.php';
 
         if (!file_exists($configPath)) {
-            $this->output->error('Database configuration not found at ' . $configPath);
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
+            $this->output->error('Database configuration not found at ' . $configPath);
             return;
         }
 
@@ -594,8 +594,8 @@ class Install extends Base implements CommandInterface
         // Check if database config exists
         $configPath = PATH_APP . '/config/database.php';
         if (!file_exists($configPath)) {
-            $this->output->error('Database configuration not found at ' . $configPath);
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
+            $this->output->error('Database configuration not found at ' . $configPath);
             return;
         }
 
@@ -617,8 +617,8 @@ class Install extends Base implements CommandInterface
             $tableCount = (int) $stmt->fetchColumn();
 
             if ($tableCount === 0) {
-                $this->output->error('Database schema not loaded.');
                 $this->output->addLine('Run "muse install schema" first to load the database schema.');
+                $this->output->error('Database schema not loaded.');
                 return;
             }
         } catch (\PDOException $e) {
@@ -663,8 +663,8 @@ class Install extends Base implements CommandInterface
         // Check if database config exists
         $configPath = PATH_APP . '/config/database.php';
         if (!file_exists($configPath)) {
-            $this->output->error('Database configuration not found at ' . $configPath);
             $this->output->addLine('Run "muse install database" first to configure the database connection.');
+            $this->output->error('Database configuration not found at ' . $configPath);
             return;
         }
 

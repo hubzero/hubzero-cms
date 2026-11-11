@@ -299,7 +299,7 @@ $roles = [
                 $cls = 'u_invited';
             }
             ?>
-            <tr class="mline <?php $cls; ?>" id="tr_<?php echo $owner->id; ?>">
+            <tr class="mline <?php echo $cls; ?>" id="tr_<?php echo $owner->id; ?>">
                 <td>
                     <input type="checkbox" value="<?= $owner->id ?>" name="owner[]"
                         aria-label="<?= $this->escape($owner->fullname) ?>"

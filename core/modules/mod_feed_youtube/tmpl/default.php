@@ -41,11 +41,11 @@ if ($this->feed) {
         : str_replace('&', '&amp', $this->feed->link);
 
     // Feed image & title
-    $hasTitleOrParam = !is_null($this->feed->title) or $this->params->get('feedtitle', '');
+    $hasTitleOrParam = !is_null($this->feed->title) || $this->params->get('feedtitle', '');
     if ($hasTitleOrParam && $this->params->get('rsstitle', 1)) { ?>
         <h3 class="feed_title">
             <?php
-            $hasFeedTitle = !is_null($this->feed->title) or $this->params->get('feedtitle', '');
+            $hasFeedTitle = !is_null($this->feed->title) || $this->params->get('feedtitle', '');
             if ($hasFeedTitle && $this->params->get('rsstitle', 1)) {
                 ?>
                 <a href="<?php echo $morelink; ?>" rel="external">

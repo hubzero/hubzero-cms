@@ -117,7 +117,7 @@ class Serials extends AdminController
         }
 
         $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller
-            . '&task=dispaly&sId=' . $sId;
+            . '&task=display&sId=' . $sId;
         App::redirect(
             Route::url($url, false),
             $msg,

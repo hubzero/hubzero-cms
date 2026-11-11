@@ -63,7 +63,7 @@ class Screenshot extends Table
         $query = "SELECT * FROM $this->tableName as s ";
         if (!$versionid) {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=s.publication_id WHERE ";
-            if ($version == 'default' or $version == 'current' && $version == 'main') {
+            if (in_array($version, ['default', 'current', 'main'])) {
                 $query .= " AND V.main=1 ";
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
@@ -111,7 +111,7 @@ class Screenshot extends Table
         $query = "SELECT * FROM $this->tableName as s ";
         if (!$versionid) {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=s.publication_id WHERE ";
-            if ($version == 'default' or $version == 'current' && $version == 'main') {
+            if (in_array($version, ['default', 'current', 'main'])) {
                 $query .= " AND V.main=1 ";
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
@@ -151,7 +151,7 @@ class Screenshot extends Table
 
         if (!$versionid) {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=s.publication_id WHERE ";
-            if ($version == 'default' or $version == 'current' && $version == 'main') {
+            if (in_array($version, ['default', 'current', 'main'])) {
                 $query .= " AND V.main=1 ";
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
@@ -300,7 +300,7 @@ class Screenshot extends Table
 
         if (!$versionid) {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=s.publication_id WHERE ";
-            if ($version == 'default' or $version == 'current' && $version == 'main') {
+            if (in_array($version, ['default', 'current', 'main'])) {
                 $query .= " AND V.main=1 ";
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
@@ -338,7 +338,7 @@ class Screenshot extends Table
 
         if (!$versionid) {
             $query .= " JOIN #__publication_versions as V ON V.publication_id=s.publication_id WHERE ";
-            if ($version == 'default' or $version == 'current' && $version == 'main') {
+            if (in_array($version, ['default', 'current', 'main'])) {
                 $query .= " AND V.main=1 ";
             } elseif ($version == 'dev') {
                 $query .= " AND V.state=3 ";
