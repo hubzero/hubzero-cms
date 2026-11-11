@@ -59,7 +59,7 @@ class Resources extends GroupMacro
         $args = $this->getArgs();
 
         // Get details
-        $type  = $this->getType($args, 'all');
+        $type  = $this->getType($args);
         $limit = $this->getLimit($args, 5);
         $class = $this->getClass($args);
 

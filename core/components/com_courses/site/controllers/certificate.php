@@ -43,7 +43,7 @@ class Certificate extends SiteController
         }
 
         // Ensure specified user is enrolled in the course
-        $student = Member::getInstance(User::get('id'), $course->get('id'), $offering->get('id'), null, 1);
+        $student = Member::getInstance(User::get('id'), $course->get('id'), $offering->get('id'), null);
         if (!$student->exists()) {
             Notify::error(Lang::txt('COM_COURSES_ERROR_STUDENT_RECORD_NOT_FOUND'));
             return $this->cancelTask();

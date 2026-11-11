@@ -73,7 +73,7 @@ class Xhubtags extends Plugin
                             break;
 
                         case 'templatedir':
-                            $text = $this->templateDir($tag[2]);
+                            $text = $this->templateDir();
                             break;
 
                         case 'getcfg':

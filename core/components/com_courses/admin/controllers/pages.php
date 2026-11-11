@@ -312,7 +312,7 @@ class Pages extends AdminController
         $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir);
 
         // Get media config
         $mediaConfig = Component::params('com_media');
@@ -442,7 +442,7 @@ class Pages extends AdminController
         $subdir = Request::getString('subdir', '', 'post');
 
         // Build the path
-        $path = $this->buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir);
 
         // Are we creating a new folder?
         $foldername = Request::getString('foldername', '', 'post');
@@ -553,7 +553,7 @@ class Pages extends AdminController
         $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir);
 
         // Incoming directory to delete
         $folder = trim(Request::getString('delFolder', ''), DS);
@@ -598,7 +598,7 @@ class Pages extends AdminController
         $subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->buildUploadPath($listdir, $subdir);
+        $path = $this->buildUploadPath($listdir);
 
         // Incoming file to delete
         $file = basename(Request::getString('delFile', ''));
@@ -637,7 +637,7 @@ class Pages extends AdminController
         $this->view->subdir = Request::getString('subdir', '');
 
         // Build the path
-        $this->view->path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
+        $this->view->path = $this->buildUploadPath($this->view->listdir);
 
         // Get list of directories
         $dirs = $this->recursiveListDir($this->view->path);
@@ -690,7 +690,7 @@ class Pages extends AdminController
         $this->view->subdir = Request::getString('subdir', '');
 
         // Build the path
-        $path = $this->buildUploadPath($this->view->listdir, $this->view->subdir);
+        $path = $this->buildUploadPath($this->view->listdir);
 
         $folders = [];
         $docs    = [];

@@ -111,7 +111,7 @@ class Applicant extends Relational
 
         // See if we're creating or updating
         $method = 'createWithNoPk'; //$this->isNew() ? 'createWithNoPk' : 'modifyWithNoPk';
-        $result = $this->$method($this->getAttributes());
+        $result = $this->$method();
 
         $result = ($result === false ? false : true);
 
