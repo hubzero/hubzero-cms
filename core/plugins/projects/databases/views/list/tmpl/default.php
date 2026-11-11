@@ -71,7 +71,13 @@ $this->css();
                 <th><?php echo Lang::txt('Created On'); ?></th>
                 <th><?php echo Lang::txt('Created By'); ?></th>
                 <?php if ($this->model->access('content')) { ?>
-                    <th><?= Lang::txt('Update Database') ?><span class="update-help-icon" title="<?= Lang::txt('Click the \'Update\' link to recreate a database using the updated source CSV file from the file repository. Click the help icon for more information.') ?>"></span></th>
+                    <?php
+                    $titleText = Lang::txt(
+                        'Click the \'Update\' link to recreate a database using the updated source CSV file from the '
+                            . 'file repository. Click the help icon for more information.',
+                    );
+                    ?>
+                    <th><?= Lang::txt('Update Database') ?><span class="update-help-icon" title="<?= $titleText ?>"></span></th>
                     <th><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE'); ?></th>
                 <?php } ?>
             </tr>

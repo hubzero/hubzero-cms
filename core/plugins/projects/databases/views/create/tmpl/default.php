@@ -189,7 +189,13 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
                 <option value="datetime"><?php echo Lang::txt('Date &amp; Time [yyyy-mm-dd HH:MM:SS]'); ?></option>
             </select><br /><br />
             <div class="col-type-props" id="prj-db-col-type-text">
-                <label for="prj-db-col-truncate" title="<?= Lang::txt('Hide the overflow text, full text will be visible by hover-over or by clicking on the visible text') ?>">
+                <?php
+                $titleText = Lang::txt(
+                    'Hide the overflow text, full text will be visible by hover-over or by clicking on the visible '
+                        . 'text',
+                );
+                ?>
+                <label for="prj-db-col-truncate" title="<?= $titleText ?>">
                     <input type="checkbox" class="col-prop" value="truncate"
                         id="prj-db-col-truncate" /><?= Lang::txt('Limit text to a single line') ?>
                 </label>

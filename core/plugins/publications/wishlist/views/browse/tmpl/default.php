@@ -294,7 +294,13 @@ if ($this->rows->count() > 0) {
 } else {
     ?>
                 <tr>
-                    <td colspan="4"><?= Lang::txt('There are currently no wishes on this list. Be the first to make a suggestion for improvement.') ?></td>
+                    <?php
+                    $cellText = Lang::txt(
+                        'There are currently no wishes on this list. Be the first to make a suggestion for '
+                            . 'improvement.',
+                    );
+                    ?>
+                    <td colspan="4"><?= $cellText ?></td>
                 </tr>
     <?php
 }

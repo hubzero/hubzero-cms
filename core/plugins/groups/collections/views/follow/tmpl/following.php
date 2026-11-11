@@ -136,8 +136,21 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                 </div><!-- / .instructions -->
                 <div class="questions">
                     <p><strong><?php echo Lang::txt('What is following?'); ?></strong></p>
-                    <p><?= Lang::txt('"Following" someone means you\'ll see that person\'s posts on this page in real time. If he/she creates a new collection, you\'ll automatically follow the new collection as well.') ?><p>
-                    <p><?= Lang::txt('You can follow individual collections if you\'re only interested in seeing posts being added to specific collections.') ?><p>
+                    <?php
+                    $paragraphText = Lang::txt(
+                        '"Following" someone means you\'ll see that person\'s posts on this page in real time. If '
+                            . 'he/she creates a new collection, you\'ll automatically follow the new collection as '
+                            . 'well.',
+                    );
+                    ?>
+                    <p><?= $paragraphText ?><p>
+                    <?php
+                    $paragraphText = Lang::txt(
+                        'You can follow individual collections if you\'re only interested in seeing posts being added '
+                            . 'to specific collections.',
+                    );
+                    ?>
+                    <p><?= $paragraphText ?><p>
                     <p><?php echo Lang::txt('You can unfollow other people or collections at any time.'); ?></p>
                 </div>
             <?php } else { ?>
