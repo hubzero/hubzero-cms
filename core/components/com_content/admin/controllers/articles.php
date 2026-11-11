@@ -142,9 +142,6 @@ class Articles extends AdminController
      */
     public function displayTask()
     {
-        if ($layout = Request::getString('layout')) {
-            $this->context .= '.' . $layout;
-        }
         $filters = [
             'search' => Request::getState(
                 $this->option . '.' . $this->controller . '.search',
@@ -283,9 +280,6 @@ class Articles extends AdminController
      */
     public function featuredTask()
     {
-        if ($layout = Request::getString('layout')) {
-            $this->context .= '.' . $layout;
-        }
         $filters = [
             'search' => Request::getState(
                 $this->option . '.featured.search',
