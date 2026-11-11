@@ -26,6 +26,15 @@ $this
      ->css('jquery.timepicker.css', 'system')
      ->js('jquery.timepicker', 'system')
      ->js();
+
+// The attribute that marks the current value in the form fields below
+$accessSelected = function ($value) {
+    if ($this->entry->get('access') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <ul id="page_options">
     <li>
@@ -105,8 +114,8 @@ $this
                     <label for="field-state">
                         <?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_PRIVACY'); ?>
                         <select class="form-control" name="entry[access]" id="field-access">
-                            <option value="1"<?= $this->entry->get('access') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PUBLIC') ?></option>
-                            <option value="2"<?= $this->entry->get('access') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_REGISTERED') ?></option>
+                            <option value="1"<?= $accessSelected(1) ?>><?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PUBLIC') ?></option>
+                            <option value="2"<?= $accessSelected(2) ?>><?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_REGISTERED') ?></option>
                             <option value="5"<?= $this->entry->get('access') > 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PRIVATE') ?></option>
                         </select>
                     </label>

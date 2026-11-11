@@ -21,6 +21,23 @@ if (User::authorise('core.delete', $this->option)) {
     Toolbar::spacer();
     Toolbar::deleteList('COM_SAML_CONFIRM_DELETE_SESSIONS');
 }
+
+// The attribute that marks the current value in the form fields below
+$spSelected = function ($value) {
+    if ($this->filters['sp'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$stateSelected = function ($value) {
+    if ($this->filters['state'] === $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <p class="info">
@@ -40,7 +57,7 @@ if (User::authorise('core.delete', $this->option)) {
                 <select name="sp" id="filter-sp" class="filter filter-submit">
                     <option value="0"><?php echo Lang::txt('COM_SAML_ALL_SERVICE_PROVIDERS'); ?></option>
                     <?php foreach ($this->sps as $sp) { ?>
-                        <option value="<?= $sp->get('id') ?>"<?= $this->filters['sp'] == $sp->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($sp->get('name'))) ?></option>
+                        <option value="<?= $sp->get('id') ?>"<?= $spSelected($sp->get('id')) ?>><?= $this->escape(stripslashes($sp->get('name'))) ?></option>
                     <?php } ?>
                 </select>
             </div>
@@ -48,8 +65,8 @@ if (User::authorise('core.delete', $this->option)) {
                 <label for="filter-state"><?php echo Lang::txt('JSTATUS'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
                     <option value="-1"<?= ($this->filters['state'] < 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_ALL_STATES') ?></option>
-                    <option value="1"<?= ($this->filters['state'] === 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_SESSION_ACTIVE') ?></option>
-                    <option value="0"<?= ($this->filters['state'] === 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_SESSION_ENDED') ?></option>
+                    <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_SAML_SESSION_ACTIVE') ?></option>
+                    <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_SAML_SESSION_ENDED') ?></option>
                 </select>
             </div>
         </div>

@@ -36,6 +36,15 @@ $this->css('
 	display:block;width:1em;height:1em;overflow:hidden;text-indent:5em;border:1px solid #999;background-color: attr(data-color);
 }
 ');
+
+// The attribute that marks the current value in the form fields below
+$openSelected = function ($value) {
+    if ($this->filters['open'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php
@@ -49,8 +58,8 @@ $formAction = Route::url(
         <label for="filter-open"><?php echo Lang::txt('COM_SUPPORT_FILTER_FOR'); ?>:</label>
         <select name="open" id="filter-open" class="filter filter-submit">
             <option value="-1"<?= $this->filters['open'] < 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_FOR_ALL') ?></option>
-            <option value="0"<?= $this->filters['open'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_FOR_CLOSED') ?></option>
-            <option value="1"<?= $this->filters['open'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_FOR_OPEN') ?></option>
+            <option value="0"<?= $openSelected(0) ?>><?= Lang::txt('COM_SUPPORT_FOR_CLOSED') ?></option>
+            <option value="1"<?= $openSelected(1) ?>><?= Lang::txt('COM_SUPPORT_FOR_OPEN') ?></option>
         </select>
     </fieldset>
 

@@ -44,6 +44,15 @@ $dir = $item->get('id');
 if (!$dir) {
     $dir = 'tmp' . time(); // . rand(0, 100);
 }
+
+// The attribute that marks the current value in the form fields below
+$idSelected = function ($value) {
+    if ($this->collection->get('id') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo Lang::txt('COM_COLLECTIONS'); ?></h2>
@@ -214,7 +223,7 @@ if (!$dir) {
                     <?php echo Lang::txt('COM_COLLECTIONS_SELECT_COLLECTION'); ?>
                     <select name="post[collection_id]" id="post-collection_id">
                     <?php foreach ($this->collections as $collection) { ?>
-                        <option value="<?= $this->escape($collection->get('id')) ?>"<?= $this->collection->get('id') == $collection->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($collection->get('title'))) ?></option>
+                        <option value="<?= $this->escape($collection->get('id')) ?>"<?= $idSelected($collection->get('id')) ?>><?= $this->escape(stripslashes($collection->get('title'))) ?></option>
                     <?php } ?>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_COLLECTIONS_SELECT_COLLECTION_HINT'); ?></span>

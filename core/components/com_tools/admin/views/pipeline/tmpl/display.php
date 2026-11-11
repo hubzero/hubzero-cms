@@ -22,6 +22,23 @@ Toolbar::help('tools');
 $this->css();
 
 Html::behavior('tooltip');
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->filters['state'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$filterStateSelected = function ($value) {
+    if ($this->filters['state'] === $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -40,17 +57,17 @@ Html::behavior('tooltip');
             <div class="col span6">
                 <label for="filter-state"><?php echo Lang::txt('COM_TOOLS_FIELD_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
-                    <option value="-1"<?= $this->filters['state'] == '-1' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_ALL_STATES') ?></option>
-                    <option value="0"<?= $this->filters['state'] === 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                    <option value="1"<?= $this->filters['state'] === 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_REGISTERED') ?></option>
-                    <option value="2"<?= $this->filters['state'] === 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_CREATED') ?></option>
-                    <option value="3"<?= $this->filters['state'] === 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_UPLOADED') ?></option>
-                    <option value="4"<?= $this->filters['state'] === 4 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_INSTALLED') ?></option>
-                    <option value="5"<?= $this->filters['state'] === 5 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_UPDATED') ?></option>
-                    <option value="6"<?= $this->filters['state'] === 6 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_APPROVED') ?></option>
-                    <option value="7"<?= $this->filters['state'] === 7 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
-                    <option value="8"<?= $this->filters['state'] === 8 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_RETIRED') ?></option>
-                    <option value="9"<?= $this->filters['state'] === 9 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_ABANDONED') ?></option>
+                    <option value="-1"<?= $stateSelected('-1') ?>><?= Lang::txt('COM_TOOLS_ALL_STATES') ?></option>
+                    <option value="0"<?= $filterStateSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                    <option value="1"<?= $filterStateSelected(1) ?>><?= Lang::txt('COM_TOOLS_REGISTERED') ?></option>
+                    <option value="2"<?= $filterStateSelected(2) ?>><?= Lang::txt('COM_TOOLS_CREATED') ?></option>
+                    <option value="3"<?= $filterStateSelected(3) ?>><?= Lang::txt('COM_TOOLS_UPLOADED') ?></option>
+                    <option value="4"<?= $filterStateSelected(4) ?>><?= Lang::txt('COM_TOOLS_INSTALLED') ?></option>
+                    <option value="5"<?= $filterStateSelected(5) ?>><?= Lang::txt('COM_TOOLS_UPDATED') ?></option>
+                    <option value="6"<?= $filterStateSelected(6) ?>><?= Lang::txt('COM_TOOLS_APPROVED') ?></option>
+                    <option value="7"<?= $filterStateSelected(7) ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                    <option value="8"<?= $filterStateSelected(8) ?>><?= Lang::txt('COM_TOOLS_RETIRED') ?></option>
+                    <option value="9"<?= $filterStateSelected(9) ?>><?= Lang::txt('COM_TOOLS_ABANDONED') ?></option>
                 </select>
             </div>
         </div>

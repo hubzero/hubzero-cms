@@ -40,6 +40,15 @@ $formUrl = Route::url(
 );
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 $required = Lang::txt('JOPTION_REQUIRED');
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->row->get('state') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?php echo $formUrl; ?>"
@@ -237,9 +246,9 @@ $required = Lang::txt('JOPTION_REQUIRED');
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_KB_PUBLISH'); ?>:</label>
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?= $this->row->get('state') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                        <option value="1"<?= $this->row->get('state') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
-                        <option value="2"<?= $this->row->get('state') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
+                        <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('JTRASHED') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap">

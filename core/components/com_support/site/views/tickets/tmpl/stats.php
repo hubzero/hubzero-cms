@@ -78,6 +78,14 @@ foreach ($severities as $severity) {
     }
 }
 
+// The attribute that marks the current value in the form fields below
+$groupSelected = function ($value) {
+    if ($this->group == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <header id="content-header">
@@ -166,7 +174,7 @@ $formAction = Route::url(
                     <label for="ticket-group"><?php echo Lang::txt('COM_SUPPORT_FILTER_GROUP'); ?></label>
                     <select name="group" id="ticket-group" class="form-control">
                         <option value=""<?= !$this->group ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_ALL') ?></option>
-                        <option value="_none_"<?= $this->group == '_none_' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_NONE') ?></option>
+                        <option value="_none_"<?= $groupSelected('_none_') ?>><?= Lang::txt('COM_SUPPORT_NONE') ?></option>
                         <?php
                         if ($this->groups) {
                             foreach ($this->groups as $group) {

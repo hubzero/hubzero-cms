@@ -28,6 +28,15 @@ Toolbar::spacer();
 Toolbar::help('downloads');
 
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$reportNotesSelected = function ($value) {
+    if ($this->filters['report-notes'] === $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php
@@ -49,8 +58,8 @@ $this
             <div class="col span7 align-right">
                 <label for="filter-reportnotes"><?php echo Lang::txt('COM_CART_SHOW_NOTES'); ?>:</label>
                 <select name="report-notes" id="filter-report-notes" class="filter filter-submit">
-                    <option value="0"<?= $this->filters['report-notes'] === 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CART_SHOW_NOTES_ALL') ?></option>
-                    <option value="1"<?= $this->filters['report-notes'] === 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CART_SHOW_NOTES_ONLY') ?></option>
+                    <option value="0"<?= $reportNotesSelected(0) ?>><?= Lang::txt('COM_CART_SHOW_NOTES_ALL') ?></option>
+                    <option value="1"<?= $reportNotesSelected(1) ?>><?= Lang::txt('COM_CART_SHOW_NOTES_ONLY') ?></option>
                 </select>
                 &nbsp;&nbsp;
                 <label for="filter-report-from">From:</label>

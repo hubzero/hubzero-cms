@@ -24,6 +24,15 @@ $sortbys['title'] = Lang::txt('COM_RESOURCES_TITLE');
 $this
      ->css()
      ->js();
+
+// The attribute that marks the current value in the form fields below
+$typeSelected = function ($value) {
+    if ($this->filters['type'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo Lang::txt('COM_RESOURCES'); ?></h2>
@@ -146,7 +155,7 @@ $this
                                                 continue;
                                             }
                                             ?>
-                                            <option value="<?= $item->id ?>"<?= ($this->filters['type'] == $item->id) ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($item->type)) ?></option>
+                                            <option value="<?= $item->id ?>"<?= $typeSelected($item->id) ?>><?= $this->escape(stripslashes($item->type)) ?></option>
                                         <?php } ?>
                                     </select>
                                 </li>

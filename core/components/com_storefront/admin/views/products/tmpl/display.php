@@ -37,6 +37,15 @@ if ($canDo->get('core.delete')) {
 }
 Toolbar::spacer();
 Toolbar::help('products');
+
+// The attribute that marks the current value in the form fields below
+$typeSelected = function ($value) {
+    if ($this->filters['type'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php
@@ -68,9 +77,9 @@ $formAction = Route::url(
             <div class="col span7">
                 <label for="filter-type"><?php echo Lang::txt('COM_STOREFRONT_TYPE'); ?>:</label>
                 <select id="filter-type" name="type" class="filter filter-submit">
-                    <option value="-1"<?= $this->filters['type'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_FILTER_TYPE') ?></option>
+                    <option value="-1"<?= $typeSelected(-1) ?>><?= Lang::txt('COM_STOREFRONT_FILTER_TYPE') ?></option>
                     <?php foreach ($this->types as $type) { ?>
-                        <option value="<?= $type->ptId ?>"<?= $this->filters['type'] == $type->ptId ? ' selected="selected"' : '' ?>><?= $type->ptName ?></option>
+                        <option value="<?= $type->ptId ?>"<?= $typeSelected($type->ptId) ?>><?= $type->ptName ?></option>
                     <?php } ?>
                 </select>
             </div>

@@ -48,6 +48,15 @@ $this
     ->js('jquery.fileuploader.js', 'system')
     ->js('fileupload.js')
     ->js();
+
+// The attribute that marks the current value in the form fields below
+$idSelected = function ($value) {
+    if ($this->collection->get('id') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -203,7 +212,7 @@ $this
                     <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_SELECT_COLLECTION'); ?>
                     <select name="post[collection_id]" id="post-collection_id" class="form-control">
                     <?php foreach ($this->collections as $collection) { ?>
-                        <option value="<?= $this->escape($collection->get('id')) ?>"<?= $this->collection->get('id') == $collection->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($collection->get('title'))) ?></option>
+                        <option value="<?= $this->escape($collection->get('id')) ?>"<?= $idSelected($collection->get('id')) ?>><?= $this->escape(stripslashes($collection->get('title'))) ?></option>
                     <?php } ?>
                     </select>
                     <span class="hint"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_SELECT_COLLECTION_HINT') ?></span>

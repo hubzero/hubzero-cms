@@ -43,6 +43,46 @@ Toolbar::help('category');
 
 $this->css();
 
+// The attribute that marks the current value in the form fields below
+$checkoutNotesRequiredSelected = function ($value) {
+    if ($this->row->getCheckoutNotesRequired() == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$allowMultipleSelected = function ($value) {
+    if ($this->row->getAllowMultiple() == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$trackInventorySelected = function ($value) {
+    if ($this->row->getTrackInventory() == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$activeStatusSelected = function ($value) {
+    if ($this->row->getActiveStatus() == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$restrictedSelected = function ($value) {
+    if ($this->row->getRestricted() == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <script type="text/javascript">
     function submitbutton(pressbutton)
@@ -149,8 +189,8 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
 <?php $checkoutReqLabel = Lang::txt('Checkout notes/comments required'); ?>
                     <label for="field-checkoutNotesRequired"><?php echo $checkoutReqLabel; ?>:</label>
                     <select name="fields[checkoutNotesRequired]" id="field-checkoutNotesRequired">
-                        <option value="0"<?= $this->row->getCheckoutNotesRequired() == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
-                        <option value="1"<?= $this->row->getCheckoutNotesRequired() == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
+                        <option value="0"<?= $checkoutNotesRequiredSelected(0) ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
+                        <option value="1"<?= $checkoutNotesRequiredSelected(1) ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
                     </select>
                 </div>
 
@@ -326,8 +366,8 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
                 <div class="input-wrap">
                     <label for="field-sAllowMultiple"><?php echo Lang::txt('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
                     <select name="fields[sAllowMultiple]" id="field-pAllowMultiple">
-                        <option value="0"<?= $this->row->getAllowMultiple() == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
-                        <option value="1"<?= $this->row->getAllowMultiple() == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
+                        <option value="0"<?= $allowMultipleSelected(0) ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
+                        <option value="1"<?= $allowMultipleSelected(1) ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
                     </select>
                 </div>
 
@@ -347,8 +387,8 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
                     <div class="input-wrap" data-hint="<?php echo $trackHint; ?>">
                         <label for="field-sTrackInventory"><?php echo 'Track Inventory'; ?>:</label>
                         <select name="fields[sTrackInventory]" id="field-sTrackInventory">
-                            <option value="0"<?= $this->row->getTrackInventory() == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
-                            <option value="1"<?= $this->row->getTrackInventory() == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
+                            <option value="0"<?= $trackInventorySelected(0) ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
+                            <option value="1"<?= $trackInventorySelected(1) ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
                         </select>
                     </div>
 
@@ -396,8 +436,8 @@ $invThresholdHint = 'Inventory threshold: when reached or below an email notific
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_STATE'); ?>:</label>
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?= $this->row->getActiveStatus() == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                        <option value="1"<?= $this->row->getActiveStatus() == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="0"<?= $activeStatusSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= $activeStatusSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
                     </select>
                 </div>
 
@@ -442,8 +482,8 @@ $publishDownVal = ($publishDown && $publishDown != '0000-00-00 00:00:00')
                 <div class="input-wrap">
                     <label for="field-restricted"><?php echo Lang::txt('Restrict by users'); ?>:</label>
                     <select name="fields[restricted]" id="field-restricted">
-                        <option value="0"<?= $this->row->getRestricted() == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
-                        <option value="1"<?= $this->row->getRestricted() == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
+                        <option value="0"<?= $restrictedSelected(0) ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
+                        <option value="1"<?= $restrictedSelected(1) ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
                     </select>
                 </div>
 

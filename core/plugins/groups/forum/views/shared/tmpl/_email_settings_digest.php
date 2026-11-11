@@ -13,6 +13,23 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 $base = $this->base;
+
+// The attribute that marks the current value in the form fields below
+$recvEmailOptionValueChecked = function ($value) {
+    if ($this->recvEmailOptionValue == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
+
+$recvEmailOptionValueSelected = function ($value) {
+    if ($this->recvEmailOptionValue == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <p>
@@ -41,7 +58,7 @@ $base = $this->base;
             <input type="radio"
                 name="recvpostemail"
                 class="edit-forum-options-immediate"
-                value="1"<?= $this->recvEmailOptionValue == 1 ? ' checked="checked"' : '' ?><?= $this->recvEmailOptionValue == 0 ? ' disabled="disabled"' : '' ?> />
+                value="1"<?= $recvEmailOptionValueChecked(1) ?><?= $this->recvEmailOptionValue == 0 ? ' disabled="disabled"' : '' ?> />
             <label>
                 <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_IMMEDIATELY'); ?>
             </label>
@@ -54,9 +71,9 @@ $base = $this->base;
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_AS_A'); ?>
             <select name="recvpostemail"
                 class="edit-forum-options-frequency"<?= $this->recvEmailOptionValue < 2 ? ' disabled="disabled"' : '' ?>>
-                <option value="2"<?= $this->recvEmailOptionValue == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DAILY') ?></option>
-                <option value="3"<?= $this->recvEmailOptionValue == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_WEEKLY') ?></option>
-                <option value="4"<?= $this->recvEmailOptionValue == 4 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_MONTHLY') ?></option>
+                <option value="2"<?= $recvEmailOptionValueSelected(2) ?>><?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DAILY') ?></option>
+                <option value="3"<?= $recvEmailOptionValueSelected(3) ?>><?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_WEEKLY') ?></option>
+                <option value="4"<?= $recvEmailOptionValueSelected(4) ?>><?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_MONTHLY') ?></option>
             </select>
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DIGEST'); ?>
         </div>

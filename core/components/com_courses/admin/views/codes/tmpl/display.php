@@ -47,6 +47,15 @@ if ($canDo->get('core.delete')) {
 }
 
 Html::behavior('tooltip');
+
+// The attribute that marks the current value in the form fields below
+$redeemedSelected = function ($value) {
+    if ($this->filters['redeemed'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
@@ -69,9 +78,9 @@ Html::behavior('tooltip');
             <div class="col span6">
                 <label for="filter-redeemed"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
                 <select name="redeemed" id="filter-redeemed" class="filter filter-submit">
-                    <option value="-1"<?= $this->filters['redeemed'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ALL_STATES') ?></option>
-                    <option value="1"<?= $this->filters['redeemed'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_FILTER_REDEEMED') ?></option>
-                    <option value="0"<?= $this->filters['redeemed'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_FILTER_UNREDEEMED') ?></option>
+                    <option value="-1"<?= $redeemedSelected(-1) ?>><?= Lang::txt('COM_COURSES_ALL_STATES') ?></option>
+                    <option value="1"<?= $redeemedSelected(1) ?>><?= Lang::txt('COM_COURSES_FILTER_REDEEMED') ?></option>
+                    <option value="0"<?= $redeemedSelected(0) ?>><?= Lang::txt('COM_COURSES_FILTER_UNREDEEMED') ?></option>
                 </select>
             </div>
         </div>

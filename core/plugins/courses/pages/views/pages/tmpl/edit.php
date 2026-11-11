@@ -28,6 +28,15 @@ $this
      ->display();
 
 $base = $this->offering->link() . '&active=pages';
+
+// The attribute that marks the current value in the form fields below
+$sectionIdSelected = function ($value) {
+    if ($this->model->get('section_id') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <div class="pages-wrap">
@@ -66,7 +75,7 @@ $base = $this->offering->link() . '&active=pages';
                     <label for="field-section_id">
                         <?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_SECTION'); ?>
                         <select name="fields[section_id]" id="field-section_id">
-                            <option value="0"<?= $this->model->get('section_id') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_COURSES_PAGES_FIELD_OPT_ALL_SECTIONS') ?></option>
+                            <option value="0"<?= $sectionIdSelected(0) ?>><?= Lang::txt('PLG_COURSES_PAGES_FIELD_OPT_ALL_SECTIONS') ?></option>
                         <?php foreach ($this->offering->sections() as $section) { ?>
                             <option value="<?= $section->get('id') ?>"<?= $section->get('id') == $this->model->get('section_id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($section->get('title'))) ?></option>
                         <?php } ?>

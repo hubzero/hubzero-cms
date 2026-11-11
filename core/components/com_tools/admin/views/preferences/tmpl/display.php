@@ -20,6 +20,22 @@ Toolbar::addNew();
 Toolbar::editList();
 Toolbar::custom('restoreDefault', 'restore', 'restore', 'COM_TOOLS_USER_PREFS_DEFAULT');
 
+// The attribute that marks the current value in the form fields below
+$searchFieldSelected = function ($value) {
+    if ($this->filters['search_field'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$classAliasSelected = function ($value) {
+    if ($this->filters['class_alias'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <?php
 $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
@@ -65,8 +81,8 @@ $sortJobs = Html::grid(
             <div class="col span5">
                 <label for="filter_search_field"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_SEARCH'); ?></label>
                 <select name="search_field" id="filter_search_field">
-                    <option value="username"<?= $this->filters['search_field'] == 'username' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_USER_PREFS_USERNAME') ?></option>
-                    <option value="name"<?= $this->filters['search_field'] == 'name' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_USER_PREFS_NAME') ?></option>
+                    <option value="username"<?= $searchFieldSelected('username') ?>><?= Lang::txt('COM_TOOLS_USER_PREFS_USERNAME') ?></option>
+                    <option value="name"<?= $searchFieldSelected('name') ?>><?= Lang::txt('COM_TOOLS_USER_PREFS_NAME') ?></option>
                 </select>
 
                 <label for="filter_search"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_SEARCH_FOR'); ?></label>
@@ -78,7 +94,7 @@ $sortJobs = Html::grid(
             </div>
             <div class="col span7">
                 <select name="class_alias" id="filter_class_alias" class="filter filter-submit">
-                    <option value=""<?= $this->filters['class_alias'] == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_FILTER_SESSION_CLASS') ?></option>
+                    <option value=""<?= $classAliasSelected('') ?>><?= Lang::txt('COM_TOOLS_FILTER_SESSION_CLASS') ?></option>
                     <?php foreach ($this->classes as $class) : ?>
                         <?php $sel = ($this->filters['class_alias'] == $class->alias) ? ' selected="selected"' : ''; ?>
                         <option value="<?php echo $class->alias; ?>"<?php echo $sel; ?>>

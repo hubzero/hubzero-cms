@@ -29,6 +29,15 @@ if ($canDo->get('core.delete')) {
 }
 Toolbar::spacer();
 Toolbar::help('pages');
+
+// The attribute that marks the current value in the form fields below
+$activeSelected = function ($value) {
+    if ($this->filters['active'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
@@ -51,9 +60,9 @@ Toolbar::help('pages');
             <div class="col span6">
                 <label for="filter-active"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
                 <select name="active" id="filter-active" class="filter filter-submit">
-                    <option value="-1"<?= $this->filters['active'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ALL_STATES') ?></option>
-                    <option value="0"<?= $this->filters['active'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_UNPUBLISHED') ?></option>
-                    <option value="1"<?= $this->filters['active'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_PUBLISHED') ?></option>
+                    <option value="-1"<?= $activeSelected(-1) ?>><?= Lang::txt('COM_COURSES_ALL_STATES') ?></option>
+                    <option value="0"<?= $activeSelected(0) ?>><?= Lang::txt('COM_COURSES_UNPUBLISHED') ?></option>
+                    <option value="1"<?= $activeSelected(1) ?>><?= Lang::txt('COM_COURSES_PUBLISHED') ?></option>
                 </select>
             </div>
         </div>

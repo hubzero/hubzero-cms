@@ -25,6 +25,15 @@ if ($this->post->get('id')) {
     $this->post->set('access', 0);
     $action = $this->post->link('new');
 }
+
+// The attribute that marks the current value in the form fields below
+$aliasSelected = function ($value) {
+    if ($this->category->get('alias') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo Lang::txt('COM_FORUM'); ?></h2>
@@ -119,7 +128,7 @@ if ($this->post->get('id')) {
                                     if ($categories->count() > 0) { ?>
                                         <optgroup label="<?= $this->escape(stripslashes($section->get('title'))) ?>">
                                             <?php foreach ($categories as $category) { ?>
-                                                <option value="<?= $category->get('id') ?>"<?= $this->category->get('alias') == $category->get('alias') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($category->get('title'))) ?></option>
+                                                <option value="<?= $category->get('id') ?>"<?= $aliasSelected($category->get('alias')) ?>><?= $this->escape(stripslashes($category->get('title'))) ?></option>
                                             <?php } ?>
                                         </optgroup>
                                     <?php } ?>

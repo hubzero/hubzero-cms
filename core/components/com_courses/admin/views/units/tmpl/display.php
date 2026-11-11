@@ -35,6 +35,15 @@ Toolbar::help('units');
 $this->css();
 
 Html::behavior('tooltip');
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->filters['state'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php $routeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
@@ -57,11 +66,11 @@ Html::behavior('tooltip');
             <div class="col span6">
                 <label for="filter-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
-                    <option value="-1"<?= $this->filters['state'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ALL_STATES') ?></option>
-                    <option value="0"<?= $this->filters['state'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_UNPUBLISHED') ?></option>
-                    <option value="1"<?= $this->filters['state'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_PUBLISHED') ?></option>
-                    <option value="3"<?= $this->filters['state'] == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_DRAFT') ?></option>
-                    <option value="2"<?= $this->filters['state'] == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_TRASHED') ?></option>
+                    <option value="-1"<?= $stateSelected(-1) ?>><?= Lang::txt('COM_COURSES_ALL_STATES') ?></option>
+                    <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_COURSES_UNPUBLISHED') ?></option>
+                    <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_COURSES_PUBLISHED') ?></option>
+                    <option value="3"<?= $stateSelected(3) ?>><?= Lang::txt('COM_COURSES_DRAFT') ?></option>
+                    <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('COM_COURSES_TRASHED') ?></option>
                 </select>
             </div>
         </div>

@@ -281,6 +281,15 @@ $countries = [
     ['code' => 'ZM', 'name' => 'Zambia', 'continent' => 'AF'],
     ['code' => 'ZW', 'name' => 'Zimbabwe', 'continent' => 'AF'],
 ];
+
+// The attribute that marks the current value in the form fields below
+$continentSelected = function ($value) {
+    if ($this->row->get('continent') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <script type="application/json" id="country-data" data-select="<?php echo Lang::txt('COM_TOOLS_SELECT'); ?>">
     {
@@ -348,14 +357,14 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                                 <?php echo Lang::txt('COM_TOOLS_FIELD_CONTINENT'); ?>:</label></th>
                         <td>
                             <select name="fields[continent]" id="field-continent">
-                                <option value=""<?= $this->row->get('continent') == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_SELECT') ?></option>
-                                <option value="NA"<?= $this->row->get('continent') == 'NA' ? ' selected="selected"' : '' ?>>North America</option>
-                                <option value="SA"<?= $this->row->get('continent') == 'SA' ? ' selected="selected"' : '' ?>>South America</option>
-                                <option value="EU"<?= $this->row->get('continent') == 'EU' ? ' selected="selected"' : '' ?>>Europe</option>
-                                <option value="AF"<?= $this->row->get('continent') == 'AF' ? ' selected="selected"' : '' ?>>Africa</option>
-                                <option value="AS"<?= $this->row->get('continent') == 'AS' ? ' selected="selected"' : '' ?>>Asia</option>
-                                <option value="AN"<?= $this->row->get('continent') == 'AN' ? ' selected="selected"' : '' ?>>Antarctica</option>
-                                <option value="OC"<?= $this->row->get('continent') == 'OC' ? ' selected="selected"' : '' ?>>Oceania</option>
+                                <option value=""<?= $continentSelected('') ?>><?= Lang::txt('COM_TOOLS_SELECT') ?></option>
+                                <option value="NA"<?= $continentSelected('NA') ?>>North America</option>
+                                <option value="SA"<?= $continentSelected('SA') ?>>South America</option>
+                                <option value="EU"<?= $continentSelected('EU') ?>>Europe</option>
+                                <option value="AF"<?= $continentSelected('AF') ?>>Africa</option>
+                                <option value="AS"<?= $continentSelected('AS') ?>>Asia</option>
+                                <option value="AN"<?= $continentSelected('AN') ?>>Antarctica</option>
+                                <option value="OC"<?= $continentSelected('OC') ?>>Oceania</option>
                             </select>
                         </td>
                     </tr>
@@ -364,7 +373,7 @@ $formId = ($this->tmpl == 'component') ? 'component-form' : 'item-form';
                             <label for="field-countrySHORT"><?php echo Lang::txt('Country'); ?>:</label></th>
                         <td>
                             <select name="fields[countrySHORT]" id="field-countrySHORT">
-                                <option value=""<?= $this->row->get('continent') == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_SELECT') ?></option>
+                                <option value=""<?= $continentSelected('') ?>><?= Lang::txt('COM_TOOLS_SELECT') ?></option>
                                 <?php
                                 //if ($countries = \Hubzero\Geocode\Geocode::countries())
                                 if ($countries) {

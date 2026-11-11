@@ -16,6 +16,15 @@ defined('_HZEXEC_') or die();
 $this
      ->css()
      ->js();
+
+// The attribute that marks the current value in the form fields below
+$categorySelected = function ($value) {
+    if ($this->category == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -75,7 +84,7 @@ $this
                     if ($this->categories) {
                         foreach ($this->categories as $id => $title) {
                             ?>
-                        <option value="<?= $id ?>"<?= $this->category == $id ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($title)) ?></option>
+                        <option value="<?= $id ?>"<?= $categorySelected($id) ?>><?= $this->escape(stripslashes($title)) ?></option>
                             <?php
                         }
                     }

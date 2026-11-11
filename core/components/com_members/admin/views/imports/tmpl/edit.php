@@ -39,6 +39,23 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$approvedSelected = function ($value) {
+    if ($this->params->get('approved', 1) == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$emailnewSelected = function ($value) {
+    if ($this->params->get('emailnew', 0) == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php foreach ($this->getErrors() as $error) : ?>
@@ -183,8 +200,8 @@ $this->js();
                         <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_APPROVED'); ?>
                     </label>
                     <select name="params[approved]" id="param-approved">
-                        <option value="0"<?= ($this->params->get('approved', 1) == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
-                        <option value="1"<?= ($this->params->get('approved', 1) == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JYES') ?></option>
+                        <option value="0"<?= $approvedSelected(0) ?>><?= Lang::txt('JNO') ?></option>
+                        <option value="1"<?= $approvedSelected(1) ?>><?= Lang::txt('JYES') ?></option>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_APPROVED_HINT'); ?></span>
                 </div>
@@ -194,8 +211,8 @@ $this->js();
                         <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW'); ?>
                     </label>
                     <select name="params[emailnew]" id="param-emailnew">
-                        <option value="0"<?= ($this->params->get('emailnew', 0) == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
-                        <option value="1"<?= ($this->params->get('emailnew', 0) == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JYES') ?></option>
+                        <option value="0"<?= $emailnewSelected(0) ?>><?= Lang::txt('JNO') ?></option>
+                        <option value="1"<?= $emailnewSelected(1) ?>><?= Lang::txt('JYES') ?></option>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_EMAILNEW_HINT'); ?></span>
                 </div>

@@ -33,6 +33,15 @@ if ($canDo->get('core.delete')) {
 }
 Toolbar::spacer();
 Toolbar::help('pages');
+
+// The attribute that marks the current value in the form fields below
+$namespaceSelected = function ($value) {
+    if ($this->filters['namespace'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -67,7 +76,7 @@ Toolbar::help('pages');
                             continue;
                         }
                         ?>
-                        <option value="<?= $nspace->get('namespace') ?>"<?= $this->filters['namespace'] == $nspace->get('namespace') ? ' selected="selected"' : '' ?>><?= $nspace->get('namespace') ?></option>
+                        <option value="<?= $nspace->get('namespace') ?>"<?= $namespaceSelected($nspace->get('namespace')) ?>><?= $nspace->get('namespace') ?></option>
                     <?php } ?>
                 </select>
             </div>

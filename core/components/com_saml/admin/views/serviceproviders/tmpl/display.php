@@ -40,6 +40,15 @@ if (User::authorise('core.delete', $this->option)) {
 
 $now = time();
 $certWarn = 30 * 24 * 60 * 60;
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->filters['state'] === $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -59,8 +68,8 @@ $certWarn = 30 * 24 * 60 * 60;
                 <label for="filter-state"><?php echo Lang::txt('JSTATUS'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
                     <option value="-1"<?= ($this->filters['state'] < 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_ALL_STATES') ?></option>
-                    <option value="1"<?= ($this->filters['state'] === 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_STATE_ENABLED') ?></option>
-                    <option value="0"<?= ($this->filters['state'] === 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_STATE_DISABLED') ?></option>
+                    <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_SAML_STATE_ENABLED') ?></option>
+                    <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_SAML_STATE_DISABLED') ?></option>
                 </select>
             </div>
         </div>

@@ -24,6 +24,15 @@ $title = ($this->hook->get('id'))
 Toolbar::title(Lang::txt($title), 'import');
 Toolbar::save();
 Toolbar::cancel();
+
+// The attribute that marks the current value in the form fields below
+$typeSelected = function ($value) {
+    if ($this->hook->get('type') == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php foreach ($this->getErrors() as $error) : ?>
@@ -45,10 +54,10 @@ Toolbar::cancel();
                         <option value="postparse">
                             <?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE_POSTPARSE'); ?>
                         </option>
-                        <option <?= $this->hook->get('type') == 'postmap' ? 'selected="selected"' : '' ?> value="postmap">
+                        <option <?= $typeSelected('postmap') ?> value="postmap">
                             <?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE_POSTMAP'); ?>
                         </option>
-                        <option <?= $this->hook->get('type') == 'postconvert' ? 'selected="selected"' : '' ?> value="postconvert">
+                        <option <?= $typeSelected('postconvert') ?> value="postconvert">
                             <?php echo Lang::txt('COM_RESOURCES_IMPORTHOOK_EDIT_FIELD_TYPE_POSTCONVERT'); ?>
                         </option>
                     </select>

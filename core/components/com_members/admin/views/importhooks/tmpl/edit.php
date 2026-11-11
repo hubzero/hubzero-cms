@@ -29,6 +29,15 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$eventSelected = function ($value) {
+    if ($this->hook->get('event') == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php foreach ($this->getErrors() as $error) : ?>
@@ -57,10 +66,10 @@ $this->js();
                         <option value="postparse">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTPARSE'); ?>
                         </option>
-                        <option <?= $this->hook->get('event') == 'postmap' ? 'selected="selected"' : '' ?> value="postmap">
+                        <option <?= $eventSelected('postmap') ?> value="postmap">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTMAP'); ?>
                         </option>
-                        <option <?= $this->hook->get('event') == 'postconvert' ? 'selected="selected"' : '' ?> value="postconvert">
+                        <option <?= $eventSelected('postconvert') ?> value="postconvert">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTCONVERT'); ?>
                         </option>
                     </select>

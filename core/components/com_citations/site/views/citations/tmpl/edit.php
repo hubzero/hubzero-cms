@@ -37,6 +37,14 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 
 $pid = Request::getInt('publication', 0);
 
+// The attribute that marks the current value in the form fields below
+$formatSelected = function ($value) {
+    if ($this->row->format == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -380,8 +388,8 @@ $pid = Request::getInt('publication', 0);
             <label for="format">
                 <?php echo Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_FORMAT'); ?>:
                 <select id="format" name="fields[format]">
-                    <option value="apa" <?= ($this->row->format == 'apa') ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_APA') ?></option>
-                    <option value="ieee" <?= ($this->row->format == 'ieee') ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_IEEE') ?></option>
+                    <option value="apa" <?= $formatSelected('apa') ?>><?= Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_APA') ?></option>
+                    <option value="ieee" <?= $formatSelected('ieee') ?>><?= Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_IEEE') ?></option>
                 </select>
             </label>
             <label for="formatted">

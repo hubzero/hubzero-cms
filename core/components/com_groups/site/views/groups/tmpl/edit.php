@@ -60,6 +60,15 @@ if ($this->task == "edit") :
 else :
         $title = Lang::txt('COM_GROUPS_ACTION_BACK');
 endif;
+
+// The attribute that marks the current value in the form fields below
+$discoverabilityChecked = function ($value) {
+    if ($this->group->get('discoverability') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -276,14 +285,14 @@ endif;
 
                         <div class="form-group form-check">
                             <label for="discoverability0" class="form-check-label">
-                                <input type="radio" class="option form-check-input" name="discoverability" id="discoverability0" value="0"<?= $this->group->get('discoverability') == 0 ? ' checked="checked"' : '' ?> />
+                                <input type="radio" class="option form-check-input" name="discoverability" id="discoverability0" value="0"<?= $discoverabilityChecked(0) ?> />
                                 <strong><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING') ?></strong>
                                 <br /><span class="indent"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_VISIBLE_SETTING_DESC') ?></span>
                             </label>
                         </div>
                         <div class="form-group form-check">
                             <label for="discoverability1" class="form-check-label">
-                                <input type="radio" class="option form-check-input" name="discoverability" id="discoverability1" value="1"<?= $this->group->get('discoverability') == 1 ? ' checked="checked"' : '' ?> />
+                                <input type="radio" class="option form-check-input" name="discoverability" id="discoverability1" value="1"<?= $discoverabilityChecked(1) ?> />
                                 <strong><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING') ?></strong>
                                 <br /><span class="indent"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_SETTINGS_HIDDEN_SETTING_DESC') ?></span>
                             </label>

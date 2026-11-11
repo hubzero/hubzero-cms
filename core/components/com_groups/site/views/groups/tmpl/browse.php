@@ -17,6 +17,23 @@ defined('_HZEXEC_') or die();
 $this
      ->css()
      ->js('browse');
+
+// The attribute that marks the current value in the form fields below
+$publishedSelected = function ($value) {
+    if ($this->filters['published'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$policySelected = function ($value) {
+    if ($this->filters['policy'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <header id="content-header">
@@ -88,18 +105,18 @@ foreach ($this->notifications as $notification) {
                             <li>
                                 <label for="filter-published"><?= Lang::txt('COM_GROUPS_BROWSE_STATE') ?></label>
                                 <select name="published" id="filter-published">
-                                    <option value="1" <?= ($this->filters['published'] == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_STATE_ACTIVE') ?></option>
-                                    <option value="2" <?= ($this->filters['published'] == 2) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED') ?></option>
+                                    <option value="1" <?= $publishedSelected(1) ?>><?= Lang::txt('COM_GROUPS_BROWSE_STATE_ACTIVE') ?></option>
+                                    <option value="2" <?= $publishedSelected(2) ?>><?= Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED') ?></option>
                                 </select>
                             </li>
                             <li>
                                 <label for="filter-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY'); ?></label>
                                 <select name="policy" id="filter-policy">
                                     <option value=""><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_ALL'); ?></option>
-                                    <option value="open" <?= ($this->filters['policy'] == 'open') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN') ?></option>
-                                    <option value="restricted" <?= ($this->filters['policy'] == 'restricted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED') ?></option>
-                                    <option value="invite" <?= ($this->filters['policy'] == 'invite') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY') ?></option>
-                                    <option value="closed" <?= ($this->filters['policy'] == 'closed') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED') ?></option>
+                                    <option value="open" <?= $policySelected('open') ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN') ?></option>
+                                    <option value="restricted" <?= $policySelected('restricted') ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED') ?></option>
+                                    <option value="invite" <?= $policySelected('invite') ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY') ?></option>
+                                    <option value="closed" <?= $policySelected('closed') ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED') ?></option>
                                 </select>
                             </li>
                         </ul>

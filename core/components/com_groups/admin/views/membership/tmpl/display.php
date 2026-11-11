@@ -118,6 +118,15 @@ Html::behavior('tooltip');
 $this
     ->css()
     ->js();
+
+// The attribute that marks the current value in the form fields below
+$statusSelected = function ($value) {
+    if ($this->filters['status'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php
@@ -166,11 +175,11 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
 
                 <label for="filter-status"><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?>:</label>
                 <select name="status" id="filter-status" class="filter filter-submit">
-                    <option value=""<?= ($this->filters['status'] == '') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_MEMBER_STATUS') ?></option>
+                    <option value=""<?= $statusSelected('') ?>><?= Lang::txt('COM_GROUPS_MEMBER_STATUS') ?></option>
                     <!-- <option value="member"<?php //echo ($this->filters['status'] == 'member') ? ' selected="selected"' : '';?>>Member</option> -->
-                    <option value="manager"<?= ($this->filters['status'] == 'manager') ? ' selected="selected"' : '' ?>><?= Lang::txt('Manager') ?></option>
-                    <option value="applicant"<?= ($this->filters['status'] == 'applicant') ? ' selected="selected"' : '' ?>><?= Lang::txt('Applicant') ?></option>
-                    <option value="invitee"<?= ($this->filters['status'] == 'invitee') ? ' selected="selected"' : '' ?>><?= Lang::txt('Invitee') ?></option>
+                    <option value="manager"<?= $statusSelected('manager') ?>><?= Lang::txt('Manager') ?></option>
+                    <option value="applicant"<?= $statusSelected('applicant') ?>><?= Lang::txt('Applicant') ?></option>
+                    <option value="invitee"<?= $statusSelected('invitee') ?>><?= Lang::txt('Invitee') ?></option>
                 </select>
 
                 <?php if (!empty($this->expiration_supported)) : ?>

@@ -21,6 +21,15 @@ Toolbar::title(Lang::txt('COM_SUPPORT_TICKETS') . ': ' . Lang::txt('COM_SUPPORT_
 Html::behavior('framework');
 
 $this->view('_submenu')->display();
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->filters['state'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -28,9 +37,9 @@ $this->view('_submenu')->display();
     <fieldset id="filter-bar">
         <label for="filter-state"><?php echo Lang::txt('COM_SUPPORT_SHOW'); ?>:</label>
         <select name="state" id="filter-state" class="filter filter-submit">
-            <option value="0"<?= $this->filters['state'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_OUTSTANDING') ?></option>
-            <option value="1"<?= $this->filters['state'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_RELEASED') ?></option>
-            <option value="2"<?= $this->filters['state'] == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_DELETED') ?></option>
+            <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_SUPPORT_OUTSTANDING') ?></option>
+            <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_SUPPORT_RELEASED') ?></option>
+            <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('COM_SUPPORT_DELETED') ?></option>
         </select>
     </fieldset>
 

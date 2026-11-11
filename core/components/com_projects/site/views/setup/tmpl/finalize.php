@@ -31,6 +31,46 @@ $privacylink = $this->config->get('privacylink', '/legal/privacy');
 $hipaa       = $this->config->get('HIPAAlink', 'http://www.hhs.gov/ocr/privacy/');
 $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/reg/ferpa/index.html');
 
+// The attribute that marks the current value in the form fields below
+$restrictedDataChecked = function ($value) {
+    if ($this->model->params->get('restricted_data') == $value) {
+        return 'checked="checked"';
+    }
+
+    return '';
+};
+
+$exportDataChecked = function ($value) {
+    if ($this->model->params->get('export_data') == $value) {
+        return 'checked="checked"';
+    }
+
+    return '';
+};
+
+$irbDataChecked = function ($value) {
+    if ($this->model->params->get('irb_data') == $value) {
+        return 'checked="checked"';
+    }
+
+    return '';
+};
+
+$hipaaDataChecked = function ($value) {
+    if ($this->model->params->get('hipaa_data') == $value) {
+        return 'checked="checked"';
+    }
+
+    return '';
+};
+
+$ferpaDataChecked = function ($value) {
+    if ($this->model->params->get('ferpa_data') == $value) {
+        return 'checked="checked"';
+    }
+
+    return '';
+};
 ?>
 
 <section class="main section" id="setup">
@@ -93,7 +133,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                         class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
                     <div class="form-group form-check">
                         <label for="restricted-yes" class="terms-label dark form-check-label">
-                            <input class="option form-check-input restricted-answer" name="restricted" id="restricted-yes" type="radio" value="yes" <?= $this->model->params->get('restricted_data') == 'yes' ? 'checked="checked"' : '' ?> />
+                            <input class="option form-check-input restricted-answer" name="restricted" id="restricted-yes" type="radio" value="yes" <?= $restrictedDataChecked('yes') ?> />
                             <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_YES'); ?>
                         </label>
                     </div>
@@ -103,7 +143,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 
                         <div class="form-group form-check">
                             <label for="export" class="terms-label form-check-label">
-                                <input class="option form-check-input restricted-opt" name="export" id="export" type="checkbox" value="yes" <?= $this->model->params->get('export_data') == 'yes' ? 'checked="checked"' : '' ?> />
+                                <input class="option form-check-input restricted-opt" name="export" id="export" type="checkbox" value="yes" <?= $exportDataChecked('yes') ?> />
                                 <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_EXPORT_CONTROLLED') ?>
                             </label>
                         </div>
@@ -111,7 +151,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 
                         <div class="form-group form-check">
                             <label for="irb" class="terms-label form-check-label">
-                                <input class="option form-check-input restricted-opt" name="irb" id="irb" type="checkbox" value="yes" <?= $this->model->params->get('irb_data') == 'yes' ? 'checked="checked"' : '' ?> />
+                                <input class="option form-check-input restricted-opt" name="irb" id="irb" type="checkbox" value="yes" <?= $irbDataChecked('yes') ?> />
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_IRB'); ?>
                             </label>
                         </div>
@@ -129,7 +169,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 
                         <div class="form-group form-check">
                             <label for="hipaa" class="form-check-label terms-label">
-                                <input class="option form-check-input restricted-opt" name="hipaa" id="hipaa" type="checkbox" value="yes" <?= $this->model->params->get('hipaa_data') == 'yes' ? 'checked="checked"' : '' ?> />
+                                <input class="option form-check-input restricted-opt" name="hipaa" id="hipaa" type="checkbox" value="yes" <?= $hipaaDataChecked('yes') ?> />
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_HIPAA'); ?>
                             </label>
                         </div>
@@ -137,7 +177,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 
                         <div class="form-group form-check">
                             <label for="ferpa" class="form-check-label terms-label">
-                                <input class="option form-check-input restricted-opt" name="ferpa" id="ferpa" type="checkbox" value="yes" <?= $this->model->params->get('ferpa_data') == 'yes' ? 'checked="checked"' : '' ?> />
+                                <input class="option form-check-input restricted-opt" name="ferpa" id="ferpa" type="checkbox" value="yes" <?= $ferpaDataChecked('yes') ?> />
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_FERPA'); ?>
                             </label>
                         </div>
@@ -156,7 +196,7 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 
                     <div class="form-group form-check">
                         <label class="terms-label dark form-check-label">
-                            <input class="option form-check-input restricted-answer" name="restricted" id="restricted-no" type="radio" value="no" <?= $this->model->params->get('restricted_data') == 'no' ? 'checked="checked"' : '' ?> />
+                            <input class="option form-check-input restricted-answer" name="restricted" id="restricted-no" type="radio" value="no" <?= $restrictedDataChecked('no') ?> />
                             <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI_NO'); ?>
                         </label>
                     </div>

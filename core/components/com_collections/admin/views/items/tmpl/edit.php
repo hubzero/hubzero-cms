@@ -56,6 +56,23 @@ $formAction = Route::url(
 $validationMsg = $this->escape(
     Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->row->get('state') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$accessSelected = function ($value) {
+    if ($this->row->get('access') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?php echo $formAction; ?>"
@@ -413,9 +430,9 @@ $validationMsg = $this->escape(
                                 <?php echo $stateLabel; ?>:
                             </label><br />
                             <select name="fields[state]" id="field-state">
-                                <option value="0"<?= $this->row->get('state') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                                <option value="1"<?= $this->row->get('state') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
-                                <option value="2"<?= $this->row->get('state') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
+                                <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                                <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                                <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('JTRASHED') ?></option>
                             </select>
                         </div>
 
@@ -432,9 +449,9 @@ $validationMsg = $this->escape(
                                 <?php echo $accessLabel; ?>:
                             </label><br />
                             <select name="fields[access]" id="field-access">
-                                <option value="0"<?= $this->row->get('access') == 0 ? ' selected="selected"' : '' ?>><?= $publicTxt ?></option>
-                                <option value="1"<?= $this->row->get('access') == 1 ? ' selected="selected"' : '' ?>><?= $regTxt ?></option>
-                                <option value="4"<?= $this->row->get('access') == 4 ? ' selected="selected"' : '' ?>><?= $privTxt ?></option>
+                                <option value="0"<?= $accessSelected(0) ?>><?= $publicTxt ?></option>
+                                <option value="1"<?= $accessSelected(1) ?>><?= $regTxt ?></option>
+                                <option value="4"<?= $accessSelected(4) ?>><?= $privTxt ?></option>
                             </select>
                         </div>
                     </fieldset>

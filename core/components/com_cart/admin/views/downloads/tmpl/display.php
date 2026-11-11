@@ -34,6 +34,15 @@ Toolbar::spacer();
 Toolbar::help('downloads');
 
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$skuRequestedSelected = function ($value) {
+    if ($this->filters['skuRequested'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php
@@ -57,7 +66,7 @@ $this
                 if (!empty($this->filters['skuRequested'])) {
                     ?>
                     <select name="skuRequested" id="skuRequested" class="filter filter-submit">
-                        <option value="0"<?= $this->filters['skuRequested'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('All SKUs') ?></option>
+                        <option value="0"<?= $skuRequestedSelected(-1) ?>><?= Lang::txt('All SKUs') ?></option>
                         <option value="<?= $this->escape($this->filters['skuRequested']) ?>"><?= $this->escape($this->skuRequestedName) ?></option>
                     </select>
                     &nbsp;&nbsp;

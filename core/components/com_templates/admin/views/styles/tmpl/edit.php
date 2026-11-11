@@ -61,6 +61,15 @@ $titleValue = $this->escape(
 );
 $homeDesc = Lang::txt('COM_TEMPLATES_FIELD_HOME_SITE_DESC');
 $homeLabel = Lang::txt('COM_TEMPLATES_FIELD_HOME_LABEL');
+
+// The attribute that marks the current value in the form fields below
+$homeSelected = function ($value) {
+    if ($this->item->home == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form
@@ -102,8 +111,8 @@ $homeLabel = Lang::txt('COM_TEMPLATES_FIELD_HOME_LABEL');
                             <?php echo $homeLabel; ?>:
                         </label><br />
                         <select name="fields[home]" id="field-home">
-                            <option value="0"<?= $this->item->home == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
-                            <option value="1"<?= $this->item->home == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JALL') ?></option>
+                            <option value="0"<?= $homeSelected(0) ?>><?= Lang::txt('JNO') ?></option>
+                            <option value="1"<?= $homeSelected(1) ?>><?= Lang::txt('JALL') ?></option>
                         </select>
                         <span class="hint"><?php echo Lang::txt('COM_TEMPLATES_FIELD_HOME_SITE_DESC'); ?></span>
                     </div>

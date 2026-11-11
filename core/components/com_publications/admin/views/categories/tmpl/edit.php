@@ -46,6 +46,14 @@ $params = $this->row->params;
 
 Html::behavior('framework', true);
 
+// The attribute that marks the current value in the form fields below
+$dcTypeSelected = function ($value) {
+    if ($this->escape($this->row->dc_type) == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form
@@ -106,7 +114,7 @@ Html::behavior('framework', true);
                     <label for="field-dc_type"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DC_TYPE'); ?>:</label>
                     <select name="prop[dc_type]" id="field-dc_type">
                         <?php foreach ($dcTypes as $dct) { ?>
-                        <option value="<?= $dct ?>" <?= $this->escape($this->row->dc_type) == $dct ? 'selected="selected"' : '' ?>><?= $dct ?></option>
+                        <option value="<?= $dct ?>" <?= $dcTypeSelected($dct) ?>><?= $dct ?></option>
                         <?php } ?>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?></span>

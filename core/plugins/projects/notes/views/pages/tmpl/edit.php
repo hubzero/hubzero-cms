@@ -40,6 +40,30 @@ if ($this->page->exists()) {
 // Incoming
 $scope   = Request::getString('scope', '');
 
+// The attribute that marks the current value in the form fields below
+$hideAuthorsChecked = function ($value) {
+    if ($this->page->param('hide_authors') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
+
+$allowChangesChecked = function ($value) {
+    if ($this->page->param('allow_changes') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
+
+$allowCommentsChecked = function ($value) {
+    if ($this->page->param('allow_comments') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
     <h2><?php echo $this->task == 'new' ? 'New Note' : $this->escape('Edit Note'); ?></h2>
@@ -223,7 +247,7 @@ $canEditAccess = !$this->page->exists()
                     <input class="option"
                         type="checkbox"
                         name="params[hide_authors]"
-                        id="params_hide_authors"<?= $this->page->param('hide_authors') == 1 ? ' checked="checked"' : '' ?>
+                        id="params_hide_authors"<?= $hideAuthorsChecked(1) ?>
                                                                                                               value="1"
                                                                                                               />
                     <?php echo Lang::txt('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
@@ -234,7 +258,7 @@ $canEditAccess = !$this->page->exists()
                     <input class="option"
                         type="checkbox"
                         name="params[allow_changes]"
-                        id="params_allow_changes"<?= $this->page->param('allow_changes') == 1 ? ' checked="checked"' : '' ?> value="1" />
+                        id="params_allow_changes"<?= $allowChangesChecked(1) ?> value="1" />
                     <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
                 </label>
 
@@ -242,7 +266,7 @@ $canEditAccess = !$this->page->exists()
                     <input class="option"
                         type="checkbox"
                         name="params[allow_comments]"
-                        id="params_allow_comments"<?= $this->page->param('allow_comments') == 1 ? ' checked="checked"' : '' ?> value="1" />
+                        id="params_allow_comments"<?= $allowCommentsChecked(1) ?> value="1" />
                     <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
                 </label>
         <?php } else { ?>

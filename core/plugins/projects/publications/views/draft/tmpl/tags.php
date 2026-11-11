@@ -26,6 +26,14 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
 
 $searchCategory = $this->pub->config('search_category', 1);
 
+// The attribute that marks the current value in the form fields below
+$categoryChecked = function ($value) {
+    if ($this->pub->category == $value) {
+        return 'checked="checked"';
+    }
+
+    return '';
+};
 ?>
 
 <!-- Load content selection browser //-->
@@ -84,7 +92,7 @@ $searchCategory = $this->pub->config('search_category', 1);
                     <div class="pubtype-block">
                         <input type="radio"
                             name="pubtype"
-                            value="<?= $cat->id ?>" <?= $this->pub->category == $cat->id ? 'checked="checked"' : '' ?> class="radio" />
+                            value="<?= $cat->id ?>" <?= $categoryChecked($cat->id) ?> class="radio" />
                         <?php echo $cat->name; ?>
                         <span><?php echo $cat->description; ?></span>
                     </div>

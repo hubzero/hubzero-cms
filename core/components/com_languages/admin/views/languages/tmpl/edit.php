@@ -51,6 +51,15 @@ Html::behavior('tooltip');
 Html::behavior('formvalidation');
 
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$publishedSelected = function ($value) {
+    if ($this->item->published == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&lang_id=' . (int) $this->item->lang_id) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
@@ -102,9 +111,9 @@ $this->js();
                     <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_PUBLISHED_DESC'); ?>">
                         <label for="field-published"><?php echo Lang::txt('JSTATUS'); ?>:</label>
                         <select name="fields[published]" id="field-published">
-                            <option value="0"<?= ($this->item->published == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                            <option value="1"<?= ($this->item->published == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
-                            <option value="-2"<?= ($this->item->published == -2) ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
+                            <option value="0"<?= $publishedSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                            <option value="1"<?= $publishedSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                            <option value="-2"<?= $publishedSelected(-2) ?>><?= Lang::txt('JTRASHED') ?></option>
                         </select>
                     </div>
                 <?php endif; ?>

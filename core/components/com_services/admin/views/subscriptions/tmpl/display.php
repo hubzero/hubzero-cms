@@ -28,6 +28,15 @@ $now = Date::toSql();
 // Push some styles to the template
 $this->css();
 $this->css('admin.subscriptions.css');
+
+// The attribute that marks the current value in the form fields below
+$statusSelected = function ($value) {
+    if ($this->filters['status'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -35,10 +44,10 @@ $this->css('admin.subscriptions.css');
     <fieldset id="filter-bar">
         <label for="filter-status"><?php echo Lang::txt('COM_SERVICES_FILTER_BY'); ?>:</label>
         <select name="filter_status" id="filter-status" class="filter filter-submit">
-            <option value="pending"<?= $this->filters['status'] == 'pending' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_PENDING') ?></option>
-            <option value="active"<?= $this->filters['status'] == 'active' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_ACTIVE') ?></option>
-            <option value="cancelled"<?= $this->filters['status'] == 'cancelled' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_CANCELLED') ?></option>
-            <option value="all"<?= $this->filters['status'] == 'all' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_ALL') ?></option>
+            <option value="pending"<?= $statusSelected('pending') ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_PENDING') ?></option>
+            <option value="active"<?= $statusSelected('active') ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_ACTIVE') ?></option>
+            <option value="cancelled"<?= $statusSelected('cancelled') ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_CANCELLED') ?></option>
+            <option value="all"<?= $statusSelected('all') ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_ALL') ?></option>
         </select>
     </fieldset>
 

@@ -28,6 +28,15 @@ $title = ($this->import->get('id'))
 Toolbar::title(Lang::txt($title), 'import');
 Toolbar::save();
 Toolbar::cancel();
+
+// The attribute that marks the current value in the form fields below
+$titlematchSelected = function ($value) {
+    if ($this->params->get('titlematch', 0) == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php foreach ($this->getErrors() as $error) : ?>
@@ -378,7 +387,7 @@ Toolbar::cancel();
                     </label>
                     <select name="params[titlematch]" id="param-titlematch">
                         <option value="0"><?php echo Lang::txt('JNo'); ?></option>
-                        <option value="1" <?= $this->params->get('titlematch', 0) == 1 ? 'selected="selected"' : '' ?>><?= Lang::txt('JYes') ?></option>
+                        <option value="1" <?= $titlematchSelected(1) ?>><?= Lang::txt('JYes') ?></option>
                     </select>
                     <span class="hint"><?php
                           echo

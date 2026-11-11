@@ -45,6 +45,23 @@ $this
 if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0000-00-00 00:00:00') {
     $this->entry->set('publish_down', '');
 }
+
+// The attribute that marks the current value in the form fields below
+$allowCommentsChecked = function ($value) {
+    if ($this->entry->get('allow_comments') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
+
+$accessSelected = function ($value) {
+    if ($this->entry->get('access') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?= Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')) ?></h2>
@@ -111,7 +128,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                     <div class="col span-half">
                         <div class="form-group form-check">
                             <label for="field-allow_comments" class="form-check-label">
-                                <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?= $this->entry->get('allow_comments') == 1 ? ' checked="checked"' : '' ?> />
+                                <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?= $allowCommentsChecked(1) ?> />
                                 <?php echo Lang::txt('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
                             </label>
                         </div>
@@ -122,8 +139,8 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                             <label for="field-access">
                                 <?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY'); ?>
                                 <select class="form-control" name="entry[access]" id="field-access">
-                                    <option value="1"<?= $this->entry->get('access') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC') ?></option>
-                                    <option value="2"<?= $this->entry->get('access') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED') ?></option>
+                                    <option value="1"<?= $accessSelected(1) ?>><?= Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC') ?></option>
+                                    <option value="2"<?= $accessSelected(2) ?>><?= Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED') ?></option>
                                     <option value="5"<?= $this->entry->get('access') > 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE') ?></option>
                                 </select>
                             </label>

@@ -13,6 +13,15 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 $this->css();
+
+// The attribute that marks the current value in the form fields below
+$sectionIdSelected = function ($value) {
+    if ($this->category->get('section_id') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
     <header id="content-header">
         <h2><?php echo Lang::txt('COM_FORUM'); ?></h2>
@@ -76,7 +85,7 @@ $this->css();
                             class="required"><?= Lang::txt('COM_FORUM_REQUIRED') ?></span>
                         <select class="form-control" name="fields[section_id]" id="field-section_id">
                             <?php foreach ($this->forum->sections(['state' => 1])->rows() as $section) { ?>
-                                <option value="<?= $section->get('id') ?>"<?= $this->category->get('section_id') == $section->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($section->get('title'))) ?></option>
+                                <option value="<?= $section->get('id') ?>"<?= $sectionIdSelected($section->get('id')) ?>><?= $this->escape(stripslashes($section->get('title'))) ?></option>
                             <?php } ?>
                         </select>
                     </label>

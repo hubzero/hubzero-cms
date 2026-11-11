@@ -35,6 +35,15 @@ if ($canDo->get('core.delete')) {
 }
 Toolbar::spacer();
 Toolbar::help('entries');
+
+// The attribute that marks the current value in the form fields below
+$bySelected = function ($value) {
+    if ($this->filters['by'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php $listAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
@@ -54,9 +63,9 @@ Toolbar::help('entries');
             <div class="col span6">
                 <label for="filter-filterby"><?php echo Lang::txt('COM_TAGS_FILTER'); ?>:</label>
                 <select name="filterby" id="filter-filterby" class="filter filter-submit">
-                    <option value="all"<?= $this->filters['by'] == 'all' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TAGS_FILTER_ALL_TAGS') ?></option>
-                    <option value="user"<?= $this->filters['by'] == 'user' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TAGS_FILTER_USER_TAGS') ?></option>
-                    <option value="admin"<?= $this->filters['by'] == 'admin' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TAGS_FILTER_ADMIN_TAGS') ?></option>
+                    <option value="all"<?= $bySelected('all') ?>><?= Lang::txt('COM_TAGS_FILTER_ALL_TAGS') ?></option>
+                    <option value="user"<?= $bySelected('user') ?>><?= Lang::txt('COM_TAGS_FILTER_USER_TAGS') ?></option>
+                    <option value="admin"<?= $bySelected('admin') ?>><?= Lang::txt('COM_TAGS_FILTER_ADMIN_TAGS') ?></option>
                 </select>
             </div>
         </div>

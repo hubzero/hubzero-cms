@@ -27,6 +27,14 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
     . '</span></a></span> &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_HISTORY_DIFF')
     . '</span>';
 
+// The attribute that marks the current value in the form fields below
+$modeChecked = function ($value) {
+    if ($this->params['mode'] == $value) {
+        return 'checked="checked"';
+    }
+
+    return '';
+};
 ?>
 
 <?php if ($this->ajax) { ?>
@@ -83,9 +91,9 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
         <?php if (!$this->getError()) { ?>
         <div class="diff-legend">
             <span class="prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF'); ?>:</span>
-            <label><input type="radio" value="side-by-side" name="mode"  <?= $this->params['mode'] == 'side-by-side' ? 'checked="checked"' : '' ?>  /> <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE') ?>
+            <label><input type="radio" value="side-by-side" name="mode"  <?= $modeChecked('side-by-side') ?>  /> <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE') ?>
             </label>
-            <label><input type="radio" value="inline" name="mode" <?= $this->params['mode'] == 'inline' ? 'checked="checked"' : '' ?> /> <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE') ?>
+            <label><input type="radio" value="inline" name="mode" <?= $modeChecked('inline') ?> /> <?= Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE') ?>
             </label>
             <input type="submit" value="Update" id="diff-update" class="btn" />
             <dl>

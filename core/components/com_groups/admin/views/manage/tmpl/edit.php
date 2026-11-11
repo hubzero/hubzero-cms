@@ -60,6 +60,47 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$typeSelected = function ($value) {
+    if ($this->group->type == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$publishedSelected = function ($value) {
+    if ($this->group->published == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
+
+$approvedSelected = function ($value) {
+    if ($this->group->approved == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
+
+$joinPolicyChecked = function ($value) {
+    if ($this->group->join_policy == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
+
+$discoverabilityChecked = function ($value) {
+    if ($this->group->discoverability == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
 ?>
 
 <?php if ($this->getErrors()) { ?>
@@ -104,13 +145,13 @@ $this->js();
                                 <label for="field-type"><?= Lang::txt('COM_GROUPS_TYPE') ?>: <span
                                     class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                                 <select name="group[type]" id="field-type" class="required">
-                                    <option value="1"<?= ($this->group->type == '1') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_HUB') ?></option>
-                                    <option value="3"<?= ($this->group->type == '3') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_SUPER') ?></option>
+                                    <option value="1"<?= $typeSelected('1') ?>><?= Lang::txt('COM_GROUPS_TYPE_HUB') ?></option>
+                                    <option value="3"<?= $typeSelected('3') ?>><?= Lang::txt('COM_GROUPS_TYPE_SUPER') ?></option>
                                     <?php if ($canDo->get('core.admin')) { ?>
-                                        <option value="0"<?= ($this->group->type == '0') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_SYSTEM') ?></option>
+                                        <option value="0"<?= $typeSelected('0') ?>><?= Lang::txt('COM_GROUPS_TYPE_SYSTEM') ?></option>
                                     <?php } ?>
-                                    <option value="2"<?= ($this->group->type == '2') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_PROJECT') ?></option>
-                                    <option value="4"<?= ($this->group->type == '4') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_COURSE') ?></option>
+                                    <option value="2"<?= $typeSelected('2') ?>><?= Lang::txt('COM_GROUPS_TYPE_PROJECT') ?></option>
+                                    <option value="4"<?= $typeSelected('4') ?>><?= Lang::txt('COM_GROUPS_TYPE_COURSE') ?></option>
                                 </select>
                             </div>
 
@@ -119,9 +160,9 @@ $this->js();
                                     <div class="input-wrap">
                                         <label for="field-published"><?= Lang::txt('COM_GROUPS_PUBLISHED') ?>:</label>
                                         <select name="group[published]" id="field-published">
-                                            <option <?= $this->group->published == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_UNPUBLISHED') ?></option>
-                                            <option <?= $this->group->published == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PUBLISHED') ?></option>
-                                            <option <?= $this->group->published == 2 ? 'selected="selected"' : '' ?> value="2"><?= Lang::txt('COM_GROUPS_ARCHIVED') ?></option>
+                                            <option <?= $publishedSelected(0) ?> value="0"><?= Lang::txt('COM_GROUPS_UNPUBLISHED') ?></option>
+                                            <option <?= $publishedSelected(1) ?> value="1"><?= Lang::txt('COM_GROUPS_PUBLISHED') ?></option>
+                                            <option <?= $publishedSelected(2) ?> value="2"><?= Lang::txt('COM_GROUPS_ARCHIVED') ?></option>
                                         </select>
                                     </div>
                                 </div>
@@ -129,8 +170,8 @@ $this->js();
                                     <div class="input-wrap">
                                         <label for="field-approved"><?= Lang::txt('COM_GROUPS_APPROVE') ?>:</label>
                                         <select name="group[approved]" id="field-approved">
-                                            <option <?= $this->group->approved == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_UNAPPROVED') ?></option>
-                                            <option <?= $this->group->approved == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_APPROVED') ?></option>
+                                            <option <?= $approvedSelected(0) ?> value="0"><?= Lang::txt('COM_GROUPS_UNAPPROVED') ?></option>
+                                            <option <?= $approvedSelected(1) ?> value="1"><?= Lang::txt('COM_GROUPS_APPROVED') ?></option>
                                         </select>
                                     </div>
                                 </div>
@@ -291,10 +332,10 @@ $this->js();
                             <fieldset>
                                 <legend><?php echo Lang::txt('COM_GROUPS_JOIN_POLICY'); ?>:</legend>
                                 <div class="input-wrap">
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy0" value="0"<?= $this->group->join_policy == 0 ? ' checked="checked"' : '' ?> /> <label for="field-join_policy0"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC_DESC') ?></label><br />
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy1" value="1"<?= $this->group->join_policy == 1 ? ' checked="checked"' : '' ?> /> <label for="field-join_policy1"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED_DESC') ?></label><br />
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy2" value="2"<?= $this->group->join_policy == 2 ? ' checked="checked"' : '' ?> /> <label for="field-join_policy2"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE_DESC') ?></label><br />
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy3" value="3"<?= $this->group->join_policy == 3 ? ' checked="checked"' : '' ?> /> <label for="field-join_policy3"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED_DESC') ?></label>
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy0" value="0"<?= $joinPolicyChecked(0) ?> /> <label for="field-join_policy0"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC_DESC') ?></label><br />
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy1" value="1"<?= $joinPolicyChecked(1) ?> /> <label for="field-join_policy1"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED_DESC') ?></label><br />
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy2" value="2"<?= $joinPolicyChecked(2) ?> /> <label for="field-join_policy2"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE_DESC') ?></label><br />
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy3" value="3"<?= $joinPolicyChecked(3) ?> /> <label for="field-join_policy3"><?= Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED') . ' &mdash; ' . Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED_DESC') ?></label>
                                 </div>
                             </fieldset>
                             <div class="input-wrap">
@@ -309,10 +350,10 @@ $this->js();
                                 <legend><?php echo Lang::txt('COM_GROUPS_DISCOVERABILITY'); ?>:</legend>
 
                                 <div class="input-wrap">
-                                    <input type="radio" name="group[discoverability]" id="field-discoverability0" value="0"<?= $this->group->discoverability == 0 ? ' checked="checked"' : '' ?> />
+                                    <input type="radio" name="group[discoverability]" id="field-discoverability0" value="0"<?= $discoverabilityChecked(0) ?> />
                                     <label for="field-discoverability0"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_VISIBLE') ?></label>
                                     <br />
-                                    <input type="radio" name="group[discoverability]" id="field-discoverability1" value="1"<?= $this->group->discoverability == 1 ? ' checked="checked"' : '' ?> />
+                                    <input type="radio" name="group[discoverability]" id="field-discoverability1" value="1"<?= $discoverabilityChecked(1) ?> />
                                     <label for="field-discoverability1"><?= Lang::txt('COM_GROUPS_DISCOVERABILITY_HIDDEN') ?></label>
                                 </div>
                             </fieldset>

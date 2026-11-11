@@ -43,6 +43,15 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
     }
     $incomplete = true;
 }
+
+// The attribute that marks the current value in the form fields below
+$approvedSelected = function ($value) {
+    if ($this->profile->get('approved') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <div class="grid">
     <div class="col span7">
@@ -334,9 +343,9 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
             <div class="input-wrap" data-hint="<?php echo $approvalHint; ?>">
                 <label id="field_approved-lbl" for="field_approved"><?php echo Lang::txt('Approved User'); ?></label>
                 <select id="field_approved" name="fields[approved]">
-                    <option value="0"<?= $this->profile->get('approved') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('Not approved') ?></option>
-                    <option value="1"<?= $this->profile->get('approved') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('Manually approved') ?></option>
-                    <option value="2"<?= $this->profile->get('approved') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('Automatically approved') ?></option>
+                    <option value="0"<?= $approvedSelected(0) ?>><?= Lang::txt('Not approved') ?></option>
+                    <option value="1"<?= $approvedSelected(1) ?>><?= Lang::txt('Manually approved') ?></option>
+                    <option value="2"<?= $approvedSelected(2) ?>><?= Lang::txt('Automatically approved') ?></option>
                 </select>
                 <span class="hint"><?php echo $approvalHint; ?></span>
             </div>

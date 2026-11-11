@@ -18,6 +18,15 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=f
 $this
      ->css()
      ->js();
+
+// The attribute that marks the current value in the form fields below
+$threadingSelected = function ($value) {
+    if ($this->config->get('threading', 'list') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php if ($this->getError()) { ?>
@@ -32,8 +41,8 @@ $this
                 <label for="param-threading">
                     <?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING'); ?>
                     <select name="params[threading]" id="param-threading" class="form-control">
-                        <option value="list"<?= $this->config->get('threading', 'list') == 'list' ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST') ?></option>
-                        <option value="tree"<?= $this->config->get('threading', 'list') == 'tree' ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE') ?></option>
+                        <option value="list"<?= $threadingSelected('list') ?>><?= Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST') ?></option>
+                        <option value="tree"<?= $threadingSelected('tree') ?>><?= Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE') ?></option>
                     </select>
                     <span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_HINT'); ?></span>
                 </label>

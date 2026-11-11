@@ -82,6 +82,15 @@ $grantedAttrs  = implode(' ', array_filter([
     $this->wish->get('status') == 1 ? 'checked="checked"' : '',
     $grantedLocked ? 'disabled="disabled"' : '',
 ]));
+
+// The attribute that marks the current value in the form fields below
+$categoryChecked = function ($value) {
+    if ($this->wishlist->get('category') == $value) {
+        return 'checked="checked"';
+    }
+
+    return '';
+};
 ?>
     <header id="content-header">
         <h2><?= $this->escape($this->title) . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . (int) $this->wish->get('id') ?></h2>
@@ -642,14 +651,14 @@ $grantedAttrs  = implode(' ', array_filter([
 
                                 <div class="form-group form-check">
                                     <label class="form-check-label" for="field-type-general">
-                                        <input class="option form-check-input" type="radio" name="type" value="general" id="field-type-general" <?= ($this->wishlist->get('category') == 'general') ? 'checked="checked"' : '' ?> />
+                                        <input class="option form-check-input" type="radio" name="type" value="general" id="field-type-general" <?= $categoryChecked('general') ?> />
                                         <?php echo Lang::txt('COM_WISHLIST_MAIN_NAME'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="form-check-label" for="field-type-resource">
-                                        <input class="option form-check-input" type="radio" name="type" value="resource" id="field-type-resource" <?= ($this->wishlist->get('category') == 'resource') ? 'checked="checked"' : '' ?> />
+                                        <input class="option form-check-input" type="radio" name="type" value="resource" id="field-type-resource" <?= $categoryChecked('resource') ?> />
                                         <?php echo Lang::txt('COM_WISHLIST_RESOURCE_NAME'); ?>
                                     </label>
                                 </div>
@@ -667,7 +676,7 @@ $grantedAttrs  = implode(' ', array_filter([
                             ) { ?>
                                 <div class="form-group form-check">
                                     <label class="form-check-label" for="field-type-group">
-                                        <input class="option form-check-input" type="radio" name="type" value="group" id="field-type-group" <?= $this->wishlist->get('category') == 'group' ? 'checked="checked"' : '' ?> />
+                                        <input class="option form-check-input" type="radio" name="type" value="group" id="field-type-group" <?= $categoryChecked('group') ?> />
                                         <?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?>
                                     </label>
                                 </div>

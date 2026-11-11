@@ -37,6 +37,31 @@ $this->css();
 if (empty($this->meta->qtyTxt)) {
     $this->meta->qtyTxt = '';
 }
+
+// The attribute that marks the current value in the form fields below
+$typeSelected = function ($value) {
+    if ($this->row->getType() == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$allowMultipleSelected = function ($value) {
+    if ($this->row->getAllowMultiple() == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$activeStatusSelected = function ($value) {
+    if ($this->row->getActiveStatus() == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <script type="text/javascript">
     function submitbutton(pressbutton)
@@ -154,7 +179,7 @@ if (empty($this->meta->qtyTxt)) {
 
                     foreach ($this->types as $type) {
                         ?>
-                        <option value="<?= $type->ptId ?>"<?= $this->row->getType() == $type->ptId ? ' selected="selected"' : '' ?>><?= $type->ptName ?></option>
+                        <option value="<?= $type->ptId ?>"<?= $typeSelected($type->ptId) ?>><?= $type->ptName ?></option>
                         <?php
                     }
 
@@ -174,8 +199,8 @@ if (empty($this->meta->qtyTxt)) {
             <div class="input-wrap">
                 <label for="field-multi"><?php echo Lang::txt('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
                 <select name="fields[pAllowMultiple]" id="field-multi">
-                    <option value="0"<?= $this->row->getAllowMultiple() == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
-                    <option value="1"<?= $this->row->getAllowMultiple() == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
+                    <option value="0"<?= $allowMultipleSelected(0) ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
+                    <option value="1"<?= $allowMultipleSelected(1) ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
                 </select>
             </div>
 
@@ -192,8 +217,8 @@ if (empty($this->meta->qtyTxt)) {
             <div class="input-wrap">
                 <label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_STATE'); ?>:</label>
                 <select name="fields[state]" id="field-state">
-                    <option value="0"<?= $this->row->getActiveStatus() == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                    <option value="1"<?= $this->row->getActiveStatus() == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                    <option value="0"<?= $activeStatusSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                    <option value="1"<?= $activeStatusSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
                 </select>
             </div>
 

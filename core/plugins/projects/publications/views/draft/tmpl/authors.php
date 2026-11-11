@@ -28,6 +28,14 @@ $elName = "authorList";
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->step, 0, 'author');
 
+// The attribute that marks the current value in the form fields below
+$idSelected = function ($value) {
+    if ($this->pub->groupOwner('id') == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <!-- Load content selection browser //-->
@@ -126,7 +134,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
                             }
                             $used[] = $g->gidNumber;
                             ?>
-                            <option value="<?= $g->gidNumber ?>" <?= $this->pub->groupOwner('id') == $g->gidNumber ? 'selected="selected"' : '' ?>><?= $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30) . ' (' . $g->cn . ')') ?></option>
+                            <option value="<?= $g->gidNumber ?>" <?= $idSelected($g->gidNumber) ?>><?= $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30) . ' (' . $g->cn . ')') ?></option>
                         <?php } ?>
                     </select>
                 <?php } else { ?>

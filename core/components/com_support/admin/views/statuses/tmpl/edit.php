@@ -37,6 +37,15 @@ $this
     ->css('jquery.colpick.css', 'system')
     ->js('jquery.colpick.js', 'system')
     ->js('edit.js');
+
+// The attribute that marks the current value in the form fields below
+$openSelected = function ($value) {
+    if ($this->row->get('open') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php
@@ -93,8 +102,8 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
                             </label>
                             <select name="fields[open]" id="field-open">
-                                <option value="1"<?= $this->row->get('open') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_FIELD_FOR_OPEN') ?></option>
-                                <option value="0"<?= $this->row->get('open') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_FIELD_FOR_CLOSED') ?></option>
+                                <option value="1"<?= $openSelected(1) ?>><?= Lang::txt('COM_SUPPORT_FIELD_FOR_OPEN') ?></option>
+                                <option value="0"<?= $openSelected(0) ?>><?= Lang::txt('COM_SUPPORT_FIELD_FOR_CLOSED') ?></option>
                             </select>
                         </div>
                     </div>

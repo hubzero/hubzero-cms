@@ -39,6 +39,23 @@ Toolbar::help('thread');
 $formAction = Route::url(
     'index.php?option=' . $this->option . '&controller=' . $this->controller,
 );
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->filters['state'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$filterStateSelected = function ($value) {
+    if ($this->filters['state'] === $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?php echo $formAction; ?>"
@@ -76,10 +93,10 @@ $formAction = Route::url(
             <div class="col span6 align-right">
                 <label for="filter-state"><?php echo Lang::txt('COM_FORUM_FIELD_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
-                    <option value="-1"<?= $this->filters['state'] == '-1' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_FORUM_ALL_STATES') ?></option>
-                    <option value="0"<?= $this->filters['state'] === 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                    <option value="1"<?= $this->filters['state'] === 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
-                    <option value="2"<?= $this->filters['state'] === 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
+                    <option value="-1"<?= $stateSelected('-1') ?>><?= Lang::txt('COM_FORUM_ALL_STATES') ?></option>
+                    <option value="0"<?= $filterStateSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                    <option value="1"<?= $filterStateSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                    <option value="2"<?= $filterStateSelected(2) ?>><?= Lang::txt('JTRASHED') ?></option>
                 </select>
 
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>

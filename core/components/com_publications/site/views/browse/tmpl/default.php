@@ -18,6 +18,15 @@ $database = App::get('db');
 $this
      ->css()
      ->js();
+
+// The attribute that marks the current value in the form fields below
+$categorySelected = function ($value) {
+    if ($this->filters['category'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -122,7 +131,7 @@ $this
                                     <select name="category" id="filter-type">
                                         <option value="" <?= (!$this->filters['category']) ? ' selected="selected"' : '' ?>><?= Lang::txt('All Categories') ?></option>
                                         <?php foreach ($this->categories as $item) { ?>
-                                            <option value="<?= $item->id ?>"<?= ($this->filters['category'] == $item->id) ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($item->name)) ?></option>
+                                            <option value="<?= $item->id ?>"<?= $categorySelected($item->id) ?>><?= $this->escape(stripslashes($item->name)) ?></option>
                                         <?php } ?>
                                     </select>
                                 </li>

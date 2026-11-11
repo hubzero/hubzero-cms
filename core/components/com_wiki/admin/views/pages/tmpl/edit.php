@@ -32,6 +32,47 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$modeSelected = function ($value) {
+    if ($this->row->param('mode') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$hideAuthorsChecked = function ($value) {
+    if ($this->row->param('hide_authors') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
+
+$allowChangesChecked = function ($value) {
+    if ($this->row->param('allow_changes') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
+
+$allowCommentsChecked = function ($value) {
+    if ($this->row->param('allow_comments') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
+
+$stateSelected = function ($value) {
+    if ($this->row->get('state') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -132,33 +173,33 @@ $this->js();
                 <div class="input-wrap">
                     <label for="param-mode"><?php echo Lang::txt('COM_WIKI_MODE_LABEL'); ?>:</label><br />
                     <select name="params[mode]" id="param-mode">
-                        <option value="wiki"<?= ($this->row->param('mode') == 'wiki') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WIKI_MODE_WIKI') ?></option>
-                        <option value="knol"<?= ($this->row->param('mode') == 'knol') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WIKI_MODE_KNOL') ?></option>
-                        <option value="static"<?= ($this->row->param('mode') == 'static') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WIKI_MODE_STATIC') ?></option>
+                        <option value="wiki"<?= $modeSelected('wiki') ?>><?= Lang::txt('COM_WIKI_MODE_WIKI') ?></option>
+                        <option value="knol"<?= $modeSelected('knol') ?>><?= Lang::txt('COM_WIKI_MODE_KNOL') ?></option>
+                        <option value="static"<?= $modeSelected('static') ?>><?= Lang::txt('COM_WIKI_MODE_STATIC') ?></option>
                     </select>
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="params[hide_authors]" id="param-hide_authors"<?= $this->row->param('hide_authors') == 1 ? ' checked="checked"' : '' ?> value="1" />
+                    <input type="checkbox" name="params[hide_authors]" id="param-hide_authors"<?= $hideAuthorsChecked(1) ?> value="1" />
                     <label for="param-hide_authors"><?php echo Lang::txt('COM_WIKI_FIELD_HIDE_AUTHORS'); ?></label>
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="params[allow_changes]" id="param-allow_changes"<?= $this->row->param('allow_changes') == 1 ? ' checked="checked"' : '' ?> value="1" />
+                    <input type="checkbox" name="params[allow_changes]" id="param-allow_changes"<?= $allowChangesChecked(1) ?> value="1" />
                     <label for="param-allow_changes"><?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_CHANGES'); ?></label>
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="params[allow_comments]" id="param-allow_comments"<?= $this->row->param('allow_comments') == 1 ? ' checked="checked"' : '' ?> value="1" />
+                    <input type="checkbox" name="params[allow_comments]" id="param-allow_comments"<?= $allowCommentsChecked(1) ?> value="1" />
                     <label for="param-allow_comments"><?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?></label>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_WIKI_FIELD_STATE'); ?>:</label><br />
                     <select name="page[state]" id="field-state">
-                        <option value="0"<?= ($this->row->get('state') == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                        <option value="1"<?= ($this->row->get('state') == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
-                        <option value="2"<?= ($this->row->get('state') == 2) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WIKI_STATE_TRASHED') ?></option>
+                        <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('COM_WIKI_STATE_TRASHED') ?></option>
                     </select>
                 </div>
 

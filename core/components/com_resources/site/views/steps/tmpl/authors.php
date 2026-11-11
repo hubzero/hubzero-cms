@@ -15,6 +15,15 @@ defined('_HZEXEC_') or die();
 $this
      ->css('create.css')
      ->js('create.js');
+
+// The attribute that marks the current value in the form fields below
+$accessSelected = function ($value) {
+    if ($this->row->access == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -87,10 +96,10 @@ $this
                         <?= Lang::txt('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL') ?>: <span
                             class="optional"><?= Lang::txt('COM_CONTRIBUTE_OPTIONAL') ?></span>
                         <select name="access" id="access">
-                            <option value="0"<?= $this->row->access == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC') ?></option>
-                            <option value="1"<?= $this->row->access == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?></option>
-                            <option value="3"<?= $this->row->access == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED') ?></option>
-                            <option value="4"<?= $this->row->access == 4 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE') ?></option>
+                            <option value="0"<?= $accessSelected(0) ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC') ?></option>
+                            <option value="1"<?= $accessSelected(1) ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?></option>
+                            <option value="3"<?= $accessSelected(3) ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED') ?></option>
+                            <option value="4"<?= $accessSelected(4) ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE') ?></option>
                         </select>
                     </label>
                 </div>

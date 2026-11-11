@@ -72,6 +72,15 @@ Html::behavior('tooltip');
 $this
     ->css()
     ->js();
+
+// The attribute that marks the current value in the form fields below
+$activationSelected = function ($value) {
+    if ($this->filters['activation'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -90,9 +99,9 @@ $this
             <div class="col span8">
                 <label for="filter_emailConfirmed"><?= Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED') ?></label>
                 <select name="activation" id="filter_emailConfirmed" class="inputbox filter filter-submit">
-                    <option value="0"<?= $this->filters['activation'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED') ?></option>
-                    <option value="1"<?= $this->filters['activation'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED') ?></option>
-                    <option value="-1"<?= $this->filters['activation'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED') ?></option>
+                    <option value="0"<?= $activationSelected(0) ?>><?= Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED') ?></option>
+                    <option value="1"<?= $activationSelected(1) ?>><?= Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED') ?></option>
+                    <option value="-1"<?= $activationSelected(-1) ?>><?= Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED') ?></option>
                 </select>
 
                 <?php // This is who may view the profile (users.access), not the access group: that's the Group filter?>

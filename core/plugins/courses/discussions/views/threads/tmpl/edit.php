@@ -28,6 +28,15 @@ if ($this->post->id) {
 if (!($this->post instanceof \Components\Forum\Models\Post)) {
     $this->post = new \Components\Forum\Models\Post($this->post);
 }
+
+// The attribute that marks the current value in the form fields below
+$anonymousChecked = function ($value) {
+    if ($this->post->get('anonymous') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
 ?>
     <form action="<?= Route::url($base) ?>" method="post" id="commentform" class="comment-edit"
         enctype="multipart/form-data" data-thread="<?= $this->post->get('thread') ?>">
@@ -114,7 +123,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
         <?php } ?>
 
             <label for="field-anonymous" class="comment-anonymous-label">
-                <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"<?= $this->post->get('anonymous') == 1 ? ' checked="checked"' : '' ?> value="1" />
+                <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"<?= $anonymousChecked(1) ?> value="1" />
                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
             </label>
 

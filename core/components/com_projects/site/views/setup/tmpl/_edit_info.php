@@ -16,6 +16,14 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+// The attribute that marks the current value in the form fields below
+$accessSelected = function ($value) {
+    if ($this->model->get('access') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <fieldset>
     <legend><?php echo ucwords(Lang::txt('COM_PROJECTS_EDIT_INFO')); ?></legend>
@@ -133,9 +141,9 @@ defined('_HZEXEC_') or die();
                         $access,
                     ); ?>
                 <?php else : ?>
-                    <option value="1"<?= $this->model->get('access') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC') ?></option>
-                    <option value="2"<?= $this->model->get('access') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_REGISTERED') ?></option>
-                    <option value="5"<?= $this->model->get('access') == 5 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE') ?></option>
+                    <option value="1"<?= $accessSelected(1) ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC') ?></option>
+                    <option value="2"<?= $accessSelected(2) ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_REGISTERED') ?></option>
+                    <option value="5"<?= $accessSelected(5) ?>><?= Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE') ?></option>
                 <?php endif; ?>
             </select>
         </label>

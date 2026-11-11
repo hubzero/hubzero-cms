@@ -48,6 +48,22 @@ if (substr($base, -13) == 'administrator') {
     $base = substr($base, 0, strlen($base) - 13);
 }
 
+// The attribute that marks the current value in the form fields below
+$filterbySelected = function ($value) {
+    if ($this->filters['filterby'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$quotaSelected = function ($value) {
+    if ($this->filters['quota'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -66,13 +82,13 @@ if (substr($base, -13) == 'administrator') {
             <div class="col span6">
                 <label for="filter-filterby"><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS'); ?>:</label>
                 <select name="filterby" id="filter-filterby" class="filter filter-submit">
-                    <option value=""<?= ($this->filters['filterby'] == '') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ALL') ?></option>
-                    <option value="setting_up_in_progress"<?= ($this->filters['filterby'] == 'setting_up_in_progress') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_SETTING_UP_IN_PROGRESS') ?></option>
-                    <option value="active"<?= ($this->filters['filterby'] == 'active') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ACTIVE') ?></option>
-                    <option value="deleted"<?= ($this->filters['filterby'] == 'deleted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_DELETED') ?></option>
-                    <option value="archived"<?= ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ARCHIVED') ?></option>
-                    <option value="rejected"<?= ($this->filters['filterby'] == 'rejected') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_REJECTED') ?></option>
-                    <option value="pending_approval"<?= ($this->filters['filterby'] == 'pending_approval') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_PEDING_APPROVAL') ?></option>
+                    <option value=""<?= $filterbySelected('') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ALL') ?></option>
+                    <option value="setting_up_in_progress"<?= $filterbySelected('setting_up_in_progress') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_SETTING_UP_IN_PROGRESS') ?></option>
+                    <option value="active"<?= $filterbySelected('active') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ACTIVE') ?></option>
+                    <option value="deleted"<?= $filterbySelected('deleted') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_DELETED') ?></option>
+                    <option value="archived"<?= $filterbySelected('archived') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ARCHIVED') ?></option>
+                    <option value="rejected"<?= $filterbySelected('rejected') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_REJECTED') ?></option>
+                    <option value="pending_approval"<?= $filterbySelected('pending_approval') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_PEDING_APPROVAL') ?></option>
                 </select>
 
                 <?php /*<label for="filter-private"><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY'); ?>:</label>
@@ -95,9 +111,9 @@ if (substr($base, -13) == 'administrator') {
 
                 <label for="filter-quota"><?php echo Lang::txt('COM_PROJECTS_FILTER_QUOTA'); ?>:</label>
                 <select name="quota" id="filter-quota" class="filter filter-submit">
-                    <option value="all"<?= ($this->filters['quota'] == 'all') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_QUOTA_ALL') ?></option>
-                    <option value="regular"<?= ($this->filters['quota'] == 'regular') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_QUOTA_REGULAR') ?></option>
-                    <option value="premium"<?= ($this->filters['quota'] == 'premium') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_QUOTA_PREMIUM') ?></option>
+                    <option value="all"<?= $quotaSelected('all') ?>><?= Lang::txt('COM_PROJECTS_QUOTA_ALL') ?></option>
+                    <option value="regular"<?= $quotaSelected('regular') ?>><?= Lang::txt('COM_PROJECTS_QUOTA_REGULAR') ?></option>
+                    <option value="premium"<?= $quotaSelected('premium') ?>><?= Lang::txt('COM_PROJECTS_QUOTA_PREMIUM') ?></option>
                 </select>
             </div>
         </div>

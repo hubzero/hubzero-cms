@@ -97,6 +97,15 @@ if ($sq->conditions)
 }
 */
 $cc = [];
+
+// The attribute that marks the current value in the form fields below
+$categorySelected = function ($value) {
+    if ($this->row->get('category') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -579,7 +588,7 @@ $cc = [];
                                         <?php
                                         foreach ($this->lists['categories'] as $category) {
                                             ?>
-                                            <option value="<?= $this->escape($category->alias) ?>"<?= $this->row->get('category') == $category->alias ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($category->title)) ?></option>
+                                            <option value="<?= $this->escape($category->alias) ?>"<?= $categorySelected($category->alias) ?>><?= $this->escape(stripslashes($category->title)) ?></option>
                                             <?php
                                         }
                                         ?>

@@ -92,6 +92,22 @@ if ($this->model->groupOwner()) {
     $groups[] = $this->model->groupOwner();
 }
 
+// The attribute that marks the current value in the form fields below
+$layoutSelected = function ($value) {
+    if ($this->params->get('layout', 'standard') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$paramsLayoutSelected = function ($value) {
+    if ($this->params->get('layout') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -248,8 +264,8 @@ if ($this->model->groupOwner()) {
                 <div class="input-wrap">
                     <label for="param-layout"><?php echo Lang::txt('COM_PROJECTS_LAYOUT'); ?>:</label>
                     <select name="params[layout]" id="param-layout">
-                        <option value="standard" <?= $this->params->get('layout', 'standard') == 'standard' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_LAYOUT_STANDARD') ?></option>
-                        <option value="extended" <?= $this->params->get('layout') == 'extended' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_LAYOUT_EXTENDED') ?></option>
+                        <option value="standard" <?= $layoutSelected('standard') ?>><?= Lang::txt('COM_PROJECTS_LAYOUT_STANDARD') ?></option>
+                        <option value="extended" <?= $paramsLayoutSelected('extended') ?>><?= Lang::txt('COM_PROJECTS_LAYOUT_EXTENDED') ?></option>
                     </select>
                 </div>
 

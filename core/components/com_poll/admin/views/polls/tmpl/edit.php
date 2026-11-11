@@ -63,6 +63,15 @@ $accessOptions = Html::select(
     $this->poll->get('access'),
 );
 $optionLabel = Lang::txt('COM_POLL_FIELD_OPTION');
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->poll->get('state') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form
@@ -128,9 +137,9 @@ $optionLabel = Lang::txt('COM_POLL_FIELD_OPTION');
                         <?php echo Lang::txt('COM_POLL_FIELD_PUBLISHED'); ?>:
                     </label>
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?= $this->poll->get('state') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                        <option value="1"<?= $this->poll->get('state') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
-                        <option value="2"<?= $this->poll->get('state') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
+                        <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('JTRASHED') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap">

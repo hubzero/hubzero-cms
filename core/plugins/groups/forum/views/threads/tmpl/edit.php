@@ -30,6 +30,15 @@ if ($this->post->get('id')) {
 $this
      ->css()
      ->js();
+
+// The attribute that marks the current value in the form fields below
+$aliasSelected = function ($value) {
+    if ($this->category->get('alias') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <ul id="page_options">
     <li>
@@ -143,7 +152,7 @@ $this
                                 if ($categories->count() > 0) { ?>
                                     <optgroup label="<?= $this->escape(stripslashes($section->get('title'))) ?>">
                                         <?php foreach ($categories as $category) { ?>
-                                            <option value="<?= $category->get('id') ?>"<?= $this->category->get('alias') == $category->get('alias') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($category->get('title'))) ?></option>
+                                            <option value="<?= $category->get('id') ?>"<?= $aliasSelected($category->get('alias')) ?>><?= $this->escape(stripslashes($category->get('title'))) ?></option>
                                         <?php } ?>
                                     </optgroup>
                                 <?php } ?>

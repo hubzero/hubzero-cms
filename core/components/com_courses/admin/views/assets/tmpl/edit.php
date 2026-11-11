@@ -38,6 +38,31 @@ if ($this->row->get('id')) {
 } else {
     $id = 'tmp' . time() . rand(0, 10000);
 }
+
+// The attribute that marks the current value in the form fields below
+$typeSelected = function ($value) {
+    if ($this->row->get('type') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$subtypeSelected = function ($value) {
+    if ($this->row->get('subtype') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$stateSelected = function ($value) {
+    if ($this->row->get('state') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
@@ -78,11 +103,11 @@ if ($this->row->get('id')) {
                     <div class="input-wrap">
                         <label for="field-type"><?php echo Lang::txt('COM_COURSES_FIELD_TYPE'); ?>:</label>
                         <select name="fields[type]" id="field-type">
-                            <option value="video"<?= $this->row->get('type') == 'video' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO') ?></option>
-                            <option value="file"<?= $this->row->get('type') == 'file' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_FILE') ?></option>
-                            <option value="form"<?= $this->row->get('type') == 'form' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_FORM') ?></option>
-                            <option value="text"<?= $this->row->get('type') == 'text' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_TEXT') ?></option>
-                            <option value="url"<?= $this->row->get('type') == 'url' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_URL') ?></option>
+                            <option value="video"<?= $typeSelected('video') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO') ?></option>
+                            <option value="file"<?= $typeSelected('file') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_FILE') ?></option>
+                            <option value="form"<?= $typeSelected('form') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_FORM') ?></option>
+                            <option value="text"<?= $typeSelected('text') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_TEXT') ?></option>
+                            <option value="url"<?= $typeSelected('url') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_URL') ?></option>
                         </select>
                     </div>
                 </div>
@@ -90,14 +115,14 @@ if ($this->row->get('id')) {
                     <div class="input-wrap">
                         <label for="field-subtype"><?php echo Lang::txt('COM_COURSES_FIELD_SUBTYPE'); ?>:</label>
                         <select name="fields[subtype]" id="field-subtype">
-                            <option value="video"<?= $this->row->get('subtype') == 'video' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO') ?></option>
-                            <option value="embedded"<?= $this->row->get('subtype') == 'embedded' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_EMBEDDED') ?></option>
-                            <option value="file"<?= $this->row->get('subtype') == 'file' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_FILE') ?></option>
-                            <option value="exam"<?= $this->row->get('subtype') == 'exam' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_EXAM') ?></option>
-                            <option value="quiz"<?= $this->row->get('subtype') == 'quiz' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_QUIZ') ?></option>
-                            <option value="homework"<?= $this->row->get('subtype') == 'homework' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_HOMEWORK') ?></option>
-                            <option value="note"<?= $this->row->get('subtype') == 'note' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_NOTE') ?></option>
-                            <option value="wiki"<?= $this->row->get('subtype') == 'wiki' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_WIKI') ?></option>
+                            <option value="video"<?= $subtypeSelected('video') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO') ?></option>
+                            <option value="embedded"<?= $subtypeSelected('embedded') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_EMBEDDED') ?></option>
+                            <option value="file"<?= $subtypeSelected('file') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_FILE') ?></option>
+                            <option value="exam"<?= $subtypeSelected('exam') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_EXAM') ?></option>
+                            <option value="quiz"<?= $subtypeSelected('quiz') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_QUIZ') ?></option>
+                            <option value="homework"<?= $subtypeSelected('homework') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_HOMEWORK') ?></option>
+                            <option value="note"<?= $subtypeSelected('note') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_NOTE') ?></option>
+                            <option value="wiki"<?= $subtypeSelected('wiki') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_WIKI') ?></option>
                         </select>
                     </div>
                 </div>
@@ -106,9 +131,9 @@ if ($this->row->get('id')) {
             <div class="input-wrap">
                 <label for="field-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
                 <select name="fields[state]" id="field-state">
-                    <option value="0"<?= $this->row->get('state') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_UNPUBLISHED') ?></option>
-                    <option value="1"<?= $this->row->get('state') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_PUBLISHED') ?></option>
-                    <option value="2"<?= $this->row->get('state') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_TRASHED') ?></option>
+                    <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_COURSES_UNPUBLISHED') ?></option>
+                    <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_COURSES_PUBLISHED') ?></option>
+                    <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('COM_COURSES_TRASHED') ?></option>
                 </select>
             </div>
             <div class="input-wrap">

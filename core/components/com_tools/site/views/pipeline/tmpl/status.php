@@ -28,6 +28,23 @@ $dev_suffix    = $this->config->get('dev_suffix', '_dev');
 $this
      ->css('pipeline.css')
      ->js('pipeline.js');
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->status['state'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$prioritySelected = function ($value) {
+    if ($this->status['priority'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?> - <span class="state_hed"><?php echo $state; ?></span></h2>
@@ -283,15 +300,15 @@ $this
                                         <label for="tool-newstate">
                                             <?php echo Lang::txt('COM_TOOLS_FLIP_STATUS');?>:
                                             <select name="newstate" id="tool-newstate" class="form-control">
-                                                <option value="1"<?= $this->status['state'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_REGISTERED') ?></option>
-                                                <option value="2"<?= $this->status['state'] == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_CREATED') ?></option>
-                                                <option value="3"<?= $this->status['state'] == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_UPLOADED') ?></option>
-                                                <option value="4"<?= $this->status['state'] == 4 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_INSTALLED') ?></option>
-                                                <option value="5"<?= $this->status['state'] == 5 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_UPDATED') ?></option>
-                                                <option value="6"<?= $this->status['state'] == 6 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_APPROVED') ?></option>
-                                                <option value="7"<?= $this->status['state'] == 7 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_PUBLISHED') ?></option>
+                                                <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_TOOLS_REGISTERED') ?></option>
+                                                <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('COM_TOOLS_CREATED') ?></option>
+                                                <option value="3"<?= $stateSelected(3) ?>><?= Lang::txt('COM_TOOLS_UPLOADED') ?></option>
+                                                <option value="4"<?= $stateSelected(4) ?>><?= Lang::txt('COM_TOOLS_INSTALLED') ?></option>
+                                                <option value="5"<?= $stateSelected(5) ?>><?= Lang::txt('COM_TOOLS_UPDATED') ?></option>
+                                                <option value="6"<?= $stateSelected(6) ?>><?= Lang::txt('COM_TOOLS_APPROVED') ?></option>
+                                                <option value="7"<?= $stateSelected(7) ?>><?= Lang::txt('COM_TOOLS_PUBLISHED') ?></option>
                                                 <?php if ($this->status['published'] == 1) { // admin can retire only tools that have a published flag on?>
-                                                    <option value="8"<?= $this->status['state'] == 8 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_RETIRED') ?></option>
+                                                    <option value="8"<?= $stateSelected(8) ?>><?= Lang::txt('COM_TOOLS_RETIRED') ?></option>
                                                 <?php } ?>
                                             </select>
                                         </label>
@@ -302,11 +319,11 @@ $this
                                         <label for="tool-priority">
                                             <?php echo Lang::txt('COM_TOOLS_PRIORITY');?>:
                                             <select name="priority" id="tool-priority" class="form-control">
-                                                <option value="3"<?= $this->status['priority'] == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_NORMAL') ?></option>
-                                                <option value="2"<?= $this->status['priority'] == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_HIGH') ?></option>
-                                                <option value="1"<?= $this->status['priority'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_CRITICAL') ?></option>
-                                                <option value="4"<?= $this->status['priority'] == 4 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_LOW') ?></option>
-                                                <option value="5"<?= $this->status['priority'] == 5 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_LOWEST') ?></option>
+                                                <option value="3"<?= $prioritySelected(3) ?>><?= Lang::txt('COM_TOOLS_NORMAL') ?></option>
+                                                <option value="2"<?= $prioritySelected(2) ?>><?= Lang::txt('COM_TOOLS_HIGH') ?></option>
+                                                <option value="1"<?= $prioritySelected(1) ?>><?= Lang::txt('COM_TOOLS_CRITICAL') ?></option>
+                                                <option value="4"<?= $prioritySelected(4) ?>><?= Lang::txt('COM_TOOLS_LOW') ?></option>
+                                                <option value="5"<?= $prioritySelected(5) ?>><?= Lang::txt('COM_TOOLS_LOWEST') ?></option>
                                             </select>
                                         </label>
                                     </div>

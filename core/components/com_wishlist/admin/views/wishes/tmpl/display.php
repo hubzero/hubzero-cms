@@ -36,6 +36,15 @@ Toolbar::spacer();
 Toolbar::help('wishes');
 
 $this->css();
+
+// The attribute that marks the current value in the form fields below
+$statusSelected = function ($value) {
+    if ($this->filters['status'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -53,18 +62,18 @@ $this->css();
             <div class="col span6">
                 <label for="filter-status"><?php echo Lang::txt('COM_WISHLIST_FILTER_STATUS'); ?>:</label>
                 <select name="status" id="filter-status" class="filter filter-submit">
-                    <option value="all"<?= ($this->filters['status'] == 'all') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_ALL') ?></option>
-                    <option value="granted"<?= ($this->filters['status'] == 'granted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_GRANTED') ?></option>
-                    <option value="open"<?= ($this->filters['status'] == 'open') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_OPEN') ?></option>
-                    <option value="accepted"<?= ($this->filters['status'] == 'accepted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_ACCEPTED') ?></option>
-                    <option value="pending"<?= ($this->filters['status'] == 'pending') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_PENDING') ?></option>
-                    <option value="rejected"<?= ($this->filters['status'] == 'rejected') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_REJECTED') ?></option>
-                    <option value="withdrawn"<?= ($this->filters['status'] == 'withdrawn') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_WITHDRAWN') ?></option>
-                    <option value="deleted"<?= ($this->filters['status'] == 'deleted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_DELETED') ?></option>
-                    <option value="useraccepted"<?= ($this->filters['status'] == 'useraccepted') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_USER_ACCEPTED') ?></option>
-                    <option value="private"<?= ($this->filters['status'] == 'private') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_PRIVATE') ?></option>
-                    <option value="public"<?= ($this->filters['status'] == 'public') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_PUBLIC') ?></option>
-                    <option value="assigned"<?= ($this->filters['status'] == 'assigned') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WISHLIST_STATE_ASSIGNED') ?></option>
+                    <option value="all"<?= $statusSelected('all') ?>><?= Lang::txt('COM_WISHLIST_STATE_ALL') ?></option>
+                    <option value="granted"<?= $statusSelected('granted') ?>><?= Lang::txt('COM_WISHLIST_STATE_GRANTED') ?></option>
+                    <option value="open"<?= $statusSelected('open') ?>><?= Lang::txt('COM_WISHLIST_STATE_OPEN') ?></option>
+                    <option value="accepted"<?= $statusSelected('accepted') ?>><?= Lang::txt('COM_WISHLIST_STATE_ACCEPTED') ?></option>
+                    <option value="pending"<?= $statusSelected('pending') ?>><?= Lang::txt('COM_WISHLIST_STATE_PENDING') ?></option>
+                    <option value="rejected"<?= $statusSelected('rejected') ?>><?= Lang::txt('COM_WISHLIST_STATE_REJECTED') ?></option>
+                    <option value="withdrawn"<?= $statusSelected('withdrawn') ?>><?= Lang::txt('COM_WISHLIST_STATE_WITHDRAWN') ?></option>
+                    <option value="deleted"<?= $statusSelected('deleted') ?>><?= Lang::txt('COM_WISHLIST_STATE_DELETED') ?></option>
+                    <option value="useraccepted"<?= $statusSelected('useraccepted') ?>><?= Lang::txt('COM_WISHLIST_STATE_USER_ACCEPTED') ?></option>
+                    <option value="private"<?= $statusSelected('private') ?>><?= Lang::txt('COM_WISHLIST_STATE_PRIVATE') ?></option>
+                    <option value="public"<?= $statusSelected('public') ?>><?= Lang::txt('COM_WISHLIST_STATE_PUBLIC') ?></option>
+                    <option value="assigned"<?= $statusSelected('assigned') ?>><?= Lang::txt('COM_WISHLIST_STATE_ASSIGNED') ?></option>
                 </select>
             </div>
         </div>

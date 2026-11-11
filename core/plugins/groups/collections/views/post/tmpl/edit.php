@@ -40,6 +40,15 @@ if (!$dir) {
 }
 
 $jbase = rtrim(Request::base(true), '/');
+
+// The attribute that marks the current value in the form fields below
+$idSelected = function ($value) {
+    if ($this->collection->get('id') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
@@ -194,7 +203,7 @@ $jbase = rtrim(Request::base(true), '/');
                         class="required"><?= Lang::txt('JREQUIRED') ?></span>
                     <select name="post[collection_id]" id="post-collection_id" class="form-control">
                     <?php foreach ($this->collections as $collection) { ?>
-                        <option value="<?= $this->escape($collection->get('id')) ?>"<?= $this->collection->get('id') == $collection->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($collection->get('title'))) ?></option>
+                        <option value="<?= $this->escape($collection->get('id')) ?>"<?= $idSelected($collection->get('id')) ?>><?= $this->escape(stripslashes($collection->get('title'))) ?></option>
                     <?php } ?>
                     </select>
                     <span class="hint"><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_SELECT_COLLECTION_HINT'); ?></span>

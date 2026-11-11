@@ -39,6 +39,15 @@ $formAction = Route::url(
     'index.php?option=' . $this->option
         . '&controller=' . $this->controller,
 );
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->filters['state'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <form
     action="<?php echo $formAction; ?>"
@@ -51,9 +60,9 @@ $formAction = Route::url(
             <?php echo Lang::txt('COM_ANSWERS_FILTER_BY'); ?>
         </label>
         <select name="state" id="filter-state" class="filter filter-submit">
-            <option value="-1"<?= $this->filters['state'] == -1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_ANSWERS_FILTER_BY_ALL_RESPONSES') ?></option>
-            <option value="1"<?= $this->filters['state'] == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_ANSWERS_FILTER_BY_ACCEPTED') ?></option>
-            <option value="0"<?= $this->filters['state'] == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_ANSWERS_FILTER_BY_UNACCEPTED') ?></option>
+            <option value="-1"<?= $stateSelected(-1) ?>><?= Lang::txt('COM_ANSWERS_FILTER_BY_ALL_RESPONSES') ?></option>
+            <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_ANSWERS_FILTER_BY_ACCEPTED') ?></option>
+            <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_ANSWERS_FILTER_BY_UNACCEPTED') ?></option>
         </select>
     </fieldset>
 

@@ -59,6 +59,30 @@ if ($this->row->id) {
 $time = $this->row->attribs->get('timeof', '');
 $time = strtotime($time) === false ? null : $time;
 
+// The attribute that marks the current value in the form fields below
+$publishedSelected = function ($value) {
+    if ($this->row->published == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$linkActionSelected = function ($value) {
+    if ($this->params->get('link_action') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$restrictDirectAccessSelected = function ($value) {
+    if ($this->params->get('restrict_direct_access') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php
@@ -215,12 +239,12 @@ $this
                 <div class="input-wrap">
                     <label for="field-published"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATUS'); ?>:</label><br />
                     <select name="fields[published]" id="field-published">
-                        <option value="2"<?= ($this->row->published == 2) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') ?></option>
-                        <option value="5"<?= ($this->row->published == 5) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') ?></option>
-                        <option value="3"<?= ($this->row->published == 3) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_PENDING') ?></option>
-                        <option value="0"<?= ($this->row->published == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                        <option value="1"<?= ($this->row->published == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
-                        <option value="4"<?= ($this->row->published == 4) ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
+                        <option value="2"<?= $publishedSelected(2) ?>><?= Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') ?></option>
+                        <option value="5"<?= $publishedSelected(5) ?>><?= Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') ?></option>
+                        <option value="3"<?= $publishedSelected(3) ?>><?= Lang::txt('COM_RESOURCES_PENDING') ?></option>
+                        <option value="0"<?= $publishedSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= $publishedSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="4"<?= $publishedSelected(4) ?>><?= Lang::txt('JTRASHED') ?></option>
                     </select>
                 </div>
                 <?php if ($this->row->standalone == 1) { ?>
@@ -316,19 +340,19 @@ $this
                         for="param-link_action"><?= Lang::txt('COM_RESOURCES_FIELD_LINK_ACTION_HINT') ?>:</label><br />
                     <select name="params[link_action]" id="param-link_action">
                         <option value="0"<?= !$this->params->get('link_action') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DEFAULT') ?></option>
-                        <option value="1"<?= $this->params->get('link_action') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW') ?></option>
-                        <option value="2"<?= $this->params->get('link_action') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX') ?></option>
-                        <option value="3"<?= $this->params->get('link_action') == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD') ?></option>
+                        <option value="1"<?= $linkActionSelected(1) ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW') ?></option>
+                        <option value="2"<?= $linkActionSelected(2) ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX') ?></option>
+                        <option value="3"<?= $linkActionSelected(3) ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap">
                     <label for="param-restrict_direct_access"><?= Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_HINT') ?>:</label><br />
                     <select name="params[restrict_direct_access]" id="param-link_action">
                         <option value="0"<?= !$this->params->get('restrict_direct_access') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT') ?></option>
-                        <option value="1"<?= $this->params->get('restrict_direct_access') == 1 ? ' selected="selected"' : '' ?>>
+                        <option value="1"<?= $restrictDirectAccessSelected(1) ?>>
                         <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_NO'); ?>
                         </option>
-                        <option value="2"<?= $this->params->get('restrict_direct_access') == 2 ? ' selected="selected"' : '' ?>>
+                        <option value="2"<?= $restrictDirectAccessSelected(2) ?>>
                         <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_YES'); ?>
                         </option>
                     </select>

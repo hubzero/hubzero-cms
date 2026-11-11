@@ -41,6 +41,14 @@ if (empty($this->meta->globalDownloadLimit)) {
     $this->meta->globalDownloadLimit = '';
 }
 
+// The attribute that marks the current value in the form fields below
+$eulaRequiredSelected = function ($value) {
+    if ($this->meta->eulaRequired == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php $formAction = Route::url('index.php?option=' . $this->option); ?>
@@ -53,8 +61,8 @@ if (empty($this->meta->globalDownloadLimit)) {
             <div class="input-wrap">
                 <label for="eulaRequired"><?php echo 'Is EULA Required?'; ?>:</label>
                 <select name="fields[eulaRequired]" id="eulaRequired">
-                    <option value="0"<?= $this->meta->eulaRequired == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
-                    <option value="1"<?= $this->meta->eulaRequired == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
+                    <option value="0"<?= $eulaRequiredSelected(0) ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
+                    <option value="1"<?= $eulaRequiredSelected(1) ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
                 </select>
             </div>
 

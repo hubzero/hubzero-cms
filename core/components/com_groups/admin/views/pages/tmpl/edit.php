@@ -36,6 +36,15 @@ Toolbar::help('page');
 
 // include modal for raw version links
 Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => true]);
+
+// The attribute that marks the current value in the form fields below
+$privacySelected = function ($value) {
+    if ($this->page->get('privacy') == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?php echo $base; ?>" method="post" name="adminForm" id="item-form">
@@ -151,10 +160,10 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                     }
                     ?>
                     <select name="page[privacy]" id="page[privacy]">
-                        <option value="default" <?= $this->page->get('privacy') == "default" ? 'selected="selected"' : '' ?>>
+                        <option value="default" <?= $privacySelected("default") ?>>
                             <?php echo Lang::txt('COM_GROUPS_PAGES_PRIVACY_OPTION_INHERIT', $name); ?>
                         </option>
-                        <option value="members" <?= $this->page->get('privacy') == "members" ? 'selected="selected"' : '' ?>>
+                        <option value="members" <?= $privacySelected("members") ?>>
                             <?php echo Lang::txt('COM_GROUPS_PAGES_PRIVACY_OPTION_PRIVATE'); ?>
                         </option>
                     </select>

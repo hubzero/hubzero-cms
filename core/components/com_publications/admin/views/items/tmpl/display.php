@@ -35,6 +35,15 @@ Html::behavior('tooltip');
 
 $this->css();
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$statusSelected = function ($value) {
+    if ($this->filters['status'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php if ($this->config->get('enabled') == 0) { ?>
@@ -58,15 +67,15 @@ $this->js();
             <div class="col span6">
                 <label for="status"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?>:</label>
                 <select name="status" id="status" class="filter filter-submit">
-                    <option value="all"<?= ($this->filters['status'] == 'all') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_ALL_STATUS') ?></option>
-                    <option value="3"<?= ($this->filters['status'] == 3) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT') ?></option>
-                    <option value="5"<?= ($this->filters['status'] == 5) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PENDING') ?></option>
-                    <option value="0"<?= ($this->filters['status'] == 0 && $this->filters['status'] != 'all') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?></option>
-                    <option value="10"<?= ($this->filters['status'] == 10) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING') ?></option>
-                    <option value="7"<?= ($this->filters['status'] == 7) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_WIP') ?></option>
-                    <option value="1"<?= ($this->filters['status'] == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED') ?></option>
-                    <option value="4"<?= ($this->filters['status'] == 4) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_READY') ?></option>
-                    <option value="2"<?= ($this->filters['status'] == 2) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DELETED') ?></option>
+                    <option value="all"<?= $statusSelected('all') ?>><?= Lang::txt('COM_PUBLICATIONS_ALL_STATUS') ?></option>
+                    <option value="3"<?= $statusSelected(3) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT') ?></option>
+                    <option value="5"<?= $statusSelected(5) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PENDING') ?></option>
+                    <option value="0"<?= $statusSelected(0 && $this->filters['status'] != 'all') ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?></option>
+                    <option value="10"<?= $statusSelected(10) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING') ?></option>
+                    <option value="7"<?= $statusSelected(7) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_WIP') ?></option>
+                    <option value="1"<?= $statusSelected(1) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED') ?></option>
+                    <option value="4"<?= $statusSelected(4) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_READY') ?></option>
+                    <option value="2"<?= $statusSelected(2) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DELETED') ?></option>
                 </select>
 
                 <label for="category"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY'); ?>:</label>

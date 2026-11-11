@@ -54,6 +54,39 @@ foreach ($this->page->authors()->rows() as $auth) {
     $authors[] = $auth->user->get('username');
 }
 $authors = implode(', ', $authors);
+
+// The attribute that marks the current value in the form fields below
+$parentSelected = function ($value) {
+    if ($this->page->get('parent') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$hideAuthorsChecked = function ($value) {
+    if ($this->page->param('hide_authors') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
+
+$allowChangesChecked = function ($value) {
+    if ($this->page->param('allow_changes') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
+
+$allowCommentsChecked = function ($value) {
+    if ($this->page->param('allow_comments') == $value) {
+        return ' checked="checked"';
+    }
+
+    return '';
+};
 ?>
 <header id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>">
     <?php
@@ -173,7 +206,7 @@ $authors = implode(', ', $authors);
                                                         continue;
                                                     }
                                                     ?>
-                                                    <option value="<?= $item->get('id') ?>"<?= $this->page->get('parent') == $item->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($item->get('pagename'))) ?></option>
+                                                    <option value="<?= $item->get('id') ?>"<?= $parentSelected($item->get('id')) ?>><?= $this->escape(stripslashes($item->get('pagename'))) ?></option>
                                                     <?php
                                                 }
                                             }
@@ -339,21 +372,21 @@ $authors = implode(', ', $authors);
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_hide_authors">
-                                        <input class="option form-check-input" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?= $this->page->param('hide_authors') == 1 ? ' checked="checked"' : '' ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?= $hideAuthorsChecked(1) ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_allow_changes">
-                                        <input class="option form-check-input" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?= $this->page->param('allow_changes') == 1 ? ' checked="checked"' : '' ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?= $allowChangesChecked(1) ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_allow_comments">
-                                        <input class="option form-check-input" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?= $this->page->param('allow_comments') == 1 ? ' checked="checked"' : '' ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?= $allowCommentsChecked(1) ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
                                     </label>
                                 </div>

@@ -25,6 +25,15 @@ if ($canDo->get('core.delete')) {
 }
 Toolbar::spacer();
 Toolbar::help('tagged');
+
+// The attribute that marks the current value in the form fields below
+$tblSelected = function ($value) {
+    if ($this->filters['tbl'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -34,7 +43,7 @@ Toolbar::help('tagged');
         <select name="tbl" id="filter-tbl" class="filter filter-submit">
             <option value=""<?= !$this->filters['tbl'] ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TAGS_FILTER_TYPE') ?></option>
             <?php foreach ($this->types as $type) { ?>
-                <option value="<?= $type->get('tbl') ?>"<?= $this->filters['tbl'] == $type->get('tbl') ? ' selected="selected"' : '' ?>><?= $type->get('tbl') ?></option>
+                <option value="<?= $type->get('tbl') ?>"<?= $tblSelected($type->get('tbl')) ?>><?= $type->get('tbl') ?></option>
             <?php } ?>
         </select>
 

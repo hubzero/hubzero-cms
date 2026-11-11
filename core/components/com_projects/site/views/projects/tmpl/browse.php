@@ -28,6 +28,14 @@ $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 // Get count
 $total = $this->model->entries('count', $this->filters);
 
+// The attribute that marks the current value in the form fields below
+$filterbySelected = function ($value) {
+    if ($this->filters['filterby'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -81,12 +89,12 @@ $total = $this->model->entries('count', $this->filters);
                     <li>
                         <label for="filterby"><?php echo Lang::txt('COM_PROJECTS_BROWSE_SHOW'); ?></label>
                         <select name="filterby" id="filterby">
-                            <option value="all" <?= ($this->filters['filterby'] == 'all') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_ALL') ?></option>
+                            <option value="all" <?= $filterbySelected('all') ?>><?= Lang::txt('COM_PROJECTS_FILTER_ALL') ?></option>
                             <?php /*<option value="public" <?php echo ($this->filters['filterby'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PUBLIC'); ?></option>
                             <option value="open" <?php echo ($this->filters['filterby'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_OPEN'); ?></option>*/ ?>
-                            <option value="archived" <?= ($this->filters['filterby'] == 'archived') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_ARCHIVED') ?></option>
+                            <option value="archived" <?= $filterbySelected('archived') ?>><?= Lang::txt('COM_PROJECTS_FILTER_ARCHIVED') ?></option>
                             <?php if (in_array($this->filters['reviewer'], ['sponsored', 'sensitive'])) { ?>
-                                <option value="pending" <?= ($this->filters['filterby'] == 'pending') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_FILTER_PENDING') ?></option>
+                                <option value="pending" <?= $filterbySelected('pending') ?>><?= Lang::txt('COM_PROJECTS_FILTER_PENDING') ?></option>
                             <?php } ?>
                         </select>
                     </li>

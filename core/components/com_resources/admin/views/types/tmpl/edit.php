@@ -34,6 +34,15 @@ $this->js();
 $this->css();
 
 $params = new \Hubzero\Config\Registry($this->row->get('params'));
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->row->state == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>"
@@ -222,8 +231,8 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATE'); ?>:</label><br />
                     <select name="type[state]" id="field-state">
-                        <option value="0"<?= $this->row->state == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                        <option value="1"<?= $this->row->state == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap">

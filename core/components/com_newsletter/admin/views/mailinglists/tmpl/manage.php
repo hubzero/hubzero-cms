@@ -32,17 +32,26 @@ Toolbar::spacer();
 Toolbar::cancel();
 
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$statusSelected = function ($value) {
+    if ($this->filters['status'] == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?>:</label>
         <select name="status">
-            <option value="all" <?= $this->filters['status'] == 'all' ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ALL') ?></option>
-            <option value="active" <?= $this->filters['status'] == 'active' ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ACTIVE') ?></option>
-            <option value="removed" <?= $this->filters['status'] == 'removed' ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_REMOVED') ?></option>
-            <option value="unsubscribed" <?= $this->filters['status'] == 'unsubscribed' ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED') ?></option>
-            <option value="inactive" <?= $this->filters['status'] == 'inactive' ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE') ?></option>
+            <option value="all" <?= $statusSelected('all') ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ALL') ?></option>
+            <option value="active" <?= $statusSelected('active') ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ACTIVE') ?></option>
+            <option value="removed" <?= $statusSelected('removed') ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_REMOVED') ?></option>
+            <option value="unsubscribed" <?= $statusSelected('unsubscribed') ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED') ?></option>
+            <option value="inactive" <?= $statusSelected('inactive') ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE') ?></option>
         </select>
         <input type="submit" value="<?php echo Lang::txt('Go'); ?>" id="btn-manage" />
     </fieldset>

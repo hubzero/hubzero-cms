@@ -30,6 +30,15 @@ Html::behavior('formvalidation');
 Html::behavior('keepalive');
 
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$statusSelected = function ($value) {
+    if ($this->row->status == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php
@@ -234,9 +243,9 @@ $fields = [
                 <div class="input-wrap">
                     <label for="field-status"><?php echo Lang::txt('COM_SERVICES_FIELD_STATUS'); ?>:</label><br />
                     <select name="fields[status]" id="field-status">
-                        <option value="0"<?= $this->row->status == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
-                        <option value="1"<?= $this->row->status == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JPUBLISHED') ?></option>
-                        <option value="2"<?= $this->row->status == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
+                        <option value="0"<?= $statusSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
+                        <option value="1"<?= $statusSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
+                        <option value="2"<?= $statusSelected(2) ?>><?= Lang::txt('JTRASHED') ?></option>
                     </select>
                 </div>
             </fieldset>

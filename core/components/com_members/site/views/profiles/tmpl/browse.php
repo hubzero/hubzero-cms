@@ -36,6 +36,15 @@ foreach ($this->fields as $field) {
         $filters[] = $field;
     }
 }
+
+// The attribute that marks the current value in the form fields below
+$sortDirSelected = function ($value) {
+    if ($this->filters['sort_Dir'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -144,8 +153,8 @@ foreach ($this->fields as $field) {
                             <label for="filter-value-sort-dir">
                                 <?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR'); ?>
                                 <select class="form-control" name="sort_Dir" id="filter-value-sort-dir">
-                                    <option value="asc"<?= $this->filters['sort_Dir'] == 'asc' ? ' selected="selected"' : '' ?>><?= $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_ASC')) ?></option>
-                                    <option value="desc"<?= $this->filters['sort_Dir'] == 'desc' ? ' selected="selected"' : '' ?>><?= $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_DESC')) ?></option>
+                                    <option value="asc"<?= $sortDirSelected('asc') ?>><?= $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_ASC')) ?></option>
+                                    <option value="desc"<?= $sortDirSelected('desc') ?>><?= $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_DESC')) ?></option>
                                 </select>
                             </label>
                         </div>

@@ -86,6 +86,15 @@ $sel301 = ($statusCode == 301)
 $sel302 = (($hasNewUrl && !$statusCode) || $statusCode == 302)
     ? ' selected="selected"'
     : '';
+
+// The attribute that marks the current value in the form fields below
+$publishedSelected = function ($value) {
+    if ($this->row->published == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form
@@ -238,10 +247,10 @@ $sel302 = (($hasNewUrl && !$statusCode) || $statusCode == 302)
                         </span>
                     </label>
                     <select name="fields[published]" id="fields-published">
-                        <option value="1"<?= $this->row->published == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JENABLED') ?></option>
-                        <option value="0"<?= $this->row->published == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JDISABLED') ?></option>
-                        <option value="2"<?= $this->row->published == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JARCHIVED') ?></option>
-                        <option value="-2"<?= $this->row->published == -2 ? ' selected="selected"' : '' ?>><?= Lang::txt('JTRASHED') ?></option>
+                        <option value="1"<?= $publishedSelected(1) ?>><?= Lang::txt('JENABLED') ?></option>
+                        <option value="0"<?= $publishedSelected(0) ?>><?= Lang::txt('JDISABLED') ?></option>
+                        <option value="2"<?= $publishedSelected(2) ?>><?= Lang::txt('JARCHIVED') ?></option>
+                        <option value="-2"<?= $publishedSelected(-2) ?>><?= Lang::txt('JTRASHED') ?></option>
                     </select>
                 </div>
             </fieldset>

@@ -84,6 +84,30 @@ $panels = [
     'submitter' => $typeParams->get('show_submitter', 0),
 ];
 
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->model->get('state') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$unpublishedReasonSelected = function ($value) {
+    if ($this->model->get('unpublished_reason') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$featuredSelected = function ($value) {
+    if ($this->model->get('featured') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -308,13 +332,13 @@ $panels = [
                 <div class="input-wrap">
                     <label for="field-published"><?= Lang::txt('COM_PUBLICATIONS_FIELD_STATUS') ?>:</label><br />
                     <select name="state" id="field-published">
-                        <option value="3"<?= ($this->model->get('state') == 3) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT') ?></option>
-                        <option value="4"<?= ($this->model->get('state') == 4) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_READY') ?></option>
-                        <option value="5"<?= ($this->model->get('state') == 5) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PENDING') ?></option>
-                        <option value="7"<?= ($this->model->get('state') == 7) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_WIP') ?></option>
-                        <option value="1"<?= ($this->model->get('state') == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED') ?></option>
-                        <option value="0"<?= ($this->model->get('state') == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?></option>
-                        <option value="2"<?= ($this->model->get('state') == 2) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DELETED') ?></option>
+                        <option value="3"<?= $stateSelected(3) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT') ?></option>
+                        <option value="4"<?= $stateSelected(4) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_READY') ?></option>
+                        <option value="5"<?= $stateSelected(5) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PENDING') ?></option>
+                        <option value="7"<?= $stateSelected(7) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_WIP') ?></option>
+                        <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED') ?></option>
+                        <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?></option>
+                        <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DELETED') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap" id="unPubReasonDiv">
@@ -322,7 +346,7 @@ $panels = [
                     <select name="unPubReasonDropdownList" id="field-unPubReason" disabled>
                         <option value="0"<?= ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_OTHERS') ?></option>
                         <option value="1" <?= ($this->model->get('unpublished_reason') == null || $this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') ?></option>
-                        <option value="2"<?= ($this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR') ?></option>
+                        <option value="2"<?= $unpublishedReasonSelected(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap" id="reasonDiv">
@@ -332,8 +356,8 @@ $panels = [
                 <div class="input-wrap">
                     <label for="field-featured"><?= Lang::txt('COM_PUBLICATIONS_FIELD_FEATURED') ?>:</label><br />
                     <select name="featured" id="field-featured">
-                        <option value="0"<?= ($this->model->get('featured') == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_NO') ?></option>
-                        <option value="1"<?= ($this->model->get('featured') == 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_YES') ?></option>
+                        <option value="0"<?= $featuredSelected(0) ?>><?= Lang::txt('COM_PUBLICATIONS_NO') ?></option>
+                        <option value="1"<?= $featuredSelected(1) ?>><?= Lang::txt('COM_PUBLICATIONS_YES') ?></option>
                     </select>
                 </div>
                 <div class="input-wrap">

@@ -44,6 +44,31 @@ $nameidSources = [
     'email'    => Lang::txt('COM_SAML_NAMEID_SOURCE_EMAIL'),
     'id'       => Lang::txt('COM_SAML_NAMEID_SOURCE_ID'),
 ];
+
+// The attribute that marks the current value in the form fields below
+$nameidSourceSelected = function ($value) {
+    if ($this->row->get('nameid_source', 'username') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$nameidFormatSelected = function ($value) {
+    if ($this->row->get('nameid_format', 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
+
+$stateSelected = function ($value) {
+    if ($this->row->get('state', 1) == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
@@ -154,7 +179,7 @@ $nameidSources = [
                     <label for="field-nameid_source"><?= Lang::txt('COM_SAML_FIELD_NAMEID_SOURCE') ?>:</label><br />
                     <select name="fields[nameid_source]" id="field-nameid_source">
                         <?php foreach ($nameidSources as $value => $label) { ?>
-                            <option value="<?= $this->escape($value) ?>"<?= $this->row->get('nameid_source', 'username') == $value ? ' selected="selected"' : '' ?>><?= $label ?></option>
+                            <option value="<?= $this->escape($value) ?>"<?= $nameidSourceSelected($value) ?>><?= $label ?></option>
                         <?php } ?>
                     </select>
                 </div>
@@ -163,7 +188,7 @@ $nameidSources = [
                     <label for="field-nameid_format"><?= Lang::txt('COM_SAML_FIELD_NAMEID_FORMAT') ?>:</label><br />
                     <select name="fields[nameid_format]" id="field-nameid_format">
                         <?php foreach ($nameidFormats as $value => $label) { ?>
-                            <option value="<?= $this->escape($value) ?>"<?= $this->row->get('nameid_format', 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified') == $value ? ' selected="selected"' : '' ?>><?= $label ?></option>
+                            <option value="<?= $this->escape($value) ?>"<?= $nameidFormatSelected($value) ?>><?= $label ?></option>
                         <?php } ?>
                     </select>
                 </div>
@@ -217,8 +242,8 @@ $nameidSources = [
                     <label for="field-state"><?php echo Lang::txt('JSTATUS'); ?>:</label><br />
                     <?php if (User::authorise('core.edit.state', $this->option)) { ?>
                         <select name="fields[state]" id="field-state">
-                            <option value="1"<?= $this->row->get('state', 1) == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_STATE_ENABLED') ?></option>
-                            <option value="0"<?= $this->row->get('state', 1) == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_STATE_DISABLED') ?></option>
+                            <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_SAML_STATE_ENABLED') ?></option>
+                            <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_SAML_STATE_DISABLED') ?></option>
                         </select>
                     <?php } else { ?>
                         <span class="state <?php echo $this->row->get('state', 1) ? 'publish' : 'unpublish'; ?>">

@@ -26,6 +26,15 @@ if ($canDo->get('core.edit')) {
 if ($canDo->get('core.delete')) {
     Toolbar::deleteList();
 }
+
+// The attribute that marks the current value in the form fields below
+$componentSelected = function ($value) {
+    if ($this->filters['component'] == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller); ?>
@@ -37,7 +46,7 @@ if ($canDo->get('core.delete')) {
             <?php if ($this->components->count()) { ?>
                 <?php foreach ($this->components as $component) { ?>
                     <?php $name = $component->get('component'); // (getComponents() returns model rows, not strings)?>
-                    <option value="<?= $this->escape($name) ?>"<?= $this->filters['component'] == $name ? ' selected="selected"' : '' ?>><?= $this->escape($name) ?></option>
+                    <option value="<?= $this->escape($name) ?>"<?= $componentSelected($name) ?>><?= $this->escape($name) ?></option>
                 <?php } ?>
             <?php } ?>
         </select>

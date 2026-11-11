@@ -39,6 +39,15 @@ Html::behavior('keepalive');
 $this->js('jquery.fileuploader.js', 'system');
 $this->js();
 $this->css();
+
+// The attribute that marks the current value in the form fields below
+$stateSelected = function ($value) {
+    if ($this->row->get('state') == $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
@@ -218,10 +227,10 @@ $this->css();
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label><br />
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?= $this->row->get('state') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_UNPUBLISHED') ?></option>
-                        <option value="1"<?= $this->row->get('state') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_PUBLISHED') ?></option>
-                        <option value="3"<?= $this->row->get('state') == 3 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_DRAFT') ?></option>
-                        <option value="2"<?= $this->row->get('state') == 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_TRASHED') ?></option>
+                        <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_COURSES_UNPUBLISHED') ?></option>
+                        <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_COURSES_PUBLISHED') ?></option>
+                        <option value="3"<?= $stateSelected(3) ?>><?= Lang::txt('COM_COURSES_DRAFT') ?></option>
+                        <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('COM_COURSES_TRASHED') ?></option>
                     </select>
                 </div>
             </fieldset>

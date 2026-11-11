@@ -38,6 +38,15 @@ $this
     ->js('tagActivityLog')
     ->js('tagLogListItem')
     ->js('tagLogsFetcher');
+
+// The attribute that marks the current value in the form fields below
+$adminSelected = function ($value) {
+    if ($this->tag->get('admin') == $value) {
+        return 'selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php
@@ -59,8 +68,8 @@ $invalidMsg      = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 -->
                 <label for="field-admin"><?php echo Lang::txt('COM_TAGS_FIELD_TYPE'); ?>:</label><br />
                 <select name="fields[admin]" id="field-admin">
-                    <option value="0" <?= $this->tag->get('admin') == 0 ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_TAGS_FIELD_TYPE_USER') ?></option>
-                    <option value="2" <?= $this->tag->get('admin') == 2 ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_TAGS_FIELD_TYPE_CORE') ?></option>
+                    <option value="0" <?= $adminSelected(0) ?>><?= Lang::txt('COM_TAGS_FIELD_TYPE_USER') ?></option>
+                    <option value="2" <?= $adminSelected(2) ?>><?= Lang::txt('COM_TAGS_FIELD_TYPE_CORE') ?></option>
                     <option value="1" <?= is_null($this->tag->get('admin')) || $this->tag->get('admin') == 1 ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_TAGS_FIELD_TYPE_ADMIN') ?></option>
                 </select>
             </div>

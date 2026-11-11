@@ -53,6 +53,15 @@ Html::behavior('modal');
 
 // add js
 $this->js();
+
+// The attribute that marks the current value in the form fields below
+$typeSelected = function ($value) {
+    if ($this->filters['type'] === $value) {
+        return ' selected="selected"';
+    }
+
+    return '';
+};
 ?>
 
 <?php
@@ -81,9 +90,9 @@ if (!$this->dependency) {
             </div>
             <div class="col span8 align-right">
                 <select name="type" id="filter-type" class="filter filter-submit">
-                    <option value=""<?= $this->filters['type'] === '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_ALL_TYPES') ?></option>
-                    <option value="html"<?= $this->filters['type'] === 'html' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_TYPE_HTML') ?></option>
-                    <option value="plain"<?= $this->filters['type'] === 'plain' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_NEWSLETTER_TYPE_PLAIN') ?></option>
+                    <option value=""<?= $typeSelected('') ?>><?= Lang::txt('COM_NEWSLETTER_ALL_TYPES') ?></option>
+                    <option value="html"<?= $typeSelected('html') ?>><?= Lang::txt('COM_NEWSLETTER_TYPE_HTML') ?></option>
+                    <option value="plain"<?= $typeSelected('plain') ?>><?= Lang::txt('COM_NEWSLETTER_TYPE_PLAIN') ?></option>
                 </select>
             </div>
         </div>
