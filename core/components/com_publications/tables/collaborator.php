@@ -63,14 +63,17 @@ class Collaborator extends Table
         $record = $this->getCollaboratorByName($name);
 
         if (empty($record)) {
-            $query = "INSERT INTO $this->tableName (id, name, orcid, access_token, acquisition_date) VALUES ("
+            // id is assigned by the database
+            $query = "INSERT INTO $this->tableName (name, orcid, access_token, acquisition_date) VALUES ("
                 . $this->db->quote($name) . ","
                 . $this->db->quote($orcid) . ","
                 . $this->db->quote($accessToken) . ","
                 . $this->db->quote(date('Y-m-d H:i:s')) . ")";
         } elseif (empty($record->orcid) && empty($record->access_token)) {
+            // As Members' ORCID controller does: the date records when the token was acquired
             $query = "UPDATE $this->tableName SET orcid=" . $this->db->quote($orcid)
-                . " AND access_token=" . $this->db->quote($accessToken)
+                . ", access_token=" . $this->db->quote($accessToken)
+                . ", acquisition_date=" . $this->db->quote(date('Y-m-d H:i:s'))
                 . " WHERE name=" . $this->db->quote($name);
         } else {
             // The collaborator already has ORCID details; nothing is written
