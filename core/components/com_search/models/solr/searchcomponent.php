@@ -23,6 +23,18 @@ use Hubzero\Facades\Route;
  * Database model for search components
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * Columns of #__solr_search_searchcomponents, and relationships read as properties:
+ *
+ * @property  int                     $id
+ * @property  string                  $name
+ * @property  string|null             $created
+ * @property  string|null             $indexed
+ * @property  string|null             $state
+ * @property  int|null                $indexed_records
+ * @property  string|null             $title
+ * @property  string|null             $custom
+ * @property  \Hubzero\Database\Rows  $filters          The filters, through filters()
  */
 class SearchComponent extends Relational
 {

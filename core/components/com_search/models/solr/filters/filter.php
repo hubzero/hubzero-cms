@@ -18,6 +18,21 @@ use Hubzero\Facades\Component;
  * Database model for search filters
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * Columns of #__solr_search_filters, and relationships read as properties:
+ *
+ * @property  int                       $id
+ * @property  int                       $component_id
+ * @property  string                    $type
+ * @property  string                    $field
+ * @property  string                    $label
+ * @property  \Hubzero\Config\Registry  $params        Through transformParams()
+ * @property  int                       $ordering
+ * @property  string|null               $created
+ * @property  int                       $created_by
+ * @property  string|null               $modified
+ * @property  int                       $modified_by
+ * @property  \Hubzero\Database\Rows    $options       The options, through options()
  */
 class Filter extends Relational
 {

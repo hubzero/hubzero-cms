@@ -15,6 +15,18 @@ use Hubzero\Facades\Route;
  * Database model for search blacklist
  *
  * @uses  \Hubzero\Database\Relational
+ *
+ * Columns of #__solr_search_facets, and relationships read as properties:
+ *
+ * @property  int                                   $id
+ * @property  string                                $name
+ * @property  string                                $facet        The query, with the parent's, through transformFacet()
+ * @property  int                                   $state
+ * @property  int                                   $protected
+ * @property  string                                $ordering
+ * @property  int|null                              $parent_id
+ * @property  \Hubzero\Database\Rows                $children     The child facets, through children()
+ * @property  \Components\Search\Models\Solr\Facet  $parentFacet  The parent facet, through parentFacet()
  */
 class Facet extends Relational
 {
