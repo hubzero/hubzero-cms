@@ -283,7 +283,9 @@ $editUrl = Route::url(
                             <?php endforeach; ?>
                         </fieldset>
                     <?php endif ?>
-                    <?php // If we are not showing the options we need to use the hidden fields so the values are not lost.?>
+                    <?php
+                    // If we are not showing the options we need to use the hidden fields so the values are not lost.
+                    ?>
                 <?php elseif ($name == 'basic-limited') : ?>
                     <?php foreach ($this->form->getFieldset('basic-limited') as $field) : ?>
                         <?php  echo $field->input; ?>

@@ -112,7 +112,9 @@ $activationSelected = function ($value) use ($view) {
                     </option>
                 </select>
 
-                <?php // This is who may view the profile (users.access), not the access group: that's the Group filter?>
+                <?php
+                // This is who may view the profile (users.access), not the access group: that's the Group filter
+                ?>
                 <label for="filter-access"><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS_LABEL'); ?>:</label>
                 <select name="access" id="filter-access" class="inputbox filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MEMBERS_FILTER_PROFILE_ACCESS');?></option>

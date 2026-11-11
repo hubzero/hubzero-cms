@@ -276,7 +276,9 @@ $prioritySelected = function ($value) use ($view) {
                                     ?>
                                     <li class="history"><a href="<?= $ticketUrl ?>"
                                         title="<?= Lang::txt('COM_TOOLS_HISTORY_TIPS') ?>">History</a></li>
-                                    <?php if ($this->status['state'] != 'Registered') { // hide for tools in registered status?>
+                                    <?php
+                                    // hide for tools in registered status
+                                    if ($this->status['state'] != 'Registered') { ?>
                                         <?php
                                         $linkUrl = $developer_url . $project_path . $this->status['toolname'] . '/wiki';
                                         ?>
@@ -472,7 +474,9 @@ $prioritySelected = function ($value) use ($view) {
                                                 <option value="7"<?= $stateSelected(7) ?>>
                                                     <?= Lang::txt('COM_TOOLS_PUBLISHED') ?>
                                                 </option>
-                                                <?php if ($this->status['published'] == 1) { // admin can retire only tools that have a published flag on?>
+                                                <?php
+                                                // admin can retire only tools that have a published flag on
+                                                if ($this->status['published'] == 1) { ?>
                                                     <option value="8"<?= $stateSelected(8) ?>>
                                                         <?= Lang::txt('COM_TOOLS_RETIRED') ?>
                                                     </option>

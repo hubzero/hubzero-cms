@@ -149,7 +149,10 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
     <?php } ?>
     <td class="shrinked middle_valign nojs">
         <?php if ($this->model->access('content')) { ?>
-            <?php // A link, not a form: these rows sit inside #plg-form. Delete by GET only shows the confirmation, which posts with a token?>
+            <?php
+            // A link, not a form: these rows sit inside #plg-form. Delete by GET only shows the confirmation, which
+            // posts with a token
+            ?>
             <?php
             $deleteUrl = Route::url(
                 $this->model->link('files') . '&action=delete' . $subdirPath . '&asset='

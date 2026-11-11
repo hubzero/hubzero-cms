@@ -198,7 +198,10 @@ $this->js('verify.js', 'com_massmail');
                     </div>
                 <?php } ?>
 
-                <?php // Whenever the system is off, warn that it will be held and needs release -- shown alongside the approval banner too.?>
+                <?php
+                // Whenever the system is off, warn that it will be held and needs release -- shown alongside the
+                // approval banner too.
+                ?>
                 <?php if ($disp['held']) { ?>
                     <div class="mm-disp mm-disp-hold">
                         <span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_HELD_TITLE'); ?></span>

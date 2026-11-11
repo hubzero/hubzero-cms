@@ -334,14 +334,18 @@ $categoryChecked = function ($value) use ($view) {
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <?php if ($this->wishlist->access('manage')) { // My opinion is available for list owners/advisory committee only?>
+                                    <?php
+                                    // My opinion is available for list owners/advisory committee only
+                                    if ($this->wishlist->access('manage')) { ?>
                                         <th><?php echo Lang::txt('COM_WISHLIST_MY_OPINION'); ?></th>
                                     <?php } ?>
                                     <th><?php echo Lang::txt('COM_WISHLIST_CONSENSUS'); ?></th>
                                     <th><?php echo Lang::txt('COM_WISHLIST_COMMUNITY_VOTE'); ?></th>
                                 </tr>
                             </thead>
-                        <?php if ($this->wishlist->access('manage')) { // My opinion is available for list owners/advisory committee only?>
+                        <?php
+                        // My opinion is available for list owners/advisory committee only
+                        if ($this->wishlist->access('manage')) { ?>
                             <tfoot>
                                 <tr>
                                     <td></td>
