@@ -87,7 +87,10 @@ $sectionIdSelected = function ($value) use ($view) {
                             class="required"><?= Lang::txt('COM_FORUM_REQUIRED') ?></span>
                         <select class="form-control" name="fields[section_id]" id="field-section_id">
                             <?php foreach ($this->forum->sections(['state' => 1])->rows() as $section) { ?>
-                                <option value="<?= $section->get('id') ?>"<?= $sectionIdSelected($section->get('id')) ?>><?= $this->escape(stripslashes($section->get('title'))) ?></option>
+                                <option
+                                    value="<?= $section->get('id') ?>"<?= $sectionIdSelected($section->get('id')) ?>>
+                                    <?= $this->escape(stripslashes($section->get('title'))) ?>
+                                </option>
                             <?php } ?>
                         </select>
                     </label>

@@ -190,7 +190,10 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                         <option value=""<?= (@$this->filters['term'] == '') ? ' selected="selected"' : '' ?>>
                             <?= Lang::txt('COM_GROUPS_MEMBER_TERM_ANY') ?>
                         </option>
-                        <option value="limited"<?= (@$this->filters['term'] == 'limited') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_MEMBER_TERM_LIMITED') ?></option>
+                        <option
+                            value="limited"<?= (@$this->filters['term'] == 'limited') ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('COM_GROUPS_MEMBER_TERM_LIMITED') ?>
+                        </option>
                         <option value="perpetual"<?= (@$this->filters['term'] == 'perpetual') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_MEMBER_TERM_PERPETUAL') ?></option>
                         <option value="expiring"<?= (@$this->filters['term'] == 'expiring') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_MEMBER_TERM_EXPIRING') ?></option>
                     </select>

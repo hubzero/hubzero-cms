@@ -131,7 +131,10 @@ $categorySelected = function ($value) use ($view) {
                                 <li>
                                     <label for="filter-type"><?php echo Lang::txt('Category'); ?></label>
                                     <select name="category" id="filter-type">
-                                        <option value="" <?= (!$this->filters['category']) ? ' selected="selected"' : '' ?>><?= Lang::txt('All Categories') ?></option>
+                                        <option
+                                            value="" <?= (!$this->filters['category']) ? ' selected="selected"' : '' ?>>
+                                            <?= Lang::txt('All Categories') ?>
+                                        </option>
                                         <?php foreach ($this->categories as $item) { ?>
                                             <option value="<?= $item->id ?>"<?= $categorySelected($item->id) ?>>
                                                 <?= $this->escape(stripslashes($item->name)) ?>

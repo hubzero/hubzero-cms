@@ -80,7 +80,10 @@ $this
                 foreach ($this->licenses as $license) {
                     if (substr($license->name, 0, 6) == 'custom') {
                         ?>
-                    <option value="custom"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= Lang::txt('Custom') ?></option>
+                    <option
+                        value="custom"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>>
+                        <?= Lang::txt('Custom') ?>
+                    </option>
                         <?php
                         $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text))
                             . '" />';

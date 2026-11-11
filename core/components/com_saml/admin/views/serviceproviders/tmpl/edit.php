@@ -125,8 +125,14 @@ $stateSelected = function ($value) use ($view) {
                     <label
                         for="field-want_requests_signed"><?= Lang::txt('COM_SAML_FIELD_WANT_SIGNED') ?>:</label><br />
                     <select name="fields[want_requests_signed]" id="field-want_requests_signed">
-                        <option value="1"<?= $this->row->get('want_requests_signed', 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JYES') ?></option>
-                        <option value="0"<?= !$this->row->get('want_requests_signed', 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
+                        <option
+                            value="1"<?= $this->row->get('want_requests_signed', 1) ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('JYES') ?>
+                        </option>
+                        <option
+                            value="0"<?= !$this->row->get('want_requests_signed', 1) ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('JNO') ?>
+                        </option>
                     </select>
                 </div>
 

@@ -409,9 +409,18 @@ $discoverabilityChecked = function ($value) use ($view) {
                             <div class="input-wrap">
                                 <label for="display_system_users"><?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS') ?>:</label><br />
                                 <select name="group[params][display_system_users]" id="display_system_users">
-                                    <option <?= $display_system_users == 'global' ? 'selected="selected"' : '' ?> value="global"><?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_GLOBAL') ?></option>
-                                    <option <?= $display_system_users == 'no' ? 'selected="selected"' : '' ?> value="no"><?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_NO') ?></option>
-                                    <option <?= $display_system_users == 'yes' ? 'selected="selected"' : '' ?> value="yes"><?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_YES') ?></option>
+                                    <option <?= $display_system_users == 'global' ? 'selected="selected"' : '' ?>
+                                        value="global">
+                                        <?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_GLOBAL') ?>
+                                    </option>
+                                    <option <?= $display_system_users == 'no' ? 'selected="selected"' : '' ?>
+                                        value="no">
+                                        <?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_NO') ?>
+                                    </option>
+                                    <option <?= $display_system_users == 'yes' ? 'selected="selected"' : '' ?>
+                                        value="yes">
+                                        <?= Lang::txt('COM_GROUPS_SHOW_SYSTEM_USERS_YES') ?>
+                                    </option>
                                 </select>
                             </div>
                         </fieldset>

@@ -374,7 +374,10 @@ $this
                 <div class="input-wrap">
                     <label for="param-restrict_direct_access"><?= Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_HINT') ?>:</label><br />
                     <select name="params[restrict_direct_access]" id="param-link_action">
-                        <option value="0"<?= !$this->params->get('restrict_direct_access') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT') ?></option>
+                        <option
+                            value="0"<?= !$this->params->get('restrict_direct_access') ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT') ?>
+                        </option>
                         <option value="1"<?= $restrictDirectAccessSelected(1) ?>>
                         <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_NO'); ?>
                         </option>

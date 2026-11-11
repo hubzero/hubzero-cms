@@ -289,7 +289,10 @@ if ($this->page->get('id')) {
                             <option value=""><?= Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_NULL') ?></option>
                             <?php foreach ($this->categories as $pageCategory) : ?>
                                 <?php $sel = ($category == $pageCategory->get('id')) ? 'selected="selected"' : ''; ?>
-                                <option <?= $sel ?> data-color="#<?= $this->escape($pageCategory->get('color')) ?>" value="<?= (int) $pageCategory->get('id') ?>"><?= $this->escape($pageCategory->get('title')) ?></option>
+                                <option <?= $sel ?> data-color="#<?= $this->escape($pageCategory->get('color')) ?>"
+                                    value="<?= (int) $pageCategory->get('id') ?>">
+                                    <?= $this->escape($pageCategory->get('title')) ?>
+                                </option>
                             <?php endforeach; ?>
                             <option value="other"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_CATEGORY_OPTION_OTHER') ?></a>
                         </select>

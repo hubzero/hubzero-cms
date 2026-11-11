@@ -39,8 +39,14 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
                         <label for="show_tags">
                             <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_DISPLAY_TAGS'); ?>
                             <select name="citations_show_tags" id="show_tags" class="form-control">
-                                <option value="yes" <?= ($this->citations_show_tags == "yes") ? "selected=selected" : "" ?>><?= Lang::txt('Yes') ?></option>
-                                <option value="no" <?= ($this->citations_show_tags == "no") ? "selected=selected" : "" ?>><?= Lang::txt('No') ?></option>
+                                <option
+                                    value="yes" <?= ($this->citations_show_tags == "yes") ? "selected=selected" : "" ?>>
+                                    <?= Lang::txt('Yes') ?>
+                                </option>
+                                <option
+                                    value="no" <?= ($this->citations_show_tags == "no") ? "selected=selected" : "" ?>>
+                                    <?= Lang::txt('No') ?>
+                                </option>
                             </select>
                         </label>
                     </div>
@@ -51,7 +57,10 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
                             <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_DISPLAY_BADGES'); ?>
                             <select name="citations_show_badges" id="show_badges" class="form-control">
                                 <option value="yes" <?= ($this->citations_show_badges == "yes") ? "selected=selected" : "" ?>><?= Lang::txt('Yes') ?></option>
-                                <option value="no" <?= ($this->citations_show_badges == "no") ? "selected=selected" : "" ?>><?= Lang::txt('No') ?></option>
+                                <option
+                                    value="no" <?= ($this->citations_show_badges == "no") ? "selected=selected" : "" ?>>
+                                    <?= Lang::txt('No') ?>
+                                </option>
                             </select>
                         </label>
                     </div>

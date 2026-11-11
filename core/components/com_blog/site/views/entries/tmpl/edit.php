@@ -156,7 +156,10 @@ $accessSelected = function ($value) use ($view) {
                                     <option value="2"<?= $accessSelected(2) ?>>
                                         <?= Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED') ?>
                                     </option>
-                                    <option value="5"<?= $this->entry->get('access') > 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE') ?></option>
+                                    <option
+                                        value="5"<?= $this->entry->get('access') > 2 ? ' selected="selected"' : '' ?>>
+                                        <?= Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE') ?>
+                                    </option>
                                 </select>
                             </label>
                         </div>

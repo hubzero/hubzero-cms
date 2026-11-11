@@ -352,8 +352,14 @@ $allowCommentsChecked = function ($value) use ($view) {
                                             <?= Lang::txt('COM_WIKI_FIELD_MODE') ?>: <span
                                                 class="required"><?= Lang::txt('COM_WIKI_REQUIRED') ?></span>
                                             <select name="params[mode]" id="params_mode" class="form-control">
-                                                <option value="knol"<?= $mode == 'knol' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WIKI_FIELD_MODE_KNOL') ?></option>
-                                                <option value="wiki"<?= $mode == 'wiki' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WIKI_FIELD_MODE_WIKI') ?></option>
+                                                <option
+                                                    value="knol"<?= $mode == 'knol' ? ' selected="selected"' : '' ?>>
+                                                    <?= Lang::txt('COM_WIKI_FIELD_MODE_KNOL') ?>
+                                                </option>
+                                                <option
+                                                    value="wiki"<?= $mode == 'wiki' ? ' selected="selected"' : '' ?>>
+                                                    <?= Lang::txt('COM_WIKI_FIELD_MODE_WIKI') ?>
+                                                </option>
                                                 <?php if ($this->page->access('admin')) { ?>
                                                     <option value="static"<?= $mode == 'static' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WIKI_FIELD_MODE_STATIC') ?></option>
                                                 <?php } ?>

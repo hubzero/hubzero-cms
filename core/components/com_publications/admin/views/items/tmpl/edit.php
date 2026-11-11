@@ -361,7 +361,10 @@ $featuredSelected = function ($value) use ($view) {
                     <select name="unPubReasonDropdownList" id="field-unPubReason" disabled>
                         <option value="0"<?= ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_OTHERS') ?></option>
                         <option value="1" <?= ($this->model->get('unpublished_reason') == null || $this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') ?></option>
-                        <option value="2"<?= $unpublishedReasonSelected(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR') ?></option>
+                        <option
+                            value="2"<?= $unpublishedReasonSelected(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ?>>
+                            <?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR') ?>
+                        </option>
                     </select>
                 </div>
                 <div class="input-wrap" id="reasonDiv">
