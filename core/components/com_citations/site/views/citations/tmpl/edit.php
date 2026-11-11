@@ -146,7 +146,18 @@ $pid = Request::getInt('publication', 0);
                                 <?php echo Lang::txt('COM_CITATIONS_AUTHORS') . ' '; ?>
                                 <span class="required"><?php echo Lang::txt('JREQUIRED'); ?></span>
                                 <?php
-                                    $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'author', 'field-author', '', (isset($this->authorString) ? $this->authorString : '')]]);
+                                $mc = Event::trigger(
+                                    'hubzero.onGetMultiEntry',
+                                    [
+                                        [
+                                            'members',
+                                            'author',
+                                            'field-author',
+                                            '',
+                                            (isset($this->authorString) ? $this->authorString : ''),
+                                        ],
+                                    ],
+                                );
                                 if (count($mc) > 0) {
                                     echo $mc[0];
                                 } else { ?>
