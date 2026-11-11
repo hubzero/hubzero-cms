@@ -282,7 +282,8 @@ class Review extends \Hubzero\Base\Model
     public function link($type = '')
     {
         if (!isset($this->base)) {
-            $this->base = 'index.php?option=com_publications&id=' . $this->get('item_id') . '&active=reviews';
+            $this->base = 'index.php?option=com_publications&id=' . $this->get('publication_id')
+                . '&active=reviews';
         }
         $link = $this->base;
 
