@@ -274,9 +274,11 @@ class Generator
             // Skip if we dont have a short desc
             // but put in error
             if (!$phpdoc->getSummary()) {
-                $this
-                    ->output['errors'][] = sprintf('Missing docblock for method "%s" in "%s"', $method
-                    ->getName(), $file);
+                $this->output['errors'][] = sprintf(
+                    'Missing docblock for method "%s" in "%s"',
+                    $method->getName(),
+                    $file,
+                );
                 continue;
             }
 
@@ -323,8 +325,6 @@ class Generator
                         continue;
                     }
 
-                    $endpoint['parameters'][] = (array) $parameter;
-                    continue;
                     // A long description or list of allowed values may be written as
                     // an array of pieces, so the docblock can wrap; join them with spaces
                     foreach (['description', 'allowedValues'] as $field) {
@@ -333,6 +333,8 @@ class Generator
                         }
                     }
 
+                    $endpoint['parameters'][] = (array) $parameter;
+                    continue;
                 }
 
                 if ($name == 'uri') {

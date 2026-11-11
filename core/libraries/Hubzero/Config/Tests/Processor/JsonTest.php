@@ -111,10 +111,11 @@ class JsonTest extends TestCase
     public function testCanParse()
     {
         $this->assertFalse($this->processor->canParse('Cras justo odio, dapibus ac facilisis in, egestas eget quam.'));
-        $this
-            ->assertFalse($this
-                ->processor
-                ->canParse('<config><app><setting name="application_env">development</setting></app></config>'));
+        $this->assertFalse(
+            $this->processor->canParse(
+                '<config><app><setting name="application_env">development</setting></app></config>',
+            ),
+        );
         $this->assertFalse(
             $this->processor->canParse('{Cras justo odio,
             dapibus ac facilisis in,

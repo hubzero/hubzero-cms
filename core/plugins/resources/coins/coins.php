@@ -155,8 +155,8 @@ class Coins extends Plugin
             $tconfig = Component::params('com_tools');
 
             if ($model->doi && ($model->doi_shoulder || $tconfig->get('doi_shoulder'))) {
-                $doi = 'https://doi.org/' . ($model
-                    ->doi_shoulder ? $model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/'
+                $doi = 'https://doi.org/'
+                    . ($model->doi_shoulder ? $model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/'
                     . strtoupper($model->doi);
             }
         }

@@ -311,9 +311,9 @@ class Ftp implements AdapterInterface
         }
 
         if (!$this->connection) {
-            throw new RuntimeException(sprintf('Could not connect to host: %s, port: %s', $this
-                ->getHost(), $this
-                ->getPort()));
+            throw new RuntimeException(
+                sprintf('Could not connect to host: %s, port: %s', $this->getHost(), $this->getPort()),
+            );
         }
 
         $this->login();
@@ -330,9 +330,9 @@ class Ftp implements AdapterInterface
     protected function setConnectionPassiveMode()
     {
         if (!ftp_pasv($this->getConnection(), $this->passive)) {
-            throw new RuntimeException(sprintf('Could not set passive mode for connection: %s::%s', $this
-                ->getHost(), $this
-                ->getPort()));
+            throw new RuntimeException(
+                sprintf('Could not set passive mode for connection: %s::%s', $this->getHost(), $this->getPort()),
+            );
         }
     }
 
@@ -371,10 +371,12 @@ class Ftp implements AdapterInterface
 
         if (!$isLoggedIn) {
             $this->disconnect();
-            throw new RuntimeException(sprintf('Could not login with connection: %s::%s, username: %s', $this
-                ->getHost(), $this
-                ->getPort(), $this
-                ->getUsername()));
+            throw new RuntimeException(sprintf(
+                'Could not login with connection: %s::%s, username: %s',
+                $this->getHost(),
+                $this->getPort(),
+                $this->getUsername(),
+            ));
         }
     }
 

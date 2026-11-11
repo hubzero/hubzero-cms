@@ -755,9 +755,10 @@ class Migration
                         } elseif ($useTransaction) {
                             $runDb->transactionRollback();
                         }
-                        $this
-                            ->log("Error: running {$direction}() resulted in\n\n{$e
-                                ->getMessage()}\n\nin {$scope}/{$file}", 'error');
+                        $this->log(
+                            "Error: running {$direction}() resulted in\n\n{$e->getMessage()}\n\nin {$scope}/{$file}",
+                            'error',
+                        );
                         return false;
                     } catch (\PDOException $e) {
                         // Rollback transaction on failure
@@ -767,9 +768,10 @@ class Migration
                         } elseif ($useTransaction) {
                             $runDb->transactionRollback();
                         }
-                        $this
-                            ->log("Error: running {$direction}() resulted in\n\n{$e
-                                ->getMessage()}\n\nin {$scope}/{$file}", 'error');
+                        $this->log(
+                            "Error: running {$direction}() resulted in\n\n{$e->getMessage()}\n\nin {$scope}/{$file}",
+                            'error',
+                        );
                         return false;
                     }
                 }

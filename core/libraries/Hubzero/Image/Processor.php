@@ -510,10 +510,9 @@ class Processor extends Obj
      */
     private function geoSingleFracs2dec($fracs)
     {
-        return $this
-            ->geoFrac2dec($fracs[0]) + $this
-            ->geoFrac2dec($fracs[1]) / 60 + $this
-            ->geoFrac2dec($fracs[2]) / 3600;
+        return $this->geoFrac2dec($fracs[0])
+            + $this->geoFrac2dec($fracs[1]) / 60
+            + $this->geoFrac2dec($fracs[2]) / 3600;
     }
 
     /**

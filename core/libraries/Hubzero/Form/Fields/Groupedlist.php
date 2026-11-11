@@ -48,8 +48,7 @@ class Groupedlist extends Field
                     $tmp = Dropdown::option(
                         ($element['value']) ? (string) $element['value'] : trim((string) $element),
                         App::get('language')
-                            ->alt(trim((string) $element), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this
-                                ->fieldname)),
+                            ->alt(trim((string) $element), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)),
                         'value',
                         'text',
                         ((string) $element['disabled'] == 'true'),
@@ -158,10 +157,8 @@ class Groupedlist extends Field
                 null,
                 [
                     'list.attr' => $attr,
-                    'id' => $this
-                        ->id,
-                    'list.select' => $this
-                        ->value,
+                    'id' => $this->id,
+                    'list.select' => $this->value,
                     'group.items' => null,
                     'option.key.toHtml' => false,
                     'option.text.toHtml' => false,
@@ -179,10 +176,8 @@ class Groupedlist extends Field
                 $this->name,
                 [
                     'list.attr' => $attr,
-                    'id' => $this
-                        ->id,
-                    'list.select' => $this
-                        ->value,
+                    'id' => $this->id,
+                    'list.select' => $this->value,
                     'group.items' => null,
                     'option.key.toHtml' => false,
                     'option.text.toHtml' => false,

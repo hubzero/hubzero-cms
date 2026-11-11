@@ -165,9 +165,13 @@ class Token
         $encrypted = hex2bin($rawtoken);
 
         // Do the decryption
-        $decrypted = openssl_decrypt($encrypted, 'AES-128-CBC', $this
-            ->key, OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $this
-            ->iv);
+        $decrypted = openssl_decrypt(
+            $encrypted,
+            'AES-128-CBC',
+            $this->key,
+            OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING,
+            $this->iv,
+        );
         // unpack the original values, no need to strip padding or hash
         // we'll just unpack what we need
         $arr = unpack("N3", $decrypted);

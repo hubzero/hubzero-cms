@@ -60,9 +60,7 @@ class Country extends Select
             $tmp = Dropdown::option(
                 (string) $option->code,
                 App::get('language')
-                    ->alt(trim((string) $option
-                        ->name), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this
-                        ->fieldname)),
+                    ->alt(trim((string) $option->name), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)),
                 'value',
                 'text',
             );

@@ -145,9 +145,8 @@ class Media extends SiteController
 
             // Check to see if we need to set a new farthest position
             if (
-                $trackingInformationDetailed
-                    ->get('current_position') > $trackingInformationDetailed
-                    ->get('farthest_position')
+                $trackingInformationDetailed->get('current_position')
+                    > $trackingInformationDetailed->get('farthest_position')
             ) {
                 $trackingInformationDetailed->set('farthest_position', $time);
                 $trackingInformationDetailed->set('farthest_position_timestamp', Date::toSql());

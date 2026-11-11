@@ -131,9 +131,10 @@ class Componentlayout extends Field
 
             // Add a Use Global option if useglobal="true" in XML file
             if ($this->element['useglobal'] == 'true') {
-                $groups[$lang
-                    ->txt('JOPTION_FROM_STANDARD')]['items'][] = Dropdown::option('', $lang
-                    ->txt('JGLOBAL_USE_GLOBAL'));
+                $groups[$lang->txt('JOPTION_FROM_STANDARD')]['items'][] = Dropdown::option(
+                    '',
+                    $lang->txt('JGLOBAL_USE_GLOBAL'),
+                );
             }
 
             // Add the layout options from the component path.
@@ -167,9 +168,9 @@ class Componentlayout extends Field
                     // Add an option to the component group
                     $value = $filesystem->name($file);
                     $component_layouts[$i] = $value;
-                    $text = isset($menu['option']) ? $lang
-                        ->txt($menu['option']) : (isset($menu['title']) ? $lang
-                        ->txt($menu['title']) : $value);
+                    $text = isset($menu['option'])
+                        ? $lang->txt($menu['option'])
+                        : (isset($menu['title']) ? $lang->txt($menu['title']) : $value);
                     $groups['_']['items'][] = Dropdown::option('_:' . $value, $text);
                 }
             }

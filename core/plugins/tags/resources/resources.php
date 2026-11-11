@@ -186,8 +186,8 @@ class Resources extends Plugin
             $query .= "AND r.published=1 AND r.access<4 ";
         }
         if (isset($filters['tag'])) {
-            $query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag=" . $database
-                ->quote($filters['tag']) . " OR tg.alias=" . $database->quote($filters['tag']) . ") ";
+            $query .= "AND t.objectid=r.id AND t.tbl='resources' AND t.tagid=tg.id AND (tg.tag="
+                . $database->quote($filters['tag']) . " OR tg.alias=" . $database->quote($filters['tag']) . ") ";
         }
         if (isset($filters['tags'])) {
             $ids = implode(',', $filters['tags']);

@@ -64,13 +64,9 @@ class Rule
 
         // Add unicode property support if available.
         if (JCOMPAT_UNICODE_PROPERTIES) {
-            $this
-                ->modifiers = (strpos($this
-                ->modifiers == null ? '' : $this
-                ->modifiers, 'u') !== false) ? $this
-                ->modifiers : $this
-                ->modifiers
-                . 'u';
+            $this->modifiers = (strpos($this->modifiers == null ? '' : $this->modifiers, 'u') !== false)
+                ? $this->modifiers
+                : $this->modifiers . 'u';
         }
 
         // Test the value against the regular expression.

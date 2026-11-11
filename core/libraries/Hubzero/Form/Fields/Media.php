@@ -42,12 +42,9 @@ class Media extends Field
     {
         $assetField  = $this->element['asset_field'] ? (string) $this->element['asset_field'] : 'asset_id';
         $authorField = $this->element['created_by_field'] ? (string) $this->element['created_by_field'] : 'created_by';
-        $asset = $this
-            ->form
-            ->getValue($assetField) ? $this
-            ->form
-            ->getValue($assetField) : (string) $this
-            ->element['asset_id'];
+        $asset = $this->form->getValue($assetField)
+            ? $this->form->getValue($assetField)
+            : (string) $this->element['asset_id'];
         if ($asset == '') {
             $asset = App::get('request')->getCmd('option');
         }

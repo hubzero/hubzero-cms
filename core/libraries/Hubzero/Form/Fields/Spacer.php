@@ -71,11 +71,9 @@ class Spacer extends Field
                     . htmlspecialchars(
                         trim($text, ':')
                             . '::'
-                            . ($this
-                                ->translateDescription ? App::get('language')
-                                ->txt($this
-                                    ->description) : $this
-                                ->description),
+                            . ($this->translateDescription
+                                ? App::get('language')->txt($this->description)
+                                : $this->description),
                         ENT_COMPAT,
                         'UTF-8',
                     ) . '"';
