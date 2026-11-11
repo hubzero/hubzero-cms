@@ -154,11 +154,11 @@ class Usage extends Plugin
     {
         if ($time < 60) {
             $data = round($time, 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_SECONDS');
-        } elseif ($time > 60 && $time < 3600) {
+        } elseif ($time < 3600) {
             $data = round(($time / 60), 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_MINUTES');
-        } elseif ($time >= 3600 && $time < 86400) {
+        } elseif ($time < 86400) {
             $data = round(($time / 3600), 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_HOURS');
-        } elseif ($time >= 86400) {
+        } else {
             $data = round(($time / 86400), 2) . ' ' . Lang::txt('PLG_PUBLICATION_USAGE_DAYS');
         }
 
