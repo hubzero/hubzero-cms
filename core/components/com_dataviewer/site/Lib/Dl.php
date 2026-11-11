@@ -56,12 +56,13 @@ class Dl
     {
         $hash_list = explode(',', $hash_list);
 
-        $fl = '';
+        // Each path is quoted for the shell on its own: a file name holding a
+        // quote, $ or backtick must stay a file name
+        $fl = [];
 
         foreach ($hash_list as $hash) {
             if (isset($_SESSION['dv']['file_download']['list'][$hash])) {
-                $fullpath = '"' . $_SESSION['dv']['file_download']['list'][$hash] . '"';
-                $fl .= $fullpath . ' ';
+                $fl[] = escapeshellarg((string) $_SESSION['dv']['file_download']['list'][$hash]);
             }
         }
 
@@ -71,7 +72,9 @@ class Dl
 
         ob_end_flush();
 
-        print `zip -qj - $fl`;
+        if ($fl) {
+            passthru('zip -qj - ' . implode(' ', $fl));
+        }
 
         exit(0);
     }
