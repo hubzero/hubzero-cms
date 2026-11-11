@@ -160,8 +160,12 @@ $formatSelected = function ($value) use ($view) {
                 'index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=update&'
                     . $this->token . '=1',
             );
+            $addUrl = Route::url(
+                'index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=add&'
+                    . $this->token . '=1',
+            );
             ?>
-            <fieldset class="author-manager" data-add="<?= Route::url('index.php?option=com_citations&controller=authors&citation=' . $this->row->id . '&task=add&' . $this->token . '=1') ?>" data-update="<?= $updateUrl ?>" data-list="<?= $displayUrl ?>">
+            <fieldset class="author-manager" data-add="<?= $addUrl ?>" data-update="<?= $updateUrl ?>" data-list="<?= $displayUrl ?>">
                     <div class="grid">
                         <div class="col span10">
                             <label for="field-author">
