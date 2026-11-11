@@ -19,6 +19,10 @@ use Hubzero\Facades\App;
 
 /**
  * Checkin Controller
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  \Components\Checkin\Models\Inspector  $model  The checked-out item inspector, set by execute()
  */
 class Checkin extends AdminController
 {

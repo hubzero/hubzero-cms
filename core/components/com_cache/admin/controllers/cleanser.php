@@ -18,6 +18,10 @@ use Hubzero\Facades\App;
 
 /**
  * Cache Controller
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  \Components\Cache\Models\Manager  $model  The cache manager, set by execute()
  */
 class Cleanser extends AdminController
 {
