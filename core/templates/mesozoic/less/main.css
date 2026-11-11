@@ -1812,6 +1812,9 @@ ol.comments .comment-options a:before,
 ol.comments .comment-options button:before {
   margin-right: 0.4em;
 }
+ol.comments .comment-options button {
+  color: #08c;
+}
 ol.comments .comment-options:hover a,
 ol.comments .comment-options:hover button {
   color: #999;
