@@ -46,6 +46,7 @@ $this
         <?php
         $linkText = Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_POWERED_BY');
         ?>
-        <p id="credits"><a href="<?php echo Request::base(true); ?>/about/hubzero#recommendations"><?= $linkText ?></a></p>
+        <p id="credits"><a
+            href="<?php echo Request::base(true); ?>/about/hubzero#recommendations"><?= $linkText ?></a></p>
     </div>
 </div>
