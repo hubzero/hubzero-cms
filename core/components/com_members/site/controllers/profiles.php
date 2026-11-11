@@ -1194,6 +1194,11 @@ class Profiles extends SiteController
             App::abort(403, Lang::txt('COM_MEMBERS_NOT_AUTH'));
         }
 
+        // What the layout and the branches below read
+        $this->view
+            ->set('profile', $profile)
+            ->set('authorized', User::authorise('core.manage', $this->option) ? 'admin' : '');
+
         // Set the page title
         $title  = Lang::txt(strtoupper($this->option));
         $title .= ($this->task) ? ': ' . Lang::txt(strtoupper($this->task)) : '';
