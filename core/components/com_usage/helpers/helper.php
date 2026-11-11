@@ -100,8 +100,6 @@ class Helper
             $enddate = $dtyear . '-' . $dtmonth;
         }
 
-        $dtyearnext = $dtyear + 1;
-
         // Look up top list information...
         $topname = '';
         $sql = "SELECT name, valfmt, size FROM tops WHERE top=" . $db->quote($top);
@@ -123,7 +121,6 @@ class Helper
 
             if ($dtmonthnext > 12) {
                 $dtmonthnext = 1;
-                $dtyearnext++;
             }
 
             $dtyearprior = substr($enddate, 0, 4) - 1;
@@ -264,6 +261,7 @@ class Helper
     public static function arrayUniqueReindex($somearray)
     {
         $tmparr = array_unique($somearray);
+        $newarr = [];
         $i = 0;
         foreach ($tmparr as $v) {
             $newarr[$i] = $v;
