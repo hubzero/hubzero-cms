@@ -43,10 +43,10 @@ class Medialist extends AdminController
 
         //$session = App::get('session');
         $state = User::getState('folder');
-        $folders = Filesystem::directoryTree(COM_MEDIA_BASE);
+        $folders = Filesystem::directoryTree(MediaHelper::base());
         $folderTree = MediaHelper::buildFolderTree($folders);
 
-        $children = MediaHelper::getChildren(COM_MEDIA_BASE, $folder);
+        $children = MediaHelper::getChildren(MediaHelper::base(), $folder);
         $parent = MediaHelper::getParent($folder);
 
         $style = Request::getState(
@@ -83,14 +83,14 @@ class Medialist extends AdminController
         $folder = urldecode(Request::getString('folder', ''));
 
         if ($file) {
-            $file = \Hubzero\Filesystem\Util::checkPath(COM_MEDIA_BASE . $file);
+            $file = \Hubzero\Filesystem\Util::checkPath(MediaHelper::base() . $file);
             $path = $file;
 
             if (!is_file($file)) {
                 App::abort(404, Lang::txt('Specified file "%s" does not exist', $file));
             }
         } elseif ($folder) {
-            $folder = \Hubzero\Filesystem\Util::checkPath(COM_MEDIA_BASE . $folder);
+            $folder = \Hubzero\Filesystem\Util::checkPath(MediaHelper::base() . $folder);
             $path = $folder;
 
             if (!is_dir($folder)) {
@@ -103,7 +103,7 @@ class Medialist extends AdminController
         // Compile info
         $data = [
             'type'          => ($file ? 'file' : 'folder'),
-            'path'          => substr($path, strlen(COM_MEDIA_BASE)),
+            'path'          => substr($path, strlen(MediaHelper::base())),
             'absolute_path' => $path,
             'full_path'     => substr($path, strlen(PATH_ROOT)),
             'name'          => basename($path),
@@ -147,13 +147,13 @@ class Medialist extends AdminController
         // Get some data from the request
         $tmpl = Request::getCmd('tmpl');
         $file = urldecode(Request::getString('file', ''));
-        $file = \Hubzero\Filesystem\Util::checkPath(COM_MEDIA_BASE . $file);
+        $file = \Hubzero\Filesystem\Util::checkPath(MediaHelper::base() . $file);
 
         if (!is_file($file)) {
             App::abort(404);
         }
 
-        $file = COM_MEDIA_BASEURL . substr($file, strlen(COM_MEDIA_BASE));
+        $file = MediaHelper::baseUrl() . substr($file, strlen(MediaHelper::base()));
 
         $this->view
             ->set('file', $file)

@@ -13,6 +13,7 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\User;
+use Components\Media\Admin\Helpers\MediaHelper;
 
 // No direct access.
 defined('_HZEXEC_') or die();
@@ -32,7 +33,7 @@ endif;
 
 // Last modified time
 $this->currentFolder['modified'] = filemtime(
-    COM_MEDIA_BASE . $this->currentFolder['path'],
+    MediaHelper::base() . $this->currentFolder['path'],
 );
 $modified = Date::of($this->currentFolder['modified']);
 

@@ -15,6 +15,7 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\User;
+use Components\Media\Admin\Helpers\MediaHelper;
 
 // No direct access.
 defined('_HZEXEC_') or die();
@@ -67,7 +68,7 @@ $href = Route::url(
 
 // Last modified time
 $this->currentDoc['modified'] = filemtime(
-    COM_MEDIA_BASE . $this->currentDoc['path'],
+    MediaHelper::base() . $this->currentDoc['path'],
 );
 $modified = Date::of($this->currentDoc['modified']);
 
@@ -91,7 +92,7 @@ Event::trigger(
 );
 
 $escapedName = $this->escape($this->currentDoc['name']);
-$docUrl = COM_MEDIA_BASEURL . $this->currentDoc['path'];
+$docUrl = MediaHelper::baseUrl() . $this->currentDoc['path'];
 ?>
     <tr class="media-item media-item-list">
         <td width="50%">

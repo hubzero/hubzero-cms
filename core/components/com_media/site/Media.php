@@ -14,6 +14,7 @@ use Hubzero\Facades\User;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\App;
 use Hubzero\Component\AbstractComponent;
+use Components\Media\Admin\Helpers\MediaHelper;
 
 /**
  * Component entry point
@@ -44,8 +45,12 @@ class Media extends AbstractComponent
         }
 
         // Set the path definitions
-        define('COM_MEDIA_BASE', PATH_APP . '/' . $params->get('image_path', 'images'));
-        define('COM_MEDIA_BASEURL', Request::root() . '/' . $params->get('image_path', 'images'));
+        $base = PATH_APP . '/' . $params->get('image_path', 'images');
+        $baseurl = Request::root() . '/' . $params->get('image_path', 'images');
+
+        MediaHelper::setBase($base, $baseurl);
+        define('COM_MEDIA_BASE', $base);
+        define('COM_MEDIA_BASEURL', $baseurl);
 
         Lang::load('com_media', dirname(__DIR__) . '/admin', null, false, true)
         ||  Lang::load('com_media', __DIR__, null, false, true);

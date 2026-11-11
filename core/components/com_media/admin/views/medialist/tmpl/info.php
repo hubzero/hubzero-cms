@@ -11,6 +11,7 @@ use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Components\Media\Admin\Helpers\MediaHelper;
 
 // No direct access.
 defined('_HZEXEC_') or die();
@@ -84,7 +85,7 @@ endif;
                             title="<?php echo $escapedName; ?>">
                             <span class="media-preview-shim"></span><!--
                             --><img
-                                src="<?php echo COM_MEDIA_BASEURL . $this->data['path']; ?>"
+                                src="<?php echo MediaHelper::baseUrl() . $this->data['path']; ?>"
                                 alt="<?php echo $imgAlt; ?>"
                                 width="<?php echo $imgWidth; ?>" />
                         </div>

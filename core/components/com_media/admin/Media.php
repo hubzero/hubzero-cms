@@ -8,6 +8,7 @@
 
 namespace Components\Media\Admin;
 
+use Components\Media\Admin\Helpers\MediaHelper;
 use Hubzero\Component\AbstractComponent;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
@@ -36,9 +37,11 @@ class Media extends AbstractComponent
         $path = trim($params->get('file_path', 'site/media'), '/');
         $path = $path ? $path . '/' : '';
 
-        define('COM_MEDIA_BASE', PATH_APP . '/' . $path);
+        $base = PATH_APP . '/' . $path;
+        $baseurl = rtrim(Request::root(), '/') . substr($base, strlen(PATH_ROOT));
 
-        $baseurl = rtrim(Request::root(), '/') . substr(COM_MEDIA_BASE, strlen(PATH_ROOT));
+        MediaHelper::setBase($base, $baseurl);
+        define('COM_MEDIA_BASE', $base);
         define('COM_MEDIA_BASEURL', $baseurl);
 
         $controllerName = Request::getCmd('controller', 'media_test');

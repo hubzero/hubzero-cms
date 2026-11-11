@@ -13,6 +13,7 @@ use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\User;
+use Components\Media\Admin\Helpers\MediaHelper;
 
 // No direct access.
 defined('_HZEXEC_') or die();
@@ -59,7 +60,7 @@ Event::trigger(
     ['com_media.file', &$this->_tmp_img, &$params],
 );
 
-$imgUrl = COM_MEDIA_BASEURL . $this->currentImg['path'];
+$imgUrl = MediaHelper::baseUrl() . $this->currentImg['path'];
 $imgExt = Filesystem::extension($this->currentImg['name']);
 $escapedName = $this->escape($this->currentImg['name']);
 ?>

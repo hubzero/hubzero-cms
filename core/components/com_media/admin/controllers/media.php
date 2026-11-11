@@ -60,23 +60,23 @@ class Media extends AdminController
         $folder = Request::getString('folder', '');
         $session = App::get('session');
         $state = User::getState('folder');
-        $folders = Filesystem::directoryTree(COM_MEDIA_BASE);
+        $folders = Filesystem::directoryTree(MediaHelper::base());
 
         $fold = [
             'id' => 0,
             'parent' => -1,
-            'name' => '', //basename(COM_MEDIA_BASE),
-            'fullname' => COM_MEDIA_BASE,
-            'relname' => substr(COM_MEDIA_BASE, strlen(PATH_ROOT)),
+            'name' => '', //basename(MediaHelper::base()),
+            'fullname' => MediaHelper::base(),
+            'relname' => substr(MediaHelper::base(), strlen(PATH_ROOT)),
         ];
 
         array_unshift($folders, $fold);
 
         $folderTree = MediaHelper::buildFolderTree($folders, -1);
 
-        $folderTree[0]['name'] = basename(COM_MEDIA_BASE);
+        $folderTree[0]['name'] = basename(MediaHelper::base());
 
-        MediaHelper::createPath($folders, COM_MEDIA_BASE);
+        MediaHelper::createPath($folders, MediaHelper::base());
 
         $layout = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
 
@@ -131,7 +131,7 @@ class Media extends AdminController
                 App::redirect($rtrn);
             }
 
-            $path = \Hubzero\Filesystem\Util::normalizePath(COM_MEDIA_BASE . $parent . DS . $folder);
+            $path = \Hubzero\Filesystem\Util::normalizePath(MediaHelper::base() . $parent . DS . $folder);
 
             if (!is_dir($path) && !is_file($path)) {
                 // Trigger the onContentBeforeSave event.
@@ -154,7 +154,7 @@ class Media extends AdminController
                 // Trigger the onContentAfterSave event.
                 Event::trigger('content.onContentAfterSave', ['com_media.folder', &$object_file, true]);
 
-                Notify::success(Lang::txt('COM_MEDIA_CREATE_COMPLETE', substr($path, strlen(COM_MEDIA_BASE))));
+                Notify::success(Lang::txt('COM_MEDIA_CREATE_COMPLETE', substr($path, strlen(MediaHelper::base()))));
             }
 
             Request::setVar('folder', ($parent) ? $parent . DS . $folder : $folder);
@@ -196,7 +196,9 @@ class Media extends AdminController
                 return;
             }
 
-            $path = \Hubzero\Filesystem\Util::normalizePath(COM_MEDIA_BASE . ($parent ? $parent . DS : '') . $folder);
+            $path = \Hubzero\Filesystem\Util::normalizePath(
+                MediaHelper::base() . ($parent ? $parent . DS : '') . $folder,
+            );
 
             if (!is_dir($path) && !is_file($path)) {
                 // Trigger the onContentBeforeSave event.
@@ -228,7 +230,7 @@ class Media extends AdminController
 
         echo json_encode([
             'success' => true,
-            'directory' => COM_MEDIA_BASE . ($parent ? $parent . DS : '') . $folder,
+            'directory' => MediaHelper::base() . ($parent ? $parent . DS : '') . $folder,
         ]);
     }
 
@@ -343,7 +345,7 @@ class Media extends AdminController
                     ['com_media.file', &$object_file, true],
                 );
 
-                $relativePath = substr($file['filepath'], strlen(COM_MEDIA_BASE));
+                $relativePath = substr($file['filepath'], strlen(MediaHelper::base()));
                 Notify::success(Lang::txt('COM_MEDIA_UPLOAD_COMPLETE', $relativePath));
             }
         }
@@ -413,7 +415,7 @@ class Media extends AdminController
         $filename = Filesystem::name($filename) . '.' . $ext;
 
         $folder = Request::getString('folder', '');
-        $path = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, [COM_MEDIA_BASE, $folder, $filename]));
+        $path = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, [MediaHelper::base(), $folder, $filename]));
         $path = dirname($path);
 
         // Define upload directory and make sure its writable
@@ -545,7 +547,7 @@ class Media extends AdminController
             {
                 // filename is not safe
                 $filename = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
-                $relativeName = substr($filename, strlen(COM_MEDIA_BASE));
+                $relativeName = substr($filename, strlen(MediaHelper::base()));
                 $msg = Lang::txt(
                     'COM_MEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME',
                     $relativeName
@@ -554,10 +556,10 @@ class Media extends AdminController
                 continue;
             }*/
 
-            $pathParts = [COM_MEDIA_BASE, $folder, $path];
+            $pathParts = [MediaHelper::base(), $folder, $path];
             $fullPath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, $pathParts));
             $object_file = new \Hubzero\Base\Obj(['filepath' => $fullPath]);
-            $relativePath = substr($fullPath, strlen(COM_MEDIA_BASE));
+            $relativePath = substr($fullPath, strlen(MediaHelper::base()));
             if (is_file($fullPath)) {
                 // Trigger the onContentBeforeDelete event.
                 $result = Event::trigger(
@@ -670,7 +672,7 @@ class Media extends AdminController
             {
                 // filename is not safe
                 $filename = htmlspecialchars($path, ENT_COMPAT, 'UTF-8');
-                $relativeName = substr($filename, strlen(COM_MEDIA_BASE));
+                $relativeName = substr($filename, strlen(MediaHelper::base()));
                 $errorMsg = Lang::txt(
                     'COM_MEDIA_ERROR_UNABLE_TO_DELETE_FILE_WARNFILENAME',
                     $relativeName
@@ -679,11 +681,11 @@ class Media extends AdminController
                 continue;
             }*/
 
-            $pathParts = [COM_MEDIA_BASE, $folder, $path];
+            $pathParts = [MediaHelper::base(), $folder, $path];
             $fullPath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, $pathParts));
 
             $object_file = new \Hubzero\Base\Obj(['filepath' => $fullPath]);
-            $relativePath = substr($fullPath, strlen(COM_MEDIA_BASE));
+            $relativePath = substr($fullPath, strlen(MediaHelper::base()));
             if (is_file($fullPath)) {
                 // Trigger the onContentBeforeDelete event.
                 $result = Event::trigger(
@@ -774,7 +776,7 @@ class Media extends AdminController
         // Get some data from the request
         $tmpl = Request::getCmd('tmpl');
         $file = urldecode(Request::getString('file', ''));
-        $file = \Hubzero\Filesystem\Util::checkPath(COM_MEDIA_BASE . $file);
+        $file = \Hubzero\Filesystem\Util::checkPath(MediaHelper::base() . $file);
 
         if (!is_file($file)) {
             App::abort(404);
@@ -808,7 +810,7 @@ class Media extends AdminController
     {
         $name = Filesystem::clean($name);
 
-        $pathParts = [COM_MEDIA_BASE, $this->folder, $name];
+        $pathParts = [MediaHelper::base(), $this->folder, $name];
         $filepath = Filesystem::cleanPath(implode(DIRECTORY_SEPARATOR, $pathParts));
 
         return [

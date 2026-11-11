@@ -13,6 +13,7 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\Toolbar;
 use Hubzero\Facades\User;
+use Components\Media\Admin\Helpers\MediaHelper;
 
 // No direct access.
 defined('_HZEXEC_') or die();
@@ -24,9 +25,9 @@ if (User::authorise('core.admin', 'com_media')) {
 }
 Toolbar::help('media');
 
-$base = COM_MEDIA_BASE;
+$base = MediaHelper::base();
 if (DIRECTORY_SEPARATOR == '\\') {
-    $base = str_replace(DIRECTORY_SEPARATOR, "\\\\", COM_MEDIA_BASE);
+    $base = str_replace(DIRECTORY_SEPARATOR, "\\\\", MediaHelper::base());
 }
 
 $style = Request::getState('media.list.layout', 'layout', 'thumbs', 'word');
@@ -72,7 +73,7 @@ $this->js();
                         <a href="<?= $linkUrl ?>" data-folder="/" class="media-breadcrumbs has-next-button folder-link"
                             id="path_root">
                             <img src="<?= Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true) ?>"
-                                alt="<?= COM_MEDIA_BASEURL ?>" />
+                                alt="<?= MediaHelper::baseUrl() ?>" />
                         </a>
                         <span id="media-breadcrumbs">
                             <?php
@@ -182,7 +183,7 @@ $this->js();
                     <div class="media-items" id="media-items" data-tmpl="<?= $this->escape($tmpl) ?>"
                         data-list="<?= $displayUrl ?>">
                         <?php
-                        $children = Components\Media\Admin\Helpers\MediaHelper::getChildren(COM_MEDIA_BASE, '');
+                        $children = Components\Media\Admin\Helpers\MediaHelper::getChildren(MediaHelper::base(), '');
 
                         $this
                             ->view('default', 'medialist')

@@ -20,6 +20,55 @@ use Hubzero\Facades\Lang;
 class MediaHelper
 {
     /**
+     * Folder the media manager works in
+     *
+     * @var  string
+     */
+    private static $base = '';
+
+    /**
+     * Address of that folder
+     *
+     * @var  string
+     */
+    private static $baseUrl = '';
+
+    /**
+     * Say which folder the media manager works in, and its address.
+     *
+     * The component's entry point calls this once, before any controller runs.
+     *
+     * @param   string  $base     Filesystem path
+     * @param   string  $baseUrl  Address of the same folder
+     * @return  void
+     */
+    public static function setBase($base, $baseUrl)
+    {
+        self::$base = (string) $base;
+        self::$baseUrl = (string) $baseUrl;
+    }
+
+    /**
+     * Folder the media manager works in, also the constant COM_MEDIA_BASE
+     *
+     * @return  string
+     */
+    public static function base()
+    {
+        return self::$base;
+    }
+
+    /**
+     * Address of that folder, also the constant COM_MEDIA_BASEURL
+     *
+     * @return  string
+     */
+    public static function baseUrl()
+    {
+        return self::$baseUrl;
+    }
+
+    /**
      * Checks if the file can be uploaded
      *
      * @param   array    $file  File information
