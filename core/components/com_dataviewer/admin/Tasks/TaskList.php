@@ -18,7 +18,7 @@ class TaskList
     public static function execute()
     {
         Toolbar::title(Lang::txt('Database List'), 'databases');
-        Toolbar::preferences(Request::getcmd('option'), '500');
+        Toolbar::preferences(Request::getCmd('option'), '500');
 
 
         $base = DvConfig::$conf['dir_base'];

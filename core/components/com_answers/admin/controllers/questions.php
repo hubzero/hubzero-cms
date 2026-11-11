@@ -50,7 +50,7 @@ class Questions extends AdminController
     {
         // Filters
         $filters = [
-            'tag' => Request::getstate(
+            'tag' => Request::getState(
                 $this->option . '.' . $this->controller . '.tag',
                 'tag',
                 '',
@@ -60,19 +60,19 @@ class Questions extends AdminController
                 'search',
                 '',
             ),
-            'state' => Request::getstate(
+            'state' => Request::getState(
                 $this->option . '.' . $this->controller . '.state',
                 'state',
                 -1,
                 'int',
             ),
             // Sorting
-            'sort' => Request::getstate(
+            'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'created',
             ),
-            'sort_Dir' => Request::getstate(
+            'sort_Dir' => Request::getState(
                 $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'DESC',

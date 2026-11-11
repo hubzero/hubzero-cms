@@ -217,7 +217,7 @@ class Helper extends \Hubzero\Base\Obj
         $reply->set('state', \Hubzero\Item\Comment::STATE_DELETED);
         $reply->save();
 
-        App::Redirect(
+        App::redirect(
             Route::url($this->resource->link() . '&active=reviews', false),
         );
     }

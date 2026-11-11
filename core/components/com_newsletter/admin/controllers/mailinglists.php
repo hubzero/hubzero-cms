@@ -55,12 +55,12 @@ class Mailinglists extends AdminController
                 'search',
                 '',
             ),
-            'sort' => Request::getstate(
+            'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'name',
             ),
-            'sort_Dir' => Request::getstate(
+            'sort_Dir' => Request::getState(
                 $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',

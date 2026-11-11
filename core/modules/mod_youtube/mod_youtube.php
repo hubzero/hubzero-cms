@@ -268,7 +268,7 @@ class Youtube extends Module
             if ($params->get('cache')) {
                 //write to the cache folder
                 if (!is_dir($cachePath)) {
-                    Filesystem::makedirectory($cachePath);
+                    Filesystem::makeDirectory($cachePath);
                 }
                 $f = json_encode($feed);
 

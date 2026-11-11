@@ -957,7 +957,7 @@ class Events extends SiteController
 
         // Ensure we have an event
         if (!$event->title || $event->registerby == '0000-00-00 00:00:00') {
-            App::Redirect(Route::url('index.php?option=' . $this->option));
+            App::redirect(Route::url('index.php?option=' . $this->option));
             return;
         }
 

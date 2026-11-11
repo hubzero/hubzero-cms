@@ -105,24 +105,24 @@ class Newsletters extends AdminController
                 'search',
                 '',
             ),
-            'published' => Request::getstate(
+            'published' => Request::getState(
                 $this->option . '.' . $this->controller . '.published',
                 'published',
                 -1,
                 'int',
             ),
-            'type' => Request::getstate(
+            'type' => Request::getState(
                 $this->option . '.' . $this->controller . '.type',
                 'type',
                 '',
             ),
             // Sorting
-            'sort' => Request::getstate(
+            'sort' => Request::getState(
                 $this->option . '.' . $this->controller . '.sort',
                 'filter_order',
                 'name',
             ),
-            'sort_Dir' => Request::getstate(
+            'sort_Dir' => Request::getState(
                 $this->option . '.' . $this->controller . '.sortdir',
                 'filter_order_Dir',
                 'ASC',
