@@ -66,12 +66,16 @@ class Configs extends AdminController
 
         if (!$userId) {
             Notify::error(Lang::txt('COM_MESSAGES_ERR_INVALID_USER'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if (!Cfg::removeForUser($userId)) {
             Notify::error(Lang::txt('COM_MESSAGES_ERR_REMOVING_SETTINGS'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $db = App::get('db');

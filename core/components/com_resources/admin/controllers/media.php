@@ -35,7 +35,9 @@ class Media extends AdminController
         $listdir = Request::getString('listdir', '', 'post');
         if (!$listdir) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming sub-directory
@@ -65,7 +67,9 @@ class Media extends AdminController
             if (!is_dir($path)) {
                 if (!Filesystem::makeDirectory($path)) {
                     $this->setError(Lang::txt('COM_RESOURCES_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                    return $this->displayTask();
+                    $this->displayTask();
+
+                    return;
                 }
             }
 
@@ -73,7 +77,9 @@ class Media extends AdminController
             $file = Request::getArray('upload', [], 'files');
             if (empty($file['name'])) {
                 $this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_FILE'));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             // Make the filename safe
@@ -111,7 +117,9 @@ class Media extends AdminController
             ];
             if (in_array(strtolower((string) $ext), $blockedExtensions)) {
                 $this->setError(Lang::txt('File type not allowed: %s', $ext));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             $file['name'] = str_replace(' ', '_', $file['name']);
@@ -185,14 +193,18 @@ class Media extends AdminController
         $listdir = Request::getString('listdir', '');
         if (!$listdir) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Make sure the listdir follows YYYY/MM/#
         $parts = explode('/', $listdir);
         if (count($parts) < 3) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming sub-directory
@@ -205,7 +217,9 @@ class Media extends AdminController
         $folder = Request::getString('delFolder', '');
         if (!$folder) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_DIRECTORY'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $folder = Utilities::normalizePath($folder);
@@ -215,7 +229,9 @@ class Media extends AdminController
         // or subdir; this covers the folder name itself.
         if (strpos($folder, '..') !== false) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Check if the folder even exists
@@ -246,14 +262,18 @@ class Media extends AdminController
         $listdir = Request::getString('listdir', '');
         if (!$listdir) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_LISTDIR'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Make sure the listdir follows YYYY/MM/#
         $parts = explode('/', $listdir);
         if (count($parts) < 3) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_DIRECTORY_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming sub-directory
@@ -266,13 +286,17 @@ class Media extends AdminController
         $file = Request::getString('delFile', '');
         if (!$file) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Keep the target within the upload directory
         if (strpos($file, '..') !== false) {
             $this->setError(Lang::txt('COM_RESOURCES_ERROR_FILE_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Check if the file even exists

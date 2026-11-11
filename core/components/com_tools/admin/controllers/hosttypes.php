@@ -176,7 +176,9 @@ class Hosttypes extends AdminController
 
         if (!$row->bind($fields)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $insert = false;
@@ -204,7 +206,9 @@ class Hosttypes extends AdminController
         // Check content
         if (!$row->check()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
@@ -216,13 +220,17 @@ class Hosttypes extends AdminController
 
         if (!$result) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();

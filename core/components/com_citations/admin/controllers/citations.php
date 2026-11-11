@@ -418,13 +418,17 @@ class Citations extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->saveAndPropagate()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $row->sponsors()->sync($this->sponsors);

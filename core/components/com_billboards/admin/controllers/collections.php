@@ -114,7 +114,9 @@ class Collections extends AdminController
                 Notify::error($error);
             }
 
-            return $this->editTask($collection);
+            $this->editTask($collection);
+
+            return;
         }
 
         // Output messsage and redirect

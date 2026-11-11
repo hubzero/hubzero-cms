@@ -38,7 +38,9 @@ class Tags extends AdminController
 
         if (!$row->get('id')) {
             Notify::error(Lang::txt('COM_RESOURCES_NOTFOUND'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Get tags for this resource

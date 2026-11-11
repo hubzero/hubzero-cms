@@ -165,7 +165,9 @@ class Categories extends AdminController
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Log change
@@ -187,7 +189,9 @@ class Categories extends AdminController
 
         // Fall back to the edit form?
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set the redirect

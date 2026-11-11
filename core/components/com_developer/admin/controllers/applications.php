@@ -148,7 +148,9 @@ class Applications extends AdminController
         // Validate and save the data
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // parse incoming team
@@ -208,7 +210,9 @@ class Applications extends AdminController
         Notify::success(Lang::txt('COM_DEVELOPER_APPLICATION_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -286,7 +290,9 @@ class Applications extends AdminController
             // a message scolding the user for not selecting anything. Tsk, tsk.
             Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->task));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Loop through all the IDs
@@ -356,7 +362,9 @@ class Applications extends AdminController
             // a message scolding the user for not selecting anything. Tsk, tsk.
             Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->task));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;
@@ -409,7 +417,9 @@ class Applications extends AdminController
             // a message scolding the user for not selecting anything. Tsk, tsk.
             Notify::warning(Lang::txt('COM_DEVELOPER_SELECT_APPLICATION_TO', $this->task));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // loop through each application id

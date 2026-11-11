@@ -173,11 +173,15 @@ class Queries extends AdminController
             }
 
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         if ($no_html && $tmpl == 'component') {
-            return $this->listTask();
+            $this->listTask();
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_SUPPORT_QUERY_SUCCESSFULLY_SAVED'));
@@ -232,7 +236,9 @@ class Queries extends AdminController
             }
 
             Notify::warning(Lang::txt('COM_SUPPORT_ERROR_SELECT_QUERY_TO_DELETE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $removed = 0;
@@ -250,7 +256,9 @@ class Queries extends AdminController
         }
 
         if ($no_html || $tmpl == 'component') {
-            return $this->listTask();
+            $this->listTask();
+
+            return;
         }
 
         // Output messsage and redirect
@@ -334,7 +342,9 @@ class Queries extends AdminController
             }
 
             Notify::error($row->getError());
-            return $this->editfolderTask($row);
+            $this->editfolderTask($row);
+
+            return;
         }
 
         if (!$no_html && $tmpl != 'component') {
@@ -343,10 +353,14 @@ class Queries extends AdminController
 
         if ($this->getTask() == 'applyfolder') {
             if ($no_html || $tmpl == 'component') {
-                return $this->listTask();
+                $this->listTask();
+
+                return;
             }
 
-            return $this->editfolderTask($row);
+            $this->editfolderTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -385,7 +399,9 @@ class Queries extends AdminController
         }
 
         if ($no_html) {
-            return $this->listTask();
+            $this->listTask();
+
+            return;
         }
 
         // Output messsage and redirect
@@ -452,7 +468,9 @@ class Queries extends AdminController
         if (!$no_html) {
             // Output messsage and redirect
             Notify::success(Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $response = new stdClass();
@@ -474,7 +492,9 @@ class Queries extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (!User::authorise('core.admin', $this->option)) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         foreach (QueryFolder::all()->rows() as $folder) {

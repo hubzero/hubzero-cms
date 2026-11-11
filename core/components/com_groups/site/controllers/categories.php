@@ -153,19 +153,25 @@ class Categories extends Base
             && $this->category->get('gidNumber') != $this->group->get('gidNumber')
         ) {
             $this->setNotification(Lang::txt('COM_GROUPS_PAGES_CATEGORY_DELETE_ERROR'), 'error');
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // bind to our new results
         if (!$this->category->bind($category)) {
             $this->setNotification($this->category->getError(), 'error');
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // Store new content
         if (!$this->category->store(true)) {
             $this->setNotification($this->category->getError(), 'error');
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         $url = Route::url(

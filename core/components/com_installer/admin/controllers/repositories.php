@@ -196,7 +196,9 @@ class Repositories extends AdminController
         $repos = (!is_array($repos) ? [$repos] : $repos);
 
         if (count($repos) <= 0) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $success = 0;

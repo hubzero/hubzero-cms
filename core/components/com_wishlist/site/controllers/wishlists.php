@@ -1471,7 +1471,9 @@ class Wishlists extends SiteController
             }
         } elseif ($this->task == 'editwish') {
             // no status change, only information
-            return $this->addwishTask();
+            $this->addwishTask();
+
+            return;
         }
 
         if ($changed) {

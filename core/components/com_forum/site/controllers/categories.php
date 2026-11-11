@@ -393,13 +393,17 @@ class Categories extends SiteController
         // Check for alias duplicates
         if (!$category->isUnique()) {
             Notify::error(Lang::txt('COM_FORUM_ERROR_CATEGORY_ALREADY_EXISTS'));
-            return $this->editTask($category);
+            $this->editTask($category);
+
+            return;
         }
 
         // Store new content
         if (!$category->save()) {
             Notify::error($category->getError());
-            return $this->editTask($category);
+            $this->editTask($category);
+
+            return;
         }
 
         // Log activity

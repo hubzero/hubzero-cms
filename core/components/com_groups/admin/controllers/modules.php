@@ -220,7 +220,9 @@ class Modules extends AdminController
         // bind request vars to module model
         if (!$this->module->bind($module)) {
             Notify::error($this->module->getError());
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // mark approved unless fails check below
@@ -258,13 +260,17 @@ class Modules extends AdminController
         // DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
         if (!$this->module->store(false, $this->group->isSuperGroup())) {
             Notify::error($this->module->getError());
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // create module menu
         if (!$this->module->buildMenu($menu)) {
             Notify::error($this->module->getError());
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // do we need to reorder

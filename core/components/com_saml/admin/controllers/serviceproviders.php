@@ -169,7 +169,9 @@ class Serviceproviders extends AdminController
         // the update branch and report success while writing nothing
         if (!empty($fields['id']) && $row->isNew()) {
             Notify::error(Lang::txt('COM_SAML_ERROR_GONE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $row->set($fields);
@@ -376,7 +378,9 @@ class Serviceproviders extends AdminController
 
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_SAML_SELECT_ITEM'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;

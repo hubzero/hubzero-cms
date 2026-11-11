@@ -38,7 +38,9 @@ class Media extends SiteController
         $resource = Request::getInt('resource', 0, 'post');
         if (!$resource) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming sub-directory
@@ -69,7 +71,9 @@ class Media extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
         }
 
@@ -77,7 +81,9 @@ class Media extends SiteController
         $file = Request::getArray('upload', '', 'files');
         if (!$file['name']) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Make the filename safe
@@ -120,7 +126,9 @@ class Media extends SiteController
         ];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
             $this->setError(Lang::txt('COM_TOOLS_INCORRECT_FILE_TYPE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $file['name'] = str_replace(' ', '_', $file['name']);
@@ -140,7 +148,9 @@ class Media extends SiteController
             Filesystem::delete($path);
 
             $this->setError(Lang::txt('COM_TOOLS_ERROR_FAILED_VIRUS_SCAN'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Push through to the media view
@@ -161,7 +171,9 @@ class Media extends SiteController
         $resource = Request::getInt('resource', 0);
         if (!$resource) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming sub-directory
@@ -191,7 +203,9 @@ class Media extends SiteController
         $parts = explode(DS, $path);
         if (count($parts) < 4) {
             $this->setError(Lang::txt('DIRECTORY_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming file to delete
@@ -199,13 +213,17 @@ class Media extends SiteController
 
         if (!$file) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Keep the target within the resource media directory
         if (strpos($file, '..') !== false) {
             $this->setError(Lang::txt('COM_TOOLS_FILE_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Check if the file even exists

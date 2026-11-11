@@ -183,7 +183,9 @@ class Plugins extends AdminController
         if (!$plugin) {
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_NO_PLUGIN_SELECTED'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Show related content

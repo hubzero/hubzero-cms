@@ -152,14 +152,18 @@ class Tagged extends AdminController
         // Store content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_TAGS_OBJECT_SAVED'));
 
         // Redirect to main listing
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -186,7 +190,9 @@ class Tagged extends AdminController
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;

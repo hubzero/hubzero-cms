@@ -63,13 +63,17 @@ class Attachments extends SiteController
         // Ensure we have an ID to work with
         if (!$id) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Ensure we have a parent ID to work with
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Authorize against the tool that owns this attachment
@@ -145,7 +149,9 @@ class Attachments extends SiteController
         $pid = Request::getInt('pid', 0);
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // get tool object
@@ -161,7 +167,9 @@ class Attachments extends SiteController
         $file = Request::getArray('upload', '', 'files');
         if (!$file['name']) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Make the filename safe
@@ -198,7 +206,9 @@ class Attachments extends SiteController
         ];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
             $this->setError(Lang::txt('COM_TOOLS_INCORRECT_FILE_TYPE'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         $file['name'] = str_replace(' ', '_', $file['name']);
@@ -224,7 +234,9 @@ class Attachments extends SiteController
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Build the path
@@ -234,7 +246,9 @@ class Attachments extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                return $this->displayTask($pid);
+                $this->displayTask($pid);
+
+                return;
             }
         }
 
@@ -255,13 +269,17 @@ class Attachments extends SiteController
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Create new parent/child association
         if (!$row->makeChildOf($pid)) {
             $this->setError($row->getError());
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         $this->_rid = $pid;
@@ -284,7 +302,9 @@ class Attachments extends SiteController
         $pid = Request::getInt('pid', 0);
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // get tool object
@@ -300,7 +320,9 @@ class Attachments extends SiteController
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Load resource info

@@ -412,13 +412,17 @@ class Modules extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($model->getError());
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         // Store content
         if (!$model->save()) {
             Notify::error($model->getError());
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         // Update menu assignments
@@ -428,7 +432,9 @@ class Modules extends AdminController
 
         if (!$model->saveAssignment($assignment, $assigned)) {
             Notify::error($model->getError());
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         // Trigger after save event
@@ -442,7 +448,9 @@ class Modules extends AdminController
 
         // Display the edit form
         if ($this->getTask() == 'apply') {
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         // Check the record back in
@@ -1124,7 +1132,9 @@ class Modules extends AdminController
 
         if (empty($pks)) {
             Notify::error(Lang::txt('JGLOBAL_NO_ITEM_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Build an array of item contexts to check
@@ -1146,10 +1156,14 @@ class Modules extends AdminController
                     if (is_array($result)) {
                         $pks = $result;
                     } else {
-                        return $this->cancelTask();
+                        $this->cancelTask();
+
+                        return;
                     }
                 } elseif ($cmd == 'm' && !$this->batchMove($commands['position_id'], $pks, $contexts)) {
-                    return $this->cancelTask();
+                    $this->cancelTask();
+
+                    return;
                 }
 
                 $done = true;
@@ -1158,7 +1172,9 @@ class Modules extends AdminController
 
         if (!empty($commands['assetgroup_id'])) {
             if (!$this->batchAccess($commands['assetgroup_id'], $pks, $contexts)) {
-                return $this->cancelTask();
+                $this->cancelTask();
+
+                return;
             }
 
             $done = true;
@@ -1166,7 +1182,9 @@ class Modules extends AdminController
 
         if (!empty($commands['language_id'])) {
             if (!$this->batchLanguage($commands['language_id'], $pks, $contexts)) {
-                return $this->cancelTask();
+                $this->cancelTask();
+
+                return;
             }
 
             $done = true;
@@ -1174,7 +1192,9 @@ class Modules extends AdminController
 
         if (!$done) {
             Notify::error(Lang::txt('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Clear the cache

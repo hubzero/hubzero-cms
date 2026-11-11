@@ -210,7 +210,9 @@ class Jobs extends AdminController
                 $row->set('next_run', $row->nextRun());
             } catch (\Throwable $e) {
                 Notify::error($e->getMessage());
-                return $this->editTask($row);
+                $this->editTask($row);
+
+                return;
             }
         }
 
@@ -221,7 +223,9 @@ class Jobs extends AdminController
         // Store content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_CRON_ITEM_SAVED'));
@@ -229,7 +233,9 @@ class Jobs extends AdminController
         // If the task was "apply",
         // fall back through to the edit form.
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -257,7 +263,9 @@ class Jobs extends AdminController
         // Ensure we have an ID to work with
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $output = new stdClass();
@@ -336,7 +344,9 @@ class Jobs extends AdminController
         // Ensure we have an ID to work with
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Loop through each ID
@@ -387,7 +397,9 @@ class Jobs extends AdminController
             $action = ($state == 1) ? Lang::txt('COM_CRON_STATE_UNPUBLISH') : Lang::txt('COM_CRON_STATE_PUBLISH');
 
             Notify::warning(Lang::txt('COM_CRON_ERROR_SELECT_ITEMS', $action));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $total = 0;
@@ -437,7 +449,9 @@ class Jobs extends AdminController
         // Ensure we have an ID to work with
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_CRON_ERROR_NO_ITEMS_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Loop through each ID

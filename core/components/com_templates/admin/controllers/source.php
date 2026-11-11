@@ -111,7 +111,9 @@ class Source extends AdminController
         }
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($file);
+            $this->editTask($file);
+
+            return;
         }
 
         App::redirect(

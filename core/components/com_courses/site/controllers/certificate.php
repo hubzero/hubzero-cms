@@ -39,20 +39,26 @@ class Certificate extends SiteController
         // Ensure the course exists
         if (!$course->exists() || !$offering->exists()) {
             Notify::error(Lang::txt('COM_COURSES_ERROR_COURSE_OR_OFFERING_NOT_FOUND'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Ensure specified user is enrolled in the course
         $student = Member::getInstance(User::get('id'), $course->get('id'), $offering->get('id'), null);
         if (!$student->exists()) {
             Notify::error(Lang::txt('COM_COURSES_ERROR_STUDENT_RECORD_NOT_FOUND'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $certificate = $course->certificate();
         if (!$certificate->exists() || !$certificate->hasFile()) {
             Notify::error(Lang::txt('COM_COURSES_ERROR_NO_CERTIFICATE_FOR_COURSE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Path and file name

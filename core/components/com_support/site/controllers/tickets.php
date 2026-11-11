@@ -896,7 +896,9 @@ class Tickets extends SiteController
                 $this->setError(Lang::txt('COM_SUPPORT_ERROR_INVALID_DATA'));
             }
 
-            return $this->newTask();
+            $this->newTask();
+
+            return;
         }
 
         // Get the user's IP
@@ -943,7 +945,9 @@ class Tickets extends SiteController
             } else {
                 Request::setVar('task', 'new');
 
-                return $this->newTask();
+                $this->newTask();
+
+                return;
             }
         }
 
@@ -1021,7 +1025,9 @@ class Tickets extends SiteController
             && (time() - strtotime($prevSubmission->get('created')) <= 15)
         ) {
             $this->setError(Lang::txt('COM_SUPPORT_TICKET_DUPLICATE_DETECTION'));
-            return $this->newTask($row);
+            $this->newTask($row);
+
+            return;
         }
 
         // Save the data
@@ -1692,7 +1698,9 @@ class Tickets extends SiteController
                         . $started,
                 ),
             );
-            return $this->ticketTask($rowc);
+            $this->ticketTask($rowc);
+
+            return;
         }
 
         // Update ticket status if necessary

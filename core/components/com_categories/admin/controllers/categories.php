@@ -75,12 +75,16 @@ class Categories extends AdminController
         $ids = Request::getArray('cid', []);
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_CATEGORIES_NO_ITEM_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
         $batchOptions = Request::getArray('batch', []);
         if (empty($batchOptions['category_id'])) {
             Notify::warning(Lang::txt('COM_CATEGORIES_BATCH_NO_CATEGORY_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
         $action = $batchOptions['move_copy'] == 'm' ? 'moved' : 'copied';
 
@@ -377,21 +381,29 @@ class Categories extends AdminController
 
         if (!$category->saveAsChildOf($items['parent_id'])) {
             Notify::error($category->getError());
-            return $this->editTask($category);
+            $this->editTask($category);
+
+            return;
         }
 
         if (!$category->rebuild(1)) {
             Notify::error($category->getError());
-            return $this->editTask($category);
+            $this->editTask($category);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_CATEGORIES_SAVE_SUCCESS'));
 
         if ($this->task == 'apply' || $this->task == 'save2copy') {
-            return $this->editTask($category);
+            $this->editTask($category);
+
+            return;
         } elseif ($this->task == 'save2new') {
             Request::setVar('id', 0);
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         $this->cancelTask();
@@ -425,7 +437,9 @@ class Categories extends AdminController
             ],
         ];
         if (!isset($states[$this->task])) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
         $state = $states[$this->task];
 
@@ -433,7 +447,9 @@ class Categories extends AdminController
 
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_CATEGORIES_NO_ITEM_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $categories = Category::all()

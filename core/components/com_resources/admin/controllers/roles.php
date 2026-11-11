@@ -155,7 +155,9 @@ class Roles extends AdminController
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $types = Request::getArray('types', [], 'post');
@@ -163,13 +165,17 @@ class Roles extends AdminController
 
         if (!$row->setTypes($types)) {
             $this->setError($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_RESOURCES_ITEM_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -198,7 +204,9 @@ class Roles extends AdminController
         if (empty($ids)) {
             // Redirect with error message
             Notify::warning(Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;

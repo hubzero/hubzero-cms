@@ -376,7 +376,9 @@ class Items extends AdminController
         // Make sure we have a prent ID
         if (!$pid) {
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Get the available types
@@ -582,7 +584,7 @@ class Items extends AdminController
      */
     public function addTask()
     {
-        return $this->editTask(1);
+        $this->editTask(1);
     }
 
     /**
@@ -1214,7 +1216,9 @@ class Items extends AdminController
         // Ensure we have some IDs to work with
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $removed = 0;
@@ -1262,7 +1266,9 @@ class Items extends AdminController
         // Ensure we have an ID to work with
         if (!$id) {
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Choose access level
@@ -1325,7 +1331,9 @@ class Items extends AdminController
         // Check for a resource
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_SELECT_TO', $this->task));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         switch ($this->getTask()) {
@@ -1609,13 +1617,17 @@ class Items extends AdminController
         // Ensure we have an ID to work with
         if (!$id) {
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Ensure we have a parent ID to work with
         if (!$pid) {
             Notify::warning(Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Get the element moving

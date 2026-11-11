@@ -152,14 +152,18 @@ class Licenses extends AdminController
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_PUBLICATIONS_SUCCESS_LICENSE_SAVED'));
 
         // Redirect to edit view?
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -231,7 +235,9 @@ class Licenses extends AdminController
 
         if (count($id) > 1) {
             Notify::warning(Lang::txt('COM_PUBLICATIONS_LICENSE_SELECT_ONE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Load row
@@ -240,7 +246,9 @@ class Licenses extends AdminController
         // Save
         if (!$row->setMain()) {
             Notify::error($row->getError());
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Redirect

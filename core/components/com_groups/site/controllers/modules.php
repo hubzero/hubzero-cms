@@ -217,7 +217,9 @@ class Modules extends Base
         // bind request vars to module model
         if (!$this->module->bind($module)) {
             $this->setNotification($this->module->getError(), 'error');
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // module is approved unless contains php or scripts (checked below)

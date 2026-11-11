@@ -371,7 +371,9 @@ class Members extends AdminController
         // Users membership through accessgroups below.
         if (!$iAmSuperAdmin && !$user->isNew() && Access::check($user->get('id'), 'core.admin')) {
             Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // ...nor hand out a group that carries core.admin. User::save() replaces
@@ -386,7 +388,9 @@ class Members extends AdminController
             foreach ((array) $fields['accessgroups'] as $gid) {
                 if (Access::checkGroup((int) $gid, 'core.admin')) {
                     Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
-                    return $this->editTask($user);
+                    $this->editTask($user);
+
+                    return;
                 }
             }
         }
@@ -410,13 +414,17 @@ class Members extends AdminController
             // Check that username is filled
             if (!Validate::username($user->get('username'))) {
                 Notify::error(Lang::txt('COM_MEMBERS_MEMBER_USERNAME_INVALID'));
-                return $this->editTask($user);
+                $this->editTask($user);
+
+                return;
             }
 
             // Check email is valid
             if (!Validate::email($user->get('email'))) {
                 Notify::error(Lang::txt('COM_MEMBERS_MEMBER_EMAIL_INVALID'));
-                return $this->editTask($user);
+                $this->editTask($user);
+
+                return;
             }
 
             // Set home directory
@@ -461,7 +469,9 @@ class Members extends AdminController
         // Can't block yourself
         if ($user->get('block') && $user->get('id') == User::get('id') && !User::get('block')) {
             Notify::error(Lang::txt('COM_MEMBERS_USERS_ERROR_CANNOT_BLOCK_SELF'));
-            return $this->editTask($user);
+            $this->editTask($user);
+
+            return;
         }
 
         // Make sure that we are not removing ourself from Super Admin group
@@ -475,14 +485,18 @@ class Members extends AdminController
 
             if (!$stillSuperAdmin) {
                 Notify::error(Lang::txt('COM_MEMBERS_USERS_ERROR_CANNOT_DEMOTE_SELF'));
-                return $this->editTask($user);
+                $this->editTask($user);
+
+                return;
             }
         }
 
         // Save the changes
         if (!$user->save()) {
             Notify::error($user->getError());
-            return $this->editTask($user);
+            $this->editTask($user);
+
+            return;
         }
 
         // Save profile data
@@ -513,7 +527,9 @@ class Members extends AdminController
 
         if (!$user->saveProfile($profile, $access)) {
             Notify::error($user->getError());
-            return $this->editTask($user);
+            $this->editTask($user);
+
+            return;
         }
 
         // Do we have a new pass?
@@ -637,11 +653,15 @@ class Members extends AdminController
             // Force reload te record as it's possible other pieces
             // of code made changes (i.e., password change)
             $user = Member::oneOrNew($user->get('id'));
-            return $this->editTask($user);
+            $this->editTask($user);
+
+            return;
         }
 
         if ($this->getTask() == 'save2new') {
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // Redirect
@@ -665,7 +685,9 @@ class Members extends AdminController
             && !User::authorise('core.create', $this->option)
             && !User::authorise('core.edit', $this->option)
         ) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $id = Request::getInt('id');
@@ -718,7 +740,9 @@ class Members extends AdminController
 
         if (empty($ids) || !$gid || !in_array($action, ['add', 'del', 'set'])) {
             Notify::warning(Lang::txt('COM_MEMBERS_BATCH_NO_SELECTION'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Only super admins hand out (or take away) super admin groups, as on
@@ -726,7 +750,9 @@ class Members extends AdminController
         $iAmSuperAdmin = User::authorise('core.admin');
         if (!$iAmSuperAdmin && Access::checkGroup($gid, 'core.admin')) {
             Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $done = 0;
@@ -858,7 +884,9 @@ class Members extends AdminController
         // Do we have an ID?
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $iAmSuperAdmin = User::authorise('core.admin');
@@ -923,7 +951,9 @@ class Members extends AdminController
         // Do we have an ID?
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $iAmSuperAdmin = User::authorise('core.admin');
@@ -1222,7 +1252,9 @@ class Members extends AdminController
         // Do we have an ID?
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $iAmSuperAdmin = User::authorise('core.admin');
@@ -1294,14 +1326,18 @@ class Members extends AdminController
         if (!$migration->saveParams('com_members', $this->config)) {
             Notify::error(Lang::txt('COM_MEMBERS_FAILED_TO_UPDATE_REGISTRATION_TOU'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Clear all old TOU states
         if (!Member::clearTerms()) {
             Notify::error(Lang::txt('COM_MEMBERS_FAILED_TO_CLEAR_TOU'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Output message to let admin know everything went well
@@ -1538,7 +1574,9 @@ class Members extends AdminController
             !User::authorise('core.manage', $this->option)
             && !User::authorise('core.admin', $this->option)
         ) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $fields = Field::all()
@@ -1570,7 +1608,9 @@ class Members extends AdminController
             !User::authorise('core.manage', $this->option)
             && !User::authorise('core.admin', $this->option)
         ) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Incoming data

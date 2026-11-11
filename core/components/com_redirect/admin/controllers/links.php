@@ -141,7 +141,9 @@ class Links extends AdminController
         // Access check.
         if (!(User::authorise('core.create', $this->option))) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_CREATE_RECORD_NOT_PERMITTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $this->editTask();
@@ -190,7 +192,9 @@ class Links extends AdminController
         // Access check.
         if (!User::authorise('core.edit', $this->option) && !User::authorise('core.create', $this->option)) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_SAVE_NOT_PERMITTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Initialise variables.
@@ -219,13 +223,17 @@ class Links extends AdminController
         // Attempt to save the data.
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_REDIRECT_SAVE_SUCCESS'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect the user
@@ -245,7 +253,9 @@ class Links extends AdminController
         // Access check.
         if (!User::authorise('core.edit', $this->option)) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Initialise variables.
@@ -295,7 +305,9 @@ class Links extends AdminController
         // Access check.
         if (!User::authorise('core.edit', $this->option)) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_EDIT_NOT_PERMITTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Get items to publish from the request.
@@ -354,7 +366,9 @@ class Links extends AdminController
         // Access check.
         if (!User::authorise('core.delete', $this->option)) {
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Check for request forgeries

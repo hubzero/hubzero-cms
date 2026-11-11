@@ -242,13 +242,17 @@ class Comments extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Trigger after save event
@@ -257,7 +261,9 @@ class Comments extends AdminController
         Notify::success(Lang::txt('COM_WIKI_COMMENT_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set the redirect
@@ -341,7 +347,9 @@ class Comments extends AdminController
 
             Notify::warning(Lang::txt('COM_WIKI_ERROR_SELECT_TO', $action));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Loop through all the IDs

@@ -244,18 +244,24 @@ class Pages extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($page->getError());
-            return $this->editTask($page);
+            $this->editTask($page);
+
+            return;
         }
 
         // Save content
         if (!$page->save()) {
             Notify::error($page->getError());
-            return $this->editTask($page);
+            $this->editTask($page);
+
+            return;
         }
 
         if (!Author::setForPage($authors, $page->get('id'))) {
             Notify::error($page->getError());
-            return $this->editTask($page);
+            $this->editTask($page);
+
+            return;
         }
 
         $page->tag($tags);
@@ -269,7 +275,9 @@ class Pages extends AdminController
         if ($this->getTask() == 'apply') {
             Request::setVar('id', $page->get('id'));
 
-            return $this->editTask($page);
+            $this->editTask($page);
+
+            return;
         }
 
         // Redirect to main listing

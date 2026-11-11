@@ -779,7 +779,9 @@ class Citations extends SiteController
 
         if (in_array(false, $result, true)) {
             $this->setError($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         if (!$row->saveAndPropagate()) {
@@ -787,7 +789,9 @@ class Citations extends SiteController
             if ($row->isNew()) {
                 $row->set('id', $updateAuthorsId);
             }
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         //check if we are allowing tags
@@ -943,7 +947,9 @@ class Citations extends SiteController
             && strtolower($download) != 'bibtex'
         ) {
             if (!$no_html) {
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             } else {
                 return json_encode(['status' => '1']);
             }

@@ -517,7 +517,9 @@ class Sections extends AdminController
         }
 
         if ($this->task == 'apply') {
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         // Output messsage and redirect

@@ -88,7 +88,9 @@ class Abusereports extends AdminController
 
         // Ensure we have an ID to work with
         if (!$id) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Load the report
@@ -172,7 +174,9 @@ class Abusereports extends AdminController
 
         // Ensure we have an ID to work with
         if (!$id) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Load the report
@@ -183,7 +187,9 @@ class Abusereports extends AdminController
 
         if (!$report->save()) {
             Notify::error($report->getError());
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Remove the reported item and any other related processes that need be performed
@@ -229,7 +235,9 @@ class Abusereports extends AdminController
 
         // Ensure we have an ID to work with
         if (!$id) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $email     = 1; // Turn off/on
@@ -289,7 +297,9 @@ class Abusereports extends AdminController
 
         if (!$report->save()) {
             Notify::error($report->getError());
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Notify item owner

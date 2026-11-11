@@ -203,7 +203,9 @@ class Preferences extends AdminController
 
         if (!is_object($user) || !$user->get('id')) {
             Notify::error(Lang::txt('COM_TOOLS_USER_PREFS_USER_NOT_FOUND'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $fields['user_id'] = $user->get('id');
@@ -211,14 +213,18 @@ class Preferences extends AdminController
         // Try to save
         if (!$row->save($fields)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_TOOLS_USER_PREFS_SAVE_SUCCESSFUL'));
 
         // Redirect
         if ($this->task == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect

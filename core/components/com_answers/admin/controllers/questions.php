@@ -174,7 +174,9 @@ class Questions extends AdminController
         // Ensure we have at least one tag
         if (!$tags) {
             Notify::error(Lang::txt('COM_ANSWERS_ERROR_QUESTION_MUST_HAVE_TAGS'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $row->set('email', (isset($fields['email']) ? 1 : 0));
@@ -186,13 +188,17 @@ class Questions extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Add the tag(s)
@@ -205,7 +211,9 @@ class Questions extends AdminController
         Notify::success(Lang::txt('COM_ANSWERS_QUESTION_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect back to the full questions list
@@ -231,7 +239,9 @@ class Questions extends AdminController
         $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $success = 0;
@@ -286,7 +296,9 @@ class Questions extends AdminController
 
             Notify::warning(Lang::txt('COM_ANSWERS_ERROR_SELECT_QUESTION_TO', $action));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;

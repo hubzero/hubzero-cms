@@ -194,7 +194,9 @@ class Images extends AdminController
     public function uploadTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         // Check for request forgeries
@@ -354,7 +356,9 @@ class Images extends AdminController
     public function removeTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxRemoveTask();
+            $this->ajaxRemoveTask();
+
+            return;
         }
     }
 

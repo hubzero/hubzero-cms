@@ -191,7 +191,9 @@ class Pages extends AdminController
         }
 
         if ($this->task == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $url = 'index.php?option=' . $this->option
@@ -422,7 +424,9 @@ class Pages extends AdminController
     public function uploadTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         // Check for request forgeries
@@ -489,7 +493,9 @@ class Pages extends AdminController
                     \Hubzero\Utility\Number::formatBytes($sizeLimit),
                 );
                 $this->setError($msg);
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             // Make the filename safe
@@ -507,7 +513,9 @@ class Pages extends AdminController
 
             if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
                 $this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             // Perform the upload

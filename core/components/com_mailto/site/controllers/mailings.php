@@ -78,7 +78,9 @@ class Mailings extends SiteController
 
         if ($timeout == 0 || time() - $timeout < 20) {
             Notify::error(Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $SiteName = Config::get('sitename');
@@ -91,7 +93,9 @@ class Mailings extends SiteController
         if (!$link || !\Hubzero\Utility\Uri::isInternal($link)) {
             //Non-local url...
             Notify::error(Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // An array of email headers we do not want to allow as input
@@ -145,7 +149,9 @@ class Mailings extends SiteController
         }
 
         if ($error) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Build the message to send
@@ -168,7 +174,9 @@ class Mailings extends SiteController
         // Send the email
         if ($return !== true) {
             Notify::error(Lang::txt('COM_MAILTO_EMAIL_NOT_SENT'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $this->view

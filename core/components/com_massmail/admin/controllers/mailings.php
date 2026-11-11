@@ -170,14 +170,18 @@ class Mailings extends AdminController
 
         if (!$row->canReturnToDraft()) {
             Notify::warning(Lang::txt('COM_MASSMAIL_NOT_EDITABLE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $row->set('status', Mailing::STATUS_DRAFT);
 
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         Notify::info(Lang::txt('COM_MASSMAIL_RETURNED_TO_DRAFT'));
@@ -220,7 +224,9 @@ class Mailings extends AdminController
         // rewrite a mailing that is being sent or has already gone out.
         if (!$row->isEditable()) {
             Notify::warning(Lang::txt('COM_MASSMAIL_NOT_EDITABLE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $row->set($fields);
@@ -389,7 +395,9 @@ class Mailings extends AdminController
 
         if ($row->get('status') != Mailing::STATUS_DRAFT) {
             Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_LAUNCHABLE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Content + audience must be valid before we let anyone confirm a send.
@@ -844,7 +852,9 @@ class Mailings extends AdminController
 
         if ($row->get('status') != Mailing::STATUS_DRAFT) {
             Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_LAUNCHABLE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Validate content + audience.
@@ -908,7 +918,9 @@ class Mailings extends AdminController
 
         if ($row->get('status') != Mailing::STATUS_PENDING_APPROVAL) {
             Notify::warning(Lang::txt('COM_MASSMAIL_NOT_PENDING_APPROVAL'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $row->set('approved_by', User::get('id'));
@@ -949,7 +961,9 @@ class Mailings extends AdminController
 
         if ($row->get('status') != Mailing::STATUS_HELD) {
             Notify::warning(Lang::txt('COM_MASSMAIL_NOT_HELD'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // A release respects any still-future schedule rather than sending now.
@@ -1189,14 +1203,18 @@ class Mailings extends AdminController
 
         // Nothing saved yet -- just leave.
         if (!$id) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $row = Mailing::oneOrFail($id);
 
         if ($row->get('status') != Mailing::STATUS_DRAFT) {
             Notify::warning(Lang::txt('COM_MASSMAIL_ONLY_DRAFTS_DISCARDABLE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if ($this->purgeMailing($row)) {

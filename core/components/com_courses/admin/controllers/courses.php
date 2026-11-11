@@ -182,7 +182,9 @@ class Courses extends AdminController
         $row->store(false);
 
         if ($this->task == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Output messsage and redirect

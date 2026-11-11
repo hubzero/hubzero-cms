@@ -352,7 +352,9 @@ class Comments extends SiteController
         // Save the data
         if (!$comment->save()) {
             $this->setError($comment->getError());
-            return $this->displayTask($comment);
+            $this->displayTask($comment);
+
+            return;
         }
 
         // Did they rate the page?

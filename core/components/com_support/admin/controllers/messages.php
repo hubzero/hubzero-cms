@@ -131,13 +131,17 @@ class Messages extends AdminController
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_SUPPORT_MESSAGE_SUCCESSFULLY_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -165,7 +169,9 @@ class Messages extends AdminController
         // Check for an ID
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_SUPPORT_ERROR_SELECT_MESSAGE_TO_DELETE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;

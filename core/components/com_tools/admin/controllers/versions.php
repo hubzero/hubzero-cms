@@ -201,7 +201,9 @@ class Versions extends AdminController
         if (!$fields['version']) {
             Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_ID'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $row = Version::getInstance(intval($fields['version']));
@@ -210,7 +212,9 @@ class Versions extends AdminController
             Request::setVar('version', $fields['version']);
 
             Notify::error(Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         $row->vnc_command = trim($fields['vnc_command']);
@@ -221,7 +225,9 @@ class Versions extends AdminController
 
         if (!$row->vnc_command) {
             Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_COMMAND'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Given as a number of hours, minutes or the like, kept in seconds
@@ -235,7 +241,9 @@ class Versions extends AdminController
             Request::setVar('version', $fields['version']);
 
             Notify::error(Lang::txt('COM_TOOLS_ERROR_INVALID_HARD_TIMEOUT'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // The form gives the host requirements as one comma-separated string
@@ -301,7 +309,9 @@ class Versions extends AdminController
 
         // Do we have an ID?
         if (!$version) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $rows = Zone::whereEquals('tool_version_id', $version);
@@ -372,7 +382,9 @@ class Versions extends AdminController
 
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Request::setVar('tmpl', 'component');

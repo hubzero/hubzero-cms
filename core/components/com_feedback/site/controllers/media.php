@@ -52,26 +52,34 @@ class Media extends SiteController
 
         if (User::isGuest()) {
             $this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
-            return $this->displayTask('', 0);
+            $this->displayTask('', 0);
+
+            return;
         }
 
         // Incoming
         if (!($id = Request::getInt('id', 0))) {
             $this->setError(Lang::txt('COM_FEEDBACK_NO_ID'));
-            return $this->displayTask('', $id);
+            $this->displayTask('', $id);
+
+            return;
         }
 
         // Only act on the current user's own quote space
         if (User::get('id') != $id) {
             $this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
-            return $this->displayTask('', User::get('id'));
+            $this->displayTask('', User::get('id'));
+
+            return;
         }
 
         // Incoming file
         $file = Request::getArray('upload', [], 'files');
         if (empty($file['name'])) {
             $this->setError(Lang::txt('COM_FEEDBACK_NO_FILE'));
-            return $this->displayTask('', $id);
+            $this->displayTask('', $id);
+
+            return;
         }
 
         // Build upload path
@@ -80,7 +88,9 @@ class Media extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_FEEDBACK_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                return $this->displayTask('', $id);
+                $this->displayTask('', $id);
+
+                return;
             }
         }
 
@@ -94,7 +104,9 @@ class Media extends SiteController
         if ($file['size'] > $sizeLimit) {
             $formattedSize = \Hubzero\Utility\Number::formatBytes($sizeLimit);
             $this->setError(Lang::txt('COM_FEEDBACKI_ERROR_UPLOADING_FILE_TOO_BIG', $formattedSize));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Make the filename safe
@@ -108,7 +120,9 @@ class Media extends SiteController
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('COM_FEEDBACK_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Do we have an old file we're replacing?
@@ -122,7 +136,9 @@ class Media extends SiteController
             if ($curfile != '' && file_exists($path . DS . $curfile)) {
                 if (!Filesystem::delete($path . DS . $curfile)) {
                     $this->setError(Lang::txt('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
-                    return $this->displayTask($file['name'], $id);
+                    $this->displayTask($file['name'], $id);
+
+                    return;
                 }
             }
 
@@ -145,24 +161,32 @@ class Media extends SiteController
 
         if (User::isGuest()) {
             $this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
-            return $this->displayTask('', 0);
+            $this->displayTask('', 0);
+
+            return;
         }
 
         // Incoming member ID
         if (!($id = Request::getInt('id', 0))) {
             $this->setError(Lang::txt('COM_FEEDBACK_NO_ID'));
-            return $this->displayTask('', $id);
+            $this->displayTask('', $id);
+
+            return;
         }
 
         if (User::get('id') != $id) {
             $this->setError(Lang::txt('COM_FEEDBACK_NOTAUTH'));
-            return $this->displayTask('', User::get('id'));
+            $this->displayTask('', User::get('id'));
+
+            return;
         }
 
         // Incoming file
         if (!($file = Request::getString('file', ''))) {
             $this->setError(Lang::txt('COM_FEEDBACK_NO_FILE'));
-            return $this->displayTask($file, $id);
+            $this->displayTask($file, $id);
+
+            return;
         }
 
         $file = basename($file);
@@ -176,7 +200,9 @@ class Media extends SiteController
             // Attempt to delete the file
             if (!Filesystem::delete($path . DS . $file)) {
                 $this->setError(Lang::txt('COM_FEEDBACK_UNABLE_TO_DELETE_FILE'));
-                return $this->displayTask($file, $id);
+                $this->displayTask($file, $id);
+
+                return;
             }
 
             $file = '';

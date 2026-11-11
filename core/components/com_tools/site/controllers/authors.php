@@ -261,7 +261,9 @@ class Authors extends SiteController
         // Ensure we have a resource ID ($pid) to work with
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Only a resource editor may change its authors
@@ -297,7 +299,9 @@ class Authors extends SiteController
         // Ensure we have a resource ID ($pid) to work with
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_COM_CONTRIBUTE_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Only a resource editor may change its authors
@@ -342,13 +346,17 @@ class Authors extends SiteController
         // Ensure we have an ID to work with
         if (!$id) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Ensure we have a parent ID to work with
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Only a resource editor may reorder its authors

@@ -230,18 +230,24 @@ class Activity extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($recipient->getError());
-            return $this->editTask($recipient);
+            $this->editTask($recipient);
+
+            return;
         }
 
         // Store new content
         if (!$activity->save()) {
             Notify::error($activity->getError());
-            return $this->editTask($recipient);
+            $this->editTask($recipient);
+
+            return;
         }
 
         if (!$recipient->save()) {
             Notify::error($recipient->getError());
-            return $this->editTask($recipient);
+            $this->editTask($recipient);
+
+            return;
         }
 
         // Trigger after save event
@@ -252,7 +258,9 @@ class Activity extends AdminController
 
         // Redirect to main listing or go back to edit form
         if ($this->getTask() == 'apply') {
-            return $this->editTask($recipient);
+            $this->editTask($recipient);
+
+            return;
         }
 
         $this->cancelTask();

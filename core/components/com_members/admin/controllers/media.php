@@ -56,27 +56,35 @@ class Media extends AdminController
         // make sure we have id
         if (!$id) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // make sure we have a file
         if (!$file['name']) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_FILE'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // make sure we have an upload path
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                return $this->displayTask($id);
+                $this->displayTask($id);
+
+                return;
             }
         }
 
         // make sure file is not empty
         if ($file['size'] == 0) {
             $this->setError(Lang::txt('COM_MEMBERS_FILE_HAS_NO_SIZE'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // make sure file is not empty
@@ -84,7 +92,9 @@ class Media extends AdminController
             $formatted = \Hubzero\Utility\Number::formatBytes($sizeLimit);
             $max = preg_replace('/<abbr \w+=\\"\w+\\">(\w{1,3})<\\/abbr>/', '$1', $formatted);
             $this->setError(Lang::txt('FILE_SIZE_TOO_BIG', $max));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // must be in allowed extensions
@@ -93,7 +103,9 @@ class Media extends AdminController
         if (!in_array($ext, $allowedExtensions)) {
             $these = implode(', ', $allowedExtensions);
             $this->setError(Lang::txt('COM_MEMBERS_FILE_TYPE_NOT_ALLOWED', $these));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // build needed paths
@@ -104,7 +116,9 @@ class Media extends AdminController
         // upload image
         if (!Filesystem::upload($file['tmp_name'], $filePath)) {
             $this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // create profile pic
@@ -144,14 +158,18 @@ class Media extends AdminController
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // Incoming file - restrict to a bare filename within the member dir
         $file = basename(Request::getString('file', ''));
         if (!$file) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_FILE'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // Build the file path
@@ -165,7 +183,9 @@ class Media extends AdminController
             // Attempt to delete the file
             if (!Filesystem::delete($path . DS . $file)) {
                 $this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_DELETE_FILE'));
-                return $this->displayTask($id);
+                $this->displayTask($id);
+
+                return;
             }
 
             // Get the file thumbnail name
@@ -178,7 +198,9 @@ class Media extends AdminController
             if ($curthumb && file_exists($path . DS . $curthumb)) {
                 if (!Filesystem::delete($path . DS . $curthumb)) {
                     $this->setError(Lang::txt('COM_MEMBERS_UNABLE_TO_DELETE_FILE'));
-                    return $this->displayTask($file, $id);
+                    $this->displayTask($file, $id);
+
+                    return;
                 }
             }
         }

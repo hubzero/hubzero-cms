@@ -154,14 +154,18 @@ class PasswordRules extends AdminController
         // Try to save
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_MEMBERS_PASSWORD_RULES_SAVE_SUCCESS'));
 
         // Redirect
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect

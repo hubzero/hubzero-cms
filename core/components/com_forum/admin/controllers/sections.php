@@ -225,13 +225,17 @@ class Sections extends AdminController
 
         if (!$section->save()) {
             Notify::error($section->getError());
-            return $this->editTask($section);
+            $this->editTask($section);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_FORUM_SECTION_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($section);
+            $this->editTask($section);
+
+            return;
         }
 
         // Redirect
@@ -306,7 +310,9 @@ class Sections extends AdminController
                 : Lang::txt('COM_FORUM_UNPUBLISH');
 
             Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;
@@ -360,7 +366,9 @@ class Sections extends AdminController
         // Check for an ID
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;

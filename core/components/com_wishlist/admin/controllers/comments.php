@@ -234,13 +234,17 @@ class Comments extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Trigger after save event
@@ -249,7 +253,9 @@ class Comments extends AdminController
         Notify::success(Lang::txt('COM_WISHLIST_COMMENT_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -328,7 +334,9 @@ class Comments extends AdminController
                 ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH')
                 : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH');
             Notify::error($msg);
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Update record(s)
@@ -387,7 +395,9 @@ class Comments extends AdminController
 
         // Check for an ID
         if (count($ids) < 1) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Update record(s)

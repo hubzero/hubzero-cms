@@ -183,12 +183,16 @@ class History extends SiteController
         // Do some error checking
         if (!$diff) {
             $this->setError(Lang::txt('COM_WIKI_ERROR_MISSING_VERSION'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         if ($diff == $oldid) {
             $this->setError(Lang::txt('COM_WIKI_ERROR_SAME_VERSIONS'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // If no initial page is given, compare to the current revision
@@ -462,7 +466,9 @@ class History extends SiteController
         $newversion = Version::oneOrFail($newversion_id);
         if ($this->page->get('id') != $newversion->get('page_id')) {
             $this->setError(Lang::txt('COM_WIKI_ERROR_PAGE_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Changing the current revision requires edit/manage access
@@ -475,7 +481,9 @@ class History extends SiteController
 
         if (!$this->page->save()) {
             $this->setError($this->page->getError());
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
         $this->page->log('page_version_changed');
 

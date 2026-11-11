@@ -420,7 +420,7 @@ class Products extends AdminController
      */
     public function accesspublicTask()
     {
-        return $this->accessTask(0);
+        $this->accessTask(0);
     }
 
     /**
@@ -430,7 +430,7 @@ class Products extends AdminController
      */
     public function accessregisteredTask()
     {
-        return $this->accessTask(1);
+        $this->accessTask(1);
     }
 
     /**
@@ -440,7 +440,7 @@ class Products extends AdminController
      */
     public function accessspecialTask()
     {
-        return $this->accessTask(2);
+        $this->accessTask(2);
     }
 
     /**

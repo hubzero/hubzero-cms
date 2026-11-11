@@ -284,7 +284,9 @@ class Categories extends AdminController
 
         if (!$section->get('id')) {
             Notify::error(Lang::txt('COM_FORUM_FIELD_INVALID_SECTION'));
-            return $this->editTask($category);
+            $this->editTask($category);
+
+            return;
         }
 
         // Ensure the category has the same scope as its parent section
@@ -294,13 +296,17 @@ class Categories extends AdminController
         // Store new content
         if (!$category->save()) {
             Notify::error($category->getError());
-            return $this->editTask($category);
+            $this->editTask($category);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_FORUM_CATEGORY_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($category);
+            $this->editTask($category);
+
+            return;
         }
 
         // Redirect
@@ -379,7 +385,9 @@ class Categories extends AdminController
                 : Lang::txt('COM_FORUM_UNPUBLISH');
 
             Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO', $action));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;
@@ -433,7 +441,9 @@ class Categories extends AdminController
         // Check for an ID
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_FORUM_SELECT_ENTRY_TO_CHANGE_ACCESS'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;

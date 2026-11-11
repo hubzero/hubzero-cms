@@ -265,14 +265,18 @@ class Sessions extends AdminController
         // Try to save
         if (!$row->save($fields)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Save class/access-group association
         if (isset($fields['groups'])) {
             if (!$row->setGroupIds($fields['groups'])) {
                 Notify::error($row->getError());
-                return $this->editTask($row);
+                $this->editTask($row);
+
+                return;
             }
         }
 
@@ -286,7 +290,9 @@ class Sessions extends AdminController
 
         // Redirect
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -319,7 +325,9 @@ class Sessions extends AdminController
                 if ($row->alias == 'default') {
                     // Output message and redirect
                     Notify::warning(Lang::txt('COM_TOOLS_SESSION_CLASS_DONT_DELETE_DEFAULT'));
-                    return $this->cancelclassTask();
+                    $this->cancelclassTask();
+
+                    return;
                 }
 
                 // Remove the record
@@ -331,7 +339,9 @@ class Sessions extends AdminController
         } else { // no rows were selected
             // Output message and redirect
             Notify::warning(Lang::txt('COM_TOOLS_SESSION_CLASS_DELETE_NO_ROWS'));
-            return $this->cancelclassTask();
+            $this->cancelclassTask();
+
+            return;
         }
 
         // Output messsage and redirect

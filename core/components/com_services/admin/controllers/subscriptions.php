@@ -177,7 +177,9 @@ class Subscriptions extends AdminController
         if (!$service->get('id')) {
             Notify::error(Lang::txt('COM_SERVICES_SERVICE_NOT_FOUND') . ' ' . $subscription->get('serviceid'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $author    = User::getInstance($subscription->uid);
@@ -271,7 +273,9 @@ class Subscriptions extends AdminController
 
         if (!$subscription->save()) {
             Notify::error($subscription->getError());
-            return $this->editTask($subscription);
+            $this->editTask($subscription);
+
+            return;
         }
 
         if ($email || $message) {

@@ -186,13 +186,17 @@ class Answers extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Trigger after save event
@@ -202,7 +206,9 @@ class Answers extends AdminController
         Notify::success(Lang::txt('COM_ANSWERS_ANSWER_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -228,7 +234,9 @@ class Answers extends AdminController
         $ids = (!is_array($ids) ? [$ids] : $ids);
 
         if (count($ids) <= 0) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $success = 0;
@@ -282,10 +290,14 @@ class Answers extends AdminController
             $action = ($publish == 1) ? 'accept' : 'reject';
 
             Notify::warning(Lang::txt('COM_ANSWERS_ERROR_SELECT_ANSWER_TO', $action));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         } elseif (count($id) > 1) {
             Notify::warning(Lang::txt('COM_ANSWERS_ERROR_ONLY_ONE_ACCEPTED_ANSWER'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $ar = Response::oneOrFail($id[0]);
@@ -293,12 +305,16 @@ class Answers extends AdminController
         if ($publish == 1) {
             if (!$ar->accept()) {
                 Notify::error($ar->getError());
-                return $this->cancelTask();
+                $this->cancelTask();
+
+                return;
             }
         } else {
             if (!$ar->reject()) {
                 Notify::error($ar->getError());
-                return $this->cancelTask();
+                $this->cancelTask();
+
+                return;
             }
         }
 

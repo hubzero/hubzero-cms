@@ -191,13 +191,17 @@ class Collections extends AdminController
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_COLLECTIONS_COLLECTION_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set the redirect
@@ -253,7 +257,7 @@ class Collections extends AdminController
      */
     public function accesspublicTask()
     {
-        return $this->accessTask(0);
+        $this->accessTask(0);
     }
 
     /**
@@ -263,7 +267,7 @@ class Collections extends AdminController
      */
     public function accessregisteredTask()
     {
-        return $this->accessTask(1);
+        $this->accessTask(1);
     }
 
     /**
@@ -273,7 +277,7 @@ class Collections extends AdminController
      */
     public function accessspecialTask()
     {
-        return $this->accessTask(2);
+        $this->accessTask(2);
     }
 
     /**
@@ -283,7 +287,7 @@ class Collections extends AdminController
      */
     public function accessprivateTask()
     {
-        return $this->accessTask(4);
+        $this->accessTask(4);
     }
 
     /**
@@ -345,7 +349,9 @@ class Collections extends AdminController
         // Check for a resource
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_COLLECTIONS_ERROR_SELECT_TO', $this->task));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Loop through all the IDs

@@ -315,7 +315,9 @@ class Media extends SiteController
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('MEMBERS_NO_ID'));
-            return $this->displayTask('', $id);
+            $this->displayTask('', $id);
+
+            return;
         }
 
         // Before anything touches the filesystem: $path is built from this id, so
@@ -327,7 +329,9 @@ class Media extends SiteController
         $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('MEMBERS_NO_FILE'));
-            return $this->displayTask('', $id);
+            $this->displayTask('', $id);
+
+            return;
         }
 
         // Build upload path
@@ -337,7 +341,9 @@ class Media extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('UNABLE_TO_CREATE_UPLOAD_PATH'));
-                return $this->displayTask('', $id);
+                $this->displayTask('', $id);
+
+                return;
             }
         }
 
@@ -352,7 +358,9 @@ class Media extends SiteController
             $this->setError(
                 Lang::txt('COM_MEMBERS_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)),
             );
-            return $this->displayTask($file['name'], $id);
+            $this->displayTask($file['name'], $id);
+
+            return;
         }
 
         // Make the filename safe
@@ -365,7 +373,9 @@ class Media extends SiteController
 
         if (!in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-            return $this->displayTask($file['name'], $id);
+            $this->displayTask($file['name'], $id);
+
+            return;
         }
 
         // Do we have an old file we're replacing?
@@ -384,7 +394,9 @@ class Media extends SiteController
                 if (file_exists($path . DS . $curfile)) {
                     if (!Filesystem::delete($path . DS . $curfile)) {
                         $this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
-                        return $this->displayTask($file['name'], $id);
+                        $this->displayTask($file['name'], $id);
+
+                        return;
                     }
                 }
 
@@ -392,7 +404,9 @@ class Media extends SiteController
                 if (file_exists($path . DS . $curthumb)) {
                     if (!Filesystem::delete($path . DS . $curthumb)) {
                         $this->setError(Lang::txt('UNABLE_TO_DELETE_FILE'));
-                        return $this->displayTask($file['name'], $id);
+                        $this->displayTask($file['name'], $id);
+
+                        return;
                     }
                 }
             }
@@ -447,7 +461,9 @@ class Media extends SiteController
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->displayTask('', $id);
+            $this->displayTask('', $id);
+
+            return;
         }
 
         $this->requireSelfOrAdmin($id);
@@ -455,7 +471,9 @@ class Media extends SiteController
 
         if (!$profile->get('id')) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->displayTask('', $id);
+            $this->displayTask('', $id);
+
+            return;
         }
 
         // Build the file path

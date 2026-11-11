@@ -214,7 +214,9 @@ class Hosts extends AdminController
 
         if (!$row->bind($fields)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // $hostname is eventually used in a string passed to an exec call, we gotta
@@ -224,7 +226,9 @@ class Hosts extends AdminController
 
         if (!$row->hostname) {
             Notify::error(Lang::txt('COM_TOOLS_ERROR_INVALID_HOSTNAME'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Figure out the hosttype stuff.
@@ -254,19 +258,25 @@ class Hosts extends AdminController
         // Check content
         if (!$row->check()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->store($insert, $fields['id'])) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();

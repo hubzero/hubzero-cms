@@ -156,14 +156,18 @@ class Messages extends AdminController
         // Store content
         if (!$row->save()) {
             $this->setError($row->getError(), 'error');
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('Message Action saved'));
 
         // Redirect
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -294,7 +298,9 @@ class Messages extends AdminController
             !User::authorise('core.admin', $this->option)
             && !User::authorise('core.edit', $this->option)
         ) {
-            return $this->settingsTask();
+            $this->settingsTask();
+
+            return;
         }
 
         $id = Request::getInt('id', 0);

@@ -325,18 +325,24 @@ class Media extends SiteController
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         // Ensure we have an ID to work with
         $listdir = Request::getInt('listdir', 0, 'post');
         if (!$listdir) {
             $this->setError(Lang::txt('COM_WIKI_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
         $this->requirePageEdit($listdir);
 
@@ -344,7 +350,9 @@ class Media extends SiteController
         $file = Request::getArray('upload', '', 'files');
         if (!$file['name']) {
             $this->setError(Lang::txt('COM_WIKI_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $attachment = Attachment::blank();
@@ -355,7 +363,9 @@ class Media extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_WIKI_ERROR_UNABLE_TO_CREATE_DIRECTORY'));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
         }
 
@@ -368,7 +378,9 @@ class Media extends SiteController
 
         if ($file['size'] > $sizeLimit) {
             $this->setError(Lang::txt('COM_WIKI_ERROR_UPLOADING_FILE_TOO_BIG', Number::formatBytes($sizeLimit)));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Make the filename safe
@@ -382,7 +394,9 @@ class Media extends SiteController
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('COM_WIKI_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Upload new files
@@ -425,14 +439,18 @@ class Media extends SiteController
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming group ID
         $listdir = Request::getInt('listdir', 0, 'get');
         if (!$listdir) {
             $this->setError(Lang::txt('COM_WIKI_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
         $this->requirePageEdit($listdir);
 
@@ -440,14 +458,18 @@ class Media extends SiteController
         $folder = trim(Request::getString('folder', '', 'get'));
         if (!$folder) {
             $this->setError(Lang::txt('COM_WIKI_NO_DIRECTORY'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Confine the folder to the attachment filespace (reject any traversal)
         $folder = \Hubzero\Filesystem\SafePath::relative($folder);
         if ($folder === false) {
             $this->setError(Lang::txt('COM_WIKI_NO_DIRECTORY'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $attachment = Attachment::blank();
@@ -467,7 +489,9 @@ class Media extends SiteController
 
         // Push through to the media view
         if (Request::getInt('no_html', 0)) {
-            return $this->listTask();
+            $this->listTask();
+
+            return;
         }
 
         // Push through to the media view
@@ -486,14 +510,18 @@ class Media extends SiteController
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming
         $listdir = Request::getInt('listdir', 0, 'get');
         if (!$listdir) {
             $this->setError(Lang::txt('COM_WIKI_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
         $this->requirePageEdit($listdir);
 
@@ -501,7 +529,9 @@ class Media extends SiteController
         $file = trim(Request::getString('file', '', 'get'));
         if (!$file) {
             $this->setError(Lang::txt('COM_WIKI_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Confine the name to the attachment filespace, as deletefolderTask
@@ -513,7 +543,9 @@ class Media extends SiteController
         $file = \Hubzero\Filesystem\SafePath::relative($file);
         if ($file === false) {
             $this->setError(Lang::txt('COM_WIKI_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $attachment = Attachment::oneByFilename($file, $listdir);
@@ -534,7 +566,9 @@ class Media extends SiteController
 
         // Push through to the media view
         if (Request::getInt('no_html', 0)) {
-            return $this->listTask();
+            $this->listTask();
+
+            return;
         }
 
         $this->displayTask();

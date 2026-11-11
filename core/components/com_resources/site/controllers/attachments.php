@@ -56,7 +56,9 @@ class Attachments extends SiteController
         // Push through to a different method if
         // being created via AJAX
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxCreateTask();
+            $this->ajaxCreateTask();
+
+            return;
         }
 
         // Ensure we have an ID to work with
@@ -74,13 +76,17 @@ class Attachments extends SiteController
             ]);
             if (!$parentResource->save()) {
                 $this->setError($parentResource->getError());
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
             $pid = $parentResource->get('id');
         }
         if (!$pid) {
             $this->setError(Lang::txt('COM_RESOURCES_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         if (!$parentResource) {
@@ -125,7 +131,9 @@ class Attachments extends SiteController
             // Save record
             if (!$resource->save()) {
                 $this->setError($resource->getError());
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
         }
 
@@ -540,13 +548,17 @@ class Attachments extends SiteController
         // Ensure we have an ID to work with
         if (!$id) {
             $this->setError(Lang::txt('CONTRIBUTE_NO_CHILD_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Ensure we have a parent ID to work with
         if (!$pid) {
             $this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         switch ($move) {
@@ -613,14 +625,18 @@ class Attachments extends SiteController
         Request::checkToken(['get', 'post']);
 
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         // Incoming
         $pid = Request::getInt('pid', 0);
         if (!$pid) {
             $this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Must be able to edit the parent resource
@@ -633,7 +649,9 @@ class Attachments extends SiteController
         $file = Request::getArray('upload', '', 'files');
         if (!$file['name']) {
             $this->setError(Lang::txt('CONTRIBUTE_NO_FILE'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Make the filename safe
@@ -671,7 +689,9 @@ class Attachments extends SiteController
         ];
         if (in_array(strtolower((string) $ext), $blockedExtensions)) {
             $this->setError(Lang::txt('File type not allowed: %s', $ext));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
         $file['name'] = str_replace(' ', '_', $file['name']);
         if (strlen($file['name']) > 230) {
@@ -702,13 +722,17 @@ class Attachments extends SiteController
 
         if ($parent->hasChild($file['name'])) {
             $this->setError(Lang::txt('A file with this name and type appears to already exist.'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Store new content
         if (!$resource->save()) {
             $this->setError($resource->getError());
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Build the path
@@ -719,7 +743,9 @@ class Attachments extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                return $this->displayTask($pid);
+                $this->displayTask($pid);
+
+                return;
             }
         }
 
@@ -742,7 +768,9 @@ class Attachments extends SiteController
             }
 
             $this->setError(Lang::txt('File rejected because the anti-virus scan failed.'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Set path value
@@ -756,13 +784,17 @@ class Attachments extends SiteController
         // Store new content
         if (!$resource->save()) {
             $this->setError($resource->getError());
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Create new parent/child association
         if (!$resource->makeChildOf($pid)) {
             $this->setError($resource->getError());
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Textifier
@@ -826,14 +858,18 @@ class Attachments extends SiteController
         $pid = Request::getInt('pid', 0);
         if (!$pid) {
             $this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Incoming child ID
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('CONTRIBUTE_NO_CHILD_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Load resource info
@@ -854,7 +890,9 @@ class Attachments extends SiteController
         if ($resource->get('standalone') == 1) {
             $association->destroy();
 
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Check for stored file
@@ -908,14 +946,18 @@ class Attachments extends SiteController
         $pid = Request::getInt('pid', 0);
         if (!$pid) {
             $this->setError(Lang::txt('CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Incoming child ID
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('CONTRIBUTE_NO_CHILD_ID'));
-            return $this->displayTask($pid);
+            $this->displayTask($pid);
+
+            return;
         }
 
         // Load resource info

@@ -1656,7 +1656,9 @@ class Articles extends SiteController
             // Redirect back to the edit screen.
             Notify::warning(Lang::txt('JLIB_APPLICATION_ERROR_SAVE_FAILED', $model->getError()));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $model->checkout();

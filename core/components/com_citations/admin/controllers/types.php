@@ -111,7 +111,9 @@ class Types extends AdminController
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('CITATION_TYPE_SAVED'));

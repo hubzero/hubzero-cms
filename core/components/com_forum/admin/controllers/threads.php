@@ -457,7 +457,9 @@ class Threads extends AdminController
         $category = Category::oneOrNew($post->get('category_id'));
         if (!$category->get('id')) {
             Notify::error(Lang::txt('COM_FORUM_FIELD_INVALID_CATEGORY'));
-            return $this->editTask($post);
+            $this->editTask($post);
+
+            return;
         }
 
         // Ensure the post's scope is the same as its parent category
@@ -484,13 +486,17 @@ class Threads extends AdminController
         // Store new content
         if (!$post->save()) {
             Notify::error($post->getError());
-            return $this->editTask($post);
+            $this->editTask($post);
+
+            return;
         }
 
         // Handle attachments
         if (!$this->uploadTask($post->get('thread', $post->get('id')), $post->get('id'))) {
             Notify::error($this->getError());
-            return $this->editTask($post);
+            $this->editTask($post);
+
+            return;
         }
 
         // Process tags
@@ -499,7 +505,9 @@ class Threads extends AdminController
         Notify::success(Lang::txt('COM_FORUM_POST_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($post);
+            $this->editTask($post);
+
+            return;
         }
 
         // Redirect

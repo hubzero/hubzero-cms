@@ -123,7 +123,9 @@ class Messages extends AdminController
 
         if ($row->get('user_id_to') != User::get('id')) {
             Notify::warning(Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if (!$row->get('state')) {
@@ -202,7 +204,9 @@ class Messages extends AdminController
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->mail($row);
@@ -210,7 +214,9 @@ class Messages extends AdminController
         Notify::success(Lang::txt('JLIB_APPLICATION_SAVE_SUCCESS'));
 
         if ($this->task == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set the redirect

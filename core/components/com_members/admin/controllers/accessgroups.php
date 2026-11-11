@@ -190,7 +190,9 @@ class Accessgroups extends AdminController
 
         if (!$iAmSuperAdmin && $groupSuperAdmin) {
             Notify::error(Lang::txt('JLIB_USER_ERROR_NOT_SUPERADMIN'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Check for super-admin changing self to be non-super-admin
@@ -213,7 +215,9 @@ class Accessgroups extends AdminController
                 // and the current group does not have super admin permissions, throw an exception
                 if (!$otherSuperAdmin && !$groupSuperAdmin) {
                     Notify::error(Lang::txt('JLIB_USER_ERROR_CANNOT_DEMOTE_SELF'));
-                    return $this->editTask($row);
+                    $this->editTask($row);
+
+                    return;
                 }
             }
         }
@@ -225,7 +229,9 @@ class Accessgroups extends AdminController
         // Try to save
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_MEMBERS_SAVE_SUCCESS'));
@@ -236,7 +242,9 @@ class Accessgroups extends AdminController
 
         // Fall through to edit form
         if (in_array($this->getTask(), ['apply', 'save2new', 'save2copy'])) {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect

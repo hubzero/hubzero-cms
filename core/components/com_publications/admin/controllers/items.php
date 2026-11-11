@@ -709,7 +709,9 @@ class Items extends AdminController
                     foreach ($fields as $f) {
                         if ($f[0] == $tagname && end($f) == 1) {
                             Notify::error(Lang::txt('COM_PUBLICATIONS_REQUIRED_FIELD_CHECK', $f[1]));
-                            return $this->cancelTask();
+                            $this->cancelTask();
+
+                            return;
                         }
                     }
                 }

@@ -209,13 +209,17 @@ class Overrides extends AdminController
         // Store new content
         if (!$model->save($fields, (isset($fields['both']) && $fields['both']))) {
             Notify::error($model->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_LANGUAGES_SAVE_SUCCESS'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         if ($this->getTask() == 'save2new') {

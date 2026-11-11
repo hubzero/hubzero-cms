@@ -130,7 +130,9 @@ class Media extends SiteController
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Check for request forgeries
@@ -141,7 +143,9 @@ class Media extends SiteController
 
         if (!$file['name'] || $file['size'] == 0) {
             $this->setError(Lang::txt('COM_BLOG_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Only the owner, a group member/manager, or a blog admin may write here
@@ -160,7 +164,9 @@ class Media extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_BLOG_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
         }
 
@@ -179,7 +185,9 @@ class Media extends SiteController
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('COM_BLOG_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
 
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Size limit is in MB, so we need to turn it into just B
@@ -192,7 +200,9 @@ class Media extends SiteController
                 \Hubzero\Utility\Number::formatBytes($sizeLimit),
             ));
 
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Make sure the file name is unique
@@ -229,14 +239,18 @@ class Media extends SiteController
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming file
         $file = trim(Request::getString('folder', '', 'get'));
         if (!$file) {
             $this->setError(Lang::txt('COM_BLOG_NO_DIRECTORY'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Only the owner, a group member/manager, or a blog admin may write here
@@ -253,7 +267,9 @@ class Media extends SiteController
         $file = \Hubzero\Filesystem\SafePath::relative($file);
         if ($file === false || $file === '') {
             $this->setError(Lang::txt('COM_BLOG_NO_DIRECTORY'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Build the file path. The requested folder was read above and then
@@ -285,14 +301,18 @@ class Media extends SiteController
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming file
         $file = trim(Request::getString('file', '', 'get'));
         if (!$file) {
             $this->setError(Lang::txt('COM_BLOG_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Only the owner, a group member/manager, or a blog admin may write here
@@ -308,7 +328,9 @@ class Media extends SiteController
         // Keep the target within the blog filespace
         if (strpos($file, '..') !== false) {
             $this->setError(Lang::txt('COM_BLOG_FILE_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Build the file path
@@ -316,7 +338,9 @@ class Media extends SiteController
 
         if (!file_exists($path . DS . $file) or !$file) {
             $this->setError(Lang::txt('COM_BLOG_FILE_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Attempt to delete the file

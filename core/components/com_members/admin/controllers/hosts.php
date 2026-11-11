@@ -35,14 +35,18 @@ class Hosts extends AdminController
             !User::authorise('core.admin', $this->option)
             && !User::authorise('core.edit', $this->option)
         ) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming member ID
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Load the profile
@@ -54,7 +58,9 @@ class Hosts extends AdminController
 
         if (!$host) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_HOST'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // Update the hosts list
@@ -82,14 +88,18 @@ class Hosts extends AdminController
             !User::authorise('core.admin', $this->option)
             && !User::authorise('core.edit', $this->option)
         ) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming member ID
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('MEMBERS_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Load the profile
@@ -99,7 +109,9 @@ class Hosts extends AdminController
         $host = Request::getString('host', '');
         if (!$host) {
             $this->setError(Lang::txt('MEMBERS_NO_HOST'));
-            return $this->displayTask($profile);
+            $this->displayTask($profile);
+
+            return;
         }
 
         $h = Host::oneByHostAndUser($host, $id);

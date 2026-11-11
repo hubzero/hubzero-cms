@@ -175,14 +175,18 @@ class Roles extends AdminController
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_GROUPS_ROLE_SAVED'));
 
         // Redirect to main listing
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -204,7 +208,9 @@ class Roles extends AdminController
         // Make sure we have an ID
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_GROUPS_ERROR_NO_ITEMS_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;

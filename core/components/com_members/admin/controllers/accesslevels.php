@@ -159,7 +159,9 @@ class Accesslevels extends AdminController
         // Try to save
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_MEMBERS_SAVE_SUCCESS'));
@@ -170,7 +172,9 @@ class Accesslevels extends AdminController
 
         // Fall through to edit form
         if (in_array($this->getTask(), ['apply', 'save2new', 'save2copy'])) {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -188,7 +192,9 @@ class Accesslevels extends AdminController
         Request::checkToken();
 
         if (!User::authorise('core.delete', $this->option)) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Incoming

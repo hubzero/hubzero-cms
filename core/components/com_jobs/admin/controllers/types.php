@@ -157,13 +157,17 @@ class Types extends AdminController
         $row = new Type($this->database);
         if (!$row->bind($_POST)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->store()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect

@@ -541,7 +541,9 @@ class Threads extends SiteController
 
             if (!$thread->get('id') || $thread->get('closed')) {
                 Notify::error(Lang::txt('COM_FORUM_ERROR_THREAD_CLOSED'));
-                return $this->editTask($post);
+                $this->editTask($post);
+
+                return;
             }
 
             // fields[thread] and fields[parent] name any rows on the hub. A
@@ -554,14 +556,18 @@ class Threads extends SiteController
                 || (int) $thread->get('category_id') !== (int) $post->get('category_id')
             ) {
                 Notify::error(Lang::txt('COM_FORUM_POST_NOT_FOUND'));
-                return $this->editTask($post);
+                $this->editTask($post);
+
+                return;
             }
 
             if ((int) $post->get('parent') !== (int) $thread->get('id')) {
                 $parentPost = Post::oneOrNew((int) $post->get('parent'));
                 if ($parentPost->isNew() || (int) $parentPost->get('thread') !== (int) $thread->get('id')) {
                     Notify::error(Lang::txt('COM_FORUM_POST_NOT_FOUND'));
-                    return $this->editTask($post);
+                    $this->editTask($post);
+
+                    return;
                 }
             }
         } elseif (!$post->get('parent') && $isNew) {
@@ -584,24 +590,32 @@ class Threads extends SiteController
             || $category->get('scope_id') != $this->forum->get('scope_id')
         ) {
             Notify::error(Lang::txt('COM_FORUM_ERROR_CATEGORY_NOT_FOUND'));
-            return $this->editTask($post);
+            $this->editTask($post);
+
+            return;
         }
 
         if ($category->get('closed')) {
             Notify::error(Lang::txt('COM_FORUM_ERROR_CATEGORY_CLOSED'));
-            return $this->editTask($post);
+            $this->editTask($post);
+
+            return;
         }
 
         // Store new content
         if (!$post->save()) {
             Notify::error($post->getError());
-            return $this->editTask($post);
+            $this->editTask($post);
+
+            return;
         }
 
         // Upload files
         if (!$this->uploadTask($post->get('thread', $post->get('id')), $post->get('id'))) {
             Notify::error($this->getError());
-            return $this->editTask($post);
+            $this->editTask($post);
+
+            return;
         }
 
         // Save tags

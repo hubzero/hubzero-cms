@@ -298,7 +298,9 @@ class Applications extends SiteController
         // attempt to save model
         if (!$model->save()) {
             Notify::error($model->getError());
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         // parse incoming team

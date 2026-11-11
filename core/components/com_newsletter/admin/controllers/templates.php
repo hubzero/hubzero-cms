@@ -120,14 +120,18 @@ class Templates extends AdminController
         // save mailing list
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set success message
         Notify::success(Lang::txt('COM_NEWSLETTER_TEMPLATE_SAVED_SUCCESS'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect back to list
@@ -204,7 +208,9 @@ class Templates extends AdminController
 
         //are we editing or adding a new tempalte
         if (!$id) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         //get template we want to duplicate
@@ -220,7 +226,9 @@ class Templates extends AdminController
         if (!$new_template->save()) {
             Notify::error(Lang::txt('COM_NEWSLETTER_TEMPLATE_DUPLICATE_FAILED'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         //set success message & redirect

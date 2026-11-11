@@ -140,14 +140,18 @@ class Statuses extends AdminController
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_SUPPORT_STATUS_SUCCESSFULLY_SAVED'));
 
         // Output messsage and redirect
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -174,7 +178,9 @@ class Statuses extends AdminController
         // Check for an ID
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_SUPPORT_ERROR_SELECT_STATUS_TO_DELETE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;

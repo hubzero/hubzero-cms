@@ -189,7 +189,9 @@ class Media extends AdminController
     public function uploadTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         // Check for request forgeries
@@ -257,7 +259,9 @@ class Media extends AdminController
                         \Hubzero\Utility\Number::formatBytes($sizeLimit),
                     ),
                 );
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             // Make the filename safe
@@ -277,7 +281,9 @@ class Media extends AdminController
 
             if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
                 $this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             // Perform the upload

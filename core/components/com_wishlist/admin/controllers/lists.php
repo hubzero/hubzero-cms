@@ -191,13 +191,17 @@ class Lists extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Trigger after save event
@@ -206,7 +210,9 @@ class Lists extends AdminController
         Notify::success(Lang::txt('COM_WISHLIST_LIST_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -234,7 +240,9 @@ class Lists extends AdminController
         // Make sure we have an ID to work with
         if (!count($ids)) {
             Notify::error(Lang::txt('COM_WISHLIST_NO_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $removed = 0;
@@ -281,7 +289,9 @@ class Lists extends AdminController
         // Make sure we have an ID to work with
         if (!$id) {
             Notify::error(Lang::txt('COM_WISHLIST_NO_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         switch ($this->getTask()) {
@@ -296,7 +306,9 @@ class Lists extends AdminController
                 break;
             default:
                 // Not one of the access tasks; change nothing
-                return $this->cancelTask();
+                $this->cancelTask();
+
+                return;
         }
 
         // Load the article
@@ -335,7 +347,9 @@ class Lists extends AdminController
             Notify::error(
                 $state ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'),
             );
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Update record(s)

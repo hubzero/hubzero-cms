@@ -176,7 +176,9 @@ class ImportHooks extends AdminController
         // Attempt to save
         if (!$hook->save()) {
             $this->setError($hook->getError());
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // Is this a new record?
@@ -200,7 +202,9 @@ class ImportHooks extends AdminController
 
         // Inform user & redirect
         if ($this->getTask() == 'apply') {
-            return $this->editTask($hook);
+            $this->editTask($hook);
+
+            return;
         }
 
         $this->cancelTask();

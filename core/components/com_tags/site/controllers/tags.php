@@ -777,18 +777,24 @@ class Tags extends SiteController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         if (!$row->saveSubstitutions($subs)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Trigger after save event
@@ -835,7 +841,9 @@ class Tags extends SiteController
 
         // Make sure we have an ID
         if (empty($ids)) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         foreach ($ids as $id) {

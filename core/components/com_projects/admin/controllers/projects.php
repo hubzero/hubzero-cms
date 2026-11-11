@@ -251,13 +251,17 @@ class Projects extends AdminController
         if ($id) {
             if (!$model->exists()) {
                 Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
-                return $this->cancelTask();
+                $this->cancelTask();
+
+                return;
             }
         }
 
         if (!$id) {
             Notify::error(Lang::txt('COM_PROJECTS_NOTICE_NEW_PROJECT_FRONT_END'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $this->view->config = $this->config;
@@ -387,7 +391,9 @@ class Projects extends AdminController
 
         if (!$model->exists()) {
             Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $title = $formdata['title'] ? rtrim($formdata['title']) : $model->get('title');
@@ -479,7 +485,9 @@ class Projects extends AdminController
         // Save changes
         if (!$model->store()) {
             Notify::error($model->getError());
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Re-sync the project's login (pr-<alias>) group to the new state so SFTP
@@ -674,7 +682,9 @@ class Projects extends AdminController
         // Check for an ID
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_PROJECTS_SELECT_ENTRY_TO_CHANGE_PRIVACY'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;
@@ -886,7 +896,9 @@ class Projects extends AdminController
         $obj = new Tables\Project($this->database);
         if (!$id or !$obj->loadProject($id)) {
             Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Get project group
@@ -1002,7 +1014,9 @@ class Projects extends AdminController
         $obj = new Tables\Project($this->database);
         if (!$id or !$obj->loadProject($id)) {
             Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $url = Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $id, false);
@@ -1022,7 +1036,9 @@ class Projects extends AdminController
 
         if (!is_file($path . DS . $file)) {
             Notify::error(Lang::txt('Error: File not found in the project, cannot add and commit'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Git helper
@@ -1061,7 +1077,9 @@ class Projects extends AdminController
         $project = new Models\Project($id);
         if (!$project->exists()) {
             Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $repo = new \Components\Projects\Models\Repo($project, 'local');
@@ -1097,7 +1115,9 @@ class Projects extends AdminController
         $obj = new Tables\Project($this->database);
         if (!$id or !$obj->loadProject($id)) {
             Notify::error(Lang::txt('COM_PROJECTS_NOTICE_ID_NOT_FOUND'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Unlock sync
@@ -1139,7 +1159,9 @@ class Projects extends AdminController
             !User::authorise('core.manage', $this->option)
             && !User::authorise('core.admin', $this->option)
         ) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Fields that we have, ordered
@@ -1182,7 +1204,9 @@ class Projects extends AdminController
             !User::authorise('core.manage', $this->option)
             && !User::authorise('core.admin', $this->option)
         ) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Incoming data

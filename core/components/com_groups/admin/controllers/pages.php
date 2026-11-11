@@ -184,7 +184,9 @@ class Pages extends AdminController
         // bind new page properties
         if (!$this->page->bind($page)) {
             Notify::error($this->page->getError());
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         if (!$this->page->get('id')) {
@@ -197,7 +199,9 @@ class Pages extends AdminController
         // bind new page version properties
         if (!$this->version->bind($version)) {
             Notify::error($this->version->getError());
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // make sure page belongs to group
@@ -244,7 +248,9 @@ class Pages extends AdminController
         // save page settings
         if (!$this->page->store(true)) {
             Notify::error($this->page->getError());
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // set page version vars
@@ -276,7 +282,9 @@ class Pages extends AdminController
         // DONT RUN CHECK ON STORE METHOD (pass false as first arg to store() method)
         if (!$this->version->store(false, $this->group->isSuperGroup())) {
             Notify::error($this->version->getError());
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // get page children

@@ -177,7 +177,9 @@ class Campaigns extends AdminController
         // Save campaign
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set success message
@@ -185,7 +187,9 @@ class Campaigns extends AdminController
 
         if ($this->getTask() == 'apply') {
             // If we just created campaign go back to edit form so we can add content
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect back to campaigns list

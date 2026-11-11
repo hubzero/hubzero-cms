@@ -84,7 +84,9 @@ class Authors extends SiteController
         Request::checkToken(['get', 'post']);
 
         if ($this->getError()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming host
@@ -155,7 +157,9 @@ class Authors extends SiteController
         Request::checkToken(['get', 'post']);
 
         if ($this->getError()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $mbrs = Request::getArray('author', []);
@@ -192,7 +196,9 @@ class Authors extends SiteController
         Request::checkToken(['get', 'post']);
 
         if ($this->getError()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
 

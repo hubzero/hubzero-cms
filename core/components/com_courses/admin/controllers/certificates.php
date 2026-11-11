@@ -36,11 +36,15 @@ class Certificates extends AdminController
         $this->view->certificate = Certificate::getInstance($this->view->cert_id, $this->view->course_id);
 
         if (!$this->view->certificate->exists()) {
-            return $this->addTask($this->view->certificate);
+            $this->addTask($this->view->certificate);
+
+            return;
         }
 
         if (!$this->view->certificate->hasFile()) {
-            return $this->editTask($this->view->certificate);
+            $this->editTask($this->view->certificate);
+
+            return;
         }
 
         Request::setVar('hidemainmenu', 1);

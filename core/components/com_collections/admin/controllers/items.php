@@ -186,7 +186,9 @@ class Items extends AdminController
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Save assets
@@ -227,7 +229,9 @@ class Items extends AdminController
         Notify::success(Lang::txt('COM_COLLECTIONS_POST_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set the redirect

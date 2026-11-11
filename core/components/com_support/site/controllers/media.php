@@ -345,7 +345,9 @@ class Media extends SiteController
         }*/
 
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         // Ensure we have an ID to work with
@@ -353,20 +355,26 @@ class Media extends SiteController
         $comment = Request::getInt('comment', 0, 'post');
         if (!$ticket) {
             $this->setError(Lang::txt('COM_SUPPORT_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // The same rule as the ajax twin above: this path is reached without it
         if (!$this->mayAttachToTicket($ticket)) {
             $this->setError(Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming file
         $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('COM_SUPPORT_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Build the upload path if it doesn't exist
@@ -375,7 +383,9 @@ class Media extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('Error uploading. Unable to create path.'));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
         }
 
@@ -392,7 +402,9 @@ class Media extends SiteController
             $this->setError(
                 Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)),
             );
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Make the filename safe
@@ -418,7 +430,9 @@ class Media extends SiteController
                 'ext'    => ($ext === '' || $ext === null) ? '(none)' : $ext,
             ]);
             $this->setError(Lang::txt('COM_SUPPORT_ERROR_INCORRECT_FILE_TYPE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $filename .= '.' . $ext;
@@ -475,7 +489,9 @@ class Media extends SiteController
         Request::checkToken(['get', 'post']);
 
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxDeleteTask();
+            $this->ajaxDeleteTask();
+
+            return;
         }
 
         // Incoming asset
@@ -487,7 +503,9 @@ class Media extends SiteController
         // is > 0. This means it's an attachment on a real
         // ticket, not a temp.
         if ($model->get('ticket') > 0 && User::isGuest()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
         // Only the person who added the attachment, or a support agent, may delete it
         if (!$this->mayManageAttachment($model)) {

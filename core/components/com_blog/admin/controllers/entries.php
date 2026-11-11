@@ -205,13 +205,17 @@ class Entries extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Process tags
@@ -225,7 +229,9 @@ class Entries extends AdminController
 
         // Redirect to main listing or go back to edit form
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -297,7 +303,9 @@ class Entries extends AdminController
         // Check for a resource
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO', $this->task));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Loop through all the IDs
@@ -359,7 +367,9 @@ class Entries extends AdminController
         // Check for a resource
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_BLOG_SELECT_ENTRY_TO_COMMENTS', $this->task));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Loop through all the IDs

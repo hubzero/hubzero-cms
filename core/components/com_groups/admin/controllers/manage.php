@@ -765,7 +765,9 @@ class Manage extends AdminController
 
         // empty list?
         if (empty($ids)) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Get GitLab client
@@ -981,7 +983,9 @@ class Manage extends AdminController
         // empty list?
         if (empty($ids)) {
             Notify::warning(Lang::txt('There are no eligible merge requests.'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // vars to hold results of pull

@@ -652,14 +652,18 @@ class Pages extends SiteController
             }
 
             // Push on through to the edit form
-            return $this->editTask($revision);
+            $this->editTask($revision);
+
+            return;
         }
 
         // Check content
         // First, make sure the pagetext isn't empty
         if ($revision->get('pagetext') == '') {
             $this->setError(Lang::txt('COM_WIKI_ERROR_MISSING_PAGETEXT'));
-            return $this->editTask($revision);
+            $this->editTask($revision);
+
+            return;
         }
 
         // Trigger before save event
@@ -668,20 +672,26 @@ class Pages extends SiteController
 
         if (in_array(false, $result, true)) {
             $this->setError($this->page->getError());
-            return $this->editTask($revision);
+            $this->editTask($revision);
+
+            return;
         }
 
         // Store new content
         if (!$this->page->save()) {
             $this->setError($this->page->getError());
-            return $this->editTask($revision);
+            $this->editTask($revision);
+
+            return;
         }
 
         // Get allowed authors (a suggester submits a revision only: adding
         // themselves as an author here would make their next save auto-approved)
         if (!$suggestOnly && !Author::setForPage(Request::getString('authors', '', 'post'), $this->page->get('id'))) {
             $this->setError(Lang::txt('COM_WIKI_ERROR_SAVING_AUTHORS'));
-            return $this->editTask($revision);
+            $this->editTask($revision);
+
+            return;
         }
 
         // Get the upload path
@@ -736,7 +746,9 @@ class Pages extends SiteController
             // Store content
             if (!$revision->save()) {
                 $this->setError(Lang::txt('COM_WIKI_ERROR_SAVING_REVISION'));
-                return $this->editTask($revision);
+                $this->editTask($revision);
+
+                return;
             }
 
             // Only an approved revision becomes the page's current text; a
@@ -752,7 +764,9 @@ class Pages extends SiteController
         if (!$this->page->save()) {
             // This really shouldn't happen.
             $this->setError(Lang::txt('COM_WIKI_ERROR_SAVING_PAGE'));
-            return $this->editTask($revision);
+            $this->editTask($revision);
+
+            return;
         }
 
         // Process tags (not for a suggestion, which changes the revision only)
@@ -1047,21 +1061,27 @@ class Pages extends SiteController
         // Are they just changing case of characters?
         if (strtolower($this->page->get('pagename')) == strtolower($newpagename)) {
             $this->setError(Lang::txt('New name matches old name.'));
-            return $this->renameTask();
+            $this->renameTask();
+
+            return;
         }
 
         // Check that no other pages are using the new title
         $p = Page::oneByPath($newpagename, $this->page->get('scope'), $this->page->get('scope_id'));
         if ($p->exists()) {
             $this->setError(Lang::txt('COM_WIKI_ERROR_PAGE_EXIST') . ' ' . Lang::txt('CHOOSE_ANOTHER_PAGENAME'));
-            return $this->renameTask();
+            $this->renameTask();
+
+            return;
         }
 
         $this->page->set('pagename', $newpagename);
 
         if (!$this->page->save()) {
             $this->setError($this->page->getError());
-            return $this->renameTask();
+            $this->renameTask();
+
+            return;
         }
 
         $pages = Page::all()

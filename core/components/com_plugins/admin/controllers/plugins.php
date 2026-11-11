@@ -272,13 +272,17 @@ class Plugins extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($model->getError());
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         // Store content
         if (!$model->save()) {
             Notify::error($model->getError());
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         // Trigger after save event
@@ -292,7 +296,9 @@ class Plugins extends AdminController
 
         // Display the edit form
         if ($this->getTask() == 'apply') {
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         // Check the record back in

@@ -164,13 +164,17 @@ class Locations extends AdminController
         $row = new Middleware\Location($fields['id']);
         if (!$row->bind($fields)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->store(true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         if ($tmpl == 'component') {
@@ -185,7 +189,9 @@ class Locations extends AdminController
         Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         App::redirect(

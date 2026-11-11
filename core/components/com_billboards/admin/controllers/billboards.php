@@ -153,7 +153,9 @@ class BillBoards extends AdminController
                 Notify::error($error);
             }
 
-            return $this->editTask($billboard);
+            $this->editTask($billboard);
+
+            return;
         }
 
         // See if we have an image coming in as well
@@ -171,7 +173,9 @@ class BillBoards extends AdminController
             $imgExt = strtolower(pathinfo($billboard_image['name'], PATHINFO_EXTENSION));
             if (!in_array($imgExt, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'], true)) {
                 Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_FILE_MOVE_FAILED'));
-                return $this->editTask($billboard);
+                $this->editTask($billboard);
+
+                return;
             }
 
             // Build the upload path if it doesn't exist
@@ -183,19 +187,25 @@ class BillBoards extends AdminController
             if (!is_dir($uploadDirectory)) {
                 if (!Filesystem::makeDirectory($uploadDirectory)) {
                     Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                    return $this->editTask($billboard);
+                    $this->editTask($billboard);
+
+                    return;
                 }
             }
 
             // Scan for viruses
             if (!Filesystem::isSafe($billboard_image['tmp_name'])) {
                 Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_FAILED_VIRUS_SCAN'));
-                return $this->editTask($billboard);
+                $this->editTask($billboard);
+
+                return;
             }
 
             if (!move_uploaded_file($billboard_image['tmp_name'], $uploadDirectory . $billboard_image['name'])) {
                 Notify::error(Lang::txt('COM_BILLBOARDS_ERROR_FILE_MOVE_FAILED'));
-                return $this->editTask($billboard);
+                $this->editTask($billboard);
+
+                return;
             } else {
                 // Remove the previous image, unless the replacement was uploaded
                 // under the same name and is that file.
@@ -208,7 +218,9 @@ class BillBoards extends AdminController
                 $billboard->set('background_img', $billboard_image['name']);
                 if (!$billboard->save()) {
                     Notify::error($billboard->getError());
-                    return $this->editTask($billboard);
+                    $this->editTask($billboard);
+
+                    return;
                 }
             }
         }

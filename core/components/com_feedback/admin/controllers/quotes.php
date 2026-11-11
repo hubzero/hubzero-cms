@@ -153,7 +153,9 @@ class Quotes extends AdminController
                 Notify::error($error);
             }
 
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Build file path
@@ -193,7 +195,9 @@ class Quotes extends AdminController
 
         if ($this->getTask() == 'apply') {
             // Display the edit form
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -221,7 +225,9 @@ class Quotes extends AdminController
         if (!count($ids)) {
             Notify::warning(Lang::txt('COM_FEEDBACK_SELECT_QUOTE_TO_DELETE'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $i = 0;

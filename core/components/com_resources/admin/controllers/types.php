@@ -211,13 +211,17 @@ class Types extends AdminController
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_RESOURCES_ITEM_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -262,7 +266,9 @@ class Types extends AdminController
         if (empty($ids)) {
             // Redirect with error message
             Notify::warning(Lang::txt('COM_RESOURCES_NO_ITEM_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $removed = 0;
@@ -326,7 +332,9 @@ class Types extends AdminController
         // Check for a resource
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_RESOURCES_SELECT_ENTRY_TO', $this->task));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Loop through all the IDs

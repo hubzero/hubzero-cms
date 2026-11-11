@@ -404,7 +404,9 @@ class Resources extends SiteController
     {
         // Check if we're using this view type
         if ($this->config->get('browsetags') == 'off') {
-            return $this->browseTask();
+            $this->browseTask();
+
+            return;
         }
 
         // Who may browse and search is a view access level, Public by default

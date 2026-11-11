@@ -154,7 +154,9 @@ class Pipeline extends AdminController
         // Do we have an ID?
         if (!$fields['id']) {
             Notify::warning(Lang::txt('COM_TOOLS_ERROR_MISSING_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $row = Tool::getInstance(intval($fields['id']));
@@ -162,7 +164,9 @@ class Pipeline extends AdminController
             Request::setVar('id', $fields['id']);
 
             Notify::error(Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         $oldstate = $row->state;
@@ -173,7 +177,9 @@ class Pipeline extends AdminController
 
         if (!$row->title) {
             Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_TITLE'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $row->update();
@@ -202,7 +208,9 @@ class Pipeline extends AdminController
         Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();

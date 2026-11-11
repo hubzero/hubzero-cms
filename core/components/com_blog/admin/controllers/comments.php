@@ -252,13 +252,17 @@ class Comments extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Trigger after save event
@@ -269,7 +273,9 @@ class Comments extends AdminController
 
         // Redirect to main listing or go back to edit form
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller

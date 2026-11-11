@@ -34,41 +34,53 @@ class Groups extends AdminController
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         if (
             !User::authorise('core.admin', 'com_groups')
             && !User::authorise('core.manage', 'com_groups')
         ) {
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // Incoming group table
         $tbl = Request::getString('tbl', '');
         if (!$tbl || !in_array($tbl, ['invitees', 'applicants', 'members', 'managers'])) {
             $this->setError(Lang::txt('COM_MEMBERS_GROUPS_NO_TABLE'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // Incoming group ID
         $gid = Request::getInt('gid', 0);
         if (!$gid) {
             $this->setError(Lang::txt('COM_MEMBERS_GROUPS_NO_ID'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // Load the group page
         $group = Group::getInstance($gid);
         if (!$group) {
             $this->setError(Lang::txt('COM_MEMBERS_GROUPS_NO_ID'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // Make sure the user isn't already a member
         if (in_array($id, $group->get($tbl))) {
             $this->setError(Lang::txt('COM_MEMBERS_ALREADY_A_MEMBER_OF_GROUP'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // Remove the user from any other lists they may be apart of
@@ -105,21 +117,27 @@ class Groups extends AdminController
         $id = Request::getInt('id', 0);
         if (!$id) {
             $this->setError(Lang::txt('COM_MEMBERS_NO_ID'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         if (
             !User::authorise('core.admin', 'com_groups')
             && !User::authorise('core.manage', 'com_groups')
         ) {
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // Incoming group ID
         $gid = Request::getString('gid', '');
         if (!$gid) {
             $this->setError(Lang::txt('COM_MEMBERS_GROUPS_NO_ID'));
-            return $this->displayTask($id);
+            $this->displayTask($id);
+
+            return;
         }
 
         // Load the group
@@ -152,7 +170,9 @@ class Groups extends AdminController
             !User::authorise('core.admin', 'com_groups')
             && !User::authorise('core.manage', 'com_groups')
         ) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $options = Request::getArray('memberoption', []);

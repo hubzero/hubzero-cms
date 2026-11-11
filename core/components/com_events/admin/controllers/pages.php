@@ -164,13 +164,17 @@ class Pages extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Trigger after save event
@@ -180,7 +184,9 @@ class Pages extends AdminController
 
         // Redirect
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -268,7 +274,9 @@ class Pages extends AdminController
         // Ensure we have an ID to work with
         if (!$id || !is_numeric($id)) {
             Notify::warning(Lang::txt('COM_EVENTS_PAGE_NO_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Ensure we have a parent ID to work with

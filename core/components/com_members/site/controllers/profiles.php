@@ -775,7 +775,7 @@ class Profiles extends SiteController
 
         Request::setVar('id', User::get('id'));
 
-        return $this->viewTask();
+        $this->viewTask();
     }
 
     /**
@@ -1624,7 +1624,9 @@ class Profiles extends SiteController
                 echo json_encode($this->getErrors());
                 exit();
             }
-            return $this->editTask($member);
+            $this->editTask($member);
+
+            return;
         }
 
         // Incoming profile edits
@@ -1698,7 +1700,9 @@ class Profiles extends SiteController
                 echo json_encode($errors);
                 exit();
             }
-            return $this->editTask($member);
+            $this->editTask($member);
+
+            return;
         }
 
         // Save profile data
@@ -1708,7 +1712,9 @@ class Profiles extends SiteController
                 echo json_encode($this->getErrors());
                 exit();
             }
-            return $this->editTask($member);
+            $this->editTask($member);
+
+            return;
         }
 
         $email = $member->get('email');

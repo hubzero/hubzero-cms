@@ -101,7 +101,9 @@ class Media extends SiteController
     public function createTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxCreateTask();
+            $this->ajaxCreateTask();
+
+            return;
         }
 
         // Check if they're logged in
@@ -141,7 +143,9 @@ class Media extends SiteController
         // Only the item's owner (or an admin) may attach assets to it
         if (!$this->userOwnsItem($listdir)) {
             $this->setError(Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Create database entry
@@ -433,27 +437,35 @@ class Media extends SiteController
         }
 
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         // Ensure we have an ID to work with
         $listdir = Request::getInt('dir', 0, 'post');
         if (!$listdir) {
             $this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Only the item's owner (or an admin) may attach assets to it
         if (!$this->userOwnsItem($listdir)) {
             $this->setError(Lang::txt('COM_COLLECTIONS_ERROR_ACCESS_DENIED'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming file
         $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             $this->setError(Lang::txt('COM_COLLECTIONS_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Get media config
@@ -465,7 +477,9 @@ class Media extends SiteController
 
         if ($file['size'] > $sizeLimit) {
             $this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_FILE_TOO_BIG', Number::formatBytes($sizeLimit)));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $asset = new Asset();
@@ -476,7 +490,9 @@ class Media extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UNABLE_TO_CREATE_UPLOAD_DIR'));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
         }
 
@@ -491,7 +507,9 @@ class Media extends SiteController
 
         if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Upload new files
@@ -537,7 +555,9 @@ class Media extends SiteController
     public function deleteTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxDeleteTask();
+            $this->ajaxDeleteTask();
+
+            return;
         }
 
         // Check if they're logged in

@@ -179,12 +179,16 @@ class Media extends SiteController
         Request::checkToken(['get', 'post']);
 
         if (Request::getInt('no_html')) {
-            return $this->ajaxuploadTask();
+            $this->ajaxuploadTask();
+
+            return;
         }
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming
@@ -193,14 +197,18 @@ class Media extends SiteController
         // Ensure we have an ID to work with
         if (!$listdir) {
             Notify::error(Lang::txt('COURSES_NO_ID'), 'courses');
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming file
         $file = Request::getArray('upload', [], 'files');
         if (empty($file) || !$file['name']) {
             Notify::error(Lang::txt('COURSES_NO_FILE'), 'courses');
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Get media config
@@ -214,7 +222,9 @@ class Media extends SiteController
             Notify::error(
                 Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)),
             );
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Verify the current user may change this course before writing. The page
@@ -235,7 +245,9 @@ class Media extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 Notify::error(Lang::txt('COM_COURSES_UNABLE_TO_CREATE_UPLOAD_PATH'));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
         }
 
@@ -250,7 +262,9 @@ class Media extends SiteController
 
         if (!in_array(strtolower($ext), $allowed)) {
             Notify::error(Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Perform the upload
@@ -271,7 +285,9 @@ class Media extends SiteController
                     if (file_exists($path . DS . $curfile)) {
                         if (!Filesystem::delete($path . DS . $curfile)) {
                             Notify::error(Lang::txt('COM_COURSES_ERROR_UNABLE_TO_DELETE_FILE'));
-                            return $this->displayTask();
+                            $this->displayTask();
+
+                            return;
                         }
                     }
                 }
@@ -279,7 +295,9 @@ class Media extends SiteController
                 $model->set('logo', $file['name']);
                 if (!$model->store()) {
                     Notify::error($model->getError());
-                    return $this->displayTask();
+                    $this->displayTask();
+
+                    return;
                 }
 
                 //push a success message
@@ -462,27 +480,35 @@ class Media extends SiteController
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming course ID
         $listdir = Request::getInt('listdir', 0, 'get');
         if (!$listdir) {
             Notify::error(Lang::txt('COURSES_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming file
         $folder = trim(Request::getString('folder', '', 'get'));
         if (!$folder) {
             Notify::error(Lang::txt('COURSES_NO_DIRECTORY'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Keep the target within the course directory
         if (strpos($folder, '..') !== false) {
             Notify::error(Lang::txt('COURSES_NO_DIRECTORY'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Verify the current user may manage this course
@@ -528,27 +554,35 @@ class Media extends SiteController
 
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming course ID
         $listdir = Request::getInt('listdir', 0, 'get');
         if (!$listdir) {
             Notify::error(Lang::txt('COURSES_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming file
         $file = trim(Request::getString('file', '', 'get'));
         if (!$file) {
             Notify::error(Lang::txt('COURSES_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Keep the target within the course directory
         if (strpos($file, '..') !== false) {
             Notify::error(Lang::txt('FILE_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Verify the current user may manage this course
@@ -566,7 +600,9 @@ class Media extends SiteController
 
         if (!file_exists($path . DS . $file) or !$file) {
             Notify::error(Lang::txt('FILE_NOT_FOUND'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         } else {
             // Attempt to delete the file
             if (!Filesystem::delete($path . DS . $file)) {

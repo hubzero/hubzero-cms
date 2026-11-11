@@ -71,7 +71,9 @@ class Tools extends AdminController
         //make sure we have a valid url if we passed one
         if ($imageUrl != '' && !preg_match("/$UrlPtn/", $imageUrl)) {
             Notify::error(Lang::txt('Image Url is not valid.'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         //do we have a file upload or just an image url
@@ -81,7 +83,9 @@ class Tools extends AdminController
             $ext  = isset($info['extension']) ? strtolower($info['extension']) : '';
             if (!in_array($ext, ['png','jpg','jpeg','bmp','gif', 'tiff'])) {
                 Notify::error(Lang::txt('COM_NEWSLETTER_TOOLS_NOT_VALID_IMAGE'));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             //create path if doesnt exist

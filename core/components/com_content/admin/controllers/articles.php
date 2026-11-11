@@ -72,14 +72,18 @@ class Articles extends AdminController
 
         if (empty($ids)) {
             Notify::error(Lang::txt('JGLOBAL_NO_ITEM_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $batchOptions = Request::getArray('batch', []);
 
         if (empty($batchOptions['category_id'])) {
             Notify::error(Lang::txt('COM_CONTENT_BATCH_NO_CATEGORY_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $batchOptions['move_copy'] = isset($batchOptions['move_copy']) ? $batchOptions['move_copy'] : 'm';
@@ -585,7 +589,9 @@ class Articles extends AdminController
 
         if (!$article->save()) {
             Notify::error($article->getError());
-            return $this->editTask($article);
+            $this->editTask($article);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_CONTENT_SAVE_SUCCESS'));
@@ -594,10 +600,14 @@ class Articles extends AdminController
             $this->getTask() == 'apply'
             || $this->getTask() == 'save2copy'
         ) {
-            return $this->editTask($article);
+            $this->editTask($article);
+
+            return;
         } elseif ($this->getTask() == 'save2new') {
             Request::setVar('id', 0);
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         $this->cancelTask();
@@ -704,7 +714,9 @@ class Articles extends AdminController
 
         if (empty($ids)) {
             Notify::error(Lang::txt('JGLOBAL_NO_ITEM_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $articles = Article::all()->whereIn('id', $ids)->rows();

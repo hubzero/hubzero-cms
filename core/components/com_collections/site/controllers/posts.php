@@ -517,7 +517,9 @@ class Posts extends SiteController
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Log activity
@@ -604,7 +606,9 @@ class Posts extends SiteController
         // Incoming
         $id = Request::getInt('comment', 0);
         if (!$id) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Initiate a whiteboard comment object
@@ -656,7 +660,7 @@ class Posts extends SiteController
         ]);
 
         // Return the topics list
-        return $this->displayTask();
+        $this->displayTask();
     }
 
     /**

@@ -243,7 +243,9 @@ class Imports extends AdminController
         // Bind input to model
         if (!$model->set($import)) {
             $this->setError($model->getError());
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         // Is this a new import?
@@ -259,12 +261,16 @@ class Imports extends AdminController
         // Attempt to save
         if (!$model->save()) {
             $this->setError($model->getError());
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // create folder for files
         if (!$this->createImportFilespace($model)) {
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // If we have a file
@@ -288,7 +294,9 @@ class Imports extends AdminController
         // Save again with import count
         if (!$model->save()) {
             $this->setError($model->getError());
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_MEMBERS_IMPORT_CREATED'));
@@ -303,7 +311,9 @@ class Imports extends AdminController
                 return;
             }
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $this->editTask($model);
@@ -377,7 +387,9 @@ class Imports extends AdminController
         $import = Import::oneOrFail($id);
 
         if (!$import->get('id')) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Output the HTML

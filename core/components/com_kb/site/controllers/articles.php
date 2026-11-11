@@ -93,7 +93,9 @@ class Articles extends SiteController
 
         // Make sure we have an alias for the category
         if (!$categoryAlias) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Get the category
@@ -242,7 +244,9 @@ class Articles extends SiteController
         // Did they vote?
         if (!$vote) {
             $this->setError(Lang::txt('COM_KB_USER_DIDNT_VOTE'));
-            return $this->articleTask();
+            $this->articleTask();
+
+            return;
         }
 
         if (!in_array($type, ['article', 'comment'])) {
@@ -402,7 +406,9 @@ class Articles extends SiteController
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->articleTask();
+            $this->articleTask();
+
+            return;
         }
 
         // Log the activity

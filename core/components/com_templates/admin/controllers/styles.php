@@ -268,13 +268,17 @@ class Styles extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($style->getError());
-            return $this->editTask($style);
+            $this->editTask($style);
+
+            return;
         }
 
         // Store new content
         if (!$style->$method()) {
             Notify::error($style->getError());
-            return $this->editTask($style);
+            $this->editTask($style);
+
+            return;
         }
 
         if (User::authorise('core.edit', 'com_menus') && $style->get('client_id') == 0) {
@@ -333,7 +337,9 @@ class Styles extends AdminController
         Notify::success(Lang::txt('COM_TEMPLATES_STYLE_SAVE_SUCCESS'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($style);
+            $this->editTask($style);
+
+            return;
         }
 
         $this->cancelTask();

@@ -191,7 +191,9 @@ class Abuse extends SiteController
             Request::setVar('id', $refid);
 
             $this->setError($row->getError());
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Get the search result totals

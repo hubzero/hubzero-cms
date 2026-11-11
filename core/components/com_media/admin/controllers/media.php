@@ -106,7 +106,9 @@ class Media extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxNewTask();
+            $this->ajaxNewTask();
+
+            return;
         }
 
         $folder      = Request::getCmd('foldername', '');
@@ -245,7 +247,9 @@ class Media extends AdminController
         Session::checkToken(['get', 'post']);
 
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         $params = Component::params('com_media');
@@ -509,7 +513,9 @@ class Media extends AdminController
         Request::checkToken(['get', 'post']);
 
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxDeleteTask();
+            $this->ajaxDeleteTask();
+
+            return;
         }
 
         // Get some data from the request

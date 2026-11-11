@@ -391,7 +391,9 @@ class Tickets extends AdminController
                             . $started,
                     ),
                 );
-                return $this->editTask($comment);
+                $this->editTask($comment);
+
+                return;
             }
         }
 
@@ -927,7 +929,9 @@ class Tickets extends AdminController
         // Check for an ID
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_SUPPORT_ERROR_SELECT_TICKET_TO_DELETE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $removed = 0;

@@ -210,13 +210,17 @@ class Versions extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($version->getError());
-            return $this->editTask($version);
+            $this->editTask($version);
+
+            return;
         }
 
         // Store new content
         if (!$version->save()) {
             Notify::error($version->getError());
-            return $this->editTask($version);
+            $this->editTask($version);
+
+            return;
         }
 
         // Get the most recent revision and compare to the set "current" version
@@ -245,7 +249,9 @@ class Versions extends AdminController
 
         // Fall through to the edit form
         if ($this->getTask() == 'apply') {
-            return $this->editTask($version);
+            $this->editTask($version);
+
+            return;
         }
 
         // Redirect to listing
@@ -272,7 +278,9 @@ class Versions extends AdminController
 
         if (count($ids) <= 0) {
             Notify::warning(Lang::txt('COM_WIKI_ERROR_MISSING_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Incoming

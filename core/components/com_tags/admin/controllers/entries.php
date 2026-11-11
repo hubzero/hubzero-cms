@@ -205,18 +205,24 @@ class Entries extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Save content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         if (!$row->saveSubstitutions($subs)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Trigger after save event
@@ -227,7 +233,9 @@ class Entries extends AdminController
 
         // Redirect to main listing or go back to edit form
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -255,7 +263,9 @@ class Entries extends AdminController
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         foreach ($ids as $id) {
@@ -320,7 +330,9 @@ class Entries extends AdminController
             $step == 1
             && (!$ids || count($ids) < 1)
         ) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $idstr = implode(',', $ids);
@@ -380,12 +392,16 @@ class Entries extends AdminController
 
                 if ($this->getError()) {
                     Notify::error($this->getError());
-                    return $this->cancelTask();
+                    $this->cancelTask();
+
+                    return;
                 }
 
                 if (!$mtag) {
                     Notify::error(Lang::txt('Failed to find destination tag.'));
-                    return $this->cancelTask();
+                    $this->cancelTask();
+
+                    return;
                 }
 
                 foreach ($ids as $id) {
@@ -438,7 +454,9 @@ class Entries extends AdminController
             $step == 1
             && (!$ids || count($ids) < 1)
         ) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $idstr = implode(',', $ids);
@@ -531,7 +549,9 @@ class Entries extends AdminController
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_TAGS_ERROR_NO_ITEMS_SELECTED'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $success = 0;

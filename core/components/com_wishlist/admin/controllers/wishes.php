@@ -328,13 +328,17 @@ class Wishes extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set tags
@@ -363,7 +367,9 @@ class Wishes extends AdminController
 
         if (!$page->save()) {
             Notify::error($page->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Trigger after save event
@@ -372,7 +378,9 @@ class Wishes extends AdminController
         Notify::success(Lang::txt('COM_WISHLIST_WISH_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -444,7 +452,9 @@ class Wishes extends AdminController
         // Make sure we have an ID to work with
         if (!$id) {
             Notify::error(Lang::txt('COM_WISHLIST_NO_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         switch ($this->getTask()) {
@@ -459,7 +469,9 @@ class Wishes extends AdminController
                 break;
             default:
                 // Not one of the access tasks; change nothing
-                return $this->cancelTask();
+                $this->cancelTask();
+
+                return;
         }
 
         // Load the article
@@ -501,7 +513,9 @@ class Wishes extends AdminController
             Notify::warning(
                 $state ? Lang::txt('COM_WISHLIST_SELECT_PUBLISH') : Lang::txt('COM_WISHLIST_SELECT_UNPUBLISH'),
             );
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Update record(s)

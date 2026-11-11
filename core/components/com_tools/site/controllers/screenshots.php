@@ -65,7 +65,9 @@ class Screenshots extends SiteController
 
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // get tool object
@@ -83,7 +85,9 @@ class Screenshots extends SiteController
 
         if ($vid == null) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Incoming
@@ -134,7 +138,9 @@ class Screenshots extends SiteController
         $version = Request::getString('version', 'dev');
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Only a member of the tool's dev team may edit a screenshot.
@@ -151,7 +157,9 @@ class Screenshots extends SiteController
         $this->view->file = basename(str_replace('\\', '/', (string) Request::getString('filename', '')));
         if (!$this->view->file) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_CHILD_ID'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Load resource info
@@ -163,7 +171,9 @@ class Screenshots extends SiteController
 
         if ($vid == null) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Build the path
@@ -210,7 +220,9 @@ class Screenshots extends SiteController
         $vid     = Request::getInt('vid', 0);
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Only a member of the tool's dev team may save a screenshot.
@@ -290,7 +302,9 @@ class Screenshots extends SiteController
 
         if ($vid == null) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Build the path
@@ -301,15 +315,21 @@ class Screenshots extends SiteController
         // Check if the folder even exists
         if (!is_dir($path) or !$path) {
             $this->setError(Lang::txt('COM_TOOLS_DIRECTORY_NOT_FOUND'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         } else {
             if (!Filesystem::exists($path . DS . $file)) {
-                return $this->displayTask($pid, $version);
+                $this->displayTask($pid, $version);
+
+                return;
             }
 
             if (!Filesystem::delete($path . DS . $file)) {
                 $this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_DELETE_FILE'));
-                return $this->displayTask($pid, $version);
+                $this->displayTask($pid, $version);
+
+                return;
             } else {
                 // Delete thumbnail
                 $tn = preg_replace('#\.[^.]*$#', '', $file) . '-tn.gif';
@@ -343,7 +363,9 @@ class Screenshots extends SiteController
         $version = Request::getString('version', 'dev');
         if (!$pid) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Only a member of the tool's dev team may upload a screenshot.
@@ -362,7 +384,9 @@ class Screenshots extends SiteController
         $changing_version = Request::getInt('changing_version', 0);
         if ($changing_version) {
             // reload screen
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Check for request forgeries
@@ -375,7 +399,9 @@ class Screenshots extends SiteController
         $file = Request::getArray('upload', '', 'files');
         if (!$file['name']) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_NO_FILE'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Make the filename safe
@@ -388,7 +414,9 @@ class Screenshots extends SiteController
         // Make sure we have an allowed format
         if (!in_array(strtolower($file_ext), $allowed)) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_WRONG_FILE_FORMAT'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Get version id
@@ -397,7 +425,9 @@ class Screenshots extends SiteController
 
         if ($vid == null) {
             $this->setError(Lang::txt('COM_TOOLS_CONTRIBUTE_VERSION_ID_NOT_FOUND'));
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         // Instantiate a new screenshot object
@@ -434,7 +464,9 @@ class Screenshots extends SiteController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('COM_TOOLS_UNABLE_TO_CREATE_UPLOAD_PATH') . $path);
-                return $this->displayTask($pid, $version);
+                $this->displayTask($pid, $version);
+
+                return;
             }
         }
 
@@ -445,7 +477,9 @@ class Screenshots extends SiteController
             // Store new content
             if (!$row->save()) {
                 $this->setError($row->getError());
-                return $this->displayTask($pid, $version);
+                $this->displayTask($pid, $version);
+
+                return;
             }
 
             // Create thumbnail
@@ -467,7 +501,9 @@ class Screenshots extends SiteController
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->displayTask($pid, $version);
+            $this->displayTask($pid, $version);
+
+            return;
         }
 
         $this->_rid = $pid;

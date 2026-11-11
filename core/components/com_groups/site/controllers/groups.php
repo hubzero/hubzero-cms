@@ -271,7 +271,9 @@ class Groups extends Base
 
             // If user is NOT manager but member or invitee
             if (!in_array(User::get('id'), $managers) && in_array(User::get('id'), $members_invitees)) {
-                return $this->unapprovedGroupTask();
+                $this->unapprovedGroupTask();
+
+                return;
             }
 
             // Set notification and clear after
@@ -288,7 +290,9 @@ class Groups extends Base
         $this->view->tab     = Helpers\View::getTab($this->view->group);
         $this->view->trueTab = strtolower(Request::getString('active', 'overview'));
         if ($this->view->group->get('approved') != 1 && $this->view->trueTab != 'overview') {
-            return $this->unapprovedGroupTask();
+            $this->unapprovedGroupTask();
+
+            return;
         }
 
         // Record the user
@@ -551,7 +555,9 @@ class Groups extends Base
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask(Lang::txt('COM_GROUPS_CREATE_MUST_BE_LOGGED_IN'));
+            $this->loginTask(Lang::txt('COM_GROUPS_CREATE_MUST_BE_LOGGED_IN'));
+
+            return;
         }
 
         Request::checkToken();
@@ -714,7 +720,9 @@ class Groups extends Base
             $this->lid = $lid;
             $this->group = $group;
             $this->tags = $tags;
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // Build the e-mail message
@@ -1106,7 +1114,9 @@ class Groups extends Base
         // Check to make sure we have confirmed
         if (!$confirm_delete || $confirm_delete != $group->get('cn')) {
             $this->setNotification(Lang::txt('COM_GROUPS_DELETE_MISSING_CONFIRM_MESSAGE'), 'error');
-            return $this->deleteTask();
+            $this->deleteTask();
+
+            return;
         }
 
         // Start log
@@ -1158,7 +1168,9 @@ class Groups extends Base
         // Delete group
         if (!$group->delete()) {
             $this->setNotification($group->error, 'error');
-            return $this->deleteTask();
+            $this->deleteTask();
+
+            return;
         }
 
         // Build the "from" info for e-mails
@@ -1348,7 +1360,9 @@ class Groups extends Base
     {
         // Check if they're logged in
         if (User::isGuest()) {
-            return $this->loginTask();
+            $this->loginTask();
+
+            return;
         }
 
         // Fetch results

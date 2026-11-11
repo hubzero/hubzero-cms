@@ -222,7 +222,9 @@ class Articles extends AdminController
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Save the tags
@@ -234,7 +236,9 @@ class Articles extends AdminController
         Notify::success(Lang::txt('COM_KB_ARTICLE_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set the redirect
@@ -307,7 +311,9 @@ class Articles extends AdminController
         // Check for an ID
         if (count($ids) < 1) {
             Notify::warning($state == 1 ? Lang::txt('COM_KB_SELECT_PUBLISH') : Lang::txt('COM_KB_SELECT_UNPUBLISH'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Update record(s)
@@ -382,7 +388,9 @@ class Articles extends AdminController
         // Make sure we have an ID to work with
         if (!$id) {
             Notify::warning(Lang::txt('COM_KB_NO_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Load and reset the article's hits
@@ -420,7 +428,9 @@ class Articles extends AdminController
         // Make sure we have an ID to work with
         if (!$id) {
             Notify::warning(Lang::txt('COM_KB_NO_ID'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Load and reset the article's ratings
@@ -430,7 +440,9 @@ class Articles extends AdminController
 
         if (!$article->save()) {
             Notify::error($article->getError());
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Delete all the entries associated with this article

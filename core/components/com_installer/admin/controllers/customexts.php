@@ -347,13 +347,17 @@ class Customexts extends AdminController
         // Validate and save the data
         if (!$model->save()) {
             Notify::error($model->getError());
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_INSTALLER_CUSTOMEXTS_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($model);
+            $this->editTask($model);
+
+            return;
         }
 
         $this->cancelTask();
@@ -486,7 +490,9 @@ class Customexts extends AdminController
 
         // empty list?
         if (empty($ids)) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Publish extnetion if not to prevent cloning a new dir.
@@ -730,7 +736,9 @@ class Customexts extends AdminController
         // empty list?
         if (empty($ids)) {
             Notify::warning(Lang::txt('COM_INSTALLER_CUSTOMEXTS_NO_ELIGIBLE_COMMITS'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // vars to hold results of pull

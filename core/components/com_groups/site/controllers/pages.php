@@ -269,13 +269,17 @@ class Pages extends Base
         // bind new page properties
         if (!$this->page->bind($page)) {
             $this->setNotification($this->page->getError(), 'error');
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // bind new page version properties
         if (!$this->version->bind($version)) {
             $this->setNotification($this->version->getError(), 'error');
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // make sure page belongs to group
@@ -304,7 +308,9 @@ class Pages extends Base
         if (!$this->page->check() || !$this->version->check()) {
             $error = ($this->page->getError()) ? $this->page->getError() : $this->version->getError();
             $this->setNotification($error, 'error');
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         // our start should be our left (order) or the parents right - 1
@@ -336,7 +342,9 @@ class Pages extends Base
         // save page settings
         if (!$this->page->store(true)) {
             $this->setNotification($this->page->getError(), 'error');
-            return $this->editTask();
+            $this->editTask();
+
+            return;
         }
 
         if (!is_object($this->group->params)) {
@@ -388,14 +396,18 @@ class Pages extends Base
             // check version again (because were not on store() method)
             if (!$this->version->check()) {
                 $this->setNotification($this->version->getError(), 'error');
-                return $this->editTask();
+                $this->editTask();
+
+                return;
             }
 
             // save version settings
             // dont run check on version store, skips onContentBeforeSave in Html format hadler
             if (!$this->version->store(false, $this->group->isSuperGroup())) {
                 $this->setNotification($this->version->getError(), 'error');
-                return $this->editTask();
+                $this->editTask();
+
+                return;
             }
 
             // send to approvers
@@ -578,7 +590,9 @@ class Pages extends Base
         // save
         if (!$page->store(false)) {
             $this->setNotification($page->getError(), 'error');
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // get page children
@@ -742,7 +756,9 @@ class Pages extends Base
         // store new group home page
         if (!$page->store()) {
             $this->setNotification($page->getError(), 'error');
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // inform user
@@ -870,7 +886,9 @@ class Pages extends Base
         // attempt to save new version
         if (!$newVersion->store(false, $this->group->isSuperGroup())) {
             $this->setNotification($newVersion->getError(), 'error');
-            return $this->versionsTask();
+            $this->versionsTask();
+
+            return;
         }
 
         // the activity entry links back to the page's version history

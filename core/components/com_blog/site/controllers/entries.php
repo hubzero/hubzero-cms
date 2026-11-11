@@ -299,19 +299,25 @@ class Entries extends SiteController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Process tags
         if (!$row->tag(Request::getString('tags', ''))) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Trigger after save event
@@ -383,7 +389,9 @@ class Entries extends SiteController
         $id = Request::getInt('entry', 0);
 
         if (!$id) {
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $process    = Request::getString('process', '');
@@ -610,13 +618,17 @@ class Entries extends SiteController
 
         if (in_array(false, $result, true)) {
             $this->setError($comment->getError());
-            return $this->entryTask();
+            $this->entryTask();
+
+            return;
         }
 
         // Store new content
         if (!$comment->save()) {
             $this->setError($comment->getError());
-            return $this->entryTask();
+            $this->entryTask();
+
+            return;
         }
 
         // Trigger after save event
@@ -657,7 +669,7 @@ class Entries extends SiteController
             'recipients' => $recipients,
         ]);
 
-        return $this->entryTask();
+        $this->entryTask();
     }
 
     /**
@@ -670,7 +682,9 @@ class Entries extends SiteController
         // Ensure the user is logged in
         if (User::isGuest()) {
             $this->setError(Lang::txt('COM_BLOG_LOGIN_NOTICE'));
-            return $this->entryTask();
+            $this->entryTask();
+
+            return;
         }
 
         // Require POST to prevent accidental deletion by crawlers

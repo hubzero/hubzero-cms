@@ -185,7 +185,9 @@ class Media extends AdminController
     public function uploadTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         // Ensure we have an ID to work with
@@ -193,14 +195,18 @@ class Media extends AdminController
         $comment = Request::getInt('comment', 0, 'post');
         if (!$ticket) {
             $this->setError(Lang::txt('COM_SUPPORT_NO_ID'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Incoming file
         $file = Request::getArray('upload', '', 'files');
         if (!$file['name']) {
             $this->setError(Lang::txt('COM_SUPPORT_NO_FILE'));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Build the upload path if it doesn't exist
@@ -209,7 +215,9 @@ class Media extends AdminController
         if (!is_dir($path)) {
             if (!Filesystem::makeDirectory($path)) {
                 $this->setError(Lang::txt('Error uploading. Unable to create path.'));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
         }
 
@@ -226,7 +234,9 @@ class Media extends AdminController
             $this->setError(
                 Lang::txt('File is too large. Max file upload size is %s', Number::formatBytes($sizeLimit)),
             );
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Make the filename safe
@@ -295,7 +305,9 @@ class Media extends AdminController
     public function deleteTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxDeleteTask();
+            $this->ajaxDeleteTask();
+
+            return;
         }
 
         // Incoming asset

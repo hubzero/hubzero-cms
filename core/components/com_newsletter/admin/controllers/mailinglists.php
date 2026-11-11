@@ -155,14 +155,18 @@ class Mailinglists extends AdminController
         // save mailing list
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set success message
         Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_SAVE_SUCCESS'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect back to list
@@ -232,7 +236,9 @@ class Mailinglists extends AdminController
         $id = (isset($ids[0])) ? $ids[0] : 0;
 
         if (!$id) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         //get request vars
@@ -352,7 +358,9 @@ class Mailinglists extends AdminController
         // make sure we have selected whether or not to send confirmation emails
         if ($this->emailConfirmation == '-1') {
             Notify::warning(Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_SPECIFY_CONFIRMATION'));
-            return $this->addEmailTask();
+            $this->addEmailTask();
+
+            return;
         }
 
         // instantiate newletter mailing email object
@@ -382,13 +390,17 @@ class Mailinglists extends AdminController
 
             if (!in_array($ext, $allowedExtensions)) {
                 Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_FILE_TYPE_NOT_ALLOWED'));
-                return $this->addEmailTask();
+                $this->addEmailTask();
+
+                return;
             }
 
             // make sure were within file limits
             if ($this->emailFile['size'] > $maxFileSize) {
                 Notify::error(Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_FILE_TOO_BIG'));
-                return $this->addEmailTask();
+                $this->addEmailTask();
+
+                return;
             }
 
             // get contents of file
@@ -410,7 +422,9 @@ class Mailinglists extends AdminController
             $emailBoxEmails = $this->parseEmails($this->emailBox);
 
             if ($emailBoxEmails === false) {
-                return $this->addEmailTask();
+                $this->addEmailTask();
+
+                return;
             }
         }
 
@@ -547,14 +561,18 @@ class Mailinglists extends AdminController
         // save mailing list
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set success message
         Notify::success(Lang::txt('COM_NEWSLETTER_MAILINGLIST_SAVE_EMAIL_SUCCESS'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editemailTask($row);
+            $this->editemailTask($row);
+
+            return;
         }
 
         // Redirect back to list

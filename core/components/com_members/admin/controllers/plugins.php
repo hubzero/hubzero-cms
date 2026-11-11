@@ -193,7 +193,9 @@ class Plugins extends AdminController
         if (!$plugin) {
             Notify::warning(Lang::txt('Please select a plugin to manage.'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Show related content

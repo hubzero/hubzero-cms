@@ -615,7 +615,9 @@ class Items extends AdminController
         // Fail if checked out not by 'me'
         if (!$isNew && $row->get('checked_out') && $row->get('checked_out') != User::get('id')) {
             Notify::warning(Lang::txt('COM_MENUS_CHECKED_OUT'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if ($this->getTask() == 'save2copy' && $row->get('id')) {
@@ -628,19 +630,25 @@ class Items extends AdminController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         if (!$isNew && $parent_id != $row->get('parent_id')) {
             if (!$row->moveByReference($row->get('parent_id'), 'last-child', $row->get('id'))) {
                 Notify::error($row->getError());
-                return $this->editTask($row);
+                $this->editTask($row);
+
+                return;
             }
         }
 
@@ -656,7 +664,9 @@ class Items extends AdminController
             User::setState('com_menus.edit.item.type', null);
             User::setState('com_menus.edit.item.link', null);
 
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $row
@@ -673,7 +683,9 @@ class Items extends AdminController
             $nw = Item::blank();
             $nw->set('menutype', $row->get('menutype'));
 
-            return $this->editTask($nw);
+            $this->editTask($nw);
+
+            return;
         }
 
         $this->cancelTask();
@@ -700,7 +712,9 @@ class Items extends AdminController
         // Check for an ID
         if (count($ids) < 1) {
             Notify::warning(Lang::txt('COM_MENUS_NO_ITEM_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $success = 0;
@@ -796,7 +810,9 @@ class Items extends AdminController
         // Ensure we have an ID to work with
         if (!$id) {
             Notify::warning(Lang::txt('COM_MENUS_NO_ITEM_SELECTED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Get the element being moved

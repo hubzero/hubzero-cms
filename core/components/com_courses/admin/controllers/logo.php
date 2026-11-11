@@ -200,7 +200,9 @@ class Logo extends AdminController
     public function uploadTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         // Check for request forgeries
@@ -251,7 +253,9 @@ class Logo extends AdminController
             $this->setError(
                 Lang::txt('COM_COURSES_ERROR_UPLOADING_FILE_TOO_BIG', \Hubzero\Utility\Number::formatBytes($sizeLimit)),
             );
-            return $this->displayTask($file['name'], $id);
+            $this->displayTask($file['name'], $id);
+
+            return;
         }
 
         // Make the filename safe
@@ -264,7 +268,9 @@ class Logo extends AdminController
 
         if (!in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('COM_COURSES_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Perform the upload
@@ -412,7 +418,9 @@ class Logo extends AdminController
     public function removeTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxRemoveTask();
+            $this->ajaxRemoveTask();
+
+            return;
         }
 
         // Check for request forgeries

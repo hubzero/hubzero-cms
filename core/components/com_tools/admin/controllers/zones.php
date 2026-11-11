@@ -169,13 +169,17 @@ class Zones extends AdminController
         $row = new Middleware\Zone($fields['id']);
         if (!$row->bind($fields)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Store new content
         if (!$row->store(true)) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         /*$vl = new \Components\Tools\Tables\ZoneLocations($mwdb);
@@ -201,7 +205,9 @@ class Zones extends AdminController
         Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         App::redirect(
@@ -463,7 +469,9 @@ class Zones extends AdminController
     public function uploadTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUploadTask();
+
+            return;
         }
 
         // Check for request forgeries
@@ -608,7 +616,9 @@ class Zones extends AdminController
     public function removefileTask()
     {
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxRemoveTask();
+            $this->ajaxRemoveTask();
+
+            return;
         }
 
         // Check for request forgeries

@@ -218,7 +218,9 @@ class Quotas extends AdminController
 
         if (!is_object($user) || !$user->get('id')) {
             Notify::error(Lang::txt('COM_MEMBERS_QUOTA_USER_NOT_FOUND'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $fields['user_id'] = $user->get('id');
@@ -228,14 +230,18 @@ class Quotas extends AdminController
         // Try to save
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_MEMBERS_QUOTA_SAVE_SUCCESSFUL'));
 
         // Redirect
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect
@@ -277,7 +283,9 @@ class Quotas extends AdminController
 
                 if ($i == 100) {
                     Notify::error(Lang::txt('Sync limit exceeded. Please select less than 100 users.'));
-                    return $this->cancelTask();
+                    $this->cancelTask();
+
+                    return;
                 }
 
                 $i++;
@@ -285,12 +293,14 @@ class Quotas extends AdminController
         } else { // no rows were selected
             // Output message and redirect
             Notify::warning(Lang::txt('No Quotas Synced'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Output messsage and redirect
         Notify::success(Lang::txt('Quotas Successfully Synced to System'));
-        return $this->cancelTask();
+        $this->cancelTask();
     }
 
     /* ------------- */
@@ -425,20 +435,26 @@ class Quotas extends AdminController
         // Try to save
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editClassTask($row);
+            $this->editClassTask($row);
+
+            return;
         }
 
         // Save class/access-group association
         if (!$row->setGroupIds($groups)) {
             Notify::error($row->getError());
-            return $this->editClassTask($row);
+            $this->editClassTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_MEMBERS_QUOTA_CLASS_SAVE_SUCCESSFUL'));
 
         // Redirect
         if ($this->getTask() == 'applyClass') {
-            return $this->editClassTask($row);
+            $this->editClassTask($row);
+
+            return;
         }
 
         // Redirect
@@ -470,7 +486,9 @@ class Quotas extends AdminController
                 if ($row->get('alias') == 'default') {
                     // Output message and redirect
                     Notify::warning(Lang::txt('COM_MEMBERS_QUOTA_CLASS_DONT_DELETE_DEFAULT'));
-                    return $this->cancelClassTask();
+                    $this->cancelClassTask();
+
+                    return;
                 }
 
                 // Remove the record
@@ -482,12 +500,14 @@ class Quotas extends AdminController
         } else { // no rows were selected
             // Output message and redirect
             Notify::warning(Lang::txt('COM_MEMBERS_QUOTA_DELETE_NO_ROWS'));
-            return $this->cancelClassTask();
+            $this->cancelClassTask();
+
+            return;
         }
 
         // Output messsage and redirect
         Notify::success(Lang::txt('COM_MEMBERS_QUOTA_DELETE_SUCCESSFUL'));
-        return $this->cancelClassTask();
+        $this->cancelClassTask();
     }
 
     /**

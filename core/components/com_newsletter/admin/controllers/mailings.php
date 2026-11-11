@@ -109,7 +109,9 @@ class Mailings extends AdminController
         // Make sure we are supposed to be tracking
         if (!$newsletter->tracking) {
             Notify::warning(Lang::txt('COM_NEWSLETTER_MAILING_NOT_TRACKING'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Get mailing recipients
@@ -293,7 +295,9 @@ class Mailings extends AdminController
         // Save
         if (!$mailing->save()) {
             Notify::error($mailing->getError());
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_NEWSLETTER_MAILING_STOPPED'));

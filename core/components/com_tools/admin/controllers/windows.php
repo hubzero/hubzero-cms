@@ -138,31 +138,41 @@ class Windows extends AdminController
 
         if (!$row->get('alias')) {
             Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_ALIAS'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $row->set('alias', preg_replace('/[^a-z0-9_\-]/i', '', strtolower($row->get('alias'))));
 
         if (!$row->get('title')) {
             Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_TITLE'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         if (!$row->get('path')) {
             Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_UUID'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         if (!$row->save()) {
             Notify::error(Lang::txt('COM_TOOLS_ERROR_MISSING_UUID'));
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         Notify::success(Lang::txt('COM_TOOLS_SAVE_SUCCESSFUL'));
 
         // Redirect
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect

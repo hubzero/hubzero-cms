@@ -204,7 +204,9 @@ class Searchable extends AdminController
         $searchComponent->set($fields);
         if (!$searchComponent->save()) {
             Notify::error($searchComponent->getError());
-            return $this->editTask($searchComponent);
+            $this->editTask($searchComponent);
+
+            return;
         } else {
             Notify::success(Lang::txt('COM_SEARCH_COMPONENT_SAVE_SUCCESS', $searchComponent->title));
             $oldFilters = $searchComponent->filters;

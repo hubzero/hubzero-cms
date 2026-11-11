@@ -982,7 +982,9 @@ class Membership extends Base
 
         //is the group restricted
         if ($this->view->group->get('join_policy') == 1) {
-            return $this->requestTask();
+            $this->requestTask();
+
+            return;
         }
 
         //if this group is open just make a member

@@ -160,7 +160,9 @@ class ImportHooks extends AdminController
         // attempt to save
         if (!$hook->save()) {
             Notify::error($hook->getError());
-            return $this->editTask($hook);
+            $this->editTask($hook);
+
+            return;
         }
 
         // is this a new import

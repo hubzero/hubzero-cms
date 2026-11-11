@@ -279,7 +279,9 @@ class Course extends SiteController
         // Push back into edit mode if any errors
         if (!$course->bind($data)) {
             Notify::error($course->getError(), 'courses');
-            return $this->editTask($course);
+            $this->editTask($course);
+
+            return;
         }
 
         // Force into draft state

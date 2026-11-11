@@ -224,7 +224,9 @@ class Polls extends AdminController
 
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $row->checkin();
@@ -243,14 +245,18 @@ class Polls extends AdminController
 
             if (!$option->save()) {
                 Notify::error($option->getError());
-                return $this->editTask($row);
+                $this->editTask($row);
+
+                return;
             }
         }
 
         Notify::success(Lang::txt('COM_POLL_ITEM_SAVED'));
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         $this->cancelTask();
@@ -308,7 +314,9 @@ class Polls extends AdminController
 
             Notify::warning(Lang::txt('COM_POLL_SELECT_ITEM_TO', Lang::txt($action), true));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         foreach ($ids as $id) {
@@ -352,7 +360,9 @@ class Polls extends AdminController
 
             Notify::warning(Lang::txt('COM_POLL_SELECT_ITEM_TO', Lang::txt($action), true));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         foreach ($ids as $id) {

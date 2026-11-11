@@ -266,7 +266,9 @@ class Newsletters extends AdminController
         // Save campaign
         if (!$row->save()) {
             Notify::error($row->getError());
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Set success message
@@ -274,7 +276,9 @@ class Newsletters extends AdminController
 
         if ($this->getTask() == 'apply') {
             // If we just created campaign go back to edit form so we can add content
-            return $this->editTask($row);
+            $this->editTask($row);
+
+            return;
         }
 
         // Redirect back to campaigns list
@@ -466,7 +470,9 @@ class Newsletters extends AdminController
         if (!$id) {
             Notify::warning(Lang::txt('COM_NEWSLETTER_SELECT_NEWSLETTER_FOR_MAILING'));
 
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Get the newsletter
@@ -624,13 +630,17 @@ class Newsletters extends AdminController
         //check to make sure we have an object
         if ($newsletter->name == '') {
             Notify::error(Lang::txt('COM_NEWSLETTER_UNABLE_TO_LOCATE'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // make sure it wasnt deleted
         if ($newsletter->deleted == 1) {
             Notify::error(Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_DELETED'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         if ($mailinglistId !== -1) {
@@ -685,7 +695,9 @@ class Newsletters extends AdminController
         // make sure we have emails
         if ($totalcount < 1) {
             Notify::error(Lang::txt('COM_NEWSLETTER_NEWSLETTER_SEND_MISSING_RECIPIENTS'));
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // add recipients at 10000 at a time

@@ -215,7 +215,9 @@ class Imports extends AdminController
         // attempt to save
         if (!$import->save()) {
             Notify::error($import->getError());
-            return $this->editTask($import);
+            $this->editTask($import);
+
+            return;
         }
 
         // is this a new import
@@ -230,7 +232,9 @@ class Imports extends AdminController
 
             if (!in_array($ext, ['csv', 'xml'])) {
                 Notify::error(Lang::txt('COM_RESOURCES_IMPORT_UNSUPPORTED_FILE_TYPE'));
-                return $this->editTask();
+                $this->editTask();
+
+                return;
             }
 
             if (!is_dir($import->fileSpacePath())) {
@@ -254,7 +258,9 @@ class Imports extends AdminController
         // save again with import count
         if (!$import->save()) {
             Notify::error($import->getError());
-            return $this->editTask($import);
+            $this->editTask($import);
+
+            return;
         }
 
         // Inform user & redirect

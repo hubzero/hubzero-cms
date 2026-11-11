@@ -804,19 +804,25 @@ class Questions extends SiteController
 
         if (in_array(false, $result, true)) {
             Notify::error($row->getError());
-            return $this->newTask($row);
+            $this->newTask($row);
+
+            return;
         }
 
         // Store new content
         if (!Request::checkHoneypot()) {
             Notify::error(Lang::txt('COM_ANSWERS_ERROR_FORM_TOO_FAST'));
-            return $this->newTask($row);
+            $this->newTask($row);
+
+            return;
         }
 
         // Ensure the user added a tag
         if (!$tags) {
             Notify::error(Lang::txt('COM_ANSWERS_QUESTION_MUST_HAVE_TAG'));
-            return $this->newTask($row);
+            $this->newTask($row);
+
+            return;
         }
 
         // Store new content
@@ -824,7 +830,9 @@ class Questions extends SiteController
             Request::setVar('tag', $tags);
 
             Notify::error($row->getError());
-            return $this->newTask($row);
+            $this->newTask($row);
+
+            return;
         }
 
         // Trigger after save event

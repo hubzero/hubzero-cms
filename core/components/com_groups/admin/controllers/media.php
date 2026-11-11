@@ -168,7 +168,9 @@ class Media extends AdminController
             if (empty($file) || !is_array($file) || empty($file['name'])) {
                 $this->setError(Lang::txt('COM_GROUPS_NO_FILE'));
 
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             // the client's file name is not a path
@@ -179,7 +181,9 @@ class Media extends AdminController
                 if (!Filesystem::makeDirectory($path)) {
                     $this->setError(Lang::txt('COM_GROUPS_UNABLE_TO_CREATE_UPLOAD_PATH'));
 
-                    return $this->displayTask();
+                    $this->displayTask();
+
+                    return;
                 }
             }
 
@@ -187,7 +191,9 @@ class Media extends AdminController
             if ($file['size'] == 0) {
                 $this->setError(Lang::txt('COM_GROUPS_FILE_HAS_NO_SIZE'));
 
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             // make sure file is not empty
@@ -201,7 +207,9 @@ class Media extends AdminController
 
                 $this->setError(Lang::txt('FILE_SIZE_TOO_BIG', $max));
 
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             $ext = Filesystem::extension($file['name']);
@@ -211,7 +219,9 @@ class Media extends AdminController
 
             if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
                 $this->setError(Lang::txt('COM_GROUPS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
 
             // build needed paths
@@ -221,7 +231,9 @@ class Media extends AdminController
             if (!Filesystem::upload($file['tmp_name'], $filePath)) {
                 $this->setError(Lang::txt('COM_GROUPS_ERROR_UPLOADING'));
 
-                return $this->displayTask();
+                $this->displayTask();
+
+                return;
             }
         }
 
@@ -246,7 +258,9 @@ class Media extends AdminController
         if (!$folder) {
             $this->setError(Lang::txt('COM_GROUPS_ERROR_NO_DIRECTORY'));
 
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         $path = $this->path . ($dir ? DS . trim($dir, DS) : '');
@@ -257,14 +271,18 @@ class Media extends AdminController
         if (!is_dir($path)) {
             $this->setError(Lang::txt('COM_GROUPS_ERROR_DIRECTORY_NOT_FOUND'));
 
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Attempt to delete the file
         if (!Filesystem::deleteDirectory($path)) {
             $this->setError(Lang::txt('COM_GROUPS_ERROR_UNABLE_TO_DELETE_DIRECTORY'));
 
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Push through to the media view
@@ -293,14 +311,18 @@ class Media extends AdminController
         if (!$file) {
             $this->setError(Lang::txt('COM_GROUPS_ERROR_NO_FILE'));
 
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Check if the file even exists
         if (!file_exists($path . DS . $file)) {
             $this->setError(Lang::txt('COM_GROUPS_ERROR_FILE_NOT_FOUND'));
 
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Attempt to delete the file

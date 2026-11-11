@@ -146,7 +146,9 @@ class Authors extends AdminController
         $id       = Request::getInt('id', 0);
 
         if (!$authorid) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         $rows = [];
@@ -168,7 +170,9 @@ class Authors extends AdminController
         }
 
         if ($this->getTask() == 'apply') {
-            return $this->editTask($rows);
+            $this->editTask($rows);
+
+            return;
         }
 
         $this->cancelTask();

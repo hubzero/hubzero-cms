@@ -245,19 +245,25 @@ class Feedback extends SiteController
         // Check that a story was entered
         if (!$row->get('quote')) {
             $this->setError(Lang::txt('COM_FEEDBACK_ERROR_MISSING_STORY'));
-            return $this->storyTask($row);
+            $this->storyTask($row);
+
+            return;
         }
 
         // Check for an author
         if (!$row->get('fullname')) {
             $this->setError(Lang::txt('COM_FEEDBACK_ERROR_MISSING_AUTHOR'));
-            return $this->storyTask($row);
+            $this->storyTask($row);
+
+            return;
         }
 
         // Check for an organization
         if (!$row->get('org')) {
             $this->setError(Lang::txt('COM_FEEDBACK_ERROR_MISSING_ORGANIZATION'));
-            return $this->storyTask($row);
+            $this->storyTask($row);
+
+            return;
         }
 
         // Code cleaner for xhtml transitional compliance
@@ -270,7 +276,9 @@ class Feedback extends SiteController
         // Store new content
         if (!$row->save()) {
             $this->setError($row->getError());
-            return $this->storyTask($row);
+            $this->storyTask($row);
+
+            return;
         }
 
         $addedPictures = [];

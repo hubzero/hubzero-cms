@@ -278,7 +278,9 @@ class Team extends AdminController
         $project_id = Request::getInt('project', 0);
 
         if (!$project_id) {
-            return $this->cancelTask();
+            $this->cancelTask();
+
+            return;
         }
 
         // Load the group page

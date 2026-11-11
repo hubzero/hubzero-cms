@@ -92,7 +92,9 @@ class Media extends AdminController
         if (!$file || !$file->get('id')) {
             $this->setError(Lang::txt('COM_FORUM_ERROR_NO_FILE'));
 
-            return $this->displayTask();
+            $this->displayTask();
+
+            return;
         }
 
         // Check if the file even exists
