@@ -528,7 +528,7 @@ class Orcid extends SiteController
 
         $first_name  = Request::getString('fname', '');
         $last_name   = Request::getString('lname', '');
-        $email       = Request::getStringr('email', '');
+        $email       = Request::getString('email', '');
         $returnOrcid = Request::getInt('return', 0);
 
         if (!$first_name || !$last_name || !$email) {
