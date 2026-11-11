@@ -172,9 +172,7 @@ class Database extends Base implements CommandInterface
 
         // Now load some things back up
         foreach ($params as $k => $v) {
-            if (!empty($v)) {
-                $migration->saveParams($k, $v);
-            }
+            $migration->saveParams($k, $v);
         }
 
         $this->output->addLine('Load complete!', 'success');

@@ -108,7 +108,7 @@ class Tags extends \Hubzero\Base\Obj
      */
     public function safeTag($tagger_id, $object_id, $tag, $strength = 1, $label = '')
     {
-        if (!isset($tagger_id) || !isset($object_id) || !isset($tag)) {
+        if ($tagger_id === null || $object_id === null || $tag === null) {
             $this->setError('safe_tag argument missing');
             return false;
         }
@@ -302,7 +302,7 @@ class Tags extends \Hubzero\Base\Obj
      */
     public function getTagId($tag)
     {
-        if (!isset($tag)) {
+        if ($tag === null) {
             $this->setError('get_tag_id argument missing');
             return false;
         }
@@ -319,7 +319,7 @@ class Tags extends \Hubzero\Base\Obj
      */
     public function getRawTagId($tag)
     {
-        if (!isset($tag)) {
+        if ($tag === null) {
             $this->setError('get_raw_tag_id argument missing');
             return false;
         }

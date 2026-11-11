@@ -1337,12 +1337,11 @@ class Migration
 
         // Find all migration files (sorted by filename/timestamp)
         $this->files = [];
-        $this->find($extension);
-        $allFiles = $this->files;
-
-        if (empty($allFiles)) {
+        if (!$this->find($extension) || empty($this->files)) {
             return false;
         }
+
+        $allFiles = $this->files;
 
         // Sort files by basename (which includes timestamp)
         usort($allFiles, function ($a, $b) {

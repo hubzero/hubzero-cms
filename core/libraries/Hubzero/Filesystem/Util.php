@@ -72,7 +72,7 @@ class Util
     /**
      * Normalize path.
      *
-     * @param   string  $path
+     * @param   mixed   $path  The path: a string, or nothing. Anything else is refused.
      * @return  string
      * @throws  InvalidArgumentException
      */
