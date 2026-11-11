@@ -78,7 +78,7 @@ Here is the middle of the shipped site template, which is the whole idea in
 one screenful — an optional column of modules, the component, another
 optional column of modules:
 
-<!--include: core/templates/kimera/index.php:233-253-->
+<!--include: core/templates/kimera/index.php:229-249-->
 
 Two consequences follow from that order, and between them they explain most
 of the surprises.

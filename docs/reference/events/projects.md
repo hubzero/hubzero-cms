@@ -182,7 +182,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/site/views/projects/tmpl/_menu.php:147`](../../../core/components/com_projects/site/views/projects/tmpl/_menu.php#L147) with `[$this->model]`
+- [`core/components/com_projects/site/views/projects/tmpl/_menu.php:143`](../../../core/components/com_projects/site/views/projects/tmpl/_menu.php#L143) with `[$this->model]`
 
 No plugin in the source tree listens for this event.
 

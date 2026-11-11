@@ -544,9 +544,7 @@ shows the usual shape — an optional left column, the component, an optional
 right column, and a footer:</p>
 <pre><code class="language-php">            &lt;div id=&quot;wrap&quot;&gt;
                 &lt;main id=&quot;content&quot; class=&quot;&lt;?php echo Request::getCmd('option', ''); ?&gt;&quot;&gt;
-                    &lt;div class=&quot;inner&lt;?php if ($this-&gt;countModules('left or right')) {
-                        echo ' withmenu';
-                                     } ?&gt;&quot;&gt;
+                    &lt;div class=&quot;inner&lt;?php echo $this-&gt;countModules('left or right') ? ' withmenu' : ''; ?&gt;&quot;&gt;
                     &lt;?php if ($this-&gt;countModules('left or right')) : ?&gt;
                         &lt;section class=&quot;main section&quot;&gt;
                             &lt;div class=&quot;section-inner&quot;&gt;

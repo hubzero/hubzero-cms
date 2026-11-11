@@ -35,8 +35,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/admin/views/assetgroups/tmpl/edit.php:202`](../../../core/components/com_courses/admin/views/assetgroups/tmpl/edit.php#L202)
-- [`core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php:41`](../../../core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php#L41)
+- [`core/components/com_courses/admin/views/assetgroups/tmpl/edit.php:194`](../../../core/components/com_courses/admin/views/assetgroups/tmpl/edit.php#L194)
+- [`core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php:37`](../../../core/plugins/courses/outline/views/outline/tmpl/editassetgroup.php#L37)
 
 Listeners:
 
@@ -140,7 +140,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_courses/admin/views/courses/tmpl/edit.php:240`](../../../core/components/com_courses/admin/views/courses/tmpl/edit.php#L240)
+- [`core/components/com_courses/admin/views/courses/tmpl/edit.php:230`](../../../core/components/com_courses/admin/views/courses/tmpl/edit.php#L230)
 
 No plugin in the source tree listens for this event.
 
@@ -189,7 +189,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/site/views/course/tmpl/display.php:687`](../../../core/components/com_courses/site/views/course/tmpl/display.php#L687) with `[$this->course]`
+- [`core/components/com_courses/site/views/course/tmpl/display.php:683`](../../../core/components/com_courses/site/views/course/tmpl/display.php#L683) with `[$this->course]`
 
 Listeners:
 
@@ -207,7 +207,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_courses/admin/views/offerings/tmpl/edit.php:352`](../../../core/components/com_courses/admin/views/offerings/tmpl/edit.php#L352)
+- [`core/components/com_courses/admin/views/offerings/tmpl/edit.php:346`](../../../core/components/com_courses/admin/views/offerings/tmpl/edit.php#L346)
 
 Listeners:
 
