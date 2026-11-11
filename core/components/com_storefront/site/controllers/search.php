@@ -17,6 +17,10 @@ use App;
 
 /**
  * Product browsing controller class
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  Warehouse  $warehouse  The storefront's stock, scoped to the visitor by execute()
  */
 class Search extends \Hubzero\Component\SiteController
 {

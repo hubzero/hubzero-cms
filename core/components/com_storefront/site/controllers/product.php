@@ -23,6 +23,10 @@ use Hubzero\Facades\Route;
 
 /**
  * Product viewing controller class
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  Warehouse  $warehouse  The storefront's stock, scoped to the visitor by execute()
  */
 class Product extends \Hubzero\Component\SiteController
 {

@@ -21,6 +21,11 @@ use Hubzero\Access\Group as Accessgroup;
 
 /**
  * Product viewing controller class
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  Warehouse           $warehouse  The storefront's stock, set by execute()
+ * @property  \Hubzero\User\User  $user       The signed-in user, set by execute()
  */
 class Download extends ComponentController
 {

@@ -22,6 +22,10 @@ use Hubzero\Facades\Event;
 
 /**
  * Courses controller class
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  \Hubzero\User\User  $user  The signed-in user, set by execute()
  */
 class Checkout extends ComponentController
 {

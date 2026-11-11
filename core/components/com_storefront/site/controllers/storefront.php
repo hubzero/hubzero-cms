@@ -15,6 +15,10 @@ use Hubzero\Facades\Request;
 
 /**
  * Courses controller class
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  Warehouse  $warehouse  The storefront's stock, scoped to the visitor by execute()
  */
 class Storefront extends ComponentController
 {

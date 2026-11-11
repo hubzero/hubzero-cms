@@ -26,6 +26,10 @@ use Hubzero\Facades\Session;
 
 /**
  * Media controller
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $folder  The folder uploaded into, set by uploadTask() for reformatFilesArray()
  */
 class Media extends AdminController
 {
