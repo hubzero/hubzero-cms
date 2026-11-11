@@ -1097,6 +1097,21 @@ class Collections extends Plugin
 
         $id = Request::getInt('post', 0);
 
+        // A save that failed comes back here with the item as typed. The form
+        // is drawn from a post, so find the post the form named (post[id], not
+        // ?post=) and show the typed item and description in place of the stored ones
+        $typedItem = null;
+        $posted = [];
+        if ($entry instanceof \Components\Collections\Models\Item) {
+            $typedItem = $entry;
+            $entry = null;
+            $posted = Request::getArray('post', [], 'post');
+            // (save() may already have put the post's ID in ?post=; keep that then)
+            if (isset($posted['id'])) {
+                $id = (int) $posted['id'];
+            }
+        }
+
         $view->collection = $this->model->collection(Request::getString('board', 0));
 
         $view->collections = $this->model->collections();
@@ -1107,6 +1122,12 @@ class Collections extends Plugin
         }
 
         $view->entry = (is_object($entry) ? $entry : $view->collection->post($id));
+        if ($typedItem) {
+            $view->entry->item($typedItem);
+            if (isset($posted['description']) && is_string($posted['description'])) {
+                $view->entry->set('description', $posted['description']);
+            }
+        }
         if (!$view->collection->exists() && $view->entry->exists()) {
             $view->collection = $this->model->collection($view->entry->get('collection_id'));
         }
@@ -1308,7 +1329,9 @@ class Collections extends Plugin
         // Check for any errors
         if ($this->getError()) {
             Request::setVar('post', $p['id']);
-            return $this->edit($post->item()->bind($fields));
+            // bind() answers true or false; the form needs the item itself
+            $post->item()->bind($fields);
+            return $this->edit($post->item());
         }
 
         if (!isset($collection)) {
