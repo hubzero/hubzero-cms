@@ -59,7 +59,7 @@ class Migration20170209150806ComSupport extends Base
         $schema = $this->db->schema();
 
         if (
-            $schema->tableExists('#__support_tickets') && $schema->hasColumn('#__support_tickets', 'group')
+            $schema->tableExists('#__support_tickets') && $schema->hasColumn('#__support_tickets', 'group_id')
             && $schema->tableExists('#__xgroups') && $schema->hasColumn('#__xgroups', 'cn')
         ) {
             $schema->dropIndex('#__support_tickets', 'idx_group_id');

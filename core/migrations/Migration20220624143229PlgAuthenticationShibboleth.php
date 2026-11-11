@@ -29,12 +29,9 @@ class Migration20220624143229PlgAuthenticationShibboleth extends Base
      **/
     public function down()
     {
-        $schema = $this->db->schema();
-
-        if ($schema->tableExists('#__extensions')) {
-            if ($schema->hasColumn('#__extensions', 'params')) {
-                $schema->modifyColumn('#__extensions', 'params')->text()->notNull();
-            }
-        }
+        // Deliberately left as it is. Shrinking #__extensions.params back to
+        // TEXT would clip any extension's params that have outgrown it, leaving
+        // them unparseable and the administrator screens broken (2.4 disabled
+        // the statement for the same reason).
     }
 }

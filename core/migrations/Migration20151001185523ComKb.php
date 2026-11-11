@@ -186,7 +186,7 @@ class Migration20151001185523ComKb extends Base
             }
 
             if (!$schema->hasColumn('#__faq', 'section')) {
-                $schema->addColumn('section')->integer()->notNull()->default(0);
+                $schema->addColumn('#__faq', 'section')->integer()->notNull()->default(0);
             }
 
             $schema->addIndex('#__faq', 'idx_section', 'section');

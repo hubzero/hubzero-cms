@@ -25,25 +25,41 @@ class Migration20140509133410ComSupport extends Base
 
         if ($schema->tableExists('#__support_categories')) {
             if (!$schema->hasColumn('#__support_categories', 'section_id')) {
-                $schema->renameColumn('section', 'section_id')->integer()->notNull()->default(0);
+                $schema
+                    ->renameColumn('#__support_categories', 'section', 'section_id')
+                    ->integer()
+                    ->notNull()
+                    ->default(0);
             }
             if ($schema->hasColumn('#__support_categories', 'category')) {
-                $schema->renameColumn('category', 'alias')->string(250)->notNull()->default('');
+                $schema
+                    ->renameColumn('#__support_categories', 'category', 'alias')
+                    ->string(250)
+                    ->notNull()
+                    ->default('');
             }
             if (!$schema->hasColumn('#__support_categories', 'title')) {
-                $schema->addColumn('title')->string(255)->notNull()->default('');
+                $schema->addColumn('#__support_categories', 'title')->string(255)->notNull()->default('');
             }
             if (!$schema->hasColumn('#__support_categories', 'created')) {
-                $schema->addColumn('created')->datetime()->notNull()->default('0000-00-00 00:00:00');
+                $schema
+                    ->addColumn('#__support_categories', 'created')
+                    ->datetime()
+                    ->notNull()
+                    ->default('0000-00-00 00:00:00');
             }
             if (!$schema->hasColumn('#__support_categories', 'created_by')) {
-                $schema->addColumn('created_by')->integer()->notNull()->default(0);
+                $schema->addColumn('#__support_categories', 'created_by')->integer()->notNull()->default(0);
             }
             if (!$schema->hasColumn('#__support_categories', 'modified')) {
-                $schema->addColumn('modified')->datetime()->notNull()->default('0000-00-00 00:00:00');
+                $schema
+                    ->addColumn('#__support_categories', 'modified')
+                    ->datetime()
+                    ->notNull()
+                    ->default('0000-00-00 00:00:00');
             }
             if (!$schema->hasColumn('#__support_categories', 'modified_by')) {
-                $schema->addColumn('modified_by')->integer()->notNull()->default(0);
+                $schema->addColumn('#__support_categories', 'modified_by')->integer()->notNull()->default(0);
             }
         }
     }
@@ -57,10 +73,14 @@ class Migration20140509133410ComSupport extends Base
 
         if ($schema->tableExists('#__support_categories')) {
             if ($schema->hasColumn('#__support_categories', 'section_id')) {
-                $schema->renameColumn('section_id', 'section')->integer()->notNull()->default(0);
+                $schema
+                    ->renameColumn('#__support_categories', 'section_id', 'section')
+                    ->integer()
+                    ->notNull()
+                    ->default(0);
             }
             if ($schema->hasColumn('#__support_categories', 'alias')) {
-                $schema->renameColumn('alias', 'category')->string(50)->notNull()->default('');
+                $schema->renameColumn('#__support_categories', 'alias', 'category')->string(50)->notNull()->default('');
             }
             if ($schema->hasColumn('#__support_categories', 'title')) {
                 $schema->dropColumn('#__support_categories', 'title');

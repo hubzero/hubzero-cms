@@ -31,53 +31,53 @@ class Migration20130924000014ComWeblinks extends Base
 
         // Rename column if needed
         if ($schema->hasColumn('#__weblinks', 'published') && !$schema->hasColumn('#__weblinks', 'state')) {
-            $schema->renameColumn('published', 'state')->tinyInteger()->notNull()->default(0);
+            $schema->renameColumn('#__weblinks', 'published', 'state')->tinyInteger()->notNull()->default(0);
         }
 
         // Add column with position (MySQL-specific)
         if (!$schema->hasColumn('#__weblinks', 'access') && $schema->hasColumn('#__weblinks', 'approved')) {
-            $schema->addColumn('access')->integer()->notNull()->default(1)->after('approved');
+            $schema->addColumn('#__weblinks', 'access')->integer()->notNull()->default(1)->after('approved');
         }
 
         // Add new columns
         if (!$schema->hasColumn('#__weblinks', 'language')) {
-            $schema->addColumn('language')->char(7)->notNull()->default('');
+            $schema->addColumn('#__weblinks', 'language')->char(7)->notNull()->default('');
         }
         if (!$schema->hasColumn('#__weblinks', 'created')) {
-            $schema->addColumn('created')->datetime()->notNull()->default('0000-00-00 00:00:00');
+            $schema->addColumn('#__weblinks', 'created')->datetime()->notNull()->default('0000-00-00 00:00:00');
         }
         if (!$schema->hasColumn('#__weblinks', 'created_by')) {
-            $schema->addColumn('created_by')->integer()->unsigned()->notNull()->default(0);
+            $schema->addColumn('#__weblinks', 'created_by')->integer()->unsigned()->notNull()->default(0);
         }
         if (!$schema->hasColumn('#__weblinks', 'created_by_alias')) {
-            $schema->addColumn('created_by_alias')->string(255)->notNull()->default('');
+            $schema->addColumn('#__weblinks', 'created_by_alias')->string(255)->notNull()->default('');
         }
         if (!$schema->hasColumn('#__weblinks', 'modified')) {
-            $schema->addColumn('modified')->datetime()->notNull()->default('0000-00-00 00:00:00');
+            $schema->addColumn('#__weblinks', 'modified')->datetime()->notNull()->default('0000-00-00 00:00:00');
         }
         if (!$schema->hasColumn('#__weblinks', 'modified_by')) {
-            $schema->addColumn('modified_by')->integer()->unsigned()->notNull()->default(0);
+            $schema->addColumn('#__weblinks', 'modified_by')->integer()->unsigned()->notNull()->default(0);
         }
         if (!$schema->hasColumn('#__weblinks', 'metakey')) {
-            $schema->addColumn('metakey')->text()->notNull();
+            $schema->addColumn('#__weblinks', 'metakey')->text()->notNull();
         }
         if (!$schema->hasColumn('#__weblinks', 'metadesc')) {
-            $schema->addColumn('metadesc')->text()->notNull();
+            $schema->addColumn('#__weblinks', 'metadesc')->text()->notNull();
         }
         if (!$schema->hasColumn('#__weblinks', 'metadata')) {
-            $schema->addColumn('metadata')->text()->notNull();
+            $schema->addColumn('#__weblinks', 'metadata')->text()->notNull();
         }
         if (!$schema->hasColumn('#__weblinks', 'featured')) {
-            $schema->addColumn('featured')->tinyInteger()->unsigned()->notNull()->default(0);
+            $schema->addColumn('#__weblinks', 'featured')->tinyInteger()->unsigned()->notNull()->default(0);
         }
         if (!$schema->hasColumn('#__weblinks', 'xreference')) {
-            $schema->addColumn('xreference')->string(50)->notNull();
+            $schema->addColumn('#__weblinks', 'xreference')->string(50)->notNull();
         }
         if (!$schema->hasColumn('#__weblinks', 'publish_up')) {
-            $schema->addColumn('publish_up')->datetime()->notNull()->default('0000-00-00 00:00:00');
+            $schema->addColumn('#__weblinks', 'publish_up')->datetime()->notNull()->default('0000-00-00 00:00:00');
         }
         if (!$schema->hasColumn('#__weblinks', 'publish_down')) {
-            $schema->addColumn('publish_down')->datetime()->notNull()->default('0000-00-00 00:00:00');
+            $schema->addColumn('#__weblinks', 'publish_down')->datetime()->notNull()->default('0000-00-00 00:00:00');
         }
 
         // Batch column modification and index operations

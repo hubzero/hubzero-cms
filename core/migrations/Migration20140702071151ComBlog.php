@@ -25,7 +25,7 @@ class Migration20140702071151ComBlog extends Base
         $schema = $this->db->schema();
 
         if (!$schema->hasColumn('#__blog_comments', 'state')) {
-            $schema->addColumn('state')->tinyInteger()->notNull()->default(0);
+            $schema->addColumn('#__blog_comments', 'state')->tinyInteger()->notNull()->default(0);
 
             $this->db
                 ->getQuery(true)
@@ -55,11 +55,11 @@ class Migration20140702071151ComBlog extends Base
         }
 
         if (!$schema->hasColumn('#__blog_comments', 'modified')) {
-            $schema->addColumn('modified')->datetime()->notNull()->default('0000-00-00 00:00:00');
+            $schema->addColumn('#__blog_comments', 'modified')->datetime()->notNull()->default('0000-00-00 00:00:00');
         }
 
         if (!$schema->hasColumn('#__blog_comments', 'modified_by')) {
-            $schema->addColumn('modified_by')->integer()->notNull()->default(0);
+            $schema->addColumn('#__blog_comments', 'modified_by')->integer()->notNull()->default(0);
         }
     }
 
