@@ -78,8 +78,10 @@ $this->wish->set('negative', $this->wish->votes()->whereEquals('helpful', 'no')-
 
 // The "granted" status: ticked once granted, locked while assigned to someone else
 $grantedLocked = $this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id');
-$grantedAttrs  = ($this->wish->get('status') == 1 ? 'checked="checked"' : '')
-    . ($grantedLocked ? 'disabled="disabled"' : '');
+$grantedAttrs  = implode(' ', array_filter([
+    $this->wish->get('status') == 1 ? 'checked="checked"' : '',
+    $grantedLocked ? 'disabled="disabled"' : '',
+]));
 ?>
     <header id="content-header">
         <h2><?= $this->escape($this->title) . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . (int) $this->wish->get('id') ?></h2>
