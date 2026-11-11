@@ -306,9 +306,9 @@ class Answers extends AdminController
         }
 
         // Set message
-        if ($publish == '1') {
+        if ($publish == 1) {
             $message = Lang::txt('COM_ANSWERS_ANSWER_ACCEPTED');
-        } elseif ($publish == '0') {
+        } else {
             $message = Lang::txt('COM_ANSWERS_ANSWER_REJECTED');
         }
 

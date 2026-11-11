@@ -412,16 +412,15 @@ class Questions extends SiteController
             if ($row instanceof Question) {
                 $question = $row;
                 $txt = htmlspecialchars((string) $row->get('subject'), ENT_QUOTES, 'UTF-8');
-            }
-            if ($row instanceof Response) {
+            } elseif ($row instanceof Response) {
                 $question = Question::oneOrFail($row->get('question_id'));
                 $txt = Lang::txt(
                     'COM_ANSWERS_ACTIVITY_ANSWER_ON',
                     $row->get('id'),
                     htmlspecialchars((string) $question->get('subject'), ENT_QUOTES, 'UTF-8'),
                 );
-            }
-            if ($row instanceof Comment) {
+            } else {
+                // The $type branches above leave only a Comment here.
                 // A comment carries no question_id of its own; link() derives
                 // it from the parent response.
                 $row->link();
