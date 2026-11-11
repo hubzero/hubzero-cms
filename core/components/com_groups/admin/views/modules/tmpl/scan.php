@@ -16,8 +16,11 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title($this->group->get('description') . ': ' . $this->module
-    ->get('title') . ' - ' . Lang::txt('COM_GROUPS_MODULES_SCAN'), 'groups.png');
+Toolbar::title(
+    $this->group->get('description') . ': ' . $this->module->get('title')
+        . ' - ' . Lang::txt('COM_GROUPS_MODULES_SCAN'),
+    'groups.png',
+);
 Toolbar::custom('markscanned', 'check', 'check', 'COM_GROUPS_MODULES_MARK_SCANNED', false);
 Toolbar::spacer();
 Toolbar::custom('scanagain', 'check', 'check', 'COM_GROUPS_MODULES_SCAN_AGAIN', false);

@@ -72,11 +72,11 @@ if ($isOwnerNoProjects || $noTodoEntries) { ?>
         $results = Event::trigger(
             'projects.onShared',
             [
-            'todo',
-            $this->model,
-            $this->projects,
-            $this->member->get('id'),
-            $this->filters,
+                'todo',
+                $this->model,
+                $this->projects,
+                $this->member->get('id'),
+                $this->filters,
             ],
         );
         echo implode("\n", $results);

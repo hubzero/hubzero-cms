@@ -112,10 +112,10 @@ Html::behavior('tooltip');
                 }
 
                 $students = $row->members([
-                                'count' => true,
-                                'student' => 1,
-                                'section_id' => $sids,
-                            ]);
+                    'count' => true,
+                    'student' => 1,
+                    'section_id' => $sids,
+                ]);
             }
 
             $pages    = $row->pages(['count' => true, 'active' => [0, 1]]);

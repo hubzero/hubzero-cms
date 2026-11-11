@@ -107,8 +107,7 @@ $this
                         if ($pageVersion->get('created_by') == 1000) {
                             $created_by = Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
                         } elseif (
-                            $pageVersion->get('created_by') != null && is_numeric($pageVersion
-                            ->get('created_by'))
+                            $pageVersion->get('created_by') != null && is_numeric($pageVersion->get('created_by'))
                         ) {
                             $profile = User::getInstance($pageVersion->get('created_by'));
                             $url = Route::url('index.php?option=com_members&id=' . $profile->get('id'));
@@ -124,8 +123,7 @@ $this
                         if ($pageVersion->get('approved_by') == 1000) {
                             $approved_by = Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
                         } elseif (
-                            $pageVersion->get('approved_by') != null && is_numeric($pageVersion
-                            ->get('approved_by'))
+                            $pageVersion->get('approved_by') != null && is_numeric($pageVersion->get('approved_by'))
                         ) {
                             $profile = User::getInstance($pageVersion->get('approved_by'));
                             $url = Route::url('index.php?option=com_members&id=' . $profile->get('id'));

@@ -349,10 +349,14 @@ $pid = Request::getInt('publication', 0);
                             $tags_list = Event::trigger(
                                 'hubzero.onGetMultiEntry',
                                 [
-                                                    ['tags', 'tags', 'actags', '',
-                                                        implode(",", $this->tags),
-                                                    ],
-                                                ],
+                                    [
+                                        'tags',
+                                        'tags',
+                                        'actags',
+                                        '',
+                                        implode(",", $this->tags),
+                                    ],
+                                ],
                             );
 
                         if (count($tags_list) > 0) {
@@ -372,10 +376,14 @@ $pid = Request::getInt('publication', 0);
                             $badges_list = Event::trigger(
                                 'hubzero.onGetMultiEntry',
                                 [
-                                                    ['tags', 'badges', 'actags1', '',
-                                                        implode(",", $this->badges),
-                                                    ],
-                                                ],
+                                    [
+                                        'tags',
+                                        'badges',
+                                        'actags1',
+                                        '',
+                                        implode(",", $this->badges),
+                                    ],
+                                ],
                             );
                         if (count($badges_list) > 0) {
                             echo $badges_list[0];

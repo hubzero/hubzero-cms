@@ -191,8 +191,13 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
                                 <?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHORS'); ?>
                                 <?php
 
-                                $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'author',
-                                'field-author', '', (isset($this->authorString) ? $this->authorString : '')]]);
+                                $mc = Event::trigger('hubzero.onGetMultiEntry', [[
+                                    'members',
+                                    'author',
+                                    'field-author',
+                                    '',
+                                    (isset($this->authorString) ? $this->authorString : ''),
+                                ]]);
                                 if (count($mc) > 0) {
                                     echo $mc[0];
                                 } else { ?>

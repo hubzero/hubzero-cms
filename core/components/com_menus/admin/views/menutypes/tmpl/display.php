@@ -28,9 +28,9 @@ defined('_HZEXEC_') or die();
                         <?php foreach ($list as $item) : ?>
                             <?php
                             $itemData = [
-                            'id' => $this->recordId,
-                            'title' => $item->title,
-                            'request' => $item->request,
+                                'id' => $this->recordId,
+                                'title' => $item->title,
+                                'request' => $item->request,
                             ];
                             $encoded = base64_encode(json_encode($itemData));
                             $descTitle = Lang::txt($item->description);
