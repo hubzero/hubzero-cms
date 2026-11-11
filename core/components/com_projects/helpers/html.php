@@ -1092,8 +1092,8 @@ class Html extends Obj
     /**
      * Get project Git repo path
      *
-     * @param   string  $projectAlias
-     * @param   string  $case
+     * @param   string|null  $projectAlias
+     * @param   string       $case
      * @return  string
      */
     public static function getProjectRepoPath($projectAlias = '', $case = 'files', $exists = true)

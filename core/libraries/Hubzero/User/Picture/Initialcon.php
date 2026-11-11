@@ -95,10 +95,10 @@ class Initialcon implements Resolver
     /**
      * Get a path or URL to a user pciture
      *
-     * @param   integer  $id
-     * @param   string   $name
-     * @param   string   $email
-     * @param   bool     $thumbnail
+     * @param   integer      $id
+     * @param   string|null  $name
+     * @param   string       $email
+     * @param   bool         $thumbnail
      * @return  string
      */
     public function picture($id, $name, $email, $thumbnail = true)
