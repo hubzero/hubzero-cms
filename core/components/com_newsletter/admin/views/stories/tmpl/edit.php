@@ -81,7 +81,9 @@ Toolbar::cancel();
                         <?php
                         $placeholderText = Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_PLACEHOLDER');
                         ?>
-                        <input type="text" name="story[readmore_link]" value="<?= $this->escape($this->story->readmore_link) ?>" placeholder="<?= $placeholderText ?>" />
+                        <input type="text" name="story[readmore_link]"
+                            value="<?= $this->escape($this->story->readmore_link) ?>"
+                            placeholder="<?= $placeholderText ?>" />
                     </div>
                 </div>
             </div>

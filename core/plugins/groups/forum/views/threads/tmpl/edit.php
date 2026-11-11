@@ -265,7 +265,8 @@ $aliasSelected = function ($value) use ($view) {
                                     <?php
                                     $fieldValue = $this->escape(stripslashes($attachment->get('description', '')));
                                     ?>
-                                    <input type="text" class="form-control" name="description" id="field-attach-descritpion" value="<?= $fieldValue ?>" />
+                                    <input type="text" class="form-control" name="description"
+                                        id="field-attach-descritpion" value="<?= $fieldValue ?>" />
                                 </label>
                             </div>
                         </div>

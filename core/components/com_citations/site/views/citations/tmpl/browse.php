@@ -441,7 +441,8 @@ if ($label == 'none') {
                         <?php
                         $checkedAttr = isset($this->filters['reftype']['eduresearch']) ? ' checked="checked"' : '';
                         ?>
-                        <input class="option" type="checkbox" name="reftype[eduresearch]" id="reftype_eduresearch" value="1"<?= $checkedAttr ?> />
+                        <input class="option" type="checkbox" name="reftype[eduresearch]" id="reftype_eduresearch"
+                            value="1"<?= $checkedAttr ?> />
                         <?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_EDUCATIONRESEARCH'); ?>
                     </label>
                     <label for="reftype_cyberinfrastructure">
