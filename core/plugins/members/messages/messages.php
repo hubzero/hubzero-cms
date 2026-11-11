@@ -957,7 +957,7 @@ class Messages extends Plugin
             }
 
             // If they previously had everything turned off, we need to remove that entry saying so
-            $records = $notify->getRecords($member->get('id'), 'all');
+            $records = \Hubzero\Message\Notify::blank()->getRecords($member->get('id'), 'all');
 
             if ($records->count()) {
                 foreach ($records as $record) {
