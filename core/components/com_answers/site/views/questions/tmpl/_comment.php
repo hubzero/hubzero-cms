@@ -55,7 +55,11 @@ if (!$this->comment->get('item_id')) {
                     $name = Lang::txt('JANONYMOUS');
                     if (!$this->comment->get('anonymous')) {
                         $name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
-                        if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels()) && !$this->comment->creator->get('block') && $this->comment->creator->get('approved')) {
+                        if (
+                            in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels())
+                            && !$this->comment->creator->get('block')
+                            && $this->comment->creator->get('approved')
+                        ) {
                             $name = '<a href="' . Route::url($this->comment->creator->link()) . '">' . $name . '</a>';
                         }
                     }
@@ -79,7 +83,11 @@ if (!$this->comment->get('item_id')) {
                 if ($componentPath) {
                     $comment = \Components\Redirect\Helpers\Converter::convert($comment);
                 } else {
-                    $comment = preg_replace('#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is', "<a href='$1' rel='nofollow'>$2</a>", $comment);
+                    $comment = preg_replace(
+                        '#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is',
+                        "<a href='$1' rel='nofollow'>$2</a>",
+                        $comment,
+                    );
                 }
 
                 if ($this->comment->isReported()) {
@@ -159,7 +167,14 @@ if (!$this->comment->get('item_id')) {
                             <label for="comment_<?php echo $formSuffix; ?>_content">
                                 <span class="label-text"><?php echo Lang::txt('COM_ANSWERS_ENTER_COMMENTS'); ?></span>
                                 <?php
-                                echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $formSuffix . '_content', ['class' => 'form-control minimal no-footer']);
+                                echo $this->editor(
+                                    'comment[content]',
+                                    '',
+                                    35,
+                                    4,
+                                    'comment_' . $formSuffix . '_content',
+                                    ['class' => 'form-control minimal no-footer'],
+                                );
                                 ?>
                             </label>
                         </div>

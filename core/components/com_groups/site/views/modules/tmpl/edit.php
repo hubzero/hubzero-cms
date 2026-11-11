@@ -74,7 +74,11 @@ foreach ($menus as $menu) {
                         if (!$this->group->isSuperGroup()) {
                             $allowPhp     = false;
                             $allowScripts = false;
-                            $content      = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $this->module->get('content'));
+                            $content      = preg_replace(
+                                '#<script(.*?)>(.*?)</script>#is',
+                                '',
+                                $this->module->get('content'),
+                            );
                             $content      = preg_replace('/<\?[\s\S]*?\?>/', '', $this->module->get('content'));
                         }
 
@@ -107,7 +111,19 @@ foreach ($menus as $menu) {
 
                             // display editor
                             $editor = App::get('editor');
-                            echo $editor->display('module[content]', stripslashes($this->module->get('content')), '100%', '100px', 0, 0, false, 'field-content', null, null, $config);
+                            echo $editor->display(
+                                'module[content]',
+                                stripslashes($this->module->get('content')),
+                                '100%',
+                                '100px',
+                                0,
+                                0,
+                                false,
+                                'field-content',
+                                null,
+                                null,
+                                $config,
+                            );
                             ?>
                     </label>
                 </fieldset>

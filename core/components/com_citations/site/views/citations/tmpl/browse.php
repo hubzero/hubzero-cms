@@ -46,10 +46,13 @@ if ($label == 'none') {
     <?php
     $importLinks = [];
     if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) {
-        $importLinks[] = '<li><a class="btn icon-add" href="' . Route::url('index.php?option=com_citations&task=add') . '">' . Lang::txt('COM_CITATIONS_SUBMIT_CITATION') . '</a></li>';
+        $importLinks[] = '<li><a class="btn icon-add" href="' . Route::url('index.php?option=com_citations&task=add')
+            . '">' . Lang::txt('COM_CITATIONS_SUBMIT_CITATION') . '</a></li>';
     }
     if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) {
-        $importLinks[] = '<li><a class="btn icon-upload" href="' . Route::url('index.php?option=' . $this->option . '&task=import') . '">' . Lang::txt('COM_CITATIONS_IMPORT_CITATION') . '</a></li>';
+        $importLinks[] = '<li><a class="btn icon-upload" href="'
+            . Route::url('index.php?option=' . $this->option . '&task=import') . '">'
+            . Lang::txt('COM_CITATIONS_IMPORT_CITATION') . '</a></li>';
     }
     if (!empty($importLinks)) : ?>
     <div id="content-header-extra">
@@ -191,7 +194,8 @@ if ($label == 'none') {
                                                             // javascript:/vbscript:/data: target judged on a
                                                             // control-character-stripped probe, and escape the name.
                                                             $slink = preg_match('/^(?:javascript|vbscript|data):/i', preg_replace('/[\x00-\x20]+/', '', (string) $s->get('link'))) ? '' : $s->get('link');
-                                                            $final .= '<a rel="external" href="' . $this->escape($slink) . '">' . $this->escape($s->get('sponsor')) . '</a>, ';
+                                                            $final .= '<a rel="external" href="' . $this->escape($slink)
+                                                                . '">' . $this->escape($s->get('sponsor')) . '</a>, ';
                                                         }
                                                     }
                                                     ?>

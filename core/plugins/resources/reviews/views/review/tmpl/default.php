@@ -92,11 +92,20 @@ if ($this->review->get('id')) {
             <label for="review_comments">
                 <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_FORM_COMMENTS');
                 if ($this->banking) {
-                    echo ' ( <span class="required">' . Lang::txt('PLG_RESOURCES_REVIEWS_REQUIRED') . '</span> ' . Lang::txt('PLG_RESOURCES_REVIEWS_FOR_ELIGIBILITY') . ' <a href="' . $this->infolink . '">' . Lang::txt('PLG_RESOURCES_REVIEWS_EARN_POINTS') . '</a> )';
+                    echo ' ( <span class="required">' . Lang::txt('PLG_RESOURCES_REVIEWS_REQUIRED') . '</span> '
+                        . Lang::txt('PLG_RESOURCES_REVIEWS_FOR_ELIGIBILITY') . ' <a href="' . $this->infolink . '">'
+                        . Lang::txt('PLG_RESOURCES_REVIEWS_EARN_POINTS') . '</a> )';
                 }
                 ?>
                 <?php
-                echo $this->editor('review[comment]', $this->escape($this->review->get('comment')), 35, 10, 'review_comments', ['class' => 'minimal no-footer']);
+                echo $this->editor(
+                    'review[comment]',
+                    $this->escape($this->review->get('comment')),
+                    35,
+                    10,
+                    'review_comments',
+                    ['class' => 'minimal no-footer'],
+                );
                 ?>
             </label>
 

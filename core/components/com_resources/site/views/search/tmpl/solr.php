@@ -61,15 +61,21 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                 <?php
                 $fullCitation = '';
                 $fullCitation .= !empty($this->result['authorString']) ? $this->result['authorString'] : '';
-                $year = !empty($this->result['yearofpublication_s']) ? Date::of($this->result['yearofpublication_s'])->year : '';
+                $year = !empty($this->result['yearofpublication_s'])
+                    ? Date::of($this->result['yearofpublication_s'])->year
+                    : '';
                 $fullCitation .= !empty($year) ? ' (' . $year . '). ' : '. ';
                 $title = !empty($this->result['title']) ? $this->result['title'] : '';
                 $title = in_array(substr(trim($title), -1), ['.', '?', '!']) ? $title : $title . '.';
                 $fullCitation .= $title . ' ';
                 $journalTitle = !empty($this->result['journaltitle_s']) ? $this->result['journaltitle_s'] : '';
-                $journalTitle = in_array(substr(trim($journalTitle), -1), ['.', '?', '!']) || empty($journalTitle) ? $journalTitle : $journalTitle . '.';
+                $journalTitle = in_array(substr(trim($journalTitle), -1), ['.', '?', '!']) || empty($journalTitle)
+                    ? $journalTitle
+                    : $journalTitle . '.';
                 $fullCitation .= '<em>' . $journalTitle . '</em> ';
-                $fullCitation .= !empty($this->result['volumeno_s']) ? '<em>' . $this->result['volumeno_s'] . '</em>' : '';
+                $fullCitation .= !empty($this->result['volumeno_s'])
+                    ? '<em>' . $this->result['volumeno_s'] . '</em>'
+                    : '';
                 $issueNumber = '';
                 if (!empty($this->result['issuenomonth_s'])) {
                     $issueNumber = $this->result['issuenomonth_s'];
@@ -81,7 +87,9 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
                     $issueNumber = '(' . $issueNumber . ').';
                 }
                 $fullCitation .= $issueNumber;
-                $fullCitation .= !empty($this->result['pagenumbers_s']) ? ' pp. ' . $this->result['pagenumbers_s'] . '.' : '';
+                $fullCitation .= !empty($this->result['pagenumbers_s'])
+                    ? ' pp. ' . $this->result['pagenumbers_s'] . '.'
+                    : '';
 
                 echo $fullCitation;
                 ?>

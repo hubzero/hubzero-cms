@@ -19,7 +19,9 @@ $placeholder = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
 if ($this->row->type == 'file') {
     $dirpath = dirname($this->row->path) == '.' ? '' : dirname($this->row->path) . DS;
     $gone    = is_file($this->path . DS . $this->row->path) ? false : true;
-    $title   = $gone ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RENAME');
+    $title   = $gone
+        ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL')
+        : Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RENAME');
     $placeholder = basename($this->row->path);
 }
 

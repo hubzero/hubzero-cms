@@ -57,8 +57,14 @@ $no_show = ["errors","duplicate"];
                         <?php foreach ($citations_require_attention as $c) : ?>
                             <?php
                                 $type_title = $c['duplicate']->relatedType->get('type_title');
-                                $tags = implode(', ', \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false));
-                                $badges = implode(', ', \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false));
+                                $tags = implode(
+                                    ', ',
+                                    \Components\Citations\Helpers\Format::citationTags($c['duplicate'], false),
+                                );
+                                $badges = implode(
+                                    ', ',
+                                    \Components\Citations\Helpers\Format::citationBadges($c['duplicate'], false),
+                                );
                             ?>
                             <tr>
                                 <!--<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->

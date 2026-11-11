@@ -20,7 +20,11 @@ $canDo = Components\Newsletter\Helpers\Permissions::getActions('mailinglist');
 Toolbar::title(Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILINGLISTS') . ': ' . $this->escape($this->list->name), 'list');
 if ($canDo->get('core.edit')) {
     Toolbar::addNew('addemail', 'COM_NEWSLETTER_TOOLBAR_ADDEMAILS');
-    Toolbar::deleteList('COM_NEWSLETTER_MAILINGLIST_DELETE_EMAILS_CHECK', 'deleteemail', 'COM_NEWSLETTER_TOOLBAR_REMOVE');
+    Toolbar::deleteList(
+        'COM_NEWSLETTER_MAILINGLIST_DELETE_EMAILS_CHECK',
+        'deleteemail',
+        'COM_NEWSLETTER_TOOLBAR_REMOVE',
+    );
     Toolbar::spacer();
 }
 Toolbar::custom('export', 'export', '', 'COM_NEWSLETTER_TOOLBAR_EXPORT', false);
@@ -84,7 +88,8 @@ $this->js();
                             <a href="mailto:<?= $this->escape($le->email) ?>"><?= $this->escape($le->email) ?></a>
                             <?php
                             if ($le->unsubscribe->reason) {
-                                echo '<p><strong>' . Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_UNSUBSCRIBE_REASON') . '</strong> ' . $this->escape($le->unsubscribe->reason) . '</p>';
+                                echo '<p><strong>' . Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_UNSUBSCRIBE_REASON')
+                                    . '</strong> ' . $this->escape($le->unsubscribe->reason) . '</p>';
                             }
                             ?>
                         </td>
@@ -96,8 +101,12 @@ $this->js();
                             if ($le->confirmed) {
                                 echo Lang::txt('JYES');
                             } else {
-                                $resendLink = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=sendconfirmation&id=' . $le->id . '&mid=' . $this->list->id);
-                                echo Lang::txt('JNO') . '(<a href="' . $resendLink . '">' . Lang::txt('Send Confirmation') . '</a>)';
+                                $resendLink = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&task=sendconfirmation&id=' . $le->id . '&mid=' . $this->list->id,
+                                );
+                                echo Lang::txt('JNO') . '(<a href="' . $resendLink . '">'
+                                    . Lang::txt('Send Confirmation') . '</a>)';
                             }
                             ?>
                         </td>
@@ -107,7 +116,8 @@ $this->js();
                         <td>
                             <?php
                             if ($le->date_confirmed && $le->date_confirmed != '0000-00-00 00:00:00') {
-                                echo '<time datetime="' . $le->date_confirmed . '">' . Date::of($le->date_confirmed)->format('l, F d, Y @ g:ia') . '</time>';
+                                echo '<time datetime="' . $le->date_confirmed . '">'
+                                    . Date::of($le->date_confirmed)->format('l, F d, Y @ g:ia') . '</time>';
                             } else {
                                 echo Lang::txt('NA');
                             }

@@ -179,13 +179,16 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                     <?php
                     switch ($page->get('state')) {
                         case 0:
-                            echo '<span class="state unpublish"><span>' . Lang::txt('COM_GROUPS_PAGES_STATE_UNPUBLISHED') . '</span></span>';
+                            echo '<span class="state unpublish"><span>'
+                                . Lang::txt('COM_GROUPS_PAGES_STATE_UNPUBLISHED') . '</span></span>';
                             break;
                         case 1:
-                            echo '<span class="state publish"><span>' . Lang::txt('COM_GROUPS_PAGES_STATE_PUBLISHED') . '</span></span>';
+                            echo '<span class="state publish"><span>' . Lang::txt('COM_GROUPS_PAGES_STATE_PUBLISHED')
+                                . '</span></span>';
                             break;
                         case 2:
-                            echo '<span class="state trashed"><span>' . Lang::txt('COM_GROUPS_PAGES_STATE_DELETED') . '</span></span>';
+                            echo '<span class="state trashed"><span>' . Lang::txt('COM_GROUPS_PAGES_STATE_DELETED')
+                                . '</span></span>';
                             break;
                     }
                     ?>

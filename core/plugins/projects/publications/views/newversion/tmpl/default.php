@@ -16,7 +16,10 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // Get publication properties
-$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->category()->alias, $this->pub->category()->name);
+$typetitle = \Components\Publications\Helpers\Html::writePubCategory(
+    $this->pub->category()->alias,
+    $this->pub->category()->name,
+);
 
 // Suggest new label
 $suggested = is_numeric($this->pub->version_label) ? number_format(($this->pub->version_label + 1.0), 1, '.', '') : '';

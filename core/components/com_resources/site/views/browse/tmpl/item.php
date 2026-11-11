@@ -84,9 +84,19 @@ $extras = Event::trigger('resources.onResourcesList', [$this->line]);
 
                         // Get statistics info
                         if ($this->line->isTool()) {
-                            $stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->line->id, $this->line->get('type'), $this->line->rating);
+                            $stats = new \Components\Resources\Helpers\Usage\Tools(
+                                $database,
+                                $this->line->id,
+                                $this->line->get('type'),
+                                $this->line->rating,
+                            );
                         } else {
-                            $stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->line->id, $this->line->get('type'), $this->line->rating);
+                            $stats = new \Components\Resources\Helpers\Usage\Andmore(
+                                $database,
+                                $this->line->id,
+                                $this->line->get('type'),
+                                $this->line->rating,
+                            );
                         }
                         echo $stats->display();
                         ?>
@@ -139,7 +149,10 @@ $extras = Event::trigger('resources.onResourcesList', [$this->line]);
             $content = trim($content);
         }
 
-        echo \Hubzero\Utility\Str::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))), 300);
+        echo \Hubzero\Utility\Str::truncate(
+            strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($content))),
+            300,
+        );
         ?>
                 <?php
                 $tc = $this->line->tags('cloud');

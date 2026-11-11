@@ -16,7 +16,11 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title($this->group->get('description') . ': ' . $this->module->get('title') . ' - ' . Lang::txt('COM_GROUPS_MODULES_ERRORS'), 'groups.png');
+Toolbar::title(
+    $this->group->get('description') . ': ' . $this->module->get('title') . ' - '
+        . Lang::txt('COM_GROUPS_MODULES_ERRORS'),
+    'groups.png',
+);
 Toolbar::custom('errorscheckagain', 'check', 'check', 'COM_GROUPS_MODULES_CHECK_AGAIN', false);
 Toolbar::cancel();
 

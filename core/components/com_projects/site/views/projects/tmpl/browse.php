@@ -120,7 +120,11 @@ $total = $this->model->entries('count', $this->filters);
                 <?php
             } else {
                 if (User::isGuest()) {
-                    echo '<p class="noresults">' . Lang::txt('COM_PROJECTS_NO_PROJECTS_FOUND') . ' ' . Lang::txt('COM_PROJECTS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=browse&action=login') . '">' . Lang::txt('COM_PROJECTS_LOGIN') . '</a> ' . Lang::txt('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS') . '</p>';
+                    echo '<p class="noresults">' . Lang::txt('COM_PROJECTS_NO_PROJECTS_FOUND') . ' '
+                        . Lang::txt('COM_PROJECTS_PLEASE') . ' <a href="'
+                        . Route::url('index.php?option=' . $this->option . '&task=browse&action=login') . '">'
+                        . Lang::txt('COM_PROJECTS_LOGIN') . '</a> ' . Lang::txt('COM_PROJECTS_TO_VIEW_PRIVATE_PROJECTS')
+                        . '</p>';
                 } else {
                     if (in_array($this->filters['reviewer'], ['sponsored', 'sensitive'])) {
                         $txt = $this->filters['filterby'] == 'pending'

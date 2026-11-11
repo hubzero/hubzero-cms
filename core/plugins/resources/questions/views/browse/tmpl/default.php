@@ -166,7 +166,12 @@ if (is_object($schema)) {
         $schema->fields = [];
     }
     foreach ($schema->fields as $field) {
-        if (isset($data[$field->name]) && $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+        if (
+            isset($data[$field->name])
+            && $elements->display($field->type, $data[$field->name])
+            && isset($field->display)
+            && $field->display == $tab
+        ) {
             $hasCustomFields = true;
             break;
         }
@@ -179,7 +184,11 @@ if ($hasCustomFields) :
     <?php
     foreach ($schema->fields as $field) {
         if (isset($data[$field->name])) {
-            if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+            if (
+                $elements->display($field->type, $data[$field->name])
+                && isset($field->display)
+                && $field->display == $tab
+            ) {
                 ?>
                     <h4><?php echo $field->label; ?></h4>
                     <div class="resource-content">

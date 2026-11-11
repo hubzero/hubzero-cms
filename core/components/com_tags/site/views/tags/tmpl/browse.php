@@ -50,7 +50,8 @@ $this
                     <ul class="entries-menu sort-options">
                         <li>
                             <?php
-                                $filters = '&search=' . urlencode($this->filters['search']) . '&limit=' . Request::getInt('limit', 25) . '&limitstart=' . Request::getInt('limitstart', 0);
+                                $filters = '&search=' . urlencode($this->filters['search']) . '&limit='
+                                    . Request::getInt('limit', 25) . '&limitstart=' . Request::getInt('limitstart', 0);
 
                                 $cls = ($this->filters['sort'] == 'total') ? 'active ' : '';
                                 $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=total&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
@@ -61,7 +62,9 @@ $this
                         </li>
                         <li>
                             <?php
-                                $cls = ($this->filters['sort'] == '' || $this->filters['sort'] == 'raw_tag') ? 'active ' : '';
+                                $cls = ($this->filters['sort'] == '' || $this->filters['sort'] == 'raw_tag')
+                                    ? 'active '
+                                    : '';
                                 $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=raw_tag&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
                             ?>
                             <a class="<?= $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down') ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE') ?>">
@@ -78,10 +81,16 @@ $this
                             $this->filters['limit'] = $this->total;
                         }
                         $s = ($this->total > 0) ? $this->filters['start'] + 1 : $this->filters['start'];
-                        $e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
+                        $e = ($this->total > ($this->filters['start'] + $this->filters['limit']))
+                            ? ($this->filters['start'] + $this->filters['limit'])
+                            : $this->total;
 
                         if ($this->filters['search'] != '') {
-                            echo Lang::txt('COM_TAGS_BROWSE_SEARCH_FOR_IN', $this->escape($this->filters['search']), Lang::txt('COM_TAGS'));
+                            echo Lang::txt(
+                                'COM_TAGS_BROWSE_SEARCH_FOR_IN',
+                                $this->escape($this->filters['search']),
+                                Lang::txt('COM_TAGS'),
+                            );
                         } else {
                             echo Lang::txt('COM_TAGS');
                         }
@@ -120,7 +129,9 @@ $this
                                     <?php
                                     $subs = $row->get('substitutes') ? $this->escape($row->substitutes) : '';
 
-                                    echo $subs ? \Hubzero\Utility\Str::truncate($subs, 75) : '<span>' . Lang::txt('COM_TAGS_NONE') . '</span>';
+                                    echo $subs
+                                        ? \Hubzero\Utility\Str::truncate($subs, 75)
+                                        : '<span>' . Lang::txt('COM_TAGS_NONE') . '</span>';
                                     ?>
                                 </td>
                                 <?php if ($this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')) { ?>

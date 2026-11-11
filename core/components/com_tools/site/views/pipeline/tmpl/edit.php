@@ -22,10 +22,12 @@ $execChoices['@D1'] = ucfirst(Lang::txt('COM_TOOLS_TOOLACCESS_D1'));
 if ($exec_pu) {
     $execChoices['@PU'] = ucfirst(Lang::txt('COM_TOOLS_TOOLACCESS_PU'));
 }
-$execChoices['@GROUP'] = ucfirst(Lang::txt('COM_TOOLS_RESTRICTED')) . ' ' . Lang::txt('COM_TOOLS_TO') . ' ' . Lang::txt('COM_TOOLS_GROUP_OR_GROUPS');
+$execChoices['@GROUP'] = ucfirst(Lang::txt('COM_TOOLS_RESTRICTED')) . ' ' . Lang::txt('COM_TOOLS_TO') . ' '
+    . Lang::txt('COM_TOOLS_GROUP_OR_GROUPS');
 
 $codeChoices[''] = Lang::txt('COM_TOOLS_SELECT_TOP');
-$codeChoices['@OPEN'] = ucfirst(Lang::txt('COM_TOOLS_OPEN_SOURCE')) . ' (' . Lang::txt('COM_TOOLS_OPEN_SOURCE_TIPS') . ')';
+$codeChoices['@OPEN'] = ucfirst(Lang::txt('COM_TOOLS_OPEN_SOURCE')) . ' (' . Lang::txt('COM_TOOLS_OPEN_SOURCE_TIPS')
+    . ')';
 $codeChoices['@DEV'] = ucfirst(Lang::txt('COM_TOOLS_ACCESS_RESTRICTED'));
 
 $wikiChoices[''] = Lang::txt('COM_TOOLS_SELECT_TOP');

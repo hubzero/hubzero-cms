@@ -76,7 +76,8 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                     <?php
                     $user = $quote->user;
                     $userPicture = $user->picture();
-                    echo '<img src="' . $userPicture . '" alt="' . $this->escape($quote->get('fullname')) . '" width="40" height="40" />';
+                    echo '<img src="' . $userPicture . '" alt="' . $this->escape($quote->get('fullname'))
+                        . '" width="40" height="40" />';
                     ?>
                     <cite><?= $this->escape(stripslashes($quote->get('fullname'))) ?> <span><?= $this->escape(stripslashes($quote->get('org'))) ?></span></cite>
                 </p>
@@ -98,8 +99,11 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
 
                     $img = substr($picture->getPathname(), strlen(PATH_ROOT));
 
-                    echo '<a class="fancybox-inline" href="' . $img . '" aria-label="' . Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname')))) . '">';
-                    echo '<img  src="' . $img . '" height="' . $mh . '" width="' . $mw . '" alt="Photo from ' . $this->escape(stripslashes($quote->get('fullname'))) . '" />';
+                    echo '<a class="fancybox-inline" href="' . $img . '" aria-label="'
+                        . Lang::txt('MOD_QUOTES_VIEW_QUOTE_BY', $this->escape(stripslashes($quote->get('fullname'))))
+                        . '">';
+                    echo '<img  src="' . $img . '" height="' . $mh . '" width="' . $mw . '" alt="Photo from '
+                        . $this->escape(stripslashes($quote->get('fullname'))) . '" />';
                     echo '</a>';
                 }
                 ?>

@@ -207,13 +207,22 @@ $authors = implode(', ', $authors);
                                                 ) {
                                                     echo ' selected="selected"';
                                                     if (!$this->page->exists()) {
-                                                        $this->revision->set('pagetext', stripslashes($template->version->get('pagetext')));
+                                                        $this->revision->set(
+                                                            'pagetext',
+                                                            stripslashes($template->version->get('pagetext')),
+                                                        );
                                                     }
                                                 }
-                                                echo '>' . $this->escape(stripslashes($template->get('title'))) . '</option>' . "\n";
+                                                echo '>' . $this->escape(stripslashes($template->get('title')))
+                                                    . '</option>' . "\n";
 
-                                                $j  = '<input type="hidden" name="t' . $template->get('id') . '" id="t' . $template->get('id') . '" value="' . $this->escape(stripslashes($template->version->get('pagetext'))) . '" />' . "\n";
-                                                $j .= '<input type="hidden" name="t' . $template->get('id') . '_tags" id="t' . $template->get('id') . '_tags" value="' . $this->escape(stripslashes($tmpltags)) . '" />' . "\n";
+                                                $j  = '<input type="hidden" name="t' . $template->get('id') . '" id="t'
+                                                    . $template->get('id') . '" value="'
+                                                    . $this->escape(stripslashes($template->version->get('pagetext')))
+                                                    . '" />' . "\n";
+                                                $j .= '<input type="hidden" name="t' . $template->get('id')
+                                                    . '_tags" id="t' . $template->get('id') . '_tags" value="'
+                                                    . $this->escape(stripslashes($tmpltags)) . '" />' . "\n";
 
                                                 $hi[] = $j;
                                             }
@@ -239,7 +248,14 @@ $authors = implode(', ', $authors);
                                 <?php echo Lang::txt('COM_WIKI_FIELD_PAGETEXT'); ?>:
                                 <span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
                                 <?php
-                                echo \Components\Wiki\Helpers\Editor::getInstance()->display('revision[pagetext]', 'pagetext', $this->revision->get('pagetext'), 'form-control', '35', '40');
+                                echo \Components\Wiki\Helpers\Editor::getInstance()->display(
+                                    'revision[pagetext]',
+                                    'pagetext',
+                                    $this->revision->get('pagetext'),
+                                    'form-control',
+                                    '35',
+                                    '40',
+                                );
                                 ?>
                             </label>
                         </div>
@@ -384,11 +400,15 @@ $authors = implode(', ', $authors);
                             <label for="actags">
                                 <?php echo Lang::txt('COM_WIKI_FIELD_TAGS'); ?>:
                                 <?php
-                                $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $this->escape($tags)]]);
+                                $tf = Event::trigger(
+                                    'hubzero.onGetMultiEntry',
+                                    [['tags', 'tags', 'actags', '', $this->escape($tags)]],
+                                );
                                 if (count($tf) > 0) {
                                     echo $tf[0];
                                 } else {
-                                    echo '<input type="text" name="tags" class="form-control" value="' . $this->escape($tags) . '" size="38" />';
+                                    echo '<input type="text" name="tags" class="form-control" value="'
+                                        . $this->escape($tags) . '" size="38" />';
                                 }
                                 ?>
                                 <span class="hint"><?php echo Lang::txt('COM_WIKI_FIELD_TAGS_HINT'); ?></span>

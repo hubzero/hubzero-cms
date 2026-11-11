@@ -17,7 +17,8 @@ defined('_HZEXEC_') or die();
 $base  = rtrim(str_replace('administrator', '', Request::base()), '/');
 
 $group  = $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')), '/');
-$accept = $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&task=accept'), '/');
+$accept = $base . '/'
+    . ltrim(Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&task=accept'), '/');
 ?>
 
     <!-- Start Header -->

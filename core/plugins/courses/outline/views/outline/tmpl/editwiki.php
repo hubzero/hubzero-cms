@@ -57,7 +57,10 @@ foreach ($this->course->offering()->units() as $unit) :
                 foreach ($ag->assets() as $a) :
                     if ($a->isPublished()) :
                         $assets[] = $a;
-                        $a->set('longTitle', $unit->get('title') . ' - ' . $ag->get('title') . ' - ' . $a->get('title'));
+                        $a->set(
+                            'longTitle',
+                            $unit->get('title') . ' - ' . $ag->get('title') . ' - ' . $a->get('title'),
+                        );
                         //echo "<li>" . $a->get('title') . "</li>";
                     endif;
                 endforeach;

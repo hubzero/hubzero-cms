@@ -22,7 +22,8 @@ defined('_HZEXEC_') or die();
 if (!$this->comment->get('anonymous')) {
     $name = $this->escape(stripslashes($huser->get('name')));
     if (in_array($huser->get('access'), User::getAuthorisedviewLevels())) {
-        $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $name . '</a>';
+        $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $huser->get('uidNumber')) . '">' . $name
+            . '</a>';
     }
 }
 
@@ -151,7 +152,14 @@ if ($this->comment->get('publication_id')) {
                     <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                         <span class="label-text"><?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_ENTER_COMMENTS') ?></span>
                         <?php
-                        echo $this->editor('comment[content]', $this->comment->content('raw'), 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'minimal no-footer']);
+                        echo $this->editor(
+                            'comment[content]',
+                            $this->comment->content('raw'),
+                            35,
+                            4,
+                            'comment_' . $this->comment->get('id') . '_content',
+                            ['class' => 'minimal no-footer'],
+                        );
                         ?>
                     </label>
 
@@ -239,7 +247,14 @@ if ($this->comment->get('publication_id')) {
                         <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                             <span class="label-text"><?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_ENTER_COMMENTS') ?></span>
                             <?php
-                            echo $this->editor('comment[content]', '', 35, 4, 'comment_' . $this->comment->get('id') . '_content', ['class' => 'minimal no-footer']);
+                            echo $this->editor(
+                                'comment[content]',
+                                '',
+                                35,
+                                4,
+                                'comment_' . $this->comment->get('id') . '_content',
+                                ['class' => 'minimal no-footer'],
+                            );
                             ?>
                         </label>
 

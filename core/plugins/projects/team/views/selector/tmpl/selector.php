@@ -27,7 +27,9 @@ if (count($this->team) > 0) {
             $name = $owner->a_name ? $owner->a_name : $owner->fullname;
             $name = trim($name) ? $name : $owner->invited_email;
 
-            $username = $owner->username ? $owner->username : Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_AUTHOR_UNCONFIRMED');
+            $username = $owner->username
+                ? $owner->username
+                : Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_AUTHOR_UNCONFIRMED');
 
             // Already an author?
             $selected = !empty($this->selected) && in_array($owner->id, $this->selected) ? 1 : 0;

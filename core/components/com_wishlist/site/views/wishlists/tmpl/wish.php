@@ -41,12 +41,18 @@ if (!$this->wish->get('anonymous')) {
     // && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)
     $assigned = ($this->wish->get('assigned')) ? Lang::txt('COM_WISHLIST_WISH_ASSIGNED_TO', '<a href="' . Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->get('category') . '&rid=' . $this->wishlist->get('referenceid') . '&wishid=' . $this->wish->get('id')) . '?filterby=' . urlencode($this->filters['filterby']) . '&sortby=' . urlencode($this->filters['sortby']) . '&tags=' . urlencode($this->filters['tag']) . '&action=editplan#plan">' . $this->escape(stripslashes($this->wish->assignee->get('name'))) . '</a>') : '';
 
-if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') == 1) && $this->wish->get('status') == 0) {
+if (
+    !$assigned
+    && ($this->wish->get('admin') == 2 or $this->wish->get('admin') == 1)
+    && $this->wish->get('status') == 0
+) {
     $assigned = '<a href="' . Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->get('category') . '&rid=' . $this->wishlist->get('referenceid') . '&wishid=' . $this->wish->get('id')) . '?filterby=' . urlencode($this->filters['filterby']) . '&sortby=' . urlencode($this->filters['sortby']) . '&tags=' . urlencode($this->filters['tag']) . '&action=editplan#plan">' . Lang::txt('unassigned') . '</a>';
 }
 
     $this->wish->set('status', ($this->wish->get('accepted') == 1 && $this->wish->get('status') == 0 ? 6 : $this->wish->get('status')));
-    $due  = ($this->wish->get('due') && $this->wish->get('due') != '0000-00-00 00:00:00') ? Date::of($this->wish->get('due'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : '';
+    $due  = ($this->wish->get('due') && $this->wish->get('due') != '0000-00-00 00:00:00')
+        ? Date::of($this->wish->get('due'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+        : '';
 
     $this->wish->set('positive', $this->wish->votes()->whereEquals('helpful', 'yes')->total());
     $this->wish->set('negative', $this->wish->votes()->whereEquals('helpful', 'no')->total());
@@ -173,10 +179,16 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                     $eligible = array_merge($owners['individuals'], $owners['advisory']);
                     $eligible = array_unique($eligible);
 
-                    $voters = ($this->wish->votes()->total() <= count($eligible)) ? count($eligible) : $this->wish->votes()->total();
+                    $voters = ($this->wish->votes()->total() <= count($eligible))
+                        ? count($eligible)
+                        : $this->wish->votes()->total();
                     //$html .= "\t\t\t".'<div class="wishpriority">'.Lang::txt('PRIORITY').': '.$this->wish->ranking.' <span>('.$this->wish->num_votes.' '.Lang::txt('NOTICE_OUT_OF').' '.$voters.' '.Lang::txt('VOTES').')</span>';
                     $html = '';
-                    if ($this->wish->due() && $this->wish->due() != '0000-00-00 00:00:00' && !$this->wish->isGranted()) {
+                    if (
+                        $this->wish->due()
+                        && $this->wish->due() != '0000-00-00 00:00:00'
+                        && !$this->wish->isGranted()
+                    ) {
                         $html .= ($this->wish->get('due') <= Date::of('now')->toSql())
                                 ? '<span class="overdue"><a href="' . Route::url($this->wish->link('editplan')) . '">' . Lang::txt('COM_WISHLIST_OVERDUE')
                                 : '<span class="due"><a href="' . Route::url($this->wish->link('editplan')) . '">' . Lang::txt('COM_WISHLIST_WISH_DUE_IN') . ' ' . \Components\Wishlist\Helpers\Html::nicetime($this->wish->get('due'));
@@ -510,7 +522,10 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                                     <strong>
                                         <?php
                                         $bonus = $this->wish->get('bonus', 0);
-                                        echo $this->wish->get('bonusgivenby') . ' ' . Lang::txt('user(s)') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $bonus . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS');
+                                        echo $this->wish->get('bonusgivenby') . ' ' . Lang::txt('user(s)') . ' '
+                                            . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $bonus
+                                            . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' '
+                                            . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS');
                                         ?>
                                     </strong>
                                 </p>
@@ -748,7 +763,14 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                             <label for="comment<?php echo $this->wish->get('id'); ?>">
                                 <?php echo Lang::txt('COM_WISHLIST_ENTER_COMMENTS'); ?>
                                 <?php
-                                echo $this->editor('comment[content]', '', 35, 4, 'comment' . $this->wish->get('id'), ['class' => 'form-control minimal no-footer']);
+                                echo $this->editor(
+                                    'comment[content]',
+                                    '',
+                                    35,
+                                    4,
+                                    'comment' . $this->wish->get('id'),
+                                    ['class' => 'form-control minimal no-footer'],
+                                );
                                 ?>
                             </label>
                         </div>

@@ -17,7 +17,9 @@ $this->css('component.css');
 
 $base = rtrim(Request::base(true), '/');
 
-$this->versionlabel = ($this->version == 'current') ? Lang::txt('COM_TOOLS_CURRENTLY_PUBLISHED') : Lang::txt('COM_TOOLS_DEVELOPMENT');
+$this->versionlabel = ($this->version == 'current')
+    ? Lang::txt('COM_TOOLS_CURRENTLY_PUBLISHED')
+    : Lang::txt('COM_TOOLS_DEVELOPMENT');
 if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
@@ -44,7 +46,11 @@ $html = '';
 if ($d) {
     while (false !== ($entry = $d->read())) {
         $img_file = $entry;
-        if (is_file($this->upath . DS . $img_file) && substr($entry, 0, 1) != '.' && strtolower($entry) !== 'index.html') {
+        if (
+            is_file($this->upath . DS . $img_file)
+            && substr($entry, 0, 1) != '.'
+            && strtolower($entry) !== 'index.html'
+        ) {
             if (preg_match("#bmp|gif|jpg|png|swf#i", $img_file)) {
                 $images[] = $img_file;
             }
@@ -115,21 +121,36 @@ for ($i = 0, $n = count($images); $i < $n; $i++) {
     if (is_file($this->upath . DS . $tn)) {
         if (strtolower(end($images[$i]['type'])) == 'swf') {
             $g++;
-            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '') ? $images[$i]['title'] : Lang::txt('COM_TOOLS_DEMO') . ' #' . $g;
+            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '')
+                ? $images[$i]['title']
+                : Lang::txt('COM_TOOLS_DEMO') . ' #' . $g;
             $els .= '<li>';
-                $els .= '<a class="popup" rel="external" href="' . $this->wpath . DS . $images[$i]['img'] . '" title="' . $title . '">';
+                $els .= '<a class="popup" rel="external" href="' . $this->wpath . DS . $images[$i]['img'] . '" title="'
+                    . $title . '">';
                     $els .= '<img src="' . $this->wpath . DS . $tn . '" alt="' . $title . '" id="ss_' . $i . '" />';
                 $els .= '</a>';
             $els .= '</li>' . "\n";
         } else {
             $k++;
-            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '') ? $images[$i]['title'] : Lang::txt('COM_TOOLS_SCREENSHOT') . ' #' . $k;
+            $title = (isset($images[$i]['title']) && $images[$i]['title'] != '')
+                ? $images[$i]['title']
+                : Lang::txt('COM_TOOLS_SCREENSHOT') . ' #' . $k;
             $els .= '<li>';
                 $els .= '<span class="dev_ss">';
-                    $els .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;pid=' . $this->rid . '&amp;filename=' . $images[$i]['img'] . '&amp;version=' . $this->version . '&amp;tmpl=component" class="icon-edit edit popup" rel="external">' . Lang::txt('COM_TOOLS_EDIT') . '</a>';
-                    $els .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=delete&amp;pid=' . $this->rid . '&amp;filename=' . $images[$i]['img'] . '&amp;version=' . $this->version . '&amp;tmpl=component&amp;' . Session::getFormToken() . '=1" class="icon-delete delete">' . Lang::txt('COM_TOOLS_DELETE') . '</a>';
+                    $els .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller='
+                        . $this->controller . '&amp;task=edit&amp;pid=' . $this->rid . '&amp;filename='
+                        . $images[$i]['img'] . '&amp;version=' . $this->version
+                        . '&amp;tmpl=component" class="icon-edit edit popup" rel="external">'
+                        . Lang::txt('COM_TOOLS_EDIT') . '</a>';
+                    $els .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller='
+                        . $this->controller . '&amp;task=delete&amp;pid=' . $this->rid . '&amp;filename='
+                        . $images[$i]['img'] . '&amp;version=' . $this->version . '&amp;tmpl=component&amp;'
+                        . Session::getFormToken() . '=1" class="icon-delete delete">' . Lang::txt('COM_TOOLS_DELETE')
+                        . '</a>';
                 $els .= '</span>';
-                $els .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=edit&amp;pid=' . $this->rid . '&amp;filename=' . $images[$i]['img'] . '&amp;version=' . $this->version . '&amp;tmpl=component" class="popup" title="' . $title . '">';
+                $els .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller='
+                    . $this->controller . '&amp;task=edit&amp;pid=' . $this->rid . '&amp;filename=' . $images[$i]['img']
+                    . '&amp;version=' . $this->version . '&amp;tmpl=component" class="popup" title="' . $title . '">';
                     $els .= '<img src="' . $this->wpath . '/' . $tn . '" alt="' . $title . '" id="ss_' . $i . '" />';
                 $els .= '</a>';
             $els .= '</li>' . "\n";
@@ -137,7 +158,11 @@ for ($i = 0, $n = count($images); $i < $n; $i++) {
         // add re-ordering option
         if ($i != ($n - 1)) {
             $els .= '<li>';
-                $els .= '<a class="icon-reorder reorder" href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=order&amp;pid=' . $this->rid . '&amp;fl=' . $images[$i + 1]['img'] . '&amp;fr=' . $images[$i]['img'] . '&amp;ol=' . ($i + 1) . '&amp;or=' . $i . '&amp;version=' . $this->version . '&amp;tmpl=component&amp;' . Session::getFormToken() . '=1" title="' . Lang::txt('COM_TOOLS_REORDER') . '">';
+                $els .= '<a class="icon-reorder reorder" href="' . $base . '/index.php?option=' . $this->option
+                    . '&amp;controller=' . $this->controller . '&amp;task=order&amp;pid=' . $this->rid . '&amp;fl='
+                    . $images[$i + 1]['img'] . '&amp;fr=' . $images[$i]['img'] . '&amp;ol=' . ($i + 1) . '&amp;or=' . $i
+                    . '&amp;version=' . $this->version . '&amp;tmpl=component&amp;' . Session::getFormToken()
+                    . '=1" title="' . Lang::txt('COM_TOOLS_REORDER') . '">';
                     $els .= Lang::txt('COM_TOOLS_REORDER');
                 $els .= '</a>';
             $els .= '</li>' . "\n";

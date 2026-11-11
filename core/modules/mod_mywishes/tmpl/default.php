@@ -50,7 +50,9 @@ defined('_HZEXEC_') or die();
                         <?php
                         echo ($row->status == 3) ? Lang::txt('MOD_MYWISHES_REJECTED') : '';
                         if ($row->status == 0) {
-                            echo ($row->accepted == 1) ? Lang::txt('MOD_MYWISHES_ACCEPTED') : Lang::txt('MOD_MYWISHES_PENDING');
+                            echo ($row->accepted == 1)
+                                ? Lang::txt('MOD_MYWISHES_ACCEPTED')
+                                : Lang::txt('MOD_MYWISHES_PENDING');
                         }
                         ?>
                     </span>
@@ -89,7 +91,9 @@ defined('_HZEXEC_') or die();
                         <?php
                         echo ($row->status == 3) ? Lang::txt('MOD_MYWISHES_REJECTED') : '';
                         if ($row->status == 0) {
-                            echo ($row->accepted == 1) ? Lang::txt('MOD_MYWISHES_ACCEPTED') : Lang::txt('MOD_MYWISHES_PENDING');
+                            echo ($row->accepted == 1)
+                                ? Lang::txt('MOD_MYWISHES_ACCEPTED')
+                                : Lang::txt('MOD_MYWISHES_PENDING');
                         }
                         ?>
                     </span>

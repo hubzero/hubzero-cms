@@ -140,7 +140,9 @@ $this->js();
 
                 $checker = User::getInstance($row->checked_out);
 
-                $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($checker->get('name', $row->checked_out)) . '<br />' . $date . '<br />' . $time . '">';
+                $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::'
+                    . $this->escape($checker->get('name', $row->checked_out)) . '<br />' . $date . '<br />' . $time
+                    . '">';
                 $checked .= '<span class="checkedout">' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '</span>';
                 $checked .= '</span>';
 

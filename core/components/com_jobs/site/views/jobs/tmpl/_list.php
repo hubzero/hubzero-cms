@@ -47,8 +47,14 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
     for ($i = 0, $n = count($this->jobs); $i < $n; $i++) {
         $model = new Components\Jobs\Models\Job($this->jobs[$i]);
 
-        $closedate = ($this->jobs[$i]->closedate && $this->jobs[$i]->closedate != '0000-00-00 00:00:00') ? Date::of($this->jobs[$i]->closedate)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y') : 'ASAP';
-        if ($this->jobs[$i]->closedate && $this->jobs[$i]->closedate != '0000-00-00 00:00:00' && $this->jobs[$i]->closedate < Date::toSql()) {
+        $closedate = ($this->jobs[$i]->closedate && $this->jobs[$i]->closedate != '0000-00-00 00:00:00')
+            ? Date::of($this->jobs[$i]->closedate)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y')
+            : 'ASAP';
+        if (
+            $this->jobs[$i]->closedate
+            && $this->jobs[$i]->closedate != '0000-00-00 00:00:00'
+            && $this->jobs[$i]->closedate < Date::toSql()
+        ) {
             $closedate = 'closed';
         }
         $curtype = $jt->getType($this->jobs[$i]->type);

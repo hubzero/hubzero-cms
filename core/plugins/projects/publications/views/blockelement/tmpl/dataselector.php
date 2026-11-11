@@ -40,7 +40,8 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText))) {
 }
 
 if (!empty($this->pub->config('accessdoc')) && ($this->elementId == 2)) {
-    $aboutText .= '<p>Add <a href="' . $this->pub->config('accessdoc') . '" target="_blank">meaningful description</a> to the image</p>';
+    $aboutText .= '<p>Add <a href="' . $this->pub->config('accessdoc')
+        . '" target="_blank">meaningful description</a> to the image</p>';
 }
 
 // Get curator status

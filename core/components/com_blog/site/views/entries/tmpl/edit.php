@@ -27,7 +27,9 @@ Pathway::append(
     $this->entry->link('edit'),
 );
 
-Document::setTitle(Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')));
+Document::setTitle(
+    Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')),
+);
 
 /*if ($this->entry->id) {
     $lid = $this->entry->id;

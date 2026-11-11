@@ -16,7 +16,9 @@ defined('_HZEXEC_') or die();
 
 // Directory path breadcrumbs
 $bc    = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent, false);
-$bcEnd = $this->item->isDir() ? '<span class="folder">' . $this->escape($this->item->getName()) . '</span>' : '<span class="file">' . $this->escape($this->item->getName()) . '</span>';
+$bcEnd = $this->item->isDir()
+    ? '<span class="folder">' . $this->escape($this->item->getName()) . '</span>'
+    : '<span class="file">' . $this->escape($this->item->getName()) . '</span>';
 $lang  = $this->item->isDir() ? 'folder' : 'file';
 
 $dubCore = [

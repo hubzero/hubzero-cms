@@ -30,7 +30,10 @@ $me = ($this->item->get('email') == User::get('email')
 $when = $this->item->get('date') ? \Components\Projects\Helpers\Html::formatTime($this->item->get('date')) : 'N/A';
 $subdirPath = $this->subdir ? '&subdir=' . urlencode($this->subdir) : '';
 
-$link = Route::url($this->model->link('files') . '&action=' . (($this->item->get('converted')) ? 'open' : 'download') . $subdirPath . '&asset=' . urlencode($this->item->get('name')));
+$link = Route::url(
+    $this->model->link('files') . '&action=' . (($this->item->get('converted')) ? 'open' : 'download') . $subdirPath
+        . '&asset=' . urlencode($this->item->get('name')),
+);
 
 // Do not display Google native extension
 $name = $this->item->get('name');

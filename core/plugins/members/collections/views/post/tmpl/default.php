@@ -124,7 +124,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                     $who = '<a href="' . Route::url($this->post->creator()->link()) . '">' . $who . '</a>';
                 }
 
-                $where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
+                $where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">'
+                    . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
 
                 echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ONTO', $who, $where);
                 ?>

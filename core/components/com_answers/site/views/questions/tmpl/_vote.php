@@ -45,7 +45,8 @@ if (!User::isGuest()) {
     $cls = ' tooltips';
 }
 
-$voteUrlBase = 'index.php?option=' . $this->option . '&task=vote&category=' . $this->vote->get('item_type') . '&id=' . $this->vote->get('item_id');
+$voteUrlBase = 'index.php?option=' . $this->option . '&task=vote&category=' . $this->vote->get('item_type') . '&id='
+    . $this->vote->get('item_id');
 ?>
 <?php if (!$this->vote->get('id')) { ?>
     <?php if (User::isGuest() || User::get('id') == $this->item->get('created_by')) { ?>

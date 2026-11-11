@@ -34,7 +34,11 @@ $cEnabled = $p_params->get('enable_' . $service, 0);
 $connected = $this->params->get($service . '_token');
 
 // Toolbar::title() writes the string into the page heading as-is
-Toolbar::title(Lang::txt('Projects') . ': ' . $this->escape(stripslashes($this->model->get('title'))) . ' (' . $this->escape($this->model->get('alias')) . ', #' . (int) $this->model->get('id') . ')', 'projects');
+Toolbar::title(
+    Lang::txt('Projects') . ': ' . $this->escape(stripslashes($this->model->get('title'))) . ' ('
+        . $this->escape($this->model->get('alias')) . ', #' . (int) $this->model->get('id') . ')',
+    'projects',
+);
 
 if (User::authorise('core.edit', $this->option)) {
     Toolbar::apply();
@@ -47,7 +51,8 @@ Toolbar::cancel();
 $status = '';
 
 if ($this->model->isActive()) {
-    $status   = '<span class="active">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span> ' . Lang::txt('COM_PROJECTS_SINCE') . ' ' . Date::of($this->model->get('created'))->toLocal();
+    $status   = '<span class="active">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span> '
+        . Lang::txt('COM_PROJECTS_SINCE') . ' ' . Date::of($this->model->get('created'))->toLocal();
 } elseif ($this->model->isDeleted()) {
     $status  = '<span class="deleted">' . Lang::txt('COM_PROJECTS_DELETED') . '</span> ';
 } elseif ($this->model->inSetup()) {
@@ -66,10 +71,14 @@ if ($this->model->isActive()) {
 
 $sysgroup = $this->config->get('group_prefix', 'pr-') . $this->model->get('alias');
 $quota    = $this->params->get('quota');
-$quota    = $quota ? $quota : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
+$quota    = $quota
+    ? $quota
+    : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
 
 $pubQuota = $this->params->get('pubQuota');
-$pubQuota = $pubQuota ? $pubQuota : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
+$pubQuota = $pubQuota
+    ? $pubQuota
+    : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
 
 Html::behavior('formvalidation');
 Html::behavior('keepalive');

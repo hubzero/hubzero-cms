@@ -116,7 +116,9 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                         $origin = 'SFTP';
                     }
                     $status = '<span class="commit-type">[' . $origin . ']</span> ';
-                    $name   = $version['remote'] && $this->file->get('remote') ? $this->file->get('remoteTitle') : $version['name'];
+                    $name   = $version['remote'] && $this->file->get('remote')
+                        ? $this->file->get('remoteTitle')
+                        : $version['name'];
 
                 // Get url, name and status
                     if ($version['remote']) {
@@ -145,7 +147,8 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                     }
 
                     if ($last) {
-                        $status .= ' <span class="crev">' . Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_CURRENT') . '</span>';
+                        $status .= ' <span class="crev">' . Lang::txt('PLG_PROJECTS_FILES_FILE_STATUS_CURRENT')
+                            . '</span>';
                     }
 
                     $charLimit = $last == true ? 400 : 400;
@@ -197,16 +200,21 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                         </span>
                         <div class="commitcontent"><?php if ($version['content'] && in_array($version['commitStatus'], ['A', 'M'])) {
                             $over = strlen($version['content']) >= $charLimit ? 1 : 0;
-                            $content = $over ? \Hubzero\Utility\Str::truncate($version['content'], $charLimit) : $version['content'];
+                            $content = $over
+                                ? \Hubzero\Utility\Str::truncate($version['content'], $charLimit)
+                                : $version['content'];
 
                             echo '<div class="short-txt" id="short-' . $i . '"><pre>' . $content . '</pre>';
                             if ($over) {
-                                echo '<p class="showaslink showmore js">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_MORE') . '</p>';
+                                echo '<p class="showaslink showmore js">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_MORE')
+                                    . '</p>';
                             }
                             echo '</div>';
                             if ($over) {
-                                echo '<div class="long-txt hidden" id="long-' . $i . '"><pre>' . $version['content'] . '</pre>';
-                                echo '<p class="showaslink showless">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_LESS') . '</p>';
+                                echo '<div class="long-txt hidden" id="long-' . $i . '"><pre>' . $version['content']
+                                    . '</pre>';
+                                echo '<p class="showaslink showless">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_LESS')
+                                    . '</p>';
                                 echo '</div>';
                             }
                                                    }

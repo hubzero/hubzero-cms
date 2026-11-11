@@ -45,7 +45,8 @@ Toolbar::help('tagged');
         <?php if ($this->filters['tagid']) { ?>
             <caption><?php
             $tag = \Components\Tags\Models\Tag::oneOrFail($this->filters['tagid']);
-            echo Lang::txt('COM_TAGS_TAG') . ': ' . $this->escape($tag->get('raw_tag')) . ' (' . $this->escape($tag->get('tag')) . ')';
+            echo Lang::txt('COM_TAGS_TAG') . ': ' . $this->escape($tag->get('raw_tag')) . ' ('
+                . $this->escape($tag->get('tag')) . ')';
             ?></caption>
         <?php } ?>
         <thead>

@@ -38,12 +38,20 @@ $base = rtrim(Request::base(true), '/');
                     $bit = (count($bits) > 1) ? array_pop($bits) : '';
                     $appname = implode('_', $bits);
 
-                    $resumeLink = Route::url('index.php?option=com_tools&task=session&sess=' . $session->sessnum . '&app=' . $appname);
+                    $resumeLink = Route::url(
+                        'index.php?option=com_tools&task=session&sess=' . $session->sessnum . '&app=' . $appname,
+                    );
 
                     //terminate & disconnect links (carry the anti-CSRF token: com_tools
                     // stop/unshare tasks require it)
-                    $terminateLink  = Route::url('index.php?option=com_tools&task=stop&sess=' . $session->sessnum . '&app=' . $appname . '&' . Session::getFormToken() . '=1');
-                    $disconnectLink = Route::url('index.php?option=com_tools&task=unshare&sess=' . $session->sessnum . '&app=' . $appname . '&' . Session::getFormToken() . '=1');
+                    $terminateLink  = Route::url(
+                        'index.php?option=com_tools&task=stop&sess=' . $session->sessnum . '&app=' . $appname . '&'
+                            . Session::getFormToken() . '=1',
+                    );
+                    $disconnectLink = Route::url(
+                        'index.php?option=com_tools&task=unshare&sess=' . $session->sessnum . '&app=' . $appname . '&'
+                            . Session::getFormToken() . '=1',
+                    );
 
                     //get snapshot
                     $snapshot = $base . '/api/tools/screenshot?sessionid=' . $session->sessnum . '&notfound=1';
@@ -162,7 +170,9 @@ $base = rtrim(Request::base(true), '/');
         }
 
         if ($amount > 0) {
-            $this->css('.' . $this->module->module . ' .session-storage .storage-meter-percent { width: ' . $percent . '%; }');
+            $this->css(
+                '.' . $this->module->module . ' .session-storage .storage-meter-percent { width: ' . $percent . '%; }',
+            );
         }
         ?>
 

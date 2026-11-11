@@ -54,7 +54,8 @@ else :
             $revision = $page->version();
 endif;
 
-        $permalink = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
+        $permalink = rtrim(Request::base(), '/') . '/'
+            . ltrim(Route::url($page->link() . '&version=' . $revision->get('version')), '/');
 
 // Find what links to the current page
         $l = Components\Wiki\Models\Link::blank()->getTableName();
@@ -77,7 +78,10 @@ endif;
     <p><?php
         $pageTitle = $page->get('title', $page->get('pagename', ''));
     if ($pageTitle) :
-        echo Lang::txt('The following pages link to %s', '<a href="' . Route::url($page->link()) . '">' . $this->escape($pageTitle) . '</a>');
+        echo Lang::txt(
+            'The following pages link to %s',
+            '<a href="' . Route::url($page->link()) . '">' . $this->escape($pageTitle) . '</a>',
+        );
     else :
             echo Lang::txt('The following pages link to this page');
     endif;

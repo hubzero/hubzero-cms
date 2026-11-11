@@ -131,7 +131,9 @@ $area = Request::getString('area', 'about');
                         if (is_numeric($matches[1])) {
                             $user = User::getInstance($matches[1]);
                             if (is_object($user)) {
-                                $a[] = '<a rel="external" href="' . Route::url('index.php?option=com_members&id=' . $matches[1]) . '">' . $this->escape(str_replace($matches[0], '', $author)) . '</a>';
+                                $a[] = '<a rel="external" href="'
+                                    . Route::url('index.php?option=com_members&id=' . $matches[1]) . '">'
+                                    . $this->escape(str_replace($matches[0], '', $author)) . '</a>';
                             } else {
                                 $a[] = $this->escape($author);
                             }

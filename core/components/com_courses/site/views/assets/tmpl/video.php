@@ -171,8 +171,12 @@ if ($type == 'hubpresenter') {
     // Cast: these are interpolated into the <style> block below and the
     // manifest they come from is a .json file in the asset filespace, i.e.
     // contributor-controlled.
-    $width  = (isset($presentation->width) && (int) $presentation->width != 0) ? (int) $presentation->width . 'px' : 'auto';
-    $height = (isset($presentation->height) && (int) $presentation->height != 0) ? (int) $presentation->height . 'px' : 'auto';
+    $width  = (isset($presentation->width) && (int) $presentation->width != 0)
+        ? (int) $presentation->width . 'px'
+        : 'auto';
+    $height = (isset($presentation->height) && (int) $presentation->height != 0)
+        ? (int) $presentation->height . 'px'
+        : 'auto';
 
     $this->css('
 	#video-flowplayer {
@@ -196,13 +200,23 @@ if ($type == 'hubpresenter') {
 
 if ($type == 'hubpresenter' || $type == 'html5') {
     // Get tracking for this user for this resource
-    $tracking = \Components\Resources\Models\MediaTracking::oneByUserAndResource(User::get('id'), $this->asset->id, 'course');
+    $tracking = \Components\Resources\Models\MediaTracking::oneByUserAndResource(
+        User::get('id'),
+        $this->asset->id,
+        'course',
+    );
 
     // Check to see if we already have a time query param
     $hasTime = (Request::getString('time', '') != '') ? true : false;
 
     // Do we want to redirect user with time added to url
-    if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration && !Request::getInt('no_html', 0)) {
+    if (
+        is_object($tracking)
+        && !$hasTime
+        && $tracking->current_position > 0
+        && $tracking->current_position != $tracking->object_duration
+        && !Request::getInt('no_html', 0)
+    ) {
         $redirect = Request::current();
 
         // do we have tmpl=component in url?
@@ -826,7 +840,11 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     <?php
                                         // Use thumb if possible
                                         $thumb = '';
-                                    if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_ROOT . DS . $content_folder . DS . $slide->thumb)) {
+                                    if (
+                                        isset($slide->thumb)
+                                        && $slide->thumb
+                                        && file_exists(PATH_ROOT . DS . $content_folder . DS . $slide->thumb)
+                                    ) {
                                         $thumb = $content_folder . DS . $slide->thumb;
                                     } elseif (!is_array($slide->media) && file_exists(PATH_ROOT . DS . $content_folder . DS . $slide->media)) {
                                         $thumb = $content_folder . DS . $slide->media;
@@ -873,7 +891,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
     </div>
 <?php elseif ($type == 'standalone') : ?>
     <?php
-        $path = DS . trim(substr(PATH_APP, strlen(PATH_ROOT)), DS) . DS . ltrim($path . DS . $this->model->get('url'), DS);
+        $path = DS . trim(substr(PATH_APP, strlen(PATH_ROOT)), DS) . DS
+            . ltrim($path . DS . $this->model->get('url'), DS);
         $ext  = strtolower(Filesystem::extension(PATH_ROOT . $path));
 
         Document::addStyleSheet('//releases.flowplayer.org/6.0.5/skin/minimalist.css');

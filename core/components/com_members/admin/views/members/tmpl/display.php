@@ -22,7 +22,12 @@ Toolbar::title(Lang::txt('COM_MEMBERS'));
 
 if ($canDo->get('core.admin')) :
     Toolbar::preferences($this->option);
-    Toolbar::getRoot()->appendButton('Link', 'buildprofile', 'COM_MEMBERS_PROFILE', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=profile'));
+    Toolbar::getRoot()->appendButton(
+        'Link',
+        'buildprofile',
+        'COM_MEMBERS_PROFILE',
+        Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=profile'),
+    );
     Toolbar::spacer();
     $export = 'index.php?option=' . $this->option . '&controller=exports&task=run';
     foreach ($this->filters as $key => $value) :
@@ -181,7 +186,11 @@ $this
                 endif;
             endif;
 
-            $row->set('name', $row->get('surname', Lang::txt('COM_MEMBERS_UNDEFINED')) . ', ' . $row->get('givenName', Lang::txt('COM_MEMBERS_UNDEFINED')) . ' ' . $row->get('middleName'));
+            $row->set(
+                'name',
+                $row->get('surname', Lang::txt('COM_MEMBERS_UNDEFINED')) . ', '
+                    . $row->get('givenName', Lang::txt('COM_MEMBERS_UNDEFINED')) . ' ' . $row->get('middleName'),
+            );
 
             switch ($row->get('activation')) :
                 case '1':

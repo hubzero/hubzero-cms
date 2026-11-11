@@ -18,7 +18,12 @@ defined('_HZEXEC_') or die();
 
 // Parse data
 $data = [];
-preg_match_all("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", $this->pub->metadata ? $this->pub->metadata : '', $matches, PREG_SET_ORDER);
+preg_match_all(
+    "#<nb:(.*?)>(.*?)</nb:(.*?)>#s",
+    $this->pub->metadata ? $this->pub->metadata : '',
+    $matches,
+    PREG_SET_ORDER,
+);
 if (count($matches) > 0) {
     foreach ($matches as $match) {
         $data[$match[1]] = $match[2];
@@ -63,7 +68,12 @@ $class = $value ? ' be-complete' : '';
 
 // Determine if current element is active/ not yet filled/ last in order
 $active = (($this->active == $this->elementId) || !$this->collapse) ? 1 : 0;
-$coming = $this->pub->_curationModel->isComing($this->master->block, $this->master->blockId, $this->active, $this->elementId);
+$coming = $this->pub->_curationModel->isComing(
+    $this->master->block,
+    $this->master->blockId,
+    $this->active,
+    $this->elementId,
+);
 $coming = $this->collapse ? $coming : 0;
 $last   = ($this->order == $this->total) ? 1 : 0;
 
@@ -89,7 +99,10 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText))) {
 $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : $complete;
 $updated = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete) || $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
 
-$elementUrl = Route::url($this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' . $this->master->blockId . '&move=continue' . '&el=' . $this->elementId . '#' . $elName);
+$elementUrl = Route::url(
+    $this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' . $this->master->blockId
+        . '&move=continue' . '&el=' . $this->elementId . '#' . $elName,
+);
 ?>
 
 <div id="<?php echo $elName; ?>" class="blockelement <?php
@@ -165,17 +178,31 @@ if ($coming) {
                         $classes .= ' no-footer ';
                         $classes .= $editorImages == 1 ? 'images ' : '';
                         $classes .= $editorMacros == 1 ? 'macros ' : '';
-                        $output .= App::get('editor')->display($field, $value, '', '', $cols, $rows, false, 'pub-' . $elName, null, null, ['class' => $classes]);
+                        $output .= App::get('editor')->display(
+                            $field,
+                            $value,
+                            '',
+                            '',
+                            $cols,
+                            $rows,
+                            false,
+                            'pub-' . $elName,
+                            null,
+                            null,
+                            ['class' => $classes],
+                        );
                         break;
 
                     case 'textarea':
                         $value = preg_replace("/\r\n/", "\r", trim($value));
-                        $output .= '<textarea name="' . $field . '" id="pub-' . $elName . '" ' . $size . ' ' . $placeholder . ' cols="' . $cols . '" rows="' . $rows . '">' . $value . '</textarea>';
+                        $output .= '<textarea name="' . $field . '" id="pub-' . $elName . '" ' . $size . ' '
+                            . $placeholder . ' cols="' . $cols . '" rows="' . $rows . '">' . $value . '</textarea>';
                         break;
 
                     case 'text':
                     default:
-                        $output .= '<input type="text" name="' . $field . '" id="pub-' . $elName . '" value="' . $this->escape($value) . '" ' . $size . ' ' . $placeholder . ' />';
+                        $output .= '<input type="text" name="' . $field . '" id="pub-' . $elName . '" value="'
+                            . $this->escape($value) . '" ' . $size . ' ' . $placeholder . ' />';
                         break;
                 }
                 $output .= '  </span>';

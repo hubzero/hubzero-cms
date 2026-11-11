@@ -51,7 +51,9 @@ if ($assets->total() > 0) {
             $ratio = $originalWidth / $originalHeight;
 
             $alt = $this->escape(stripslashes($first->get('description', '')));
-            $height = (!isset($this->actual) || !$this->actual) ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP) : $originalHeight;
+            $height = (!isset($this->actual) || !$this->actual)
+                ? round($this->params->get('maxWidth', 290) / $ratio, 0, PHP_ROUND_HALF_UP)
+                : $originalHeight;
 
             if ($isLocal) : ?>
                 <div class="holder">

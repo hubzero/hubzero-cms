@@ -46,7 +46,9 @@ $this
 if ($this->page->alias == '') {
     $html .= ' class="active"';
 }
-        $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id) . '"><span>' . Lang::txt('EVENTS_OVERVIEW') . '</span></a></li>' . "\n";
+        $html .= '><a class="tab" href="'
+            . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id) . '"><span>'
+            . Lang::txt('EVENTS_OVERVIEW') . '</span></a></li>' . "\n";
 if ($this->pages) {
     foreach ($this->pages as $p) {
         $html .= "\t" . '<li';

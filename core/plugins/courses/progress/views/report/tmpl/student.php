@@ -26,7 +26,10 @@ $passing  = (isset($passing[$this->member->get('id')])) ? $passing[$this->member
 $this->course->offering()->gradebook()->hasEarnedBadge($this->member->get('id'));
 $student = $this->member;
 
-$gradePolicy = new \Components\Courses\Models\GradePolicies($this->course->offering()->section()->get('grade_policy_id'), $this->course->offering()->section()->get('id'));
+$gradePolicy = new \Components\Courses\Models\GradePolicies(
+    $this->course->offering()->section()->get('grade_policy_id'),
+    $this->course->offering()->section()->get('id'),
+);
 
 $details = [];
 $details['quizzes_total']       = 0;
@@ -87,7 +90,10 @@ foreach ($assets as $asset) {
         }
 
         // Get the date the grade was entered
-        if (isset($grades[$this->member->get('id')]['assets'][$asset->id]) && !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['date'])) {
+        if (
+            isset($grades[$this->member->get('id')]['assets'][$asset->id])
+            && !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['date'])
+        ) {
             $date = Date::of($grades[$this->member->get('id')]['assets'][$asset->id]['date'])->format('r');
         } else {
             $date = "N/A";
@@ -103,7 +109,10 @@ foreach ($assets as $asset) {
     }
 
     if ($isValidForm) {
-        $dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb($crumb, $this->course->offering()->section()->get('id'));
+        $dep = \Components\Courses\Models\PdfFormDeployment::fromCrumb(
+            $crumb,
+            $this->course->offering()->section()->get('id'),
+        );
 
         switch ($dep->getState()) {
             // Form isn't available yet
@@ -220,7 +229,9 @@ $units     = $this->course->offering()->units();
 $num_units = $units->total();
 $index     = 1;
 $current_i = 0;
-$finished  = $this->course->offering()->gradebook()->isEligibleForRecognition($this->member->get('id')) ? ' finished' : '';
+$finished  = $this->course->offering()->gradebook()->isEligibleForRecognition($this->member->get('id'))
+    ? ' finished'
+    : '';
 
 // Build the progress timeline bar
 $progress_timeline  = "<div class=\"progress-timeline length_{$num_units}\">";

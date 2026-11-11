@@ -126,7 +126,8 @@ $renderIfJson = function ($v) {
             if (!trim($vl)) {
                 continue;
             }
-            $o[] = '<tr><th>' . htmlspecialchars((string) $nm, ENT_QUOTES, 'UTF-8') . ':</th><td>' . htmlspecialchars((string) $vl, ENT_QUOTES, 'UTF-8') . '</td></tr>';
+            $o[] = '<tr><th>' . htmlspecialchars((string) $nm, ENT_QUOTES, 'UTF-8') . ':</th><td>'
+                . htmlspecialchars((string) $vl, ENT_QUOTES, 'UTF-8') . '</td></tr>';
         }
         $o[] = '</tbody>';
         $o[] = '</table>';
@@ -196,7 +197,9 @@ $legacy = [
         $awards = $awards->award();
 
         $increm  = '<div id="award-info">';
-        $increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_OFFERING_POINTS', Route::url('index.php?option=com_store')) . '</p>';
+        $increm .= '<p>'
+            . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_OFFERING_POINTS', Route::url('index.php?option=com_store'))
+            . '</p>';
 
         if ($awards['prior']) {
             $increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_AWARDED_POINTS', $awards['prior']) . '</p>';
@@ -239,7 +242,10 @@ $legacy = [
                                 $page->text = $page->introtext;
                             }
                             $params = new \Hubzero\Config\Registry($page->attribs);
-                            $results = Event::trigger('content.onContentPrepare', ['com_content.article', &$page, &$params, 0]);
+                            $results = Event::trigger(
+                                'content.onContentPrepare',
+                                ['com_content.article', &$page, &$params, 0],
+                            );
                             echo $page->text;
                         }
                         ?>
@@ -277,9 +283,16 @@ $legacy = [
                     <div class="value"><?php echo $this->escape($this->profile->get('name')); ?></div>
                     <br class="clear" />
                     <?php
-                        $name  = '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_FIRST_NAME') . ' <input type="text" name="name[first]" id="first-name" class="input-text" value="' . $this->escape($this->profile->get('givenName')) . '" /></label>';
-                        $name .= '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_MIDDLE_NAME') . ' <input type="text" name="name[middle]" id="middle-name" class="input-text" value="' . $this->escape($this->profile->get('middleName')) . '" /></label>';
-                        $name .= '<label class="side-by-side three no-padding-right">' . Lang::txt('PLG_MEMBERS_PROFILE_LAST_NAME') . ' <input type="text" name="name[last]" id="last-name" class="input-text" value="' . $this->escape($this->profile->get('surname')) . '" /></label>';
+                        $name  = '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_FIRST_NAME')
+                            . ' <input type="text" name="name[first]" id="first-name" class="input-text" value="'
+                            . $this->escape($this->profile->get('givenName')) . '" /></label>';
+                        $name .= '<label class="side-by-side three">' . Lang::txt('PLG_MEMBERS_PROFILE_MIDDLE_NAME')
+                            . ' <input type="text" name="name[middle]" id="middle-name" class="input-text" value="'
+                            . $this->escape($this->profile->get('middleName')) . '" /></label>';
+                        $name .= '<label class="side-by-side three no-padding-right">'
+                            . Lang::txt('PLG_MEMBERS_PROFILE_LAST_NAME')
+                            . ' <input type="text" name="name[last]" id="last-name" class="input-text" value="'
+                            . $this->escape($this->profile->get('surname')) . '" /></label>';
 
                     if (Field::state('registrationFullname', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY) {
                         $this
@@ -465,7 +478,8 @@ $legacy = [
                             if ($this->profile->get('access') > 2) {
                                 $access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>';
                                 $access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
-                                $access .= '<input type="hidden" name="access[email]" value="' . $this->params->get('access_email') . '" />';
+                                $access .= '<input type="hidden" name="access[email]" value="'
+                                    . $this->params->get('access_email') . '" />';
                             } else {
                                 $access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . $select . '</label>';
                             }
@@ -536,7 +550,11 @@ $legacy = [
         foreach ($this->fields as $field) :
             // Add in class for JS selector to conditionally retrieve data from RoR Api
             $rorApiBoolean = Component::params('com_members')->get('rorApi');
-            if (strtolower($field->get('name')) == "organization" && strtolower($field->get('type')) == "text" && $rorApiBoolean) {
+            if (
+                strtolower($field->get('name')) == "organization"
+                && strtolower($field->get('type')) == "text"
+                && $rorApiBoolean
+            ) {
                 echo "<span class='hidden rorApiAvailable'></span>";
             }
 
@@ -578,7 +596,8 @@ $legacy = [
                     $events = $option->get('dependents');
 
                     if ($field->get('type') == 'dropdown') {
-                        $scripts[] = '		if ($(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                        $scripts[] = '		if ($(this).val() == "'
+                            . ($option->value ? $option->value : $option->label) . '") {';
                         $show = [];
                         foreach ($events as $s) {
                             $show[] = '#profile_' . $s;
@@ -589,13 +608,15 @@ $legacy = [
                         $scripts[] = '			$("' . implode(', ', $show) . '").closest("li.section").hide();';
                         $scripts[] = '		}';
 
-                        $toggle[] = '	if ($("#profile_' . $field->get('name') . '").val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                        $toggle[] = '	if ($("#profile_' . $field->get('name') . '").val() == "'
+                            . ($option->value ? $option->value : $option->label) . '") {';
                         $toggle[] = '		$("' . implode(', ', $show) . '").closest("li.section").show();';
                         $toggle[] = '	} else {';
                         $toggle[] = '		$("' . implode(', ', $show) . '").closest("li.section").hide();';
                         $toggle[] = '	}';
                     } else {
-                        $scripts[] = '		if ($(this).is(":checked") && $(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                        $scripts[] = '		if ($(this).is(":checked") && $(this).val() == "'
+                            . ($option->value ? $option->value : $option->label) . '") {';
                         $show = [];
                         foreach ($events as $s) {
                             $show[] = '#profile_' . $s;
@@ -606,7 +627,9 @@ $legacy = [
                         $scripts[] = '			$("' . implode(', ', $show) . '").closest("li.section").hide();';
                         $scripts[] = '		}';
 
-                        $toggle[] = '	if ($("#profile_' . $field->get('name') . $i . '").is(":checked") && $("#profile_' . $field->get('name') . $i . '").val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                        $toggle[] = '	if ($("#profile_' . $field->get('name') . $i
+                            . '").is(":checked") && $("#profile_' . $field->get('name') . $i . '").val() == "'
+                            . ($option->value ? $option->value : $option->label) . '") {';
                         $toggle[] = '		$("' . implode(', ', $show) . '").closest("li.section").show();';
                         $toggle[] = '	} else {';
                         $toggle[] = '		$("' . implode(', ', $show) . '").closest("li.section").hide();';
@@ -634,7 +657,10 @@ $legacy = [
                 $profile->set('access', 5);
             }
 
-            if (in_array($profile->get('access', $field->get('access', 5)), User::getAuthorisedViewLevels()) || $isUser) {
+            if (
+                in_array($profile->get('access', $field->get('access', 5)), User::getAuthorisedViewLevels())
+                || $isUser
+            ) {
                 $cls = ['profile-' . $field->get('name')];
 
                 if ($profile->get('access', $field->get('access')) == 2) {
@@ -663,10 +689,14 @@ $legacy = [
                         // IF the type is a URL, link it
                         if ($field->get('type') == 'url') {
                             $parsed = parse_url($value);
-                            if (empty($parsed['scheme']) || !in_array(strtolower($parsed['scheme']), ['http', 'https'])) {
+                            if (
+                                empty($parsed['scheme'])
+                                || !in_array(strtolower($parsed['scheme']), ['http', 'https'])
+                            ) {
                                 $value = 'http://' . ltrim($value, '/');
                             }
-                            $value = '<a href="' . $this->escape($value) . '" rel="external">' . $this->escape($value) . '</a>';
+                            $value = '<a href="' . $this->escape($value) . '" rel="external">' . $this->escape($value)
+                                . '</a>';
                         }
                     }
                 }
@@ -701,7 +731,11 @@ $legacy = [
                         $sh += $f[$field->get('name')][$value];
                     }
 
-                    if (is_string($value) && strpos($value, '{') === false && !in_array($field->get('type'), ['url', 'textarea', 'tags'])) {
+                    if (
+                        is_string($value)
+                        && strpos($value, '{') === false
+                        && !in_array($field->get('type'), ['url', 'textarea', 'tags'])
+                    ) {
                         $val = $this->escape($value);
                     } else {
                         $val = $renderIfJson($value);
@@ -753,7 +787,8 @@ $legacy = [
                                 if ($this->profile->get('access') > 2) {
                                     $access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>';
                                     $access .= Lang::txt('PLG_MEMBERS_PROFILE_ACCESS_MUST_BE_PUBLIC');
-                                    $access .= '<input type="hidden" name="access[' . $field->get('name') . ']" value="' . $profile->get('access', $field->get('access')) . '" />';
+                                    $access .= '<input type="hidden" name="access[' . $field->get('name') . ']" value="'
+                                        . $profile->get('access', $field->get('access')) . '" />';
                                 } else {
                                     $access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $value == '' ? $field->get('access') : $profile->get('access', $field->get('access')), 'input-select');
                                 }
@@ -841,7 +876,8 @@ $legacy = [
                             ];
 
                             //build option list
-                            $optin_html  = '<strong>' . Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_EXPLANATION') . '</strong>';
+                            $optin_html  = '<strong>' . Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES_EXPLANATION')
+                                . '</strong>';
                             $optin_html .= '<label for="sendEmail">';
                             $optin_html .= '<select name="sendEmail" id="sendEmail" class="input-select">';
                             foreach ($options as $key => $value) {

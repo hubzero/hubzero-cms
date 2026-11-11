@@ -43,7 +43,9 @@ if ($this->row->standalone == 1) {
     }
     $this->row->fulltxt = preg_replace("#<nb:(.*?)>(.*?)</nb:(.*?)>#s", '', $this->row->fulltxt);
     $this->row->fulltxt = trim($this->row->fulltxt);
-    $this->row->fulltxt = ($this->row->fulltxt) ? trim(stripslashes($this->row->fulltxt ?? '')) : trim(stripslashes($this->row->introtext));
+    $this->row->fulltxt = ($this->row->fulltxt)
+        ? trim(stripslashes($this->row->fulltxt ?? ''))
+        : trim(stripslashes($this->row->introtext));
 }
 
 // Build the path for uploading files
@@ -245,7 +247,11 @@ $this
                         <label for="publish_down"><?= Lang::txt('COM_RESOURCES_FIELD_PUBLISH_DOWN') ?>:</label><br />
                         <?php
                             $down = Lang::txt('COM_RESOURCES_NEVER');
-                        if ($this->row->publish_down && $this->row->publish_down != '0000-00-00 00:00:00' && $this->row->publish_down != Lang::txt('COM_RESOURCES_NEVER')) {
+                        if (
+                            $this->row->publish_down
+                            && $this->row->publish_down != '0000-00-00 00:00:00'
+                            && $this->row->publish_down != Lang::txt('COM_RESOURCES_NEVER')
+                        ) {
                             $down = Date::of($this->row->publish_down)->toLocal('Y-m-d H:i:s');
                         }
                         ?>

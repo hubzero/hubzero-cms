@@ -16,7 +16,11 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-Toolbar::title(Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') . ' - ' . Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': #' . $this->pub->id . ' - ' . Lang::txt('COM_PUBLICATIONS_VERSIONS'), 'publications');
+Toolbar::title(
+    Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') . ' - ' . Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ': #'
+        . $this->pub->id . ' - ' . Lang::txt('COM_PUBLICATIONS_VERSIONS'),
+    'publications',
+);
 Toolbar::spacer();
 Toolbar::cancel();
 

@@ -196,7 +196,8 @@ if (!empty($errors))
                         $genericPerks = $this->couponPerks['generic'];
 
                         foreach ($genericPerks as $perk) {
-                            echo '<p class="cartDiscountName"><span>Discount</span>: ' . $this->escape($perk->name) . ': ';
+                            echo '<p class="cartDiscountName"><span>Discount</span>: ' . $this->escape($perk->name)
+                                . ': ';
                             if ($perk->discount > 0) {
                                 echo '-$' . number_format($perk->discount, 2);
                             } else {

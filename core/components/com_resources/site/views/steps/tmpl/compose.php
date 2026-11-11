@@ -14,7 +14,9 @@ use Hubzero\Facades\Route;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$this->row->fulltxt = ($this->row->fulltxt) ? stripslashes($this->row->fulltxt ? $this->row->fulltxt : "") : stripslashes($this->row->introtext ? $this->row->introtext : "");
+$this->row->fulltxt = ($this->row->fulltxt)
+    ? stripslashes($this->row->fulltxt ? $this->row->fulltxt : "")
+    : stripslashes($this->row->introtext ? $this->row->introtext : "");
 
 $type = $this->row->type;
 

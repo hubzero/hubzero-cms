@@ -42,19 +42,23 @@ if ($this->row->get('login')) {
         }
         $usertype = implode(', ', $gids);
 
-        $name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&id=' . $submitter->get('id')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
+        $name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&id=' . $submitter->get('id'))
+            . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' ('
+            . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
         $unknown = 0;
     } else {
         $displayName = ($this->row->get('login')) ? $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')' : $this->escape(stripslashes($this->row->get('name')));
         if ($this->row->get('email')) {
-            $name = '<a rel="email" href="mailto:' . $this->escape($this->row->get('email')) . '">' . $displayName . '</a>';
+            $name = '<a rel="email" href="mailto:' . $this->escape($this->row->get('email')) . '">' . $displayName
+                . '</a>';
         } else {
             $name = $displayName;
         }
     }
 } else {
     if ($this->row->get('email')) {
-        $name = '<a rel="email" href="mailto:' . $this->escape($this->row->get('email')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . '</a>';
+        $name = '<a rel="email" href="mailto:' . $this->escape($this->row->get('email')) . '">'
+            . $this->escape(stripslashes($this->row->get('name'))) . '</a>';
     } else {
         $name = $this->escape(stripslashes($this->row->get('name')));
     }
@@ -155,9 +159,13 @@ $cc = [];
 
                                     if ($attachment->isImage()) {
                                         if ($attachment->width() > 400) {
-                                            $img = '<p><a href="' . Route::url($attachment->link()) . '" rel="lightbox"><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+                                            $img = '<p><a href="' . Route::url($attachment->link())
+                                                . '" rel="lightbox"><img src="' . Route::url($attachment->link())
+                                                . '" alt="' . $this->escape($attachment->get('description'))
+                                                . '" width="400" /></a></p>';
                                         } else {
-                                            $img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+                                            $img = '<p><img src="' . Route::url($attachment->link()) . '" alt="'
+                                                . $this->escape($attachment->get('description')) . '" /></p>';
                                         }
                                         echo $img;
                                     } else {
@@ -285,7 +293,9 @@ $cc = [];
 
                 if ($comment->creator->get('id')) {
                     $cite = $this->escape(stripslashes($comment->creator->get('name')));
-                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $comment->creator->get('id')) . '">' . $cite . ' (' . $this->escape(stripslashes($comment->creator->get('username'))) . ')</a>';
+                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $comment->creator->get('id'))
+                        . '">' . $cite . ' (' . $this->escape(stripslashes($comment->creator->get('username')))
+                        . ')</a>';
                 }
 
                 $o = ($o == 'odd') ? 'even' : 'odd';
@@ -332,9 +342,13 @@ $cc = [];
                                 if ($attachment->hasFile()) {
                                     if ($attachment->isImage()) {
                                         if ($attachment->width() > 400) {
-                                            $img = '<p><a href="' . Route::url($attachment->link()) . '" rel="lightbox"><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+                                            $img = '<p><a href="' . Route::url($attachment->link())
+                                                . '" rel="lightbox"><img src="' . Route::url($attachment->link())
+                                                . '" alt="' . $this->escape($attachment->get('description'))
+                                                . '" width="400" /></a></p>';
                                         } else {
-                                            $img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+                                            $img = '<p><img src="' . Route::url($attachment->link()) . '" alt="'
+                                                . $this->escape($attachment->get('description')) . '" /></p>';
                                         }
                                         echo $img;
                                     } else {
@@ -437,7 +451,10 @@ $cc = [];
                             <label for="tags">
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_TAGS'); ?>:<br />
                                 <?php
-                                $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $this->row->tags('string', null)]]);
+                                $tf = Event::trigger(
+                                    'hubzero.onGetMultiEntry',
+                                    [['tags', 'tags', 'actags', '', $this->row->tags('string', null)]],
+                                );
 
                                 if (count($tf) > 0) {
                                     echo $tf[0];
@@ -461,7 +478,10 @@ $cc = [];
                                             }
                                         }
 
-                                        $gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', [['groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner']]);
+                                        $gc = Event::trigger(
+                                            'hubzero.onGetSingleEntryWithSelect',
+                                            [['groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner']],
+                                        );
                                         if (count($gc) > 0) {
                                             echo $gc[0];
                                         } else { ?>
@@ -594,7 +614,10 @@ $cc = [];
                                             ?>
                                             <option value="m<?= $message->id ?>"><?= $this->escape(stripslashes($message->title)) ?></option>
                                             <?php
-                                            $hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape($message->transformMessage($this->row->get('id'))) . '" />' . "\n";
+                                            $hi[] = '<input type="hidden" name="m' . $message->id . '" id="m'
+                                                . $message->id . '" value="'
+                                                . $this->escape($message->transformMessage($this->row->get('id')))
+                                                . '" />' . "\n";
                                         }
                                         ?>
                                     </select>
@@ -699,9 +722,14 @@ $cc = [];
                         <div class="form-group">
                             <label for="acmembers">
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC'); ?>: <?php
-                                $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'cc', 'acmembers', '', implode(', ', $cc)]]);
+                                $mc = Event::trigger(
+                                    'hubzero.onGetMultiEntry',
+                                    [['members', 'cc', 'acmembers', '', implode(', ', $cc)]],
+                                );
                                 if (count($mc) > 0) {
-                                    echo '<span class="hint">' . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
+                                    echo '<span class="hint">'
+                                        . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE')
+                                        . '</span>' . $mc[0];
                                 } else {
                                     ?> <span class="hint"><?= Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS') ?></span>
                                 <input type="text" name="cc" id="acmembers" class="form-control"

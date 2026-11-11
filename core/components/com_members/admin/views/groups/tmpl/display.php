@@ -41,7 +41,9 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                                 <?php
                                 if ($this->rows) {
                                     foreach ($this->rows as $row) {
-                                        echo '<option value="' . $row->gidNumber . '">' . $this->escape($row->description) . ' (' . $this->escape($row->cn) . ')</option>' . "\n";
+                                        echo '<option value="' . $row->gidNumber . '">'
+                                            . $this->escape($row->description) . ' (' . $this->escape($row->cn)
+                                            . ')</option>' . "\n";
                                     }
                                 }
                                 ?>
@@ -110,7 +112,10 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                                     <?= $this->escape($group->description) . ' (' . $this->escape($group->cn) . ')' ?>
                                 <?php } ?>
                                 <?php
-                                $db->setQuery("SELECT * FROM `#__xgroups_memberoption` WHERE userid=" . $db->quote($this->id) . " AND gidNumber=" . $db->quote($group->gidNumber));
+                                $db->setQuery(
+                                    "SELECT * FROM `#__xgroups_memberoption` WHERE userid=" . $db->quote($this->id)
+                                        . " AND gidNumber=" . $db->quote($group->gidNumber),
+                                );
                                 $options = $db->loadObjectList();
                                 if ($options) {
                                     foreach ($options as $option) {

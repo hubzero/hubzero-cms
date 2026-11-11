@@ -135,7 +135,10 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
                                         <?php echo $post->comment; ?>
                                     </div>
                                     <?php
-                                    $sef  = Route::urlForClient('site', Components\Forum\Models\Post::one($post->id)->link());
+                                    $sef  = Route::urlForClient(
+                                        'site',
+                                        Components\Forum\Models\Post::one($post->id)->link(),
+                                    );
                                     $link = $base . '/' . trim($sef, '/');
                                     ?>
                                     <div style="margin-top: 10px; text-align: right;">

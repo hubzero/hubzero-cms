@@ -20,7 +20,8 @@ $this->post->set('section', $this->section->get('alias'));
 $this->post->set('category', $this->category->get('alias'));
 
 if ($this->post->get('id')) {
-    $action = $base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias') . '/' . $this->post->get('thread');
+    $action = $base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias') . '/'
+        . $this->post->get('thread');
 } else {
     $action = $base . '&scope=' . $this->section->get('alias') . '/' . $this->category->get('alias');
     $this->post->set('access', 0);

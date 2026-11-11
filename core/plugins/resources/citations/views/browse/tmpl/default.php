@@ -46,7 +46,8 @@ if ($this->citations) {
         $item .= "\t\t\t" . '<a href="' . Route::url('index.php?option=com_citations&task=download&id=' . $cite->id . '&citationFormat=endnote&no_html=1') . '" title="' . Lang::txt('PLG_RESOURCES_CITATIONS_DOWNLOAD_ENDNOTE') . '">EndNote</a>' . "\n";
         if ($cite->eprint) {
             if ($cite->eprint) {
-                $item .= "\t\t\t" . ' <span>|</span> <a href="' . $this->escape(stripslashes($cite->eprint)) . '">' . Lang::txt('PLG_RESOURCES_CITATIONS_ELECTRONIC_PAPER') . '</a>' . "\n";
+                $item .= "\t\t\t" . ' <span>|</span> <a href="' . $this->escape(stripslashes($cite->eprint)) . '">'
+                    . Lang::txt('PLG_RESOURCES_CITATIONS_ELECTRONIC_PAPER') . '</a>' . "\n";
             }
         }
         $item .= "\t\t" . '</p>' . "\n";
@@ -108,7 +109,12 @@ if (is_object($schema)) {
         $schema->fields = [];
     }
     foreach ($schema->fields as $field) {
-        if (isset($data[$field->name]) && $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+        if (
+            isset($data[$field->name])
+            && $elements->display($field->type, $data[$field->name])
+            && isset($field->display)
+            && $field->display == $tab
+        ) {
             $hasCustomFields = true;
             break;
         }
@@ -121,7 +127,11 @@ if ($hasCustomFields) :
     <?php
     foreach ($schema->fields as $field) {
         if (isset($data[$field->name])) {
-            if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+            if (
+                $elements->display($field->type, $data[$field->name])
+                && isset($field->display)
+                && $field->display == $tab
+            ) {
                 ?>
                     <h4><?php echo $field->label; ?></h4>
                     <div class="resource-content">

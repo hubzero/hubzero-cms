@@ -84,7 +84,9 @@ if ($this_datetime <= $last_event_time) {
 $content  = '<table class="ecalendar">' . "\n";
 $content .= ' <caption>';
 if ($this->shownav) {
-    $content .= '<a class="prv" rel="nofollow" href="' . $prev . '" title="' . $prev_text . '" aria-label="' . $prev_text . '">&lsaquo;</a> <a class="nxt" rel="nofollow" href="' . $next . '" title="' . $next_text . '" aria-label="' . $next_text . '">&rsaquo;</a> ';
+    $content .= '<a class="prv" rel="nofollow" href="' . $prev . '" title="' . $prev_text . '" aria-label="'
+        . $prev_text . '">&lsaquo;</a> <a class="nxt" rel="nofollow" href="' . $next . '" title="' . $next_text
+        . '" aria-label="' . $next_text . '">&rsaquo;</a> ';
 }
 $content .= \Components\Events\Helpers\Html::getMonthName($cal_month) . '</caption>' . "\n";
 $content .= ' <thead>' . "\n";

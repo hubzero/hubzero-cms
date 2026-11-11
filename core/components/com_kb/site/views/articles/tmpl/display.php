@@ -120,7 +120,9 @@ Document::setTitle(Lang::txt('COM_KB'));
                     // "Categories" printed over nothing at all.
                     $shown = [];
 
-                    $categories = $this->archive->categories(['state' => 1, 'access' => User::getAuthorisedViewLevels()]);
+                    $categories = $this->archive->categories(
+                        ['state' => 1, 'access' => User::getAuthorisedViewLevels()],
+                    );
 
                     foreach ($categories as $row) {
                         $articles = $row

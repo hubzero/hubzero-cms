@@ -94,12 +94,19 @@ $this->category->set('section_alias', $this->filters['section']);
                             <?php
                             if ($this->filters['search']) {
                                 if ($this->category->get('title')) {
-                                    echo Lang::txt('COM_FORUM_SEARCH_FOR_IN', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
+                                    echo Lang::txt(
+                                        'COM_FORUM_SEARCH_FOR_IN',
+                                        $this->escape($this->filters['search']),
+                                        $this->escape(stripslashes($this->category->get('title'))),
+                                    );
                                 } else {
                                     echo Lang::txt('COM_FORUM_SEARCH_FOR', $this->escape($this->filters['search']));
                                 }
                             } else {
-                                echo Lang::txt('COM_FORUM_SEARCH_IN', $this->escape(stripslashes($this->category->get('title'))));
+                                echo Lang::txt(
+                                    'COM_FORUM_SEARCH_IN',
+                                    $this->escape(stripslashes($this->category->get('title'))),
+                                );
                             }
                             ?>
                         </caption>
@@ -111,7 +118,8 @@ $this->category->set('section_alias', $this->filters['section']);
                                     if (!$row->get('anonymous')) {
                                         $name = $this->escape(stripslashes($row->creator->get('name', $name)));
                                         if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                            $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
+                                            $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name
+                                                . '</a>';
                                         }
                                     }
                                     $cls = [];
@@ -163,9 +171,13 @@ $this->category->set('section_alias', $this->filters['section']);
                                                 if ($lastpost->get('id')) {
                                                     $lname = Lang::txt('JANONYMOUS');
                                                     if (!$lastpost->get('anonymous')) {
-                                                        $lname = $this->escape(stripslashes($lastpost->creator->get('name')));
+                                                        $lname = $this->escape(
+                                                            stripslashes($lastpost->creator->get('name')),
+                                                        );
                                                         if (in_array($lastpost->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                                            $lname = '<a href="' . Route::url($lastpost->creator->link()) . '">' . $lname . '</a>';
+                                                            $lname = '<a href="'
+                                                                . Route::url($lastpost->creator->link()) . '">' . $lname
+                                                                . '</a>';
                                                         }
                                                     }
                                                     ?>

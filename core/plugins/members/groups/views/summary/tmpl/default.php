@@ -105,21 +105,33 @@ $this
                     $status = 'manager';
 
                     //$options  = '<a class="manage tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&active=members') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_MANAGE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_MANAGE').'</a>';
-                    $options .= ' <a class="customize tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit') . '" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_EDIT_TITLE') . '">' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_EDIT') . '</a>';
+                    $options .= ' <a class="customize tooltips" href="'
+                        . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=edit')
+                        . '" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_EDIT_TITLE') . '">'
+                        . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_EDIT') . '</a>';
                     //$options .= ' <a class="delete tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=delete') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DELETE_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DELETE').'</a>';
                 } elseif ($group->registered && $group->regconfirmed) {
                     $status = 'member';
 
-                    $options = '<button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') . '" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL') . '</button>';
+                    $options = '<button type="submit" form="hz-post-action" formaction="'
+                        . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel')
+                        . '" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE')
+                        . '">' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL') . '</button>';
                 } elseif ($group->registered && !$group->regconfirmed) {
                     $status = 'pending';
 
-                    $options = '<button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') . '" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE') . '">' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL') . '</button>';
+                    $options = '<button type="submit" form="hz-post-action" formaction="'
+                        . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel')
+                        . '" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL_TITLE')
+                        . '">' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_CANCEL') . '</button>';
                 } elseif (!$group->registered && $group->regconfirmed) {
                     $status = 'invitee';
 
                     //$options  = '<a class="accept tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=accept') .'" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE') . '">'.Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT').'</a>';
-                    $options .= ' <button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel') . '" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE_TITLE') . '">' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE') . '</button>';
+                    $options .= ' <button type="submit" form="hz-post-action" formaction="'
+                        . Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn . '&task=cancel')
+                        . '" class="cancel tooltips" title="' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE_TITLE')
+                        . '">' . Lang::txt('PLG_MEMBERS_GROUPS_ACTION_DECLINE') . '</button>';
                 }
 
                 // do we have a new unpublished group
@@ -224,7 +236,10 @@ $this
                                                 if (!$activity->get('id')) {
                                                     $activity->set('created', $group->created);
                                                 }
-                                                if (!$activity->get('created') || $activity->get('created') == '0000-00-00 00:00:00') {
+                                                if (
+                                                    !$activity->get('created')
+                                                    || $activity->get('created') == '0000-00-00 00:00:00'
+                                                ) {
                                                     echo Lang::txt('PLG_MEMBERS_GROUPS_ACTIVITY_UNKNOWN');
                                                 } else {
                                                     $dt = Date::of($activity->get('created'));

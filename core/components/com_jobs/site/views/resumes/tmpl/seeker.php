@@ -91,7 +91,9 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
             <span class="mini"><?= Lang::txt('COM_JOBS_LAST_UPDATE') ?>: <?= $this->seeker->created ?></span>
             <?php if ($this->seeker->url) {
                 // only a web URL becomes a link; anything else gets the http:// prefix
-                $url = preg_match('#^https?://#i', $this->seeker->url) ? $this->seeker->url : 'http://' . ltrim($this->seeker->url, '/');
+                $url = preg_match('#^https?://#i', $this->seeker->url)
+                    ? $this->seeker->url
+                    : 'http://' . ltrim($this->seeker->url, '/');
                 ?>
                 <span class="mini"> | </span>
                 <span class="mini">

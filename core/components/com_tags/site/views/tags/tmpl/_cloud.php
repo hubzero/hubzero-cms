@@ -51,7 +51,10 @@ foreach ($this->tags as $tag) {
     }
 
     if ($this->config->get('show_sizes', 0) == 2) {
-        $tll[$tag->get('tag')] = '<li' . $class . '><a rel="nofollow" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '" data-tag="' . $this->escape($tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>' . $tag->objects()->total() . '</span></a></li>';
+        $tll[$tag->get('tag')] = '<li' . $class . '><a rel="nofollow" href="'
+            . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '" data-tag="'
+            . $this->escape($tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag'))) . ' <span>'
+            . $tag->objects()->total() . '</span></a></li>';
     } else {
         $tll[$tag->get('tag')]  = '<li' . $class . '>';
         if ($this->config->get('show_sizes', 0) == 1) {
@@ -68,7 +71,9 @@ foreach ($this->tags as $tag) {
                 $link_class = ' core';
                 break;
         }
-        $tll[$tag->get('tag')] .= '<a class="tag' . $link_class . '" rel="nofollow" href="' . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">' . $this->escape(stripslashes($tag->get('raw_tag')));
+        $tll[$tag->get('tag')] .= '<a class="tag' . $link_class . '" rel="nofollow" href="'
+            . Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')) . '">'
+            . $this->escape(stripslashes($tag->get('raw_tag')));
         if ($this->config->get('show_tag_count', 0)) {
             $tll[$tag->get('tag')] .= ' <span>' . $tag->get('count') . '</span>';
         }

@@ -35,7 +35,8 @@ if ($this->uid == $this->project->get('created_by_user') && !$this->project->isP
 } else {
     $subtitle  = User::get('name') . ' ';//$this->project->owner('name') . ' ';
     $subtitle .= $this->uid ? Lang::txt('COM_PROJECTS_EMAIL_ADDED_YOU') : Lang::txt('COM_PROJECTS_EMAIL_INVITED_YOU');
-    $subtitle .= ' "' . $this->escape($this->project->get('title')) . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE') . ' ';
+    $subtitle .= ' "' . $this->escape($this->project->get('title')) . '" ' . Lang::txt('COM_PROJECTS_EMAIL_IN_THE_ROLE')
+        . ' ';
     if ($this->role == 1) {
         $subtitle .= Lang::txt('COM_PROJECTS_LABEL_OWNER');
     } elseif ($this->role == 5) {

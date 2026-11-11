@@ -116,7 +116,10 @@ if ($this->rows) {
                 </td>
                 <td class="priority-3">
                     <?php
-                        $db->setQuery("SELECT count(*) FROM `display` WHERE `status`='broken' AND `hostname`=" . $db->quote($row->hostname));
+                        $db->setQuery(
+                            "SELECT count(*) FROM `display` WHERE `status`='broken' AND `hostname`="
+                                . $db->quote($row->hostname),
+                        );
                         echo $db->loadResult();
                     ?>
                 </td>

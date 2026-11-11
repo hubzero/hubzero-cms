@@ -82,7 +82,8 @@ $this
                         ?>
                     <option value="custom"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= Lang::txt('Custom') ?></option>
                         <?php
-                        $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
+                        $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text))
+                            . '" />';
                         $c = $this->escape(nl2br($license->text));
                     }
                 }
@@ -91,7 +92,8 @@ $this
                     <option value="custom"><?php echo Lang::txt('COM_CONTRIBUTE_CUSTOM_LICENSE'); ?></option>
                     <?php
                     $c = $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE'));
-                    $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
+                    $l[] = '<input type="hidden" id="license-custom" value="'
+                        . $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
                 }
                 foreach ($this->licenses as $license) {
                     if (substr($license->name, 0, 6) == 'custom') {
@@ -101,7 +103,8 @@ $this
                     <option value="<?= $this->escape($license->name) ?>"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= $this->escape($license->title) ?></option>
                         <?php
                     }
-                    $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
+                    $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="'
+                        . $this->escape(nl2br($license->text)) . '" />';
                     if ($params->get('license') == $license->name) {
                         $preview = nl2br($this->escape($license->text));
                     }
@@ -177,7 +180,8 @@ $this
                     ?>
                         <option value="custom"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= Lang::txt('Custom') ?></option>
                     <?php
-                    $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
+                    $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text))
+                        . '" />';
                     $c = $this->escape(nl2br($license->text));
                 }
             }
@@ -186,7 +190,8 @@ $this
                         <option value="custom"><?php echo Lang::txt('COM_CONTRIBUTE_CUSTOM_LICENSE'); ?></option>
                     <?php
                     $c = $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE'));
-                    $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
+                    $l[] = '<input type="hidden" id="license-custom" value="'
+                        . $this->escape(Lang::txt('COM_CONTRIBUTE_ENTER_LICENSE_HERE')) . '" />';
             }
             foreach ($this->licenses as $license) {
                 if (substr($license->name, 0, 6) == 'custom') {
@@ -196,7 +201,8 @@ $this
                         <option value="<?= $this->escape($license->name) ?>"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= $this->escape($license->title) ?></option>
                     <?php
                 }
-                $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
+                $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="'
+                    . $this->escape(nl2br($license->text)) . '" />';
                 if ($params->get('license') == $license->name) {
                     $preview = nl2br($this->escape($license->text));
                 }

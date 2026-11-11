@@ -78,22 +78,38 @@ $timezone = $userLocalizer->getTimezone();
                             <?php if ($event->get('publish_down') && $event->get('publish_down') != '0000-00-00 00:00:00') : ?>
                                 <dd class="start-and-end">
                                     <?php
-                                        echo Date::of($event->get('publish_up'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+                                        echo Date::of($event->get('publish_up'))->toTimezone(
+                                            $timezone,
+                                            'l, F d, Y @ g:i a',
+                                            $ignoreDst,
+                                        );
                                     ?>
                                     &mdash;
                                     <?php
-                                        echo Date::of($event->get('publish_down'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+                                        echo Date::of($event->get('publish_down'))->toTimezone(
+                                            $timezone,
+                                            'l, F d, Y @ g:i a',
+                                            $ignoreDst,
+                                        );
                                     ?>
                                 </dd>
                             <?php else : ?>
                                 <dd class="date">
                                     <?php
-                                        echo Date::of($event->get('publish_up'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+                                        echo Date::of($event->get('publish_up'))->toTimezone(
+                                            $timezone,
+                                            'l, F d, Y @ g:i a',
+                                            $ignoreDst,
+                                        );
                                     ?>
                                 <dd>
                                 <dd class="time">
                                     <?php
-                                        echo Date::of($event->get('publish_up'))->toTimezone($timezone, 'l, F d, Y @ g:i a', $ignoreDst);
+                                        echo Date::of($event->get('publish_up'))->toTimezone(
+                                            $timezone,
+                                            'l, F d, Y @ g:i a',
+                                            $ignoreDst,
+                                        );
                                     ?>
                                 <dd>
                             <?php endif; ?>
@@ -102,7 +118,9 @@ $timezone = $userLocalizer->getTimezone();
                             <p>
                                 <?php
                                     $content = strip_tags($event->get('content'));
-                                    echo ($content) ? Hubzero\Utility\Str::truncate($content, 500) : '<em>no content</em>';
+                                    echo ($content)
+                                        ? Hubzero\Utility\Str::truncate($content, 500)
+                                        : '<em>no content</em>';
                                 ?>
                             </p>
                         </div>

@@ -125,7 +125,12 @@ $hideform = Request::getInt('hideform', 0);
                     <td class="u">
                         <?php
                         if ($i > 0 || ($i + 0 > 0)) {
-                            echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->id . '&amp;id=' . $child->id . '&amp;task=reorder&amp;move=up&amp;hideform=' . $hideform . '&amp;' . Session::getFormToken() . '=1" class="order up" title="' . Lang::txt('COM_CONTRIBUTE_MOVE_UP') . '"><span>' . Lang::txt('COM_CONTRIBUTE_MOVE_UP') . '</span></a>';
+                            echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller
+                                . '&amp;tmpl=component&amp;pid=' . $this->id . '&amp;id=' . $child->id
+                                . '&amp;task=reorder&amp;move=up&amp;hideform=' . $hideform . '&amp;'
+                                . Session::getFormToken() . '=1" class="order up" title="'
+                                . Lang::txt('COM_CONTRIBUTE_MOVE_UP') . '"><span>' . Lang::txt('COM_CONTRIBUTE_MOVE_UP')
+                                . '</span></a>';
                         } else {
                             echo '&nbsp;';
                         }
@@ -134,7 +139,12 @@ $hideform = Request::getInt('hideform', 0);
                     <td class="d">
                         <?php
                         if ($i < $n - 1 || $i + 0 < $n - 1) {
-                            echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->id . '&amp;id=' . $child->id . '&amp;task=reorder&amp;move=down&amp;hideform=' . $hideform . '&amp;' . Session::getFormToken() . '=1" class="order down" title="' . Lang::txt('COM_CONTRIBUTE_MOVE_DOWN') . '"><span>' . Lang::txt('COM_CONTRIBUTE_MOVE_DOWN') . '</span></a>';
+                            echo '<a href="index.php?option=' . $this->option . '&amp;controller=' . $this->controller
+                                . '&amp;tmpl=component&amp;pid=' . $this->id . '&amp;id=' . $child->id
+                                . '&amp;task=reorder&amp;move=down&amp;hideform=' . $hideform . '&amp;'
+                                . Session::getFormToken() . '=1" class="order down" title="'
+                                . Lang::txt('COM_CONTRIBUTE_MOVE_DOWN') . '"><span>'
+                                . Lang::txt('COM_CONTRIBUTE_MOVE_DOWN') . '</span></a>';
                         } else {
                             echo '&nbsp;';
                         }

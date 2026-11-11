@@ -21,20 +21,30 @@ Toolbar::cancel();
 
 $this->css();
 
-$added   = (intval($this->subscription->added) <> 0) ? Date::of($this->subscription->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : null;
-$updated = (intval($this->subscription->updated) <> 0) ? Date::of($this->subscription->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
-$expires = (intval($this->subscription->expires) <> 0) ? Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
+$added   = (intval($this->subscription->added) <> 0)
+    ? Date::of($this->subscription->added)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+    : null;
+$updated = (intval($this->subscription->updated) <> 0)
+    ? Date::of($this->subscription->updated)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+    : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
+$expires = (intval($this->subscription->expires) <> 0)
+    ? Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+    : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
 
 $status = '';
 $service = $this->subscription->service;
 $pending = $service->get('currency') . ' ' . $this->subscription->pendingpayment;
 $now = Date::toSql();
 
-$onhold_msg = ($this->subscription->status == 2) ? Lang::txt('COM_SERVICES_SEND_MESSAGE') : Lang::txt('COM_SERVICES_SUBSCRIPTION_ON_HOLD');
+$onhold_msg = ($this->subscription->status == 2)
+    ? Lang::txt('COM_SERVICES_SEND_MESSAGE')
+    : Lang::txt('COM_SERVICES_SUBSCRIPTION_ON_HOLD');
 
 switch ($this->subscription->status) {
     case '1':
-        $status = ($this->subscription->expires > $now) ? '<span class="service-active">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span class="service-expired">' . strtolower(Lang::txt('COM_SERVICES_STATE_EXPIRED')) . '</span>';
+        $status = ($this->subscription->expires > $now)
+            ? '<span class="service-active">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>'
+            : '<span class="service-expired">' . strtolower(Lang::txt('COM_SERVICES_STATE_EXPIRED')) . '</span>';
         break;
     case '0':
         $status = '<span class="service-pending">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING')) . '</span>';
@@ -45,8 +55,14 @@ switch ($this->subscription->status) {
         break;
 }
 
-$priceline  = Lang::txt('COM_SERVICES_PRICE_PER_UNIT', $service->get('currency') . ' ' . $service->get('unitprice'), $service->get('unitmeasure'));
-$priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_POINTS', $service->get('pointsprice')) : '';
+$priceline  = Lang::txt(
+    'COM_SERVICES_PRICE_PER_UNIT',
+    $service->get('currency') . ' ' . $service->get('unitprice'),
+    $service->get('unitmeasure'),
+);
+$priceline .= ($service->get('pointsprice') > 0)
+    ? Lang::txt('COM_SERVICES_OR_POINTS', $service->get('pointsprice'))
+    : '';
 
 ?>
 

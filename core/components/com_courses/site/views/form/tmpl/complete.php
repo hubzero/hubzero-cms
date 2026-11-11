@@ -93,7 +93,8 @@ if ($this->resp->getStartTime()) {
 									}
 								',
                                 );
-                                echo '<div class="incomplete-marker" id="question-' . $qid . '-incomplete-marker">*</div>';
+                                echo '<div class="incomplete-marker" id="question-' . $qid
+                                    . '-incomplete-marker">*</div>';
                             endif;
                         endforeach;
                         ++$qidx;

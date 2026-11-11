@@ -54,7 +54,9 @@ if (count($matches) > 0) {
     }
 }
 
-$customFields = $rt->customFields && $rt->customFields != '{"fields":[]}' ? $rt->customFields : '{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}';
+$customFields = $rt->customFields && $rt->customFields != '{"fields":[]}'
+    ? $rt->customFields
+    : '{"fields":[{"default":"","name":"citations","label":"Citations","type":"textarea","required":"0"}]}';
 
 $customFields = $this->model->_curationModel->getMetaSchema();
 
@@ -161,7 +163,10 @@ $panels = [
 
                 <div class="input-wrap">
                     <?php
-                    $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $this->model->getTagsForEditing(0, 0, true)]]);
+                    $tf = Event::trigger(
+                        'hubzero.onGetMultiEntry',
+                        [['tags', 'tags', 'actags', '', $this->model->getTagsForEditing(0, 0, true)]],
+                    );
                     if (count($tf) > 0) {
                         echo $tf[0];
                     } else { ?>

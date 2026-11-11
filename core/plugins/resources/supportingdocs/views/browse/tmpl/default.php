@@ -58,7 +58,11 @@ if ($this->model->isTool()) {
         $someDocsHidden = false;
 
         foreach ($children as $child) {
-            if ($child->access == 0 || ($child->access == 1 && !User::isGuest()) || ($child->access == 3 && in_array($this->model->group_owner, $usersgroups))) {
+            if (
+                $child->access == 0
+                || ($child->access == 1 && !User::isGuest())
+                || ($child->access == 3 && in_array($this->model->group_owner, $usersgroups))
+            ) {
                 $i++;
 
                 $ftype = Filesystem::extension($child->path);
@@ -167,7 +171,12 @@ if ($this->model->isTool()) {
                     $title = ($child->logical_type) ? $child->logicaltype->type : stripslashes($child->title);
                 }
 
-                $url = \Components\Resources\Helpers\Html::processPath($this->option, $child, $this->model->id, $linkAction);
+                $url = \Components\Resources\Helpers\Html::processPath(
+                    $this->option,
+                    $child,
+                    $this->model->id,
+                    $linkAction,
+                );
 
                 //$child->title = str_replace('"', '&quot;', $child->title);
                 //$child->title = str_replace('&amp;', '&', $child->title);
@@ -224,7 +233,10 @@ if ($this->model->isTool()) {
                 }
 
                 $classAttribute = ($class) ? ' class="' . $class . '"' : '';
-                $displayedItem = '<li' . $liclass . '>' . \Components\Resources\Helpers\Html::getFileAttribs($child->path, $base, 0) . '<a' . $classAttribute . ' href="' . $url . '" title="' . $this->escape(stripslashes($child->title)) . '"' . $action . '>' . $title . '</a></li>';
+                $displayedItem = '<li' . $liclass . '>'
+                    . \Components\Resources\Helpers\Html::getFileAttribs($child->path, $base, 0) . '<a'
+                    . $classAttribute . ' href="' . $url . '" title="' . $this->escape(stripslashes($child->title))
+                    . '"' . $action . '>' . $title . '</a></li>';
 
                 $displayedDocs[] = $displayedItem;
             } else {
@@ -276,7 +288,12 @@ if ($this->model->isTool()) {
             $schema->fields = [];
         }
         foreach ($schema->fields as $field) {
-            if (isset($data[$field->name]) && $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+            if (
+                isset($data[$field->name])
+                && $elements->display($field->type, $data[$field->name])
+                && isset($field->display)
+                && $field->display == $tab
+            ) {
                 $hasCustomFields = true;
                 break;
             }
@@ -289,7 +306,11 @@ if ($this->model->isTool()) {
         <?php
         foreach ($schema->fields as $field) {
             if (isset($data[$field->name])) {
-                if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+                if (
+                    $elements->display($field->type, $data[$field->name])
+                    && isset($field->display)
+                    && $field->display == $tab
+                ) {
                     ?>
                         <h4><?php echo $field->label; ?></h4>
                         <div class="resource-content">

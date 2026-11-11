@@ -21,7 +21,8 @@ if (!empty($this->launcherLayout) && $this->publication->main == 1 && $this->pub
             echo '<li class="meta-' . $section['name'] . '">';
 
             if ($section['name'] != 'usage') {
-                echo '<a href="' . Route::url($this->publication->link() . '&active=' . $section['name']) . '" title="' . Lang::txt('COM_PUBLICATIONS_META_TITLE_' . strtoupper($section['name'])) . '">';
+                echo '<a href="' . Route::url($this->publication->link() . '&active=' . $section['name']) . '" title="'
+                    . Lang::txt('COM_PUBLICATIONS_META_TITLE_' . strtoupper($section['name'])) . '">';
             }
 
             echo '<span class="icon"></span><span class="label">' . $section['count'] . '</span>';
@@ -51,7 +52,12 @@ foreach ($this->sections as $section) {
     $data .= (!empty($section['metadata'])) ? $section['metadata'] : '';
 }
 
-if ($this->params->get('show_ranking') || $this->params->get('show_audience') || $this->params->get('supportedtag') || $data) {
+if (
+    $this->params->get('show_ranking')
+    || $this->params->get('show_audience')
+    || $this->params->get('supportedtag')
+    || $data
+) {
     ?>
 <div class="metadata">
     <?php

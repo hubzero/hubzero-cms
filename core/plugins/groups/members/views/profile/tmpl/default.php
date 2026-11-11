@@ -179,7 +179,8 @@ foreach ($profiles as $profile) {
                                 }
 
                                 foreach ($decoded as $nm => $vl) {
-                                    $decoded[$nm] = '<strong>' . $this->escape($nm) . ':</strong> ' . $this->escape(is_scalar($vl) ? (string) $vl : json_encode($vl));
+                                    $decoded[$nm] = '<strong>' . $this->escape($nm) . ':</strong> '
+                                        . $this->escape(is_scalar($vl) ? (string) $vl : json_encode($vl));
                                 }
 
                                 $value[$k] = implode('<br />', $decoded);
@@ -196,7 +197,8 @@ foreach ($profiles as $profile) {
                             }
 
                             foreach ($decoded as $nm => $vl) {
-                                $decoded[$nm] = '<strong>' . $this->escape($nm) . ':</strong> ' . $this->escape(is_scalar($vl) ? (string) $vl : json_encode($vl));
+                                $decoded[$nm] = '<strong>' . $this->escape($nm) . ':</strong> '
+                                    . $this->escape(is_scalar($vl) ? (string) $vl : json_encode($vl));
                             }
 
                             $value = implode('<br />', $decoded);

@@ -33,10 +33,14 @@ if ($this->row->get('login')) {
         }
         $usertype = implode(', ', $gids);
 
-        $name = '<a rel="profile" href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->row->submitter->get('id')) . '">' . $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
+        $name = '<a rel="profile" href="'
+            . Route::url('index.php?option=com_members&task=edit&id=' . $this->row->submitter->get('id')) . '">'
+            . $this->escape(stripslashes($this->row->get('name'))) . ' ('
+            . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
         $unknown = false;
 
-        $notify[] = $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')';
+        $notify[] = $this->escape(stripslashes($this->row->get('name'))) . ' ('
+            . $this->escape(stripslashes($this->row->get('login'))) . ')';
     }
 }
 
@@ -51,14 +55,16 @@ if (!$name) {
 
 if ($this->row->isOwned()) {
     if ($this->row->assignee->get('name')) {
-        $notify[] = $this->escape(stripslashes($this->row->assignee->get('name'))) . ' (' . $this->escape(stripslashes($this->row->assignee->get('username'))) . ')';
+        $notify[] = $this->escape(stripslashes($this->row->assignee->get('name'))) . ' ('
+            . $this->escape(stripslashes($this->row->assignee->get('username'))) . ')';
     }
 }
 
 $lastactivity = Lang::txt('COM_SUPPORT_NOT_APPLICAPABLE');
 if ($this->row->comments->count() > 0) {
     $last = $this->row->comments->last();
-    $lastactivity = '<time datetime="' . $last->get('created') . '">' . Date::of($last->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . '</time>';
+    $lastactivity = '<time datetime="' . $last->get('created') . '">'
+        . Date::of($last->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . '</time>';
     $this->row->comments->rewind();
 }
 
@@ -128,13 +134,19 @@ if (!$no_html) {
 
                                 if ($attachment->isImage()) {
                                     if ($attachment->width() > 400) {
-                                        $img = '<p><a href="' . Route::url($attachment->link()) . '"><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+                                        $img = '<p><a href="' . Route::url($attachment->link()) . '"><img src="'
+                                            . Route::url($attachment->link()) . '" alt="'
+                                            . $this->escape($attachment->get('description'))
+                                            . '" width="400" /></a></p>';
                                     } else {
-                                        $img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+                                        $img = '<p><img src="' . Route::url($attachment->link()) . '" alt="'
+                                            . $this->escape($attachment->get('description')) . '" /></p>';
                                     }
                                     echo $img;
                                 } else {
-                                    echo '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $this->escape($attachment->get('description')) . '">' . $this->escape($attachment->get('description')) . '</a></p>';
+                                    echo '<p class="attachment"><a href="' . Route::url($attachment->link())
+                                        . '" title="' . $this->escape($attachment->get('description')) . '">'
+                                        . $this->escape($attachment->get('description')) . '</a></p>';
                                 }
                             }
                             ?>
@@ -257,7 +269,9 @@ if (!$no_html) {
 
                     if ($comment->creator->get('id')) {
                         $cite = $this->escape(stripslashes($comment->creator->get('name')));
-                        $name = '<a href="' . Route::url('index.php?option=com_members&task=edit&id[]=' . $comment->creator->get('id')) . '">' . $cite . ' (' . $this->escape($comment->creator->get('username')) . ')</a>';
+                        $name = '<a href="'
+                            . Route::url('index.php?option=com_members&task=edit&id[]=' . $comment->creator->get('id'))
+                            . '">' . $cite . ' (' . $this->escape($comment->creator->get('username')) . ')</a>';
                     }
 
                     if ($comment->changelog()->format() != 'html') {
@@ -297,13 +311,19 @@ if (!$no_html) {
 
                                     if ($attachment->isImage()) {
                                         if ($attachment->width() > 400) {
-                                            $img = '<p><a href="' . Route::url($attachment->link()) . '"><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+                                            $img = '<p><a href="' . Route::url($attachment->link()) . '"><img src="'
+                                                . Route::url($attachment->link()) . '" alt="'
+                                                . $this->escape($attachment->get('description'))
+                                                . '" width="400" /></a></p>';
                                         } else {
-                                            $img = '<p><img src="' . Route::url($attachment->link()) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+                                            $img = '<p><img src="' . Route::url($attachment->link()) . '" alt="'
+                                                . $this->escape($attachment->get('description')) . '" /></p>';
                                         }
                                         echo $img;
                                     } else {
-                                        echo '<p class="attachment"><a href="' . Route::url($attachment->link()) . '" title="' . $this->escape($attachment->get('description')) . '">' . $this->escape($attachment->get('description')) . '</a></p>';
+                                        echo '<p class="attachment"><a href="' . Route::url($attachment->link())
+                                            . '" title="' . $this->escape($attachment->get('description')) . '">'
+                                            . $this->escape($attachment->get('description')) . '</a></p>';
                                     }
                                 }
                                 ?>
@@ -380,7 +400,9 @@ if (!$no_html) {
                                         ?>
                                         <option value="m<?= $message->id ?>"><?= $this->escape(stripslashes($message->title)) ?></option>
                                         <?php
-                                        $hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id . '" value="' . $this->escape($message->transformMessage($this->row->get('id'))) . '" />';
+                                        $hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id
+                                            . '" value="'
+                                            . $this->escape($message->transformMessage($this->row->get('id'))) . '" />';
                                     }
                                     ?>
                                 </select>
@@ -515,7 +537,10 @@ if (!$no_html) {
                         <label for="tags">
                             <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_TAGS'); ?>
                             <?php
-                            $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tags', 'actags', '', $this->row->tags('string')]]);
+                            $tf = Event::trigger(
+                                'hubzero.onGetMultiEntry',
+                                [['tags', 'tags', 'actags', '', $this->row->tags('string')]],
+                            );
 
                             if (count($tf) > 0) {
                                 echo $tf[0];
@@ -539,7 +564,10 @@ if (!$no_html) {
                                         }
                                     }
 
-                                    $gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', [['groups', 'ticket[group_id]', 'acgroup','', $group,'','owner']]);
+                                    $gc = Event::trigger(
+                                        'hubzero.onGetSingleEntryWithSelect',
+                                        [['groups', 'ticket[group_id]', 'acgroup','', $group,'','owner']],
+                                    );
                                     if (count($gc) > 0) {
                                         echo $gc[0];
                                     } else { ?>

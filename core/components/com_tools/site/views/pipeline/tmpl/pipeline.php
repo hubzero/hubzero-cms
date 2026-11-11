@@ -156,7 +156,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                 for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                     $row = &$this->rows[$i];
 
-                    $row->state_changed = ($row->state_changed && $row->state_changed != '0000-00-00 00:00:00') ? $row->state_changed : $row->registered;
+                    $row->state_changed = ($row->state_changed && $row->state_changed != '0000-00-00 00:00:00')
+                        ? $row->state_changed
+                        : $row->registered;
                     $row->title .= ($row->version) ? ' v' . $row->version : '';
 
                     \Components\Tools\Helpers\Html::getStatusName($row->state, $status);

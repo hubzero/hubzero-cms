@@ -235,7 +235,14 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                                     class="required"><?= Lang::txt('JREQUIRED') ?></span>
                                 <?php
                                 if (!User::isGuest()) {
-                                    echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', ['class' => 'minimal']);
+                                    echo $this->editor(
+                                        'comment[content]',
+                                        '',
+                                        40,
+                                        15,
+                                        'commentcontent',
+                                        ['class' => 'minimal'],
+                                    );
                                 } else {
                                     $rtrn = Route::url($this->article->link() . '#post-comment', false, true);
                                     ?>

@@ -85,7 +85,9 @@ if ($this->masterAdmin) {
                 <p>
                     <span class="view">
                         <?php if ($this->stats['shortlisted'] > 0) {
-                            echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=batch') . '?pile=shortlisted" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_DOWNLOAD') . ' ]</a> &nbsp;&nbsp;&nbsp;';
+                            echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=batch')
+                                . '?pile=shortlisted" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_DOWNLOAD')
+                                . ' ]</a> &nbsp;&nbsp;&nbsp;';
                         }
                         echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW') . ' ]</a>'; ?>
                     </span><?php echo $this->stats['shortlisted']; ?>
@@ -94,7 +96,9 @@ if ($this->masterAdmin) {
                 <p>
                     <span class="view">
                         <?php if ($this->stats['applied'] > 0) {
-                            echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=batch') . '?pile=applied" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_DOWNLOAD') . ' ]</a> &nbsp;&nbsp;&nbsp;';
+                            echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=batch')
+                                . '?pile=applied" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_DOWNLOAD')
+                                . ' ]</a> &nbsp;&nbsp;&nbsp;';
                         }
                         echo '<a href="' . Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=applied" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW') . ' ]</a>'; ?>
                     </span><?php echo $this->stats['applied']; ?>
@@ -119,11 +123,14 @@ if ($this->masterAdmin) {
                                 <span class="view"><?php if ($mj->status == 1) {
                                     echo $mj->applications . ' ' . Lang::txt('COM_JOBS_DASHBOARD_APPLICATIONS') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=job&code=' . $mj->code) . '#applications" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW') . ' ]</a>';
                                                    } elseif ($mj->status == 4) {
-                                                       echo '(' . strtolower(Lang::txt('COM_JOBS_JOB_STATUS_DRAFT')) . ')';
+                                                       echo '(' . strtolower(Lang::txt('COM_JOBS_JOB_STATUS_DRAFT'))
+                                                           . ')';
                                                    } elseif ($mj->status == 0) {
-                                                       echo '(' . strtolower(Lang::txt('COM_JOBS_JOB_STATUS_PENDING')) . ')';
+                                                       echo '(' . strtolower(Lang::txt('COM_JOBS_JOB_STATUS_PENDING'))
+                                                           . ')';
                                                    } elseif ($mj->status == 3) {
-                                                       echo '(' . strtolower(Lang::txt('COM_JOBS_JOB_STATUS_INACTIVE')) . ')';
+                                                       echo '(' . strtolower(Lang::txt('COM_JOBS_JOB_STATUS_INACTIVE'))
+                                                           . ')';
                                                    } ?>
                                 </span>
                                 <?= '<span class="code">' . $mj->code . '</span>: <a href="' . Route::url('index.php?option=' . $this->option . '&task=job&code=' . $mj->code) . '">' . \Hubzero\Utility\Str::truncate($mj->title, 50) . '</a>' ?>

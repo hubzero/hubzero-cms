@@ -108,7 +108,9 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                 <?php
                 if (substr($this->row->log->get('scope'), 0, strlen('project')) == 'project') {
                     // @TODO: Find a better way to associate comments to their parent scope (group, projects)
-                    $project = new \Components\Projects\Models\Project($this->row->log->details->get('projectid', $this->row->log->get('scope_id')));
+                    $project = new \Components\Projects\Models\Project(
+                        $this->row->log->details->get('projectid', $this->row->log->get('scope_id')),
+                    );
 
                     if ($project) {
                         $projectDetailUrl = $this->row->log->details->get('url');
@@ -166,7 +168,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                                 $attachment->set('description', $attachment->get('filename'));
                             }
 
-                            $link = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=File:/uploads/' . ($attachment->get('subdir') ? $attachment->get('subdir') . '/' : '') . $attachment->get('filename');
+                            $link = 'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                . '&active=File:/uploads/'
+                                . ($attachment->get('subdir') ? $attachment->get('subdir') . '/' : '')
+                                . $attachment->get('filename');
 
                             if ($attachment->isImage()) {
                                 ?>

@@ -58,15 +58,24 @@ $this->row->content = str_replace('<br />', '', $this->row->content);
 if (!empty($this->fields)) {
     for ($i = 0, $n = count($this->fields); $i < $n; $i++) {
         // explore the text and pull out all matches
-        array_push($this->fields[$i], \Components\Events\Site\Controllers\Events::parseTag($this->row->content, $this->fields[$i][0]));
+        array_push(
+            $this->fields[$i],
+            \Components\Events\Site\Controllers\Events::parseTag($this->row->content, $this->fields[$i][0]),
+        );
         // clean the original text of any matches
-        $this->row->content = str_replace('<ef:' . $this->fields[$i][0] . '>' . end($this->fields[$i]) . '</ef:' . $this->fields[$i][0] . '>', '', $this->row->content);
+        $this->row->content = str_replace(
+            '<ef:' . $this->fields[$i][0] . '>' . end($this->fields[$i]) . '</ef:' . $this->fields[$i][0] . '>',
+            '',
+            $this->row->content,
+        );
     }
     $this->row->content = trim($this->row->content);
 }
 
 // Times are stored in UTC; display in the event's own time zone (always labeled).
-$event_tz = (isset($this->row->time_zone) && $this->row->time_zone != '') ? $this->row->time_zone : \Config::get('offset');
+$event_tz = (isset($this->row->time_zone) && $this->row->time_zone != '')
+    ? $this->row->time_zone
+    : \Config::get('offset');
 $start_date = Date::of($this->row->publish_up)->toTimeZone($event_tz, 'Y-m-d');
 $stop_date  = Date::of($this->row->publish_down)->toTimeZone($event_tz, 'Y-m-d');
 
@@ -84,42 +93,54 @@ if (Date::of($this->row->publish_down)->toUnix() < Date::of()->toUnix()) {
 $html .= "\t\t" . '<div class="event-details">' . "\n";
 if ($start_date == $stop_date) {
     if ($this->showdate) {
-        $html .= "\t\t\t" . '<div class="event-date">' . Date::of($this->row->publish_up)->toTimeZone($event_tz, Lang::txt('DATE_FORMAT_HZ1')) . '</div>' . "\n";
+        $html .= "\t\t\t" . '<div class="event-date">'
+            . Date::of($this->row->publish_up)->toTimeZone($event_tz, Lang::txt('DATE_FORMAT_HZ1')) . '</div>' . "\n";
     }
     if ($allday) {
         $html .= "\t\t\t" . '<div class="event-time starttime">' . Lang::txt('EVENTS_ALL_DAY') . '</div>' . "\n";
     } else {
-        $html .= "\t\t\t" . '<div class="event-time starttime">' . Date::of($this->row->publish_up)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
-        $html .= "\t\t\t" . '<div class="event-time endtime">' . strtolower(Lang::txt('EVENTS_CAL_LANG_TO')) . ' ' . Date::of($this->row->publish_down)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
+        $html .= "\t\t\t" . '<div class="event-time starttime">'
+            . Date::of($this->row->publish_up)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
+        $html .= "\t\t\t" . '<div class="event-time endtime">' . strtolower(Lang::txt('EVENTS_CAL_LANG_TO')) . ' '
+            . Date::of($this->row->publish_down)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
     }
 } else {
     if ($this->showdate) {
-        $html .= "\t\t\t" . '<div class="event-date starttime">' . Date::of($this->row->publish_up)->toTimeZone($event_tz, Lang::txt('DATE_FORMAT_HZ1')) . '</div>' . "\n";
+        $html .= "\t\t\t" . '<div class="event-date starttime">'
+            . Date::of($this->row->publish_up)->toTimeZone($event_tz, Lang::txt('DATE_FORMAT_HZ1')) . '</div>' . "\n";
     }
     if (!$allday) {
-        $html .= "\t\t\t" . '<div class="event-time starttime">' . Date::of($this->row->publish_up)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
+        $html .= "\t\t\t" . '<div class="event-time starttime">'
+            . Date::of($this->row->publish_up)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
     }
     if ($this->showdate) {
-        $html .= "\t\t\t" . '<div class="event-date endtime">' . strtolower(Lang::txt('EVENTS_CAL_LANG_TO')) . ' ' . Date::of($this->row->publish_down)->toTimeZone($event_tz, Lang::txt('DATE_FORMAT_HZ1')) . '</div>' . "\n";
+        $html .= "\t\t\t" . '<div class="event-date endtime">' . strtolower(Lang::txt('EVENTS_CAL_LANG_TO')) . ' '
+            . Date::of($this->row->publish_down)->toTimeZone($event_tz, Lang::txt('DATE_FORMAT_HZ1')) . '</div>' . "\n";
     }
     if (!$allday) {
-        $html .= "\t\t\t" . '<div class="event-time endtime">' . Date::of($this->row->publish_down)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
+        $html .= "\t\t\t" . '<div class="event-time endtime">'
+            . Date::of($this->row->publish_down)->toTimeZone($event_tz, 'g:i A T') . '&nbsp;' . '</div>' . "\n";
     }
 }
 $html .= "\t\t" . '</div><div class="ewrap">' . "\n";
-$html .= "\t\t" . '<p class="title"><a href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id) . '">' . $this->escape(stripslashes($this->row->title)) . '</a></p>' . "\n";
+$html .= "\t\t" . '<p class="title"><a href="'
+    . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id) . '">'
+    . $this->escape(stripslashes($this->row->title)) . '</a></p>' . "\n";
 if (isset($this->categories[$this->row->catid])) {
-    $html .= "\t\t" . '<p class="category"><strong>Category:</strong> ' . stripslashes($this->categories[$this->row->catid]) . '</p>' . "\n";
+    $html .= "\t\t" . '<p class="category"><strong>Category:</strong> '
+        . stripslashes($this->categories[$this->row->catid]) . '</p>' . "\n";
 }
 $info = '';
 foreach ($this->fields as $field) {
     if ($field[4] == 1 && end($field) != '') {
-        $info .= "\t\t" . '<p class="' . $field[0] . '"><strong>' . $field[1] . ':</strong> ' . end($field) . '</p>' . "\n";
+        $info .= "\t\t" . '<p class="' . $field[0] . '"><strong>' . $field[1] . ':</strong> ' . end($field) . '</p>'
+            . "\n";
     }
 }
 $html .= $info;
 if (!$info) {
-    $html .= "\t\t" . '<p class="description">' . \Hubzero\Utility\Str::truncate(strip_tags($this->row->content), 300) . '</p>' . "\n";
+    $html .= "\t\t" . '<p class="description">' . \Hubzero\Utility\Str::truncate(strip_tags($this->row->content), 300)
+        . '</p>' . "\n";
 }
 $html .= "\t" . '</div></li>' . "\n";
 

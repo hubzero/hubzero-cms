@@ -219,7 +219,10 @@ $this
 
                             if (!in_array($row->status->get('id'), $statuses)) {
                                 $statuses[] = $row->status->get('id');
-                                $this->css('#tktlist li .status-' . $row->status->get('id') . ' { border-left-color: #' . $row->status->get('color') . '; }');
+                                $this->css(
+                                    '#tktlist li .status-' . $row->status->get('id') . ' { border-left-color: #'
+                                        . $row->status->get('color') . '; }',
+                                );
                             }
                             ?>
                         <li class="<?= !$row->isOpen() ? 'closed' : 'open' ?>" data-id="<?= $row->get('id') ?>"

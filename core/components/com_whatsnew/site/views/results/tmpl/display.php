@@ -45,11 +45,16 @@ foreach ($this->cats as $cat) {
         if ($cat['category'] == $this->active) {
             $a = ' class="active"';
 
-            Pathway::append($cat['title'], 'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob)));
+            Pathway::append(
+                $cat['title'],
+                'index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob)),
+            );
         }
 
         // Build the HTML
-        $l = "\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($cat['title']) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
+        $l = "\t" . '<li' . $a . '><a href="'
+            . Route::url('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">'
+            . $this->escape($cat['title']) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
         // Are there sub-categories?
         if (isset($cat['_sub']) && is_array($cat['_sub'])) {
             // An array for storing the HTML we make
@@ -78,7 +83,10 @@ foreach ($this->cats as $cat) {
                     }
 
                     // Build the HTML
-                    $k[] = "\t\t\t" . '<li' . $a . '><a href="' . Route::url('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob))) . '">' . $this->escape($subcat['title']) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
+                    $k[] = "\t\t\t" . '<li' . $a . '><a href="'
+                        . Route::url('index.php?option=' . $this->option . '&period=' . urlencode(stripslashes($blob)))
+                        . '">' . $this->escape($subcat['title']) . ' <span class="item-count">' . $subcat['total']
+                        . '</span></a></li>';
                 }
             }
             // Do we actually have any links?
@@ -142,7 +150,9 @@ foreach ($this->cats as $cat) {
                         }
                     }
 
-                    $num = ($total > 1) ? Lang::txt('COM_WHATSNEW_RESULTS', $total) : Lang::txt('COM_WHATSNEW_RESULT', $total);
+                    $num = ($total > 1)
+                        ? Lang::txt('COM_WHATSNEW_RESULTS', $total)
+                        : Lang::txt('COM_WHATSNEW_RESULT', $total);
                     $this->total = $num;
 
                     // A function for category specific items that may be needed
@@ -160,7 +170,10 @@ foreach ($this->cats as $cat) {
 
                     $act = ($this->active) ? $this->active : $this->cats[$ci]['category'];
 
-                    $feed = Route::url('index.php?option=' . $this->option . '&task=feed.rss&period=' . urlencode(strToLower($act) . ':' . stripslashes($this->period)));
+                    $feed = Route::url(
+                        'index.php?option=' . $this->option . '&task=feed.rss&period='
+                            . urlencode(strToLower($act) . ':' . stripslashes($this->period)),
+                    );
                     if (substr($feed, 0, 4) != 'http') {
                         $feed = rtrim(Request::getSchemeAndHttpHost(), '/') . '/' . ltrim($feed, '/');
                     }
@@ -168,7 +181,9 @@ foreach ($this->cats as $cat) {
 
                     // Build the category HTML
                     $html .= '<div class="container-block" id="' . $divid . '">' . "\n";
-                    $html .= '<h3 id="rel-' . $divid . '">' . $this->escape($name) . ' <a class="icon-feed feed" href="' . $feed . '" aria-label="' . $this->escape($name) . ' ' . Lang::txt('COM_WHATSNEW_FEED') . '">' . Lang::txt('COM_WHATSNEW_FEED') . '</a></h3>' . "\n";
+                    $html .= '<h3 id="rel-' . $divid . '">' . $this->escape($name) . ' <a class="icon-feed feed" href="'
+                        . $feed . '" aria-label="' . $this->escape($name) . ' ' . Lang::txt('COM_WHATSNEW_FEED') . '">'
+                        . Lang::txt('COM_WHATSNEW_FEED') . '</a></h3>' . "\n";
 
                     // Does this category have custom output?
                     // Check if a function exist (using old style plugins)
@@ -204,11 +219,14 @@ foreach ($this->cats as $cat) {
                             }
 
                             $html .= "\t" . '<li>' . "\n";
-                            $html .= "\t\t" . '<p class="title"><a href="' . $this->escape(str_replace('&amp;', '&', $row->href)) . '">' . $this->escape(stripslashes($row->title)) . '</a></p>' . "\n";
+                            $html .= "\t\t" . '<p class="title"><a href="'
+                                . $this->escape(str_replace('&amp;', '&', $row->href)) . '">'
+                                . $this->escape(stripslashes($row->title)) . '</a></p>' . "\n";
                             if ($row->text) {
                                 $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags(\Hubzero\Utility\Sanitize::stripAll(stripslashes($row->text))), 200) . '</p>' . "\n";
                             }
-                            $html .= "\t\t" . '<p class="href">' . rtrim(Request::getSchemeAndHttpHost(), '/') . '/' . ltrim($row->href, '/') . '</p>' . "\n";
+                            $html .= "\t\t" . '<p class="href">' . rtrim(Request::getSchemeAndHttpHost(), '/') . '/'
+                                . ltrim($row->href, '/') . '</p>' . "\n";
                             $html .= "\t" . '</li>' . "\n";
                         }
                     }

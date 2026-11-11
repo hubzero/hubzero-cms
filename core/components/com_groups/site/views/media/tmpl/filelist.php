@@ -92,9 +92,21 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                         $dataFolder = $this->relpath . '/' . $folder;
                     }
 
-                        $moveFolderPath     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=movefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
-                        $renameFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=renamefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
-                        $deleteFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=deletefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
+                        $moveFolderPath     = Route::url(
+                            'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                . '&controller=media&task=movefolder&folder=' . $dataFolder . '&tmpl=component&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        $renameFolderPath   = Route::url(
+                            'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                . '&controller=media&task=renamefolder&folder=' . $dataFolder . '&tmpl=component&'
+                                . Session::getFormToken() . '=1',
+                        );
+                        $deleteFolderPath   = Route::url(
+                            'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                                . '&controller=media&task=deletefolder&folder=' . $dataFolder . '&tmpl=component&'
+                                . Session::getFormToken() . '=1',
+                        );
                     ?>
                     <a href="javascript:void(0);" data-action-delete="<?= $deleteFolderPath ?>"
                         data-action-rename="<?= $renameFolderPath ?>" data-action-move="<?= $moveFolderPath ?>"

@@ -85,7 +85,8 @@ $this->js('events.js');
                             <label for="field-<?= $field[0] ?>"><?= $field[1] ?>: <?= ($field[3]) ? '<span class="required">' . Lang::txt('JOPTION_REQUIRED') . '</span>' : '' ?></label><br />
                             <?php
                             if ($field[2] == 'checkbox') {
-                                echo '<input type="checkbox" name="fields[' . $field[0] . ']" id="field-' . $field[0] . '" value="1" class="required"';
+                                echo '<input type="checkbox" name="fields[' . $field[0] . ']" id="field-' . $field[0]
+                                    . '" value="1" class="required"';
                                 if (stripslashes(end($field)) == 1) {
                                     echo ' checked="checked"';
                                 }

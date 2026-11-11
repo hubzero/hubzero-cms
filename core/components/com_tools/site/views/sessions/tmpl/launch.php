@@ -40,7 +40,10 @@ $config = [
     ],
 ];
 
-$classicUrl = Route::url('index.php?option=com_tools&controller=sessions&app=' . urlencode($this->app) . '&task=invoke&version=' . urlencode($this->version) . '&launch=legacy');
+$classicUrl = Route::url(
+    'index.php?option=com_tools&controller=sessions&app=' . urlencode($this->app) . '&task=invoke&version='
+        . urlencode($this->version) . '&launch=legacy',
+);
 ?>
 <div class="main section">
     <div id="tool-launch" class="tool-launch">

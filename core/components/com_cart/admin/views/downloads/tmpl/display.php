@@ -86,7 +86,9 @@ $this
                         echo Lang::txt('COM_CART_ORDERS_FOR') . ': ';
                         $user = User::getInstance($this->filters['uidNumber']);
 
-                        echo ($user->get('id')) ? $this->escape($user->get('name') . ' (' . $user->get('username') . ')') : Lang::txt('COM_CART_USER_ID') . ': ' . (int) $this->filters['uidNumber'];
+                        echo ($user->get('id'))
+                            ? $this->escape($user->get('name') . ' (' . $user->get('username') . ')')
+                            : Lang::txt('COM_CART_USER_ID') . ': ' . (int) $this->filters['uidNumber'];
                         ?>
                             <button type="button"
                                 id="filter_uidNumber-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>
@@ -174,14 +176,18 @@ $this
                 </td>
                 <td>
                     <?php
-                    $product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $row->pId) . '">' . $this->escape(stripslashes($row->pName)) . '</a>';
+                    $product = '<a href="'
+                        . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $row->pId)
+                        . '">' . $this->escape(stripslashes($row->pName)) . '</a>';
                     if (!stripslashes($row->pName)) {
                         $product = '<span class="missing">Product n/a</span>';
                     }
                     if (!stripslashes($row->sSku)) {
                         $product .= '<br />SKU: <span class="missing">n/a</span>';
                     } else {
-                        $product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId) . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
+                        $product .= '<br />SKU: ' . '<a href="'
+                            . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $row->sId)
+                            . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
                     }
                     ?>
 

@@ -78,7 +78,10 @@ $base = $this->offering->link();
         $unitOrder = [];
         foreach ($results as $id => $notes) {
             $lectures[$id]  = new \Components\Courses\Models\Assetgroup($id);
-            $unitOrder[$id] = (int) \Components\Courses\Models\Unit::getInstance($lectures[$id]->get('unit_id'))->get('ordering', 0);
+            $unitOrder[$id] = (int) \Components\Courses\Models\Unit::getInstance($lectures[$id]->get('unit_id'))->get(
+                'ordering',
+                0,
+            );
         }
         uksort($results, function ($a, $b) use ($lectures, $unitOrder) {
             if ($unitOrder[$a] != $unitOrder[$b]) {

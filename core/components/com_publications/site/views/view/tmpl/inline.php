@@ -92,9 +92,15 @@ if (!User::isGuest()) {
     $token = base64_encode($crypter->encrypt($session_id));
 }
 
-$downloadUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' . $this->aid . '&render=download&token=' . $token);
+$downloadUrl = Route::url(
+    'index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' . $this->aid
+        . '&render=download&token=' . $token,
+);
 
-$viewUrl = Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' . $this->aid . '&render=download&disposition=inline&token=' . $token);
+$viewUrl = Route::url(
+    'index.php?option=com_publications&id=' . $this->publication->id . '&task=serve&aid=' . $this->aid
+        . '&render=download&disposition=inline&token=' . $token,
+);
 
 ?>
 <div class="sample">

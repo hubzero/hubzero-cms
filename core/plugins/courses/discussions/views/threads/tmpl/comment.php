@@ -33,11 +33,16 @@ if (!$this->comment->get('anonymous')) {
 }
 
     $cls = isset($this->cls) ? $this->cls : 'odd';
-if (!$this->comment->get('anonymous') && $this->course->offering()->member($this->comment->get('created_by'))->get('id')) {
+if (
+    !$this->comment->get('anonymous')
+    && $this->course->offering()->member($this->comment->get('created_by'))->get('id')
+) {
     if (!$this->course->offering()->member($this->comment->get('created_by'))->get('student')) {
-        $cls .= ' ' . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
+        $cls .= ' '
+            . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
     } elseif (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) {
-        $cls .= ' ' . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
+        $cls .= ' '
+            . strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'));
     }
 }
     $cls .= ' ' . $this->comment->get('treename');

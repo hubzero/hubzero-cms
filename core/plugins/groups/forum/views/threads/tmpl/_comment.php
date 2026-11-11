@@ -138,7 +138,8 @@ if ($this->comment->isReported()) {
 
                                 $userProfileUrl = "/members/" . $userId . "/profile";
 
-                                $links[] = '<a href="' . $userProfileUrl . '" target="_blank">' . $this->escape($userName) . '</a>';
+                                $links[] = '<a href="' . $userProfileUrl . '" target="_blank">'
+                                    . $this->escape($userName) . '</a>';
                             }
                             echo join(", ", $links) . " liked this";
                             ?>
@@ -162,25 +163,37 @@ if ($this->comment->isReported()) {
 
                         if ($attachment->isImage()) {
                             if ($attachment->width() > 400) {
-                                $html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" width="400" /></a></p>';
+                                $html = '<p><a href="' . Route::url($link) . '"><img src="' . Route::url($link)
+                                    . '" alt="' . $this->escape($attachment->get('description'))
+                                    . '" width="400" /></a></p>';
                             } else {
-                                $html = '<p><img src="' . Route::url($link) . '" alt="' . $this->escape($attachment->get('description')) . '" /></p>';
+                                $html = '<p><img src="' . Route::url($link) . '" alt="'
+                                    . $this->escape($attachment->get('description')) . '" /></p>';
                             }
                         } else {
-                            $html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" href="' . Route::url($link) . '" title="' . $this->escape($attachment->get('description')) . '">';
-                            $html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
+                            $html  = '<a class="attachment ' . Filesystem::extension($attachment->get('filename'))
+                                . '" href="' . Route::url($link) . '" title="'
+                                . $this->escape($attachment->get('description')) . '">';
+                            $html .= '<p class="attachment-description">'
+                                . $this->escape($attachment->get('description')) . '</p>';
                             $html .= '<p class="attachment-meta">';
-                            $html .= '<span class="attachment-size">' . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
-                            $html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') . '</span>';
+                            $html .= '<span class="attachment-size">'
+                                . Hubzero\Utility\Number::formatBytes($attachment->size()) . '</span>';
+                            $html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD')
+                                . '</span>';
                             $html .= '</p>';
                             $html .= '</a>';
                         }
                     } else {
-                        $html  = '<div class="attachment ' . Filesystem::extension($attachment->get('filename')) . '" title="' . $this->escape($attachment->get('description')) . '">';
-                        $html .= '<p class="attachment-description">' . $this->escape($attachment->get('description')) . '</p>';
+                        $html  = '<div class="attachment ' . Filesystem::extension($attachment->get('filename'))
+                            . '" title="' . $this->escape($attachment->get('description')) . '">';
+                        $html .= '<p class="attachment-description">' . $this->escape($attachment->get('description'))
+                            . '</p>';
                         $html .= '<p class="attachment-meta">';
-                        $html .= '<span class="attachment-size">' . $this->escape($attachment->get('filename')) . '</span>';
-                        $html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND') . '</span>';
+                        $html .= '<span class="attachment-size">' . $this->escape($attachment->get('filename'))
+                            . '</span>';
+                        $html .= '<span class="attachment-action">' . Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND')
+                            . '</span>';
                         $html .= '</p>';
                         $html .= '</div>';
                     }
@@ -273,7 +286,14 @@ if ($this->comment->isReported()) {
                                     <span class="label-text"><?= Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS') ?></span>
                                     <?php
                                         // Original Editor
-                                        echo $this->editor('fields[comment]', '', 35, 4, 'field_' . $this->comment->get('id') . '_comment', ['class' => 'minimal no-footer']);
+                                        echo $this->editor(
+                                            'fields[comment]',
+                                            '',
+                                            35,
+                                            4,
+                                            'field_' . $this->comment->get('id') . '_comment',
+                                            ['class' => 'minimal no-footer'],
+                                        );
                                     ?>
                                 </label>
                             </div>

@@ -316,7 +316,12 @@ foreach ($this->fields as $field) {
 
                             // User messaging
                             $messageuser = false;
-                            if ($messaging && $row->get('id') > 0 && $row->get('uidNumber') != User::get('id') && substr($row->get('email'), -8) != '@invalid') {
+                            if (
+                                $messaging
+                                && $row->get('id') > 0
+                                && $row->get('uidNumber') != User::get('id')
+                                && substr($row->get('email'), -8) != '@invalid'
+                            ) {
                                 switch ($this->config->get('user_messaging')) {
                                     case 1:
                                         // Get the groups of the profile

@@ -48,8 +48,11 @@ foreach ($authenticators as $a) {
         $html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(null, $returnQueryString);
         $login_provider_html .= is_array($html) ? implode("\n", $html) : $html;
     } else {
-        $login_provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $returnQueryString) . '">';
-        $login_provider_html .= '<div class="signin">' . Lang::txt('MOD_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
+        $login_provider_html .= '<a class="' . $a['name'] . ' account" href="'
+            . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name'] . $returnQueryString)
+            . '">';
+        $login_provider_html .= '<div class="signin">' . Lang::txt('MOD_LOGIN_SIGN_IN_WITH_METHOD', $a['display'])
+            . '</div>';
         $login_provider_html .= '</a>';
     }
 }

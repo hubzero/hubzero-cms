@@ -193,7 +193,12 @@ $now = Date::of('now')->toSql();
                             <label>
                                 <?php echo Lang::txt('COM_FORUM_FIELD_YOUR_TAGS'); ?>
                                 <?php
-                                    echo $this->autocompleter('tags', 'tags', $this->escape($this->thread->tags('string')), 'actags');
+                                    echo $this->autocompleter(
+                                        'tags',
+                                        'tags',
+                                        $this->escape($this->thread->tags('string')),
+                                        'actags',
+                                    );
                                 ?>
                             </label>
 

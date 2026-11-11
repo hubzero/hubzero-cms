@@ -43,7 +43,8 @@ if (count($this->addresses) < 1) {
         }
 
         //do we gave a city state and zip
-        $formattedAddresses .= $this->escape($address->addressCity) . ' ' . $this->escape($address->addressRegion) . ', ' . $this->escape($address->addressPostal) . '<br />';
+        $formattedAddresses .= $this->escape($address->addressCity) . ' ' . $this->escape($address->addressRegion)
+            . ', ' . $this->escape($address->addressPostal) . '<br />';
 
         //do we have a country && its not USA
         if (
@@ -56,8 +57,12 @@ if (count($this->addresses) < 1) {
         //do we want to display edit links
         if ($this->displayEditLinks) {
             $formattedAddresses .= '<span class="address-links">';
-            $formattedAddresses .= '<a class="edit edit-address" href="' . Route::url($this->profile->link() . '&active=profile&action=editaddress&addressid=' . $address->id) . '">' . Lang::txt('JACTION_EDIT') . '</a>';
-            $formattedAddresses .= ' | <button type="submit" form="hz-post-action" formaction="' . Route::url($this->profile->link() . '&active=profile&action=deleteaddress&addressid=' . $address->id) . '" class="delete delete-address">' . Lang::txt('JACTION_DELETE') . '</button>';
+            $formattedAddresses .= '<a class="edit edit-address" href="'
+                . Route::url($this->profile->link() . '&active=profile&action=editaddress&addressid=' . $address->id)
+                . '">' . Lang::txt('JACTION_EDIT') . '</a>';
+            $formattedAddresses .= ' | <button type="submit" form="hz-post-action" formaction="'
+                . Route::url($this->profile->link() . '&active=profile&action=deleteaddress&addressid=' . $address->id)
+                . '" class="delete delete-address">' . Lang::txt('JACTION_DELETE') . '</button>';
             $formattedAddresses .= '</span>';
         }
 

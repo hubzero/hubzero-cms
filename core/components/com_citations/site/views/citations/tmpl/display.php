@@ -23,10 +23,14 @@ $this
     <?php
     $citationLinks = [];
     if ($this->allow_import == 1 || ($this->allow_import == 2 && $this->isAdmin)) {
-        $citationLinks[] = '<li><a class="btn icon-add" href="' . Route::url('index.php?option=' . $this->option . '&task=add') . '">' . Lang::txt('COM_CITATIONS_SUBMIT_CITATION') . '</a></li>';
+        $citationLinks[] = '<li><a class="btn icon-add" href="'
+            . Route::url('index.php?option=' . $this->option . '&task=add') . '">'
+            . Lang::txt('COM_CITATIONS_SUBMIT_CITATION') . '</a></li>';
     }
     if ($this->allow_bulk_import == 1 || ($this->allow_bulk_import == 2 && $this->isAdmin)) {
-        $citationLinks[] = '<li><a class="btn icon-upload" href="' . Route::url('index.php?option=' . $this->option . '&task=import') . '">' . Lang::txt('COM_CITATIONS_IMPORT_CITATION') . '</a></li>';
+        $citationLinks[] = '<li><a class="btn icon-upload" href="'
+            . Route::url('index.php?option=' . $this->option . '&task=import') . '">'
+            . Lang::txt('COM_CITATIONS_IMPORT_CITATION') . '</a></li>';
     }
     if (!empty($citationLinks)) : ?>
     <div id="content-header-extra">
@@ -105,7 +109,8 @@ foreach ($yearlystats as $year => $amt) {
     $tr .= "\t\t\t" . '<th scope="row" class="textual-data">' . $year . '</th>' . "\n";
     $tr .= "\t\t\t" . '<td class="numerical-data">' . $amt['affiliate'] . '</td>' . "\n";
     $tr .= "\t\t\t" . '<td class="numerical-data">' . $amt['non-affiliate'] . '</td>' . "\n";
-    $tr .= "\t\t\t" . '<td class="numerical-data highlight">' . (intval($amt['affiliate']) + intval($amt['non-affiliate'])) . '</td>' . "\n";
+    $tr .= "\t\t\t" . '<td class="numerical-data highlight">'
+        . (intval($amt['affiliate']) + intval($amt['non-affiliate'])) . '</td>' . "\n";
     $tr .= "\t\t" . '</tr>' . "\n";
 
     $rows[] = $tr;
@@ -118,8 +123,10 @@ $html .= "\t" . '<caption>' . Lang::txt('COM_CITATIONS_TABLE_METRICS_YEAR') . '<
 $html .= "\t" . '<thead>' . "\n";
 $html .= "\t\t" . '<tr>' . "\n";
 $html .= "\t\t\t" . '<th scope="col" class="textual-data">' . Lang::txt('COM_CITATIONS_YEAR') . '</th>' . "\n";
-$html .= "\t\t\t" . '<th scope="col" class="numerical-data"><sup><a href="#fn-1">1</a></sup> ' . Lang::txt('COM_CITATIONS_AFFILIATED') . '</th>' . "\n";
-$html .= "\t\t\t" . '<th scope="col" class="numerical-data"><sup><a href="#fn-1">1</a></sup> ' . Lang::txt('COM_CITATIONS_NONAFFILIATED') . '</th>' . "\n";
+$html .= "\t\t\t" . '<th scope="col" class="numerical-data"><sup><a href="#fn-1">1</a></sup> '
+    . Lang::txt('COM_CITATIONS_AFFILIATED') . '</th>' . "\n";
+$html .= "\t\t\t" . '<th scope="col" class="numerical-data"><sup><a href="#fn-1">1</a></sup> '
+    . Lang::txt('COM_CITATIONS_NONAFFILIATED') . '</th>' . "\n";
 $html .= "\t\t\t" . '<th scope="col" class="numerical-data">' . Lang::txt('COM_CITATIONS_TOTAL') . '</th>' . "\n";
 $html .= "\t\t" . '</tr>' . "\n";
 $html .= "\t" . '</thead>' . "\n";
@@ -128,7 +135,8 @@ $html .= implode('', $rows);
 $html .= "\t" . '</tbody>' . "\n";
 $html .= "\t" . '<tfoot>' . "\n";
 $html .= "\t\t" . '<tr class="summary">' . "\n";
-$html .= "\t\t\t" . '<th scope="row" class="numerical-data" colspan="3">' . Lang::txt('COM_CITATIONS_TOTAL') . '</th>' . "\n";
+$html .= "\t\t\t" . '<th scope="row" class="numerical-data" colspan="3">' . Lang::txt('COM_CITATIONS_TOTAL') . '</th>'
+    . "\n";
 $html .= "\t\t\t" . '<td class="numerical-data highlight">' . $tot . '</td>' . "\n";
 $html .= "\t\t" . '</tr>' . "\n";
 $html .= "\t" . '</tfoot>' . "\n";
@@ -200,7 +208,8 @@ for ($i = 0, $n = count($data_arr['text']); $i < $n; $i++) {
     $tr .= "\t\t\t" . '<th scope="row" class="textual-data">' . $text . '</th>' . "\n";
     $tr .= "\t\t\t" . '<td class="numerical-data">' . "\n";
     $tr .= "\t\t\t\t" . '<div class="graph">' . "\n";
-    $tr .= "\t\t\t\t\t" . '<strong class="bar bar' . $i . ' ' . $tdclass . '"><span>' . $percent . '%</span></strong>' . "\n";
+    $tr .= "\t\t\t\t\t" . '<strong class="bar bar' . $i . ' ' . $tdclass . '"><span>' . $percent . '%</span></strong>'
+        . "\n";
     $tr .= "\t\t\t\t" . '</div>' . "\n";
     $tr .= "\t\t\t" . '</td>' . "\n";
     $tr .= "\t\t\t" . '<td class="numerical-data">' . $hits . '</td>' . "\n";

@@ -92,10 +92,12 @@ $this->css();
 
             if ($r['source_revision'] != $r['source_revision_curr']) {
                 if ($r['source_available']) {
-                    $file_extra = 'class="file-updated" title="' . Lang::txt('The file has changed, modified %s', $r['source_revision_date']) . '"';
+                    $file_extra = 'class="file-updated" title="'
+                        . Lang::txt('The file has changed, modified %s', $r['source_revision_date']) . '"';
                 } else {
                     $file_extra = 'class="file-deleted" title="' . Lang::txt('The file [%s] has been removed or renamed %s', $full_path, $r['source_revision_date']) . '"';
-                    $file_name = '<span style="color: #ddd; cursor: not-allowed;">' . $this->escape($r['source_file']) . '</span>';
+                    $file_name = '<span style="color: #ddd; cursor: not-allowed;">' . $this->escape($r['source_file'])
+                        . '</span>';
                     $recreate = '<span title="' . Lang::txt('The original file has been removed or renamed, please restore the file to enable this functionality') . '" style="color: #ddd; cursor: not-allowed;">' . Lang::txt('Recreate') . '<span>';
                 }
             }

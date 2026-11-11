@@ -75,13 +75,23 @@ $this->css('jquery.colpick.css', 'system');
 // Include media tracking
 if (isset($this->entityId) && isset($this->entityType)) {
     // Get tracking for this user for this resource
-    $tracking = Components\System\Models\Mediatracking::oneByUserAndObject($this->entityId, $this->entityType, User::get('id'));
+    $tracking = Components\System\Models\Mediatracking::oneByUserAndObject(
+        $this->entityId,
+        $this->entityType,
+        User::get('id'),
+    );
 
     // Check to see if we already have a time query param
     $hasTime = (Request::getString('time', '') != '') ? true : false;
 
     // Do we want to redirect user with time added to url
-    if (is_object($tracking) && !$hasTime && $tracking->current_position > 0 && $tracking->current_position != $tracking->object_duration && !Request::getInt('no_html', 0)) {
+    if (
+        is_object($tracking)
+        && !$hasTime
+        && $tracking->current_position > 0
+        && $tracking->current_position != $tracking->object_duration
+        && !Request::getInt('no_html', 0)
+    ) {
         $redirect = Request::current(true);
 
         // do we have tmpl=component in url?
@@ -351,7 +361,11 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                 <?php
                                     // Use thumb if possible
                                     $thumb = '';
-                                if (isset($slide->thumb) && $slide->thumb && file_exists($content_folder . DS . $slide->thumb)) {
+                                if (
+                                    isset($slide->thumb)
+                                    && $slide->thumb
+                                    && file_exists($content_folder . DS . $slide->thumb)
+                                ) {
                                     $thumb = $content_folder . DS . $slide->thumb;
                                 } elseif (!is_array($slide->media) && file_exists($content_folder . DS . $slide->media)) {
                                     $thumb = $content_folder . DS . $slide->media;

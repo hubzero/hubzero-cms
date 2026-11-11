@@ -53,7 +53,9 @@ $fmt = function ($bytes) use ($unitDiv, $unitLbl) {
     return number_format($bytes / $unitDiv, 1) . ' ' . $unitLbl;
 };
 
-$filerUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component');
+$filerUrl = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=filelist&tmpl=component',
+);
 $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=storage');
 ?>
 <header id="content-header">

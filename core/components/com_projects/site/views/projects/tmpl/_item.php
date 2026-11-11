@@ -126,7 +126,9 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
             <?php if ($this->row->groupOwner()) : ?>
                 <span class="project-owner owner-group icon-group tooltips" title="<?= $this->escape(Lang::txt('This project is owned by the %s group', $this->row->groupOwner('description'))) ?>">
                     <?php
-                        $_ownerTrunc = $this->escape(Hubzero\Utility\Str::truncate($this->row->groupOwner('description'), 25));
+                        $_ownerTrunc = $this->escape(
+                            Hubzero\Utility\Str::truncate($this->row->groupOwner('description'), 25),
+                        );
                         $_ownerCn = $this->escape($this->row->groupOwner('cn'));
                         // [a11y] aria-label must contain visible text (SC 2.5.3) and be unique (SC 2.4.4)
                         $_ownerLabel = $_ownerTrunc . ' (' . $_ownerCn . ')';
@@ -149,7 +151,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                     title="<?= $this->escape(Lang::txt('This project is owned by %s', $name)) ?>">
                     <?php
                     if ($owner->get('id') && in_array($owner->get('access'), User::getAuthorisedViewLevels())) :
-                        $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $owner->get('id')) . '">' . $this->escape($name) . '</a>';
+                        $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $owner->get('id')) . '">'
+                            . $this->escape($name) . '</a>';
                     endif;
 
                     echo $name;
@@ -162,7 +165,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                 echo '<span class="block owner-email">' . $this->escape($this->row->owner('email')) . '</span>';
 
                 if ($this->row->owner('phone')) :
-                    echo '<span class="block owner-telephone"> Tel.' . $this->escape($this->row->owner('phone')) . '</span>';
+                    echo '<span class="block owner-telephone"> Tel.' . $this->escape($this->row->owner('phone'))
+                        . '</span>';
                 endif;
             endif;
             ?>
@@ -190,7 +194,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                         endif;
 
                         if ($params->get('export_data') == 'yes') :
-                            $info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_EXPORT_CONTROLLED') . '</span>';
+                            $info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_EXPORT_CONTROLLED')
+                                . '</span>';
                         endif;
 
                         if ($params->get('irb_data') == 'yes') :
@@ -198,7 +203,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                         endif;
 
                         if ($params->get('restricted_data') == 'maybe' && $params->get('followup') == 'yes') :
-                            $info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_FOLLOW_UP_NECESSARY') . '</span>';
+                            $info .= '<span class="block">' . Lang::txt('COM_PROJECTS_SETUP_FOLLOW_UP_NECESSARY')
+                                . '</span>';
                         endif;
 
                         echo $info;
@@ -207,15 +213,20 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                             <div class="col span6">
                                 <?php
                                 if ($this->row->isActive()) :
-                                    echo '<span class="project-status active">' . Lang::txt('COM_PROJECTS_ACTIVE') . '</span>';
+                                    echo '<span class="project-status active">' . Lang::txt('COM_PROJECTS_ACTIVE')
+                                        . '</span>';
                                 elseif ($this->row->inSetup()) :
-                                        echo '<span class="project-status setup">' . Lang::txt('COM_PROJECTS_STATUS_SETUP') . '</span> ';
+                                        echo '<span class="project-status setup">'
+                                            . Lang::txt('COM_PROJECTS_STATUS_SETUP') . '</span> ';
                                 elseif ($this->row->isInactive()) :
-                                        echo '<span class="project-status inactive">' . Lang::txt('COM_PROJECTS_STATUS_INACTIVE') . '</span> ';
+                                        echo '<span class="project-status inactive">'
+                                            . Lang::txt('COM_PROJECTS_STATUS_INACTIVE') . '</span> ';
                                 elseif ($this->row->isArchived()) :
-                                        echo '<span class="project-status archived">' . Lang::txt('COM_PROJECTS_STATUS_ARCHIVED') . '</span> ';
+                                        echo '<span class="project-status archived">'
+                                            . Lang::txt('COM_PROJECTS_STATUS_ARCHIVED') . '</span> ';
                                 elseif ($this->row->isPending()) :
-                                        echo '<span class="project-status pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING') . '</span>';
+                                        echo '<span class="project-status pending">'
+                                            . Lang::txt('COM_PROJECTS_STATUS_PENDING') . '</span>';
                                 endif;
                                 ?>
                             </div>
@@ -224,8 +235,14 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                 $commentCount = 0;
 
                                 if ($this->row->get('admin_notes')) :
-                                    $commentCount = \Components\Projects\Helpers\Html::getAdminNoteCount($this->row->get('admin_notes'), 'sensitive');
-                                    echo \Components\Projects\Helpers\Html::getLastAdminNote($this->row->get('admin_notes'), 'sensitive');
+                                    $commentCount = \Components\Projects\Helpers\Html::getAdminNoteCount(
+                                        $this->row->get('admin_notes'),
+                                        'sensitive',
+                                    );
+                                    echo \Components\Projects\Helpers\Html::getLastAdminNote(
+                                        $this->row->get('admin_notes'),
+                                        'sensitive',
+                                    );
                                 endif;
 
                                 ?>
@@ -258,11 +275,15 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                     <td>
                                         <?php
                                         if (!$params->get('grant_approval') && $params->get('grant_status', 0) == 0) :
-                                            echo '<span class="project-grant-status pending">' . Lang::txt('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';
+                                            echo '<span class="project-grant-status pending">'
+                                                . Lang::txt('COM_PROJECTS_STATUS_PENDING_SPS') . '</span>';
                                         elseif ($params->get('grant_approval') || $params->get('grant_status') == 1) :
-                                                echo '<span class="project-grant-status active">' . Lang::txt('COM_PROJECTS_APPROVAL_CODE') . ': ' . $params->get('grant_approval', '(N/A)') . '</span>';
+                                                echo '<span class="project-grant-status active">'
+                                                    . Lang::txt('COM_PROJECTS_APPROVAL_CODE') . ': '
+                                                    . $params->get('grant_approval', '(N/A)') . '</span>';
                                         elseif ($params->get('grant_status') == '2') :
-                                                echo '<span class="project-grant-status rejected">' . Lang::txt('COM_PROJECTS_STATUS_SPS_REJECTED') . '</span>';
+                                                echo '<span class="project-grant-status rejected">'
+                                                    . Lang::txt('COM_PROJECTS_STATUS_SPS_REJECTED') . '</span>';
                                         endif;
                                         ?>
 

@@ -104,7 +104,8 @@ if (document.body && document.body.id === 'component-body') {
                 <?php
         endforeach;
     else :
-            echo '<p class="warning">' . Lang::txt('COM_CONFIG_ERROR_COMPONENT_CONFIG_NOT_FOUND', $this->component->option) . '</p>';
+            echo '<p class="warning">'
+                . Lang::txt('COM_CONFIG_ERROR_COMPONENT_CONFIG_NOT_FOUND', $this->component->option) . '</p>';
     endif;
 
         echo Html::tabs('end');

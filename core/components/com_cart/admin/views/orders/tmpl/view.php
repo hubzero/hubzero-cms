@@ -101,9 +101,12 @@ $this
                 <p>
                     <strong>Ship to:</strong><br>
                     <?php
-                        echo $this->escape($this->tInfo->tiShippingToFirst) . ' ' . $this->escape($this->tInfo->tiShippingToLast) . '<br>';
+                        echo $this->escape($this->tInfo->tiShippingToFirst) . ' '
+                            . $this->escape($this->tInfo->tiShippingToLast) . '<br>';
                         echo $this->escape($this->tInfo->tiShippingAddress) . '<br>';
-                        echo $this->escape($this->tInfo->tiShippingCity) . ', ' . $this->escape($this->tInfo->tiShippingState) . ' ' . $this->escape($this->tInfo->tiShippingZip) . '<br>';
+                        echo $this->escape($this->tInfo->tiShippingCity) . ', '
+                            . $this->escape($this->tInfo->tiShippingState) . ' '
+                            . $this->escape($this->tInfo->tiShippingZip) . '<br>';
                     ?>
                 </p>
 
@@ -125,7 +128,8 @@ $this
 
                 <?php
                 if (!empty($this->tInfo->tiPaymentDetails)) {
-                    echo '<p><strong>Payment details:</strong><br>' . $this->escape($this->tInfo->tiPaymentDetails) . '</p>';
+                    echo '<p><strong>Payment details:</strong><br>' . $this->escape($this->tInfo->tiPaymentDetails)
+                        . '</p>';
                 }
 
                 ?>
@@ -162,7 +166,8 @@ $this
                             $product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
                             $product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
                         } else {
-                            $product = $this->escape(stripslashes(isset($itemInfo->pName) ? $itemInfo->pName : 'N/A')) . ', ' . $this->escape(stripslashes(isset($itemInfo->sSku) ? $itemInfo->sSku : 'N/A'));
+                            $product = $this->escape(stripslashes(isset($itemInfo->pName) ? $itemInfo->pName : 'N/A'))
+                                . ', ' . $this->escape(stripslashes(isset($itemInfo->sSku) ? $itemInfo->sSku : 'N/A'));
                             $product .= ' <br><em>&nbsp;&mdash;&nbsp;Item is no longer available</em>';
                         }
                         ?>
@@ -236,7 +241,9 @@ $this
         // let's show the logs
         foreach ($this->log as $log) {
             echo '<article>';
-            $header = '<header>' . $this->escape($log->description) . ' on ' . date("F j, Y, g:i a", strtotime($log->created)) . ' by ' . $this->escape($log->user) . ' [' . (int) $log->created_by . ']</header>';
+            $header = '<header>' . $this->escape($log->description) . ' on '
+                . date("F j, Y, g:i a", strtotime($log->created)) . ' by ' . $this->escape($log->user) . ' ['
+                . (int) $log->created_by . ']</header>';
             echo $header;
 
             foreach ($log->details as $change) {

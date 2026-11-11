@@ -20,7 +20,11 @@ Html::behavior('framework');
 
 Toolbar::title(Lang::txt('COM_MESSAGES_VIEW_PRIVATE_MESSAGE'), 'inbox.png');
 $sender = User::getInstance($this->item->user_id_from);
-if ($sender->authorise('core.admin') || $sender->authorise('core.manage', 'com_messages') && $sender->authorise('core.login.admin')) {
+if (
+    $sender->authorise('core.admin')
+    || $sender->authorise('core.manage', 'com_messages')
+    && $sender->authorise('core.login.admin')
+) {
     Toolbar::custom('reply', 'restore.png', 'restore_f2.png', 'COM_MESSAGES_TOOLBAR_REPLY', false);
 }
 Toolbar::cancel('cancel');

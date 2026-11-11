@@ -147,7 +147,8 @@ $this
                                 $who = '<a href="' . Route::url($row->creator()->link()) . '">' . $name . '</a>';
                             }
 
-                            $where = '<a href="' . Route::url($row->link()) . '">' . $this->escape(stripslashes($row->get('title'))) . '</a>';
+                            $where = '<a href="' . Route::url($row->link()) . '">'
+                                . $this->escape(stripslashes($row->get('title'))) . '</a>';
 
                             echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ONTO', $who, $where);
                             ?>

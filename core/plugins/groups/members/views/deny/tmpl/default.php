@@ -42,7 +42,8 @@ $formUrl = Route::url(
         </label>
 
         <?php
-        $manageUrl = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=members&action=denyresponses';
+        $manageUrl = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')
+            . '&active=members&action=denyresponses';
         foreach ($this->users as $user) {
             $manageUrl .= '&users[]=' . (int) $user;
         }

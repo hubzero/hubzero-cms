@@ -374,7 +374,14 @@ $first = $this->archive
                         <label for="commentcontent">
                             Your <?php echo ($replyto->get('id')) ? 'reply' : 'comments'; ?>:
                             <?php
-                                echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', ['class' => 'minimal no-footer']);
+                                echo $this->editor(
+                                    'comment[content]',
+                                    '',
+                                    40,
+                                    15,
+                                    'commentcontent',
+                                    ['class' => 'minimal no-footer'],
+                                );
                             ?>
                         </label>
                     <?php } else { ?>

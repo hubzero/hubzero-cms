@@ -26,12 +26,18 @@ if ($group->get('published') == 1 && !User::isGuest()) {
 
     if (in_array(User::get('id'), $members)) {
         $status  = 'member';
-        $options = '<button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') . '" class="cancel tooltips" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</button>';
+        $options = '<button type="submit" form="hz-post-action" formaction="'
+            . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel')
+            . '" class="cancel tooltips" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">'
+            . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</button>';
 
         $managers = $group->get('managers');
         if (in_array(User::get('id'), $managers)) {
             $status  = 'manager';
-            $options = ' <a class="customize tooltips" href="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=edit') . '" title="' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '</a>';
+            $options = ' <a class="customize tooltips" href="'
+                . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=edit')
+                . '" title="' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT')
+                . '</a>';
         }
     } else {
         $invitees   = $group->get('invitees');
@@ -39,10 +45,16 @@ if ($group->get('published') == 1 && !User::isGuest()) {
 
         if (in_array(User::get('id'), $invitees)) {
             $status  = 'invitee';
-            $options = ' <button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') . '" class="cancel tooltips" title="' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '</button>';
+            $options = ' <button type="submit" form="hz-post-action" formaction="'
+                . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel')
+                . '" class="cancel tooltips" title="' . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '">'
+                . Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') . '</button>';
         } elseif (in_array(User::get('id'), $applicants)) {
             $status  = 'pending';
-            $options = '<button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel') . '" class="cancel tooltips" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</button>';
+            $options = '<button type="submit" form="hz-post-action" formaction="'
+                . Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=cancel')
+                . '" class="cancel tooltips" title="' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '">'
+                . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</button>';
         }
     }
 }
@@ -150,7 +162,10 @@ $published = ($group->get('published')) ? true : false;
                                     if (!$activity->get('id')) {
                                         $activity->set('created', $group->get('created'));
                                     }
-                                    if (!$activity->get('created') || $activity->get('created') == '0000-00-00 00:00:00') {
+                                    if (
+                                        !$activity->get('created')
+                                        || $activity->get('created') == '0000-00-00 00:00:00'
+                                    ) {
                                         echo Lang::txt('COM_GROUPS_UNKNOWN');
                                     } else {
                                         $dt = Date::of($activity->get('created'));
@@ -192,8 +207,12 @@ $published = ($group->get('published')) ? true : false;
                             </div>
                             <div class="join-group">
                                 <?php
-                                $joinUrl   = Route::url('index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join');
-                                $joinLabel = Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': ' . $this->escape(stripslashes($group->get('description'))) . ' (' . $this->escape($group->get('cn')) . ')';
+                                $joinUrl   = Route::url(
+                                    'index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=join',
+                                );
+                                $joinLabel = Lang::txt('COM_GROUPS_TOOLBAR_JOIN') . ': '
+                                    . $this->escape(stripslashes($group->get('description'))) . ' ('
+                                    . $this->escape($group->get('cn')) . ')';
                                 ?>
                                 <?php if (!$group->get('join_policy')) : ?>
                                     <button type="submit" form="hz-post-action" formaction="<?= $joinUrl ?>" class="btn btn-success" aria-label="<?= $joinLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></button>

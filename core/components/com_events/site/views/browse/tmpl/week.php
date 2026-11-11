@@ -156,7 +156,8 @@ $this->css();
                         $prev_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
                     } else {
                         $prev = "javascript:void(0);";
-                        $prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
+                        $prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' '
+                            . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
                     }
                     //get a DateTime for the first day of the next year and see if there's an event after
                     $this_datetime->add(new DateInterval("P1Y"));
@@ -165,7 +166,8 @@ $this->css();
                         $next_text = Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
                     } else {
                         $next = "javascript:void(0);";
-                        $next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
+                        $next_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' '
+                            . Lang::txt('EVENTS_CAL_LANG_NEXTYEAR');
                     }
 
                     ?>
@@ -204,24 +206,32 @@ $this->css();
                     $next_week->addDays(+7);
 
                     //$this->week is the last day shown; get a DateTime for the first day of this week and of the next
-                    $next_week_dt = new DateTime($this->week['year'] . '-' . $this->week['month'] . '-' . $this->week['day']);
+                    $next_week_dt = new DateTime(
+                        $this->week['year'] . '-' . $this->week['month'] . '-' . $this->week['day'],
+                    );
                     $next_week_dt->add(new DateInterval("P1D"));
                     $this_week_dt = clone($next_week_dt);
                     $this_week_dt->sub(new DateInterval("P7D"));
 
                     if ($this_week_dt > $first_event_time) {
-                        $prev_week_url = Route::url('index.php?option=' . $this->option . '&' . $prev_week->toDateURL($this->task));
+                        $prev_week_url = Route::url(
+                            'index.php?option=' . $this->option . '&' . $prev_week->toDateURL($this->task),
+                        );
                         $prev_week_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSWEEK');
                     } else {
                         $prev_week_url = '';
-                        $prev_week_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSWEEK');
+                        $prev_week_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' '
+                            . Lang::txt('EVENTS_CAL_LANG_PREVIOUSWEEK');
                     }
                     if ($next_week_dt <= $last_event_time) {
-                        $next_week_url = Route::url('index.php?option=' . $this->option . '&' . $next_week->toDateURL($this->task));
+                        $next_week_url = Route::url(
+                            'index.php?option=' . $this->option . '&' . $next_week->toDateURL($this->task),
+                        );
                         $next_week_text = Lang::txt('EVENTS_CAL_LANG_NEXTWEEK');
                     } else {
                         $next_week_url = '';
-                        $next_week_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_NEXTWEEK');
+                        $next_week_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' '
+                            . Lang::txt('EVENTS_CAL_LANG_NEXTWEEK');
                     }
                     ?>
                     <?php if ($prev_week_url) { ?>

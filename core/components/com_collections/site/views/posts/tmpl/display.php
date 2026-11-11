@@ -136,10 +136,13 @@ if (!$no_html) {
                             <?php
                             $who = $name;
                             if (in_array($this->post->creator()->get('access'), User::getAuthorisedViewLevels())) {
-                                $who = '<a href="' . Route::url($this->post->creator()->link() . '&active=collections') . '" aria-label="' . Lang::txt('COM_COLLECTIONS_VIEW_COLLECTIONS_BY', $name) . '">' . $name . '</a>';
+                                $who = '<a href="' . Route::url($this->post->creator()->link() . '&active=collections')
+                                    . '" aria-label="' . Lang::txt('COM_COLLECTIONS_VIEW_COLLECTIONS_BY', $name) . '">'
+                                    . $name . '</a>';
                             }
 
-                            $where = '<a href="' . Route::url($this->collection->link()) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
+                            $where = '<a href="' . Route::url($this->collection->link()) . '">'
+                                . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
 
                             echo Lang::txt('COM_COLLECTIONS_ONTO', $who, $where);
                             ?>

@@ -160,7 +160,10 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                 <label for="field_newgroups">
                     <?php echo Lang::txt('COM_WISHLIST_SETTINGS_ADD_GROUPS'); ?>:
                     <?php
-                    $mc = Event::trigger('hubzero.onGetMultiEntry', [['groups', 'newgroups', 'field_newgroups', '', '']]);
+                    $mc = Event::trigger(
+                        'hubzero.onGetMultiEntry',
+                        [['groups', 'newgroups', 'field_newgroups', '', '']],
+                    );
                     if (count($mc) > 0) {
                         echo $mc[0];
                     } else { ?>
@@ -226,7 +229,10 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                     <label for="field_newowners">
                         <?php echo Lang::txt('COM_WISHLIST_ADD_IND'); ?>:
                         <?php
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'newowners', 'field_newowners', '', '']]);
+                        $mc = Event::trigger(
+                            'hubzero.onGetMultiEntry',
+                            [['members', 'newowners', 'field_newowners', '', '']],
+                        );
                         if (count($mc) > 0) {
                             echo $mc[0];
                         } else { ?>
@@ -290,7 +296,10 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                         <label for="field_newadvisory">
                             <?php echo Lang::txt('COM_WISHLIST_ADD_ADVISORY_MEMBERS'); ?>:
                             <?php
-                            $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'newadvisory', 'field_newadvisory', '', '']]);
+                            $mc = Event::trigger(
+                                'hubzero.onGetMultiEntry',
+                                [['members', 'newadvisory', 'field_newadvisory', '', '']],
+                            );
                             if (count($mc) > 0) {
                                 echo $mc[0];
                             } else { ?>

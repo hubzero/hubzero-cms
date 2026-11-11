@@ -61,9 +61,15 @@ foreach ($this->notifications as $notification) {
                 <div class="container">
                     <nav class="entries-filters" aria-label="<?= Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS') ?>">
                         <?php
-                            $fltrs  = ($this->filters['index']) ? '&index=' . $this->escape($this->filters['index']) : '';
-                            $fltrs .= ($this->filters['policy']) ? '&policy=' . $this->escape($this->filters['policy']) : '';
-                            $fltrs .= ($this->filters['search']) ? '&search=' . $this->escape($this->filters['search']) : '';
+                            $fltrs  = ($this->filters['index'])
+                                ? '&index=' . $this->escape($this->filters['index'])
+                                : '';
+                            $fltrs .= ($this->filters['policy'])
+                                ? '&policy=' . $this->escape($this->filters['policy'])
+                                : '';
+                            $fltrs .= ($this->filters['search'])
+                                ? '&search=' . $this->escape($this->filters['search'])
+                                : '';
                         ?>
                         <ul class="entries-menu order-options" data-label="<?= Lang::txt('COM_GROUPS_BROWSE_SORT') ?>">
                             <li><a class="sort-title<?= ($this->filters['sortby'] == 'title') ? ' active' : '' ?>" href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $fltrs) ?>" title="<?= Lang::txt('COM_GROUPS_BROWSE_SORT_BY_TITLE') ?>" rel="nofollow"><?= Lang::txt('COM_GROUPS_GROUP_TITLE') ?></a></li>
@@ -71,8 +77,12 @@ foreach ($this->notifications as $notification) {
                         </ul>
                         <?php
                         $fltrs  = ($this->filters['index']) ? '&index=' . $this->escape($this->filters['index']) : '';
-                        $fltrs .= ($this->filters['sortby']) ? '&sortby=' . $this->escape($this->filters['sortby']) : '';
-                        $fltrs .= ($this->filters['search']) ? '&search=' . $this->escape($this->filters['search']) : '';
+                        $fltrs .= ($this->filters['sortby'])
+                            ? '&sortby=' . $this->escape($this->filters['sortby'])
+                            : '';
+                        $fltrs .= ($this->filters['search'])
+                            ? '&search=' . $this->escape($this->filters['search'])
+                            : '';
                         ?>
                         <ul class="entries-menu filter-options" data-label="<?= Lang::txt('COM_GROUPS_BROWSE_SHOW') ?>">
                             <li>

@@ -26,7 +26,8 @@ if (User::isGuest()) {
 // Setup Google Authenticator, call the google_authentictor script
 $username = User::get('username');
 $user_id = User::get('id');
-$cmd = '/usr/share/adm/scripts/google-authenticator-setup.sh ' . escapeshellarg($username) . ' ' . escapeshellarg((string) $user_id);
+$cmd = '/usr/share/adm/scripts/google-authenticator-setup.sh ' . escapeshellarg($username) . ' '
+    . escapeshellarg((string) $user_id);
 exec($cmd, $exec_response);
 
 // The script writes the factor row; without it there is nothing to show

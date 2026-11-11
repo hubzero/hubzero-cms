@@ -84,7 +84,8 @@ Toolbar::cancel();
                     <td>
                         <?php
                         if (!empty($row->dietary_needs)) {
-                            echo Lang::txt('COM_EVENTS_RESPONDANT_DIETARY_NEEDS', $this->escape($row->dietary_needs)) . '<br />';
+                            echo Lang::txt('COM_EVENTS_RESPONDANT_DIETARY_NEEDS', $this->escape($row->dietary_needs))
+                                . '<br />';
                         }
                         if ($row->disability_needs) {
                             echo Lang::txt('COM_EVENTS_RESPONDANT_DISABILITY_REQUESTED');

@@ -98,9 +98,12 @@ $this
                 <p>
                     <strong>Ship to:</strong><br>
                     <?php
-                        echo $this->escape($this->tInfo->tiShippingToFirst) . ' ' . $this->escape($this->tInfo->tiShippingToLast) . '<br>';
+                        echo $this->escape($this->tInfo->tiShippingToFirst) . ' '
+                            . $this->escape($this->tInfo->tiShippingToLast) . '<br>';
                         echo $this->escape($this->tInfo->tiShippingAddress) . '<br>';
-                        echo $this->escape($this->tInfo->tiShippingCity) . ', ' . $this->escape($this->tInfo->tiShippingState) . ' ' . $this->escape($this->tInfo->tiShippingZip) . '<br>';
+                        echo $this->escape($this->tInfo->tiShippingCity) . ', '
+                            . $this->escape($this->tInfo->tiShippingState) . ' '
+                            . $this->escape($this->tInfo->tiShippingZip) . '<br>';
                     ?>
                 </p>
 
@@ -159,7 +162,8 @@ $this
                                 $product = '<a href="' . Route::url('index.php?option=com_storefront&controller=products&task=edit&id=' . $itemInfo->pId) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->pName)) . '</a>';
                                 $product .= ', ' . '<a href="' . Route::url('index.php?option=com_storefront&controller=skus&task=edit&id=' . $itemInfo->sId) . '" target="_blank" rel="noopener">' . $this->escape(stripslashes($itemInfo->sSku)) . '</a>';
                             } else {
-                                $product = $this->escape(stripslashes($itemInfo->pName)) . ', ' . $this->escape(stripslashes($itemInfo->sSku));
+                                $product = $this->escape(stripslashes($itemInfo->pName)) . ', '
+                                    . $this->escape(stripslashes($itemInfo->sSku));
                                 $product .= ' <br><em>&nbsp;&mdash;&nbsp;Item is no longer available</em>';
                             }
                             ?>
@@ -215,7 +219,8 @@ $this
                 echo '<p>';
                 echo $note['label'];
                 if ($note['object'] == 'transactionItem') {
-                    echo '<textarea rows="6" name="checkoutNotes[' . $this->escape($note['objectId']) . ']">' . $this->escape($note['notes']) . '</textarea>';
+                    echo '<textarea rows="6" name="checkoutNotes[' . $this->escape($note['objectId']) . ']">'
+                        . $this->escape($note['notes']) . '</textarea>';
                 } elseif ($note['object'] == 'transaction') {
                     echo '<textarea rows="6" name="tiNotes">' . $this->escape($note['notes']) . '</textarea>';
                 }

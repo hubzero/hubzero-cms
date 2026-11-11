@@ -73,7 +73,9 @@ $this
                     <th colspan="6"><?php echo Lang::txt('COM_CART_ORDERS_FOR'); ?>: <?php
                         $user = User::getInstance($this->filters['uidNumber']);
 
-                        echo ($user->get('id')) ? $this->escape($user->get('name') . ' (' . $user->get('username') . ')') : Lang::txt('COM_CART_USER_ID') . ': ' . (int) $this->filters['uidNumber'];
+                        echo ($user->get('id'))
+                            ? $this->escape($user->get('name') . ' (' . $user->get('username') . ')')
+                            : Lang::txt('COM_CART_USER_ID') . ': ' . (int) $this->filters['uidNumber'];
                     ?>
                         <button type="button"
                             id="filter_uidNumber-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>

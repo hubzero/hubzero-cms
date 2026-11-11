@@ -41,7 +41,8 @@ $this->css();
             if (!$row->get('anonymous')) {
                 $user = User::getInstance($row->get('created_by'));
                 if (is_object($user)) {
-                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $user->get('id')) . '">' . $this->escape(stripslashes($user->get('name'))) . '</a>';
+                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $user->get('id')) . '">'
+                        . $this->escape(stripslashes($user->get('name'))) . '</a>';
                 } else {
                     $name = Lang::txt('PLG_PUBLICATION_QUESTIONS_UNKNOWN');
                 }

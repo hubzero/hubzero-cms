@@ -137,16 +137,20 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                     $times = '';
                     if (isset($row->publish_up)) {
                         if (!$row->publish_up || $row->publish_up == '0000-00-00 00:00:00') {
-                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_ALWAYS') . '<br />';
+                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : '
+                                . Lang::txt('COM_EVENTS_CAL_LANG_ALWAYS') . '<br />';
                         } else {
-                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_up)) . '<br />';
+                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_FROM') . ' : '
+                                . date('Y-m-d H:i:s', strtotime($row->publish_up)) . '<br />';
                         }
                     }
                     if (isset($row->publish_down)) {
                         if (!$row->publish_down || $row->publish_down == '0000-00-00 00:00:00') {
-                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_TO') . ' : ' . Lang::txt('COM_EVENTS_CAL_LANG_NEVER') . '<br />';
+                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_TO') . ' : '
+                                . Lang::txt('COM_EVENTS_CAL_LANG_NEVER') . '<br />';
                         } else {
-                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_TO') . ' : ' . date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';
+                            $times .= Lang::txt('COM_EVENTS_CAL_LANG_TO') . ' : '
+                                . date('Y-m-d H:i:s', strtotime($row->publish_down)) . '<br />';
                         }
                     }
 
@@ -167,7 +171,11 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                         <?php
                             $group = \Hubzero\User\Group::getInstance($row->scope_id);
                         if (is_object($group)) {
-                            echo Lang::txt('COM_EVENTS_EVENT_GROUP', Route::url('index.php?option=com_events&group_id=' . $group->get('gidNumber')), $this->escape($group->get('description')));
+                            echo Lang::txt(
+                                'COM_EVENTS_EVENT_GROUP',
+                                Route::url('index.php?option=com_events&group_id=' . $group->get('gidNumber')),
+                                $this->escape($group->get('description')),
+                            );
                         } else {
                             echo Lang::txt('COM_EVENTS_EVENT_GROUP_NOT_FOUND', $row->scope_id);
                         }

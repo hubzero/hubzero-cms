@@ -47,9 +47,14 @@ $this
             $html  = '<h3>' . $this->escape(stripslashes($this->row->title));
             if ($this->auth) {
                 $html .= '&nbsp;&nbsp;';
-                $html .= '<a class="edit" href="' . Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id) . '" title="' . Lang::txt('JACTION_EDIT') . '">' . strtolower(Lang::txt('JACTION_EDIT')) . '</a>' . "\n";
+                $html .= '<a class="edit" href="'
+                    . Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id) . '" title="'
+                    . Lang::txt('JACTION_EDIT') . '">' . strtolower(Lang::txt('JACTION_EDIT')) . '</a>' . "\n";
                 $html .= '&nbsp;&nbsp;' . "\n";
-                $html .= '<button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id) . '" class="delete" title="' . Lang::txt('JACTION_DELETE') . '">' . strtolower(Lang::txt('JACTION_DELETE')) . '</button>' . "\n";
+                $html .= '<button type="submit" form="hz-post-action" formaction="'
+                    . Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id)
+                    . '" class="delete" title="' . Lang::txt('JACTION_DELETE') . '">'
+                    . strtolower(Lang::txt('JACTION_DELETE')) . '</button>' . "\n";
             }
             $html .= '</h3>' . "\n";
 
@@ -59,7 +64,9 @@ $this
             if ($this->page->alias == '') {
                 $html .= ' class="active"';
             }
-            $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id) . '"><span>' . Lang::txt('EVENTS_OVERVIEW') . '</span></a></li>' . "\n";
+            $html .= '><a class="tab" href="'
+                . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id) . '"><span>'
+                . Lang::txt('EVENTS_OVERVIEW') . '</span></a></li>' . "\n";
             if ($this->pages) {
                 foreach ($this->pages as $p) {
                     $html .= "\t" . '<li';
@@ -69,7 +76,11 @@ $this
                     $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&page=' . $p->alias) . '"><span>' . trim(stripslashes($p->title)) . '</span></a></li>' . "\n";
                 }
             }
-            if ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00' && strtotime($this->row->registerby) >= time()) {
+            if (
+                $this->row->registerby
+                && $this->row->registerby != '0000-00-00 00:00:00'
+                && strtotime($this->row->registerby) >= time()
+            ) {
                 $html .= "\t" . '<li';
                 if ($this->page->alias == 'register') {
                     $html .= ' class="active"';
@@ -81,7 +92,9 @@ $this
             $html .= '</div>' . "\n";
 
             if ($this->page->alias != '') {
-                $html .= (trim($this->page->pagetext)) ? stripslashes($this->page->pagetext) : '<p class="warning">' . Lang::txt('EVENTS_NO_INFO_AVAILABLE') . '</p>';
+                $html .= (trim($this->page->pagetext))
+                    ? stripslashes($this->page->pagetext)
+                    : '<p class="warning">' . Lang::txt('EVENTS_NO_INFO_AVAILABLE') . '</p>';
             } else {
                 $user = User::getInstance($this->row->created_by);
 
@@ -90,7 +103,9 @@ $this
                 } else {
                     $name = Lang::txt('EVENTS_CAL_LANG_UNKNOWN');
                 }
-                $category = (isset($this->categories[$this->row->catid])) ? $this->categories[$this->row->catid] : 'N/A';
+                $category = (isset($this->categories[$this->row->catid]))
+                    ? $this->categories[$this->row->catid]
+                    : 'N/A';
                 $html .= '<table id="event-info">' . "\n";
                 $html .= ' <tbody>' . "\n";
                 $html .= '  <tr>' . "\n";
@@ -111,7 +126,9 @@ $this
                     $this->row->start_time = implode(':', $ts);
                     $this->row->start_time .= ' <small>PM</small>';
                 } else {
-                    $this->row->start_time .= (intval($ts[0]) == 12) ? ' <small>' . Lang::txt('EVENTS_NOON') . '</small>' : ' <small>AM</small>';
+                    $this->row->start_time .= (intval($ts[0]) == 12)
+                        ? ' <small>' . Lang::txt('EVENTS_NOON') . '</small>'
+                        : ' <small>AM</small>';
                 }
                 $te = explode(':', $this->row->stop_time);
                 if (intval($te[0]) > 12) {
@@ -119,14 +136,18 @@ $this
                     $this->row->stop_time = implode(':', $te);
                     $this->row->stop_time .= ' <small>PM</small>';
                 } else {
-                    $this->row->stop_time .= (intval($te[0]) == 12) ? ' <small>' . Lang::txt('EVENTS_NOON') . '</small>' : ' <small>AM</small>';
+                    $this->row->stop_time .= (intval($te[0]) == 12)
+                        ? ' <small>' . Lang::txt('EVENTS_NOON') . '</small>'
+                        : ' <small>AM</small>';
                 }
 
                 // Times are stored in UTC. Display in the event's own time zone,
                 // always labeled with the zone abbreviation (T).
                 $publish_up   = $this->row->publish_up;
                 $publish_down = $this->row->publish_down;
-                $event_tz     = (isset($this->row->time_zone) && $this->row->time_zone != '') ? $this->row->time_zone : \Config::get('offset');
+                $event_tz     = (isset($this->row->time_zone) && $this->row->time_zone != '')
+                    ? $this->row->time_zone
+                    : \Config::get('offset');
 
                 $startDay = Date::of($publish_up)->toTimeZone($event_tz, 'Y-m-d');
                 $endDay   = Date::of($publish_down)->toTimeZone($event_tz, 'Y-m-d');
@@ -166,7 +187,8 @@ $this
                 if (trim($this->row->extra_info)) {
                     $html .= '  <tr>' . "\n";
                     $html .= '   <th scope="row">' . Lang::txt('EVENTS_CAL_LANG_EVENT_EXTRA') . ':</th>' . "\n";
-                    $html .= '   <td><a href="' . htmlentities($this->row->extra_info) . '">' . htmlentities($this->row->extra_info) . '</a></td>' . "\n";
+                    $html .= '   <td><a href="' . htmlentities($this->row->extra_info) . '">'
+                        . htmlentities($this->row->extra_info) . '</a></td>' . "\n";
                     $html .= '  </tr>' . "\n";
                 }
                 if ($this->fields) {

@@ -56,7 +56,11 @@ if ($this->row->log->get('created_by') == User::get('id')) {
         $name = '<a href="' . Route::url($creator->link()) . '">' . $name . '</a>';
     }
 
-    if (isset($this->online) && !$this->row->log->get('anonymous') && in_array($this->row->log->get('created_by'), $this->online)) {
+    if (
+        isset($this->online)
+        && !$this->row->log->get('anonymous')
+        && in_array($this->row->log->get('created_by'), $this->online)
+    ) {
         $online = true;
     }
 }

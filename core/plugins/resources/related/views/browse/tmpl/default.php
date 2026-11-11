@@ -30,7 +30,9 @@ defined('_HZEXEC_') or die();
                 }
             } else {
                 if ($line->group_cn != '' && $line->scope != '') {
-                    $sef = Route::url('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias);
+                    $sef = Route::url(
+                        'index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias,
+                    );
                 } else {
                     $sef = Route::url('index.php?option=com_wiki&scope=' . $line->scope . '&pagename=' . $line->alias);
                 }

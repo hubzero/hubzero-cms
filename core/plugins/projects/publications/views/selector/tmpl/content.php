@@ -108,7 +108,8 @@ $pa = new \Components\Publications\Tables\Author($database);
                     <p class="details">
                         <?php
                         if ($authors) {
-                            echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS_LIST') . ': ' . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
+                            echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_AUTHORS_LIST') . ': '
+                                . \Components\Publications\Helpers\Html::showContributors($authors, false, true);
                         }
                         ?>
                     </p>

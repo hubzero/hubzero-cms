@@ -346,7 +346,10 @@ $this
                 $hubShortURL = rtrim(str_replace('https://', '', Request::base()), '/'); //$hubShortURL;
 
                 // get tool access text
-                $toolaccess = \Components\Tools\Helpers\Html::getToolAccess($this->status['exec'], $this->status['membergroups']);
+                $toolaccess = \Components\Tools\Helpers\Html::getToolAccess(
+                    $this->status['exec'],
+                    $this->status['membergroups'],
+                );
                 $live_site = rtrim(Request::base(), '/');
                 $developer_url = $live_site = "https://" . preg_replace('#^(https://|http://)#', '', $live_site);
 
@@ -358,8 +361,14 @@ $this
                 $dev_suffix     = $this->config->get('dev_suffix', '_dev');
 
                 // set common paths
-                $this->statuspath =  Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']);
-                $testpath = Route::url('index.php?option=' . $this->option . '&controller=sessions&task=invoke&app=' . $this->status['toolname'] . '&version=test');
+                $this->statuspath = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='
+                        . $this->status['toolname'],
+                );
+                $testpath = Route::url(
+                    'index.php?option=' . $this->option . '&controller=sessions&task=invoke&app='
+                        . $this->status['toolname'] . '&version=test',
+                );
 
                 switch ($this->status['state']) {
                     //  registered

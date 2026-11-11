@@ -91,19 +91,29 @@ defined('_HZEXEC_') or die();
 
                 // Determine expiration date
                 if ($thissub) {
-                    $length = $this->subscription->status == 0 ? $this->subscription->pendingunits : $this->subscription->units;
-                    $expires  = $this->subscription->expires > $now && $this->subscription->status == 1 ? '<p class="yes">' : '<p class="no">';
-                    $expires .= Lang::txt('COM_JOBS_YOUR') . ' ' . $length . '-' . $currentService->unitmeasure . ' ' . Lang::txt('COM_JOBS_SUBSCRIPTION') . ' ';
+                    $length = $this->subscription->status == 0
+                        ? $this->subscription->pendingunits
+                        : $this->subscription->units;
+                    $expires  = $this->subscription->expires > $now && $this->subscription->status == 1
+                        ? '<p class="yes">'
+                        : '<p class="no">';
+                    $expires .= Lang::txt('COM_JOBS_YOUR') . ' ' . $length . '-' . $currentService->unitmeasure . ' '
+                        . Lang::txt('COM_JOBS_SUBSCRIPTION') . ' ';
                     if ($this->subscription->status == 1) {
-                        $expires .= $this->subscription->expires > $now ? strtolower(Lang::txt('COM_JOBS_SUBSCRIPTION_STATUS_EXPIRES')) : strtolower(Lang::txt('COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED'));
-                        $expires .= ' ' . Lang::txt('COM_JOBS_ON') . ' ' . Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '.';
+                        $expires .= $this->subscription->expires > $now
+                            ? strtolower(Lang::txt('COM_JOBS_SUBSCRIPTION_STATUS_EXPIRES'))
+                            : strtolower(Lang::txt('COM_JOBS_SUBSCRIPTION_STATUS_EXPIRED'));
+                        $expires .= ' ' . Lang::txt('COM_JOBS_ON') . ' '
+                            . Date::of($this->subscription->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '.';
                     } else {
                         $expires .= Lang::txt('COM_JOBS_SUBSCRIPTION_IS_PENDING');
                     }
 
                     $expires .= '</p>' . "\n";
                     $expires .= $this->subscription->expires > $now ? ' <button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid) . '" class="cancelit" id="showconfirm">[ ' . Lang::txt('COM_JOBS_SUBSCRIPTION_CANCEL_THIS') . ' ]</button>' : '';
-                    $expires .= $this->subscription->pendingunits > 0 && $this->subscription->status == 1 ? '<p class="no">' . Lang::txt('COM_JOBS_SUBSCRIPTION_EXTEND_REQUEST_PENDING') . '</p>' : '';
+                    $expires .= $this->subscription->pendingunits > 0 && $this->subscription->status == 1
+                        ? '<p class="no">' . Lang::txt('COM_JOBS_SUBSCRIPTION_EXTEND_REQUEST_PENDING') . '</p>'
+                        : '';
                 }
 
                 $units_select = [];
@@ -118,7 +128,12 @@ defined('_HZEXEC_') or die();
                     $unitsize = $unitsize + $currentService->unitsize;
                 }
 
-                $unitsChoice = \Components\Jobs\Helpers\Html::formSelect('units_' . $currentService->id, $units_select, '', "option units");
+                $unitsChoice = \Components\Jobs\Helpers\Html::formSelect(
+                    'units_' . $currentService->id,
+                    $units_select,
+                    '',
+                    "option units",
+                );
                 $iniprice = $thissub ? 0 : $currentService->unitprice;
                 ?>
                 <div class="bindtogether product">
@@ -138,7 +153,10 @@ defined('_HZEXEC_') or die();
                             echo '';
                         }
                         if ($thissub or ($this->subscription->serviceid == 0 && $this->services->key() == 1)) {
-                            \Components\Jobs\Helpers\Html::confirmscreen(Route::url('index.php?option=' . $this->option . '&task=dashboard&uid=' . $this->uid), Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid));
+                            \Components\Jobs\Helpers\Html::confirmscreen(
+                                Route::url('index.php?option=' . $this->option . '&task=dashboard&uid=' . $this->uid),
+                                Route::url('index.php?option=' . $this->option . '&task=cancel&uid=' . $this->uid),
+                            );
                         }
                         ?>
                         <label>
@@ -174,7 +192,9 @@ defined('_HZEXEC_') or die();
                     value="<?= $this->escape($currentService->unitprice) ?>" />
                 <?php $this->services->next();
             }
-            $btn = $this->subscription->id ? Lang::txt('COM_JOBS_SUBSCRIPTION_SAVE') : Lang::txt('COM_JOBS_SUBSCRIPTION_PROCESS_ORDER');
+            $btn = $this->subscription->id
+                ? Lang::txt('COM_JOBS_SUBSCRIPTION_SAVE')
+                : Lang::txt('COM_JOBS_SUBSCRIPTION_PROCESS_ORDER');
             ?>
             <label for="contact">
                 <?= Lang::txt('COM_JOBS_SUBSCRIPTION_CONTACT_PHONE') . ': <span class="required">' . Lang::txt('COM_JOBS_REQUIRED_WITH_PAYMENT') . '</span>' ?>

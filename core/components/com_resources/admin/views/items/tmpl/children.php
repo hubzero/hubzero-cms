@@ -124,7 +124,8 @@ if ($this->filters['parent_id'] > 0) {
                         $task  = 'unpublish';
                     }
 
-                    $info .= Lang::txt('JPUBLISHED') . ': ' . Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
+                    $info .= Lang::txt('JPUBLISHED') . ': '
+                        . Date::of($row->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . '<br />';
                     break;
                 case 2:
                     $alt   = Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL');
@@ -193,7 +194,8 @@ if ($this->filters['parent_id'] > 0) {
                 $date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
                 $time = Date::of($row->checked_out_time)->toLocal('H:i');
 
-                $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::' . $this->escape($row->editor) . '<br />' . $date . '<br />' . $time . '">';
+                $checked  = '<span class="editlinktip hasTip" title="' . Lang::txt('JLIB_HTML_CHECKED_OUT') . '::'
+                    . $this->escape($row->editor) . '<br />' . $date . '<br />' . $time . '">';
                 $checked .= '<span class="checkedout"></span>' . '</span>';
 
                 $info .= ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')

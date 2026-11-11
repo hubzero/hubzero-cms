@@ -20,8 +20,12 @@ defined('_HZEXEC_') or die();
     $jobcat     = !empty($this->jobcat) ? $this->jobcat : 'Unspecified';
     $jobtype    = !empty($this->jobtype) ? $this->jobtype : 'Unspecified';
 
-    $startdate = ($job->startdate && $job->startdate != '0000-00-00 00:00:00') ? Date::of($job->startdate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'Unspecified';
-    $closedate = ($job->closedate && $job->closedate != '0000-00-00 00:00:00') ? Date::of($job->closedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : 'Unspecified';
+    $startdate = ($job->startdate && $job->startdate != '0000-00-00 00:00:00')
+        ? Date::of($job->startdate)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+        : 'Unspecified';
+    $closedate = ($job->closedate && $job->closedate != '0000-00-00 00:00:00')
+        ? Date::of($job->closedate)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+        : 'Unspecified';
 
     $model = new \Components\Jobs\Models\Job($job);
 
@@ -81,7 +85,11 @@ defined('_HZEXEC_') or die();
         <?php } ?>
         <?php
         if ($job->applied) {
-            \Components\Jobs\Helpers\Html::confirmscreen(Route::url('index.php?option=' . $this->option . '&task=job&code=' . $job->code), Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code), $action = "withdrawapp");
+            \Components\Jobs\Helpers\Html::confirmscreen(
+                Route::url('index.php?option=' . $this->option . '&task=job&code=' . $job->code),
+                Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code),
+                $action = "withdrawapp",
+            );
         }
         ?>
     </span>

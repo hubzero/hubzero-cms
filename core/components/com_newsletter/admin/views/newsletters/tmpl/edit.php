@@ -234,7 +234,9 @@ if ($secondaries->count() > 0) {
                                 <td>
                                     <?php
                                         $user = User::getInstance($this->newsletter->created_by);
-                                        echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
+                                        echo (is_object($user) && $user->get('name') != '')
+                                            ? $user->get('name')
+                                            : 'Admin';
                                     ?>
                                     <input type="hidden" name="newsletter[created_by]"
                                         value="<?= $this->newsletter->created_by ?>" />
@@ -259,7 +261,9 @@ if ($secondaries->count() > 0) {
                                 <td>
                                     <?php
                                         $user = User::getInstance($this->newsletter->modified_by);
-                                        echo (is_object($user) && $user->get('name') != '') ? $user->get('name') : 'Admin';
+                                        echo (is_object($user) && $user->get('name') != '')
+                                            ? $user->get('name')
+                                            : 'Admin';
                                     ?>
                                     <input type="hidden" name="newsletter[modified_by]"
                                         value="<?= $this->newsletter->modified_by ?>" />

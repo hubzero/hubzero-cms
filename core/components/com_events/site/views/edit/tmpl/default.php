@@ -86,7 +86,8 @@ $this
                             }
                             echo ' />';
                         } else {
-                            echo '<input type="text" name="fields[' . $field[0] . ']" size="45" maxlength="255" value="' . $this->escape(stripslashes(end($field))) . '" />';
+                            echo '<input type="text" name="fields[' . $field[0] . ']" size="45" maxlength="255" value="'
+                                . $this->escape(stripslashes(end($field))) . '" />';
                         }
                         ?>
                         </label>
@@ -101,7 +102,8 @@ $this
                 if (count($tf) > 0) {
                     echo $tf[0];
                 } else {
-                    echo '<input type="text" name="tags" value="' . $this->escape($this->lists['tags']) . '" size="38" />';
+                    echo '<input type="text" name="tags" value="' . $this->escape($this->lists['tags'])
+                        . '" size="38" />';
                 }
                 ?>
             </label>

@@ -47,13 +47,20 @@ $base = $this->offering->link() . '&active=forum';
                         <?php
                         if ($this->filters['search']) {
                             if ($this->category->get('id')) {
-                                echo Lang::txt('Search for "%s" in "%s"', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
+                                echo Lang::txt(
+                                    'Search for "%s" in "%s"',
+                                    $this->escape($this->filters['search']),
+                                    $this->escape(stripslashes($this->category->get('title'))),
+                                );
                             } else {
                                 echo Lang::txt('Search for "%s"', $this->escape($this->filters['search']));
                             }
                         } else {
                             if ($this->category->get('id')) {
-                                echo Lang::txt('Discussions in "%s"', $this->escape(stripslashes($this->category->get('title'))));
+                                echo Lang::txt(
+                                    'Discussions in "%s"',
+                                    $this->escape(stripslashes($this->category->get('title'))),
+                                );
                             } else {
                                 echo Lang::txt('Discussions');
                             }
@@ -128,9 +135,12 @@ $base = $this->offering->link() . '&active=forum';
                                             if ($lastpost->get('id')) {
                                                 $lname = Lang::txt('JANONYMOUS');
                                                 if (!$lastpost->get('anonymous')) {
-                                                    $lname = $this->escape(stripslashes($lastpost->creator->get('name')));
+                                                    $lname = $this->escape(
+                                                        stripslashes($lastpost->creator->get('name')),
+                                                    );
                                                     if (in_array($lastpost->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                                        $lname = '<a href="' . Route::url($lastpost->creator->link()) . '">' . $lname . '</a>';
+                                                        $lname = '<a href="' . Route::url($lastpost->creator->link())
+                                                            . '">' . $lname . '</a>';
                                                     }
                                                 }
                                                 ?>

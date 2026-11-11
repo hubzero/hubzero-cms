@@ -184,7 +184,14 @@ $this->comment->set('category', 'answercomment');
                             <label for="comment_<?php echo $this->comment->get('id'); ?>_content">
                                 <span class="label-text"><?php echo Lang::txt('COM_WIKI_ENTER_COMMENTS'); ?></span>
                                 <?php
-                                echo \Components\Wiki\Helpers\Editor::getInstance()->display('comment[ctext]', 'comment_' . $this->comment->get('id') . '_content', '', 'form-control minimal no-footer', '35', '4');
+                                echo \Components\Wiki\Helpers\Editor::getInstance()->display(
+                                    'comment[ctext]',
+                                    'comment_' . $this->comment->get('id') . '_content',
+                                    '',
+                                    'form-control minimal no-footer',
+                                    '35',
+                                    '4',
+                                );
                                 ?>
                             </label>
                         </div>

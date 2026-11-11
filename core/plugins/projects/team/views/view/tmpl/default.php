@@ -154,7 +154,9 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                         $timecheck = date('Y-m-d H:i:s', time() - (15 * 60));
                         $lastvisit = Lang::txt('PLG_PROJECTS_TEAM_NEVER');
                         if ($owner->lastvisit && $owner->lastvisit != '0000-00-00 00:00:00') {
-                            $lastvisit = '<time datetime="' . Date::of($owner->lastvisit)->format('Y-m-d\TH:i:s\Z') . '">' . Components\Projects\Helpers\Html::timeAgo($owner->lastvisit) . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AGO') . '</time>';
+                            $lastvisit = '<time datetime="' . Date::of($owner->lastvisit)->format('Y-m-d\TH:i:s\Z')
+                                . '">' . Components\Projects\Helpers\Html::timeAgo($owner->lastvisit) . ' '
+                                . Lang::txt('PLG_PROJECTS_TEAM_AGO') . '</time>';
                         }
                         if ($owner->userid == $this->uid || ($owner->online && $owner->lastvisit > $timecheck)) {
                             $lastvisit = '<span class="online">' . Lang::txt('PLG_PROJECTS_TEAM_ONLINE_NOW') . '</span>';

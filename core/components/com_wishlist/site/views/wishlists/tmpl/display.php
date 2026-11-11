@@ -224,7 +224,8 @@ if ($this->wishlist->get('id')) {
                                     if (!$item->get('anonymous')) {
                                         $name = $this->escape(stripslashes($item->proposer->get('name', $name)));
                                         if (in_array($item->proposer->get('access'), User::getAuthorisedViewLevels())) {
-                                            $name = '<a href="' . Route::url($item->proposer->link()) . '">' . $name . '</a>';
+                                            $name = '<a href="' . Route::url($item->proposer->link()) . '">' . $name
+                                                . '</a>';
                                         }
                                     }
                                     ?>
@@ -296,7 +297,9 @@ if ($this->wishlist->get('id')) {
                                             switch ($item->get('status')) {
                                                 case 0:
                                                     if (!$item->get('ranked') && $this->wishlist->access('manage')) {
-                                                        $html .= '<a class="rankit" href="' . Route::url($item->link('rank', $filters)) . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
+                                                        $html .= '<a class="rankit" href="'
+                                                            . Route::url($item->link('rank', $filters)) . '">'
+                                                            . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
                                                     } elseif ($item->get('ranked')) {
                                                         //$html .= Lang::txt('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
                                                         $this->css('
@@ -316,16 +319,19 @@ if ($this->wishlist->get('id')) {
                                                     }
                                                     break;
                                                 case 1:
-                                                    $html .= '<span class="granted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED') . '</span>';
+                                                    $html .= '<span class="granted">'
+                                                        . Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED') . '</span>';
                                                     /*if ($item->granted && $item->granted != '0000-00-00 00:00:00') {
                                                         $html .= ' <span class="mini">'.strtolower(Lang::txt('ON')).' '.Date::of($item->granted)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</span>';
                                                     }*/
                                                     break;
                                                 case 3:
-                                                    $html .= '<span class="rejected">' . Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED') . '</span>';
+                                                    $html .= '<span class="rejected">'
+                                                        . Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED') . '</span>';
                                                     break;
                                                 case 4:
-                                                    $html .= '<span class="withdrawn">' . Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN') . '</span>';
+                                                    $html .= '<span class="withdrawn">'
+                                                        . Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN') . '</span>';
                                                     break;
                                             }
                                             echo $html;
@@ -412,10 +418,13 @@ if ($this->wishlist->get('id')) {
                             $html .= '<p class="info">' . Lang::txt('COM_WISHLIST_NOTICE_SITE_ADMIN') . '</p>' . "\n";
                             break;
                         case '2':
-                            $html .= '<p class="info">' . Lang::txt('COM_WISHLIST_NOTICE_LIST_ADMIN') . ' Edit <a href="' . Route::url($this->wishlist->link('settings')) . '">' . Lang::txt('COM_WISHLIST_LIST_SETTINGS') . '</a>.</p>' . "\n";
+                            $html .= '<p class="info">' . Lang::txt('COM_WISHLIST_NOTICE_LIST_ADMIN')
+                                . ' Edit <a href="' . Route::url($this->wishlist->link('settings')) . '">'
+                                . Lang::txt('COM_WISHLIST_LIST_SETTINGS') . '</a>.</p>' . "\n";
                             break;
                         case '3':
-                            $html .= '<p class="info">' . Lang::txt('COM_WISHLIST_NOTICE_ADVISORY_ADMIN') . '</p>' . "\n";
+                            $html .= '<p class="info">' . Lang::txt('COM_WISHLIST_NOTICE_ADVISORY_ADMIN') . '</p>'
+                                . "\n";
                             break;
                     }
                         echo $html;

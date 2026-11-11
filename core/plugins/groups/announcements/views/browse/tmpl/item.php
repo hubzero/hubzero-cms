@@ -53,7 +53,10 @@ if ($closed == 'closed' && $this->showClose == true) {
         $content = $this->announcement->content;
         if (strlen(strip_tags($content)) > 500 && $this->showClose) {
             $content  = Hubzero\Utility\Str::truncate($this->announcement->get('content'), 500, ['html' => true]);
-            $content .= '<p><a href="' . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements') . '" title="' . Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MORE_TITLE') . '">' . Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MORE') . '</a></p>';
+            $content .= '<p><a href="'
+                . Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=announcements')
+                . '" title="' . Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MORE_TITLE') . '">'
+                . Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MORE') . '</a></p>';
         }
         echo $content;
         ?>

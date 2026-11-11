@@ -125,7 +125,10 @@ defined('_HZEXEC_') or die();
                 value="<?php echo $this->escape($this->password->get('shadowWarning')); ?>"/>
         </div>
         <?php
-            $expiryDay = \Hubzero\User\Password::passwordExpiryDay($this->password->get('shadowLastChange'), $this->password->get('shadowMax'));
+            $expiryDay = \Hubzero\User\Password::passwordExpiryDay(
+                $this->password->get('shadowLastChange'),
+                $this->password->get('shadowMax'),
+            );
             $expiresOn = ($expiryDay === null) ? '' : gmdate('Y-m-d', $expiryDay * 86400);
         ?>
         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_PASSWORD_SHADOW_EXPIRE_HINT'); ?>">

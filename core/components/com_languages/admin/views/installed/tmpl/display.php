@@ -26,7 +26,12 @@ if ($canDo->get('core.edit.state')) {
 
 if ($canDo->get('core.admin')) {
     // Add install languages link to the lang installer component
-    Toolbar::appendButton('Link', 'extension', 'COM_LANGUAGES_INSTALL', 'index.php?option=com_installer&view=languages');
+    Toolbar::appendButton(
+        'Link',
+        'extension',
+        'COM_LANGUAGES_INSTALL',
+        'index.php?option=com_installer&view=languages',
+    );
     Toolbar::divider();
 
     Toolbar::preferences('com_languages');
@@ -104,7 +109,8 @@ $pagination = $this->rows->pagination;
                 <td>
                     <?php
                     if (!$row->missing) :
-                        echo '<input type="radio" id="cb' . $i . '" name="cid" value="' . $this->escape($row->language) . '" class="checkbox-toggle" title="' . ($i + 1) . '"/>';
+                        echo '<input type="radio" id="cb' . $i . '" name="cid" value="' . $this->escape($row->language)
+                            . '" class="checkbox-toggle" title="' . ($i + 1) . '"/>';
                     endif;
                     ?>
                 </td>

@@ -23,12 +23,18 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->project->get('al
 // Com_wiki adds /projects - strip it out
 $this->content = str_replace('projects/projects/', 'projects/', $this->content);
 
-$this->content = str_replace('projects/pr-' . $this->project->get('alias'), 'projects/' . $this->project->get('alias'), $this->content);
+$this->content = str_replace(
+    'projects/pr-' . $this->project->get('alias'),
+    'projects/' . $this->project->get('alias'),
+    $this->content,
+);
 
 // Get the page
 $page = $this->page;
 
-$showSidePanel = ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') && $page->get('id') ? true : false;
+$showSidePanel = ($this->task == 'view' or $this->task == 'page' or $this->task == 'wiki') && $page->get('id')
+    ? true
+    : false;
 
 // Get all project notes
 $notes = $this->note->getNotes();
@@ -54,12 +60,14 @@ $bcrumb = '';
 if ($this->task == 'new') {
     $bcrumb .= ' &raquo; <span class="subheader">' . Lang::txt('COM_PROJECTS_NOTES_TASK_NEW') . '</span>';
 } elseif ($page->get('id')) {
-    $bcrumb .= ' &raquo; <span class="subheader"><a href="' . Route::url($page->link()) . '">' . $this->escape($page->get('title')) . '</a></span>';
+    $bcrumb .= ' &raquo; <span class="subheader"><a href="' . Route::url($page->link()) . '">'
+        . $this->escape($page->get('title')) . '</a></span>';
 }
 
 $tasks = [ 'edit', 'history', 'comments', 'delete', 'compare', 'addcomment', 'renamepage' ];
 if ($this->task != 'view' && in_array($this->task, $tasks)) {
-    $bcrumb .= ' &raquo; <span class="subheader">' . Lang::txt('COM_PROJECTS_NOTES_TASK_' . strtoupper($this->task)) . '</span> ';
+    $bcrumb .= ' &raquo; <span class="subheader">' . Lang::txt('COM_PROJECTS_NOTES_TASK_' . strtoupper($this->task))
+        . '</span> ';
 }
 
 // Is note public?

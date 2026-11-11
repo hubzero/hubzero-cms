@@ -58,7 +58,11 @@ if (intval($this->params->get('cache', 1))) {
     if (!($results = Cache::get('resources.usage' . $this->resource->id . 'overview'))) {
         $results = plgResourcesUsage::getOverview($this->resource->id, $prd);
 
-        Cache::put('resources.usage' . $this->resource->id . 'overview', $results, intval($this->params->get('cache_time', 15)));
+        Cache::put(
+            'resources.usage' . $this->resource->id . 'overview',
+            $results,
+            intval($this->params->get('cache_time', 15)),
+        );
     }
 } else {
     $results = plgResourcesUsage::getOverview($this->resource->id, $prd);
@@ -84,10 +88,14 @@ if ($results) {
 
     $c = count($results);
     foreach ($results as $result) {
-        $users[]       = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . "')," . $result->users . "]";
-        $interactive[] = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . "')," . $result->sessions . "]";
-        $sessions[]    = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . "')," . $result->simulations . "]";
-        $runs[]        = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime)) . "')," . $result->jobs . "]";
+        $users[]       = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+            . "')," . $result->users . "]";
+        $interactive[] = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+            . "')," . $result->sessions . "]";
+        $sessions[]    = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+            . "')," . $result->simulations . "]";
+        $runs[]        = "[new Date('" . str_replace('-', '/', str_replace('-00 00:00:00', '-01', $result->datetime))
+            . "')," . $result->jobs . "]";
 
         $usersTop = ($result->users > $usersTop) ? $result->users : $usersTop;
         $runsTop = ($result->jobs > $runsTop) ? $result->jobs : $runsTop;
@@ -201,7 +209,9 @@ $bars = [];
                         }
 
                         $sparkline .= "\t" . '<span class="index">';
-                        $sparkline .= '<span class="count count' . $height . '" title="' . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': ' . number_format($result->users) . '">';
+                        $sparkline .= '<span class="count count' . $height . '" title="'
+                            . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': '
+                            . number_format($result->users) . '">';
                         $sparkline .= number_format($result->users);
                         $sparkline .= '</span> ';
                         $sparkline .= '</span>' . "\n";
@@ -261,7 +271,11 @@ $bars = [];
                             if (!($dataset = Cache::get('resources.usage' . $this->resource->id . 'type'))) {
                                 $dataset = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
 
-                                Cache::put('resources.usage' . $this->resource->id . 'type', $dataset, intval($this->params->get('cache_time', 15)));
+                                Cache::put(
+                                    'resources.usage' . $this->resource->id . 'type',
+                                    $dataset,
+                                    intval($this->params->get('cache_time', 15)),
+                                );
                             }
                         } else {
                             $dataset = plgResourcesUsage::getTopValue($this->resource->id, 3, $tid, $datetime);
@@ -286,7 +300,8 @@ $bars = [];
                                 if (!isset($colors[$i])) {
                                     $i = 0;
                                 }
-                                $r[$ky][] = '{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
+                                $r[$ky][] = '{label: \'' . addslashes($row->name) . '\', data: '
+                                    . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}';
 
                                 if ($row->rank != '0') {
                                     $total += $row->value;
@@ -385,7 +400,11 @@ $bars = [];
                             if (!($dataset = Cache::get('resources.usage' . $this->resource->id . 'country'))) {
                                 $dataset = plgResourcesUsage::getTopValue($this->resource->id, 1, $tid, $datetime);
 
-                                Cache::put('resources.usage' . $this->resource->id . 'country', $dataset, intval($this->params->get('cache_time', 15)));
+                                Cache::put(
+                                    'resources.usage' . $this->resource->id . 'country',
+                                    $dataset,
+                                    intval($this->params->get('cache_time', 15)),
+                                );
                             }
                         } else {
                             $dataset = plgResourcesUsage::getTopValue($this->resource->id, 1, $tid, $datetime);
@@ -408,7 +427,8 @@ $bars = [];
                                     $i = 0;
                                 }
 
-                                $r[$ky][] = '{label: \'' . addslashes($row->name) . '\', data: ' . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}' . "\n";
+                                $r[$ky][] = '{label: \'' . addslashes($row->name) . '\', data: '
+                                    . number_format($row->value) . ', color: \'' . $colors[$i] . '\'}' . "\n";
 
                                 if ($row->rank != '0') {
                                     $total += $row->value;
@@ -649,7 +669,9 @@ $bars = [];
                         }
 
                         $sparkline .= "\t" . '<span class="index">';
-                        $sparkline .= '<span class="count count' . $height . '" title="' . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': ' . $result->jobs . '">';
+                        $sparkline .= '<span class="count count' . $height . '" title="'
+                            . Date::of($result->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . ': ' . $result->jobs
+                            . '">';
                         $sparkline .= number_format($result->jobs);
                         $sparkline .= '</span> ';
                         $sparkline .= '</span>' . "\n";
@@ -1146,7 +1168,12 @@ if (is_object($schema)) {
         $schema->fields = [];
     }
     foreach ($schema->fields as $field) {
-        if (isset($data[$field->name]) && $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+        if (
+            isset($data[$field->name])
+            && $elements->display($field->type, $data[$field->name])
+            && isset($field->display)
+            && $field->display == $tab
+        ) {
             $hasCustomFields = true;
             break;
         }
@@ -1159,7 +1186,11 @@ if ($hasCustomFields) :
     <?php
     foreach ($schema->fields as $field) {
         if (isset($data[$field->name])) {
-            if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+            if (
+                $elements->display($field->type, $data[$field->name])
+                && isset($field->display)
+                && $field->display == $tab
+            ) {
                 ?>
                     <h4><?php echo $field->label; ?></h4>
                     <div class="resource-content">

@@ -81,19 +81,27 @@ $this->css('admin.subscriptions.css');
             }
 
             $status = '';
-            $pending = Lang::txt('COM_SERVICES_FOR_UNITS', $service->get('currency') . ' ' . $row->pendingpayment, $row->pendingunits);
+            $pending = Lang::txt(
+                'COM_SERVICES_FOR_UNITS',
+                $service->get('currency') . ' ' . $row->pendingpayment,
+                $row->pendingunits,
+            );
 
-            $expires = (intval($row->expires) <> 0) ? Date::of($row->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
+            $expires = (intval($row->expires) <> 0)
+                ? Date::of($row->expires)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                : Lang::txt('COM_SERVICES_NOT_APPLICABLE');
 
             switch ($row->status) {
                 case '1':
                     $status = ($row->expires > $now) ? '<span class="service-active">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span  class="service-expired">' . strtolower(Lang::txt('COM_SERVICES_EXPIRED')) . '</span>';
                     break;
                 case '0':
-                    $status = '<span class="service-pending">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING')) . '</span>';
+                    $status = '<span class="service-pending">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING'))
+                        . '</span>';
                     break;
                 case '2':
-                    $status = '<span class="service-cancelled">' . strtolower(Lang::txt('COM_SERVICES_STATE_CANCELED')) . '</span>';
+                    $status = '<span class="service-cancelled">' . strtolower(Lang::txt('COM_SERVICES_STATE_CANCELED'))
+                        . '</span>';
                     $pending .= $row->pendingpayment ? ' (' . Lang::txt('COM_SERVICES_REFUND') . ')' : '';
                     break;
             }

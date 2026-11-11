@@ -136,7 +136,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     $who = '<a href="' . Route::url($this->post->creator()->link()) . '">' . $who . '</a>';
                 }
 
-                $where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">' . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
+                $where = '<a href="' . Route::url($base . '&task=' . $this->collection->get('alias')) . '">'
+                    . $this->escape(stripslashes($this->collection->get('title'))) . '</a>';
 
                 echo Lang::txt('PLG_GROUPS_COLLECTIONS_ONTO', $who, $where);
                 ?>

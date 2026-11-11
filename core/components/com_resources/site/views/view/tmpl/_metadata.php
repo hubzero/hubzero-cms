@@ -22,7 +22,12 @@ foreach ($this->sections as $section) {
     $data .= (isset($section['metadata'])) ? $section['metadata'] : '';
 }
 
-if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('show_audience', 0) || $this->model->params->get('supportedtag', 0) || $data) {
+if (
+    $this->model->params->get('show_ranking', 0)
+    || $this->model->params->get('show_audience', 0)
+    || $this->model->params->get('supportedtag', 0)
+    || $data
+) {
     $database = App::get('db');
     ?>
     <div class="metadata">
@@ -42,9 +47,21 @@ if ($this->model->params->get('show_ranking', 0) || $this->model->params->get('s
                 ->count();
 
             if ($this->model->isTool()) {
-                $stats = new \Components\Resources\Helpers\Usage\Tools($database, $this->model->id, $this->model->type, $this->model->rating, $citationCount);
+                $stats = new \Components\Resources\Helpers\Usage\Tools(
+                    $database,
+                    $this->model->id,
+                    $this->model->type,
+                    $this->model->rating,
+                    $citationCount,
+                );
             } else {
-                $stats = new \Components\Resources\Helpers\Usage\Andmore($database, $this->model->id, $this->model->type, $this->model->rating, $citationCount);
+                $stats = new \Components\Resources\Helpers\Usage\Andmore(
+                    $database,
+                    $this->model->id,
+                    $this->model->type,
+                    $this->model->rating,
+                    $citationCount,
+                );
             }
 
             $rank = round($this->model->ranking, 1);

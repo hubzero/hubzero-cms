@@ -61,7 +61,10 @@ $this->js();
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <select name="fields[parent_id]" id="field-parent_id" class="required">
                         <?php foreach ($this->options as $option) :
-                            if (User::authorise('core.admin') || (!Hubzero\Access\Access::checkGroup($option->get('id'), 'core.admin'))) {
+                            if (
+                                User::authorise('core.admin')
+                                || (!Hubzero\Access\Access::checkGroup($option->get('id'), 'core.admin'))
+                            ) {
                                 $level = Hubzero\Access\Group::all()
                                     ->where('lft', '<', $option->get('lft'))
                                     ->where('rgt', '>', $option->get('rgt'))

@@ -33,9 +33,13 @@ $authorlist = '';
             foreach ($this->related as $line) {
                 if ($line->section == 'Topic') {
                     if ($line->group != '' && $line->scope != '') {
-                        $sef = Route::url('index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias);
+                        $sef = Route::url(
+                            'index.php?option=com_groups&scope=' . $line->scope . '&pagename=' . $line->alias,
+                        );
                     } else {
-                        $sef = Route::url('index.php?option=com_wiki&scope=' . $line->scope . '&pagename=' . $line->alias);
+                        $sef = Route::url(
+                            'index.php?option=com_wiki&scope=' . $line->scope . '&pagename=' . $line->alias,
+                        );
                     }
                 } else {
                     $class = \Components\Publications\Helpers\Html::getRatingClass($line->rating);
@@ -53,7 +57,10 @@ $authorlist = '';
                     $myclass = \Components\Publications\Helpers\Html::getRatingClass($myrating);
 
                     // Get the SEF for the publication
-                    $sef = Route::url('index.php?option=' . $this->option . ($line->alias ? '&alias=' . $line->alias : '&id=' . $line->id));
+                    $sef = Route::url(
+                        'index.php?option=' . $this->option
+                            . ($line->alias ? '&alias=' . $line->alias : '&id=' . $line->id),
+                    );
                 }
 
                 // Format the ranking

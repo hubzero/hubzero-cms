@@ -12,7 +12,9 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
-$title = $this->model->get('title') ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . $this->escape($this->model->get('title')) : $this->title;
+$title = $this->model->get('title')
+    ? Lang::txt('COM_PROJECTS_NEW_PROJECT') . ': ' . $this->escape($this->model->get('title'))
+    : $this->title;
 
 ?>
 <header id="content-header">

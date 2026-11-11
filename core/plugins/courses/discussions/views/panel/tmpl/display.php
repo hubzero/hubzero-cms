@@ -260,7 +260,14 @@ if (count($inst) > 0) {
                                 <span
                                     class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS') ?></span>
                                 <?php
-                                echo $this->editor('fields[comment]', '', 35, 5, 'field_comment', ['class' => 'minimal no-footer']);
+                                echo $this->editor(
+                                    'fields[comment]',
+                                    '',
+                                    35,
+                                    5,
+                                    'field_comment',
+                                    ['class' => 'minimal no-footer'],
+                                );
                                 ?>
                             </label>
 

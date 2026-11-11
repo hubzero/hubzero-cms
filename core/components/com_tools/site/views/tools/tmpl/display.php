@@ -71,7 +71,10 @@ $this
 
                     // Tool admins see the pipeline state of anything not marked published
                     $pipeline = '';
-                    if ($this->isToolAdmin && $project->tool_state != \Components\Tools\Models\Orm\Tool::STATUS_PUBLISHED) {
+                    if (
+                        $this->isToolAdmin
+                        && $project->tool_state != \Components\Tools\Models\Orm\Tool::STATUS_PUBLISHED
+                    ) {
                         \Components\Tools\Helpers\Html::getStatusName($project->tool_state, $pipeline);
                     }
                     ?>

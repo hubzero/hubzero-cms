@@ -15,8 +15,16 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // Directory path breadcrumbs
-$bc    = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent, false, $this->connection->adapter());
-$bcEnd = $this->item->isDir() ? '<span class="folder">' . $this->escape($this->item->getName()) . '</span>' : '<span class="file">' . $this->escape($this->item->getName()) . '</span>';
+$bc    = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs(
+    $this->subdir,
+    $this->url,
+    $parent,
+    false,
+    $this->connection->adapter(),
+);
+$bcEnd = $this->item->isDir()
+    ? '<span class="folder">' . $this->escape($this->item->getName()) . '</span>'
+    : '<span class="file">' . $this->escape($this->item->getName()) . '</span>';
 $lang  = $this->item->isDir() ? 'folder' : 'file';
 ?>
 

@@ -19,7 +19,10 @@ defined('_HZEXEC_') or die();
 $this->css('impact');
 
 if ($this->pub->exists()) {
-    $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->category()->alias, $this->pub->category()->name);
+    $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
+        $this->pub->category()->alias,
+        $this->pub->category()->name,
+    );
 }
 
 $thisMonth = date('M Y');
@@ -95,7 +98,9 @@ $base = rtrim(Request::base(true), '/');
 
     <?php
     foreach ($this->pubstats as $stat) {
-        $toDate = strtotime($stat->first_published) > strtotime($this->firstlog) ? $stat->first_published : $this->firstlog;
+        $toDate = strtotime($stat->first_published) > strtotime($this->firstlog)
+            ? $stat->first_published
+            : $this->firstlog;
 
         $yTickSize = max(
             $stat->threemonth_views,
@@ -121,7 +126,8 @@ $base = rtrim(Request::base(true), '/');
                     <td></td>
                     <td></td>
                     <td><?php
-                        echo '<span class="pubstats-label">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_THIS_MONTH') . '</span><span class="pubstats-note">' . $thisMonth . '</span>';
+                        echo '<span class="pubstats-label">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_THIS_MONTH')
+                            . '</span><span class="pubstats-note">' . $thisMonth . '</span>';
                     ?></td>
 
                     <td><?= '<span class="pubstats-label">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_LAST_MONTH') . '</span><span class="pubstats-note">' . $lastMonth . '</span>' ?></td>

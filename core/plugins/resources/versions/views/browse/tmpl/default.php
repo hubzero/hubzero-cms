@@ -37,8 +37,10 @@ $this->css();
             $handle = '';
 
             if (isset($v->doi) && $v->doi && $this->tconfig->get('doi_shoulder')) {
-                $handle = 'doi:' . (isset($v->doi_shoulder) ? $v->doi_shoulder : $this->tconfig->get('doi_shoulder')) . '/' . strtoupper($v->doi);
-                $handle = '<a href="' . $this->tconfig->get('doi_resolve', 'https://doi.org/') . $handle . '">' . $handle . '</a>';
+                $handle = 'doi:' . (isset($v->doi_shoulder) ? $v->doi_shoulder : $this->tconfig->get('doi_shoulder'))
+                    . '/' . strtoupper($v->doi);
+                $handle = '<a href="' . $this->tconfig->get('doi_resolve', 'https://doi.org/') . $handle . '">'
+                    . $handle . '</a>';
             } elseif (isset($v->doi_label) && $v->doi_label) {
                 $handle = 'doi:10254/' . $this->tconfig->get('doi_prefix') . $this->resource->id . '.' . $v->doi_label;
                 $handle = '<a href="http://hdl.handle.net/' . $handle . '">' . $handle . '</a>';
@@ -90,7 +92,12 @@ if (is_object($schema)) {
         $schema->fields = [];
     }
     foreach ($schema->fields as $field) {
-        if (isset($data[$field->name]) && $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+        if (
+            isset($data[$field->name])
+            && $elements->display($field->type, $data[$field->name])
+            && isset($field->display)
+            && $field->display == $tab
+        ) {
             $hasCustomFields = true;
             break;
         }
@@ -103,7 +110,11 @@ if ($hasCustomFields) :
     <?php
     foreach ($schema->fields as $field) {
         if (isset($data[$field->name])) {
-            if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+            if (
+                $elements->display($field->type, $data[$field->name])
+                && isset($field->display)
+                && $field->display == $tab
+            ) {
                 ?>
                     <h4><?php echo $field->label; ?></h4>
                     <div class="resource-content">

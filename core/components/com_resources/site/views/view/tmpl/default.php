@@ -93,7 +93,9 @@ if ($mode != 'preview') {
 
                     $firstchild = $children->first();
 
-                    $html .= $this->tab != 'play' && is_object($firstchild) ? \Components\Resources\Helpers\Html::primaryChild($this->option, $this->model, $firstchild, '') : '';
+                    $html .= $this->tab != 'play' && is_object($firstchild)
+                        ? \Components\Resources\Helpers\Html::primaryChild($this->option, $this->model, $firstchild, '')
+                        : '';
 
                     $html .= $children && count($children) > 1
                            ? \Components\Resources\Helpers\Html::sortSupportingDocs($this->model, $this->option, $children)
@@ -110,7 +112,8 @@ if ($mode != 'preview') {
                     if (!$this->model->access('view-all')) {
                         $ghtml = [];
                         foreach ($this->model->groups as $allowedgroup) {
-                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup)
+                                . '">' . $allowedgroup . '</a>';
                         }
                         ?>
                             <p class="warning">

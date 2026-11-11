@@ -93,17 +93,24 @@ switch ($this->which) {
                         $html = '';
                         if ($row->access('owner')) {
                             if ($row->isActive()) {
-                                $html .= '<span class="active"><a href="' . Route::url($row->link()) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_GO_TO_PROJECT') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ACTIVE') . '</a></span>';
+                                $html .= '<span class="active"><a href="' . Route::url($row->link()) . '" title="'
+                                    . Lang::txt('PLG_GROUPS_PROJECTS_GO_TO_PROJECT') . '">&raquo; '
+                                    . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ACTIVE') . '</a></span>';
                             } elseif ($row->inSetup()) {
-                                $html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="' . Lang::txt('PLG_GROUPS_PROJECTS_CONTINUE_SETUP') . '">&raquo; ' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') . '</a></span> ';
+                                $html .= '<span class="setup"><a href="' . Route::url($row->link('setup')) . '" title="'
+                                    . Lang::txt('PLG_GROUPS_PROJECTS_CONTINUE_SETUP') . '">&raquo; '
+                                    . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SETUP') . '</a></span> ';
                             }
                         }
                         if ($row->isInactive()) {
-                            $html .= '<span class="suspended">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SUSPENDED') . '</span> ';
+                            $html .= '<span class="suspended">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_SUSPENDED')
+                                . '</span> ';
                         } elseif ($row->isPending()) {
-                            $html .= '<span class="pending">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_PENDING') . '</span> ';
+                            $html .= '<span class="pending">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_PENDING')
+                                . '</span> ';
                         } elseif ($row->isArchived()) {
-                            $html .= '<span class="archived">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ARCHIVED') . '</span> ';
+                            $html .= '<span class="archived">' . Lang::txt('PLG_GROUPS_PROJECTS_STATUS_ARCHIVED')
+                                . '</span> ';
                         }
 
                         echo $html;

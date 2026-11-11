@@ -56,7 +56,8 @@ foreach ($this->authenticators as $a) {
         $login_provider_html .= is_array($html) ? implode("\n", $html) : $html;
     } else {
         $login_provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=' . $this->option . '&authenticator=' . $a['name'] . $this->returnQueryString) . '">';
-        $login_provider_html .= '<div class="signin">' . Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
+        $login_provider_html .= '<div class="signin">' . Lang::txt('COM_USERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display'])
+            . '</div>';
         $login_provider_html .= '</a>';
     }
 }

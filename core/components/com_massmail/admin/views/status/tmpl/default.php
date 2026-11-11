@@ -39,11 +39,13 @@ $bars = function ($series, $everyN, $color, $lineVals = null, $lineMax = 0, $lin
     $slot = $plotW / max(1, $n);
     $bw = max(2, $slot - 3);
     $base = $padT + $plotH;
-    $svg  = '<figure><svg viewBox="0 0 ' . $W . ' ' . $H . '" width="100%" role="img" preserveAspectRatio="xMidYMid meet">';
+    $svg  = '<figure><svg viewBox="0 0 ' . $W . ' ' . $H
+        . '" width="100%" role="img" preserveAspectRatio="xMidYMid meet">';
     $svg .= '<line x1="' . $padL . '" y1="' . $padT . '" x2="' . $W . '" y2="' . $padT . '" stroke="#edf2f7"/>';
     $svg .= '<line x1="' . $padL . '" y1="' . $base . '" x2="' . $W . '" y2="' . $base . '" stroke="#e2e8f0"/>';
     if ($peak > 0) {
-        $svg .= '<text x="' . ($padL - 6) . '" y="' . ($padT + 4) . '" text-anchor="end" font-size="10" fill="#a0aec0">' . $peak . '</text>';
+        $svg .= '<text x="' . ($padL - 6) . '" y="' . ($padT + 4) . '" text-anchor="end" font-size="10" fill="#a0aec0">'
+            . $peak . '</text>';
     }
     $svg .= '<text x="' . ($padL - 6) . '" y="' . $base . '" text-anchor="end" font-size="10" fill="#a0aec0">0</text>';
     foreach ($series as $i => $h) {
@@ -51,10 +53,13 @@ $bars = function ($series, $everyN, $color, $lineVals = null, $lineMax = 0, $lin
         $bh = ($h['value'] / $scale) * $plotH;
         $y = $base - $bh;
         if ($h['value'] > 0) {
-            $svg .= '<rect x="' . round($x, 1) . '" y="' . round($y, 1) . '" width="' . round($bw, 1) . '" height="' . round($bh, 1) . '" rx="3" fill="' . $color . '"><title>' . $h['label'] . ' — ' . $h['value'] . '</title></rect>';
+            $svg .= '<rect x="' . round($x, 1) . '" y="' . round($y, 1) . '" width="' . round($bw, 1) . '" height="'
+                . round($bh, 1) . '" rx="3" fill="' . $color . '"><title>' . $h['label'] . ' — ' . $h['value']
+                . '</title></rect>';
         }
         if ($i % $everyN == 0) {
-            $svg .= '<text x="' . round($x + $bw / 2, 1) . '" y="' . ($H - 6) . '" text-anchor="middle" font-size="9" fill="#a0aec0">' . $h['label'] . '</text>';
+            $svg .= '<text x="' . round($x + $bw / 2, 1) . '" y="' . ($H - 6)
+                . '" text-anchor="middle" font-size="9" fill="#a0aec0">' . $h['label'] . '</text>';
         }
     }
     if (is_array($lineVals) && $lineMax > 0 && count($lineVals)) {
@@ -64,7 +69,8 @@ $bars = function ($series, $everyN, $color, $lineVals = null, $lineMax = 0, $lin
             $yy = $base - min(1, (float) $v / $lineMax) * $plotH;
             $pts[] = round($x, 1) . ',' . round($yy, 1);
         }
-        $svg .= '<polyline points="' . implode(' ', $pts) . '" fill="none" stroke="' . $lineColor . '" stroke-width="1.5" stroke-linejoin="round" stroke-opacity="0.85" />';
+        $svg .= '<polyline points="' . implode(' ', $pts) . '" fill="none" stroke="' . $lineColor
+            . '" stroke-width="1.5" stroke-linejoin="round" stroke-opacity="0.85" />';
     }
     $svg .= '</svg></figure>';
     return $svg;

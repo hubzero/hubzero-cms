@@ -119,8 +119,12 @@ defined('_HZEXEC_') or die();
                     $this->row->start_time = implode(':', $ts);
                     $this->row->start_time .= ' <abbr title="Post Meridian">am</abbr>';
                 } else {
-                    $this->row->start_time = (substr($this->row->start_time, 0, 1) == '0') ? substr($this->row->start_time, 1) : $this->row->start_time;
-                    $this->row->start_time .= (intval($ts[0]) == 12) ? ' <small>' . Lang::txt('EVENTS_NOON') . '</small>' : ' <abbr title="Ante Meridian">am</abbr>';
+                    $this->row->start_time = (substr($this->row->start_time, 0, 1) == '0')
+                        ? substr($this->row->start_time, 1)
+                        : $this->row->start_time;
+                    $this->row->start_time .= (intval($ts[0]) == 12)
+                        ? ' <small>' . Lang::txt('EVENTS_NOON') . '</small>'
+                        : ' <abbr title="Ante Meridian">am</abbr>';
                 }
                 $te = explode(':', $this->row->stop_time);
                 //$te[0] = intval($te[0]);
@@ -130,11 +134,16 @@ defined('_HZEXEC_') or die();
                     $this->row->stop_time = implode(':', $te);
                     $this->row->stop_time .= ' <abbr title="Post Meridian">pm</abbr>';
                 } else {
-                    $this->row->stop_time = (substr($this->row->stop_time, 0, 1) == '0') ? substr($this->row->stop_time, 1) : $this->row->stop_time;
-                    $this->row->stop_time .= (intval($te[0]) == 12) ? ' <small>' . Lang::txt('EVENTS_NOON') . '</small>' : ' <abbr title="Ante Meridian">pm</abbr>';
+                    $this->row->stop_time = (substr($this->row->stop_time, 0, 1) == '0')
+                        ? substr($this->row->stop_time, 1)
+                        : $this->row->stop_time;
+                    $this->row->stop_time .= (intval($te[0]) == 12)
+                        ? ' <small>' . Lang::txt('EVENTS_NOON') . '</small>'
+                        : ' <abbr title="Ante Meridian">pm</abbr>';
                 }
                 if ($this->row->start_date == $this->row->stop_date) {
-                    echo $this->row->start_date . ',<br />' . $this->row->start_time . '&nbsp;-&nbsp;' . $this->row->stop_time . '<br />';
+                    echo $this->row->start_date . ',<br />' . $this->row->start_time . '&nbsp;-&nbsp;'
+                        . $this->row->stop_time . '<br />';
                 } else {
                     echo Lang::txt('EVENTS_CAL_LANG_FROM') . ' ' . $this->row->start_date . '&nbsp;-&nbsp;' . $this->row->start_time . '<br />'
                         . Lang::txt('EVENTS_CAL_LANG_TO') . ' ' . $this->row->stop_date . '&nbsp;-&nbsp;' . $this->row->stop_time . '<br />';

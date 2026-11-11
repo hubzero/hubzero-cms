@@ -88,7 +88,8 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
 
                 $name = Lang::txt('JANONYMOUS');
                 if (!$item->anonymous) {
-                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $item->proposed_by) . '">' . $this->escape($item->proposer->get('name')) . '</a>';
+                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $item->proposed_by) . '">'
+                        . $this->escape($item->proposer->get('name')) . '</a>';
                 }
                 ?>
                     <tr class="<?php echo $state; ?>">
@@ -164,7 +165,11 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                 $html = '';
                             switch ($item->status) {
                                 case 0:
-                                    if (isset($item->ranked) && !$item->ranked && ($this->admin == 2 or $this->admin == 3)) {
+                                    if (
+                                        isset($item->ranked)
+                                        && !$item->ranked
+                                        && ($this->admin == 2 or $this->admin == 3)
+                                    ) {
                                         $html .= '<a class="rankit" href="index.php?option=com_wishlist&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby=' . $this->escape($this->filters['filterby']) . '&sortby=' . $this->escape($this->filters['sortby']) . '&tags=' . $this->escape($this->filters['tag']) . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
                                     } elseif (isset($item->ranked) && $item->ranked) {
                                         //$html .= Lang::txt('WISH_PRIORITY').': <span class="priority">'.$item->ranking.'</span>'."\n";
@@ -181,20 +186,24 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
 											</span>';
                                     }
                                     if ($item->accepted == 1) {
-                                        $html .= '<span class="accepted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED') . '</span>';
+                                        $html .= '<span class="accepted">'
+                                            . Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED') . '</span>';
                                     }
                                     break;
                                 case 1:
-                                    $html .= '<span class="granted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED') . '</span>';
+                                    $html .= '<span class="granted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED')
+                                        . '</span>';
                                     /*if ($item->granted && $item->granted != '0000-00-00 00:00:00') {
                                         $html .= ' <span class="mini">'.strtolower(Lang::txt('ON')).' '.Date::of($item->granted)->toLocal(Lang::txt('DATE_FORMAT_HZ1')).'</span>';
                                     }*/
                                     break;
                                 case 3:
-                                    $html .= '<span class="rejected">' . Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED') . '</span>';
+                                    $html .= '<span class="rejected">' . Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED')
+                                        . '</span>';
                                     break;
                                 case 4:
-                                    $html .= '<span class="withdrawn">' . Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN') . '</span>';
+                                    $html .= '<span class="withdrawn">'
+                                        . Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN') . '</span>';
                                     break;
                             }
                                 echo $html;

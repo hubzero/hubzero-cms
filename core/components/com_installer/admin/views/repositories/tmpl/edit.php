@@ -15,7 +15,10 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Toolbar;
 
-Toolbar::title(Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY') . ': ' . Arr::getValue($this->config, 'name', ''), 'packages');
+Toolbar::title(
+    Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY') . ': ' . Arr::getValue($this->config, 'name', ''),
+    'packages',
+);
 
 $canDo = \Components\Installer\Admin\Helpers\Installer::getActions();
 if ($canDo->get('core.edit')) {

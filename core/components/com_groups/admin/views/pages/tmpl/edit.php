@@ -17,7 +17,9 @@ use Hubzero\Facades\User;
 defined('_HZEXEC_') or die();
 
 // define base links
-$base = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn);
+$base = Route::url(
+    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn,
+);
 
 // define title
 $text = ($this->task == 'edit' ? Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE') : Lang::txt('COM_GROUPS_PAGES_NEW_PAGE'));
@@ -190,7 +192,9 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                             <td>
                                 <?php
                                     $profile = User::getInstance($this->firstversion->get('created_by'));
-                                    echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('id') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
+                                    echo (is_object($profile))
+                                        ? $profile->get('name') . ' (' . $profile->get('id') . ')'
+                                        : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
                                 ?>
                             </td>
                         </tr>
@@ -203,7 +207,9 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                             <td>
                                 <?php
                                     $profile = User::getInstance($this->version->get('created_by'));
-                                    echo (is_object($profile)) ? $profile->get('name') . ' (' . $profile->get('id') . ')' : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
+                                    echo (is_object($profile))
+                                        ? $profile->get('name') . ' (' . $profile->get('id') . ')'
+                                        : Lang::txt('COM_GROUPS_PAGES_SYSTEM');
                                 ?>
                             </td>
                         </tr>
@@ -231,7 +237,11 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                                         <?php
                                             $profile = User::getInstance($version->get('created_by'));
                                             $name = ((is_object($profile)) ? $profile->get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
-                                            echo Lang::txt('COM_GROUPS_PAGES_VERSION_CREATED_DETAILS', $name, Date::of($version->get('created'))->toLocal());
+                                            echo Lang::txt(
+                                                'COM_GROUPS_PAGES_VERSION_CREATED_DETAILS',
+                                                $name,
+                                                Date::of($version->get('created'))->toLocal(),
+                                            );
                                         ?>
                                     </td>
                                     <td>
@@ -239,7 +249,11 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                                         if ($version->get('approved')) {
                                             $profile = User::getInstance($version->get('approved_by'));
                                             $name = ((is_object($profile)) ? $profile->get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
-                                            echo Lang::txt('COM_GROUPS_PAGES_VERSION_APPROVED_DETAILS', $name, Date::of($version->get('approved_on'))->toLocal());
+                                            echo Lang::txt(
+                                                'COM_GROUPS_PAGES_VERSION_APPROVED_DETAILS',
+                                                $name,
+                                                Date::of($version->get('approved_on'))->toLocal(),
+                                            );
                                         } else {
                                             echo Lang::txt('COM_GROUPS_PAGES_VERSION_NOT_APPROVED');
                                         }

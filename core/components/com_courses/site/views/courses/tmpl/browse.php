@@ -123,11 +123,17 @@ $this->css('browse.css');
                 <h3>
                     <?php
                         $s = $this->filters['start'] + 1;
-                        $e = ($this->total > ($this->filters['start'] + $this->filters['limit'])) ? ($this->filters['start'] + $this->filters['limit']) : $this->total;
+                        $e = ($this->total > ($this->filters['start'] + $this->filters['limit']))
+                            ? ($this->filters['start'] + $this->filters['limit'])
+                            : $this->total;
 
                     if ($this->filters['search'] != '') {
                         if ($this->filters['tag'] != '') {
-                            echo Lang::txt('COM_COURSES_SEARCH_FOR_IN_WITH', $this->escape($this->filters['search']), $this->escape($this->filters['tag']));
+                            echo Lang::txt(
+                                'COM_COURSES_SEARCH_FOR_IN_WITH',
+                                $this->escape($this->filters['search']),
+                                $this->escape($this->filters['tag']),
+                            );
                         } else {
                             echo Lang::txt('COM_COURSES_SEARCH_FOR_IN', $this->escape($this->filters['search']));
                         }
@@ -193,7 +199,9 @@ $this->css('browse.css');
                                         if (count($instructors) > 0) {
                                             $names = [];
                                             foreach ($instructors as $i) {
-                                                $instructor = Components\Members\Models\Member::oneOrNew($i->get('user_id'));
+                                                $instructor = Components\Members\Models\Member::oneOrNew(
+                                                    $i->get('user_id'),
+                                                );
                                                 $name = $this->escape(stripslashes($instructor->get('name')));
 
                                                 $names[] = (in_array($instructor->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($instructor->link()) . '">' . $name . '</a>' : $name);

@@ -96,7 +96,9 @@ if ($assets->total() > 0) {
             <div class="gallery">
                 <?php
                 foreach ($images as $asset) {
-                    $alt = ($asset->get('description')) ? stripslashes($asset->get('description')) : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($asset->get('filename'), DS));
+                    $alt = ($asset->get('description'))
+                        ? stripslashes($asset->get('description'))
+                        : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($asset->get('filename'), DS));
                     ?>
                     <a class="img-link"
                         href="<?php echo $asset->link('medium'); ?>"

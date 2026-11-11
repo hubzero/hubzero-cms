@@ -20,7 +20,12 @@ $this
 // Directory path breadcrumbs
 $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $this->url, $parent);
 
-$endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action=history&amp;asset=' . urlencode($this->file->get('name')) . '&amp;subdir=' . $this->escape($this->subdir) . '">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . $this->escape(\Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40)) . '</span></a></span> &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_HISTORY_DIFF') . '</span>';
+$endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action=history&amp;asset='
+    . urlencode($this->file->get('name')) . '&amp;subdir=' . $this->escape($this->subdir) . '">'
+    . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">'
+    . $this->escape(\Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40))
+    . '</span></a></span> &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_HISTORY_DIFF')
+    . '</span>';
 
 ?>
 

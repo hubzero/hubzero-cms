@@ -48,7 +48,8 @@ if (!User::isGuest()) {
     $cls = ' tooltips';
 }
 
-$vote_link = 'index.php?option=' . $this->option . '&id=' . $this->item->get('publication_id') . $verq . '&active=reviews&action=rateitem&refid=' . $this->item->get('id');
+$vote_link = 'index.php?option=' . $this->option . '&id=' . $this->item->get('publication_id') . $verq
+    . '&active=reviews&action=rateitem&refid=' . $this->item->get('id');
 ?>
 <?php if (!$this->item->get('vote')) { ?>
     <?php if (User::isGuest()) { ?>

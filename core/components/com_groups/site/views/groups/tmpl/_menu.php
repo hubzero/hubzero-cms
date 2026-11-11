@@ -28,7 +28,9 @@ defined('_HZEXEC_') or die();
             $access  = $this->pluginAccess[$section['name']];
             $class   = strtolower($section['name']);
             $title   = $section['title'];
-            $link    = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $section['name']);
+            $link    = Route::url(
+                'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=' . $section['name'],
+            );
             $liClass = ($this->tab == $section['name']) ? 'active' : '';
             $ariaCurrent = ($this->tab == $section['name']) ? ' aria-current="page"' : '';
 
@@ -42,7 +44,10 @@ defined('_HZEXEC_') or die();
             $liClass = ($trueTab != $this->tab) ? '' : $liClass;
             $ariaCurrent = ($trueTab == $this->tab && $this->tab == $section['name']) ? ' aria-current="page"' : '';
 
-            if (($access == 'registered' && User::isGuest()) || ($access == 'members' && !in_array(User::get("id"), $this->group->get('members')))) {
+            if (
+                ($access == 'registered' && User::isGuest())
+                || ($access == 'members' && !in_array(User::get("id"), $this->group->get('members')))
+            ) {
                 $item  = "<li class=\"protected group-overview-tab\"><span data-icon=\"&#x{$section['icon']};\" aria-disabled=\"true\" class=\"disabled overview\">Overview<span class=\"sr-only\"> - " . Lang::txt('COM_GROUPS_MENU_RESTRICTED') . "</span></span>";
             } else {
                 $item  = "<li class=\"{$liClass} group-overview-tab\">";
@@ -67,19 +72,27 @@ defined('_HZEXEC_') or die();
                 $item = '';
             } elseif (!$this->group->get('approved')) {
                 $item  = '<li class="protected members-only group-' . $class . '-tab">';
-                $item .= '<span data-icon="&#x' . $section['icon'] . '" aria-disabled="true" class="disabled' . $class . '">' . $title . '<span class="sr-only"> - ' . Lang::txt('COM_GROUPS_MENU_RESTRICTED_APPROVAL') . '</span></span>';
+                $item .= '<span data-icon="&#x' . $section['icon'] . '" aria-disabled="true" class="disabled' . $class
+                    . '">' . $title . '<span class="sr-only"> - ' . Lang::txt('COM_GROUPS_MENU_RESTRICTED_APPROVAL')
+                    . '</span></span>';
                 $item .= '</li>';
             } elseif ($access == 'members' && !in_array(User::get('id'), $this->group->get('members'))) {
                 $item  = '<li class="protected members-only group-' . $class . '-tab">';
-                $item .= '<span data-icon="&#x' . $section['icon'] . '" aria-disabled="true" class="disabled' . $class . '">' . $title . '<span class="sr-only"> - ' . Lang::txt('COM_GROUPS_MENU_MEMBERS_ONLY') . '</span></span>';
+                $item .= '<span data-icon="&#x' . $section['icon'] . '" aria-disabled="true" class="disabled' . $class
+                    . '">' . $title . '<span class="sr-only"> - ' . Lang::txt('COM_GROUPS_MENU_MEMBERS_ONLY')
+                    . '</span></span>';
                 $item .= '</li>';
             } elseif ($access == 'registered' && User::isGuest()) {
                 $item  = '<li class="protected registered-only group-' . $class . '-tab">';
-                $item .= '<span data-icon="&#x' . $section['icon'] . '" aria-disabled="true" class="disabled' . $class . '">' . $title . '<span class="sr-only"> - ' . Lang::txt('COM_GROUPS_MENU_REGISTERED_ONLY') . '</span></span>';
+                $item .= '<span data-icon="&#x' . $section['icon'] . '" aria-disabled="true" class="disabled' . $class
+                    . '">' . $title . '<span class="sr-only"> - ' . Lang::txt('COM_GROUPS_MENU_REGISTERED_ONLY')
+                    . '</span></span>';
                 $item .= '</li>';
             } else {
                 //menu item meta data vars
-                $metadata = (isset($this->sectionsContent[$k]['metadata'])) ? $this->sectionsContent[$k]['metadata'] : [];
+                $metadata = (isset($this->sectionsContent[$k]['metadata']))
+                    ? $this->sectionsContent[$k]['metadata']
+                    : [];
                 $meta_count = (isset($metadata['count']) && $metadata['count'] != '') ? $metadata['count'] : '';
                 $meta_alert = (isset($metadata['alert']) && $metadata['alert'] != '') ? $metadata['alert'] : '';
 

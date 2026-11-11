@@ -296,7 +296,10 @@ if (!$this->app->sess) {
             // child it opened unseen behind the canvas in both modes, with the
             // default choice focused.
             $leaveUrl     = Route::url('index.php?option=com_members&task=myaccount');
-            $terminateUrl = Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=stop&sess=' . $this->app->sess . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1');
+            $terminateUrl = Route::url(
+                'index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=stop&sess=' . $this->app->sess
+                    . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1',
+            );
             ?>
         <div id="ts-confirm" class="ts-confirm" hidden role="dialog" aria-modal="true"
             aria-labelledby="ts-confirm-title">
@@ -368,7 +371,8 @@ if (!$this->app->sess) {
                         <?php
                         $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'username', 'acmembers']]);
                         if (count($mc) > 0) {
-                            echo '<span class="hint">' . Lang::txt('COM_TOOLS_SHARE_SESSION_HINT_AUTOCOMPLETE') . '</span>' . $mc[0];
+                            echo '<span class="hint">' . Lang::txt('COM_TOOLS_SHARE_SESSION_HINT_AUTOCOMPLETE')
+                                . '</span>' . $mc[0];
                         } else { ?>
                             <span class="hint"><?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_HINT'); ?></span>
                             <input type="text" name="username" id="field-username" value="" />

@@ -75,13 +75,15 @@ $message  = Lang::txt('Group Updated') . "\n\n";
 $message .= "--------------------------------------------\n";
 $message .= Lang::txt('Group:') . ' ' . strip_tags($this->group->get('description')) . "\n";
 $message .= Lang::txt('Alias:') . ' ' . $this->group->get('cn') . "\n";
-$message .= Lang::txt('Updated:') . ' @ ' . Date::of('now')->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' on ' . Date::of('now')->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\n";
+$message .= Lang::txt('Updated:') . ' @ ' . Date::of('now')->toLocal(Lang::txt('TIME_FORMAT_HZ1')) . ' on '
+    . Date::of('now')->toLocal(Lang::txt('DATE_FORMAT_HZ1')) . "\n";
 $message .= Lang::txt('Updated By:') . ' ' . $this->user->get('name') . ' (' . $this->user->get('email') . ')' . "\n";
 $message .= "--------------------------------------------\n\n";
 
 $nameNew = strip_tags($this->group->get('description'));
 $message .= "\t" . Lang::txt('Name:') . ' ' . $nameNew;
-$message .= $wasText('description', $nameNew, isset($before['description']) ? strip_tags($before['description']) : null) . "\n\n";
+$message .= $wasText('description', $nameNew, isset($before['description']) ? strip_tags($before['description']) : null)
+    . "\n\n";
 
 $message .= "\t" . Lang::txt('Interests (Tags):') . ' ';
 
@@ -99,7 +101,8 @@ $privateNew = strip_tags($this->group->get('private_desc', '[ Empty ]'));
 $message .= "\t" . Lang::txt('Private Description:') . ' ' . $privateNew;
 $message .= $wasText('private_desc', $this->group->get('private_desc'), isset($before['private_desc']) ? strip_tags($before['private_desc']) : null) . "\n\n";
 
-$message .= "\t" . Lang::txt('Logo:') . ' ' . ($this->group->get('logo') ? $base . DS . ltrim($this->group->getLogo(), DS) : '[ Not set ]');
+$message .= "\t" . Lang::txt('Logo:') . ' '
+    . ($this->group->get('logo') ? $base . DS . ltrim($this->group->getLogo(), DS) : '[ Not set ]');
 $message .= $wasText('logo', $this->group->get('logo'), isset($before['logo']) ? ($before['logo'] ? $before['logo'] : '[ Not set ]') : null) . "\n\n";
 
 $message .= "\t" . Lang::txt('Membership Settings/Join Policy:') . ' ';

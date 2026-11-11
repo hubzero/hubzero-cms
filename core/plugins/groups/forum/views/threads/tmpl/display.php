@@ -14,7 +14,8 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
-$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('thread');
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope='
+    . $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('thread');
 
 $this->category->set('section_alias', $this->filters['section']);
 
@@ -128,7 +129,10 @@ $this
             <?php
             $pageNav->setAdditionalUrlParam('cn', $this->group->get('cn'));
             $pageNav->setAdditionalUrlParam('active', 'forum');
-            $pageNav->setAdditionalUrlParam('scope', $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('id'));
+            $pageNav->setAdditionalUrlParam(
+                'scope',
+                $this->filters['section'] . '/' . $this->category->get('alias') . '/' . $this->thread->get('id'),
+            );
 
             echo $pageNav;
             ?>
@@ -298,7 +302,12 @@ $this
                 <label>
                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_YOUR_TAGS'); ?>:
                     <?php
-                        echo $this->autocompleter('tags', 'tags', $this->escape($this->thread->tags('string')), 'actags');
+                        echo $this->autocompleter(
+                            'tags',
+                            'tags',
+                            $this->escape($this->thread->tags('string')),
+                            'actags',
+                        );
                     ?>
                 </label>
 

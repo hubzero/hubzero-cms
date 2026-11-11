@@ -59,17 +59,20 @@ $this
                 echo '">';
                 if ($product->imgName) {
                     echo '<div class="img" style="background-image: url(';
-                    $imgPath = trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $product->pId . DS;
+                    $imgPath = trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS
+                        . $product->pId . DS;
                     echo "'/app/" . $imgPath . $product->imgName . "'";
                     echo ')"></div>';
                 } else {
                     echo '<div class="img" style="background-image: url(';
-                    $imgPath = dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__)))) . DS . 'assets' . DS . 'img' . DS;
+                    $imgPath = dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__)))) . DS . 'assets' . DS
+                        . 'img' . DS;
                     echo "'" . $imgPath . "noimage.png'";
                     echo ')"></div>';
                 }
                 echo '<a href="';
-                echo Route::url('index.php?option=' . Request::getCmd('option')) . 'product/' . $this->escape($productIdentificator);
+                echo Route::url('index.php?option=' . Request::getCmd('option')) . 'product/'
+                    . $this->escape($productIdentificator);
                 echo '">';
                 echo '<div class="content">';
                 echo '<h3>' . $this->escape($product->pName) . '</h3>';

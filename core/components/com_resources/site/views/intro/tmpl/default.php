@@ -144,7 +144,9 @@ if ($categories) {
                     $cls = rtrim($category->alias, 's');
                 }
                 // Need to do some decoding to ensure escaped characters aren't encoded twice.
-                $category->description = html_entity_decode(strip_tags(stripslashes($this->escape($category->description))));
+                $category->description = html_entity_decode(
+                    strip_tags(stripslashes($this->escape($category->description))),
+                );
                 ?>
                 <div class="col span-third <?php echo $clm; ?>">
                     <div class="resource-type <?php echo $cls; ?>">

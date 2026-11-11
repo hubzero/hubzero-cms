@@ -139,7 +139,10 @@ $this->js();
                         }
 
                         // output member autocompletor
-                        $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'team', 'acmembers', '', implode(', ', $currentTeam)]]);
+                        $mc = Event::trigger(
+                            'hubzero.onGetMultiEntry',
+                            [['members', 'team', 'acmembers', '', implode(', ', $currentTeam)]],
+                        );
                         if (count($mc) > 0) {
                             echo $mc[0];
                         } else { ?>

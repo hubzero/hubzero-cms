@@ -128,8 +128,10 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                     $html = $refl->getMethod('onRenderOption')->invoke(null);
                     $provider_html .= is_array($html) ? implode("\n", $html) : $html;
                 } else {
-                    $provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']) . '">';
-                    $provider_html .= '<div class="signin">' . Lang::txt('COM_MEMBERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
+                    $provider_html .= '<a class="' . $a['name'] . ' account" href="'
+                        . Route::url('index.php?option=com_users&view=login&authenticator=' . $a['name']) . '">';
+                    $provider_html .= '<div class="signin">'
+                        . Lang::txt('COM_MEMBERS_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
                     $provider_html .= '</a>';
                 }
             }
@@ -256,14 +258,21 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                     foreach ($this->password_rules as $rule) {
                                         if (!empty($rule)) {
                                             $err = '';
-                                            if (!empty($this->xregistration->invalid['password']) && is_array($this->xregistration->invalid['password'])) {
+                                            if (
+                                                !empty($this->xregistration->invalid['password'])
+                                                && is_array($this->xregistration->invalid['password'])
+                                            ) {
                                                 $err = in_array($rule, $this->xregistration->invalid['password']);
                                             }
 
-                                            echo '<li' . ($err ? ' class="error"' : ' class="empty"') . '>' . $rule . '</li>' . "\n";
+                                            echo '<li' . ($err ? ' class="error"' : ' class="empty"') . '>' . $rule
+                                                . '</li>' . "\n";
                                         }
                                     }
-                                    if (!empty($this->xregistration->invalid['password']) && is_array($this->xregistration->invalid['password'])) {
+                                    if (
+                                        !empty($this->xregistration->invalid['password'])
+                                        && is_array($this->xregistration->invalid['password'])
+                                    ) {
                                         foreach ($this->xregistration->invalid['password'] as $msg) {
                                             if (!in_array($msg, $this->password_rules)) {
                                                 echo '<li class="error">' . $msg . '</li>' . "\n";
@@ -292,8 +301,12 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
                 <?php if ($this->registrationFullname != Field::STATE_HIDDEN) { ?>
                     <?php
-                    $required = ($this->registrationFullname == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '';
-                    $message = (!empty($this->xregistration->invalid['name'])) ? '<p class="error">' . $this->xregistration->invalid['name'] . '</p>' : '';
+                    $required = ($this->registrationFullname == Field::STATE_REQUIRED)
+                        ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'
+                        : '';
+                    $message = (!empty($this->xregistration->invalid['name']))
+                        ? '<p class="error">' . $this->xregistration->invalid['name'] . '</p>'
+                        : '';
                     $fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
                     $givenName  = '';
@@ -414,7 +427,11 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
                     // Add in class for JS selector to conditionally retrieve data from RoR Api based on members option 'rorApi'
                     $rorApiBoolean = Component::params('com_members')->get('rorApi');
-                    if (strtolower($field->get('name')) == "profile[organization]" && strtolower($field->get('type')) == "text" && $rorApiBoolean) {
+                    if (
+                        strtolower($field->get('name')) == "profile[organization]"
+                        && strtolower($field->get('type')) == "text"
+                        && $rorApiBoolean
+                    ) {
                         echo "<span class='hidden rorApiAvailable'></span>";
                     }
 
@@ -462,7 +479,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                             $events = $option->get('dependents');
 
                             if ($field->get('type') == 'dropdown') {
-                                $scripts[] = '		if ($(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                                $scripts[] = '		if ($(this).val() == "'
+                                    . ($option->value ? $option->value : $option->label) . '") {';
                                 $show = [];
                                 foreach ($events as $s) {
                                     $show[] = '#input-' . $s;
@@ -473,13 +491,15 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                 $scripts[] = '			$("' . implode(', ', $show) . '").hide();';
                                 $scripts[] = '		}';
 
-                                $toggle[] = '	if ($("#profile_' . $field->get('name') . '").val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                                $toggle[] = '	if ($("#profile_' . $field->get('name') . '").val() == "'
+                                    . ($option->value ? $option->value : $option->label) . '") {';
                                 $toggle[] = '		$("' . implode(', ', $show) . '").show();';
                                 $toggle[] = '	} else {';
                                 $toggle[] = '		$("' . implode(', ', $show) . '").hide();';
                                 $toggle[] = '	}';
                             } else {
-                                $scripts[] = '		if ($(this).is(":checked") && $(this).val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                                $scripts[] = '		if ($(this).is(":checked") && $(this).val() == "'
+                                    . ($option->value ? $option->value : $option->label) . '") {';
                                 $show = [];
                                 foreach ($events as $s) {
                                     $show[] = '#input-' . $s;
@@ -490,7 +510,9 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                 $scripts[] = '			$("' . implode(', ', $show) . '").hide();';
                                 $scripts[] = '		}';
 
-                                $toggle[] = '	if ($("#profile_' . $field->get('name') . $i . '").is(":checked") && $("#profile_' . $field->get('name') . $i . '").val() == "' . ($option->value ? $option->value : $option->label) . '") {';
+                                $toggle[] = '	if ($("#profile_' . $field->get('name') . $i
+                                    . '").is(":checked") && $("#profile_' . $field->get('name') . $i . '").val() == "'
+                                    . ($option->value ? $option->value : $option->label) . '") {';
                                 $toggle[] = '		$("' . implode(', ', $show) . '").show();';
                                 $toggle[] = '	} else {';
                                 $toggle[] = '		$("' . implode(', ', $show) . '").hide();';
@@ -541,7 +563,9 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
         <?php if ($this->registrationOptIn != Field::STATE_HIDDEN) { ?>
             <?php
-            $message = (!empty($this->xregistration->invalid['sendEmail'])) ? '<span class="error" role="alert">' . $this->xregistration->invalid['sendEmail'] . '</span>' : '';
+            $message = (!empty($this->xregistration->invalid['sendEmail']))
+                ? '<span class="error" role="alert">' . $this->xregistration->invalid['sendEmail'] . '</span>'
+                : '';
             $fieldclass = ($message) ? ' class="fieldWithErrors"' : '';
 
             //define mail preference options

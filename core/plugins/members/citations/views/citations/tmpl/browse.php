@@ -132,7 +132,10 @@ if (isset($this->messages)) {
                                     <?php endif; ?>
                                     <td class="citation-container">
                                         <?php
-                                            $formatted = $cite->formatted($this->config->toArray(), $this->filters['search']);
+                                            $formatted = $cite->formatted(
+                                                $this->config->toArray(),
+                                                $this->filters['search'],
+                                            );
 
                                         if ($cite->doi) {
                                             $formatted = str_replace(
@@ -155,7 +158,8 @@ if (isset($this->messages)) {
                                                     $final = "";
                                                 if ($sponsors) {
                                                     foreach ($sponsors as $s) {
-                                                        $final .= '<a rel="external" href="' . $s->get('link') . '">' . $s->get('sponsor') . '</a>, ';
+                                                        $final .= '<a rel="external" href="' . $s->get('link') . '">'
+                                                            . $s->get('sponsor') . '</a>, ';
                                                     }
                                                 }
                                                 ?>

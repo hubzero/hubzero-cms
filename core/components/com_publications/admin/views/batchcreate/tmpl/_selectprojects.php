@@ -15,7 +15,8 @@ $html  = '<select name="projectid" id="projectid">' . "\n";
 $html .= "\t" . '<option value="0" selected="selected">' . Lang::txt('COM_PUBLICATIONS_SELECT_PROJECT') . '</option>';
 foreach ($this->projects as $project) {
     $html .= "\t" . '<option value="' . $project->id . '"';
-    $html .= '>' . $this->escape(\Hubzero\Utility\Str::truncate($project->title, 60)) . ' (' . $this->escape($project->alias) . ')</option>' . "\n";
+    $html .= '>' . $this->escape(\Hubzero\Utility\Str::truncate($project->title, 60)) . ' ('
+        . $this->escape($project->alias) . ')</option>' . "\n";
 }
 $html .= '</select>' . "\n";
 echo $html;

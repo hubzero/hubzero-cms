@@ -40,7 +40,14 @@ if ($this->filters['state'] == -2 && $canDo->get('core.delete')) {
 
 //Toolbar::addNew('module.add');
 Toolbar::divider();
-Toolbar::appendButton('Popup', 'options', 'COM_MESSAGES_TOOLBAR_MY_SETTINGS', Route::url('index.php?option=com_messages&controller=configs&tmpl=component'), 850, 400);
+Toolbar::appendButton(
+    'Popup',
+    'options',
+    'COM_MESSAGES_TOOLBAR_MY_SETTINGS',
+    Route::url('index.php?option=com_messages&controller=configs&tmpl=component'),
+    850,
+    400,
+);
 
 if ($canDo->get('core.admin')) {
     Toolbar::preferences('com_messages');

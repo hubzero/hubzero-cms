@@ -403,7 +403,8 @@ $pid = Request::getInt('publication', 0);
                         if (count($tags_list) > 0) {
                             echo $tags_list[0];
                         } else {
-                            echo '<input type="text" name="tags" value="' . $this->escape(implode(',', (array) $this->tags)) . '" />';
+                            echo '<input type="text" name="tags" value="'
+                                . $this->escape(implode(',', (array) $this->tags)) . '" />';
                         }
                         ?>
                         <span class="hint"><?php echo Lang::txt('COM_CITATIONS_TAGS_HINT'); ?></span>
@@ -429,7 +430,8 @@ $pid = Request::getInt('publication', 0);
                         if (count($badges_list) > 0) {
                             echo $badges_list[0];
                         } else {
-                            echo '<input type="text" name="badges" value="' . $this->escape(implode(',', (array) $this->badges)) . '" />';
+                            echo '<input type="text" name="badges" value="'
+                                . $this->escape(implode(',', (array) $this->badges)) . '" />';
                         }
                         ?>
                         <span class="hint"><?php echo Lang::txt('COM_CITATIONS_BADGES_HINT'); ?></span>
@@ -483,7 +485,8 @@ $pid = Request::getInt('publication', 0);
                             }
 
                             echo "\t\t\t" . '  <tr>' . "\n";
-                            echo "\t\t\t" . '   <td><select name="assocs[' . $i . '][tbl]" aria-label="' . Lang::txt('COM_CITATIONS_ASSOCIATION_TYPE') . '">' . "\n";
+                            echo "\t\t\t" . '   <td><select name="assocs[' . $i . '][tbl]" aria-label="'
+                                . Lang::txt('COM_CITATIONS_ASSOCIATION_TYPE') . '">' . "\n";
                             echo ' <option value=""';
                             echo ($this->assocs[$i]->tbl == '') ? ' selected="selected"' : '';
                             echo '>' . Lang::txt('COM_CITATIONS_SELECT') . '</option>' . "\n";
@@ -494,10 +497,15 @@ $pid = Request::getInt('publication', 0);
                             echo ($this->assocs[$i]->tbl == 'publication') ? ' selected="selected"' : '';
                             echo '>' . Lang::txt('COM_CITATIONS_PUBLICATION') . '</option>' . "\n";
                             echo '</select></td>' . "\n";
-                            echo "\t\t\t" . '<td><input type="text" name="assocs[' . $i . '][oid]" aria-label="' . Lang::txt('COM_CITATIONS_ASSOCIATION_ID') . '" value="' . $this->assocs[$i]->oid . '" />' . "\n";
-                            echo "\t\t\t\t" . '<input type="hidden" name="assocs[' . $i . '][id]" value="' . $this->assocs[$i]->id . '" />' . "\n";
-                            echo "\t\t\t\t" . '<input type="hidden" name="assocs[' . $i . '][cid]" value="' . $this->assocs[$i]->cid . '" /></td>' . "\n";
-                            echo "\t\t\t" . '<td><select name="assocs[' . $i . '][type]" aria-label="' . Lang::txt('COM_CITATIONS_CONTEXT') . '">' . "\n";
+                            echo "\t\t\t" . '<td><input type="text" name="assocs[' . $i . '][oid]" aria-label="'
+                                . Lang::txt('COM_CITATIONS_ASSOCIATION_ID') . '" value="' . $this->assocs[$i]->oid
+                                . '" />' . "\n";
+                            echo "\t\t\t\t" . '<input type="hidden" name="assocs[' . $i . '][id]" value="'
+                                . $this->assocs[$i]->id . '" />' . "\n";
+                            echo "\t\t\t\t" . '<input type="hidden" name="assocs[' . $i . '][cid]" value="'
+                                . $this->assocs[$i]->cid . '" /></td>' . "\n";
+                            echo "\t\t\t" . '<td><select name="assocs[' . $i . '][type]" aria-label="'
+                                . Lang::txt('COM_CITATIONS_CONTEXT') . '">' . "\n";
                             echo ' <option value=""';
                             echo ($this->assocs[$i]->type == '') ? ' selected="selected"' : '';
                             echo '>' . Lang::txt('COM_CITATIONS_SELECT') . '</option>' . "\n";

@@ -89,40 +89,58 @@ if ($this->group->isSuperGroup()) {
         if ($this->group->get('published') != 2) {
             if ($isManager) {
                 if ($membership_control == 1 && $this->group->get('join_policy') != 3) {
-                    $menuItems[] = '<li role="none"><a role="menuitem" class="group-invite" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=invite') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_INVITE') . '</a></li>';
+                    $menuItems[] = '<li role="none"><a role="menuitem" class="group-invite" href="'
+                        . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=invite') . '">'
+                        . Lang::txt('COM_GROUPS_TOOLBAR_INVITE') . '</a></li>';
                 }
-                $menuItems[] = '<li role="none"><a role="menuitem" class="group-edit" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=edit') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '</a></li>';
-                $menuItems[] = '<li role="none"><a role="menuitem" class="group-pages" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=pages') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_PAGES') . '</a></li>';
+                $menuItems[] = '<li role="none"><a role="menuitem" class="group-edit" href="'
+                    . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=edit') . '">'
+                    . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '</a></li>';
+                $menuItems[] = '<li role="none"><a role="menuitem" class="group-pages" href="'
+                    . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=pages') . '">'
+                    . Lang::txt('COM_GROUPS_TOOLBAR_PAGES') . '</a></li>';
                 if ($membership_control == 1) {
                     $menuItems[] = '<li class="divider" role="separator"></li>';
                 }
             } else {
                 if ($membership_control == 1 && Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.invite')) {
-                    $menuItems[] = '<li role="none"><a role="menuitem" class="group-invite" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=invite') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_INVITE') . '</a></li>';
+                    $menuItems[] = '<li role="none"><a role="menuitem" class="group-invite" href="'
+                        . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=invite') . '">'
+                        . Lang::txt('COM_GROUPS_TOOLBAR_INVITE') . '</a></li>';
                 }
                 if (Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.edit')) {
-                    $menuItems[] = '<li role="none"><a role="menuitem" class="group-edit" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=edit') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '</a></li>';
+                    $menuItems[] = '<li role="none"><a role="menuitem" class="group-edit" href="'
+                        . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=edit') . '">'
+                        . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '</a></li>';
                 }
                 if (Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages')) {
-                    $menuItems[] = '<li role="none"><a role="menuitem" class="group-pages" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=pages') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_PAGES') . '</a></li>';
+                    $menuItems[] = '<li role="none"><a role="menuitem" class="group-pages" href="'
+                        . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=pages') . '">'
+                        . Lang::txt('COM_GROUPS_TOOLBAR_PAGES') . '</a></li>';
                 }
             }
         }
 
         if ($canCancel && $membership_control == 1) {
-            $menuItems[] = '<li role="none"><button type="submit" form="hz-post-action" formaction="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=cancel') . '" role="menuitem" class="group-cancel cancel_group_membership">' . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</button></li>';
+            $menuItems[] = '<li role="none"><button type="submit" form="hz-post-action" formaction="'
+                . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=cancel')
+                . '" role="menuitem" class="group-cancel cancel_group_membership">'
+                . Lang::txt('COM_GROUPS_TOOLBAR_CANCEL') . '</button></li>';
             if ($isManager) {
                 $menuItems[] = '<li class="divider" role="separator"></li>';
             }
         }
 
         if ($isManager && $membership_control == 1) {
-            $menuItems[] = '<li role="none"><a role="menuitem" class="group-delete" href="' . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=delete') . '">' . Lang::txt('COM_GROUPS_TOOLBAR_DELETE') . '</a></li>';
+            $menuItems[] = '<li role="none"><a role="menuitem" class="group-delete" href="'
+                . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=delete') . '">'
+                . Lang::txt('COM_GROUPS_TOOLBAR_DELETE') . '</a></li>';
         }
 
         if ($this->logoutLink) {
             $menuItems[] = '<li class="divider" role="separator"></li>';
-            $menuItems[] = '<li role="none"><a role="menuitem" class="logout" href="' . $logoutLink . '">' . Lang::txt('COM_GROUPS_TOOLBAR_LOGOUT') . '</a></li>';
+            $menuItems[] = '<li role="none"><a role="menuitem" class="logout" href="' . $logoutLink . '">'
+                . Lang::txt('COM_GROUPS_TOOLBAR_LOGOUT') . '</a></li>';
         }
         ?>
         <li>

@@ -50,7 +50,11 @@ $base = $this->offering->alias() . '&active=forum';
                         if ($this->filters['search'] && $rows->count() > 0) {
                             foreach ($rows as $row) {
                                 $title = $this->escape(stripslashes($row->get('title')));
-                                $title = preg_replace('#' . preg_quote($this->filters['search'], '#') . '#i', "<span class=\"highlight\">\\0</span>", $title);
+                                $title = preg_replace(
+                                    '#' . preg_quote($this->filters['search'], '#') . '#i',
+                                    "<span class=\"highlight\">\\0</span>",
+                                    $title,
+                                );
 
                                 $name = Lang::txt('JANONYMOUS');
                                 if (!$row->get('anonymous')) {

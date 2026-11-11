@@ -55,8 +55,10 @@ foreach ($this->authenticators as $a) {
         $html = $refl[$a['name']]->getMethod('onRenderOption')->invoke(null, $this->returnQueryString);
         $login_provider_html .= is_array($html) ? implode("\n", $html) : $html;
     } else {
-        $login_provider_html .= '<a class="' . $a['name'] . ' account" href="' . Route::url('index.php?option=com_login&authenticator=' . $a['name'] . $this->returnQueryString) . '">';
-        $login_provider_html .= '<div class="signin">' . Lang::txt('COM_LOGIN_LOGIN_SIGN_IN_WITH_METHOD', $a['display']) . '</div>';
+        $login_provider_html .= '<a class="' . $a['name'] . ' account" href="'
+            . Route::url('index.php?option=com_login&authenticator=' . $a['name'] . $this->returnQueryString) . '">';
+        $login_provider_html .= '<div class="signin">' . Lang::txt('COM_LOGIN_LOGIN_SIGN_IN_WITH_METHOD', $a['display'])
+            . '</div>';
         $login_provider_html .= '</a>';
     }
 }

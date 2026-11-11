@@ -160,7 +160,10 @@ $maintext = $this->model->description;
                                 <?php
                                 $fieldContent = $elements->display($field->type, $data[$field->name]);
                                 // Wrap orphaned <li> items in <ul> for accessibility
-                                if (preg_match('#<li\b#', $fieldContent) && !preg_match('#<[uo]l[\s>]#', $fieldContent)) {
+                                if (
+                                    preg_match('#<li\b#', $fieldContent)
+                                    && !preg_match('#<[uo]l[\s>]#', $fieldContent)
+                                ) {
                                     $fieldContent = '<ul>' . $fieldContent . '</ul>';
                                 }
                                 echo $fieldContent;

@@ -94,7 +94,8 @@ $revision = $this->revision;
                     if (!$this->model->access('view-all')) {
                         $ghtml = [];
                         foreach ($this->model->groups as $allowedgroup) {
-                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup)
+                                . '">' . $allowedgroup . '</a>';
                         }
                         ?>
                             <p class="warning">
@@ -118,7 +119,12 @@ $revision = $this->revision;
 
                         $firstChild = $children->first();
 
-                        echo \Components\Resources\Helpers\Html::primaryChild($this->option, $this->model, $firstChild, '');
+                        echo \Components\Resources\Helpers\Html::primaryChild(
+                            $this->option,
+                            $this->model,
+                            $firstChild,
+                            '',
+                        );
 
                         $html = '';
 
@@ -131,39 +137,56 @@ $revision = $this->revision;
                             $versiontext .= '<strong>' . $thistool->version . '</strong>';
                             if ($this->model->revision != 'dev') {
                                 $versiontext .=  '<br /> ' . ucfirst(Lang::txt('COM_RESOURCES_PUBLISHED_ON')) . ' ';
-                                $versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00') ? Date::of($thistool->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Date::of($this->model->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                                $versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00')
+                                    ? Date::of($thistool->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                                    : Date::of($this->model->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                                 $versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', ' . Lang::txt('COM_RESOURCES_UNPUBLISHED_ON') . ' ' . Date::of($thistool->unpublished)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : '';
                             } else {
                                 $versiontext .= ' (' . Lang::txt('COM_RESOURCES_IN_DEVELOPMENT') . ')';
                             }
                         } elseif ($curtool) {
-                            $versiontext .= '<strong>' . $curtool->version . '</strong> - ' . Lang::txt('COM_RESOURCES_PUBLISHED_ON') . ' ';
-                            $versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00') ? Date::of($curtool->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Date::of($this->model->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
+                            $versiontext .= '<strong>' . $curtool->version . '</strong> - '
+                                . Lang::txt('COM_RESOURCES_PUBLISHED_ON') . ' ';
+                            $versiontext .= ($curtool->released && $curtool->released != '0000-00-00 00:00:00')
+                                ? Date::of($curtool->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                                : Date::of($this->model->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                         }
 
                         if (!$thistool) {
                             if ($versiontext !== '') {
-                                $html .= "\t\t\t\t" . '<p class="curversion">' . Lang::txt('COM_RESOURCES_VERSION') . ' ' . $versiontext . '</p>' . "\n";
+                                $html .= "\t\t\t\t" . '<p class="curversion">' . Lang::txt('COM_RESOURCES_VERSION')
+                                    . ' ' . $versiontext . '</p>' . "\n";
                             }
                         } elseif ($revision == 'dev') {
-                            $html .= "\t\t\t\t" . '<p class="devversion">' . Lang::txt('COM_RESOURCES_VERSION') . ' ' . $versiontext;
+                            $html .= "\t\t\t\t" . '<p class="devversion">' . Lang::txt('COM_RESOURCES_VERSION') . ' '
+                                . $versiontext;
                             $html .= $this->model->toolpublished ? ' <span>' . Lang::txt('View') . ' <a href="' . Route::url($this->model->link() . '&active=versions') . '">' . Lang::txt('other versions') . '</a></span>' : '';
                             $html .= '</p>' . "\n";
                         } else {
                             // Show archive message
-                            $msg = '<strong>' . Lang::txt('COM_RESOURCES_ARCHIVE') . '</strong> ' . Lang::txt('COM_RESOURCES_VERSION') . ' ' . $versiontext;
+                            $msg = '<strong>' . Lang::txt('COM_RESOURCES_ARCHIVE') . '</strong> '
+                                . Lang::txt('COM_RESOURCES_VERSION') . ' ' . $versiontext;
                             if ($this->model->curversion) {
-                                $msg .= ' <br />' . Lang::txt('COM_RESOURCES_LATEST_VERSION') . ': <a href="' . Route::url($this->model->link() . '&rev=' . $curtool->revision) . '">' . $this->model->curversion . '</a>.';
+                                $msg .= ' <br />' . Lang::txt('COM_RESOURCES_LATEST_VERSION') . ': <a href="'
+                                    . Route::url($this->model->link() . '&rev=' . $curtool->revision) . '">'
+                                    . $this->model->curversion . '</a>.';
                             }
-                            $msg .= ' <a href="' . Route::url($this->model->link() . '&active=versions') . '">' . Lang::txt('COM_RESOURCES_TOOL_ALL_VERSIONS') . '</a>';
+                            $msg .= ' <a href="' . Route::url($this->model->link() . '&active=versions') . '">'
+                                . Lang::txt('COM_RESOURCES_TOOL_ALL_VERSIONS') . '</a>';
                             $html .= '<p class="archive">' . $msg . '</p>' . "\n";
                         }
 
                         // doi message
-                        if ($revision != 'dev' && $this->model->doi && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder'))) {
+                        if (
+                            $revision != 'dev'
+                            && $this->model->doi
+                            && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder'))
+                        ) {
                             $doi = 'doi:' . ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
 
-                            $html .= "\t\t" . '<p class="doi">' . $doi . ' <span><a href="' . Route::url($this->model->link() . '&active=about') . '#citethis">' . Lang::txt('cite this') . '</a></span></p>' . "\n";
+                            $html .= "\t\t" . '<p class="doi">' . $doi . ' <span><a href="'
+                                . Route::url($this->model->link() . '&active=about') . '#citethis">'
+                                . Lang::txt('cite this') . '</a></span></p>' . "\n";
                         }
 
                         // Open/closed source
@@ -172,7 +195,8 @@ $revision = $this->revision;
                             $html .= ($this->model->taravailable) ? ' |  <a href="' . Route::url('index.php?option=' . $this->option . '&task=sourcecode&tool=' . $this->model->tool) . '">' . Lang::txt('download') . '</a> ' . "\n" : ' | <span class="unavail">' . Lang::txt('code unavailable') . '</span>' . "\n";
                             $html .= '</p>' . "\n";
                         } elseif (!$this->model->toolsource) { // closed source, archive page
-                            $html .= '<p class="closedsource_license">' . Lang::txt('COM_RESOURCES_TOOL_IS_CLOSED_SOURCE') . '</p>' . "\n";
+                            $html .= '<p class="closedsource_license">'
+                                . Lang::txt('COM_RESOURCES_TOOL_IS_CLOSED_SOURCE') . '</p>' . "\n";
                         }
                         // do we have a first-time user guide?
                         if (!$thistool) {
@@ -192,7 +216,9 @@ $revision = $this->revision;
                             if ($url) {
                                 $html .= "\t\t\t" . '<span><span class="guide"><a href="' . $url . '">' . Lang::txt('COM_RESOURCES_TOOL_FIRT_TIME_USER_GUIDE') . '</a></span></span>' . "\n";
                             }
-                            $html .= "\t\t\t" . '<span class="viewalldocs"><a href="' . Route::url($this->model->link() . '&active=supportingdocs') . '">' . Lang::txt('COM_RESOURCES_TOOL_VIEW_ALL_SUPPORTING_DOCS') . '</a></span>' . "\n";
+                            $html .= "\t\t\t" . '<span class="viewalldocs"><a href="'
+                                . Route::url($this->model->link() . '&active=supportingdocs') . '">'
+                                . Lang::txt('COM_RESOURCES_TOOL_VIEW_ALL_SUPPORTING_DOCS') . '</a></span>' . "\n";
                             $html .= "\t\t" . '</p>' . "\n";
                         }
 
@@ -232,7 +258,9 @@ $revision = $this->revision;
                             : Lang::txt('This section is unavailable in an archive version of a tool.');
 
                     if ($this->model->curversion) {
-                        echo ' ' . Lang::txt('Consult the latest published version') . ' <a href="' . Route::url($this->model->link() . '&rev=' . $curtool->revision) . '">' . $this->model->curversion . '</a> ' . Lang::txt('for most current information.');
+                        echo ' ' . Lang::txt('Consult the latest published version') . ' <a href="'
+                            . Route::url($this->model->link() . '&rev=' . $curtool->revision) . '">'
+                            . $this->model->curversion . '</a> ' . Lang::txt('for most current information.');
                     }
                     ?>
                 </p>

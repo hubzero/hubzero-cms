@@ -53,7 +53,10 @@ $this
 
                             $edit = 0;
                             // Make sure editing capaibilites are available before even accepting an ID to edit
-                            if ($this->params->get('access-edit-comment') || $this->params->get('access-manage-comment')) {
+                            if (
+                                $this->params->get('access-edit-comment')
+                                || $this->params->get('access-manage-comment')
+                            ) {
                                 $edit = Request::getInt('commentedit', 0);
                             }
 
@@ -87,7 +90,8 @@ $this
                                     if (!$reply->get('anonymous')) {
                                         $name = $this->escape(stripslashes($reply->creator->get('name')));
                                         if (in_array($reply->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                            $name = '<a href="' . Route::url($reply->creator->link()) . '">' . $name . '</a>';
+                                            $name = '<a href="' . Route::url($reply->creator->link()) . '">' . $name
+                                                . '</a>';
                                         }
                                     }
                                     ?>
@@ -110,7 +114,14 @@ $this
                                     <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_YOUR_COMMENTS'); ?>:
                                     <?php
                                     if (!User::isGuest()) {
-                                        echo $this->editor('comment[content]', $this->escape($comment->get('content')), 35, 15, 'commentcontent', ['class' => 'form-control minimal no-footer']);
+                                        echo $this->editor(
+                                            'comment[content]',
+                                            $this->escape($comment->get('content')),
+                                            35,
+                                            15,
+                                            'commentcontent',
+                                            ['class' => 'form-control minimal no-footer'],
+                                        );
                                     }
                                     ?>
                                 </label>

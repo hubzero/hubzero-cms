@@ -219,7 +219,8 @@ $option = 'com_groups';
 
                                 if (\Components\Members\Helpers\Utility::validemail($guser)) {
                                     $inviteemail = true;
-                                    $pic = rtrim(Request::base(true), '/') . '/core/components/com_groups/site/assets/img/emailthumb.png';
+                                    $pic = rtrim(Request::base(true), '/')
+                                        . '/core/components/com_groups/site/assets/img/emailthumb.png';
                                 } elseif (!is_object($u)) {
                                     continue;
                                 } else {
@@ -353,7 +354,8 @@ $option = 'com_groups';
                                     $roles = $db->loadAssocList();
 
                                     if ($roles) {
-                                        $html .= '<strong>' . Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
+                                        $html .= '<strong>' . Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES')
+                                            . ':</strong> ';
                                         foreach ($roles as $role) {
                                             $all_roles .= ', <span><a href="' . Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&filter=' . $this->filter . '&role_filter=' . $role['id']) . '">' . $this->escape($role['name']) . '</a>';
 
@@ -366,7 +368,8 @@ $option = 'com_groups';
                                             }
                                         }
 
-                                        $html .= '<span class="roles-list" id="roles-list-' . $u->get('id') . '">' . substr($all_roles, 2) . '</span>';
+                                        $html .= '<span class="roles-list" id="roles-list-' . $u->get('id') . '">'
+                                            . substr($all_roles, 2) . '</span>';
 
                                         if ($this->authorized == 'manager') {
                                             if ($this->membership_control == 1) {
@@ -376,9 +379,14 @@ $option = 'com_groups';
                                     }
 
                                     if ($this->membership_control == 1) {
-                                        if (($this->authorized == 'manager' || $this->authorized == 'admin') && !$roles) {
-                                            $html .= '<strong>' . Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES') . ':</strong> ';
-                                            $html .= '<span class="roles-list" id="roles-list-' . $u->get('id') . '"></span>';
+                                        if (
+                                            ($this->authorized == 'manager' || $this->authorized == 'admin')
+                                            && !$roles
+                                        ) {
+                                            $html .= '<strong>' . Lang::txt('PLG_GROUPS_MEMBERS_MEMBER_ROLES')
+                                                . ':</strong> ';
+                                            $html .= '<span class="roles-list" id="roles-list-' . $u->get('id')
+                                                . '"></span>';
                                             $html .= ' <a class="assign-role" href="' . Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=assignrole&uid=' . $u->get('id')) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_ASSIGN_ROLE') . '</a>';
                                         }
                                     }
@@ -400,7 +408,8 @@ $option = 'com_groups';
                                     if ($expires) {
                                         $soon = (strtotime($expires . ' UTC') - time()) < ($this->expiration_warn_days * 86400);
 
-                                        $html .= '<span class="term-expires' . ($soon ? ' term-expires-soon' : '') . '">';
+                                        $html .= '<span class="term-expires' . ($soon ? ' term-expires-soon' : '')
+                                            . '">';
                                         $html .= Lang::txt(
                                             'PLG_GROUPS_MEMBERS_EXPIRATION_ENDS',
                                             '<time datetime="' . $this->escape($expires) . '">'
@@ -430,9 +439,12 @@ $option = 'com_groups';
                                     $row->loadReason($u->get('id'), $this->group->gidNumber);
 
                                     if ($row) {
-                                        $html .= '<span class="reason" data-title="' . Lang::txt('PLG_GROUPS_MEMBERS_REASON_FOR_REQUEST') . '">';
-                                        $html .= '<span class="reason-reason">' . $this->escape(stripslashes($row->reason)) . '</span>';
-                                        $html .= '<span class="reason-date">' . Date::of($row->date)->toLocal('F d, Y @ g:ia') . '</span>';
+                                        $html .= '<span class="reason" data-title="'
+                                            . Lang::txt('PLG_GROUPS_MEMBERS_REASON_FOR_REQUEST') . '">';
+                                        $html .= '<span class="reason-reason">'
+                                            . $this->escape(stripslashes($row->reason)) . '</span>';
+                                        $html .= '<span class="reason-date">'
+                                            . Date::of($row->date)->toLocal('F d, Y @ g:ia') . '</span>';
                                         $html .= '</span>';
                                     }
                                 }
@@ -487,19 +499,28 @@ $option = 'com_groups';
                                     $html .= "\t\t\t\t" . '<td class="demote-member"> </td>' . "\n";
                                 }
                                 $html .= "\t\t\t\t" . '<td class="message-member">';
-                                if (is_object($u) && User::get('id') == $u->get('uidNumber') || $this->filter == 'invitees' || $this->filter == 'pending') {
+                                if (
+                                    is_object($u)
+                                    && User::get('id') == $u->get('uidNumber')
+                                    || $this->filter == 'invitees'
+                                    || $this->filter == 'pending'
+                                ) {
                                 } else {
                                     $membersParams = Component::params('com_members');
                                     $userMessaging = $membersParams->get('user_messaging', 1);
                                     if (!$inviteemail && $this->messages_acl != 'nobody') {
                                         if ($u->get('activation') > 0) {
-                                            if (in_array(User::get('id'), $this->group->get('managers')) && ($u->get('activation') > 0)) {
+                                            if (
+                                                in_array(User::get('id'), $this->group->get('managers'))
+                                                && ($u->get('activation') > 0)
+                                            ) {
                                                 $html .= '<a class="tooltips" href="' . Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=messages&action=new&users[]=' . $guser) . '" title="Message :: Send a message to ' . $this->escape($u->get('name')) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE') . '</a>';
                                             } elseif (($userMessaging == 2 || ($userMessaging == 1 && in_array(User::get('id'), $this->group->get('members')))) && ($u->get('activation') > 0)) {
                                                 $html .= '<a class="tooltips" href="' . Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=messages&task=new&to[]=' . $guser) . '" title="Message :: Send a message to ' . $this->escape($u->get('name')) . '">' . Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE') . '</a>';
                                             }
                                         } else {
-                                            $html .= '<span class="unconfirmed">' . Lang::txt('PLG_GROUPS_MEMBERS_EMAIL_NOT_ACTIVATED') . '</span>';
+                                            $html .= '<span class="unconfirmed">'
+                                                . Lang::txt('PLG_GROUPS_MEMBERS_EMAIL_NOT_ACTIVATED') . '</span>';
                                         }
                                     }
                                     $html .= '</td>' . "\n";

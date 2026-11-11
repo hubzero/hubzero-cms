@@ -38,7 +38,9 @@ switch ($this->level) {
             if ($tg == '') {
                 $html .= 'open';
             }
-            $html .= '" data-type="' . $type->get('id') . '" data-input="" data-input2="" data-level="2" data-col="col1_all" data-rid="' . $id . '">[ All ]</span></li>';
+            $html .= '" data-type="' . $type->get('id')
+                . '" data-input="" data-input2="" data-level="2" data-col="col1_all" data-rid="' . $id
+                . '">[ All ]</span></li>';
         }
         $lis = '';
         $i = 0;
@@ -59,7 +61,9 @@ switch ($this->level) {
                 $d = $i;
             }
 
-            $li .= '" data-type="' . $type->get('id') . '" data-input="' . $tag->tag . '" data-input2="' . $tg2 . '" data-level="2" data-col="col1_' . $tag->tag . '" data-rid="' . $id . '">' . stripslashes($tag->raw_tag) . ' (' . $tag->ucount . ')</span></li>';
+            $li .= '" data-type="' . $type->get('id') . '" data-input="' . $tag->tag . '" data-input2="' . $tg2
+                . '" data-level="2" data-col="col1_' . $tag->tag . '" data-rid="' . $id . '">'
+                . stripslashes($tag->raw_tag) . ' (' . $tag->ucount . ')</span></li>';
 
             if ($this->bits['supportedtag'] && $tag->tag == $this->bits['supportedtag']) {
                 $html .= $li;
@@ -71,7 +75,8 @@ switch ($this->level) {
             $tg = 'all';
         }
         $html .= $lis;
-        $html .= '</ul><input type="hidden" name="atg" id="atg" value="' . htmlentities($tg) . '" /><input type="hidden" name="d" id="d" value="' . $d . '" />';
+        $html .= '</ul><input type="hidden" name="atg" id="atg" value="' . htmlentities($tg)
+            . '" /><input type="hidden" name="d" id="d" value="' . $d . '" />';
         break;
 
     case 2:
@@ -110,7 +115,9 @@ switch ($this->level) {
                 if ($this->bits['supportedtag'] && ($this->bits['tag'] == $this->bits['supportedtag'] || $supported)) {
                     $html .= 'class="supported" ';
                 }
-                $html .= '><span id="col2_' . $tool->id . '" data-type="' . $type->get('id') . '" data-input="' . $tool->id . '" data-input2="" data-level="3" data-col="col2_' . $tool->id . '" data-rid="">' . $this->escape(stripslashes($tool->title)) . '</span></li>';
+                $html .= '><span id="col2_' . $tool->id . '" data-type="' . $type->get('id') . '" data-input="'
+                    . $tool->id . '" data-input2="" data-level="3" data-col="col2_' . $tool->id . '" data-rid="">'
+                    . $this->escape(stripslashes($tool->title)) . '</span></li>';
             }
         } else {
             $html .= '<li role="option" aria-disabled="true" aria-selected="false"><span>'
@@ -123,12 +130,15 @@ switch ($this->level) {
                 $html .= '<div id="filteroptions">';
                 $html .= ' <div>' . Lang::txt('Show:');
                 foreach ($filters as $avalue => $alabel) {
-                    $html .= ' <label class="skill_' . $avalue . '"><input type="checkbox" class="option" name="filter" value="' . $avalue . '" ';
+                    $html .= ' <label class="skill_' . $avalue
+                        . '"><input type="checkbox" class="option" name="filter" value="' . $avalue . '" ';
                     $html .= in_array($avalue, $this->bits['filter']) ? 'checked="checked"' : '';
                     $html .= ' /> ' . $alabel . '</label>';
                 }
                 if ($params->get('audiencelink')) {
-                    $html .= ' <span>' . Lang::txt('COM_RESOURCES_WHATS_THIS') . ' <a href="' . $params->get('audiencelink') . '">' . Lang::txt('About audience levels') . ' &rsaquo;</a></span>';
+                    $html .= ' <span>' . Lang::txt('COM_RESOURCES_WHATS_THIS') . ' <a href="'
+                        . $params->get('audiencelink') . '">' . Lang::txt('About audience levels')
+                        . ' &rsaquo;</a></span>';
                 }
                 $html .= ' </div>';
                 $html .= '</div>';
@@ -151,9 +161,19 @@ switch ($this->level) {
         $statshtml = '';
         if ($params->get('show_ranking')) {
             if ($resource->isTool()) {
-                $stats = new \Components\Resources\Helpers\Usage\Tools($database, $resource->id, $resource->type, $resource->rating);
+                $stats = new \Components\Resources\Helpers\Usage\Tools(
+                    $database,
+                    $resource->id,
+                    $resource->type,
+                    $resource->rating,
+                );
             } else {
-                $stats = new \Components\Resources\Helpers\Usage\Andmore($database, $resource->id, $resource->type, $resource->rating);
+                $stats = new \Components\Resources\Helpers\Usage\Andmore(
+                    $database,
+                    $resource->id,
+                    $resource->type,
+                    $resource->rating,
+                );
             }
 
             $statshtml = $stats->display();
@@ -182,7 +202,8 @@ switch ($this->level) {
                 break;
         }
         $html .= '><a href="' . $sef . '">' . $this->escape(stripslashes($resource->title)) . '</a></h4>';
-        $html .= '<p>' . \Hubzero\Utility\Str::truncate(stripslashes($resource->introtext), 400) . ' &nbsp; <a href="' . $sef . '">' . Lang::txt('COM_RESOURCES_LEARN_MORE') . '</a></p>';
+        $html .= '<p>' . \Hubzero\Utility\Str::truncate(stripslashes($resource->introtext), 400) . ' &nbsp; <a href="'
+            . $sef . '">' . Lang::txt('COM_RESOURCES_LEARN_MORE') . '</a></p>';
 
         $usersgroups = [];
         if (!User::isGuest()) {
@@ -200,7 +221,8 @@ switch ($this->level) {
         if ($resource->access == 3 && !in_array($resource->group_owner, $usersgroups) && !$authorized) {
             $ghtml = [];
             foreach ($resource->groups as $allowedgroup) {
-                $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+                $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">'
+                    . $allowedgroup . '</a>';
             }
 
             $html .= '<p class="warning">' . Lang::txt('You must be logged in and a member of one of the following groups to access the full resource:') . ' ' . implode(', ', $ghtml) . '</p>' . "\n";

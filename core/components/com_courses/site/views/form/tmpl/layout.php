@@ -53,7 +53,8 @@ $this
                 $tabs = [];
                 $layout = $this->pdf->getPageLayout();
                 $this->pdf->eachPage(function ($src, $idx) use (&$tabs, $layout) {
-                    $tabs[] = '<li><a href="#page-' . $idx . '"' . ($idx == 1 ? ' class="current"' : '') . '>' . $idx . '</a></li>';
+                    $tabs[] = '<li><a href="#page-' . $idx . '"' . ($idx == 1 ? ' class="current"' : '') . '>' . $idx
+                        . '</a></li>';
 
                     echo '<li id="page-' . $idx . '">';
                     echo '<img src="' . $src . '" />';
@@ -80,9 +81,12 @@ $this
 									}
 								',
                                 );
-                                echo '<div class="radio-container' . ($ans['correct'] ? ' selected' : '') . '" id="' . $answerId . '">';
+                                echo '<div class="radio-container' . ($ans['correct'] ? ' selected' : '') . '" id="'
+                                    . $answerId . '">';
                                 echo '<button class="remove">x</button>';
-                                echo '<input name="question-saved-' . $idx . '-' . $qidx . '" value="' . $aidx . '" class="placeholder"' . ($ans['correct'] ? ' checked="checked"' : '') . ' type="radio" />';
+                                echo '<input name="question-saved-' . $idx . '-' . $qidx . '" value="' . $aidx
+                                    . '" class="placeholder"' . ($ans['correct'] ? ' checked="checked"' : '')
+                                    . ' type="radio" />';
                                 echo '</div>';
                             }
                             ++$qidx;

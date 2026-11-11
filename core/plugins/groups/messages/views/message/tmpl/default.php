@@ -16,7 +16,8 @@ defined('_HZEXEC_') or die();
 
 if (substr($this->xmessage->type, -8) == '_message') {
     $u = User::getInstance($this->xmessage->created_by);
-    $from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $this->escape($u->get('name')) . '</a>';
+    $from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">'
+        . $this->escape($u->get('name')) . '</a>';
 } else {
     $from = Lang::txt('System') . ' (' . $this->xmessage->component . ')';
 }

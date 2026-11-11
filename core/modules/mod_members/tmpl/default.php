@@ -90,7 +90,9 @@ $this->css();
                             . $colors[$k] . '; }';
 
                         $data  = '{';
-                        $data .= '"label": ' . json_encode($domain->domain, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) . ',';
+                        $data .= '"label": '
+                            . json_encode($domain->domain, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT)
+                            . ',';
                         $data .= '"data": ' . round(($domain->email_count / $total) * 100, 2) . ',';
                         $data .= '"color": "' . $colors[$k] . '"';
                         $data .= '}';

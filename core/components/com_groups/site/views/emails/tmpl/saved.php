@@ -372,11 +372,21 @@ $onOffLabel = function ($v) {
                                     // Determine the join policy
                                     $policy = $joinPolicyLabel($this->group->get('join_policy'));
                                     echo $policy;
-                                    echo $wasMarker('join_policy', $policy, isset($before['join_policy']) ? $joinPolicyLabel($before['join_policy']) : null);
+                                    echo $wasMarker(
+                                        'join_policy',
+                                        $policy,
+                                        isset($before['join_policy']) ? $joinPolicyLabel($before['join_policy']) : null,
+                                    );
 
                                     if ($this->group->get('join_policy') == 1) {
-                                        echo '<br /><em>' . \Hubzero\Utility\Sanitize::html($this->group->get('restrict_msg')) . '</em>';
-                                        echo $wasMarker('restrict_msg', $this->group->get('restrict_msg'), isset($before['restrict_msg']) ? $before['restrict_msg'] : null);
+                                        echo '<br /><em>'
+                                            . \Hubzero\Utility\Sanitize::html($this->group->get('restrict_msg'))
+                                            . '</em>';
+                                        echo $wasMarker(
+                                            'restrict_msg',
+                                            $this->group->get('restrict_msg'),
+                                            isset($before['restrict_msg']) ? $before['restrict_msg'] : null,
+                                        );
                                     }
                                     ?>
                                 </td>
@@ -431,17 +441,25 @@ $onOffLabel = function ($v) {
                                     ]);
 
                                     $access = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
-                                    $oldAccess = (isset($before['access']) && is_array($before['access'])) ? $before['access'] : null;
+                                    $oldAccess = (isset($before['access']) && is_array($before['access']))
+                                        ? $before['access']
+                                        : null;
 
                                     foreach ($group_plugins as $plugin) {
                                         if ($plugin['display_menu_tab'] == 1) {
                                             $title  = $plugin['title'];
                                             $perm = $access[$plugin['name']];
                                             echo $title . ' => ' . $levels[$perm];
-                                            if ($oldAccess !== null && isset($oldAccess[$plugin['name']]) && $oldAccess[$plugin['name']] != $perm) {
+                                            if (
+                                                $oldAccess !== null
+                                                && isset($oldAccess[$plugin['name']])
+                                                && $oldAccess[$plugin['name']] != $perm
+                                            ) {
                                                 $oldPerm  = $oldAccess[$plugin['name']];
                                                 $oldLabel = isset($levels[$oldPerm]) ? $levels[$oldPerm] : $oldPerm;
-                                                echo ' <span style="color: #cc0000; font-weight: bold;">(' . Lang::txt('COM_GROUPS_EMAIL_WAS', htmlspecialchars($oldLabel)) . ')</span>';
+                                                echo ' <span style="color: #cc0000; font-weight: bold;">('
+                                                    . Lang::txt('COM_GROUPS_EMAIL_WAS', htmlspecialchars($oldLabel))
+                                                    . ')</span>';
                                             }
                                             echo '<br />';
                                         }

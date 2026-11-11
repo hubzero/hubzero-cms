@@ -60,13 +60,18 @@ $this
                             if ($this->filters['search'] && $rows->count() > 0) {
                                 foreach ($rows as $row) {
                                     $title = $this->escape(stripslashes($row->get('title')));
-                                    $title = preg_replace('#' . preg_quote($this->filters['search'], '#') . '#i', "<span class=\"highlight\">\\0</span>", $title);
+                                    $title = preg_replace(
+                                        '#' . preg_quote($this->filters['search'], '#') . '#i',
+                                        "<span class=\"highlight\">\\0</span>",
+                                        $title,
+                                    );
 
                                     $name = Lang::txt('JANONYMOUS');
                                     if (!$row->get('anonymous')) {
                                         $name = $this->escape(stripslashes($row->creator->get('name')));
                                         if (in_array($row->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                            $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name . '</a>';
+                                            $name = '<a href="' . Route::url($row->creator->link()) . '">' . $name
+                                                . '</a>';
                                         }
                                     }
                                     $cls = [];

@@ -28,7 +28,8 @@ $profile = User::getInstance($this->seeker->uid);
 $jobtype = $jt->getType($this->seeker->sought_type, strtolower(Lang::txt('PLG_MEMBERS_RESUME_TYPE_ANY')));
 $jobcat  = $jc->getCat($this->seeker->sought_cid, strtolower(Lang::txt('PLG_MEMBERS_RESUME_CATEGORY_ANY')));
 
-$title = Lang::txt('PLG_MEMBERS_RESUME_ACTION_DOWNLOAD') . ' ' . $this->seeker->name . ' ' . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
+$title = Lang::txt('PLG_MEMBERS_RESUME_ACTION_DOWNLOAD') . ' ' . $this->seeker->name . ' '
+    . ucfirst(Lang::txt('PLG_MEMBERS_RESUME_RESUME'));
 
 // Get the configured upload path
 $base_path = DS . trim($this->params->get('webpath', '/site/members'), DS);

@@ -158,7 +158,19 @@ if ($this->page->get('id')) {
 
                             // display editor
                             $editor = App::get('editor');
-                            echo $editor->display('pageversion[content]', $this->escape($content), '100%', '400', 0, 0, false, 'pagecontent', null, null, $config);
+                            echo $editor->display(
+                                'pageversion[content]',
+                                $this->escape($content),
+                                '100%',
+                                '400',
+                                0,
+                                0,
+                                false,
+                                'pagecontent',
+                                null,
+                                null,
+                                $config,
+                            );
                             ?>
 
                     </label>

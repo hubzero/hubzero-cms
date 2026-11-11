@@ -127,7 +127,8 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                 <div class="element-instructions">
                     <?php
                     if ($citation) {
-                        echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI_EXISTS') . '</p><div class="citeit">' . $citation . '</div>';
+                        echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI_EXISTS')
+                            . '</p><div class="citeit">' . $citation . '</div>';
                     } else {
                         echo '<p>' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_DOI') . '</p>';
                     }
@@ -155,13 +156,17 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                     <?php if ($this->pub->submitter()) {
                         // Do we have a submitter choice?
                         $submitter  = $this->escape($this->pub->submitter()->name);
-                        $submitter .= $this->pub->submitter()->organization ? ', ' . $this->escape($this->pub->submitter()->organization) : '';
-                        $submitter .= '<input type="hidden" name="submitter" value="' . $this->pub->submitter()->user_id . '" />';
+                        $submitter .= $this->pub->submitter()->organization
+                            ? ', ' . $this->escape($this->pub->submitter()->organization)
+                            : '';
+                        $submitter .= '<input type="hidden" name="submitter" value="' . $this->pub->submitter()->user_id
+                            . '" />';
                         if ($this->pub->submitter()->user_id != User::get('id')) {
                             $submitter  = '<select name="submitter">' . "\n";
                             $submitter .= '<option value="' . User::get('id') . '" selected="selected">' . $this->escape(User::get('name'))
                                 . '</option>' . "\n";
-                            $submitter .= '<option value="' . $this->pub->submitter()->user_id . '">' . $this->escape($this->pub->submitter()->name) . '</option>' . "\n";
+                            $submitter .= '<option value="' . $this->pub->submitter()->user_id . '">'
+                                . $this->escape($this->pub->submitter()->name) . '</option>' . "\n";
                             $submitter .= '</select>';
                         }
                         ?>

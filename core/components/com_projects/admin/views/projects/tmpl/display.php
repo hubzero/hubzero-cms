@@ -140,18 +140,22 @@ if (substr($base, -13) == 'administrator') {
                     $row = $this->rows[$i];
 
                     if ($row->owned_by_group && !$row->groupcn) {
-                        $row->groupname = '<span class="italic pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP') . '</span>';
+                        $row->groupname = '<span class="italic pale">' . Lang::txt('COM_PROJECTS_INFO_DELETED_GROUP')
+                            . '</span>';
                     } else {
                         $row->groupname = $this->escape($row->groupname);
                     }
                     $owner = ($row->owned_by_group) ? $row->groupname . '<br /><span class="block prominent">' . $this->escape($row->groupcn) . '</span>' : $this->escape(stripslashes($row->authorname));
-                    $owner = $owner ? $owner : '<span class="unknown" class="smallsub">' . Lang::txt('(unknown)') . '</span>';
+                    $owner = $owner
+                        ? $owner
+                        : '<span class="unknown" class="smallsub">' . Lang::txt('(unknown)') . '</span>';
                     $ownerclass = ($row->owned_by_group) ? 'group' : 'user';
 
                     // Determine status
                     $status = '';
                     if ($row->state == 1 && $row->setup_stage >= $setup_complete) {
-                        $status = '<span class="active">' . Lang::txt('Active') . '</span> ' . Lang::txt('since') . ' ' . Date::of($row->created)->toLocal('M d, Y');
+                        $status = '<span class="active">' . Lang::txt('Active') . '</span> ' . Lang::txt('since') . ' '
+                            . Date::of($row->created)->toLocal('M d, Y');
                     } elseif ($row->state == 2) {
                         $status  = '<span class="deleted">' . Lang::txt('Deleted') . '</span> ';
                     } elseif ($row->setup_stage < $setup_complete) {

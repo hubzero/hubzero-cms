@@ -63,7 +63,9 @@ Html::behavior('tooltip');
         <?php
         $i = 0;
         foreach ($this->rows as $row) {
-            $appinfo = exec("/usr/bin/hz-aws-appstream getapp --appid " . escapeshellarg(stripslashes($row->get('path'))));
+            $appinfo = exec(
+                "/usr/bin/hz-aws-appstream getapp --appid " . escapeshellarg(stripslashes($row->get('path'))),
+            );
             $appinfoArray = explode("|", $appinfo);
             ?>
             <tr>

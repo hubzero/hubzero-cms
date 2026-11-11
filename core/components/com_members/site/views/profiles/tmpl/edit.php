@@ -137,7 +137,11 @@ foreach ($profiles as $profile) {
                     <div class="grid">
                         <div class="col span8">
                             <?php
-                            if ($field->get('name') == 'organization' && $field->get('type') == 'text' && Component::params('com_members')->get('rorApi')) {
+                            if (
+                                $field->get('name') == 'organization'
+                                && $field->get('type') == 'text'
+                                && Component::params('com_members')->get('rorApi')
+                            ) {
                                 echo "<span class='hidden rorApiAvailable'></span>";
                             }
                             echo $formfield->label;
@@ -147,7 +151,11 @@ foreach ($profiles as $profile) {
                         <div class="col span4 omega">
                             <?php
                             echo '<label>' . Lang::txt('COM_MEMBERS_FIELD_ACCESS') . '</label>';
-                            echo Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $field->get('access'), 'input-select');
+                            echo Components\Members\Helpers\Html::selectAccess(
+                                'access[' . $field->get('name') . ']',
+                                $field->get('access'),
+                                'input-select',
+                            );
                             ?>
                         </div>
                     </div>

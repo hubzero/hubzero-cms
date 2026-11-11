@@ -13,7 +13,10 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 // Get publication properties
-$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->category()->alias, $this->pub->category()->name);
+$typetitle = \Components\Publications\Helpers\Html::writePubCategory(
+    $this->pub->category()->alias,
+    $this->pub->category()->name,
+);
 
 ?>
 <form action="<?php echo Route::url($this->pub->link('editbase')); ?>" method="post" id="plg-form" >

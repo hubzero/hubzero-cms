@@ -57,7 +57,8 @@ if ($attributes) {
     $images = ['png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp'];
     $files  = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg'];
 
-    $UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)" . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+    $UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)"
+        . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
 if (preg_match("/$UrlPtn/", $this->activechild->path)) {
     $url = $this->activechild->path;
@@ -143,7 +144,10 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
             $token = base64_encode($crypter->encrypt($session_id));
         }
 
-        $sef = Route::url('index.php?option=com_resources&id=' . $this->activechild->id . '&task=download&file=' . basename($this->activechild->path) . '&token=' . $token . '&' . Session::getFormToken() . '=1');
+        $sef = Route::url(
+            'index.php?option=com_resources&id=' . $this->activechild->id . '&task=download&file='
+                . basename($this->activechild->path) . '&token=' . $token . '&' . Session::getFormToken() . '=1',
+        );
 
         $html .= '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . ltrim($sef, '/')) . '&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" bgcolor="white"></iframe>' . "\n";
     } elseif (in_array(strtolower($type), $videos)) {

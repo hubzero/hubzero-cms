@@ -17,12 +17,18 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
-$pageTitle = ($this->author->id) ? Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR_INFO') : Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR');
+$pageTitle = ($this->author->id)
+    ? Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR_INFO')
+    : Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR');
 
 $tmpl = Request::getCmd('tmpl', '');
 
 if ($tmpl != 'component') {
-    Toolbar::title(Lang::txt('COM_PUBLICATIONS') . ': ' . $pageTitle . ' ' . Lang::txt('COM_PUBLICATIONS_FOR_PUB') . ' #' . $this->pub->id . ' (v.' . $this->escape($this->row->version_label) . ')', 'publications');
+    Toolbar::title(
+        Lang::txt('COM_PUBLICATIONS') . ': ' . $pageTitle . ' ' . Lang::txt('COM_PUBLICATIONS_FOR_PUB') . ' #'
+            . $this->pub->id . ' (v.' . $this->escape($this->row->version_label) . ')',
+        'publications',
+    );
     Toolbar::save('saveauthor');
     Toolbar::cancel();
 }

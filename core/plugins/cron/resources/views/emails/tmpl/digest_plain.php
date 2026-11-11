@@ -19,7 +19,11 @@ $sef  = Route::urlForClient('site', $this->member->link());
 $link = $base . '/' . trim($sef, '/');
 
 // Build message
-$message  = Lang::txt('PLG_CRON_RESOURCES_EMAIL_MEMBERS_EXPLANATION', $link, $this->member->get('name') . ' (' . $this->member->get('username') . ')');
+$message  = Lang::txt(
+    'PLG_CRON_RESOURCES_EMAIL_MEMBERS_EXPLANATION',
+    $link,
+    $this->member->get('name') . ' (' . $this->member->get('username') . ')',
+);
 
 foreach ($this->rows as $row) {
     $content = '';

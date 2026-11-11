@@ -103,16 +103,25 @@ if ($this->children) {
         $out .= ' <tr>';
         $out .= '  <td width="100%">';
         if ($this->allowupload) {
-            $out .= '<span' . $liclass . ' item:name id:' . $child->id . '" data-id="' . $child->id . '" data-token="' . Session::getFormToken() . '">' . $this->escape($child->title) . '</span><br /><span class="caption">(<a href="' . Route::url('index.php?option=com_resources&task=download&id=' . $child->id) . '" title="' . $this->escape($child->title) . '">' . \Components\Tools\Helpers\Html::getFileAttribs($url, $base) . '</a>)</span>';
+            $out .= '<span' . $liclass . ' item:name id:' . $child->id . '" data-id="' . $child->id . '" data-token="'
+                . Session::getFormToken() . '">' . $this->escape($child->title)
+                . '</span><br /><span class="caption">(<a href="'
+                . Route::url('index.php?option=com_resources&task=download&id=' . $child->id) . '" title="'
+                . $this->escape($child->title) . '">' . \Components\Tools\Helpers\Html::getFileAttribs($url, $base)
+                . '</a>)</span>';
         } else {
-            $out .= '<span><a href="' . Route::url('index.php?option=com_resources&task=download&id=' . $child->id) . '">' . $this->escape($child->title) . '</a></span>';
+            $out .= '<span><a href="' . Route::url('index.php?option=com_resources&task=download&id=' . $child->id)
+                . '">' . $this->escape($child->title) . '</a></span>';
         }
         $out .= '</td>';
         if ($this->allowupload) {
             $out .= '  <td class="d">';
 
             if ($i > 0 || ($i + 0 > 0)) {
-                $out .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->resource->id . '&amp;id=' . $child->id . '&amp;task=reorder&amp;move=up&amp;' . Session::getFormToken() . '=1" class="order up" title="' . Lang::txt('COM_TOOLS_MOVE_UP') . '"><span>' . Lang::txt('COM_TOOLS_MOVE_UP') . '</span></a>';
+                $out .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller='
+                    . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->resource->id . '&amp;id=' . $child->id
+                    . '&amp;task=reorder&amp;move=up&amp;' . Session::getFormToken() . '=1" class="order up" title="'
+                    . Lang::txt('COM_TOOLS_MOVE_UP') . '"><span>' . Lang::txt('COM_TOOLS_MOVE_UP') . '</span></a>';
             } else {
                 $out .= '&nbsp;';
             }
@@ -121,12 +130,19 @@ if ($this->children) {
             $out .= '  <td class="u">';
 
             if ($i < $n - 1 || $i + 0 < $n - 1) {
-                $out .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->resource->id . '&amp;id=' . $child->id . '&amp;task=reorder&amp;move=down&amp;' . Session::getFormToken() . '=1" class="order down" title="' . Lang::txt('COM_TOOLS_MOVE_DOWN') . '"><span>' . Lang::txt('COM_TOOLS_MOVE_DOWN') . '</span></a>';
+                $out .= '<a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller='
+                    . $this->controller . '&amp;tmpl=component&amp;pid=' . $this->resource->id . '&amp;id=' . $child->id
+                    . '&amp;task=reorder&amp;move=down&amp;' . Session::getFormToken()
+                    . '=1" class="order down" title="' . Lang::txt('COM_TOOLS_MOVE_DOWN') . '"><span>'
+                    . Lang::txt('COM_TOOLS_MOVE_DOWN') . '</span></a>';
             } else {
                 $out .= '&nbsp;';
             }
             $out .= '</td>';
-            $out .= '  <td class="t"><a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller=' . $this->controller . '&amp;task=delete&amp;tmpl=component&amp;id=' . $child->id . '&amp;pid=' . $this->resource->id . '&amp;' . Session::getFormToken() . '=1" class="icon-delete delete"><span> ' . Lang::txt('COM_TOOLS_DELETE') . '</span></a></td>';
+            $out .= '  <td class="t"><a href="' . $base . '/index.php?option=' . $this->option . '&amp;controller='
+                . $this->controller . '&amp;task=delete&amp;tmpl=component&amp;id=' . $child->id . '&amp;pid='
+                . $this->resource->id . '&amp;' . Session::getFormToken() . '=1" class="icon-delete delete"><span> '
+                . Lang::txt('COM_TOOLS_DELETE') . '</span></a></td>';
         }
         $out .= ' </tr>';
 

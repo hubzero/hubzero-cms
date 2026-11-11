@@ -569,7 +569,11 @@ $presentation->subtitles = array_values($presentation->subtitles);
                                 if (is_string($thumb)) {
                                     $thumb = $content_url . DS . $thumb;
                                 }
-                                if (isset($slide->thumb) && $slide->thumb && file_exists(PATH_APP . DS . $content_folder . DS . $slide->thumb)) {
+                                if (
+                                    isset($slide->thumb)
+                                    && $slide->thumb
+                                    && file_exists(PATH_APP . DS . $content_folder . DS . $slide->thumb)
+                                ) {
                                     $thumb = $content_url . DS . $slide->thumb;
                                 }
                                 ?>

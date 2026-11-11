@@ -82,7 +82,8 @@ $this->css();
 
                 $name = Lang::txt('JANONYMOUS');
                 if (!$item->anonymous) {
-                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $item->proposed_by) . '">' . $this->escape($item->proposer->get('name')) . '</a>';
+                    $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $item->proposed_by) . '">'
+                        . $this->escape($item->proposer->get('name')) . '</a>';
                 }
                 ?>
                 <tr class="<?php echo $state; ?>">
@@ -149,7 +150,12 @@ $this->css();
                     switch ($item->status) {
                         case 0:
                             if (isset($item->ranked) && !$item->ranked && ($this->admin == 2 or $this->admin == 3)) {
-                                $html .= '<a class="rankit" href="index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . urlencode($this->filters['tag']) . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS') . '</a>' . "\n";
+                                $html .= '<a class="rankit" href="index.php?option=' . $this->option
+                                    . '&task=wish&category=' . $this->wishlist->category . '&rid='
+                                    . $this->wishlist->referenceid . '&wishid=' . $item->id . '&filterby='
+                                    . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags='
+                                    . urlencode($this->filters['tag']) . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS')
+                                    . '</a>' . "\n";
                             } elseif (isset($item->ranked) && $item->ranked) {
                                 $this->css('
 										.priority-level' . $item->id . ' {
@@ -163,17 +169,21 @@ $this->css();
 									</span>';
                             }
                             if ($item->accepted == 1) {
-                                $html .= '<span class="accepted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED') . '</span>';
+                                $html .= '<span class="accepted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED')
+                                    . '</span>';
                             }
                             break;
                         case 1:
-                            $html .= '<span class="granted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED') . '</span>';
+                            $html .= '<span class="granted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED')
+                                . '</span>';
                             break;
                         case 3:
-                            $html .= '<span class="rejected">' . Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED') . '</span>';
+                            $html .= '<span class="rejected">' . Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED')
+                                . '</span>';
                             break;
                         case 4:
-                            $html .= '<span class="withdrawn">' . Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN') . '</span>';
+                            $html .= '<span class="withdrawn">' . Lang::txt('COM_WISHLIST_WISH_STATUS_WITHDRAWN')
+                                . '</span>';
                             break;
                     }
                         echo $html;
@@ -215,7 +225,12 @@ if (is_object($schema)) {
         $schema->fields = [];
     }
     foreach ($schema->fields as $field) {
-        if (isset($data[$field->name]) && $elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+        if (
+            isset($data[$field->name])
+            && $elements->display($field->type, $data[$field->name])
+            && isset($field->display)
+            && $field->display == $tab
+        ) {
             $hasCustomFields = true;
             break;
         }
@@ -228,7 +243,11 @@ if ($hasCustomFields) :
     <?php
     foreach ($schema->fields as $field) {
         if (isset($data[$field->name])) {
-            if ($elements->display($field->type, $data[$field->name]) && isset($field->display) && $field->display == $tab) {
+            if (
+                $elements->display($field->type, $data[$field->name])
+                && isset($field->display)
+                && $field->display == $tab
+            ) {
                 ?>
                     <h4><?php echo $field->label; ?></h4>
                     <div class="resource-content">

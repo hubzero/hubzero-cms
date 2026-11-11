@@ -81,15 +81,19 @@ $this->css('compare.css');
                     if ($key == 'metadata') {
                         foreach ($this->customFields['fields'] as $field) {
                             if ($field['name'] == $k) {
-                                echo '<h3 class="diff-area" id="diffed-' . $k . '"><span>' . $this->escape($field['label']) . '</span></h3>';
+                                echo '<h3 class="diff-area" id="diffed-' . $k . '"><span>'
+                                    . $this->escape($field['label']) . '</span></h3>';
                             }
                         }
                     }
                     echo $v ? $v : '<p class="diff-unchanged">' . Lang::txt('COM_PUBLICATIONS_NO_CHANGES') . '</p>';
                 }
             } else {
-                echo '<h3 class="diff-area" id="diffed-' . $key . '"><span>' . Lang::txt('COM_PUBLICATIONS_' . strtoupper($key)) . '</span></h3>';
-                echo $result ? $result : '<p class="diff-unchanged">' . Lang::txt('COM_PUBLICATIONS_NO_CHANGES') . '</p>';
+                echo '<h3 class="diff-area" id="diffed-' . $key . '"><span>'
+                    . Lang::txt('COM_PUBLICATIONS_' . strtoupper($key)) . '</span></h3>';
+                echo $result
+                    ? $result
+                    : '<p class="diff-unchanged">' . Lang::txt('COM_PUBLICATIONS_NO_CHANGES') . '</p>';
             }
         }
 
@@ -207,7 +211,8 @@ $this->css('compare.css');
                             <td class="left">
                                 <?php
                                 if ($att->lft) {
-                                    echo $att->lft->get('type') . ' &mdash; ' . $this->escape($att->lft->get('title', $att->lft->get('path')));
+                                    echo $att->lft->get('type') . ' &mdash; '
+                                        . $this->escape($att->lft->get('title', $att->lft->get('path')));
                                 }
                                 ?>
                             </td>
@@ -215,7 +220,8 @@ $this->css('compare.css');
                             <td class="right">
                                 <?php
                                 if ($att->rgt) {
-                                    echo $att->rgt->get('type') . ' &mdash; ' . $this->escape($att->rgt->get('title', $att->rgt->get('path')));
+                                    echo $att->rgt->get('type') . ' &mdash; '
+                                        . $this->escape($att->rgt->get('title', $att->rgt->get('path')));
                                 }
                                 ?>
                             </td>

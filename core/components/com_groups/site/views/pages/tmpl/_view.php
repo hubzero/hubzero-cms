@@ -86,32 +86,57 @@ if (
             <?php
                 $firstVersion     = $versions->last();
                 $currentVersion   = $this->version;
-                $createdDate      = ($firstVersion->get('created')) ? Date::of($firstVersion->get('created'))->toLocal('D F j, Y') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
-                $modifiedDate     = ($currentVersion->get('created')) ? Date::of($currentVersion->get('created'))->toLocal('D F j, Y g:i a') : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
+                $createdDate      = ($firstVersion->get('created'))
+                    ? Date::of($firstVersion->get('created'))->toLocal('D F j, Y')
+                    : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
+                $modifiedDate     = ($currentVersion->get('created'))
+                    ? Date::of($currentVersion->get('created'))->toLocal('D F j, Y g:i a')
+                    : Lang::txt('COM_GROUPS_PAGES_PAGE_NA');
                 $createdProfile   = User::getInstance($firstVersion->get('created_by'));
                 $modifiedProfile  = User::getInstance($currentVersion->get('created_by'));
-                $createdBy        = (is_object($createdProfile) && $createdProfile->get('name')) ? $createdProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
-                $modifiedBy       = (is_object($modifiedProfile) && $modifiedProfile->get('name')) ? $modifiedProfile->get('name') : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
+                $createdBy        = (is_object($createdProfile) && $createdProfile->get('name'))
+                    ? $createdProfile->get('name')
+                    : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
+                $modifiedBy       = (is_object($modifiedProfile) && $modifiedProfile->get('name'))
+                    ? $modifiedProfile->get('name')
+                    : Lang::txt('COM_GROUPS_PAGES_PAGE_SYSTEM');
 
             if (is_object($createdProfile) && $createdProfile->get('uidNumber')) {
-                $createdLink = '<a href="' . Route::url('index.php?option=com_members&id=' . $createdProfile->get('uidNumber')) . '">' . $createdBy . '</a>';
+                $createdLink = '<a href="'
+                    . Route::url('index.php?option=com_members&id=' . $createdProfile->get('uidNumber')) . '">'
+                    . $createdBy . '</a>';
             } else {
                 $createdLink = $createdBy;
             }
             if (is_object($modifiedProfile) && $modifiedProfile->get('uidNumber')) {
-                $modifiedLink = '<a href="' . Route::url('index.php?option=com_members&id=' . $modifiedProfile->get('uidNumber')) . '">' . $modifiedBy . '</a>';
+                $modifiedLink = '<a href="'
+                    . Route::url('index.php?option=com_members&id=' . $modifiedProfile->get('uidNumber')) . '">'
+                    . $modifiedBy . '</a>';
             } else {
                 $modifiedLink = $modifiedBy;
             }
 
-                $editPageLink     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid=' . $this->page->get('id'));
-                $setPageHomeLink  = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=sethome&pageid=' . $this->page->get('id'));
-                $overrideHomeLink = Route::url('index.php?option=com_help&component=groups&page=pages&cn=' . $this->group->get('cn') . '#grouphomepageoverride');
+                $editPageLink     = Route::url(
+                    'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=edit&pageid='
+                        . $this->page->get('id'),
+                );
+                $setPageHomeLink  = Route::url(
+                    'index.php?option=com_groups&cn=' . $this->group->get('cn')
+                        . '&controller=pages&task=sethome&pageid=' . $this->page->get('id'),
+                );
+                $overrideHomeLink = Route::url(
+                    'index.php?option=com_help&component=groups&page=pages&cn=' . $this->group->get('cn')
+                        . '#grouphomepageoverride',
+                );
 
                 // current location
                 $editPageLink    .= '&return=' . base64_encode(Request::current(true));
-                $setPageHomeLink .= '&return=' . base64_encode(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')));
-                $categoryLink     = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&filter=' . $category->get('id'));
+                $setPageHomeLink .= '&return='
+                    . base64_encode(Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn')));
+                $categoryLink     = Route::url(
+                    'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&filter='
+                        . $category->get('id'),
+                );
             ?>
 
 
@@ -175,7 +200,10 @@ if (
             $experts = [];
         foreach ($this->group->get('members') as $member) {
             // get each members roles
-            $roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles($member, $this->group->get('gidNumber'));
+            $roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles(
+                $member,
+                $this->group->get('gidNumber'),
+            );
 
             // make sure roles match pattern "Expert: ..."
             $roles = array_map(function ($role) {

@@ -81,7 +81,8 @@ if ($mode != 'preview') {
                     if (!$this->model->access('view-all')) {
                         $ghtml = [];
                         foreach ($this->model->groups as $allowedgroup) {
-                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup) . '">' . $allowedgroup . '</a>';
+                            $ghtml[] = '<a href="' . Route::url('index.php?option=com_groups&cn=' . $allowedgroup)
+                                . '">' . $allowedgroup . '</a>';
                         }
                         ?>
                             <p class="warning">

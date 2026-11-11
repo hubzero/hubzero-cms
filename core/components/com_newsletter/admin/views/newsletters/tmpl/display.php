@@ -141,7 +141,9 @@ if (!$this->dependency) {
                                 $activeTemplate = $newsletter->template->name;
                             }
 
-                                echo ($activeTemplate) ? $activeTemplate : Lang::txt('COM_NEWSLETTER_NO_TEMPLATE_FOUND');
+                                echo ($activeTemplate)
+                                    ? $activeTemplate
+                                    : Lang::txt('COM_NEWSLETTER_NO_TEMPLATE_FOUND');
                             ?>
                         </td>
                         <td class="priority-2">

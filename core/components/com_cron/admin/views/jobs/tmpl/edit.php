@@ -136,7 +136,8 @@ foreach ($this->getErrors() as $error) {
                         }
 
                         if (!$out) {
-                            $out = '<div class="input-wrap"><p><i>' . Lang::txt('COM_CRON_NO_PARAMETERS_FOUND') . '</i></p></div>';
+                            $out = '<div class="input-wrap"><p><i>' . Lang::txt('COM_CRON_NO_PARAMETERS_FOUND')
+                                . '</i></p></div>';
                         }
                         ?>
                         <fieldset class="adminform paramlist eventparams <?= $style ?>"

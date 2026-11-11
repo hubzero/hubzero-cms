@@ -176,10 +176,12 @@ $this
                                     <?php
                                     $who = $name;
                                     if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())) {
-                                        $who = '<a href="' . Route::url($row->creator()->link() . '&active=collections') . '">' . $name . '</a>';
+                                        $who = '<a href="' . Route::url($row->creator()->link() . '&active=collections')
+                                            . '">' . $name . '</a>';
                                     }
 
-                                    $where = '<a href="' . Route::url($row->link()) . '">' . $this->escape(stripslashes($row->get('title'))) . '</a>';
+                                    $where = '<a href="' . Route::url($row->link()) . '">'
+                                        . $this->escape(stripslashes($row->get('title'))) . '</a>';
 
                                     echo Lang::txt('COM_COLLECTIONS_ONTO', $who, $where);
                                     ?>

@@ -43,7 +43,8 @@ defined('_HZEXEC_') or die();
 
                         echo $start . ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
                         if ($cn = $this->model->groupOwner('cn')) {
-                            echo ' ' . Lang::txt('COM_PROJECTS_GROUP') . ' <a href="' . Route::url('index.php?option=com_groups&cn=' . $cn) . '">' . $cn . '</a>';
+                            echo ' ' . Lang::txt('COM_PROJECTS_GROUP') . ' <a href="'
+                                . Route::url('index.php?option=com_groups&cn=' . $cn) . '">' . $cn . '</a>';
                         } else {
                             echo Lang::txt('COM_PROJECTS_UNKNOWN') . ' ' . Lang::txt('COM_PROJECTS_GROUP');
                         }

@@ -20,7 +20,8 @@ $this->tagstring = str_replace(['%20', ' ', '+'], ',', $this->tagstring);
 
 $name  = Lang::txt('COM_TAGS_ALL_CATEGORIES');
 $total = $this->total;
-$here  = 'index.php?option=' . $this->option . '&tag=' . $this->tagstring . ($this->filters['sort'] ? '&sort=' . $this->filters['sort'] : '');
+$here  = 'index.php?option=' . $this->option . '&tag=' . $this->tagstring
+    . ($this->filters['sort'] ? '&sort=' . $this->filters['sort'] : '');
 
 // Add the "all" category
 $all = [
@@ -64,7 +65,8 @@ foreach ($cats as $cat) {
     }
 
     // Build the HTML
-    $l = "\t" . '<li><a' . $a . ' rel="nofollow" href="' . $sef . '">' . $this->escape(stripslashes($cat['title'])) . ' <span class="item-count">' . $cat['total'] . '</span></a>';
+    $l = "\t" . '<li><a' . $a . ' rel="nofollow" href="' . $sef . '">' . $this->escape(stripslashes($cat['title']))
+        . ' <span class="item-count">' . $cat['total'] . '</span></a>';
 
     // Are there sub-categories?
     if (isset($cat['children']) && is_array($cat['children'])) {
@@ -91,7 +93,10 @@ foreach ($cats as $cat) {
                 }
 
                 // Build the HTML
-                $k[] = "\t\t\t" . '<li><a' . $a . ' rel="nofollow" href="' . Route::url($here . '&parent=' . $parent . '&area=' . stripslashes($blob)) . '">' . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total'] . '</span></a></li>';
+                $k[] = "\t\t\t" . '<li><a' . $a . ' rel="nofollow" href="'
+                    . Route::url($here . '&parent=' . $parent . '&area=' . stripslashes($blob)) . '">'
+                    . $this->escape(stripslashes($subcat['title'])) . ' <span class="item-count">' . $subcat['total']
+                    . '</span></a></li>';
             }
         }
         // Do we actually have any links?
@@ -163,14 +168,18 @@ foreach ($cats as $cat) {
 
                 <div class="container-block">
                     <?php
-                        $ttl = ($total > ($this->filters['limit'] + $this->filters['start'])) ? ($this->filters['limit'] + $this->filters['start']) : $total;
+                        $ttl = ($total > ($this->filters['limit'] + $this->filters['start']))
+                            ? ($this->filters['limit'] + $this->filters['start'])
+                            : $total;
                     if ($total && !$ttl) {
                         $ttl = $total;
                     }
 
                         $base = rtrim(Request::base(), '/');
 
-                        $html  = '<h3>' . $this->escape(stripslashes($name)) . ' <span>(' . Lang::txt('COM_TAGS_RESULTS_THROUGH_OF', ($this->filters['start'] + 1), $ttl, $total) . ')</span></h3>' . "\n";
+                        $html  = '<h3>' . $this->escape(stripslashes($name)) . ' <span>('
+                            . Lang::txt('COM_TAGS_RESULTS_THROUGH_OF', ($this->filters['start'] + 1), $ttl, $total)
+                            . ')</span></h3>' . "\n";
 
                     if ($this->results) {
                         $html .= '<ol class="results">' . "\n";
@@ -187,12 +196,15 @@ foreach ($cats as $cat) {
                                 }
 
                                 $html .= "\t" . '<li>' . "\n";
-                                $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">' . \Hubzero\Utility\Sanitize::clean($row->title) . '</a></p>' . "\n";
+                                $html .= "\t\t" . '<p class="title"><a href="' . $row->href . '">'
+                                    . \Hubzero\Utility\Sanitize::clean($row->title) . '</a></p>' . "\n";
                                 if ($row->section) {
-                                    $html .= "\t\t" . '<p class="details"><strong class="type">' . ucfirst($row->section) . "</strong></p>\n";
+                                    $html .= "\t\t" . '<p class="details"><strong class="type">'
+                                        . ucfirst($row->section) . "</strong></p>\n";
                                 }
                                 if ($row->ftext) {
-                                    $html .= "\t\t" . '<p>' . \Hubzero\Utility\Str::truncate(strip_tags($row->ftext), 200) . "</p>\n";
+                                    $html .= "\t\t" . '<p>'
+                                        . \Hubzero\Utility\Str::truncate(strip_tags($row->ftext), 200) . "</p>\n";
                                 }
                                 $html .= "\t\t" . '<p class="href">' . $base . $row->href . '</p>' . "\n";
                                 $html .= "\t" . '</li>' . "\n";
@@ -235,9 +247,12 @@ foreach ($cats as $cat) {
                     // No - nothing to output
                     $html = '';
                 }
-                $html .= "\t" . '<input type="hidden" name="parent" value="' . $this->escape($this->parent) . '" />' . "\n";
-                $html .= "\t" . '<input type="hidden" name="area" value="' . $this->escape($this->active) . '" />' . "\n";
-                $html .= "\t" . '<input type="hidden" name="sort" value="' . $this->escape($this->filters['sort']) . '" />' . "\n";
+                $html .= "\t" . '<input type="hidden" name="parent" value="' . $this->escape($this->parent) . '" />'
+                    . "\n";
+                $html .= "\t" . '<input type="hidden" name="area" value="' . $this->escape($this->active) . '" />'
+                    . "\n";
+                $html .= "\t" . '<input type="hidden" name="sort" value="' . $this->escape($this->filters['sort'])
+                    . '" />' . "\n";
 
                 echo $html;
                 ?>

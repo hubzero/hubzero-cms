@@ -82,7 +82,10 @@ $this->css('display.css', 'com_massmail');
                         // message, stays editable until the mailing starts sending, and its
                         // status side-panel exposes the admin approve/release/etc. controls
                         // appropriate to the current status.
-                $link = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->get('id'));
+                $link = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]='
+                        . $row->get('id'),
+                );
                 ?>
             <tr>
                 <td><?php echo Html::grid('id', $i++, $row->get('id')); ?></td>
@@ -101,7 +104,8 @@ $this->css('display.css', 'com_massmail');
                     $failed = (int) $row->get('failed_count');
                     echo $sent . ' / ' . $total;
                     if ($failed) {
-                        echo ' <span class="mm-failed">(' . $failed . ' ' . Lang::txt('COM_MASSMAIL_FAILED') . ')</span>';
+                        echo ' <span class="mm-failed">(' . $failed . ' ' . Lang::txt('COM_MASSMAIL_FAILED')
+                            . ')</span>';
                     }
                     ?>
                 </td>

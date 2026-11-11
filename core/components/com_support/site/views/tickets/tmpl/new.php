@@ -286,7 +286,9 @@ endif;
                         <?php
                         $mc = Event::trigger('hubzero.onGetMultiEntry', [['members', 'cc', 'acmembers', '', '']]);
                         if (count($mc) > 0) :
-                            echo '<span class="hint">' . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
+                            echo '<span class="hint">'
+                                . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>'
+                                . $mc[0];
                         else : ?>
                             <span class="hint"><?= Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS') ?></span>
                             <input type="text" name="cc" id="acmembers" class="form-control" value="" size="35" />

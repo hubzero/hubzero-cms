@@ -31,7 +31,9 @@ $presentation = $this->manifest->presentation;
 // Cast: these go straight into a <style> block below, and the manifest they come
 // from is a .json file in the resource filespace, i.e. contributor-controlled.
 $width  = (isset($presentation->width) && (int) $presentation->width != 0) ? (int) $presentation->width . 'px' : 'auto';
-$height = (isset($presentation->height) && (int) $presentation->height != 0) ? (int) $presentation->height . 'px' : 'auto';
+$height = (isset($presentation->height) && (int) $presentation->height != 0)
+    ? (int) $presentation->height . 'px'
+    : 'auto';
 
 $this->css('
 #video-flowplayer {

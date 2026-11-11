@@ -33,9 +33,14 @@ $this
 <section class="main section">
     <?php
     ($this->status['published'] != 1 && !$this->status['version']) ? $hint = '1.0' : $hint = ''; // if tool is under dev and no version was specified before
-    $statuspath = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']);
+    $statuspath = Route::url(
+        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='
+            . $this->status['toolname'],
+    );
 
-    $newstate = ($this->action == 'edit') ? $this->status['state'] : \Components\Tools\Helpers\Html::getStatusNum('Approved');
+    $newstate = ($this->action == 'edit')
+        ? $this->status['state']
+        : \Components\Tools\Helpers\Html::getStatusNum('Approved');
     $submitlabel = ($this->action == 'edit') ? Lang::txt('COM_TOOLS_SAVE') : Lang::txt('COM_TOOLS_USE_THIS_VERSION');
     if ($this->action == 'confirm') {
         \Components\Tools\Helpers\Html::writeApproval(Lang::txt('COM_TOOLS_CONFIRM_VERSION'));
@@ -94,7 +99,10 @@ $this
                     $i = 0;
                 foreach ($this->versions as $t) {
                     // get tool access text
-                    $toolaccess = \Components\Tools\Helpers\Html::getToolAccess($t->toolaccess, $this->status['membergroups']);
+                    $toolaccess = \Components\Tools\Helpers\Html::getToolAccess(
+                        $t->toolaccess,
+                        $this->status['membergroups'],
+                    );
                     // get source code access text
                     $codeaccess = \Components\Tools\Helpers\Html::getCodeAccess($t->codeaccess);
                     // get wiki access text
@@ -104,14 +112,18 @@ $this
                     $handle = '';
 
                     if (isset($t->doi) && $t->doi && $tconfig->get('doi_shoulder')) {
-                        $handle = 'doi:' . (isset($t->doi_shoulder) ? $t->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($t->doi);
-                        $handle = '<a href="' . $tconfig->get('doi_resolve', 'https://doi.org/') . $handle . '">' . $handle . '</a>';
+                        $handle = 'doi:' . (isset($t->doi_shoulder) ? $t->doi_shoulder : $tconfig->get('doi_shoulder'))
+                            . '/' . strtoupper($t->doi);
+                        $handle = '<a href="' . $tconfig->get('doi_resolve', 'https://doi.org/') . $handle . '">'
+                            . $handle . '</a>';
                     } elseif (isset($t->doi_label) && $t->doi_label) {
                         $handle = 'doi:10254/' . $tconfig->get('doi_prefix') . $this->resource->id . '.' . $t->doi_label;
                         $handle = '<a href="http://hdl.handle.net/' . $handle . '">' . $handle . '</a>';
                     }
 
-                            $t->version = ($t->state == 3 && $t->version == $this->status['currentversion']) ? Lang::txt('COM_TOOLS_NO_LABEL') : $t->version;
+                            $t->version = ($t->state == 3 && $t->version == $this->status['currentversion'])
+                                ? Lang::txt('COM_TOOLS_NO_LABEL')
+                                : $t->version;
                     ?>
                     <tr id="displays_<?php echo $i; ?>">
                         <td>
@@ -177,7 +189,9 @@ $this
         </table>
             <?php
         } else { // no versions found
-            echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NO_VERSIONS') . ' ' . $this->status['toolname'] . '. ' . ucfirst(Lang::txt('COM_TOOLS_GO_BACK_TO')) . ' <a href="' . $statuspath . '">' . strtolower(Lang::txt('COM_TOOLS_TOOL_STATUS')) . '</a>.';
+            echo Lang::txt('COM_TOOLS_CONTRIBTOOL_NO_VERSIONS') . ' ' . $this->status['toolname'] . '. '
+                . ucfirst(Lang::txt('COM_TOOLS_GO_BACK_TO')) . ' <a href="' . $statuspath . '">'
+                . strtolower(Lang::txt('COM_TOOLS_TOOL_STATUS')) . '</a>.';
         }
         ?>
         </div>

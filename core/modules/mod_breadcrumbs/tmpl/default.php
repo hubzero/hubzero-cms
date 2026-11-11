@@ -42,7 +42,9 @@ defined('_HZEXEC_') or die;
         if ($key != $last_item_key) {
             // Render all but last item - along with separator
             if (!empty($item->link)) {
-                echo '<a href="' . $item->link . '" class="pathway" aria-label="' . htmlspecialchars(html_entity_decode($item->name), ENT_COMPAT, 'UTF-8') . ' (breadcrumb)">' . html_entity_decode($item->name) . '</a>';
+                echo '<a href="' . $item->link . '" class="pathway" aria-label="'
+                    . htmlspecialchars(html_entity_decode($item->name), ENT_COMPAT, 'UTF-8') . ' (breadcrumb)">'
+                    . html_entity_decode($item->name) . '</a>';
             } else {
                 echo '<span>' . $item->name . '</span>';
             }

@@ -20,7 +20,10 @@ $canDo = \Components\Storefront\Admin\Helpers\Permissions::getActions('product')
 
 $text = ($this->task == 'edit' ? Lang::txt('COM_STOREFRONT_EDIT') : Lang::txt('COM_STOREFRONT_NEW'));
 
-Toolbar::title(Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT') . ': ' . $text, 'storefront.png');
+Toolbar::title(
+    Lang::txt('COM_STOREFRONT') . ': ' . Lang::txt('COM_STOREFRONT_PRODUCT') . ': ' . $text,
+    'storefront.png',
+);
 if ($canDo->get('core.edit')) {
     Toolbar::apply();
     Toolbar::save();
@@ -337,7 +340,8 @@ if (empty($this->meta->qtyTxt)) {
                 $width = 0;
                 $height = 0;
                 $this_size = 0;
-                $pathl = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS . $this->row->getId();
+                $pathl = DS . trim($this->config->get('imagesFolder', '/site/storefront/products'), DS) . DS
+                    . $this->row->getId();
 
                 if ($image && file_exists(PATH_APP . $pathl . DS . $file)) {
                     $this_size = filesize(PATH_APP . $pathl . DS . $file);
@@ -347,7 +351,8 @@ if (empty($this->meta->qtyTxt)) {
                 } else {
                     $image = false;
                     $pic = 'noimage.png';
-                    $path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img' . DS;
+                    $path = dirname(dirname(dirname(dirname(str_replace(PATH_ROOT, '', __DIR__))))) . '/site/assets/img'
+                        . DS;
                 }
                 ?>
                 <div id="img-container">

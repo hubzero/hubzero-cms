@@ -43,20 +43,28 @@ if ($comment) {
 
 if ($this->project->config()->get('restricted_data', 0) && $this->reviewer == 'sensitive') {
     $comment .= '<ul style="' . $ulStyle . '">';
-    $comment .= ' <li>' . Lang::txt('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->project->params->get('hipaa_data') . '</li>';
-    $comment .= ' <li>' . Lang::txt('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->project->params->get('ferpa_data') . '</li>';
-    $comment .= ' <li>' . Lang::txt('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->project->params->get('export_data') . '</li>';
+    $comment .= ' <li>' . Lang::txt('COM_PROJECTS_EMAIL_HIPAA') . ': ' . $this->project->params->get('hipaa_data')
+        . '</li>';
+    $comment .= ' <li>' . Lang::txt('COM_PROJECTS_EMAIL_FERPA') . ': ' . $this->project->params->get('ferpa_data')
+        . '</li>';
+    $comment .= ' <li>' . Lang::txt('COM_PROJECTS_EMAIL_EXPORT') . ': ' . $this->project->params->get('export_data')
+        . '</li>';
     if ($this->project->params->get('followup')) {
-        $comment .= ' <li>' . Lang::txt('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': ' . $this->project->params->get('followup') . '</li>';
+        $comment .= ' <li>' . Lang::txt('COM_PROJECTS_EMAIL_FOLLOWUP_NEEDED') . ': '
+            . $this->project->params->get('followup') . '</li>';
     }
     $comment .= '</ul>';
 }
 if ($this->project->config()->get('grantinfo', 0) && $this->reviewer == 'sponsored') {
     $comment .= '<ul style="' . $ulStyle . '">';
-    $comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': ' . $this->escape($this->project->params->get('grant_title')) . '</li>';
-    $comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI') . ': ' . $this->escape($this->project->params->get('grant_PI')) . '</li>';
-    $comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY') . ': ' . $this->escape($this->project->params->get('grant_agency')) . '</li>';
-    $comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET') . ': ' . $this->escape($this->project->params->get('grant_budget')) . '</li>';
+    $comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_TITLE') . ': '
+        . $this->escape($this->project->params->get('grant_title')) . '</li>';
+    $comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_PI') . ': '
+        . $this->escape($this->project->params->get('grant_PI')) . '</li>';
+    $comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_AGENCY') . ': '
+        . $this->escape($this->project->params->get('grant_agency')) . '</li>';
+    $comment .= ' <li> ' . Lang::txt('COM_PROJECTS_EMAIL_GRANT_BUDGET') . ': '
+        . $this->escape($this->project->params->get('grant_budget')) . '</li>';
     $comment .= '</ul>';
 }
 

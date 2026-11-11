@@ -23,7 +23,14 @@ Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
 
 Toolbar::appendButton('Popup', 'new', 'COM_GROUPS_NEW', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid']), 570, 170);
 
-Toolbar::appendButton('Link', 'unblock', 'COM_GROUPS_ROLE_ASSIGN', 'index.php?option=' . $this->option . '&controller=roles&tmpl=component&task=assign&gid=' . $this->filters['gid'], 400, 400);
+Toolbar::appendButton(
+    'Link',
+    'unblock',
+    'COM_GROUPS_ROLE_ASSIGN',
+    'index.php?option=' . $this->option . '&controller=roles&tmpl=component&task=assign&gid=' . $this->filters['gid'],
+    400,
+    400,
+);
 
 Toolbar::spacer();
 switch ($this->filters['status']) {
@@ -33,12 +40,26 @@ switch ($this->filters['status']) {
             //Toolbar::custom('accept', 'publish', Lang::txt('Accept'), Lang::txt('Accept'), false, false);
         //}
         if ($canDo->get('core.delete')) {
-            Toolbar::custom('uninvite', 'unpublish', 'COM_GROUPS_MEMBER_UNINVITE', 'COM_GROUPS_MEMBER_UNINVITE', false, false);
+            Toolbar::custom(
+                'uninvite',
+                'unpublish',
+                'COM_GROUPS_MEMBER_UNINVITE',
+                'COM_GROUPS_MEMBER_UNINVITE',
+                false,
+                false,
+            );
         }
         break;
     case 'applicant':
         if ($canDo->get('core.edit')) {
-            Toolbar::custom('approve', 'publish', 'COM_GROUPS_MEMBER_APPROVE', 'COM_GROUPS_MEMBER_APPROVE', false, false);
+            Toolbar::custom(
+                'approve',
+                'publish',
+                'COM_GROUPS_MEMBER_APPROVE',
+                'COM_GROUPS_MEMBER_APPROVE',
+                false,
+                false,
+            );
         }
         if ($canDo->get('core.delete')) {
             Toolbar::custom('deny', 'unpublish', 'COM_GROUPS_MEMBER_DENY', 'COM_GROUPS_MEMBER_DENY', false, false);
@@ -46,7 +67,14 @@ switch ($this->filters['status']) {
         break;
     default:
         if ($canDo->get('core.edit')) {
-            Toolbar::custom('promote', 'promote', 'COM_GROUPS_MEMBER_PROMOTE', 'COM_GROUPS_MEMBER_PROMOTE', false, false);
+            Toolbar::custom(
+                'promote',
+                'promote',
+                'COM_GROUPS_MEMBER_PROMOTE',
+                'COM_GROUPS_MEMBER_PROMOTE',
+                false,
+                false,
+            );
             Toolbar::custom('demote', 'demote', 'COM_GROUPS_MEMBER_DEMOTE', 'COM_GROUPS_MEMBER_DEMOTE', false, false);
         }
         if (
@@ -195,7 +223,10 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                 $status = 'manager';
             }
 
-            $roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles($row->uidNumber, $this->group->get('gidNumber'));
+            $roles = Components\Groups\Helpers\Permissions::getGroupMemberRoles(
+                $row->uidNumber,
+                $this->group->get('gidNumber'),
+            );
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>

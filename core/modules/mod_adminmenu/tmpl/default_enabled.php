@@ -195,7 +195,8 @@ if (User::authorise('core.manage', 'com_menus')) {
         } elseif ($menuType->home == 1 && $menuType->language == '*') {
             $titleicon = ' <span class="home" title="' . Lang::txt('MOD_MENU_HOME_DEFAULT') . '">' . '*' . '</span>';
         } elseif ($menuType->home > 1) {
-            $titleicon = ' <span class="home multiple" title="' . Lang::txt('MOD_MENU_HOME_MULTIPLE') . '">' . $menuType->home . '</span>';
+            $titleicon = ' <span class="home multiple" title="' . Lang::txt('MOD_MENU_HOME_MULTIPLE') . '">'
+                . $menuType->home . '</span>';
         } else {
             $titleicon = ' <span title="' . $menuType->title_native . '">' . $alt . '</span>';
         }
@@ -273,7 +274,10 @@ if ($components) {
         $actives[] = $component->element;
     }
 
-    $menu->addChild(new Node(Lang::txt('MOD_MENU_COMPONENTS'), '#', 'class:components', in_array($active, $actives)), true);
+    $menu->addChild(
+        new Node(Lang::txt('MOD_MENU_COMPONENTS'), '#', 'class:components', in_array($active, $actives)),
+        true,
+    );
 
     foreach ($components as $component) {
         if (in_array($component->element, ['com_members', 'com_groups', 'com_system'])) {
@@ -287,7 +291,9 @@ if ($components) {
             }
             $menu->getParent();
         } else {
-            $menu->addChild(new Node($component->text, $component->link, $component->img, ($active == $component->element)));
+            $menu->addChild(
+                new Node($component->text, $component->link, $component->img, ($active == $component->element)),
+            );
         }
     }
     $menu->getParent();

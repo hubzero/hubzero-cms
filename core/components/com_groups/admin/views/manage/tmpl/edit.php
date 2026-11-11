@@ -172,7 +172,8 @@ $this->js();
                                     $hint = trim($formfield->description);
                                 }
 
-                                echo '<div class="input-wrap"' . ($hint ? ' data-hint="' . $this->escape($hint) . '"' : '') . '>';
+                                echo '<div class="input-wrap"'
+                                    . ($hint ? ' data-hint="' . $this->escape($hint) . '"' : '') . '>';
 
                                 if (strtolower($formfield->type) != 'paragraph') {
                                     echo $formfield->label;
@@ -180,11 +181,20 @@ $this->js();
 
                                 if ($field->type == 'textarea') {
                                     $fieldName     = $field->get('name');
-                                    $fieldValue    = isset($this->customAnswers[$fieldName]) ? $this->customAnswers[$fieldName] : $field->get('default_value', '');
+                                    $fieldValue    = isset($this->customAnswers[$fieldName])
+                                        ? $this->customAnswers[$fieldName]
+                                        : $field->get('default_value', '');
                                     $fieldNameAttr = $formInfo['control'] . '[' . $fieldName . ']';
                                     $fieldIdAttr   = $formInfo['control'] . '_' . $fieldName;
 
-                                    echo $this->editor($fieldNameAttr, $this->escape($fieldValue), 35, 8, $fieldIdAttr, ['class' => 'minimal no-footer images macros']);
+                                    echo $this->editor(
+                                        $fieldNameAttr,
+                                        $this->escape($fieldValue),
+                                        35,
+                                        8,
+                                        $fieldIdAttr,
+                                        ['class' => 'minimal no-footer images macros'],
+                                    );
                                 } else {
                                     echo $formfield->input;
                                 }

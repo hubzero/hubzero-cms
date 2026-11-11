@@ -248,7 +248,14 @@ $this
                             class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                         <?php
                         if (!User::isGuest()) {
-                            echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', ['class' => 'minimal no-footer']);
+                            echo $this->editor(
+                                'comment[content]',
+                                '',
+                                40,
+                                15,
+                                'commentcontent',
+                                ['class' => 'minimal no-footer'],
+                            );
                         } else {
                             ?>
                         <p class="warning">

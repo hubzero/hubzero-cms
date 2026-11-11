@@ -107,7 +107,8 @@ $this->css('jobs', 'com_jobs');
                                     $selected = ($avalue == $this->js->sought_type || $alabel == $this->js->sought_type)
                                               ? ' selected="selected"'
                                               : '';
-                                    echo ' <option value="' . $this->escape($avalue) . '"' . $selected . '>' . $this->escape($alabel) . '</option>' . "\n";
+                                    echo ' <option value="' . $this->escape($avalue) . '"' . $selected . '>'
+                                        . $this->escape($alabel) . '</option>' . "\n";
                                 }
                                 ?>
                             </select>
@@ -119,7 +120,8 @@ $this->css('jobs', 'com_jobs');
                                     $selected = ($avalue == $this->js->sought_cid || $alabel == $this->js->sought_cid)
                                               ? ' selected="selected"'
                                               : '';
-                                    echo ' <option value="' . $this->escape($avalue) . '"' . $selected . '>' . $this->escape($alabel) . '</option>' . "\n";
+                                    echo ' <option value="' . $this->escape($avalue) . '"' . $selected . '>'
+                                        . $this->escape($alabel) . '</option>' . "\n";
                                 }
                                 ?>
                             </select>

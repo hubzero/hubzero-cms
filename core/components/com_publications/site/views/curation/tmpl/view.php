@@ -26,7 +26,10 @@ $this
 
 $status = $this->pub->getStatusName();
 $class  = $this->pub->getStatusCss();
-$typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub->category()->alias, $this->pub->category()->name);
+$typetitle = \Components\Publications\Helpers\Html::writePubCategory(
+    $this->pub->category()->alias,
+    $this->pub->category()->name,
+);
 ?>
 <header id="content-header">
     <h2><?php echo $this->title; ?></h2>
@@ -59,10 +62,13 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
                 </span>
                 <strong class="block">
                     <?php
-                    echo $this->pub->reviewed ? Lang::txt('COM_PUBLICATIONS_CURATION_RESUBMITTED') : Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED');
+                    echo $this->pub->reviewed
+                        ? Lang::txt('COM_PUBLICATIONS_CURATION_RESUBMITTED')
+                        : Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED');
                     $name = $this->pub->modifier('name');
                     $name = $name ?: Lang::txt('JUNKNOWN');
-                    echo ' ' . Date::of($this->pub->submitted)->toLocal('M d, Y') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($name));
+                    echo ' ' . Date::of($this->pub->submitted)->toLocal('M d, Y') . ' '
+                        . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($name));
                     ?>
                 </strong>
                 <?php if ($this->pub->curator()) : ?>

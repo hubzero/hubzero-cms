@@ -20,7 +20,11 @@ $this->css();
 $tmpl = Request::getCmd('tmpl', '');
 
 if ($tmpl != 'component') {
-    Toolbar::title(Lang::txt('COM_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_FOR_PUB') . ' #' . $this->pub->get('id') . ' (v.' . $this->pub->get('version_label') . ')', 'publications');
+    Toolbar::title(
+        Lang::txt('COM_PUBLICATIONS') . ': ' . Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_FOR_PUB') . ' #'
+            . $this->pub->get('id') . ' (v.' . $this->pub->get('version_label') . ')',
+        'publications',
+    );
     Toolbar::save('savecontent');
     Toolbar::cancel();
 }

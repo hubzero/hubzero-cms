@@ -64,7 +64,13 @@ if ($this->getError()) {
                 $ext = \Components\Projects\Helpers\Google::getImportExt($this->file->get('originalPath'));
             }
 
-            $formats = \Components\Projects\Helpers\Google::getGoogleConversionFormat($this->file->get('mimeType'), false, false, true, $ext);
+            $formats = \Components\Projects\Helpers\Google::getGoogleConversionFormat(
+                $this->file->get('mimeType'),
+                false,
+                false,
+                true,
+                $ext,
+            );
             $first = isset($formats[$ext]) ? 0 : 1;
 
             if (!empty($formats)) {

@@ -12,7 +12,8 @@ use Hubzero\Facades\User;
 
 defined('_HZEXEC_') or die();
 
-$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope=' . $this->filters['section'] . '/' . $this->filters['category'];
+$base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=forum&scope='
+    . $this->filters['section'] . '/' . $this->filters['category'];
 
 /**
  * Returns opposite of how it was sorted
@@ -103,12 +104,19 @@ $this
                     <?php
                     if ($this->filters['search']) {
                         if ($this->category->get('title')) {
-                            echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_FOR_IN', $this->escape($this->filters['search']), $this->escape(stripslashes($this->category->get('title'))));
+                            echo Lang::txt(
+                                'PLG_GROUPS_FORUM_SEARCH_FOR_IN',
+                                $this->escape($this->filters['search']),
+                                $this->escape(stripslashes($this->category->get('title'))),
+                            );
                         } else {
                             echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_FOR', $this->escape($this->filters['search']));
                         }
                     } else {
-                        echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_IN', $this->escape(stripslashes($this->category->get('title'))));
+                        echo Lang::txt(
+                            'PLG_GROUPS_FORUM_SEARCH_IN',
+                            $this->escape(stripslashes($this->category->get('title'))),
+                        );
                     }
                     ?>
                 </caption>
@@ -193,7 +201,8 @@ $this
                                             if (!$lastpost->get('anonymous')) {
                                                 $lname = $this->escape(stripslashes($lastpost->creator->get('name')));
                                                 if (in_array($lastpost->creator->get('access'), User::getAuthorisedViewLevels())) {
-                                                    $lname = '<a href="' . Route::url($lastpost->creator->link()) . '">' . $lname . '</a>';
+                                                    $lname = '<a href="' . Route::url($lastpost->creator->link()) . '">'
+                                                        . $lname . '</a>';
                                                 }
                                             }
                                             ?>

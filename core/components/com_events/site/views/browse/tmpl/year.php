@@ -114,7 +114,8 @@ $this
                     $prev_text = Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
                 } else {
                     $prev = "javascript:void(0);";
-                    $prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
+                    $prev_text = Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' '
+                        . Lang::txt('EVENTS_CAL_LANG_PREVIOUSYEAR');
                 }
                 //get a DateTime for the first day of the next year and see if there's an event after
                 $this_datetime->add(new DateInterval("P1Y"));

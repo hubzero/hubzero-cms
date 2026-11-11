@@ -99,10 +99,14 @@ $this
                         $check = "<input class=\"chkbox\" type=\"checkbox\" id=\"msg{$row->id}\" value=\"{$row->id}\" name=\"mid[]\" />";
 
                         //get the message status
-                        $status = ($row->whenseen && $row->whenseen != '0000-00-00 00:00:00') ? '<span class="read">read</span>' : '<span class="unread">unread</span>';
+                        $status = ($row->whenseen && $row->whenseen != '0000-00-00 00:00:00')
+                            ? '<span class="read">read</span>'
+                            : '<span class="unread">unread</span>';
 
                         //get the component that created message
-                        $component = (substr($row->component, 0, 4) == 'com_') ? substr($row->component, 4) : $row->component;
+                        $component = (substr($row->component, 0, 4) == 'com_')
+                            ? substr($row->component, 4)
+                            : $row->component;
 
                         //url to view message
                         $url = Route::url($this->member->link() . '&active=messages&msg=' . $row->id);
@@ -118,7 +122,9 @@ $this
                     }
 
                         //get the message
-                        $preview = ($row->message) ? "<h3>Message Preview:</h3>" . nl2br(htmlspecialchars(stripslashes($row->message))) : "";
+                        $preview = ($row->message)
+                            ? "<h3>Message Preview:</h3>" . nl2br(htmlspecialchars(stripslashes($row->message)))
+                            : "";
 
                         //subject link
                         $subject_cls = "message-link";
@@ -133,7 +139,9 @@ $this
                         $from = Lang::txt('JANONYMOUS');
                         if (!$row->anonymous) {
                             $u = User::getInstance($row->created_by);
-                            $from = '<a href="' . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">' . $this->escape($u->get('name')) . '</a>';
+                            $from = '<a href="'
+                                . Route::url('index.php?option=' . $this->option . '&id=' . $u->get('id')) . '">'
+                                . $this->escape($u->get('name')) . '</a>';
                         }
                     } else {
                         $from = Lang::txt('PLG_MEMBERS_MESSAGES_SYSTEM', $component);
@@ -143,8 +151,13 @@ $this
                         $date = Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
 
                         //delete link
-                        $del_link = Route::url($this->member->link() . '&active=messages&mid[]=' . $row->id . '&action=sendtotrash&activetab=archive&' . Session::getFormToken() . '=1');
-                        $delete = '<a title="' . Lang::txt('PLG_MEMBERS_MESSAGES_REMOVE_MESSAGE') . '" class="trash" href="' . $del_link . '">' . Lang::txt('PLG_MEMBERS_MESSAGES_TRASH') . '</a>';
+                        $del_link = Route::url(
+                            $this->member->link() . '&active=messages&mid[]=' . $row->id
+                                . '&action=sendtotrash&activetab=archive&' . Session::getFormToken() . '=1',
+                        );
+                        $delete = '<a title="' . Lang::txt('PLG_MEMBERS_MESSAGES_REMOVE_MESSAGE')
+                            . '" class="trash" href="' . $del_link . '">' . Lang::txt('PLG_MEMBERS_MESSAGES_TRASH')
+                            . '</a>';
                     ?>
 
                     <tr>

@@ -75,7 +75,9 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                                 if (!in_array($calendar->get('color'), $colors)) {
                                     $calendar->set('color', '');
                                 }
-                                $sel = ($calendar->get('id') == $this->event->get('calendar_id')) ? 'selected="selected"' : '';
+                                $sel = ($calendar->get('id') == $this->event->get('calendar_id'))
+                                    ? 'selected="selected"'
+                                    : '';
                                 ?>
                                 <option <?= $sel ?> data-img="<?= Request::base(true) ?>/core/plugins/groups/calendar/assets/img/swatch-<?= ($calendar->get('color')) ? $calendar->get('color') : 'gray' ?>.png" value="<?= $calendar->get('id') ?>"><?= $this->escape($calendar->get('title')) ?></option>
                             <?php endforeach; ?>
@@ -122,7 +124,9 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         <?php echo Lang::txt('Start:'); ?> <span class="required">Required</span>
                         <?php
                             $start           = Request::getString('start', '', 'get');
-                            $publish_up      = ($this->event->get('publish_up')) ? $this->event->get('publish_up') : $start;
+                            $publish_up      = ($this->event->get('publish_up'))
+                                ? $this->event->get('publish_up')
+                                : $start;
                             $publish_up_date = '';
                             $publish_up_time = '';
                         if ($publish_up && $publish_up != '0000-00-00 00:00:00') {
@@ -144,12 +148,22 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         <?php echo Lang::txt('End:'); ?> <span class="optional">Optional</span>
                         <?php
                             $end               = Request::getString('end', '', 'get');
-                            $publish_down      = ($this->event->get('publish_down')) ? $this->event->get('publish_down') : $end;
+                            $publish_down      = ($this->event->get('publish_down'))
+                                ? $this->event->get('publish_down')
+                                : $end;
                             $publish_down_date = '';
                             $publish_down_time = '';
                         if ($publish_down && $publish_down != '0000-00-00 00:00:00') {
-                            $publish_down_date = Date::of($publish_down)->toTimezone($this->timezone, 'm/d/Y', $ignoreDst);
-                            $publish_down_time = Date::of($publish_down)->toTimezone($this->timezone, 'g:i a', $ignoreDst);
+                            $publish_down_date = Date::of($publish_down)->toTimezone(
+                                $this->timezone,
+                                'm/d/Y',
+                                $ignoreDst,
+                            );
+                            $publish_down_time = Date::of($publish_down)->toTimezone(
+                                $this->timezone,
+                                'g:i a',
+                                $ignoreDst,
+                            );
                         }
                         ?>
                         <div class="input-group">
@@ -302,7 +316,10 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                                 class="required"><?= Lang::txt('Required for Registration Tab to Appear') ?></span>
                             <?php
                                 $register_by = '';
-                            if ($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') {
+                            if (
+                                $this->event->get('registerby')
+                                && $this->event->get('registerby') != '0000-00-00 00:00:00'
+                            ) {
                                 $register_by = Date::of($this->event->get('registerby'))->toLocal('m/d/Y @ g:i a');
                             }
                             ?>

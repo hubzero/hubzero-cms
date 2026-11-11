@@ -156,8 +156,11 @@ endif;
                                     <option value=""><?= Lang::txt('COM_GROUPS_LOGO_FIELD_OPTION_NULL') ?></option>
                                     <?php foreach ($this->logos as $logo) : ?>
                                         <?php
-                                        $remove = PATH_APP . DS . 'site' . DS . 'groups' . DS . $this->group->get('gidNumber') . DS . 'uploads' . DS;
-                                        $sel = (str_replace($remove, '', $logo) == $this->group->get('logo')) ? 'selected' : '';
+                                        $remove = PATH_APP . DS . 'site' . DS . 'groups' . DS
+                                            . $this->group->get('gidNumber') . DS . 'uploads' . DS;
+                                        $sel = (str_replace($remove, '', $logo) == $this->group->get('logo'))
+                                            ? 'selected'
+                                            : '';
                                         ?>
                                         <option <?= $sel ?> value="<?= rtrim(Request::root(true), '/') . str_replace(PATH_ROOT, '', $logo) ?>"><?= str_replace($remove, '', $logo) ?></option>
                                     <?php endforeach; ?>

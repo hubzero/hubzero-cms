@@ -220,7 +220,10 @@ $this
 
                             if (!in_array($row->status->get('id'), $statuses)) {
                                 $statuses[] = $row->status->get('id');
-                                $this->css('#tktlist tbody tr td.status-' . $row->status->get('id') . ' { border-left-color: #' . $row->status->get('color') . '; }');
+                                $this->css(
+                                    '#tktlist tbody tr td.status-' . $row->status->get('id') . ' { border-left-color: #'
+                                        . $row->status->get('color') . '; }',
+                                );
                             }
                             ?>
                             <tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
@@ -232,7 +235,9 @@ $this
                                         <span class="<?= ($row->isOpen() ? 'open' : 'closed') . ' ' . $row->status->get('class') ?> status">
                                             <?php
                                             echo $row->status->get('text');
-                                            echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : '';
+                                            echo (!$row->isOpen())
+                                                ? ' (' . $this->escape($row->get('resolved')) . ')'
+                                                : '';
                                             ?>
                                         </span>
                                         <?php if ($row->get('target_date') && $row->get('target_date') != '0000-00-00 00:00:00') { ?>

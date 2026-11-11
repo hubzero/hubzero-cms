@@ -97,7 +97,11 @@ $this->css('theme' . $theme . '.css');
                             if ($componentPath) {
                                     $val = \Components\Redirect\Helpers\Converter::convert($val);
                             } else {
-                                    $val = preg_replace('#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is', "<a href='$1' rel='nofollow'>$2</a>", $val);
+                                    $val = preg_replace(
+                                        '#<a\s[^>]*href="([^"]*)"[^>]*?>(.*?)</a>#is',
+                                        "<a href='$1' rel='nofollow'>$2</a>",
+                                        $val,
+                                    );
                             }
                             ?>
                 <div class="public-list-header">

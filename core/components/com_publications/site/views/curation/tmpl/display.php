@@ -100,18 +100,23 @@ $this
                                 $submitted  = $row->reviewed && $row->state == 5
                                             ? strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_RESUBMITTED'))
                                             : strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'));
-                                $submitted .= ' <span class="prominent">' . Date::of($row->submitted)->toLocal('M d, Y') . '</span> ';
+                                $submitted .= ' <span class="prominent">' . Date::of($row->submitted)->toLocal('M d, Y')
+                                    . '</span> ';
 
                                 // Get submitter
                                 $submitter  = $pa->getSubmitter($row->version_id, $row->created_by);
                                 $submitter->name = $submitter->name ?: Lang::txt('JUNKNOWN');
-                                $submitted .= ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($submitter->name)) . '</span>';
+                                $submitted .= ' <span class="block">'
+                                    . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($submitter->name))
+                                    . '</span>';
 
                                 if ($row->state == 7) {
                                     $reviewed = '';
 
                                     if (!empty($row->reviewed_by)) {
-                                        $reviewed = strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_REVIEWED')) . ' <span class="prominent">' . Date::of($row->reviewed)->toLocal('M d, Y') . '</span> ';
+                                        $reviewed = strtolower(Lang::txt('COM_PUBLICATIONS_CURATION_REVIEWED'))
+                                            . ' <span class="prominent">' . Date::of($row->reviewed)->toLocal('M d, Y')
+                                            . '</span> ';
 
                                         $reviewer = User::getInstance($row->reviewed_by);
                                         $name = $reviewer->get('name');
