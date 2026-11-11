@@ -262,14 +262,16 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                     } elseif (isset($item->ranked) && $item->ranked) {
                                         //$html .= Lang::txt('WISH_PRIORITY').': <span
                                         //    class="priority">'.$item->ranking.'</span>'."\n";
+                                        $percent = ($item->ranking / 50) * 100;
+                                        $levelClass = 'priority-level priority-level-' . $item->id;
                                         $this->css('
 												.priority-level-' . $item->id . ' {
-													width: ' . (($item->ranking / 50) * 100) . '%;
+													width: ' . $percent . '%;
 												}
 											');
 
                                         $html .= '<span class="priority-level-base">
-												<span class="priority-level" priority-level-' . $item->id . '" title="' . (($item->ranking / 50) * 100) . '%">
+												<span class="' . $levelClass . '" title="' . $percent . '%">
 													<span>' . Lang::txt('COM_WISHLIST_WISH_PRIORITY') . ': ' . $item->ranking . '</span>
 												</span>
 											</span>';
