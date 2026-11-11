@@ -30,6 +30,32 @@ use Hubzero\Facades\Config;
  * ```php
  * public $useTransaction = false;
  * ```
+ *
+ * The macros in Macros/ are called as methods of the migration, by __call().
+ * Those whose signatures are too long for a tag are declared below.
+ *
+ * @method bool  deleteComponentEntry(string $name)
+ * @method bool  enableComponent(string $element)
+ * @method bool  disableComponent(string $element)
+ * @method bool  addModuleEntry(string $element, int $enabled = 1, mixed $params = '', int $client = 0)
+ * @method bool  deleteModuleEntry(string $element, int $client = null)
+ * @method bool  enableModule(string $element)
+ * @method bool  disableModule(string $element)
+ * @method void  installModule($module, $position, $always = true, $params = '', $client = 0, $menus = 0)
+ * @method bool  addPluginEntry(string $folder, string $element, int $enabled = 1, mixed $params = '')
+ * @method bool  deletePluginEntry(string $folder, string $element = null)
+ * @method bool  enablePlugin(string $folder, string $element)
+ * @method bool  disablePlugin(string $folder, string $element)
+ * @method bool  normalizePluginEntry(string $folder, string $element)
+ * @method bool  renamePluginEntry(string $folder, string $element, string $name)
+ * @method bool  deleteTemplateEntry(string $element, int $client = 1)
+ * @method bool  enableTemplate(string $element, int $client = null)
+ * @method bool  disableTemplate(string $element, int $client = null)
+ * @method mixed getParams(string $element, bool $returnRaw = false)
+ * @method bool  saveParams(string $element, mixed $params)
+ * @method bool  savePluginParams(string $element, mixed ...$args) ($folder, $element, $params) or ($element, $params)
+ * @method void  setAssetRules(string $element, array $rules)
+ * @method bool  widenColumn(string $table, string $column, int $width, string $charset = null, object $db = null)
  **/
 class Base
 {
@@ -446,6 +472,88 @@ class Base
     public static function registerMacroNamespace($namespace, $paths = [])
     {
         self::$macroNamespaces[$namespace] = (array) $paths;
+    }
+
+    /**
+     * Add a component entry to the extensions table (the AddComponentEntry macro)
+     *
+     * Declared here rather than as a tag because its signature does not fit
+     * on one line, and a tag cannot be wrapped. It goes through __call(), so
+     * a macro registered under the same name still takes its place.
+     *
+     * @param   string   $name            Component name
+     * @param   string   $option          com_xyz
+     * @param   integer  $enabled         Whether or not the component should be enabled
+     * @param   string   $params          Component params (if already known)
+     * @param   boolean  $createMenuItem  Create an admin menu item for this component
+     * @param   boolean  $createRoute     Create the site route for this component
+     * @return  boolean
+     */
+    public function addComponentEntry(
+        $name,
+        $option = null,
+        $enabled = 1,
+        $params = '',
+        $createMenuItem = true,
+        $createRoute = null,
+    ) {
+        return $this->__call(__FUNCTION__, func_get_args());
+    }
+
+    /**
+     * Add a template entry (the AddTemplateEntry macro)
+     *
+     * Declared here rather than as a tag because its signature does not fit
+     * on one line, and a tag cannot be wrapped. It goes through __call(), so
+     * a macro registered under the same name still takes its place.
+     *
+     * @param   string   $element    Template element
+     * @param   string   $name       Template name
+     * @param   integer  $client     Admin or site client
+     * @param   integer  $enabled    Whether or not the template should be enabled
+     * @param   integer  $home       Whether or not this should become the enabled template
+     * @param   array    $styles     Template styles
+     * @param   integer  $protected  Whether or not the template is a core one or not
+     * @return  boolean
+     */
+    public function addTemplateEntry(
+        $element,
+        $name = null,
+        $client = 1,
+        $enabled = 1,
+        $home = 0,
+        $styles = null,
+        $protected = 0,
+    ) {
+        return $this->__call(__FUNCTION__, func_get_args());
+    }
+
+    /**
+     * Add a template entry and make it the enabled default (the InstallTemplateEntry macro)
+     *
+     * Declared here rather than as a tag because its signature does not fit
+     * on one line, and a tag cannot be wrapped. It goes through __call(), so
+     * a macro registered under the same name still takes its place.
+     *
+     * @param   string   $element    Template element
+     * @param   string   $name       Template name
+     * @param   integer  $client     Admin or site client
+     * @param   integer  $enabled    Ignored (always 1)
+     * @param   integer  $home       Ignored (always 1)
+     * @param   array    $styles     Template styles
+     * @param   integer  $protected  Whether or not the template is a core one or not
+     * @return  boolean
+     */
+    public function installTemplateEntry(
+        $element,
+        $name = null,
+        $client = 1,
+        $enabled = 1,
+        $home = 0,
+        $styles = null,
+        $protected = 0,
+    ) {
+        return $this->__call(__FUNCTION__, func_get_args());
     }
 
     /**
