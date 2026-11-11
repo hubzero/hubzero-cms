@@ -10,6 +10,13 @@ namespace Hubzero\Database;
 
 /**
  * Database ORM class for implementing nested set records
+ *
+ * A nested set's table has these columns, which this class maintains:
+ *
+ * @property  int  $id
+ * @property  int  $lft
+ * @property  int  $rgt
+ * @property  int  $level
  */
 class Nested extends Relational
 {

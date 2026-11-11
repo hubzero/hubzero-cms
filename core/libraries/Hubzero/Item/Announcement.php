@@ -14,6 +14,8 @@ use Hubzero\Facades\Date;
 
 /**
  * Item Announcement
+ *
+ * @property  string  $created  A column of its table
  */
 class Announcement extends Relational
 {

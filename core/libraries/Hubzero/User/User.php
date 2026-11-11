@@ -24,6 +24,10 @@ use Hubzero\Facades\Request;
  * Users database model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * @property  string                    $username    A column of #__users
+ * @property  \Hubzero\Config\Registry  $params      From transformParams()
+ * @property  \Hubzero\User\Reputation  $reputation  From the reputation() relationship
  */
 class User extends \Hubzero\Database\Relational
 {

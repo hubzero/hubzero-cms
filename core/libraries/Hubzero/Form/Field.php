@@ -166,6 +166,16 @@ abstract class Field
     protected $labelClass;
 
     /**
+     * The CSS class of the form field
+     *
+     * __get() offers it, but nothing sets it yet: the class is read from the
+     * field's element instead.
+     *
+     * @var  string|null
+     */
+    protected $class;
+
+    /**
      * The count value for generated name field
      *
      * @var  integer

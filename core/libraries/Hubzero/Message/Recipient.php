@@ -13,6 +13,8 @@ use Hubzero\Utility\Date;
 
 /**
  * Model class for recipient of message
+ *
+ * @property  int  $uid  The recipient's user ID, a column of its table
  */
 class Recipient extends Relational
 {
