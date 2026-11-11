@@ -1177,7 +1177,7 @@ class Item extends Nested
         }
 
         // Association menu items
-        if (App::has('menu_associations') && App::get('menu_associations', 0) != 0) {
+        if (App::has('menu_associations') && App::get('menu_associations') != 0) {
             $languages = Lang::getLanguages('lang_code');
 
             $addform = new \SimpleXMLElement('<form />');

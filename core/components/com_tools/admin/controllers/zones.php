@@ -291,7 +291,7 @@ class Zones extends AdminController
         Request::checkToken();
 
         // Get item to default from request
-        $id = Request::getArray('id', [], '', 'array');
+        $id = Request::getArray('id', []);
 
         if (empty($id)) {
             App::abort(404, Lang::txt('COM_TOOLS_ERROR_MISSING_ID'));

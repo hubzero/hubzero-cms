@@ -86,7 +86,7 @@ class Entriesv1r0 extends ApiController
         $earliest_year = !empty($earliest_year) ? $earliest_year : 1990;
 
         $filters['id']              = Request::getInt('id', 0);
-        $filters['tag']             = Request::getString('tag', '', 'request', 'none', 2);
+        $filters['tag']             = Request::getString('tag', '', 'request');
         $filters['type']            = Request::getString('type', '');
         $filters['author']          = Request::getString('author', '');
         $filters['publishedin']     = Request::getString('publishedin', '');

@@ -113,7 +113,7 @@ class Media extends SiteController
      */
     public function downloadTask()
     {
-        $pagename = urldecode(Request::getString('pagename', '', 'default', 'none', 2));
+        $pagename = urldecode(Request::getString('pagename', '', 'default'));
         $pagename = explode('/', $pagename);
         $filename = array_pop($pagename);
         $pagename = implode('/', $pagename);

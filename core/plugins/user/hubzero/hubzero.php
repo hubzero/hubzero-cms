@@ -878,17 +878,16 @@ class Hubzero extends Plugin
     {
         $query = App::get('db')->getQuery();
 
-        // If user exists:
-        $user = User::oneOrFail($userId);
-        if (isset($user)) {
-            // NULL out any existing secret for this user:
-            $query
-                ->update('#__users')
-                ->set(['secret' => null])
-                ->whereEquals('id', $userId)
-                ->execute();
-            return true;
-        }
-        return false;
+        // Make sure the user exists: oneOrFail() throws if not
+        User::oneOrFail($userId);
+
+        // NULL out any existing secret for this user:
+        $query
+            ->update('#__users')
+            ->set(['secret' => null])
+            ->whereEquals('id', $userId)
+            ->execute();
+
+        return true;
     }
 }

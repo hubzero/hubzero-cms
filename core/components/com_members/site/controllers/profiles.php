@@ -1130,7 +1130,7 @@ class Profiles extends SiteController
         Event::trigger('onUserAfterChangePassword', [$profile->toArray()]);
 
         // Redirect user back to main account page
-        $return = base64_decode(Request::getString('return', '', 'method', 'base64'));
+        $return = base64_decode(Request::getString('return', '', 'method'));
         if ($return && !\Hubzero\Utility\Uri::isInternal($return)) {
             $return = '';
         }

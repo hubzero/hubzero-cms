@@ -251,7 +251,7 @@ class Entries extends SiteController
         // Check for request forgeries
         Request::checkToken();
 
-        $fields = Request::getArray('entry', [], 'post', 'none', 2);
+        $fields = Request::getArray('entry', [], 'post');
 
         // Make sure we don't want to turn off comments
         //$fields['allow_comments'] = (isset($fields['allow_comments'])) ? 1 : 0;
@@ -566,7 +566,7 @@ class Entries extends SiteController
         Request::checkToken();
 
         // Incoming
-        $data = Request::getArray('comment', [], 'post', 'none', 2);
+        $data = Request::getArray('comment', [], 'post');
 
         // comment[id], comment[entry_id], comment[parent], comment[created_by]
         // and comment[state] are all hidden inputs, and oneOrNew() resolves

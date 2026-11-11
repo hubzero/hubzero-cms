@@ -74,7 +74,7 @@ class Cleanser extends AdminController
         // Check for request forgeries
         Request::checkToken();
 
-        $cid = Request::getArray('cid', [], 'post', 'array');
+        $cid = Request::getArray('cid', [], 'post');
 
         if (empty($cid)) {
             App::abort(500, Lang::txt('JERROR_NO_ITEMS_SELECTED'));

@@ -300,7 +300,7 @@ class Create extends SiteController
         $type = Request::getInt('type', '');
 
         if ($type == '7') {
-            App::redirect(Route::url('index.php?option=com_tools&task=create'), '', 'message', true);
+            App::redirect(Route::url('index.php?option=com_tools&task=create'), '', 'message');
         }
 
         $this->view->next_step = $this->step + 1;

@@ -112,7 +112,7 @@ class ModeDb
                     $dd = $dd_func();
                 }
             } else {
-                App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
+                App::abort(404, 'Invalid or Missing Dataview');
                 exit();
             }
 

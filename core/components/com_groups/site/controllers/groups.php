@@ -577,9 +577,9 @@ class Groups extends Base
             trim(strip_tags(Request::getString('description', Lang::txt('NONE'), 'post'))),
         );
         $g_discoverability = Request::getInt('discoverability', 0, 'post');
-        $g_public_desc     = Sanitize::clean(trim(Request::getString('public_desc', '', 'post', 'none', 2)));
-        $g_private_desc    = Sanitize::clean(trim(Request::getString('private_desc', '', 'post', 'none', 2)));
-        $g_restrict_msg    = Sanitize::html(trim(Request::getString('restrict_msg', '', 'post', 'none', 2)));
+        $g_public_desc     = Sanitize::clean(trim(Request::getString('public_desc', '', 'post')));
+        $g_private_desc    = Sanitize::clean(trim(Request::getString('private_desc', '', 'post')));
+        $g_restrict_msg    = Sanitize::html(trim(Request::getString('restrict_msg', '', 'post')));
         $g_join_policy     = Request::getInt('join_policy', 0, 'post');
         $tags              = trim(Request::getString('tags', ''));
         $lid               = Request::getInt('lid', 0, 'post');

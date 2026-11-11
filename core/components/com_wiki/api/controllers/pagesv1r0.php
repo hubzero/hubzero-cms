@@ -390,7 +390,7 @@ class Pagesv1r0 extends ApiController
         $scope = (is_string($scope) && $scope !== '') ? preg_replace('/[^A-Z_]/i', '', $scope) : null;
 
         $fields = [
-            'title'          => Request::getString('title', null, '', 'none', 2),
+            'title'          => Request::getString('title', null),
             'pagename'       => Request::getString('pagename', null),
             'scope'          => $scope,
             'scope_id'       => Request::getInt('scope_id', null),

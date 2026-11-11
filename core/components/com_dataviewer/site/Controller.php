@@ -41,7 +41,7 @@ class Controller
 
         // Only the shipped modes exist; anything else names a class that does not
         if ($db_id['name'] === '' || !in_array($db_id['mode'], ['db', 'ds', 'dsl'], true)) {
-            App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
+            App::abort(404, 'Invalid or Missing Dataview');
         }
 
         /* Include database mode specific functionality */
@@ -59,7 +59,7 @@ class Controller
         if (method_exists(self::class, $taskMethod)) {
             self::$taskMethod($db_id);
         } else {
-            App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
+            App::abort(404, 'Invalid or Missing Dataview');
         }
     }
 

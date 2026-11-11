@@ -187,7 +187,7 @@ class Posts extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', [], 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate model
         $row = Post::oneOrNew($fields['id'])->set($fields);

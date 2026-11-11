@@ -288,7 +288,7 @@ class Customexts extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', [], 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post');
 
         // Location (Legacy) is optional on the form, but client_id is a NOT NULL
         // integer: an unselected location would be '' and fail in strict mode

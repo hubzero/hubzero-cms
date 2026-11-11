@@ -156,7 +156,7 @@ class MediaHelper
         }
 
         if (!User::authorise('core.admin')) {
-            $xss_check = Filesystem::read($file['tmp_name'], false, 256);
+            $xss_check = Filesystem::read($file['tmp_name']);
 
             $html_tags = [
                 'abbr',

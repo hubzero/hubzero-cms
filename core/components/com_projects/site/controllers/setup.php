@@ -94,7 +94,7 @@ class Setup extends Base
             $this->model->saveParam('versionTracking', '0');
             $this->model->set('alias', Request::getString('name', '', 'post'));
             $this->model->set('title', Request::getString('title', '', 'post'));
-            $this->model->set('about', trim(Request::getString('about', '', 'post', 'none', 2)));
+            $this->model->set('about', trim(Request::getString('about', '', 'post')));
             $this->model->set('private', $this->config->get('privacy', 1));
             $this->model->set('access', $this->config->get('accesslevel', 5));
             $this->model->set('setup_stage', 0);
@@ -660,7 +660,7 @@ class Setup extends Base
                 }
 
                 $this->model->set('title', \Hubzero\Utility\Str::truncate($title, 250));
-                $this->model->set('about', trim(Request::getString('about', '', 'post', 'none', 2)));
+                $this->model->set('about', trim(Request::getString('about', '', 'post')));
                 // Only a manager/owner (or the creator during setup) may change
                 // the project type or visibility; a description-only collaborator may not.
                 if ($new || $this->model->access('manager') || $this->model->access('owner')) {

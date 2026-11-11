@@ -182,7 +182,7 @@ class Entries extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', [], 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post');
 
         if (isset($fields['publish_up']) && $fields['publish_up'] != '') {
             $fields['publish_up']   = Date::of($fields['publish_up'], Config::get('offset'))->toSql();

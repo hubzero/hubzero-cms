@@ -28,6 +28,6 @@ class Migration20250124193721PlgGeocodeIpstack extends Base
      **/
     public function down()
     {
-        $this->deletePluginEntry('geocode', 'ipstack', 0);
+        $this->deletePluginEntry('geocode', 'ipstack');
     }
 }

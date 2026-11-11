@@ -208,7 +208,7 @@ class Resources extends SiteController
             'limit'  => Request::getInt('limit', Config::get('list_limit')),
             'start'  => Request::getInt('limitstart', 0),
             'search' => Request::getString('search', ''),
-            'tag'    => trim(Request::getString('tag', '', 'request', 'none', 2)),
+            'tag'    => trim(Request::getString('tag', '', 'request')),
             'tag_ignored' => [],
             'access' => [0, 3],
         ];
@@ -989,7 +989,7 @@ class Resources extends SiteController
             $redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
 
             //redirect
-            App::redirect(Route::url($redirect, false), '', '', false);
+            App::redirect(Route::url($redirect, false), '', '');
         }
 
         //do we have javascript?
@@ -1130,7 +1130,7 @@ class Resources extends SiteController
             $redirect .= '&time=' . gmdate("H:i:s", $tracking->current_position);
 
             // Redirect
-            App::redirect(Route::url($redirect, false), '', '', false);
+            App::redirect(Route::url($redirect, false), '', '');
         }
 
         if (!Request::getInt('no_html')) {

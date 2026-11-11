@@ -211,7 +211,7 @@ class Entriesv1r0 extends ApiController
             'enabled'        => Request::getInt('enabled', 0, 'post'),
             'access'         => Request::getInt('access', 1, 'post'),
             'protected'      => 0,
-            'params'         => Request::getString('params', null, 'post', 'none'),
+            'params'         => Request::getString('params', null, 'post'),
         ];
 
         $row = Plugin::blank();

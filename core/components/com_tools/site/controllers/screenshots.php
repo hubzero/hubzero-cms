@@ -683,7 +683,7 @@ class Screenshots extends SiteController
             // Copy directory
             Log::debug(__FUNCTION__ . "() copying $src to $dest");
 
-            if (!Filesystem::copyDirectory($src, $dest, '', true)) {
+            if (!Filesystem::copyDirectory($src, $dest)) {
                 return false;
             } else {
                 // Update screenshot information for this resource

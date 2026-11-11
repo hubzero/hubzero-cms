@@ -43,7 +43,7 @@ class Register extends SiteController
     {
         // Make sure we're using a secure connection
         if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == 'off') {
-            App::redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '', 'message', true);
+            App::redirect('https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'], '', 'message');
             die('insecure connection and redirection failed');
         }
 
@@ -231,7 +231,7 @@ class Register extends SiteController
                 // Redirect
                 Session::clear('session.return');
 
-                App::redirect($return, '', 'message', true);
+                App::redirect($return, '', 'message');
             }
         } else {
             if ($updateEmail) {
@@ -285,7 +285,7 @@ class Register extends SiteController
                 // Redirect
                 Session::clear('session.return');
 
-                App::redirect($return, '', 'message', true);
+                App::redirect($return, '', 'message');
             }
         }
 
@@ -1449,7 +1449,7 @@ class Register extends SiteController
                 // Check if the email address was actually changed
                 if ($pemail == $email) {
                     // Addresses are the same! Redirect
-                    App::redirect($return, '', 'message', true);
+                    App::redirect($return, '', 'message');
                 } else {
                     // New email submitted - attempt to save it
                     if ($xprofile->get('id')) {
@@ -1862,7 +1862,7 @@ class Register extends SiteController
                 $return = Route::url('index.php?option=com_members&task=myaccount');
             }
 
-            App::redirect($return, '', 'message', true);
+            App::redirect($return, '', 'message');
         } else {
             $this->setError(Lang::txt('COM_MEMBERS_REGISTER_ERROR_INVALID_CONFIRMATION'));
         }

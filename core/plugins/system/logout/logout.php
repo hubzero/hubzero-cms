@@ -79,7 +79,7 @@ class Logout extends Plugin
         // Make sure the error is a 403 and we are in the frontend.
         if ($error->getCode() == 403 and App::isSite()) {
             // Redirect to the home page
-            App::redirect('index.php', Lang::txt('PLG_SYSTEM_LOGOUT_REDIRECT'), null, true, false);
+            App::redirect('index.php', Lang::txt('PLG_SYSTEM_LOGOUT_REDIRECT'), null);
         } else {
             // Render the error page.
             $renderer = new \Hubzero\Error\Renderer\Page(

@@ -1184,7 +1184,7 @@ class Projects extends AdminController
         }
 
         // Incoming data
-        $description = json_decode(Request::getString('descriptionFields', '{}', 'post', 'none', 2));
+        $description = json_decode(Request::getString('descriptionFields', '{}', 'post'));
 
         // Get the old schema
         $fields = Field::all()

@@ -42,7 +42,7 @@ class Hubzero extends Plugin
                 new \Hubzero\Encryption\Key('simple', $key, $key),
             );
 
-            if ($str = Request::getString($hash, '', 'cookie', 1 | 2)) {
+            if ($str = Request::getString($hash, '', 'cookie')) {
                 $sstr = $crypt->decrypt($str);
                 $tracker = @unserialize($sstr);
 

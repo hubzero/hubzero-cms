@@ -267,8 +267,8 @@ class Postsv1r0 extends ApiController
         $this->requiresAuthentication();
 
         $fields = [
-            'title'          => Request::getString('title', null, 'post', 'none', 2),
-            'description'    => Request::getString('description', null, 'post', 'none', 2),
+            'title'          => Request::getString('title', null, 'post'),
+            'description'    => Request::getString('description', null, 'post'),
             'url'            => Request::getString('url', null, 'post'),
             'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
             'created_by'     => Request::getInt('created_by', 0, 'post'),

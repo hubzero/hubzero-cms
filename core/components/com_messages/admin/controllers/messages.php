@@ -194,7 +194,7 @@ class Messages extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', [], 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate extended database class
         $row = Message::oneOrNew($fields['message_id'])->set($fields);

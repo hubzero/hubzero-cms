@@ -178,10 +178,7 @@ class Passportv1r0 extends Base
         $permissions_path = $db->loadResult();
 
         // Get all groups the current user is a member of
-        $user_groups = [];
-        if (!empty($user)) {
-            $user_groups = $user->groups('members');
-        }
+        $user_groups = $user->groups('members');
 
         // Next see if the user is allowed to make this call
         $sql = 'SELECT `user_id`, `group_id` FROM `#__api_permissions` WHERE `path` = '

@@ -51,7 +51,7 @@ class ModeDs
             $r = $db->loadAssoc();
 
             if (!$r) {
-                App::abort(404, 'Invalid or Missing Dataview', 'Invalid or Missing Dataview');
+                App::abort(404, 'Invalid or Missing Dataview');
             }
 
             $td = json_decode($r['table_definition'], true);

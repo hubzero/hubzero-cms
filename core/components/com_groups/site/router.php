@@ -213,7 +213,7 @@ class Router extends Base
                 $vars['option'] = 'com_groups';
 
                 // build url to redirect to based on vars
-                App::redirect(Route::url('index.php?' . http_build_query($vars)), null, null, true);
+                App::redirect(Route::url('index.php?' . http_build_query($vars)), null, null);
                 exit();
             }
         }

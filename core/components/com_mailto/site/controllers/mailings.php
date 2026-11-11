@@ -35,7 +35,7 @@ class Mailings extends SiteController
 
         $data = new stdClass();
 
-        $data->link = urldecode(Request::getString('link', '', 'method', 'base64'));
+        $data->link = urldecode(Request::getString('link', '', 'method'));
 
         if ($data->link == '') {
             App::abort(402, Lang::txt('COM_MAILTO_LINK_IS_MISSING'));

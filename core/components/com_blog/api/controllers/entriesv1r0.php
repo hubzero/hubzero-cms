@@ -311,9 +311,9 @@ class Entriesv1r0 extends ApiController
         $fields = [
             'scope'          => $scope,
             'scope_id'       => $scopeId,
-            'title'          => Request::getString('title', null, 'post', 'none', 2),
+            'title'          => Request::getString('title', null, 'post'),
             'alias'          => Request::getString('alias', null, 'post'),
-            'content'        => Request::getString('content', null, 'post', 'none', 2),
+            'content'        => Request::getString('content', null, 'post'),
             'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
             'created_by'     => $createdBy,
             'state'          => Request::getInt('state', 1, 'post'),

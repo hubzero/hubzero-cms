@@ -275,8 +275,8 @@ class Polls extends SiteController
         // Check for request forgeries
         Request::checkToken();
 
-        $poll_id   = Request::getInt('id', 0, '', 'int');
-        $option_id = Request::getInt('voteid', 0, 'post', 'int');
+        $poll_id   = Request::getInt('id', 0);
+        $option_id = Request::getInt('voteid', 0, 'post');
 
         $poll = Poll::oneOrFail($poll_id);
 
@@ -287,7 +287,7 @@ class Polls extends SiteController
         $cookieName = App::hash(App::get('client')->name . 'poll' . $poll_id);
 
         // ToDo - may be adding those information to the session?
-        $voted = Request::getString($cookieName, '0', 'COOKIE', 'INT');
+        $voted = Request::getString($cookieName, '0', 'COOKIE');
 
         if ($voted || !$option_id) {
             if ($voted) {

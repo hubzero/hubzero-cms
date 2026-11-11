@@ -156,7 +156,7 @@ class Registration
         $this->registration['sendEmail'] = Request::getString('sendEmail', '0', 'post');
 
         // Incoming profile edits
-        $profile = Request::getArray('profile', [], 'post', 'none', 2);
+        $profile = Request::getArray('profile', [], 'post');
 
         // Compile profile data
         foreach ($profile as $key => $data) {

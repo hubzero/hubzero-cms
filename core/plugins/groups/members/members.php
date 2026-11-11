@@ -1218,7 +1218,6 @@ class Members extends Plugin
             Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&task=invite&return=members'),
             '',
             'message',
-            true,
         );
     }
 
@@ -1669,7 +1668,6 @@ class Members extends Plugin
             Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=members&filter=invitees'),
             '',
             '',
-            true,
         );
     }
 

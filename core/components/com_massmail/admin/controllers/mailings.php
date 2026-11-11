@@ -200,7 +200,7 @@ class Mailings extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
-        $posted = Request::getArray('fields', [], 'post', 'none', 2);
+        $posted = Request::getArray('fields', [], 'post');
 
         // Only the fields the compose form owns are taken from the request;
         // everything else on the row (status, counters, actor/timestamp

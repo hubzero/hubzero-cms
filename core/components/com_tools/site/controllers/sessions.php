@@ -1555,7 +1555,7 @@ class Sessions extends SiteController
 
         // Incoming
         $sess = Request::getInt('sess', 0);
-        $rtrn = base64_decode(Request::getString('return', '', 'method', 'base64'));
+        $rtrn = base64_decode(Request::getString('return', '', 'method'));
 
         // Only go back to a page on this hub
         if ($rtrn && !\Hubzero\Utility\Uri::isInternal($rtrn)) {

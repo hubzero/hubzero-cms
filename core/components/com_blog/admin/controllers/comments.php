@@ -241,7 +241,7 @@ class Comments extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', [], 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate extended database class
         $row = Comment::oneOrNew($fields['id'])->set($fields);

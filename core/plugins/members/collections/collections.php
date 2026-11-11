@@ -1349,7 +1349,7 @@ class Collections extends Plugin
             $post = new \Components\Collections\Tables\Post($this->database);
             $post->item_id       = $item_id;
             $post->collection_id = $collection_id;
-            $post->description   = Request::getString('description', '', 'none', 2);
+            $post->description   = Request::getString('description', '');
             if (!$post->check()) {
                 $this->setError($post->getError());
             } else {

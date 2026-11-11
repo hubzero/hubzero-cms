@@ -414,9 +414,9 @@ class Entriesv1r1 extends ApiController
         $fields = [
             'scope'          => Request::getString('scope', '', 'post'),
             'scope_id'       => Request::getInt('scope_id', 0, 'post'),
-            'action'         => Request::getString('action', null, 'post', 'none', 2),
+            'action'         => Request::getString('action', null, 'post'),
             'description'    => \Hubzero\Utility\Sanitize::html(
-                (string) Request::getString('description', null, 'post', 'none', 2),
+                (string) Request::getString('description', null, 'post'),
             ),
             // The timestamp is pinned along with the author below: only a
             // manager may back-date an entry.

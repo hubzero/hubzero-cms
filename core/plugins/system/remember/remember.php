@@ -36,7 +36,7 @@ class Remember extends Plugin
         if (User::isGuest()) {
             $hash = App::hash('JLOGIN_REMEMBER');
 
-            if ($str = Request::getString($hash, '', 'cookie', 1 | 2)) {
+            if ($str = Request::getString($hash, '', 'cookie')) {
                 $credentials = [];
                 $goodCookie  = true;
 

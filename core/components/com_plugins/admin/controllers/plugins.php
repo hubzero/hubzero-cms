@@ -255,7 +255,7 @@ class Plugins extends AdminController
         }
 
         // Incoming
-        $fields = Request::getArray('fields', [], 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post');
 
         // Initiate extended database class
         $model = Plugin::oneOrNew($fields['extension_id'])->set($fields);
@@ -382,7 +382,7 @@ class Plugins extends AdminController
         }
 
         // Get items to publish from the request.
-        $cid   = Request::getArray('cid', [], '', 'array');
+        $cid   = Request::getArray('cid', []);
         $data  = [
             'publish'   => 1,
             'unpublish' => 0,

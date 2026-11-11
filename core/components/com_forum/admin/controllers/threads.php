@@ -441,7 +441,7 @@ class Threads extends AdminController
         User::setState('com_forum.edit.thread.data', null);
 
         // Incoming
-        $fields = Request::getArray('fields', [], 'post', 'none', 2);
+        $fields = Request::getArray('fields', [], 'post');
         $fields = array_map('trim', $fields);
 
         $fields['sticky']    = (isset($fields['sticky'])) ? $fields['sticky'] : 0;

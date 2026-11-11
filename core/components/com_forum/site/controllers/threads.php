@@ -406,7 +406,7 @@ class Threads extends SiteController
 
         // Incoming
         $section = Request::getString('section', '');
-        $fields  = Request::getArray('fields', [], 'post', 'none', 2);
+        $fields  = Request::getArray('fields', [], 'post');
         $fields  = array_map('trim', $fields);
 
         // Only the columns the edit form offers are bindable; set() copies every

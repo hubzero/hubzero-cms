@@ -95,8 +95,8 @@ class Events extends AdminController
             'search',
             '',
         ));
-        $this->view->filters['catid']    = Request::getInt('catid', 0, '', 'int');
-        $this->view->filters['scope_id'] = Request::getInt('group_id', 0, '', 'int');
+        $this->view->filters['catid']    = Request::getInt('catid', 0);
+        $this->view->filters['scope_id'] = Request::getInt('group_id', 0);
 
         $ee = new Event($this->database);
 

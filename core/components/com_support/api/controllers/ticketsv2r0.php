@@ -283,7 +283,7 @@ class Ticketsv2r0 extends ApiController
         $ticket->set('owner', Request::get('owner', 0));
 
         //check if the report was good
-        $ticket->set('report', Request::get('report', '', 'none', 2));
+        $ticket->set('report', Request::get('report', ''));
         if (!$ticket->get('report')) {
             throw new Exception(Lang::txt('Error: Report contains no text.'), 500);
         }

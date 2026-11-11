@@ -213,8 +213,8 @@ class Questionsv1r0 extends ApiController
         $fields = [
             'email'      => Request::getInt('email', 0, 'post'),
             'anonymous'  => Request::getInt('anonymous', 0, 'post'),
-            'subject'    => Request::getString('subject', null, 'post', 'none', 2),
-            'question'   => Request::getString('question', null, 'post', 'none', 2),
+            'subject'    => Request::getString('subject', null, 'post'),
+            'question'   => Request::getString('question', null, 'post'),
             'created'    => ($manager ? Request::getString(
                 'created',
                 with(new Date('now'))->toSql(),

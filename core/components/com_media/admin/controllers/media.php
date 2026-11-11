@@ -508,7 +508,7 @@ class Media extends AdminController
 
         // Get some data from the request
         $tmpl   = Request::getCmd('tmpl');
-        $paths  = Request::getArray('rm', [], '', 'array');
+        $paths  = Request::getArray('rm', []);
         $folder = Request::getString('folder', '');
         $rm     = Request::getArray('rm', []);
 

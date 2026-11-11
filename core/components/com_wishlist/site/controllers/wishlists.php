@@ -863,7 +863,7 @@ class Wishlists extends SiteController
         $page->set('created_by', User::get('id'));
         $page->set('created', Date::toSql());
         $page->set('approved', 1);
-        $page->set('pagetext', Request::getString('pagetext', '', 'post', 'none'));
+        $page->set('pagetext', Request::getString('pagetext', '', 'post'));
 
         // Stripslashes just to make sure
         $oldpagetext = rtrim(stripslashes($old->get('pagetext')));

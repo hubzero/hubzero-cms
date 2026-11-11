@@ -337,7 +337,7 @@ class Commentsv1r0 extends ApiController
         // Create a new comment
         $comment = new \Components\Support\Models\Comment();
         $comment->set('ticket', $ticket->get('id'));
-        $comment->set('comment', nl2br(Request::getString('comment', '', 'post', 'none', 2)));
+        $comment->set('comment', nl2br(Request::getString('comment', '', 'post')));
         if ($comment->get('comment')) {
             // If a comment was posted by the ticket submitter to a "waiting user response" ticket, change status.
             if ($ticket->isWaiting() && User::get('username') == $ticket->get('login')) {

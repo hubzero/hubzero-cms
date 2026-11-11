@@ -641,8 +641,8 @@ class Threadsv1r0 extends ApiController
 
         $fields = [
             'category_id'    => Request::getInt('category_id', 0, 'post'),
-            'title'          => Request::getString('title', null, 'post', 'none', 2),
-            'comment'        => Request::getString('comment', null, 'post', 'none', 2),
+            'title'          => Request::getString('title', null, 'post'),
+            'comment'        => Request::getString('comment', null, 'post'),
             'created'        => Request::getString('created', with(new Date('now'))->toSql(), 'post'),
             'created_by'     => Request::getInt('created_by', 0, 'post'),
             'state'          => Request::getInt('state', Post::STATE_PUBLISHED, 'post'),
