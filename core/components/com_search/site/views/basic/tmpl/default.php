@@ -187,7 +187,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
     <?php elseif (($raw = $this->terms->getRaw())) : ?>
         <p><?php echo Lang::txt('COM_SEARCH_RESULTS_NONE', $this->escape($raw)); ?></p>
         <?php
-            // raw terms were specified but no chunks were parsed out, meaning they were all stop words, so we can give a quasi-helpful explanation of why nothing turned up
+            // raw terms were specified but no chunks were parsed out, meaning they were all
+            // stop words, so we can give a quasi-helpful explanation of why nothing turned up
         if (!$this->terms->any() || strlen($raw) <= 3) :
             ?>
             <p class="warning"><?php echo Lang::txt('COM_SEARCH_WARNING_SHORT_WORDS'); ?></p>

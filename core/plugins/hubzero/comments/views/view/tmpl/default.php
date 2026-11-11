@@ -62,7 +62,8 @@ $this
 
                             // Load the comment
                             $comment = \Plugins\Hubzero\Comments\Models\Comment::oneOrNew($edit);
-                            // If the comment exists and the editor is NOT the creator and the editor is NOT a manager...
+                            // If the comment exists and the editor is NOT
+                            // the creator and the editor is NOT a manager...
                             // (or it is a comment on some other item -- commentedit= resolves any comment on the hub)
                             if (
                                 $comment->get('id')

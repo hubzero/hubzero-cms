@@ -189,7 +189,8 @@ foreach ($assets as $asset) {
                     // For sanities sake - they have NOT completed the form yet!
                     $increment_count_taken = false;
 
-                    // If there's an override in the gradebook, go ahead and use that, whether or not they've even taken the form yet
+                    // If there's an override in the gradebook, go ahead and
+                    // use that, whether or not they've even taken the form yet
                     if (
                         $grades[$this->member->get('id')]['assets'][$asset->id]['override']
                         && !is_null($grades[$this->member->get('id')]['assets'][$asset->id]['score'])
@@ -286,7 +287,8 @@ if (count($units) > 0) {
             || $complete > 0
         ) {
             $current   = ' current';
-            // Set the index for the currently available unit (this will result in the latter of the available units if multiple are available)
+            // Set the index for the currently available unit (this will result
+            // in the latter of the available units if multiple are available)
             $current_i = $index;
         }
 

@@ -426,7 +426,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                 <?php foreach ($this->fields as $field) : ?>
                     <?php
 
-                    // Add in class for JS selector to conditionally retrieve data from RoR Api based on members option 'rorApi'
+                    // Add in class for JS selector to conditionally retrieve
+                    // data from RoR Api based on members option 'rorApi'
                     $rorApiBoolean = Component::params('com_members')->get('rorApi');
                     if (
                         strtolower($field->get('name')) == "profile[organization]"
