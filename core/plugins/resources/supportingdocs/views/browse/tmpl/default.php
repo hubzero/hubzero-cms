@@ -109,7 +109,18 @@ if ($this->model->isTool()) {
                         default:
                             $linkAction = 0;
 
-                            $mediatypes = ['elink','quicktime','presentation','presentation_audio','breeze','quiz','player','video_stream','video','hubpresenter'];
+                            $mediatypes = [
+                                'elink',
+                                'quicktime',
+                                'presentation',
+                                'presentation_audio',
+                                'breeze',
+                                'quiz',
+                                'player',
+                                'video_stream',
+                                'video',
+                                'hubpresenter',
+                            ];
                             $downtypes = ['thesis','handout','manual','software_download'];
 
                             if (in_array($lt->alias, $downtypes)) {

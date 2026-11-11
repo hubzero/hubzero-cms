@@ -158,7 +158,13 @@ $listDirn  = $this->escape($this->filters['direction']);
                                 $active = $menu->getActive();
                                 $itemId = $active->id;
                                 $link = Route::url('index.php?option=com_users&view=login&Itemid=' . $itemId);
-                                $returnURL = Route::url(Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language));
+                                $returnURL = Route::url(
+                                    Components\Content\Site\Helpers\Route::getArticleRoute(
+                                        $article->slug,
+                                        $article->catid,
+                                        $article->language,
+                                    ),
+                                );
                                 $fullURL = new Hubzero\Utility\Uri($link);
                                 $fullURL->setUriVar('return', base64_encode(urlencode($returnURL)));
                             ?>

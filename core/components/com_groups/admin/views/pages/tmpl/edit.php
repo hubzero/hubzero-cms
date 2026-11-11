@@ -236,7 +236,11 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                                     <td>
                                         <?php
                                             $profile = User::getInstance($version->get('created_by'));
-                                            $name = ((is_object($profile)) ? $profile->get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
+                                            $name = (
+                                                (is_object($profile))
+                                                    ? $profile->get('name')
+                                                    : Lang::txt('COM_GROUPS_PAGES_SYSTEM')
+                                            );
                                             echo Lang::txt(
                                                 'COM_GROUPS_PAGES_VERSION_CREATED_DETAILS',
                                                 $name,
@@ -248,7 +252,11 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                                         <?php
                                         if ($version->get('approved')) {
                                             $profile = User::getInstance($version->get('approved_by'));
-                                            $name = ((is_object($profile)) ? $profile->get('name') : Lang::txt('COM_GROUPS_PAGES_SYSTEM'));
+                                            $name = (
+                                                (is_object($profile))
+                                                    ? $profile->get('name')
+                                                    : Lang::txt('COM_GROUPS_PAGES_SYSTEM')
+                                            );
                                             echo Lang::txt(
                                                 'COM_GROUPS_PAGES_VERSION_APPROVED_DETAILS',
                                                 $name,

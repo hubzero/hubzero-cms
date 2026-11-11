@@ -86,7 +86,11 @@ $this->css();
 
             $file_name = '<a href="' . $file_url . '">' . $this->escape($r['source_file']) . '</a>';
 
-            $recreate = '<a href="' . Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=databases&action=create&db_id=' . $r['id']) . '" class="re-create-db">' . Lang::txt('Update Database') . '</a>';
+            $recreate = '<a href="'
+                . Route::url(
+                    'index.php?option=com_projects&alias=' . $this->model->get('alias')
+                        . '&active=databases&action=create&db_id=' . $r['id'],
+                ) . '" class="re-create-db">' . Lang::txt('Update Database') . '</a>';
 
             $file_extra = 'title="' . $full_path . '"';
 
@@ -95,7 +99,12 @@ $this->css();
                     $file_extra = 'class="file-updated" title="'
                         . Lang::txt('The file has changed, modified %s', $r['source_revision_date']) . '"';
                 } else {
-                    $file_extra = 'class="file-deleted" title="' . Lang::txt('The file [%s] has been removed or renamed %s', $full_path, $r['source_revision_date']) . '"';
+                    $file_extra = 'class="file-deleted" title="'
+                        . Lang::txt(
+                            'The file [%s] has been removed or renamed %s',
+                            $full_path,
+                            $r['source_revision_date'],
+                        ) . '"';
                     $file_name = '<span style="color: #ddd; cursor: not-allowed;">' . $this->escape($r['source_file'])
                         . '</span>';
                     $recreate = '<span title="' . Lang::txt('The original file has been removed or renamed, please restore the file to enable this functionality') . '" style="color: #ddd; cursor: not-allowed;">' . Lang::txt('Recreate') . '<span>';
@@ -163,7 +172,11 @@ $this->css();
     } else {
         $out = '<p class="noresults">' . Lang::txt('PLG_PROJECTS_DATA_NO_DATA_FOUND');
         if ($this->model->access('content')) {
-            $out .= ' <span class="addnew"><a href="' . Route::url('index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias') . '&action=create#content') . '" >' . Lang::txt('PLG_PROJECTS_DATA_START') . '</a></span>';
+            $out .= ' <span class="addnew"><a href="'
+                . Route::url(
+                    'index.php?option=' . $this->option . '&active=databases&alias=' . $this->model->get('alias')
+                        . '&action=create#content',
+                ) . '" >' . Lang::txt('PLG_PROJECTS_DATA_START') . '</a></span>';
         }
         $out .= '</p>';
         echo $out;

@@ -103,17 +103,27 @@ if ($this->group->isSuperGroup()) {
                     $menuItems[] = '<li class="divider" role="separator"></li>';
                 }
             } else {
-                if ($membership_control == 1 && Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.invite')) {
+                if (
+                    $membership_control == 1
+                    && Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction(
+                        $this->group,
+                        'group.invite',
+                    )
+                ) {
                     $menuItems[] = '<li role="none"><a role="menuitem" class="group-invite" href="'
                         . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=invite') . '">'
                         . Lang::txt('COM_GROUPS_TOOLBAR_INVITE') . '</a></li>';
                 }
-                if (Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.edit')) {
+                if (
+                    Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.edit')
+                ) {
                     $menuItems[] = '<li role="none"><a role="menuitem" class="group-edit" href="'
                         . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=edit') . '">'
                         . Lang::txt('COM_GROUPS_TOOLBAR_EDIT') . '</a></li>';
                 }
-                if (Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages')) {
+                if (
+                    Components\Groups\Helpers\Permissions::userHasPermissionForGroupAction($this->group, 'group.pages')
+                ) {
                     $menuItems[] = '<li role="none"><a role="menuitem" class="group-pages" href="'
                         . Route::url('index.php?option=com_groups&cn=' . $cn . '&task=pages') . '">'
                         . Lang::txt('COM_GROUPS_TOOLBAR_PAGES') . '</a></li>';

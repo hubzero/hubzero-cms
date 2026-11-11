@@ -125,7 +125,12 @@ $icPlay  = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" f
 $icX     = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1Zm2.828 8.243a.75.75 0 0 1-1.06 1.06L8 8.536 6.232 10.303a.75.75 0 1 1-1.06-1.06L6.94 7.475 5.172 5.707a.75.75 0 0 1 1.06-1.06L8 6.414l1.768-1.767a.75.75 0 0 1 1.06 1.06L9.06 7.475l1.768 1.768Z"/></svg>';
 $icEdit  = '<svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10ZM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5Zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5Zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325Z"/></svg>';
 
-Toolbar::title(Lang::txt($isNew ? 'COM_MASSMAIL_NEW_MAILING' : ($editable ? 'COM_MASSMAIL_EDIT_MAILING' : 'COM_MASSMAIL_MAILING_STATUS')), 'massmail');
+Toolbar::title(
+    Lang::txt(
+        $isNew ? 'COM_MASSMAIL_NEW_MAILING' : ($editable ? 'COM_MASSMAIL_EDIT_MAILING' : 'COM_MASSMAIL_MAILING_STATUS'),
+    ),
+    'massmail',
+);
 if ($editable) {
     Toolbar::apply();
     Toolbar::save();
@@ -308,7 +313,13 @@ $this->js('edit.js', 'com_massmail');
                                     <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_MODIFIED'); ?></th>
                                     <td><?php echo Date::of($this->row->get('modified'))->toLocal($fmt);
                                     if ($this->row->get('modified_by')) {
-                                        echo '<br /><span class="mm-meta-sub">' . Lang::txt('COM_MASSMAIL_META_BY', $this->escape(User::getInstance($this->row->get('modified_by'))->get('name'))) . '</span>';
+                                        echo '<br /><span class="mm-meta-sub">'
+                                            . Lang::txt(
+                                                'COM_MASSMAIL_META_BY',
+                                                $this->escape(
+                                                    User::getInstance($this->row->get('modified_by'))->get('name'),
+                                                ),
+                                            ) . '</span>';
                                     } ?></td>
                                 </tr>
                             <?php } ?>

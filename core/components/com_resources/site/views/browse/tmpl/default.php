@@ -58,8 +58,12 @@ $this
                             <ol class="tags">
                             <?php
                             $url  = 'index.php?option=' . $this->option . '&task=browse';
-                            $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-                            $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
+                            $url .= (
+                                $this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : ''
+                            );
+                            $url .= (
+                                $this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : ''
+                            );
                             $url .= ($this->filters['type'] ? '&type=' . $this->escape($this->filters['type']) : '');
 
                             $rt = new \Components\Resources\Helpers\Tags(0);

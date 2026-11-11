@@ -174,7 +174,12 @@ $this->category->set('section_alias', $this->filters['section']);
                                                         $lname = $this->escape(
                                                             stripslashes($lastpost->creator->get('name')),
                                                         );
-                                                        if (in_array($lastpost->creator->get('access'), User::getAuthorisedViewLevels())) {
+                                                        if (
+                                                            in_array(
+                                                                $lastpost->creator->get('access'),
+                                                                User::getAuthorisedViewLevels(),
+                                                            )
+                                                        ) {
                                                             $lname = '<a href="'
                                                                 . Route::url($lastpost->creator->link()) . '">' . $lname
                                                                 . '</a>';

@@ -20,7 +20,12 @@ $route = $this->model->isProvisioned()
         : 'index.php?option=com_projects&alias=' . $this->model->get('alias');
 
 // Save Selection URL
-$url = $this->model->isProvisioned() ? Route::url($route) : Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications&pid=' . $this->publication->id);
+$url = $this->model->isProvisioned()
+    ? Route::url($route)
+    : Route::url(
+        'index.php?option=com_projects&alias=' . $this->model->get('alias') . '&active=publications&pid='
+            . $this->publication->id,
+    );
 
 $citationFormat = $this->publication->config('citation_format', 'apa');
 

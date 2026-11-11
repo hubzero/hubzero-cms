@@ -115,7 +115,11 @@ $this
                                 echo ' (' . Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT') . ')';
                             }
                             if ($this->status['published']) {
-                                echo ' [<a class="tool-versions" href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app=' . $this->status['toolname']) . '">' . strtolower(Lang::txt('COM_TOOLS_ALL_VERSIONS')) . '</a>]';
+                                echo ' [<a class="tool-versions" href="'
+                                    . Route::url(
+                                        'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                            . '&task=versions&app=' . $this->status['toolname'],
+                                    ) . '">' . strtolower(Lang::txt('COM_TOOLS_ALL_VERSIONS')) . '</a>]';
                             }  ?>
                             </td>
                         </tr>

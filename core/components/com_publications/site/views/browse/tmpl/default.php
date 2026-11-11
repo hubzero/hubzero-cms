@@ -43,9 +43,17 @@ $this
                             <ol class="tags">
                             <?php
                             $url  = 'index.php?option=' . $this->option . '&task=browse';
-                            $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-                            $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-                            $url .= ($this->filters['category'] ? '&category=' . $this->escape($this->filters['category']) : '');
+                            $url .= (
+                                $this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : ''
+                            );
+                            $url .= (
+                                $this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : ''
+                            );
+                            $url .= (
+                                $this->filters['category']
+                                    ? '&category=' . $this->escape($this->filters['category'])
+                                    : ''
+                            );
 
                             $rt = new Components\Publications\Helpers\Tags($database);
                             $tags = $rt->parseTopTags($this->filters['tag']);
@@ -73,7 +81,9 @@ $this
                         $url  = 'index.php?option=' . $this->option . '&task=browse';
                         $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
                         $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-                        $url .= ($this->filters['type'] ? '&category=' . $this->escape($this->filters['category']) : '');
+                        $url .= (
+                            $this->filters['type'] ? '&category=' . $this->escape($this->filters['category']) : ''
+                        );
 
                         foreach ($this->filters['tag_ignored'] as $tag) {
                             ?>
@@ -93,7 +103,9 @@ $this
                     <nav class="entries-filters" aria-label="<?= Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS') ?>">
                         <?php
                         $qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-                        $qs .= ($this->filters['category'] ? '&category=' . $this->escape($this->filters['category']) : '');
+                        $qs .= (
+                            $this->filters['category'] ? '&category=' . $this->escape($this->filters['category']) : ''
+                        );
                         $qs .= ($this->filters['tag'] ? '&tag=' . $this->escape($this->filters['tag']) : '');
                         ?>
                         <ul class="entries-menu order-options">

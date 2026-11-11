@@ -92,7 +92,9 @@ $this->js('events.js');
                                 }
                                 echo ' />';
                             } else {
-                                echo '<input type="text" name="fields[' . $field[0] . ']" id="field-' . $field[0] . '" class="required" maxlength="255" value="' . $this->escape(end($field)) . '" />';
+                                echo '<input type="text" name="fields[' . $field[0] . ']" id="field-' . $field[0]
+                                    . '" class="required" maxlength="255" value="' . $this->escape(end($field))
+                                    . '" />';
                             }
                             ?>
                         </div>

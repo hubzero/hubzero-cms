@@ -100,7 +100,12 @@ foreach ($assets as $asset) {
         }
 
         if (isset($asset->unit_id) && $asset->unit_id) {
-            $details['forms'][$unit->get('id')][] = ['title' => $title, 'score' => $score, 'date' => $date, 'url' => $url];
+            $details['forms'][$unit->get('id')][] = [
+                'title' => $title,
+                'score' => $score,
+                'date' => $date,
+                'url' => $url,
+            ];
         } else {
             $details['aux'][] = ['title' => $asset->title, 'score' => $score, 'date' => $date];
         }
@@ -117,7 +122,12 @@ foreach ($assets as $asset) {
         switch ($dep->getState()) {
             // Form isn't available yet
             case 'pending':
-                $details['forms'][$unit->get('id')][] = ['title' => $title, 'score' => 'Not yet open', 'date' => 'N/A', 'url' => $url];
+                $details['forms'][$unit->get('id')][] = [
+                    'title' => $title,
+                    'score' => 'Not yet open',
+                    'date' => 'N/A',
+                    'url' => $url,
+                ];
                 break;
 
             // Form availability has expired
@@ -143,7 +153,12 @@ foreach ($assets as $asset) {
                 // They have completed this form, therefore set increment_count_taken equal to true
                 $increment_count_taken = true;
 
-                $details['forms'][$unit->get('id')][] = ['title' => $title, 'score' => $score, 'date' => $date, 'url' => $url];
+                $details['forms'][$unit->get('id')][] = [
+                    'title' => $title,
+                    'score' => $score,
+                    'date' => $date,
+                    'url' => $url,
+                ];
                 break;
 
             // Form is still active
@@ -184,7 +199,12 @@ foreach ($assets as $asset) {
                     }
                 }
 
-                $details['forms'][$unit->get('id')][] = ['title' => $title, 'score' => $score, 'date' => $date, 'url' => $url];
+                $details['forms'][$unit->get('id')][] = [
+                    'title' => $title,
+                    'score' => $score,
+                    'date' => $date,
+                    'url' => $url,
+                ];
                 break;
         }
     }
@@ -243,12 +263,28 @@ if (count($units) > 0) {
         $complete = isset($progress[$this->member->get('id')][$unit->get('id')]['percentage_complete'])
                     ? $progress[$this->member->get('id')][$unit->get('id')]['percentage_complete']
                     : 0;
-        $past     = ((!is_null($unit->get('publish_up')) && $unit->get('publish_up') != '0000-00-00 00:00:00' && $unit->started()) || $complete > 0) ? ' past' : '';
+        $past     = (
+            (
+                !is_null($unit->get('publish_up'))
+                && $unit->get('publish_up') != '0000-00-00 00:00:00'
+                && $unit->started()
+            )
+            || $complete > 0
+        )
+            ? ' past'
+            : '';
         $margin   = 100 - $complete;
         $done     = ($complete == 100) ? ' complete' : '';
         $current  = '';
 
-        if ((!is_null($unit->get('publish_up')) && $unit->get('publish_up') != '0000-00-00 00:00:00' && $unit->isAvailable()) || $complete > 0) {
+        if (
+            (
+                !is_null($unit->get('publish_up'))
+                && $unit->get('publish_up') != '0000-00-00 00:00:00'
+                && $unit->isAvailable()
+            )
+            || $complete > 0
+        ) {
             $current   = ' current';
             // Set the index for the currently available unit (this will result in the latter of the available units if multiple are available)
             $current_i = $index;
@@ -265,7 +301,8 @@ if (count($units) > 0) {
         $progress_timeline .= '<div class="person"></div>';
         $progress_timeline .= '<div class="unit-inner' . $first . $last . $past . '">';
         $progress_timeline .= '<div class="unit-fill">';
-        $progress_timeline .= '<div class="unit-fill-inner' . $done . ' unit-fill-inner' . $unit->get('id') . '"></div>';
+        $progress_timeline .= '<div class="unit-fill-inner' . $done . ' unit-fill-inner' . $unit->get('id')
+            . '"></div>';
         $progress_timeline .= '</div>';
         $progress_timeline .= "Unit {$index}";
         $progress_timeline .= '</div></div>';

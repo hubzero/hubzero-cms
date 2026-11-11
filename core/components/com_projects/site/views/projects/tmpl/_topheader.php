@@ -34,12 +34,21 @@ defined('_HZEXEC_') or die();
                     <p>
                         <?php
                         if (!$this->model->isPublic()) {
-                            $privacy = '<span class="private">' . ucfirst(Lang::txt('COM_PROJECTS_PRIVATE')) . '</span>';
+                            $privacy = '<span class="private">' . ucfirst(Lang::txt('COM_PROJECTS_PRIVATE'))
+                                . '</span>';
                         } else {
-                            $privacy = '<a href="' . Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&preview=1') . '" title="' . Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">' . ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')) . '</a>';
+                            $privacy = '<a href="'
+                                . Route::url(
+                                    'index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')
+                                        . '&preview=1',
+                                ) . '" title="' . Lang::txt('COM_PROJECTS_PREVIEW_PUBLIC_PROFILE') . '">'
+                                . ucfirst(Lang::txt('COM_PROJECTS_PUBLIC')) . '</a>';
                         }
 
-                        $start = ($this->publicView == false && $this->model->access('member')) ? '<span class="h-privacy">' . $privacy . '</span> ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
+                        $start = ($this->publicView == false && $this->model->access('member'))
+                            ? '<span class="h-privacy">' . $privacy . '</span> '
+                                . strtolower(Lang::txt('COM_PROJECTS_PROJECT'))
+                            : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
 
                         echo $start . ' ' . Lang::txt('COM_PROJECTS_BY') . ' ';
                         if ($cn = $this->model->groupOwner('cn')) {

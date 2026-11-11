@@ -23,7 +23,9 @@ $canDo = Components\Content\Admin\Helpers\Permissions::getActions('article', $th
 Html::behavior('tooltip');
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
-$lang = ($this->task == 'edit' || $this->task == 'apply' ? 'COM_CONTENT_PAGE_EDIT_ARTICLE' : 'COM_CONTENT_PAGE_ADD_ARTICLE');
+$lang = (
+    $this->task == 'edit' || $this->task == 'apply' ? 'COM_CONTENT_PAGE_EDIT_ARTICLE' : 'COM_CONTENT_PAGE_ADD_ARTICLE'
+);
 Toolbar::title(Lang::txt($lang), 'content');
 if (
     $canDo->get('core.edit')

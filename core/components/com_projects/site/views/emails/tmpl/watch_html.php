@@ -131,7 +131,12 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
                                 $content = $a->log->get('description');
 
                                 $isHtml = false;
-                                if (preg_match('/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is', $content)) {
+                                if (
+                                    preg_match(
+                                        '/^(<([a-z]+)[^>]*>.+<\/([a-z]+)[^>]*>|<(\?|%|([a-z]+)[^>]*).*(\?|%|)>)/is',
+                                        $content,
+                                    )
+                                ) {
                                     $isHtml = true;
                                 }
 

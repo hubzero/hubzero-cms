@@ -20,7 +20,12 @@ $this->baseURL = rtrim($this->baseURL, '/');
 // lands back where they started. Stored internal-only; urlencoded for the link.
 $return = $this->xprofile->getParam('return', false);
 
-$link = $this->baseURL . Route::urlForClient('site', 'index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email=' . urlencode($this->xprofile->get('email')) . ($return ? '&return=' . urlencode($return) : ''));
+$link = $this->baseURL
+    . Route::urlForClient(
+        'site',
+        'index.php?option=' . $this->option . '&task=confirm&confirm=' . -$this->xprofile->get('activation') . '&email='
+            . urlencode($this->xprofile->get('email')) . ($return ? '&return=' . urlencode($return) : ''),
+    );
 
 //$link = $this->baseURL . $link;
 $link = str_replace('/administrator', '', $link);

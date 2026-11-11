@@ -15,7 +15,15 @@ use Hubzero\Facades\Session;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-$newSession = Request::getString('REQUEST_URI', Route::url('index.php?option=' . $this->option . '&task=invoke&app=' . $this->app->toolname . '&version=' . $this->app->version, false), 'server');
+$newSession = Request::getString(
+    'REQUEST_URI',
+    Route::url(
+        'index.php?option=' . $this->option . '&task=invoke&app=' . $this->app->toolname . '&version='
+            . $this->app->version,
+        false,
+    ),
+    'server',
+);
 if (strstr($newSession, '?')) {
     $newSession .= '&newinstance=1';
 } else {

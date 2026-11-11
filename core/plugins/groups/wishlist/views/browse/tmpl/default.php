@@ -20,7 +20,11 @@ $this->css();
 $title = ($this->admin) ? Lang::txt('COM_WISHLIST_TITLE_PRIORITIZED') : Lang::txt('COM_WISHLIST_TITLE_RECENT_WISHES');
 
 if (count($this->rows) > 0 && $this->items > $this->filters['limit']) {
-    $title .= ' <span>(<a href="' . Route::url('index.php?option=com_wishlist&task=wishlist&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid) . '">' . Lang::txt('PLG_GROUPS_WISHLIST_VIEW_ALL') . ' ' . $this->items . '</a>)</span>';
+    $title .= ' <span>(<a href="'
+        . Route::url(
+            'index.php?option=com_wishlist&task=wishlist&category=' . $this->wishlist->category . '&rid='
+                . $this->wishlist->referenceid,
+        ) . '">' . Lang::txt('PLG_GROUPS_WISHLIST_VIEW_ALL') . ' ' . $this->items . '</a>)</span>';
 } else {
     $title .= ' <span>(' . $this->items . ')</span>';
 }
@@ -58,13 +62,27 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
 
                 if ($item->status == 7) {
                     $status = 'outstanding';
-                } elseif (isset($item->ranked) && !$item->ranked && $item->status != 1 && $item->status != 3 && $item->status != 4 && ($this->admin == 2 or $this->admin == 3)) {
+                } elseif (
+                    isset($item->ranked)
+                    && !$item->ranked
+                    && $item->status != 1
+                    && $item->status != 3
+                    && $item->status != 4
+                    && ($this->admin == 2 or $this->admin == 3)
+                ) {
                     $status = 'unranked';
                 } else {
                     $status = 'outstanding';
                 }
 
-                $state  = (isset($item->ranked) && !$item->ranked && $item->status != 1 && ($this->admin == 2 or $this->admin == 3)) ? 'new' : '';
+                $state  = (
+                    isset($item->ranked)
+                    && !$item->ranked
+                    && $item->status != 1
+                    && ($this->admin == 2 or $this->admin == 3)
+                )
+                    ? 'new'
+                    : '';
                 $state .= ($item->private) ? ' private' : '';
                 switch ($item->status) {
                     case 3:

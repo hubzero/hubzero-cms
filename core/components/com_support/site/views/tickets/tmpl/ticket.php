@@ -47,7 +47,10 @@ if ($this->row->get('login')) {
             . $this->escape(stripslashes($this->row->get('login'))) . ')</a>';
         $unknown = 0;
     } else {
-        $displayName = ($this->row->get('login')) ? $this->escape(stripslashes($this->row->get('name'))) . ' (' . $this->escape(stripslashes($this->row->get('login'))) . ')' : $this->escape(stripslashes($this->row->get('name')));
+        $displayName = ($this->row->get('login'))
+            ? $this->escape(stripslashes($this->row->get('name'))) . ' ('
+                . $this->escape(stripslashes($this->row->get('login'))) . ')'
+            : $this->escape(stripslashes($this->row->get('name')));
         if ($this->row->get('email')) {
             $name = '<a rel="email" href="mailto:' . $this->escape($this->row->get('email')) . '">' . $displayName
                 . '</a>';

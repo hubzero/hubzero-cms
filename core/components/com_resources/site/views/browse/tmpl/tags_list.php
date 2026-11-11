@@ -98,7 +98,13 @@ switch ($this->level) {
             $sortbys['jobs'] = Lang::txt('COM_RESOURCES_SORT_BY') . ' ' . Lang::txt('COM_RESOURCES_JOBS');
         }
 
-        $html .= '<h3>' . Lang::txt('COM_RESOURCES') . ' ' . \Components\Resources\Helpers\Html::formSelect('sortby', $sortbys, $this->bits['sortby'], '" aria-label="' . Lang::txt('COM_RESOURCES_SORT_BY')) . '</h3>';
+        $html .= '<h3>' . Lang::txt('COM_RESOURCES') . ' '
+            . \Components\Resources\Helpers\Html::formSelect(
+                'sortby',
+                $sortbys,
+                $this->bits['sortby'],
+                '" aria-label="' . Lang::txt('COM_RESOURCES_SORT_BY'),
+            ) . '</h3>';
         $html .= '<ul id="ulitems" tabindex="0" role="listbox" aria-label="' . Lang::txt('COM_RESOURCES') . '">';
         if ($tools && count($tools) > 0) {
             foreach ($tools as $tool) {
@@ -225,7 +231,10 @@ switch ($this->level) {
                     . $allowedgroup . '</a>';
             }
 
-            $html .= '<p class="warning">' . Lang::txt('You must be logged in and a member of one of the following groups to access the full resource:') . ' ' . implode(', ', $ghtml) . '</p>' . "\n";
+            $html .= '<p class="warning">'
+                . Lang::txt(
+                    'You must be logged in and a member of one of the following groups to access the full resource:',
+                ) . ' ' . implode(', ', $ghtml) . '</p>' . "\n";
         } else {
             $firstChild = $resource
                 ->children()

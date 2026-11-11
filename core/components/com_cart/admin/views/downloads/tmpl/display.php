@@ -192,14 +192,22 @@ $this
                     ?>
 
                     <?php
-                    $product = '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&pId=' . $row->pId) . '">' . $this->escape(stripslashes($row->pName)) . '</a>';
+                    $product = '<a href="'
+                        . Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&pId='
+                                . $row->pId,
+                        ) . '">' . $this->escape(stripslashes($row->pName)) . '</a>';
                     if (!stripslashes($row->pName)) {
                         $product = '<span class="missing">Product n/a</span>';
                     }
                     if (!stripslashes($row->sSku)) {
                         $product .= '<br />SKU: <span class="missing">n/a</span>';
                     } else {
-                        $product .= '<br />SKU: ' . '<a href="' . Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&sId=' . $row->sId) . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
+                        $product .= '<br />SKU: ' . '<a href="'
+                            . Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller . '&sId='
+                                    . $row->sId,
+                            ) . '">' . $this->escape(stripslashes($row->sSku)) . '</a>';
                     }
                     ?>
                     <span><?php echo $product; ?></span>

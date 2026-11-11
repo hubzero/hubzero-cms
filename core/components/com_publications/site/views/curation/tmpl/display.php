@@ -121,7 +121,11 @@ $this
                                         $reviewer = User::getInstance($row->reviewed_by);
                                         $name = $reviewer->get('name');
                                         $name = $name ?: Lang::txt('JUNKNOWN');
-                                        $reviewed .= $reviewer ? ' <span class="block">' . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($name)) . '</span>' : '';
+                                        $reviewed .= $reviewer
+                                            ? ' <span class="block">'
+                                                . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($name))
+                                                . '</span>'
+                                            : '';
                                     }
                                 }
 
@@ -130,7 +134,16 @@ $this
                                 $abstract  = $row->abstract ? stripslashes($row->abstract) : '';
 
                                 // Is user authorize to edit assignment?
-                                $assign = ($this->authorized == 'curator' || $this->authorized == 'admin' || ($this->authorized == 'limited' && in_array($row->master_type, $this->filters['master_type']))) ? true : false;
+                                $assign = (
+                                    $this->authorized == 'curator'
+                                    || $this->authorized == 'admin'
+                                    || (
+                                        $this->authorized == 'limited'
+                                        && in_array($row->master_type, $this->filters['master_type'])
+                                    )
+                                )
+                                    ? true
+                                    : false;
                                 ?>
                                     <tr class="mline mini faded" id="tr_<?php echo $row->id; ?>">
                                         <td>

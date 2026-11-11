@@ -140,7 +140,12 @@ $revision = $this->revision;
                                 $versiontext .= ($thistool->released && $thistool->released != '0000-00-00 00:00:00')
                                     ? Date::of($thistool->released)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
                                     : Date::of($this->model->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-                                $versiontext .= ($thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00') ? ', ' . Lang::txt('COM_RESOURCES_UNPUBLISHED_ON') . ' ' . Date::of($thistool->unpublished)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : '';
+                                $versiontext .= (
+                                    $thistool->unpublished && $thistool->unpublished != '0000-00-00 00:00:00'
+                                )
+                                    ? ', ' . Lang::txt('COM_RESOURCES_UNPUBLISHED_ON') . ' '
+                                        . Date::of($thistool->unpublished)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                                    : '';
                             } else {
                                 $versiontext .= ' (' . Lang::txt('COM_RESOURCES_IN_DEVELOPMENT') . ')';
                             }
@@ -160,7 +165,11 @@ $revision = $this->revision;
                         } elseif ($revision == 'dev') {
                             $html .= "\t\t\t\t" . '<p class="devversion">' . Lang::txt('COM_RESOURCES_VERSION') . ' '
                                 . $versiontext;
-                            $html .= $this->model->toolpublished ? ' <span>' . Lang::txt('View') . ' <a href="' . Route::url($this->model->link() . '&active=versions') . '">' . Lang::txt('other versions') . '</a></span>' : '';
+                            $html .= $this->model->toolpublished
+                                ? ' <span>' . Lang::txt('View') . ' <a href="'
+                                    . Route::url($this->model->link() . '&active=versions') . '">'
+                                    . Lang::txt('other versions') . '</a></span>'
+                                : '';
                             $html .= '</p>' . "\n";
                         } else {
                             // Show archive message
@@ -182,7 +191,12 @@ $revision = $this->revision;
                             && $this->model->doi
                             && ($this->model->doi_shoulder || $tconfig->get('doi_shoulder'))
                         ) {
-                            $doi = 'doi:' . ($this->model->doi_shoulder ? $this->model->doi_shoulder : $tconfig->get('doi_shoulder')) . '/' . strtoupper($this->model->doi);
+                            $doi = 'doi:'
+                                . (
+                                    $this->model->doi_shoulder
+                                        ? $this->model->doi_shoulder
+                                        : $tconfig->get('doi_shoulder')
+                                ) . '/' . strtoupper($this->model->doi);
 
                             $html .= "\t\t" . '<p class="doi">' . $doi . ' <span><a href="'
                                 . Route::url($this->model->link() . '&active=about') . '#citethis">'
@@ -191,8 +205,19 @@ $revision = $this->revision;
 
                         // Open/closed source
                         if ($this->model->toolsource && $this->model->tool) { // open source
-                            $html .= '<p class="opensource_license">' . Lang::txt('Open source') . ': <a class="popup" href="' . Route::url('index.php?option=' . $this->option . '&task=license&tool=' . $this->model->tool . '&tmpl=component') . '">license</a> ';
-                            $html .= ($this->model->taravailable) ? ' |  <a href="' . Route::url('index.php?option=' . $this->option . '&task=sourcecode&tool=' . $this->model->tool) . '">' . Lang::txt('download') . '</a> ' . "\n" : ' | <span class="unavail">' . Lang::txt('code unavailable') . '</span>' . "\n";
+                            $html .= '<p class="opensource_license">' . Lang::txt('Open source')
+                                . ': <a class="popup" href="'
+                                . Route::url(
+                                    'index.php?option=' . $this->option . '&task=license&tool=' . $this->model->tool
+                                        . '&tmpl=component',
+                                ) . '">license</a> ';
+                            $html .= ($this->model->taravailable)
+                                ? ' |  <a href="'
+                                    . Route::url(
+                                        'index.php?option=' . $this->option . '&task=sourcecode&tool='
+                                            . $this->model->tool,
+                                    ) . '">' . Lang::txt('download') . '</a> ' . "\n"
+                                : ' | <span class="unavail">' . Lang::txt('code unavailable') . '</span>' . "\n";
                             $html .= '</p>' . "\n";
                         } elseif (!$this->model->toolsource) { // closed source, archive page
                             $html .= '<p class="closedsource_license">'
@@ -211,10 +236,18 @@ $revision = $this->revision;
                                     }
                                 }
                             }
-                            $url = $guide ? \Components\Resources\Helpers\Html::processPath($this->option, $guide, $this->model->id) : '';
+                            $url = $guide
+                                ? \Components\Resources\Helpers\Html::processPath(
+                                    $this->option,
+                                    $guide,
+                                    $this->model->id,
+                                )
+                                : '';
                             $html .= "\t\t" . '<p class="supdocs">' . "\n";
                             if ($url) {
-                                $html .= "\t\t\t" . '<span><span class="guide"><a href="' . $url . '">' . Lang::txt('COM_RESOURCES_TOOL_FIRT_TIME_USER_GUIDE') . '</a></span></span>' . "\n";
+                                $html .= "\t\t\t" . '<span><span class="guide"><a href="' . $url . '">'
+                                    . Lang::txt('COM_RESOURCES_TOOL_FIRT_TIME_USER_GUIDE') . '</a></span></span>'
+                                    . "\n";
                             }
                             $html .= "\t\t\t" . '<span class="viewalldocs"><a href="'
                                 . Route::url($this->model->link() . '&active=supportingdocs') . '">'

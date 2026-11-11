@@ -63,7 +63,8 @@ if ($this->wishlist->get('id')) {
                 switch ($this->wishlist->get('saved')) {
                     case '1':
                         // List settings saved
-                        echo '<p class="passed">' . Lang::txt('COM_WISHLIST_NOTICE_LIST_SETTINGS_SAVED') . '</p>' . "\n";
+                        echo '<p class="passed">' . Lang::txt('COM_WISHLIST_NOTICE_LIST_SETTINGS_SAVED') . '</p>'
+                            . "\n";
                         break;
                     case '2':
                         // Changes to wish saved
@@ -107,9 +108,21 @@ if ($this->wishlist->get('id')) {
                                     <ol class="tags">
                                     <?php
                                     $url  = $base;
-                                    $url .= ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
-                                    $url .= ($this->filters['sortby'] ? '&sortby=' . $this->escape($this->filters['sortby']) : '');
-                                    $url .= ($this->filters['filterby'] ? '&filterby=' . $this->escape($this->filters['filterby']) : '');
+                                    $url .= (
+                                        $this->filters['search']
+                                            ? '&search=' . $this->escape($this->filters['search'])
+                                            : ''
+                                    );
+                                    $url .= (
+                                        $this->filters['sortby']
+                                            ? '&sortby=' . $this->escape($this->filters['sortby'])
+                                            : ''
+                                    );
+                                    $url .= (
+                                        $this->filters['filterby']
+                                            ? '&filterby=' . $this->escape($this->filters['filterby'])
+                                            : ''
+                                    );
 
                                     $tags = $cloud->parseTags($this->filters['tag']);
                                     foreach ($tags as $tag) {
@@ -194,7 +207,13 @@ if ($this->wishlist->get('id')) {
 
                                     if ($item->isReported()) {
                                         $status = 'outstanding';
-                                    } elseif ($item->get('ranked') && !$item->isGranted() && !$item->isWithdrawn() && !$item->isRejected() && $this->wishlist->access('manage')) {
+                                    } elseif (
+                                        $item->get('ranked')
+                                        && !$item->isGranted()
+                                        && !$item->isWithdrawn()
+                                        && !$item->isRejected()
+                                        && $this->wishlist->access('manage')
+                                    ) {
                                         $status = 'unranked';
                                     } else {
                                         $status = 'outstanding';
@@ -315,7 +334,9 @@ if ($this->wishlist->get('id')) {
 														</span>';
                                                     }
                                                     if ($item->isAccepted()) {
-                                                        $html .= '<span class="accepted">' . Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED') . '</span>';
+                                                        $html .= '<span class="accepted">'
+                                                            . Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED')
+                                                            . '</span>';
                                                     }
                                                     break;
                                                 case 1:
@@ -406,7 +427,14 @@ if ($this->wishlist->get('id')) {
                     }
 
                     if ($this->wishlist->get('category') == 'resource') {
-                        $html  = '<p>' . Lang::txt('COM_WISHLIST_THIS_LIST_IS_FOR_RES', '<a href="' . Route::url('index.php?option=com_resources&id=' . $this->wishlist->get('referenceid')) . '">' . $this->escape($this->wishlist->item('title')) . '</a>') . '</p>';
+                        $html  = '<p>'
+                            . Lang::txt(
+                                'COM_WISHLIST_THIS_LIST_IS_FOR_RES',
+                                '<a href="'
+                                    . Route::url(
+                                        'index.php?option=com_resources&id=' . $this->wishlist->get('referenceid'),
+                                    ) . '">' . $this->escape($this->wishlist->item('title')) . '</a>',
+                            ) . '</p>';
                     } elseif ($this->wishlist->get('description')) {
                         $html  = '<p>' . $this->escape($this->wishlist->get('description')) . '<p>';
                     } else {

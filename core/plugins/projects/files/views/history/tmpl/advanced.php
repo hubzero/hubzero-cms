@@ -38,7 +38,10 @@ foreach ($this->versions as $version) {
     }
 }
 
-$endPath = ' &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR') . ' <span class="italic">' . $this->escape(\Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40)) . '</span></span>';
+$endPath = ' &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_REV_HISTORY_FOR')
+    . ' <span class="italic">'
+    . $this->escape(\Components\Projects\Helpers\Html::shortenFileName($this->file->get('name'), 40))
+    . '</span></span>';
 
 $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candiff <= 1) ? 0 : 1;
 
@@ -72,7 +75,10 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
         <input type="hidden" name="action" value="diff" />
             <ul class="sample">
                 <?php
-                    $extras =  ($allowDiff && !$this->getError()) ? '<input type="submit" id="rundiff" value="' . Lang::txt('PLG_PROJECTS_FILES_DIFF_REVISIONS') . '" class="btn rightfloat" />' : '';
+                    $extras = ($allowDiff && !$this->getError())
+                        ? '<input type="submit" id="rundiff" value="' . Lang::txt('PLG_PROJECTS_FILES_DIFF_REVISIONS')
+                            . '" class="btn rightfloat" />'
+                        : '';
 
                     // Display list item with file data
                     $this

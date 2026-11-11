@@ -121,7 +121,12 @@ if ($this->masterAdmin) {
                     echo '_pending';
                 } ?>">
                                 <span class="view"><?php if ($mj->status == 1) {
-                                    echo $mj->applications . ' ' . Lang::txt('COM_JOBS_DASHBOARD_APPLICATIONS') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=job&code=' . $mj->code) . '#applications" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW') . ' ]</a>';
+                                    echo $mj->applications . ' ' . Lang::txt('COM_JOBS_DASHBOARD_APPLICATIONS')
+                                        . ' <a href="'
+                                        . Route::url(
+                                            'index.php?option=' . $this->option . '&task=job&code=' . $mj->code,
+                                        ) . '#applications" class="cancelit">[ ' . Lang::txt('COM_JOBS_DASHBOARD_VIEW')
+                                        . ' ]</a>';
                                                    } elseif ($mj->status == 4) {
                                                        echo '(' . strtolower(Lang::txt('COM_JOBS_JOB_STATUS_DRAFT'))
                                                            . ')';

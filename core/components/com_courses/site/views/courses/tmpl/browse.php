@@ -204,7 +204,15 @@ $this->css('browse.css');
                                                 );
                                                 $name = $this->escape(stripslashes($instructor->get('name')));
 
-                                                $names[] = (in_array($instructor->get('access'), User::getAuthorisedViewLevels()) ? '<a href="' . Route::url($instructor->link()) . '">' . $name . '</a>' : $name);
+                                                $names[] = (
+                                                    in_array(
+                                                        $instructor->get('access'),
+                                                        User::getAuthorisedViewLevels(),
+                                                    )
+                                                        ? '<a href="' . Route::url($instructor->link()) . '">' . $name
+                                                            . '</a>'
+                                                        : $name
+                                                );
                                             }
                                             echo Lang::txt('COM_COURSES_COURSE_INSTRUCTORS'); ?>: <span class="entry-instructors"><?= implode(', ', $names) ?></span><?php
                                         }

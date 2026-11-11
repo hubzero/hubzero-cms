@@ -126,7 +126,14 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                     $alt = Lang::txt('COM_EVENTS_EVENT_UNPUBLISHED');
                     if ($now <= $row->publish_up && $row->state == "1") {
                         $alt = Lang::txt('COM_EVENTS_EVENT_PENDING');
-                    } elseif (($now <= $row->publish_down || !$row->publish_down || $row->publish_down == "0000-00-00 00:00:00") && $row->state == "1") {
+                    } elseif (
+                        (
+                            $now <= $row->publish_down
+                            || !$row->publish_down
+                            || $row->publish_down == "0000-00-00 00:00:00"
+                        )
+                        && $row->state == "1"
+                    ) {
                         $alt = Lang::txt('COM_EVENTS_EVENT_PUBLISHED');
                     } elseif ($now > $row->publish_down && $row->state == "1") {
                         $alt = Lang::txt('COM_EVENTS_EVENT_EXPIRED');

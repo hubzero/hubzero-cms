@@ -71,12 +71,16 @@ $this
                     }
 
                         //get the message
-                        $preview = ($row->message) ? '<h3>' . Lang::txt('PLG_MEMBERS_MESSAGES_PREVIEW') . '</h3>' . nl2br(htmlspecialchars(stripslashes($row->message))) : '';
+                        $preview = ($row->message)
+                            ? '<h3>' . Lang::txt('PLG_MEMBERS_MESSAGES_PREVIEW') . '</h3>'
+                                . nl2br(htmlspecialchars(stripslashes($row->message)))
+                            : '';
 
                         //subject link
                         $subject_cls = 'message-link';
 
-                        $subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">" . $this->escape(stripslashes($subject)) . "</a>";
+                        $subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">"
+                            . $this->escape(stripslashes($subject)) . "</a>";
 
                         // Check for identity masking flag
                     if (strpos($row->type, '_anonymous') === false) {

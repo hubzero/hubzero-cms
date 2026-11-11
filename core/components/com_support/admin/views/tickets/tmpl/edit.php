@@ -209,7 +209,10 @@ if (!$no_html) {
                     <td><?php
                     if ($this->row->isOwned()) {
                         if ($this->row->assignee->get('id')) {
-                            echo '<a rel="profile" href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->row->assignee->get('id')) . '">' . $this->escape(stripslashes($this->row->assignee->get('name'))) . '</a>';
+                            echo '<a rel="profile" href="'
+                                . Route::url(
+                                    'index.php?option=com_members&task=edit&id=' . $this->row->assignee->get('id'),
+                                ) . '">' . $this->escape(stripslashes($this->row->assignee->get('name'))) . '</a>';
                         } else {
                             echo $this->escape($this->row->get('owner'));
                         }
@@ -500,7 +503,10 @@ if (!$no_html) {
                                     ],
                                 ]);
                                 if (count($mc) > 0) {
-                                    echo '<span class="hint">' . Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
+                                    echo '<span class="hint">'
+                                        . Lang::txt(
+                                            'COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE',
+                                        ) . '</span>' . $mc[0];
                                 } else {
                                     ?> <span class="hint"><?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS') ?></span>
                                     <input type="text" name="cc" id="comment-field-message"

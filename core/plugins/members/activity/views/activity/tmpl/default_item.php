@@ -191,7 +191,12 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     <?php echo $content; ?>
                 </div>
                 <?php
-                if (in_array($this->row->log->get('action'), ['updated', 'emailed', 'downloaded', 'uploaded', 'denied', 'voted', 'shared'])) {
+                if (
+                    in_array(
+                        $this->row->log->get('action'),
+                        ['updated', 'emailed', 'downloaded', 'uploaded', 'denied', 'voted', 'shared'],
+                    )
+                ) {
                     $recipient = Hubzero\Activity\Recipient::all();
 
                     $r = $recipient->getTableName();

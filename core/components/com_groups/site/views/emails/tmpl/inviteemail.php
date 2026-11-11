@@ -16,8 +16,16 @@ defined('_HZEXEC_') or die();
 // build urls
 $base  = rtrim(str_replace('administrator', '', Request::base()), '/');
 
-$group    = $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')), '/');
-$accept   = $base . '/' . ltrim(Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&task=accept&token=' . $this->token), '/');
+$group    = $base . '/'
+    . ltrim(Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')), '/');
+$accept   = $base . '/'
+    . ltrim(
+        Route::url(
+            'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&task=accept&token='
+                . $this->token,
+        ),
+        '/',
+    );
 $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&controller=register'), '/') . '?return='
     . base64_encode($group);
 ?>

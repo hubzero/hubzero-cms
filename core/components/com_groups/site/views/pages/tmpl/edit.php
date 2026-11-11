@@ -153,7 +153,10 @@ if ($this->page->get('id')) {
                             // if super group add to templates
                             if ($this->group->isSuperGroup()) {
                                 $config['templates_replace'] = false;
-                                $config['templates_files']   = ['pagelayouts' => '/app/site/groups/' . $this->group->get('gidNumber') . '/template/assets/js/pagelayouts.js'];
+                                $config['templates_files']   = [
+                                    'pagelayouts' => '/app/site/groups/' . $this->group->get('gidNumber')
+                                        . '/template/assets/js/pagelayouts.js',
+                                ];
                             }
 
                             // display editor

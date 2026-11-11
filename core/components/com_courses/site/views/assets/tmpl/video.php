@@ -88,7 +88,13 @@ if ($type == 'hubpresenter') {
         // Make sure for each of the slide videos we have all three formats and has a backup image for the slide
         foreach ($slide_video as $k => $v) {
             if (count($v) < 3) {
-                $this->setError(Lang::txt('COM_COURSES_VIDEO_ERROR_MISSING_SLIDES_FORMAT', count($v), $k . implode(", {$k}.", array_keys($v))));
+                $this->setError(
+                    Lang::txt(
+                        'COM_COURSES_VIDEO_ERROR_MISSING_SLIDES_FORMAT',
+                        count($v),
+                        $k . implode(", {$k}.", array_keys($v)),
+                    ),
+                );
             }
 
             if (!file_exists($slide_path . DS . $k . '.png')) {
@@ -846,7 +852,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         && file_exists(PATH_ROOT . DS . $content_folder . DS . $slide->thumb)
                                     ) {
                                         $thumb = $content_folder . DS . $slide->thumb;
-                                    } elseif (!is_array($slide->media) && file_exists(PATH_ROOT . DS . $content_folder . DS . $slide->media)) {
+                                    } elseif (
+                                        !is_array($slide->media)
+                                        && file_exists(PATH_ROOT . DS . $content_folder . DS . $slide->media)
+                                    ) {
                                         $thumb = $content_folder . DS . $slide->media;
                                     }
                                     ?>

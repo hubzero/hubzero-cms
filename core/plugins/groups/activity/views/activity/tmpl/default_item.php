@@ -115,7 +115,11 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                     if ($project) {
                         $projectDetailUrl = $this->row->log->details->get('url');
                         // The stored URL is only followed to a site path or an http(s) address
-                        $projectDetailUrl = (!empty($projectDetailUrl) && preg_match('#^(https?://|/)#i', $projectDetailUrl)) ? $projectDetailUrl : Route::url('index.php?option=com_projects&alias=' . $project->get('alias'));
+                        $projectDetailUrl = (
+                            !empty($projectDetailUrl) && preg_match('#^(https?://|/)#i', $projectDetailUrl)
+                        )
+                            ? $projectDetailUrl
+                            : Route::url('index.php?option=com_projects&alias=' . $project->get('alias'));
                         ?>
                         <div class="activity-source icon-project">
                             <a href="<?= $this->escape($projectDetailUrl) ?>"><?= $this->escape(stripslashes($project->get('title'))) ?></a>

@@ -226,7 +226,13 @@ $roles = [
             }
 
             $disabled = false;
-            if ($owner->native && (($group && $this->model->get('sync_group') && in_array($owner->userid, $members)) || ($this->managers_count == 1 && $owner->role == 1))) {
+            if (
+                $owner->native
+                && (
+                    ($group && $this->model->get('sync_group') && in_array($owner->userid, $members))
+                    || ($this->managers_count == 1 && $owner->role == 1)
+                )
+            ) {
                 $disabled = true;
             }
 

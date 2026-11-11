@@ -117,7 +117,8 @@ $this
                         $handle = '<a href="' . $tconfig->get('doi_resolve', 'https://doi.org/') . $handle . '">'
                             . $handle . '</a>';
                     } elseif (isset($t->doi_label) && $t->doi_label) {
-                        $handle = 'doi:10254/' . $tconfig->get('doi_prefix') . $this->resource->id . '.' . $t->doi_label;
+                        $handle = 'doi:10254/' . $tconfig->get('doi_prefix') . $this->resource->id . '.'
+                            . $t->doi_label;
                         $handle = '<a href="http://hdl.handle.net/' . $handle . '">' . $handle . '</a>';
                     }
 

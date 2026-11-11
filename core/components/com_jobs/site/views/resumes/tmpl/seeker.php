@@ -24,7 +24,8 @@ $profile = Components\Members\Models\Member::oneOrNew($this->seeker->uid);
 $jobtype = $jt->getType($this->seeker->sought_type, strtolower(Lang::txt('COM_JOBS_TYPE_ANY')));
 $jobcat  = $jc->getCat($this->seeker->sought_cid, strtolower(Lang::txt('COM_JOBS_CATEGORY_ANY')));
 
-$title = Lang::txt('COM_JOBS_ACTION_DOWNLOAD') . ' ' . $this->seeker->name . ' ' . ucfirst(Lang::txt('COM_JOBS_RESUME'));
+$title = Lang::txt('COM_JOBS_ACTION_DOWNLOAD') . ' ' . $this->seeker->name . ' '
+    . ucfirst(Lang::txt('COM_JOBS_RESUME'));
 
 // Get the configured upload path
 $base_path = DS . trim($this->params->get('webpath', '/site/members'), DS);

@@ -542,7 +542,10 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                         $formfield->setValue($this->registration['_profile'][$field->get('name')]);
                     }
 
-                    $errors = (!empty($this->xregistration->invalid[$field->get('name')])) ? '<span class="error" role="alert">' . $this->xregistration->invalid[$field->get('name')] . '</span>' : '';
+                    $errors = (!empty($this->xregistration->invalid[$field->get('name')]))
+                        ? '<span class="error" role="alert">' . $this->xregistration->invalid[$field->get('name')]
+                            . '</span>'
+                        : '';
                     ?>
                     <div class="form-group<?= $errors ? ' fieldWithErrors' : '' ?>"
                         id="input-<?= $this->escape($field->get('name')) ?>">

@@ -93,7 +93,10 @@ $this->css('admin.subscriptions.css');
 
             switch ($row->status) {
                 case '1':
-                    $status = ($row->expires > $now) ? '<span class="service-active">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE')) . '</span>' : '<span  class="service-expired">' . strtolower(Lang::txt('COM_SERVICES_EXPIRED')) . '</span>';
+                    $status = ($row->expires > $now)
+                        ? '<span class="service-active">' . strtolower(Lang::txt('COM_SERVICES_STATE_ACTIVE'))
+                            . '</span>'
+                        : '<span  class="service-expired">' . strtolower(Lang::txt('COM_SERVICES_EXPIRED')) . '</span>';
                     break;
                 case '0':
                     $status = '<span class="service-pending">' . strtolower(Lang::txt('COM_SERVICES_STATE_PENDING'))

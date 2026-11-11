@@ -129,7 +129,8 @@ defined('_HZEXEC_') or die();
                             $attribs[] = $key . '="' . $this->escape($val) . '"';
                         }
 
-                        $item .= '<li><a ' . implode(' ', $attribs) . '>' . $this->escape($option['text']) . '</a></li>';
+                        $item .= '<li><a ' . implode(' ', $attribs) . '>' . $this->escape($option['text'])
+                            . '</a></li>';
                     }
                     $item .= '</ul>';
                 }

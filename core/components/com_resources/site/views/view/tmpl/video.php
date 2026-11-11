@@ -84,7 +84,13 @@ $this->css('
                     //video source
                     $source = $video->source;
 
-                if (preg_match('/^(.*?)(\/+)(app\/+site\/+resources)(\/+)([12]\d\d\d)(\/+)(0\d|1[012])(\/+)(\d{5})\/*(.*)$/m', $source, $matches)) {
+                if (
+                    preg_match(
+                        '/^(.*?)(\/+)(app\/+site\/+resources)(\/+)([12]\d\d\d)(\/+)(0\d|1[012])(\/+)(\d{5})\/*(.*)$/m',
+                        $source,
+                        $matches,
+                    )
+                ) {
                     $url = '/resources/' . $matches[9] . '/download/' . $matches[10];
                 } else {
                     $url = $source;

@@ -104,7 +104,8 @@ $version = $record['summary']['version'];
                                                                 }
                                                         ');
 
-                                echo '<div class="no-answer" id="question-' . $qid . '-marker">No answer provided</div>';
+                                echo '<div class="no-answer" id="question-' . $qid
+                                    . '-marker">No answer provided</div>';
                                 continue 2;
                         elseif ($record['detail'][$qid]['correct_answer_id'] == $ans['id']) :
                                                        Document::addStyleDeclaration('

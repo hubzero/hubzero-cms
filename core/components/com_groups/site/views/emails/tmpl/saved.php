@@ -406,7 +406,13 @@ $onOffLabel = function ($v) {
                                     // Determine the discoverability
                                     $discoverability = $discoverabilityLabel($this->group->get('discoverability'));
                                     echo $discoverability;
-                                    echo $wasMarker('discoverability', $discoverability, isset($before['discoverability']) ? $discoverabilityLabel($before['discoverability']) : null);
+                                    echo $wasMarker(
+                                        'discoverability',
+                                        $discoverability,
+                                        isset($before['discoverability'])
+                                            ? $discoverabilityLabel($before['discoverability'])
+                                            : null,
+                                    );
                                     ?>
                                 </td>
                             </tr>
@@ -483,7 +489,13 @@ $onOffLabel = function ($v) {
                                         <?php
                                         $autosub = $onOffLabel($this->group->get('discussion_email_autosubscribe'));
                                         echo $autosub;
-                                        echo $wasMarker('discussion_email_autosubscribe', $autosub, isset($before['discussion_email_autosubscribe']) ? $onOffLabel($before['discussion_email_autosubscribe']) : null);
+                                        echo $wasMarker(
+                                            'discussion_email_autosubscribe',
+                                            $autosub,
+                                            isset($before['discussion_email_autosubscribe'])
+                                                ? $onOffLabel($before['discussion_email_autosubscribe'])
+                                                : null,
+                                        );
                                         ?>
                                     </td>
                                 </tr>

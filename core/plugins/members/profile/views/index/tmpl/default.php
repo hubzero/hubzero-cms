@@ -209,7 +209,14 @@ $legacy = [
             $increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARNED_POINTS', $awards['new']) . '</p>';
         }
 
-        $increm .= '<p>' . Lang::txt('PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS', $incrOpts->getAwardPerField(), Route::url('index.php?option=com_store'), Route::url('index.php?option=com_answers'), Route::url('index.php?option=com_wishlist')) . '</p>';
+        $increm .= '<p>'
+            . Lang::txt(
+                'PLG_MEMBERS_PROFILE_INCREMENTAL_EARN_MORE_POINTS',
+                $incrOpts->getAwardPerField(),
+                Route::url('index.php?option=com_store'),
+                Route::url('index.php?option=com_answers'),
+                Route::url('index.php?option=com_wishlist'),
+            ) . '</p>';
 
         $increm .= '</div>';
         $increm .= '<div id="wallet"><span>' . ($awards['prior'] + $awards['new']) . '</span></div>';
@@ -790,7 +797,14 @@ $legacy = [
                                     $access .= '<input type="hidden" name="access[' . $field->get('name') . ']" value="'
                                         . $profile->get('access', $field->get('access')) . '" />';
                                 } else {
-                                    $access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>' . Components\Members\Helpers\Html::selectAccess('access[' . $field->get('name') . ']', $value == '' ? $field->get('access') : $profile->get('access', $field->get('access')), 'input-select');
+                                    $access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>'
+                                        . Components\Members\Helpers\Html::selectAccess(
+                                            'access[' . $field->get('name') . ']',
+                                            $value == ''
+                                                ? $field->get('access')
+                                                : $profile->get('access', $field->get('access')),
+                                            'input-select',
+                                        );
                                 }
 
                                 $this

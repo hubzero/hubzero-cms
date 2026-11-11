@@ -292,20 +292,39 @@ if ($mode != 'preview') {
                         if (count($grandchildren) > 0) {
                             foreach ($grandchildren as $grandchild) {
                                 $grandchild->set('title', $this->escape($grandchild->title));
-                                $grandchild->set('path', \Components\Resources\Helpers\Html::processPath($this->option, $grandchild, $child->id));
+                                $grandchild->set(
+                                    'path',
+                                    \Components\Resources\Helpers\Html::processPath(
+                                        $this->option,
+                                        $grandchild,
+                                        $child->id,
+                                    ),
+                                );
 
                                 $alias = isset($grandchild->type->alias) ? $grandchild->type->alias : '';
 
                                 switch ($alias) {
                                     case 'player':
                                     case 'quicktime':
-                                        $videoi .= (!$videoi) ? '<a href="' . $this->escape($grandchild->path) . '">' . Lang::txt('View') . '</a>' : '';
+                                        $videoi .= (!$videoi)
+                                            ? '<a href="' . $this->escape($grandchild->path) . '">' . Lang::txt('View')
+                                                . '</a>'
+                                            : '';
                                         break;
                                     case 'breeze':
-                                        $breeze .= (!$breeze) ? '<a class="breeze flash" href="' . $this->escape($grandchild->path) . '&amp;no_html=1" title="' . $this->escape(stripslashes($grandchild->title)) . '">' . Lang::txt('View Flash') . '</a>' : '';
+                                        $breeze .= (!$breeze)
+                                            ? '<a class="breeze flash" href="' . $this->escape($grandchild->path)
+                                                . '&amp;no_html=1" title="'
+                                                . $this->escape(stripslashes($grandchild->title)) . '">'
+                                                . Lang::txt('View Flash') . '</a>'
+                                            : '';
                                         break;
                                     case 'hubpresenter':
-                                        $hubpresenter .= (!$hubpresenter) ? '<a class="hubpresenter html5" href="' . $this->escape($grandchild->path) . '" title="' . $this->escape(stripslashes($grandchild->title)) . '">' . Lang::txt('View HTML') . '</a>' : '';
+                                        $hubpresenter .= (!$hubpresenter)
+                                            ? '<a class="hubpresenter html5" href="' . $this->escape($grandchild->path)
+                                                . '" title="' . $this->escape(stripslashes($grandchild->title)) . '">'
+                                                . Lang::txt('View HTML') . '</a>'
+                                            : '';
                                         break;
                                     case 'elink':
                                     case 'youtube':
@@ -316,7 +335,11 @@ if ($mode != 'preview') {
                                             ($alias == 'elink' || $alias == 'youtube')
                                             && $grandchild->get('logical_type') == 68
                                         ) {
-                                            $youtube .= (!$youtube) ? '<a class="youtube" href="' . $this->escape($grandchild->path) . '" title="' . $this->escape(stripslashes($grandchild->title)) . '">' . Lang::txt('View on YouTube') . '</a>' : '';
+                                            $youtube .= (!$youtube)
+                                                ? '<a class="youtube" href="' . $this->escape($grandchild->path)
+                                                    . '" title="' . $this->escape(stripslashes($grandchild->title))
+                                                    . '">' . Lang::txt('View on YouTube') . '</a>'
+                                                : '';
                                             break;
                                         }
                                         if ($grandchild->get('logical_type') == 14) {

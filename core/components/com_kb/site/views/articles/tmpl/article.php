@@ -102,7 +102,10 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                             </a>
                         </li>
                         <?php
-                        $filters = ['state' => Components\Kb\Models\Category::STATE_PUBLISHED, 'access' => User::getAuthorisedViewLevels()];
+                        $filters = [
+                            'state' => Components\Kb\Models\Category::STATE_PUBLISHED,
+                            'access' => User::getAuthorisedViewLevels(),
+                        ];
 
                         $categories = $this->archive->categories($filters);
 

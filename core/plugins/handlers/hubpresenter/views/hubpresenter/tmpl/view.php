@@ -367,7 +367,9 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     && file_exists($content_folder . DS . $slide->thumb)
                                 ) {
                                     $thumb = $content_folder . DS . $slide->thumb;
-                                } elseif (!is_array($slide->media) && file_exists($content_folder . DS . $slide->media)) {
+                                } elseif (
+                                    !is_array($slide->media) && file_exists($content_folder . DS . $slide->media)
+                                ) {
                                     $thumb = $content_folder . DS . $slide->media;
                                 }
                                 ?>

@@ -187,7 +187,10 @@ for ($d = 1; $d <= $lastDayOfMonth; $d++) {
     $content .= '   <td';
     $content .= ($class) ? ' class="' . $class . '">' : '>';
     if ($hasevents) {
-        $content .= '<a class="mod_events_daylink" rel="nofollow" href="' . Route::url('index.php?option=' . $this->option . '&year=' . $cal_year . '&month=' . $cal_month . '&day=' . $do) . '">' . $d . '</a>';
+        $content .= '<a class="mod_events_daylink" rel="nofollow" href="'
+            . Route::url(
+                'index.php?option=' . $this->option . '&year=' . $cal_year . '&month=' . $cal_month . '&day=' . $do,
+            ) . '">' . $d . '</a>';
     } else {
         $content .= $d;
     }

@@ -193,7 +193,16 @@ if ($label == 'none') {
                                                             // Same treatment as the DOI link above: reject a
                                                             // javascript:/vbscript:/data: target judged on a
                                                             // control-character-stripped probe, and escape the name.
-                                                            $slink = preg_match('/^(?:javascript|vbscript|data):/i', preg_replace('/[\x00-\x20]+/', '', (string) $s->get('link'))) ? '' : $s->get('link');
+                                                            $slink = preg_match(
+                                                                '/^(?:javascript|vbscript|data):/i',
+                                                                preg_replace(
+                                                                    '/[\x00-\x20]+/',
+                                                                    '',
+                                                                    (string) $s->get('link'),
+                                                                ),
+                                                            )
+                                                                ? ''
+                                                                : $s->get('link');
                                                             $final .= '<a rel="external" href="' . $this->escape($slink)
                                                                 . '">' . $this->escape($s->get('sponsor')) . '</a>, ';
                                                         }

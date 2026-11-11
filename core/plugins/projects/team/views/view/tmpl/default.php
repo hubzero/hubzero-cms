@@ -159,7 +159,8 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                                 . Lang::txt('PLG_PROJECTS_TEAM_AGO') . '</time>';
                         }
                         if ($owner->userid == $this->uid || ($owner->online && $owner->lastvisit > $timecheck)) {
-                            $lastvisit = '<span class="online">' . Lang::txt('PLG_PROJECTS_TEAM_ONLINE_NOW') . '</span>';
+                            $lastvisit = '<span class="online">' . Lang::txt('PLG_PROJECTS_TEAM_ONLINE_NOW')
+                                . '</span>';
                         }
                         echo $lastvisit;
                         ?>

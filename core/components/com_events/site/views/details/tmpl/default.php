@@ -73,7 +73,11 @@ $this
                     if ($this->page->alias == $p->alias) {
                         $html .= ' class="active"';
                     }
-                    $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&page=' . $p->alias) . '"><span>' . trim(stripslashes($p->title)) . '</span></a></li>' . "\n";
+                    $html .= '><a class="tab" href="'
+                        . Route::url(
+                            'index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&page='
+                                . $p->alias,
+                        ) . '"><span>' . trim(stripslashes($p->title)) . '</span></a></li>' . "\n";
                 }
             }
             if (
@@ -85,7 +89,10 @@ $this
                 if ($this->page->alias == 'register') {
                     $html .= ' class="active"';
                 }
-                $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&page=register') . '"><span>' . Lang::txt('EVENTS_REGISTER') . '</span></a></li>' . "\n";
+                $html .= '><a class="tab" href="'
+                    . Route::url(
+                        'index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&page=register',
+                    ) . '"><span>' . Lang::txt('EVENTS_REGISTER') . '</span></a></li>' . "\n";
             }
             $html .= '</ul>' . "\n";
             $html .= '<div class="clear"></div>' . "\n";

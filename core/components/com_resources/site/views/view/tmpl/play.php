@@ -91,13 +91,49 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
                 $url = 'https://www.youtube.com/embed/' . $video_id . '?wmode=transparent';
             }
         }
-        $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" allowfullscreen></iframe>';
+        $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="'
+            . $this->escape($url) . '" title="'
+            . htmlspecialchars(
+                stripslashes(
+                    isset($this->resource) && $this->resource->title
+                        ? $this->resource->title
+                        : $this->activechild->title,
+                ),
+                ENT_QUOTES,
+            ) . '" frameborder="0" allowfullscreen></iframe>';
     } elseif (stristr($parsed['host'], 'vimeo')) {
-        $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+        $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="'
+            . $this->escape($url) . '" title="'
+            . htmlspecialchars(
+                stripslashes(
+                    isset($this->resource) && $this->resource->title
+                        ? $this->resource->title
+                        : $this->activechild->title,
+                ),
+                ENT_QUOTES,
+            ) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
     } elseif (stristr($parsed['host'], 'blip')) {
-        $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+        $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="'
+            . $this->escape($url) . '" title="'
+            . htmlspecialchars(
+                stripslashes(
+                    isset($this->resource) && $this->resource->title
+                        ? $this->resource->title
+                        : $this->activechild->title,
+                ),
+                ENT_QUOTES,
+            ) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
     } else {
-        $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="' . $this->escape($url) . '" title="' . htmlspecialchars(stripslashes(isset($this->resource) && $this->resource->title ? $this->resource->title : $this->activechild->title), ENT_QUOTES) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+        $html .= '<iframe width="' . ($width ? $width : 640) . '" height="' . ($height ? $height : 360) . '" src="'
+            . $this->escape($url) . '" title="'
+            . htmlspecialchars(
+                stripslashes(
+                    isset($this->resource) && $this->resource->title
+                        ? $this->resource->title
+                        : $this->activechild->title,
+                ),
+                ENT_QUOTES,
+            ) . '" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
     }
 } elseif (is_file($source)) {
     if (strtolower($type) == 'swf') {

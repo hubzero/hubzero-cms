@@ -97,7 +97,10 @@ if (strlen($aboutText) == strlen(strip_tags($aboutText))) {
 }
 
 $complete = $curatorStatus->status == 1 && $required ? $curatorStatus->status : $complete;
-$updated = $curatorStatus->updated && (($curatorStatus->status == 3 && !$complete) || $curatorStatus->status == 1 || $curatorStatus->status == 0) ? true : false;
+$updated = $curatorStatus->updated
+    && (($curatorStatus->status == 3 && !$complete) || $curatorStatus->status == 1 || $curatorStatus->status == 0)
+    ? true
+    : false;
 
 $elementUrl = Route::url(
     $this->pub->link('editversion') . '&section=' . $this->master->block . '&step=' . $this->master->blockId
@@ -211,7 +214,10 @@ if ($coming) {
             <?php if ($curatorStatus->status == 3 && !$complete) { ?>
                 <p class="warning"><?php
                     echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_SKIPPED_ITEM');
-                    echo $curatorStatus->authornotice ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"' . $this->escape($curatorStatus->authornotice) . '"' : '';
+                    echo $curatorStatus->authornotice
+                        ? ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_REASON') . ':"'
+                            . $this->escape($curatorStatus->authornotice) . '"'
+                        : '';
                 ?></p>
             <?php } ?>
             <?php // Navigate to next element

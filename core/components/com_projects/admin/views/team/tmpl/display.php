@@ -27,7 +27,17 @@ if ($group) {
 $groupSynced = ($group && $this->project->get('sync_group'));
 
 Toolbar::title(Lang::txt('COM_PROJECTS') . ': ' . Lang::txt('COM_PROJECTS_TEAM'), 'projects');
-Toolbar::appendButton('Popup', 'new', 'COM_PROJECTS_TEAM_NEW', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&project=' . $this->filters['project']), 570, 170);
+Toolbar::appendButton(
+    'Popup',
+    'new',
+    'COM_PROJECTS_TEAM_NEW',
+    Route::url(
+        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&project='
+            . $this->filters['project'],
+    ),
+    570,
+    170,
+);
 Toolbar::spacer();
 Toolbar::deleteList('COM_PROJECTS_TEAM_DELETE', 'delete');
 Toolbar::spacer();
@@ -111,7 +121,13 @@ $this->css();
             }
 
             $disabled = false;
-            if ($row->native && (($groupSynced && in_array($row->userid, $members)) || ($this->managers_count == 1 && $row->role == 1))) {
+            if (
+                $row->native
+                && (
+                    ($groupSynced && in_array($row->userid, $members))
+                    || ($this->managers_count == 1 && $row->role == 1)
+                )
+            ) {
                 $disabled = true;
             }
             ?>

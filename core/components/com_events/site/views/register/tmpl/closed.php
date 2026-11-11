@@ -55,7 +55,10 @@ if ($this->pages) {
         if ($this->page->alias == $p->alias) {
             $html .= ' class="active"';
         }
-        $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id . '&page=' . $p->alias) . '"><span>' . $this->escape(trim(stripslashes($p->title))) . '</span></a></li>' . "\n";
+        $html .= '><a class="tab" href="'
+            . Route::url(
+                'index.php?option=' . $this->option . '&task=details&id=' . $this->event->id . '&page=' . $p->alias,
+            ) . '"><span>' . $this->escape(trim(stripslashes($p->title))) . '</span></a></li>' . "\n";
     }
 }
         $html .= "\t" . '<li';

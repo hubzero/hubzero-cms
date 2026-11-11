@@ -252,7 +252,16 @@ $this
                                         <span class="ticket-author">
                                             <?php
                                             echo $this->escape($row->get('name'));
-                                            echo ($row->submitter->get('id')) ? ' (<a href="' . Route::url('index.php?option=com_members&id=' . $row->submitter->get('id')) . '">' . $this->escape($row->get('login')) . '</a>)' : ($row->get('login') ? ' (' . $this->escape($row->get('login')) . ')' : '');
+                                            echo ($row->submitter->get('id'))
+                                                ? ' (<a href="'
+                                                    . Route::url(
+                                                        'index.php?option=com_members&id=' . $row->submitter->get('id'),
+                                                    ) . '">' . $this->escape($row->get('login')) . '</a>)'
+                                                : (
+                                                    $row->get('login')
+                                                        ? ' (' . $this->escape($row->get('login')) . ')'
+                                                        : ''
+                                                );
                                             ?>
                                         </span>
                                         <span class="ticket-datetime">

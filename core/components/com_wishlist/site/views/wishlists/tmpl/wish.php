@@ -46,7 +46,12 @@ if (
     && ($this->wish->get('admin') == 2 or $this->wish->get('admin') == 1)
     && $this->wish->get('status') == 0
 ) {
-    $assigned = '<a href="' . Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->get('category') . '&rid=' . $this->wishlist->get('referenceid') . '&wishid=' . $this->wish->get('id')) . '?filterby=' . urlencode($this->filters['filterby']) . '&sortby=' . urlencode($this->filters['sortby']) . '&tags=' . urlencode($this->filters['tag']) . '&action=editplan#plan">' . Lang::txt('unassigned') . '</a>';
+    $assigned = '<a href="'
+        . Route::url(
+            'index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->get('category') . '&rid='
+                . $this->wishlist->get('referenceid') . '&wishid=' . $this->wish->get('id'),
+        ) . '?filterby=' . urlencode($this->filters['filterby']) . '&sortby=' . urlencode($this->filters['sortby'])
+        . '&tags=' . urlencode($this->filters['tag']) . '&action=editplan#plan">' . Lang::txt('unassigned') . '</a>';
 }
 
     $this->wish->set('status', ($this->wish->get('accepted') == 1 && $this->wish->get('status') == 0 ? 6 : $this->wish->get('status')));

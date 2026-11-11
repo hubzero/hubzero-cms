@@ -67,7 +67,11 @@ $this
                     }
                     $shown++;
 
-                    $status = ($project->codeaccess == '@OPEN' ? Lang::txt('COM_TOOLS_OPEN_SOURCE') : Lang::txt('COM_TOOLS_CLOSED_SOURCE'));
+                    $status = (
+                        $project->codeaccess == '@OPEN'
+                            ? Lang::txt('COM_TOOLS_OPEN_SOURCE')
+                            : Lang::txt('COM_TOOLS_CLOSED_SOURCE')
+                    );
 
                     // Tool admins see the pipeline state of anything not marked published
                     $pipeline = '';

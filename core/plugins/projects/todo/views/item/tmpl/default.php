@@ -30,7 +30,11 @@ $overdue = $this->row->isOverdue();
 $oNote = $overdue ? ' (' . Lang::txt('PLG_PROJECTS_TODO_OVERDUE') . ')' : '';
 
 // Can it be deleted?
-$deletable = ($this->model->access('content') && ($this->model->access('manager') or $this->row->get('created_by') == $this->uid)) ? 1 : 0;
+$deletable = (
+    $this->model->access('content') && ($this->model->access('manager') or $this->row->get('created_by') == $this->uid)
+)
+    ? 1
+    : 0;
 
 // Due?
 $due = $this->row->due() ? $this->row->due('date') : Lang::txt('PLG_PROJECTS_TODO_NEVER');

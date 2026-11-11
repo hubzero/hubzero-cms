@@ -119,7 +119,11 @@ $this->js('verify.js', 'com_massmail');
                                 <th scope="row"><?php echo Lang::txt('COM_MASSMAIL_META_MODIFIED'); ?></th>
                                 <td><?php echo Date::of($row->get('modified'))->toLocal($fmt);
                                 if ($row->get('modified_by')) {
-                                    echo '<br /><span class="mm-meta-sub">' . Lang::txt('COM_MASSMAIL_META_BY', $this->escape(User::getInstance($row->get('modified_by'))->get('name'))) . '</span>';
+                                    echo '<br /><span class="mm-meta-sub">'
+                                        . Lang::txt(
+                                            'COM_MASSMAIL_META_BY',
+                                            $this->escape(User::getInstance($row->get('modified_by'))->get('name')),
+                                        ) . '</span>';
                                 } ?></td>
                             </tr>
                         <?php } ?>

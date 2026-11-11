@@ -81,9 +81,13 @@ $pa = new \Components\Publications\Tables\Author($database);
                 // sink below echoes it into the page. Escape at the source.
                 $description = '';
                 if ($item->get('abstract')) {
-                    $description = $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($item->get('abstract')), 300)) . "\n";
+                    $description = $this->escape(
+                        \Hubzero\Utility\Str::truncate(stripslashes($item->get('abstract')), 300),
+                    ) . "\n";
                 } elseif ($item->get('description')) {
-                    $description = $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($item->get('description')), 300)) . "\n";
+                    $description = $this->escape(
+                        \Hubzero\Utility\Str::truncate(stripslashes($item->get('description')), 300),
+                    ) . "\n";
                 }
 
                 $info = [];

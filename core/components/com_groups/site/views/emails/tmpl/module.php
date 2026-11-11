@@ -17,7 +17,8 @@ defined('_HZEXEC_') or die();
 //build urls
 $base      = rtrim(str_replace('administrator', '', Request::base()), DS);
 $groupLink = $base . DS . 'groups' . DS . $this->group->get('cn');
-$adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->group->get('cn') . '&controller=modules';
+$adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->group->get('cn')
+    . '&controller=modules';
 ?>
     <!-- Start Header -->
     <table class="tbl-header" width="100%" cellpadding="0" cellspacing="0" border="0">

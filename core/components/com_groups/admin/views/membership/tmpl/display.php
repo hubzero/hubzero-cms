@@ -21,7 +21,17 @@ $canDo = \Components\Groups\Helpers\Permissions::getActions('group');
 
 Toolbar::title(Lang::txt('COM_GROUPS'), 'groups.png');
 
-Toolbar::appendButton('Popup', 'new', 'COM_GROUPS_NEW', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid=' . $this->filters['gid']), 570, 170);
+Toolbar::appendButton(
+    'Popup',
+    'new',
+    'COM_GROUPS_NEW',
+    Route::url(
+        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=new&gid='
+            . $this->filters['gid'],
+    ),
+    570,
+    170,
+);
 
 Toolbar::appendButton(
     'Link',
@@ -81,7 +91,17 @@ switch ($this->filters['status']) {
             $canDo->get('core.edit') && \Hubzero\User\Group\Membership::supported()
             && \Hubzero\User\Group\Membership::enabled()
         ) {
-            Toolbar::appendButton('Popup', 'options', 'COM_GROUPS_MEMBER_TERM', Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=expiration&gid=' . $this->filters['gid']), 570, 300);
+            Toolbar::appendButton(
+                'Popup',
+                'options',
+                'COM_GROUPS_MEMBER_TERM',
+                Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                        . '&tmpl=component&task=expiration&gid=' . $this->filters['gid'],
+                ),
+                570,
+                300,
+            );
         }
         if ($canDo->get('core.delete')) {
             Toolbar::deleteList('COM_GROUPS_MEMBER_DELETE', 'delete');
@@ -255,7 +275,12 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                             //echo Lang::txt('COM_GROUPS_ROLES') . ': ';
                             $r = [];
                             foreach ($roles as $role) :
-                                $r[] = '<span class="role">' . $this->escape($role['name']) . ' <a href="' . Route::url('index.php?option=com_groups&controller=roles&task=unassign&gid=' . $this->filters['gid'] . '&id=' . $row->uidNumber . '&roleid=' . $role['id'] . '&return=' . $this->controller) . '" title="' . Lang::txt('COM_GROUPS_UNASSIGN_ROLE') . '">x</a></span>';
+                                $r[] = '<span class="role">' . $this->escape($role['name']) . ' <a href="'
+                                    . Route::url(
+                                        'index.php?option=com_groups&controller=roles&task=unassign&gid='
+                                            . $this->filters['gid'] . '&id=' . $row->uidNumber . '&roleid='
+                                            . $role['id'] . '&return=' . $this->controller,
+                                    ) . '" title="' . Lang::txt('COM_GROUPS_UNASSIGN_ROLE') . '">x</a></span>';
                             endforeach;
                             echo implode(', ', $r);
                             ?>

@@ -197,7 +197,20 @@ endif;
                             <label for="acgroup">
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_GROUP'); ?>:
                                 <?php
-                                $gc = Event::trigger('hubzero.onGetSingleEntryWithSelect', [['groups', 'problem[group_id]', 'acgroup', '', $this->escape($group), '', 'ticketowner']]);
+                                $gc = Event::trigger(
+                                    'hubzero.onGetSingleEntryWithSelect',
+                                    [
+                                        [
+                                            'groups',
+                                            'problem[group_id]',
+                                            'acgroup',
+                                            '',
+                                            $this->escape($group),
+                                            '',
+                                            'ticketowner',
+                                        ],
+                                    ],
+                                );
                                 if (count($gc) > 0) :
                                     echo $gc[0];
                                 else : ?>

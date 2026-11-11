@@ -95,15 +95,27 @@ $message .= "\t" . Lang::txt('Interests (Tags):') . ' ';
 
 $publicNew = strip_tags($this->group->get('public_desc', '[ Empty ]'));
 $message .= "\t" . Lang::txt('Public Description:') . ' ' . $publicNew;
-$message .= $wasText('public_desc', $this->group->get('public_desc'), isset($before['public_desc']) ? strip_tags($before['public_desc']) : null) . "\n\n";
+$message .= $wasText(
+    'public_desc',
+    $this->group->get('public_desc'),
+    isset($before['public_desc']) ? strip_tags($before['public_desc']) : null,
+) . "\n\n";
 
 $privateNew = strip_tags($this->group->get('private_desc', '[ Empty ]'));
 $message .= "\t" . Lang::txt('Private Description:') . ' ' . $privateNew;
-$message .= $wasText('private_desc', $this->group->get('private_desc'), isset($before['private_desc']) ? strip_tags($before['private_desc']) : null) . "\n\n";
+$message .= $wasText(
+    'private_desc',
+    $this->group->get('private_desc'),
+    isset($before['private_desc']) ? strip_tags($before['private_desc']) : null,
+) . "\n\n";
 
 $message .= "\t" . Lang::txt('Logo:') . ' '
     . ($this->group->get('logo') ? $base . DS . ltrim($this->group->getLogo(), DS) : '[ Not set ]');
-$message .= $wasText('logo', $this->group->get('logo'), isset($before['logo']) ? ($before['logo'] ? $before['logo'] : '[ Not set ]') : null) . "\n\n";
+$message .= $wasText(
+    'logo',
+    $this->group->get('logo'),
+    isset($before['logo']) ? ($before['logo'] ? $before['logo'] : '[ Not set ]') : null,
+) . "\n\n";
 
 $message .= "\t" . Lang::txt('Membership Settings/Join Policy:') . ' ';
     $policy = $joinPolicyLabel($this->group->get('join_policy'));
@@ -154,18 +166,32 @@ $message .= "\t" . Lang::txt('Access Permissions:') . "\n";
     if ($params->get('email_forum_comments')) {
         $autosub = $onOffLabel($this->group->get('discussion_email_autosubscribe'));
         $message .= "\t" . Lang::txt('Discussion Group Emails Autosubscribe:') . ' ' . $autosub;
-        $message .= $wasText('discussion_email_autosubscribe', $autosub, isset($before['discussion_email_autosubscribe']) ? $onOffLabel($before['discussion_email_autosubscribe']) : null) . "\n\n";
+        $message .= $wasText(
+            'discussion_email_autosubscribe',
+            $autosub,
+            isset($before['discussion_email_autosubscribe'])
+                ? $onOffLabel($before['discussion_email_autosubscribe'])
+                : null,
+        ) . "\n\n";
     }
 
     $message .= "\t" . Lang::txt('Page Comments:') . ' ';
     $pageComments = $pageCommentsLabel($gparams->get('page_comments'));
     $message .= $pageComments;
-    $message .= $wasText('page_comments', $pageComments, isset($before['page_comments']) ? $pageCommentsLabel($before['page_comments']) : null) . "\n";
+    $message .= $wasText(
+        'page_comments',
+        $pageComments,
+        isset($before['page_comments']) ? $pageCommentsLabel($before['page_comments']) : null,
+    ) . "\n";
 
     $message .= "\t" . Lang::txt('Page Author Details:') . ' ';
     $pageAuthor = $pageAuthorLabel($gparams->get('page_author'));
     $message .= $pageAuthor;
-    $message .= $wasText('page_author', $pageAuthor, isset($before['page_author']) ? $pageAuthorLabel($before['page_author']) : null) . "\n";
+    $message .= $wasText(
+        'page_author',
+        $pageAuthor,
+        isset($before['page_author']) ? $pageAuthorLabel($before['page_author']) : null,
+    ) . "\n";
 
     $message .= "\n\n";
     $message .= $base . '/' . $sef . "\n";

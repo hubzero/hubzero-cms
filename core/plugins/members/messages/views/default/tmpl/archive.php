@@ -130,7 +130,8 @@ $this
                         $subject_cls = "message-link";
                         $subject_cls .= ($row->whenseen && $row->whenseen != '0000-00-00 00:00:00') ? "" : " unread";
 
-                        $subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">" . $this->escape(stripslashes($subject));
+                        $subject  = "<a class=\"{$subject_cls}\" href=\"{$url}\">"
+                            . $this->escape(stripslashes($subject));
                         //$subject .= "<div class=\"preview\"><span>" . $preview . "</span></div>";
                         $subject .= "</a>";
 

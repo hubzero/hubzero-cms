@@ -40,7 +40,9 @@ if ($urls && (!empty($urls->urla) || !empty($urls->urlb) || !empty($urls->urlc))
                 $label = ($label) ? $label : $link;
 
                 // Reject dangerous URL schemes
-                if (preg_match('/^(?:javascript|vbscript|data):/i', preg_replace('/[\x00-\x20]+/', '', (string) $link))) {
+                if (
+                    preg_match('/^(?:javascript|vbscript|data):/i', preg_replace('/[\x00-\x20]+/', '', (string) $link))
+                ) {
                     $link = '';
                 }
 
