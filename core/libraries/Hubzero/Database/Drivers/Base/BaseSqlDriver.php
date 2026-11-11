@@ -1113,6 +1113,16 @@ abstract class BaseSqlDriver extends PdoDriver
     abstract public function getCharacterSet($table, $field = null);
 
     /**
+     * Gets database server version information
+     *
+     * getMajorVersion() and getFullVersion() read it, so every driver has one.
+     *
+     * @return  array  At least 'version', the full version string, and
+     *                 'driver_version', the version as x.y.z
+     */
+    abstract public function getServerInfo();
+
+    /**
      * Gets the auto-increment value for the given table
      *
      * @param   string  $table  The table for which to retrieve the auto-increment value
@@ -2812,6 +2822,10 @@ abstract class BaseSqlDriver extends PdoDriver
      */
     public function getDatabaseNames()
     {
+        if (!method_exists($this, 'getDatabaseList')) {
+            throw new \BadMethodCallException(static::class . ' cannot list the databases on its server.');
+        }
+
         return $this->getDatabaseList();
     }
 
