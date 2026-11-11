@@ -69,7 +69,10 @@ $this
                 <tr class="section-header">
                     <th scope="col"><?php echo $this->escape($display_header); ?></th>
                     <?php foreach ($this->notimethods as $notimethod) { ?>
-                        <th scope="col"><span class="<?php echo $notimethod; ?>iconed"><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_MSG_' . strtoupper($notimethod));?>
+                        <?php
+                        $xiconedText = Lang::txt('PLG_MEMBERS_MESSAGES_MSG_' . strtoupper($notimethod));
+                        ?>
+                        <th scope="col"><span class="<?php echo $notimethod; ?>iconed"><?= $xiconedText ?>
                         </span></th>
                     <?php } ?>
                 </tr>

@@ -19,7 +19,10 @@ defined('_HZEXEC_') or die();
 
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-        <link rel="stylesheet" type="text/css" media="screen" href="<?php echo Request::base(true); ?>/templates/<?php echo App::get('template')->template;?>/css/main.css" />
+        <?php
+        $linkUrl = Request::base(true) . '/templates/' . App::get('template')->template . '/css/main.css';
+        ?>
+        <link rel="stylesheet" type="text/css" media="screen" href="<?= $linkUrl ?>" />
 
         <script type="text/javascript" src="<?php echo Request::base(true); ?>/core/assets/js/jquery.js"></script>
     </head>
