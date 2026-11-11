@@ -12,6 +12,15 @@ use Hubzero\Facades\Date;
 
 /**
  * Whats New helper class for time periods
+ *
+ * Kept by __set() and read by __get(), set by process():
+ *
+ * @property  string  $startTime   The start of the period, as SQL
+ * @property  string  $endTime     The end of the period, as SQL
+ * @property  string  $cStartDate  The start of the period, as SQL
+ * @property  string  $dStartDate  The start date of the period
+ * @property  string  $cEndDate    The end of the period, as SQL
+ * @property  string  $dEndDate    The end date of the period
  */
 class Period
 {
