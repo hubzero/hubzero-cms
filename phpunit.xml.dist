@@ -30,6 +30,9 @@
         <testsuite name="Plugins">
             <directory suffix="Test.php">core/plugins/</directory>
         </testsuite>
+        <testsuite name="Migrations">
+            <directory suffix="Test.php">core/migrations/tests/</directory>
+        </testsuite>
     </testsuites>
     <php>
         <!--
