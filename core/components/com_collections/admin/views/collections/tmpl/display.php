@@ -166,6 +166,8 @@ $accessSelected = function ($value) use ($view) {
         $k = 0;
         $i = 0;
         foreach ($this->rows as $row) {
+            $alt = null;
+            $task = null;
             switch ($row->get('state')) {
                 case 1:
                     $class = 'publish';
@@ -184,6 +186,8 @@ $accessSelected = function ($value) use ($view) {
                     break;
             }
 
+            $color_access = null;
+            $task_access = null;
             switch ($row->get('access', 0)) {
                 case 0:
                     $color_access = 'public';

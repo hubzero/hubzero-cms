@@ -350,6 +350,10 @@ $searchPlaceholder = Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC');
                     <?php echo $this->escape($item->category->title); ?>
                 </td>
                 <td class="priority-3 order">
+                    <?php
+                    $nextMatch = null;
+                    $prevMatch = null;
+                    ?>
                     <?php if ($canChange) : ?>
                         <?php if ($saveOrder) : ?>
                             <?php if ($listDirn == 'asc') : ?>

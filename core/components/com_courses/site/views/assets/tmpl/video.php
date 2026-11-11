@@ -39,6 +39,8 @@ if (is_dir(PATH_APP . $path)) {
     $manifest  = (count($manifests) > 0) ? $manifests[0] : '';
 }
 
+$media_dir = null;
+$media_path = null;
 if (isset($manifest) && is_file($manifest)) {
     $media_path = $manifest;
     $media_dir  = dirname($manifest);

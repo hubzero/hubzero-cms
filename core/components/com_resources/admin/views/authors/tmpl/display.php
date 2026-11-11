@@ -123,6 +123,7 @@ if ($canDo->get('core.edit')) {
                 $scls = 'notmember';
             }
 
+            $authorName = null;
             if ($row->authorid > 0 && !$row->name) {
                 $u = User::getInstance($row->authorid);
                 $row->name = $u->get('name');

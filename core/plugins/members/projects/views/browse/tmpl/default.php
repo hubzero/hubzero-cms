@@ -47,6 +47,7 @@ $this->css();
     </ul>
 <?php } ?>
 
+<?php $memberId = null; ?>
 <?php if (User::get('id') == $this->user->get('id')) {
     $memberId = $this->user->get('id');
     $allUrl = Route::url(

@@ -230,6 +230,7 @@ $draftCompleteClass = $complete ? 'draft-complete' : 'draft-incomplete';
                                         <?php } ?>
                                     </span>
                                 
+                                <?php $missingItem = null; ?>
                                 <?php if (empty($dept) || empty($org) || empty($email)) { ?>
                                     <?php if (empty($dept) && empty($org) && empty($email)) {
                                         $missingItem = "affiliated department, affiliated organization and email "

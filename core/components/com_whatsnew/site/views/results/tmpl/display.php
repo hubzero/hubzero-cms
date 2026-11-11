@@ -145,6 +145,7 @@ foreach ($this->cats as $cat) {
                 $ci = $k + 1; // cats index offset by "all" at position 0
                 $amt = count($category);
 
+                $divid = null;
                 if ($amt > 0 && isset($this->cats[$ci])) {
                     $foundresults = true;
 

@@ -97,7 +97,9 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
         <input type="hidden" name="sync" id="sync" value="<?php echo $sync; ?>" />
         <input type="hidden" name="uid" id="uid" value="<?php echo $this->uid; ?>" />
         <input type="hidden" name="sharing" id="sharing" value="<?php echo $sharing; ?>" />
-        <?php if ($sharing && $this->model->access('content')) {
+        <?php
+        $lastsync = null;
+        if ($sharing && $this->model->access('content')) {
             foreach ($this->services as $service) {
                 $lastsync = $this->rSync->get('status') == 'complete' ? date("c") : $this->model->params->get($service
                 . '_sync', '');

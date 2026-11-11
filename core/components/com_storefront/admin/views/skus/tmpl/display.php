@@ -104,6 +104,9 @@ $k = 0;
 $i = 0;
 
 foreach ($this->rows as $row) {
+    $alt = null;
+    $class = null;
+    $task = null;
     switch ($row->sActive) {
         case 1:
             $class = 'publish';

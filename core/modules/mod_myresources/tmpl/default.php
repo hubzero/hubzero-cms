@@ -55,6 +55,7 @@ if (!$this->no_html) {
                     <?php
                     for ($i = 0; $i < count($this->contributions); $i++) {
                         // Determine css class
+                        $class = null;
                         switch ($this->contributions[$i]->published) {
                             case 1:
                                 $class = 'published';

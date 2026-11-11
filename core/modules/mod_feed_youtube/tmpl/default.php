@@ -93,6 +93,7 @@ if ($this->feed) {
             ?>
         <li>
             <?php
+            $thumb = null;
             if (!is_null($currItem->getLink())) {
                 // Get video id
                 $match = [];

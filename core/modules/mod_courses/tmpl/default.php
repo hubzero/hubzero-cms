@@ -35,6 +35,7 @@ Html::behavior('chart');
         $top = 0;
 
         $totals = '';
+    $c = null;
     if ($this->totals) {
         $c = [];
         foreach ($this->totals as $year => $data) {

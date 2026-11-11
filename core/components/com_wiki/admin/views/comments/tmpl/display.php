@@ -117,6 +117,7 @@ Html::behavior('tooltip');
                 $state2 = 0;
             }
 
+            $ctextTrunc = null;
             switch ($row->get('state')) {
                 case 2:
                     $calt1  = Lang::txt('JTRASHED');

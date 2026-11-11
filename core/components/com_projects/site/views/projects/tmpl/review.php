@@ -18,6 +18,7 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{ajax: mixed, filterby: mixed, model: mixed, params: mixed, reviewer: mixed} $this
  */
 
+$approved = null;
 if ($this->reviewer == 'sponsored') {
     $title = Lang::txt('COM_PROJECTS_REVIEW_PROJECT_SPS');
     $approved = $this->params->get('grant_approval') || $this->params->get('grant_status') == 1 ? 1 : 0;

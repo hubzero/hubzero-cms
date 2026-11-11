@@ -33,6 +33,7 @@ $nextstep = $this->step + 1;
 $task = ($nextstep == 5) ? 'preview' : 'start';
 $dev = ($this->version == 'dev') ? 1 : 0;
 
+$layout = null;
 if ($this->version == 'dev') {
     $v = ($this->status['version'] && $this->status['version'] != $this->status['currentversion'])
         ? $this->status['version']

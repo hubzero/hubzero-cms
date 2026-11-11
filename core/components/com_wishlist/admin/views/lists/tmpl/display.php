@@ -162,6 +162,8 @@ $sortCategory = Html::grid(
         $k = 0;
         $i = 0;
         foreach ($this->rows as $row) {
+            $alt = null;
+            $task = null;
             switch ($row->state) {
                 case 1:
                     $class = 'publish';

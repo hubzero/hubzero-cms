@@ -94,6 +94,8 @@ if ($this->rows->count() > 0) {
         }
 
         $name = Lang::txt('JANONYMOUS');
+        $wishBaseUrl = null;
+        $wishFilterParams = null;
         if (!$item->anonymous) {
             $name = '<a href="'
                 . Route::url('index.php?option=com_members&id=' . $item->proposed_by)

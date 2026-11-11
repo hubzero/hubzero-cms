@@ -156,6 +156,9 @@ $i = 0;
 $db = App::get('db');
 
 foreach ($this->rows as $row) {
+    $alt = null;
+    $class = null;
+    $task = null;
     switch ($row->pActive) {
         case 1:
             $class = 'publish';

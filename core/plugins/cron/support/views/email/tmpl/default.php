@@ -26,6 +26,7 @@ lowest priority, that need to be acted upon.
 ------------------------------------------
 
 <?php
+$msg = '';
 foreach ($this->severities as $severity => $tickets) {
     if (count($tickets) <= 0) {
         continue;
@@ -46,3 +47,4 @@ foreach ($this->severities as $severity => $tickets) {
             . "\n";
     }
 }
+echo $msg;

@@ -151,6 +151,9 @@ $stateSelected = function ($value) use ($view) {
         $k = 0;
         $i = 0;
         foreach ($this->rows as $row) {
+            $alt = null;
+            $cls = null;
+            $task = null;
             switch ($row->get('state')) {
                 case 2:
                     $task = 'open';

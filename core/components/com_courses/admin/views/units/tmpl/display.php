@@ -156,6 +156,7 @@ $stateSelected = function ($value) use ($view) {
             $assetgroups = $row->assetgroups()->total();
             $assets = $row->assets()->total();
 
+            $alt = null;
             switch ($row->get('state')) {
                 case 1:
                     $class = 'publish';

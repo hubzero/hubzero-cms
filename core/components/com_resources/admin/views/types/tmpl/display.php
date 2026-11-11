@@ -148,6 +148,7 @@ if ($canDo->get('core.delete')) {
         $k = 0;
         $i = 0;
         foreach ($this->rows as $row) {
+            $alt = null;
             if ($row->get('state') == 0) {
                 $alt  = Lang::txt('JUNPUBLISHED');
                 $task = 'publish';

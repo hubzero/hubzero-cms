@@ -132,6 +132,14 @@ if ($this->page->exists() && !$this->page->access('modify')) {
 <form action="<?php echo $this->page->link('save'); ?>"
     method="post"
     id="hubForm"<?php echo ($this->sub) ? ' class="full"' : ''; ?>>
+<?php
+$dropInstructions = null;
+$iframeSrc = null;
+$listAction = null;
+$macrosFileUrl = null;
+$macrosImageUrl = null;
+$uploadAction = null;
+?>
 <?php if (!$this->sub) { ?>
     <div class="explaination">
     <?php if ($this->page->exists() && $this->page->access('edit')) { ?>

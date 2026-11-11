@@ -99,6 +99,9 @@ $i = 0;
 foreach ($this->rows as $row) {
     //print_r($row); die;
 
+    $alt = null;
+    $class = null;
+    $task = null;
     switch ($row->cActive) {
         case 1:
             $class = 'publish';

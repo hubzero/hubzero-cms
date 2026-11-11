@@ -31,6 +31,8 @@ if (!$this->tags->count()) {
     $min_font_size = 1;
     $max_font_size = 1.8;
 
+$min_qty = null;
+$step = null;
 if ($this->config->get('show_sizes', 0) == 1) {
     $retarr = [];
     foreach ($tags as $tag) {
@@ -73,6 +75,7 @@ foreach ($this->tags as $tag) {
     }
 
 
+    $append = null;
     if ($this->config->get('show_sizes', 0) == 2) {
         $tagUrl = Route::url(
             $this->base

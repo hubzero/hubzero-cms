@@ -34,6 +34,7 @@ defined('_HZEXEC_') or die();
             </h1>
             <?php
             $offlineMsg = str_replace(' ', '', Config::get('offline_message'));
+            $langOfflineMsg = null;
             if (Config::get('display_offline_message', 1) == 1 && $offlineMsg != '') :
                 ?>
                 <p>

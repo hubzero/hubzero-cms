@@ -126,6 +126,9 @@ $sort = @$this->filters['sort'];
         $i = 0;
 
         foreach ($this->rows as $row) {
+            $alt = null;
+            $cls = null;
+            $task = null;
             if ($row->isPublished()) {
                 $alt  = Lang::txt('JPUBLISHED');
                 $cls  = 'publish';

@@ -96,6 +96,9 @@ $k = 0;
 $i = 0;
 
 foreach ($this->rows as $row) {
+    $alt = null;
+    $class = null;
+    $task = null;
     switch ($row->ogActive) {
         case 1:
             $class = 'publish';

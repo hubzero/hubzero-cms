@@ -47,6 +47,7 @@ $batch_download = $this->config->get("citation_batch_download", 1);
 $coins = $this->config->get("citation_coins", 1);
 
 //do we want to number li items
+$citations_label_class = null;
 if ($label == 'none') {
     $citations_label_class = 'no-label';
 } elseif ($label == 'number') {

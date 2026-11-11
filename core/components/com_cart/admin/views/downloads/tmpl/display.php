@@ -213,6 +213,7 @@ $this
         $i = 0;
 
         foreach ($this->rows as $row) {
+            $alt = null;
             switch ($row->dStatus) {
                 case 1:
                     $class = 'publish';

@@ -61,6 +61,7 @@ $nameText = $name;
 $online = false;
 
 // Is it not anonymous?
+$logId = null;
 if (!$this->activity->log->get('anonymous')) {
     // Get their full name
     $name = $this->escape(stripslashes($creator->get('name', Lang::txt('PLG_PROJECTS_ACTIVITY_UNKNOWN'))));

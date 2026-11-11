@@ -87,6 +87,7 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                 foreach ($rows as $row) {
                     $vCreatorName = $row->version->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')) ?? '';
                     $name = $this->escape(stripslashes($vCreatorName));
+                    $taskKey = null;
                     if (in_array($row->version->creator->get('access'), User::getAuthorisedViewLevels())) {
                         $name = '<a href="' . Route::url($row->version->creator->link()) . '">' . $name . '</a>';
                     }

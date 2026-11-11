@@ -37,6 +37,7 @@ $authorlist = '';
         <tbody>
             <?php
             foreach ($this->related as $line) {
+                $class = null;
                 if ($line->section == 'Topic') {
                     if ($line->group != '' && $line->scope != '') {
                         $sef = Route::url(

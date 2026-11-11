@@ -51,6 +51,7 @@ if ($this->show_tools && $tools) {
 
     $html .= '<ul class="expandedlist">' . "\n";
     for ($i = 0; $i < count($tools); $i++) {
+        $class = null;
         if ($i <= $this->limit_tools) {
             $class = $tools[$i]->published
                 ? 'published'
@@ -183,6 +184,7 @@ if (!$contributions) {
     for ($i = 0; $i < count($contributions); $i++) {
         if ($i < $this->limit_other) {
             // Determine css class
+            $class = null;
             switch ($contributions[$i]->published) {
                 case 1:
                     $class = 'published';

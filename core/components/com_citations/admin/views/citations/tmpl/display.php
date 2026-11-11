@@ -213,6 +213,8 @@ $formAction = Route::url(
             . '&controller=' . $this->controller;
         $token = Session::getFormToken();
         foreach ($this->rows as $row) {
+            $alt = null;
+            $pubUrl = null;
             if ($row->published == 1) :
                 $cls = 'publish';
                 $alt = Lang::txt('UNPUBLISH');

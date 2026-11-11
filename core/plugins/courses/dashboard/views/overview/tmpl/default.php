@@ -107,6 +107,8 @@ $base = $this->offering->link();
                     <ul class="dashboard-timeline">
                         <?php
                         foreach ($rows as $i => $row) {
+                            $obj = null;
+                            $url = null;
                             switch ($row->scope) {
                                 case 'unit':
                                     $obj = \Components\Courses\Models\Unit::getInstance($row->scope_id);

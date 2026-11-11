@@ -520,6 +520,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
             <div id="media" class="<?php echo $cls; ?>">
                 <?php if (strtolower($presentation->type) == 'video') : ?>
                     <video id="player" preload="auto" controls="controls" data-mediaid="<?php echo $rr->id; ?>">
+                        <?php $mp4 = null; ?>
                         <?php foreach ($presentation->media as $media) : ?>
                             <?php
                             switch ($media->type) {

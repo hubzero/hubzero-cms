@@ -78,6 +78,7 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
         }
 
         // what's the job status?
+        $status = null;
         if ($this->admin && !$this->emp && !$this->mini) {
             $status = '';
             $class =  '';

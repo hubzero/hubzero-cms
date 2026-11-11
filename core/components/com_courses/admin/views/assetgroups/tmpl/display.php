@@ -189,6 +189,7 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
 
             $assets = $row->assets()->total();
 
+            $alt = null;
             switch ($row->get('state')) {
                 case 1:
                     $class = 'publish';

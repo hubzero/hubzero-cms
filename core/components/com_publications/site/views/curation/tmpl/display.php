@@ -158,6 +158,7 @@ $this
                                     . Lang::txt('COM_PUBLICATIONS_CURATION_BY', $this->escape($submitter->name))
                                     . '</span>';
 
+                                $reviewed = null;
                                 if ($row->state == 7) {
                                     $reviewed = '';
 

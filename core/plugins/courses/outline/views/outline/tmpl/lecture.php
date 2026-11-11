@@ -83,6 +83,8 @@ if (
             <div class="video-player-wrap">
             <?php
             $used = 0;
+            $used_asset = null;
+            $used_title = null;
             if ($lecture->assets()->total()) {
                 // Render video
                 foreach ($lecture->assets() as $a) {

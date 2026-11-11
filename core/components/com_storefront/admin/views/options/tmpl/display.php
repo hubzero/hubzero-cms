@@ -113,6 +113,9 @@ $i = 0;
 foreach ($this->rows as $row) {
     //print_r($row); die;
     //$row =& $this->rows[$i];
+    $alt = null;
+    $class = null;
+    $task = null;
     switch ($row->oActive) {
         case 1:
             $class = 'publish';

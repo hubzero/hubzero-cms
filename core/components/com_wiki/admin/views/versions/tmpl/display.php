@@ -122,6 +122,10 @@ Toolbar::help('revisions');
         $k = 0;
         $i = 0;
         foreach ($this->rows as $row) {
+            $alt = null;
+            $class = null;
+            $color_access = null;
+            $revNum = null;
             switch ($row->get('approved')) {
                 case '2':
                     $color_access = 'trashed';

@@ -128,6 +128,7 @@ $assignment = $this->item->disableCaching()->purgeCache()->menuAssignment();
                 <ul class="menu-links">
                     <?php
                     foreach ($type->links as $link) :
+                        $checked = null;
                         if (trim($assignment) == '-') :
                             $checked = '';
                         elseif ($assignment == 0) :

@@ -32,6 +32,7 @@ if (!$this->tags->count()) {
     $min_font_size = 1;
     $max_font_size = 1.8;
 
+$min_qty = null;
 if ($this->config->get('show_sizes', 0) == 1) {
     $retarr = [];
     foreach ($tags as $tag) {
