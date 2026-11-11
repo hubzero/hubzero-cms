@@ -25,6 +25,10 @@ use Hubzero\Facades\Document;
 
 /**
  * Report items as abusive
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $_title  The page title, set by buildTitle()
  */
 class Abuse extends SiteController
 {

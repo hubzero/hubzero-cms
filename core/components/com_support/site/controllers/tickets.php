@@ -43,6 +43,11 @@ use Hubzero\Facades\Notify;
 
 /**
  * Manage support tickets
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  \Components\Support\Helpers\ACL  $acl     The user's support permissions, set by execute()
+ * @property  string                           $_title  The page title, set by buildTitle()
  */
 class Tickets extends SiteController
 {

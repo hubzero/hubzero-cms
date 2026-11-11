@@ -17,6 +17,11 @@ use Hubzero\Facades\User;
 
 /**
  * Support ticket model
+ *
+ * Not columns, read and set through __get() and __set():
+ *
+ * @property  \Components\Support\Helpers\ACL  $_acl      The user's permissions, cached by access()
+ * @property  \Hubzero\Database\Rows           $comments  The comments, through comments()
  */
 class Ticket extends Relational
 {
