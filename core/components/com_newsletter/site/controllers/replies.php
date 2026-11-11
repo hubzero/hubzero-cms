@@ -36,7 +36,7 @@ class Replies extends SiteController
             App::redirect('/');
         }
 
-        $userId = User::whereEquals('username', $username)->row()->get('id');
+        $userId = \Hubzero\User\User::whereEquals('username', $username)->row()->get('id');
 
         $reply = Reply::blank();
         $reply->set([
