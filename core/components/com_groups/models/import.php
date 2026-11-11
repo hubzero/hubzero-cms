@@ -29,6 +29,13 @@ class Import extends Base
     private $fields = null;
 
     /**
+     * Whether fieldMap() has added the custom fields yet
+     *
+     * @var  bool
+     */
+    private $mapped = false;
+
+    /**
      * Mapping key
      *
      * @var  array
@@ -323,6 +330,8 @@ class Import extends Base
                     preg_replace('/[^a-zA-Z0-9]/', '', $field->get('name')),
                 ];
             }
+
+            $this->mapped = true;
         }
 
         return $this->fieldMap;
