@@ -326,7 +326,8 @@ class Articles extends AdminController
             case '1':
                 $message = Lang::txt('COM_KB_ITEMS_PUBLISHED', count($ids));
                 break;
-            case '0':
+            default:
+                // Every task other than publish set the state to 0
                 $message = Lang::txt('COM_KB_ITEMS_UNPUBLISHED', count($ids));
                 break;
         }
