@@ -292,6 +292,18 @@ class Entity extends Obj
     }
 
     /**
+     * Grabs the entity extension
+     *
+     * File and Directory each have their own; an entity of neither kind has none.
+     *
+     * @return  string
+     **/
+    public function getExtension()
+    {
+        return '';
+    }
+
+    /**
      * Grabs the item name
      *
      * @return  string

@@ -26,6 +26,9 @@ use League\Flysystem\StorageAttributes;
  * classes expects the old names, bool returns and array metadata, so this
  * class wraps a League filesystem and translates both ways. The v3 names are
  * available too, for new code.
+ *
+ * @method bool fileExists(string $location)       Flysystem 3; throws on a storage error, unlike has()
+ * @method bool directoryExists(string $location)  Flysystem 3; throws on a storage error, unlike has()
  */
 class Flysystem
 {

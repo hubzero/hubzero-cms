@@ -59,7 +59,7 @@ class Directory extends Entity
 
     public function hasSubDirs()
     {
-        return count($this->subDirectories()) > 0;
+        return count($this->getSubDirs()) > 0;
     }
 
     /**
