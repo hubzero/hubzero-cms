@@ -40,15 +40,15 @@ $this
 <section class="main section noaside">
     <h3><?php echo $this->escape(stripslashes($this->event->title)); ?></h3>
     <?php
-        $html  = '<div id="sub-sub-menu">' . "\n";
-        $html .= '<ul>' . "\n";
-        $html .= "\t" . '<li';
+    $html  = '<div id="sub-sub-menu">' . "\n";
+    $html .= '<ul>' . "\n";
+    $html .= "\t" . '<li';
     if ($this->page->alias == '') {
         $html .= ' class="active"';
     }
-        $html .= '><a class="tab" href="'
-            . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id) . '"><span>'
-            . Lang::txt('EVENTS_OVERVIEW') . '</span></a></li>' . "\n";
+    $html .= '><a class="tab" href="'
+        . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id) . '"><span>'
+        . Lang::txt('EVENTS_OVERVIEW') . '</span></a></li>' . "\n";
     if ($this->pages) {
         foreach ($this->pages as $p) {
             $html .= "\t" . '<li';
@@ -61,15 +61,15 @@ $this
                 ) . '"><span>' . $this->escape(trim(stripslashes($p->title))) . '</span></a></li>' . "\n";
         }
     }
-        $html .= "\t" . '<li';
+    $html .= "\t" . '<li';
     if ($this->page->alias == 'register') {
         $html .= ' class="active"';
     }
-        $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id . '&page=register') . '"><span>' . Lang::txt('EVENTS_REGISTER') . '</span></a></li>' . "\n";
-        $html .= '</ul>' . "\n";
-        $html .= '<div class="clear"></div>' . "\n";
-        $html .= '</div>' . "\n";
-        echo $html;
+    $html .= '><a class="tab" href="' . Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->event->id . '&page=register') . '"><span>' . Lang::txt('EVENTS_REGISTER') . '</span></a></li>' . "\n";
+    $html .= '</ul>' . "\n";
+    $html .= '<div class="clear"></div>' . "\n";
+    $html .= '</div>' . "\n";
+    echo $html;
     ?>
 
     <?php if ($this->getError()) { ?>

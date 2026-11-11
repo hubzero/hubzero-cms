@@ -125,7 +125,7 @@ $panels = [
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
                     <?php
-                        echo $this->editor('description', $this->escape(stripslashes($this->model->get('description'))), '40', '10', 'pub_description');
+                    echo $this->editor('description', $this->escape(stripslashes($this->model->get('description'))), '40', '10', 'pub_description');
                     ?>
                 </div>
             </fieldset>
@@ -372,7 +372,7 @@ $panels = [
                 <div class="input-wrap">
                     <label for="publish_down"><?= Lang::txt('COM_PUBLICATIONS_FIELD_UNPUBLISH_DATE') ?>:</label><br />
                     <?php
-                        $down = 'Never';
+                    $down = 'Never';
                     if (strtolower($this->model->version->published_down == null ? '' : $this->model->version->published_down) != Lang::txt('COM_PUBLICATIONS_NEVER')) {
                         $down = $this->model->version->published_down && $this->model->version->published_down != '0000-00-00 00:00:00'
                             ? Date::of($this->model->version->published_down)->toLocal('Y-m-d H:i:s')

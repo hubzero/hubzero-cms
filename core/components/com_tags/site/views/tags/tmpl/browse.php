@@ -50,11 +50,11 @@ $this
                     <ul class="entries-menu sort-options">
                         <li>
                             <?php
-                                $filters = '&search=' . urlencode($this->filters['search']) . '&limit='
-                                    . Request::getInt('limit', 25) . '&limitstart=' . Request::getInt('limitstart', 0);
+                            $filters = '&search=' . urlencode($this->filters['search']) . '&limit='
+                                . Request::getInt('limit', 25) . '&limitstart=' . Request::getInt('limitstart', 0);
 
-                                $cls = ($this->filters['sort'] == 'total') ? 'active ' : '';
-                                $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=total&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
+                            $cls = ($this->filters['sort'] == 'total') ? 'active ' : '';
+                            $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=total&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
                             ?>
                             <a class="<?= $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down') ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
@@ -62,10 +62,10 @@ $this
                         </li>
                         <li>
                             <?php
-                                $cls = ($this->filters['sort'] == '' || $this->filters['sort'] == 'raw_tag')
-                                    ? 'active '
-                                    : '';
-                                $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=raw_tag&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
+                            $cls = ($this->filters['sort'] == '' || $this->filters['sort'] == 'raw_tag')
+                                ? 'active '
+                                : '';
+                            $url = Route::url('index.php?option=' . $this->option . '&task=browse&sort=raw_tag&sortdir=' . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc') . $filters);
                             ?>
                             <a class="<?= $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down') ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA'); ?>
@@ -170,17 +170,17 @@ $this
                     </tbody>
                 </table>
                 <?php
-                    // Initiate paging
-                    $pageNav = $this->pagination(
-                        $this->total,
-                        $this->filters['start'],
-                        $this->filters['limit'],
-                    );
-                    $pageNav->setAdditionalUrlParam('search', $this->filters['search']);
-                    $pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
-                    $pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
-                    echo $pageNav->render();
-                    ?>
+                // Initiate paging
+                $pageNav = $this->pagination(
+                    $this->total,
+                    $this->filters['start'],
+                    $this->filters['limit'],
+                );
+                $pageNav->setAdditionalUrlParam('search', $this->filters['search']);
+                $pageNav->setAdditionalUrlParam('sort', $this->filters['sort']);
+                $pageNav->setAdditionalUrlParam('sortdir', $this->filters['sort_Dir']);
+                echo $pageNav->render();
+                ?>
                 <div class="clearfix"></div>
                 <input type="hidden" name="sort" value="<?php echo $this->escape($this->filters['sort']); ?>" />
             </div><!-- / .container -->

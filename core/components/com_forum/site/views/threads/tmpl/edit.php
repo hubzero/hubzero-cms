@@ -187,7 +187,7 @@ if ($this->post->get('id')) {
                         <label for="actags">
                             <?php echo Lang::txt('COM_FORUM_FIELD_TAGS'); ?>:
                             <?php
-                                echo $this->autocompleter('tags', 'tags', $this->escape($this->post->tags('string')), 'actags');
+                            echo $this->autocompleter('tags', 'tags', $this->escape($this->post->tags('string')), 'actags');
                             ?>
                         </label>
                     </div>

@@ -78,7 +78,7 @@ $base = $this->offering->link() . '&active=pages';
                     <?= Lang::txt('PLG_COURSES_PAGES_FIELD_CONTENT') ?> <span
                         class="required"><?= Lang::txt('PLG_COURSES_PAGES_REQUIRED') ?></span>
                     <?php
-                        echo $this->editor('fields[content]', $this->escape($this->model->content('raw')), 35, 50, 'field_content');
+                    echo $this->editor('fields[content]', $this->escape($this->model->content('raw')), 35, 50, 'field_content');
                     ?>
                 </label>
 

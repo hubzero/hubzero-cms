@@ -16,11 +16,11 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
-    $cls = isset($this->cls) ? $this->cls : 'odd';
+$cls = isset($this->cls) ? $this->cls : 'odd';
 
-    $this->comment->set('option', $this->option);
-    $this->comment->set('item_id', $this->obj_id);
-    $this->comment->set('item_type', $this->obj_type);
+$this->comment->set('option', $this->option);
+$this->comment->set('item_id', $this->obj_id);
+$this->comment->set('item_type', $this->obj_type);
 
 if ($this->obj->get('created_by') == $this->comment->get('created_by')) {
     $cls .= ' author';
@@ -33,9 +33,9 @@ if ($mark = $this->params->get('onCommentMark')) {
     }
 }
 
-    $rtrn = $this->url ? $this->url : Request::getString('REQUEST_URI', 'index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments', 'server');
+$rtrn = $this->url ? $this->url : Request::getString('REQUEST_URI', 'index.php?option=' . $this->option . '&id=' . $this->obj_id . '&active=comments', 'server');
 
-    $this->comment->set('url', $rtrn);
+$this->comment->set('url', $rtrn);
 ?>
         <li class="comment <?php echo $cls; ?>" id="c<?php echo $this->comment->get('id'); ?>">
             <p class="comment-member-photo">

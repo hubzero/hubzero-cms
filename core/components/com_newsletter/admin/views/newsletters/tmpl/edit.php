@@ -151,8 +151,8 @@ if ($secondaries->count() > 0) {
                 </div>
 
                 <?php
-                    $link = $this->config->get('email_tracking_link', 'http://kb.mailchimp.com/article/how-open-tracking-works');
-                    $hint = Lang::txt('COM_NEWSLETTER_NEWSLETTER_WHAT_IS_TRACKING', $link);
+                $link = $this->config->get('email_tracking_link', 'http://kb.mailchimp.com/article/how-open-tracking-works');
+                $hint = Lang::txt('COM_NEWSLETTER_NEWSLETTER_WHAT_IS_TRACKING', $link);
                 ?>
                 <div class="input-wrap" data-hint="<?php echo $this->escape(strip_tags($hint)); ?>">
                     <label
@@ -233,10 +233,10 @@ if ($secondaries->count() > 0) {
                                 <th scope="row"><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_CREATED_BY'); ?>:</th>
                                 <td>
                                     <?php
-                                        $user = User::getInstance($this->newsletter->created_by);
-                                        echo (is_object($user) && $user->get('name') != '')
-                                            ? $user->get('name')
-                                            : 'Admin';
+                                    $user = User::getInstance($this->newsletter->created_by);
+                                    echo (is_object($user) && $user->get('name') != '')
+                                        ? $user->get('name')
+                                        : 'Admin';
                                     ?>
                                     <input type="hidden" name="newsletter[created_by]"
                                         value="<?= $this->newsletter->created_by ?>" />
@@ -260,10 +260,10 @@ if ($secondaries->count() > 0) {
                                 <th scope="row"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_LAST_MODIFIED_BY') ?>:</th>
                                 <td>
                                     <?php
-                                        $user = User::getInstance($this->newsletter->modified_by);
-                                        echo (is_object($user) && $user->get('name') != '')
-                                            ? $user->get('name')
-                                            : 'Admin';
+                                    $user = User::getInstance($this->newsletter->modified_by);
+                                    echo (is_object($user) && $user->get('name') != '')
+                                        ? $user->get('name')
+                                        : 'Admin';
                                     ?>
                                     <input type="hidden" name="newsletter[modified_by]"
                                         value="<?= $this->newsletter->modified_by ?>" />
@@ -274,7 +274,7 @@ if ($secondaries->count() > 0) {
                 </table>
 
                 <?php
-                    $params = new \Hubzero\Config\Registry($this->newsletter->params);
+                $params = new \Hubzero\Config\Registry($this->newsletter->params);
                 ?>
                 <fieldset class="adminform">
                     <legend><?php echo Lang::txt('COM_NEWSLETTER_NEWSLETTER_MAILING_DETAILS'); ?></legend>

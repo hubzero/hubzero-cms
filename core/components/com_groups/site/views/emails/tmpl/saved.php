@@ -226,7 +226,7 @@ $onOffLabel = function ($v) {
                                     align="right"><?php echo Lang::txt('Updated By:'); ?></th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left">
                                     <?php
-                                        echo $this->user->get('name') . ' (' . $this->user->get('email') . ')';
+                                    echo $this->user->get('name') . ' (' . $this->user->get('email') . ')';
                                     ?>
                                 </td>
                             </tr>
@@ -269,9 +269,9 @@ $onOffLabel = function ($v) {
                             <tr>
                                 <td style="text-align:left; padding: 1em; line-height:18px;" align="left">
                                     <?php
-                                        $new = $this->group->get('description');
-                                        echo $new;
-                                        echo $wasMarker('description', $new, isset($before['description']) ? $before['description'] : null);
+                                    $new = $this->group->get('description');
+                                    echo $new;
+                                    echo $wasMarker('description', $new, isset($before['description']) ? $before['description'] : null);
                                     ?>
                                 </td>
                             </tr>
@@ -287,8 +287,8 @@ $onOffLabel = function ($v) {
                             <tr>
                                 <td style="text-align:left; padding: 1em; line-height:18px;" align="left">
                                     <?php
-                                        $gt = new \Components\Groups\Models\Tags($this->group->get('gidNumber'));
-                                        $tags = $gt->render('string');
+                                    $gt = new \Components\Groups\Models\Tags($this->group->get('gidNumber'));
+                                    $tags = $gt->render('string');
                                     ?>
                                     <?php if ($tags) : ?>
                                         <?php echo $tags; ?>
@@ -524,10 +524,10 @@ $onOffLabel = function ($v) {
                             <tr>
                                 <td style="text-align:left; padding: 1em; line-height:18px;" align="left">
                                     <?php
-                                        $gparams = new \Hubzero\Config\Registry($this->group->get('params'));
-                                        $pageComments = $pageCommentsLabel($gparams->get('page_comments'));
-                                        echo $pageComments;
-                                        echo $wasMarker('page_comments', $pageComments, isset($before['page_comments']) ? $pageCommentsLabel($before['page_comments']) : null);
+                                    $gparams = new \Hubzero\Config\Registry($this->group->get('params'));
+                                    $pageComments = $pageCommentsLabel($gparams->get('page_comments'));
+                                    echo $pageComments;
+                                    echo $wasMarker('page_comments', $pageComments, isset($before['page_comments']) ? $pageCommentsLabel($before['page_comments']) : null);
                                     ?>
                                 </td>
                             </tr>
@@ -543,10 +543,10 @@ $onOffLabel = function ($v) {
                             <tr>
                                 <td style="text-align:left; padding: 1em; line-height:18px;" align="left">
                                     <?php
-                                        $gparams = new \Hubzero\Config\Registry($this->group->get('params'));
-                                        $pageAuthor = $pageAuthorLabel($gparams->get('page_author'));
-                                        echo $pageAuthor;
-                                        echo $wasMarker('page_author', $pageAuthor, isset($before['page_author']) ? $pageAuthorLabel($before['page_author']) : null);
+                                    $gparams = new \Hubzero\Config\Registry($this->group->get('params'));
+                                    $pageAuthor = $pageAuthorLabel($gparams->get('page_author'));
+                                    echo $pageAuthor;
+                                    echo $wasMarker('page_author', $pageAuthor, isset($before['page_author']) ? $pageAuthorLabel($before['page_author']) : null);
                                     ?>
                                 </td>
                             </tr>

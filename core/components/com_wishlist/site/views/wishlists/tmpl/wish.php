@@ -21,13 +21,13 @@ $this
      ->css('jquery.ui.css', 'system')
      ->js();
 
-    $error = $this->getError();
+$error = $this->getError();
 
-    // What name should we dispay for the submitter?
-    $user = $this->wish->proposer;
+// What name should we dispay for the submitter?
+$user = $this->wish->proposer;
 
-    $name = Lang::txt('JANONYMOUS');
-    $memberImage = '';
+$name = Lang::txt('JANONYMOUS');
+$memberImage = '';
 if (!$this->wish->get('anonymous')) {
     $name = $this->escape(stripslashes($this->wish->proposer->get('name', $name)));
     if (in_array($this->wish->proposer->get('access'), User::getAuthorisedViewLevels())) {
@@ -38,8 +38,8 @@ if (!$this->wish->get('anonymous')) {
     $memberImage = '<img src="' . $memberImage . '" alt="<' . Lang::txt('COM_WISHLIST_MEMBER_PICTURE') . '" />';
 }
 
-    // && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)
-    $assigned = ($this->wish->get('assigned')) ? Lang::txt('COM_WISHLIST_WISH_ASSIGNED_TO', '<a href="' . Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->get('category') . '&rid=' . $this->wishlist->get('referenceid') . '&wishid=' . $this->wish->get('id')) . '?filterby=' . urlencode($this->filters['filterby']) . '&sortby=' . urlencode($this->filters['sortby']) . '&tags=' . urlencode($this->filters['tag']) . '&action=editplan#plan">' . $this->escape(stripslashes($this->wish->assignee->get('name'))) . '</a>') : '';
+// && ($this->wish->get('admin')==2 or $this->wish->get('admin')==1)
+$assigned = ($this->wish->get('assigned')) ? Lang::txt('COM_WISHLIST_WISH_ASSIGNED_TO', '<a href="' . Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->get('category') . '&rid=' . $this->wishlist->get('referenceid') . '&wishid=' . $this->wish->get('id')) . '?filterby=' . urlencode($this->filters['filterby']) . '&sortby=' . urlencode($this->filters['sortby']) . '&tags=' . urlencode($this->filters['tag']) . '&action=editplan#plan">' . $this->escape(stripslashes($this->wish->assignee->get('name'))) . '</a>') : '';
 
 if (
     !$assigned
@@ -54,13 +54,13 @@ if (
         . '&tags=' . urlencode($this->filters['tag']) . '&action=editplan#plan">' . Lang::txt('unassigned') . '</a>';
 }
 
-    $this->wish->set('status', ($this->wish->get('accepted') == 1 && $this->wish->get('status') == 0 ? 6 : $this->wish->get('status')));
-    $due  = ($this->wish->get('due') && $this->wish->get('due') != '0000-00-00 00:00:00')
-        ? Date::of($this->wish->get('due'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
-        : '';
+$this->wish->set('status', ($this->wish->get('accepted') == 1 && $this->wish->get('status') == 0 ? 6 : $this->wish->get('status')));
+$due  = ($this->wish->get('due') && $this->wish->get('due') != '0000-00-00 00:00:00')
+    ? Date::of($this->wish->get('due'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+    : '';
 
-    $this->wish->set('positive', $this->wish->votes()->whereEquals('helpful', 'yes')->total());
-    $this->wish->set('negative', $this->wish->votes()->whereEquals('helpful', 'no')->total());
+$this->wish->set('positive', $this->wish->votes()->whereEquals('helpful', 'yes')->total());
+$this->wish->set('negative', $this->wish->votes()->whereEquals('helpful', 'no')->total());
 ?>
     <header id="content-header">
         <h2><?= $this->escape($this->title) . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . (int) $this->wish->get('id') ?></h2>
@@ -769,7 +769,7 @@ if (
         <div class="aside">
             <p>
                 <?php
-                    $link = Route::url($this->wish->link('comment'));
+                $link = Route::url($this->wish->link('comment'));
                 if (User::isGuest()) {
                     $link = Route::url('index.php?option=com_users&view=login&return=' . base64_encode($link));
                 }

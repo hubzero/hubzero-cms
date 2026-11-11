@@ -17,17 +17,17 @@ use Hubzero\Facades\User;
 // No direct access.
 defined('_HZEXEC_') or die();
 
-    $html = '';
+$html = '';
 
-    $source = $this->activechild->basepath() . '/' . $this->activechild->path;
-    $url = '/resources/' . $this->activechild->id . '/download/' . $this->activechild->relativeurl();
+$source = $this->activechild->basepath() . '/' . $this->activechild->path;
+$url = '/resources/' . $this->activechild->id . '/download/' . $this->activechild->relativeurl();
 
-    // Get some attributes
-    $attribs = new \Hubzero\Config\Registry($this->activechild->get('attribs'));
-    $width  = $attribs->get('width', '');
-    $height = $attribs->get('height', '');
+// Get some attributes
+$attribs = new \Hubzero\Config\Registry($this->activechild->get('attribs'));
+$width  = $attribs->get('width', '');
+$height = $attribs->get('height', '');
 
-    $attributes = $attribs->get('attributes', '');
+$attributes = $attribs->get('attributes', '');
 if ($attributes) {
     $a = explode(',', $attributes);
     $bits = [];
@@ -43,22 +43,22 @@ if ($attributes) {
     $attributes = implode(' ', $bits);
 }
 
-    $type = '';
-    $arr  = explode('.', $url);
-    $type = end($arr);
-    $type = (strlen($type) > 4) ? 'html' : $type;
-    $type = (strlen($type) > 3) ? substr($type, 0, 3) : $type;
+$type = '';
+$arr  = explode('.', $url);
+$type = end($arr);
+$type = (strlen($type) > 4) ? 'html' : $type;
+$type = (strlen($type) > 3) ? substr($type, 0, 3) : $type;
 
-    $width  = (intval($width) > 0) ? intval($width) : 0;
-    $height = (intval($height) > 0) ? intval($height) : 0;
+$width  = (intval($width) > 0) ? intval($width) : 0;
+$height = (intval($height) > 0) ? intval($height) : 0;
 
-    $videos = ['mp4'];
-    $audios = ['mp3'];
-    $images = ['png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp'];
-    $files  = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg'];
+$videos = ['mp4'];
+$audios = ['mp3'];
+$images = ['png', 'jpeg', 'jpe', 'jpg', 'gif', 'bmp'];
+$files  = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pages', 'ai', 'psd', 'tiff', 'dxf', 'eps', 'ps', 'ttf', 'xps', 'zip', 'rar', 'svg'];
 
-    $UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)"
-        . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
+$UrlPtn  = "(?:https?:|mailto:|ftp:|gopher:|news:|file:)"
+    . "(?:[^ |\\/\"\']*\\/)*[^ |\\t\\n\\/\"\']*[A-Za-z0-9\\/?=&~_]";
 
 if (preg_match("/$UrlPtn/", $this->activechild->path)) {
     $url = $this->activechild->path;
@@ -214,4 +214,4 @@ if (preg_match("/$UrlPtn/", $this->activechild->path)) {
     $html .= '<p class="error">' . Lang::txt('COM_RESOURCES_FILE_NOT_FOUND') . '</p>' . "\n";
 }
 
-    echo $html;
+echo $html;
