@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Html $this
+ */
+
 // Get browser info to set some classes
 $browser = new \Hubzero\Browser\Detector();
 $cls = [

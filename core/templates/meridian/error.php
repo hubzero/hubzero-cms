@@ -10,6 +10,12 @@ use Hubzero\Facades\User;
 // No Direct Access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Error $this
+ */
+
 // Get browser info to set some classes
 $browser = new \Hubzero\Browser\Detector();
 $cls = [
@@ -176,7 +182,7 @@ Lang::load('tpl_' . $this->template)
                                                 </a>
                                             </li>
                                         <?php } ?>
-                                        <?php if (false && $this->countModules('helppane')) : ?>
+                                        <?php if (false) : ?>
                                             <?php
                                             // set module REPORTPROBLEMS parameter to work with .helpme
                                             $supportUrl = Route::url('index.php?option=com_support');

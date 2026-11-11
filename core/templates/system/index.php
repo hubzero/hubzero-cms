@@ -8,4 +8,10 @@
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Html $this
+ */
+
 include __DIR__ . DIRECTORY_SEPARATOR . 'component.php';

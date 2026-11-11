@@ -9,6 +9,15 @@
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 
+// No direct access
+defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Error $this
+ */
+
 // Get browser info to set some classes
 $browser = new \Hubzero\Browser\Detector();
 $cls = [

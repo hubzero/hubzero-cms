@@ -10,6 +10,12 @@
 defined('_HZEXEC_') or die();
 
 /**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Html $this
+ */
+
+/**
  * The front page
  *
  * index.php hands the whole of main to this file on the front page, so what a

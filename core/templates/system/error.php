@@ -11,6 +11,12 @@ use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Error $this
+ */
+
 if (!isset($this->error)) {
     $this->error = new Exception(Lang::txt('JERROR_ALERTNOAUTHOR'), 404);
     $this->debug = false;

@@ -11,6 +11,12 @@ use Hubzero\Facades\User;
 // No Direct Access stuff, whatever, just keep it there
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Html $this
+ */
+
 // What the hub has chosen for this style in the admin. Both off by default:
 // a help pane needs a module in the position before it shows anything, and a
 // register link needs registration to be open.

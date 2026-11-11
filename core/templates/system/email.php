@@ -10,6 +10,12 @@ use Hubzero\Facades\Request;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Mail\Template $this
+ */
+
 if ($title = $this->getTitle()) {
     $this->setTitle(Config::get('sitename') . ' - ' . $title);
 }

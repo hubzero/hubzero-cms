@@ -9,21 +9,15 @@
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Route;
 
-defined('_HZEXEC_') or die;
-
 /**
- * What this template is given.
+ * What this template is given, and what the code that includes it sets.
  *
  * @var \Hubzero\Module\Module $this
- */
-
-/**
- * Set by the code that includes this file.
- *
  * @var mixed $list
  * @var mixed $params
  * @var mixed $startLevel
  */
+defined('_HZEXEC_') or die;
 
 foreach ($list as $item) : ?>
     <?php

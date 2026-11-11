@@ -13,6 +13,18 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die;
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     form: mixed,
+ *     item: mixed,
+ *     pageclass_sfx: mixed,
+ *     params: mixed,
+ *     return_page: mixed,
+ * } $this
+ */
+
 Html::behavior('keepalive');
 Html::behavior('tooltip');
 Html::behavior('calendar');

@@ -6,14 +6,13 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-// No direct access.
-defined('_HZEXEC_') or die();
-
 /**
  * What this template is given.
  *
  * @var \Hubzero\Component\View&object{active: mixed, sections: mixed} $this
  */
+// No direct access.
+defined('_HZEXEC_') or die();
 
 foreach ($this->sections as $section) {
     if (!$section['html']) {

@@ -11,6 +11,12 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Html $this
+ */
+
 // include frameworks
 Html::behavior('framework', true);
 Html::behavior('modal');

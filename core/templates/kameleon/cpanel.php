@@ -15,6 +15,12 @@ use Hubzero\Facades\Html;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Html $this
+ */
+
 // The control panel draws js/index.js, which is jQuery's growl plugin and uses
 // $ throughout. index.php asks for the framework and this file never did, so
 // the one admin page every administrator lands on after signing in was the one

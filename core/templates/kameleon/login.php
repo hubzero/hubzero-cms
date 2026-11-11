@@ -12,6 +12,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Html $this
+ */
+
 // Load base styles
 $this->addStyleSheet(
     $this->baseurl . '/templates/' . $this->template . '/css/login.css?v=' . filemtime(__DIR__ . '/css/login.css'),

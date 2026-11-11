@@ -13,6 +13,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Error $this
+ */
+
 Lang::load('tpl_' . $this->template)
 || Lang::load('tpl_' . $this->template, __DIR__);
 

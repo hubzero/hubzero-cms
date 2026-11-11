@@ -10,6 +10,12 @@ use Hubzero\Facades\Lang;
 
 // No direct access.
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Document\Type\Html $this
+ */
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo $this->language; ?>" dir="<?php echo $this->direction; ?>"

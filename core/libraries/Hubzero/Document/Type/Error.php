@@ -24,7 +24,7 @@ class Error extends Base
      *
      * @var  object
      */
-    protected $error;
+    public $error;
 
     /**
      * Base URL for the template
@@ -45,7 +45,7 @@ class Error extends Base
      *
      * @var  bool
      */
-    protected $debug = false;
+    public $debug = false;
 
     /**
      * Template file path
