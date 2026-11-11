@@ -133,11 +133,17 @@ $maxscore  = $this->filters['search'] && $this->jobs[0]->keywords > 0 ? $this->j
             <td>
                 <?php if ($this->jobs[$i]->applied) { ?>
                     <span class="alreadyapplied">
-                        <?= Lang::txt('COM_JOBS_JOB_APPLIED_ON') ?> <span class="datedisplay"><?= Date::of($this->jobs[$i]->applied)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y') ?></span>
+                        <?php
+                        $spanText = Date::of($this->jobs[$i]->applied)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y');
+                        ?>
+                        <?= Lang::txt('COM_JOBS_JOB_APPLIED_ON') ?> <span class="datedisplay"><?= $spanText ?></span>
                     </span>
                 <?php } elseif ($this->jobs[$i]->withdrawn) { ?>
                     <span class="withdrawn">
-                        <?= Lang::txt('COM_JOBS_JOB_WITHDREW_ON') ?> <span class="datedisplay"><?= Date::of($this->jobs[$i]->withdrawn)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y') ?></span>
+                        <?php
+                        $spanText = Date::of($this->jobs[$i]->withdrawn)->toLocal('d&\n\b\s\p;M&\n\b\s\p;y');
+                        ?>
+                        <?= Lang::txt('COM_JOBS_JOB_WITHDREW_ON') ?> <span class="datedisplay"><?= $spanText ?></span>
                     </span>
                 <?php } else { ?>
                     <?php echo $closedate ? '<span class="datedisplay">' . $closedate . '</span>' : ''; ?>

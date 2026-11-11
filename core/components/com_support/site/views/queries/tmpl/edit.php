@@ -165,8 +165,18 @@ if (!$tmpl && !$no_html) {
                             <td>
                                 <select name="fields[sort_dir]" id="field-sort_dir"
                                     aria-label="<?= Lang::txt('COM_SUPPORT_QUERY_SORT_DIRECTION') ?>">
-                                    <option value="DESC"<?= strtolower($this->row->sort_dir) == 'desc' ? ' selected="selected"' : '' ?>>desc</option>
-                                    <option value="ASC"<?= strtolower($this->row->sort_dir) == 'asc' ? ' selected="selected"' : '' ?>>asc</option>
+                                    <?php
+                                    $selectedAttr = strtolower($this->row->sort_dir) == 'desc'
+                                        ? ' selected="selected"'
+                                        : '';
+                                    ?>
+                                    <option value="DESC"<?= $selectedAttr ?>>desc</option>
+                                    <?php
+                                    $selectedAttr = strtolower($this->row->sort_dir) == 'asc'
+                                        ? ' selected="selected"'
+                                        : '';
+                                    ?>
+                                    <option value="ASC"<?= $selectedAttr ?>>asc</option>
                                 </select>
                             </td>
                         </tr>
@@ -290,8 +300,14 @@ if (!$tmpl && !$no_html) {
                 </select>
                 <select name="fields[sort_dir]" id="field-sort_dir-inline"
                     aria-label="<?= Lang::txt('COM_SUPPORT_QUERY_SORT_DIRECTION') ?>">
-                    <option value="DESC"<?= strtolower($this->row->sort_dir) == 'desc' ? ' selected="selected"' : '' ?>>desc</option>
-                    <option value="ASC"<?= strtolower($this->row->sort_dir) == 'asc' ? ' selected="selected"' : '' ?>>asc</option>
+                    <?php
+                    $selectedAttr = strtolower($this->row->sort_dir) == 'desc' ? ' selected="selected"' : '';
+                    ?>
+                    <option value="DESC"<?= $selectedAttr ?>>desc</option>
+                    <?php
+                    $selectedAttr = strtolower($this->row->sort_dir) == 'asc' ? ' selected="selected"' : '';
+                    ?>
+                    <option value="ASC"<?= $selectedAttr ?>>asc</option>
                 </select>
             </p>
         </fieldset>

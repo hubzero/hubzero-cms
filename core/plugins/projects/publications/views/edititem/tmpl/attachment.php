@@ -100,7 +100,10 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
                             $spanText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_DESCRIPTION'));
                             ?>
                             <span class="leftshift faded"><?= $spanText ?>:</span>
-                            <textarea name="description" class="long" rows="10" cols="60" maxlength="5000" placeholder="Enter up to 5000 characters..."><?= $this->escape($this->row->attribs) ?></textarea>
+                            <?php
+                            $fieldText = $this->escape($this->row->attribs);
+                            ?>
+                            <textarea name="description" class="long" rows="10" cols="60" maxlength="5000" placeholder="Enter up to 5000 characters..."><?= $fieldText ?></textarea>
                         </p>
                     <?php } else { ?>
                         <p class="c-wrapper">

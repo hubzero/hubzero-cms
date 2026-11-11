@@ -320,7 +320,10 @@ $categoryChecked = function ($value) use ($view) {
                         class="rankingform" id="rankForm">
                         <table class="wish-priority" id="priority">
                             <caption>
-                                <?= Lang::txt('COM_WISHLIST_PRIORITY') ?>: <strong><?= $this->wish->get('ranking') ?></strong>
+                                <?php
+                                $priorityText = Lang::txt('COM_WISHLIST_PRIORITY');
+                                ?>
+                                <?= $priorityText ?>: <strong><?= $this->wish->get('ranking') ?></strong>
                                 <?php
                                 $spanText = $this->wish->rankings()->total('count') . ' '
                                     . Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') . ' ' . $voters . ' '
@@ -643,7 +646,10 @@ $categoryChecked = function ($value) use ($view) {
                                     <label for="field-amount">
                                         <?php echo Lang::txt('COM_WISHLIST_ACTION_ADD'); ?>
                                         <span class="price"></span>
-                                        <input class="option form-control" type="text" maxlength="4" name="amount" id="field-amount" value=""<?= ($this->wish->get('funds') <= 0) ? ' disabled="disabled"' : '' ?> />
+                                        <?php
+                                        $disabledAttr = ($this->wish->get('funds') <= 0) ? ' disabled="disabled"' : '';
+                                        ?>
+                                        <input class="option form-control" type="text" maxlength="4" name="amount" id="field-amount" value=""<?= $disabledAttr ?> />
                                         <span>
                                             (<?= Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') ?> <?= $this->wish->get('funds') ?> <?= Lang::txt('COM_WISHLIST_NOTICE_POINTS_AVAILABLE') ?>
                                             <?php
@@ -841,7 +847,10 @@ $categoryChecked = function ($value) use ($view) {
                 } else {
                     ?>
                 <p>
-                    <?= Lang::txt('COM_WISHLIST_NO_COMMENTS') ?> <a href="<?= Route::url($this->wish->link('comment')) ?>"><?= Lang::txt('COM_WISHLIST_MAKE_A_COMMENT') ?></a>.
+                    <?php
+                    $linkText = Lang::txt('COM_WISHLIST_MAKE_A_COMMENT');
+                    ?>
+                    <?= Lang::txt('COM_WISHLIST_NO_COMMENTS') ?> <a href="<?= Route::url($this->wish->link('comment')) ?>"><?= $linkText ?></a>.
                 </p>
                     <?php
                 }

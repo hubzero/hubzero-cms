@@ -292,19 +292,41 @@ $registerUrl = Route::url(
                     <legend><?= Lang::txt('Highest academic degree earned:') ?> <span
                         class="optional">Optional</span></legend>
                         <label>
-                            <input type="radio" class="option" name="register[degree]" value="Bachelors" <?= (isset($this->register['degree']) && $this->register['degree'] == 'Bachelors') ? 'checked="checked"' : '' ?> />
+                            <?php
+                            $checkedAttr = (
+                                isset($this->register['degree']) && $this->register['degree'] == 'Bachelors'
+                            )
+                                ? 'checked="checked"'
+                                : '';
+                            ?>
+                            <input type="radio" class="option" name="register[degree]" value="Bachelors" <?= $checkedAttr ?> />
                             <?php echo Lang::txt('Bachelors degree'); ?>
                         </label>
                         <label>
-                            <input type="radio" class="option" name="register[degree]" value="Masters" <?= (isset($this->register['degree']) && $this->register['degree'] == 'Masters') ? 'checked="checked"' : '' ?> />
+                            <?php
+                            $checkedAttr = (isset($this->register['degree']) && $this->register['degree'] == 'Masters')
+                                ? 'checked="checked"'
+                                : '';
+                            ?>
+                            <input type="radio" class="option" name="register[degree]" value="Masters" <?= $checkedAttr ?> />
                             <?php echo Lang::txt('Masters degree'); ?>
                         </label>
                         <label>
-                            <input type="radio" class="option" name="register[degree]" value="Doctoral" <?= (isset($this->register['degree']) && $this->register['degree'] == 'Doctoral') ? 'checked="checked"' : '' ?> />
+                            <?php
+                            $checkedAttr = (isset($this->register['degree']) && $this->register['degree'] == 'Doctoral')
+                                ? 'checked="checked"'
+                                : '';
+                            ?>
+                            <input type="radio" class="option" name="register[degree]" value="Doctoral" <?= $checkedAttr ?> />
                             <?php echo Lang::txt('Doctoral degree'); ?>
                         </label>
                         <label>
-                            <input type="radio" class="option" name="register[degree]" value="Other" <?= (isset($this->register['degree']) && $this->register['degree'] == 'Other') ? 'checked="checked"' : '' ?> />
+                            <?php
+                            $checkedAttr = (isset($this->register['degree']) && $this->register['degree'] == 'Other')
+                                ? 'checked="checked"'
+                                : '';
+                            ?>
+                            <input type="radio" class="option" name="register[degree]" value="Other" <?= $checkedAttr ?> />
                             <?php echo Lang::txt('None of the above'); ?>
                         </label>
                 </fieldset>
@@ -314,15 +336,30 @@ $registerUrl = Route::url(
                 <fieldset>
                     <legend><?php echo Lang::txt('Gender:'); ?> <span class="optional">Optional</span></legend>
                     <label>
-                        <input type="radio" name="register[sex]" value="Male" class="option" <?= (isset($this->register['sex']) && $this->register['sex'] == 'Male') ? 'checked="checked"' : '' ?> />
+                        <?php
+                        $checkedAttr = (isset($this->register['sex']) && $this->register['sex'] == 'Male')
+                            ? 'checked="checked"'
+                            : '';
+                        ?>
+                        <input type="radio" name="register[sex]" value="Male" class="option" <?= $checkedAttr ?> />
                         <?php echo Lang::txt('Male'); ?>
                     </label>
                     <label>
-                        <input type="radio" name="register[sex]" value="Female" class="option" <?= (isset($this->register['sex']) && $this->register['sex'] == 'Female') ? 'checked="checked"' : '' ?> />
+                        <?php
+                        $checkedAttr = (isset($this->register['sex']) && $this->register['sex'] == 'Female')
+                            ? 'checked="checked"'
+                            : '';
+                        ?>
+                        <input type="radio" name="register[sex]" value="Female" class="option" <?= $checkedAttr ?> />
                         <?php echo Lang::txt('Female'); ?>
                     </label>
                     <label>
-                        <input type="radio" name="register[sex]" value="Refused" class="option" <?= (isset($this->register['sex']) && $this->register['sex'] == 'Refused') ? 'checked="checked"' : '' ?> />
+                        <?php
+                        $checkedAttr = (isset($this->register['sex']) && $this->register['sex'] == 'Refused')
+                            ? 'checked="checked"'
+                            : '';
+                        ?>
+                        <input type="radio" name="register[sex]" value="Refused" class="option" <?= $checkedAttr ?> />
                         <?php echo Lang::txt('Do not wish to reveal'); ?>
                     </label>
                 </fieldset>
@@ -420,7 +457,12 @@ $registerUrl = Route::url(
 
             <?php if ($this->params->get('show_dietary')) : ?>
                 <label>
-                    <input type="checkbox" class="option" name="dietary[needs]" value="yes" <?= isset($this->dietary['needs']) && $this->dietary['needs'] == 'yes' ? 'checked="checked"' : '' ?> />
+                    <?php
+                    $checkedAttr = isset($this->dietary['needs']) && $this->dietary['needs'] == 'yes'
+                        ? 'checked="checked"'
+                        : '';
+                    ?>
+                    <input type="checkbox" class="option" name="dietary[needs]" value="yes" <?= $checkedAttr ?> />
                     <?php echo Lang::txt('I have specific dietary needs.'); ?>
                 </label>
                 <label class="indent"><?php echo Lang::txt('Please specify'); ?>
@@ -453,7 +495,10 @@ $registerUrl = Route::url(
                     echo stripslashes($this->params->get('abstract_text'));
                 }
                 ?>
-                <textarea name="register[abstract]" rows="16" cols="32"><?= (isset($this->register['abstract'])) ? $this->escape($this->register['abstract']) : '' ?></textarea>
+                <?php
+                $fieldText = (isset($this->register['abstract'])) ? $this->escape($this->register['abstract']) : '';
+                ?>
+                <textarea name="register[abstract]" rows="16" cols="32"><?= $fieldText ?></textarea>
             </label>
         </fieldset>
     <?php endif; ?>
@@ -463,7 +508,10 @@ $registerUrl = Route::url(
             <legend><?php echo Lang::txt('Comments'); ?></legend>
             <label>
                 <?php echo Lang::txt('Please use the space below to provide any additional comments:'); ?>
-                <textarea name="register[comment]" rows="4" cols="32"><?= (isset($this->register['comment'])) ? $this->escape($this->register['comment']) : '' ?></textarea>
+                <?php
+                $fieldText = (isset($this->register['comment'])) ? $this->escape($this->register['comment']) : '';
+                ?>
+                <textarea name="register[comment]" rows="4" cols="32"><?= $fieldText ?></textarea>
             </label>
         </fieldset>
     <?php endif; ?>

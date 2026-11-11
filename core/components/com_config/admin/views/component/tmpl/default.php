@@ -70,7 +70,10 @@ if (document.body && document.body.id === 'component-body') {
             <div class="configuration-options">
                 <button type="button" id="btn-apply"><?php echo Lang::txt('JAPPLY');?></button>
                 <button type="button" id="btn-save"><?php echo Lang::txt('JSAVE');?></button>
-                <button type="button" id="btn-cancel"<?= Request::getBool('refresh', 0) ? ' data-refresh="1"' : '' ?>><?= Lang::txt('JCANCEL') ?></button>
+                <?php
+                $dataRefreshAttr = Request::getBool('refresh', 0) ? ' data-refresh="1"' : '';
+                ?>
+                <button type="button" id="btn-cancel"<?= $dataRefreshAttr ?>><?= Lang::txt('JCANCEL') ?></button>
             </div>
 
             <?php echo Lang::txt($this->component->option . '_configuration'); ?>

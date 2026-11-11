@@ -58,7 +58,10 @@ if (count($this->folders) > 0) { ?>
                         );
                         ?>
                         <a class="aquery" href="<?= $displayUrl ?>">
-                            <?= $this->escape(stripslashes($query->title)) ?> <span><?= Components\Support\Models\Ticket::countWithQuery($query, []) ?></span>
+                            <?php
+                            $spanText = Components\Support\Models\Ticket::countWithQuery($query, []);
+                            ?>
+                            <?= $this->escape(stripslashes($query->title)) ?> <span><?= $spanText ?></span>
                         </a>
                         <span class="query-options">
                             <?php

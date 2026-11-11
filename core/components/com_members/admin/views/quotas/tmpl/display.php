@@ -89,7 +89,12 @@ $classAliasSelected = function ($value) use ($view) {
                         <?= Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS') ?>
                     </option>
                     <?php foreach ($this->classes as $class) : ?>
-                        <option value="<?= $this->escape($class->get('alias')) ?>"<?= $classAliasSelected($class->get('alias')) ?>><?= $this->escape($class->get('alias')) ?></option>
+                        <?php
+                        $fieldValue = $this->escape($class->get('alias'));
+                        $selectedAttr = $classAliasSelected($class->get('alias'));
+                        $optionText = $this->escape($class->get('alias'));
+                        ?>
+                        <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

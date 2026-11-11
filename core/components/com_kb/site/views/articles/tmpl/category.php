@@ -78,8 +78,11 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                         <li>
                             <?php
                             $linkUrl = Route::url($this->category->link() . '&sort=popularity' . $carry);
+                            $attributes = ($this->filters['sort'] == 'popularity')
+                                ? ' class="active" aria-current="page"'
+                                : '';
                             ?>
-                            <a<?= ($this->filters['sort'] == 'popularity') ? ' class="active" aria-current="page"' : '' ?> href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_KB_SORT_BY_POPULAR') ?>">
+                            <a<?= $attributes ?> href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_KB_SORT_BY_POPULAR') ?>">
                                 <?php echo Lang::txt('COM_KB_SORT_POPULAR'); ?>
                             </a>
                         </li>

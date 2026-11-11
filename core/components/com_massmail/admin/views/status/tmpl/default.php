@@ -105,7 +105,10 @@ $this->js('status.js', 'com_massmail');
         $spanText = Lang::txt('COM_MASSMAIL_DASH_HOURLY_LIMIT');
         ?>
         <span><?= $spanText ?>: <strong><?= number_format($this->hourly) ?>/hr</strong></span>
-        <span><?= Lang::txt('COM_MASSMAIL_DASH_PER_RUN') ?>: <strong><?= number_format($this->perRun) ?></strong> <span class="mm-muted"><?= Lang::txt('COM_MASSMAIL_DASH_PER_RUN_HINT', number_format($this->ticksPerHour)) ?></span></span>
+        <?php
+        $runHintText = Lang::txt('COM_MASSMAIL_DASH_PER_RUN_HINT', number_format($this->ticksPerHour));
+        ?>
+        <span><?= Lang::txt('COM_MASSMAIL_DASH_PER_RUN') ?>: <strong><?= number_format($this->perRun) ?></strong> <span class="mm-muted"><?= $runHintText ?></span></span>
         <?php
         $spanText = Lang::txt('COM_MASSMAIL_DASH_SENT_LAST_HOUR');
         ?>

@@ -305,7 +305,10 @@ $groupDefs = $groups->getAllGroups();
             </p>
             <p>
                 After reaching the end of this list: <br />
-                <input type="radio" name="repeat-type" value="0" <?= $repeatType !== 1 ? 'checked="checked" ' : '' ?>/> repeat prompting indefinitely using the last delay listed between attempts<br />
+                <?php
+                $checkedAttr = $repeatType !== 1 ? 'checked="checked" ' : '';
+                ?>
+                <input type="radio" name="repeat-type" value="0" <?= $checkedAttr ?>/> repeat prompting indefinitely using the last delay listed between attempts<br />
                 <input type="radio" name="repeat-type"
                     value="1" <?= $repeatType === 1 ? 'checked="checked" ' : '' ?>/> stop prompting
             </p>

@@ -81,14 +81,20 @@ if (!$no_html) { ?>
         <?php if ($this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
             <span class="vote-button <?= ($this->item->get('negative', 0) > 0 ? 'dislike' : 'neutral') . $cls ?>"
                 title="<?= $dislike_title ?>">
-                <?= $this->item->get('negative', 0) ?><span> <?= Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE') ?></span>
+                <?php
+                $spanText = Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE');
+                ?>
+                <?= $this->item->get('negative', 0) ?><span> <?= $spanText ?></span>
             </span>
         <?php } else { ?>
             <button type="submit" form="hz-post-action"
                 formaction="<?= Route::url($this->url . 'action=commentvote&votedown=' . $this->item->get('id')) ?>"
                 class="vote-button <?= ($this->item->get('negative', 0) > 0 ? 'dislike' : 'neutral') . $cls ?>"
                 title="<?= $dislike_title ?>">
-                <?= $this->item->get('negative', 0) ?><span> <?= Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE') ?></span>
+                <?php
+                $spanText = Lang::txt('PLG_HUBZERO_COMMENTS_VOTE_DISLIKE');
+                ?>
+                <?= $this->item->get('negative', 0) ?><span> <?= $spanText ?></span>
             </button>
         <?php } ?>
     </span>

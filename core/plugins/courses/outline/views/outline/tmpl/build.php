@@ -133,8 +133,14 @@ endforeach;
                                 <div class="label-input-pair">
                                     <label for="state">Published:</label>
                                     <select name="state">
-                                        <option value="0"<?php echo ($agt->get('state') == '0') ? ' selected="selected"' : '' ?>>No</option>
-                                        <option value="1"<?php echo ($agt->get('state') == '1') ? ' selected="selected"' : '' ?>>Yes</option>
+                                        <?php
+                                        $selectedAttr = ($agt->get('state') == '0') ? ' selected="selected"' : '';
+                                        ?>
+                                        <option value="0"<?= $selectedAttr ?>>No</option>
+                                        <?php
+                                        $selectedAttr = ($agt->get('state') == '1') ? ' selected="selected"' : '';
+                                        ?>
+                                        <option value="1"<?= $selectedAttr ?>>Yes</option>
                                     </select>
                                 </div>
                                 <div class="label-input-pair">

@@ -222,7 +222,16 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                         <div class="form-group">
                             <label for="userlogin" <?= !empty($this->xregistration->invalid['login']) ? 'class="fieldWithErrors"' : '' ?>>
                                 <?= Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN') ?> <?= $this->registrationUsername == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
-                                <input name="login" id="userlogin" class="form-control" type="text" maxlength="32" value="<?= $this->escape($this->registration['login']) ?>"<?= ($this->registrationUsername == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= !empty($this->xregistration->invalid['login']) ? ' aria-invalid="true"' : '' ?> aria-describedby="usernameHint" />
+                                <?php
+                                $fieldValue = $this->escape($this->registration['login']);
+                                $ariaRequiredAttr = ($this->registrationUsername == Field::STATE_REQUIRED)
+                                    ? ' required aria-required="true"'
+                                    : '';
+                                $ariaInvalidAttr = !empty($this->xregistration->invalid['login'])
+                                    ? ' aria-invalid="true"'
+                                    : '';
+                                ?>
+                                <input name="login" id="userlogin" class="form-control" type="text" maxlength="32" value="<?= $fieldValue ?>"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> aria-describedby="usernameHint" />
                                 <p class="hint"
                                     id="usernameHint"><?= Lang::txt('COM_MEMBERS_REGISTER_USERNAME_HINT') ?></p>
                                 <?= !empty($this->xregistration->invalid['login'])
@@ -241,7 +250,15 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                                 ? ' class="fieldWithErrors"'
                                                 : ''; ?>>
                                         <?= Lang::txt('COM_MEMBERS_REGISTER_PASSWORD') ?> <?= $this->registrationPassword == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
-                                        <input name="password" id="password" class="form-control" type="password" value="<?= $this->escape($this->registration['password']) ?>" autocomplete="off"<?= ($this->registrationPassword == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= !empty($this->xregistration->invalid['password']) ? ' aria-invalid="true"' : '' ?> aria-describedby="passrules" />
+                                        <?php
+                                        $ariaRequiredAttr = ($this->registrationPassword == Field::STATE_REQUIRED)
+                                            ? ' required aria-required="true"'
+                                            : '';
+                                        $ariaInvalidAttr = !empty($this->xregistration->invalid['password'])
+                                            ? ' aria-invalid="true"'
+                                            : '';
+                                        ?>
+                                        <input name="password" id="password" class="form-control" type="password" value="<?= $this->escape($this->registration['password']) ?>" autocomplete="off"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> aria-describedby="passrules" />
                                         <?php echo !empty($this->xregistration->invalid['password']) && !is_array($this->xregistration->invalid['password'])
                                                     ? '<span class="error" role="alert">'
                                                         . $this->xregistration->invalid['password'] . '</span>'
@@ -252,9 +269,24 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                             <?php if ($this->registrationConfirmPassword != Field::STATE_HIDDEN) { ?>
                                 <div class="col span6 omega">
                                     <div class="form-group">
-                                        <label for="password2"<?= !empty($this->xregistration->invalid['confirmPassword']) ? ' class="fieldWithErrors"' : '' ?>>
+                                        <?php
+                                        $classAttr = !empty($this->xregistration->invalid['confirmPassword'])
+                                            ? ' class="fieldWithErrors"'
+                                            : '';
+                                        ?>
+                                        <label for="password2"<?= $classAttr ?>>
                                             <?= Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_PASSWORD') ?> <?= $this->registrationConfirmPassword == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
-                                            <input name="password2" class="form-control" id="password2" type="password" value="<?= $this->escape($this->registration['confirmPassword']) ?>" autocomplete="off"<?= ($this->registrationConfirmPassword == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= !empty($this->xregistration->invalid['confirmPassword']) ? ' aria-invalid="true"' : '' ?> />
+                                            <?php
+                                            $ariaRequiredAttr = (
+                                                $this->registrationConfirmPassword == Field::STATE_REQUIRED
+                                            )
+                                                ? ' required aria-required="true"'
+                                                : '';
+                                            $ariaInvalidAttr = !empty($this->xregistration->invalid['confirmPassword'])
+                                                ? ' aria-invalid="true"'
+                                                : '';
+                                            ?>
+                                            <input name="password2" class="form-control" id="password2" type="password" value="<?= $this->escape($this->registration['confirmPassword']) ?>" autocomplete="off"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> />
                                             <?= !empty($this->xregistration->invalid['confirmPassword'])
                                                 ? '<span class="error" role="alert">'
                                                     . $this->xregistration->invalid['confirmPassword'] . '</span>'
@@ -351,7 +383,15 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                             <div class="form-group">
                                 <label for="middle-name">
                                     <?php echo Lang::txt('COM_MEMBERS_REGISTER_MIDDLE_NAME'); ?>
-                                    <input type="text" class="form-control" name="name[middle]" id="middle-name" value="<?= $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($middleName)) ?>"<?= ($this->registrationFullname == Field::STATE_READONLY) ? ' readonly' : '' ?> />
+                                    <?php
+                                    $fieldValue = $this->escape(
+                                        \Hubzero\Utility\Sanitize::cleanProperName($middleName),
+                                    );
+                                    $readonlyAttr = ($this->registrationFullname == Field::STATE_READONLY)
+                                        ? ' readonly'
+                                        : '';
+                                    ?>
+                                    <input type="text" class="form-control" name="name[middle]" id="middle-name" value="<?= $fieldValue ?>"<?= $readonlyAttr ?> />
                                 </label>
                             </div>
                         </div>
@@ -378,9 +418,23 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                         <?php if ($this->registrationEmail != Field::STATE_HIDDEN) { ?>
                             <div class="col span6">
                                 <div class="form-group">
-                                    <label for="email"<?= !empty($this->xregistration->invalid['email']) ? ' class="fieldWithErrors"' : '' ?>>
+                                    <?php
+                                    $classAttr = !empty($this->xregistration->invalid['email'])
+                                        ? ' class="fieldWithErrors"'
+                                        : '';
+                                    ?>
+                                    <label for="email"<?= $classAttr ?>>
                                         <?= Lang::txt('COM_MEMBERS_REGISTER_VALID_EMAIL') ?> <?= $this->registrationEmail == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
-                                        <input class="form-control" name="email" id="email" type="email" value="<?= $this->escape($this->registration['email']) ?>"<?= ($this->registrationEmail == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= !empty($this->xregistration->invalid['email']) ? ' aria-invalid="true"' : '' ?> />
+                                        <?php
+                                        $fieldValue = $this->escape($this->registration['email']);
+                                        $ariaRequiredAttr = ($this->registrationEmail == Field::STATE_REQUIRED)
+                                            ? ' required aria-required="true"'
+                                            : '';
+                                        $ariaInvalidAttr = !empty($this->xregistration->invalid['email'])
+                                            ? ' aria-invalid="true"'
+                                            : '';
+                                        ?>
+                                        <input class="form-control" name="email" id="email" type="email" value="<?= $fieldValue ?>"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> />
                                         <?= !empty($this->xregistration->invalid['email'])
                                             ? '<span class="error" role="alert">'
                                                 . $this->xregistration->invalid['email'] . '</span>'
@@ -397,9 +451,23 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                 }
                                 ?>
                                 <div class="form-group">
-                                    <label for="email2"<?= !empty($this->xregistration->invalid['confirmEmail']) ? ' class="fieldWithErrors"' : '' ?>>
+                                    <?php
+                                    $classAttr = !empty($this->xregistration->invalid['confirmEmail'])
+                                        ? ' class="fieldWithErrors"'
+                                        : '';
+                                    ?>
+                                    <label for="email2"<?= $classAttr ?>>
                                         <?= Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_EMAIL') ?> <?= ($this->registrationConfirmEmail == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
-                                        <input class="form-control" name="email2" id="email2" type="email" value="<?= $this->escape($this->registration['confirmEmail']) ?>"<?= ($this->registrationConfirmEmail == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= !empty($this->xregistration->invalid['confirmEmail']) ? ' aria-invalid="true"' : '' ?> />
+                                        <?php
+                                        $fieldValue = $this->escape($this->registration['confirmEmail']);
+                                        $ariaRequiredAttr = ($this->registrationConfirmEmail == Field::STATE_REQUIRED)
+                                            ? ' required aria-required="true"'
+                                            : '';
+                                        $ariaInvalidAttr = !empty($this->xregistration->invalid['confirmEmail'])
+                                            ? ' aria-invalid="true"'
+                                            : '';
+                                        ?>
+                                        <input class="form-control" name="email2" id="email2" type="email" value="<?= $fieldValue ?>"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> />
                                         <?= !empty($this->xregistration->invalid['confirmEmail'])
                                             ? '<span class="error" role="alert">'
                                                 . $this->xregistration->invalid['confirmEmail'] . '</span>'
@@ -623,7 +691,14 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
                 <div class="form-group">
                     <label for="sendEmail"<?php echo $fieldclass; ?>>
-                        <input class="option form-check-input" type="checkbox" name="sendEmail" id="sendEmail" value="1" <?= ($this->registration['sendEmail'] == '1' || $this->registration['sendEmail'] == '-1') ? 'checked="checked"' : '' ?> />
+                        <?php
+                        $checkedAttr = (
+                            $this->registration['sendEmail'] == '1' || $this->registration['sendEmail'] == '-1'
+                        )
+                            ? 'checked="checked"'
+                            : '';
+                        ?>
+                        <input class="option form-check-input" type="checkbox" name="sendEmail" id="sendEmail" value="1" <?= $checkedAttr ?> />
                         <?= Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES') ?> <?= ($this->registrationOptIn == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
                     </label>
                     <?php echo $message; ?>
@@ -662,8 +737,16 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                 <legend><?php echo Lang::txt('COM_MEMBERS_REGISTER_TERMS_AND_CONDITIONS'); ?></legend>
 
                 <div class="form-group">
-                    <label for="usageAgreement"<?= (!empty($this->xregistration->invalid['usageAgreement'])) ? ' class="fieldWithErrors"' : '' ?>>
-                        <input type="checkbox" class="option form-check-input" id="usageAgreement" value="1" name="usageAgreement"<?= $this->registration['usageAgreement'] ? ' checked="checked"' : '' ?>/>
+                    <?php
+                    $classAttr = (!empty($this->xregistration->invalid['usageAgreement']))
+                        ? ' class="fieldWithErrors"'
+                        : '';
+                    ?>
+                    <label for="usageAgreement"<?= $classAttr ?>>
+                        <?php
+                        $checkedAttr = $this->registration['usageAgreement'] ? ' checked="checked"' : '';
+                        ?>
+                        <input type="checkbox" class="option form-check-input" id="usageAgreement" value="1" name="usageAgreement"<?= $checkedAttr ?>/>
                         <?php echo Lang::txt('COM_MEMBERS_REGISTER_TOS', Request::base(true)); ?>
                         <?= ($this->registrationTOU == Field::STATE_REQUIRED)
                             ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'

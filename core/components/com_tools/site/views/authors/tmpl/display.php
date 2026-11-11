@@ -131,7 +131,12 @@ if ($this->contributors) {
                             if ($this->roles) {
                                 foreach ($this->roles as $role) {
                                     ?>
-                                    <option value="<?= $this->escape($role->alias) ?>"<?= $contributor->role == $role->alias ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($role->title)) ?></option>
+                                    <?php
+                                    $fieldValue = $this->escape($role->alias);
+                                    $selectedAttr = $contributor->role == $role->alias ? ' selected="selected"' : '';
+                                    $optionText = $this->escape(stripslashes($role->title));
+                                    ?>
+                                    <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                     <?php
                                 }
                             }

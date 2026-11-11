@@ -32,7 +32,11 @@ if (!$this->no_html) {
                 if ($cat[$name] != '') {
                     $isActive = (strtolower($name) == $this->task);
                     ?>
-                <li id="sm-<?= $i ?>"<?= $isActive ? ' class="active"' : '' ?>><a class="tab" href="<?= Route::url('index.php?option=' . $this->option . '&task=' . $name) ?>"<?= $isActive ? ' aria-current="page"' : '' ?>><span><?= $cat[$name] ?></span></a></li>
+                    <?php
+                    $linkUrl = Route::url('index.php?option=' . $this->option . '&task=' . $name);
+                    $ariaCurrentAttr = $isActive ? ' aria-current="page"' : '';
+                    ?>
+                <li id="sm-<?= $i ?>"<?= $isActive ? ' class="active"' : '' ?>><a class="tab" href="<?= $linkUrl ?>"<?= $ariaCurrentAttr ?>><span><?= $cat[$name] ?></span></a></li>
                     <?php
                     $i++;
                     $cs[] = $name;

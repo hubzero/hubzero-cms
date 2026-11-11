@@ -91,7 +91,10 @@ endif;
             </div>
 
             <div class="form-group">
-                <label for="reporter_name"<?= ($this->getError() && !$this->row->get('name')) ? ' class="fieldWithErrors"' : '' ?>>
+                <?php
+                $classAttr = ($this->getError() && !$this->row->get('name')) ? ' class="fieldWithErrors"' : '';
+                ?>
+                <label for="reporter_name"<?= $classAttr ?>>
                     <?= Lang::txt('COM_SUPPORT_NAME') ?> <span
                         class="required"><?= Lang::txt('COM_SUPPORT_REQUIRED') ?></span>
                     <input type="text" name="reporter[name]" class="form-control"
@@ -104,7 +107,10 @@ endif;
             </div>
 
             <div class="form-group">
-                <label for="reporter_email"<?= ($this->getError() && !$this->row->get('email')) ? ' class="fieldWithErrors"' : '' ?>>
+                <?php
+                $classAttr = ($this->getError() && !$this->row->get('email')) ? ' class="fieldWithErrors"' : '';
+                ?>
+                <label for="reporter_email"<?= $classAttr ?>>
                     <?= Lang::txt('COM_SUPPORT_EMAIL') ?> <span
                         class="required"><?= Lang::txt('COM_SUPPORT_REQUIRED') ?></span>
                     <input type="email" name="reporter[email]" class="form-control"
@@ -137,7 +143,10 @@ endif;
             <legend><?php echo Lang::txt('COM_SUPPORT_TROUBLE_YOUR_PROBLEM'); ?></legend>
 
             <div class="form-group">
-                <label for="problem_long"<?= ($this->getError() && !$this->row->get('report')) ? ' class="fieldWithErrors"' : '' ?>>
+                <?php
+                $classAttr = ($this->getError() && !$this->row->get('report')) ? ' class="fieldWithErrors"' : '';
+                ?>
+                <label for="problem_long"<?= $classAttr ?>>
                     <?= Lang::txt('COM_SUPPORT_TROUBLE_DESCRIPTION') ?> <span
                         class="required"><?= Lang::txt('JREQUIRED') ?></span>
                     <textarea name="problem[long]" cols="40" rows="10" class="form-control"
@@ -246,7 +255,11 @@ endif;
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEVERITY'); ?>
                                 <select name="problem[severity]" id="ticket-field-severity" class="form-control">
                                     <?php foreach ($this->lists['severities'] as $severity) : ?>
-                                        <option value="<?= $severity ?>"<?= $severity == 'normal' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)) ?></option>
+                                        <?php
+                                        $selectedAttr = $severity == 'normal' ? ' selected="selected"' : '';
+                                        $optionText = Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity));
+                                        ?>
+                                        <option value="<?= $severity ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>

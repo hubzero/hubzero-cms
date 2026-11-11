@@ -20,7 +20,10 @@ defined('_HZEXEC_') or die();
         <table class="formed">
             <thead>
                 <tr>
-                    <th><label for="image"><?= Lang::txt('COM_TOOLS_UPLOAD') ?> <?= Lang::txt('COM_TOOLS_WILL_REPLACE_EXISTING_IMAGE') ?></label></th>
+                    <?php
+                    $existingImageText = Lang::txt('COM_TOOLS_WILL_REPLACE_EXISTING_IMAGE');
+                    ?>
+                    <th><label for="image"><?= Lang::txt('COM_TOOLS_UPLOAD') ?> <?= $existingImageText ?></label></th>
                 </tr>
             </thead>
             <tbody>

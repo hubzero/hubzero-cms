@@ -221,10 +221,16 @@ $stateSelected = function ($value) use ($view) {
                             <option
                                 value="0"<?= !$params->get('restrict_direct_access') ? ' selected="selected"' : '' ?>>
                                 <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT'); ?></option>
-                            <option value="1"<?= $params->get('restrict_direct_access') == 1 ? ' selected="selected"' : '' ?>>
+                            <?php
+                            $selectedAttr = $params->get('restrict_direct_access') == 1 ? ' selected="selected"' : '';
+                            ?>
+                            <option value="1"<?= $selectedAttr ?>>
                                 <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_NO'); ?>
                             </option>
-                            <option value="2"<?= $params->get('restrict_direct_access') == 2 ? ' selected="selected"' : '' ?>>
+                            <?php
+                            $selectedAttr = $params->get('restrict_direct_access') == 2 ? ' selected="selected"' : '';
+                            ?>
+                            <option value="2"<?= $selectedAttr ?>>
                                 <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_YES'); ?>
                             </option>
                         </select>

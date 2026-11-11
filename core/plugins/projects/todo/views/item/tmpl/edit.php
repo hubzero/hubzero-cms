@@ -101,7 +101,10 @@ $todoContent = $this->row->get('details')
                                     <?php echo $noneSelected; ?>
                                 ><?php echo $noListLabel; ?></option>
                             <?php foreach ($lists as $list) { ?>
-                                <option value="<?= $list->color ?>" <?= $list->color == $color ? 'selected="selected"' : '' ?>><?= stripslashes($list->todolist) ?></option>
+                                <?php
+                                $selectedAttr = $list->color == $color ? 'selected="selected"' : '';
+                                ?>
+                                <option value="<?= $list->color ?>" <?= $selectedAttr ?>><?= stripslashes($list->todolist) ?></option>
                             <?php } ?>
                             </select>
                         </label>

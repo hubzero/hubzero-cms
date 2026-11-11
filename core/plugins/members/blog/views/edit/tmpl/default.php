@@ -62,7 +62,10 @@ $accessSelected = function ($value) use ($view) {
             </legend>
 
             <div class="form-group">
-                <label for="field-title"<?= $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '' ?>>
+                <?php
+                $classAttr = $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '';
+                ?>
+                <label for="field-title"<?= $classAttr ?>>
                     <?= Lang::txt('PLG_MEMBERS_BLOG_TITLE') ?> <span
                         class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                     <input type="text" class="form-control" name="entry[title]" id="field-title" size="35"

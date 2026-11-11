@@ -100,7 +100,13 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                         <?php if ($this->authorized == 'manager') : ?>
                             <span class="hint">
-                                <?= Lang::txt('Need a new calendar?') ?> <a href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->cn . '&active=calendar&action=addcalendar') ?>">Click here!</a>
+                                <?php
+                                $addcalendarUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&cn=' . $this->group->cn
+                                        . '&active=calendar&action=addcalendar',
+                                );
+                                ?>
+                                <?= Lang::txt('Need a new calendar?') ?> <a href="<?= $addcalendarUrl ?>">Click here!</a>
                             </span>
                         <?php endif; ?>
                     </label>

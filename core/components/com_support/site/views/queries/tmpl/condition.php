@@ -79,7 +79,11 @@ if ($this->condition->expressions) {
         if ($operators) {
             foreach ($operators as $operator) {
                 ?>
-                <option value="<?= $this->escape($operator->val) ?>"<?= $expression->opval == $operator->val ? ' selected="selected"' : '' ?>><?= $this->escape($operator->label) ?></option>
+                <?php
+                $selectedAttr = $expression->opval == $operator->val ? ' selected="selected"' : '';
+                $optionText = $this->escape($operator->label);
+                ?>
+                <option value="<?= $this->escape($operator->val) ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                 <?php
             }
         }
@@ -92,7 +96,11 @@ if ($this->condition->expressions) {
             <?php
             foreach ($values as $value) {
                 ?>
-                <option value="<?= $this->escape($value->val) ?>"<?= $expression->val == $value->val ? ' selected="selected"' : '' ?>><?= $this->escape($value->label) ?></option>
+                <?php
+                $selectedAttr = $expression->val == $value->val ? ' selected="selected"' : '';
+                $optionText = $this->escape($value->label);
+                ?>
+                <option value="<?= $this->escape($value->val) ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                 <?php
             }
             ?>

@@ -313,7 +313,10 @@ $ferpaDataChecked = function ($value) use ($view) {
                             rel="external" ><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a>? <span
                             class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
                         <input class="option form-check-input" name="agree" type="checkbox" value="1" />
-                        <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_AGREE') ?> <a href="<?= $privacylink ?>" rel="external" ><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a> <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE_PROJECT') ?> <span class="prominent"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_ALL_MEMBERS') ?></span>.
+                        <?php
+                        $agreeProjectText = Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE_PROJECT');
+                        ?>
+                        <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_AGREE') ?> <a href="<?= $privacylink ?>" rel="external" ><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a> <?= $agreeProjectText ?> <span class="prominent"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_ALL_MEMBERS') ?></span>.
                     </label>
                 </div>
             </fieldset>

@@ -146,7 +146,10 @@ $featuredSelected = function ($value) use ($view) {
                 </div>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SYNOPSIS'); ?>:</label>
-                    <textarea name="abstract" id="pub-abstract" cols="40" rows="3" class="pubinput"><?= $this->escape(preg_replace("/\r\n/", "\r", trim($this->model->get('abstract')))) ?></textarea>
+                    <?php
+                    $fieldText = $this->escape(preg_replace("/\r\n/", "\r", trim($this->model->get('abstract'))));
+                    ?>
+                    <textarea name="abstract" id="pub-abstract" cols="40" rows="3" class="pubinput"><?= $fieldText ?></textarea>
                 </div>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
@@ -238,7 +241,12 @@ $featuredSelected = function ($value) use ($view) {
                 </div>
                 <div class="input-wrap">
                     <label for="license_text"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE_TEXT'); ?>:</label>
-                    <textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?= $this->escape(preg_replace("/\r\n/", "\r", trim($this->model->get('license_text', '')))) ?></textarea>
+                    <?php
+                    $fieldText = $this->escape(
+                        preg_replace("/\r\n/", "\r", trim($this->model->get('license_text', ''))),
+                    );
+                    ?>
+                    <textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?= $fieldText ?></textarea>
                 </div>
             </fieldset>
             <fieldset class="adminform">
@@ -378,8 +386,31 @@ $featuredSelected = function ($value) use ($view) {
                     ?>
                     <label for="field-unPubReason"><?= $labelText ?>:</label><br />
                     <select name="unPubReasonDropdownList" id="field-unPubReason" disabled>
-                        <option value="0"<?= ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_OTHERS') ?></option>
-                        <option value="1" <?= ($this->model->get('unpublished_reason') == null || $this->model->get('unpublished_reason') == Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') ?></option>
+                        <?php
+                        $selectedAttr = (
+                            $this->model->get('unpublished_reason') != Lang::txt(
+                                'COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE',
+                            )
+                            && $this->model->get('unpublished_reason') != Lang::txt(
+                                'COM_PUBLICATIONS_UNPUBLISHED_ERROR',
+                            )
+                        )
+                            ? ' selected="selected"'
+                            : '';
+                        $optionText = Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_OTHERS');
+                        ?>
+                        <option value="0"<?= $selectedAttr ?>><?= $optionText ?></option>
+                        <?php
+                        $selectedAttr = (
+                            $this->model->get('unpublished_reason') == null
+                            || $this->model->get('unpublished_reason') == Lang::txt(
+                                'COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE',
+                            )
+                        )
+                            ? ' selected="selected"'
+                            : '';
+                        ?>
+                        <option value="1" <?= $selectedAttr ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') ?></option>
                         <option
                             value="2"<?= $unpublishedReasonSelected(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ?>>
                             <?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR') ?>
@@ -388,7 +419,17 @@ $featuredSelected = function ($value) use ($view) {
                 </div>
                 <div class="input-wrap" id="reasonDiv">
                     <label for="reason"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ASK_REASON'); ?>:</label><br />
-                    <textarea name="reason" id="reason" rows="5" cols="50" disabled ><?= ($this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ? $this->escape($this->model->get('unpublished_reason')) : '' ?></textarea>
+                    <?php
+                    $fieldText = (
+                        $this->model->get('unpublished_reason') != Lang::txt(
+                            'COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE',
+                        )
+                        && $this->model->get('unpublished_reason') != Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')
+                    )
+                        ? $this->escape($this->model->get('unpublished_reason'))
+                        : '';
+                    ?>
+                    <textarea name="reason" id="reason" rows="5" cols="50" disabled ><?= $fieldText ?></textarea>
                 </div>
                 <div class="input-wrap">
                     <label for="field-featured"><?= Lang::txt('COM_PUBLICATIONS_FIELD_FEATURED') ?>:</label><br />
@@ -551,8 +592,18 @@ $featuredSelected = function ($value) use ($view) {
                                 <td class="key"><?php echo ucfirst($panel); ?>:</td>
                                 <td>
                                     <select name="params[show_<?php echo $panel; ?>]">
-                                        <option value="0" <?= ($params->get('show_' . $panel, $val) == 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_HIDE') ?></option>
-                                        <option value="1" <?= ($params->get('show_' . $panel, $val) > 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PUBLICATIONS_SHOW') ?></option>
+                                        <?php
+                                        $selectedAttr = ($params->get('show_' . $panel, $val) == 0)
+                                            ? ' selected="selected"'
+                                            : '';
+                                        ?>
+                                        <option value="0" <?= $selectedAttr ?>><?= Lang::txt('COM_PUBLICATIONS_HIDE') ?></option>
+                                        <?php
+                                        $selectedAttr = ($params->get('show_' . $panel, $val) > 0)
+                                            ? ' selected="selected"'
+                                            : '';
+                                        ?>
+                                        <option value="1" <?= $selectedAttr ?>><?= Lang::txt('COM_PUBLICATIONS_SHOW') ?></option>
                                     </select>
                                 </td>
                             </tr>

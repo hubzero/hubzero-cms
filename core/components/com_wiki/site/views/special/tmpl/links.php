@@ -95,7 +95,10 @@ endif;
                         $linkUrl = Route::url($this->page->link() . '&sort=timestamp&dir=' . $altdir);
                         ?>
                         <a<?= $sort == 'timestamp' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>">
-                            <?= $sort == 'timestamp' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_DATE') ?>
+                            <?php
+                            $colDateText = Lang::txt('COM_WIKI_COL_DATE');
+                            ?>
+                            <?= $sort == 'timestamp' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= $colDateText ?>
                         </a>
                     </th>
                     <th scope="col">
@@ -103,7 +106,10 @@ endif;
                         $linkUrl = Route::url($this->page->link() . '&sort=title&dir=' . $altdir);
                         ?>
                         <a<?= $sort == 'title' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>">
-                            <?= $sort == 'title' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_TITLE') ?>
+                            <?php
+                            $colTitleText = Lang::txt('COM_WIKI_COL_TITLE');
+                            ?>
+                            <?= $sort == 'title' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= $colTitleText ?>
                         </a>
                     </th>
                 </tr>

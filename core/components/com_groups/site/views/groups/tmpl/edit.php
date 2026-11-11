@@ -248,7 +248,14 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 ?>
                                 <strong><?= $strongText ?></strong>
                                 (<?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS_DESC') ?>) <span class="optional"><?= Lang::txt('COM_GROUPS_OPTIONAL') ?></span>
-                                <textarea name="restrict_msg" id="restrict_msg" rows="5" cols="50"><?= htmlentities(stripslashes($this->group->get('restrict_msg') ? $this->group->get('restrict_msg') : '')) ?></textarea>
+                                <?php
+                                $fieldText = htmlentities(
+                                    stripslashes(
+                                        $this->group->get('restrict_msg') ? $this->group->get('restrict_msg') : '',
+                                    ),
+                                );
+                                ?>
+                                <textarea name="restrict_msg" id="restrict_msg" rows="5" cols="50"><?= $fieldText ?></textarea>
                             </label>
                         </div>
                         <div class="form-group form-check">

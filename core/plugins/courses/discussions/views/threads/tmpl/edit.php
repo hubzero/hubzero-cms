@@ -117,7 +117,13 @@ $anonymousChecked = function ($value) use ($view) {
                                 ?>
                             <optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
                                 <?php foreach ($section->categories as $category) { ?>
-                                <option value="<?= $category->id ?>"<?= $category->id == $this->post->get('category_id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($category->title)) ?></option>
+                                    <?php
+                                    $selectedAttr = $category->id == $this->post->get('category_id')
+                                        ? ' selected="selected"'
+                                        : '';
+                                    $optionText = $this->escape(stripslashes($category->title));
+                                    ?>
+                                <option value="<?= $category->id ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                 <?php } ?>
                             </optgroup>
                                 <?php

@@ -80,7 +80,11 @@ $this->js();
                             <select name="fields[hardTimeoutUnit]" id="field-hardtimeout-unit"
                                 aria-label="<?= Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_UNIT') ?>">
                                 <?php foreach (array_keys(\Components\Tools\Helpers\Duration::UNITS) as $unit) : ?>
-                                    <option value="<?= $unit ?>"<?= $unit == $hardTimeoutUnit ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_UNIT_' . strtoupper($unit)) ?></option>
+                                    <?php
+                                    $selectedAttr = $unit == $hardTimeoutUnit ? ' selected="selected"' : '';
+                                    $optionText = Lang::txt('COM_TOOLS_UNIT_' . strtoupper($unit));
+                                    ?>
+                                    <option value="<?= $unit ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <span class="hint"

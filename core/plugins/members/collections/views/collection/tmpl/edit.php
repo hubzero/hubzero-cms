@@ -65,7 +65,10 @@ $this->css();
         </div>
 
         <div class="form-group">
-            <label for="field-title"<?= $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '' ?>>
+            <?php
+            $classAttr = $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '';
+            ?>
+            <label for="field-title"<?= $classAttr ?>>
                 <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_TITLE'); ?>
                 <span class="required">
                     <?php echo Lang::txt('JREQUIRED'); ?>

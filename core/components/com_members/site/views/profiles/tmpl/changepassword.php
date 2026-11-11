@@ -76,7 +76,12 @@ $this
 
                 <div class="grid">
                     <div class="col span6">
-                        <label<?= ($this->change && (!$this->newpass || $this->newpass != $this->newpass2)) ? ' class="fieldWithErrors"' : '' ?>>
+                        <?php
+                        $classAttr = ($this->change && (!$this->newpass || $this->newpass != $this->newpass2))
+                            ? ' class="fieldWithErrors"'
+                            : '';
+                        ?>
+                        <label<?= $classAttr ?>>
                             <?php echo Lang::txt('COM_MEMBERS_FIELD_NEW_PASS'); ?>
                             <input name="newpass" id="newpass" type="password" value="" />
                             <?php
@@ -87,7 +92,12 @@ $this
                         </label>
                     </div>
                     <div class="col span6 omega">
-                        <label<?= ($this->change && (!$this->newpass2 || $this->newpass != $this->newpass2)) ? ' class="fieldWithErrors"' : '' ?>>
+                        <?php
+                        $classAttr = ($this->change && (!$this->newpass2 || $this->newpass != $this->newpass2))
+                            ? ' class="fieldWithErrors"'
+                            : '';
+                        ?>
+                        <label<?= $classAttr ?>>
                             <?php echo Lang::txt('COM_MEMBERS_FIELD_PASS_CONFIRM'); ?>
                             <input name="newpass2" id="newpass2" type="password" value="" />
                             <?php

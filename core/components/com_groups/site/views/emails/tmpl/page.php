@@ -104,7 +104,15 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
                             </tr>
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left">@ <?= Date::of($page->version()->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?> on <?= Date::of($page->version()->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></td>
+                                <?php
+                                $cellText = Date::of($page->version()->get('created'))->toLocal(
+                                    Lang::txt('TIME_FORMAT_HZ1'),
+                                );
+                                $dateText = Date::of($page->version()->get('created'))->toLocal(
+                                    Lang::txt('DATE_FORMAT_HZ1'),
+                                );
+                                ?>
+                                <td style="text-align: left; padding: 0 0.5em;" align="left">@ <?= $cellText ?> on <?= $dateText ?></td>
                             </tr>
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created By:</th>

@@ -56,7 +56,10 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
                         <label for="show_badges">
                             <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_DISPLAY_BADGES'); ?>
                             <select name="citations_show_badges" id="show_badges" class="form-control">
-                                <option value="yes" <?= ($this->citations_show_badges == "yes") ? "selected=selected" : "" ?>><?= Lang::txt('Yes') ?></option>
+                                <?php
+                                $attributes = ($this->citations_show_badges == "yes") ? "selected=selected" : "";
+                                ?>
+                                <option value="yes" <?= $attributes ?>><?= Lang::txt('Yes') ?></option>
                                 <option
                                     value="no" <?= ($this->citations_show_badges == "no") ? "selected=selected" : "" ?>>
                                     <?= Lang::txt('No') ?>

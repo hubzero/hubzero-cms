@@ -84,7 +84,12 @@ $accessSelected = function ($value) use ($view) {
                                 foreach ($this->groups as $group) {
                                     $listed = $listed || ($owner == $group->cn);
                                     ?>
-                                <option value="<?= $this->escape($group->cn) ?>"<?= $owner == $group->cn ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($group->description)) ?></option>
+                                    <?php
+                                    $fieldValue = $this->escape($group->cn);
+                                    $selectedAttr = $owner == $group->cn ? ' selected="selected"' : '';
+                                    $optionText = $this->escape(stripslashes($group->description));
+                                    ?>
+                                <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                     <?php
                                 }
                             }
@@ -126,7 +131,11 @@ $accessSelected = function ($value) use ($view) {
                 $strongText = Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC');
                 ?>
                 <strong><?= $strongText ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC_EXPLANATION') ?><br />
-                <strong><?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION') ?><br />
+                <?php
+                $accessRegisteredText = Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED');
+                $registeredExplanationText = Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED_EXPLANATION');
+                ?>
+                <strong><?= $accessRegisteredText ?></strong> = <?= $registeredExplanationText ?><br />
                 <?php
                 $strongText = Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED');
                 ?>

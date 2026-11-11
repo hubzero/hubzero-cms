@@ -41,8 +41,10 @@ $editUrl = Route::url(
         . $this->pub->get('id') . '&version=' . $this->pub->get('version_number'),
 );
 $linkUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
+$publicationText = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->get('id');
+$crumbsText = Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO');
 ?>
-<p class="crumbs"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= $editUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->get('id') ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO') ?></p>
+<p class="crumbs"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= $editUrl ?>"><?= $publicationText ?></a> &raquo; <?= $crumbsText ?></p>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
     name="adminForm" id="item-form">
@@ -129,7 +131,10 @@ $linkUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $th
                                     $labelText = Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_GALLERY_DESCRIPTION');
                                     ?>
                                     <label><?= $labelText ?>:</label>
-                                    <textarea name="attachments[<?= $attach->id ?>][attribs]" rows="10" cols="60" maxlength="5000" value="<?= $this->escape($attach->attribs) ?>" placeholder="Enter up to 5000 characters..."><?= $this->escape($attach->attribs) ?></textarea>
+                                    <?php
+                                    $fieldText = $this->escape($attach->attribs);
+                                    ?>
+                                    <textarea name="attachments[<?= $attach->id ?>][attribs]" rows="10" cols="60" maxlength="5000" value="<?= $this->escape($attach->attribs) ?>" placeholder="Enter up to 5000 characters..."><?= $fieldText ?></textarea>
                                 <?php } ?>
                             </div>
                         <?php } ?>

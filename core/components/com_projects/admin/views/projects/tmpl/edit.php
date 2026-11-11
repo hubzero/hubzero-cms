@@ -217,7 +217,14 @@ $paramsLayoutSelected = function ($value) use ($view) {
                                         continue;
                                     }
                                     $used[] = $g->gidNumber; ?>
-                                    <option value="<?= $g->gidNumber ?>" <?= $g->gidNumber == $this->model->get('owned_by_group') ? 'selected="selected"' : '' ?>><?= $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30)) . ' (' . $this->escape($g->cn) . ')' ?></option>
+                                    <?php
+                                    $selectedAttr = $g->gidNumber == $this->model->get('owned_by_group')
+                                        ? 'selected="selected"'
+                                        : '';
+                                    $optionText = $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30))
+                                        . ' (' . $this->escape($g->cn) . ')';
+                                    ?>
+                                    <option value="<?= $g->gidNumber ?>" <?= $selectedAttr ?>><?= $optionText ?></option>
                                 <?php } ?>
                             </select>
                         </label>
@@ -364,7 +371,10 @@ $paramsLayoutSelected = function ($value) use ($view) {
 
                     <?php if ($cEnabled) { ?>
                         <div class="input-wrap">
-                            <?= Lang::txt('COM_PROJECTS_CONNECTIONS') ?>: <strong><?= $connected ? $service : 'not connected' ?></strong> &nbsp;
+                            <?php
+                            $strongText = $connected ? $service : 'not connected';
+                            ?>
+                            <?= Lang::txt('COM_PROJECTS_CONNECTIONS') ?>: <strong><?= $strongText ?></strong> &nbsp;
                             <?php if ($connected) { ?>
                                 <?php
                                 $fixsyncUrl = Route::url(
@@ -384,7 +394,11 @@ $paramsLayoutSelected = function ($value) use ($view) {
                 <tbody>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_PROJECTS_CREATED'); ?>:</th>
-                        <td><?= $this->model->get('created') ?> <?= Lang::txt('COM_PROJECTS_BY') . ' ' . $this->escape($this->model->creator('name')) . ' (' . $this->escape($this->model->creator('username')) . ')' ?></td>
+                        <?php
+                        $byText = Lang::txt('COM_PROJECTS_BY') . ' ' . $this->escape($this->model->creator('name'))
+                            . ' (' . $this->escape($this->model->creator('username')) . ')';
+                        ?>
+                        <td><?= $this->model->get('created') ?> <?= $byText ?></td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_PROJECTS_STATUS'); ?></th>

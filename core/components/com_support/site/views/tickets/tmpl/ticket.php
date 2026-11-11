@@ -603,7 +603,15 @@ $categorySelected = function ($value) use ($view) {
                                     <?= Lang::txt('COM_SUPPORT_COMMENT_SEVERITY') ?>: <a class="icon-help tooltips popup" href="<?= Route::url('index.php?option=com_help&component=support&page=ticket#severity') ?>" title="<?= Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP') ?>"><?= Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP') ?></a>
                                     <select name="ticket[severity]" id="ticket-field-severity" class="form-control">
                                         <?php foreach ($this->lists['severities'] as $severity) { ?>
-                                            <option value="<?= $severity ?>"<?= $severity == $this->row->get('severity') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)) ?></option>
+                                            <?php
+                                            $selectedAttr = $severity == $this->row->get('severity')
+                                                ? ' selected="selected"'
+                                                : '';
+                                            $optionText = Lang::txt(
+                                                'COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity),
+                                            );
+                                            ?>
+                                            <option value="<?= $severity ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                         <?php } ?>
                                     </select>
                                 </label>
@@ -619,7 +627,13 @@ $categorySelected = function ($value) use ($view) {
                                                 <?php } ?>
                                             </optgroup>
                                             <optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
-                                                <option value="0"<?= !$this->row->isOpen() && $this->row->get('status') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED') ?></option>
+                                                <?php
+                                                $selectedAttr = !$this->row->isOpen() && $this->row->get('status') == 0
+                                                    ? ' selected="selected"'
+                                                    : '';
+                                                $optionText = Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED');
+                                                ?>
+                                                <option value="0"<?= $selectedAttr ?>><?= $optionText ?></option>
                                                 <?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
                                                     <option value="<?= $status->get('id') ?>"<?= !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
                                                 <?php } ?>

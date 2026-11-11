@@ -108,7 +108,10 @@ $sectionIdSelected = function ($value) use ($view) {
                 <div class="form-group">
                     <label for="field-description">
                         <?php echo Lang::txt('COM_FORUM_FIELD_DESCRIPTION'); ?>
-                        <textarea class="form-control" name="fields[description]" id="field-description" cols="35" rows="5"><?= $this->escape(stripslashes($this->category->get('description', ''))) ?></textarea>
+                        <?php
+                        $fieldText = $this->escape(stripslashes($this->category->get('description', '')));
+                        ?>
+                        <textarea class="form-control" name="fields[description]" id="field-description" cols="35" rows="5"><?= $fieldText ?></textarea>
                     </label>
                 </div>
             </fieldset>

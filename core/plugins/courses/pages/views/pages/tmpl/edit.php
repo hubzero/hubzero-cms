@@ -85,7 +85,13 @@ $sectionIdSelected = function ($value) use ($view) {
                                 <?= Lang::txt('PLG_COURSES_PAGES_FIELD_OPT_ALL_SECTIONS') ?>
                             </option>
                         <?php foreach ($this->offering->sections() as $section) { ?>
-                            <option value="<?= $section->get('id') ?>"<?= $section->get('id') == $this->model->get('section_id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($section->get('title'))) ?></option>
+                            <?php
+                            $selectedAttr = $section->get('id') == $this->model->get('section_id')
+                                ? ' selected="selected"'
+                                : '';
+                            $optionText = $this->escape(stripslashes($section->get('title')));
+                            ?>
+                            <option value="<?= $section->get('id') ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                         <?php } ?>
                         </select>
                     </label>

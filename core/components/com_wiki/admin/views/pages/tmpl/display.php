@@ -66,7 +66,10 @@ $namespaceSelected = function ($value) use ($view) {
                     <?php foreach ($this->scopes as $scope) {
                         $val = $scope->get('scope') . ':' . $scope->get('scope_id');
                         ?>
-                        <option value="<?= $this->escape($val) ?>"<?= $val == $this->filters['scope'] ? ' selected="selected"' : '' ?>><?= $this->escape($val) ?></option>
+                        <?php
+                        $selectedAttr = $val == $this->filters['scope'] ? ' selected="selected"' : '';
+                        ?>
+                        <option value="<?= $this->escape($val) ?>"<?= $selectedAttr ?>><?= $this->escape($val) ?></option>
                     <?php } ?>
                 </select>
 
@@ -78,7 +81,11 @@ $namespaceSelected = function ($value) use ($view) {
                             continue;
                         }
                         ?>
-                        <option value="<?= $nspace->get('namespace') ?>"<?= $namespaceSelected($nspace->get('namespace')) ?>><?= $nspace->get('namespace') ?></option>
+                        <?php
+                        $fieldValue = $nspace->get('namespace');
+                        $selectedAttr = $namespaceSelected($nspace->get('namespace'));
+                        ?>
+                        <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $nspace->get('namespace') ?></option>
                     <?php } ?>
                 </select>
             </div>

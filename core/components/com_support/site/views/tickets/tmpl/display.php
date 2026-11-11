@@ -82,7 +82,10 @@ $this
                                     );
                                     ?>
                                     <a class="aquery" href="<?= $displayUrl ?>">
-                                        <?= $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_OPEN')) ?> <span><?= $this->watch['open'] ?></span>
+                                        <?php
+                                        $listOpenText = $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_OPEN'));
+                                        ?>
+                                        <?= $listOpenText ?> <span><?= $this->watch['open'] ?></span>
                                     </a>
                                 </li>
                                 <li<?php echo intval($this->filters['show']) == -2 ? ' class="active"' : ''; ?>>
@@ -94,7 +97,10 @@ $this
                                     );
                                     ?>
                                     <a class="aquery" href="<?= $displayUrl ?>">
-                                        <?= $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_CLOSED')) ?> <span><?= $this->watch['closed'] ?></span>
+                                        <?php
+                                        $listClosedText = $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_CLOSED'));
+                                        ?>
+                                        <?= $listClosedText ?> <span><?= $this->watch['closed'] ?></span>
                                     </a>
                                 </li>
                             </ul>
@@ -145,7 +151,12 @@ $this
                                 <?php } ?>
                                 <ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
                                     <?php foreach ($folder->queries as $query) { ?>
-                                        <li id="query_<?= $this->escape($query->id) ?>" <?= intval($this->filters['show']) == $query->id ? ' class="active"' : '' ?>>
+                                        <?php
+                                        $classAttr = intval($this->filters['show']) == $query->id
+                                            ? ' class="active"'
+                                            : '';
+                                        ?>
+                                        <li id="query_<?= $this->escape($query->id) ?>" <?= $classAttr ?>>
                                             <?php
                                             $displayUrl = Route::url(
                                                 'index.php?option=' . $this->option . '&controller=' . $this->controller

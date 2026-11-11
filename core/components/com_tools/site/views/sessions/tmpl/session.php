@@ -201,7 +201,11 @@ if (!$this->app->sess) {
                                         continue;
                                     }
                                     ?>
-                                    <option value="<?= $plugin->name ?>"<?= $viewer == $plugin->name ? ' selected="selected"' : '' ?>><?= $this->escape($plugin->title) ?></option>
+                                    <?php
+                                    $selectedAttr = $viewer == $plugin->name ? ' selected="selected"' : '';
+                                    $optionText = $this->escape($plugin->title);
+                                    ?>
+                                    <option value="<?= $plugin->name ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                 <?php } ?>
                             </select>
                         </span>

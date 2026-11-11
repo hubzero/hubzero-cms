@@ -116,7 +116,10 @@ $base = $this->offering->link();
                             <?php endif; ?>
                         </div>
                         <div class="jStickyNote">
-                            <textarea name="note_<?= $note->get('id') ?>"><?= $this->escape(stripslashes($note->get('content'))) ?></textarea>
+                            <?php
+                            $fieldText = $this->escape(stripslashes($note->get('content')));
+                            ?>
+                            <textarea name="note_<?= $note->get('id') ?>"><?= $fieldText ?></textarea>
                         </div>
                         <?php
                         $deleteUrl = Route::url($base . '&active=notes&action=delete&note=' . $note->get('id'));

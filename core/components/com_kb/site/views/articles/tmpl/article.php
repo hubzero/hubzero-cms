@@ -141,8 +141,11 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                                         <li>
                                             <?php
                                             $linkUrl = Route::url($cat->link());
+                                            $attributes = $this->category->get('id') == $cat->get('id')
+                                                ? 'class="active" aria-current="page" '
+                                                : '';
                                             ?>
-                                            <a <?= $this->category->get('id') == $cat->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= $linkUrl ?>">
+                                            <a <?= $attributes ?> href="<?= $linkUrl ?>">
                                                 <?= $this->escape(stripslashes($cat->get('title'))) ?> <span
                                                     class="item-count"><?= $cat->get('articles', 0) ?></span>
                                             </a>

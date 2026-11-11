@@ -21,7 +21,13 @@ $this
 </div>
 <div class="tombstone-section">
     <h3><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_RETRACTION_DESCRIPTION'); ?></h3>
-    <p><?= Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_IDENTIFIER') ?><a target="_blank" rel="external" href="<?= Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->escape($this->record->doi) ?>"><?= Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->escape($this->record->doi) ?></a><?= Lang::txt('COM_PUBLICATIONS_TOMBSTONE_REASON') . $this->escape(lcfirst((string) $this->record->unpublished_reason)) . "." ?></p>
+    <?php
+    $linkUrl = Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->escape($this->record->doi);
+    $linkText = Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DOI_ORG') . $this->escape($this->record->doi);
+    $tombstoneReasonText = Lang::txt('COM_PUBLICATIONS_TOMBSTONE_REASON')
+        . $this->escape(lcfirst((string) $this->record->unpublished_reason)) . ".";
+    ?>
+    <p><?= Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_IDENTIFIER') ?><a target="_blank" rel="external" href="<?= $linkUrl ?>"><?= $linkText ?></a><?= $tombstoneReasonText ?></p>
     <p><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_CONTACT_PURR'); ?></p>
 </div>
 

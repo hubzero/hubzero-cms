@@ -72,7 +72,12 @@ $invalidMsg      = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <select name="fields[admin]" id="field-admin">
                     <option value="0" <?= $adminSelected(0) ?>><?= Lang::txt('COM_TAGS_FIELD_TYPE_USER') ?></option>
                     <option value="2" <?= $adminSelected(2) ?>><?= Lang::txt('COM_TAGS_FIELD_TYPE_CORE') ?></option>
-                    <option value="1" <?= is_null($this->tag->get('admin')) || $this->tag->get('admin') == 1 ? 'selected="selected"' : '' ?>><?= Lang::txt('COM_TAGS_FIELD_TYPE_ADMIN') ?></option>
+                    <?php
+                    $selectedAttr = is_null($this->tag->get('admin')) || $this->tag->get('admin') == 1
+                        ? 'selected="selected"'
+                        : '';
+                    ?>
+                    <option value="1" <?= $selectedAttr ?>><?= Lang::txt('COM_TAGS_FIELD_TYPE_ADMIN') ?></option>
                 </select>
             </div>
 

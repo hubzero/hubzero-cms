@@ -96,7 +96,12 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
         <?php echo $this->item->drawIcon($ext); ?>
         <?php if ($this->item->get('type') == 'file') { ?>
             <div class="file-action-dropdown<?= ($handlers = Handler::getLaunchUrlsForFile($handlerBase)) ? ' hasMultiple' : '' ?>">
-                <a href="<?= $link ?>" class="preview file:<?= urlencode($name) ?>"<?= $this->item->get('converted') ? ' rel="noopener noreferrer external" target="_blank"' : '' ?>>
+                <?php
+                $attributes = $this->item->get('converted')
+                    ? ' rel="noopener noreferrer external" target="_blank"'
+                    : '';
+                ?>
+                <a href="<?= $link ?>" class="preview file:<?= urlencode($name) ?>"<?= $attributes ?>>
                     <?php echo \Components\Projects\Helpers\Html::shortenFileName($name, 60); ?>
                 </a>
                 <?php if ($handlers && count($handlers) > 0) : ?>

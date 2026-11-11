@@ -16,7 +16,13 @@ defined('_HZEXEC_') or die();
     <div class="container">
         <h3><?php echo Lang::txt('COM_KB_COMMUNITY'); ?></h3>
         <p>
-            <?= Lang::txt('COM_KB_COMMUNITY_CANT_FIND') ?> <?= Lang::txt('COM_KB_COMMUNITY_TRY_ANSWERS', '<a href="' . Route::url('index.php?option=com_answers') . '">' . Lang::txt('COM_ANSWERS') . '</a>') ?>
+            <?php
+            $tryAnswersText = Lang::txt(
+                'COM_KB_COMMUNITY_TRY_ANSWERS',
+                '<a href="' . Route::url('index.php?option=com_answers') . '">' . Lang::txt('COM_ANSWERS') . '</a>',
+            );
+            ?>
+            <?= Lang::txt('COM_KB_COMMUNITY_CANT_FIND') ?> <?= $tryAnswersText ?>
         </p>
     </div><!-- / .container -->
 <?php } ?>
@@ -33,7 +39,10 @@ defined('_HZEXEC_') or die();
     <div class="container">
         <h3><?php echo Lang::txt('COM_KB_TROUBLE_REPORT'); ?></h3>
         <p>
-            <?= Lang::txt('COM_KB_TROUBLE_FOUND_BUG') ?> <a href="<?= Route::url('index.php?option=com_support&controller=tickets&task=new') ?>"><?= Lang::txt('COM_KB_TROUBLE_TELL_US') ?></a>
+            <?php
+            $newUrl = Route::url('index.php?option=com_support&controller=tickets&task=new');
+            ?>
+            <?= Lang::txt('COM_KB_TROUBLE_FOUND_BUG') ?> <a href="<?= $newUrl ?>"><?= Lang::txt('COM_KB_TROUBLE_TELL_US') ?></a>
         </p>
     </div><!-- / .container -->
 <?php } ?>

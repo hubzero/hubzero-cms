@@ -232,7 +232,12 @@ $idSelected = function ($value) use ($view) {
                     <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_SELECT_COLLECTION'); ?>
                     <select name="post[collection_id]" id="post-collection_id" class="form-control">
                     <?php foreach ($this->collections as $collection) { ?>
-                        <option value="<?= $this->escape($collection->get('id')) ?>"<?= $idSelected($collection->get('id')) ?>><?= $this->escape(stripslashes($collection->get('title'))) ?></option>
+                        <?php
+                        $fieldValue = $this->escape($collection->get('id'));
+                        $selectedAttr = $idSelected($collection->get('id'));
+                        $optionText = $this->escape(stripslashes($collection->get('title')));
+                        ?>
+                        <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                     <?php } ?>
                     </select>
                     <span class="hint"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_SELECT_COLLECTION_HINT') ?></span>

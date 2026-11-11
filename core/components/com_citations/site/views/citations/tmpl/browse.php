@@ -436,7 +436,12 @@ if ($label == 'none') {
                         <?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_EDUCATIONRESEARCH'); ?>
                     </label>
                     <label for="reftype_cyberinfrastructure">
-                        <input class="option" type="checkbox" name="reftype[cyberinfrastructure]" id="reftype_cyberinfrastructure" value="1"<?= isset($this->filters['reftype']['cyberinfrastructure']) ? ' checked="checked"' : '' ?> />
+                        <?php
+                        $checkedAttr = isset($this->filters['reftype']['cyberinfrastructure'])
+                            ? ' checked="checked"'
+                            : '';
+                        ?>
+                        <input class="option" type="checkbox" name="reftype[cyberinfrastructure]" id="reftype_cyberinfrastructure" value="1"<?= $checkedAttr ?> />
                         <?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_CYBERINFRASTRUCTURE'); ?>
                     </label>
                 </fieldset>

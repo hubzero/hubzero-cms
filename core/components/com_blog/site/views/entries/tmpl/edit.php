@@ -98,7 +98,10 @@ $accessSelected = function ($value) use ($view) {
                 </legend>
 
                 <div class="form-group">
-                    <label for="field-title"<?= $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '' ?>>
+                    <?php
+                    $classAttr = $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '';
+                    ?>
+                    <label for="field-title"<?= $classAttr ?>>
                         <?= Lang::txt('COM_BLOG_FIELD_TITLE') ?> <span
                             class="required"><?= Lang::txt('COM_BLOG_REQUIRED') ?></span>
                         <input type="text" class="form-control" name="entry[title]" id="field-title" size="35"
@@ -110,7 +113,12 @@ $accessSelected = function ($value) use ($view) {
                 </div>
 
                 <div class="form-group">
-                    <label for="entrycontent"<?= $this->task == 'save' && !$this->entry->get('content') ? ' class="fieldWithErrors"' : '' ?>>
+                    <?php
+                    $classAttr = $this->task == 'save' && !$this->entry->get('content')
+                        ? ' class="fieldWithErrors"'
+                        : '';
+                    ?>
+                    <label for="entrycontent"<?= $classAttr ?>>
                         <?= Lang::txt('COM_BLOG_FIELD_CONTENT') ?> <span
                             class="required"><?= Lang::txt('COM_BLOG_REQUIRED') ?></span>
                         <?= $this->editor(

@@ -70,7 +70,13 @@ $this->js();
                                     ->where('rgt', '>', $option->get('rgt'))
                                     ->total();
                                 ?>
-                                <option value="<?= $option->get('id') ?>"<?= $option->get('id') == $this->row->get('parent_id') ? ' selected="selected"' : '' ?>><?= str_repeat('- ', $level) . $option->get('title') ?></option>
+                                <?php
+                                $selectedAttr = $option->get('id') == $this->row->get('parent_id')
+                                    ? ' selected="selected"'
+                                    : '';
+                                $optionText = str_repeat('- ', $level) . $option->get('title');
+                                ?>
+                                <option value="<?= $option->get('id') ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                 <?php
                             }
                         endforeach; ?>

@@ -63,7 +63,10 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         $linkUrl = Route::url($this->page->link() . '&sort=created&dir=' . $altdir);
                         ?>
                         <a<?= $sort == 'created' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>">
-                            <?= $sort == 'created' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_DATE') ?>
+                            <?php
+                            $colDateText = Lang::txt('COM_WIKI_COL_DATE');
+                            ?>
+                            <?= $sort == 'created' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= $colDateText ?>
                         </a>
                     </th>
                     <th scope="col">
@@ -71,7 +74,10 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         $linkUrl = Route::url($this->page->link() . '&sort=filename&dir=' . $altdir);
                         ?>
                         <a<?= $sort == 'filename' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>">
-                            <?= $sort == 'filename' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_NAME') ?>
+                            <?php
+                            $colNameText = Lang::txt('COM_WIKI_COL_NAME');
+                            ?>
+                            <?= $sort == 'filename' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= $colNameText ?>
                         </a>
                     </th>
                     <th scope="col">

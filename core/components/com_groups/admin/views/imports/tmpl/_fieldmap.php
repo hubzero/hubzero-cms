@@ -68,7 +68,10 @@ if ($this->import->get('id')) { ?>
                             ?>
                             <optgroup label="<?php echo Lang::txt('COM_GROUPS_IMPORT_FIELDS_DETAILS'); ?>">
                                 <?php foreach ($columns as $column) : ?>
-                                    <option value="<?= $column ?>" <?= $mapping['field'] == $column ? 'selected="selected"' : '' ?>><?= $column ?></option>
+                                    <?php
+                                    $selectedAttr = $mapping['field'] == $column ? 'selected="selected"' : '';
+                                    ?>
+                                    <option value="<?= $column ?>" <?= $selectedAttr ?>><?= $column ?></option>
                                 <?php endforeach; ?>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_GROUPS_IMPORT_FIELDS_DESCRIPTION'); ?>">

@@ -66,7 +66,12 @@ endif;
                             </div>
                             <?php if ($event->comment) : ?>
                                 <div class="changelog-comment">
-                                    <?= Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT') . ' <span class="italic">' . $event->comment /* encoded where it is stored (saveHistory) */ . '</span>' ?>
+                                    <?php
+                                    $submitterCommentText = Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTER_COMMENT')
+                                        . ' <span class="italic">'
+                                        . $event->comment /* encoded where it is stored (saveHistory) */ . '</span>';
+                                    ?>
+                                    <?= $submitterCommentText ?>
                                 </div>
                             <?php endif; ?>
                         </div>

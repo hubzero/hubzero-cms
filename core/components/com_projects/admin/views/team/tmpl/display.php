@@ -207,9 +207,27 @@ $this->css();
                         <span class="prominent"><?= $spanText ?></span>
                     <?php } else { ?>
                         <select name="role[<?php echo $row->userid; ?>]" onchange="Hubzero.submitbutton('update');">
-                            <option value="1"<?= $row->role == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER') ?></option>
-                            <option value="0"<?= $row->role == \Components\Projects\Models\Orm\Owner::ROLE_INVITEE || !$row->role ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR') ?></option>
-                            <option value="5"<?= $row->role == \Components\Projects\Models\Orm\Owner::ROLE_REVIEWER ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_PROJECTS_TEAM_LABEL_REVIEWER') ?></option>
+                            <?php
+                            $selectedAttr = $row->role == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER
+                                ? ' selected="selected"'
+                                : '';
+                            ?>
+                            <option value="1"<?= $selectedAttr ?>><?= Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER') ?></option>
+                            <?php
+                            $selectedAttr = $row->role == \Components\Projects\Models\Orm\Owner::ROLE_INVITEE
+                                || !$row->role
+                                ? ' selected="selected"'
+                                : '';
+                            $optionText = Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR');
+                            ?>
+                            <option value="0"<?= $selectedAttr ?>><?= $optionText ?></option>
+                            <?php
+                            $selectedAttr = $row->role == \Components\Projects\Models\Orm\Owner::ROLE_REVIEWER
+                                ? ' selected="selected"'
+                                : '';
+                            $optionText = Lang::txt('COM_PROJECTS_TEAM_LABEL_REVIEWER');
+                            ?>
+                            <option value="5"<?= $selectedAttr ?>><?= $optionText ?></option>
                         </select>
                     <?php } ?>
                     </span>

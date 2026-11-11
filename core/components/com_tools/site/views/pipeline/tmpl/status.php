@@ -542,7 +542,10 @@ $prioritySelected = function ($value) use ($view) {
                     <p>
                         <?= Lang::txt('COM_TOOLS_TEAM_WILL_CREATE') ?> <a class="developer-site" href="<?= $developer_url ?>/tools"><?= $developer_site ?></a>, <?= Lang::txt('COM_TOOLS_WHATSNEXT_REGISTERED_INSTRUCTIONS') ?>.
                         <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= \Components\Tools\Helpers\Html::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST') ?>.
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE') ?> 24 <?= Lang::txt('COM_TOOLS_HOURS') ?>
+                        <?php
+                        $receiveResponseText = Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE');
+                        ?>
+                        <?= $receiveResponseText ?> 24 <?= Lang::txt('COM_TOOLS_HOURS') ?>
                     </p>
                     <h4><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
                     <ul>
@@ -601,7 +604,10 @@ $prioritySelected = function ($value) use ($view) {
                     case 2:
                         ?>
                     <p>
-                        <?= ucfirst(Lang::txt('COM_TOOLS_THE')) ?> <?= $sitename ?>  <?= Lang::txt('COM_TOOLS_WHATSNEXT_AREA_CREATED1') ?>
+                        <?php
+                        $areaCreated1Text = Lang::txt('COM_TOOLS_WHATSNEXT_AREA_CREATED1');
+                        ?>
+                        <?= ucfirst(Lang::txt('COM_TOOLS_THE')) ?> <?= $sitename ?>  <?= $areaCreated1Text ?>
                         <a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/wiki"><?= Lang::txt('COM_TOOLS_PROJECT_AREA') ?></a>
                         <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_AREA_CREATED2'); ?>
                         <a href="<?php echo $developer_url . '/tools'; ?>"><?php echo $developer_site; ?></a>.
@@ -709,9 +715,17 @@ $prioritySelected = function ($value) use ($view) {
                     case 3:
                         ?>
                     <p>
-                        <?= ucfirst(Lang::txt('COM_TOOLS_THE')) ?> <?= $sitename ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS') ?> <?= $sitename ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST') ?>.
+                        <?php
+                        $theText = ucfirst(Lang::txt('COM_TOOLS_THE'));
+                        $teamNeedsText = Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS');
+                        $canTestText = Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST');
+                        ?>
+                        <?= $theText ?> <?= $sitename ?> <?= $teamNeedsText ?> <?= $sitename ?> <?= $canTestText ?>.
                         <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= \Components\Tools\Helpers\Html::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE') ?>.
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE') ?> 3 <?= Lang::txt('COM_TOOLS_DAYS') ?>.
+                        <?php
+                        $receiveResponseText = Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE');
+                        ?>
+                        <?= $receiveResponseText ?> 3 <?= Lang::txt('COM_TOOLS_DAYS') ?>.
                     </p>
                     <h4><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
                     <ul>
@@ -768,7 +782,11 @@ $prioritySelected = function ($value) use ($view) {
                     case 4:
                         ?>
                     <p>
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_INSTALLED_CODE_READY') ?> <?= $hubShortURL ?>. <?= Lang::txt('COM_TOOLS_WHATSNEXT_INSTALLED_PLS_TEST') ?>:
+                        <?php
+                        $codeReadyText = Lang::txt('COM_TOOLS_WHATSNEXT_INSTALLED_CODE_READY');
+                        $plsTestText = Lang::txt('COM_TOOLS_WHATSNEXT_INSTALLED_PLS_TEST');
+                        ?>
+                        <?= $codeReadyText ?> <?= $hubShortURL ?>. <?= $plsTestText ?>:
                     </p>
                     <ul>
                         <li class="todo">
@@ -901,9 +919,17 @@ $prioritySelected = function ($value) use ($view) {
                     case 5:
                         ?>
                     <p>
-                        <?= ucfirst(Lang::txt('COM_TOOLS_THE')) ?> <?= $sitename ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS') ?> <?= $sitename ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST') ?>.
+                        <?php
+                        $theText = ucfirst(Lang::txt('COM_TOOLS_THE'));
+                        $teamNeedsText = Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_TEAM_NEEDS');
+                        $canTestText = Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST');
+                        ?>
+                        <?= $theText ?> <?= $sitename ?> <?= $teamNeedsText ?> <?= $sitename ?> <?= $canTestText ?>.
                         <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= \Components\Tools\Helpers\Html::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE') ?>.
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE') ?> 3 <?= Lang::txt('COM_TOOLS_DAYS') ?>.
+                        <?php
+                        $receiveResponseText = Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE');
+                        ?>
+                        <?= $receiveResponseText ?> 3 <?= Lang::txt('COM_TOOLS_DAYS') ?>.
                     </p>
                     <h4><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_REMAINING_STEPS'); ?>:</h4>
                     <ul>
@@ -1076,7 +1102,10 @@ $prioritySelected = function ($value) use ($view) {
                         ?>
                     <p>
                         <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_RETIRED_FROM'); ?> <?php echo $hubShortURL; ?>.
-                        <?= Lang::txt('COM_TOOLS_CONTACT') ?> <?= $sitename ?> <?= Lang::txt('COM_TOOLS_CONTACT_SUPPORT_TO_REPUBLISH') ?>.
+                        <?php
+                        $toRepublishText = Lang::txt('COM_TOOLS_CONTACT_SUPPORT_TO_REPUBLISH');
+                        ?>
+                        <?= Lang::txt('COM_TOOLS_CONTACT') ?> <?= $sitename ?> <?= $toRepublishText ?>.
                     </p>
                     <h3><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_YOUR_OPTIONS'); ?>:</h3>
                     <ul class="youroptions">
@@ -1101,7 +1130,11 @@ $prioritySelected = function ($value) use ($view) {
                     case 9:
                         ?>
                     <p>
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_ABANDONED_MSG') ?> <?= $sitename ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_ABANDONED_CONTACT') ?>.
+                        <?php
+                        $abandonedMsgText = Lang::txt('COM_TOOLS_WHATSNEXT_ABANDONED_MSG');
+                        $abandonedContactText = Lang::txt('COM_TOOLS_WHATSNEXT_ABANDONED_CONTACT');
+                        ?>
+                        <?= $abandonedMsgText ?> <?= $sitename ?> <?= $abandonedContactText ?>.
                     </p>
                         <?php
                         break;

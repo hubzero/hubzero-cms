@@ -314,7 +314,12 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 <span class="entry-time"><?= $entryTimeText ?></span>
                             </span>
                         </td>
-                        <td <?= !\Components\Tools\Helpers\Html::toolEstablished($row->state) ? 'class="disabled_links"' : '' ?>>
+                        <?php
+                        $classAttr = !\Components\Tools\Helpers\Html::toolEstablished($row->state)
+                            ? 'class="disabled_links"'
+                            : '';
+                        ?>
+                        <td <?= $classAttr ?>>
                             <?php if (!\Components\Tools\Helpers\Html::toolActive($row->state)) { ?>
                                 <span class="entry-page">
                                     <?php echo Lang::txt('COM_TOOLS_RESOURCE'); ?>

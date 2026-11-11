@@ -63,7 +63,10 @@ $this
 <?php if ($this->progress['submitted'] == 1) { ?>
         <div class="explaination">
             <p class="help">
-                <?= Lang::txt('COM_CONTRIBUTE_PASSED_REVIEW') ?> <a href="<?= Route::url('index.php?option=com_resources&id=' . $this->id) ?>"><?= Lang::txt('COM_CONTRIBUTE_VIEW_HERE') ?></a>
+                <?php
+                $linkUrl = Route::url('index.php?option=com_resources&id=' . $this->id);
+                ?>
+                <?= Lang::txt('COM_CONTRIBUTE_PASSED_REVIEW') ?> <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_CONTRIBUTE_VIEW_HERE') ?></a>
             </p>
         </div>
         <fieldset>
@@ -103,7 +106,11 @@ $this
                         continue;
                     } else {
                         ?>
-                    <option value="<?= $this->escape($license->name) ?>"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= $this->escape($license->title) ?></option>
+                        <?php
+                        $selectedAttr = $params->get('license') == $license->name ? ' selected="selected"' : '';
+                        $optionText = $this->escape($license->title);
+                        ?>
+                    <option value="<?= $this->escape($license->name) ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                         <?php
                     }
                     $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="'
@@ -186,7 +193,10 @@ $this
             foreach ($this->licenses as $license) {
                 if (substr($license->name, 0, 6) == 'custom') {
                     ?>
-                        <option value="custom"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= Lang::txt('Custom') ?></option>
+                        <?php
+                        $selectedAttr = $params->get('license') == $license->name ? ' selected="selected"' : '';
+                        ?>
+                        <option value="custom"<?= $selectedAttr ?>><?= Lang::txt('Custom') ?></option>
                     <?php
                     $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text))
                         . '" />';
@@ -206,7 +216,11 @@ $this
                     continue;
                 } else {
                     ?>
-                        <option value="<?= $this->escape($license->name) ?>"<?= $params->get('license') == $license->name ? ' selected="selected"' : '' ?>><?= $this->escape($license->title) ?></option>
+                        <?php
+                        $selectedAttr = $params->get('license') == $license->name ? ' selected="selected"' : '';
+                        $optionText = $this->escape($license->title);
+                        ?>
+                        <option value="<?= $this->escape($license->name) ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                     <?php
                 }
                 $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="'

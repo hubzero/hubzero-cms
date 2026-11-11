@@ -145,7 +145,14 @@ $sortDirSelected = function ($value) use ($view) {
                                 <select class="form-control" name="sort" id="filter-value-sort">
                                     <option value="name"><?php echo $this->escape('Name'); ?></option>
                                     <?php foreach ($this->fields as $field) : ?>
-                                        <option value="<?= $this->escape($field->get('name')) ?>"<?= $field->get('name') == $this->filters['sort'] ? ' selected="selected"' : '' ?>><?= $this->escape($field->get('label')) ?></option>
+                                        <?php
+                                        $fieldValue = $this->escape($field->get('name'));
+                                        $selectedAttr = $field->get('name') == $this->filters['sort']
+                                            ? ' selected="selected"'
+                                            : '';
+                                        $optionText = $this->escape($field->get('label'));
+                                        ?>
+                                        <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>

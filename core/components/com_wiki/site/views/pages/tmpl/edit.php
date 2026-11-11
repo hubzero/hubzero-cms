@@ -361,7 +361,11 @@ $allowCommentsChecked = function ($value) use ($view) {
                                                     <?= Lang::txt('COM_WIKI_FIELD_MODE_WIKI') ?>
                                                 </option>
                                                 <?php if ($this->page->access('admin')) { ?>
-                                                    <option value="static"<?= $mode == 'static' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WIKI_FIELD_MODE_STATIC') ?></option>
+                                                    <?php
+                                                    $selectedAttr = $mode == 'static' ? ' selected="selected"' : '';
+                                                    $optionText = Lang::txt('COM_WIKI_FIELD_MODE_STATIC');
+                                                    ?>
+                                                    <option value="static"<?= $selectedAttr ?>><?= $optionText ?></option>
                                                 <?php } ?>
                                             </select>
                                         </label>

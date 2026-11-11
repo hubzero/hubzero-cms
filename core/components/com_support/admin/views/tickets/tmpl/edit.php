@@ -675,7 +675,14 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                 <?php
                                 foreach ($this->lists['categories'] as $category) {
                                     ?>
-                                <option value="<?= $this->escape($category->alias) ?>"<?= $category->alias == $this->row->get('category') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($category->title)) ?></option>
+                                    <?php
+                                    $fieldValue = $this->escape($category->alias);
+                                    $selectedAttr = $category->alias == $this->row->get('category')
+                                        ? ' selected="selected"'
+                                        : '';
+                                    $optionText = $this->escape(stripslashes($category->title));
+                                    ?>
+                                <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                     <?php
                                 }
                                 ?>
@@ -696,7 +703,15 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                     <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEVERITY'); ?>
                                     <select name="ticket[severity]" id="ticket-field-severity">
                                         <?php foreach (\Components\Support\Helpers\Utilities::getSeverities() as $severity) { ?>
-                                            <option value="<?= $severity ?>"<?= $severity == $this->row->get('severity') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)) ?></option>
+                                            <?php
+                                            $selectedAttr = $severity == $this->row->get('severity')
+                                                ? ' selected="selected"'
+                                                : '';
+                                            $optionText = Lang::txt(
+                                                'COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity),
+                                            );
+                                            ?>
+                                            <option value="<?= $severity ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                         <?php } ?>
                                     </select>
                                 </label>
@@ -714,7 +729,13 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                         </optgroup>
                                         <optgroup
                                             label="<?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED') ?>">
-                                            <option value="0"<?= !$this->row->isOpen() && $this->row->get('status') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED') ?></option>
+                                            <?php
+                                            $selectedAttr = !$this->row->isOpen() && $this->row->get('status') == 0
+                                                ? ' selected="selected"'
+                                                : '';
+                                            $optionText = Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED');
+                                            ?>
+                                            <option value="0"<?= $selectedAttr ?>><?= $optionText ?></option>
                                             <?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
                                                 <option value="<?= $status->get('id') ?>"<?= !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
                                             <?php } ?>

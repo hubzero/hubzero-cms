@@ -240,7 +240,14 @@ $repohostChecked = function ($value) use ($view) {
                     <?php if ($this->config->get('github', 1)) { ?>
                         <div class="form-group form-check">
                             <label for="tool_repohost_gitexternal" class="form-check-label">
-                                <input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?= (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'gitExternal') ? 'checked="checked"' : "disabled" ?> class="option form-check-input" />
+                                <?php
+                                $checkedAttr = (
+                                    !$this->defaults['repohost'] || $this->defaults['repohost'] == 'gitExternal'
+                                )
+                                    ? 'checked="checked"'
+                                    : "disabled";
+                                ?>
+                                <input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?= $checkedAttr ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_EXT_GIT'); ?>
                             </label>
                         </div>
@@ -249,7 +256,12 @@ $repohostChecked = function ($value) use ($view) {
                     <?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
                         <div class="form-group form-check">
                             <label for="tool_repohost_gitlocal" class="form-check-label">
-                                <input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?= ($this->defaults['repohost'] == 'gitLocal') ? 'checked="checked"' : "disabled" ?> class="option form-check-input" />
+                                <?php
+                                $checkedAttr = ($this->defaults['repohost'] == 'gitLocal')
+                                    ? 'checked="checked"'
+                                    : "disabled";
+                                ?>
+                                <input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?= $checkedAttr ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_GIT'); ?>
                             </label>
                         </div>
@@ -291,7 +303,13 @@ $repohostChecked = function ($value) use ($view) {
                     <legend><?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT'); ?>:</legend>
                     <div class="form-group form-check">
                         <label for="tool_publishType_standard" class="form-check-label">
-                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?= !$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard' ? 'checked="checked"' : '' ?> class="option form-check-input" />
+                            <?php
+                            $checkedAttr = !$this->defaults['publishType']
+                                || $this->defaults['publishType'] == 'standard'
+                                ? 'checked="checked"'
+                                : '';
+                            ?>
+                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?= $checkedAttr ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_RAPP'); ?>
                         </label>
                     </div>
@@ -325,7 +343,13 @@ $repohostChecked = function ($value) use ($view) {
                     <?php if ($this->config->get('github', 1)) { ?>
                         <div class="form-group form-check">
                             <label for="tool_repohost_gitexternal" class="form-check-label">
-                                <input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?= !$this->defaults['repohost'] || $this->defaults['repohost'] == 'gitExternal' ? 'checked="checked"' : '' ?> class="option form-check-input" />
+                                <?php
+                                $checkedAttr = !$this->defaults['repohost']
+                                    || $this->defaults['repohost'] == 'gitExternal'
+                                    ? 'checked="checked"'
+                                    : '';
+                                ?>
+                                <input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?= $checkedAttr ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_EXT_GIT'); ?>
                             </label>
                         </div>
@@ -379,7 +403,13 @@ $repohostChecked = function ($value) use ($view) {
                     <legend><?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT'); ?>:</legend>
                     <div class="form-group form-check">
                         <label for="tool_publishType_standard" class="form-check-label">
-                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?= !$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard' ? 'checked="checked"' : '' ?> class="option form-check-input" />
+                            <?php
+                            $checkedAttr = !$this->defaults['publishType']
+                                || $this->defaults['publishType'] == 'standard'
+                                ? 'checked="checked"'
+                                : '';
+                            ?>
+                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?= $checkedAttr ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_RAPP'); ?>
                         </label>
                     </div>

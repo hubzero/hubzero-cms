@@ -173,8 +173,11 @@ foreach ($cats as $cat) {
                                     . $this->active . '&parent=' . $this->parent . '&sort=date&limit='
                                     . $this->filters['limit'] . '&start=' . $this->filters['start'],
                             );
+                            $classAttr = ($this->filters['sort'] == 'date' || $this->filters['sort'] == '')
+                                ? ' class="active"'
+                                : '';
                             ?>
-                            <a<?= ($this->filters['sort'] == 'date' || $this->filters['sort'] == '') ? ' class="active"' : '' ?> rel="nofollow" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TAGS_OPT_SORT_BY_DATE') ?>">
+                            <a<?= $classAttr ?> rel="nofollow" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TAGS_OPT_SORT_BY_DATE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_OPT_DATE'); ?>
                             </a>
                         </li>

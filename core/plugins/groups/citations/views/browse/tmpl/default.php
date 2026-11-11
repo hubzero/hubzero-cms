@@ -82,8 +82,11 @@ if (isset($this->messages)) {
                             ?>
                             <?php
                             $browseUrl = Route::url($base . '&action=browse' . $queryString . '&filters[filter]=all');
+                            $classAttr = $this->filters['filter'] == '' || $this->filters['filter'] == 'all'
+                                ? 'class="active"'
+                                : '';
                             ?>
-                            <li><a <?= $this->filters['filter'] == '' || $this->filters['filter'] == 'all' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= Lang::txt('PLG_GROUPS_CITATIONS_ALL') ?></a></li>
+                            <li><a <?= $classAttr ?> href="<?= $browseUrl ?>"><?= Lang::txt('PLG_GROUPS_CITATIONS_ALL') ?></a></li>
                             <?php
                             $browseUrl = Route::url(
                                 $base . '&action=browse' . $queryString . '&filters[filter]=member',
