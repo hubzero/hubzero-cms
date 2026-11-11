@@ -463,6 +463,7 @@ class Connect extends Obj
             return false;
         }
 
+        $client = null;
         if ($service == 'google') {
             // Set up the config for the google api instance
             $client = new Google_Client();
@@ -800,13 +801,12 @@ class Connect extends Obj
             return null;
         }
 
-        $remote_md5      = isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
-        $remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
+        $remote_md5      = isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
+        $remote_modified = isset($metadata['modifiedDate'])
                             ? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate']))
                             : null;
-        $remote_format   = isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
-        $converted       = isset($metadata)
-                        && preg_match("/google-apps/", $remote_format)
+        $remote_format   = isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
+        $converted       = preg_match("/google-apps/", $remote_format)
                         && !preg_match("/.folder/", $remote_format) ? 1 : 0;
 
         if ($convert == true && !$converted) {
@@ -936,13 +936,12 @@ class Connect extends Obj
             return false;
         }
 
-        $remote_md5 = isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
-        $remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
+        $remote_md5 = isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
+        $remote_modified = isset($metadata['modifiedDate'])
                 ? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate']))
                 : null;
-        $remote_format = isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
-        $converted = isset($metadata)
-                            && preg_match("/google-apps/", $remote_format)
+        $remote_format = isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
+        $converted = preg_match("/google-apps/", $remote_format)
                             && !preg_match("/.folder/", $remote_format) ? 1 : 0;
 
         // Update connection record
@@ -1019,13 +1018,13 @@ class Connect extends Obj
             return false;
         }
 
-        $remote_md5 = isset($metadata) && isset($metadata['md5Checksum'])
+        $remote_md5 = isset($metadata['md5Checksum'])
                     ? $metadata['md5Checksum']
                     : null;
-        $remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
+        $remote_modified = isset($metadata['modifiedDate'])
                         ? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate']))
                         : null;
-        $remote_format = isset($metadata) && isset($metadata['mimeType'])
+        $remote_format = isset($metadata['mimeType'])
                         ? $metadata['mimeType']
                         : null;
 
@@ -1096,11 +1095,11 @@ class Connect extends Obj
             return false;
         }
 
-        $remote_md5 = isset($metadata) && isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
-        $remote_modified = isset($metadata) && isset($metadata['modifiedDate'])
+        $remote_md5 = isset($metadata['md5Checksum']) ? $metadata['md5Checksum'] : null;
+        $remote_modified = isset($metadata['modifiedDate'])
                 ? gmdate('Y-m-d H:i:s', strtotime($metadata['modifiedDate']))
                 : null;
-        $remote_format = isset($metadata) && isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
+        $remote_format = isset($metadata['mimeType']) ? $metadata['mimeType'] : null;
 
         // Update connection record
         $objRFile = new \Components\Projects\Tables\RemoteFile($this->db);
