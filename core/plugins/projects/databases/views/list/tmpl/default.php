@@ -77,7 +77,8 @@ $this->css();
                             . 'file repository. Click the help icon for more information.',
                     );
                     ?>
-                    <th><?= Lang::txt('Update Database') ?><span class="update-help-icon" title="<?= $titleText ?>"></span></th>
+                    <th><?= Lang::txt('Update Database') ?><span class="update-help-icon"
+                        title="<?= $titleText ?>"></span></th>
                     <th><?php echo Lang::txt('PLG_PROJECTS_DATABASES_DELETE'); ?></th>
                 <?php } ?>
             </tr>
