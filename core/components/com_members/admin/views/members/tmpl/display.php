@@ -382,8 +382,14 @@ $activationSelected = function ($value) use ($view) {
                             'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id='
                                 . $row->get('id'),
                         );
+                        $nameTitle = $this->escape(stripslashes($row->get('name')));
+                        /* ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot;
+                           name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot;
+                           height=&quot;40&quot; /><br /><span
+                           class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php
+                           echo ($row->public) ? 'public profile' : 'private profile'; </span>*/
                         ?>
-                        <a class="editlinktip hasTip" href="<?= $editUrl ?>" title="<?php echo $this->escape(stripslashes($row->get('name')));/* ?>::<img border=&quot;1&quot; src=&quot;<?php echo $base . $picture; ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; /><br /><span class=&quot;glyph <?php echo ($row->public) ? 'public' : 'private'; ?>&quot;><?php echo ($row->public) ? 'public profile' : 'private profile'; </span>*/?>">
+                        <a class="editlinktip hasTip" href="<?= $editUrl ?>" title="<?= $nameTitle ?>">
                             <?php echo $this->escape($row->get('name')); ?>
                         </a>
                     <?php else : ?>

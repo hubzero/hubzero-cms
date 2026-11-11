@@ -102,7 +102,12 @@ $authorlist = '';
                                                 </tr>
                                                 <tr>
                                                     <th><?= Lang::txt('PLG_PUBLICATION_RELATED_AVG_RATING') ?></th>
-                                                    <td><span class="avgrating<?= $class ?>"><span><?= Lang::txt('OUT_OF_5_STARS', $line->rating) ?></span>&nbsp;</span> (<?= $line->times_rated ?>)</td>
+                                                    <?php
+                                                    $stars = Lang::txt('OUT_OF_5_STARS', $line->rating);
+                                                    $rating = '<span class="avgrating' . $class . '"><span>' . $stars
+                                                        . '</span>&nbsp;</span>';
+                                                    ?>
+                                                    <td><?= $rating ?> (<?= $line->times_rated ?>)</td>
                                                 </tr>
                                             </tbody>
                                         </table>

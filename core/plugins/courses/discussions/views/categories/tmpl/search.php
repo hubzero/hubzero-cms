@@ -102,7 +102,15 @@ $base = $this->offering->alias() . '&active=forum';
                                     <td class="priority-4">
                                         <span><?php echo Lang::txt('Section'); ?></span>
                                         <span class="entry-details section-name">
-                                            <?= $this->escape(Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, ['exact' => true])) ?>
+                                            <?php
+                                            $category = $this->categories[$row->get('category_id')];
+                                            $sectionTitle = Str::truncate(
+                                                $this->sections[$category->get('section_id')]->get('title'),
+                                                100,
+                                                ['exact' => true],
+                                            );
+                                            ?>
+                                            <?= $this->escape($sectionTitle) ?>
                                         </span>
                                     </td>
                                     <td>

@@ -16,9 +16,12 @@ $this
     ->css('jquery.fancybox.css', 'system')
     ->js();
 
+$imageUrl = Route::url(
+    'index.php?option=com_publications&id=' . $this->publication->id . '&v=' . $this->publication->version_id,
+);
 $this->css('
 	.launcher-image .imager {
-		background-image: url("' . Route::url('index.php?option=com_publications&id=' . $this->publication->id . '&v=' . $this->publication->version_id) . '/Image:master");
+		background-image: url("' . $imageUrl . '/Image:master");
 	}
 ');
 

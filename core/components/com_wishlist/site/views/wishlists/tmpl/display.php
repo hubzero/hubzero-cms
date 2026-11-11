@@ -516,14 +516,17 @@ if ($this->wishlist->get('id')) {
                                                     } elseif ($item->get('ranked')) {
                                                         //$html .= Lang::txt('WISH_PRIORITY').': <span
                                                         //    class="priority">'.$item->ranking.'</span>'."\n";
+                                                        $percent = ($item->get('ranking', 0) / 50) * 100;
+                                                        $levelClass = 'priority-level priority-level-'
+                                                            . $item->get('id');
                                                         $this->css('
 															.priority-level-' . $item->get('id') . ' {
-																width: ' . (($item->get('ranking', 0) / 50) * 100) . '%;
+																width: ' . $percent . '%;
 															}
 														');
 
                                                         $html .= '<span class="priority-level-base">
-															<span class="priority-level priority-level-' . $item->get('id') . '" title="' . (($item->get('ranking', 0) / 50) * 100) . '%">
+															<span class="' . $levelClass . '" title="' . $percent . '%">
 																<span>' . Lang::txt('COM_WISHLIST_WISH_PRIORITY') . ': ' . $item->get('ranking', 0) . '</span>
 															</span>
 														</span>';

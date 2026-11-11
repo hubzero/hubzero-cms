@@ -579,7 +579,8 @@ if ($this->message) { ?>
             "SELECT a.label,b.value,b.valfmt,a.plot,a.id
 			FROM `summary_simusage` AS a
 			INNER JOIN `summary_simusage_vals` AS b
-			WHERE a.id=b.rowid AND b.period = " . $db->quote($period) . " AND b.datetime = " . $db->quote($datetime) . " AND a.id > 2
+			WHERE a.id=b.rowid AND b.period = " . $db->quote($period) . "
+			AND b.datetime = " . $db->quote($datetime) . " AND a.id > 2
 			ORDER BY a.id",
         );
         $results = $db->loadObjectList();

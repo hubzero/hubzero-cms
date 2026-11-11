@@ -430,7 +430,8 @@ $option = 'com_groups';
                                         "SELECT r.id, r.name, r.permissions
 										FROM `#__xgroups_roles` as r
 										LEFT JOIN `#__xgroups_member_roles` as m ON m.roleid=r.id
-										WHERE m.uidNumber=" . $db->quote($u->get('id')) . " AND r.gidNumber=" . $db->quote($this->group->gidNumber) . "
+										WHERE m.uidNumber=" . $db->quote($u->get('id')) . "
+										AND r.gidNumber=" . $db->quote($this->group->gidNumber) . "
 										ORDER BY r.ordering ASC, r.name ASC",
                                     );
                                     $roles = $db->loadAssocList();

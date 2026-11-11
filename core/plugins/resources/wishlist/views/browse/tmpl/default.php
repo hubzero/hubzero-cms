@@ -233,13 +233,15 @@ $this->css();
                                     . urlencode($this->filters['tag']) . '">' . Lang::txt('COM_WISHLIST_WISH_RANK_THIS')
                                     . '</a>' . "\n";
                             } elseif (isset($item->ranked) && $item->ranked) {
+                                $percent = ($item->ranking / 50) * 100;
+                                $levelClass = 'priority-level priority-level' . $item->id;
                                 $this->css('
 										.priority-level' . $item->id . ' {
-											width: ' . (($item->ranking / 50) * 100) . '%;
+											width: ' . $percent . '%;
 										}
 									');
                                 $html .= '<span class="priority-level-base">
-										<span class="priority-level priority-level' . $item->id . '" data-width="' . (($item->ranking / 50) * 100) . '">
+										<span class="' . $levelClass . '" data-width="' . $percent . '">
 											<span>' . Lang::txt('WISH_PRIORITY') . ': ' . $item->ranking . '</span>
 										</span>
 									</span>';

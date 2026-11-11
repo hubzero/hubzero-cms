@@ -192,7 +192,13 @@ $no_show = ["errors","duplicate"];
                                                                                         echo $this->escape($badges);
                                                                                     break;
                                                                                 default:
-                                                                                        echo nl2br($this->escape(html_entity_decode((string) $c['duplicate']->get($k))));
+                                                                                        $raw = $c['duplicate']->get($k);
+                                                                                        $text = html_entity_decode(
+                                                                                            (string) $raw,
+                                                                                        );
+                                                                                        echo nl2br(
+                                                                                            $this->escape($text),
+                                                                                        );
                                                                                     break;
                                                                             }
                                                                             ?>

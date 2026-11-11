@@ -15,11 +15,15 @@ defined('_HZEXEC_') or die();
 <fieldset class="condition-set">
     <p class="operator">
         <button class="remove" alt="Remove">&times;</button>
-        <?php echo Lang::txt(
+        <?php
+        $operator = strtolower($this->condition->operator);
+        $allSelected = $operator == 'and' ? ' selected="selected"' : '';
+        $anySelected = $operator == 'or' ? ' selected="selected"' : '';
+        echo Lang::txt(
             'COM_SUPPORT_QUERY_MATCH',
             '<select aria-label="' . Lang::txt('COM_SUPPORT_QUERY_MATCH_OPERATOR') . '">
-			<option value="AND"' . (strtolower($this->condition->operator) == 'and' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_SUPPORT_QUERY_ALL') . '</option>
-			<option value="OR"' . (strtolower($this->condition->operator) == 'or' ? ' selected="selected"' : '') . '>' . Lang::txt('COM_SUPPORT_QUERY_ANY') . '</option>
+			<option value="AND"' . $allSelected . '>' . Lang::txt('COM_SUPPORT_QUERY_ALL') . '</option>
+			<option value="OR"' . $anySelected . '>' . Lang::txt('COM_SUPPORT_QUERY_ANY') . '</option>
 		</select>',
         ); ?>
     </p>
