@@ -16,6 +16,11 @@ use Hubzero\Facades\Lang;
 /**
  * Base class for wiki macros
  * Should be extended
+ *
+ * The parser hands each macro its arguments through __set(), which keeps
+ * them in $data and clears the parsed arguments:
+ *
+ * @property  string  $args  The text between the macro's parentheses
  */
 class Macro
 {
@@ -55,13 +60,6 @@ class Macro
     protected $arguments = null;
 
     /**
-     * Arguments passed to the macro
-     *
-     * @var  string
-     */
-    public $args = '';
-
-    /**
      * Allow macro in partial parsing?
      *
      * @var  string
@@ -91,6 +89,8 @@ class Macro
     public function __construct($config = [])
     {
         $this->db = App::get('db');
+
+        $this->args = '';
 
         // Set the controller name
         if (empty($this->name)) {
