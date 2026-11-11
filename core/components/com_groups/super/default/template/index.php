@@ -23,6 +23,14 @@ $no_html = Request::getInt('no_html', 0);
 // add stylesheets and scripts
 Document::addStyleSheet($base . DS . 'assets/css/main.css');
 Document::addScript($base . DS . 'assets/js/main.js');
+
+// the page heading: the page's own title, or else the name of the tab
+$title = (isset($this->page) && $this->page->get('title'))
+    ? $this->page->get('title')
+    : Lang::txt('PLG_GROUPS_' . strtoupper($this->tab));
+$title = ($title == 'PLG_GROUPS_' . strtoupper($this->tab)
+    ? ucfirst($this->tab)
+    : $title);
 ?>
 
 <?php if (!$no_html) : ?>
@@ -34,15 +42,7 @@ Document::addScript($base . DS . 'assets/js/main.js');
 
         <div class="super-group-content-wrap">
             <div class="super-group-content group_<?php echo $this->escape($this->tab); ?>">
-                <?php
-                $title = (isset($this->page) && $this->page->get('title'))
-                    ? $this->page->get('title')
-                    : Lang::txt('PLG_GROUPS_' . strtoupper($this->tab));
-                $title = ($title == 'PLG_GROUPS_' . strtoupper($this->tab)
-                    ? ucfirst($this->tab)
-                    : $title);
-                if ($title != '') :
-                    ?>
+                <?php if ($title != '') : ?>
                     <h2><?php echo $this->escape($title); ?></h2>
                 <?php endif; ?>
 <?php endif; ?>
