@@ -11,6 +11,19 @@ use Hubzero\Facades\Route;
 
 // no direct access
 defined('_HZEXEC_') or die();
+
+// What the member posted, to fill the form in again. A field sent as a list
+// where one value is expected is flattened to a string.
+$posted = [];
+foreach (
+    [
+        'org-other', 'reason-other', 'countryorigin', 'countryorigin_us', 'countryresident',
+        'countryresident_us', 'racenativetribe', 'disability', 'location',
+    ] as $key
+) {
+    $posted[$key] = Request::getString($key, null, 'post');
+}
+$postedName = array_map('strval', array_filter(Request::getArray('name', [], 'post'), 'is_scalar'));
 ?>
 
 <div id="overlay"></div>
@@ -131,9 +144,7 @@ defined('_HZEXEC_') or die();
                         here:
                     </label><br />
                     <?php
-                    $orgOther = isset($_POST['org-other'])
-                        ? str_replace('"', '&quot;', $_POST['org-other'])
-                        : '';
+                    $orgOther = $this->escape($posted['org-other'] ?? '');
                     ?>
                     <input id="org-other"
                         type="text"
@@ -194,9 +205,7 @@ defined('_HZEXEC_') or die();
                         Have a different reason?
                     </label><br />
                     <?php
-                    $reasonOther = isset($_POST['reason-other'])
-                        ? str_replace('"', '&quot;', $_POST['reason-other'])
-                        : '';
+                    $reasonOther = $this->escape($posted['reason-other'] ?? '');
                     ?>
                     <input id="reason-other"
                         type="text"
@@ -219,14 +228,7 @@ defined('_HZEXEC_') or die();
                             <label for="inc_name-first">
                                 <span>First:</span>
                                 <?php
-                                $nameFirst = '';
-                                if (isset($_POST['name']['first'])) {
-                                    $nameFirst = str_replace(
-                                        '"',
-                                        '&quot;',
-                                        $_POST['name']['first'],
-                                    );
-                                }
+                                $nameFirst = $this->escape($postedName['first'] ?? '');
                                 ?>
                                 <input type="text"
                                     id="inc_name-first"
@@ -239,14 +241,7 @@ defined('_HZEXEC_') or die();
                             <label for="inc_name-middle">
                                 <span>Middle:</span>
                                 <?php
-                                $nameMiddle = '';
-                                if (isset($_POST['name']['middle'])) {
-                                    $nameMiddle = str_replace(
-                                        '"',
-                                        '&quot;',
-                                        $_POST['name']['middle'],
-                                    );
-                                }
+                                $nameMiddle = $this->escape($postedName['middle'] ?? '');
                                 ?>
                                 <input type="text"
                                     id="inc_name-middle"
@@ -259,14 +254,7 @@ defined('_HZEXEC_') or die();
                             <label for="inc_name-last">
                                 <span>Last:</span>
                                 <?php
-                                $nameLast = '';
-                                if (isset($_POST['name']['last'])) {
-                                    $nameLast = str_replace(
-                                        '"',
-                                        '&quot;',
-                                        $_POST['name']['last'],
-                                    );
-                                }
+                                $nameLast = $this->escape($postedName['last'] ?? '');
                                 ?>
                                 <input type="text"
                                     id="inc_name-last"
@@ -377,8 +365,8 @@ defined('_HZEXEC_') or die();
                 <?php if (isset($row['countryorigin'])) : ?>
                     <li>
                         <?php
-                        $country = isset($_POST['countryorigin'])
-                            ? $_POST['countryorigin']
+                        $country = isset($posted['countryorigin'])
+                            ? $posted['countryorigin']
                             : \Hubzero\Geocode\Geocode::ipcountry(
                                 Request::ip(),
                             );
@@ -400,18 +388,18 @@ defined('_HZEXEC_') or die();
                                 $originYes = (
                                     strtolower($country) == 'us'
                                     || (
-                                        isset($_POST['countryorigin_us'])
-                                        && $_POST['countryorigin_us'] == 'yes'
+                                        isset($posted['countryorigin_us'])
+                                        && $posted['countryorigin_us'] == 'yes'
                                     )
                                 );
                                 $originNo = (
                                     (
-                                        !empty($_POST['countryorigin'])
+                                        !empty($posted['countryorigin'])
                                         && strtolower($country) != 'us'
                                     )
                                     || (
-                                        isset($_POST['countryorigin_us'])
-                                        && $_POST['countryorigin_us'] == 'no'
+                                        isset($posted['countryorigin_us'])
+                                        && $posted['countryorigin_us'] == 'no'
                                     )
                                 );
                                 $yesChk = $originYes
@@ -473,8 +461,8 @@ defined('_HZEXEC_') or die();
                 <?php if (isset($row['countryresident'])) : ?>
                     <li>
                         <?php
-                        $country = isset($_POST['countryresident'])
-                            ? $_POST['countryresident']
+                        $country = isset($posted['countryresident'])
+                            ? $posted['countryresident']
                             : \Hubzero\Geocode\Geocode::ipcountry(
                                 Request::ip(),
                             );
@@ -495,18 +483,18 @@ defined('_HZEXEC_') or die();
                                 $resYes = (
                                     strtolower($country) == 'us'
                                     || (
-                                        isset($_POST['countryresident_us'])
-                                        && $_POST['countryresident_us'] == 'yes'
+                                        isset($posted['countryresident_us'])
+                                        && $posted['countryresident_us'] == 'yes'
                                     )
                                 );
                                 $resNo = (
                                     (
-                                        !empty($_POST['countryresident'])
+                                        !empty($posted['countryresident'])
                                         && strtolower($country) != 'us'
                                     )
                                     || (
-                                        isset($_POST['countryresident_us'])
-                                        && $_POST['countryresident_us'] == 'no'
+                                        isset($posted['countryresident_us'])
+                                        && $posted['countryresident_us'] == 'no'
                                     )
                                 );
                                 $yesChk = $resYes
@@ -569,9 +557,7 @@ defined('_HZEXEC_') or die();
                 <?php endif; ?>
                 <?php if (isset($row['race'])) : ?>
                     <?php
-                    $race = isset($_POST['race'])
-                        ? $_POST['race']
-                        : [];
+                    $race = Request::getArray('race', [], 'post');
                     ?>
                     <li>
                             <?php
@@ -612,14 +598,7 @@ defined('_HZEXEC_') or die();
                                     <label class="indent">
                                         Tribal Affiliation(s)
                                         <?php
-                                        $tribeVal = '';
-                                        if (isset($_POST['racenativetribe'])) {
-                                            $tribeVal = str_replace(
-                                                '"',
-                                                '&quot;',
-                                                $_POST['racenativetribe'],
-                                            );
-                                        }
+                                        $tribeVal = $this->escape($posted['racenativetribe'] ?? '');
                                         ?>
                                         <input
                                             name="racenativetribe"
@@ -713,8 +692,8 @@ defined('_HZEXEC_') or die();
                             <div class="indented">
                                 <?php
                                 $disYes = (
-                                    isset($_POST['disability'])
-                                    && $_POST['disability'] == 'yes'
+                                    isset($posted['disability'])
+                                    && $posted['disability'] == 'yes'
                                 ) ? 'checked="checked" ' : '';
                                 ?>
                                 <label><input
@@ -768,8 +747,8 @@ defined('_HZEXEC_') or die();
                                 </fieldset>
                                 <?php
                                 $disNo = (
-                                    isset($_POST['disability'])
-                                    && $_POST['disability'] == 'no'
+                                    isset($posted['disability'])
+                                    && $posted['disability'] == 'no'
                                 ) ? 'checked="checked" ' : '';
                                 ?>
                                 <label><input
@@ -781,8 +760,8 @@ defined('_HZEXEC_') or die();
                                     No (none)</label><br />
                                 <?php
                                 $disRefused = (
-                                    isset($_POST['disability'])
-                                    && $_POST['disability'] == 'refused'
+                                    isset($posted['disability'])
+                                    && $posted['disability'] == 'refused'
                                 ) ? 'checked="checked" ' : '';
                                 ?>
                                 <label><input
@@ -836,13 +815,7 @@ defined('_HZEXEC_') or die();
                             What is your postal code?
                         </label>
                         <?php
-                        $locVal = isset($_POST['location'])
-                            ? str_replace(
-                                '"',
-                                '&quot;',
-                                $_POST['location'],
-                            )
-                            : '';
+                        $locVal = $this->escape($posted['location'] ?? '');
                         ?>
                         <p class="indented"><input
                             id="location"
