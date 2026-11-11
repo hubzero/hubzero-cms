@@ -331,21 +331,19 @@ class Pages extends AdminController
 
                 $i = 0;
 
-                if (!empty($ids)) {
-                    foreach ($ids as $id) {
-                        // Finally, delete the page itself
-                        $page = Page::oneOrFail(intval($id));
+                foreach ($ids as $id) {
+                    // Finally, delete the page itself
+                    $page = Page::oneOrFail(intval($id));
 
-                        if (!$page->destroy()) {
-                            Notify::error($page->getError());
-                            continue;
-                        }
-
-                        // Trigger after delete event
-                        Event::trigger('wiki.onWikiAfterDelete', [$id]);
-
-                        $i++;
+                    if (!$page->destroy()) {
+                        Notify::error($page->getError());
+                        continue;
                     }
+
+                    // Trigger after delete event
+                    Event::trigger('wiki.onWikiAfterDelete', [$id]);
+
+                    $i++;
                 }
 
                 if ($i) {
@@ -388,6 +386,9 @@ class Pages extends AdminController
                     break;
                 case 'accessspecial':
                     $access = 2;
+                    break;
+                default:
+                    $access = 0;
                     break;
             }
 
