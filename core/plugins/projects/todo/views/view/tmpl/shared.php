@@ -128,7 +128,8 @@ $rows = $this->todo->entries('list', $this->filters);
                     <?php
                     $viewUrl = Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id'));
                     ?>
-                    | <?= Lang::txt('PLG_PROJECTS_TODO_COMMENTS') ?>: <a href="<?= $viewUrl ?>"><?= $row->comments('count') ?></a></span>
+                    | <?= Lang::txt('PLG_PROJECTS_TODO_COMMENTS') ?>: <a
+                        href="<?= $viewUrl ?>"><?= $row->comments('count') ?></a></span>
             </td>
             <?php
             $linkUrl = Route::url($row->project()->link('todo'));

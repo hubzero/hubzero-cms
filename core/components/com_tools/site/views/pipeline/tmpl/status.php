@@ -236,7 +236,8 @@ $prioritySelected = function ($value) use ($view) {
                                         . '&task=license&app=' . $this->status['toolname'],
                                 );
                                 ?>
-                                [<a class="license-tool" href="<?= $licenseUrl ?>"><?= Lang::txt('COM_TOOLS_CHANGE_LICENSE') ?></a>]
+                                [<a class="license-tool"
+                                    href="<?= $licenseUrl ?>"><?= Lang::txt('COM_TOOLS_CHANGE_LICENSE') ?></a>]
                             <?php } ?>
                             </td>
                         </tr>
@@ -986,7 +987,8 @@ $prioritySelected = function ($value) use ($view) {
                                     . '&task=update&newstate=Updated&app=' . $this->status['toolname'],
                             );
                             ?>
-                            | <span id="Updated_"><a href="<?= $updateUrl ?>" class="flip"><?= Lang::txt('COM_TOOLS_WHATSNEXT_CHANGES_MADE') ?></a></span>
+                            | <span id="Updated_"><a href="<?= $updateUrl ?>"
+                                class="flip"><?= Lang::txt('COM_TOOLS_WHATSNEXT_CHANGES_MADE') ?></a></span>
                         </li>
                         <li class="incomplete">
                             <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_PUBLISH'); ?> <?php echo $hubShortURL; ?>

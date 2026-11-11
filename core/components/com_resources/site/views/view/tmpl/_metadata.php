@@ -86,7 +86,8 @@ if (
                             'index.php?option=' . $this->option . '&id=' . $this->model->id . '&active=reviews',
                         );
                         ?>
-                        Ranking is calculated from a formula comprised of <a href="<?= $linkUrl ?>">user reviews</a> and usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>
+                        Ranking is calculated from a formula comprised of <a href="<?= $linkUrl ?>">user reviews</a> and
+                            usage statistics. <a href="about/ranking/">Learn more &rsaquo;</a>
                     </p>
                     <div>
                         <?php echo $stats->display(); ?>

@@ -320,7 +320,8 @@ if ($this->wishlist->get('id')) {
                                             ? ($this->filters['start'] + 1)
                                             : $this->filters['start'];
                                         ?>
-                                        (<?= $filtersText ?> - <?= $this->filters['start'] + $this->wishes->count() ?> of <?= $this->total ?>)
+                                        (<?= $filtersText ?> - <?= $this->filters['start'] + $this->wishes->count() ?>
+                                            of <?= $this->total ?>)
                                     </span>
                                 </caption>
                                 <tbody>
