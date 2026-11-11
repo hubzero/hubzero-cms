@@ -285,9 +285,22 @@ class Router extends Base
                 // Tools
                 if (!empty($segments[2]) && $vars['active'] == 'tools') {
                     // App actions
-                    $appActions = ['status', 'history', 'wiki', 'browse',
-                        'edit', 'start', 'save', 'register', 'attach', 'source',
-                        'cancel', 'update', 'message', 'verify', 'addimage',
+                    $appActions = [
+                        'status',
+                        'history',
+                        'wiki',
+                        'browse',
+                        'edit',
+                        'start',
+                        'save',
+                        'register',
+                        'attach',
+                        'source',
+                        'cancel',
+                        'update',
+                        'message',
+                        'verify',
+                        'addimage',
                     ];
                     if (in_array($segments[2], $appActions)) {
                         $vars['action'] = $segments[2];
@@ -303,14 +316,32 @@ class Router extends Base
                     // Notes
                     //!is_numeric($segments[2]) &&
                     // Wiki actions
-                    $wiki_actions = ['media', 'list', 'upload',
-                        'deletefolder', 'deletefile', 'view',
-                        'new', 'edit', 'save', 'cancel',
-                        'delete', 'deleteversion', 'approve',
-                        'rename', 'saverename', 'history',
-                        'compare', 'comments', 'editcomment',
-                        'addcomment', 'savecomment', 'removecomment',
-                        'reportcomment', 'deleterevision', 'pdf',
+                    $wiki_actions = [
+                        'media',
+                        'list',
+                        'upload',
+                        'deletefolder',
+                        'deletefile',
+                        'view',
+                        'new',
+                        'edit',
+                        'save',
+                        'cancel',
+                        'delete',
+                        'deleteversion',
+                        'approve',
+                        'rename',
+                        'saverename',
+                        'history',
+                        'compare',
+                        'comments',
+                        'editcomment',
+                        'addcomment',
+                        'savecomment',
+                        'removecomment',
+                        'reportcomment',
+                        'deleterevision',
+                        'pdf',
                     ];
 
                     $remaining = array_slice($segments, 2);

@@ -1068,9 +1068,20 @@ class Tool
         }
 
         if (
-            in_array($filters['sortby'], ['id ASC', 'id DESC', 'toolname ASC',
-                'toolname DESC', 'title ASC', 'title DESC', 'versions ASC', 'versions DESC',
-                'state_changed ASC', 'state_changed DESC', 'registered ASC', 'registered DESC'])
+            in_array($filters['sortby'], [
+                'id ASC',
+                'id DESC',
+                'toolname ASC',
+                'toolname DESC',
+                'title ASC',
+                'title DESC',
+                'versions ASC',
+                'versions DESC',
+                'state_changed ASC',
+                'state_changed DESC',
+                'registered ASC',
+                'registered DESC',
+            ])
         ) {
             return " ORDER BY " . $filters['sortby'] . " ";
         }

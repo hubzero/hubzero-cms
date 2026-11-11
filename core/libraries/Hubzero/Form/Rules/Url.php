@@ -43,9 +43,31 @@ class Url extends Rule
         // See http://www.w3.org/Addressing/URL/url-spec.txt
         // Use the full list or optionally specify a list of permitted schemes.
         if ($element['schemes'] == '') {
-            $scheme = ['http', 'https', 'ftp', 'ftps', 'gopher', 'mailto', 'news', 'prospero', 'telnet', 'rlogin',
-                'tn3270', 'wais', 'url',
-                'mid', 'cid', 'nntp', 'tel', 'urn', 'ldap', 'file', 'fax', 'modem', 'git'];
+            $scheme = [
+                'http',
+                'https',
+                'ftp',
+                'ftps',
+                'gopher',
+                'mailto',
+                'news',
+                'prospero',
+                'telnet',
+                'rlogin',
+                'tn3270',
+                'wais',
+                'url',
+                'mid',
+                'cid',
+                'nntp',
+                'tel',
+                'urn',
+                'ldap',
+                'file',
+                'fax',
+                'modem',
+                'git',
+            ];
         } else {
             $scheme = explode(',', $element['schemes']);
         }
@@ -104,8 +126,26 @@ class Url extends Rule
         $result = false;
 
         // Build arrays of values we need to decode before parsing
-        $entities = ['%21', '%2A', '%27', '%28', '%29', '%3B', '%3A', '%40', '%26', '%3D', '%24', '%2C', '%2F',
-            '%3F', '%25', '%23', '%5B', '%5D'];
+        $entities = [
+            '%21',
+            '%2A',
+            '%27',
+            '%28',
+            '%29',
+            '%3B',
+            '%3A',
+            '%40',
+            '%26',
+            '%3D',
+            '%24',
+            '%2C',
+            '%2F',
+            '%3F',
+            '%25',
+            '%23',
+            '%5B',
+            '%5D',
+        ];
         $replacements = ['!', '*', "'", "(", ")", ";", ":", "@", "&", "=", "$", ",", "/", "?", "%", "#", "[", "]"];
 
         // Create encoded URL with special URL characters decoded so it can be parsed

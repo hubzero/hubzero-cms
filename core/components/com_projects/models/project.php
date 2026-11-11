@@ -905,14 +905,34 @@ class Project extends Model
 
         // Array of reserved names (task names and default dirs)
         $reserved = explode(',', $this->config('reserved_names'));
-        $tasks    = ['start', 'setup', 'browse',
-            'intro', 'features', 'deleteimg',
-            'reports', 'stats', 'view', 'edit',
-            'suspend', 'reinstate', 'fixownership',
-            'delete', 'intro', 'activate', 'process',
-            'upload', 'img', 'verify', 'autocomplete',
-            'showcount', 'preview', 'auth', 'public',
-            'get', 'media',
+        $tasks    = [
+            'start',
+            'setup',
+            'browse',
+            'intro',
+            'features',
+            'deleteimg',
+            'reports',
+            'stats',
+            'view',
+            'edit',
+            'suspend',
+            'reinstate',
+            'fixownership',
+            'delete',
+            'intro',
+            'activate',
+            'process',
+            'upload',
+            'img',
+            'verify',
+            'autocomplete',
+            'showcount',
+            'preview',
+            'auth',
+            'public',
+            'get',
+            'media',
         ];
 
         if ($name) {

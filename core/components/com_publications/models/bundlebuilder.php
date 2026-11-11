@@ -1446,8 +1446,16 @@ class BundleBuilder
         // Run from the content dir and feed the relative names on stdin (-@) so
         // paths are preserved (no -j), arbitrary names can't be misread as
         // options, and there is no ARG_MAX ceiling on large datasets.
-        $cmd = ['zip', '-' . max(0, min(9, (int) $level)), '-X', '-q',
-            '-n', '.' . implode(':.', self::compressedExtList()), $tmp, '-@'];
+        $cmd = [
+            'zip',
+            '-' . max(0, min(9, (int) $level)),
+            '-X',
+            '-q',
+            '-n',
+            '.' . implode(':.', self::compressedExtList()),
+            $tmp,
+            '-@',
+        ];
 
         $rc = $this->runQuiet($cmd, $content, implode("\n", array_values($files)) . "\n");
 
@@ -2549,8 +2557,18 @@ class BundleBuilder
         // -D: no directory entries (the packager adds none). No -y, so file
         // symlinks are dereferenced and their content stored. -n: store
         // already-compressed extensions instead of wasting CPU deflating them.
-        $cmd = ['zip', '-' . max(0, min(9, (int) $level)), '-X', '-D', '-q', '-r',
-            '-n', '.' . implode(':.', self::compressedExtList()), $tmp, $name];
+        $cmd = [
+            'zip',
+            '-' . max(0, min(9, (int) $level)),
+            '-X',
+            '-D',
+            '-q',
+            '-r',
+            '-n',
+            '.' . implode(':.', self::compressedExtList()),
+            $tmp,
+            $name,
+        ];
         $rc = $this->runQuiet($cmd, $stage);
 
         $this->removeStage($stage);

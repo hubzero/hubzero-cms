@@ -709,7 +709,8 @@ class Sanitize
         }
 
         return preg_replace(
-            ['/[^\P{C}\s]/u',
+            [
+                '/[^\P{C}\s]/u',
                 '/:/u',
                 '/</u',
                 '/>/u',

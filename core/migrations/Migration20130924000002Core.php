@@ -312,9 +312,15 @@ class Migration20130924000002Core extends Base
                         ->getQuery(true)
                         ->insert('#__assets')
                         ->columns(['parent_id', 'lft', 'rgt', 'level', 'name', 'title', 'rules'])
-                        ->values([$result, '', '', $level, 'com_content.article.' . $art
-                            ->id, $art
-                            ->title, '{"core.delete":[],"core.edit":[],"core.edit.state":[]}'])
+                        ->values([
+                            $result,
+                            '',
+                            '',
+                            $level,
+                            'com_content.article.' . $art->id,
+                            $art->title,
+                            '{"core.delete":[],"core.edit":[],"core.edit.state":[]}',
+                        ])
                         ->execute();
 
                     // Now, update the content table with the asset id

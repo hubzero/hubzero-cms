@@ -1121,10 +1121,18 @@ class Wishlists extends SiteController
 
         // Non-managers may only set descriptive fields
         if (!$canManage) {
-            foreach (
-                ['status', 'assigned', 'ranking', 'private', 'proposed_by',
-                    'granted', 'granted_by', 'granted_vid', 'accepted'] as $k
-            ) {
+            $managerFields = [
+                'status',
+                'assigned',
+                'ranking',
+                'private',
+                'proposed_by',
+                'granted',
+                'granted_by',
+                'granted_vid',
+                'accepted',
+            ];
+            foreach ($managerFields as $k) {
                 unset($fields[$k]);
             }
         }

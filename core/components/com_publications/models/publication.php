@@ -2457,7 +2457,8 @@ class Publication extends Obj
             'external-id-relationship' => 'self',
         ];
 
-        $data = ['title' => $title,
+        $data = [
+            'title' => $title,
             'short-description' => $description,
             'citation' => $citation,
             'type' => $type,

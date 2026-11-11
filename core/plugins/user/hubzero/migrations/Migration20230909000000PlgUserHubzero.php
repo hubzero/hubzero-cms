@@ -24,10 +24,13 @@ class Migration20230909000000PlgUserHubzero extends Base
     protected static $tableName = '#__users';
 
     // specify column to create
-    protected static $columnData = [['name' => 'secret',
-        'type' => 'char(32)',
-        'restriction' => 'UNIQUE',
-        'default' => 'NULL'],
+    protected static $columnData = [
+        [
+            'name' => 'secret',
+            'type' => 'char(32)',
+            'restriction' => 'UNIQUE',
+            'default' => 'NULL',
+        ],
     ];
 
     /**

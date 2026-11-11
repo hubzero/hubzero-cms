@@ -54,11 +54,13 @@ class Contentlanguage
             if ($all) {
                 array_unshift(
                     self::$items,
-                    new Obj(['value' => '*',
+                    new Obj([
+                        'value' => '*',
                         'text' => $translate ? Lang::alt(
                             'JALL',
                             'language',
-                        ) : 'JALL_LANGUAGE']),
+                        ) : 'JALL_LANGUAGE',
+                    ]),
                 );
             }
 

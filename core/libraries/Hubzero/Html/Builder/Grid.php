@@ -536,14 +536,42 @@ class Grid
         }
 
         $states = [
-            1  => ['unpublish',
-                'JPUBLISHED',   'JLIB_HTML_UNPUBLISH_ITEM', 'JPUBLISHED',   false, 'publish',   'publish'],
-            0  => ['publish',
-                'JUNPUBLISHED', 'JLIB_HTML_PUBLISH_ITEM',   'JUNPUBLISHED', false, 'unpublish', 'unpublish'],
-            2  => ['unpublish',
-                'JARCHIVED',    'JLIB_HTML_UNPUBLISH_ITEM', 'JARCHIVED',    false, 'archive',   'archive'],
-            -2 => ['publish',
-                'JTRASHED',     'JLIB_HTML_PUBLISH_ITEM',   'JTRASHED',     false, 'trash',     'trash'],
+            1  => [
+                'unpublish',
+                'JPUBLISHED',
+                'JLIB_HTML_UNPUBLISH_ITEM',
+                'JPUBLISHED',
+                false,
+                'publish',
+                'publish',
+            ],
+            0  => [
+                'publish',
+                'JUNPUBLISHED',
+                'JLIB_HTML_PUBLISH_ITEM',
+                'JUNPUBLISHED',
+                false,
+                'unpublish',
+                'unpublish',
+            ],
+            2  => [
+                'unpublish',
+                'JARCHIVED',
+                'JLIB_HTML_UNPUBLISH_ITEM',
+                'JARCHIVED',
+                false,
+                'archive',
+                'archive',
+            ],
+            -2 => [
+                'publish',
+                'JTRASHED',
+                'JLIB_HTML_PUBLISH_ITEM',
+                'JTRASHED',
+                false,
+                'trash',
+                'trash',
+            ],
         ];
 
         // Special state for dates
@@ -594,8 +622,10 @@ class Grid
                     $states[$key][4] = true;
                 }
             }
-            return self::state($states, $value, $i, ['prefix' => $prefix,
-                'translate' => !$tip], $enabled, true, $checkbox);
+            return self::state($states, $value, $i, [
+                'prefix' => $prefix,
+                'translate' => !$tip,
+            ], $enabled, true, $checkbox);
         }
 
         return self::state($states, $value, $i, $prefix, $enabled, true, $checkbox);
@@ -705,8 +735,15 @@ class Grid
         }
 
         $states = [
-            1 => ['unsetDefault',
-                'JDEFAULT', 'JLIB_HTML_UNSETDEFAULT_ITEM', 'JDEFAULT', false, 'default', 'default'],
+            1 => [
+                'unsetDefault',
+                'JDEFAULT',
+                'JLIB_HTML_UNSETDEFAULT_ITEM',
+                'JDEFAULT',
+                false,
+                'default',
+                'default',
+            ],
             0 => ['setDefault', '', 'JLIB_HTML_SETDEFAULT_ITEM', '', false, 'notdefault', 'notdefault'],
         ];
 

@@ -49,10 +49,17 @@ class Tags extends Text
         $results = App::get('dispatcher')->trigger(
             'hubzero.onGetMultiEntry',
             [
-                ['tags',
+                [
+                    'tags',
                     $this->name,
                     $this->id,
-                    $attributes['class'], $this->value, null, null, 'multi', ($attributes['disabled'] ? true : null)],
+                    $attributes['class'],
+                    $this->value,
+                    null,
+                    null,
+                    'multi',
+                    ($attributes['disabled'] ? true : null),
+                ],
             ],
         );
 

@@ -307,11 +307,15 @@ class StrTest extends Basic
         $result = Str::insert(':name is :age years old.', ['name' => 'Bob', 'age' => '65']);
 
         $this->assertEquals($result, 'Bob is 65 years old.');
-        $result = Str::insert('*name is *age years old.', ['name' => 'Bob',
-            'age' => '65'], ['before' => '*']);
+        $result = Str::insert('*name is *age years old.', [
+            'name' => 'Bob',
+            'age' => '65',
+        ], ['before' => '*']);
         $this->assertEquals($result, 'Bob is 65 years old.');
-        $result = Str::insert('*name* is *age* years *old.', ['name' => 'Bob',
-            'age' => '65'], ['before' => '*', 'after' => '*']);
+        $result = Str::insert('*name* is *age* years *old.', [
+            'name' => 'Bob',
+            'age' => '65',
+        ], ['before' => '*', 'after' => '*']);
         $this->assertEquals($result, 'Bob is 65 years *old.');
     }
 

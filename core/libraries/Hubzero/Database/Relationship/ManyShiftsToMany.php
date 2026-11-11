@@ -94,8 +94,10 @@ class ManyShiftsToMany extends ManyToMany
      **/
     protected function getConnectionData()
     {
-        return [$this->associativeLocal => $this->model->getPkValue(),
-            $this->shifter => strtolower($this->model->getModelName())];
+        return [
+            $this->associativeLocal => $this->model->getPkValue(),
+            $this->shifter => strtolower($this->model->getModelName()),
+        ];
     }
 
     /**

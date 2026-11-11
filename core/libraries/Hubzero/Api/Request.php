@@ -148,8 +148,16 @@ class Request
         $what = (array) $what;
 
         if (in_array('all', $what)) {
-            $what = array_merge($what, ['method', 'request', 'version', 'headers', 'body', 'hostname', 'scheme',
-                'postdata']);
+            $what = array_merge($what, [
+                'method',
+                'request',
+                'version',
+                'headers',
+                'body',
+                'hostname',
+                'scheme',
+                'postdata',
+            ]);
         }
 
         foreach ($what as $item) {

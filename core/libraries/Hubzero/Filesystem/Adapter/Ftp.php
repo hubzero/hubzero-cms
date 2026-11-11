@@ -708,9 +708,19 @@ class Ftp implements AdapterInterface
     /**
      * {@inheritdoc}
      */
-    public function listContents($path, $filter = '.', $recursive = false, $full = false, $exclude = ['.svn',
-        '.git', 'CVS', '.DS_Store', '__MACOSX'])
-    {
+    public function listContents(
+        $path,
+        $filter = '.',
+        $recursive = false,
+        $full = false,
+        $exclude = [
+            '.svn',
+            '.git',
+            'CVS',
+            '.DS_Store',
+            '__MACOSX',
+        ],
+    ) {
         $listing = ftp_rawlist($this->getConnection(), '-lna ' . $path, $recursive);
 
         return $listing ? $this->normalizeListing($listing, ($full ? '' : $path), $filter, $exclude) : [];
@@ -723,9 +733,18 @@ class Ftp implements AdapterInterface
      * @param   string  $prefix
      * @return  array   Directory listing
      */
-    protected function normalizeListing(array $listing, $prefix = '', $filter = '.', $exclude = ['.svn', '.git',
-        'CVS', '.DS_Store', '__MACOSX'])
-    {
+    protected function normalizeListing(
+        array $listing,
+        $prefix = '',
+        $filter = '.',
+        $exclude = [
+            '.svn',
+            '.git',
+            'CVS',
+            '.DS_Store',
+            '__MACOSX',
+        ],
+    ) {
         $base = $prefix;
 
         $result  = [];

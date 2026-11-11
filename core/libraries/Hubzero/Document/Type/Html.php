@@ -611,11 +611,17 @@ class Html extends Base
 
                 // Separate buffers to be executed first and last
                 if ($type == 'module' || $type == 'modules') {
-                    $template_tags_first[$matches[0][$i]] = ['type' => $type,
-                        'name' => $name, 'attribs' => $attribs];
+                    $template_tags_first[$matches[0][$i]] = [
+                        'type' => $type,
+                        'name' => $name,
+                        'attribs' => $attribs,
+                    ];
                 } else {
-                    $template_tags_last[$matches[0][$i]]  = ['type' => $type,
-                        'name' => $name, 'attribs' => $attribs];
+                    $template_tags_last[$matches[0][$i]]  = [
+                        'type' => $type,
+                        'name' => $name,
+                        'attribs' => $attribs,
+                    ];
                 }
             }
             // Reverse the last array so the jdocs are in forward order.

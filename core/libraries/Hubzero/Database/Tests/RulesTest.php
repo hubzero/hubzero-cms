@@ -203,8 +203,10 @@ class RulesTest extends TestCase
         $endAfterStart = function ($data) {
             return $data['end'] > $data['start'] ? false : 'The end must be after the beginning';
         };
-        $fail = Rules::validate(['start' => '2015-07-01 00:00:00',
-            'end' => '2015-06-01 00:00:00'], ['end' => $endAfterStart]);
+        $fail = Rules::validate([
+            'start' => '2015-07-01 00:00:00',
+            'end' => '2015-06-01 00:00:00',
+        ], ['end' => $endAfterStart]);
         $beSquare = function ($data) {
             return $data['height'] == $data['width'] ? false : 'It\'s not a square!';
         };

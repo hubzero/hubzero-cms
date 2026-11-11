@@ -224,8 +224,10 @@ class Application extends AdminController
             $query = App::get('db')->getQuery();
             $result = $query
                 ->update($tableName)
-                ->set(['value' => $secret,
-                    'updated' => $updated])
+                ->set([
+                    'value' => $secret,
+                    'updated' => $updated,
+                ])
                 ->whereEquals('scope', 'hub')
                 ->whereEquals('key', 'secret')
                 ->execute();
