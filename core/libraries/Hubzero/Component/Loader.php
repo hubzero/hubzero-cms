@@ -189,6 +189,7 @@ class Loader
         $compName  = ucfirst(substr($option, 4));
         $namespace = '\\Components\\' . $compName . '\\' . ucfirst($client) . '\\' . $compName;
         $found     = false;
+        $type      = null;
         $react_path = PATH_COMPONENT
             . DIRECTORY_SEPARATOR
             . 'assets'

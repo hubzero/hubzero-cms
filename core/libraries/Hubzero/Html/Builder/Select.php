@@ -313,20 +313,17 @@ class Select
         static $state = 'open';
 
         // Toggle between open and close states:
-        switch ($state) {
-            case 'open':
-                $obj = new stdClass();
-                $obj->$optKey = '<OPTGROUP>';
-                $obj->$optText = $text;
-                $state = 'close';
-                break;
-            case 'close':
-                $obj = new stdClass();
-                $obj->$optKey = '</OPTGROUP>';
-                $obj->$optText = $text;
-                $state = 'open';
-                break;
+        $obj = new stdClass();
+
+        if ($state == 'open') {
+            $obj->$optKey = '<OPTGROUP>';
+            $state = 'close';
+        } else {
+            $obj->$optKey = '</OPTGROUP>';
+            $state = 'open';
         }
+
+        $obj->$optText = $text;
 
         return $obj;
     }

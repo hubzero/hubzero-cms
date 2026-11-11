@@ -373,6 +373,11 @@ class Arr
     {
         $key = self::$sortKey;
 
+        // A key with no direction or case of its own takes the previous key's,
+        // and the first takes sortObjects()'s defaults
+        $direction     = 1;
+        $caseSensitive = true;
+
         for ($i = 0, $count = count($key); $i < $count; $i++) {
             if (isset(self::$sortDirection[$i])) {
                 $direction = self::$sortDirection[$i];

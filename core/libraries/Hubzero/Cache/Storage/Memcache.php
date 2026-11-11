@@ -236,6 +236,8 @@ class Memcache extends None
             $index = [];
         }
 
+        $data = [];
+
         foreach ($index as $key) {
             if (empty($key)) {
                 continue;

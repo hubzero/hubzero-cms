@@ -288,6 +288,9 @@ class Server extends Obj
             exit(0);
         }
 
+        // Separates the parts of a response to a request for several ranges
+        $boundary = 'g45d64df96bmdf4sdgh45hf5';
+
         if (
             $acceptranges
             && $_SERVER['REQUEST_METHOD'] == 'GET'
@@ -295,7 +298,6 @@ class Server extends Obj
             && $range = stristr(trim($_SERVER['HTTP_RANGE']), 'bytes=')
         ) {
             $range    = substr($range, 6);
-            $boundary = 'g45d64df96bmdf4sdgh45hf5'; //set a random boundary
             $ranges   = explode(',', $range);
             $partial  = true;
         } else {

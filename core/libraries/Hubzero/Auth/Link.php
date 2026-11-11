@@ -95,6 +95,8 @@ class Link extends Relational
      */
     public function read()
     {
+        $row = null;
+
         if ($this->get('id')) {
             $row = self::oneOrNew($this->get('id'));
         } elseif ($this->get('user_id')) {

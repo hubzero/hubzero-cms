@@ -98,6 +98,13 @@ class Radio extends Field
         // answer away.
         $fieldDisabled = ((string) $this->element['disabled'] == 'true');
 
+        // The "other" option after the list carries on from the last option:
+        // it is numbered after it and takes its onclick and disabled state.
+        // These are what it has always had when there are no options.
+        $i        = 0;
+        $onclick  = '';
+        $disabled = '';
+
         $html[] = '<ul>';
 
         // Build the radio field output.

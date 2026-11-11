@@ -317,6 +317,8 @@ class SolrQueryAdapter implements QueryInterface
      */
     public function addFilter($name, $query = [], $tag = 'root_type')
     {
+        $string = null;
+
         if (is_array($query)) {
             $string = $this->makeQueryString($query);
         } elseif (is_string($query)) {
@@ -462,7 +464,7 @@ class SolrQueryAdapter implements QueryInterface
      *
      * @param array $query
      * @access private
-     * @return string
+     * @return string|null  Null for an operator other than '='
      */
     private function makeQueryString($query = [])
     {
@@ -470,13 +472,11 @@ class SolrQueryAdapter implements QueryInterface
         $operator = $query[1];
         $operand = $query[2];
 
-        switch ($operator) {
-            case '=':
-                $string = $subject . ':' . $operand;
-                break;
+        if ($operator == '=') {
+            return $subject . ':' . $operand;
         }
 
-        return $string;
+        return null;
     }
 
     /**

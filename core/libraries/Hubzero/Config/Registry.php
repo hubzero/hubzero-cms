@@ -214,31 +214,33 @@ class Registry implements \JsonSerializable, \ArrayAccess, \IteratorAggregate, \
         // Finally, re-key the array so they are sequential.
         $nodes = array_values(array_filter(explode($separator, $path), 'strlen'));
 
-        if ($nodes) {
-            // Initialize the current node to be the registry root.
-            $node = $this->data;
+        if (!$nodes) {
+            return $this;
+        }
 
-            // Traverse the registry to find the correct node for the result.
-            for ($i = 0, $n = count($nodes) - 1; $i < $n; $i++) {
-                if (is_object($node)) {
-                    if (!isset($node->{$nodes[$i]}) && ($i != $n)) {
-                        $node->{$nodes[$i]} = new stdClass();
-                    }
+        // Initialize the current node to be the registry root.
+        $node = $this->data;
 
-                    // Pass the child as pointer in case it is an object
-                    $node = &$node->{$nodes[$i]};
-
-                    continue;
+        // Traverse the registry to find the correct node for the result.
+        for ($i = 0, $n = count($nodes) - 1; $i < $n; $i++) {
+            if (is_object($node)) {
+                if (!isset($node->{$nodes[$i]}) && ($i != $n)) {
+                    $node->{$nodes[$i]} = new stdClass();
                 }
 
-                if (is_array($node)) {
-                    if (!isset($node[$nodes[$i]]) && ($i != $n)) {
-                        $node[$nodes[$i]] = new stdClass();
-                    }
+                // Pass the child as pointer in case it is an object
+                $node = &$node->{$nodes[$i]};
 
-                    // Pass the child as pointer in case it is an array
-                    $node = &$node[$nodes[$i]];
+                continue;
+            }
+
+            if (is_array($node)) {
+                if (!isset($node[$nodes[$i]]) && ($i != $n)) {
+                    $node[$nodes[$i]] = new stdClass();
                 }
+
+                // Pass the child as pointer in case it is an array
+                $node = &$node[$nodes[$i]];
             }
         }
 

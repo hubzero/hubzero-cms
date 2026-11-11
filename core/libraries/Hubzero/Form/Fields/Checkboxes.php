@@ -103,6 +103,13 @@ class Checkboxes extends Field
         $found  = false;
         $values = (array) $this->value;
 
+        // The "other" option after the list carries on from the last option:
+        // it is numbered after it and takes its onclick and disabled state.
+        // These are what it has always had when there are no options.
+        $i        = 0;
+        $onclick  = '';
+        $disabled = '';
+
         // Build the checkbox field output.
         $html[] = '<ul>';
         foreach ($options as $i => $option) {

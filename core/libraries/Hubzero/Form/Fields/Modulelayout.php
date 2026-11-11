@@ -58,6 +58,7 @@ class Modulelayout extends Field
         $template = preg_replace('#\W#', '', $template);
 
         // Get the style.
+        $template_style_id = '';
         if ($this->form instanceof Form) {
             $template_style_id = $this->form->getValue('template_style_id');
         }

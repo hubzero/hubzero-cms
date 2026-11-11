@@ -484,6 +484,9 @@ class File extends Obj
             return $output;
         }
 
+        // A file outside both the root and core has no public path
+        $relative = '';
+
         if ($this->extensionType() == 'system') {
             $relative = rtrim(str_replace('/administrator', '', Request::base(true)), '/')
                 . substr($output, strlen(PATH_ROOT));

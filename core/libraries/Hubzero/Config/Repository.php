@@ -75,6 +75,7 @@ class Repository extends Registry
         // Bare key: search across all config groups
         $nodes = get_object_vars($this->data);
         $found = false;
+        $value = null;
 
         foreach ($nodes as $n => $node) {
             if (is_array($node) && isset($node[$path])) {

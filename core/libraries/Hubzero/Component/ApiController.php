@@ -633,6 +633,8 @@ class ApiController implements ControllerInterface
         $properties = $model->getStructure()->getTableColumns($model->getTableName());
         $properties = $this->normalizeProperties($properties);
 
+        $fields = [];
+
         foreach ($properties as $property => $type) {
             if ($property == $model->getPrimaryKey()) {
                 continue;
@@ -734,6 +736,8 @@ class ApiController implements ControllerInterface
         $properties = $model->getStructure()->getTableColumns($model->getTableName());
         $properties = $this->normalizeProperties($properties);
 
+        $fields = [];
+
         foreach ($properties as $property => $type) {
             if ($type == 'date' && $model->get($property) && $model->get($property) != '0000-00-00 00:00:00') {
                 $model->set($property, with(new Date($model->get($property)))->format('Y-m-d\TH:i:s\Z'));
@@ -805,6 +809,8 @@ class ApiController implements ControllerInterface
         // Collect data
         $properties = $model->getStructure()->getTableColumns($model->getTableName());
         $properties = $this->normalizeProperties($properties);
+
+        $fields = [];
 
         foreach ($properties as $property => $type) {
             if ($property == $model->getPrimaryKey()) {
