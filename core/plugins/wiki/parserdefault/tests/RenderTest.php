@@ -81,8 +81,8 @@ class RenderTest extends TestCase
 </li><li> b
 <ul><li> c
 </li></ul>
-<!-- common: 0, last: 2, prefx:0, * --></li></ul>
-<!-- common: 0, last: 1, prefx:0, * -->',
+</li></ul>
+',
             ],
             'code after a list' => [
                 [],
@@ -94,7 +94,7 @@ code
 ',
                 '<ul><li> item
 </li></ul>
-<!-- common: 0, last: 1, prefx:0, * --><pre><code>
+<pre><code>
 code
 </code></pre>
 ',

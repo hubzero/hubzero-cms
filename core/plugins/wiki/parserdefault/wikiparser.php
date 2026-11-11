@@ -2672,16 +2672,7 @@ class WikiParser
                     // corresponding <ul><li> to close, so emitting </li></ul> for them
                     // would orphan subsequent <li> elements outside any list.
                     if (!empty($openlistReal[$i + 1])) {
-                        $output .= $this->closeList($lastPrefix)
-                            . '<!-- common: '
-                            . $commonPrefixLength
-                            . ', last: '
-                            . $lastPrefixLength
-                            . ', prefx:'
-                            . $prefixLength
-                            . ', '
-                            . $lastPrefix
-                            . ' -->';
+                        $output .= $this->closeList($lastPrefix);
                     }
                     --$lastPrefixLength;
                 }
