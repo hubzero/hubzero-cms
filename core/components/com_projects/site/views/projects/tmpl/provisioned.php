@@ -125,7 +125,7 @@ $this
                                     <input type="submit" id="b-continue" class="btn btn-primary active"
                                         value="<?= Lang::txt('COM_PROJECTS_ACTIVATE_CREATE_A_PROJECT') ?>" />
                                     <span class="btn btncancel"><a
-                                        href="<?= $url ?>"><?= Lang::txt(JCANCEL) ?></a></span>
+                                        href="<?= $url ?>"><?= Lang::txt('JCANCEL') ?></a></span>
                                 </p>
                             </fieldset>
                         </form>

@@ -19,7 +19,7 @@ defined('_HZEXEC_') or die();
 $this->css();
 
 $now = Date::toSql();
-$week = Date::add('1 week')->toSql();
+$week = Date::of('+1 week')->toSql();
 
 $database = App::get('db');
 

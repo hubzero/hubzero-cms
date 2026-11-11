@@ -53,7 +53,7 @@ if (!$this->thread->thread) {
         $huser = '';
     if (!$this->thread->anonymous) {
         $name = $this->escape(stripslashes($this->thread->creator->get('name')));
-        if (in_array($this->thread->creator->get('access'), User::getAuthorisedviewLevels())) {
+        if (in_array($this->thread->creator->get('access'), User::getAuthorisedViewLevels())) {
             $name = '<a href="' . Route::url($this->thread->creator->link()) . '">' . $name . '</a>';
         }
     }

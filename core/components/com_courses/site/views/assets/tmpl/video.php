@@ -237,7 +237,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
         $redirect .= $delimeter . 'time=' . gmdate("H:i:s", $tracking->current_position);
 
         // Redirect
-        App::redirect(Route::url($redirect, false), '', '', false);
+        App::redirect(Route::url($redirect, false), '', '');
     }
 }
 

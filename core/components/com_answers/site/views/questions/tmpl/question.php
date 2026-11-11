@@ -397,7 +397,7 @@ if ($this->question->isDeleted() or !$this->question->get('id')) {
                             continue;
                         }
                         if (!is_object($tag)) {
-                            $tag = new \Components\Tags\Models\Tag($tag);
+                            $tag = \Components\Tags\Models\Tag::oneByTag($tag);
                             if (!$tag->get('id')) {
                                 continue;
                             }

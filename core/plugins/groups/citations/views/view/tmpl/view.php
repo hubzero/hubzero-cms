@@ -92,8 +92,8 @@ $params = new \Hubzero\Config\Registry($citation->params);
 $showThisAbstract = $params->get('rollover', $showAbstract);
 
 //get tags and badges
-$tags   = \Components\Citations\Helpers\Format::citationTags($citation, $database, false);
-$badges = \Components\Citations\Helpers\Format::citationBadges($citation, $database, false);
+$tags   = \Components\Citations\Helpers\Format::citationTags($citation, false);
+$badges = \Components\Citations\Helpers\Format::citationBadges($citation, false);
 
 //are we allowed to show tags and badges
 $showTags   = $config->get('citation_show_tags', 'yes');

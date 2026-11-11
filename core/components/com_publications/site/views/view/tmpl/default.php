@@ -57,7 +57,6 @@ if ($this->config->get('launcher_layout', 0)) {
                             true,
                             false,
                             false,
-                            false,
                             $formatAuthors,
                         );
                         ?>

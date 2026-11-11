@@ -156,6 +156,6 @@ endforeach;
         <input type="hidden" name="type" value="wiki" />
 
         <input type="submit" value="Submit" class="wiki-submit submit" />
-        <input type="button" value="Cancel" class="cancel" data-new="<?php echo (isset($id)) ? 'false' : 'true'; ?>" />
+        <input type="button" value="Cancel" class="cancel" data-new="<?php echo $id ? 'false' : 'true'; ?>" />
     </form>
 </div>

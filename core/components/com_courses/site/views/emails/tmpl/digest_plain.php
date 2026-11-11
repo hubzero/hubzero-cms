@@ -35,10 +35,9 @@ Latest Discussions:
 <?php if (count($this->latest) > 0) : ?>
     <?php foreach ($this->latest as $post) : ?>
 ----------------------------------------
-        <?php $postObj = \Components\Forum\Models\Post::getInstance($post->id); ?>
         <?php $val = Date::of($post->created)->toLocal('M j, Y g:i:s a') . "\n"; ?>
         <?php echo User::getInstance($post->created_by)->get('name'); ?> | created: <?php echo $val; ?>
-        <?php echo $postObj->content('raw') . "\n"; ?>
+        <?php echo $post->comment . "\n"; ?>
 ----------------------------------------
 
     <?php endforeach; ?>

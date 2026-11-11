@@ -161,6 +161,6 @@ $tool_path = $config->get('tool_path');
         <input type="hidden" name="subtype" value="tool" />
 
         <input type="submit" value="Submit" class="tool-submit submit" />
-        <input type="button" value="Cancel" class="cancel" data-new="<?php echo (isset($id)) ? 'false' : 'true'; ?>" />
+        <input type="button" value="Cancel" class="cancel" data-new="<?php echo $id ? 'false' : 'true'; ?>" />
     </form>
 </div>

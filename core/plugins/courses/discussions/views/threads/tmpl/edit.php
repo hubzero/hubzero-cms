@@ -26,7 +26,7 @@ if ($this->post->id) {
 }
 
 if (!($this->post instanceof \Components\Forum\Models\Post)) {
-    $this->post = new \Components\Forum\Models\Post($this->post);
+    $this->post = \Components\Forum\Models\Post::blank();
 }
 
 $view = $this;

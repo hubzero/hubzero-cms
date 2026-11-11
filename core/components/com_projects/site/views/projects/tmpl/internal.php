@@ -50,7 +50,7 @@ $notification = Event::trigger(
     'projects.onProjectNotification',
     [ $this->model, $this->active ],
 );
-$notification   = $notification && !empty($notification)
+$notification   = $notification
     ? $notification[0]
     : null;
 
@@ -59,7 +59,7 @@ $sideContent = Event::trigger(
     'projects.onProjectExtras',
     [ $this->model, $this->active ],
 );
-$sideContent    = $sideContent && !empty($sideContent)
+$sideContent    = $sideContent
     ? $sideContent[0]
     : null;
 

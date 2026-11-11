@@ -27,7 +27,7 @@ if ($this->comment->isReported()) {
     $name = Lang::txt('JANONYMOUS');
 if (!$this->comment->get('anonymous')) {
     $name = $this->escape(stripslashes($this->comment->creator->get('name', $name)));
-    if (in_array($this->comment->creator->get('access'), User::getAuthorisedviewLevels())) {
+    if (in_array($this->comment->creator->get('access'), User::getAuthorisedViewLevels())) {
         $name = '<a href="' . Route::url($this->comment->creator->link()) . '">' . $name . '</a>';
     }
 }
