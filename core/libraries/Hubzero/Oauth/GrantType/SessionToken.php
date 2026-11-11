@@ -53,10 +53,9 @@ class SessionToken implements GrantTypeInterface, ClientAssertionTypeInterface
      * Constructor
      *
      * @param   object  $storage  Storage object
-     * @param   array   $config   Config array
      * @return  void
      */
-    public function __construct(SessionTokenInterface $storage, $config = [])
+    public function __construct(SessionTokenInterface $storage)
     {
         $this->storage = $storage;
     }

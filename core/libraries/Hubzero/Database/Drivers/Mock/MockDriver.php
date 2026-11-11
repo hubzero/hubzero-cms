@@ -30,13 +30,12 @@ class MockDriver extends \Hubzero\Database\Drivers\Sqlite\SqliteDriver
     /**
      * Constructs a new in-memory SQLite database
      *
-     * All passed options are ignored. The driver always uses :memory:
-     * with no table prefix.
+     * It takes no options: the driver always uses :memory: with no table
+     * prefix.
      *
-     * @param   array  $options  Ignored
      * @return  void
      */
-    public function __construct($options = [])
+    public function __construct()
     {
         parent::__construct([
             'database' => ':memory:',

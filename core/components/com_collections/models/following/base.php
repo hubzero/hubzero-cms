@@ -39,14 +39,6 @@ abstract class Base extends Obj
     private $baselink = 'index.php';
 
     /**
-     * Constructor
-     *
-     * @param   integer  $id  ID
-     * @return  void
-     */
-    public function __construct($oid = null) {}
-
-    /**
      * Returns a reference to this object
      *
      * @param   integer  $oid  User ID

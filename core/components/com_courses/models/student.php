@@ -44,7 +44,7 @@ class Student extends Member
                 if ($sid !== null) {
                     $this->table->loadBySection($uid, $sid);
                 } elseif ($cid !== null) {
-                    $this->table->load($uid, $cid, null, null, 1);
+                    $this->table->load($uid, $cid, ($oid ?: null), null, 1);
                 } else {
                     $this->table->load($uid);
                 }

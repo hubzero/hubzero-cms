@@ -57,12 +57,12 @@ class Server
 
         // available grant types
         $grantTypes = [
-            new UserCredentialsGrantType($storage, $this->config),
+            new UserCredentialsGrantType($storage),
             new RefreshTokenGrantType($storage, $this->config),
-            new AuthorizationCodeGrantType($storage, $this->config),
+            new AuthorizationCodeGrantType($storage),
             new ClientCredentialsGrantType($storage, $this->config),
-            new SessionTokenGrantType($storage, $this->config),
-            new ToolSessionTokenGrantType($storage, $this->config),
+            new SessionTokenGrantType($storage),
+            new ToolSessionTokenGrantType($storage),
         ];
 
         // Pass a storage object or array of storage objects to the OAuth2 server class

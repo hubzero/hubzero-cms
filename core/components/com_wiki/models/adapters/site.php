@@ -27,10 +27,9 @@ class Site extends Base
      *
      * @param   string   $pagename
      * @param   string   $path
-     * @param   integer  $scope_id
      * @return  void
      */
-    public function __construct($pagename = null, $path = null, $scope_id = null)
+    public function __construct($pagename = null, $path = null)
     {
         $pagename = ($path ? $path . '/' : '') . $pagename;
 

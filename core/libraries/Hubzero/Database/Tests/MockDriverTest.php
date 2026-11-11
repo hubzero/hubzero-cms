@@ -198,7 +198,7 @@ class MockDriverTest extends AbstractDriverTestCase
 
     #[Test]
     #[DataProvider('databaseProvider')]
-    public function constructorIgnoresOptions(
+    public function constructorTakesNoOptions(
         string $dbName,
         Driver $driver,
     ): void {
@@ -206,20 +206,14 @@ class MockDriverTest extends AbstractDriverTestCase
             return;
         }
 
-        // Create a new Mock with arbitrary options — all should be ignored
-        $mock = new MockDriver([
-            'database' => '/tmp/should_be_ignored.db',
-            'host'     => 'should.be.ignored',
-            'user'     => 'nobody',
-            'password' => 'secret',
-            'prefix'   => 'ignored_',
-        ]);
+        // A new Mock has nothing to be told: no database, host, user or prefix
+        $mock = new MockDriver();
 
         // It should still work as in-memory SQLite
         $mock->setQuery('SELECT 1 AS val');
         $this->assertEquals(1, $mock->loadResult());
 
-        // Prefix should be empty, not 'ignored_'
+        // Prefix should be empty
         $this->assertEquals('', $mock->getPrefix());
     }
 

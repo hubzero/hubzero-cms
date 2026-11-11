@@ -53,10 +53,9 @@ class ToolSessionToken implements GrantTypeInterface, ClientAssertionTypeInterfa
      * Constructor
      *
      * @param   object  $storage  Storage object
-     * @param   array   $config   Config array
      * @return  void
      */
-    public function __construct(ToolSessionTokenInterface $storage, $config = [])
+    public function __construct(ToolSessionTokenInterface $storage)
     {
         $this->storage = $storage;
     }

@@ -49,6 +49,7 @@ class Note extends \Components\Wiki\Models\Book
     {
         $this->db = App::get('db');
         $this->scope = $scope;
+        $this->group_cn = $group_cn;
         $this->project_id = $project_id;
 
         parent::__construct($scope);

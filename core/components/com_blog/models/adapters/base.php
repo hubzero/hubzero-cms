@@ -39,10 +39,12 @@ abstract class Base extends Obj
     /**
      * Constructor
      *
-     * @param   integer  $scope_id  Scope ID (group, course, etc.)
+     * Does nothing here; each adapter has its own. It is kept so that the
+     * parent's constructor does not take the adapter's arguments as properties.
+     *
      * @return  void
      */
-    public function __construct($scope_id = 0) {}
+    public function __construct() {}
 
     /**
      * Retrieve a property from the internal item object
