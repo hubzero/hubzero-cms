@@ -117,18 +117,30 @@ foreach ($this->notifications as $notification) {
                             <li>
                                 <label for="filter-published"><?= Lang::txt('COM_GROUPS_BROWSE_STATE') ?></label>
                                 <select name="published" id="filter-published">
-                                    <option value="1" <?= $publishedSelected(1) ?>><?= Lang::txt('COM_GROUPS_BROWSE_STATE_ACTIVE') ?></option>
-                                    <option value="2" <?= $publishedSelected(2) ?>><?= Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED') ?></option>
+                                    <option value="1" <?= $publishedSelected(1) ?>>
+                                        <?= Lang::txt('COM_GROUPS_BROWSE_STATE_ACTIVE') ?>
+                                    </option>
+                                    <option value="2" <?= $publishedSelected(2) ?>>
+                                        <?= Lang::txt('COM_GROUPS_BROWSE_STATE_ARCHIVED') ?>
+                                    </option>
                                 </select>
                             </li>
                             <li>
                                 <label for="filter-policy"><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY'); ?></label>
                                 <select name="policy" id="filter-policy">
                                     <option value=""><?php echo Lang::txt('COM_GROUPS_BROWSE_POLICY_ALL'); ?></option>
-                                    <option value="open" <?= $policySelected('open') ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN') ?></option>
-                                    <option value="restricted" <?= $policySelected('restricted') ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED') ?></option>
-                                    <option value="invite" <?= $policySelected('invite') ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY') ?></option>
-                                    <option value="closed" <?= $policySelected('closed') ?>><?= Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED') ?></option>
+                                    <option value="open" <?= $policySelected('open') ?>>
+                                        <?= Lang::txt('COM_GROUPS_BROWSE_POLICY_OPEN') ?>
+                                    </option>
+                                    <option value="restricted" <?= $policySelected('restricted') ?>>
+                                        <?= Lang::txt('COM_GROUPS_BROWSE_POLICY_RESTRICTED') ?>
+                                    </option>
+                                    <option value="invite" <?= $policySelected('invite') ?>>
+                                        <?= Lang::txt('COM_GROUPS_BROWSE_POLICY_INVITE_ONLY') ?>
+                                    </option>
+                                    <option value="closed" <?= $policySelected('closed') ?>>
+                                        <?= Lang::txt('COM_GROUPS_BROWSE_POLICY_CLOSED') ?>
+                                    </option>
                                 </select>
                             </li>
                         </ul>
@@ -179,7 +191,12 @@ foreach ($this->notifications as $notification) {
             <?php if (Component::isEnabled('com_members')) : ?>
                 <div class="container">
                     <h3><?php echo Lang::txt('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_TITLE'); ?></h3>
-                    <p><?= Lang::txt('COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS', Route::url('index.php?option=com_members')) ?></p>
+                    <p>
+                        <?= Lang::txt(
+                            'COM_GROUPS_BROWSE_ASIDE_SECTION_TWO_DEATAILS',
+                            Route::url('index.php?option=com_members'),
+                        ) ?>
+                    </p>
                 </div><!-- / .container -->
             <?php endif; ?>
         </aside><!-- / .aside -->

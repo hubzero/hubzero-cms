@@ -257,8 +257,12 @@ Toolbar::cancel();
                     <td><input type="text" name="fields[<?= $i ?>][title]" value="<?= $fields[$i][1] ?>"
                         maxlength="255" /></td>
                     <td><select name="fields[<?php echo $i; ?>][type]">
-                        <option value="text"<?= ($fields[$i][2] == 'text') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_EVENTS_CAL_LANG_TEXT') ?></option>
-                        <option value="checkbox"<?= ($fields[$i][2] == 'checkbox') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_EVENTS_CAL_LANG_CHECKBOX') ?></option>
+                        <option value="text"<?= ($fields[$i][2] == 'text') ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('COM_EVENTS_CAL_LANG_TEXT') ?>
+                        </option>
+                        <option value="checkbox"<?= ($fields[$i][2] == 'checkbox') ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('COM_EVENTS_CAL_LANG_CHECKBOX') ?>
+                        </option>
                     </select></td>
                     <td><input type="checkbox" name="fields[<?= $i ?>][required]"
                         value="1"<?= ($fields[$i][3]) ? ' checked="checked"' : '' ?> /></td>

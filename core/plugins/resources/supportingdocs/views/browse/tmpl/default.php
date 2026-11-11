@@ -260,7 +260,12 @@ if ($this->model->isTool()) {
         if ($someDocsHidden && User::isGuest()) {
             $url = Request::getString('REQUEST_URI', '', 'server');
             ?>
-            <p class="warning"><?= Lang::txt('PLG_RESOURCES_SUPPORTINGDOCS_LOGIN_TO_SEE_MORE', Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url))) ?></p>
+            <p class="warning">
+                <?= Lang::txt(
+                    'PLG_RESOURCES_SUPPORTINGDOCS_LOGIN_TO_SEE_MORE',
+                    Route::url('index.php?option=com_users&view=login&return=' . base64_encode($url)),
+                ) ?>
+            </p>
             <?php
         }
         ?>

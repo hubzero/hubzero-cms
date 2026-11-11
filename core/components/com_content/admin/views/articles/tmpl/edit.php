@@ -114,7 +114,9 @@ $editUrl = Route::url(
                                 $selected = 'selected="selected"';
                             }
                             ?>
-                            <option value="<?= $category->id ?>" <?= $selected ?>><?= $this->escape($category->nestedTitle()) ?></option>
+                            <option value="<?= $category->id ?>" <?= $selected ?>>
+                                <?= $this->escape($category->nestedTitle()) ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -184,7 +186,9 @@ $editUrl = Route::url(
                         </td> 
                     </tr>
                     <tr>
-                        <th scope="row"><?= Lang::txt('COM_CONTENT_FIELD_CREATED_LABEL') . " " . $abbrTimeZoneString ?></th>
+                        <th scope="row">
+                            <?= Lang::txt('COM_CONTENT_FIELD_CREATED_LABEL') . " " . $abbrTimeZoneString ?>
+                        </th>
                         <td>
                             <time datetime="<?php echo $dateCreatedString; ?>"><?php echo $dateCreatedString; ?></time>
                         </td>
@@ -201,7 +205,9 @@ $editUrl = Route::url(
                             </td> 
                         </tr>
                         <tr>
-                            <th scope="row"><?= Lang::txt('COM_CONTENT_FIELD_MODIFIED_LABEL') . " " . $abbrTimeZoneString ?></th>
+                            <th scope="row">
+                                <?= Lang::txt('COM_CONTENT_FIELD_MODIFIED_LABEL') . " " . $abbrTimeZoneString ?>
+                            </th>
                             <td>
                                 <time datetime="<?= $dateModifiedString ?>"><?= $dateModifiedString ?></time>
                             </td>

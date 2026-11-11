@@ -103,12 +103,18 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
                                     align="right"><?= Lang::txt('Created:') ?></th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">@ <?= $this->question->created('time') ?> on <?= $this->question->created('date') ?></td>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
+                                    @ <?= $this->question->created('time') ?> on <?= $this->question->created('date') ?>
+                                </td>
                             </tr>
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
                                     align="right"><?= Lang::txt('Creator:') ?></th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->question->get('anonymous') ? Lang::txt('JANONYMOUS') : $this->escape(stripslashes($this->question->creator->get('name'))) ?></td>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
+                                    <?= $this->question->get('anonymous')
+                                        ? Lang::txt('JANONYMOUS')
+                                        : $this->escape(stripslashes($this->question->creator->get('name'))) ?>
+                                </td>
                             </tr>
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
@@ -135,13 +141,17 @@ $link = rtrim(Request::base(), '/') . '/' . ltrim(Route::url($this->question->li
                             <tr>
                                 <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0"
                                     border="0">
-                                    <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?= $this->escape($this->question->subject) ?></div>
+                                    <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">
+                                        <?= $this->escape($this->question->subject) ?>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0"
                                     border="0">
-                                    <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?= $this->question->question ?></div>
+                                    <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">
+                                        <?= $this->question->question ?>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

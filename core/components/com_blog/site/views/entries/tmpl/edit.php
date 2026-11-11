@@ -66,7 +66,10 @@ $accessSelected = function ($value) use ($view) {
 };
 ?>
 <header id="content-header">
-    <h2><?= Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')) ?></h2>
+    <h2>
+        <?= Lang::txt('COM_BLOG') . ': '
+            . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')) ?>
+    </h2>
 
     <div id="content-header-extra">
         <p><a class="icon-archive archive btn"
@@ -89,7 +92,9 @@ $accessSelected = function ($value) use ($view) {
                 <iframe width="100%" height="370" name="filer" id="filer" title="<?= Lang::txt('COM_BLOG_FIELD_FILES') ?>" src="<?= $sourceUrl ?>"></iframe>
             </div>
             <fieldset>
-                <legend><?= Lang::txt($this->entry->isNew() ? 'COM_BLOG_NEW_ENTRY' : 'COM_BLOG_EDIT_DETAILS') ?></legend>
+                <legend>
+                    <?= Lang::txt($this->entry->isNew() ? 'COM_BLOG_NEW_ENTRY' : 'COM_BLOG_EDIT_DETAILS') ?>
+                </legend>
 
                 <div class="form-group">
                     <label for="field-title"<?= $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '' ?>>
@@ -145,8 +150,12 @@ $accessSelected = function ($value) use ($view) {
                             <label for="field-access">
                                 <?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY'); ?>
                                 <select class="form-control" name="entry[access]" id="field-access">
-                                    <option value="1"<?= $accessSelected(1) ?>><?= Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC') ?></option>
-                                    <option value="2"<?= $accessSelected(2) ?>><?= Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED') ?></option>
+                                    <option value="1"<?= $accessSelected(1) ?>>
+                                        <?= Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC') ?>
+                                    </option>
+                                    <option value="2"<?= $accessSelected(2) ?>>
+                                        <?= Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED') ?>
+                                    </option>
                                     <option value="5"<?= $this->entry->get('access') > 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE') ?></option>
                                 </select>
                             </label>

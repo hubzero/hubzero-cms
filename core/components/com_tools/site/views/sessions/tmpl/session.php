@@ -283,7 +283,9 @@ if (!$this->app->sess) {
                                             continue;
                                         }
                                         ?>
-                                    <option value="<?= $zone->get('id') ?>"><?= $this->escape($zone->get('title', $zone->get('zone'))) ?></option>
+                                    <option value="<?= $zone->get('id') ?>">
+                                        <?= $this->escape($zone->get('title', $zone->get('zone'))) ?>
+                                    </option>
                                     <?php } ?>
                                 </select>
                             </label>
@@ -494,7 +496,9 @@ if (!$this->app->sess) {
 <?php } ?>
 
 <?php if ($this->config->get('access-manage-session')) { ?>
-    <p id="app-manager"><?= Lang::txt('COM_TOOLS_SESSION_ADMIN_INFO', $this->app->username, $this->app->ip, $this->app->sess) ?></p>
+    <p id="app-manager">
+        <?= Lang::txt('COM_TOOLS_SESSION_ADMIN_INFO', $this->app->username, $this->app->ip, $this->app->sess) ?>
+    </p>
 <?php } ?>
 
     <?php

@@ -41,8 +41,24 @@ Toolbar::help('messages');
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_SUPPORT_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_SUPPORT_COL_MESSAGE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_SUPPORT_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_SUPPORT_COL_MESSAGE',
+                        'title',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

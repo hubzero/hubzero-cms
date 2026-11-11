@@ -134,8 +134,12 @@ $stateSelected = function ($value) use ($view) {
                     data-hint="<?= $this->escape(Lang::txt('COM_SAML_FIELD_SIGN_ASSERTION_HINT')) ?>">
                     <label for="field-sign_assertion"><?= Lang::txt('COM_SAML_FIELD_SIGN_ASSERTION') ?>:</label><br />
                     <select name="fields[sign_assertion]" id="field-sign_assertion">
-                        <option value="0"<?= !$this->row->get('sign_assertion') ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
-                        <option value="1"<?= $this->row->get('sign_assertion') ? ' selected="selected"' : '' ?>><?= Lang::txt('JYES') ?></option>
+                        <option value="0"<?= !$this->row->get('sign_assertion') ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('JNO') ?>
+                        </option>
+                        <option value="1"<?= $this->row->get('sign_assertion') ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('JYES') ?>
+                        </option>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_SAML_FIELD_SIGN_ASSERTION_HINT'); ?></span>
                 </div>
@@ -181,7 +185,9 @@ $stateSelected = function ($value) use ($view) {
                     <label for="field-nameid_source"><?= Lang::txt('COM_SAML_FIELD_NAMEID_SOURCE') ?>:</label><br />
                     <select name="fields[nameid_source]" id="field-nameid_source">
                         <?php foreach ($nameidSources as $value => $label) { ?>
-                            <option value="<?= $this->escape($value) ?>"<?= $nameidSourceSelected($value) ?>><?= $label ?></option>
+                            <option value="<?= $this->escape($value) ?>"<?= $nameidSourceSelected($value) ?>>
+                                <?= $label ?>
+                            </option>
                         <?php } ?>
                     </select>
                 </div>
@@ -190,7 +196,9 @@ $stateSelected = function ($value) use ($view) {
                     <label for="field-nameid_format"><?= Lang::txt('COM_SAML_FIELD_NAMEID_FORMAT') ?>:</label><br />
                     <select name="fields[nameid_format]" id="field-nameid_format">
                         <?php foreach ($nameidFormats as $value => $label) { ?>
-                            <option value="<?= $this->escape($value) ?>"<?= $nameidFormatSelected($value) ?>><?= $label ?></option>
+                            <option value="<?= $this->escape($value) ?>"<?= $nameidFormatSelected($value) ?>>
+                                <?= $label ?>
+                            </option>
                         <?php } ?>
                     </select>
                 </div>

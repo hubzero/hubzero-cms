@@ -51,13 +51,23 @@ $resp = $this->resp;
         <?php if (!empty($resp->city) || !empty($resp->state) || !empty($resp->zip) || !empty($resp->country)) : ?>
             <tr>
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_LOCATION'); ?></th>
-                <td><?= $this->escape($resp->city) . ' ' . $this->escape($resp->state) . ' ' . $this->escape($resp->country) . ' ' . $this->escape($resp->zip) ?></td>
+                <td>
+                    <?= $this->escape($resp->city) . ' ' . $this->escape($resp->state) . ' '
+                        . $this->escape($resp->country) . ' ' . $this->escape($resp->zip) ?>
+                </td>
             </tr>
         <?php endif; ?>
         <?php if (!empty($resp->telephone) || !empty($resp->fax)) : ?>
             <tr>
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_TELEPHONE'); ?></th>
-                <td><?= $this->escape($resp->telephone) . (empty($resp->fax) ? '' : ' ' . $this->escape($resp->fax) . ' (' . Lang::txt('COM_EVENTS_FAX') . ')') ?></td>
+                <td>
+                    <?= $this->escape($resp->telephone)
+                        . (
+                            empty($resp->fax)
+                                ? ''
+                                : ' ' . $this->escape($resp->fax) . ' (' . Lang::txt('COM_EVENTS_FAX') . ')'
+                        ) ?>
+                </td>
             </tr>
         <?php endif; ?>
         <?php if (!empty($resp->website)) : ?>
@@ -87,7 +97,11 @@ $resp = $this->resp;
         <?php if (!empty($resp->gender)) : ?>
             <tr>
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_GENDER'); ?></th>
-                <td><?= $resp->gender == 'm' ? Lang::txt('COM_EVENTS_RESPONDANT_MALE') : Lang::txt('COM_EVENTS_RESPONDANT_FEMALE') ?></td>
+                <td>
+                    <?= $resp->gender == 'm'
+                        ? Lang::txt('COM_EVENTS_RESPONDANT_MALE')
+                        : Lang::txt('COM_EVENTS_RESPONDANT_FEMALE') ?>
+                </td>
             </tr>
         <?php endif; ?>
         <?php if (!empty($resp->arrival)) : ?>
@@ -104,7 +118,11 @@ $resp = $this->resp;
         <?php endif; ?>
             <tr>
                 <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_DISABILITY_CONTACT_REQUESTED'); ?></th>
-                <td><?= $resp->disability_needs ? Lang::txt('COM_EVENTS_RESPONDANT_YES') : Lang::txt('COM_EVENTS_RESPONDANT_NO') ?></td>
+                <td>
+                    <?= $resp->disability_needs
+                        ? Lang::txt('COM_EVENTS_RESPONDANT_YES')
+                        : Lang::txt('COM_EVENTS_RESPONDANT_NO') ?>
+                </td>
             </tr>
         <?php if (!empty($resp->dietary_needs)) : ?>
             <tr>
@@ -114,7 +132,11 @@ $resp = $this->resp;
         <?php endif; ?>
         <tr>
             <th><?php echo Lang::txt('COM_EVENTS_RESPONDANT_ATTENDING_DINNER'); ?></th>
-            <td><?= $resp->attending_dinner ? Lang::txt('COM_EVENTS_RESPONDANT_YES') : Lang::txt('COM_EVENTS_RESPONDANT_NO') ?></td>
+            <td>
+                <?= $resp->attending_dinner
+                    ? Lang::txt('COM_EVENTS_RESPONDANT_YES')
+                    : Lang::txt('COM_EVENTS_RESPONDANT_NO') ?>
+            </td>
         </tr>
         <?php if (!empty($resp->abstract)) : ?>
             <tr>

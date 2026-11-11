@@ -32,7 +32,11 @@ foreach ($menus as $menu) {
 }
 ?>
 <header id="content-header">
-    <h2><?= ($this->module->get('id')) ? Lang::txt('COM_GROUPS_PAGES_EDIT_MODULE') : Lang::txt('COM_GROUPS_PAGES_ADD_MODULE') ?></h2>
+    <h2>
+        <?= ($this->module->get('id'))
+            ? Lang::txt('COM_GROUPS_PAGES_EDIT_MODULE')
+            : Lang::txt('COM_GROUPS_PAGES_ADD_MODULE') ?>
+    </h2>
 
     <div id="content-header-extra">
         <ul id="useroptions">
@@ -149,7 +153,9 @@ foreach ($menus as $menu) {
                             class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
                         <select name="menu[assignment]" id="field-assignment" class="fancy-select">
                             <option value="0"><?= Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT_ALL') ?></option>
-                            <option <?= !in_array(0, $activeMenu) ? 'selected="selected"' : '' ?> value=""><?= Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT_SELECTED') ?></option>
+                            <option <?= !in_array(0, $activeMenu) ? 'selected="selected"' : '' ?> value="">
+                                <?= Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT_SELECTED') ?>
+                            </option>
                         </select>
                     </label>
 
@@ -209,7 +215,9 @@ foreach ($menus as $menu) {
                                     <?php $sel = ($order->get('title') == $this->module->get('title'))
                                         ? 'selected="selected"'
                                         : ''; ?>
-                                    <option <?= $sel ?> value="<?= ($k + 1) ?>"><?= ($k + 1) . '. ' . $order->get('title') ?></option>
+                                    <option <?= $sel ?> value="<?= ($k + 1) ?>">
+                                        <?= ($k + 1) . '. ' . $order->get('title') ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </label>

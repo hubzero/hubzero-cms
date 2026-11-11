@@ -84,7 +84,9 @@ if ($this->params->get('stamp_logo')) {
                                 <optgroup label="Group Member Roles">
                                     <?php foreach ($this->member_roles as $role) { ?>
                                         <?php $sel = ($role['name'] == $role_name) ? 'selected="selected"' : ''; ?>
-                                        <option <?= $sel ?> value="role_<?= $role['id'] ?>"><?= $role['name'] ?></option>
+                                        <option <?= $sel ?> value="role_<?= $role['id'] ?>">
+                                            <?= $role['name'] ?>
+                                        </option>
                                     <?php } ?>
                                 </optgroup>
                             <?php } ?>

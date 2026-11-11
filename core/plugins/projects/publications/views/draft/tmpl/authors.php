@@ -148,7 +148,11 @@ $idSelected = function ($value) use ($view) {
                             }
                             $used[] = $g->gidNumber;
                             ?>
-                            <option value="<?= $g->gidNumber ?>" <?= $idSelected($g->gidNumber) ?>><?= $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30) . ' (' . $g->cn . ')') ?></option>
+                            <option value="<?= $g->gidNumber ?>" <?= $idSelected($g->gidNumber) ?>>
+                                <?= $this->escape(
+                                    \Hubzero\Utility\Str::truncate($g->description, 30) . ' (' . $g->cn . ')',
+                                ) ?>
+                            </option>
                         <?php } ?>
                     </select>
                 <?php } else { ?>

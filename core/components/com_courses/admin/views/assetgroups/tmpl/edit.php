@@ -76,7 +76,9 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_COURSES_FIELD_PARENT_HINT'); ?>">
                     <label for="field-parent"><?php echo Lang::txt('COM_COURSES_FIELD_PARENT'); ?>:</label><br />
                     <select name="fields[parent]" id="field-parent">
-                        <option value="0"<?= 0 == $this->row->get('parent') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_NONE') ?></option>
+                        <option value="0"<?= 0 == $this->row->get('parent') ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('COM_COURSES_NONE') ?>
+                        </option>
                         <?php foreach ($this->assetgroups as $assetgroup) { ?>
                             <?php
                             $isSelected = ($assetgroup->get('id') == $this->row->get('parent'));

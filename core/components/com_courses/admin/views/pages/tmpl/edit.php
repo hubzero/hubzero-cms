@@ -133,8 +133,12 @@ $this->js();
                 <div class="input-wrap">
                     <label for="field-active"><?php echo Lang::txt('COM_COURSES_FIELD_ACTIVE'); ?>:</label><br />
                     <select name="fields[active]" id="field-active">
-                        <option value="1" <?= $this->row->get('active') ? 'selected="selected"' : '' ?>><?= Lang::txt('JYES') ?></option>
-                        <option value="0" <?= !$this->row->get('active') ? 'selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
+                        <option value="1" <?= $this->row->get('active') ? 'selected="selected"' : '' ?>>
+                            <?= Lang::txt('JYES') ?>
+                        </option>
+                        <option value="0" <?= !$this->row->get('active') ? 'selected="selected"' : '' ?>>
+                            <?= Lang::txt('JNO') ?>
+                        </option>
                     </select>
                 </div>
             </fieldset>

@@ -91,7 +91,9 @@ $accessSelected = function ($value) use ($view) {
                             // Keep a group the editor isn't a member of, or it would be dropped on save
                             if ($owner && !$listed) {
                                 ?>
-                                <option value="<?= $this->escape($owner) ?>" selected="selected"><?= $this->escape($this->row->group_owner->get('description', $owner)) ?></option>
+                                <option value="<?= $this->escape($owner) ?>" selected="selected">
+                                    <?= $this->escape($this->row->group_owner->get('description', $owner)) ?>
+                                </option>
                                 <?php
                             }
                             ?>
@@ -103,10 +105,18 @@ $accessSelected = function ($value) use ($view) {
                         <?= Lang::txt('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL') ?>: <span
                             class="optional"><?= Lang::txt('COM_CONTRIBUTE_OPTIONAL') ?></span>
                         <select name="access" id="access">
-                            <option value="0"<?= $accessSelected(0) ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC') ?></option>
-                            <option value="1"<?= $accessSelected(1) ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?></option>
-                            <option value="3"<?= $accessSelected(3) ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED') ?></option>
-                            <option value="4"<?= $accessSelected(4) ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE') ?></option>
+                            <option value="0"<?= $accessSelected(0) ?>>
+                                <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC') ?>
+                            </option>
+                            <option value="1"<?= $accessSelected(1) ?>>
+                                <?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?>
+                            </option>
+                            <option value="3"<?= $accessSelected(3) ?>>
+                                <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED') ?>
+                            </option>
+                            <option value="4"<?= $accessSelected(4) ?>>
+                                <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE') ?>
+                            </option>
                         </select>
                     </label>
                 </div>

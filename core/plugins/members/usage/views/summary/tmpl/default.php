@@ -79,7 +79,14 @@ $this->css('usage', 'com_usage');
                 $cls = ($cls == 'even') ? 'odd' : 'even';
                 echo $cls; ?>">
                 <th scope="row"><?php echo Lang::txt('PLG_MEMBERS_USAGE_CLUSTERS'); ?>:</th>
-                <td><?= Lang::txt('PLG_MEMBERS_USAGE_USERS_IN_COURSES_SERVED', number_format($this->cluster_users), number_format($this->cluster_classes), number_format($this->cluster_schools)) ?></td>
+                <td>
+                    <?= Lang::txt(
+                        'PLG_MEMBERS_USAGE_USERS_IN_COURSES_SERVED',
+                        number_format($this->cluster_users),
+                        number_format($this->cluster_classes),
+                        number_format($this->cluster_schools),
+                    ) ?>
+                </td>
             </tr>
         <?php } ?>
         </tbody>
@@ -248,7 +255,9 @@ $this->css('usage', 'com_usage');
                     <?php
                     $linkUrl = Route::url('index.php?option=com_resources&id=' . $row->id);
                     ?>
-                    <td class="textual-data"><a href="<?= $linkUrl ?>"><?= $row->title ?></a> <span class="small"><?= $row->type ?></span></td>
+                    <td class="textual-data">
+                        <a href="<?= $linkUrl ?>"><?= $row->title ?></a> <span class="small"><?= $row->type ?></span>
+                    </td>
                     <td><?php echo $usercount12; ?></td>
                     <td><?php echo $usercount14; ?></td>
                     <td><?php echo $cites ?></td>
@@ -280,7 +289,9 @@ $this->css('usage', 'com_usage');
                             <td class="highlight"><?php echo $usercount12; ?></td>
                             <td class="highlight"><?php echo $usercount14; ?></td>
                             <td class="highlight"><?php echo $cites ?></td>
-                            <td class="highlight"><?= Date::of($rw->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></td>
+                            <td class="highlight">
+                                <?= Date::of($rw->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?>
+                            </td>
                         </tr>
                         <?php
                         $count++;

@@ -76,7 +76,9 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&cn=' . $this->gr
                     <?php if ($this->maxDays > 0 && $days > $this->maxDays) {
                         continue;
                     } ?>
-                    <option value="<?= $days ?>"><?= Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_EXTEND_DAYS', $days) ?></option>
+                    <option value="<?= $days ?>">
+                        <?= Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_EXTEND_DAYS', $days) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
             <br /><span class="hint"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_EXTEND_HINT'); ?></span>

@@ -35,7 +35,9 @@ $this
                     . $this->status['toolname'],
             );
             ?>
-            <li><a class="icon-status status btn" href="<?= $statusUrl ?>"><?= Lang::txt('COM_TOOLS_TOOL_STATUS') ?></a></li>
+            <li>
+                <a class="icon-status status btn" href="<?= $statusUrl ?>"><?= Lang::txt('COM_TOOLS_TOOL_STATUS') ?></a>
+            </li>
             <?php
             $createUrl = Route::url(
                 'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=create',

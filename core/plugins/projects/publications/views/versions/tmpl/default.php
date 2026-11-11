@@ -46,7 +46,9 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
                 <th class="tdmini"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION'); ?></th>
                 <th><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE'); ?></th>
                 <th><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATUS'); ?></th>
-                <th><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOI') . '/' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARK') ?></th>
+                <th>
+                    <?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOI') . '/' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_ARK') ?>
+                </th>
                 <th><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_OPTIONS')); ?></th>
             </tr>
          </thead>

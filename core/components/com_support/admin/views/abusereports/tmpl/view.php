@@ -50,12 +50,19 @@ Html::behavior('modal', 'a.modals');
                     <tbody>
                         <tr>
                             <td>
-                                <h4><?= '<a class="modals" href="' . $link . '">' . $this->escape($this->title) . '</a>: ' ?></h4>
+                                <h4>
+                                    <?= '<a class="modals" href="' . $link . '">' . $this->escape($this->title)
+                                        . '</a>: ' ?>
+                                </h4>
                                 <?php // The reported body is rendered markup for some sources -- the
                                 // wiki support plugin selects rc.chtml into this column -- so escaping
                                 // it shows an administrator literal <p> and <a> tags. Purify it, which
                                 // is what the site twin (site/views/abuse/tmpl/display.php) does.?>
-                                <p><?= (is_object($this->reported)) ? \Hubzero\Utility\Sanitize::html(stripslashes((string) $this->reported->text)) : '' ?></p>
+                                <p>
+                                    <?= (is_object($this->reported))
+                                        ? \Hubzero\Utility\Sanitize::html(stripslashes((string) $this->reported->text))
+                                        : '' ?>
+                                </p>
                                 <?= is_object($this->reported)
                                     && isset($this->reported->subject)
                                     && $this->reported->subject != ''
@@ -75,11 +82,19 @@ Html::behavior('modal', 'a.modals');
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SUPPORT_REPORT_REPORTED_BY'); ?></th>
-                        <td><?= (is_object($reporter) && $reporter->get('username')) ? $this->escape($reporter->get('username')) : Lang::txt('COM_SUPPORT_UNKNOWN') ?></td>
+                        <td>
+                            <?= (is_object($reporter) && $reporter->get('username'))
+                                ? $this->escape($reporter->get('username'))
+                                : Lang::txt('COM_SUPPORT_UNKNOWN') ?>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_SUPPORT_COL_REASON'); ?></th>
-                        <td><?= $this->escape(stripslashes($this->report->report ? $this->report->report : $this->report->subject)) ?></td>
+                        <td>
+                            <?= $this->escape(
+                                stripslashes($this->report->report ? $this->report->report : $this->report->subject),
+                            ) ?>
+                        </td>
                     </tr>
                 </tbody>
             </table>

@@ -143,7 +143,11 @@ $prioritySelected = function ($value) use ($view) {
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_TITLE'); ?></th>
-                            <td><?= $this->escape(stripslashes($this->status['title'])) . ' (' . $this->status['toolname'] . ' - ' . strtolower(Lang::txt('COM_TOOLS_ID')) . ' #' . $this->status['toolid'] . ')' ?></td>
+                            <td>
+                                <?= $this->escape(stripslashes($this->status['title'])) . ' ('
+                                    . $this->status['toolname'] . ' - ' . strtolower(Lang::txt('COM_TOOLS_ID')) . ' #'
+                                    . $this->status['toolid'] . ')' ?>
+                            </td>
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_VERSION'); ?></th>
@@ -198,7 +202,12 @@ $prioritySelected = function ($value) use ($view) {
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_TOOL_EXEC'); ?></th>
-                            <td><?= \Components\Tools\Helpers\Html::getToolAccess($this->status['exec'], $this->status['membergroups']) ?></td>
+                            <td>
+                                <?= \Components\Tools\Helpers\Html::getToolAccess(
+                                    $this->status['exec'],
+                                    $this->status['membergroups'],
+                                ) ?>
+                            </td>
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_SOURCE_CODE'); ?></th>
@@ -376,15 +385,31 @@ $prioritySelected = function ($value) use ($view) {
                                         <label for="tool-newstate">
                                             <?php echo Lang::txt('COM_TOOLS_FLIP_STATUS');?>:
                                             <select name="newstate" id="tool-newstate" class="form-control">
-                                                <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_TOOLS_REGISTERED') ?></option>
-                                                <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('COM_TOOLS_CREATED') ?></option>
-                                                <option value="3"<?= $stateSelected(3) ?>><?= Lang::txt('COM_TOOLS_UPLOADED') ?></option>
-                                                <option value="4"<?= $stateSelected(4) ?>><?= Lang::txt('COM_TOOLS_INSTALLED') ?></option>
-                                                <option value="5"<?= $stateSelected(5) ?>><?= Lang::txt('COM_TOOLS_UPDATED') ?></option>
-                                                <option value="6"<?= $stateSelected(6) ?>><?= Lang::txt('COM_TOOLS_APPROVED') ?></option>
-                                                <option value="7"<?= $stateSelected(7) ?>><?= Lang::txt('COM_TOOLS_PUBLISHED') ?></option>
+                                                <option value="1"<?= $stateSelected(1) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_REGISTERED') ?>
+                                                </option>
+                                                <option value="2"<?= $stateSelected(2) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_CREATED') ?>
+                                                </option>
+                                                <option value="3"<?= $stateSelected(3) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_UPLOADED') ?>
+                                                </option>
+                                                <option value="4"<?= $stateSelected(4) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_INSTALLED') ?>
+                                                </option>
+                                                <option value="5"<?= $stateSelected(5) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_UPDATED') ?>
+                                                </option>
+                                                <option value="6"<?= $stateSelected(6) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_APPROVED') ?>
+                                                </option>
+                                                <option value="7"<?= $stateSelected(7) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_PUBLISHED') ?>
+                                                </option>
                                                 <?php if ($this->status['published'] == 1) { // admin can retire only tools that have a published flag on?>
-                                                    <option value="8"<?= $stateSelected(8) ?>><?= Lang::txt('COM_TOOLS_RETIRED') ?></option>
+                                                    <option value="8"<?= $stateSelected(8) ?>>
+                                                        <?= Lang::txt('COM_TOOLS_RETIRED') ?>
+                                                    </option>
                                                 <?php } ?>
                                             </select>
                                         </label>
@@ -395,11 +420,21 @@ $prioritySelected = function ($value) use ($view) {
                                         <label for="tool-priority">
                                             <?php echo Lang::txt('COM_TOOLS_PRIORITY');?>:
                                             <select name="priority" id="tool-priority" class="form-control">
-                                                <option value="3"<?= $prioritySelected(3) ?>><?= Lang::txt('COM_TOOLS_NORMAL') ?></option>
-                                                <option value="2"<?= $prioritySelected(2) ?>><?= Lang::txt('COM_TOOLS_HIGH') ?></option>
-                                                <option value="1"<?= $prioritySelected(1) ?>><?= Lang::txt('COM_TOOLS_CRITICAL') ?></option>
-                                                <option value="4"<?= $prioritySelected(4) ?>><?= Lang::txt('COM_TOOLS_LOW') ?></option>
-                                                <option value="5"<?= $prioritySelected(5) ?>><?= Lang::txt('COM_TOOLS_LOWEST') ?></option>
+                                                <option value="3"<?= $prioritySelected(3) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_NORMAL') ?>
+                                                </option>
+                                                <option value="2"<?= $prioritySelected(2) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_HIGH') ?>
+                                                </option>
+                                                <option value="1"<?= $prioritySelected(1) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_CRITICAL') ?>
+                                                </option>
+                                                <option value="4"<?= $prioritySelected(4) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_LOW') ?>
+                                                </option>
+                                                <option value="5"<?= $prioritySelected(5) ?>>
+                                                    <?= Lang::txt('COM_TOOLS_LOWEST') ?>
+                                                </option>
                                             </select>
                                         </label>
                                     </div>

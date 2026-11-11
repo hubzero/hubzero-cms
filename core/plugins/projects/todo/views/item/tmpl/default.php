@@ -85,13 +85,23 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
                     </div>
                 </div>
                 <div class="col span4 omega td-details">
-                    <p><?= Lang::txt('PLG_PROJECTS_TODO_CREATED') . ' ' . $this->row->created('date') . ' ' . Lang::txt('PLG_PROJECTS_TODO_BY') . ' ' . $this->row->creator('name') ?></p>
+                    <p>
+                        <?= Lang::txt('PLG_PROJECTS_TODO_CREATED') . ' ' . $this->row->created('date') . ' '
+                            . Lang::txt('PLG_PROJECTS_TODO_BY') . ' ' . $this->row->creator('name') ?>
+                    </p>
                 <?php if (!$this->row->isComplete()) { ?>
                     <p><?= Lang::txt('PLG_PROJECTS_TODO_ASSIGNED_TO') . ' <strong>' . $assignee . '</strong>' ?></p>
                     <p><?php echo Lang::txt('PLG_PROJECTS_TODO_DUE') . ': <strong>' . $due . '</strong>'; ?></p>
                 <?php } elseif ($this->row->isComplete()) { ?>
-                        <p><?= Lang::txt('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' ' . Lang::txt('PLG_PROJECTS_TODO_BY') . ' ' . \Components\Projects\Helpers\Html::shortenName($this->row->closer('name')) ?></p>
-                        <p><?= Lang::txt('PLG_PROJECTS_TODO_TODO_TOOK') . ' ' . $diff . ' ' . Lang::txt('PLG_PROJECTS_TODO_TODO_TO_COMPLETE') ?></p>
+                        <p>
+                            <?= Lang::txt('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' '
+                                . Lang::txt('PLG_PROJECTS_TODO_BY') . ' '
+                                . \Components\Projects\Helpers\Html::shortenName($this->row->closer('name')) ?>
+                        </p>
+                        <p>
+                            <?= Lang::txt('PLG_PROJECTS_TODO_TODO_TOOK') . ' ' . $diff . ' '
+                                . Lang::txt('PLG_PROJECTS_TODO_TODO_TO_COMPLETE') ?>
+                        </p>
                 <?php } ?>
                 </div>
             </div>
@@ -109,7 +119,9 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
         <?php } ?>
     </div>
     <div class="comment-wrap">
-        <h4 class="comment-blurb"><?= ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMMENTS')) . ' (' . $this->row->comments('count') . ')' ?>:</h4>
+        <h4 class="comment-blurb">
+            <?= ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMMENTS')) . ' (' . $this->row->comments('count') . ')' ?>:
+        </h4>
         <?php if ($this->row->comments() && $this->row->comments() instanceof \Hubzero\Base\ItemList) { ?>
             <ul id="td-comments">
             <?php foreach ($this->row->comments() as $comment) { ?>

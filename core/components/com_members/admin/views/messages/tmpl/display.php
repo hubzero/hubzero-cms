@@ -48,7 +48,9 @@ $componentSelected = function ($value) use ($view) {
             <?php if ($this->components->count()) { ?>
                 <?php foreach ($this->components as $component) { ?>
                     <?php $name = $component->get('component'); // (getComponents() returns model rows, not strings)?>
-                    <option value="<?= $this->escape($name) ?>"<?= $componentSelected($name) ?>><?= $this->escape($name) ?></option>
+                    <option value="<?= $this->escape($name) ?>"<?= $componentSelected($name) ?>>
+                        <?= $this->escape($name) ?>
+                    </option>
                 <?php } ?>
             <?php } ?>
         </select>

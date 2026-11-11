@@ -105,7 +105,9 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
         <div class="element_editing">
             <div class="pane-wrapper">
                 <span class="checker">&nbsp;</span>
-                <h5 class="element-title"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_BUNDLE') ?></h5>
+                <h5 class="element-title">
+                    <?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_ARCHIVE_BUNDLE') ?>
+                </h5>
                 <div class="element-instructions">
                     <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_ARCHIVE_PACKAGE'); ?></p>
                     <div class="list-wrapper">

@@ -47,10 +47,42 @@ $this->css('import');
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?= Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS', 'count', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED', 'created_at', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN', 'ran_at', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME',
+                        'name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS',
+                        'count',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_RESOURCES_IMPORT_DISPLAY_FIELD_CREATED',
+                        'created_at',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_RESOURCES_IMPORT_DISPLAY_FIELD_LASTRUN',
+                        'ran_at',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col" class="priority-2"><?= Lang::txt('COM_RESOURCES_IMPORT_DISPLAY_FIELD_RUNCOUNT') ?></th>
             </tr>
         </thead>

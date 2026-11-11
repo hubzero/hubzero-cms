@@ -194,7 +194,9 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                                 <a class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>"
                                     href="<?= Route::url($link) ?>"
                                     title="<?= $this->escape($attachment->get('description')) ?>">
-                                    <p class="attachment-description"><?= $this->escape($attachment->get('description')) ?></p>
+                                    <p class="attachment-description">
+                                        <?= $this->escape($attachment->get('description')) ?>
+                                    </p>
                                     <p class="attachment-meta">
                                         <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
                                         <span class="attachment-action"><?= Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') ?></span>

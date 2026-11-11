@@ -208,7 +208,9 @@ $categorySelected = function ($value) use ($view) {
                                         <a class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>"
                                             href="<?= Route::url($attachment->link()) ?>"
                                             title="<?= $this->escape($attachment->get('description')) ?>">
-                                            <p class="attachment-description"><?= $this->escape($attachment->get('description')) ?></p>
+                                            <p class="attachment-description">
+                                                <?= $this->escape($attachment->get('description')) ?>
+                                            </p>
                                             <p class="attachment-meta">
                                                 <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
                                                 <span class="attachment-action"><?= Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') ?></span>
@@ -405,7 +407,9 @@ $categorySelected = function ($value) use ($view) {
                                         <a class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>"
                                             href="<?= Route::url($attachment->link()) ?>"
                                             title="<?= $this->escape($attachment->get('description')) ?>">
-                                            <p class="attachment-description"><?= $this->escape($attachment->get('description')) ?></p>
+                                            <p class="attachment-description">
+                                                <?= $this->escape($attachment->get('description')) ?>
+                                            </p>
                                             <p class="attachment-meta">
                                                 <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
                                                 <span class="attachment-action"><?= Lang::txt('JLIB_HTML_CLICK_TO_DOWNLOAD') ?></span>
@@ -417,7 +421,9 @@ $categorySelected = function ($value) use ($view) {
                                     ?>
                                     <div class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>"
                                         title="<?= $this->escape($attachment->get('description')) ?>">
-                                        <p class="attachment-description"><?= $this->escape($attachment->get('description')) ?></p>
+                                        <p class="attachment-description">
+                                            <?= $this->escape($attachment->get('description')) ?>
+                                        </p>
                                         <p class="attachment-meta">
                                             <span class="attachment-size"><?= $this->escape($attachment->get('filename')) ?></span>
                                             <span class="attachment-action"><?= Lang::txt('JLIB_HTML_ERROR_FILE_NOT_FOUND') ?></span>
@@ -667,7 +673,9 @@ $categorySelected = function ($value) use ($view) {
                                         $hi = [];
                                         foreach ($this->lists['messages'] as $message) {
                                             ?>
-                                            <option value="m<?= $message->id ?>"><?= $this->escape(stripslashes($message->title)) ?></option>
+                                            <option value="m<?= $message->id ?>">
+                                                <?= $this->escape(stripslashes($message->title)) ?>
+                                            </option>
                                             <?php
                                             $hi[] = '<input type="hidden" name="m' . $message->id . '" id="m'
                                                 . $message->id . '" value="'

@@ -94,12 +94,52 @@ $namespaceSelected = function ($value) use ($view) {
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_WIKI_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_WIKI_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-5">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WIKI_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WIKI_COL_TITLE',
+                        'title',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_WIKI_COL_MODE'); ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_WIKI_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_WIKI_COL_LOCKED', 'protected', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_WIKI_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WIKI_COL_STATE',
+                        'state',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-5">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WIKI_COL_LOCKED',
+                        'protected',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WIKI_COL_SCOPE',
+                        'scope',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_WIKI_COL_REVISIONS'); ?></th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_WIKI_COL_COMMENTS'); ?></th>
             </tr>

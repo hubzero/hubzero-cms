@@ -39,7 +39,9 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
             <?php
             $linkUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
             ?>
-            <li><a class="btn icon-browse" href="<?= $linkUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LIST') ?></a></li>
+            <li>
+                <a class="btn icon-browse" href="<?= $linkUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LIST') ?></a>
+            </li>
         </ul>
     </div><!-- / #content-header-extra -->
 </header><!-- / #content-header -->

@@ -46,7 +46,9 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
     <table class="adminlist attention">
         <thead>
             <tr>
-                <th scope="col">(<?= $this->needsAttention->count() ?>) <?= Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION') ?></th>
+                <th scope="col">
+                    (<?= $this->needsAttention->count() ?>) <?= Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION') ?>
+                </th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECKS'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_APPROVE'); ?></th>

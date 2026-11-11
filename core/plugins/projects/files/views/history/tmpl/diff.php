@@ -125,8 +125,14 @@ $modeChecked = function ($value) use ($view) {
             <table id="table-diff" class="diff diffSideBySide">
              <thead>
                 <tr>
-                    <th colspan="2"><?= Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($old['rev']) . ' (' . $this->escape($old['hash']) . ')' ?></th>
-                    <th colspan="2"><?= Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($new['rev']) . ' (' . $this->escape($new['hash']) . ')' ?></th>
+                    <th colspan="2">
+                        <?= Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($old['rev']) . ' ('
+                            . $this->escape($old['hash']) . ')' ?>
+                    </th>
+                    <th colspan="2">
+                        <?= Lang::txt('PLG_PROJECTS_FILES_REV') . ' @' . $this->escape($new['rev']) . ' ('
+                            . $this->escape($new['hash']) . ')' ?>
+                    </th>
                 </tr>
              </thead>
 

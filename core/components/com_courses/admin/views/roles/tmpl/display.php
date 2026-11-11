@@ -51,11 +51,51 @@ Toolbar::help('roles');
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_COURSES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_COURSES_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_COURSES_COL_OFFERING', 'offering_id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_COURSES_COL_TOTAL', 'total', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_COURSES_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_COURSES_COL_ALIAS',
+                        'alias',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_COURSES_COL_TITLE',
+                        'title',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_COURSES_COL_OFFERING',
+                        'offering_id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_COURSES_COL_TOTAL',
+                        'total',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

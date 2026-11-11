@@ -201,8 +201,16 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
                 <select class="col-prop" id="prj-db-col-linkpath"></select><br />
                 <div style="font-size: .8em;">
                     <ul>
-                        <li><?= Lang::txt('Only files in the source CSV file folder or  its sub folders can be used here.') ?></li>
-                        <li><?= Lang::txt('Your CSV file should list <strong>only the file name</strong> for repository files.') ?></li>
+                        <li>
+                            <?= Lang::txt(
+                                'Only files in the source CSV file folder or  its sub folders can be used here.',
+                            ) ?>
+                        </li>
+                        <li>
+                            <?= Lang::txt(
+                                'Your CSV file should list <strong>only the file name</strong> for repository files.',
+                            ) ?>
+                        </li>
                     </ul>
                 </div>
             </div>

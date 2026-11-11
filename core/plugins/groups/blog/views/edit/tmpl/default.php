@@ -52,7 +52,9 @@ $accessSelected = function ($value) use ($view) {
 
 <form action="<?php echo Route::url($base); ?>" method="post" id="hubForm" class="full">
     <fieldset>
-        <legend><?= Lang::txt($this->entry->isNew() ? 'PLG_GROUPS_BLOG_NEW_ENTRY' : 'PLG_GROUPS_BLOG_EDIT_DETAILS') ?></legend>
+        <legend>
+            <?= Lang::txt($this->entry->isNew() ? 'PLG_GROUPS_BLOG_NEW_ENTRY' : 'PLG_GROUPS_BLOG_EDIT_DETAILS') ?>
+        </legend>
 
         <div class="form-group">
             <label<?php echo $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : ''; ?>>
@@ -116,9 +118,15 @@ $accessSelected = function ($value) use ($view) {
                     <label for="field-state">
                         <?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_PRIVACY'); ?>
                         <select class="form-control" name="entry[access]" id="field-access">
-                            <option value="1"<?= $accessSelected(1) ?>><?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PUBLIC') ?></option>
-                            <option value="2"<?= $accessSelected(2) ?>><?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_REGISTERED') ?></option>
-                            <option value="5"<?= $this->entry->get('access') > 2 ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PRIVATE') ?></option>
+                            <option value="1"<?= $accessSelected(1) ?>>
+                                <?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PUBLIC') ?>
+                            </option>
+                            <option value="2"<?= $accessSelected(2) ?>>
+                                <?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_REGISTERED') ?>
+                            </option>
+                            <option value="5"<?= $this->entry->get('access') > 2 ? ' selected="selected"' : '' ?>>
+                                <?= Lang::txt('PLG_GROUPS_BLOG_FIELD_STATE_PRIVATE') ?>
+                            </option>
                         </select>
                     </label>
                 </div>

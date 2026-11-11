@@ -43,9 +43,13 @@ $tblSelected = function ($value) use ($view) {
     <fieldset id="filter-bar">
         <label for="filter-tbl"><?php echo Lang::txt('COM_TAGS_FILTER'); ?>:</label>
         <select name="tbl" id="filter-tbl" class="filter filter-submit">
-            <option value=""<?= !$this->filters['tbl'] ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TAGS_FILTER_TYPE') ?></option>
+            <option value=""<?= !$this->filters['tbl'] ? ' selected="selected"' : '' ?>>
+                <?= Lang::txt('COM_TAGS_FILTER_TYPE') ?>
+            </option>
             <?php foreach ($this->types as $type) { ?>
-                <option value="<?= $type->get('tbl') ?>"<?= $tblSelected($type->get('tbl')) ?>><?= $type->get('tbl') ?></option>
+                <option value="<?= $type->get('tbl') ?>"<?= $tblSelected($type->get('tbl')) ?>>
+                    <?= $type->get('tbl') ?>
+                </option>
             <?php } ?>
         </select>
 
@@ -68,14 +72,62 @@ $tblSelected = function ($value) use ($view) {
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_TAGS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-5">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_TAGS_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <?php if (!$this->filters['tagid']) { ?>
-                    <th scope="col"><?= Html::grid('sort', 'COM_TAGS_COL_TAGID', 'tagid', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                    <th scope="col">
+                        <?= Html::grid(
+                            'sort',
+                            'COM_TAGS_COL_TAGID',
+                            'tagid',
+                            @$this->filters['sort_Dir'],
+                            @$this->filters['sort'],
+                        ) ?>
+                    </th>
                 <?php } ?>
-                <th scope="col"><?= Html::grid('sort', 'COM_TAGS_COL_TBL', 'tbl', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_TAGS_COL_OBJECTID', 'objectid', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_TAGS_COL_CREATED', 'taggedon', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_TAGS_COL_CREATED_BY', 'taggerid', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_TAGS_COL_TBL',
+                        'tbl',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_TAGS_COL_OBJECTID',
+                        'objectid',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_TAGS_COL_CREATED',
+                        'taggedon',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_TAGS_COL_CREATED_BY',
+                        'taggerid',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

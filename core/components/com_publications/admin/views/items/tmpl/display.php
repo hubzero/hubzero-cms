@@ -69,15 +69,23 @@ $statusSelected = function ($value) use ($view) {
             <div class="col span6">
                 <label for="status"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?>:</label>
                 <select name="status" id="status" class="filter filter-submit">
-                    <option value="all"<?= $statusSelected('all') ?>><?= Lang::txt('COM_PUBLICATIONS_ALL_STATUS') ?></option>
+                    <option value="all"<?= $statusSelected('all') ?>>
+                        <?= Lang::txt('COM_PUBLICATIONS_ALL_STATUS') ?>
+                    </option>
                     <option
                         value="3"<?= $statusSelected(3) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT') ?></option>
                     <option
                         value="5"<?= $statusSelected(5) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PENDING') ?></option>
-                    <option value="0"<?= $statusSelected(0 && $this->filters['status'] != 'all') ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?></option>
-                    <option value="10"<?= $statusSelected(10) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING') ?></option>
+                    <option value="0"<?= $statusSelected(0 && $this->filters['status'] != 'all') ?>>
+                        <?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?>
+                    </option>
+                    <option value="10"<?= $statusSelected(10) ?>>
+                        <?= Lang::txt('COM_PUBLICATIONS_VERSION_PRESERVING') ?>
+                    </option>
                     <option value="7"<?= $statusSelected(7) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_WIP') ?></option>
-                    <option value="1"<?= $statusSelected(1) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED') ?></option>
+                    <option value="1"<?= $statusSelected(1) ?>>
+                        <?= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED') ?>
+                    </option>
                     <option
                         value="4"<?= $statusSelected(4) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_READY') ?></option>
                     <option
@@ -104,11 +112,35 @@ $statusSelected = function ($value) use ($view) {
         <thead>
             <tr>
                 <th></th>
-                <th class="priority-3"><?= Html::grid('sort', 'COM_PUBLICATIONS_FIELD_ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby']) ?></th>
-                <th><?= Html::grid('sort', 'COM_PUBLICATIONS_FIELD_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby']) ?></th>
+                <th class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PUBLICATIONS_FIELD_ID',
+                        'id',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby'],
+                    ) ?>
+                </th>
+                <th>
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PUBLICATIONS_FIELD_TITLE',
+                        'title',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby'],
+                    ) ?>
+                </th>
                 <th class="priority-4"><?php echo Lang::txt('@v.'); ?></th>
                 <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'); ?></th>
-                <th class="priority-2"><?= Html::grid('sort', 'COM_PUBLICATIONS_FIELD_PROJECT', 'project', @$this->filters['sortdir'], @$this->filters['sortby']) ?></th>
+                <th class="priority-2">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PUBLICATIONS_FIELD_PROJECT',
+                        'project',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby'],
+                    ) ?>
+                </th>
                 <th class="priority-4"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RELEASES'); ?></th>
                 <th class="priority-4" colspan="2"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_TYPE_CAT'); ?></th>
                 <th class="priority-5"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LAST_MODIFIED'); ?></th>

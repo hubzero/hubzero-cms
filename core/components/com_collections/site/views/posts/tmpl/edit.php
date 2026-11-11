@@ -105,7 +105,9 @@ $idSelected = function ($value) use ($view) {
 <?php } ?>
     <form action="<?= Route::url($base . '&task=save') ?>" method="post" id="hubForm" enctype="multipart/form-data">
         <fieldset>
-            <legend><?= $item->get('id') ? Lang::txt('COM_COLLECTIONS_EDIT_POST') : Lang::txt('COM_COLLECTIONS_NEW_POST') ?></legend>
+            <legend>
+                <?= $item->get('id') ? Lang::txt('COM_COLLECTIONS_EDIT_POST') : Lang::txt('COM_COLLECTIONS_NEW_POST') ?>
+            </legend>
 
     <?php if ($this->entry->get('original')) { ?>
             <div class="field-wrap">

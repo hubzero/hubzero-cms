@@ -188,7 +188,12 @@ $allowCommentsChecked = function ($value) use ($view) {
         </div>
     <?php } else {*/ ?>
                     <?php if ($this->page->exists() && $this->page->access('edit') && !$isHome) { ?>
-                        <p><?= Lang::txt('COM_WIKI_WARNING_TO_CHANGE_PAGENAME', Route::url($this->page->link('rename'))) ?></p>
+                        <p>
+                            <?= Lang::txt(
+                                'COM_WIKI_WARNING_TO_CHANGE_PAGENAME',
+                                Route::url($this->page->link('rename')),
+                            ) ?>
+                        </p>
                     <?php } ?>
                     <?php //}?>
                     <fieldset>
@@ -306,8 +311,18 @@ $allowCommentsChecked = function ($value) use ($view) {
                                 </div>
                                 <div class="col span-half omega">
                                     <?php if ($macros) { ?>
-                                        <p><?= Lang::txt('COM_WIKI_IMAGE_MACRO_HINT', Route::url($macros->link() . '#image')) ?></p>
-                                        <p><?= Lang::txt('COM_WIKI_FILE_MACRO_HINT', Route::url($macros->link() . '#file')) ?></p>
+                                        <p>
+                                            <?= Lang::txt(
+                                                'COM_WIKI_IMAGE_MACRO_HINT',
+                                                Route::url($macros->link() . '#image'),
+                                            ) ?>
+                                        </p>
+                                        <p>
+                                            <?= Lang::txt(
+                                                'COM_WIKI_FILE_MACRO_HINT',
+                                                Route::url($macros->link() . '#file'),
+                                            ) ?>
+                                        </p>
                                     <?php } ?>
                                 </div>
                             </div><!-- / .grid -->

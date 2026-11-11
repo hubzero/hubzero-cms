@@ -164,7 +164,10 @@ defined('_HZEXEC_') or die();
         <span class="review_applicants"><a
             href="<?= Route::url('index.php?option=com_jobs&task=resumes?filterby=applied') ?>"><button
             class="btn btn"><?= Lang::txt('COM_JOBS_REVIEW_APPLICANTS') ?></button></a></span>
-        <h3><?= Lang::txt('COM_JOBS_APPLICATIONS') . ' (' . count($job->applications) . ' ' . Lang::txt('COM_JOBS_TOTAL') . ')' ?></h3>
+        <h3>
+            <?= Lang::txt('COM_JOBS_APPLICATIONS') . ' (' . count($job->applications) . ' '
+                . Lang::txt('COM_JOBS_TOTAL') . ')' ?>
+        </h3>
         <?php if (count($job->applications) <= 0) { ?>
             <p><?php echo Lang::txt('COM_JOBS_NOTICE_APPLICATIONS_NONE'); ?></p>
         <?php } else { ?>

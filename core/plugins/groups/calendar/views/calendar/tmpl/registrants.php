@@ -131,7 +131,9 @@ $month = date("m", strtotime($this->event->publish_up));
         <?php if (count($this->registrants) > 0) : ?>
             <?php foreach ($this->registrants as $registrant) : ?>
                 <tr>
-                    <td><?= $this->escape($registrant->last_name) . ', ' . $this->escape($registrant->first_name) ?></td>
+                    <td>
+                        <?= $this->escape($registrant->last_name) . ', ' . $this->escape($registrant->first_name) ?>
+                    </td>
                     <td><?php echo $this->escape($registrant->email); ?></td>
                     <td><?php echo Date::of($registrant->registered)->toLocal('l, F d, Y @ g:i a'); ?></td>
                 </tr>

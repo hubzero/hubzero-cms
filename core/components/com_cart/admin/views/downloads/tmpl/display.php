@@ -69,7 +69,9 @@ $this
                     ?>
                     <select name="skuRequested" id="skuRequested" class="filter filter-submit">
                         <option value="0"<?= $skuRequestedSelected(-1) ?>><?= Lang::txt('All SKUs') ?></option>
-                        <option value="<?= $this->escape($this->filters['skuRequested']) ?>"><?= $this->escape($this->skuRequestedName) ?></option>
+                        <option value="<?= $this->escape($this->filters['skuRequested']) ?>">
+                            <?= $this->escape($this->skuRequestedName) ?>
+                        </option>
                     </select>
                     &nbsp;&nbsp;
                     <?php
@@ -137,13 +139,45 @@ $this
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?= Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_CART_PRODUCT',
+                        'product',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_CART_DOWNLOADED_BY',
+                        'dName',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col"><?php echo Lang::txt('COM_CART_USER_INFO'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_CART_EULA'); ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_CART_DOWNLOADED', 'dDownloaded', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_CART_DOWNLOADED',
+                        'dDownloaded',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col">IP</th>
-                <th scope="col"><?= Html::grid('sort', 'COM_CART_STATUS', 'dStatus', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_CART_STATUS',
+                        'dStatus',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

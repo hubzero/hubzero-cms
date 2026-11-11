@@ -76,7 +76,11 @@ if ($this->masterAdmin) {
         <div class="col span6">
             <div id="activities">
                 <h3><?php echo Lang::txt('COM_JOBS_DASHBOARD_ACTIVITIES'); ?></h3>
-                <h4><?= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=resumes') . '">' . Lang::txt('COM_JOBS_ACTION_BROWSE_RESUMES') . ' (' . $this->stats['total_resumes'] . ')</a>' ?></h4>
+                <h4>
+                    <?= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=resumes') . '">'
+                        . Lang::txt('COM_JOBS_ACTION_BROWSE_RESUMES') . ' (' . $this->stats['total_resumes']
+                        . ')</a>' ?>
+                </h4>
                 <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_DASHBOARD_TOTAL_POOL'); ?></span>
                 <p>
                     <span class="view">
@@ -107,7 +111,9 @@ if ($this->masterAdmin) {
                     </span><?php echo $this->stats['applied']; ?>
                 </p>
                 <div class="spacer"></div>
-                <h4><span><?= Lang::txt('COM_JOBS_DASHBOARD_MANAGE_ADS') . ' (' . count($this->myjobs) . ')' ?></span></h4>
+                <h4>
+                    <span><?= Lang::txt('COM_JOBS_DASHBOARD_MANAGE_ADS') . ' (' . count($this->myjobs) . ')' ?></span>
+                </h4>
 
                 <p class="reg">
                     <span><?php echo Lang::txt('COM_JOBS_DASHBOARD_YOU_HAVE_CURRENTLY') . ' ' . $this->activejobs . ' ' . Lang::txt('COM_JOBS_DASHBOARD_PUBLISHED_ADS');
@@ -187,14 +193,29 @@ if ($this->masterAdmin) {
                     <h3><?= Lang::txt('COM_JOBS_SUBSCRIPTION_EMPLOYER_INFORMATION') ?><span><?= Lang::txt('COM_JOBS_EMPLOYER_USERNAME') . ': ' . $this->login ?></span></h3>
 
                     <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_EMPLOYER_COMPANY'); ?></span>
-                    <p><?= $this->employer->companyName ? $this->escape($this->employer->companyName) : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED') ?></p>
+                    <p>
+                        <?= $this->employer->companyName
+                            ? $this->escape($this->employer->companyName)
+                            : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED') ?>
+                    </p>
 
                     <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_EMPLOYER_LOCATION'); ?></span>
-                    <p><?= $this->employer->companyLocation ? $this->escape($this->employer->companyLocation) : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED') ?></p>
+                    <p>
+                        <?= $this->employer->companyLocation
+                            ? $this->escape($this->employer->companyLocation)
+                            : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED') ?>
+                    </p>
 
                     <span class="sub-heading"><?php echo Lang::txt('COM_JOBS_EMPLOYER_WEBSITE'); ?></span>
-                    <p><?= $this->employer->companyWebsite ? $this->escape($this->employer->companyWebsite) : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED') ?></p>
-                    <p><?= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=subscribe') . '" class="cancelit">[ ' . Lang::txt('COM_JOBS_EMPLOYER_EDIT_INFO') . ' ]</a>' ?></p>
+                    <p>
+                        <?= $this->employer->companyWebsite
+                            ? $this->escape($this->employer->companyWebsite)
+                            : Lang::txt('COM_JOBS_NOTICE_UNSPECIFIED') ?>
+                    </p>
+                    <p>
+                        <?= '<a href="' . Route::url('index.php?option=' . $this->option . '&task=subscribe')
+                            . '" class="cancelit">[ ' . Lang::txt('COM_JOBS_EMPLOYER_EDIT_INFO') . ' ]</a>' ?>
+                    </p>
                 <?php } ?>
             </div>
         </div>

@@ -47,7 +47,9 @@ if ($this->version == 'dev') {
                             if ($this->roles) {
                                 foreach ($this->roles as $role) {
                                     ?>
-                                <option value="<?= $this->escape($role->alias) ?>"><?= $this->escape($role->title) ?></option>
+                                <option value="<?= $this->escape($role->alias) ?>">
+                                    <?= $this->escape($role->title) ?>
+                                </option>
                                     <?php
                                 }
                             }
@@ -122,7 +124,9 @@ if ($this->contributors) {
                     </td>
                     <td>
                         <select name="authors[<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>][role]" id="role-<?= isset($contributor->authorid) ? $contributor->authorid : $contributor->id ?>">
-                            <option value=""<?= $contributor->role == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_TOOLS_AUTHOR') ?></option>
+                            <option value=""<?= $contributor->role == '' ? ' selected="selected"' : '' ?>>
+                                <?= Lang::txt('COM_TOOLS_AUTHOR') ?>
+                            </option>
                             <?php
                             if ($this->roles) {
                                 foreach ($this->roles as $role) {

@@ -290,7 +290,9 @@ if (count($inst) > 0) {
                                     <label for="field-category_id">
                                     <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY') ?></span>
                                     <select name="fields[category_id]" id="field-category_id">
-                                        <option value="0"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT') ?></option>
+                                        <option value="0">
+                                            <?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CATEGORY_SELECT') ?>
+                                        </option>
                                         <?php
                                         foreach ($this->sections as $section) {
                                             if ($section->categories) {
@@ -303,7 +305,9 @@ if (count($inst) > 0) {
                                                         continue;
                                                     }
                                                     ?>
-                                                    <option value="<?= $category->get('id') ?>"><?= $this->escape(stripslashes($category->get('title'))) ?></option>
+                                                    <option value="<?= $category->get('id') ?>">
+                                                        <?= $this->escape(stripslashes($category->get('title'))) ?>
+                                                    </option>
                                                     <?php
                                                 }
                                                 ?>

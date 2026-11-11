@@ -73,7 +73,9 @@ $actionUrl = Route::url(
                             <?php $sel = ($order->get('title') == $this->module->get('title'))
                                 ? 'selected="selected"'
                                 : ''; ?>
-                            <option <?= $sel ?> value="<?= ($k + 1) ?>"><?= ($k + 1) . '. ' . $this->escape($order->get('title')) ?></option>
+                            <option <?= $sel ?> value="<?= ($k + 1) ?>">
+                                <?= ($k + 1) . '. ' . $this->escape($order->get('title')) ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -93,7 +95,9 @@ $actionUrl = Route::url(
                     <label for="field-assignment"><?= Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT') ?>:</label>
                     <select name="menu[assignment]" id="field-assignment">
                         <option value="0"><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_ALL'); ?></option>
-                        <option <?= !in_array(0, $activeMenu) ? 'selected="selected"' : '' ?> value=""><?= Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_SELECTED') ?></option>
+                        <option <?= !in_array(0, $activeMenu) ? 'selected="selected"' : '' ?> value="">
+                            <?= Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_SELECTED') ?>
+                        </option>
                     </select>
                 </div>
 

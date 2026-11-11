@@ -90,7 +90,9 @@ $stateSelected = function ($value) use ($view) {
                         . $row->id . '&cat=' . $row->category,
                 );
                 ?>
-                <td><a href="<?= $viewUrl ?>"><?= $this->escape($row->category) . ' #' . (int) $row->referenceid ?></a></td>
+                <td>
+                    <a href="<?= $viewUrl ?>"><?= $this->escape($row->category) . ' #' . (int) $row->referenceid ?></a>
+                </td>
                 <td><?php echo $this->escape($row->subject); ?></td>
                 <td><?php echo $this->escape($user->get('username')); ?></td>
                 <td><?php echo Date::of($row->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1')); ?></td>

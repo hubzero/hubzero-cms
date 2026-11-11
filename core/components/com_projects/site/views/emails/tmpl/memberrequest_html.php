@@ -119,7 +119,9 @@ if ($this->project->isProvisioned()) {
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
                                 align="right">Created:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">@ <?= $this->project->created('time') ?> on <?= $this->project->created('date') ?></td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
+                                @ <?= $this->project->created('time') ?> on <?= $this->project->created('date') ?>
+                            </td>
                         </tr>
                         <?php if ($owner) { ?>
                         <tr>
@@ -141,7 +143,9 @@ if ($this->project->isProvisioned()) {
                     <tbody>
                         <tr>
                             <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?= $comment ?></div>
+                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">
+                                    <?= $comment ?>
+                                </div>
                             </td>
                         </tr>
                     </tbody>

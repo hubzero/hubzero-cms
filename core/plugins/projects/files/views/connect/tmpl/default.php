@@ -70,7 +70,9 @@ $i = 0;
                 <?php
                 $connectUrl = Route::url($this->model->link('files') . '&action=connect&service=' . $servicename);
                 ?>
-                <p class="connect-action"><a href="<?= $connectUrl ?>"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT') ?></a></p>
+                <p class="connect-action">
+                    <a href="<?= $connectUrl ?>"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT') ?></a>
+                </p>
             <?php } ?>
         </div>
         <?php } ?>

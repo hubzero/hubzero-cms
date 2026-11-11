@@ -73,7 +73,11 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
                 <th class="checkbox"><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ORDER'); ?></th>
                 <th class="primarycolumn"><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ITEM'); ?></th>
                 <th><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_ASSIGNED'); ?></th>
-                <th><?= ($this->filters['state']) ? Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMPLETED') : Lang::txt('PLG_PROJECTS_TODO_COLUMN_DUE') ?></th>
+                <th>
+                    <?= ($this->filters['state'])
+                        ? Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMPLETED')
+                        : Lang::txt('PLG_PROJECTS_TODO_COLUMN_DUE') ?>
+                </th>
                 <th><?php echo Lang::txt('PLG_PROJECTS_TODO_COLUMN_COMMENTS'); ?></th>
                 <th aria-label="<?php echo Lang::txt('Options'); ?>"><span class="sr-only">Options</span></th>
             </tr>
@@ -95,7 +99,9 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
                 ?>
                 <td><a href="<?= $viewUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT') ?>"><?= \Hubzero\Utility\Str::truncate($row->get('content'), 120) ?></a></td>
                 <td class="mini faded"><?= $row->isComplete() ? $row->closer('name') : $row->owner('name') ?></td>
-                <td class="mini nowrap"><?= $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote ?></td>
+                <td class="mini nowrap">
+                    <?= $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote ?>
+                </td>
                 <?php
                 $viewUrl = Route::url($url . '&action=view') . '/?todoid=' . $row->get('id');
                 ?>

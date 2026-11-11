@@ -110,7 +110,9 @@ $roles = [
 
 <fieldset>
     <?php if (!$this->setup) : ?>
-        <legend><?= Lang::txt('PLG_PROJECTS_TEAM_ADD_NEW_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AS') . ':' ?></legend>
+        <legend>
+            <?= Lang::txt('PLG_PROJECTS_TEAM_ADD_NEW_MEMBERS') . ' ' . Lang::txt('PLG_PROJECTS_TEAM_AS') . ':' ?>
+        </legend>
     <?php else : ?>
         <legend><?php echo Lang::txt('PLG_PROJECTS_TEAM_PER_USER'); ?>:</legend>
     <?php endif; ?>

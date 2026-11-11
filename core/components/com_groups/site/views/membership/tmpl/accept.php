@@ -30,7 +30,9 @@ if ($this->token) {
 
 <section class="main section">
     <div class="section-inner">
-        <p class="info"><?= Lang::txt('COM_GROUPS_ACCEPT_INVITE_CONFIRM', $this->escape($this->group->get('description'))) ?></p>
+        <p class="info">
+            <?= Lang::txt('COM_GROUPS_ACCEPT_INVITE_CONFIRM', $this->escape($this->group->get('description'))) ?>
+        </p>
         <p>
             <button type="submit" form="hz-post-action" formaction="<?= Route::url($accept) ?>" class="btn btn-success">
                 <?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>

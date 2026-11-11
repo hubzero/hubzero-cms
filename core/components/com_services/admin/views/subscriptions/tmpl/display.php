@@ -46,9 +46,15 @@ $statusSelected = function ($value) use ($view) {
     <fieldset id="filter-bar">
         <label for="filter-status"><?php echo Lang::txt('COM_SERVICES_FILTER_BY'); ?>:</label>
         <select name="filter_status" id="filter-status" class="filter filter-submit">
-            <option value="pending"<?= $statusSelected('pending') ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_PENDING') ?></option>
-            <option value="active"<?= $statusSelected('active') ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_ACTIVE') ?></option>
-            <option value="cancelled"<?= $statusSelected('cancelled') ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_CANCELLED') ?></option>
+            <option value="pending"<?= $statusSelected('pending') ?>>
+                <?= Lang::txt('COM_SERVICES_FILTER_BY_PENDING') ?>
+            </option>
+            <option value="active"<?= $statusSelected('active') ?>>
+                <?= Lang::txt('COM_SERVICES_FILTER_BY_ACTIVE') ?>
+            </option>
+            <option value="cancelled"<?= $statusSelected('cancelled') ?>>
+                <?= Lang::txt('COM_SERVICES_FILTER_BY_CANCELLED') ?>
+            </option>
             <option value="all"<?= $statusSelected('all') ?>><?= Lang::txt('COM_SERVICES_FILTER_BY_ALL') ?></option>
         </select>
     </fieldset>
@@ -56,14 +62,62 @@ $statusSelected = function ($value) use ($view) {
     <table class="adminlist">
         <thead>
             <tr>
-                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_ID_CODE', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_SERVICES_COL_ID_CODE',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_SERVICES_COL_STATUS',
+                        'status',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col"><?php echo Lang::txt('COM_SERVICES_COL_SERVICE'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_SERVICES_COL_PENDING'); ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_USER', 'uid', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_ADDED', 'added', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_LAST_UPDATED', 'updated', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_SERVICES_COL_EXPIRES', 'expires', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_SERVICES_COL_USER',
+                        'uid',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_SERVICES_COL_ADDED',
+                        'added',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_SERVICES_COL_LAST_UPDATED',
+                        'updated',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_SERVICES_COL_EXPIRES',
+                        'expires',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

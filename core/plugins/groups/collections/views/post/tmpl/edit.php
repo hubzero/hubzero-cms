@@ -58,7 +58,11 @@ $idSelected = function ($value) use ($view) {
 <form action="<?= Route::url($base . '&scope=post/save' . ($this->no_html ? '&no_html=' . $this->no_html : '')) ?>"
     method="post" id="hubForm" class="full" enctype="multipart/form-data">
     <fieldset>
-        <legend><?= $item->get('id') ? ($this->entry->get('original') ? Lang::txt('Edit post') : Lang::txt('Edit repost')) : Lang::txt('New post') ?></legend>
+        <legend>
+            <?= $item->get('id')
+                ? ($this->entry->get('original') ? Lang::txt('Edit post') : Lang::txt('Edit repost'))
+                : Lang::txt('New post') ?>
+        </legend>
 
         <?php if ($this->entry->get('original')) { ?>
             <div class="field-wrap">
@@ -188,7 +192,9 @@ $idSelected = function ($value) use ($view) {
                 </div>
 
                 <?php if ($this->task == 'save' && !$item->get('description')) { ?>
-                    <p class="error"><?= Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT') ?></p>
+                    <p class="error">
+                        <?= Lang::txt('PLG_GROUPS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT') ?>
+                    </p>
                 <?php } ?>
             </div><!-- / #post-file -->
         </div><!-- / #post-type-form -->

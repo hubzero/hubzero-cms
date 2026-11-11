@@ -178,7 +178,9 @@ $presentation->subtitles = array_values($presentation->subtitles);
                     <optgroup label="<?php echo $this->escape($parent->title); ?>">
                         <?php foreach ($children as $c) : ?>
                             <?php if (Date::toSql() > $c->publish_up || User::authorise('core.admin')) : ?>
-                                <option <?= $c->title == $rr->title ? "selected" : '' ?> value="<?= $c->id ?>"><?= $this->escape($c->title) ?></option>
+                                <option <?= $c->title == $rr->title ? "selected" : '' ?> value="<?= $c->id ?>">
+                                    <?= $this->escape($c->title) ?>
+                                </option>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </optgroup>

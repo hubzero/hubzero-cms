@@ -773,7 +773,11 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     id="input-section-<?= $this->escape($field->get('name')) ?>">
                     <div class="section-content">
                         <div class="key"><?php echo $field->get('label'); ?></div>
-                        <div class="value"><?= (!empty($val)) ? (is_array($val) ? implode(', ', $val) : $val) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET') ?></div>
+                        <div class="value">
+                            <?= (!empty($val))
+                                ? (is_array($val) ? implode(', ', $val) : $val)
+                                : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET') ?>
+                        </div>
                         <br class="clear" />
                         <?php
                         if ($isUser) {

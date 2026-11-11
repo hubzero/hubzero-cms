@@ -247,8 +247,12 @@ $this
                 <div class="input-wrap">
                     <label for="field-published"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATUS'); ?>:</label><br />
                     <select name="fields[published]" id="field-published">
-                        <option value="2"<?= $publishedSelected(2) ?>><?= Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') ?></option>
-                        <option value="5"<?= $publishedSelected(5) ?>><?= Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') ?></option>
+                        <option value="2"<?= $publishedSelected(2) ?>>
+                            <?= Lang::txt('COM_RESOURCES_DRAFT_EXTERNAL') ?>
+                        </option>
+                        <option value="5"<?= $publishedSelected(5) ?>>
+                            <?= Lang::txt('COM_RESOURCES_DRAFT_INTERNAL') ?>
+                        </option>
                         <option value="3"<?= $publishedSelected(3) ?>><?= Lang::txt('COM_RESOURCES_PENDING') ?></option>
                         <option value="0"<?= $publishedSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
                         <option value="1"<?= $publishedSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
@@ -353,10 +357,18 @@ $this
                     <label
                         for="param-link_action"><?= Lang::txt('COM_RESOURCES_FIELD_LINK_ACTION_HINT') ?>:</label><br />
                     <select name="params[link_action]" id="param-link_action">
-                        <option value="0"<?= !$this->params->get('link_action') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DEFAULT') ?></option>
-                        <option value="1"<?= $linkActionSelected(1) ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW') ?></option>
-                        <option value="2"<?= $linkActionSelected(2) ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX') ?></option>
-                        <option value="3"<?= $linkActionSelected(3) ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD') ?></option>
+                        <option value="0"<?= !$this->params->get('link_action') ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DEFAULT') ?>
+                        </option>
+                        <option value="1"<?= $linkActionSelected(1) ?>>
+                            <?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW') ?>
+                        </option>
+                        <option value="2"<?= $linkActionSelected(2) ?>>
+                            <?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_LIGHTBOX') ?>
+                        </option>
+                        <option value="3"<?= $linkActionSelected(3) ?>>
+                            <?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DOWNLOAD') ?>
+                        </option>
                     </select>
                 </div>
                 <div class="input-wrap">

@@ -389,9 +389,15 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <label for="param_page_comments">
                                     <?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS'); ?>:
                                     <select name="params[page_comments]" id="param_page_comments" class="form-control">
-                                        <option <?= $comments == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO') ?></option>
-                                        <option <?= $comments == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES') ?></option>
-                                        <option <?= $comments == 2 ? 'selected="selected"' : '' ?> value="2"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK') ?></option>
+                                        <option <?= $comments == 0 ? 'selected="selected"' : '' ?> value="0">
+                                            <?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO') ?>
+                                        </option>
+                                        <option <?= $comments == 1 ? 'selected="selected"' : '' ?> value="1">
+                                            <?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES') ?>
+                                        </option>
+                                        <option <?= $comments == 2 ? 'selected="selected"' : '' ?> value="2">
+                                            <?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK') ?>
+                                        </option>
                                     </select>
                                     <span class="hint"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT') ?></span>
                                 </label>
@@ -402,8 +408,12 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <label for="param_page_author">
                                     <?php echo Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR'); ?>:
                                     <select name="params[page_author]" id="param_page_author" class="form-control">
-                                        <option <?= $author == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO') ?></option>
-                                        <option <?= $author == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES') ?></option>
+                                        <option <?= $author == 0 ? 'selected="selected"' : '' ?> value="0">
+                                            <?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO') ?>
+                                        </option>
+                                        <option <?= $author == 1 ? 'selected="selected"' : '' ?> value="1">
+                                            <?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES') ?>
+                                        </option>
                                     </select>
                                     <span class="hint"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_HINT') ?></span>
                                 </label>

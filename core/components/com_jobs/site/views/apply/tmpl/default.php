@@ -27,12 +27,19 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
     <div id="content-header-extra">
         <ul id="useroptions">
         <?php if (User::isGuest()) { ?>
-            <li><?= Lang::txt('COM_JOBS_PLEASE') . ' <a href="' . Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login">' . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> ' . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS') ?></li>
+            <li>
+                <?= Lang::txt('COM_JOBS_PLEASE') . ' <a href="'
+                    . Route::url('index.php?option=' . $this->option . '&task=view') . '?action=login">'
+                    . Lang::txt('COM_JOBS_ACTION_LOGIN') . '</a> '
+                    . Lang::txt('COM_JOBS_ACTION_LOGIN_TO_VIEW_OPTIONS') ?>
+            </li>
         <?php } elseif ($this->emp && $this->config->get('allowsubscriptions', 0)) {  ?>
             <?php
             $dashboardUrl = Route::url('index.php?option=' . $this->option . '&task=dashboard');
             ?>
-            <li><a class="myjobs btn" href="<?= $dashboardUrl ?>"><?= Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD') ?></a></li>
+            <li>
+                <a class="myjobs btn" href="<?= $dashboardUrl ?>"><?= Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD') ?></a>
+            </li>
             <li><a class="shortlist btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted' ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
         <?php } elseif ($this->admin) { ?>
             <li>

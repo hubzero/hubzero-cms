@@ -75,7 +75,9 @@ $stateSelected = function ($value) use ($view) {
                 <div class="input-wrap">
                     <label for="field-group_id"><?php echo Lang::txt('COM_COURSES_FIELD_GROUP'); ?>:</label><br />
                     <select name="fields[group_id]" id="field-group_id">
-                        <option value="0"<?= !$this->row->get('group_id') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_COURSES_NONE') ?></option>
+                        <option value="0"<?= !$this->row->get('group_id') ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('COM_COURSES_NONE') ?>
+                        </option>
                         <?php
                         $filters = [
                             'authorized' => 'admin',

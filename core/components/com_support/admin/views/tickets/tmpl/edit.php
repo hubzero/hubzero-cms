@@ -103,9 +103,17 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                     <dt>Type:</dt>
                     <dd>Issue</dd>
                     <dt><?php echo Lang::txt('COM_SUPPORT_TICKET_STATUS'); ?>:</dt>
-                    <dd class="ticket-status <?= (!$this->row->isOpen()) ? 'closed' : 'open' ?>"><?= (!$this->row->isOpen()) ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED') : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN') ?></dd>
+                    <dd class="ticket-status <?= (!$this->row->isOpen()) ? 'closed' : 'open' ?>">
+                        <?= (!$this->row->isOpen())
+                            ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED')
+                            : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN') ?>
+                    </dd>
                     <dt><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_SEVERITY'); ?>:</dt>
-                    <dd class="ticket-severity <?= $this->escape($this->row->get('severity')) ?>"><?= $this->escape(Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($this->row->get('severity')))) ?></dd>
+                    <dd class="ticket-severity <?= $this->escape($this->row->get('severity')) ?>">
+                        <?= $this->escape(
+                            Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($this->row->get('severity'))),
+                        ) ?>
+                    </dd>
                 </dl>
     <?php } ?>
             <div class="ticket<?php echo ($no_html) ? '-body' : ''; ?>" id="t<?php echo $this->row->get('id'); ?>">
@@ -203,14 +211,22 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
     <div class="col span4">
         <dl class="ticket-status <?php echo (!$this->row->isOpen()) ? 'closed' : 'open'; ?>">
             <dt><?php echo Lang::txt('COM_SUPPORT_TICKET_STATUS'); ?></dt>
-            <dd><?= (!$this->row->isOpen()) ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED') : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN') ?></dd>
+            <dd>
+                <?= (!$this->row->isOpen())
+                    ? Lang::txt('COM_SUPPORT_TICKET_STATUS_CLOSED')
+                    : Lang::txt('COM_SUPPORT_TICKET_STATUS_OPEN') ?>
+            </dd>
         </dl>
 
         <table class="meta">
             <tbody>
                 <tr>
                     <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_SEVERITY'); ?></th>
-                    <td><?= $this->escape(Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($this->row->get('severity')))) ?></td>
+                    <td>
+                        <?= $this->escape(
+                            Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($this->row->get('severity'))),
+                        ) ?>
+                    </td>
                 </tr>
                 <tr>
                     <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_OWNER'); ?></th>
@@ -426,7 +442,9 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                     $hi = [];
                                     foreach ($this->lists['messages'] as $message) {
                                         ?>
-                                        <option value="m<?= $message->id ?>"><?= $this->escape(stripslashes($message->title)) ?></option>
+                                        <option value="m<?= $message->id ?>">
+                                            <?= $this->escape(stripslashes($message->title)) ?>
+                                        </option>
                                         <?php
                                         $hi[] = '<input type="hidden" name="m' . $message->id . '" id="m' . $message->id
                                             . '" value="'

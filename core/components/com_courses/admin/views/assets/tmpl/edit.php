@@ -105,11 +105,21 @@ $stateSelected = function ($value) use ($view) {
                     <div class="input-wrap">
                         <label for="field-type"><?php echo Lang::txt('COM_COURSES_FIELD_TYPE'); ?>:</label>
                         <select name="fields[type]" id="field-type">
-                            <option value="video"<?= $typeSelected('video') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO') ?></option>
-                            <option value="file"<?= $typeSelected('file') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_FILE') ?></option>
-                            <option value="form"<?= $typeSelected('form') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_FORM') ?></option>
-                            <option value="text"<?= $typeSelected('text') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_TEXT') ?></option>
-                            <option value="url"<?= $typeSelected('url') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_URL') ?></option>
+                            <option value="video"<?= $typeSelected('video') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO') ?>
+                            </option>
+                            <option value="file"<?= $typeSelected('file') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_FILE') ?>
+                            </option>
+                            <option value="form"<?= $typeSelected('form') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_FORM') ?>
+                            </option>
+                            <option value="text"<?= $typeSelected('text') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_TEXT') ?>
+                            </option>
+                            <option value="url"<?= $typeSelected('url') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_URL') ?>
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -117,14 +127,30 @@ $stateSelected = function ($value) use ($view) {
                     <div class="input-wrap">
                         <label for="field-subtype"><?php echo Lang::txt('COM_COURSES_FIELD_SUBTYPE'); ?>:</label>
                         <select name="fields[subtype]" id="field-subtype">
-                            <option value="video"<?= $subtypeSelected('video') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO') ?></option>
-                            <option value="embedded"<?= $subtypeSelected('embedded') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_EMBEDDED') ?></option>
-                            <option value="file"<?= $subtypeSelected('file') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_FILE') ?></option>
-                            <option value="exam"<?= $subtypeSelected('exam') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_EXAM') ?></option>
-                            <option value="quiz"<?= $subtypeSelected('quiz') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_QUIZ') ?></option>
-                            <option value="homework"<?= $subtypeSelected('homework') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_HOMEWORK') ?></option>
-                            <option value="note"<?= $subtypeSelected('note') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_NOTE') ?></option>
-                            <option value="wiki"<?= $subtypeSelected('wiki') ?>><?= Lang::txt('COM_COURSES_ASSET_TYPE_WIKI') ?></option>
+                            <option value="video"<?= $subtypeSelected('video') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_VIDEO') ?>
+                            </option>
+                            <option value="embedded"<?= $subtypeSelected('embedded') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_EMBEDDED') ?>
+                            </option>
+                            <option value="file"<?= $subtypeSelected('file') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_FILE') ?>
+                            </option>
+                            <option value="exam"<?= $subtypeSelected('exam') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_EXAM') ?>
+                            </option>
+                            <option value="quiz"<?= $subtypeSelected('quiz') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_QUIZ') ?>
+                            </option>
+                            <option value="homework"<?= $subtypeSelected('homework') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_HOMEWORK') ?>
+                            </option>
+                            <option value="note"<?= $subtypeSelected('note') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_NOTE') ?>
+                            </option>
+                            <option value="wiki"<?= $subtypeSelected('wiki') ?>>
+                                <?= Lang::txt('COM_COURSES_ASSET_TYPE_WIKI') ?>
+                            </option>
                         </select>
                     </div>
                 </div>

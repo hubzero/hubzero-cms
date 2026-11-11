@@ -28,8 +28,12 @@ $ag = new \Components\Courses\Models\Assetgroup($this->scope_id);
         <p>
             <label for="state">Published:</label>
             <select name="state">
-                <option value="0"<?= $ag->get('state') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('JNo') ?></option>
-                <option value="1"<?= $ag->get('state') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('JYes') ?></option>
+                <option value="0"<?= $ag->get('state') == 0 ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('JNo') ?>
+                </option>
+                <option value="1"<?= $ag->get('state') == 1 ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('JYes') ?>
+                </option>
             </select>
         </p>
 

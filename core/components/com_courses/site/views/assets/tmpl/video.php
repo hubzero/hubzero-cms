@@ -378,7 +378,9 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 </div>
                                 <div class="col span8 omega input">
                                     <select id="subtitle-selector">
-                                        <option value=""><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
+                                        <option value="">
+                                            <?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?>
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -388,7 +390,9 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 </div>
                                 <div class="col span8 omega input">
                                     <select id="transcript-selector" class="transcript-selector">
-                                        <option value=""><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
+                                        <option value="">
+                                            <?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?>
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -400,12 +404,30 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     </div>
                                     <div class="col span6 omega input">
                                         <select id="font-selector">
-                                            <option value="Arial" selected><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL') ?></option>
-                                            <option value="Times New Roman"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES') ?></option>
-                                            <option value="Tahoma"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA') ?></option>
-                                            <option value="Trebuchet MS"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET') ?></option>
-                                            <option value="Verdana"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA') ?></option>
-                                            <option value="Courier New"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER') ?></option>
+                                            <option value="Arial" selected>
+                                                <?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL') ?>
+                                            </option>
+                                            <option value="Times New Roman">
+                                                <?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES') ?>
+                                            </option>
+                                            <option value="Tahoma">
+                                                <?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA') ?>
+                                            </option>
+                                            <option value="Trebuchet MS">
+                                                <?= Lang::txt(
+                                                    'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET',
+                                                ) ?>
+                                            </option>
+                                            <option value="Verdana">
+                                                <?= Lang::txt(
+                                                    'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA',
+                                                ) ?>
+                                            </option>
+                                            <option value="Courier New">
+                                                <?= Lang::txt(
+                                                    'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER',
+                                                ) ?>
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -415,9 +437,21 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     </div>
                                     <div class="col span6 omega input">
                                         <select id="font-size-selector">
-                                            <option value="12"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL') ?></option>
-                                            <option value="18" selected><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM') ?></option>
-                                            <option value="24"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE') ?></option>
+                                            <option value="12">
+                                                <?= Lang::txt(
+                                                    'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL',
+                                                ) ?>
+                                            </option>
+                                            <option value="18" selected>
+                                                <?= Lang::txt(
+                                                    'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM',
+                                                ) ?>
+                                            </option>
+                                            <option value="24">
+                                                <?= Lang::txt(
+                                                    'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE',
+                                                ) ?>
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -440,7 +474,9 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 <div class="grid">
                                     <div class="col span12 omega subtitle-settings-preview-container">
                                         <div class="subtitle-settings-preview">
-                                            <div class="test"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE') ?></div>
+                                            <div class="test">
+                                                <?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE') ?>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -502,7 +538,9 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     <select id="speed">
                                         <option value=".25">.25×</option>
                                         <option value=".5">.5×</option>
-                                        <option selected value="1"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL') ?></option>
+                                        <option selected value="1">
+                                            <?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL') ?>
+                                        </option>
                                         <option value="1.25">1.25×</option>
                                         <option value="1.5">1.5×</option>
                                         <option value="2">2×</option>
@@ -630,7 +668,11 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         </div>
                                         <div class="col span8 omega input">
                                             <select id="subtitle-selector">
-                                                <option value=""><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
+                                                <option value="">
+                                                    <?= Lang::txt(
+                                                        'COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF',
+                                                    ) ?>
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -640,7 +682,11 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         </div>
                                         <div class="col span8 omega input">
                                             <select id="transcript-selector" class="transcript-selector">
-                                                <option value=""><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
+                                                <option value="">
+                                                    <?= Lang::txt(
+                                                        'COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT_OFF',
+                                                    ) ?>
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -652,12 +698,36 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                             </div>
                                             <div class="col span6 omega input">
                                                 <select id="font-selector">
-                                                    <option value="Arial" selected><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL') ?></option>
-                                                    <option value="Times New Roman"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES') ?></option>
-                                                    <option value="Tahoma"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA') ?></option>
-                                                    <option value="Trebuchet MS"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET') ?></option>
-                                                    <option value="Verdana"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA') ?></option>
-                                                    <option value="Courier New"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER') ?></option>
+                                                    <option value="Arial" selected>
+                                                        <?= Lang::txt(
+                                                            'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_ARIAL',
+                                                        ) ?>
+                                                    </option>
+                                                    <option value="Times New Roman">
+                                                        <?= Lang::txt(
+                                                            'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TIMES',
+                                                        ) ?>
+                                                    </option>
+                                                    <option value="Tahoma">
+                                                        <?= Lang::txt(
+                                                            'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TAHOMA',
+                                                        ) ?>
+                                                    </option>
+                                                    <option value="Trebuchet MS">
+                                                        <?= Lang::txt(
+                                                            'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_TREBUCHET',
+                                                        ) ?>
+                                                    </option>
+                                                    <option value="Verdana">
+                                                        <?= Lang::txt(
+                                                            'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_VERDANA',
+                                                        ) ?>
+                                                    </option>
+                                                    <option value="Courier New">
+                                                        <?= Lang::txt(
+                                                            'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COURIER',
+                                                        ) ?>
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -667,9 +737,21 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                             </div>
                                             <div class="col span6 omega input">
                                                 <select id="font-size-selector">
-                                                    <option value="12"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL') ?></option>
-                                                    <option value="18" selected><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM') ?></option>
-                                                    <option value="24"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE') ?></option>
+                                                    <option value="12">
+                                                        <?= Lang::txt(
+                                                            'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_SMALL',
+                                                        ) ?>
+                                                    </option>
+                                                    <option value="18" selected>
+                                                        <?= Lang::txt(
+                                                            'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_MEDIUM',
+                                                        ) ?>
+                                                    </option>
+                                                    <option value="24">
+                                                        <?= Lang::txt(
+                                                            'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_SIZE_LARGE',
+                                                        ) ?>
+                                                    </option>
                                                 </select>
                                             </div>
                                         </div>
@@ -692,7 +774,11 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         <div class="grid">
                                             <div class="col span12 omega subtitle-settings-preview-container">
                                                 <div class="subtitle-settings-preview">
-                                                    <div class="test"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE') ?></div>
+                                                    <div class="test">
+                                                        <?= Lang::txt(
+                                                            'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_EXAMPLE',
+                                                        ) ?>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -754,7 +840,11 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                             <select id="speed">
                                                 <option value=".25">.25×</option>
                                                 <option value=".5">.5×</option>
-                                                <option selected value="1"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL') ?></option>
+                                                <option selected value="1">
+                                                    <?= Lang::txt(
+                                                        'COM_COURSES_VIDEO_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL',
+                                                    ) ?>
+                                                </option>
                                                 <option value="1.25">1.25×</option>
                                                 <option value="1.5">1.5×</option>
                                                 <option value="2">2×</option>

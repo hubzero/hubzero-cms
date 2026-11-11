@@ -253,7 +253,11 @@ $this->js('edit.js', 'com_massmail');
                         </ul>
                     </div>
 
-                    <p class="mm-header-hint"><?= Lang::txt($isSuper ? 'COM_MASSMAIL_SENDER_OPTIONS_HINT' : 'COM_MASSMAIL_SENDER_LOCKED_HINT') ?></p>
+                    <p class="mm-header-hint">
+                        <?= Lang::txt(
+                            $isSuper ? 'COM_MASSMAIL_SENDER_OPTIONS_HINT' : 'COM_MASSMAIL_SENDER_LOCKED_HINT',
+                        ) ?>
+                    </p>
                     <?php } else { ?>
                     <div class="mm-mail-body-ro">
                         <iframe class="mm-message-body" sandbox=""
@@ -567,7 +571,9 @@ $this->js('edit.js', 'com_massmail');
             <button type="button" class="mm-modal-close" id="mm-rcpt-close"
                 aria-label="<?= $this->escape(Lang::txt('COM_MASSMAIL_CLOSE')) ?>">&times;</button>
             <h3><?php echo Lang::txt('COM_MASSMAIL_RECIPIENTS'); ?></h3>
-            <p class="mm-preview mm-modal-count"><strong><?= Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)) ?></strong></p>
+            <p class="mm-preview mm-modal-count">
+                <strong><?= Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)) ?></strong>
+            </p>
 
             <div class="mm-rcpt-section">
                 <label class="mm-everyone"><input type="checkbox"

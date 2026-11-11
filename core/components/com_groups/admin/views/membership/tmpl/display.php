@@ -187,7 +187,9 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                 <?php if (!empty($this->expiration_supported)) : ?>
                     <label for="filter-term"><?php echo Lang::txt('COM_GROUPS_MEMBER_TERM'); ?>:</label>
                     <select name="term" id="filter-term" class="filter filter-submit">
-                        <option value=""<?= (@$this->filters['term'] == '') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_MEMBER_TERM_ANY') ?></option>
+                        <option value=""<?= (@$this->filters['term'] == '') ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('COM_GROUPS_MEMBER_TERM_ANY') ?>
+                        </option>
                         <option value="limited"<?= (@$this->filters['term'] == 'limited') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_MEMBER_TERM_LIMITED') ?></option>
                         <option value="perpetual"<?= (@$this->filters['term'] == 'perpetual') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_MEMBER_TERM_PERPETUAL') ?></option>
                         <option value="expiring"<?= (@$this->filters['term'] == 'expiring') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_MEMBER_TERM_EXPIRING') ?></option>
@@ -224,10 +226,42 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_GROUPS_USERID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_GROUPS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_GROUPS_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_GROUPS_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_GROUPS_USERID',
+                        'uidNumber',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_GROUPS_NAME',
+                        'name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_GROUPS_USERNAME',
+                        'username',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-5">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_GROUPS_EMAIL',
+                        'email',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?></th>
                 <th scope="col" colspan="2"><?php echo Lang::txt('COM_GROUPS_MEMBER_ACTION'); ?></th>
             </tr>

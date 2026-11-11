@@ -264,11 +264,15 @@ $this
                 <div class="diff">
                     <div>
                         <p>New value:</p>
-                        <div class="value"><?= $this->escape(is_scalar($change->new) ? $change->new : json_encode($change->new)) ?></div>
+                        <div class="value">
+                            <?= $this->escape(is_scalar($change->new) ? $change->new : json_encode($change->new)) ?>
+                        </div>
                     </div>
                     <div>
                         <p>Old value:</p>
-                        <div class="value old"><?= $this->escape(is_scalar($change->old) ? $change->old : json_encode($change->old)) ?></div>
+                        <div class="value old">
+                            <?= $this->escape(is_scalar($change->old) ? $change->old : json_encode($change->old)) ?>
+                        </div>
                     </div>
                 </div>
 

@@ -27,7 +27,9 @@ $this
             <?php
             $addUrl = Route::url('index.php?option=' . $this->option . '&task=add');
             ?>
-            <li class="last"><a class="icon-add add btn" href="<?= $addUrl ?>"><?= Lang::txt('EVENTS_ADD_EVENT') ?></a></li>
+            <li class="last">
+                <a class="icon-add add btn" href="<?= $addUrl ?>"><?= Lang::txt('EVENTS_ADD_EVENT') ?></a>
+            </li>
         </ul>
     </div><!-- / #content-header-extra -->
     <?php } ?>
@@ -38,25 +40,33 @@ $this
         <?php
         $linkUrl = Route::url('index.php?option=' . $this->option . '&year=' . $this->year);
         ?>
-        <li<?= $this->task == 'year' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= $linkUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_YEAR') ?></span></a></li>
+        <li<?= $this->task == 'year' ? ' class="active"' : '' ?>>
+            <a rel="nofollow" href="<?= $linkUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_YEAR') ?></span></a>
+        </li>
         <?php
         $linkUrl = Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month);
         ?>
-        <li<?= $this->task == 'month' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= $linkUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_MONTH') ?></span></a></li>
+        <li<?= $this->task == 'month' ? ' class="active"' : '' ?>>
+            <a rel="nofollow" href="<?= $linkUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_MONTH') ?></span></a>
+        </li>
         <?php
         $weekUrl = Route::url(
             'index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day='
                 . $this->day . '&task=week',
         );
         ?>
-        <li<?= $this->task == 'week' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= $weekUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_WEEK') ?></span></a></li>
+        <li<?= $this->task == 'week' ? ' class="active"' : '' ?>>
+            <a rel="nofollow" href="<?= $weekUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_WEEK') ?></span></a>
+        </li>
         <?php
         $linkUrl = Route::url(
             'index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day='
                 . $this->day,
         );
         ?>
-        <li<?= $this->task == 'day' ? ' class="active"' : '' ?>><a rel="nofollow" href="<?= $linkUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_DAY') ?></span></a></li>
+        <li<?= $this->task == 'day' ? ' class="active"' : '' ?>>
+            <a rel="nofollow" href="<?= $linkUrl ?>"><span><?= Lang::txt('EVENTS_CAL_LANG_REP_DAY') ?></span></a>
+        </li>
     </ul>
 </nav>
 
@@ -224,15 +234,25 @@ $this
                 <select name="register[position]">
                     <option value=""
                         selected="selected"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NULL') ?></option>
-                    <option value="university"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNIVERSITY') ?></option>
-                    <option value="precollege"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_PRECOLLEGE') ?></option>
-                    <option value="nationallab"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NATIONALLAB') ?></option>
+                    <option value="university">
+                        <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNIVERSITY') ?>
+                    </option>
+                    <option value="precollege">
+                        <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_PRECOLLEGE') ?>
+                    </option>
+                    <option value="nationallab">
+                        <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NATIONALLAB') ?>
+                    </option>
                     <option
                         value="industry"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_INDUSTRY') ?></option>
-                    <option value="government"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_GOVERNMENT') ?></option>
+                    <option value="government">
+                        <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_GOVERNMENT') ?>
+                    </option>
                     <option
                         value="military"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_MILITARY') ?></option>
-                    <option value="unemployed"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNEMPLOYED') ?></option>
+                    <option value="unemployed">
+                        <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNEMPLOYED') ?>
+                    </option>
                 </select>
                 <input name="register[position_other]" type="text" value="<?= (isset($this->register['position_other'])) ? $this->escape($this->register['position_other']) : '' ?>" />
             </label>

@@ -68,8 +68,12 @@ $classAliasSelected = function ($value) use ($view) {
             <div class="col span5">
                 <label for="filter_search_field"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
                 <select name="search_field" id="filter_search_field" class="filter">
-                    <option value="username"<?= $searchFieldSelected('username') ?>><?= Lang::txt('COM_MEMBERS_QUOTA_USERNAME') ?></option>
-                    <option value="name"<?= $searchFieldSelected('name') ?>><?= Lang::txt('COM_MEMBERS_QUOTA_NAME') ?></option>
+                    <option value="username"<?= $searchFieldSelected('username') ?>>
+                        <?= Lang::txt('COM_MEMBERS_QUOTA_USERNAME') ?>
+                    </option>
+                    <option value="name"<?= $searchFieldSelected('name') ?>>
+                        <?= Lang::txt('COM_MEMBERS_QUOTA_NAME') ?>
+                    </option>
                 </select>
 
                 <label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
@@ -81,7 +85,9 @@ $classAliasSelected = function ($value) use ($view) {
             </div>
             <div class="col span7">
                 <select name="class_alias" id="filter_class_alias" class="filter filter-submit">
-                    <option value=""<?= $classAliasSelected('') ?>><?= Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS') ?></option>
+                    <option value=""<?= $classAliasSelected('') ?>>
+                        <?= Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS') ?>
+                    </option>
                     <?php foreach ($this->classes as $class) : ?>
                         <option value="<?= $this->escape($class->get('alias')) ?>"<?= $classAliasSelected($class->get('alias')) ?>><?= $this->escape($class->get('alias')) ?></option>
                     <?php endforeach; ?>
@@ -99,10 +105,42 @@ $classAliasSelected = function ($value) use ($view) {
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <!-- <th class="priority-6"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th> -->
-                <th class="priority-5"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th class="priority-4"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th class="priority-3"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_CLASS', 'class_alias', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th class="priority-5">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_QUOTA_USER_ID',
+                        'user_id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_QUOTA_USERNAME',
+                        'username',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th>
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_QUOTA_NAME',
+                        'name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_QUOTA_CLASS',
+                        'class_alias',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th><?php echo Lang::txt('COM_MEMBERS_QUOTA_DISK_USAGE'); ?></th>
             </tr>
         </thead>

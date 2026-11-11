@@ -238,7 +238,18 @@ $this
                             <span class="comment-date-on"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ON'); ?></span>
                             <span class="date"><time datetime="<?= $replyto->get('created') ?>"><?= $replyto->created('date') ?></time></span>
                         </p>
-                        <p><?= $this->escape(\Hubzero\Utility\Str::truncate(html_entity_decode(strip_tags(stripslashes($replyto->get('content'))), ENT_QUOTES, 'UTF-8'), 300)) ?></p>
+                        <p>
+                            <?= $this->escape(
+                                \Hubzero\Utility\Str::truncate(
+                                    html_entity_decode(
+                                        strip_tags(stripslashes($replyto->get('content'))),
+                                        ENT_QUOTES,
+                                        'UTF-8',
+                                    ),
+                                    300,
+                                ),
+                            ) ?>
+                        </p>
                     </blockquote>
                         <?php
                     }

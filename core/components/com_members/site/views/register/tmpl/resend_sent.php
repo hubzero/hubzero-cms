@@ -22,5 +22,7 @@ $this
     <?php
     $resendUrl = Route::url('index.php?option=com_members&controller=register&task=resend');
     ?>
-    <p>Didn't receive it? You can <a href="<?= $resendUrl ?>">request another confirmation email</a> in a few minutes.</p>
+    <p>
+        Didn't receive it? You can <a href="<?= $resendUrl ?>">request another confirmation email</a> in a few minutes.
+    </p>
 </section><!-- / .section -->

@@ -98,7 +98,12 @@ if ($revertAllowed && $this->pub->accepted()) {
         <div class="col span6" id="c-selector">
             <div class="c-inner">
         <?php } ?>
-                <h4><?= $this->escape($this->pub->title) . '<span class="version-title">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' ' . $this->escape($this->pub->get('version_label')) . ' (' . $this->escape($status) . ')</span>' ?></h4>
+                <h4>
+                    <?= $this->escape($this->pub->title) . '<span class="version-title">'
+                        . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION') . ' '
+                        . $this->escape($this->pub->get('version_label')) . ' (' . $this->escape($status)
+                        . ')</span>' ?>
+                </h4>
                 <table class="tbl-panel">
                     <tbody>
                         <tr>
@@ -118,14 +123,19 @@ if ($revertAllowed && $this->pub->accepted()) {
                         </tr>
                         <tr>
                             <td class="tbl-lbl"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED')) ?>:</td>
-                            <td class="tbl-input"><?= $this->pub->created('date') . ' (' . $this->pub->created('timeago') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')' ?></td>
+                            <td class="tbl-input">
+                                <?= $this->pub->created('date') . ' (' . $this->pub->created('timeago') . ' '
+                                    . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')' ?>
+                            </td>
                         </tr>
                         <tr>
                             <td class="tbl-lbl"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED_BY')) ?>:</td>
                             <td class="tbl-input"><?php echo $creator; ?></td>
                         </tr>
                         <tr>
-                            <td class="tbl-lbl"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT')) ?>:</td>
+                            <td class="tbl-lbl">
+                                <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PRIMARY_CONTENT')) ?>:
+                            </td>
                             <td class="tbl-input"><?php echo $this->pub->masterType()->type; ?></td>
                         </tr>
                         <tr>
@@ -155,7 +165,10 @@ if ($revertAllowed && $this->pub->accepted()) {
                         <?php }  if ($this->pub->accepted()) { ?>
                         <tr>
                             <td class="tbl-lbl"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_ACCEPTED'); ?>:</td>
-                            <td class="tbl-input"><?= $this->pub->accepted('date') . ' (' . $this->pub->accepted('timeago') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')' ?></td>
+                            <td class="tbl-input">
+                                <?= $this->pub->accepted('date') . ' (' . $this->pub->accepted('timeago') . ' '
+                                    . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')' ?>
+                            </td>
                         </tr>
                         <?php } if ($this->pub->published()) { ?>
                         <tr>
@@ -170,7 +183,10 @@ if ($revertAllowed && $this->pub->accepted()) {
                         <?php } if ($this->pub->isUnpublished() || $this->pub->isDown()) { ?>
                         <tr>
                             <td class="tbl-lbl"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_UNPUBLISHED')) ?>:</td>
-                            <td class="tbl-input"><?= $this->pub->unpublished('date') . ' (' . $this->pub->unpublished('timeago') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')' ?></td>
+                            <td class="tbl-input">
+                                <?= $this->pub->unpublished('date') . ' (' . $this->pub->unpublished('timeago') . ' '
+                                    . Lang::txt('PLG_PROJECTS_PUBLICATIONS_AGO') . ')' ?>
+                            </td>
                         </tr>
                         <?php } ?>
                         <tr>
@@ -240,7 +256,9 @@ if ($revertAllowed && $this->pub->accepted()) {
                                 </li>
                         <?php } ?>
                             <?php if ($past->details->get('admin') == 1) { ?>
-                                <li id="next-question"><p><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_BY_ADMIN') ?></p></li>
+                                <li id="next-question">
+                                    <p><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_UNPUBLISHED_BY_ADMIN') ?></p>
+                                </li>
                             <?php }
                         break;
 
@@ -322,7 +340,9 @@ if ($revertAllowed && $this->pub->accepted()) {
                             <p class="centeralign"><a href="<?= $reviewUrl ?>" class="btn btn-success active"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_RESUBMIT_TO_PUBLISH_REVIEW') ?></a></p></li>
                         <?php } else { ?>
                             <li id="next-edit">
-                                <p><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_DRAFT_INCOMPLETE_RESUBMIT') ?></p>
+                                <p>
+                                    <?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_DRAFT_INCOMPLETE_RESUBMIT') ?>
+                                </p>
                                 <?php
                                 $continueUrl = Route::url($this->pub->link('editversion') . '&action=continue');
                                 ?>

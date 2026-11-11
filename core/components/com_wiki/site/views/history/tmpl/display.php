@@ -83,7 +83,12 @@ $revisions = $this->page
 
         <div class="grid">
             <div class="col">
-                <p><?= Lang::txt('COM_WIKI_HISTORY_EXPLANATION', Route::url($this->page->link('base') . '&pagename=Help:PageHistory')) ?></p>
+                <p>
+                    <?= Lang::txt(
+                        'COM_WIKI_HISTORY_EXPLANATION',
+                        Route::url($this->page->link('base') . '&pagename=Help:PageHistory'),
+                    ) ?>
+                </p>
             </div><!-- / .aside -->
         </div>
 

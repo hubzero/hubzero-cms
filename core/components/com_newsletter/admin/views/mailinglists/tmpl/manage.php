@@ -49,11 +49,21 @@ $statusSelected = function ($value) use ($view) {
     <fieldset id="filter-bar">
         <label><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?>:</label>
         <select name="status">
-            <option value="all" <?= $statusSelected('all') ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ALL') ?></option>
-            <option value="active" <?= $statusSelected('active') ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ACTIVE') ?></option>
-            <option value="removed" <?= $statusSelected('removed') ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_REMOVED') ?></option>
-            <option value="unsubscribed" <?= $statusSelected('unsubscribed') ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED') ?></option>
-            <option value="inactive" <?= $statusSelected('inactive') ?>><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE') ?></option>
+            <option value="all" <?= $statusSelected('all') ?>>
+                <?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ALL') ?>
+            </option>
+            <option value="active" <?= $statusSelected('active') ?>>
+                <?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ACTIVE') ?>
+            </option>
+            <option value="removed" <?= $statusSelected('removed') ?>>
+                <?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_REMOVED') ?>
+            </option>
+            <option value="unsubscribed" <?= $statusSelected('unsubscribed') ?>>
+                <?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED') ?>
+            </option>
+            <option value="inactive" <?= $statusSelected('inactive') ?>>
+                <?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE') ?>
+            </option>
         </select>
         <input type="submit" value="<?php echo Lang::txt('Go'); ?>" id="btn-manage" />
     </fieldset>
@@ -67,10 +77,26 @@ $statusSelected = function ($value) use ($view) {
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?= Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL',
+                        'email',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_CONFIRMED'); ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED', 'date_added', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_MAILINGLIST_MANAGE_DATE_ADDED',
+                        'date_added',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col">
                     <?= Html::grid(
                         'sort',

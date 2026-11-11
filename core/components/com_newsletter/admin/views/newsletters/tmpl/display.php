@@ -95,7 +95,9 @@ if (!$this->dependency) {
                     <option value=""<?= $typeSelected('') ?>><?= Lang::txt('COM_NEWSLETTER_ALL_TYPES') ?></option>
                     <option
                         value="html"<?= $typeSelected('html') ?>><?= Lang::txt('COM_NEWSLETTER_TYPE_HTML') ?></option>
-                    <option value="plain"<?= $typeSelected('plain') ?>><?= Lang::txt('COM_NEWSLETTER_TYPE_PLAIN') ?></option>
+                    <option value="plain"<?= $typeSelected('plain') ?>>
+                        <?= Lang::txt('COM_NEWSLETTER_TYPE_PLAIN') ?>
+                    </option>
                 </select>
             </div>
         </div>
@@ -109,12 +111,60 @@ if (!$this->dependency) {
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?= Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_FORMAT', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_TEMPLATE', 'template_id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_PUBLIC', 'published', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_SENT', 'sent', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_TRACKING', 'tracking', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_NEWSLETTER_NAME',
+                        'name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_NEWSLETTER_FORMAT',
+                        'type',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_NEWSLETTER_TEMPLATE',
+                        'template_id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_NEWSLETTER_PUBLIC',
+                        'published',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_NEWSLETTER_SENT',
+                        'sent',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_NEWSLETTER_NEWSLETTER_TRACKING',
+                        'tracking',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

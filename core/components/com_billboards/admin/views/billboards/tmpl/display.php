@@ -57,7 +57,9 @@ Toolbar::help('billboards');
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_BILLBOARDS_COL_ID'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_BILLBOARDS_COL_NAME'); ?></th>
                 <th scope="col" class="priority-2"><?php echo Lang::txt('COM_BILLBOARDS_COL_COLLECTION'); ?></th>
-                <th scope="col" class="priority-3"><?= Lang::txt('COM_BILLBOARDS_COL_ORDERING') . Html::grid('order', $this->rows->toArray()) ?></th>
+                <th scope="col" class="priority-3">
+                    <?= Lang::txt('COM_BILLBOARDS_COL_ORDERING') . Html::grid('order', $this->rows->toArray()) ?>
+                </th>
                 <th scope="col" class="priority-1"><?php echo Lang::txt('COM_BILLBOARDS_COL_PUBLISHED'); ?></th>
             </tr>
         </thead>

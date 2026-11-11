@@ -114,7 +114,9 @@ if ($comment) {
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
                                 align="right">Created:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">@ <?= $this->model->created('time') ?> on <?= $this->model->created('date') ?></td>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">
+                                @ <?= $this->model->created('time') ?> on <?= $this->model->created('date') ?>
+                            </td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Project:</th>
@@ -133,7 +135,9 @@ if ($comment) {
                     <tbody>
                         <tr>
                             <td style="text-align: left; padding: 0 0.5em;" cellpadding="0" cellspacing="0" border="0">
-                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;"><?= $comment ?></div>
+                                <div style="line-height: 1.6em; margin: 1em 0; padding: 0; text-align: left;">
+                                    <?= $comment ?>
+                                </div>
                                 <?php if (!empty($this->permissionURL) && !empty($this->permissionTxt)) {?>
                                     <a href="<?= $this->permissionURL ?>"><?= $this->permissionTxt ?></a>
                                 <?php } ?>

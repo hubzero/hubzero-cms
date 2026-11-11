@@ -296,7 +296,9 @@ $this->js();
                                 <?php
                                 $file = ltrim($file, DS);
                                 $sel = ($this->import->get('file') == $file) ? 'selected="selected"' : ''; ?>
-                                <option <?= $sel ?> value="<?= $this->escape($file) ?>"><?= $this->escape($file) ?></option>
+                                <option <?= $sel ?> value="<?= $this->escape($file) ?>">
+                                    <?= $this->escape($file) ?>
+                                </option>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </select>

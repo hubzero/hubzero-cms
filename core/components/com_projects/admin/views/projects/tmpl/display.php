@@ -86,12 +86,24 @@ $quotaSelected = function ($value) use ($view) {
                 <select name="filterby" id="filter-filterby" class="filter filter-submit">
                     <option
                         value=""<?= $filterbySelected('') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ALL') ?></option>
-                    <option value="setting_up_in_progress"<?= $filterbySelected('setting_up_in_progress') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_SETTING_UP_IN_PROGRESS') ?></option>
-                    <option value="active"<?= $filterbySelected('active') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ACTIVE') ?></option>
-                    <option value="deleted"<?= $filterbySelected('deleted') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_DELETED') ?></option>
-                    <option value="archived"<?= $filterbySelected('archived') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ARCHIVED') ?></option>
-                    <option value="rejected"<?= $filterbySelected('rejected') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_REJECTED') ?></option>
-                    <option value="pending_approval"<?= $filterbySelected('pending_approval') ?>><?= Lang::txt('COM_PROJECTS_FILTER_STATUS_PEDING_APPROVAL') ?></option>
+                    <option value="setting_up_in_progress"<?= $filterbySelected('setting_up_in_progress') ?>>
+                        <?= Lang::txt('COM_PROJECTS_FILTER_STATUS_SETTING_UP_IN_PROGRESS') ?>
+                    </option>
+                    <option value="active"<?= $filterbySelected('active') ?>>
+                        <?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ACTIVE') ?>
+                    </option>
+                    <option value="deleted"<?= $filterbySelected('deleted') ?>>
+                        <?= Lang::txt('COM_PROJECTS_FILTER_STATUS_DELETED') ?>
+                    </option>
+                    <option value="archived"<?= $filterbySelected('archived') ?>>
+                        <?= Lang::txt('COM_PROJECTS_FILTER_STATUS_ARCHIVED') ?>
+                    </option>
+                    <option value="rejected"<?= $filterbySelected('rejected') ?>>
+                        <?= Lang::txt('COM_PROJECTS_FILTER_STATUS_REJECTED') ?>
+                    </option>
+                    <option value="pending_approval"<?= $filterbySelected('pending_approval') ?>>
+                        <?= Lang::txt('COM_PROJECTS_FILTER_STATUS_PEDING_APPROVAL') ?>
+                    </option>
                 </select>
 
                 <?php /*<label for="filter-private"><?php echo Lang::txt('COM_PROJECTS_FILTER_PRIVACY'); ?>:</label>
@@ -115,8 +127,12 @@ $quotaSelected = function ($value) use ($view) {
                 <label for="filter-quota"><?php echo Lang::txt('COM_PROJECTS_FILTER_QUOTA'); ?>:</label>
                 <select name="quota" id="filter-quota" class="filter filter-submit">
                     <option value="all"<?= $quotaSelected('all') ?>><?= Lang::txt('COM_PROJECTS_QUOTA_ALL') ?></option>
-                    <option value="regular"<?= $quotaSelected('regular') ?>><?= Lang::txt('COM_PROJECTS_QUOTA_REGULAR') ?></option>
-                    <option value="premium"<?= $quotaSelected('premium') ?>><?= Lang::txt('COM_PROJECTS_QUOTA_PREMIUM') ?></option>
+                    <option value="regular"<?= $quotaSelected('regular') ?>>
+                        <?= Lang::txt('COM_PROJECTS_QUOTA_REGULAR') ?>
+                    </option>
+                    <option value="premium"<?= $quotaSelected('premium') ?>>
+                        <?= Lang::txt('COM_PROJECTS_QUOTA_PREMIUM') ?>
+                    </option>
                 </select>
             </div>
         </div>
@@ -131,14 +147,56 @@ $quotaSelected = function ($value) use ($view) {
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th class="priority-5" scope="col"><?= Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby']) ?></th>
+                <th class="priority-5" scope="col">
+                    <?= Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby']) ?>
+                </th>
                 <th class="priority-5" scope="col"> </th>
-                <th scope="col"><?= Html::grid('sort', 'COM_PROJECTS_TITLE', 'title', @$this->filters['sortdir'], @$this->filters['sortby']) ?></th>
-                <th class="priority-3" scope="col"><?= Html::grid('sort', 'COM_PROJECTS_OWNER', 'owner', @$this->filters['sortdir'], @$this->filters['sortby']) ?></th>
-                <th class="priority-4" scope="col"><?= Html::grid('sort', 'COM_PROJECTS_FEATURED', 'featured', @$this->filters['sortdir'], @$this->filters['sortby']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PROJECTS_TITLE',
+                        'title',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby'],
+                    ) ?>
+                </th>
+                <th class="priority-3" scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PROJECTS_OWNER',
+                        'owner',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby'],
+                    ) ?>
+                </th>
+                <th class="priority-4" scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PROJECTS_FEATURED',
+                        'featured',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby'],
+                    ) ?>
+                </th>
                 <th class="priority-3" scope="col"><?php echo Lang::txt('COM_PROJECTS_TEAM'); ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_PROJECTS_STATUS', 'status', @$this->filters['sortdir'], @$this->filters['sortby']) ?></th>
-                <th class="priority-4" scope="col"><?= Html::grid('sort', 'COM_PROJECTS_PRIVACY', 'privacy', @$this->filters['sortdir'], @$this->filters['sortby']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PROJECTS_STATUS',
+                        'status',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby'],
+                    ) ?>
+                </th>
+                <th class="priority-4" scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PROJECTS_PRIVACY',
+                        'privacy',
+                        @$this->filters['sortdir'],
+                        @$this->filters['sortby'],
+                    ) ?>
+                </th>
                 <th class="priority-4"><?php echo Lang::txt('COM_PROJECTS_QUOTA'); ?></th>
                 <th class="priority-3"><?php echo Lang::txt('COM_PROJECTS_ACTIVITY'); ?></th>
             </tr>

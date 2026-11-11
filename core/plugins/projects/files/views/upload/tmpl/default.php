@@ -62,7 +62,10 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
                         <label class="addnew">
                             <input name="upload[]" type="file" class="option uploader" id="uploader"
                                 multiple="multiple" />
-                            <p class="hint ipadded"><?= Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($this->sizelimit) ?></p>
+                            <p class="hint ipadded">
+                                <?= Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' '
+                                    . \Hubzero\Utility\Number::formatBytes($this->sizelimit) ?>
+                            </p>
                         </label>
                         <div id="upload-body">
                             <ul id="u-selected" class="qq-upload-list" aria-label="Uploaded files" hidden>
@@ -92,7 +95,10 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
                     <input name="upload[]" type="file" class="option uploader" id="uploader"
                            data-max-bytes="<?php echo (int) $basicLimit; ?>"
                            multiple="multiple" />
-                    <p class="hint ipadded"><?= Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($basicLimit) ?></p>
+                    <p class="hint ipadded">
+                        <?= Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' '
+                            . \Hubzero\Utility\Number::formatBytes($basicLimit) ?>
+                    </p>
                 </label>
                 <p class="hint mini faded"><?php echo Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_LARGE_HINT'); ?></p>
                 <script>

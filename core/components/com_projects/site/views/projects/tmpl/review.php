@@ -130,7 +130,9 @@ if ($this->getError()) {
                     <?php } ?>
                     </label>
                 </td>
-                <td class="tdmini"><?= !$approved ? '<span class="or">' . Lang::txt('COM_PROJECTS_OR') . '</span>' : '' ?></td>
+                <td class="tdmini">
+                    <?= !$approved ? '<span class="or">' . Lang::txt('COM_PROJECTS_OR') . '</span>' : '' ?>
+                </td>
                 <td>
                     <?php if (!$approved) { ?>
                     <label for="rejected" class="dark">

@@ -61,7 +61,9 @@ $formatSelected = function ($value) use ($view) {
 
 <section class="main section">
     <?php if ($pid) { ?>
-        <h3><?= Lang::txt('COM_CITATIONS_CITATION_FOR') ?> <?= Lang::txt('COM_CITATIONS_PUBLICATION') . ' #' . $pid ?></h3>
+        <h3>
+            <?= Lang::txt('COM_CITATIONS_CITATION_FOR') ?> <?= Lang::txt('COM_CITATIONS_PUBLICATION') . ' #' . $pid ?>
+        </h3>
     <?php } ?>
     <?php if ($this->getError()) { ?>
         <p class="error"><?php echo $this->getError(); ?></p>
@@ -396,8 +398,12 @@ $formatSelected = function ($value) use ($view) {
             <label for="format">
                 <?php echo Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_FORMAT'); ?>:
                 <select id="format" name="fields[format]">
-                    <option value="apa" <?= $formatSelected('apa') ?>><?= Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_APA') ?></option>
-                    <option value="ieee" <?= $formatSelected('ieee') ?>><?= Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_IEEE') ?></option>
+                    <option value="apa" <?= $formatSelected('apa') ?>>
+                        <?= Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_APA') ?>
+                    </option>
+                    <option value="ieee" <?= $formatSelected('ieee') ?>>
+                        <?= Lang::txt('COM_CITATIONS_MANUALLY_FORMAT_IEEE') ?>
+                    </option>
                 </select>
             </label>
             <label for="formatted">

@@ -51,10 +51,20 @@ $url = Route::url($route . '&pid=' . $this->publication->id);
                 $cls = (($cls == 'even') ? 'odd' : 'even');
                 ?>
                 <tr class="<?php echo $cls; ?>">
-                    <td <?= $v->version_number == $this->publication->version_number ? 'class="active"' : '' ?>><?= $this->escape($v->version_label) ?></td>
-                    <td><?= ($v->published_up && $v->published_up != '0000-00-00 00:00:00') ? Date::of($v->published_up)->toLocal('M d, Y') : Lang::txt('COM_PUBLICATIONS_NA') ?></td>
+                    <td <?= $v->version_number == $this->publication->version_number ? 'class="active"' : '' ?>>
+                        <?= $this->escape($v->version_label) ?>
+                    </td>
+                    <td>
+                        <?= ($v->published_up && $v->published_up != '0000-00-00 00:00:00')
+                            ? Date::of($v->published_up)->toLocal('M d, Y')
+                            : Lang::txt('COM_PUBLICATIONS_NA') ?>
+                    </td>
                     <td><?php echo $v->doi ? $v->doi : Lang::txt('COM_PUBLICATIONS_NA'); ?></td>
-                    <td class="<?= $v->state == 1 ? 'state_published' : 'state_unpublished' ?>"><?= $v->state == 1 ? Lang::txt('PLG_PUBLICATION_VERSIONS_PUBLISHED') : Lang::txt('PLG_PUBLICATION_VERSIONS_UNPUBLISHED') ?></td>
+                    <td class="<?= $v->state == 1 ? 'state_published' : 'state_unpublished' ?>">
+                        <?= $v->state == 1
+                            ? Lang::txt('PLG_PUBLICATION_VERSIONS_PUBLISHED')
+                            : Lang::txt('PLG_PUBLICATION_VERSIONS_UNPUBLISHED') ?>
+                    </td>
                     <?php
                     $linkUrl = Route::url(
                         'index.php?option=' . $this->option . '&id=' . $this->publication->id . '&v='

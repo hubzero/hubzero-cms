@@ -83,8 +83,12 @@ $sortJobs = Html::grid(
             <div class="col span5">
                 <label for="filter_search_field"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_SEARCH'); ?></label>
                 <select name="search_field" id="filter_search_field">
-                    <option value="username"<?= $searchFieldSelected('username') ?>><?= Lang::txt('COM_TOOLS_USER_PREFS_USERNAME') ?></option>
-                    <option value="name"<?= $searchFieldSelected('name') ?>><?= Lang::txt('COM_TOOLS_USER_PREFS_NAME') ?></option>
+                    <option value="username"<?= $searchFieldSelected('username') ?>>
+                        <?= Lang::txt('COM_TOOLS_USER_PREFS_USERNAME') ?>
+                    </option>
+                    <option value="name"<?= $searchFieldSelected('name') ?>>
+                        <?= Lang::txt('COM_TOOLS_USER_PREFS_NAME') ?>
+                    </option>
                 </select>
 
                 <label for="filter_search"><?php echo Lang::txt('COM_TOOLS_USER_PREFS_SEARCH_FOR'); ?></label>
@@ -96,7 +100,9 @@ $sortJobs = Html::grid(
             </div>
             <div class="col span7">
                 <select name="class_alias" id="filter_class_alias" class="filter filter-submit">
-                    <option value=""<?= $classAliasSelected('') ?>><?= Lang::txt('COM_TOOLS_FILTER_SESSION_CLASS') ?></option>
+                    <option value=""<?= $classAliasSelected('') ?>>
+                        <?= Lang::txt('COM_TOOLS_FILTER_SESSION_CLASS') ?>
+                    </option>
                     <?php foreach ($this->classes as $class) : ?>
                         <?php $sel = ($this->filters['class_alias'] == $class->alias) ? ' selected="selected"' : ''; ?>
                         <option value="<?php echo $class->alias; ?>"<?php echo $sel; ?>>

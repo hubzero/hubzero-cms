@@ -153,7 +153,9 @@ if ($this->results) {
                             <?php } ?>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_DATE'); ?></th>
-                                        <td><?= Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></td>
+                                        <td>
+                                            <?= Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_GROUPS_RESOURCES_AVG_RATING'); ?></th>

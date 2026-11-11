@@ -37,9 +37,15 @@ Toolbar::cancel('cancelemail');
                     <th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION'); ?>:</th>
                     <td>
                         <select name="email_confirmation">
-                            <option value="-1"><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_NULL') ?></option>
-                            <option value="1"><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_YES') ?></option>
-                            <option value="0"><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_NO') ?></option>
+                            <option value="-1">
+                                <?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_NULL') ?>
+                            </option>
+                            <option value="1">
+                                <?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_YES') ?>
+                            </option>
+                            <option value="0">
+                                <?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_CONFIRMATION_OPTION_NO') ?>
+                            </option>
                         </select>
                     </td>
                 </tr>
@@ -59,9 +65,13 @@ Toolbar::cancel('cancelemail');
                         <th><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_GROUP'); ?>:</th>
                         <td>
                             <select name="email_group">
-                                <option value=""><?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_GROUP_OPTION_NULL') ?></option>
+                                <option value="">
+                                    <?= Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS_GROUP_OPTION_NULL') ?>
+                                </option>
                                 <?php foreach ($this->groups as $group) : ?>
-                                    <option value="<?= (int) $group->gidNumber ?>"><?= $this->escape($group->description) ?></option>
+                                    <option value="<?= (int) $group->gidNumber ?>">
+                                        <?= $this->escape($group->description) ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </td>

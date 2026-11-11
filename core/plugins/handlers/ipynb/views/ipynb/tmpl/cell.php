@@ -29,7 +29,9 @@ endif;
         <div class="input">
             <div class="prompt input_prompt"> </div>
             <div class="inner_cell">
-                <div class="text_cell_render rendered_html"><?= \Hubzero\Utility\Sanitize::html(($this->parser) ? $this->parser->parse($source) : $source) ?></div>
+                <div class="text_cell_render rendered_html">
+                    <?= \Hubzero\Utility\Sanitize::html(($this->parser) ? $this->parser->parse($source) : $source) ?>
+                </div>
             </div>
         </div>
     </div>
@@ -40,7 +42,9 @@ if ($cell->cell_type == 'code') :
         ?>
         <div class="cell <?php echo $cell->cell_type; ?> rendered">
             <div class="input">
-                <div class="prompt input_prompt">In [<?= (isset($cell->prompt_number)) ? $this->escape($cell->prompt_number) : ' ' ?>]:</div>
+                <div class="prompt input_prompt">
+                    In [<?= (isset($cell->prompt_number)) ? $this->escape($cell->prompt_number) : ' ' ?>]:
+                </div>
                 <div class="inner_cell">
                     <pre name="code" class="<?= (isset($cell->language)) ? $this->escape($cell->language) : 'python' ?>:nogutter:nocontrols"><?= $this->escape($source) ?></pre>
                 </div>
@@ -56,7 +60,9 @@ if ($cell->cell_type == 'code') :
         ?>
         <div class="cell <?php echo $cell->cell_type; ?> rendered">
             <div class="input">
-                <div class="prompt output_prompt">Out[<?= (isset($cell->prompt_number)) ? $this->escape($cell->prompt_number) : ' ' ?>]:</div>
+                <div class="prompt output_prompt">
+                    Out[<?= (isset($cell->prompt_number)) ? $this->escape($cell->prompt_number) : ' ' ?>]:
+                </div>
                 <div class="inner_cell <?php echo $cls; ?> output_execute_result">
                     <?php
                     $out = [];

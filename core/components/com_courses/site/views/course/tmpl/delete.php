@@ -53,7 +53,10 @@ $this
         <fieldset>
             <h3><?php echo Lang::txt('COURSES_DELETE_HEADER'); ?></h3>
 
-            <p class="warning"><?= Lang::txt('COURSES_DELETE_WARNING', $this->escape($this->course->get('description'))) . '<br /><br />' . $this->log ?></p>
+            <p class="warning">
+                <?= Lang::txt('COURSES_DELETE_WARNING', $this->escape($this->course->get('description')))
+                    . '<br /><br />' . $this->log ?>
+            </p>
 
             <div class="form-group">
                 <label for="msg">

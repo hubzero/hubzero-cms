@@ -32,7 +32,9 @@ defined('_HZEXEC_') or die();
             />
 
         <select name="<?php echo $this->id; ?>_role">
-            <option value=""<?= empty($this->role) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_ROLE_AUTHOR') ?></option>
+            <option value=""<?= empty($this->role) ? ' selected="selected"' : '' ?>>
+                <?= Lang::txt('COM_RESOURCES_ROLE_AUTHOR') ?>
+            </option>
 <?php
 if ($this->roles) {
     foreach ($this->roles as $role) {

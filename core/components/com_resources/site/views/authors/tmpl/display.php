@@ -46,7 +46,9 @@ $this->css('create.css');
                             if ($this->roles) {
                                 foreach ($this->roles as $role) {
                                     ?>
-                                    <option value="<?= $this->escape($role->alias) ?>"><?= $this->escape(stripslashes($role->title)) ?></option>
+                                    <option value="<?= $this->escape($role->alias) ?>">
+                                        <?= $this->escape(stripslashes($role->title)) ?>
+                                    </option>
                                     <?php
                                 }
                             }
@@ -118,7 +120,9 @@ if ($this->contributors) {
                     <td>
                         <select name="authors[<?= $contributor->authorid ?>][role]"
                             id="role-<?= $contributor->authorid ?>">
-                            <option value=""<?= $contributor->role == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_AUTHOR') ?></option>
+                            <option value=""<?= $contributor->role == '' ? ' selected="selected"' : '' ?>>
+                                <?= Lang::txt('COM_CONTRIBUTE_AUTHOR') ?>
+                            </option>
                             <?php
                             if ($this->roles) {
                                 foreach ($this->roles as $role) {

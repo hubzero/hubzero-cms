@@ -65,18 +65,38 @@ $statusSelected = function ($value) use ($view) {
                 <label for="filter-status"><?php echo Lang::txt('COM_WISHLIST_FILTER_STATUS'); ?>:</label>
                 <select name="status" id="filter-status" class="filter filter-submit">
                     <option value="all"<?= $statusSelected('all') ?>><?= Lang::txt('COM_WISHLIST_STATE_ALL') ?></option>
-                    <option value="granted"<?= $statusSelected('granted') ?>><?= Lang::txt('COM_WISHLIST_STATE_GRANTED') ?></option>
+                    <option value="granted"<?= $statusSelected('granted') ?>>
+                        <?= Lang::txt('COM_WISHLIST_STATE_GRANTED') ?>
+                    </option>
                     <option
                         value="open"<?= $statusSelected('open') ?>><?= Lang::txt('COM_WISHLIST_STATE_OPEN') ?></option>
-                    <option value="accepted"<?= $statusSelected('accepted') ?>><?= Lang::txt('COM_WISHLIST_STATE_ACCEPTED') ?></option>
-                    <option value="pending"<?= $statusSelected('pending') ?>><?= Lang::txt('COM_WISHLIST_STATE_PENDING') ?></option>
-                    <option value="rejected"<?= $statusSelected('rejected') ?>><?= Lang::txt('COM_WISHLIST_STATE_REJECTED') ?></option>
-                    <option value="withdrawn"<?= $statusSelected('withdrawn') ?>><?= Lang::txt('COM_WISHLIST_STATE_WITHDRAWN') ?></option>
-                    <option value="deleted"<?= $statusSelected('deleted') ?>><?= Lang::txt('COM_WISHLIST_STATE_DELETED') ?></option>
-                    <option value="useraccepted"<?= $statusSelected('useraccepted') ?>><?= Lang::txt('COM_WISHLIST_STATE_USER_ACCEPTED') ?></option>
-                    <option value="private"<?= $statusSelected('private') ?>><?= Lang::txt('COM_WISHLIST_STATE_PRIVATE') ?></option>
-                    <option value="public"<?= $statusSelected('public') ?>><?= Lang::txt('COM_WISHLIST_STATE_PUBLIC') ?></option>
-                    <option value="assigned"<?= $statusSelected('assigned') ?>><?= Lang::txt('COM_WISHLIST_STATE_ASSIGNED') ?></option>
+                    <option value="accepted"<?= $statusSelected('accepted') ?>>
+                        <?= Lang::txt('COM_WISHLIST_STATE_ACCEPTED') ?>
+                    </option>
+                    <option value="pending"<?= $statusSelected('pending') ?>>
+                        <?= Lang::txt('COM_WISHLIST_STATE_PENDING') ?>
+                    </option>
+                    <option value="rejected"<?= $statusSelected('rejected') ?>>
+                        <?= Lang::txt('COM_WISHLIST_STATE_REJECTED') ?>
+                    </option>
+                    <option value="withdrawn"<?= $statusSelected('withdrawn') ?>>
+                        <?= Lang::txt('COM_WISHLIST_STATE_WITHDRAWN') ?>
+                    </option>
+                    <option value="deleted"<?= $statusSelected('deleted') ?>>
+                        <?= Lang::txt('COM_WISHLIST_STATE_DELETED') ?>
+                    </option>
+                    <option value="useraccepted"<?= $statusSelected('useraccepted') ?>>
+                        <?= Lang::txt('COM_WISHLIST_STATE_USER_ACCEPTED') ?>
+                    </option>
+                    <option value="private"<?= $statusSelected('private') ?>>
+                        <?= Lang::txt('COM_WISHLIST_STATE_PRIVATE') ?>
+                    </option>
+                    <option value="public"<?= $statusSelected('public') ?>>
+                        <?= Lang::txt('COM_WISHLIST_STATE_PUBLIC') ?>
+                    </option>
+                    <option value="assigned"<?= $statusSelected('assigned') ?>>
+                        <?= Lang::txt('COM_WISHLIST_STATE_ASSIGNED') ?>
+                    </option>
                 </select>
             </div>
         </div>
@@ -98,16 +118,80 @@ $statusSelected = function ($value) use ($view) {
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_WISHLIST_WISH_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_WISHLIST_TITLE', 'subject', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-5">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WISHLIST_WISH_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WISHLIST_TITLE',
+                        'subject',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <?php if (!$this->wishlist->id) { ?>
-                    <th scope="col"><?= Html::grid('sort', 'COM_WISHLIST_WISHLIST_ID', 'wishlist', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                    <th scope="col">
+                        <?= Html::grid(
+                            'sort',
+                            'COM_WISHLIST_WISHLIST_ID',
+                            'wishlist',
+                            @$this->filters['sort_Dir'],
+                            @$this->filters['sort'],
+                        ) ?>
+                    </th>
                 <?php } ?>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_WISHLIST_PROPOSED_BY', 'proposed_by', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_WISHLIST_PROPOSED', 'proposed', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_WISHLIST_STATUS', 'status', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_WISHLIST_ACCESS', 'private', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_WISHLIST_COMMENTS', 'numreplies', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WISHLIST_PROPOSED_BY',
+                        'proposed_by',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-5">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WISHLIST_PROPOSED',
+                        'proposed',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WISHLIST_STATUS',
+                        'status',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WISHLIST_ACCESS',
+                        'private',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_WISHLIST_COMMENTS',
+                        'numreplies',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

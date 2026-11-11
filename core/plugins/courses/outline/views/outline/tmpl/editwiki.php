@@ -111,7 +111,9 @@ endforeach;
             <select name="scope_id">
                 <?php foreach ($assetgroups as $assetgroup) : ?>
                     <?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?= $this->escape($assetgroup['title']) ?></option>
+                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>>
+                        <?= $this->escape($assetgroup['title']) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </p>

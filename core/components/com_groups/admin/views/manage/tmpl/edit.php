@@ -147,13 +147,23 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <label for="field-type"><?= Lang::txt('COM_GROUPS_TYPE') ?>: <span
                                     class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                                 <select name="group[type]" id="field-type" class="required">
-                                    <option value="1"<?= $typeSelected('1') ?>><?= Lang::txt('COM_GROUPS_TYPE_HUB') ?></option>
-                                    <option value="3"<?= $typeSelected('3') ?>><?= Lang::txt('COM_GROUPS_TYPE_SUPER') ?></option>
+                                    <option value="1"<?= $typeSelected('1') ?>>
+                                        <?= Lang::txt('COM_GROUPS_TYPE_HUB') ?>
+                                    </option>
+                                    <option value="3"<?= $typeSelected('3') ?>>
+                                        <?= Lang::txt('COM_GROUPS_TYPE_SUPER') ?>
+                                    </option>
                                     <?php if ($canDo->get('core.admin')) { ?>
-                                        <option value="0"<?= $typeSelected('0') ?>><?= Lang::txt('COM_GROUPS_TYPE_SYSTEM') ?></option>
+                                        <option value="0"<?= $typeSelected('0') ?>>
+                                            <?= Lang::txt('COM_GROUPS_TYPE_SYSTEM') ?>
+                                        </option>
                                     <?php } ?>
-                                    <option value="2"<?= $typeSelected('2') ?>><?= Lang::txt('COM_GROUPS_TYPE_PROJECT') ?></option>
-                                    <option value="4"<?= $typeSelected('4') ?>><?= Lang::txt('COM_GROUPS_TYPE_COURSE') ?></option>
+                                    <option value="2"<?= $typeSelected('2') ?>>
+                                        <?= Lang::txt('COM_GROUPS_TYPE_PROJECT') ?>
+                                    </option>
+                                    <option value="4"<?= $typeSelected('4') ?>>
+                                        <?= Lang::txt('COM_GROUPS_TYPE_COURSE') ?>
+                                    </option>
                                 </select>
                             </div>
 
@@ -162,9 +172,15 @@ $discoverabilityChecked = function ($value) use ($view) {
                                     <div class="input-wrap">
                                         <label for="field-published"><?= Lang::txt('COM_GROUPS_PUBLISHED') ?>:</label>
                                         <select name="group[published]" id="field-published">
-                                            <option <?= $publishedSelected(0) ?> value="0"><?= Lang::txt('COM_GROUPS_UNPUBLISHED') ?></option>
-                                            <option <?= $publishedSelected(1) ?> value="1"><?= Lang::txt('COM_GROUPS_PUBLISHED') ?></option>
-                                            <option <?= $publishedSelected(2) ?> value="2"><?= Lang::txt('COM_GROUPS_ARCHIVED') ?></option>
+                                            <option <?= $publishedSelected(0) ?> value="0">
+                                                <?= Lang::txt('COM_GROUPS_UNPUBLISHED') ?>
+                                            </option>
+                                            <option <?= $publishedSelected(1) ?> value="1">
+                                                <?= Lang::txt('COM_GROUPS_PUBLISHED') ?>
+                                            </option>
+                                            <option <?= $publishedSelected(2) ?> value="2">
+                                                <?= Lang::txt('COM_GROUPS_ARCHIVED') ?>
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -172,8 +188,12 @@ $discoverabilityChecked = function ($value) use ($view) {
                                     <div class="input-wrap">
                                         <label for="field-approved"><?= Lang::txt('COM_GROUPS_APPROVE') ?>:</label>
                                         <select name="group[approved]" id="field-approved">
-                                            <option <?= $approvedSelected(0) ?> value="0"><?= Lang::txt('COM_GROUPS_UNAPPROVED') ?></option>
-                                            <option <?= $approvedSelected(1) ?> value="1"><?= Lang::txt('COM_GROUPS_APPROVED') ?></option>
+                                            <option <?= $approvedSelected(0) ?> value="0">
+                                                <?= Lang::txt('COM_GROUPS_UNAPPROVED') ?>
+                                            </option>
+                                            <option <?= $approvedSelected(1) ?> value="1">
+                                                <?= Lang::txt('COM_GROUPS_APPROVED') ?>
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -257,8 +277,12 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT_HINT') ?>">
                                 <label for="param-page_trusted"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT') ?>:</label>
                                 <select name="group[params][page_trusted]" id="param-page_trusted">
-                                    <option <?= $trusted == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_NO') ?></option>
-                                    <option <?= $trusted == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_YES') ?></option>
+                                    <option <?= $trusted == 0 ? 'selected="selected"' : '' ?> value="0">
+                                        <?= Lang::txt('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_NO') ?>
+                                    </option>
+                                    <option <?= $trusted == 1 ? 'selected="selected"' : '' ?> value="1">
+                                        <?= Lang::txt('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_YES') ?>
+                                    </option>
                                 </select>
                             </div>
 
@@ -266,9 +290,15 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT') ?>">
                                 <label for="param-page_comments"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS') ?>:</label>
                                 <select name="group[params][page_comments]" id="param-page_comments">
-                                    <option <?= $comments == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO') ?></option>
-                                    <option <?= $comments == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES') ?></option>
-                                    <option <?= $comments == 2 ? 'selected="selected"' : '' ?> value="2"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK') ?></option>
+                                    <option <?= $comments == 0 ? 'selected="selected"' : '' ?> value="0">
+                                        <?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO') ?>
+                                    </option>
+                                    <option <?= $comments == 1 ? 'selected="selected"' : '' ?> value="1">
+                                        <?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES') ?>
+                                    </option>
+                                    <option <?= $comments == 2 ? 'selected="selected"' : '' ?> value="2">
+                                        <?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK') ?>
+                                    </option>
                                 </select>
                             </div>
 
@@ -277,8 +307,12 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <label
                                     for="param-page_author"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR') ?>:</label>
                                 <select name="group[params][page_author]" id="param-page_author">
-                                    <option <?= $author == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO') ?></option>
-                                    <option <?= $author == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES') ?></option>
+                                    <option <?= $author == 0 ? 'selected="selected"' : '' ?> value="0">
+                                        <?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO') ?>
+                                    </option>
+                                    <option <?= $author == 1 ? 'selected="selected"' : '' ?> value="1">
+                                        <?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES') ?>
+                                    </option>
                                 </select>
                             </div>
                             <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_TEMPLATE_HINT'); ?>">
@@ -308,7 +342,11 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 <?php if ($this->group->created) { ?>
                                     <tr>
                                         <th scope="row"><?php echo Lang::txt('COM_GROUPS_CREATED'); ?></th>
-                                        <td><?= $this->escape(date("l F d, Y @ g:ia", strtotime($this->group->created))) ?></td>
+                                        <td>
+                                            <?= $this->escape(
+                                                date("l F d, Y @ g:ia", strtotime($this->group->created)),
+                                            ) ?>
+                                        </td>
                                     </tr>
                                 <?php } ?>
                                 <?php if ($this->group->created_by) { ?>

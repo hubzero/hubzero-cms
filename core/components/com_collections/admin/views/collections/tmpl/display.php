@@ -95,7 +95,9 @@ $accessSelected = function ($value) use ($view) {
                     ?>
                     <option
                         value="0"<?= $accessSelected(0) ?>><?= Lang::txt('COM_COLLECTIONS_ACCESS_PUBLIC') ?></option>
-                    <option value="1"<?= $accessSelected(1) ?>><?= Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED') ?></option>
+                    <option value="1"<?= $accessSelected(1) ?>>
+                        <?= Lang::txt('COM_COLLECTIONS_ACCESS_REGISTERED') ?>
+                    </option>
                     <option
                         value="4"<?= $accessSelected(4) ?>><?= Lang::txt('COM_COLLECTIONS_ACCESS_PRIVATE') ?></option>
                 </select>

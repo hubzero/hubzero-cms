@@ -205,7 +205,11 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
         <?php if ($this->event->get('contact_info') != '') : ?>
             <tr>
                 <th scope="row" class="author"><span class="sr-only visually-hidden">Contact:</span></th>
-                <td colspan="3"><?= Plugins\Groups\Calendar\Helper::autoLinkText($this->escape($this->event->get('contact_info'))) ?></td>
+                <td colspan="3">
+                    <?= Plugins\Groups\Calendar\Helper::autoLinkText(
+                        $this->escape($this->event->get('contact_info')),
+                    ) ?>
+                </td>
             </tr>
         <?php endif; ?>
 
@@ -223,7 +227,11 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
         <?php if ($this->event->get('content') != '') : ?>
             <tr>
                 <th scope="row" class="details"><span class="sr-only visually-hidden">Details:</span></th>
-                <td colspan="3"><?= Plugins\Groups\Calendar\Helper::autoLinkText(nl2br($this->escape($this->event->get('content')))) ?></td>
+                <td colspan="3">
+                    <?= Plugins\Groups\Calendar\Helper::autoLinkText(
+                        nl2br($this->escape($this->event->get('content'))),
+                    ) ?>
+                </td>
             </tr>
         <?php endif; ?>
 

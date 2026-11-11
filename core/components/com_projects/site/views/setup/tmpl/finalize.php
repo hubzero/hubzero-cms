@@ -151,7 +151,9 @@ $ferpaDataChecked = function ($value) use ($view) {
                                 <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_EXPORT_CONTROLLED') ?>
                             </label>
                         </div>
-                        <div id="stop-export" class="stopaction hidden"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_EXPORT') ?></div>
+                        <div id="stop-export" class="stopaction hidden">
+                            <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_EXPORT') ?>
+                        </div>
 
                         <div class="form-group form-check">
                             <label for="irb" class="terms-label form-check-label">
@@ -179,7 +181,9 @@ $ferpaDataChecked = function ($value) use ($view) {
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PROJECT_WILL_INVOLVE_HIPAA'); ?>
                             </label>
                         </div>
-                        <div id="stop-hipaa" class="stopaction hidden"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_HIPAA') ?></div>
+                        <div id="stop-hipaa" class="stopaction hidden">
+                            <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_HIPAA') ?>
+                        </div>
 
                         <div class="form-group form-check">
                             <label for="ferpa" class="form-check-label terms-label">

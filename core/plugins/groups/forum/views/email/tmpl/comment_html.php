@@ -29,8 +29,12 @@ $bdcolor = '#e1e1e1';
         <tbody>
             <tr>
                 <td height="30" style="border-collapse: collapse; color: #9bac9b;">
-                    <div style="height: 0px; overflow: hidden; color: #fff; visibility: hidden;"><?= $this->delimiter ?></div>
-                    <div style="text-align: center; font-size: 90%; display: block; padding: 1em;"><?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_REPLY_ABOVE') ?></div>
+                    <div style="height: 0px; overflow: hidden; color: #fff; visibility: hidden;">
+                        <?= $this->delimiter ?>
+                    </div>
+                    <div style="text-align: center; font-size: 90%; display: block; padding: 1em;">
+                        <?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_REPLY_ABOVE') ?>
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -135,7 +139,13 @@ $bdcolor = '#e1e1e1';
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
                                     align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_CREATED') ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left"><?= Lang::txt('PLG_GROUPS_FORUM_CREATED', $this->thread->created('time'), $this->thread->created('date')) ?></td>
+                                <td style="text-align: left; padding: 0 0.5em;" align="left">
+                                    <?= Lang::txt(
+                                        'PLG_GROUPS_FORUM_CREATED',
+                                        $this->thread->created('time'),
+                                        $this->thread->created('date'),
+                                    ) ?>
+                                </td>
                             </tr>
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
@@ -172,12 +182,18 @@ $bdcolor = '#e1e1e1';
         cellpadding="0" cellspacing="0" border="0">
         <tbody>
             <tr>
-                <th style="text-align: left;" align="left"><?= (!$this->post->get('anonymous')) ? $this->escape($this->post->creator->get('name')) : Lang::txt('JANONYMOUS') ?></th>
+                <th style="text-align: left;" align="left">
+                    <?= (!$this->post->get('anonymous'))
+                        ? $this->escape($this->post->creator->get('name'))
+                        : Lang::txt('JANONYMOUS') ?>
+                </th>
                 <th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?= Lang::txt('PLG_GROUPS_FORUM_CREATED', $this->post->created('time'), $this->post->created('date')) ?></span></th>
             </tr>
             <tr>
                 <td colspan="2" style="padding: 0 2em;">
-                    <div style="line-height: 1.6em; margin: 0; padding: 0; text-align: left;"><?= $this->post->comment ?></div>
+                    <div style="line-height: 1.6em; margin: 0; padding: 0; text-align: left;">
+                        <?= $this->post->comment ?>
+                    </div>
                     <?php
                     $attachments = $this->post
                         ->attachments()

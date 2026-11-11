@@ -34,7 +34,9 @@ $this->css();
         <?php
         $startUrl = Route::url($this->model->link('publications') . '&action=start');
         ?>
-        <p class="s-publications"><a href="<?= $startUrl ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION') ?></a></p>
+        <p class="s-publications">
+            <a href="<?= $startUrl ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_PUBLICATION') ?></a>
+        </p>
     <?php } else { ?>
         <ul>
             <?php foreach ($this->items as $pub) {

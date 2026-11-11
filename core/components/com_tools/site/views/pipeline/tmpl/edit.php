@@ -74,7 +74,9 @@ $repohostChecked = function ($value) use ($view) {
                     . $this->defaults['toolname'],
             );
             ?>
-            <li><a class="icon-status status btn" href="<?= $statusUrl ?>"><?= Lang::txt('COM_TOOLS_TOOL_STATUS') ?></a></li>
+            <li>
+                <a class="icon-status status btn" href="<?= $statusUrl ?>"><?= Lang::txt('COM_TOOLS_TOOL_STATUS') ?></a>
+            </li>
         <?php } ?>
             <?php
             $pipelineUrl = Route::url(

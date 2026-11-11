@@ -156,7 +156,11 @@ $stateSelected = function ($value) use ($view) {
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_CREATOR'); ?></th>
-                        <td><?= $this->escape(stripslashes($this->row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN')))) ?></td>
+                        <td>
+                            <?= $this->escape(
+                                stripslashes($this->row->creator->get('name', Lang::txt('COM_WIKI_UNKNOWN'))),
+                            ) ?>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_WIKI_FIELD_HITS'); ?></th>
@@ -177,7 +181,9 @@ $stateSelected = function ($value) use ($view) {
                     <select name="params[mode]" id="param-mode">
                         <option value="wiki"<?= $modeSelected('wiki') ?>><?= Lang::txt('COM_WIKI_MODE_WIKI') ?></option>
                         <option value="knol"<?= $modeSelected('knol') ?>><?= Lang::txt('COM_WIKI_MODE_KNOL') ?></option>
-                        <option value="static"<?= $modeSelected('static') ?>><?= Lang::txt('COM_WIKI_MODE_STATIC') ?></option>
+                        <option value="static"<?= $modeSelected('static') ?>>
+                            <?= Lang::txt('COM_WIKI_MODE_STATIC') ?>
+                        </option>
                     </select>
                 </div>
 

@@ -82,9 +82,33 @@ $this->css();
                 </th>
                 <?php //}?>
                 <?php // the controller names these sortby/sortdir (sort/sort_Dir were never set)?>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_PROJECTS_TEAM_USERID', 'uidNumber', $this->filters['sortdir'], $this->filters['sortby']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_PROJECTS_TEAM_NAME', 'name', $this->filters['sortdir'], $this->filters['sortby']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_PROJECTS_TEAM_USERNAME', 'username', $this->filters['sortdir'], $this->filters['sortby']) ?></th>
+                <th scope="col" class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PROJECTS_TEAM_USERID',
+                        'uidNumber',
+                        $this->filters['sortdir'],
+                        $this->filters['sortby'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PROJECTS_TEAM_NAME',
+                        'name',
+                        $this->filters['sortdir'],
+                        $this->filters['sortby'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_PROJECTS_TEAM_USERNAME',
+                        'username',
+                        $this->filters['sortdir'],
+                        $this->filters['sortby'],
+                    ) ?>
+                </th>
                 <th scope="col" class="priority-5"><?php echo Lang::txt('COM_PROJECTS_TEAM_ROLE'); ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_PROJECTS_TEAM_JOINED'); ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_PROJECTS_TEAM_LAST_VISIT'); ?></th>

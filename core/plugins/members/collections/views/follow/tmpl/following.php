@@ -112,7 +112,12 @@ $this
             <?php if ($this->params->get('access-manage-collection')) { ?>
                 <div class="instructions">
                     <ol>
-                        <li><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP1', Route::url('index.php?option=com_collections')) ?></li>
+                        <li>
+                            <?= Lang::txt(
+                                'PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP1',
+                                Route::url('index.php?option=com_collections'),
+                            ) ?>
+                        </li>
                         <li><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP2'); ?></li>
                         <li><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_INSTRUCTIONS_STEP3'); ?></li>
                     </ol>

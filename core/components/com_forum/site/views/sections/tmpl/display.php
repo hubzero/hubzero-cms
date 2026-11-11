@@ -336,7 +336,12 @@ $this
 <?php } else { ?>
     <div class="instructions icon-comments">
         <?php if ($this->config->get('access-create-section')) { ?>
-            <p class="notification"><?= Lang::txt('COM_FORUM_EMPTY_MODERATOR', Route::url('index.php?option=' . $this->option . '&action=populate')) ?></p>
+            <p class="notification">
+                <?= Lang::txt(
+                    'COM_FORUM_EMPTY_MODERATOR',
+                    Route::url('index.php?option=' . $this->option . '&action=populate'),
+                ) ?>
+            </p>
 
             <div class="container">
                 <form action="<?php echo Route::url('index.php?option=' . $this->option); ?>" method="post">

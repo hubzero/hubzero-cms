@@ -50,7 +50,11 @@ $sectionIdSelected = function ($value) use ($view) {
 
         <form action="<?= Route::url($base) ?>" method="post" id="pageform" class="full" enctype="multipart/form-data">
             <fieldset>
-                <legend><?= ($this->model->exists()) ? Lang::txt('PLG_COURSES_PAGES_EDIT_PAGE') : Lang::txt('PLG_COURSES_PAGES_NEW_PAGE') ?></legend>
+                <legend>
+                    <?= ($this->model->exists())
+                        ? Lang::txt('PLG_COURSES_PAGES_EDIT_PAGE')
+                        : Lang::txt('PLG_COURSES_PAGES_NEW_PAGE') ?>
+                </legend>
 
                 <div class="grid">
                     <div class="col span-half">
@@ -77,7 +81,9 @@ $sectionIdSelected = function ($value) use ($view) {
                     <label for="field-section_id">
                         <?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_SECTION'); ?>
                         <select name="fields[section_id]" id="field-section_id">
-                            <option value="0"<?= $sectionIdSelected(0) ?>><?= Lang::txt('PLG_COURSES_PAGES_FIELD_OPT_ALL_SECTIONS') ?></option>
+                            <option value="0"<?= $sectionIdSelected(0) ?>>
+                                <?= Lang::txt('PLG_COURSES_PAGES_FIELD_OPT_ALL_SECTIONS') ?>
+                            </option>
                         <?php foreach ($this->offering->sections() as $section) { ?>
                             <option value="<?= $section->get('id') ?>"<?= $section->get('id') == $this->model->get('section_id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($section->get('title'))) ?></option>
                         <?php } ?>

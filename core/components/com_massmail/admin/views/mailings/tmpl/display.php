@@ -48,7 +48,9 @@ $this->css('display.css', 'com_massmail');
                 <select name="status" id="filter-status" class="filter filter-submit">
                     <option value=""><?php echo Lang::txt('COM_MASSMAIL_ALL_STATUSES'); ?></option>
                     <?php foreach ($statuses as $s) { ?>
-                        <option value="<?= $s ?>"<?= ($this->filters['status'] === $s ? ' selected="selected"' : '') ?>><?= Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($s)) ?></option>
+                        <option value="<?= $s ?>"<?= ($this->filters['status'] === $s ? ' selected="selected"' : '') ?>>
+                            <?= Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($s)) ?>
+                        </option>
                     <?php } ?>
                 </select>
             </div>
@@ -110,7 +112,9 @@ $this->css('display.css', 'com_massmail');
                     ?>
                 </td>
                 <td class="priority-4"><?php echo $this->escape($row->creator->get('name')); ?></td>
-                <td class="priority-3"><?= $row->get('created') ? Date::of($row->get('created'))->toLocal('M j, Y') : '&mdash;' ?></td>
+                <td class="priority-3">
+                    <?= $row->get('created') ? Date::of($row->get('created'))->toLocal('M j, Y') : '&mdash;' ?>
+                </td>
             </tr>
             <?php }
         } ?>

@@ -209,7 +209,9 @@ $paramsLayoutSelected = function ($value) use ($view) {
                         <label for="owned_by_group">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_OWNER_CHOOSE_GROUP'); ?>:
                             <select name="owned_by_group" class="block">
-                                <option value="0" <?= !$this->model->groupOwner() ? 'selected="selected"' : '' ?>><?= Lang::txt('PLG_PROJECTS_TEAM_NO_GROUP') ?></option>
+                                <option value="0" <?= !$this->model->groupOwner() ? 'selected="selected"' : '' ?>>
+                                    <?= Lang::txt('PLG_PROJECTS_TEAM_NO_GROUP') ?>
+                                </option>
                                 <?php foreach ($groups as $g) {
                                     if (in_array($g->gidNumber, $used)) {
                                         continue;
@@ -266,8 +268,12 @@ $paramsLayoutSelected = function ($value) use ($view) {
                 <div class="input-wrap">
                     <label for="param-layout"><?php echo Lang::txt('COM_PROJECTS_LAYOUT'); ?>:</label>
                     <select name="params[layout]" id="param-layout">
-                        <option value="standard" <?= $layoutSelected('standard') ?>><?= Lang::txt('COM_PROJECTS_LAYOUT_STANDARD') ?></option>
-                        <option value="extended" <?= $paramsLayoutSelected('extended') ?>><?= Lang::txt('COM_PROJECTS_LAYOUT_EXTENDED') ?></option>
+                        <option value="standard" <?= $layoutSelected('standard') ?>>
+                            <?= Lang::txt('COM_PROJECTS_LAYOUT_STANDARD') ?>
+                        </option>
+                        <option value="extended" <?= $paramsLayoutSelected('extended') ?>>
+                            <?= Lang::txt('COM_PROJECTS_LAYOUT_EXTENDED') ?>
+                        </option>
                     </select>
                 </div>
 

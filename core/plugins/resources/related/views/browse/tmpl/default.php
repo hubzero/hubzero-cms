@@ -67,7 +67,9 @@ defined('_HZEXEC_') or die();
                                     </tr>
                                     <tr>
                                         <th><?php echo Lang::txt('PLG_RESOURCES_RELATED_DATE'); ?></th>
-                                        <td><?= Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></td>
+                                        <td>
+                                            <?= Date::of($line->publish_up)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

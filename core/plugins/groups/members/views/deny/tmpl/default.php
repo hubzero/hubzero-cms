@@ -55,7 +55,9 @@ $formUrl = Route::url(
                     data-confirm="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_REPLACE')) ?>">
                     <option value=""><?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_NONE'); ?></option>
                     <?php foreach ($this->responses as $i => $response) : ?>
-                        <option value="<?= $i ?>" data-text="<?= $this->escape($response['text']) ?>"><?= $this->escape($response['title']) ?></option>
+                        <option value="<?= $i ?>" data-text="<?= $this->escape($response['text']) ?>">
+                            <?= $this->escape($response['title']) ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
             </label>

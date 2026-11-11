@@ -337,7 +337,9 @@ if ($this->config->get('access-manage-section')) {
 <?php } else { ?>
     <div class="instructions">
         <?php if ($this->config->get('access-create-section')) { ?>
-            <p class="notification"><?= Lang::txt('PLG_GROUPS_FORUM_EMPTY_MODERATOR', Route::url($base . '&action=populate')) ?></p>
+            <p class="notification">
+                <?= Lang::txt('PLG_GROUPS_FORUM_EMPTY_MODERATOR', Route::url($base . '&action=populate')) ?>
+            </p>
 
             <div class="container">
                 <form method="post" action="<?php echo Route::url($base); ?>">

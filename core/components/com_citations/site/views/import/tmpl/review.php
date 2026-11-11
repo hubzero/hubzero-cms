@@ -49,7 +49,12 @@ $no_show = ["errors","duplicate"];
                     <thead>
                         <tr>
                             <!--<th></th>-->
-                            <th><?= Lang::txt('COM_CITATIONS_IMPORT_REQUIRE_ATTENTION', count($citations_require_attention)) ?></th>
+                            <th>
+                                <?= Lang::txt(
+                                    'COM_CITATIONS_IMPORT_REQUIRE_ATTENTION',
+                                    count($citations_require_attention),
+                                ) ?>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -175,7 +180,12 @@ $no_show = ["errors","duplicate"];
                         <tr>
                             <th><input type="checkbox" class="checkall" name="select-all-no-attention"
                                 checked="checked" /></th>
-                            <th><?= Lang::txt('COM_CITATIONS_IMPORT_REQUIRE_NO_ATTENTION', count($citations_require_no_attention)) ?></th>
+                            <th>
+                                <?= Lang::txt(
+                                    'COM_CITATIONS_IMPORT_REQUIRE_NO_ATTENTION',
+                                    count($citations_require_no_attention),
+                                ) ?>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -199,15 +209,23 @@ $no_show = ["errors","duplicate"];
                                     <table class="citation-details hide">
                                         <thead>
                                             <tr>
-                                                <th colspan="2"><?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_DETAILS') ?></th>
+                                                <th colspan="2">
+                                                    <?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_DETAILS') ?>
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach (array_keys($c) as $k) : ?>
                                                 <?php if (!in_array($k, $no_show)) : ?>
                                                     <tr>
-                                                        <td class="key"><?= $this->escape(str_replace("_", " ", (string) $k)) ?></td>
-                                                        <td><?= nl2br($this->escape(html_entity_decode((string) $c[$k]))) ?></td>
+                                                        <td class="key">
+                                                            <?= $this->escape(str_replace("_", " ", (string) $k)) ?>
+                                                        </td>
+                                                        <td>
+                                                            <?= nl2br(
+                                                                $this->escape(html_entity_decode((string) $c[$k])),
+                                                            ) ?>
+                                                        </td>
                                                     </tr>
                                                 <?php endif; ?>
                                             <?php endforeach; ?>

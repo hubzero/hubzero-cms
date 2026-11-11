@@ -238,7 +238,9 @@ if ($label == 'none') {
                                                         && $this->config->get("citation_sponsors", "yes") == 'yes'
                                                     ) : ?>
                                                         <?php $final = substr($final, 0, -2); ?>
-                                                        <p class="sponsor"><?= Lang::txt('COM_CITATIONS_ABSTRACT_BY') ?> <?= $final ?></p>
+                                                        <p class="sponsor">
+                                                            <?= Lang::txt('COM_CITATIONS_ABSTRACT_BY') ?> <?= $final ?>
+                                                        </p>
                                                     <?php endif; ?>
                                                     <p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
                                                 </div>

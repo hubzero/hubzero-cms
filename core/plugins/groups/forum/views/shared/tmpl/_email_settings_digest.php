@@ -73,9 +73,15 @@ $recvEmailOptionValueSelected = function ($value) use ($view) {
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_AS_A'); ?>
             <select name="recvpostemail"
                 class="edit-forum-options-frequency"<?= $this->recvEmailOptionValue < 2 ? ' disabled="disabled"' : '' ?>>
-                <option value="2"<?= $recvEmailOptionValueSelected(2) ?>><?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DAILY') ?></option>
-                <option value="3"<?= $recvEmailOptionValueSelected(3) ?>><?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_WEEKLY') ?></option>
-                <option value="4"<?= $recvEmailOptionValueSelected(4) ?>><?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_MONTHLY') ?></option>
+                <option value="2"<?= $recvEmailOptionValueSelected(2) ?>>
+                    <?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DAILY') ?>
+                </option>
+                <option value="3"<?= $recvEmailOptionValueSelected(3) ?>>
+                    <?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_WEEKLY') ?>
+                </option>
+                <option value="4"<?= $recvEmailOptionValueSelected(4) ?>>
+                    <?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_MONTHLY') ?>
+                </option>
             </select>
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DIGEST'); ?>
         </div>

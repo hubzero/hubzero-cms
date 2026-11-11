@@ -95,7 +95,10 @@ $categoryChecked = function ($value) use ($view) {
 };
 ?>
     <header id="content-header">
-        <h2><?= $this->escape($this->title) . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . (int) $this->wish->get('id') ?></h2>
+        <h2>
+            <?= $this->escape($this->title) . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #'
+                . (int) $this->wish->get('id') ?>
+        </h2>
 
         <?php /*<div id="content-header-extra">
             <ul id="useroptions">
@@ -376,7 +379,12 @@ $categoryChecked = function ($value) use ($view) {
                                     <?php
                                 } else {
                                     ?>
-                                    <td><?= \Components\Wishlist\Helpers\Html::convertVote($this->wish->get('average_imp', $this->wish->ranking('importance')), 'importance') ?></td>
+                                    <td>
+                                        <?= \Components\Wishlist\Helpers\Html::convertVote(
+                                            $this->wish->get('average_imp', $this->wish->ranking('importance')),
+                                            'importance',
+                                        ) ?>
+                                    </td>
                                     <?php
                                 }
                                 ?>

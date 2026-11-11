@@ -124,7 +124,12 @@ $bars = [];
             <div class="grid">
                 <div class="col span3">
                     <h4><?php echo Lang::txt('World usage'); ?></h4>
-                    <p><?= Lang::txt('PLG_RESOURCES_USAGE_MAP_EXPLANATION', $this->escape(stripslashes($this->resource->title))) ?></p>
+                    <p>
+                        <?= Lang::txt(
+                            'PLG_RESOURCES_USAGE_MAP_EXPLANATION',
+                            $this->escape(stripslashes($this->resource->title)),
+                        ) ?>
+                    </p>
                 </div><!-- / .col span3 -->
                 <div class="col span9 omega">
                     <p>
@@ -351,14 +356,18 @@ $bars = [];
                             }
                             if ($i == 0) { ?>
                             <tr>
-                                <td class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?></td>
+                                <td class="textual-data">
+                                    <?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?>
+                                </td>
                                 <td></td>
                             </tr>
                             <?php }
                         } else {
                             ?>
                             <tr>
-                                <td class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?></td>
+                                <td class="textual-data">
+                                    <?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?>
+                                </td>
                                 <td></td>
                             </tr>
                             <?php
@@ -482,14 +491,18 @@ $bars = [];
                             }
                             if ($i == 0) { ?>
                                 <tr>
-                                    <td class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?></td>
+                                    <td class="textual-data">
+                                        <?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?>
+                                    </td>
                                     <td></td>
                                 </tr>
                             <?php }
                         } else {
                             ?>
                             <tr>
-                                <td class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?></td>
+                                <td class="textual-data">
+                                    <?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE_FOR_MONTH', $datetime) ?>
+                                </td>
                                 <td></td>
                             </tr>
                             <?php

@@ -130,9 +130,18 @@ $base = rtrim(Request::base(true), '/');
                             . '</span><span class="pubstats-note">' . $thisMonth . '</span>';
                     ?></td>
 
-                    <td><?= '<span class="pubstats-label">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_LAST_MONTH') . '</span><span class="pubstats-note">' . $lastMonth . '</span>' ?></td>
+                    <td>
+                        <?= '<span class="pubstats-label">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_LAST_MONTH')
+                            . '</span><span class="pubstats-note">' . $lastMonth . '</span>' ?>
+                    </td>
 
-                    <td><?= '<span class="pubstats-label"><span class="prominent">' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_TOTAL') . '</span>*</span><span class="pubstats-note">*' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_SINCE') . ' ' . Date::of($toDate)->toLocal('M d, Y') . ' ' . '</span>' ?></td>
+                    <td>
+                        <?= '<span class="pubstats-label"><span class="prominent">'
+                            . Lang::txt('PLG_PROJECTS_PUBLICATIONS_STATS_TOTAL')
+                            . '</span>*</span><span class="pubstats-note">*'
+                            . Lang::txt('PLG_PROJECTS_PUBLICATIONS_SINCE') . ' ' . Date::of($toDate)->toLocal('M d, Y')
+                            . ' ' . '</span>' ?>
+                    </td>
 
                 </tr>
                 <tr>

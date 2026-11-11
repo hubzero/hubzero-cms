@@ -63,7 +63,9 @@ $authIDs = [];
                 name="<?= $authname->authorid ?>_organization" value="<?= $this->escape($org) ?>" />
 
             <select name="<?php echo $authname->authorid; ?>_role">
-                <option value=""<?= $authname->role == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_ROLE_AUTHOR') ?></option>
+                <option value=""<?= $authname->role == '' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_RESOURCES_ROLE_AUTHOR') ?>
+                </option>
                 <?php
                 if ($this->roles) {
                     foreach ($this->roles as $role) {

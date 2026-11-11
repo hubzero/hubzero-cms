@@ -258,13 +258,17 @@ endif;
                                         <option value="0"
                                             selected="selected"><?= Lang::txt('COM_SUPPORT_COMMENT_OPT_NEW') ?></option>
                                         <?php foreach (Components\Support\Models\Status::allOpen()->rows() as $status) : ?>
-                                            <option value="<?= $status->get('id') ?>"><?= $this->escape($status->get('title')) ?></option>
+                                            <option value="<?= $status->get('id') ?>">
+                                                <?= $this->escape($status->get('title')) ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </optgroup>
                                     <optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
                                         <option value="0"><?= Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED') ?></option>
                                         <?php foreach (Components\Support\Models\Status::allClosed()->rows() as $status) : ?>
-                                            <option value="<?= $status->get('id') ?>"><?= $this->escape($status->get('title')) ?></option>
+                                            <option value="<?= $status->get('id') ?>">
+                                                <?= $this->escape($status->get('title')) ?>
+                                            </option>
                                         <?php endforeach; ?>
                                     </optgroup>
                                 </select>
@@ -289,7 +293,9 @@ endif;
                                 <?php
                                 foreach ($this->lists['categories'] as $category) :
                                     ?>
-                                    <option value="<?= $this->escape($category->alias) ?>"><?= $this->escape(stripslashes($category->title)) ?></option>
+                                    <option value="<?= $this->escape($category->alias) ?>">
+                                        <?= $this->escape(stripslashes($category->title)) ?>
+                                    </option>
                                     <?php
                                 endforeach;
                                 ?>

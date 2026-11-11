@@ -167,7 +167,11 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     </div>
                                     <div class="col span8 omega input">
                                         <select id="subtitle-selector">
-                                            <option value=""><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
+                                            <option value="">
+                                                <?= Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT_OFF',
+                                                ) ?>
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -177,7 +181,11 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     </div>
                                     <div class="col span8 omega input">
                                         <select class="transcript-selector">
-                                            <option value=""><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT_OFF') ?></option>
+                                            <option value="">
+                                                <?= Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTIONS_TRANSCRIPT_OFF',
+                                                ) ?>
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
@@ -190,12 +198,32 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                         </div>
                                         <div class="col span6 omega input">
                                             <select id="font-selector">
-                                                <option value="Arial" selected><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_ARIAL') ?></option>
-                                                <option value="Times New Roman"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TIMES') ?></option>
-                                                <option value="Tahoma"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TAHOMA') ?></option>
+                                                <option value="Arial" selected>
+                                                    <?= Lang::txt(
+                                                        'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_ARIAL',
+                                                    ) ?>
+                                                </option>
+                                                <option value="Times New Roman">
+                                                    <?= Lang::txt(
+                                                        'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TIMES',
+                                                    ) ?>
+                                                </option>
+                                                <option value="Tahoma">
+                                                    <?= Lang::txt(
+                                                        'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TAHOMA',
+                                                    ) ?>
+                                                </option>
                                                 <option value="Trebuchet MS"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_TREBUCHET') ?></option>
-                                                <option value="Verdana"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_VERDANA') ?></option>
-                                                <option value="Courier New"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_COURIER') ?></option>
+                                                <option value="Verdana">
+                                                    <?= Lang::txt(
+                                                        'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_VERDANA',
+                                                    ) ?>
+                                                </option>
+                                                <option value="Courier New">
+                                                    <?= Lang::txt(
+                                                        'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_FONT_COURIER',
+                                                    ) ?>
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
@@ -230,7 +258,11 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     <div class="grid">
                                         <div class="col span12 omega subtitle-settings-preview-container">
                                             <div class="subtitle-settings-preview">
-                                                <div class="test"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_EXAMPLE') ?></div>
+                                                <div class="test">
+                                                    <?= Lang::txt(
+                                                        'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_EXAMPLE',
+                                                    ) ?>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -257,12 +289,36 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     </div>
                                     <div class="col span6 omega input">
                                         <select id="speed">
-                                            <option value=".25"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_025') ?></option>
-                                            <option value=".5"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_05') ?></option>
-                                            <option selected value="1"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL') ?></option>
-                                            <option value="1.25"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_125') ?></option>
-                                            <option value="1.5"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_15') ?></option>
-                                            <option value="2"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_2') ?></option>
+                                            <option value=".25">
+                                                <?= Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_025',
+                                                ) ?>
+                                            </option>
+                                            <option value=".5">
+                                                <?= Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_05',
+                                                ) ?>
+                                            </option>
+                                            <option selected value="1">
+                                                <?= Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_NORMAL',
+                                                ) ?>
+                                            </option>
+                                            <option value="1.25">
+                                                <?= Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_125',
+                                                ) ?>
+                                            </option>
+                                            <option value="1.5">
+                                                <?= Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_15',
+                                                ) ?>
+                                            </option>
+                                            <option value="2">
+                                                <?= Lang::txt(
+                                                    'PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS_PLAYBACK_RATE_2',
+                                                ) ?>
+                                            </option>
                                         </select>
                                     </div>
                                 </div>

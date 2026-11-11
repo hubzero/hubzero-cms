@@ -49,8 +49,12 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?= Html::grid('sort', 'COM_CHECKIN_DATABASE_TABLE', 'table', $listDirn, $listOrder) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_CHECKIN_ITEMS_TO_CHECK_IN', 'count', $listDirn, $listOrder) ?></th>
+                <th scope="col">
+                    <?= Html::grid('sort', 'COM_CHECKIN_DATABASE_TABLE', 'table', $listDirn, $listOrder) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid('sort', 'COM_CHECKIN_ITEMS_TO_CHECK_IN', 'count', $listDirn, $listOrder) ?>
+                </th>
             </tr>
         </thead>
         <tbody>

@@ -35,7 +35,11 @@ $certWarn = 30 * 24 * 60 * 60;
                     <tbody>
                         <tr>
                             <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_ENABLED'); ?>:</th>
-                            <td><?= $this->params->get('IdP_enable', 1) ? Lang::txt('JYES') : ('<strong>' . Lang::txt('JNO') . '</strong>') ?></td>
+                            <td>
+                                <?= $this->params->get('IdP_enable', 1)
+                                    ? Lang::txt('JYES')
+                                    : ('<strong>' . Lang::txt('JNO') . '</strong>') ?>
+                            </td>
                         </tr>
                         <tr>
                             <th class="key"><?php echo Lang::txt('COM_SAML_OVERVIEW_ENTITY_ID'); ?>:</th>
@@ -95,7 +99,12 @@ $certWarn = 30 * 24 * 60 * 60;
                                     <?php if ($this->cert['valid_to'] < $now) { ?>
                                         <p class="error"><?php echo Lang::txt('COM_SAML_OVERVIEW_CERT_EXPIRED'); ?></p>
                                     <?php } elseif ($this->cert['valid_to'] < ($now + $certWarn)) { ?>
-                                        <p class="warning"><?= Lang::txt('COM_SAML_OVERVIEW_CERT_EXPIRING', ceil(($this->cert['valid_to'] - $now) / 86400)) ?></p>
+                                        <p class="warning">
+                                            <?= Lang::txt(
+                                                'COM_SAML_OVERVIEW_CERT_EXPIRING',
+                                                ceil(($this->cert['valid_to'] - $now) / 86400),
+                                            ) ?>
+                                        </p>
                                     <?php } ?>
                                 </td>
                             </tr>

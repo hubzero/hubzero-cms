@@ -85,12 +85,38 @@ $access = Html::access('assetgroups');
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?= Html::grid('sort', 'COM_KB_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_KB_PUBLISHED', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_KB_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_KB_TITLE',
+                        'title',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_KB_PUBLISHED',
+                        'state',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_KB_ACCESS',
+                        'access',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_KB_CATEGORY'); ?></th>
                 <th scope="col" class="priority-5"><?php echo Lang::txt('COM_KB_VOTES'); ?></th>
-                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_KB_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-5">
+                    <?= Html::grid('sort', 'COM_KB_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

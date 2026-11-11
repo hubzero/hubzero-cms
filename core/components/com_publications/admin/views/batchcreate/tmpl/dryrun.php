@@ -17,7 +17,9 @@ $skipFields = ['license_type', 'state', 'main', 'secret', 'access'];
 <ul class="pubitems" id="resultlist">
 <?php foreach ($this->items as $item) { ?>
     <li<?php echo count($item['errors']) > 0 ? ' class="problem"' : ''; ?>>
-        <h5><?= Lang::txt('COM_PUBLICATIONS_BATCH_RECORD') . ' ' . $i . ': ' . $this->escape($item['version']->title) ?></h5>
+        <h5>
+            <?= Lang::txt('COM_PUBLICATIONS_BATCH_RECORD') . ' ' . $i . ': ' . $this->escape($item['version']->title) ?>
+        </h5>
         <table class="records">
             <tbody>
                 <tr>

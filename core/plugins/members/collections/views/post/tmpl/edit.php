@@ -67,7 +67,15 @@ $idSelected = function ($value) use ($view) {
 <form action="<?= Route::url($base . '&task=post/save' . ($this->no_html ? '&no_html=' . $this->no_html : '')) ?>"
     method="post" id="hubForm" class="full" enctype="multipart/form-data">
     <fieldset>
-        <legend><?= $item->get('id') ? ($this->entry->get('original') ? Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT_POST') : Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT_REPOST')) : Lang::txt('PLG_MEMBERS_COLLECTIONS_NEW_POST') ?></legend>
+        <legend>
+            <?= $item->get('id')
+                ? (
+                    $this->entry->get('original')
+                        ? Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT_POST')
+                        : Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT_REPOST')
+                )
+                : Lang::txt('PLG_MEMBERS_COLLECTIONS_NEW_POST') ?>
+        </legend>
 
         <?php if ($this->entry->get('original')) { ?>
             <div class="field-wrap">
@@ -204,7 +212,9 @@ $idSelected = function ($value) use ($view) {
                 </div>
 
                 <?php if ($this->task == 'save' && !$item->get('description')) { ?>
-                    <p class="error"><?= Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT') ?></p>
+                    <p class="error">
+                        <?= Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_ERROR_PROVIDE_CONTENT') ?>
+                    </p>
                 <?php } ?>
             </div><!-- / #post-file -->
         </div><!-- / #post-type-form -->

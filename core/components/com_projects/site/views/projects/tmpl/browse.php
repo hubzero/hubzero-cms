@@ -91,12 +91,18 @@ $filterbySelected = function ($value) use ($view) {
                     <li>
                         <label for="filterby"><?php echo Lang::txt('COM_PROJECTS_BROWSE_SHOW'); ?></label>
                         <select name="filterby" id="filterby">
-                            <option value="all" <?= $filterbySelected('all') ?>><?= Lang::txt('COM_PROJECTS_FILTER_ALL') ?></option>
+                            <option value="all" <?= $filterbySelected('all') ?>>
+                                <?= Lang::txt('COM_PROJECTS_FILTER_ALL') ?>
+                            </option>
                             <?php /*<option value="public" <?php echo ($this->filters['filterby'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PUBLIC'); ?></option>
                             <option value="open" <?php echo ($this->filters['filterby'] == 'open') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_OPEN'); ?></option>*/ ?>
-                            <option value="archived" <?= $filterbySelected('archived') ?>><?= Lang::txt('COM_PROJECTS_FILTER_ARCHIVED') ?></option>
+                            <option value="archived" <?= $filterbySelected('archived') ?>>
+                                <?= Lang::txt('COM_PROJECTS_FILTER_ARCHIVED') ?>
+                            </option>
                             <?php if (in_array($this->filters['reviewer'], ['sponsored', 'sensitive'])) { ?>
-                                <option value="pending" <?= $filterbySelected('pending') ?>><?= Lang::txt('COM_PROJECTS_FILTER_PENDING') ?></option>
+                                <option value="pending" <?= $filterbySelected('pending') ?>>
+                                    <?= Lang::txt('COM_PROJECTS_FILTER_PENDING') ?>
+                                </option>
                             <?php } ?>
                         </select>
                     </li>

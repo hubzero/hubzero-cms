@@ -45,10 +45,42 @@ $this->css();
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th class="priority-4"><?= Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_ID'), 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th><?= Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_NAME'), 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th class="priority-3"><?= Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'), 'contributable', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th class="priority-2"><?= Html::grid('sort', Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'), 'state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th class="priority-4">
+                    <?= Html::grid(
+                        'sort',
+                        Lang::txt('COM_PUBLICATIONS_FIELD_ID'),
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th>
+                    <?= Html::grid(
+                        'sort',
+                        Lang::txt('COM_PUBLICATIONS_FIELD_NAME'),
+                        'name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        Lang::txt('COM_PUBLICATIONS_FIELD_CONTRIBUTABLE'),
+                        'contributable',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th class="priority-2">
+                    <?= Html::grid(
+                        'sort',
+                        Lang::txt('COM_PUBLICATIONS_FIELD_STATUS'),
+                        'state',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

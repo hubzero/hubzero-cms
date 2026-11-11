@@ -69,7 +69,9 @@ $tool_path = $config->get('tool_path');
                     <?php $selected = ($substr && isset($substr[1]) && $substr[1] == $tool->alias)
                         ? 'selected="selected"'
                         : ''; ?>
-                    <option value="<?php echo $this->escape($tool->alias) ?>" <?php echo $selected ?>><?php echo $this->escape($tool->title) ?></option>
+                    <option value="<?php echo $this->escape($tool->alias) ?>" <?php echo $selected ?>>
+                        <?php echo $this->escape($tool->title) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </p>
@@ -115,7 +117,9 @@ $tool_path = $config->get('tool_path');
             <select name="scope_id">
                 <?php foreach ($assetgroups as $assetgroup) : ?>
                     <?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?= $this->escape($assetgroup['title']) ?></option>
+                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>>
+                        <?= $this->escape($assetgroup['title']) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </p>

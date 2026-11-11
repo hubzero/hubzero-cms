@@ -400,11 +400,15 @@ if ($secondaries->count() > 0) {
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE') ?>:</td>
+                                            <td class="key">
+                                                <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE') ?>:
+                                            </td>
                                             <td><?php echo $this->escape($primary->title); ?></td>
                                         </tr>
                                         <tr>
-                                            <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER') ?>:</td>
+                                            <td class="key">
+                                                <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER') ?>:
+                                            </td>
                                             <td>
                                                 <input type="text" readonly="readonly" value="<?= $primary->order ?>"
                                                     class="align-center" size="3" />
@@ -438,11 +442,15 @@ if ($secondaries->count() > 0) {
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY') ?>:</td>
+                                            <td class="key">
+                                                <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY') ?>:
+                                            </td>
                                             <td><?php echo nl2br(stripslashes($primary->story)); ?></td>
                                         </tr>
                                         <tr>
-                                            <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE') ?>:</td>
+                                            <td class="key">
+                                                <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE') ?>:
+                                            </td>
                                             <td><strong><?= $primary->readmore_title ?></strong> - <?= $primary->readmore_link ?></td>
                                         </tr>
                                     </tbody>
@@ -501,11 +509,15 @@ if ($secondaries->count() > 0) {
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE') ?>:</td>
+                                                <td class="key">
+                                                    <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_TITLE') ?>:
+                                                </td>
                                                 <td><?php echo $secondary->title; ?></td>
                                             </tr>
                                             <tr>
-                                                <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER') ?>:</td>
+                                                <td class="key">
+                                                    <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_ORDER') ?>:
+                                                </td>
                                                 <td>
                                                     <input type="text" readonly="readonly"
                                                         value="<?= $secondary->order ?>" class="align-center"
@@ -542,11 +554,15 @@ if ($secondaries->count() > 0) {
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY') ?>:</td>
+                                                <td class="key">
+                                                    <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_STORY') ?>:
+                                                </td>
                                                 <td><?php echo nl2br(stripslashes($secondary->story)); ?></td>
                                             </tr>
                                             <tr>
-                                                <td class="key"><?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE') ?>:</td>
+                                                <td class="key">
+                                                    <?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE') ?>:
+                                                </td>
                                                 <td><strong><?= $secondary->readmore_title ?></strong> - <?= $secondary->readmore_link ?></td>
                                             </tr>
                                         </tbody>

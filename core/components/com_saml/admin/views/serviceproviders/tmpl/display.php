@@ -69,7 +69,9 @@ $stateSelected = function ($value) use ($view) {
             <div class="col span6">
                 <label for="filter-state"><?php echo Lang::txt('JSTATUS'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
-                    <option value="-1"<?= ($this->filters['state'] < 0) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SAML_ALL_STATES') ?></option>
+                    <option value="-1"<?= ($this->filters['state'] < 0) ? ' selected="selected"' : '' ?>>
+                        <?= Lang::txt('COM_SAML_ALL_STATES') ?>
+                    </option>
                     <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_SAML_STATE_ENABLED') ?></option>
                     <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_SAML_STATE_DISABLED') ?></option>
                 </select>
@@ -86,11 +88,29 @@ $stateSelected = function ($value) use ($view) {
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col"><?= Html::grid('sort', 'COM_SAML_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_SAML_COL_ENTITY_ID', 'entity_id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_SAML_COL_NAME',
+                        'name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-2">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_SAML_COL_ENTITY_ID',
+                        'entity_id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col" class="priority-3"><?php echo Lang::txt('COM_SAML_COL_ACS'); ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_SAML_COL_CERT_EXPIRES'); ?></th>
-                <th scope="col"><?= Html::grid('sort', 'JSTATUS', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col">
+                    <?= Html::grid('sort', 'JSTATUS', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

@@ -76,7 +76,14 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                 <?php endif; ?>
             </div>
             <div class="lower">
-                <div class="instructions"><?= isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription') ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(null, $returnQueryString) : Lang::txt('MOD_LOGIN_SIGN_IN_WITH_METHOD', ucfirst($primary)) ?></div>
+                <div class="instructions">
+                    <?= isset($refl[$primary]) && $refl[$primary]->hasMethod('onGetSubsequentLoginDescription')
+                        ? $refl[$primary]->getMethod('onGetSubsequentLoginDescription')->invoke(
+                            null,
+                            $returnQueryString,
+                        )
+                        : Lang::txt('MOD_LOGIN_SIGN_IN_WITH_METHOD', ucfirst($primary)) ?>
+                </div>
             </div>
         </div>
     </a>

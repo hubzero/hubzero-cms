@@ -136,7 +136,9 @@ $filterStateSelected = function ($value) use ($view) {
                         <?php
                         foreach ($this->sections as $section) {
                             ?>
-                            <option value="<?= $section->id ?>"<?= $sectionIdSelected($section->id) ?>><?= $this->escape(stripslashes($section->title)) ?></option>
+                            <option value="<?= $section->id ?>"<?= $sectionIdSelected($section->id) ?>>
+                                <?= $this->escape(stripslashes($section->title)) ?>
+                            </option>
                             <?php
                         }
                         ?>
@@ -150,7 +152,9 @@ $filterStateSelected = function ($value) use ($view) {
                         <?php
                         foreach ($this->categories as $category) {
                             ?>
-                            <option value="<?= $category->id ?>"<?= $categoryIdSelected($category->id) ?>><?= $this->escape(stripslashes($category->title)) ?></option>
+                            <option value="<?= $category->id ?>"<?= $categoryIdSelected($category->id) ?>>
+                                <?= $this->escape(stripslashes($category->title)) ?>
+                            </option>
                             <?php
                         }
                         ?>

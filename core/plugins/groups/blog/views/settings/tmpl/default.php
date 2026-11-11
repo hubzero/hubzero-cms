@@ -87,8 +87,12 @@ $feedEntriesSelected = function ($value) use ($view) {
                 <label for="param-feeds_enabled">
                     <?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENTRY_FEED'); ?>
                     <select name="params[feeds_enabled]" id="param-feeds_enabled" class="form-control">
-                        <option value="0"<?= !$this->config->get('feeds_enabled', 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_DISABLED') ?></option>
-                        <option value="1"<?= $feedsEnabledSelected(1) ?>><?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENABLED') ?></option>
+                        <option value="0"<?= !$this->config->get('feeds_enabled', 1) ? ' selected="selected"' : '' ?>>
+                            <?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_DISABLED') ?>
+                        </option>
+                        <option value="1"<?= $feedsEnabledSelected(1) ?>>
+                            <?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_ENABLED') ?>
+                        </option>
                     </select>
                 </label>
             </div>
@@ -97,8 +101,12 @@ $feedEntriesSelected = function ($value) use ($view) {
                 <label for="param-feeds_entries">
                     <?php echo Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FEED_ENTRY_LENGTH'); ?>
                     <select name="params[feed_entries]" id="param-feeds_entries" class="form-control">
-                        <option value="full"<?= $feedEntriesSelected('full') ?>><?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FULL') ?></option>
-                        <option value="partial"<?= $feedEntriesSelected('partial') ?>><?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_PARTIAL') ?></option>
+                        <option value="full"<?= $feedEntriesSelected('full') ?>>
+                            <?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_FULL') ?>
+                        </option>
+                        <option value="partial"<?= $feedEntriesSelected('partial') ?>>
+                            <?= Lang::txt('PLG_GROUPS_BLOG_SETTINGS_PARTIAL') ?>
+                        </option>
                     </select>
                 </label>
             </div>

@@ -75,7 +75,11 @@ $connection = \Components\Projects\Models\Orm\Connection::oneOrFail(Request::get
         </li>
     <?php } ?>
 <?php else : ?>
-    <li class="noresults <?= ($parent = Request::getString('parent', '')) ? 'parent-' . $this->escape($parent) : '' ?>"><?= $this->model->isProvisioned() ? Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND_PROV') : Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND') ?></li>
+    <li class="noresults <?= ($parent = Request::getString('parent', '')) ? 'parent-' . $this->escape($parent) : '' ?>">
+        <?= $this->model->isProvisioned()
+            ? Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND_PROV')
+            : Lang::txt('PLG_PROJECTS_FILES_SELECTOR_NO_FILES_FOUND') ?>
+    </li>
 <?php endif; ?>
 
 <?php if (!isset($this->noUl) || !$this->noUl) : ?>

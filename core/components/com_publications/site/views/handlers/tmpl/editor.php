@@ -16,7 +16,9 @@ $url = Route::url($this->publication->link('edit'));
 
 ?>
 <div id="abox-content" class="handler-wrap">
-    <h3><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_HANDLER') . ' - ' . $this->escape($this->editor->configs->label) ?></h3>
+    <h3>
+        <?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_HANDLER') . ' - ' . $this->escape($this->editor->configs->label) ?>
+    </h3>
     <?php
     // Display error  message
     if ($this->getError()) {

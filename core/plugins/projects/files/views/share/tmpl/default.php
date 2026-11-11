@@ -23,7 +23,11 @@ if (!empty($this->file)) {
 
 ?>
 <div id="abox-content">
-<h3><?= $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_PROJECT_FILES') : Lang::txt('PLG_PROJECTS_FILES_SHARE_PROJECT_FILES') ?></h3>
+<h3>
+    <?= $remoteControl
+        ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_PROJECT_FILES')
+        : Lang::txt('PLG_PROJECTS_FILES_SHARE_PROJECT_FILES') ?>
+</h3>
 <?php
 // Display error or success message
 if ($this->getError()) {

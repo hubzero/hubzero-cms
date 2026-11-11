@@ -656,8 +656,12 @@ $option = 'com_groups';
                                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                         </svg>
                                     </div>
-                                    <h3 class="members-search-prompt-title"><?= Lang::txt('PLG_GROUPS_MEMBERS_ENTER_SEARCH_TITLE') ?></h3>
-                                    <p class="members-search-prompt-body"><?= Lang::txt('PLG_GROUPS_MEMBERS_ENTER_SEARCH') ?></p>
+                                    <h3 class="members-search-prompt-title">
+                                        <?= Lang::txt('PLG_GROUPS_MEMBERS_ENTER_SEARCH_TITLE') ?>
+                                    </h3>
+                                    <p class="members-search-prompt-body">
+                                        <?= Lang::txt('PLG_GROUPS_MEMBERS_ENTER_SEARCH') ?>
+                                    </p>
                                 </div>
                             </td>
                         </tr>

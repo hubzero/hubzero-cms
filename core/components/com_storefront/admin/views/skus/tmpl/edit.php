@@ -191,8 +191,12 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
 <?php $checkoutReqLabel = Lang::txt('Checkout notes/comments required'); ?>
                     <label for="field-checkoutNotesRequired"><?php echo $checkoutReqLabel; ?>:</label>
                     <select name="fields[checkoutNotesRequired]" id="field-checkoutNotesRequired">
-                        <option value="0"<?= $checkoutNotesRequiredSelected(0) ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
-                        <option value="1"<?= $checkoutNotesRequiredSelected(1) ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
+                        <option value="0"<?= $checkoutNotesRequiredSelected(0) ?>>
+                            <?= Lang::txt('COM_STOREFRONT_NO') ?>
+                        </option>
+                        <option value="1"<?= $checkoutNotesRequiredSelected(1) ?>>
+                            <?= Lang::txt('COM_STOREFRONT_YES') ?>
+                        </option>
                     </select>
                 </div>
 
@@ -390,8 +394,12 @@ $priceValue = $this->escape(stripslashes($this->row->getPrice()));
                     <div class="input-wrap" data-hint="<?php echo $trackHint; ?>">
                         <label for="field-sTrackInventory"><?php echo 'Track Inventory'; ?>:</label>
                         <select name="fields[sTrackInventory]" id="field-sTrackInventory">
-                            <option value="0"<?= $trackInventorySelected(0) ?>><?= Lang::txt('COM_STOREFRONT_NO') ?></option>
-                            <option value="1"<?= $trackInventorySelected(1) ?>><?= Lang::txt('COM_STOREFRONT_YES') ?></option>
+                            <option value="0"<?= $trackInventorySelected(0) ?>>
+                                <?= Lang::txt('COM_STOREFRONT_NO') ?>
+                            </option>
+                            <option value="1"<?= $trackInventorySelected(1) ?>>
+                                <?= Lang::txt('COM_STOREFRONT_YES') ?>
+                            </option>
                         </select>
                     </div>
 

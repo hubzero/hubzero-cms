@@ -334,14 +334,26 @@ $featuredSelected = function ($value) use ($view) {
                 <div class="input-wrap">
                     <label for="field-published"><?= Lang::txt('COM_PUBLICATIONS_FIELD_STATUS') ?>:</label><br />
                     <select name="state" id="field-published">
-                        <option value="3"<?= $stateSelected(3) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT') ?></option>
-                        <option value="4"<?= $stateSelected(4) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_READY') ?></option>
-                        <option value="5"<?= $stateSelected(5) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PENDING') ?></option>
+                        <option value="3"<?= $stateSelected(3) ?>>
+                            <?= Lang::txt('COM_PUBLICATIONS_VERSION_DRAFT') ?>
+                        </option>
+                        <option value="4"<?= $stateSelected(4) ?>>
+                            <?= Lang::txt('COM_PUBLICATIONS_VERSION_READY') ?>
+                        </option>
+                        <option value="5"<?= $stateSelected(5) ?>>
+                            <?= Lang::txt('COM_PUBLICATIONS_VERSION_PENDING') ?>
+                        </option>
                         <option
                             value="7"<?= $stateSelected(7) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_WIP') ?></option>
-                        <option value="1"<?= $stateSelected(1) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED') ?></option>
-                        <option value="0"<?= $stateSelected(0) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?></option>
-                        <option value="2"<?= $stateSelected(2) ?>><?= Lang::txt('COM_PUBLICATIONS_VERSION_DELETED') ?></option>
+                        <option value="1"<?= $stateSelected(1) ?>>
+                            <?= Lang::txt('COM_PUBLICATIONS_VERSION_PUBLISHED') ?>
+                        </option>
+                        <option value="0"<?= $stateSelected(0) ?>>
+                            <?= Lang::txt('COM_PUBLICATIONS_VERSION_UNPUBLISHED') ?>
+                        </option>
+                        <option value="2"<?= $stateSelected(2) ?>>
+                            <?= Lang::txt('COM_PUBLICATIONS_VERSION_DELETED') ?>
+                        </option>
                     </select>
                 </div>
                 <div class="input-wrap" id="unPubReasonDiv">
@@ -436,13 +448,17 @@ $featuredSelected = function ($value) use ($view) {
                             <?php } elseif ($this->model->isPublished() || $this->model->isUnpublished()) { ?>
                                 <?php if ($this->model->submitted()) { ?>
                                         <tr>
-                                            <td class="paramlist_key"><?= Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTED') ?></td>
+                                            <td class="paramlist_key">
+                                                <?= Lang::txt('COM_PUBLICATIONS_FIELD_SUBMITTED') ?>
+                                            </td>
                                             <td><?php echo $this->model->submitted('datetime'); ?></td>
                                         </tr>
                                 <?php } ?>
                                 <?php if ($this->model->accepted()) { ?>
                                         <tr>
-                                            <td class="paramlist_key"><?= Lang::txt('COM_PUBLICATIONS_FIELD_ACCEPTED') ?></td>
+                                            <td class="paramlist_key">
+                                                <?= Lang::txt('COM_PUBLICATIONS_FIELD_ACCEPTED') ?>
+                                            </td>
                                             <td><?php echo $this->model->accepted('datetime'); ?></td>
                                         </tr>
                                 <?php } ?>

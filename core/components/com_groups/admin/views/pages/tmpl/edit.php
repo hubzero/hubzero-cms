@@ -81,7 +81,9 @@ $privacySelected = function ($value) use ($view) {
                             <?php $sel = ($this->page->get('category') == $pageCategory->get('id'))
                                 ? 'selected="selected"'
                                 : ''; ?>
-                            <option <?= $sel ?> value="<?= $pageCategory->get('id') ?>"><?= $this->escape($pageCategory->get('title')) ?></option>
+                            <option <?= $sel ?> value="<?= $pageCategory->get('id') ?>">
+                                <?= $this->escape($pageCategory->get('title')) ?>
+                            </option>
                         <?php endforeach; ?>
                     </select>
                 </div>

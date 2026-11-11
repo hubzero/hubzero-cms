@@ -76,8 +76,12 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
                         <label for="include-coins">
                             <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_INCLUDE_COINS'); ?>
                             <select name="include_coins" id="include-coins" class="form-control">
-                                <option value="no" <?= ($this->include_coins == "no") ? "selected=selected" : "" ?>><?= Lang::txt('No') ?></option>
-                                <option value="yes" <?= ($this->include_coins == "yes") ? "selected=selected" : "" ?>><?= Lang::txt('Yes') ?></option>
+                                <option value="no" <?= ($this->include_coins == "no") ? "selected=selected" : "" ?>>
+                                    <?= Lang::txt('No') ?>
+                                </option>
+                                <option value="yes" <?= ($this->include_coins == "yes") ? "selected=selected" : "" ?>>
+                                    <?= Lang::txt('Yes') ?>
+                                </option>
                             </select>
                         </label>
                     </div>
@@ -87,8 +91,12 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
                         <label for="coins-only">
                             <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_COINS_ONLY'); ?>
                             <select name="coins_only" id="coins-only" class="form-control">
-                                <option value="no" <?= ($this->coins_only == "no") ? "selected=selected" : "" ?>><?= Lang::txt('No') ?></option>
-                                <option value="yes" <?= ($this->coins_only == "yes") ? "selected=selected" : "" ?>><?= Lang::txt('Yes') ?></option>
+                                <option value="no" <?= ($this->coins_only == "no") ? "selected=selected" : "" ?>>
+                                    <?= Lang::txt('No') ?>
+                                </option>
+                                <option value="yes" <?= ($this->coins_only == "yes") ? "selected=selected" : "" ?>>
+                                    <?= Lang::txt('Yes') ?>
+                                </option>
                             </select>
                         </label>
                     </div>

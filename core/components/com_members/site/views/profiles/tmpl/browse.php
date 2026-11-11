@@ -155,8 +155,12 @@ $sortDirSelected = function ($value) use ($view) {
                             <label for="filter-value-sort-dir">
                                 <?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR'); ?>
                                 <select class="form-control" name="sort_Dir" id="filter-value-sort-dir">
-                                    <option value="asc"<?= $sortDirSelected('asc') ?>><?= $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_ASC')) ?></option>
-                                    <option value="desc"<?= $sortDirSelected('desc') ?>><?= $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_DESC')) ?></option>
+                                    <option value="asc"<?= $sortDirSelected('asc') ?>>
+                                        <?= $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_ASC')) ?>
+                                    </option>
+                                    <option value="desc"<?= $sortDirSelected('desc') ?>>
+                                        <?= $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_DESC')) ?>
+                                    </option>
                                 </select>
                             </label>
                         </div>
@@ -255,8 +259,15 @@ $sortDirSelected = function ($value) use ($view) {
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                 </svg>
                             </div>
-                            <h3 class="members-search-prompt-title"><?= Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH_TITLE', $this->escape(Config::get('sitename'))) ?></h3>
-                            <p class="members-search-prompt-body"><?= Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH') ?></p>
+                            <h3 class="members-search-prompt-title">
+                                <?= Lang::txt(
+                                    'COM_MEMBERS_BROWSE_ENTER_SEARCH_TITLE',
+                                    $this->escape(Config::get('sitename')),
+                                ) ?>
+                            </h3>
+                            <p class="members-search-prompt-body">
+                                <?= Lang::txt('COM_MEMBERS_BROWSE_ENTER_SEARCH') ?>
+                            </p>
                         </div>
                     <?php } elseif ($this->rows->count() > 0) {
                         $cols = 2;

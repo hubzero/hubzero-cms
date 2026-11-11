@@ -491,7 +491,9 @@ $progress_timeline .= '</div>';
                                 ?>
                                 <tr class="<?php echo $class ?>">
                                     <td class="grade-details-title"><a href="<?php echo $this->escape($form['url']) ?>"><?php echo $this->escape($form['title']) ?></a></td>
-                                    <td class="grade-details-score"><?php echo $form['score'] . (is_numeric($form['score']) ? '%' : '') ?></td>
+                                    <td class="grade-details-score">
+                                        <?php echo $form['score'] . (is_numeric($form['score']) ? '%' : '') ?>
+                                    </td>
                                     <td class="grade-details-date"><?php echo $form['date'] ?></td>
                                 </tr>
                             <?php endforeach; ?>
@@ -542,7 +544,9 @@ $progress_timeline .= '</div>';
                             ?>
                             <tr class="<?php echo $class ?>">
                                 <td class="grade-details-title"><?php echo $this->escape($aux['title']) ?></td>
-                                <td class="grade-details-score"><?php echo $aux['score'] . (is_numeric($aux['score']) ? '%' : '') ?></td>
+                                <td class="grade-details-score">
+                                    <?php echo $aux['score'] . (is_numeric($aux['score']) ? '%' : '') ?>
+                                </td>
                                 <td class="grade-details-date"><?php echo $aux['date'] ?></td>
                             </tr>
                         <?php endforeach; ?>

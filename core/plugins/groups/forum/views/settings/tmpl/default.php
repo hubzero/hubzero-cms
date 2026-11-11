@@ -43,8 +43,12 @@ $threadingSelected = function ($value) use ($view) {
                 <label for="param-threading">
                     <?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING'); ?>
                     <select name="params[threading]" id="param-threading" class="form-control">
-                        <option value="list"<?= $threadingSelected('list') ?>><?= Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST') ?></option>
-                        <option value="tree"<?= $threadingSelected('tree') ?>><?= Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE') ?></option>
+                        <option value="list"<?= $threadingSelected('list') ?>>
+                            <?= Lang::txt('PLG_GROUPS_FORUM_SETTINGS_LIST') ?>
+                        </option>
+                        <option value="tree"<?= $threadingSelected('tree') ?>>
+                            <?= Lang::txt('PLG_GROUPS_FORUM_SETTINGS_TREE') ?>
+                        </option>
                     </select>
                     <span class="hint"><?php echo Lang::txt('PLG_GROUPS_FORUM_SETTINGS_THREADING_HINT'); ?></span>
                 </label>

@@ -104,8 +104,12 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                                 <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
                             </label>
                             <select name="fields[open]" id="field-open">
-                                <option value="1"<?= $openSelected(1) ?>><?= Lang::txt('COM_SUPPORT_FIELD_FOR_OPEN') ?></option>
-                                <option value="0"<?= $openSelected(0) ?>><?= Lang::txt('COM_SUPPORT_FIELD_FOR_CLOSED') ?></option>
+                                <option value="1"<?= $openSelected(1) ?>>
+                                    <?= Lang::txt('COM_SUPPORT_FIELD_FOR_OPEN') ?>
+                                </option>
+                                <option value="0"<?= $openSelected(0) ?>>
+                                    <?= Lang::txt('COM_SUPPORT_FIELD_FOR_CLOSED') ?>
+                                </option>
                             </select>
                         </div>
                     </div>

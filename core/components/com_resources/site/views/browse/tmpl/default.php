@@ -167,7 +167,9 @@ $typeSelected = function ($value) use ($view) {
                                         class="sr-only visually-hidden"><?= Lang::txt('COM_RESOURCES_TYPE') ?></label>
                                     <select name="type" id="filter-type"
                                         aria-label="<?= Lang::txt('COM_RESOURCES_TYPE') ?>">
-                                        <option value="" <?= (!$this->filters['type']) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_ALL_TYPES') ?></option>
+                                        <option value="" <?= (!$this->filters['type']) ? ' selected="selected"' : '' ?>>
+                                            <?= Lang::txt('COM_RESOURCES_ALL_TYPES') ?>
+                                        </option>
                                         <?php foreach ($this->types as $item) { ?>
                                             <?php
                                             if (!$item->state) {
@@ -177,7 +179,9 @@ $typeSelected = function ($value) use ($view) {
                                                 continue;
                                             }
                                             ?>
-                                            <option value="<?= $item->id ?>"<?= $typeSelected($item->id) ?>><?= $this->escape(stripslashes($item->type)) ?></option>
+                                            <option value="<?= $item->id ?>"<?= $typeSelected($item->id) ?>>
+                                                <?= $this->escape(stripslashes($item->type)) ?>
+                                            </option>
                                         <?php } ?>
                                     </select>
                                 </li>

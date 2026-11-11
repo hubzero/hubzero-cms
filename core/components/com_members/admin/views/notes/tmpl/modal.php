@@ -15,7 +15,13 @@ defined('_HZEXEC_') or die();
 Html::behavior('tooltip');
 ?>
 <div class="unotes">
-    <h2 class="modal-title"><?= Lang::txt('COM_MEMBERS_NOTES_FOR_USER', $this->escape($this->user->get('name')), (int) $this->user->get('id')) ?></h2>
+    <h2 class="modal-title">
+        <?= Lang::txt(
+            'COM_MEMBERS_NOTES_FOR_USER',
+            $this->escape($this->user->get('name')),
+            (int) $this->user->get('id'),
+        ) ?>
+    </h2>
     <table class="adminlist">
         <tbody>
             <tr>
@@ -28,9 +34,21 @@ Html::behavior('tooltip');
         <li>
             <div class=" utitle">
                 <?php if ($row->get('subject')) : ?>
-                    <h4><?= Lang::txt('COM_MEMBERS_NOTE_N_SUBJECT', (int) $row->get('id'), $this->escape($row->get('subject'))) ?></h4>
+                    <h4>
+                        <?= Lang::txt(
+                            'COM_MEMBERS_NOTE_N_SUBJECT',
+                            (int) $row->get('id'),
+                            $this->escape($row->get('subject')),
+                        ) ?>
+                    </h4>
                 <?php else : ?>
-                    <h4><?= Lang::txt('COM_MEMBERS_NOTE_N_SUBJECT', (int) $row->get('id'), Lang::txt('COM_MEMBERS_EMPTY_SUBJECT')) ?></h4>
+                    <h4>
+                        <?= Lang::txt(
+                            'COM_MEMBERS_NOTE_N_SUBJECT',
+                            (int) $row->get('id'),
+                            Lang::txt('COM_MEMBERS_EMPTY_SUBJECT'),
+                        ) ?>
+                    </h4>
                 <?php endif; ?>
             </div>
 

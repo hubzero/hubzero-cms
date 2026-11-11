@@ -108,7 +108,9 @@ if (isset($this->version) && $this->version->get('approved') == 0) {
                     . $this->page->get('id'),
             );
             ?>
-            <li><a class="icon-edit" href="<?= $editUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE_BACK') ?></a></li>
+            <li>
+                <a class="icon-edit" href="<?= $editUrl ?>"> <?= Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE_BACK') ?></a>
+            </li>
             <?php
             $previewUrl = Route::url(
                 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=pages&task=preview&pageid='

@@ -101,9 +101,15 @@ $activationSelected = function ($value) use ($view) {
             <div class="col span8">
                 <label for="filter_emailConfirmed"><?= Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED') ?></label>
                 <select name="activation" id="filter_emailConfirmed" class="inputbox filter filter-submit">
-                    <option value="0"<?= $activationSelected(0) ?>><?= Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED') ?></option>
-                    <option value="1"<?= $activationSelected(1) ?>><?= Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED') ?></option>
-                    <option value="-1"<?= $activationSelected(-1) ?>><?= Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED') ?></option>
+                    <option value="0"<?= $activationSelected(0) ?>>
+                        <?= Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED') ?>
+                    </option>
+                    <option value="1"<?= $activationSelected(1) ?>>
+                        <?= Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED') ?>
+                    </option>
+                    <option value="-1"<?= $activationSelected(-1) ?>>
+                        <?= Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED') ?>
+                    </option>
                 </select>
 
                 <?php // This is who may view the profile (users.access), not the access group: that's the Group filter?>
@@ -179,14 +185,62 @@ $activationSelected = function ($value) use ($view) {
                     <label for="checkall-toggle"
                         class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_MEMBERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_MEMBERS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_MEMBERS_COL_USERNAME', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-6"><?= Html::grid('sort', 'COM_MEMBERS_COL_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-2">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_COL_ID',
+                        'id',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_COL_NAME',
+                        'name',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-5">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_COL_USERNAME',
+                        'username',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-6">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_COL_EMAIL',
+                        'email',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
                 <th scope="col" class="priority-3 nowrap"><?php echo Lang::txt('COM_MEMBERS_COL_GROUPS'); ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_MEMBERS_STATUS'); ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_MEMBERS_COL_REGISTERED', 'registerDate', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-6"><?= Html::grid('sort', 'COM_MEMBERS_COL_LAST_VISIT', 'lastvisitDate', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <th scope="col" class="priority-3">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_COL_REGISTERED',
+                        'registerDate',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
+                <th scope="col" class="priority-6">
+                    <?= Html::grid(
+                        'sort',
+                        'COM_MEMBERS_COL_LAST_VISIT',
+                        'lastvisitDate',
+                        @$this->filters['sort_Dir'],
+                        @$this->filters['sort'],
+                    ) ?>
+                </th>
             </tr>
         </thead>
         <tfoot>

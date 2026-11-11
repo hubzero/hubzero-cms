@@ -45,24 +45,50 @@ if ($this->condition->expressions) {
         <p class="conditions">
             <button class="remove" alt="<?php echo Lang::txt('COM_SUPPORT_QUERY_REMOVE'); ?>">&times;</button>
             <select class="fld">
-                <option value="open"<?= $expression->fldval == 'open' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN') ?></option>
-                <option value="status"<?= $expression->fldval == 'status' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS') ?></option>
-                <option value="login"<?= $expression->fldval == 'login' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER') ?></option>
-                <option value="owner"<?= $expression->fldval == 'owner' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER') ?></option>
-                <option value="group"<?= $expression->fldval == 'group' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_GROUP') ?></option>
-                <option value="id"<?= $expression->fldval == 'id' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_ID') ?></option>
-                <option value="report"<?= $expression->fldval == 'report' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT') ?></option>
+                <option value="open"<?= $expression->fldval == 'open' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN') ?>
+                </option>
+                <option value="status"<?= $expression->fldval == 'status' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS') ?>
+                </option>
+                <option value="login"<?= $expression->fldval == 'login' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER') ?>
+                </option>
+                <option value="owner"<?= $expression->fldval == 'owner' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER') ?>
+                </option>
+                <option value="group"<?= $expression->fldval == 'group' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_GROUP') ?>
+                </option>
+                <option value="id"<?= $expression->fldval == 'id' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_ID') ?>
+                </option>
+                <option value="report"<?= $expression->fldval == 'report' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT') ?>
+                </option>
                 <?php /*
                 <option value="resolved"<?php if ($expression->fldval == 'resolved') {
                     echo ' selected="selected"';
                                         } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>
                 */ ?>
-                <option value="severity"<?= $expression->fldval == 'severity' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY') ?></option>
-                <option value="tag"<?= $expression->fldval == 'tag' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_TAG') ?></option>
-                <option value="type"<?= $expression->fldval == 'type' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE') ?></option>
-                <option value="created"<?= $expression->fldval == 'created' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED') ?></option>
-                <option value="closed"<?= $expression->fldval == 'closed' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED') ?></option>
-                <option value="category"<?= $expression->fldval == 'category' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY') ?></option>
+                <option value="severity"<?= $expression->fldval == 'severity' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY') ?>
+                </option>
+                <option value="tag"<?= $expression->fldval == 'tag' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_TAG') ?>
+                </option>
+                <option value="type"<?= $expression->fldval == 'type' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE') ?>
+                </option>
+                <option value="created"<?= $expression->fldval == 'created' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED') ?>
+                </option>
+                <option value="closed"<?= $expression->fldval == 'closed' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED') ?>
+                </option>
+                <option value="category"<?= $expression->fldval == 'category' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY') ?>
+                </option>
             </select>
             <select class="op">
                 <?php
