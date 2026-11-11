@@ -834,10 +834,10 @@ class Articles extends SiteController
             $intro_items[$i] = &$items[$i];
         }
 
-        $this->columns = max(1, $params->def('num_columns', 1));
+        $columns = max(1, $params->def('num_columns', 1));
         $order = $params->def('multi_column_order', 1);
 
-        if ($order == 0 && $this->columns > 1) {
+        if ($order == 0 && $columns > 1) {
             // call order down helper
             $intro_items = HelperQuery::orderDownColumns($intro_items, $columns);
         }
@@ -1363,12 +1363,12 @@ class Articles extends SiteController
                 $intro_items[$i] = &$items[$i];
             }
 
-            $this->columns = max(1, $params->def('num_columns', 1));
+            $columns = max(1, $params->def('num_columns', 1));
             $order = $params->def('multi_column_order', 1);
 
-            if ($order == 0 && $this->columns > 1) {
+            if ($order == 0 && $columns > 1) {
                 // call order down helper
-                $this->intro_items = HelperQuery::orderDownColumns($this->intro_items, $this->columns);
+                $intro_items = HelperQuery::orderDownColumns($intro_items, $columns);
             }
 
             $limit = $numLeading + $numIntro + $numLinks;
