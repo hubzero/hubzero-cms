@@ -390,7 +390,8 @@ $this
                                         . $row->status->get('title')
                                         . (!$row->isOpen() ? ' (' . $this->escape($row->get('resolved')) . ')' : '');
                                     ?>
-                                    <span class="<?= $row->status->get('alias') ?> status hasTip" title="<?= $titleText ?>">
+                                    <span class="<?= $row->status->get('alias') ?> status hasTip"
+                                        title="<?= $titleText ?>">
                                             <?php echo $row->status->get('title');
                                             echo (!$row->isOpen()) ? ' (' . $this->escape($row->get('resolved')) . ')' : ''; ?>
                                     </span>

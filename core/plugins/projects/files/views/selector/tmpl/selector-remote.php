@@ -65,7 +65,8 @@ $connection = \Components\Projects\Models\Orm\Connection::oneOrFail(Request::get
         $classes = ($item->isDir() ? 'type-folder collapsed' : 'type-file') . $parentCss
             . ($selected ? ' selectedfilter preselected' : '') . $allowed;
         ?>
-        <li class="<?= $classes ?>" id="<?= $liId ?>" data-path="<?= $this->escape($item->getPath()) ?>" data-connection="<?= $connection->id ?>">
+        <li class="<?= $classes ?>" id="<?= $liId ?>" data-path="<?= $this->escape($item->getPath()) ?>"
+            data-connection="<?= $connection->id ?>">
             <span class="item-info"><?php echo $item->isFile() ? $item->getSize() : ''; ?></span>
             <span class="item-wrap <?= ($item->isDir() ? 'collapsor ' : ' ') . $levelCss ?>"
                 id="<?= urlencode($connection->id . '://' . $item->getPath()) ?>">
