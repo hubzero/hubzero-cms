@@ -489,9 +489,13 @@ class Tags extends SiteController
                 ) {
                     $query .= " LIMIT " . $limitstart . "," . $limit;
                 }
+
+                $this->database->setQuery($query);
+                $rows = $this->database->loadObjectList();
+            } else {
+                // No plugin offered anything to search
+                $rows = [];
             }
-            $this->database->setQuery($query);
-            $rows = $this->database->loadObjectList();
         } else {
             $results = Event::trigger(
                 'tags.onTagView',

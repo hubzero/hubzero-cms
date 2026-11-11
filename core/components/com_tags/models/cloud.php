@@ -423,24 +423,6 @@ class Cloud extends \Hubzero\Base\Obj
     }
 
     /**
-     * Get the ID of a normalized tag
-     *
-     * @param   string  $tag  Normalized tag
-     * @return  mixed   False if errors, integer on success
-     */
-    private function getTagId($tag)
-    {
-        if (!isset($tag)) {
-            $this->setError(__CLASS__ . '::' . __METHOD__ . ' - Tag argument missing.');
-            return false;
-        }
-
-        $t = Tag::oneByTag($tag);
-
-        return $t->get('id');
-    }
-
-    /**
      * Render a tag cloud
      *
      * @param   string   $rtrn     Format to render
