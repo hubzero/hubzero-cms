@@ -151,7 +151,8 @@ foreach ($this->getErrors() as $error) {
                                             $selected = $eventSelected($event['name']);
                                             $optionText = $this->escape($event['label']);
                                             ?>
-                                            <option value="<?= $fieldValue ?>"<?= $selected ?>><?= $optionText ?></option>
+                                            <option
+                                                value="<?= $fieldValue ?>"<?= $selected ?>><?= $optionText ?></option>
                                             <?php
                                         }
                                     }
