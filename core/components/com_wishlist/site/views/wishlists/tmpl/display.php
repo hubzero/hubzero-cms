@@ -525,9 +525,11 @@ if ($this->wishlist->get('id')) {
 															}
 														');
 
+                                                        $priorityText = Lang::txt('COM_WISHLIST_WISH_PRIORITY') . ': '
+                                                            . $item->get('ranking', 0);
                                                         $html .= '<span class="priority-level-base">
 															<span class="' . $levelClass . '" title="' . $percent . '%">
-																<span>' . Lang::txt('COM_WISHLIST_WISH_PRIORITY') . ': ' . $item->get('ranking', 0) . '</span>
+																<span>' . $priorityText . '</span>
 															</span>
 														</span>';
                                                     }

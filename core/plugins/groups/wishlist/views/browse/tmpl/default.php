@@ -270,9 +270,10 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
 												}
 											');
 
+                                        $priorityText = Lang::txt('COM_WISHLIST_WISH_PRIORITY') . ': ' . $item->ranking;
                                         $html .= '<span class="priority-level-base">
 												<span class="' . $levelClass . '" title="' . $percent . '%">
-													<span>' . Lang::txt('COM_WISHLIST_WISH_PRIORITY') . ': ' . $item->ranking . '</span>
+													<span>' . $priorityText . '</span>
 												</span>
 											</span>';
                                     }
