@@ -1472,8 +1472,16 @@ class Wishlists extends SiteController
             ) {
                 $changed = true;
             }
+        } elseif ($this->task == 'editwish') {
+            // no status change, only information
+            return $this->addwishTask();
+        }
 
-            if ($changed) {
+        if ($changed) {
+            // save changes
+            if (!$wish->save()) {
+                App::abort(500, $wish->getError());
+            } elseif ($this->task == 'editwish') {
                 // Build e-mail components
 
                 // to wish author
@@ -1523,17 +1531,7 @@ class Wishlists extends SiteController
 
                 $message['multipart'] = $eview->loadTemplate();
                 $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
-            }
-        } elseif ($this->task == 'editwish') {
-            // no status change, only information
-            return $this->addwishTask();
-        }
 
-        if ($changed) {
-            // save changes
-            if (!$wish->save()) {
-                App::abort(500, $wish->getError());
-            } elseif ($this->task == 'editwish') {
                 if (
                     !Event::trigger(
                         'xmessage.onSendMessage',
