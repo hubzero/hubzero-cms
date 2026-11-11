@@ -89,8 +89,12 @@ class Media extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
+        // The editor's uploader sends the token in the address
+        Request::checkToken(['get', 'post']);
+
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxCreateTask();
+            $this->ajaxCreate();
+            return;
         }
 
         // Ensure we have an ID to work with
@@ -129,9 +133,12 @@ class Media extends AdminController
     }
 
     /**
-     * Upload a file to the wiki via AJAX
+     * Add a link, answering in JSON. Reached only through createTask(), which
+     * checks permission and the form token; not a task of its own.
+     *
+     * @return  void
      */
-    public function ajaxCreateTask()
+    protected function ajaxCreate()
     {
         // Ensure we have an ID to work with
         $listdir = strtolower(Request::getString('dir', ''));
@@ -189,9 +196,12 @@ class Media extends AdminController
     }
 
     /**
-     * Upload a file to the wiki via AJAX
+     * Upload a file, answering in JSON. Reached only through uploadTask(),
+     * which checks permission and the form token; not a task of its own.
+     *
+     * @return  void
      */
-    public function ajaxUploadTask()
+    protected function ajaxUpload()
     {
         // Ensure we have an ID to work with
         $listdir = Request::getInt('dir', 0);
@@ -277,7 +287,7 @@ class Media extends AdminController
         $filename = Filesystem::clean($filename);
         $filename = str_replace(' ', '_', $filename);
 
-        $ext = $pathinfo['extension'];
+        $ext = $pathinfo['extension'] ?? '';
         while (file_exists($path . DS . $filename . '.' . $ext)) {
             $filename .= rand(10, 99);
         }
@@ -308,6 +318,14 @@ class Media extends AdminController
             fclose($target);
         } else {
             move_uploaded_file($_FILES['qqfile']['tmp_name'], $file);
+        }
+
+        // Virus scan, as the form upload does
+        if (!Filesystem::isSafe($file)) {
+            Filesystem::delete($file);
+
+            echo json_encode(['error' => Lang::txt('COM_COLLECTIONS_ERROR_UPLOADING_VIRUS')]);
+            return;
         }
 
         // Create database entry
@@ -360,8 +378,12 @@ class Media extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
+        // The editor's uploader sends the token in the address
+        Request::checkToken(['get', 'post']);
+
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxUploadTask();
+            $this->ajaxUpload();
+            return;
         }
 
         // Ensure we have an ID to work with
@@ -455,8 +477,12 @@ class Media extends AdminController
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
         }
 
+        // Each asset's delete link carries the token
+        Request::checkToken(['get', 'post']);
+
         if (Request::getInt('no_html', 0)) {
-            return $this->ajaxDeleteTask();
+            $this->ajaxDelete();
+            return;
         }
 
         // Incoming asset
@@ -473,9 +499,12 @@ class Media extends AdminController
     }
 
     /**
-     * Display a form for uploading files
+     * Delete a file, answering in JSON. Reached only through deleteTask(),
+     * which checks permission and the form token; not a task of its own.
+     *
+     * @return  void
      */
-    public function ajaxDeleteTask()
+    protected function ajaxDelete()
     {
         // Incoming
         $id = Request::getInt('asset', 0);

@@ -9,6 +9,7 @@
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Hubzero\Facades\Session;
 use Hubzero\Facades\Toolbar;
 use Hubzero\Facades\User;
 
@@ -207,7 +208,8 @@ $accessSelected = function ($value) use ($view) {
                                         );
                                         $uploadUrl = Route::url(
                                             'index.php?option=' . $this->option
-                                            . '&no_html=1&controller=media&task=upload',
+                                            . '&no_html=1&controller=media&task=upload&'
+                                            . Session::getFormToken() . '=1',
                                         );
                                         $listUrl = Route::url(
                                             'index.php?option=' . $this->option
@@ -240,7 +242,8 @@ $accessSelected = function ($value) use ($view) {
                                         );
                                         $createUrl = Route::url(
                                             'index.php?option=' . $this->option
-                                            . '&no_html=1&controller=media&task=create&dir=',
+                                            . '&no_html=1&controller=media&task=create&'
+                                            . Session::getFormToken() . '=1&dir=',
                                         );
                                         ?>
                                         <div id="link-adder"
