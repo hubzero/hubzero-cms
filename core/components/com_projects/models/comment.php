@@ -48,7 +48,7 @@ class Comment extends Model
     /**
      * Commen count
      *
-     * @var integer
+     * @var integer|null
      */
     private $commentsCount = null;
 

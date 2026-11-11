@@ -57,14 +57,14 @@ class Item extends Base
     /**
      * Container for properties
      *
-     * @var array
+     * @var array|null
      */
     private $assets = null;
 
     /**
      * Tag Cloud model
      *
-     * @var object
+     * @var object|null
      */
     private $tags = null;
 

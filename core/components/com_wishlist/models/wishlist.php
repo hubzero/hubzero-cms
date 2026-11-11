@@ -97,7 +97,7 @@ class Wishlist extends Relational
     /**
      * Component configuration
      *
-     * @var  object
+     * @var  object|null
      */
     protected $config = null;
 

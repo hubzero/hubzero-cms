@@ -104,14 +104,14 @@ class Project extends Relational implements \Hubzero\Search\Searchable
     /**
      * Hubzero\Config\Registry
      *
-     * @var  object
+     * @var  object|null
      */
     public $config = null;
 
     /**
      * Get the URI
      *
-     * @var  string
+     * @var  string|null
      */
     protected $url = null;
 

@@ -27,7 +27,7 @@ class Editor extends Field
     /**
      * The Editor object.
      *
-     * @var  object
+     * @var  object|null
      */
     protected $editor;
 

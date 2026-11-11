@@ -53,7 +53,7 @@ class Entry extends Model
     /**
      * Comment count
      *
-     * @var integer
+     * @var integer|null
      */
     private $commentsCount = null;
 

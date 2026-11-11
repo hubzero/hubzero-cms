@@ -25,7 +25,7 @@ class Comment extends ItemComment
     /**
      * URL for this entry
      *
-     * @var string
+     * @var string|null
      */
     private $base = null;
 

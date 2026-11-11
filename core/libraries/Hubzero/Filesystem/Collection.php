@@ -23,14 +23,14 @@ class Collection extends ItemList
     /**
      * A flat list of all data and nested files
      *
-     * @var  array
+     * @var  array|null
      **/
     private $flatData = null;
 
     /**
      * A flat list of all file extensions
      *
-     * @var  array
+     * @var  array|null
      **/
     private $flatExtentions = null;
 

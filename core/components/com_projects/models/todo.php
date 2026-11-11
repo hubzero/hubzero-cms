@@ -27,7 +27,7 @@ class Todo extends Model
     /**
      * Entry
      *
-     * @var object
+     * @var object|null
      */
     private $entry = null;
 

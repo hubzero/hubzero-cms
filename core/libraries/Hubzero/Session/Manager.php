@@ -246,7 +246,7 @@ class Manager extends Obj
     /**
      * Checks for a form token in the request.
      *
-     * @param   string   $method   The request method in which to look for the token key.
+     * @param   string|array  $method  The request method, or methods, in which to look for the token key.
      * @param   boolean  $capture  Return result instead of throwing exception?
      * @return  boolean  True if found and valid, false otherwise.
      */

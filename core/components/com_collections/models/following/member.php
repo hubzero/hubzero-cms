@@ -23,7 +23,7 @@ class Member extends Base
     /**
      * File path
      *
-     * @var  string
+     * @var  string|null
      */
     private $image = null;
 

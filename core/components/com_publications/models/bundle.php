@@ -20,7 +20,7 @@ class Bundle
     /**
      * Publication
      *
-     * @var object
+     * @var object|null
      */
     protected $publication;
 
@@ -41,7 +41,7 @@ class Bundle
     /**
      * Contents of archive
      *
-     * @var  array
+     * @var  array|null
      */
     protected $contents = null;
 

@@ -19,7 +19,7 @@ class AddComponentEntry extends Macro
     /**
      * The component route helper, once asked for
      *
-     * @var  \Hubzero\Menu\ComponentRoute
+     * @var  \Hubzero\Menu\ComponentRoute|null
      */
     protected $routes;
 

@@ -11,15 +11,15 @@ namespace Hubzero\Facades;
 /**
  * Request facade
  *
- * @method static bool    setVar(string $name, string $value = null, string $hash = 'method', bool $overwrite = true)
- * @method static int     getInt(string $key, int $default = 0, string $hash = 'input')
+ * @method static bool    setVar(string $name, mixed $value = null, string $hash = 'method', bool $overwrite = true)
+ * @method static int     getInt(string $key, mixed $default = 0, string $hash = 'input')
  * @method static int     getUInt(string $name, int $default = 0, string $hash = 'input')
  * @method static float   getFloat(string $key, float $default = 0.0, string $hash = 'input')
  * @method static bool    getBool(string $key = null, bool $default = null, string $hash = 'input')
  * @method static string  getWord(string $key, mixed $default = null, string $hash = 'input')
  * @method static string  getCmd(string $key = null, mixed $default = null, string $hash = 'input')
  * @method static string  getString(string $key, mixed $default = null, string $hash = 'input')
- * @method static array   getArray(string $key = null, array $default = [], string $hash = 'input')
+ * @method static array   getArray(string $key = null, mixed $default = [], string $hash = 'input')
  * @method static array   getSimpleArray(string $key = null, array $default = [], string $hash = 'input')
  * @method static string  method()
  * @method static string  root(bool $pathonly = false)
@@ -46,9 +46,9 @@ namespace Hubzero\Facades;
  * @method static string  getUri()
  * @method static ?string getQueryString()
  * @method static string  getSchemeAndHttpHost()
- * @method static bool    checkToken(string $method = 'post')
+ * @method static bool    checkToken(string|array $method = 'post')
  * @method static bool    checkHoneypot(string $name = null, int $delay = 3)
- * @method static mixed   getState(string $key, string $request, string $default = null, string $type = 'none')
+ * @method static mixed   getState(string $key, string $request, mixed $default = null, string $type = 'none')
  * @method static bool   isSecure()
  * @method static string getHttpHost()
  *

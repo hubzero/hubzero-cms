@@ -90,7 +90,7 @@ class User extends \Hubzero\Database\Relational
     /**
      * User params
      *
-     * @var    object
+     * @var    object|null
      * @since  2.1.0
      */
     protected $userParams = null;

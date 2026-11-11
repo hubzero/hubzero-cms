@@ -25,21 +25,21 @@ class View
     /**
      * Current tab
      *
-     * @var  string
+     * @var  string|null
      */
     private static $tab = null;
 
     /**
      * List of sections
      *
-     * @var  array
+     * @var  array|null
      */
     private static $sections = null;
 
     /**
      * List of section content
      *
-     * @var  array
+     * @var  array|null
      */
     private static $sections_content = null;
 

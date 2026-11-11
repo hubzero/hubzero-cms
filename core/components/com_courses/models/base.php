@@ -55,7 +55,7 @@ abstract class Base extends Model
     /**
      * Registry
      *
-     * @var object
+     * @var object|null
      */
     protected $config = null;
 

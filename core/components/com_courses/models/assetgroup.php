@@ -34,7 +34,7 @@ class Assetgroup extends Base
     /**
      * Curent asset
      *
-     * @var array
+     * @var array|null
      */
     private $asset = null;
 

@@ -99,7 +99,7 @@ class Category extends Nested
     /**
      * Asset rules
      *
-     * @var  object
+     * @var  object|null
      */
     public $assetRules;
 

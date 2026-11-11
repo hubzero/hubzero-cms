@@ -38,7 +38,7 @@ class Date extends DateTime
     /**
      * Placeholder for a DateTimeZone object with GMT as the time zone.
      *
-     * @var  object
+     * @var  object|null
      */
     protected static $gmt;
 
@@ -46,7 +46,7 @@ class Date extends DateTime
      * Placeholder for a DateTimeZone object with the default server
      * time zone as the time zone.
      *
-     * @var  object
+     * @var  object|null
      */
     protected static $stz;
 

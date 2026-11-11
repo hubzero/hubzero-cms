@@ -21,7 +21,7 @@ class Base extends Model
     /**
      * Registry
      *
-     * @var  object
+     * @var  object|null
      */
     private $config = null;
 

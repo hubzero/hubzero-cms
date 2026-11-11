@@ -41,7 +41,7 @@ class Request extends BaseRequest
      * Set a variable in one of the request variables.
      *
      * @param   string   $name       Name
-     * @param   string   $value      Value
+     * @param   mixed    $value      Value
      * @param   string   $hash       Hash
      * @param   boolean  $overwrite  Boolean
      * @return  boolean
@@ -108,7 +108,7 @@ class Request extends BaseRequest
      * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
      * @param   string   $type     Return type for the variable. [!] Deprecated. Joomla legacy support.
      * @param   string   $mask     Filter mask for the variable. [!] Deprecated. Joomla legacy support.
-     * @return  integer  Request variable
+     * @return  mixed  Request variable
      */
     public function getVar($key, $default = null, $hash = 'input', $type = 'none', $mask = 0)
     {
@@ -727,7 +727,7 @@ class Request extends BaseRequest
      *
      * @param   string  $key      The key of the user state variable.
      * @param   string  $request  The name of the variable passed in a request.
-     * @param   string  $default  The default value for the variable if not found. Optional.
+     * @param   mixed   $default  The default value for the variable if not found. Optional.
      * @param   string  $type     Filter for the variable. Optional.
      * @return  The request user state.
      */

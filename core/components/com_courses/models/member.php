@@ -33,14 +33,14 @@ class Member extends Base
     /**
      * \Components\Courses\Models\MemberBadge
      *
-     * @var object
+     * @var object|null
      */
     private $badge = null;
 
     /**
      * \Components\Courses\Models\Prerequisites
      *
-     * @var object
+     * @var object|null
      **/
     private $prerequisites = null;
 

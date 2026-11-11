@@ -25,7 +25,7 @@ class Entity extends Obj
     /**
      * The filesystem adapter use for actually interacting with the entity
      *
-     * @var  object
+     * @var  object|null
      **/
     protected $adapter = null;
 

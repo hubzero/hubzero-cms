@@ -183,7 +183,7 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
     /**
      * Tool revision
      *
-     * @var  string
+     * @var  string|null
      */
     public $revision = null;
 

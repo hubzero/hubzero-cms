@@ -36,14 +36,14 @@ class PublicationUsageHelper
     /**
      * Version ID
      *
-     * @var int
+     * @var int|null
      */
     protected $versionId;
 
     /**
      * Publication ID
      *
-     * @var int
+     * @var int|null
      */
     protected $publicationId;
 

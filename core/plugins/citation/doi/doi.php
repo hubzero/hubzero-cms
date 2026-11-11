@@ -30,7 +30,7 @@ class Doi extends Plugin
     /**
      * The publication component configuration
      *
-     * @var object
+     * @var object|null
      */
     public $configs = null;
 

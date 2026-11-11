@@ -41,7 +41,7 @@ class Curation extends Obj
     /**
      * Publication
      *
-     * @var  object
+     * @var  object|null
      */
     public $pub = null;
 
@@ -97,7 +97,7 @@ class Curation extends Obj
     /**
      * Progress
      *
-     * @var  object
+     * @var  object|null
      */
     public $progress = null;
 

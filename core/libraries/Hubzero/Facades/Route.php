@@ -11,7 +11,7 @@ namespace Hubzero\Facades;
 /**
  * Router facade
  *
- * @method static string url(string $url, bool $xhtml = true, int $ssl = null)
+ * @method static string url(string $url, bool $xhtml = true, int|bool $ssl = null)
  * @method static object build(string $uri)
  * @method static object parse(string $url)
  * @method static string urlForClient(string $client, string $url, bool $xhtml = true, int $ssl = null)

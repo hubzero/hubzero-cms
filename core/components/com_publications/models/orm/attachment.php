@@ -77,7 +77,7 @@ class Attachment extends Relational
     /**
      * Filespace path
      *
-     * @var  string
+     * @var  string|null
      */
     public $filespace = null;
 

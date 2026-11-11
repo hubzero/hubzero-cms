@@ -58,14 +58,14 @@ abstract class Model extends Obj
     /**
      * Table
      *
-     * @var object
+     * @var object|null
      */
     protected $table = null;
 
     /**
      * Database
      *
-     * @var  object
+     * @var  object|null
      */
     protected $db = null;
 

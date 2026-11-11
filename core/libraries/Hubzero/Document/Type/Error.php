@@ -22,7 +22,7 @@ class Error extends Base
     /**
      * Error Object
      *
-     * @var  object
+     * @var  object|null
      */
     public $error;
 

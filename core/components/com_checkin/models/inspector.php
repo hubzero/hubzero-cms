@@ -43,7 +43,7 @@ class Inspector extends Obj
     /**
      * Total items
      *
-     * @var  integer
+     * @var  integer|null
      */
     protected $total;
 

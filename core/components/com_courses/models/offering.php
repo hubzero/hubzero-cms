@@ -41,98 +41,98 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $units = null;
 
     /**
      * \Components\Courses\Models\Unit
      *
-     * @var object
+     * @var object|null
      */
     private $unit = null;
 
     /**
      * Page
      *
-     * @var object
+     * @var object|null
      */
     private $page = null;
 
     /**
      * Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $pages = null;
 
     /**
      * Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $announcements = null;
 
     /**
      * Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $roles = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $members = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $member = null;
 
     /**
      * \Components\Courses\Models\Member
      *
-     * @var object
+     * @var object|null
      */
     private $manager = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $managers = null;
 
     /**
      * \Components\Courses\Models\Member
      *
-     * @var object
+     * @var object|null
      */
     private $student = null;
 
     /**
      * \Components\Courses\Models\Gradebook
      *
-     * @var object
+     * @var object|null
      */
     private $gradebook = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $sections = null;
 
     /**
      * \Components\Courses\Models\Section
      *
-     * @var object
+     * @var object|null
      */
     private $section = null;
 
@@ -146,14 +146,14 @@ class Offering extends Base
     /**
      * \Components\Courses\Models\Permissions
      *
-     * @var object
+     * @var object|null
      */
     private $permissions = null;
 
     /**
      * URL to this object
      *
-     * @var string
+     * @var string|null
      */
     private $link = null;
 

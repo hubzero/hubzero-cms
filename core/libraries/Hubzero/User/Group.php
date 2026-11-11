@@ -40,7 +40,7 @@ class Group extends Obj
     /**
      * Group alias
      *
-     * @var  string
+     * @var  string|null
      */
     private $cn = null;
 

@@ -72,7 +72,7 @@ class Log extends Relational
     /**
      * Container for details
      *
-     * @var  object
+     * @var  object|null
      */
     public $entryDetails = null;
 

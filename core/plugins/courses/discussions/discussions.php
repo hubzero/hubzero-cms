@@ -77,7 +77,7 @@ class Discussions extends Plugin
     protected $lecture = null;
 
     /**
-     * @var array
+     * @var array|null
      */
     protected $instructors = null;
 

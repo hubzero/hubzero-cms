@@ -36,56 +36,56 @@ class Course extends Base
     /**
      * \Components\Courses\Models\Offering
      *
-     * @var object
+     * @var object|null
      */
     private $offering = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $offerings = null;
 
     /**
      * \Components\Courses\Models\Permissions
      *
-     * @var object
+     * @var object|null
      */
     private $permissions = null;
 
     /**
      * \Components\Courses\Models\Offering
      *
-     * @var object
+     * @var object|null
      */
     private $manager = null;
 
     /**
      * List of managers
      *
-     * @var array
+     * @var array|null
      */
     private $managers = null;
 
     /**
      * List of students
      *
-     * @var array
+     * @var array|null
      */
     private $students = null;
 
     /**
      * \Components\Courses\Models\Offering
      *
-     * @var object
+     * @var object|null
      */
     private $page = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $pages = null;
 
@@ -99,7 +99,7 @@ class Course extends Base
     /**
      * URL to this object
      *
-     * @var string
+     * @var string|null
      */
     private $base = null;
 
@@ -183,7 +183,7 @@ class Course extends Base
     /**
      * Set and get a specific offering
      *
-     * @return     void
+     * @return     \Components\Courses\Models\Offering
      */
     public function offering($id = null)
     {

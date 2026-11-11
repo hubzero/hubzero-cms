@@ -171,7 +171,7 @@ class Module extends Model
      *
      * @param   boolean  $check           Run the Table Check Method
      * @param   boolean  $trustedContent  Is content trusted
-     * @return  void
+     * @return  boolean  True on success
      */
     public function store($check = true, $trustedContent = false)
     {

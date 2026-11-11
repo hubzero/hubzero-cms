@@ -54,28 +54,28 @@ class Section extends Base
     /**
      * List of members
      *
-     * @var object
+     * @var object|null
      */
     private $members = null;
 
     /**
      * Member
      *
-     * @var object
+     * @var object|null
      */
     private $member = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $codes = null;
 
     /**
      * \Components\Courses\Models\Section\Code
      *
-     * @var object
+     * @var object|null
      */
     private $code = null;
 
@@ -89,14 +89,14 @@ class Section extends Base
     /**
      * \Components\Courses\Models\Section\Date
      *
-     * @var object
+     * @var object|null
      */
     private $date = null;
 
     /**
      * \Components\Courses\Models\Section\Badge
      *
-     * @var object
+     * @var object|null
      */
     private $badge = null;
 

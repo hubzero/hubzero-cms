@@ -39,28 +39,28 @@ class Unit extends Base
     /**
      * \Components\Courses\Models\Assetgroup
      *
-     * @var object
+     * @var object|null
      */
     public $group = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     public $assetgroups = null;
 
     /**
      * \Components\Courses\Models\Asset
      *
-     * @var object
+     * @var object|null
      */
     private $asset = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $assets = null;
 

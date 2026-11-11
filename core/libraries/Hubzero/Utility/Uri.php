@@ -40,7 +40,7 @@ class Uri
     /**
      * Port
      *
-     * @var  integer
+     * @var  integer|null
      */
     protected $port = null;
 

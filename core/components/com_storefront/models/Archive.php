@@ -30,7 +30,7 @@ class Archive extends \Hubzero\Base\Obj
     /**
      * Products count
      *
-     * @var integer
+     * @var integer|null
      */
     private $productsCount = null;
 

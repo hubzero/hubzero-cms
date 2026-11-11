@@ -42,7 +42,7 @@ class Page extends Relational
     /**
      * Component config
      *
-     * @var  object
+     * @var  object|null
      */
     protected $config = null;
 

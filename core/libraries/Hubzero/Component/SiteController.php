@@ -70,7 +70,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * The task the component is to perform
      *
-     * @var  string
+     * @var  string|null
      */
     protected $task = null;
 
@@ -93,7 +93,7 @@ class SiteController extends Obj implements ControllerInterface
     /**
      * The name of this controller
      *
-     * @var  string
+     * @var  string|null
      */
     protected $controller = null;
 

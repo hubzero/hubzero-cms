@@ -39,7 +39,7 @@ class Middleware extends Obj
     /**
      * Registry
      *
-     * @var object
+     * @var object|null
      */
     private $config = null;
 

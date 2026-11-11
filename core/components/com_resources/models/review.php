@@ -95,7 +95,7 @@ class Review extends Relational
     /**
      * Base URL
      *
-     * @var  string
+     * @var  string|null
      */
     protected $base = null;
 

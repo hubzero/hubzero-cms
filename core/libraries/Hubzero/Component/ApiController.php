@@ -294,7 +294,7 @@ class ApiController implements ControllerInterface
     /**
      * Set response content
      *
-     * @param   string   $message
+     * @param   mixed    $message  Text, or data for the response formatter
      * @param   integer  $status
      * @param   string   $reason
      * @return  void

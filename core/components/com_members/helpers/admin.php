@@ -26,7 +26,7 @@ class Admin
     /**
      * A cache for the available actions.
      *
-     * @var  object
+     * @var  object|null
      */
     protected static $actions;
 

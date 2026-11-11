@@ -24,35 +24,35 @@ class Permissions extends Obj
     /**
      * Config
      *
-     * @var object
+     * @var object|null
      */
     private $config = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $managers = null;
 
     /**
      * \Components\Courses\Models\Member
      *
-     * @var object
+     * @var object|null
      */
     private $manager = null;
 
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $students = null;
 
     /**
      * \Components\Courses\Models\Member
      *
-     * @var object
+     * @var object|null
      */
     private $student = null;
 

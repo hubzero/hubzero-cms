@@ -67,7 +67,7 @@ class Plugin
     /**
      * The triggered event
      *
-     * @var object
+     * @var object|null
      */
     public $event;
 

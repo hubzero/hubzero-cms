@@ -33,7 +33,7 @@ class Version
     /**
      * Description for 'instance'
      *
-     * @var string
+     * @var string|null
      */
     private $instance = null;          // tool                  #__tool_version
 

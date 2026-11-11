@@ -37,7 +37,7 @@ class Page extends Model
     /**
      * \Hubzero\Base\ItemList
      *
-     * @var object
+     * @var object|null
      */
     protected $versions = null;
 

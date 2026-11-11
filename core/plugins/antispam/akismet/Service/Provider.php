@@ -224,7 +224,7 @@ class Provider extends AbstractService
      * @param     string $request
      * @param     string $host
      * @param     string $path
-     * @return    string
+     * @return    array  Response headers, then body
      */
     private function sendRequest($request, $host, $path)
     {

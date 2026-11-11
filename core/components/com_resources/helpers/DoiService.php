@@ -24,7 +24,7 @@ class DoiService extends Obj
     /**
      * DOI Configs
      *
-     * @var  object
+     * @var  object|null
      */
     public $configs = null;
 

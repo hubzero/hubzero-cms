@@ -132,7 +132,7 @@ abstract class Field
     /**
      * The form field type.
      *
-     * @var  string
+     * @var  string|null
      */
     protected $type;
 

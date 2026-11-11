@@ -75,7 +75,7 @@ class SearchComponent extends Relational
     /**
      * Hubzero\Search\Adapters\SolrIndexAdapter
      *
-     * @var  object
+     * @var  object|null
      */
     private $searchIndexer = null;
 

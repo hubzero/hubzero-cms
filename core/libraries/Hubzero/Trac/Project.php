@@ -25,14 +25,14 @@ class Project
     /**
      * Project ID
      *
-     * @var  integer
+     * @var  integer|null
      */
     private $id = null;
 
     /**
      * Project name
      *
-     * @var  string
+     * @var  string|null
      */
     private $name = null;
 

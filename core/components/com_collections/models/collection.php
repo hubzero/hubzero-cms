@@ -49,14 +49,14 @@ class Collection extends Base
     /**
      * ItemList
      *
-     * @var object
+     * @var object|null
      */
     private $posts = null;
 
     /**
      * Post
      *
-     * @var object
+     * @var object|null
      */
     private $post = null;
 
@@ -70,7 +70,7 @@ class Collection extends Base
     /**
      * Following
      *
-     * @var object
+     * @var object|null
      */
     private $followingFlag = null;
 

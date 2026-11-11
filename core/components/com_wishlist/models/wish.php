@@ -143,7 +143,7 @@ class Wish extends Relational
     /**
      * Component configuration
      *
-     * @var  object
+     * @var  object|null
      */
     protected $config = null;
 

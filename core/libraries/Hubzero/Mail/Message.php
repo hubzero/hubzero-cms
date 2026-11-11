@@ -156,7 +156,7 @@ class Message extends \Symfony\Component\Mime\Email
     /**
      * Send the message
      *
-     * @return  object
+     * @return  boolean  Whether the message was handed to the transport
      */
     public function send($transport = '', $options = [])
     {

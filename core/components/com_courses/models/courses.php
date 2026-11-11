@@ -34,14 +34,14 @@ class Courses extends Obj
     /**
      * \Components\Courses\Models\Iterator
      *
-     * @var object
+     * @var object|null
      */
     private $courses = null;
 
     /**
      * \Components\Courses\Models\Course
      *
-     * @var object
+     * @var object|null
      */
     private $course = null;
 

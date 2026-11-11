@@ -56,7 +56,7 @@ class Manager extends Obj
     /**
      * Pagination object
      *
-     * @var  object
+     * @var  object|null
      */
     protected $pagination = null;
 

@@ -65,7 +65,7 @@ class Comment extends Relational
     /**
      * Base URL
      *
-     * @var string
+     * @var string|null
      */
     private $base = null;
 

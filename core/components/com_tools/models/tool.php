@@ -31,7 +31,7 @@ class Tool
     /**
      * Description for 'toolname'
      *
-     * @var string
+     * @var string|null
      */
     private $toolname = null;
 

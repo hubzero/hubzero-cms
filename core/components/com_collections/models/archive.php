@@ -52,7 +52,7 @@ class Archive extends Obj
     /**
      * Collection
      *
-     * @var object
+     * @var object|null
      */
     private $collection = null;
 
@@ -73,14 +73,14 @@ class Archive extends Obj
     /**
      * Is following?
      *
-     * @var boolean
+     * @var boolean|null
      */
     private $isFollowing = null;
 
     /**
      * Is being followed?
      *
-     * @var boolean
+     * @var boolean|null
      */
     private $isFollowed = null;
 

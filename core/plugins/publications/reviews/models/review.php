@@ -53,7 +53,7 @@ class Review extends \Hubzero\Base\Model
     /**
      * Commen count
      *
-     * @var integer
+     * @var integer|null
      */
     private $comments_count = null;
 

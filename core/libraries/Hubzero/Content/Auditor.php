@@ -27,7 +27,7 @@ class Auditor
     /**
      * Holds list of detectors and what they reported
      *
-     * @var  array
+     * @var  array|null
      */
     protected $report = null;
 

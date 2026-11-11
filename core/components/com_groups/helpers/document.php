@@ -40,7 +40,7 @@ class Document extends Obj
     /**
      * Page
      *
-     * @var  object
+     * @var  object|null
      */
     public $page         = null;
 

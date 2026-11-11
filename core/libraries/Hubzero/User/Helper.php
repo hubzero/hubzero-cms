@@ -425,7 +425,7 @@ class Helper
      *
      * @param   integer  $uid
      * @param   integer  $pid
-     * @return  boolean
+     * @return  array
      */
     public static function getCommonGroups($uid, $pid)
     {
