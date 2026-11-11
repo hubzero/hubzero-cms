@@ -254,7 +254,7 @@ class Pucas extends Plugin
             }
 
             // If we have a real user, drop the authenticator cookie
-            if (isset($user) && is_object($user)) {
+            if (is_object($user)) {
                 // Set cookie with login preference info
                 $prefs = [
                     'user_id'       => $user->get('id'),

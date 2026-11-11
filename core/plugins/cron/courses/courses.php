@@ -210,7 +210,7 @@ class Courses extends Plugin
                                 $latest     = [];
                                 $latest_cnt = 0;
 
-                                if (isset($posts) && $posts_cnt > 0) {
+                                if ($posts_cnt > 0) {
                                     foreach ($posts as $post) {
                                         if (strtotime($post->created) > strtotime('-1 day')) {
                                             $latest[] = $post;

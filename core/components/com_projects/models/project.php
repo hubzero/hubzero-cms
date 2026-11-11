@@ -1043,7 +1043,7 @@ class Project extends Model
      *
      * @param   array    $filters
      * @param   boolean  $refresh
-     * @return  object
+     * @return  array    The owners' rows, empty when there are none
      */
     public function team($filters = [], $refresh = false)
     {
