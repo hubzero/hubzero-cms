@@ -321,7 +321,11 @@ if (!$this->app->sess) {
                                 <select name="zone" id="field-zone">
                                     <option value=""><?php echo Lang::txt('COM_TOOLS_SELECT'); ?></option>
                                     <?php
-                                    foreach ($this->middleware->zones('list', ['state' => 'up', 'id' => $this->middleware->get('allowed')]) as $zone) {
+                                    $zones = $this->middleware->zones(
+                                        'list',
+                                        ['state' => 'up', 'id' => $this->middleware->get('allowed')],
+                                    );
+                                    foreach ($zones as $zone) {
                                         if ($zone->get('id') == $this->zone->get('id')) {
                                             continue;
                                         }

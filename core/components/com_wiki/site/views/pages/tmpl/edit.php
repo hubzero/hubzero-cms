@@ -235,7 +235,10 @@ $allowCommentsChecked = function ($value) use ($view) {
 
                                             $tplate = strtolower(Request::getString('tplate', ''));
 
-                                            foreach ($this->book->templates(['state' => Page::STATE_PUBLISHED])->rows() as $template) {
+                                            $templates = $this->book
+                                                ->templates(['state' => Page::STATE_PUBLISHED])
+                                                ->rows();
+                                            foreach ($templates as $template) {
                                                 $tmpltags = $template->tags('string');
                                                 if ($tplate == strtolower($template->get('pagename'))) {
                                                     $tags = $tmpltags;

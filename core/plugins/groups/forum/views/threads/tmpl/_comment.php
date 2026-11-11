@@ -162,7 +162,8 @@ if ($this->comment->isReported()) {
 
             <div class="comment-attachments">
                 <?php
-                foreach ($this->comment->attachments()->whereEquals('state', Attachment::STATE_PUBLISHED)->rows() as $attachment) {
+                $attachments = $this->comment->attachments()->whereEquals('state', Attachment::STATE_PUBLISHED)->rows();
+                foreach ($attachments as $attachment) {
                     if (!trim($attachment->get('description'))) {
                         $attachment->set('description', $attachment->get('filename'));
                     }
