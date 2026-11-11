@@ -245,7 +245,7 @@ class Recipient extends Relational
     {
         // Query::delete() needs the table name; without it "Empty trash"
         // threw ArgumentCountError and nothing was deleted (cf. Notify::deleteByUser)
-        return $this
+        return $this->getQuery()
             ->delete($this->getTableName())
             ->whereEquals('uid', $uid)
             ->whereEquals('state', 2)
@@ -267,8 +267,8 @@ class Recipient extends Relational
 
         $ids = array_map('intval', $ids);
 
-        return $this
-            ->update()
+        return $this->getQuery()
+            ->update($this->getTableName())
             ->set(['state' => $state])
             ->whereIn('id', $ids)
             ->execute();

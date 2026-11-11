@@ -95,7 +95,7 @@ class Notify extends Relational
      */
     public function deleteByUser($uid)
     {
-        return $this
+        return $this->getQuery()
             ->delete($this->getTableName())
             ->whereEquals('uid', $uid)
             ->execute();
@@ -109,7 +109,7 @@ class Notify extends Relational
      */
     public function deleteByType($type)
     {
-        return $this
+        return $this->getQuery()
             ->delete($this->getTableName())
             ->whereEquals('type', $type)
             ->execute();
