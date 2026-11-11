@@ -67,6 +67,13 @@ class Extension extends Relational
     protected $paramsRegistry = null;
 
     /**
+     * The language's details from its XML manifest, read by info()
+     *
+     * @var  array|null
+     */
+    protected $data = null;
+
+    /**
      * Language path
      *
      * @var  object

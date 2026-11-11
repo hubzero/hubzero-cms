@@ -21,9 +21,29 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Model class for a category
+ *
+ * Read through __get():
+ *
+ * @property  Registry  $params    The params column as a registry, through transformParams()
+ * @property  Registry  $metadata  The metadata column as a registry, through transformMetadata()
+ * @property  Category  $parent    The parent category, through parent()
  */
 class Category extends Nested
 {
+    /**
+     * The params column as a registry, made by transformParams()
+     *
+     * @var  Registry|null
+     */
+    protected $paramsRegistry = null;
+
+    /**
+     * The metadata column as a registry, made by transformMetadata()
+     *
+     * @var  Registry|null
+     */
+    protected $metadataRegistry = null;
+
     /**
      * Default order by for model
      *
