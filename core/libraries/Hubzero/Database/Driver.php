@@ -2227,7 +2227,7 @@ abstract class Driver implements LoggerAwareInterface
     public function getPersistentCacheConnectionFingerprint(): string
     {
         $fingerprintData = [
-            'driver' => $this->getType(),
+            'driver' => static::class,
             'database' => (string) ($this->database ?? ''),
             'prefix' => (string) ($this->tablePrefix ?? ''),
             'host' => (string) ($this->getConnectionOption('host', '')),
