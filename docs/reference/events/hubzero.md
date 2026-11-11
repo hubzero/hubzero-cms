@@ -68,9 +68,9 @@ Fired from:
 - [`core/components/com_publications/site/views/curation/tmpl/assign.php:48`](../../../core/components/com_publications/site/views/curation/tmpl/assign.php#L48) with `[['members', 'owner', 'owner', '', $selected, '', 'owner']]`
 - [`core/components/com_support/admin/views/tickets/tmpl/add.php:140`](../../../core/components/com_support/admin/views/tickets/tmpl/add.php#L140) with `[['groups', 'ticket[group_id]', 'acgroup', '', '', '', 'owner']]`
 - [`core/components/com_support/admin/views/tickets/tmpl/batch.php:95`](../../../core/components/com_support/admin/views/tickets/tmpl/batch.php#L95) with `[['groups', 'fields[group]', 'acgroup', '', '', '', 'owner']]`
-- [`core/components/com_support/admin/views/tickets/tmpl/edit.php:649`](../../../core/components/com_support/admin/views/tickets/tmpl/edit.php#L649) with `[['groups', 'ticket[group_id]', 'acgroup','', $group,'','owner']]`
+- [`core/components/com_support/admin/views/tickets/tmpl/edit.php:669`](../../../core/components/com_support/admin/views/tickets/tmpl/edit.php#L669) with `[['groups', 'ticket[group_id]', 'acgroup','', $group,'','owner']]`
 - [`core/components/com_support/site/views/tickets/tmpl/new.php:229`](../../../core/components/com_support/site/views/tickets/tmpl/new.php#L229) with `[ [ 'groups', 'problem[group_id]', 'acgroup', '', $this->escape($group), '', 'ticketowner', ], ]`
-- [`core/components/com_support/site/views/tickets/tmpl/ticket.php:577`](../../../core/components/com_support/site/views/tickets/tmpl/ticket.php#L577) with `[['groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner']]`
+- [`core/components/com_support/site/views/tickets/tmpl/ticket.php:586`](../../../core/components/com_support/site/views/tickets/tmpl/ticket.php#L586) with `[['groups', 'ticket[group_id]', 'acgroup', '', $group, '', 'ticketowner']]`
 
 Listeners:
 
