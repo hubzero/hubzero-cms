@@ -316,11 +316,12 @@ class Applications extends AdminController
                 case 'publish':
                     $message = Lang::txt('COM_DEVELOPER_APPLICATION_PUBLISHED', $success);
                     break;
-                case 'unpublish':
-                    $message = Lang::txt('COM_DEVELOPER_APPLICATION_UNPUBLISHED', $success);
-                    break;
                 case 'archive':
                     $message = Lang::txt('COM_DEVELOPER_APPLICATION_ARCHIVED', $success);
+                    break;
+                default:
+                    // Every task other than publish set the entries to state 0.
+                    $message = Lang::txt('COM_DEVELOPER_APPLICATION_UNPUBLISHED', $success);
                     break;
             }
 

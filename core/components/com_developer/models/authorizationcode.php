@@ -75,12 +75,7 @@ class Authorizationcode extends Relational
 
             $uris = array_map('trim', explode(PHP_EOL, $data['redirect_uri']));
 
-            // must have one
-            if (empty($uris)) {
-                return Lang::txt('COM_DEVELOPER_API_APPLICATION_MISSING_REDIRECT_URI');
-            }
-
-            // validate each one
+            // Validate each one (a blank line is not a valid URL)
             $invalid = [];
             foreach ($uris as $uri) {
                 if (!Validate::url($uri)) {
