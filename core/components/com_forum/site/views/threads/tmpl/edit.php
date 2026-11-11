@@ -173,8 +173,11 @@ $aliasSelected = function ($value) use ($view) {
                                         [
                                             'minChars' => 0,
                                             'feed' =>  '/api/members/mentions/list?search={encodedQuery}',
-                                            'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" /><strong class="username">{username}</strong><span class="fullname">{name}</span></li>',
-                                            'outputTemplate' => '<a href="/members/{id}" data-user-id="{id}" target="_blank">@{username}</a>&nbsp;&nbsp;',
+                                            'itemTemplate' => '<li data-id="{id}"><img class="photo" src="{picture}" '
+                                                . '/><strong class="username">{username}</strong><span '
+                                                . 'class="fullname">{name}</span></li>',
+                                            'outputTemplate' => '<a href="/members/{id}" data-user-id="{id}" '
+                                                . 'target="_blank">@{username}</a>&nbsp;&nbsp;',
                                         ],
                                     ],
                                     // A post is stored in a TEXT column, so cap it well inside that

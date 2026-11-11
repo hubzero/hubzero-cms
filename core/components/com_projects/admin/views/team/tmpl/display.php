@@ -54,7 +54,8 @@ $this->css();
         <fieldset id="filter-bar">
             <p class="warning">
                 <?php echo Lang::txt(
-                    'Membership is synced with group "%s".<br />Addition or removal of members in that group must handled through the group\'s membership interface.',
+                    'Membership is synced with group "%s".<br />Addition or removal of members in that group must '
+                        . 'handled through the group\'s membership interface.',
                     '<a href="'
                         . Route::url('index.php?option=com_groups&controller=membership&gid=' . $group->get('cn'))
                         . '">' . $this->escape($group->get('description')) . ' (' . $this->escape($group->get('cn'))
