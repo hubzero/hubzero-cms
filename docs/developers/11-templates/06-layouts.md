@@ -222,7 +222,7 @@ returns whatever the administrator has assigned to it. Kimera's content region
 shows the usual shape — an optional left column, the component, an optional
 right column, and a footer:
 
-<!--include: core/templates/kimera/index.php:221-263-->
+<!--include: core/templates/kimera/index.php:224-266-->
 
 The `<positions>` block in `templateDetails.xml` does **not** restrict
 anything. It is read only by `com_modules` when it builds the position picker
