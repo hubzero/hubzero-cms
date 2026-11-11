@@ -67,7 +67,8 @@ $team = $this->model->team($filters = ['status' => 1]);
                 <?php
                 $selectedAttr = $g->gidNumber == $this->model->get('owned_by_group') ? 'selected="selected"' : '';
                 ?>
-            <option value="<?php echo $g->gidNumber; ?>" <?= $selectedAttr ?>><?php echo Str::truncate($g->description, 30)
+            <option value="<?php echo $g->gidNumber; ?>"
+                <?= $selectedAttr ?>><?php echo Str::truncate($g->description, 30)
                                . ' ('
                                . $g->cn
                                . ')'; ?></option>

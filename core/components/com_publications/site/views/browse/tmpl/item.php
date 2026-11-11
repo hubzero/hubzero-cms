@@ -141,7 +141,8 @@ $extras = Event::trigger('publications.onPublicationsList', [$this->line]);
             ?>
             <div class="metadata">
                 <?php $ratingTxt = Lang::txt('COM_PUBLICATIONS_OUT_OF_5_STARS', $this->line->get('master_rating')); ?>
-                <p class="rating"><span title="<?php echo $ratingTxt; ?>" class="avgrating<?php echo $class; ?>"><span><?php echo $ratingTxt; ?></span>&nbsp;</span></p>
+                <p class="rating"><span title="<?php echo $ratingTxt; ?>"
+                    class="avgrating<?php echo $class; ?>"><span><?php echo $ratingTxt; ?></span>&nbsp;</span></p>
             </div>
                 <?php
         endif;

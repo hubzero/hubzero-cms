@@ -25,12 +25,14 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
                             ?></a><?php
                      } ?>
     <?php if ($this->listName) {
-        ?> &raquo; <a href="<?php echo Route::url($url) . '/?list=' . $this->filters['todolist']; ?>"><span class="indlist <?php echo 'pin_' . $this->filters['todolist']?>"><?php echo $this->listName; ?>
+        ?> &raquo; <a href="<?php echo Route::url($url) . '/?list=' . $this->filters['todolist']; ?>"><span
+            class="indlist <?php echo 'pin_' . $this->filters['todolist']?>"><?php echo $this->listName; ?>
         </span></a> <?php
     } ?>
     <?php if ($this->filters['assignedto']) {
         $linkText = ucfirst(Lang::txt('PLG_PROJECTS_TODO_MY_TODOS'));
-        ?> &raquo; <span class="indlist mytodo"><a href="<?php echo Route::url($url) . '/?mine=1'; ?>"><?= $linkText ?></a></span> <?php
+        ?> &raquo; <span class="indlist mytodo"><a
+            href="<?php echo Route::url($url) . '/?mine=1'; ?>"><?= $linkText ?></a></span> <?php
     } ?>
     <?php if ($this->filters['state']) {
         ?> &raquo; <span class="indlist completedtd"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_COMPLETED')); ?>

@@ -36,7 +36,8 @@ if ($items) {
             <?php
             $linkUrl = Route::url($this->model->link('stamp') . '&s=' . $item->stamp);
             ?>
-        <li><a href="<?= $linkUrl ?>"><?php echo $file::drawIcon($file->get('ext'));?> <?php echo basename($ref->file); ?></li>
+        <li><a href="<?= $linkUrl ?>"><?php echo $file::drawIcon($file->get('ext'));?>
+            <?php echo basename($ref->file); ?></li>
             <?php
         } ?>
     </ul>
