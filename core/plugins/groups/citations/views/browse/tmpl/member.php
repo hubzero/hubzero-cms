@@ -51,7 +51,9 @@ if (count($this->citations) > 0) :
             </thead>
             <tbody>
                 <?php $x = 0; ?>
+                <?php $counter = 0; ?>
                 <?php foreach ($this->citations as $cite) : ?>
+                    <?php $counter++; ?>
                     <tr class="citation-row">
                         <td class="batch">
                             <input type="checkbox"
@@ -120,9 +122,9 @@ if (count($this->citations) > 0) :
                                     $final = "";
                                     foreach ($cite->sponsors as $s) {
                                         $final .= '<a rel="external" href="'
-                                            . $sp->get('link')
+                                            . $s->get('link')
                                             . '">'
-                                            . $sp->get('sponsor')
+                                            . $s->get('sponsor')
                                             . '</a>, ';
                                     }
                                     ?>

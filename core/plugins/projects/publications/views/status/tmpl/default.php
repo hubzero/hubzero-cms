@@ -279,7 +279,7 @@ if ($revertAllowed && $this->pub->accepted()) {
                             ->join($r, $r . '.log_id', $l . '.id', 'inner')
                             ->whereEquals($r . '.scope', 'project')
                             ->whereEquals($r . '.scope_id', $this->project->get('id'))
-                            ->whereEquals($l . '.description', $check)
+                            ->whereEquals($l . '.description', $activity)
                             ->order($l . '.created', 'desc')
                             ->row();
 

@@ -37,7 +37,7 @@ if ($items) {
     <ul>
         <?php foreach ($items as $item) {
             $ref = json_decode($item->reference);
-            $file = new \Components\Projects\Models\File($e);
+            $file = new \Components\Projects\Models\File($ref->file);
             ?>
             <?php
             $linkUrl = Route::url($this->model->link('stamp') . '&s=' . $item->stamp);

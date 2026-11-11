@@ -93,7 +93,7 @@ $this->css();
                             type="submit"
                             name="raiselimit[sessions]"
                             id="raiselimitsessions"
-                            value="<?php echo $submit_button; ?>"/></span></td>
+                            value="Submit Request"/></span></td>
                     </tr>
                     <tr>
                         <th>Online Disk Storage Limit:</th>
@@ -102,7 +102,7 @@ $this->css();
                             type="submit"
                             name="raiselimit[storage]"
                             id="raiselimitstorage"
-                            value="<?php echo $submit_button; ?>"/></span></td>
+                            value="Submit Request"/></span></td>
                     </tr>
                     <tr>
                         <th>Maximum Online Meetings:</th>
@@ -111,7 +111,7 @@ $this->css();
                             type="submit"
                             name="raiselimit[meetings]"
                             id="raiselimitmeetings"
-                            value="<?php echo $submit_button; ?>"/></span></td>
+                            value="Submit Request"/></span></td>
                     </tr>
                 </tbody>
             </table>

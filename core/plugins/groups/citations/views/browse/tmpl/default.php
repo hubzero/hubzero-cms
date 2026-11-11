@@ -246,8 +246,8 @@ if (isset($this->messages)) {
                                                 $final = "";
 
                                                 foreach ($cite->sponsors as $s) {
-                                                    $final .= '<a rel="external" href="' . $sp->get('link') . '">'
-                                                        . $sp->get('sponsor') . '</a>, ';
+                                                    $final .= '<a rel="external" href="' . $s->get('link') . '">'
+                                                        . $s->get('sponsor') . '</a>, ';
                                                 }
                                                 ?>
                                                 <?php

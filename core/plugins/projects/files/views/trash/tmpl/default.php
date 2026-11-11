@@ -81,7 +81,7 @@ defined('_HZEXEC_') or die();
             <?php } else {  ?>
             <a id="cancel-action"
                 class="btn btn-cancel"
-                href="<?php echo $this->url . '?a=1' . $subdirlink; ?>"
+                href="<?php echo $this->url . '?a=1'; ?>"
                 ><?php echo Lang::txt('PLG_PROJECTS_FILES_GO_BACK'); ?></a>
             <?php } ?>
         </p>
