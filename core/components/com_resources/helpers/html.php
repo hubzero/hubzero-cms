@@ -81,7 +81,7 @@ class Html
 
         $content = preg_replace_callback(
             '/<[^>]+style[\x00-\x20]*=[\`\'\"]*([^\`\'\"]+)[\`\'\"]*[^>]*>/i',
-            function ($match) use ($content, $disallowed) {
+            function ($match) use ($disallowed) {
                 $properties = [];
 
                 $declarations = explode(';', $match[1]);
