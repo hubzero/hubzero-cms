@@ -858,16 +858,17 @@ class Project extends Model
      * Get a configuration value
      * If no key is passed, it returns the configuration object
      *
-     * @param   string  $key  Config property to retrieve
+     * @param   string  $key      Config property to retrieve
+     * @param   mixed   $default  Value to return when the property is not set
      * @return  mixed
      */
-    public function config($key = null)
+    public function config($key = null, $default = null)
     {
         if (!isset($this->config)) {
             $this->config = Component::params('com_projects');
         }
         if ($key) {
-            return $this->config->get($key);
+            return $this->config->get($key, $default);
         }
         return $this->config;
     }
