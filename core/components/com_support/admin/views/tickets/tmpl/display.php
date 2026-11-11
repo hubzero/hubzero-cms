@@ -237,7 +237,9 @@ $this
                                             ? ' class="active ' . strtolower($this->filters['sortdir']) . '"'
                                             : '';
                                         ?>
-                                        <a<?= $classAttr ?> href="javascript:tableOrdering('created','<?= $direction ?>','');" title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
+                                        <a<?= $classAttr ?>
+                                            href="javascript:tableOrdering('created','<?= $direction ?>','');"
+                                            title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_AGE'); ?>
                                         </a>
                                     </li>
@@ -247,7 +249,9 @@ $this
                                             ? ' class="active ' . strtolower($this->filters['sortdir']) . '"'
                                             : '';
                                         ?>
-                                        <a<?= $classAttr ?> href="javascript:tableOrdering('status','<?= $direction ?>','');" title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
+                                        <a<?= $classAttr ?>
+                                            href="javascript:tableOrdering('status','<?= $direction ?>','');"
+                                            title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_STATUS'); ?>
                                         </a>
                                     </li>
@@ -257,7 +261,9 @@ $this
                                             ? ' class="active ' . strtolower($this->filters['sortdir']) . '"'
                                             : '';
                                         ?>
-                                        <a<?= $classAttr ?> href="javascript:tableOrdering('severity','<?= $direction ?>','');" title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
+                                        <a<?= $classAttr ?>
+                                            href="javascript:tableOrdering('severity','<?= $direction ?>','');"
+                                            title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SEVERITY'); ?>
                                         </a>
                                     </li>
@@ -267,7 +273,9 @@ $this
                                             ? ' class="active ' . strtolower($this->filters['sortdir']) . '"'
                                             : '';
                                         ?>
-                                        <a<?= $classAttr ?> href="javascript:tableOrdering('summary','<?= $direction ?>','');" title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
+                                        <a<?= $classAttr ?>
+                                            href="javascript:tableOrdering('summary','<?= $direction ?>','');"
+                                            title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SUMMARY'); ?>
                                         </a>
                                     </li>
@@ -277,7 +285,9 @@ $this
                                             ? ' class="active ' . strtolower($this->filters['sortdir']) . '"'
                                             : '';
                                         ?>
-                                        <a<?= $classAttr ?> href="javascript:tableOrdering('group','<?= $direction ?>','');" title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
+                                        <a<?= $classAttr ?>
+                                            href="javascript:tableOrdering('group','<?= $direction ?>','');"
+                                            title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_GROUP'); ?>
                                         </a>
                                     </li>
@@ -287,7 +297,9 @@ $this
                                             ? ' class="active ' . strtolower($this->filters['sortdir']) . '"'
                                             : '';
                                         ?>
-                                        <a<?= $classAttr ?> href="javascript:tableOrdering('owner','<?= $direction ?>','');" title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
+                                        <a<?= $classAttr ?>
+                                            href="javascript:tableOrdering('owner','<?= $direction ?>','');"
+                                            title="<?= Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_OWNER'); ?>
                                         </a>
                                     </li>

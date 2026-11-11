@@ -104,7 +104,8 @@ $this->css('browse.css');
                             );
                             ?>
                             <a href="<?= $browseUrl ?>">
-                                <img src="<?= $group->getLogo() ?>" <?= $atts ?> alt="<?= $this->escape($group->get('description')) ?>" />
+                                <img src="<?= $group->getLogo() ?>" <?= $atts ?>
+                                    alt="<?= $this->escape($group->get('description')) ?>" />
                             </a>
                         </p>
                         <p class="course-group-description">
@@ -140,19 +141,25 @@ $this->css('browse.css');
                             'index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs,
                         );
                         ?>
-                        <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_TITLE') ?>" rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_TITLE') ?></a></li>
+                        <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?>
+                            href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_TITLE') ?>"
+                            rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_TITLE') ?></a></li>
                         <?php
                         $browseUrl = Route::url(
                             'index.php?option=' . $this->option . '&task=browse&sortby=alias' . $qs,
                         );
                         ?>
-                        <li><a<?= ($this->filters['sortby'] == 'alias') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_ALIAS') ?>" rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_ALIAS') ?></a></li>
+                        <li><a<?= ($this->filters['sortby'] == 'alias') ? ' class="active"' : '' ?>
+                            href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_ALIAS') ?>"
+                            rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_ALIAS') ?></a></li>
                         <?php
                         $browseUrl = Route::url(
                             'index.php?option=' . $this->option . '&task=browse&sortby=popularity' . $qs,
                         );
                         ?>
-                        <li><a<?= ($this->filters['sortby'] == 'popularity') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_POPULARITY') ?>" rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_POPULARITY') ?></a></li>
+                        <li><a<?= ($this->filters['sortby'] == 'popularity') ? ' class="active"' : '' ?>
+                            href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_COURSES_SORT_BY_POPULARITY') ?>"
+                            rel="nofollow"><?= Lang::txt('COM_COURSES_SORT_POPULARITY') ?></a></li>
                     </ul>
                 </nav>
 

@@ -304,7 +304,9 @@ $activeStatusSelected = function ($value) use ($view) {
                             if ($cat->cActive || in_array($cat->cId, $collections)) {
                                 ?>
                                 <li>
-                                    <input type="checkbox" name="fields[collections][]" <?= in_array($cat->cId, $collections) ? 'checked' : '' ?> value="<?= $cat->cId ?>"
+                                    <input type="checkbox" name="fields[collections][]"
+                                        <?= in_array($cat->cId, $collections) ? 'checked' : '' ?>
+                                        value="<?= $cat->cId ?>"
                                            id="collection_<?php echo $cat->cId; ?>">
                                     <label for="collection_<?php echo $cat->cId; ?>">
                                         <?php echo $cat->cName; ?>
@@ -340,7 +342,9 @@ $activeStatusSelected = function ($value) use ($view) {
                                 ?>
                                 <li>
                                     <input type="checkbox"
-                                           name="fields[optionGroups][]" <?= in_array($og->ogId, $this->productOptionGroups) ? 'checked' : '' ?> value="<?= $og->ogId ?>"
+                                           name="fields[optionGroups][]"
+                                               <?= in_array($og->ogId, $this->productOptionGroups) ? 'checked' : '' ?>
+                                               value="<?= $og->ogId ?>"
                                            id="optionGroup_<?php echo $og->ogId; ?>">
                                     <label for="optionGroup_<?php echo $og->ogId; ?>">
                                         <?php echo $og->ogName; ?>

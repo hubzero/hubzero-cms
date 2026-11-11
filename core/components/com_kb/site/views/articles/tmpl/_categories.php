@@ -46,7 +46,8 @@ if (!empty($this->filters['search'])) {
                     <?php
                     $linkUrl = Route::url($row->link() . $carry);
                     ?>
-                    <a <?= $this->catid == $row->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= $linkUrl ?>">
+                    <a <?= $this->catid == $row->get('id') ? 'class="active" aria-current="page" ' : '' ?>
+                        href="<?= $linkUrl ?>">
                         <?= $this->escape(stripslashes($row->get('title'))) ?> <span
                             class="item-count"><?= $row->get('articles', 0) ?></span>
                     </a>

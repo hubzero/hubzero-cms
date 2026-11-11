@@ -27,7 +27,9 @@ if ($this->disabled) : ?>
             <ul class="dropdown-menu">
                 <?php foreach ($this->options as $option) : ?>
                     <li>
-                        <a <?= $option->class ? 'class="' . $option->class . '"' : '' ?> <?= isset($option->attrs) ? $option->attrs : '' ?> href="<?= $option->href ?>"><?= $this->escape($option->title) ?></a>
+                        <a <?= $option->class ? 'class="' . $option->class . '"' : '' ?>
+                            <?= isset($option->attrs) ? $option->attrs : '' ?>
+                            href="<?= $option->href ?>"><?= $this->escape($option->title) ?></a>
                     </li>
                 <?php endforeach; ?>
             </ul>

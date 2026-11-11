@@ -28,11 +28,13 @@ $this
     <ul>
         <li>
             <?php $url = Route::url('index.php?option=' . $this->option . '&controller=imports'); ?>
-            <a<?= $this->controller == 'imports' ? ' class="active"' : '' ?> href="<?= $url ?>"><?= Lang::txt('COM_GROUPS_IMPORT_TITLE_IMPORTS') ?></a>
+            <a<?= $this->controller == 'imports' ? ' class="active"' : '' ?>
+                href="<?= $url ?>"><?= Lang::txt('COM_GROUPS_IMPORT_TITLE_IMPORTS') ?></a>
         </li>
         <li>
             <?php $url = Route::url('index.php?option=' . $this->option . '&controller=importhooks'); ?>
-            <a<?= $this->controller == 'importhooks' ? ' class="active"' : '' ?> href="<?= $url ?>"><?= Lang::txt('COM_GROUPS_IMPORT_HOOKS') ?></a>
+            <a<?= $this->controller == 'importhooks' ? ' class="active"' : '' ?>
+                href="<?= $url ?>"><?= Lang::txt('COM_GROUPS_IMPORT_HOOKS') ?></a>
         </li>
     </ul>
 </nav>

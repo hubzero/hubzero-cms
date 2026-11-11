@@ -92,7 +92,9 @@ if (!$no_html) {
 <?php
 $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
 ?>
-<form action="<?= $actionUrl ?>" method="post" <?= (!$no_html) ? 'name="adminForm" id="item-form"' : 'name="ajaxForm" id="ajax-form"' ?> enctype="multipart/form-data">
+<form action="<?= $actionUrl ?>" method="post"
+    <?= (!$no_html) ? 'name="adminForm" id="item-form"' : 'name="ajaxForm" id="ajax-form"' ?>
+    enctype="multipart/form-data">
     <?php if (!$no_html) { ?>
     <div class="grid">
     <div class="col span8">

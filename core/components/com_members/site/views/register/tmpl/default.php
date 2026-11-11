@@ -222,7 +222,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                         </div>
                     <?php } elseif ($this->registrationUsername != Field::STATE_HIDDEN) { ?>
                         <div class="form-group">
-                            <label for="userlogin" <?= !empty($this->xregistration->invalid['login']) ? 'class="fieldWithErrors"' : '' ?>>
+                            <label for="userlogin"
+                                <?= !empty($this->xregistration->invalid['login']) ? 'class="fieldWithErrors"' : '' ?>>
                                 <?= Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN') ?> <?= $this->registrationUsername == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
                                 <?php
                                 $fieldValue = $this->escape($this->registration['login']);
@@ -233,7 +234,9 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                     ? ' aria-invalid="true"'
                                     : '';
                                 ?>
-                                <input name="login" id="userlogin" class="form-control" type="text" maxlength="32" value="<?= $fieldValue ?>"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> aria-describedby="usernameHint" />
+                                <input name="login" id="userlogin" class="form-control" type="text" maxlength="32"
+                                    value="<?= $fieldValue ?>"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?>
+                                    aria-describedby="usernameHint" />
                                 <p class="hint"
                                     id="usernameHint"><?= Lang::txt('COM_MEMBERS_REGISTER_USERNAME_HINT') ?></p>
                                 <?= !empty($this->xregistration->invalid['login'])
@@ -260,7 +263,10 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                             ? ' aria-invalid="true"'
                                             : '';
                                         ?>
-                                        <input name="password" id="password" class="form-control" type="password" value="<?= $this->escape($this->registration['password']) ?>" autocomplete="off"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> aria-describedby="passrules" />
+                                        <input name="password" id="password" class="form-control" type="password"
+                                            value="<?= $this->escape($this->registration['password']) ?>"
+                                            autocomplete="off"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?>
+                                            aria-describedby="passrules" />
                                         <?php echo !empty($this->xregistration->invalid['password']) && !is_array($this->xregistration->invalid['password'])
                                                     ? '<span class="error" role="alert">'
                                                         . $this->xregistration->invalid['password'] . '</span>'

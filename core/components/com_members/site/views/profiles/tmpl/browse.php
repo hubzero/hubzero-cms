@@ -119,9 +119,19 @@ $sortDirSelected = function ($value) use ($view) {
                                     <label for="filter-value-<?php echo $this->escape($field->get('name')); ?>">
                                         <?php echo $this->escape($field->get('label')); ?>
                                         <?php if ($field->get('max')) { ?>
-                                            <input type="range" class="form-control" name="q[<?= $this->escape($field->get('name')) ?>]" id="filter-value-<?= $this->escape($field->get('name')) ?>" min="<?= $field->get('min', 0) ?>" <?= $field->get('max') ? ' max="' . $field->get('max') . '"' : '' ?> step="1" value="<?= $this->escape(implode('', $value)) ?>" />
+                                            <input type="range" class="form-control"
+                                                name="q[<?= $this->escape($field->get('name')) ?>]"
+                                                id="filter-value-<?= $this->escape($field->get('name')) ?>"
+                                                min="<?= $field->get('min', 0) ?>"
+                                                <?= $field->get('max') ? ' max="' . $field->get('max') . '"' : '' ?>
+                                                step="1" value="<?= $this->escape(implode('', $value)) ?>" />
                                         <?php } else { ?>
-                                            <input type="number" class="form-control" name="q[<?= $this->escape($field->get('name')) ?>]" id="filter-value-<?= $this->escape($field->get('name')) ?>" <?= $field->get('min') ? ' min="' . $field->get('min') . '"' : '' ?> <?= $field->get('max') ? ' max="' . $field->get('max') . '"' : '' ?> value="<?= $this->escape(implode('', $value)) ?>" />
+                                            <input type="number" class="form-control"
+                                                name="q[<?= $this->escape($field->get('name')) ?>]"
+                                                id="filter-value-<?= $this->escape($field->get('name')) ?>"
+                                                <?= $field->get('min') ? ' min="' . $field->get('min') . '"' : '' ?>
+                                                <?= $field->get('max') ? ' max="' . $field->get('max') . '"' : '' ?>
+                                                value="<?= $this->escape(implode('', $value)) ?>" />
                                         <?php } ?>
                                     </label>
                                 <?php } else { ?>

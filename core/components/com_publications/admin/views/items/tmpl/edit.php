@@ -412,7 +412,8 @@ $featuredSelected = function ($value) use ($view) {
                             ? ' selected="selected"'
                             : '';
                         ?>
-                        <option value="1" <?= $selectedAttr ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') ?></option>
+                        <option value="1"
+                            <?= $selectedAttr ?>><?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_NOT_AVAILABLE') ?></option>
                         <option
                             value="2"<?= $unpublishedReasonSelected(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR')) ?>>
                             <?= Lang::txt('COM_PUBLICATIONS_UNPUBLISHED_ERROR') ?>
@@ -599,13 +600,15 @@ $featuredSelected = function ($value) use ($view) {
                                             ? ' selected="selected"'
                                             : '';
                                         ?>
-                                        <option value="0" <?= $selectedAttr ?>><?= Lang::txt('COM_PUBLICATIONS_HIDE') ?></option>
+                                        <option value="0"
+                                            <?= $selectedAttr ?>><?= Lang::txt('COM_PUBLICATIONS_HIDE') ?></option>
                                         <?php
                                         $selectedAttr = ($params->get('show_' . $panel, $val) > 0)
                                             ? ' selected="selected"'
                                             : '';
                                         ?>
-                                        <option value="1" <?= $selectedAttr ?>><?= Lang::txt('COM_PUBLICATIONS_SHOW') ?></option>
+                                        <option value="1"
+                                            <?= $selectedAttr ?>><?= Lang::txt('COM_PUBLICATIONS_SHOW') ?></option>
                                     </select>
                                 </td>
                             </tr>

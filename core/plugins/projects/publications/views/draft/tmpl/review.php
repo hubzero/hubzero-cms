@@ -200,18 +200,23 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                                 );
                             ?>
                             <li>
-                                <span class="item-order"><input type="checkbox" name="contact[]" value="<?= $this->escape($author->id) ?>" <?= $author->repository_contact ? ' checked="checked"' : '' ?>/></span>
+                                <span class="item-order"><input type="checkbox" name="contact[]"
+                                    value="<?= $this->escape($author->id) ?>"
+                                    <?= $author->repository_contact ? ' checked="checked"' : '' ?>/></span>
                                     <span class="item-title"><?php echo $this->escape($name); ?> 
                                         <?php if (!empty($dept)) {?>
-                                        <span id=<?php echo $this->escape($author->id) . "_dept" ?> class="item-subtext"><?= ' - ' . $this->escape($dept) ?></span>
+                                        <span id=<?php echo $this->escape($author->id) . "_dept" ?>
+                                            class="item-subtext"><?= ' - ' . $this->escape($dept) ?></span>
                                         <?php } ?>
                                         
                                         <?php if (!empty($org)) {?>
-                                        <span id=<?php echo $this->escape($author->id) . "_org" ?> class="item-subtext"><?= ' - ' . $this->escape($org) ?></span>
+                                        <span id=<?php echo $this->escape($author->id) . "_org" ?>
+                                            class="item-subtext"><?= ' - ' . $this->escape($org) ?></span>
                                         <?php } ?>
                                         
                                         <?php if (!empty($email)) { ?>
-                                        <span id=<?php echo $this->escape($author->id) . "_email" ?> class="item-subtext"><?= ' - ' . $this->escape($email) ?></span>
+                                        <span id=<?php echo $this->escape($author->id) . "_email" ?>
+                                            class="item-subtext"><?= ' - ' . $this->escape($email) ?></span>
                                         <?php }?>
                                     </span>
                                 
@@ -236,7 +241,9 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                                     <?php
                                     $itemMsgText = "The contact is required to include $missingItem. Please ";
                                     ?>
-                                    <span style="display:none" id=<?php echo $this->escape($author->id) . "_missing_item" ?> class="item-msg"><?= $itemMsgText ?>
+                                    <span style="display:none"
+                                        id=<?php echo $this->escape($author->id) . "_missing_item" ?>
+                                        class="item-msg"><?= $itemMsgText ?>
                                     <?php
                                     $editauthorUrl = Route::url(
                                         $this->pub->link('editversionid')

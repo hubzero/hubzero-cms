@@ -102,19 +102,22 @@ if ($label == 'none') {
                                 'index.php?option=com_citations&task=browse' . $queryString . '&filter=',
                             );
                             ?>
-                            <li><a <?= $this->filters['filter'] == '' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= Lang::txt('COM_CITATIONS_ALL') ?></a></li>
+                            <li><a <?= $this->filters['filter'] == '' ? 'class="active"' : '' ?>
+                                href="<?= $browseUrl ?>"><?= Lang::txt('COM_CITATIONS_ALL') ?></a></li>
                             <?php
                             $browseUrl = Route::url(
                                 'index.php?option=com_citations&task=browse' . $queryString . '&filter=aff',
                             );
                             ?>
-                            <li><a <?= $this->filters['filter'] == 'aff' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= Lang::txt('COM_CITATIONS_AFFILIATED') ?></a></li>
+                            <li><a <?= $this->filters['filter'] == 'aff' ? 'class="active"' : '' ?>
+                                href="<?= $browseUrl ?>"><?= Lang::txt('COM_CITATIONS_AFFILIATED') ?></a></li>
                             <?php
                             $browseUrl = Route::url(
                                 'index.php?option=com_citations&task=browse' . $queryString . '&filter=nonaff',
                             );
                             ?>
-                            <li><a <?= $this->filters['filter'] == 'nonaff' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= Lang::txt('COM_CITATIONS_NONAFFILIATED') ?></a></li>
+                            <li><a <?= $this->filters['filter'] == 'nonaff' ? 'class="active"' : '' ?>
+                                href="<?= $browseUrl ?>"><?= Lang::txt('COM_CITATIONS_NONAFFILIATED') ?></a></li>
                         </ul>
                     </nav>
 

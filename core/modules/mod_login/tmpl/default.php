@@ -147,7 +147,9 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                     <input type="submit" value="<?= Lang::txt('Sign in') ?>" class="login-submit btn btn-primary" />
                     <?php if (Plugin::isEnabled('system', 'remember')) : ?>
                         <div class="remember-wrap">
-                            <input type="checkbox" class="remember option" name="remember" id="remember" value="yes" title="<?= Lang::txt('Remember Me') ?>" <?= ($remember_me_default) ? 'checked="checked"' : '' ?> />
+                            <input type="checkbox" class="remember option" name="remember" id="remember" value="yes"
+                                title="<?= Lang::txt('Remember Me') ?>"
+                                <?= ($remember_me_default) ? 'checked="checked"' : '' ?> />
                             <label for="remember"
                                 class="remember-me-label"><?= Lang::txt('MOD_LOGIN_KEEP_LOGGED_IN') ?></label>
                         </div>

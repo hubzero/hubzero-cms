@@ -499,7 +499,8 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     <div class="section-content">
                         <div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'); ?></div>
                         <div class="value">
-                            <a class="email" href="mailto:<?= MembersHtml::obfuscate($this->profile->get('email')) ?>" rel="nofollow">
+                            <a class="email" href="mailto:<?= MembersHtml::obfuscate($this->profile->get('email')) ?>"
+                                rel="nofollow">
                                 <?php echo MembersHtml::obfuscate($this->profile->get('email')); ?>
                             </a>
                         </div>

@@ -441,7 +441,9 @@ $allowCommentsChecked = function ($value) use ($view) {
                             <?php if ($this->page->access('manage')) { ?>
                                 <div class="form-group form-check">
                                     <label for="protected" class="form-check-label">
-                                        <input class="option form-check-input" type="checkbox" name="page[protected]" id="protected"<?= $this->page->isLocked() ? ' checked="checked"' : '' ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox" name="page[protected]"
+                                            id="protected"<?= $this->page->isLocked() ? ' checked="checked"' : '' ?>
+                                            value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_STATE'); ?>
                                     </label>
                                 </div>

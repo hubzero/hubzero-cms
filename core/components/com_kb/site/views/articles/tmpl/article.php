@@ -108,7 +108,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                             <?php
                             $linkUrl = Route::url('index.php?option=' . $this->option . '&section=all');
                             ?>
-                            <a<?= $this->catid <= 0 ? ' class="active" aria-current="page"' : '' ?> href="<?= $linkUrl ?>">
+                            <a<?= $this->catid <= 0 ? ' class="active" aria-current="page"' : '' ?>
+                                href="<?= $linkUrl ?>">
                                 <?php echo Lang::txt('COM_KB_ALL_ARTICLES'); ?>
                             </a>
                         </li>
@@ -131,7 +132,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                                 <?php
                                 $linkUrl = Route::url($row->link());
                                 ?>
-                                <a <?= $this->catid == $row->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= $linkUrl ?>">
+                                <a <?= $this->catid == $row->get('id') ? 'class="active" aria-current="page" ' : '' ?>
+                                    href="<?= $linkUrl ?>">
                                     <?= $this->escape(stripslashes($row->get('title'))) ?> <span
                                         class="item-count"><?= $row->get('articles', 0) ?></span>
                                 </a>

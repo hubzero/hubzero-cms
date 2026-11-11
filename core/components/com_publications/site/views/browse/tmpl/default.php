@@ -130,19 +130,25 @@ $categorySelected = function ($value) use ($view) {
                                 'index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs,
                             );
                             ?>
-                            <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= $linkUrl ?>" title="<?= Lang::txt('Sort by title') ?>" rel="nofollow">&darr; <?= Lang::txt('Title') ?></a></li>
+                            <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?>
+                                href="<?= $linkUrl ?>" title="<?= Lang::txt('Sort by title') ?>"
+                                rel="nofollow">&darr; <?= Lang::txt('Title') ?></a></li>
                             <?php
                             $linkUrl = Route::url(
                                 'index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs,
                             );
                             ?>
-                            <li><a<?= ($this->filters['sortby'] == 'date') ? ' class="active"' : '' ?> href="<?= $linkUrl ?>" title="<?= Lang::txt('Sort by date published') ?>" rel="nofollow">&darr; <?= Lang::txt('Published') ?></a></li>
+                            <li><a<?= ($this->filters['sortby'] == 'date') ? ' class="active"' : '' ?>
+                                href="<?= $linkUrl ?>" title="<?= Lang::txt('Sort by date published') ?>"
+                                rel="nofollow">&darr; <?= Lang::txt('Published') ?></a></li>
                             <?php if ($this->config->get('show_ranking')) {
                                 $browseUrl = Route::url(
                                     'index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs,
                                 );
                                 ?>
-                            <li><a<?= ($this->filters['sortby'] == 'ranking') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" title="<?= Lang::txt('Sort by ranking') ?>" rel="nofollow">&darr; <?= Lang::txt('Ranking') ?></a></li>
+                            <li><a<?= ($this->filters['sortby'] == 'ranking') ? ' class="active"' : '' ?>
+                                href="<?= $browseUrl ?>" title="<?= Lang::txt('Sort by ranking') ?>"
+                                rel="nofollow">&darr; <?= Lang::txt('Ranking') ?></a></li>
                             <?php } ?>
                         </ul>
                         <?php if (count($this->categories) > 0) { ?>

@@ -91,7 +91,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                             <?php
                             $linkUrl = Route::url($this->category->link() . '&sort=recent' . $carry);
                             ?>
-                            <a<?= ($this->filters['sort'] == 'recent') ? ' class="active" aria-current="page"' : '' ?> href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_KB_SORT_BY_RECENT') ?>">
+                            <a<?= ($this->filters['sort'] == 'recent') ? ' class="active" aria-current="page"' : '' ?>
+                                href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_KB_SORT_BY_RECENT') ?>">
                                 <?php echo Lang::txt('COM_KB_SORT_RECENT'); ?>
                             </a>
                         </li>

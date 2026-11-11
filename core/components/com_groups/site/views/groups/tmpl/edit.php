@@ -181,7 +181,8 @@ $discoverabilityChecked = function ($value) use ($view) {
                                         $fieldValue = rtrim(Request::root(true), '/')
                                             . str_replace(PATH_ROOT, '', $logo);
                                         ?>
-                                        <option <?= $sel ?> value="<?= $fieldValue ?>"><?= str_replace($remove, '', $logo) ?></option>
+                                        <option <?= $sel ?>
+                                            value="<?= $fieldValue ?>"><?= str_replace($remove, '', $logo) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>

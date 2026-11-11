@@ -54,7 +54,9 @@ if (!$this->getError()) {
         <input type="radio" name="action" value="<?= 'publist' ?>" <?= $this->publicStamp->listed ? 'checked="checked"' : '' ?> /> <?= Lang::txt('COM_PROJECTS_NOTES_PUB_LIST') ?>
         </label>
         <label class="block">
-        <input type="radio" name="action" value="<?= 'unlist' ?>" <?= !$this->publicStamp->listed ? 'checked="checked"' : '' ?>  /> <?= Lang::txt('COM_PROJECTS_NOTES_PUB_UNLIST') ?>
+        <input type="radio" name="action" value="<?= 'unlist' ?>"
+            <?= !$this->publicStamp->listed ? 'checked="checked"' : '' ?>
+             /> <?= Lang::txt('COM_PROJECTS_NOTES_PUB_UNLIST') ?>
         </label>
         <p class="submitarea">
             <input type="submit" class="btn" value="<?php echo Lang::txt('COM_PROJECTS_SAVE_MY_CHOICE'); ?>" />

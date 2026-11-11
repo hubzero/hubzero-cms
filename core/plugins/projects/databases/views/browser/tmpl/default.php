@@ -34,7 +34,8 @@ $route = $this->model->isProvisioned()
 $p_url = Route::url($route . '&active=databases');
 
 ?>
-<ul id="c-browser" <?= count($items) == 0 && isset($this->attachments) && count($this->attachments) == 0 ? 'class="hidden"' : '' ?> >
+<ul id="c-browser"
+    <?= count($items) == 0 && isset($this->attachments) && count($this->attachments) == 0 ? 'class="hidden"' : '' ?> >
 <?php
 if (count($items) > 0) { ?>
     <?php

@@ -129,7 +129,8 @@ if ($assets->total() > 0) {
                 }
                 ?>
                 <li class="type-<?php echo $asset->get('type'); ?>">
-                    <a href="<?= $this->escape($assetHref) ?>" <?= ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : '' ?>>
+                    <a href="<?= $this->escape($assetHref) ?>"
+                        <?= ($asset->isLink()) ? ' rel="external nofollow noreferrer"' : '' ?>>
                         <?php echo $this->escape($asset->get('filename')); ?>
                     </a>
                     <span class="file-meta">

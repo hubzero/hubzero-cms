@@ -86,14 +86,16 @@ if (isset($this->messages)) {
                                 ? 'class="active"'
                                 : '';
                             ?>
-                            <li><a <?= $classAttr ?> href="<?= $browseUrl ?>"><?= Lang::txt('PLG_GROUPS_CITATIONS_ALL') ?></a></li>
+                            <li><a <?= $classAttr ?>
+                                href="<?= $browseUrl ?>"><?= Lang::txt('PLG_GROUPS_CITATIONS_ALL') ?></a></li>
                             <?php
                             $browseUrl = Route::url(
                                 $base . '&action=browse' . $queryString . '&filters[filter]=member',
                             );
                             $linkText = Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED');
                             ?>
-                            <li><a <?= $this->filters['filter'] == 'member' ? 'class="active"' : '' ?> href="<?= $browseUrl ?>"><?= $linkText ?></a></li>
+                            <li><a <?= $this->filters['filter'] == 'member' ? 'class="active"' : '' ?>
+                                href="<?= $browseUrl ?>"><?= $linkText ?></a></li>
                         </ul>
                     </nav>
                     <?php endif; ?>

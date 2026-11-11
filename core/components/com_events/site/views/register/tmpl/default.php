@@ -302,25 +302,29 @@ $this
                     ? 'checked="checked"'
                     : '';
                 ?>
-                <label><input type="radio" class="option" name="register[degree]" value="bachelors" <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_BACHELORS') ?></label>
+                <label><input type="radio" class="option" name="register[degree]" value="bachelors"
+                    <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_BACHELORS') ?></label>
                 <?php
                 $checkedAttr = (isset($this->register['degree']) && $this->register['degree'] == 'masters')
                     ? 'checked="checked"'
                     : '';
                 ?>
-                <label><input type="radio" class="option" name="register[degree]" value="masters" <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_MASTERS') ?></label>
+                <label><input type="radio" class="option" name="register[degree]" value="masters"
+                    <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_MASTERS') ?></label>
                 <?php
                 $checkedAttr = (isset($this->register['degree']) && $this->register['degree'] == 'doctoral')
                     ? 'checked="checked"'
                     : '';
                 ?>
-                <label><input type="radio" class="option" name="register[degree]" value="doctoral" <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_DOCTORAL') ?></label>
+                <label><input type="radio" class="option" name="register[degree]" value="doctoral"
+                    <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_DOCTORAL') ?></label>
                 <?php
                 $checkedAttr = (isset($this->register['degree']) && $this->register['degree'] == 'none of the above')
                     ? 'checked="checked"'
                     : '';
                 ?>
-                <label><input type="radio" class="option" name="register[degree]" value="none of the above" <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_NULL') ?></label>
+                <label><input type="radio" class="option" name="register[degree]" value="none of the above"
+                    <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DEGREE_OPTION_NULL') ?></label>
             </fieldset>
             <?php } ?>
 
@@ -332,19 +336,22 @@ $this
                     ? 'checked="checked"'
                     : '';
                 ?>
-                <label><input type="radio" name="register[sex]" value="male" class="option" <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_MALE') ?></label>
+                <label><input type="radio" name="register[sex]" value="male" class="option"
+                    <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_MALE') ?></label>
                 <?php
                 $checkedAttr = (isset($this->register['sex']) && $this->register['sex'] == 'female')
                     ? 'checked="checked"'
                     : '';
                 ?>
-                <label><input type="radio" name="register[sex]" value="female" class="option" <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_FEMALE') ?></label>
+                <label><input type="radio" name="register[sex]" value="female" class="option"
+                    <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_FEMALE') ?></label>
                 <?php
                 $checkedAttr = (isset($this->register['sex']) && $this->register['sex'] == 'refused')
                     ? 'checked="checked"'
                     : '';
                 ?>
-                <label><input type="radio" name="register[sex]" value="refused" class="option" <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_NULL') ?></label>
+                <label><input type="radio" name="register[sex]" value="refused" class="option"
+                    <?= $checkedAttr ?> /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_GENDER_OPTION_NULL') ?></label>
             </fieldset>
             <?php } ?>
 

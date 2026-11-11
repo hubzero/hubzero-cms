@@ -271,7 +271,10 @@ $repohostChecked = function ($value) use ($view) {
 
                     <div class="form-group form-check">
                         <label for="tool_repohost_svnlocal" class="form-check-label">
-                            <input readonly type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?= ($this->defaults['repohost'] == 'svnLocal') ? 'checked="checked"' : "disabled" ?> class="option form-check-input" />
+                            <input readonly type="radio" name="tool[repohost]" id="tool_repohost_svnlocal"
+                                value="svnLocal"
+                                <?= ($this->defaults['repohost'] == 'svnLocal') ? 'checked="checked"' : "disabled" ?>
+                                class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_SUBVERSION'); ?>
                         </label>
                     </div>
@@ -319,7 +322,9 @@ $repohostChecked = function ($value) use ($view) {
                     <?php if ($this->config->get('jupyter', 1)) { ?>
                         <div class="form-group form-check">
                             <label for="tool_publishType_jupyter"  class="form-check-label">
-                                <input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?= $publishTypeChecked('jupyter') ?> class="option form-check-input" />
+                                <input type="radio" name="tool[publishType]" id="tool_publishType_jupyter"
+                                    value="jupyter" <?= $publishTypeChecked('jupyter') ?>
+                                    class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_JUP'); ?>
                             </label>
                     </div>
@@ -362,7 +367,8 @@ $repohostChecked = function ($value) use ($view) {
                     <?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
                         <div class="form-group form-check">
                             <label for="tool_repohost_gitlocal" class="form-check-label">
-                                <input type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?= $repohostChecked('gitLocal') ?> class="option form-check-input" />
+                                <input type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal"
+                                    <?= $repohostChecked('gitLocal') ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_GIT'); ?>
                             </label>
                         </div>
@@ -422,7 +428,9 @@ $repohostChecked = function ($value) use ($view) {
                     <?php if ($this->config->get('jupyter', 1)) { ?>
                         <div class="form-group form-check">
                             <label for="tool_publishType_jupyter"  class="form-check-label">
-                                <input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?= $publishTypeChecked('jupyter') ?> class="option form-check-input" />
+                                <input type="radio" name="tool[publishType]" id="tool_publishType_jupyter"
+                                    value="jupyter" <?= $publishTypeChecked('jupyter') ?>
+                                    class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_JUP'); ?>
                             </label>
                     </div>

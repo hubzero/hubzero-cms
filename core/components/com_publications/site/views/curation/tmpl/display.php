@@ -194,7 +194,8 @@ $this
                                                 <?php
                                                 $linkUrl = Route::url($route . '&id=' . $row->id);
                                                 ?>
-                                                <a href="<?= $linkUrl ?>" <?= $abstract ? 'title="' . $this->escape($abstract) . '"' : '' ?>>
+                                                <a href="<?= $linkUrl ?>"
+                                                    <?= $abstract ? 'title="' . $this->escape($abstract) . '"' : '' ?>>
                                         <?php } ?>
                                         <?php echo $this->escape($row->title); ?>
                                         <?php if ($row->state == 5) { ?>

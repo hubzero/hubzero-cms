@@ -135,11 +135,13 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
                         data-uid="<?= $this->member->get('id') ?>">
                         <?php foreach ($this->formats as $format) : ?>
                                 <?php if ($format->style != 'custom-member-' . $this->member->get('id')) : ?>
-                            <option <?= $this->currentFormat->id == $format->id ? 'selected' : '' ?> value="<?= $format->id ?>" data-format="<?= $format->format ?>">
+                            <option <?= $this->currentFormat->id == $format->id ? 'selected' : '' ?>
+                                value="<?= $format->id ?>" data-format="<?= $format->format ?>">
                                     <?php echo $format->style; ?>
                             </option>
                                 <?php elseif ($format->style == 'custom-member-' . $this->member->get('id')) : ?>
-                                <option <?= $this->currentFormat->id == $format->id ? 'selected' : '' ?> value="<?= $format->id ?>" data-format="<?= $format->format ?>">
+                                <option <?= $this->currentFormat->id == $format->id ? 'selected' : '' ?>
+                                    value="<?= $format->id ?>" data-format="<?= $format->format ?>">
                                     <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_CUSTOM_FORMAT'); ?>
                                 </option>
                                 <?php endif; ?> 

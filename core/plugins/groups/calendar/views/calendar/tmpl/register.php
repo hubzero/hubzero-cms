@@ -454,7 +454,8 @@ $registerUrl = Route::url(
             <legend><?php echo Lang::txt('Disability/Dietary needs'); ?></legend>
             <?php if ($this->params->get('show_disability')) : ?>
                 <label>
-                    <input type="checkbox" class="option" name="disability" value="yes" <?= isset($this->disability) && $this->disability == 'yes' ? 'checked="checked"' : '' ?> />
+                    <input type="checkbox" class="option" name="disability" value="yes"
+                        <?= isset($this->disability) && $this->disability == 'yes' ? 'checked="checked"' : '' ?> />
                     <?= Lang::txt('I have auxiliary aids or services due to a disability. Please contact me.') ?>
                 </label>
             <?php endif; ?>

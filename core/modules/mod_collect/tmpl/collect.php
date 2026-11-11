@@ -54,7 +54,8 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
                         if ($this->myboards) {
                             foreach ($this->myboards as $board) {
                                 ?>
-                                <option<?= $i == 0 ? ' selected="selected"' : '' ?> value="<?= $this->escape($board->id) ?>"
+                                <option<?= $i == 0 ? ' selected="selected"' : '' ?>
+                                    value="<?= $this->escape($board->id) ?>"
                                 ><?php echo $this->escape(stripslashes($board->title)); ?></option>
                                 <?php
                                 $i++;
@@ -73,7 +74,8 @@ $url = implode('/', array_map('rawurlencode', explode('/', $url)));
                                     <?php
                                     foreach ($boards as $board) {
                                         ?>
-                                        <option<?= $i == 0 ? ' selected="selected"' : '' ?> value="<?= $this->escape($board->id) ?>"
+                                        <option<?= $i == 0 ? ' selected="selected"' : '' ?>
+                                            value="<?= $this->escape($board->id) ?>"
                                         ><?php echo $this->escape(stripslashes($board->title)); ?></option>
                                         <?php
                                         $i++;

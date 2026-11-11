@@ -50,7 +50,8 @@ if (count($this->folders) > 0) { ?>
             <ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
                 <?php
                 foreach ($folder->queries()->order('ordering', 'asc')->rows() as $query) { ?>
-                    <li id="query_<?= $this->escape($query->id) ?>" <?= $this->show == $query->id ? ' class="active"' : '' ?>>
+                    <li id="query_<?= $this->escape($query->id) ?>"
+                        <?= $this->show == $query->id ? ' class="active"' : '' ?>>
                         <?php
                         $displayUrl = Route::url(
                             'index.php?option=' . $this->option . '&controller=tickets&task=display&show=' . $query->id

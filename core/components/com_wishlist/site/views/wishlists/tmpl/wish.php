@@ -554,14 +554,18 @@ $categoryChecked = function ($value) use ($view) {
 
                             <div class="form-group form-check">
                                 <label for="field-status-accepted" class="form-check-label">
-                                    <input type="radio" name="status" id="field-status-accepted" class="form-check-input" value="accepted" <?= ($this->wish->isAccepted()) ? 'checked="checked"' : '' ?> />
+                                    <input type="radio" name="status" id="field-status-accepted"
+                                        class="form-check-input" value="accepted"
+                                        <?= ($this->wish->isAccepted()) ? 'checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_ACCEPTED'); ?>
                                 </label>
                             </div>
 
                             <div class="form-group form-check">
                                 <label for="field-status-rejected" class="form-check-label">
-                                    <input type="radio" name="status" id="field-status-rejected" class="form-check-input" value="rejected" <?= ($this->wish->isRejected()) ? 'checked="checked"' : '' ?> />
+                                    <input type="radio" name="status" id="field-status-rejected"
+                                        class="form-check-input" value="rejected"
+                                        <?= ($this->wish->isRejected()) ? 'checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_REJECTED'); ?>
                                 </label>
                             </div>

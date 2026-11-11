@@ -104,7 +104,8 @@ $todoContent = $this->row->get('details')
                                 <?php
                                 $selectedAttr = $list->color == $color ? 'selected="selected"' : '';
                                 ?>
-                                <option value="<?= $list->color ?>" <?= $selectedAttr ?>><?= stripslashes($list->todolist) ?></option>
+                                <option value="<?= $list->color ?>"
+                                    <?= $selectedAttr ?>><?= stripslashes($list->todolist) ?></option>
                             <?php } ?>
                             </select>
                         </label>

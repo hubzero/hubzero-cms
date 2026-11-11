@@ -37,7 +37,8 @@ if ($this->get('new_pubs')) {
 <?php
 $titleAttr = $row->get('abstract') ? 'title="' . $this->escape($row->get('abstract')) . '"' : '';
 ?>
-<td><a href="<?= $pubUrl ?>" <?= $titleAttr ?>><?= $this->escape($row->get('title')) ?></a> v.<?= $this->escape($row->get('version_label')) ?>
+<td><a href="<?= $pubUrl ?>"
+    <?= $titleAttr ?>><?= $this->escape($row->get('title')) ?></a> v.<?= $this->escape($row->get('version_label')) ?>
 </td>
 <td><?php echo $row->get('id'); ?></td>
 <td class="restype"><?php echo $row->get('base'); ?></td>

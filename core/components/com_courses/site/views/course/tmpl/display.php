@@ -141,7 +141,9 @@ $this
 
                     <div class="form-group form-check">
                         <label for="params-allow_forks" class="form-check-label">
-                            <input type="checkbox" class="option form-check-input" name="params[allow_forks]" id="params-allow_forks" <?= $this->course->config('allow_forks') ? 'checked="checked"' : '' ?> value="1" />
+                            <input type="checkbox" class="option form-check-input" name="params[allow_forks]"
+                                id="params-allow_forks"
+                                <?= $this->course->config('allow_forks') ? 'checked="checked"' : '' ?> value="1" />
                             <?php echo Lang::txt('COM_COURSES_ALLOW_FORKS'); ?>
                         </label>
                         <span class="hint"><?php echo Lang::txt('COM_COURSES_ALLOW_FORKS_HINT'); ?></span>
@@ -202,7 +204,8 @@ $this
                             );
                             ?>
                             <a href="<?= $browseUrl ?>">
-                                <img src="<?= $group->getLogo() ?>" <?= $atts ?> alt="<?= $this->escape(stripslashes($group->get('description'))) ?>" />
+                                <img src="<?= $group->getLogo() ?>" <?= $atts ?>
+                                    alt="<?= $this->escape(stripslashes($group->get('description'))) ?>" />
                             </a>
                         </p>
                         <p class="course-group-description">

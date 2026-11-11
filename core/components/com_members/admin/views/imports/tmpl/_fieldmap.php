@@ -54,7 +54,8 @@ if ($this->import->get('id')) { ?>
                                 $selectedAttr = $mapping['field'] == 'password' ? 'selected="selected"' : '';
                                 ?>
                                 <option value="password" <?= $selectedAttr ?>>password</option>
-                                <option value="email" <?= $mapping['field'] == 'email' ? 'selected="selected"' : '' ?>>email</option>
+                                <option value="email"
+                                    <?= $mapping['field'] == 'email' ? 'selected="selected"' : '' ?>>email</option>
                                 <?php
                                 $selectedAttr = $mapping['field'] == 'activation' ? 'selected="selected"' : '';
                                 ?>
@@ -67,7 +68,8 @@ if ($this->import->get('id')) { ?>
                                 $selectedAttr = $mapping['field'] == 'usageAgreement' ? 'selected="selected"' : '';
                                 ?>
                                 <option value="usageAgreement" <?= $selectedAttr ?>>usageAgreement</option>
-                                <option value="note" <?= $mapping['field'] == 'note' ? 'selected="selected"' : '' ?>>note</option>
+                                <option value="note"
+                                    <?= $mapping['field'] == 'note' ? 'selected="selected"' : '' ?>>note</option>
                                 <?php
                                 $selectedAttr = $mapping['field'] == 'homeDirectory' ? 'selected="selected"' : '';
                                 ?>
@@ -76,7 +78,8 @@ if ($this->import->get('id')) { ?>
                                 $selectedAttr = $mapping['field'] == 'modifiedDate' ? 'selected="selected"' : '';
                                 ?>
                                 <option value="modifiedDate" <?= $selectedAttr ?>>modifiedDate</option>
-                                <option value="block" <?= $mapping['field'] == 'block' ? 'selected="selected"' : '' ?>>block</option>
+                                <option value="block"
+                                    <?= $mapping['field'] == 'block' ? 'selected="selected"' : '' ?>>block</option>
                                 <?php
                                 $selectedAttr = $mapping['field'] == 'approved' ? 'selected="selected"' : '';
                                 ?>
@@ -89,12 +92,14 @@ if ($this->import->get('id')) { ?>
                                 $selectedAttr = $mapping['field'] == 'ftpShell' ? 'selected="selected"' : '';
                                 ?>
                                 <option value="ftpShell" <?= $selectedAttr ?>>ftpShell</option>
-                                <option value="groups" <?= $mapping['field'] == 'groups' ? 'selected="selected"' : '' ?>>groups</option>
+                                <option value="groups"
+                                    <?= $mapping['field'] == 'groups' ? 'selected="selected"' : '' ?>>groups</option>
                                 <?php
                                 $selectedAttr = $mapping['field'] == 'projects' ? 'selected="selected"' : '';
                                 ?>
                                 <option value="projects" <?= $selectedAttr ?>>projects</option>
-                                <option value="access" <?= $mapping['field'] == 'access' ? 'selected="selected"' : '' ?>>access</option>
+                                <option value="access"
+                                    <?= $mapping['field'] == 'access' ? 'selected="selected"' : '' ?>>access</option>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_REGISTER'); ?>">
                                 <?php
@@ -111,7 +116,8 @@ if ($this->import->get('id')) { ?>
                                 <option value="registerDate" <?= $selectedAttr ?>>registerDate</option>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_NAME'); ?>">
-                                <option value="name" <?= $mapping['field'] == 'name' ? 'selected="selected"' : '' ?>>name</option>
+                                <option value="name"
+                                    <?= $mapping['field'] == 'name' ? 'selected="selected"' : '' ?>>name</option>
                                 <?php
                                 $selectedAttr = $mapping['field'] == 'givenName' ? 'selected="selected"' : '';
                                 ?>
@@ -120,7 +126,8 @@ if ($this->import->get('id')) { ?>
                                 $selectedAttr = $mapping['field'] == 'middleName' ? 'selected="selected"' : '';
                                 ?>
                                 <option value="middleName" <?= $selectedAttr ?>>middleName</option>
-                                <option value="surname" <?= $mapping['field'] == 'surname' ? 'selected="selected"' : '' ?>>surname</option>
+                                <option value="surname"
+                                    <?= $mapping['field'] == 'surname' ? 'selected="selected"' : '' ?>>surname</option>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_PROFILE'); ?>">
                                 <?php

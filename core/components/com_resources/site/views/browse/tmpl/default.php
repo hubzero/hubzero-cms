@@ -138,7 +138,9 @@ $typeSelected = function ($value) use ($view) {
                                     'index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs,
                                 );
                                 ?>
-                                <a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" rel="nofollow"><?= Lang::txt('COM_RESOURCES_SORT_TITLE') ?></a>
+                                <a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?>
+                                    href="<?= $browseUrl ?>"
+                                    rel="nofollow"><?= Lang::txt('COM_RESOURCES_SORT_TITLE') ?></a>
                             </li>
                             <li>
                                 <?php
@@ -146,7 +148,9 @@ $typeSelected = function ($value) use ($view) {
                                     'index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs,
                                 );
                                 ?>
-                                <a<?= ($this->filters['sortby'] == 'date') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" rel="nofollow"><?= Lang::txt('COM_RESOURCES_SORT_PUBLISHED') ?></a>
+                                <a<?= ($this->filters['sortby'] == 'date') ? ' class="active"' : '' ?>
+                                    href="<?= $browseUrl ?>"
+                                    rel="nofollow"><?= Lang::txt('COM_RESOURCES_SORT_PUBLISHED') ?></a>
                             </li>
                             <?php if ($this->config->get('show_ranking')) { ?>
                                 <li>
@@ -155,7 +159,9 @@ $typeSelected = function ($value) use ($view) {
                                         'index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs,
                                     );
                                     ?>
-                                    <a<?= ($this->filters['sortby'] == 'ranking') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" rel="nofollow"><?= Lang::txt('COM_RESOURCES_SORT_RANKING') ?></a>
+                                    <a<?= ($this->filters['sortby'] == 'ranking') ? ' class="active"' : '' ?>
+                                        href="<?= $browseUrl ?>"
+                                        rel="nofollow"><?= Lang::txt('COM_RESOURCES_SORT_RANKING') ?></a>
                                 </li>
                             <?php } ?>
                         </ul>

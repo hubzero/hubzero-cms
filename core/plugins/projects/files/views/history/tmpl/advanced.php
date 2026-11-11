@@ -203,13 +203,17 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                                 $v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name'],
                             );
                             ?>
-                        <input type="radio" value="<?= $fieldValue ?>" name="old" <?= $oldest ? 'checked="checked"' : '' ?> <?= $last ? 'disabled="disabled"' : '' ?> class="diff-old" />
+                        <input type="radio" value="<?= $fieldValue ?>" name="old"
+                            <?= $oldest ? 'checked="checked"' : '' ?> <?= $last ? 'disabled="disabled"' : '' ?>
+                            class="diff-old" />
                             <?php
                             $fieldValue = urlencode(
                                 $v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name'],
                             );
                             ?>
-                        <input type="radio" value="<?= $fieldValue ?>" name="new" <?= $last ? 'checked="checked"' : '' ?> <?= $oldest ? 'disabled="disabled"' : '' ?> class="diff-new" />
+                        <input type="radio" value="<?= $fieldValue ?>" name="new"
+                            <?= $last ? 'checked="checked"' : '' ?> <?= $oldest ? 'disabled="disabled"' : '' ?>
+                            class="diff-new" />
                         <?php } ?>
                     </td>
                     <?php } ?>
