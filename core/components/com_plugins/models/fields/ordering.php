@@ -135,7 +135,7 @@ class Ordering extends Field
         } else {
             if ($neworder > 0) {
                 $text = Lang::txt('JGLOBAL_NEWITEMSLAST_DESC');
-            } elseif ($neworder <= 0) {
+            } else {
                 $text = Lang::txt('JGLOBAL_NEWITEMSFIRST_DESC');
             }
             $html = '<input type="hidden" name="' . $name . '" value="' . (int) $selected . '" />'

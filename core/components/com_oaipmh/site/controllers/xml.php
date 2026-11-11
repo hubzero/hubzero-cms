@@ -181,6 +181,7 @@ class Xml extends SiteController
 
             case 'ListSets':
                 if (!empty($resumption)) {
+                    $data = null;
                     try {
                         $data = $service->decodeToken($resumption);
                     } catch (\Exception $e) {
@@ -253,6 +254,7 @@ class Xml extends SiteController
 
             case 'ListIdentifiers':
                 if (!empty($resumption)) {
+                    $data = null;
                     try {
                         $data = $service->decodeToken($resumption);
                     } catch (\Exception $e) {
@@ -308,6 +310,7 @@ class Xml extends SiteController
 
             case 'ListRecords':
                 if (!empty($resumption)) {
+                    $data = null;
                     try {
                         $data = $service->decodeToken($resumption);
                     } catch (\Exception $e) {
