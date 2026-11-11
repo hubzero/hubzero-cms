@@ -237,7 +237,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/site/views/projects/tmpl/_item.php:319`](../../../core/components/com_projects/site/views/projects/tmpl/_item.php#L319) with `[$this->row]`
+- [`core/components/com_projects/site/views/projects/tmpl/_item.php:320`](../../../core/components/com_projects/site/views/projects/tmpl/_item.php#L320) with `[$this->row]`
 
 No plugin in the source tree listens for this event.
 
