@@ -16,8 +16,7 @@ $content = \Hubzero\Utility\Str::truncate(strip_tags($this->post->get('comment')
 ?>
 <li class="forum-entry">
     <p class="title">
-        <a href="<?php echo Route::url($this->post->link()); ?>
-        "><?php echo $this->escape(stripslashes($this->post->get('title')));?></a>
+        <a href="<?php echo Route::url($this->post->link()); ?>"><?php echo $this->escape(stripslashes($this->post->get('title')));?></a>
     </p>
     <p class="details">
         <?php echo Lang::txt('PLG_TAGS_FORUM')

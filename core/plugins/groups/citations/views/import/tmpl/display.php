@@ -27,8 +27,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=c
             <?php //}?>
         <?php endif; ?>
         <ul id="steps">
-            <li><a href="<?php echo Route::url($base . '&action=import'); ?>
-            " class="active"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1');?>
+            <li><a href="<?php echo Route::url($base . '&action=import'); ?>" class="active"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1');?>
             <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP1_NAME');?></span></a></li>
             <li><a><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2'); ?>
             <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_STEP2_NAME');?></span></a></li>

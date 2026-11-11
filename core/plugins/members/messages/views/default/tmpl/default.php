@@ -70,15 +70,13 @@ $no_html = Request::getInt("no_html", 0);
     <ul id="message-toolbar">
         <?php foreach ($sections as $s) : ?>
             <?php $sel = ($this->task == $s['name']) ? 'active' : ''; ?>
-            <li><a class="<?php echo $s['name'] . ' ' . $sel; ?>" title="<?php echo $s['title']; ?>
-            " href="<?php echo $s['link'];?>"><?php echo $s['title']; ?></a></li>
+            <li><a class="<?php echo $s['name'] . ' ' . $sel; ?>" title="<?php echo $s['title']; ?>" href="<?php echo $s['link'];?>"><?php echo $s['title']; ?></a></li>
         <?php endforeach; ?>
     </ul>
     <ul id="message-options">
         <?php foreach ($options as $o) : ?>
             <?php $sel = ($this->task == $o['name']) ? 'active' : ''; ?>
-            <li><a class="<?php echo $o['name'] . ' ' . $sel; ?>" title="<?php echo $o['title']; ?>
-            " href="<?php echo $o['link'];?>"><?php echo $o['title']; ?></a></li>
+            <li><a class="<?php echo $o['name'] . ' ' . $sel; ?>" title="<?php echo $o['title']; ?>" href="<?php echo $o['link'];?>"><?php echo $o['title']; ?></a></li>
         <?php endforeach; ?>
     </ul>
     <br class="clear" />

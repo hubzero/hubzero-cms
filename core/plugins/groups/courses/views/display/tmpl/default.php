@@ -31,13 +31,9 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                 ?>
                 <ul class="entries-menu order-options">
                     <li><a<?php echo ($this->filters['sortby'] == 'title') ? ' class="active"' : ''; ?>
-                    href="<?php echo Route::url($base . '&sortby=title' . $qs);?>
-                    " title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_TITLE');?>
-                    "><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_TITLE');?></a></li>
+                    href="<?php echo Route::url($base . '&sortby=title' . $qs);?>" title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_TITLE');?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_TITLE');?></a></li>
                     <li><a<?php echo ($this->filters['sortby'] == 'popularity') ? ' class="active"' : ''; ?>
-                    href="<?php echo Route::url($base . '&sortby=popularity' . $qs);?>
-                    " title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_ENROLLED');?>
-                    "><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_ENROLLED');?></a></li>
+                    href="<?php echo Route::url($base . '&sortby=popularity' . $qs);?>" title="<?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_BY_ENROLLED');?>"><?php echo Lang::txt('PLG_GROUPS_COURSES_SORT_ENROLLED');?></a></li>
                 </ul>
             </nav>
 

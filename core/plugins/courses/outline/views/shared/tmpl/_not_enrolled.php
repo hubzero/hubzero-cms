@@ -57,8 +57,7 @@ if ($cost = $oparams->get('store_price', false)) {
             <strong><?php echo Lang::txt('I\'m convinced...now what?'); ?></strong>
         </p>
         <p>
-            <a href="<?php echo Route::url($this->course->offering()->link('enroll')); ?>
-            ">Enroll for <?php echo $price;?>!</a>
+            <a href="<?php echo Route::url($this->course->offering()->link('enroll')); ?>">Enroll for <?php echo $price;?>!</a>
         </p>
         <p>
             <strong><?php echo Lang::txt('Want more details about this and similar courses?'); ?></strong>

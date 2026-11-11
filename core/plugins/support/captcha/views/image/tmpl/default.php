@@ -41,8 +41,7 @@ if (Request::isSecure()) {
                     alt="CAPTCHA Image" />
                 <a class="tooltips" href="#"
                     onclick="reloadCapthcha<?php echo $this->total; ?>(<?php echo $this->total; ?>);return false;"
-                    title="<?php echo Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?>
-                    "><?php echo Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA');?></a>
+                    title="<?php echo Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA'); ?>"><?php echo Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA');?></a>
                 <script type="text/javascript">
                     //<![CDATA[
                     function reloadCapthcha<?php echo $this->total; ?>(instanceNo) {

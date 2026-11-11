@@ -40,8 +40,7 @@ $team = $this->model->team($filters = ['status' => 1]);
             <?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_OWNER_CHOOSE_INDIVIDUAL'); ?>:
             <select name="owned_by_user" class="block">
         <?php foreach ($team as $member) {  ?>
-            <option value="<?php echo $member->userid; ?>
-            " <?= $member->userid == $this->model->get('owned_by_user') ? 'selected="selected"' : '' ?>><?= $member->fullname ?>
+            <option value="<?php echo $member->userid; ?>" <?= $member->userid == $this->model->get('owned_by_user') ? 'selected="selected"' : '' ?>><?= $member->fullname ?>
                            <?= $member->userid == $this->model->get('owned_by_user')
                                ? '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')'
                                : '' ?></option>
@@ -62,8 +61,7 @@ $team = $this->model->team($filters = ['status' => 1]);
                     continue;
                 }
                 $used[] = $g->gidNumber; ?>
-            <option value="<?php echo $g->gidNumber; ?>
-            " <?= $g->gidNumber == $this->model->get('owned_by_group') ? 'selected="selected"' : '' ?>><?php echo Str::truncate($g->description, 30)
+            <option value="<?php echo $g->gidNumber; ?>" <?= $g->gidNumber == $this->model->get('owned_by_group') ? 'selected="selected"' : '' ?>><?php echo Str::truncate($g->description, 30)
                                . ' ('
                                . $g->cn
                                . ')'; ?></option>
