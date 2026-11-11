@@ -125,10 +125,12 @@ Two things to know:
 
   <!--include: core/libraries/Hubzero/Pagination/Views/paginator.php:103-118-->
 
-  The strings are passed to `Lang::txt()` as literal English — `'Previous page'`
-  and `'Next page'` — and no such keys exist in any `en-GB.ini`, so `Lang::txt()`
-  returns them unchanged and they cannot be translated. The *Go* button next to
-  the limit select is not passed through `Lang::txt()` at all.
+  The labels are language keys, `JLIB_HTML_PAGINATION_PREVIOUS_PAGE` and
+  `JLIB_HTML_PAGINATION_NEXT_PAGE`, defined in both clients' `en-GB.ini`
+  (`core/bootstrap/Site/language/` and `core/bootstrap/Administrator/language/`),
+  so a translation can change them. The *Go* button next to the limit select
+  reads `JLIB_HTML_PAGINATION_GO`, and the `<nav>` label `JGLOBAL_PAGINATION_LABEL`.
+  A disabled arrow is a `<span aria-hidden="true">`, so it is not announced.
 - The **administrator** branch emits `<a>` elements with `data-prefix` and
   `data-start` and **no `href`**. An anchor without `href` is not focusable and
   is not a link to assistive technology, so admin pagination cannot be reached
