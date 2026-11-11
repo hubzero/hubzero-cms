@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Components\Support\Models\Status;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Filesystem;
@@ -623,7 +624,7 @@ $categorySelected = function ($value) use ($view) {
                                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_STATUS'); ?>:
                                         <select name="ticket[status]" id="status" class="form-control">
                                             <optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
-                                                <?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
+                                                <?php foreach (Status::allOpen()->rows() as $status) { ?>
                                                     <option value="<?= $status->get('id') ?>"<?= $this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
                                                 <?php } ?>
                                             </optgroup>
@@ -635,7 +636,7 @@ $categorySelected = function ($value) use ($view) {
                                                 $optionText = Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED');
                                                 ?>
                                                 <option value="0"<?= $selectedAttr ?>><?= $optionText ?></option>
-                                                <?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
+                                                <?php foreach (Status::allClosed()->rows() as $status) { ?>
                                                     <option value="<?= $status->get('id') ?>"<?= !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
                                                 <?php } ?>
                                             </optgroup>

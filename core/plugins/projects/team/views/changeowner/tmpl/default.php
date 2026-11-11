@@ -8,6 +8,7 @@
 
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Hubzero\Utility\Str;
 
 // @phpcs:disable PSR1.Files.SideEffects
 
@@ -62,7 +63,7 @@ $team = $this->model->team($filters = ['status' => 1]);
                 }
                 $used[] = $g->gidNumber; ?>
             <option value="<?php echo $g->gidNumber; ?>
-            " <?= $g->gidNumber == $this->model->get('owned_by_group') ? 'selected="selected"' : '' ?>><?php echo \Hubzero\Utility\Str::truncate($g->description, 30)
+            " <?= $g->gidNumber == $this->model->get('owned_by_group') ? 'selected="selected"' : '' ?>><?php echo Str::truncate($g->description, 30)
                                . ' ('
                                . $g->cn
                                . ')'; ?></option>

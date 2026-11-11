@@ -18,6 +18,8 @@ use Hubzero\Facades\Plugin;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
+use Hubzero\Utility\Sanitize;
+use Hubzero\Utility\Str;
 
 $this
      ->css('register')
@@ -377,7 +379,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                             <div class="form-group">
                                 <label for="first-name"<?php echo $fieldclass; ?>>
                                     <?php echo Lang::txt('COM_MEMBERS_REGISTER_FIRST_NAME'); ?> <?php echo $required; ?>
-                                    <input type="text" class="form-control" name="name[first]" id="first-name" value="<?= $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($givenName)) ?>"<?= ($this->registrationFullname == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= ($this->registrationFullname == Field::STATE_READONLY) ? ' readonly' : '' ?><?= !empty($this->xregistration->invalid['name']) ? ' aria-invalid="true"' : '' ?> />
+                                    <input type="text" class="form-control" name="name[first]" id="first-name" value="<?= $this->escape(Sanitize::cleanProperName($givenName)) ?>"<?= ($this->registrationFullname == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= ($this->registrationFullname == Field::STATE_READONLY) ? ' readonly' : '' ?><?= !empty($this->xregistration->invalid['name']) ? ' aria-invalid="true"' : '' ?> />
                                 </label>
                             </div>
                         </div>
@@ -387,7 +389,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                     <?php echo Lang::txt('COM_MEMBERS_REGISTER_MIDDLE_NAME'); ?>
                                     <?php
                                     $fieldValue = $this->escape(
-                                        \Hubzero\Utility\Sanitize::cleanProperName($middleName),
+                                        Sanitize::cleanProperName($middleName),
                                     );
                                     $readonlyAttr = ($this->registrationFullname == Field::STATE_READONLY)
                                         ? ' readonly'
@@ -402,7 +404,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                             <div class="form-group">
                                 <label for="last-name"<?php echo $fieldclass; ?>>
                                     <?php echo Lang::txt('COM_MEMBERS_REGISTER_LAST_NAME'); ?> <?php echo $required; ?>
-                                    <input type="text" class="form-control" name="name[last]" id="last-name" value="<?= $this->escape(\Hubzero\Utility\Sanitize::cleanProperName($surname)) ?>"<?= ($this->registrationFullname == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= ($this->registrationFullname == Field::STATE_READONLY) ? ' readonly' : '' ?><?= !empty($this->xregistration->invalid['name']) ? ' aria-invalid="true"' : '' ?> />
+                                    <input type="text" class="form-control" name="name[last]" id="last-name" value="<?= $this->escape(Sanitize::cleanProperName($surname)) ?>"<?= ($this->registrationFullname == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= ($this->registrationFullname == Field::STATE_READONLY) ? ' readonly' : '' ?><?= !empty($this->xregistration->invalid['name']) ? ' aria-invalid="true"' : '' ?> />
                                 </label>
                             </div>
                         </div>
@@ -494,12 +496,12 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                 <p class="warning">
                                     <?= Lang::txt(
                                         'COM_MEMBERS_REGISTER_YOU_MUST_CONFIRM_EMAIL',
-                                        \Hubzero\Utility\Str::obfuscate(Config::get('mailfrom')),
+                                        Str::obfuscate(Config::get('mailfrom')),
                                     ) ?>
                                 </p>
                             <?php } ?>
                         <?php } else { ?>
-                            <p class="warning">Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from <?= \Hubzero\Utility\Str::obfuscate(Config::get('mailfrom')) ?> in order to re-activate your account.</p>
+                            <p class="warning">Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from <?= Str::obfuscate(Config::get('mailfrom')) ?> in order to re-activate your account.</p>
                         <?php } ?>
                     <?php } ?>
                 <?php } ?>

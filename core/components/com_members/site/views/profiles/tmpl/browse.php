@@ -12,6 +12,7 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Plugin;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
+use Hubzero\User\Helper;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -361,7 +362,7 @@ $sortDirSelected = function ($value) use ($view) {
                                 switch ($this->config->get('user_messaging')) {
                                     case 1:
                                         // Get the groups of the profile
-                                        $pgroups = Hubzero\User\Helper::getGroups($row->get('id'), 'all', 1); //$row->groups();
+                                        $pgroups = Helper::getGroups($row->get('id'), 'all', 1); //$row->groups();
                                         // Get the groups the user has access to
                                         $profilesgroups = [];
                                         if (!empty($pgroups)) {

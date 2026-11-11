@@ -9,6 +9,7 @@
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
+use Hubzero\Utility\Str;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -30,7 +31,7 @@ endif;
     <div class="curation-history">
         <div class="pubtitle">
             <p>
-                <?= $this->escape(\Hubzero\Utility\Str::truncate($this->pub->title, 65)) ?> | <?= Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->escape($this->pub->version_label) ?>
+                <?= $this->escape(Str::truncate($this->pub->title, 65)) ?> | <?= Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' ' . $this->escape($this->pub->version_label) ?>
             </p>
         </div>
         <?php if ($history) : ?>

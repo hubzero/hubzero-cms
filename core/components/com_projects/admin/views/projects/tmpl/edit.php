@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Components\Projects\Helpers\Html as ProjectsHtml;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Html;
@@ -73,12 +74,12 @@ $sysgroup = $this->config->get('group_prefix', 'pr-') . $this->model->get('alias
 $quota    = $this->params->get('quota');
 $quota    = $quota
     ? $quota
-    : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
+    : ProjectsHtml::convertSize(floatval($this->config->get('defaultQuota', '1')), 'GB', 'b');
 
 $pubQuota = $this->params->get('pubQuota');
 $pubQuota = $pubQuota
     ? $pubQuota
-    : \Components\Projects\Helpers\Html::convertSize(floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
+    : ProjectsHtml::convertSize(floatval($this->config->get('pubQuota', '1')), 'GB', 'b');
 
 Html::behavior('formvalidation');
 Html::behavior('keepalive');
@@ -349,14 +350,14 @@ $paramsLayoutSelected = function ($value) use ($view) {
                     <div class="input-wrap">
                         <label for="param-quota"><?= Lang::txt('Files Quota') ?>: <?= ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES') . ')' ?></label>
                         <input name="params[quota]" id="param-quota" maxlength="100" type="text"
-                            value="<?= \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2) ?>"
+                            value="<?= ProjectsHtml::convertSize($quota, 'b', 'GB', 2) ?>"
                             class="short" />
                     </div>
 
                     <div class="input-wrap">
                         <label for="param-pubQuota"><?= Lang::txt('Publications Quota') ?>: <?= ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES') . ')' ?></label>
                         <input name="params[pubQuota]" id="param-pubQuota" maxlength="100" type="text"
-                            value="<?= \Components\Projects\Helpers\Html::convertSize($pubQuota, 'b', 'GB', 2) ?>"
+                            value="<?= ProjectsHtml::convertSize($pubQuota, 'b', 'GB', 2) ?>"
                             class="short" />
                     </div>
 
@@ -445,7 +446,7 @@ $paramsLayoutSelected = function ($value) use ($view) {
                     // Plain text: strip the tags, decode the entities they leave (&nbsp; etc.), then escape once
                             $activity = $this->escape(html_entity_decode(strip_tags($activity), ENT_QUOTES, 'UTF-8'));
                             ?>
-                            <?= $this->last_activity->created ?> (<?= \Components\Projects\Helpers\Html::timeAgo($this->last_activity->created) . ' ' . Lang::txt('COM_PROJECTS_AGO') ?>) <br /> <span class="actor"><?= $this->escape($this->last_activity->creator->name) ?></span> <?= $activity ?>
+                            <?= $this->last_activity->created ?> (<?= ProjectsHtml::timeAgo($this->last_activity->created) . ' ' . Lang::txt('COM_PROJECTS_AGO') ?>) <br /> <span class="actor"><?= $this->escape($this->last_activity->creator->name) ?></span> <?= $activity ?>
                             <?php } else {
                                 echo Lang::txt('COM_PROJECTS_NA');
                             }?>

@@ -9,6 +9,7 @@
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
+use Hubzero\Utility\Str;
 
 defined('_HZEXEC_') or die();
 
@@ -99,14 +100,14 @@ $this
                                 <td class="priority-4">
                                     <span><?php echo Lang::txt('PLG_GROUPS_FORUM_SECTION'); ?></span>
                                     <span class="entry-details section-name">
-                                        <?= $this->escape(\Hubzero\Utility\Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, ['exact' => true])) ?>
+                                        <?= $this->escape(Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, ['exact' => true])) ?>
                                     </span>
                                 </td>
                                 <td class="priority-3">
                                     <span><?php echo Lang::txt('PLG_GROUPS_FORUM_CATEGORY'); ?></span>
                                     <span class="entry-details category-name">
                                         <?= $this->escape(
-                                            \Hubzero\Utility\Str::truncate(
+                                            Str::truncate(
                                                 $this->categories[$row->get('category_id')]->get('title'),
                                                 100,
                                                 ['exact' => true],

@@ -11,6 +11,7 @@ use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\User;
+use Hubzero\Utility\Str;
 
 // No direct access
 defined('_HZEXEC_') or die();
@@ -169,7 +170,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                     </td>
                     <?php if ($this->count_groups) { ?>
                         <td class="priority-2">
-                            <?= $owner->groupdesc ? $this->escape(\Hubzero\Utility\Str::truncate($owner->groupdesc, 30)) : '' ?><span class="block short prominent"><?= $this->escape($owner->groupname) ?></span>
+                            <?= $owner->groupdesc ? $this->escape(Str::truncate($owner->groupdesc, 30)) : '' ?><span class="block short prominent"><?= $this->escape($owner->groupname) ?></span>
                         </td>
                     <?php } ?>
                     <td class="priority-4">

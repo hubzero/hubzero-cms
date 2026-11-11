@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Components\Projects\Helpers\Html as ProjectsHtml;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
@@ -46,7 +47,7 @@ $listName = $this->todo->getListName($this->model->get('id'), $color);
 // How long did it take to complete
 if ($this->row->isComplete()) {
     $diff = strtotime($this->row->get('closed')) - strtotime($this->row->get('created'));
-    $diff = \Components\Projects\Helpers\Html::timeDifference($diff);
+    $diff = ProjectsHtml::timeDifference($diff);
 }
 $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('PLG_PROJECTS_TODO_NOONE');
 ?>
@@ -96,7 +97,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
                         <p>
                             <?= Lang::txt('PLG_PROJECTS_TODO_TODO_CHECKED_OFF') . ' ' . $this->row->closed('date') . ' '
                                 . Lang::txt('PLG_PROJECTS_TODO_BY') . ' '
-                                . \Components\Projects\Helpers\Html::shortenName($this->row->closer('name')) ?>
+                                . ProjectsHtml::shortenName($this->row->closer('name')) ?>
                         </p>
                         <p>
                             <?= Lang::txt('PLG_PROJECTS_TODO_TODO_TOOK') . ' ' . $diff . ' '
@@ -132,7 +133,7 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
             <?php foreach ($this->row->comments() as $comment) { ?>
                 <li>
                     <p><?php echo $comment->content('parsed'); ?></p>
-                    <p class="todo-assigned"><?= $comment->creator('name') ?> <span class="date"> &middot; <?= \Components\Projects\Helpers\Html::timeAgo($comment->get('created')) . ' ' . Lang::txt('PLG_PROJECTS_TODO_AGO') ?> </span> <?php if ($comment->get('created_by') == $this->uid) {
+                    <p class="todo-assigned"><?= $comment->creator('name') ?> <span class="date"> &middot; <?= ProjectsHtml::timeAgo($comment->get('created')) . ' ' . Lang::txt('PLG_PROJECTS_TODO_AGO') ?> </span> <?php if ($comment->get('created_by') == $this->uid) {
                         ?><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=deletecomment') . '/?todoid=' . $this->row->get('id') . '&amp;cid=' . $comment->get('id') ?>" class="confirm-it" id="delc-<?= $comment->get('id') ?>">[<?= Lang::txt('PLG_PROJECTS_TODO_DELETE') ?>]</button><?php
                                              } ?></p>
                 </li>

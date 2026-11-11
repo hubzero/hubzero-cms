@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Components\Wiki\Models\Page;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
@@ -39,12 +40,12 @@ if ($this->page->exists()) {
     $lid = '-' . str_pad(substr((string) abs((int) $lid), -8), 8, '0', STR_PAD_LEFT);
 }
 
-$macros = \Components\Wiki\Models\Page::oneByPath('Help:WikiMacros', 'site', 0);
+$macros = Page::oneByPath('Help:WikiMacros', 'site', 0);
 $macros
     ->set('scope', $this->book->get('scope'))
     ->set('scope_id', $this->book->get('scope_id'));
 
-$formatting = \Components\Wiki\Models\Page::oneByPath('Help:WikiFormatting', 'site', 0);
+$formatting = Page::oneByPath('Help:WikiFormatting', 'site', 0);
 $formatting
     ->set('scope', $this->book->get('scope'))
     ->set('scope_id', $this->book->get('scope_id'));
@@ -234,7 +235,7 @@ $allowCommentsChecked = function ($value) use ($view) {
 
                                             $tplate = strtolower(Request::getString('tplate', ''));
 
-                                            foreach ($this->book->templates(['state' => \Components\Wiki\Models\Page::STATE_PUBLISHED])->rows() as $template) {
+                                            foreach ($this->book->templates(['state' => Page::STATE_PUBLISHED])->rows() as $template) {
                                                 $tmpltags = $template->tags('string');
                                                 if ($tplate == strtolower($template->get('pagename'))) {
                                                     $tags = $tmpltags;

@@ -47,6 +47,7 @@ if (isset($this->registration_update)) {
 
 // incremental registration
 
+use Components\Members\Helpers\Html as MembersHtml;
 use Components\Members\Models\Profile\Field;
 use Hubzero\Facades\App;
 use Hubzero\Facades\Component;
@@ -65,7 +66,7 @@ $isIncrementalEnabled = $incrOpts->isEnabled($uid);
 $entries = $this->profile->profiles();
 
 $p = $entries->getTableName();
-$f = Components\Members\Models\Profile\Field::blank()->getTableName();
+$f = Field::blank()->getTableName();
 $o = Components\Members\Models\Profile\Option::blank()->getTableName();
 
 $profiles = $entries
@@ -76,7 +77,7 @@ $profiles = $entries
     ->rows();
 
 // Convert to XML so we can use the Form processor
-$xml = Components\Members\Models\Profile\Field::toXml($this->fields, 'edit');
+$xml = Field::toXml($this->fields, 'edit');
 
 // Gather data to pass to the form processor
 $data = new Hubzero\Config\Registry(
@@ -299,7 +300,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
     <?php endif; ?>
 
     <ul id="profile" hidden>
-        <?php if ($isUser && (Field::state('registrationFullname', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
+        <?php if ($isUser && (Field::state('registrationFullname', 'RRRR', 'edit') != Field::STATE_HIDDEN)) : ?>
             <li class="profile-name section hidden">
                 <div class="section-content">
                     <div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NAME'); ?></div>
@@ -317,7 +318,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                             . ' <input type="text" name="name[last]" id="last-name" class="input-text" value="'
                             . $this->escape($this->profile->get('surname')) . '" /></label>';
 
-                    if (Field::state('registrationFullname', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY) {
+                    if (Field::state('registrationFullname', 'RRRR', 'edit') != Field::STATE_READONLY) {
                         $this
                          ->view('default', 'edit')
                          ->set('registration_field', 'name')
@@ -333,7 +334,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     }
                     ?>
                 </div>
-                <?php if ($isUser && Field::state('registrationFullname', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY) : ?>
+                <?php if ($isUser && Field::state('registrationFullname', 'RRRR', 'edit') != Field::STATE_READONLY) : ?>
                 <div class="section-edit">
                     <a class="edit-profile-section" href="#">
                         <?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
@@ -343,7 +344,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
             </li>
         <?php endif; ?>
 
-        <?php if ($isUser && (Field::state('registrationUsername', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
+        <?php if ($isUser && (Field::state('registrationUsername', 'RRRR', 'edit') != Field::STATE_HIDDEN)) : ?>
             <li class="profile-name section hidden">
                 <div class="section-content">
                     <div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_USERNAME'); ?></div>
@@ -353,7 +354,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
             </li>
         <?php endif; ?>
 
-        <?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
+        <?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_HIDDEN)) : ?>
             <?php
             // Determine what type of password change the user needs
             $hzup = \Hubzero\User\Password::getInstance($this->profile->get('id'));
@@ -426,7 +427,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                             </div>
                         </div>
                     </div>
-                    <?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY)) : ?>
+                    <?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_READONLY)) : ?>
                     <div class="section-edit">
                         <a class="edit-profile-section" href="#">
                             <?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
@@ -450,7 +451,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                             ?>
                         </div>
                     </div>
-                    <?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY)) : ?>
+                    <?php if ($isUser && (Field::state('registrationPassword', 'RRRR', 'edit') != Field::STATE_READONLY)) : ?>
                     <div class="section-edit">
                         <a href="<?php echo Route::url($this->profile->link() . '&active=account'); ?>">
                             <?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
@@ -461,7 +462,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
             <?php endif; ?>
         <?php endif; ?>
 
-        <?php if ($this->profile->get('email') && (Field::state('registrationEmail', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
+        <?php if ($this->profile->get('email') && (Field::state('registrationEmail', 'RRRR', 'edit') != Field::STATE_HIDDEN)) : ?>
             <?php if (
             $this->params->get('access_email', 2) == 0
                     || ($this->params->get('access_email', 2) == 1 && $loggedin)
@@ -489,11 +490,11 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     <div class="section-content">
                         <div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAIL'); ?></div>
                         <div class="value">
-                            <a class="email" href="mailto:<?= \Components\Members\Helpers\Html::obfuscate($this->profile->get('email')) ?>" rel="nofollow">
-                                <?php echo \Components\Members\Helpers\Html::obfuscate($this->profile->get('email')); ?>
+                            <a class="email" href="mailto:<?= MembersHtml::obfuscate($this->profile->get('email')) ?>" rel="nofollow">
+                                <?php echo MembersHtml::obfuscate($this->profile->get('email')); ?>
                             </a>
                         </div>
-                        <?php if ($isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY) : ?>
+                        <?php if ($isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Field::STATE_READONLY) : ?>
                             <br class="clear" />
                             <input type="hidden" class="input-text" name="email" id="email"
                                 value="<?= $this->escape($this->profile->get('email')) ?>" />
@@ -524,7 +525,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                             ?>
                         <?php endif; ?>
                     </div>
-                    <?php if ($isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY) : ?>
+                    <?php if ($isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Field::STATE_READONLY) : ?>
                         <div class="section-edit">
                             <a class="edit-profile-section" href="#">
                                 <?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>
@@ -818,7 +819,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                                         . $profile->get('access', $field->get('access')) . '" />';
                                 } else {
                                     $access = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>'
-                                        . Components\Members\Helpers\Html::selectAccess(
+                                        . MembersHtml::selectAccess(
                                             'access[' . $field->get('name') . ']',
                                             $value == ''
                                                 ? $field->get('access')
@@ -894,7 +895,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                     break;
             }
             ?>
-            <?php if ($isUser && (Field::state('registrationOptIn', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_HIDDEN)) : ?>
+            <?php if ($isUser && (Field::state('registrationOptIn', 'RRRR', 'edit') != Field::STATE_HIDDEN)) : ?>
             <li class="profile-optin section <?php echo $cls; ?>">
                 <div class="section-content">
                     <div class="key"><?php echo Lang::txt('PLG_MEMBERS_PROFILE_EMAILUPDATES'); ?></div>
@@ -939,7 +940,7 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                             ?>
                     <?php endif; ?>
                 </div>
-                <?php if ($isUser && (Field::state('registrationOptIn', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY)) : ?>
+                <?php if ($isUser && (Field::state('registrationOptIn', 'RRRR', 'edit') != Field::STATE_READONLY)) : ?>
                     <div class="section-edit">
                         <a class="edit-profile-section" href="#">
                         <?php echo Lang::txt('PLG_MEMBERS_PROFILE_EDIT'); ?>

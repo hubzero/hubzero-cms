@@ -9,6 +9,7 @@
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Hubzero\Utility\Str;
 
 // no direct access
 defined('_HZEXEC_') or die();
@@ -36,7 +37,7 @@ defined('_HZEXEC_') or die();
                 $when = Date::of($row->proposed)->relative();
                 $title = strip_tags($row->about)
                     ? $this->escape(stripslashes($row->subject)) . ' :: '
-                        . \Hubzero\Utility\Str::truncate($this->escape(strip_tags($row->about)), 160)
+                        . Str::truncate($this->escape(strip_tags($row->about)), 160)
                     : null;
                 ?>
             <li class="wishlist">
@@ -46,7 +47,7 @@ defined('_HZEXEC_') or die();
                 );
                 ?>
                 <a href="<?= $wishUrl ?>" class="tooltips" title="<?= $title ?>">
-                    #<?= $row->id ?>: <?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($row->subject), 35)) ?>
+                    #<?= $row->id ?>: <?= $this->escape(Str::truncate(stripslashes($row->subject), 35)) ?>
                 </a>
                 <span>
                     <span class="<?php
@@ -85,7 +86,7 @@ defined('_HZEXEC_') or die();
                 $when = Date::of($row->proposed)->relative();
                 $title = strip_tags($row->about)
                     ? $this->escape(stripslashes($row->subject)) . ' :: '
-                        . \Hubzero\Utility\Str::truncate($this->escape(strip_tags($row->about)), 160)
+                        . Str::truncate($this->escape(strip_tags($row->about)), 160)
                     : null;
                 ?>
             <li class="wishlist">
@@ -95,7 +96,7 @@ defined('_HZEXEC_') or die();
                 );
                 ?>
                 <a href="<?= $wishUrl ?>" class="tooltips" title="<?= $title ?>">
-                    #<?= $row->id ?>: <?= $this->escape(\Hubzero\Utility\Str::truncate(stripslashes($row->subject), 35)) ?>
+                    #<?= $row->id ?>: <?= $this->escape(Str::truncate(stripslashes($row->subject), 35)) ?>
                 </a>
                 <span>
                     <span class="<?php

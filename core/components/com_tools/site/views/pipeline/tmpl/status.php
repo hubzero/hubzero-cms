@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Components\Tools\Helpers\Html as ToolsHtml;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
@@ -22,8 +23,8 @@ $project_path  = $this->config->get('project_path', '/tools/');
 $dev_suffix    = $this->config->get('dev_suffix', '_dev');
 
 // get status name
-\Components\Tools\Helpers\Html::getStatusName($this->status['state'], $state);
-\Components\Tools\Helpers\Html::getStatusClass($this->status['state'], $this->statusClass);
+ToolsHtml::getStatusName($this->status['state'], $state);
+ToolsHtml::getStatusClass($this->status['state'], $this->statusClass);
 
 $this
      ->css('pipeline.css')
@@ -73,7 +74,7 @@ $prioritySelected = function ($value) use ($view) {
 
 <section class="main section">
     <?php
-    if (\Components\Tools\Helpers\Html::toolActive($this->status['state'])) {
+    if (ToolsHtml::toolActive($this->status['state'])) {
         $states = [
             Lang::txt('COM_TOOLS_REGISTERED'),
             Lang::txt('COM_TOOLS_CREATED'),
@@ -119,8 +120,8 @@ $prioritySelected = function ($value) use ($view) {
 
     <div class="toolinfo_note">
         <?php echo $this->msg ? '<p class="passed">' . $this->msg . '</p>' : ''; ?>
-        <?= \Components\Tools\Helpers\Html::getNumofTools($this->status)
-            ? '<p>' . \Components\Tools\Helpers\Html::getNumofTools($this->status) . '.</p>'
+        <?= ToolsHtml::getNumofTools($this->status)
+            ? '<p>' . ToolsHtml::getNumofTools($this->status) . '.</p>'
             : '' ?>
     </div><!-- / .toolinfo_note -->
 
@@ -132,7 +133,7 @@ $prioritySelected = function ($value) use ($view) {
                         <tr>
                             <th colspan="2" class="toolinfo_hed">
                                 <?php echo Lang::txt('COM_TOOLS_TOOL_INFO'); ?>
-                            <?php if (\Components\Tools\Helpers\Html::toolActive($this->status['state'])) { ?>
+                            <?php if (ToolsHtml::toolActive($this->status['state'])) { ?>
                                 <?php
                                 $editUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=' . $this->controller
@@ -156,7 +157,7 @@ $prioritySelected = function ($value) use ($view) {
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_VERSION'); ?></th>
                             <td><?php echo ($this->status['version']) ? Lang::txt('COM_TOOLS_THIS_VERSION') . ' ' . $this->status['version'] : Lang::txt('COM_TOOLS_THIS_VERSION') . ': ' . Lang::txt('COM_TOOLS_NO_LABEL');
-                            if (!$this->status['published'] or ($this->status['version'] != $this->status['currentversion'] && \Components\Tools\Helpers\Html::toolActive($this->status['state']))) {
+                            if (!$this->status['published'] or ($this->status['version'] != $this->status['currentversion'] && ToolsHtml::toolActive($this->status['state']))) {
                                 echo ' (' . Lang::txt('COM_TOOLS_UNDER_DEVELOPMENT') . ')';
                             }
                             if ($this->status['published']) {
@@ -209,7 +210,7 @@ $prioritySelected = function ($value) use ($view) {
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_TOOL_EXEC'); ?></th>
                             <td>
-                                <?= \Components\Tools\Helpers\Html::getToolAccess(
+                                <?= ToolsHtml::getToolAccess(
                                     $this->status['exec'],
                                     $this->status['membergroups'],
                                 ) ?>
@@ -217,11 +218,11 @@ $prioritySelected = function ($value) use ($view) {
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_SOURCE_CODE'); ?></th>
-                            <td><?php echo \Components\Tools\Helpers\Html::getCodeAccess($this->status['code']); ?>
+                            <td><?php echo ToolsHtml::getCodeAccess($this->status['code']); ?>
                             <?php
                             if (
-                                \Components\Tools\Helpers\Html::toolActive($this->status['state'])
-                                && \Components\Tools\Helpers\Html::toolWIP($this->status['state'])
+                                ToolsHtml::toolActive($this->status['state'])
+                                && ToolsHtml::toolWIP($this->status['state'])
                             ) { ?>
                                 [<a class="license-tool" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']) ?>"><?= Lang::txt('COM_TOOLS_CHANGE_LICENSE') ?></a>]
                             <?php } ?>
@@ -229,7 +230,7 @@ $prioritySelected = function ($value) use ($view) {
                         </tr>
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_PROJECT_AREA'); ?></th>
-                            <td><?php echo \Components\Tools\Helpers\Html::getWikiAccess($this->status['wiki']); ?></td>
+                            <td><?php echo ToolsHtml::getWikiAccess($this->status['wiki']); ?></td>
                         </tr>
                         
                         <?php if ($this->status['github']) { ?>
@@ -246,7 +247,7 @@ $prioritySelected = function ($value) use ($view) {
 
                         <tr>
                             <th><?php echo Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'); ?></th>
-                            <td><?= \Components\Tools\Helpers\Html::getDevTeam($this->status['developers']) ?></td>
+                            <td><?= ToolsHtml::getDevTeam($this->status['developers']) ?></td>
                         </tr>
                         <tr>
                             <th colspan="2" class="toolinfo_hed"><?= Lang::txt('COM_TOOLS_DEVELOPER_TOOLS') ?></th>
@@ -275,7 +276,7 @@ $prioritySelected = function ($value) use ($view) {
                                             class="disabled"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></span></li>
                                     <?php } ?>
                                     <li class="message"><a href="javascript:void(0);" title="<?= Lang::txt('COM_TOOLS_SEND_MESSAGE') . ' ' . Lang::txt('COM_TOOLS_TO') ?> <?= ($this->config->get('access-admin-component')) ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM')) : Lang::txt('COM_TOOLS_SITE_ADMIN') ?>" class="showmsg"><?= Lang::txt('COM_TOOLS_MESSAGE') ?></a></li>
-                                    <?php if ($this->status['published'] != 1 && \Components\Tools\Helpers\Html::toolActive($this->status['state'])) {  // show cancel option only for tools under development?>
+                                    <?php if ($this->status['published'] != 1 && ToolsHtml::toolActive($this->status['state'])) {  // show cancel option only for tools under development?>
                                         <li class="canceltool"><a href="javascript:void(0);"
                                             title="<?= Lang::txt('COM_TOOLS_CANCEL_TIPS') ?>"
                                             class="showcancel"><?= Lang::txt('JCANCEL') ?></a></li>
@@ -511,7 +512,7 @@ $prioritySelected = function ($value) use ($view) {
                 $hubShortURL = rtrim(str_replace('https://', '', Request::base()), '/'); //$hubShortURL;
 
                 // get tool access text
-                $toolaccess = \Components\Tools\Helpers\Html::getToolAccess(
+                $toolaccess = ToolsHtml::getToolAccess(
                     $this->status['exec'],
                     $this->status['membergroups'],
                 );
@@ -541,7 +542,7 @@ $prioritySelected = function ($value) use ($view) {
                         ?>
                     <p>
                         <?= Lang::txt('COM_TOOLS_TEAM_WILL_CREATE') ?> <a class="developer-site" href="<?= $developer_url ?>/tools"><?= $developer_site ?></a>, <?= Lang::txt('COM_TOOLS_WHATSNEXT_REGISTERED_INSTRUCTIONS') ?>.
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= \Components\Tools\Helpers\Html::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST') ?>.
+                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= ToolsHtml::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST') ?>.
                         <?php
                         $receiveResponseText = Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE');
                         ?>
@@ -721,7 +722,7 @@ $prioritySelected = function ($value) use ($view) {
                         $canTestText = Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST');
                         ?>
                         <?= $theText ?> <?= $sitename ?> <?= $teamNeedsText ?> <?= $sitename ?> <?= $canTestText ?>.
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= \Components\Tools\Helpers\Html::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE') ?>.
+                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= ToolsHtml::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE') ?>.
                         <?php
                         $receiveResponseText = Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE');
                         ?>
@@ -925,7 +926,7 @@ $prioritySelected = function ($value) use ($view) {
                         $canTestText = Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST');
                         ?>
                         <?= $theText ?> <?= $sitename ?> <?= $teamNeedsText ?> <?= $sitename ?> <?= $canTestText ?>.
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= \Components\Tools\Helpers\Html::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE') ?>.
+                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= ToolsHtml::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE') ?>.
                         <?php
                         $receiveResponseText = Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE');
                         ?>
@@ -989,7 +990,7 @@ $prioritySelected = function ($value) use ($view) {
                         <?= ucfirst(Lang::txt('COM_TOOLS_THE')) . ' ' . $sitename . ' '
                             . Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_TEAM_WILL_FINALIZE') . ' '
                             . Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') . ' '
-                            . \Components\Tools\Helpers\Html::timeAgo($this->status['changed']) . ' '
+                            . ToolsHtml::timeAgo($this->status['changed']) . ' '
                             . Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_SINCE') . '  '
                             . Lang::txt('COM_TOOLS_WHATSNEXT_APPROVED_WHAT_WILL_HAPPEN') . ' ' . $toolaccess ?>.
                     </p>

@@ -9,6 +9,7 @@
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\User;
+use Hubzero\Utility\Str;
 
 defined('_HZEXEC_') or die();
 
@@ -101,14 +102,14 @@ $base = $this->offering->alias() . '&active=forum';
                                     <td class="priority-4">
                                         <span><?php echo Lang::txt('Section'); ?></span>
                                         <span class="entry-details section-name">
-                                            <?= $this->escape(\Hubzero\Utility\Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, ['exact' => true])) ?>
+                                            <?= $this->escape(Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, ['exact' => true])) ?>
                                         </span>
                                     </td>
                                     <td>
                                         <span><?php echo Lang::txt('Category'); ?></span>
                                         <span class="entry-details category-name">
                                             <?= $this->escape(
-                                                \Hubzero\Utility\Str::truncate(
+                                                Str::truncate(
                                                     $this->categories[$row->get('category_id')]->get('title'),
                                                     100,
                                                     ['exact' => true],

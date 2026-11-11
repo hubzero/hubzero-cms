@@ -6,6 +6,7 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Components\Forum\Models\Attachment;
 use Hubzero\Facades\Filesystem;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
@@ -153,7 +154,7 @@ if ($this->comment->isReported()) {
 
             <div class="comment-attachments">
                 <?php
-                foreach ($this->comment->attachments()->whereEquals('state', Components\Forum\Models\Attachment::STATE_PUBLISHED)->rows() as $attachment) {
+                foreach ($this->comment->attachments()->whereEquals('state', Attachment::STATE_PUBLISHED)->rows() as $attachment) {
                     if (!trim($attachment->get('description'))) {
                         $attachment->set('description', $attachment->get('filename'));
                     }

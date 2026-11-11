@@ -6,6 +6,8 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
+use Components\Support\Helpers\Utilities;
+use Components\Support\Models\Status;
 use Hubzero\Facades\Date;
 use Hubzero\Facades\Event;
 use Hubzero\Facades\Html;
@@ -702,7 +704,7 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                 <label for="ticket-field-severity">
                                     <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEVERITY'); ?>
                                     <select name="ticket[severity]" id="ticket-field-severity">
-                                        <?php foreach (\Components\Support\Helpers\Utilities::getSeverities() as $severity) { ?>
+                                        <?php foreach (Utilities::getSeverities() as $severity) { ?>
                                             <?php
                                             $selectedAttr = $severity == $this->row->get('severity')
                                                 ? ' selected="selected"'
@@ -724,7 +726,7 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                     <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_STATUS'); ?>:
                                     <select name="ticket[status]" id="ticket-field-status">
                                         <optgroup label="<?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN') ?>">
-                                            <?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
+                                            <?php foreach (Status::allOpen()->rows() as $status) { ?>
                                                 <option value="<?= $status->get('id') ?>"<?= $this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
                                             <?php } ?>
                                         </optgroup>
@@ -737,7 +739,7 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                             $optionText = Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED');
                                             ?>
                                             <option value="0"<?= $selectedAttr ?>><?= $optionText ?></option>
-                                            <?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
+                                            <?php foreach (Status::allClosed()->rows() as $status) { ?>
                                                 <option value="<?= $status->get('id') ?>"<?= !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
                                             <?php } ?>
                                         </optgroup>
