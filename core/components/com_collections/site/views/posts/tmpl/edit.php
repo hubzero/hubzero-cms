@@ -121,7 +121,13 @@ $idSelected = function ($value) use ($view) {
                         // echo &amp;dir=$dir;
                         // echo $dir;
                         ?>
-                        <div id="ajax-uploader" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=upload" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=">
+                        <?php
+                        $dataActionUrl = '/index.php?option=com_collections&amp;no_html=1&amp;controller=media'
+                            . '&amp;task=upload';
+                        $dataList = '/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list'
+                            . '&amp;dir=';
+                        ?>
+                        <div id="ajax-uploader" data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
                             <noscript>
                                 <label for="upload">
                                     <?php echo Lang::txt('COM_COLLECTIONS_FILE'); ?>
@@ -135,7 +141,13 @@ $idSelected = function ($value) use ($view) {
                         // echo $dir;
                         // echo $dir;
                         ?>
-                        <div id="link-adder" data-action="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=create&amp;dir=" data-list="/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list&amp;dir=">
+                        <?php
+                        $dataActionUrl = '/index.php?option=com_collections&amp;no_html=1&amp;controller=media'
+                            . '&amp;task=create&amp;dir=';
+                        $dataList = '/index.php?option=com_collections&amp;no_html=1&amp;controller=media&amp;task=list'
+                            . '&amp;dir=';
+                        ?>
+                        <div id="link-adder" data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
                             <noscript>
                                 <label for="add-link">
                                     <?php echo Lang::txt('COM_COLLECTIONS_ADD_A_LINK'); ?>
