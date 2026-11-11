@@ -24,6 +24,90 @@ use Hubzero\Facades\Lang;
  * Hubs database model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * Columns of #__citations:
+ *
+ * @property  int          $id
+ * @property  int|null     $uid
+ * @property  string|null  $type
+ * @property  int          $published
+ * @property  int          $affiliated
+ * @property  int|null     $fundedby
+ * @property  string       $created
+ * @property  string|null  $address
+ * @property  string|null  $author
+ * @property  string|null  $booktitle
+ * @property  string|null  $chapter
+ * @property  string|null  $cite
+ * @property  string|null  $edition
+ * @property  string|null  $editor
+ * @property  string|null  $eprint
+ * @property  string|null  $howpublished
+ * @property  string|null  $institution
+ * @property  string|null  $isbn
+ * @property  string|null  $journal
+ * @property  string|null  $key
+ * @property  string|null  $location
+ * @property  string|null  $month
+ * @property  string|null  $note
+ * @property  string|null  $number
+ * @property  string|null  $organization
+ * @property  string|null  $pages
+ * @property  string|null  $publisher
+ * @property  string|null  $series
+ * @property  string|null  $school
+ * @property  string|null  $title
+ * @property  string|null  $url
+ * @property  string|null  $volume
+ * @property  string|null  $year
+ * @property  string|null  $doi
+ * @property  string|null  $ref_type
+ * @property  string       $date_submit
+ * @property  string       $date_accept
+ * @property  string       $date_publish
+ * @property  int|null     $software_use
+ * @property  int|null     $res_edu
+ * @property  int|null     $exp_list_exp_data
+ * @property  int|null     $exp_data
+ * @property  string|null  $notes
+ * @property  string|null  $language
+ * @property  string|null  $accession_number
+ * @property  string|null  $short_title
+ * @property  string|null  $author_address
+ * @property  string|null  $keywords
+ * @property  string|null  $abstract
+ * @property  string|null  $call_number
+ * @property  string|null  $label
+ * @property  string|null  $research_notes
+ * @property  string|null  $params
+ * @property  string|null  $formatted
+ * @property  string|null  $format
+ * @property  string|null  $scope
+ * @property  string|null  $scope_id
+ * @property  string|null  $custom1
+ * @property  string|null  $custom2
+ * @property  string|null  $custom3
+ * @property  string|null  $custom4
+ *
+ * Relationships, read as properties:
+ *
+ * @property  \Components\Citations\Models\Format  $assignedFormat  The format named by the format column
+ * @property  \Hubzero\Database\Rows               $resources       The resources it is associated with
+ * @property  \Hubzero\Database\Rows               $associations    Its associations
+ * @property  \Hubzero\Database\Rows               $relatedAuthors  Its authors
+ * @property  \Hubzero\Database\Rows               $secondaries     Its secondary citations
+ * @property  \Hubzero\Database\Rows               $tags            Its tags, replaced by separateTagsAndBadges()
+ *
+ * Selected by getFilteredRecords():
+ *
+ * @property  string|null  $template  The format template of the assigned format
+ * @property  int|null     $sec_cnt   The count of secondary citations
+ *
+ * Placeholders in the format templates that no column fills, so they are always empty:
+ *
+ * @property  null  $journaltitle   {JOURNAL TITLE}
+ * @property  null  $issn           {ISSN}
+ * @property  null  $search_string  {SECONDARY LINK}
  */
 class Citation extends Relational implements \Hubzero\Search\Searchable
 {

@@ -18,6 +18,10 @@ use Hubzero\Facades\Lang;
 
 /**
  * Manage a citation's author entries
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  \Components\Citations\Models\Citation  $citation  The citation the authors belong to, set by execute()
  */
 class Authors extends SiteController
 {

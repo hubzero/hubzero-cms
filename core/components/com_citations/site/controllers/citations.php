@@ -33,6 +33,10 @@ use Hubzero\Facades\User;
 
 /**
  * Citations controller class for citation entries
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $_title  The page title, set by buildTitle()
  */
 class Citations extends SiteController
 {

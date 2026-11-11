@@ -27,6 +27,11 @@ use Hubzero\Facades\App;
 
 /**
  * Citations controller class for importing citation entries
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  \Components\Citations\Models\Importer  $importer  The import session, set by execute()
+ * @property  string                                 $_title    The page title, set by buildTitle()
  */
 class Import extends SiteController
 {

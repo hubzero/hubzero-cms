@@ -28,6 +28,12 @@ use Hubzero\Facades\User;
 
 /**
  * Controller class for citations
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $tags      The tags typed in, set by saveTask()
+ * @property  string  $badges    The badges typed in, set by saveTask()
+ * @property  array   $sponsors  The sponsor IDs chosen, set by saveTask()
  */
 class Citations extends AdminController
 {
