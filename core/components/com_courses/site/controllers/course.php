@@ -223,9 +223,7 @@ class Course extends SiteController
         }
 
         //get directory for course file uploads
-        if ($this->lid != '') {
-            $this->view->lid = $this->lid;
-        } elseif ($this->course->get('id')) {
+        if ($this->course->get('id')) {
             $this->view->lid = $this->course->get('id');
         } else {
             $this->view->lid = time() . rand(0, 1000);
