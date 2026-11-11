@@ -16,6 +16,8 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Model class for publication attachment
+ *
+ * @property  Version  $version  The version it is attached to, through version()
  */
 class Attachment extends Relational
 {

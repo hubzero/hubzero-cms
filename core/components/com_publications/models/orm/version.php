@@ -20,6 +20,14 @@ use Hubzero\Facades\Route;
 
 /**
  * Model class for publication version
+ *
+ * @property  int                     $id           Column
+ * @property  int                     $created_by   Column
+ * @property  int                     $access       Column
+ * @property  string                  $statusName   The state's name, through transformStatusName()
+ * @property  Publication             $publication  The publication, through publication()
+ * @property  \Hubzero\Database\Rows  $authors      Its authors, through authors()
+ * @property  \Hubzero\Database\Rows  $attachments  Its attachments, through attachments()
  */
 class Version extends Relational implements \Hubzero\Search\Searchable
 {

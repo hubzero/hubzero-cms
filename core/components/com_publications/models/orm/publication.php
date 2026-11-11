@@ -14,6 +14,9 @@ use Hubzero\Facades\Component;
 
 /**
  * Model class for publication
+ *
+ * @property  \Hubzero\Database\Rows  $versions  Its versions, through versions()
+ * @property  \Hubzero\Database\Rows  $ratings   Its ratings, through ratings()
  */
 class Publication extends Relational
 {
