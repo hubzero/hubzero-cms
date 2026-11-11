@@ -1745,8 +1745,8 @@ class Collections extends Plugin
         }
 
         // Store new content
-        if (!$comment->save()) {
-            $this->setError($comment->getError());
+        if (!$row->save()) {
+            $this->setError($row->getError());
             return $this->post();
         }
 
@@ -1754,10 +1754,10 @@ class Collections extends Plugin
 
         $recipients = [
             ['collection', $post->get('collection_id')],
-            ['user', $comment->get('created_by')],
+            ['user', $row->get('created_by')],
         ];
-        if ($comment->get('parent')) {
-            $recipients[] = ['user', $comment->parent()->get('created_by')];
+        if ($row->get('parent')) {
+            $recipients[] = ['user', $row->parent()->get('created_by')];
         }
 
         $title = $post->item()->get('title');
@@ -1769,7 +1769,7 @@ class Collections extends Plugin
 
         Event::trigger('system.logActivity', [
             'activity' => [
-                'action'      => (!empty($data['id']) ? 'updated' : 'created'),
+                'action'      => (!empty($comment['id']) ? 'updated' : 'created'),
                 'scope'       => 'collections.comment',
                 'scope_id'    => $row->get('id'),
                 'description' => Lang::txt(
@@ -1787,7 +1787,7 @@ class Collections extends Plugin
                     'collection_id' => $post->get('collection_id'),
                     'post_id'       => $post->get('id'),
                     'item_id'       => $post->get('item_id'),
-                    'url'           => $url . '#c' . $comment->get('id'),
+                    'url'           => $url . '#c' . $row->get('id'),
                 ],
             ],
             'recipients' => $recipients,
