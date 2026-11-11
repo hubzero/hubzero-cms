@@ -123,7 +123,13 @@ $this
                                     <?php
                                     // $base . '&task=post/' . $row->get('id') . '/comment');
                                     ?>
-                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
+                                    <?php
+                                    $commentUrl = Route::url(
+                                        'index.php?option=com_collections&controller=posts&post=' . $row->get('id')
+                                            . '&task=comment',
+                                    );
+                                    ?>
+                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= $commentUrl ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                     <a class="btn repost" data-id="<?= $row->get('id') ?>"
@@ -151,7 +157,13 @@ $this
                                     <?php
                                     // $base . '&task=post/' . $row->get('id') . '/comment');
                                     ?>
-                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
+                                    <?php
+                                    $commentUrl = Route::url(
+                                        'index.php?option=com_collections&controller=posts&post=' . $row->get('id')
+                                            . '&task=comment',
+                                    );
+                                    ?>
+                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= $commentUrl ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                     <?php

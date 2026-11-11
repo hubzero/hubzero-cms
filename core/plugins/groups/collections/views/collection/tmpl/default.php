@@ -221,7 +221,13 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                         <?php
                                         // $base . '&scope=post/' . $row->get('id') . '/comment');
                                         ?>
-                                        <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
+                                        <?php
+                                        $commentUrl = Route::url(
+                                            'index.php?option=com_collections&controller=posts&post=' . $row->get('id')
+                                                . '&task=comment',
+                                        );
+                                        ?>
+                                        <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= $commentUrl ?>">
                                             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
                                         </a>
                                     <?php } ?>
@@ -293,7 +299,13 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                     <?php
                                     // $base . '&scope=post/' . $row->get('id') . '/comment');
                                     ?>
-                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
+                                    <?php
+                                    $commentUrl = Route::url(
+                                        'index.php?option=com_collections&controller=posts&post=' . $row->get('id')
+                                            . '&task=comment',
+                                    );
+                                    ?>
+                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= $commentUrl ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                     <?php
