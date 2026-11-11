@@ -11,6 +11,7 @@ use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Toolbar;
+use Hubzero\Facades\Component;
 
 // no direct access
 defined('_HZEXEC_') or die();
@@ -19,7 +20,7 @@ Toolbar::title(Lang::txt('COM_SYSTEM_INFO'), 'systeminfo');
 Toolbar::help('sysinfo');
 
 // Add specific helper files for html generation
-Html::addIncludePath(dirname(PATH_COMPONENT) . '/helpers/html');
+Html::addIncludePath(Component::path('com_system') . '/helpers/html');
 
 // Load switcher behavior
 Html::behavior('switcher', 'submenu');

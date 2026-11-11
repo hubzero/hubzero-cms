@@ -14,6 +14,7 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Session;
 use Hubzero\Facades\Toolbar;
 use Hubzero\Facades\User;
+use Components\Menus\Helpers\Html\HtmlMenus;
 
 // no direct access
 defined('_HZEXEC_') or die();
@@ -319,7 +320,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                     </p>
                 </td>
                 <td class="center priority-3">
-                    <?php echo Html::menus('state', $item->get('published'), $i, $canChange, 'cb'); ?>
+                    <?php echo HtmlMenus::state($item->get('published'), $i, $canChange, 'cb'); ?>
                 </td>
                 <td class="order">
                     <?php if ($canChange) : ?>
@@ -435,7 +436,7 @@ $searchPlaceholder = Lang::txt('COM_MENUS_ITEMS_SEARCH_FILTER');
                     ?>
                 <td class="center">
                     <?php if ($item->get('association')) : ?>
-                        <?php echo Html::menus('association', $item->get('id')); ?>
+                        <?php echo HtmlMenus::association($item->get('id')); ?>
                     <?php endif; ?>
                 </td>
                 <?php endif; ?>

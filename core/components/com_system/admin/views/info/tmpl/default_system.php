@@ -8,6 +8,7 @@
 
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
+use Components\System\Helpers\Html\System;
 
 // no direct access
 defined('_HZEXEC_') or die();
@@ -63,7 +64,7 @@ defined('_HZEXEC_') or die();
                     <?php echo Lang::txt('COM_SYSTEM_INFO_WEB_SERVER'); ?>
                 </th>
                 <td>
-                    <?php echo Html::system('server', $this->info['server']); ?>
+                    <?php echo System::server($this->info['server']); ?>
                 </td>
             </tr>
             <tr>

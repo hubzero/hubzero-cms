@@ -8,6 +8,7 @@
 
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
+use Components\System\Helpers\Html\Directory as DirectoryHtml;
 
 // no direct access
 defined('_HZEXEC_') or die();
@@ -29,10 +30,10 @@ defined('_HZEXEC_') or die();
             <?php foreach ($this->directory as $dir => $info) : ?>
                 <tr>
                     <td>
-                        <?php echo Html::directory('message', $dir, $info['message']); ?>
+                        <?php echo DirectoryHtml::message($dir, $info['message']); ?>
                     </td>
                     <td>
-                        <?php echo Html::directory('writable', $info['writable']); ?>
+                        <?php echo DirectoryHtml::writable($info['writable']); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>
