@@ -118,10 +118,8 @@ class Jsonld extends Plugin
 
                 $nameParts = explode(' ', $name);
 
-                if (!empty($nameParts)) {
-                    $givenName  = array_shift($nameParts);
-                    $familyName = array_pop($nameParts);
-                }
+                $givenName  = array_shift($nameParts);
+                $familyName = array_pop($nameParts);
             }
 
             if (!$contributor->organization) {
@@ -224,7 +222,7 @@ class Jsonld extends Plugin
                 $publication->version->id,
             );
 
-            if ($files != false && !empty($files)) {
+            if ($files != false) {
                 $quantity += count($files);
             }
 
@@ -236,7 +234,7 @@ class Jsonld extends Plugin
                 $attachments,
             );
 
-            if ($files != false && !empty($files)) {
+            if ($files != false) {
                 foreach ($files as $file) {
                     $mimeType = mime_content_type($file);
                     if ($mimeType && !in_array($mimeType, $mimeTypes)) {

@@ -254,6 +254,10 @@ class Watch extends Plugin
                     . Lang::txt('PLG_PUBLICATIONS_WATCH_SUBJECT_EMAIL');
                 $url = Route::url($this->publication->link('version'));
                 break;
+
+            default:
+                // No message for any other activity
+                return;
         }
 
         // Do we have subscribers?
