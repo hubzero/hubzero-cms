@@ -209,9 +209,12 @@ if (!$no_html) {
                     data-name="<?php echo $this->escape($this->profile->get('name')); ?>"
                     data-type="Impact Graph"
                     href="<?php echo with(new \Hubzero\Content\Moderator(PATH_APP . $full, 'public'))->getUrl(); ?>">
+                    <?php
+                    $altText = $this->escape(Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name')));
+                    ?>
                     <img
                         src="<?php echo with(new \Hubzero\Content\Moderator(PATH_APP . $thumb, 'public'))->getUrl(); ?>"
-                        alt="<?= $this->escape(Lang::txt('COM_MEMBERS_MEMBER_IMPACT', $this->profile->get('name'))) ?>"/>
+                        alt="<?= $altText ?>"/>
                 </a>
             <?php endif; ?>
         </div><!-- /#page_sidebar -->

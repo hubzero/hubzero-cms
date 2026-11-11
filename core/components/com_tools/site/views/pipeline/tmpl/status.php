@@ -230,7 +230,13 @@ $prioritySelected = function ($value) use ($view) {
                                 ToolsHtml::toolActive($this->status['state'])
                                 && ToolsHtml::toolWIP($this->status['state'])
                             ) { ?>
-                                [<a class="license-tool" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname']) ?>"><?= Lang::txt('COM_TOOLS_CHANGE_LICENSE') ?></a>]
+                                <?php
+                                $licenseUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                        . '&task=license&app=' . $this->status['toolname'],
+                                );
+                                ?>
+                                [<a class="license-tool" href="<?= $licenseUrl ?>"><?= Lang::txt('COM_TOOLS_CHANGE_LICENSE') ?></a>]
                             <?php } ?>
                             </td>
                         </tr>
@@ -974,7 +980,13 @@ $prioritySelected = function ($value) use ($view) {
                         <?php } else { ?>
                             <span class="disabled"><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_I_APPROVE'); ?></span>
                         <?php } ?>
-                            | <span id="Updated_"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=update&newstate=Updated&app=' . $this->status['toolname']) ?>" class="flip"><?= Lang::txt('COM_TOOLS_WHATSNEXT_CHANGES_MADE') ?></a></span>
+                            <?php
+                            $updateUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=update&newstate=Updated&app=' . $this->status['toolname'],
+                            );
+                            ?>
+                            | <span id="Updated_"><a href="<?= $updateUrl ?>" class="flip"><?= Lang::txt('COM_TOOLS_WHATSNEXT_CHANGES_MADE') ?></a></span>
                         </li>
                         <li class="incomplete">
                             <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_PUBLISH'); ?> <?php echo $hubShortURL; ?>

@@ -473,11 +473,15 @@ if (isset($this->entityId) && isset($this->entityType)) {
 
                         <?php if (isset($subs) && count($subs) > 0) : ?>
                             <?php foreach ($subs as $sub) : ?>
+                                <?php
+                                $dataSrc = $this->escape($sub->source) . '?v='
+                                    . (is_file($sub->source) ? filemtime($sub->source) : 0);
+                                ?>
                                 <div
                                     data-autoplay="<?php echo (int) $sub->autoplay; ?>"
                                     data-type="subtitle"
                                     data-lang="<?php echo $this->escape($sub->name); ?>"
-                                    data-src="<?= $this->escape($sub->source) ?>?v=<?= (is_file($sub->source) ? filemtime($sub->source) : 0) ?>"></div>
+                                    data-src="<?= $dataSrc ?>"></div>
                             <?php endforeach; ?>
                         <?php endif; ?>
 

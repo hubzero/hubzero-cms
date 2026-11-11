@@ -441,12 +441,18 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                             class="description"><?= Lang::txt('Drag &amp; Drop an Event File Here to Upload') ?></span>
                         <span class="button-container">
                             <span class="btn"><?php echo Lang::txt('or, Select Event'); ?>
+                                <?php
+                                $importUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')
+                                        . '&active=calendar&action=import',
+                                );
+                                ?>
                                 <input
                                     type="file"
                                     name="import"
                                     id="import"
                                     aria-label="<?php echo Lang::txt('PLG_GROUPS_CALENDAR_IMPORT_EVENT_FILE'); ?>"
-                                    data-url="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') . '&active=calendar&action=import') ?>" />
+                                    data-url="<?= $importUrl ?>" />
                             </span>
                         </span>
                     </div>

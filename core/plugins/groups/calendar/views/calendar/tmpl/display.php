@@ -94,7 +94,12 @@ $timezone = $userLocalizer->getTimezone();
                         </h4>
                         <dl class="entry-meta">
                             <dd class="calendar">
-                                in <?= ($event->calendar()->get('id')) ? $this->escape($event->calendar()->get('title')) : 'Uncategorized' ?>
+                                <?php
+                                $titleText = ($event->calendar()->get('id'))
+                                    ? $this->escape($event->calendar()->get('title'))
+                                    : 'Uncategorized';
+                                ?>
+                                in <?= $titleText ?>
                             </dd>
                             <?php
                             if (

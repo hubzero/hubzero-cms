@@ -128,7 +128,13 @@ $this
                     <h4>
                         <?php echo Lang::txt('COM_TOOLS_TOOL_LICENSE'); ?>
                         <span class="actionlink">
-                            [<a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=license&app=' . $this->status['toolname'] . '&action=confirm') ?>"><?= Lang::txt('COM_TOOLS_EDIT') ?></a>]
+                            <?php
+                            $licenseUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&task=license&app=' . $this->status['toolname'] . '&action=confirm',
+                            );
+                            ?>
+                            [<a href="<?= $licenseUrl ?>"><?= Lang::txt('COM_TOOLS_EDIT') ?></a>]
                         </span>
                     </h4>
                     <pre class="licensetxt"><?php echo $this->escape(stripslashes($this->status['license'])); ?></pre>

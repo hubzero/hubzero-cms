@@ -31,7 +31,12 @@ if (count($this->items) > 0) { ?>
                     ?>
                     <a href="<?= $linkUrl ?>" title="<?= $this->escape($pub->get('title')) ?>"><?= $linkText ?></a>
                     <span class="public-list-info">
-                        - <?= Lang::txt('COM_PROJECTS_PUBLISHED') . ' ' . $pub->published('date') . ' ' . Lang::txt('COM_PROJECTS_IN') . ' <a href="' . Route::url($pub->link('category')) . '">' . $pub->category()->name . '</a>' ?>
+                        <?php
+                        $publishedText = Lang::txt('COM_PROJECTS_PUBLISHED') . ' ' . $pub->published('date') . ' '
+                            . Lang::txt('COM_PROJECTS_IN') . ' <a href="' . Route::url($pub->link('category')) . '">'
+                            . $pub->category()->name . '</a>';
+                        ?>
+                        - <?= $publishedText ?>
                     </span>
                 </span>
             </li>

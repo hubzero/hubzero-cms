@@ -187,7 +187,14 @@ endforeach;
                 ?>
 
                                 <li class="add-new asset-group-item">
-                                    Add a new <?= $this->escape((substr($agt->get('title'), -3) == 'ies') ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title'))) : strtolower(rtrim($agt->get('title'), 's'))) ?>
+                                    <?php
+                                    $titleText = $this->escape(
+                                        (substr($agt->get('title'), -3) == 'ies')
+                                            ? strtolower(preg_replace('/ies$/', 'y', $agt->get('title')))
+                                            : strtolower(rtrim($agt->get('title'), 's')),
+                                    );
+                                    ?>
+                                    Add a new <?= $titleText ?>
                                     <form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
                                         <input type="hidden" name="course_id" value="<?= $course->get('id') ?>" />
                                         <input type="hidden" name="offering" value="<?= $offering->alias() ?>" />

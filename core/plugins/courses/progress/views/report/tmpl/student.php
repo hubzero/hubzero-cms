@@ -328,7 +328,12 @@ $progress_timeline .= '</div>';
     <?php endif; ?>
 
     <h3>
-        <?php echo (Request::getInt('id', false)) ? $this->escape(User::getInstance($this->member->get('user_id'))->get('name')) . ':' : '' ?>
+        <?php
+        $nameText = (Request::getInt('id', false))
+            ? $this->escape(User::getInstance($this->member->get('user_id'))->get('name')) . ':'
+            : '';
+        ?>
+        <?= $nameText ?>
         <?php echo $h3 ?>
     </h3>
     <h4><?php echo Lang::txt('Unit %d of %d', $current_i, $num_units) ?></h4>

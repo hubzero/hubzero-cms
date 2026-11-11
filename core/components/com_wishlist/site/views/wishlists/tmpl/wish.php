@@ -979,7 +979,10 @@ $categoryChecked = function ($value) use ($view) {
                 <h3>
                     <?php echo Lang::txt('COM_WISHLIST_IMPLEMENTATION_PLAN'); ?>
                     <?php if ($this->wish->plan->get('id')) { ?>
-                        (<a href="<?= Route::url($this->wish->link('editplan')) ?>"><?= Lang::txt('COM_WISHLIST_ACTION_EDIT') ?></a>)
+                        <?php
+                        $linkUrl = Route::url($this->wish->link('editplan'));
+                        ?>
+                        (<a href="<?= $linkUrl ?>"><?= Lang::txt('COM_WISHLIST_ACTION_EDIT') ?></a>)
                     <?php } else { ?>
                         (<?php echo Lang::txt('COM_WISHLIST_PLAN_NOT_STARTED'); ?>)
                     <?php } ?>

@@ -29,7 +29,12 @@ if ($this->getError()) { ?>
     <h3>
         <?php echo Lang::txt('COM_TOOLS_EXISTING_SS'); ?>
         <?php if ($this->published) { ?>
-            (<?= $this->version == 'dev' ? Lang::txt('COM_TOOLS_DEVELOPMENT') . ' ' . strtolower(Lang::txt('COM_TOOLS_VERSION')) : Lang::txt('COM_TOOLS_CURRENTLY_PUBLISHED') . ' ' . strtolower(Lang::txt('COM_TOOLS_VERSION')) ?>)
+            <?php
+            $developmentText = $this->version == 'dev'
+                ? Lang::txt('COM_TOOLS_DEVELOPMENT') . ' ' . strtolower(Lang::txt('COM_TOOLS_VERSION'))
+                : Lang::txt('COM_TOOLS_CURRENTLY_PUBLISHED') . ' ' . strtolower(Lang::txt('COM_TOOLS_VERSION'));
+            ?>
+            (<?= $developmentText ?>)
         <?php } ?>
     </h3>
 

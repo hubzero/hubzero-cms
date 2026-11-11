@@ -100,12 +100,17 @@ $no_show = ["errors","duplicate"];
                                                 <th><?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_DETAILS') ?></th>
                                                 <th class="options">
                                                     <label>
+                                                        <?php
+                                                        $citationReplaceText = Lang::txt(
+                                                            'COM_CITATIONS_IMPORT_CITATION_REPLACE',
+                                                        );
+                                                        ?>
                                                         <input
                                                             type="radio"
                                                             class="citation_require_attention_option"
                                                             name="citation_action_attention[<?php echo $counter; ?>]"
                                                             value="overwrite"
-                                                            checked="checked" /> <?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_REPLACE') ?>
+                                                            checked="checked" /> <?= $citationReplaceText ?>
                                                     </label>
                                                     <label>
                                                         <input
@@ -116,11 +121,16 @@ $no_show = ["errors","duplicate"];
                                                                 <?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_KEEP') ?>
                                                     </label>
                                                     <label>
+                                                        <?php
+                                                        $citationNothingText = Lang::txt(
+                                                            'COM_CITATIONS_IMPORT_CITATION_NOTHING',
+                                                        );
+                                                        ?>
                                                         <input
                                                             type="radio"
                                                             class="citation_require_attention_option"
                                                             name="citation_action_attention[<?php echo $counter; ?>]"
-                                                            value="discard" /> <?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_NOTHING') ?>
+                                                            value="discard" /> <?= $citationNothingText ?>
                                                     </label>
                                                 </th>
                                             </tr>

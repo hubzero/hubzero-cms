@@ -1054,11 +1054,22 @@ if ($type == 'hubpresenter' || $type == 'html5') {
 
                             <?php if (isset($subs) && count($subs) > 0) : ?>
                                 <?php foreach ($subs as $sub) : ?>
+                                    <?php
+                                    $dataSrc = $this->escape($sub->source) . '?v='
+                                        . $this->escape(
+                                            (
+                                                substr($sub->source, 0, 4) != 'http'
+                                                && file_exists(PATH_ROOT . $sub->source)
+                                            )
+                                                ? filemtime(PATH_ROOT . $sub->source)
+                                                : 0,
+                                        );
+                                    ?>
                                     <div
                                         data-autoplay="<?php echo $this->escape($sub->autoplay); ?>"
                                         data-type="subtitle"
                                         data-lang="<?php echo $this->escape($sub->name); ?>"
-                                        data-src="<?= $this->escape($sub->source) ?>?v=<?= $this->escape((substr($sub->source, 0, 4) != 'http' && file_exists(PATH_ROOT . $sub->source)) ? filemtime(PATH_ROOT . $sub->source) : 0) ?>"></div>
+                                        data-src="<?= $dataSrc ?>"></div>
                                 <?php endforeach; ?>
                             <?php endif; ?>
 

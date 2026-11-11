@@ -125,7 +125,10 @@ $rows = $this->todo->entries('list', $this->filters);
                     . strtolower(Lang::txt('PLG_PROJECTS_TODO_BY')) . ' ' . $row->creator('name');
                 ?>
                 <span class="block mini faded"><?= $spanText ?>
-                    | <?= Lang::txt('PLG_PROJECTS_TODO_COMMENTS') ?>: <a href="<?= Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id')) ?>"><?= $row->comments('count') ?></a></span>
+                    <?php
+                    $viewUrl = Route::url($row->project()->link('todo') . '&action=view&todoid=' . $row->get('id'));
+                    ?>
+                    | <?= Lang::txt('PLG_PROJECTS_TODO_COMMENTS') ?>: <a href="<?= $viewUrl ?>"><?= $row->comments('count') ?></a></span>
             </td>
             <?php
             $linkUrl = Route::url($row->project()->link('todo'));

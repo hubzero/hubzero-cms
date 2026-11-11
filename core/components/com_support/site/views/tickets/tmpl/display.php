@@ -485,7 +485,11 @@ $this
                                             ?>
                                         </span>
                                         <span class="ticket-datetime">
-                                            @ <time datetime="<?= Date::of($row->get('created'))->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($row->get('created'))->toLocal() ?></time>
+                                            <?php
+                                            $datetime = Date::of($row->get('created'))->format('Y-m-d\TH:i:s\Z');
+                                            $timeText = Date::of($row->get('created'))->toLocal();
+                                            ?>
+                                            @ <time datetime="<?= $datetime ?>"><?= $timeText ?></time>
                                         </span>
                                         <?php if ($lastcomment && $lastcomment != '0000-00-00 00:00:00') { ?>
                                             <span class="ticket-activity">

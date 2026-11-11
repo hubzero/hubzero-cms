@@ -315,7 +315,12 @@ if ($this->wishlist->get('id')) {
                                         )
                                         : '' ?>
                                     <span>
-                                        (<?= ($this->total > 0) ? ($this->filters['start'] + 1) : $this->filters['start'] ?> - <?= $this->filters['start'] + $this->wishes->count() ?> of <?= $this->total ?>)
+                                        <?php
+                                        $filtersText = ($this->total > 0)
+                                            ? ($this->filters['start'] + 1)
+                                            : $this->filters['start'];
+                                        ?>
+                                        (<?= $filtersText ?> - <?= $this->filters['start'] + $this->wishes->count() ?> of <?= $this->total ?>)
                                     </span>
                                 </caption>
                                 <tbody>
