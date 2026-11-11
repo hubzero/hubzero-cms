@@ -46,7 +46,7 @@ class Help extends SiteController
             require_once $finalHelpPage;
             $content = ob_get_contents();
             ob_end_clean();
-        } elseif (isset($component) && $component != '' && $page == 'index') {
+        } elseif ($component != '' && $page == 'index') {
             // Get list of component pages
             $pages[] = Finder::pages($component);
 

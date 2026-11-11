@@ -975,7 +975,7 @@ class Post extends Relational
             $this->addError(Lang::txt('JERROR_LOADFILE_FAILED'));
         }
 
-        if (!$data || empty($data)) {
+        if (empty($data)) {
             $data = $this->toArray();
         }
 
