@@ -470,11 +470,6 @@ class Sessions extends SiteController
                             break;
                         }
 
-                        // Fail if whitelist is empty
-                        if (empty($params_whitelist)) {
-                            break;
-                        }
-
                         // Fail if $value isn't prefixed with a whitelisted directory.
                         // $match must be cleared for every parameter: left over from
                         // an earlier line it would pass an unwhitelisted path.
@@ -922,7 +917,7 @@ class Sessions extends SiteController
         }
 
         //do we want to share with a group
-        if (isset($group) && $group != 0) {
+        if ($group != 0) {
             $hg = \Hubzero\User\Group::getInstance($group);
             $members = $hg->get('members');
 
@@ -931,7 +926,7 @@ class Sessions extends SiteController
 
             //remove this user
             $isUserInArray = array_search(User::get('id'), $users);
-            if (isset($isUserInArray)) {
+            if ($isUserInArray !== false) {
                 unset($users[$isUserInArray]);
             }
 

@@ -124,7 +124,7 @@ class Utils
         exec($cmd, $results, $status);
 
         // Check exec status
-        if (!isset($status) || $status != 0) {
+        if ($status != 0) {
             // Something went wrong
             return false;
         }

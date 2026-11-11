@@ -531,10 +531,6 @@ class Tool
 
                 $valuelist = implode(",", $list);
 
-                if (empty($valuelist)) {
-                    $valuelist = "''";
-                }
-
                 if ($property == 'version') {
                     $query = "DELETE FROM $aux_table WHERE toolid=" . $db->Quote($this->id)
                         . " AND instance NOT IN ($valuelist);";
@@ -939,7 +935,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     unknown $instance Parameter description (if any) ...
+     * @param     string $instance Parameter description (if any) ...
      * @return   boolean Return description (if any) ...
      */
     public function unpublishVersion($instance)

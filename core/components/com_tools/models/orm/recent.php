@@ -119,8 +119,8 @@ class Recent extends Relational
 
         // We reached the limit, so update the oldest entry effectively replacing it
         $recent = $records->last();
-        $record->set('tool', $tool);
-        $record->set('created', Date::of('now')->toSql());
+        $recent->set('tool', $tool);
+        $recent->set('created', Date::of('now')->toSql());
 
         if (!$recent->save()) {
             return false;

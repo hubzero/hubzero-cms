@@ -66,14 +66,11 @@ class Host extends Table
             if ($this->$k) {
                 //$ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
                 $fmtsql = "UPDATE $this->tableName SET %s WHERE %s";
+                $where = $this->tableKey . '=' . ($kv ? $this->db->quote($kv) : $this->db->quote($this->$k));
                 $tmp = [];
                 foreach ($this->getProperties() as $ky => $v) {
                     if (is_array($v) or is_object($v) or $ky[0] == '_') { // internal or NA field
                         continue;
-                    }
-                    if ($ky == $this->tableKey) { // PK not to be updated
-                        $where = $this->tableKey . '=' . ($kv ? $this->db->quote($kv) : $this->db->quote($v));
-                        //continue;
                     }
                     if ($v === null) {
                         continue;

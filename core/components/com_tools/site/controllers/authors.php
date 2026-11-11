@@ -172,72 +172,69 @@ class Authors extends SiteController
             }
         }
 
-        // Do we have new authors?
-        if (!empty($authorsNew)) {
-            // loop through each one
-            for ($i = 0, $n = count($authorsNew); $i < $n; $i++) {
-                $cid = trim($authorsNew[$i]);
+        // Add each new author
+        for ($i = 0, $n = count($authorsNew); $i < $n; $i++) {
+            $cid = trim($authorsNew[$i]);
 
-                if (is_numeric($cid)) {
-                    $uid = intval($cid);
-                } else {
-                    $cid = strtolower($cid);
-                    // Find the user's account info
-                    $uid = User::oneByUsername($cid)->get('id');
-
-                    if (!$uid) {
-                        $this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
-                        continue;
-                    }
-                }
-
-                $profile = User::getInstance($uid);
-
+            if (is_numeric($cid)) {
+                $uid = intval($cid);
+            } else {
+                $cid = strtolower($cid);
                 // Find the user's account info
-                if (!$profile->get('id')) {
-                    // No account
-                    // This should mean we have an author that is not a site member
+                $uid = User::oneByUsername($cid)->get('id');
 
-                    $cid = trim($cid);
+                if (!$uid) {
+                    $this->setError(Lang::txt('COM_CONTRIBUTE_UNABLE_TO_FIND_USER_ACCOUNT', $cid));
+                    continue;
+                }
+            }
 
-                    // No name. Can't save record, so pass over it.
-                    if (!$cid) {
-                        continue;
-                    }
+            $profile = User::getInstance($uid);
 
-                    // Check to see if they're already an author
-                    $author = Author::oneByName($id, $cid);
+            // Find the user's account info
+            if (!$profile->get('id')) {
+                // No account
+                // This should mean we have an author that is not a site member
 
-                    if ($author->get('id')) {
-                        $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid));
-                        continue;
-                    }
+                $cid = trim($cid);
 
-                    $authorid     = $author->getUserId($cid);
-                    $name         = $cid;
-                    $organization = '';
-                } else {
-                    // Check to see if they're already an author
-                    $author = Author::oneByRelationship($id, $profile->get('id'));
-
-                    if ($author->get('id')) {
-                        $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $author->get('name')));
-                        continue;
-                    }
-
-                    $authorid     = $profile->get('id');
-                    $name         = $profile->get('name');
-                    $organization = $profile->get('organization');
+                // No name. Can't save record, so pass over it.
+                if (!$cid) {
+                    continue;
                 }
 
-                $author->set('subtable', 'resources');
-                $author->set('subid', $id);
-                $author->set('authorid', $authorid);
-                $author->set('name', (string) $name);
-                $author->set('organization', (string) $organization);
-                $author->set('role', (string) $role);
-                $author->save();
+                // Check to see if they're already an author
+                $author = Author::oneByName($id, $cid);
+
+                if ($author->get('id')) {
+                    $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $cid));
+                    continue;
+                }
+
+                $authorid     = $author->getUserId($cid);
+                $name         = $cid;
+                $organization = '';
+            } else {
+                // Check to see if they're already an author
+                $author = Author::oneByRelationship($id, $profile->get('id'));
+
+                if ($author->get('id')) {
+                    $this->setError(Lang::txt('COM_CONTRIBUTE_USER_IS_ALREADY_AUTHOR', $author->get('name')));
+                    continue;
+                }
+
+                $authorid     = $profile->get('id');
+                $name         = $profile->get('name');
+                $organization = $profile->get('organization');
             }
+
+            $author->set('subtable', 'resources');
+            $author->set('subid', $id);
+            $author->set('authorid', $authorid);
+            $author->set('name', (string) $name);
+            $author->set('organization', (string) $organization);
+            $author->set('role', (string) $role);
+            $author->save();
         }
 
         if ($show) {

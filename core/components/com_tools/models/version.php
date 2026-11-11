@@ -357,24 +357,16 @@ class Version
     {
         $db = App::get('db');
 
-        if (!isset($this)) { // static method call
-            if (is_numeric($tool)) {
-                $where_clause = "toolid=" . $db->Quote($tool);
-            } else {
-                $where_clause = "toolname=" . $db->Quote($tool);
-            }
-        } else { // object method call
-            if (is_numeric($tool)) {
-                $where_clause = "toolid=" . $db->Quote($tool);
-            } elseif (!empty($tool)) {
-                $where_clause = "toolname=" . $db->Quote($tool);
-            } elseif (empty($this->toolname)) {
-                $where_clause = "toolid=" . $db->Quote($this->id);
-            } elseif (empty($this->toolid)) {
-                $where_clause = "toolname=" . $db->Quote($this->toolname);
-            } else {
-                $where_clause = "toolname=" . $db->Quote($this->toolname) . " AND toolid=" . $db->Quote($this->toolid);
-            }
+        if (is_numeric($tool)) {
+            $where_clause = "toolid=" . $db->Quote($tool);
+        } elseif (!empty($tool)) {
+            $where_clause = "toolname=" . $db->Quote($tool);
+        } elseif (empty($this->toolname)) {
+            $where_clause = "toolid=" . $db->Quote($this->id);
+        } elseif (empty($this->toolid)) {
+            $where_clause = "toolname=" . $db->Quote($this->toolname);
+        } else {
+            $where_clause = "toolname=" . $db->Quote($this->toolname) . " AND toolid=" . $db->Quote($this->toolid);
         }
 
         $db->setQuery("SELECT instance FROM #__tool_version WHERE $where_clause;");
@@ -431,8 +423,8 @@ class Version
      *
      * Long description (if any) ...
      *
-     * @param     unknown $toolname Parameter description (if any) ...
-     * @param     unknown $instance Parameter description (if any) ...
+     * @param     string $toolname Parameter description (if any) ...
+     * @param     string $instance Parameter description (if any) ...
      * @return   mixed Return description (if any) ...
      */
     public static function createInstance($toolname, $instance)
@@ -778,10 +770,6 @@ class Version
                 }
 
                 $valuelist = implode(",", $list);
-
-                if (empty($valuelist)) {
-                    $valuelist = "''";
-                }
 
                 if ($property == 'author') {
                     $query = "DELETE FROM $aux_table WHERE version_id=" . $db->Quote($this->id)

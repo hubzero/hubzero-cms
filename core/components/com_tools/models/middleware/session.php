@@ -192,7 +192,7 @@ class Session extends Base
 
             // remove this user
             $isUserInArray = array_search(User::get('id'), $users);
-            if (isset($isUserInArray)) {
+            if ($isUserInArray !== false) {
                 unset($users[$isUserInArray]);
             }
 

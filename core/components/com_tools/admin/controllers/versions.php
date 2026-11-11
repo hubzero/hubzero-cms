@@ -238,10 +238,9 @@ class Versions extends AdminController
             return $this->editTask($row);
         }
 
-        $row->hostreq = (is_array($row->hostreq) && !empty($row->hostreq) ? explode(',', $row->hostreq[0]) : []);
-
+        // The form gives the host requirements as one comma-separated string
         $hostreq = [];
-        foreach ($row->hostreq as $req) {
+        foreach (explode(',', trim($fields['hostreq'])) as $req) {
             if (!empty($req)) {
                 $hostreq[] = trim($req);
             }
