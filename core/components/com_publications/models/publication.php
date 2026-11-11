@@ -24,6 +24,58 @@ use Hubzero\Facades\Request;
 
 /**
  * Information retrieval for items/info linked to a publication
+ *
+ * What it sets on itself is kept in $data by __set() and read back by __get().
+ * The constructor copies every column of the version, and of the publication
+ * (prefixed master_ where the names clash), onto it, then sets the first ones
+ * below; the rest are loaded on demand and cached by the methods named.
+ *
+ * @property  Tables\Version                       $version                  The version, loaded by the constructor
+ * @property  Tables\Publication                   $publication              The publication, loaded by the constructor
+ * @property  \Hubzero\Config\Registry             $params                   Component, version and type parameters
+ * @property  int                                  $id                       The publication's id
+ * @property  int                                  $version_id               The version's id
+ * @property  string                               $base                     The master type's alias
+ * @property  string                               $curatorgroup             The master type's curator group
+ * @property  string                               $versionAlias             Set by versionAlias()
+ * @property  Tables\MasterType                    $type                     The master type, by masterType()
+ * @property  Curation                             $_curationModel           By setCuration()
+ * @property  \Hubzero\Config\Registry             $_config                  The component's parameters, by config()
+ * @property  string                               $_base                    The stem of its links, by link()
+ * @property  string                               $_editBase                The stem of its edit links, by link()
+ * @property  string                               $_basePath                Its files' path, by path()
+ * @property  string                               $_bundlePath              Its bundle's path, by bundlePath()
+ * @property  Tables\Category                      $_category                By category()
+ * @property  \Components\Projects\Models\Project  $_project                 By project()
+ * @property  \Hubzero\User\Group|null             $_groupOwner              By groupOwner()
+ * @property  mixed                                $_owner                   The user's project membership, by owner()
+ * @property  \Hubzero\User\User                   $_creator                 By creator()
+ * @property  \Hubzero\User\User                   $_modifier                By modifier()
+ * @property  \Hubzero\User\User                   $_curator                 By curator()
+ * @property  array                                $_curatorGroups           By curatorGroups()
+ * @property  array                                $_accessGroups            By getAccessGroups()
+ * @property  array                                $_authors                 By authors()
+ * @property  object|null                          $_submitter               By authors()
+ * @property  array                                $_attachments             By attachments()
+ * @property  int                                  $_attachmentsCount        By attachmentsCount()
+ * @property  object|null                          $_license                 By license()
+ * @property  object|null                          $_lastPublicRelease       By lastPublicRelease()
+ * @property  object|null                          $_prevPublication         By prevPublication()
+ * @property  object|null                          $_nextPublication         By nextPublication()
+ * @property  \Hubzero\Database\Rows               $_citations               By getCitations()
+ * @property  string|null                          $_lastCitationDate        By getLastCitationDate()
+ * @property  \Hubzero\Database\Rows               $citationsForMetadataSet  By getCitationsForMetadataSet()
+ * @property  array                                $_tags                    By getTags()
+ * @property  string                               $_tagsForEditing          By getTagsForEditing()
+ * @property  string                               $_tagCloud                By getTagCloud()
+ * @property  Tables\Author                        $_tblAuthor               By table()
+ * @property  Tables\Author                        $_tblAuthors              By authors()
+ * @property  Tables\Attachment                    $_tblContent              By table() and attachments()
+ * @property  Tables\Attachment                    $_tblAttachment           By getSeries()
+ * @property  Tables\License                       $_tblLicense              By table() and license()
+ * @property  Tables\Log                           $_tblLog                  By logAccess()
+ * @property  Tables\Publication                   $tbl                      By entries()
+ * @property  Tables\Collaborator                  $tblCollaborator          By getCollaboratorByName()
  */
 class Publication extends Obj
 {
@@ -1630,7 +1682,7 @@ class Publication extends Obj
             $a = \Components\Citations\Models\Association::blank()->getTableName();
             $c = $cc->getTableName();
 
-            $this->lastCitationDate = $cc
+            $this->_lastCitationDate = $cc
                 ->join($a, $a . '.cid', $c . '.id', 'inner')
                 ->whereEquals($c . '.published', self::STATE_PUBLISHED)
                 ->whereEquals($a . '.tbl', 'publication')
