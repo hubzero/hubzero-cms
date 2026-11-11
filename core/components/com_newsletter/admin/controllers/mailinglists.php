@@ -24,6 +24,14 @@ use Hubzero\Facades\User;
 
 /**
  * Newsletter Mailing List Controller
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  int     $mid                The mailing list, set by doAddEmailTask()
+ * @property  array   $emailFile          The uploaded file of addresses, doAddEmailTask()
+ * @property  int     $emailGroup         The group whose members to add, doAddEmailTask()
+ * @property  string  $emailBox           The addresses typed in, set by doAddEmailTask()
+ * @property  string  $emailConfirmation  Whether to ask for confirmation, doAddEmailTask()
  */
 class Mailinglists extends AdminController
 {

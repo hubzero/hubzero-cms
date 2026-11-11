@@ -19,6 +19,11 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Newsletter Controller
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  int     $id      The newsletter asked for, set by execute()
+ * @property  string  $_title  The page title, set by buildTitle()
  */
 class Newsletters extends SiteController
 {

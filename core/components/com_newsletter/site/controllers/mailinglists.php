@@ -27,6 +27,10 @@ use Hubzero\Facades\Session;
 
 /**
  * Newsletter Mailing List Controller
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $_title  The page title, set by buildTitle()
  */
 class Mailinglists extends SiteController
 {

@@ -18,6 +18,12 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Newsletter tools Controller
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string|null  $code      The mosaic's HTML, set by mozifyTask()
+ * @property  string|null  $preview   The mosaic preview, set by mozifyTask()
+ * @property  string       $original  The image mozified, set by mozifyTask()
  */
 class Tools extends AdminController
 {
