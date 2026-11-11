@@ -119,6 +119,12 @@ class Languagecode extends Plugin
 
         // Inject fields into the form
         foreach ($languages as $tag => $language) {
+            $description = htmlspecialchars(
+                Lang::txt('PLG_SYSTEM_LANGUAGECODE_FIELD_DESC', $language['name']),
+                ENT_COMPAT,
+                'UTF-8',
+            );
+
             $form->load('
 <form>
 	<fields name="params">
@@ -130,11 +136,7 @@ class Languagecode extends Plugin
 			<field
 				name="' . strtolower($tag) . '"
 				type="text"
-				description="' . htmlspecialchars(
-                    Lang::txt('PLG_SYSTEM_LANGUAGECODE_FIELD_DESC', $language['name']),
-                    ENT_COMPAT,
-                    'UTF-8',
-                ) . '"
+				description="' . $description . '"
 				translate_description="false"
 				label="' . $tag . '"
 				translate_label="false"
