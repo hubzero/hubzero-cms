@@ -102,7 +102,8 @@ if (!$this->comment->get('item_id')) {
             </div>
 
             <p class="comment-options">
-            <?php /*if ($this->config->get('access-edit-thread')) { // || User::get('id') == $this->comment->created_by ?>
+            <?php
+            /*if ($this->config->get('access-edit-thread')) { // || User::get('id') == $this->comment->created_by ?>
                 <?php if ($this->config->get('access-delete-thread')) { ?>
                     <a class="icon-delete delete" href="<?php echo Route::url($this->base . '&action=delete&comment=' .
                         $this->comment->get('id')); ?>"><!--

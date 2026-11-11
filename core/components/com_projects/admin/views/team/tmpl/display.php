@@ -202,7 +202,11 @@ $this->css();
                 </td>
                 <td class="priority-5">
                     <span>
-                        <?php //echo ($creator && !$this->project->groupOwner() ? '<span class="prominent">' . Lang::txt('COM_PROJECTS_TEAM_OWNER') . '</span> / ' : '') . $this->escape($role);?>
+                        <?php
+                        //echo ($creator && !$this->project->groupOwner()
+                        //    ? '<span class="prominent">' . Lang::txt('COM_PROJECTS_TEAM_OWNER') . '</span> / ' : '')
+                        //    . $this->escape($role);
+                        ?>
                     <?php if ($creator) { ?>
                         <?php
                         $spanText = Lang::txt('COM_PROJECTS_TEAM_OWNER') . ' / ' . $this->escape($role);

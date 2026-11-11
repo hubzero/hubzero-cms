@@ -113,11 +113,14 @@ $filterbySelected = function ($value) use ($view) {
                             <option value="all" <?= $filterbySelected('all') ?>>
                                 <?= Lang::txt('COM_PROJECTS_FILTER_ALL') ?>
                             </option>
-                            <?php /*<option value="public" <?php echo ($this->filters['filterby'] == 'public') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_PUBLIC'); ?></option>
                             <?php
-                            $selectedAttr = ($this->filters['filterby'] == 'open') ? ' selected="selected"' : '';
+                            /*<option value="public"
+                                <?php echo ($this->filters['filterby'] == 'public') ? ' selected="selected"' : ''; ?>>
+                                <?php echo Lang::txt('COM_PROJECTS_FILTER_PUBLIC'); ?></option>
+                            <option value="open"
+                                <?php echo ($this->filters['filterby'] == 'open') ? ' selected="selected"' : ''; ?>>
+                                <?php echo Lang::txt('COM_PROJECTS_FILTER_OPEN'); ?></option>*/
                             ?>
-                            <option value="open" <?= $selectedAttr ?>><?php echo Lang::txt('COM_PROJECTS_FILTER_OPEN'); ?></option>*/ ?>
                             <option value="archived" <?= $filterbySelected('archived') ?>>
                                 <?= Lang::txt('COM_PROJECTS_FILTER_ARCHIVED') ?>
                             </option>

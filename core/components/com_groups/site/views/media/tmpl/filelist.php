@@ -175,7 +175,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                         . '&controller=media&task=deletefile&file=' . $relFilePath . '&format=raw&'
                         . Session::getFormToken() . '=1',
                 );  //tmpl=component');
-                //$rawPath  = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn').'&controller=media&task=rawfile&file=' . $relFilePath . '&tmpl=component');
+                //$rawPath  = Route::url('index.php?option=com_groups&cn='.$this->group->get('cn')
+                //    .'&controller=media&task=rawfile&file=' . $relFilePath . '&tmpl=component');
             ?>
             <li class="file file-<?php echo strtolower($extension); ?>">
                 <div class="name">

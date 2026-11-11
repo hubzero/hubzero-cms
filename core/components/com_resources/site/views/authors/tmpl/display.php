@@ -119,7 +119,10 @@ if ($this->contributors) {
                             id="organization-<?= $contributor->authorid ?>" size="35"
                             value="<?= $this->escape(stripslashes($contributor->organization)) ?>"
                             placeholder="<?= Lang::txt('COM_CONTRIBUTE_AUTHORS_ORGANIZATION') ?>" />
-                        <?php //echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : '';?>
+                        <?php
+                        //echo ($contributor->org)
+                        //    ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : '';
+                        ?>
                     </td>
                     <td>
                         <select name="authors[<?= $contributor->authorid ?>][role]"

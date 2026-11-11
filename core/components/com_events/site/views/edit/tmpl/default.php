@@ -138,7 +138,10 @@ $this
                 <?= Lang::txt('EVENTS_CAL_LANG_EVENT_STARTDATE') . ' &amp; '
                     . Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME') ?></label>
                 <p>
-                    <?php //echo Html::input('calendar', 'publish_up', $start_publish, array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10'));?>
+                    <?php
+                    //echo Html::input('calendar', 'publish_up', $start_publish,
+                    //    array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10'));
+                    ?>
                     <input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10"
                         value="<?= $this->times['start_publish'] ?>" />
                     <input class="option" type="text" name="start_time" id="start_time" size="5" maxlength="6"
@@ -156,7 +159,10 @@ $this
                 <?= Lang::txt('EVENTS_CAL_LANG_EVENT_ENDDATE') . ' &amp; '
                     . Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME') ?></label>
                 <p>
-                    <?php //echo Html::input('calendar', 'publish_down', $stop_publish, array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10'));?>
+                    <?php
+                    //echo Html::input('calendar', 'publish_down', $stop_publish,
+                    //    array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10'));
+                    ?>
                     <input class="option" type="text" name="publish_down" id="publish_down" size="10" maxlength="10"
                         value="<?= $this->times['stop_publish'] ?>" />
                     <input class="option" type="text" name="end_time" id="end_time" size="5" maxlength="6"

@@ -41,7 +41,11 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
     <input type="hidden" name="action" value="team" />
 
     <div class="container">
-        <!-- <p class="msg-total"><?= ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SHOWING')) ?> <?= $this->total <= count($this->team) ? Lang::txt('PLG_PROJECTS_TEAM_ALL') : '' ?> <span class="prominent"><?= count($this->team) ?></span>  <?= $this->total > count($this->team) ? Lang::txt('PLG_PROJECTS_TEAM_OUT_OF') . ' ' . $this->total : '' ?> <?= Lang::txt('PLG_PROJECTS_TEAM_MEMBERS') ?></p> -->
+        <!-- <p class="msg-total"><?= ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SHOWING')) ?>
+            <?= $this->total <= count($this->team) ? Lang::txt('PLG_PROJECTS_TEAM_ALL') : '' ?>
+            <span class="prominent"><?= count($this->team) ?></span>
+            <?= $this->total > count($this->team) ? Lang::txt('PLG_PROJECTS_TEAM_OUT_OF') . ' ' . $this->total : '' ?>
+            <?= Lang::txt('PLG_PROJECTS_TEAM_MEMBERS') ?></p> -->
 
         <table id="teamlist" class="listing">
             <thead>

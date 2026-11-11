@@ -170,7 +170,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
         <div class="subject">
             <h3 class="comments-title">
                 <?php echo Lang::txt('COM_KB_COMMENTS_ON_ENTRY'); ?>
-                <?php /*if ($this->article->param('feeds_enabled') && $this->article->comments($filters)->count() > 0) { ?>
+                <?php
+                /*if ($this->article->param('feeds_enabled') && $this->article->comments($filters)->count() > 0) { ?>
                     <a class="icon-feed feed btn" href="<?php echo $this->article->link('feed'); ?>" title="<?php echo
                         Lang::txt('COM_KB_COMMENT_FEED'); ?>">
                         <?php echo Lang::txt('COM_KB_FEED'); ?>

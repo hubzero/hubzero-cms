@@ -144,7 +144,11 @@ if (!$tmpl && !$no_html) {
                                     <option value="report"<?= $sortSelected('report') ?>>
                                         <?= Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT') ?>
                                     </option>
-                                    <?php /*<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
+                                    <?php
+                                    /*<option value="resolved"<?php if ($this->row->sort == 'resolved') {
+                                        echo ' selected="selected"'; } ?>><?php
+                                        echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/
+                                    ?>
                                     <option value="severity"<?= $sortSelected('severity') ?>>
                                         <?= Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY') ?>
                                     </option>
@@ -287,7 +291,11 @@ if (!$tmpl && !$no_html) {
                     <option value="report"<?= $sortSelected('report') ?>>
                         <?= Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT') ?>
                     </option>
-                    <?php /*<option value="resolved"<?php if ($this->row->sort == 'resolved') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
+                    <?php
+                    /*<option value="resolved"<?php if ($this->row->sort == 'resolved') {
+                        echo ' selected="selected"'; } ?>><?php
+                        echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/
+                    ?>
                     <option value="severity"<?= $sortSelected('severity') ?>>
                         <?= Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY') ?>
                     </option>
