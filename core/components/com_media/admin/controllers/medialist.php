@@ -96,6 +96,8 @@ class Medialist extends AdminController
             if (!is_dir($folder)) {
                 App::abort(404, Lang::txt('Specified folder "%s" does not exist', $folder));
             }
+        } else {
+            App::abort(404, Lang::txt('No file or folder specified'));
         }
 
         // Compile info
