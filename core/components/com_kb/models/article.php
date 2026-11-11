@@ -21,6 +21,31 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Knowledgebase model for an article
+ *
+ * Columns of #__kb_articles (made from #__faq by a 2015 migration):
+ *
+ * @property  int                                   $id
+ * @property  string|null                           $title
+ * @property  string|null                           $alias
+ * @property  \Hubzero\Config\Registry|string|null  $params            Merged with the component's until a row loads
+ * @property  string|null                           $fulltxt
+ * @property  string|null                           $created
+ * @property  int|null                              $created_by
+ * @property  string|null                           $modified
+ * @property  int|null                              $modified_by
+ * @property  int|null                              $checked_out
+ * @property  string|null                           $checked_out_time
+ * @property  int|null                              $state
+ * @property  int|null                              $access
+ * @property  int|null                              $hits
+ * @property  int|null                              $version
+ * @property  int|null                              $category
+ * @property  int                                   $helpful
+ * @property  int                                   $nothelpful
+ *
+ * Not columns:
+ *
+ * @property  \Components\Categories\Models\Category  $parentCategory  The category, through parentCategory()
  */
 class Article extends Relational implements \Hubzero\Search\Searchable
 {

@@ -28,6 +28,10 @@ use Hubzero\Facades\Route;
 
 /**
  * Knowledge Base controller
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  \Components\Kb\Models\Archive  $archive  The knowledge base, set by execute()
  */
 class Articles extends SiteController
 {
