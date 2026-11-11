@@ -12,7 +12,7 @@ parameters:
     excludePaths:
         analyseAndScan:
             - core/vendor
-            - core/cache
+            - core/cache (?)
             - core/components/com_search/site/assets
     ignoreErrors:
         # A hub writes its own app/config/*.php when it is installed; git
