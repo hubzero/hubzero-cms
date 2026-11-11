@@ -107,7 +107,9 @@ if ($closed == 'closed' && $this->showClose == true) {
                             $confirmText = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_CONFIRM_DELETE');
                             $buttonText = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE');
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE') ?>" data-confirm="<?= $confirmText ?>"><?= $buttonText ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                                class="icon-delete delete" title="<?= Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_DELETE') ?>"
+                                data-confirm="<?= $confirmText ?>"><?= $buttonText ?></button>
                         <?php endif; ?>
                     </dd>
                 <?php endif; ?>

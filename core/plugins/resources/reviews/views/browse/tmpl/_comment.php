@@ -202,7 +202,8 @@ if ($this->comment->get('resource_id')) {
                     $dataTxtConfirm = Lang::txt('PLG_RESOURCES_REVIEWS_CONFIRM_DELETE');
                     $buttonText = Lang::txt('PLG_RESOURCES_REVIEWS_DELETE');
                     ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
+                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                        class="icon-delete delete" data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
                     <?php
                     $editUrl = Route::url(
                         $this->base . '&action=edit' . ($this->comment->get('resource_id') ? 'review' : '')

@@ -528,7 +528,8 @@ $paramsLayoutSelected = function ($value) use ($view) {
     );
     $linkText = Lang::txt('COM_PROJECTS_ERASE_PROJECT');
     ?>
-    <p class="notice"><a class="button" href="<?= $eraseUrl ?>"><?= $linkText ?></a> <?= Lang::txt('COM_PROJECTS_ERASE_NOTICE') ?></p>
+    <p class="notice"><a class="button"
+        href="<?= $eraseUrl ?>"><?= $linkText ?></a> <?= Lang::txt('COM_PROJECTS_ERASE_NOTICE') ?></p>
 
         </div>
         <div id="page-images" class="tab">

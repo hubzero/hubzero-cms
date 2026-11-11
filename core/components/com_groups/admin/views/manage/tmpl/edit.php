@@ -385,22 +385,30 @@ $discoverabilityChecked = function ($value) use ($view) {
                                     $labelText = Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC') . ' &mdash; '
                                         . Lang::txt('COM_GROUPS_JOIN_POLICY_PUBLIC_DESC');
                                     ?>
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy0" value="0"<?= $joinPolicyChecked(0) ?> /> <label for="field-join_policy0"><?= $labelText ?></label><br />
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy0"
+                                        value="0"<?= $joinPolicyChecked(0) ?> /> <label
+                                        for="field-join_policy0"><?= $labelText ?></label><br />
                                     <?php
                                     $labelText = Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED') . ' &mdash; '
                                         . Lang::txt('COM_GROUPS_JOIN_POLICY_RESTRICTED_DESC');
                                     ?>
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy1" value="1"<?= $joinPolicyChecked(1) ?> /> <label for="field-join_policy1"><?= $labelText ?></label><br />
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy1"
+                                        value="1"<?= $joinPolicyChecked(1) ?> /> <label
+                                        for="field-join_policy1"><?= $labelText ?></label><br />
                                     <?php
                                     $labelText = Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE') . ' &mdash; '
                                         . Lang::txt('COM_GROUPS_JOIN_POLICY_INVITE_DESC');
                                     ?>
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy2" value="2"<?= $joinPolicyChecked(2) ?> /> <label for="field-join_policy2"><?= $labelText ?></label><br />
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy2"
+                                        value="2"<?= $joinPolicyChecked(2) ?> /> <label
+                                        for="field-join_policy2"><?= $labelText ?></label><br />
                                     <?php
                                     $labelText = Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED') . ' &mdash; '
                                         . Lang::txt('COM_GROUPS_JOIN_POLICY_CLOSED_DESC');
                                     ?>
-                                    <input type="radio" name="group[join_policy]" id="field-join_policy3" value="3"<?= $joinPolicyChecked(3) ?> /> <label for="field-join_policy3"><?= $labelText ?></label>
+                                    <input type="radio" name="group[join_policy]" id="field-join_policy3"
+                                        value="3"<?= $joinPolicyChecked(3) ?> /> <label
+                                        for="field-join_policy3"><?= $labelText ?></label>
                                 </div>
                             </fieldset>
                             <div class="input-wrap">

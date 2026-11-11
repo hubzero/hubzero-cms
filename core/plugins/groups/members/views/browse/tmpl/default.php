@@ -369,7 +369,8 @@ $option = 'com_groups';
                                             Date::of($invited)->toLocal(Lang::txt('DATE_FORMAT_HZ1')),
                                         );
                                         ?>
-                                        <span class="invited"><time datetime="<?= $invited ?>"><?= $timeText ?></time></span><br />
+                                        <span class="invited"><time
+                                            datetime="<?= $invited ?>"><?= $timeText ?></time></span><br />
                                     <?php } ?>
                                 <?php } else { ?>
                                     <span class="name">
@@ -815,7 +816,8 @@ $option = 'com_groups';
                                 $titleText = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE');
                                 $buttonText = Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE');
                                 ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= $removeroleUrl ?>" class="remove-role" title="<?= $titleText ?>"><?= $buttonText ?></button>
+                                <button type="submit" form="hz-post-action" formaction="<?= $removeroleUrl ?>"
+                                    class="remove-role" title="<?= $titleText ?>"><?= $buttonText ?></button>
                                 <?php
                                 $editroleUrl = Route::url(
                                     'index.php?option=' . $option . '&cn=' . $this->group->cn

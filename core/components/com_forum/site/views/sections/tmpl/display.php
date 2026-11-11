@@ -106,7 +106,9 @@ $this
                                     $dataTxtConfirm = Lang::txt('COM_FORUM_CONFIRM_DELETE');
                                     $spanText = Lang::txt('JACTION_DELETE');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= $dataTxtConfirm ?>"><span><?= $spanText ?></span></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                                        class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>"
+                                        data-txt-confirm="<?= $dataTxtConfirm ?>"><span><?= $spanText ?></span></button>
                                 <?php } ?>
                                 <?php
                                 if (
@@ -160,7 +162,8 @@ $this
                                             <?php
                                             $entryIdentifierText = $this->escape($row->get('id'));
                                             ?>
-                                            <span class="entry-identifier <?= $icn ?>"><?= $entryIdentifierText ?></span>
+                                            <span
+                                                class="entry-identifier <?= $icn ?>"><?= $entryIdentifierText ?></span>
                                         </th>
                                         <td>
                                             <a class="entry-title" href="<?php echo Route::url($row->link()); ?>">

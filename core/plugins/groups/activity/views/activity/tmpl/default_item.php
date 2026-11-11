@@ -283,7 +283,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                         $dataTxtConfirm = Lang::txt('PLG_GROUPS_ACTIVITY_CONFIRM_DELETE');
                         $buttonText = Lang::txt('PLG_GROUPS_ACTIVITY_DELETE');
                         ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_GROUPS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
+                        <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>"
+                            class="icon-delete tooltips" title="<?= Lang::txt('PLG_GROUPS_ACTIVITY_DELETE') ?>"
+                            data-id="activity<?= $this->row->get('id') ?>"
+                            data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
                     </li>
                     <?php } ?>
                     <?php /*<li>

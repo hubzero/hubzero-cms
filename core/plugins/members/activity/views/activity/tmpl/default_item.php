@@ -241,7 +241,8 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                                     $timeText = Date::of($dup->log->get('created'))->toLocal('M j') . ' @ '
                                         . Date::of($dup->log->get('created'))->toLocal('g:i a');
                                     ?>
-                                    <span class="activity-time"><time datetime="<?= $datetime ?>"><?= $timeText ?></time></span>
+                                    <span class="activity-time"><time
+                                        datetime="<?= $datetime ?>"><?= $timeText ?></time></span>
                                 </li>
                             <?php } ?>
                         </ul>
@@ -274,7 +275,10 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                         $dataTxtConfirm = Lang::txt('PLG_MEMBERS_ACTIVITY_CONFIRM_DELETE');
                         $buttonText = Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE');
                         ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="icon-delete tooltips" title="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?>" data-id="activity<?= $this->row->get('id') ?>" data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
+                        <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>"
+                            class="icon-delete tooltips" title="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_DELETE') ?>"
+                            data-id="activity<?= $this->row->get('id') ?>"
+                            data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
                     </li>
                     <?php /*<li>
                         <a

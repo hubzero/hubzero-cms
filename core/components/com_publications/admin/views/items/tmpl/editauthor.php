@@ -59,7 +59,8 @@ $editUrl = Route::url(
 );
 $linkText = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id;
 ?>
-<p class="crumbs"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?> &raquo; <a href="<?= $editUrl ?>"><?= $linkText ?></a> &raquo; <?= $pageTitle ?></p>
+<p class="crumbs"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?> &raquo; <a
+    href="<?= $editUrl ?>"><?= $linkText ?></a> &raquo; <?= $pageTitle ?></p>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
     name="adminForm" id="item-form">
@@ -112,7 +113,8 @@ $linkText = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id;
                     <?php
                     $labelText = Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_FIRST_AND_MIDDLE');
                     ?>
-                    <td class="key"><label><?= $labelText ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label></td>
+                    <td class="key"><label><?= $labelText ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label></td>
                     <td>
                         <input type="text" name="firstName" value="<?= $this->escape($firstname) ?>" size="25" />
                     </td>

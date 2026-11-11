@@ -174,7 +174,8 @@ $bars = [];
                     <?php
                     $timeText = Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                     ?>
-                    <span><?= $periodWord ?> <span id="users-overview-date"><time datetime="<?= $current->datetime ?>"><?= $timeText ?></time></span></span>
+                    <span><?= $periodWord ?> <span id="users-overview-date"><time
+                        datetime="<?= $current->datetime ?>"><?= $timeText ?></time></span></span>
                 </p>
             </div><!-- / .col span3 -->
             <div class="col span9 omega">
@@ -646,7 +647,8 @@ $bars = [];
                         <?php
                         $timeText = Date::of($current->datetime)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                         ?>
-                        <span><?= $periodWord ?> <span id="runs-overview-date"><time datetime="<?= $current->datetime ?>"><?= $timeText ?></time></span></span>
+                        <span><?= $periodWord ?> <span id="runs-overview-date"><time
+                            datetime="<?= $current->datetime ?>"><?= $timeText ?></time></span></span>
                     </p>
                 </div><!-- / .col span3 -->
                 <div class="col span9 omega">

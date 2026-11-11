@@ -209,7 +209,8 @@ $this->category->set('section_alias', $this->filters['section']);
                                             <?php
                                             $entryIdentifierText = $this->escape($row->get('id'));
                                             ?>
-                                            <span class="entry-identifier <?= $icn ?>"><?= $entryIdentifierText ?></span>
+                                            <span
+                                                class="entry-identifier <?= $icn ?>"><?= $entryIdentifierText ?></span>
                                         </th>
                                         <td>
                                             <a class="entry-title" href="<?php echo Route::url($row->link()); ?>">

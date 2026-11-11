@@ -87,5 +87,6 @@ if (count($items) > 0) { ?>
     $linkUrl = Route::url($route . '&active=databases');
     $paragraphText = Lang::txt('PLG_PROJECTS_DATABASES_TO_CREATE');
     ?>
-    <p class="addnew"><?= Lang::txt('PLG_PROJECTS_DATABASES_GO_TO') ?> <a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> <?= $paragraphText ?></p>
+    <p class="addnew"><?= Lang::txt('PLG_PROJECTS_DATABASES_GO_TO') ?> <a
+        href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> <?= $paragraphText ?></p>
 <?php }

@@ -103,7 +103,8 @@ $i = 0;
                     );
                     $buttonText = ucfirst(Lang::txt('PLG_PROJECTS_FILES_CONNECT_DISCONNECT'));
                     ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= $disconnectUrl ?>" id="disconnect"><?= $buttonText ?> &raquo;</button>
+                    <button type="submit" form="hz-post-action" formaction="<?= $disconnectUrl ?>"
+                        id="disconnect"><?= $buttonText ?> &raquo;</button>
                 </span>
                 &nbsp; &nbsp;
                 <span>

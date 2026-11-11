@@ -215,7 +215,9 @@ $base = $this->offering->link() . '&active=forum';
                                                 );
                                                 $buttonText = Lang::txt('PLG_COURSES_DISCUSSIONS_DELETE');
                                                 ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete"><?= $buttonText ?></button>
+                                                <button type="submit" form="hz-post-action"
+                                                    formaction="<?= $actionUrl ?>"
+                                                    class="delete"><?= $buttonText ?></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>

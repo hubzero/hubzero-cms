@@ -143,7 +143,8 @@ foreach ($this->modules as $module) {
                                 );
                                 $buttonText = Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE');
                                 ?>
-                                <li><button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="icon-ban-circle"> <?= $buttonText ?></button></li>
+                                <li><button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>"
+                                    class="icon-ban-circle"> <?= $buttonText ?></button></li>
                             <?php else : ?>
                                 <?php
                                 $unpublishUrl = Route::url(
@@ -152,7 +153,8 @@ foreach ($this->modules as $module) {
                                 );
                                 $buttonText = Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE');
                                 ?>
-                                <li><button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>" class="icon-success"> <?= $buttonText ?></button></li>
+                                <li><button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>"
+                                    class="icon-success"> <?= $buttonText ?></button></li>
                             <?php endif; ?>
                             <li class="divider"></li>
                             <?php

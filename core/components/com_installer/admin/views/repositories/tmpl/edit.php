@@ -65,7 +65,8 @@ $this->js();
                         <?php
                         $labelText = Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_DESCRIPTION');
                         ?>
-                        <label for="field-description"><?= $labelText ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                        <label for="field-description"><?= $labelText ?> <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
                         <input name="description" id="field-description" type="text" class="required"
                             value="<?= $this->escape(Arr::getValue($this->config, 'description', '')) ?>"></input>
                     </div>

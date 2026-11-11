@@ -212,7 +212,8 @@ $this
                                 <?php
                                 $descText = \Components\Tools\Helpers\Html::getDevTeam($t->authors);
                                 ?>
-                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_AUTHORS')) ?>: </span><span class="desc"><?= $descText ?></span></p>
+                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_AUTHORS')) ?>: </span><span
+                                    class="desc"><?= $descText ?></span></p>
                                 <p><span
                                     class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')) ?>: </span><span
                                     class="desc"><?= $toolaccess ?></span></p>

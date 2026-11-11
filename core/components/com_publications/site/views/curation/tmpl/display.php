@@ -219,7 +219,8 @@ $this
                                                 ? Lang::txt('COM_PUBLICATIONS_CURATION_STATUS_PENDING')
                                                 : Lang::txt('COM_PUBLICATIONS_CURATION_PENDING_AUTHOR_CHANGES');
                                             ?>
-                                            <span class="status-icon <?= $class ?>"></span> <span class="status-label"><?= $statusLabelText ?></span>
+                                            <span class="status-icon <?= $class ?>"></span> <span
+                                                class="status-label"><?= $statusLabelText ?></span>
                                         </td>
                                         <td>
                                         <?php

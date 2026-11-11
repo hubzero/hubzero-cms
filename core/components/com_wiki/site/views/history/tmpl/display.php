@@ -181,7 +181,8 @@ $revisions = $this->page
                                             $revision->get('version'),
                                         );
                                         ?>
-                                        <label class="sr-only" for="diff-<?= $revision->get('id') ?>"><?= $labelText ?></label>
+                                        <label class="sr-only"
+                                            for="diff-<?= $revision->get('id') ?>"><?= $labelText ?></label>
                                     <?php
                                     $ariaLabel = Lang::txt(
                                         'COM_WIKI_HISTORY_COMPARE_NEW_VERSION',
@@ -200,7 +201,8 @@ $revisions = $this->page
                                             $revision->get('version'),
                                         );
                                         ?>
-                                        <label class="sr-only" for="oldid-<?= $revision->get('id') ?>"><?= $labelText ?></label>
+                                        <label class="sr-only"
+                                            for="oldid-<?= $revision->get('id') ?>"><?= $labelText ?></label>
                                         <?php
                                         $ariaLabel = Lang::txt(
                                             'COM_WIKI_HISTORY_COMPARE_OLD_VERSION',

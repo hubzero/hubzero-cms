@@ -262,7 +262,9 @@ if (isset($this->messages)) {
                                             $titleText = Lang::txt('PLG_GROUPS_CITATIONS_DELETE');
                                             $spanText = Lang::txt('PLG_GROUPS_CITATIONS_DELETE');
                                             ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete individual protected" title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                                                class="icon-delete delete individual protected"
+                                                title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
                                         </td>
                                         <td class="col-publish">
                                             <?php
@@ -274,7 +276,9 @@ if (isset($this->messages)) {
                                                 ? Lang::txt('PLG_GROUPS_CITATIONS_UNPUBLISH')
                                                 : '<strong>' . Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH') . '</strong>';
                                             ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="icon-window-publish individual publish" title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>"
+                                                class="icon-window-publish individual publish"
+                                                title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
                                         </td>
                                     <?php endif; ?>
                                 </tr>

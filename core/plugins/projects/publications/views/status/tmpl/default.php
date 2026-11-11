@@ -120,7 +120,8 @@ if ($revertAllowed && $this->pub->accepted()) {
                             $versionsUrl = Route::url($this->pub->link('edit') . '&action=versions');
                             $linkText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_ALL_VERSIONS');
                             ?>
-                            <td class="tbl-input"><span><?= $this->pub->version_number ?></span>&nbsp; &nbsp;<span >[<a href="<?= $versionsUrl ?>"><?= $linkText ?></a>]</span></td>
+                            <td class="tbl-input"><span><?= $this->pub->version_number ?></span>&nbsp; &nbsp;<span >[<a
+                                href="<?= $versionsUrl ?>"><?= $linkText ?></a>]</span></td>
                         </tr>
                         <tr>
                             <td class="tbl-lbl"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_CREATED')) ?>:</td>
@@ -290,7 +291,8 @@ if ($revertAllowed && $this->pub->accepted()) {
                                 $statsUrl = Route::url($this->pub->link('editversion') . '&action=stats');
                                 $linkText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_USAGE');
                                 ?>
-                                <span class="block italic"><a href="<?= $statsUrl ?>"><?= $linkText ?> &raquo;</a></span></p></li>
+                                <span class="block italic"><a
+                                    href="<?= $statsUrl ?>"><?= $linkText ?> &raquo;</a></span></p></li>
                             <?php if ($showCitations) { ?>
                                 <?php
                                 $paragraphText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_WATCH_ADD_CITATIONS');
@@ -300,7 +302,8 @@ if ($revertAllowed && $this->pub->accepted()) {
                                 $linkUrl = Route::url($this->pub->link('editversion') . '&section=citations');
                                 $linkText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_ADD_CITATIONS');
                                 ?>
-                                <span class="block italic"><a href="<?= $linkUrl ?>"><?= $linkText ?> &raquo;</a></span></p></li>
+                                <span class="block italic"><a
+                                    href="<?= $linkUrl ?>"><?= $linkText ?> &raquo;</a></span></p></li>
                             <?php } ?>
                             <?= $this->pub->archived()
                                 ? '<li id="next-archive"><p class="info">'
@@ -355,7 +358,8 @@ if ($revertAllowed && $this->pub->accepted()) {
                             $reviewUrl = Route::url($this->pub->link('editversion') . '&action=review');
                             $linkText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_RESUBMIT_TO_PUBLISH_REVIEW');
                             ?>
-                            <p class="centeralign"><a href="<?= $reviewUrl ?>" class="btn btn-success active"><?= $linkText ?></a></p></li>
+                            <p class="centeralign"><a href="<?= $reviewUrl ?>"
+                                class="btn btn-success active"><?= $linkText ?></a></p></li>
                         <?php } else { ?>
                             <li id="next-edit">
                                 <p>
@@ -365,7 +369,8 @@ if ($revertAllowed && $this->pub->accepted()) {
                                 $continueUrl = Route::url($this->pub->link('editversion') . '&action=continue');
                                 $linkText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_MAKE_CHANGES');
                                 ?>
-                                <p class="next-controls"><a href="<?= $continueUrl ?>" id="start-curation" class="btn btn-primary active icon-next"><?= $linkText ?></a></p>
+                                <p class="next-controls"><a href="<?= $continueUrl ?>" id="start-curation"
+                                    class="btn btn-primary active icon-next"><?= $linkText ?></a></p>
                             </li>
                         <?php }
                         break;
@@ -396,7 +401,8 @@ if ($revertAllowed && $this->pub->accepted()) {
                             $reviewUrl = Route::url($this->pub->link('editversion') . '&action=review');
                             $linkText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_SUBMIT_TO_PUBLISH_REVIEW');
                             ?>
-                            <p class="centeralign"><a href="<?= $reviewUrl ?>" class="btn btn-success active"><?= $linkText ?></a></p></li>
+                            <p class="centeralign"><a href="<?= $reviewUrl ?>"
+                                class="btn btn-success active"><?= $linkText ?></a></p></li>
                         <?php } else { ?>
                             <li id="next-edit">
                                 <p><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_WHATS_NEXT_DRAFT_INCOMPLETE_CURATE') ?></p>
@@ -404,7 +410,8 @@ if ($revertAllowed && $this->pub->accepted()) {
                                 $continueUrl = Route::url($this->pub->link('editversion') . '&action=continue');
                                 $linkText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT');
                                 ?>
-                                <p class="next-controls"><a href="<?= $continueUrl ?>" id="start-curation" class="btn btn-primary active icon-next"><?= $linkText ?></a></p>
+                                <p class="next-controls"><a href="<?= $continueUrl ?>" id="start-curation"
+                                    class="btn btn-primary active icon-next"><?= $linkText ?></a></p>
                             </li>
                         <?php } ?>
 

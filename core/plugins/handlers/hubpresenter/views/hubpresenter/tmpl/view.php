@@ -321,7 +321,8 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                             'PLG_HANDLERS_HUBPRESENTER_CONTROL_CAPTION_OPTION_SAVE',
                                         );
                                         ?>
-                                        <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= $buttonText ?></button>
+                                        <button class="btn btn-info btn-secondary icon-save"
+                                            id="subtitle-settings-save"><?= $buttonText ?></button>
                                     </div>
                                 </div>
                             </div>

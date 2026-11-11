@@ -41,7 +41,8 @@ $no_show = ["errors","duplicate"];
             <?php
             $spanText = Lang::txt('COM_CITATIONS_IMPORT_STEP1_NAME');
             ?>
-            <li><a href="<?= Request::base(true) ?>/citations/import" class="passed"><?= Lang::txt('COM_CITATIONS_IMPORT_STEP1') ?><span><?= $spanText ?></span></a></li>
+            <li><a href="<?= Request::base(true) ?>/citations/import"
+                class="passed"><?= Lang::txt('COM_CITATIONS_IMPORT_STEP1') ?><span><?= $spanText ?></span></a></li>
             <?php
             $spanText = Lang::txt('COM_CITATIONS_IMPORT_STEP2_NAME');
             ?>

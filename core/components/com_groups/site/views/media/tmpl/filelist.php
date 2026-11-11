@@ -213,29 +213,34 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                             <?php
                             $linkText = Lang::txt('COM_GROUPS_MEDIA_DOWNLOAD');
                             ?>
-                            <a href="<?= $this->escape($downloadPath) ?>" class="btn btn-secondary icon-download action-download"><?= $linkText ?></a>
+                            <a href="<?= $this->escape($downloadPath) ?>"
+                                class="btn btn-secondary icon-download action-download"><?= $linkText ?></a>
                             <?php if ($this->authorized) : ?>
                                 <?php if ($this->group->published == 1) : ?>
                                     <?php
                                     $linkText = Lang::txt('COM_GROUPS_MEDIA_RENAME');
                                     ?>
-                                    <a href="<?= $renamePath ?>" class="btn btn-secondary icon-edit action-rename"><?= $linkText ?></a>
+                                    <a href="<?= $renamePath ?>"
+                                        class="btn btn-secondary icon-edit action-rename"><?= $linkText ?></a>
                                     <?php
                                     $linkText = Lang::txt('COM_GROUPS_MEDIA_MOVE');
                                     ?>
-                                    <a href="<?= $movePath ?>" class="btn btn-secondary icon-move action-move"><?= $linkText ?></a>
+                                    <a href="<?= $movePath ?>"
+                                        class="btn btn-secondary icon-move action-move"><?= $linkText ?></a>
                                 <?php endif; ?>
                                 <?php if ($isArchive) : ?>
                                     <?php
                                     $linkText = Lang::txt('COM_GROUPS_MEDIA_EXTRACT');
                                     ?>
-                                    <a href="<?= $extractPath ?>" class="btn btn-secondary icon-extract action-extract"><?= $linkText ?></a>
+                                    <a href="<?= $extractPath ?>"
+                                        class="btn btn-secondary icon-extract action-extract"><?= $linkText ?></a>
                                 <?php endif; ?>
                                 <?php if ($this->group->published == 1) : ?>
                                     <?php
                                     $linkText = Lang::txt('COM_GROUPS_MEDIA_DELETE');
                                     ?>
-                                    <a data-file="<?= $this->escape($relFilePath) ?>" href="<?= $deletePath ?>" class="btn btn-secondary icon-delete action-delete"><?= $linkText ?></a>
+                                    <a data-file="<?= $this->escape($relFilePath) ?>" href="<?= $deletePath ?>"
+                                        class="btn btn-secondary icon-delete action-delete"><?= $linkText ?></a>
                                 <?php endif; ?>
                             <?php endif; ?>
                         </li>

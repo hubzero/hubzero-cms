@@ -55,7 +55,8 @@ $spanText = isset($this->db_id)
     ? Lang::txt('PLG_PROJECTS_DATABASES_UPDATE_DATABASE')
     : Lang::txt('PLG_PROJECTS_DATA_START');
 ?>
-<h3 class="databases c-header"><a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> &raquo; <span class="indlist"><?= $spanText ?></span></h3>
+<h3 class="databases c-header"><a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_DATABASES') ?></a> &raquo; <span
+    class="indlist"><?= $spanText ?></span></h3>
 </div>
 <div id="prj-db-step-1" class="prj-db-step">
 <?php

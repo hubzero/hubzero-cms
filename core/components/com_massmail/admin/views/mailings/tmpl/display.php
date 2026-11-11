@@ -101,7 +101,8 @@ $this->css('display.css', 'com_massmail');
                 <?php
                 $mmStatusText = Lang::txt('COM_MASSMAIL_STATUS_' . strtoupper($row->get('status')));
                 ?>
-                <td><a class="mm-status-link" href="<?= $link ?>"><span class="mm-status mm-status-<?= $row->get('status') ?>"><?= $mmStatusText ?></span></a></td>
+                <td><a class="mm-status-link" href="<?= $link ?>"><span
+                    class="mm-status mm-status-<?= $row->get('status') ?>"><?= $mmStatusText ?></span></a></td>
                 <td>
                     <?php
                     $total = (int) $row->get('total_recipients');

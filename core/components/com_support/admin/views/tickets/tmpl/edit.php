@@ -137,12 +137,14 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                         <?php
                         $timeText = Date::of($this->row->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
                         ?>
-                        <span class="time"><time datetime="<?= $this->row->get('created') ?>"><?= $timeText ?></time></span>
+                        <span class="time"><time
+                            datetime="<?= $this->row->get('created') ?>"><?= $timeText ?></time></span>
                         <span class="date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
                         <?php
                         $timeText = Date::of($this->row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                         ?>
-                        <span class="date"><time datetime="<?= $this->row->get('created') ?>"><?= $timeText ?></time></span>
+                        <span class="date"><time
+                            datetime="<?= $this->row->get('created') ?>"><?= $timeText ?></time></span>
                     </a>
                 </div>
                 <blockquote class="ticket-content"

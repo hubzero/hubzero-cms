@@ -75,14 +75,16 @@ $rows = $this->todo->entries('list', $this->filters);
             );
             $linkText = Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE');
             ?>
-            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?>" class="filter-mine<?= $this->filters['mine'] == 1 ? ' active' : '' ?>"><?= $linkText ?></a></li>
+            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_MINE') ?>"
+                class="filter-mine<?= $this->filters['mine'] == 1 ? ' active' : '' ?>"><?= $linkText ?></a></li>
             <?php
             $linkUrl = Route::url(
                 $url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&state=1',
             );
             $linkText = Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE');
             ?>
-            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?>" class="filter-complete<?= $this->filters['state'] == 1 ? ' active' : '' ?>"><?= $linkText ?></a></li>
+            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_COMPLETE') ?>"
+                class="filter-complete<?= $this->filters['state'] == 1 ? ' active' : '' ?>"><?= $linkText ?></a></li>
         </ul>
     </nav>
 </div>

@@ -105,7 +105,8 @@ $this
                                             <?php
                                             $entryIdentifierText = $this->escape($row->get('id'));
                                             ?>
-                                            <span class="entry-identifier <?= $icn ?>"><?= $entryIdentifierText ?></span>
+                                            <span
+                                                class="entry-identifier <?= $icn ?>"><?= $entryIdentifierText ?></span>
                                         </th>
                                         <td>
                                             <?php

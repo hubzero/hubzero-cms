@@ -405,7 +405,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <?php
                             $buttonText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS');
                             ?>
-                            <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options"><?= $buttonText ?></button>
+                            <button type="button" class="options-toggle" aria-expanded="false"
+                                aria-controls="subtitle-options"><?= $buttonText ?></button>
                             <div class="subtitle-settings hide" id="subtitle-options">
                                 <div class="grid">
                                     <div class="col span6 label">
@@ -518,7 +519,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     <?php
                                     $buttonText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE');
                                     ?>
-                                    <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= $buttonText ?></button>
+                                    <button class="btn btn-info btn-secondary icon-save"
+                                        id="subtitle-settings-save"><?= $buttonText ?></button>
                                 </div>
                             </div>
                         </div>
@@ -761,7 +763,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     <?php
                                     $buttonText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTIONS');
                                     ?>
-                                    <button type="button" class="options-toggle" aria-expanded="false" aria-controls="subtitle-options"><?= $buttonText ?></button>
+                                    <button type="button" class="options-toggle" aria-expanded="false"
+                                        aria-controls="subtitle-options"><?= $buttonText ?></button>
                                     <div class="subtitle-settings hide" id="subtitle-options">
                                         <div class="grid">
                                             <div class="col span6 label">
@@ -893,7 +896,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                             <?php
                                             $buttonText = Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_SAVE');
                                             ?>
-                                            <button class="btn btn-info btn-secondary icon-save" id="subtitle-settings-save"><?= $buttonText ?></button>
+                                            <button class="btn btn-info btn-secondary icon-save"
+                                                id="subtitle-settings-save"><?= $buttonText ?></button>
                                         </div>
                                     </div>
                                 </div>

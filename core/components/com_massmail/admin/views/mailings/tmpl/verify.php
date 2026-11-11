@@ -71,7 +71,9 @@ $this->js('verify.js', 'com_massmail');
                     <?php
                     $mmEnvValText = $this->escape(stripslashes((string) $row->get('subject')));
                     ?>
-                    <div class="mm-env-row"><span class="mm-env-label"><?= Lang::txt('COM_MASSMAIL_SUBJECT') ?></span><span class="mm-env-val"><?= $mmEnvValText ?></span></div>
+                    <div class="mm-env-row"><span
+                        class="mm-env-label"><?= Lang::txt('COM_MASSMAIL_SUBJECT') ?></span><span
+                        class="mm-env-val"><?= $mmEnvValText ?></span></div>
                 </div>
                 <div class="mm-pv-body">
                     <iframe id="mm-pv-html" sandbox=""

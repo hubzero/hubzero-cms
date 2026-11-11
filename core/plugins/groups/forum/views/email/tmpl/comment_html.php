@@ -194,7 +194,8 @@ $bdcolor = '#e1e1e1';
                     $this->post->created('date'),
                 );
                 ?>
-                <th class="timestamp" style="color: #999; text-align: right;" align="right"><span class="mobilehide"><?= $spanText ?></span></th>
+                <th class="timestamp" style="color: #999; text-align: right;" align="right"><span
+                    class="mobilehide"><?= $spanText ?></span></th>
             </tr>
             <tr>
                 <td colspan="2" style="padding: 0 2em;">

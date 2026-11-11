@@ -142,7 +142,8 @@ if (!$this->comment->get('item_id')) {
                     <?php
                     $linkText = Lang::txt('COM_ANSWERS_ACCEPT_ANSWER');
                     ?>
-                    <a class="icon-success accept" href="<?= Route::url($this->comment->link('accept')) ?>"><?= $linkText ?></a>
+                    <a class="icon-success accept"
+                        href="<?= Route::url($this->comment->link('accept')) ?>"><?= $linkText ?></a>
                 <?php } ?>
             <?php } ?>
             </p>

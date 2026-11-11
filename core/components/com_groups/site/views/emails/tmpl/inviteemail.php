@@ -203,7 +203,9 @@ $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&control
                     <?php
                     $spanText = Config::get('sitename');
                     ?>
-                    <span><?= $spanText ?> sent this email because you are a group manager for this group. Visit our <a href="<?= rtrim($base, '/') ?>/legal/privacy">Privacy Policy</a> and <a href="<?= rtrim($base, '/') ?>/support">Support Center</a> if you have any questions.</span>
+                    <span><?= $spanText ?> sent this email because you are a group manager for this group. Visit our <a
+                        href="<?= rtrim($base, '/') ?>/legal/privacy">Privacy Policy</a> and <a
+                        href="<?= rtrim($base, '/') ?>/support">Support Center</a> if you have any questions.</span>
                 </td>
             </tr>
         </tbody>

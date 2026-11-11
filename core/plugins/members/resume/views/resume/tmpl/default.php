@@ -81,7 +81,8 @@ $this->css('jobs', 'com_jobs');
                             <?php
                             $counterText = Lang::txt('PLG_MEMBERS_RESUME_CHARS_LEFT');
                             ?>
-                            <span class="counter"><span id="counter_number_lookingfor"></span> <?= $counterText ?></span>
+                            <span class="counter"><span
+                                id="counter_number_lookingfor"></span> <?= $counterText ?></span>
                         </span>
                     </label>
                     <label>

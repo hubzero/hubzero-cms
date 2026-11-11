@@ -234,7 +234,9 @@ $published = ($group->get('published')) ? true : false;
                                     <?php
                                     $buttonText = Lang::txt('COM_GROUPS_TOOLBAR_JOIN');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $joinUrl ?>" class="btn btn-success" aria-label="<?= $joinLabel ?>"><?= $buttonText ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $joinUrl ?>"
+                                        class="btn btn-success"
+                                        aria-label="<?= $joinLabel ?>"><?= $buttonText ?></button>
                                 <?php else : ?>
                                     <a class="btn btn-success" href="<?= $joinUrl ?>"
                                         aria-label="<?= $joinLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></a>

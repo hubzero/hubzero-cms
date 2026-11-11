@@ -166,7 +166,8 @@ $this->js();
                                 <?php
                                 $timeText = $this->escape(Date::of($this->row->get('created'))->toLocal());
                                 ?>
-                                <time datetime="<?= $this->escape($this->row->get('created')) ?>"><?= $timeText ?></time>
+                                <time
+                                    datetime="<?= $this->escape($this->row->get('created')) ?>"><?= $timeText ?></time>
                             </td>
                         </tr>
                         <?php if ($this->row->get('created_by')) { ?>

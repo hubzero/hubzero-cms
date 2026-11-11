@@ -74,7 +74,9 @@ $this->css('tools.css');
                     $linkText = Lang::txt('COM_TOOLS_DISCONNECT');
                     $ownerText = Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username;
                     ?>
-                <td><a class="disconnect" href="<?= $unshareUrl ?>" title="<?= Lang::txt('COM_TOOLS_DISCONNECT_TITLE') ?>"><?= $linkText ?></a> <span class="owner"><?= $ownerText ?></span></td>
+                <td><a class="disconnect" href="<?= $unshareUrl ?>"
+                    title="<?= Lang::txt('COM_TOOLS_DISCONNECT_TITLE') ?>"><?= $linkText ?></a> <span
+                    class="owner"><?= $ownerText ?></span></td>
                 <?php } ?>
             </tr>
                 <?php

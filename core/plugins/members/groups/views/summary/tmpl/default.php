@@ -234,7 +234,9 @@ $this
                                     $titleText = Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT_TITLE');
                                     $buttonText = Lang::txt('PLG_MEMBERS_GROUPS_ACTION_ACCEPT');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>" class="btn btn-success accept tooltips" title="<?= $titleText ?>"><?= $buttonText ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>"
+                                        class="btn btn-success accept tooltips"
+                                        title="<?= $titleText ?>"><?= $buttonText ?></button>
                                 <?php else : ?>
                                     <div class="grid">
                                         <div class="col span6">

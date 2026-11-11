@@ -65,7 +65,8 @@ $certWarn = 30 * 24 * 60 * 60;
                                     <?php
                                     $codeText = $this->escape($this->idp->getMetadataUrl());
                                     ?>
-                                    <a href="<?= $this->escape($this->idp->getMetadataUrl()) ?>" target="_blank" rel="noopener"><code><?= $codeText ?></code></a>
+                                    <a href="<?= $this->escape($this->idp->getMetadataUrl()) ?>" target="_blank"
+                                        rel="noopener"><code><?= $codeText ?></code></a>
                                 <?php } else { ?>
                                     <?php echo Lang::txt('COM_SAML_OVERVIEW_METADATA_DISABLED'); ?>
                                 <?php } ?>

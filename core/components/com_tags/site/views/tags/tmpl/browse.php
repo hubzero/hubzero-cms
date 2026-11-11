@@ -183,7 +183,9 @@ $this
                                             $confirmText = Lang::txt('COM_TAGS_CONFIRM_DELETE');
                                             $buttonText = Lang::txt('JACTION_DELETE');
                                             ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete delete-tag" data-confirm="<?= $confirmText ?>"><?= $buttonText ?></button>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>"
+                                                class="icon-delete delete delete-tag"
+                                                data-confirm="<?= $confirmText ?>"><?= $buttonText ?></button>
                                         <?php } ?>
                                     </td>
                                     <td>

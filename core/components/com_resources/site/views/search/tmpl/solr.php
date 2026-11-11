@@ -56,7 +56,8 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
         <?php
         $linkText = $this->escape($this->result['title']);
         ?>
-        <h3 class="result-title"><a href="<?= $this->escape($this->result['url']) ?>"><b><!-- highlight portion --></b><?= $linkText ?></a></h3>
+        <h3 class="result-title"><a
+            href="<?= $this->escape($this->result['url']) ?>"><b><!-- highlight portion --></b><?= $linkText ?></a></h3>
 
         <div class="result-extras">
             <?php if (!empty($extras)) : ?>

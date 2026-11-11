@@ -39,7 +39,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
     $deleteUrl = Route::url($url . '&action=delete&dl=' . $this->filters['todolist']);
     $buttonText = Lang::txt('PLG_PROJECTS_TODO_DELETE_TODO_LIST');
     ?>
-    <span class="listoptions"><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="dellist" id="del-<?= $this->filters['todolist'] ?>"><?= $buttonText ?></button></span>
+    <span class="listoptions"><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="dellist"
+        id="del-<?= $this->filters['todolist'] ?>"><?= $buttonText ?></button></span>
     <div class="confirmaction"
         id="confirm-<?= $this->filters['todolist'] ?>"><?= Lang::txt('PLG_PROJECTS_TODO_DELETE_ARE_YOU_SURE') ?>
         <ul>

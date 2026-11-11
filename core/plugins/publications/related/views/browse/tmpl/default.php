@@ -79,7 +79,8 @@ $authorlist = '';
                                 <?php
                                 $linkText = $this->escape(stripslashes($line->title));
                                 ?>
-                                <a href="<?= $sef ?>" class="fixedResourceTip" title="DOM:rsrce<?= $line->id ?>"><?= $linkText ?></a>
+                                <a href="<?= $sef ?>" class="fixedResourceTip"
+                                    title="DOM:rsrce<?= $line->id ?>"><?= $linkText ?></a>
                                 <div class="hide" id="rsrce<?php echo $line->id; ?>">
                                     <h4><?php echo $this->escape(stripslashes($line->title)); ?></h4>
                                     <div>

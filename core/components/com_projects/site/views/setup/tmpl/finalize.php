@@ -120,7 +120,10 @@ $ferpaDataChecked = function ($value) use ($view) {
                     <?php
                     $linkText = Lang::txt('COM_PROJECTS_SETUP_TERMS_HIPAA');
                     ?>
-                    <p><?= Lang::txt('COM_PROJECTS_SETUP_MORE_ON') ?><a href="<?= $hipaa ?>" rel="external" > <?= $linkText ?></a>. <?= Lang::txt('COM_PROJECTS_SETUP_MORE_ON') ?><a href="<?= $ferpa ?>" rel="external nofollow"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_FERPA') ?></a>.</p>
+                    <p><?= Lang::txt('COM_PROJECTS_SETUP_MORE_ON') ?><a href="<?= $hipaa ?>"
+                        rel="external" > <?= $linkText ?></a>. <?= Lang::txt('COM_PROJECTS_SETUP_MORE_ON') ?><a
+                        href="<?= $ferpa ?>"
+                        rel="external nofollow"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_FERPA') ?></a>.</p>
                     <p class="info"><?php echo Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_NOTE'); ?></p>
                 <?php else : ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_WHY'); ?></h4>

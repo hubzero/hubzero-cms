@@ -120,7 +120,9 @@ if ($this->config->get('access-manage-section')) {
                                 $titleText = Lang::txt('PLG_GROUPS_FORUM_DELETE');
                                 $spanText = Lang::txt('PLG_GROUPS_FORUM_DELETE');
                                 ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
+                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>"
+                                    class="icon-delete delete"
+                                    title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
                             <?php } ?>
                             <?php
                             if (
@@ -209,7 +211,9 @@ if ($this->config->get('access-manage-section')) {
                                             $titleText = Lang::txt('PLG_GROUPS_FORUM_DELETE_CATEGORY');
                                             $spanText = Lang::txt('PLG_GROUPS_FORUM_DELETE');
                                             ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete tooltips" title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
+                                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>"
+                                                class="icon-delete delete tooltips"
+                                                title="<?= $titleText ?>"><span><?= $spanText ?></span></button>
                                         <?php } ?>
                                     </td>
                                 <?php } ?>

@@ -174,7 +174,9 @@ $this->comment->set('url', $rtrn);
                             $dataTxtConfirm = Lang::txt('PLG_HUBZERO_COMMENTS_CONFIRM');
                             $buttonText = Lang::txt('PLG_HUBZERO_COMMENTS_DELETE');
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>"
+                                class="icon-delete delete"
+                                data-txt-confirm="<?= $dataTxtConfirm ?>"><?= $buttonText ?></button>
                         <?php } ?>
                         <?php
                         if (

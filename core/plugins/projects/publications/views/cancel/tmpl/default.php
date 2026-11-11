@@ -42,7 +42,9 @@ $crumbs = $draft
         $linkUrl = Route::url($this->pub->link('editversion'));
         $linkText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS'));
         ?>
-        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $linkText ?></a> &raquo; <a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= $crumbs ?></h3>
+        <h3 class="prov-header"><a
+            href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $linkText ?></a> &raquo; <a
+            href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= $crumbs ?></h3>
     <?php } else { ?>
         <?php
         $linkUrl = Route::url($this->pub->link('editversion'));

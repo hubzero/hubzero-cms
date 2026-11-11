@@ -162,7 +162,8 @@ foreach ($menus as $menu) {
                     <?php
                     $strongText = Lang::txt('COM_GROUPS_PAGES_MODULE_SELECTION');
                     ?>
-                    <label for="field-assignment-menu"><strong><?= $strongText ?>:</strong> <span class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span></label>
+                    <label for="field-assignment-menu"><strong><?= $strongText ?>:</strong> <span
+                        class="optional"><?= Lang::txt('COM_GROUPS_FIELD_OPTIONAL') ?></span></label>
                     <fieldset class="assignment" <?php if (in_array(0, $activeMenu)) :
                         ?>disabled="disabled"<?php
                                                  endif; ?>>

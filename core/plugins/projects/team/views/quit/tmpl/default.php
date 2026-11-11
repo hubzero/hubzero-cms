@@ -55,7 +55,8 @@ if ($this->group && $this->model->get('sync_group') == 1) {
                 $linkText = $this->escape($group->get('description'));
                 $paragraphText = Lang::txt('PLG_PROJECTS_TEAM_LEAVE_GROUP_MEMBER_QUIT');
                 ?>
-                <p class="warning"><?= Lang::txt('PLG_PROJECTS_TEAM_LEAVE_GROUP_MEMBER') ?> <a href="<?= $linkUrl ?>"><?= $linkText ?></a> <?= $paragraphText ?></p>
+                <p class="warning"><?= Lang::txt('PLG_PROJECTS_TEAM_LEAVE_GROUP_MEMBER') ?> <a
+                    href="<?= $linkUrl ?>"><?= $linkText ?></a> <?= $paragraphText ?></p>
             <?php } else { ?>
                 <p class="warning"><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT_NOTE'); ?></p>
                 <h4><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT'); ?></h4>

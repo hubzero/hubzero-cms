@@ -367,12 +367,14 @@ if ($this->wishlist->get('id')) {
                                                 <?php
                                                 $timeText = $item->proposed('time');
                                                 ?>
-                                                <span class="entry-time"><time datetime="<?= $item->proposed() ?>"><?= $timeText ?></time></span>
+                                                <span class="entry-time"><time
+                                                    datetime="<?= $item->proposed() ?>"><?= $timeText ?></time></span>
                                                 <span class="entry-date-on"><?= Lang::txt('COM_WISHLIST_ON') ?></span>
                                                 <?php
                                                 $timeText = $item->proposed('date');
                                                 ?>
-                                                <span class="entry-date"><time datetime="<?= $item->proposed() ?>"><?= $timeText ?></time></span>
+                                                <span class="entry-date"><time
+                                                    datetime="<?= $item->proposed() ?>"><?= $timeText ?></time></span>
                                                 <span class="entry-details-divider">&bull;</span>
                                                 <span class="entry-comments">
                                                     <?php

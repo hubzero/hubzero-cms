@@ -159,12 +159,14 @@ $dataActionUrl = Route::url(
                                     <?php
                                     $timeText = Date::of('now')->toLocal(Lang::txt('TIME_FORMAt_HZ1'));
                                     ?>
-                                    <span class="time"><time datetime="<?= Date::of('now')->toSql() ?>"><?= $timeText ?></time></span>
+                                    <span class="time"><time
+                                        datetime="<?= Date::of('now')->toSql() ?>"><?= $timeText ?></time></span>
                                     <span class="comment-date-on"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_ON') ?></span>
                                     <?php
                                     $timeText = Date::of('now')->toLocal(Lang::txt('DATE_FORMAt_HZ1'));
                                     ?>
-                                    <span class="date"><time datetime="<?= Date::of('now')->toSql() ?>"><?= $timeText ?></time></span>
+                                    <span class="date"><time
+                                        datetime="<?= Date::of('now')->toSql() ?>"><?= $timeText ?></time></span>
                                 </span>
                             </p>
 

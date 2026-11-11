@@ -217,14 +217,16 @@ if (!$no_html) {
                                                 Lang::txt('TIME_FORMAT_HZ1'),
                                             );
                                             ?>
-                                            <span class="time"><time datetime="<?= $comment->created ?>"><?= $timeText ?></time></span>
+                                            <span class="time"><time
+                                                datetime="<?= $comment->created ?>"><?= $timeText ?></time></span>
                                             <span class="entry-date-on"><?= Lang::txt('COM_COLLECTIONS_ON') ?></span>
                                             <?php
                                             $timeText = Date::of($comment->created)->toLocal(
                                                 Lang::txt('DATE_FORMAT_HZ1'),
                                             );
                                             ?>
-                                            <span class="date"><time datetime="<?= $comment->created ?>"><?= $timeText ?></time></span>
+                                            <span class="date"><time
+                                                datetime="<?= $comment->created ?>"><?= $timeText ?></time></span>
                                         </span>
                                     </a>
                                 </p>
@@ -264,12 +266,14 @@ if (!$no_html) {
                                     <?php
                                     $timeText = Date::toLocal(Lang::txt('TIME_FORMAT_HZ1'));
                                     ?>
-                                    <span class="time"><time datetime="<?= Date::toSql() ?>"><?= $timeText ?></time></span>
+                                    <span class="time"><time
+                                        datetime="<?= Date::toSql() ?>"><?= $timeText ?></time></span>
                                     <span class="entry-date-on"><?php echo Lang::txt('COM_COLLECTIONS_ON'); ?></span>
                                     <?php
                                     $timeText = Date::toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                                     ?>
-                                    <span class="date"><time datetime="<?= Date::toSql() ?>"><?= $timeText ?></time></span>
+                                    <span class="date"><time
+                                        datetime="<?= Date::toSql() ?>"><?= $timeText ?></time></span>
                                 </span>
                             </p>
 

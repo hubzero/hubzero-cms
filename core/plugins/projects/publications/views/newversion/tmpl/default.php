@@ -45,13 +45,18 @@ if ($this->getError()) {
         $linkText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS'));
         $headingText = ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION'));
         ?>
-        <h3 class="prov-header"><a href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $linkText ?></a> &raquo; <a href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= $headingText ?></h3>
+        <h3 class="prov-header"><a
+            href="<?= Route::url($this->pub->link('editbase')) ?>"><?= $linkText ?></a> &raquo; <a
+            href="<?= $linkUrl ?>">"<?= $this->escape($this->pub->title) ?>"</a> &raquo; <?= $headingText ?></h3>
     <?php } else { ?>
         <?php
         $linkUrl = Route::url($this->project->link('publications'));
         $linkText = $this->escape($this->pub->title);
         ?>
-        <h3 class="publications"><a href="<?= $linkUrl ?>"><?= $this->title ?></a> &raquo; <span class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $linkText ?>"</a></span> <span class="indlist"> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')) ?></span>
+        <h3 class="publications"><a href="<?= $linkUrl ?>"><?= $this->title ?></a> &raquo; <span
+            class="restype indlist"><?= $typetitle ?></span> <span class="indlist"><a
+            href="<?= Route::url($this->pub->link('editversion')) ?>">"<?= $linkText ?>"</a></span> <span
+            class="indlist"> &raquo; <?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_NEW_VERSION')) ?></span>
         </h3>
     <?php } ?>
     </div>
