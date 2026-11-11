@@ -1258,7 +1258,6 @@ class Profiles extends SiteController
                         $this->view
                             ->set('title', $title)
                             ->set('resource', $k)
-                            ->setLayout('select')
                             ->display();
                         return;
                     }
@@ -1282,7 +1281,6 @@ class Profiles extends SiteController
                         $this->view
                             ->set('title', $title)
                             ->set('resource', $k)
-                            ->setLayout('select')
                             ->display();
                         return;
                     }
@@ -1309,7 +1307,6 @@ class Profiles extends SiteController
                         $this->view
                             ->set('title', $title)
                             ->set('resource', $k)
-                            ->setLayout('select')
                             ->display();
                         return;
                     }
