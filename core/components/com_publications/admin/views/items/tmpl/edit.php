@@ -546,7 +546,12 @@ $featuredSelected = function ($value) use ($view) {
                                             false,
                                         );
                                         ?>
-                                        <a href="<?= trim($site, DS) . '/publications/' . $this->model->get('id') . DS . 'serve' . DS . $this->model->get('version_number') . '/?render=archive' ?>" class="archival"><?= Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE') ?></a> &nbsp;&nbsp;<a href="<?= $archiveUrl ?>">[<?= Lang::txt('COM_PUBLICATIONS_REPACKAGE') ?>]</a>
+                                        <?php
+                                        $linkUrl = trim($site, DS) . '/publications/' . $this->model->get('id') . DS
+                                            . 'serve' . DS . $this->model->get('version_number') . '/?render=archive';
+                                        $repackageText = Lang::txt('COM_PUBLICATIONS_REPACKAGE');
+                                        ?>
+                                        <a href="<?= $linkUrl ?>" class="archival"><?= Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE') ?></a> &nbsp;&nbsp;<a href="<?= $archiveUrl ?>">[<?= $repackageText ?>]</a>
                                     <?php  } else {
                                         $archiveUrl = Route::url(
                                             'index.php?option=' . $this->option . '&controller=' . $this->controller

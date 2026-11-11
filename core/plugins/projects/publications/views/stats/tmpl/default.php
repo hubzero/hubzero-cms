@@ -140,7 +140,12 @@ $base = rtrim(Request::base(true), '/');
                     ) . '/Image:thumb';
                     ?>
                     <img src="<?= $sourceUrl ?>" alt=""/>
-                    <span class="h-title"><a href="<?= Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->version_number) ?>"><?= $this->escape($stat->title) ?></a></span>
+                    <?php
+                    $linkUrl = Route::url(
+                        'index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->version_number,
+                    );
+                    ?>
+                    <span class="h-title"><a href="<?= $linkUrl ?>"><?= $this->escape($stat->title) ?></a></span>
                     <?php
                     $spanText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' '
                         . Date::of($stat->published_up)->toLocal('M d, Y') . ' '

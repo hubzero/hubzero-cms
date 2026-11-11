@@ -158,8 +158,11 @@ if ($this->wishlist->get('id')) {
                                             $base . '&filterby=' . $this->filters['filterby'] . '&sortby=ranking&tags='
                                                 . $this->filters['tag'],
                                         );
+                                        $activeClass = $this->filters['sortby'] == 'ranking' ? ' active' : '';
+                                        $titleText = Lang::txt('COM_WISHLIST_SORT_RANKING_TITLE');
+                                        $linkText = Lang::txt('COM_WISHLIST_SORT_RANKING');
                                         ?>
-                                        <li><a class="icon-arrow-down sort-ranking<?= $this->filters['sortby'] == 'ranking' ? ' active' : '' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WISHLIST_SORT_RANKING_TITLE') ?>"><?= Lang::txt('COM_WISHLIST_SORT_RANKING') ?></a></li>
+                                        <li><a class="icon-arrow-down sort-ranking<?= $activeClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                     <?php } ?>
                                     <?php if ($this->wishlist->get('banking')) { ?>
                                         <?php
@@ -167,23 +170,32 @@ if ($this->wishlist->get('id')) {
                                             $base . '&filterby=' . $this->filters['filterby'] . '&sortby=bonus&tags='
                                                 . $this->filters['tag'],
                                         );
+                                        $activeClass = $this->filters['sortby'] == 'bonus' ? ' active' : '';
+                                        $titleText = Lang::txt('COM_WISHLIST_SORT_BONUS_TITLE');
+                                        $linkText = Lang::txt('COM_WISHLIST_SORT_BONUS');
                                         ?>
-                                        <li><a class="icon-arrow-down sort-bonus<?= $this->filters['sortby'] == 'bonus' ? ' active' : '' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WISHLIST_SORT_BONUS_TITLE') ?>"><?= Lang::txt('COM_WISHLIST_SORT_BONUS') ?></a></li>
+                                        <li><a class="icon-arrow-down sort-bonus<?= $activeClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                     <?php } ?>
                                     <?php
                                     $linkUrl = Route::url(
                                         $base . '&filterby=' . $this->filters['filterby'] . '&sortby=feedback&tags='
                                             . $this->filters['tag'],
                                     );
+                                    $activeClass = $this->filters['sortby'] == 'feedback' ? ' active' : '';
+                                    $titleText = Lang::txt('COM_WISHLIST_SORT_FEEDBACK_TITLE');
+                                    $linkText = Lang::txt('COM_WISHLIST_SORT_FEEDBACK');
                                     ?>
-                                    <li><a class="icon-arrow-down sort-feedback<?= $this->filters['sortby'] == 'feedback' ? ' active' : '' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WISHLIST_SORT_FEEDBACK_TITLE') ?>"><?= Lang::txt('COM_WISHLIST_SORT_FEEDBACK') ?></a></li>
+                                    <li><a class="icon-arrow-down sort-feedback<?= $activeClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                     <?php
                                     $linkUrl = Route::url(
                                         $base . '&filterby=' . $this->filters['filterby'] . '&sortby=submitter&tags='
                                             . $this->filters['tag'],
                                     );
+                                    $activeClass = $this->filters['sortby'] == 'submitter' ? ' active' : '';
+                                    $titleText = Lang::txt('COM_WISHLIST_SORT_SUBMITTER_TITLE');
+                                    $linkText = Lang::txt('COM_WISHLIST_SORT_SUBMITTER');
                                     ?>
-                                    <li><a class="icon-arrow-down sort-submitter<?= $this->filters['sortby'] == 'submitter' ? ' active' : '' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WISHLIST_SORT_SUBMITTER_TITLE') ?>"><?= Lang::txt('COM_WISHLIST_SORT_SUBMITTER') ?></a></li>
+                                    <li><a class="icon-arrow-down sort-submitter<?= $activeClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= $linkText ?></a></li>
                                     <?php
                                     $linkUrl = Route::url(
                                         $base . '&filterby=' . $this->filters['filterby'] . '&sortby=date&tags='
@@ -396,8 +408,10 @@ if ($this->wishlist->get('id')) {
                                                 <span class="entry-comments">
                                                     <?php
                                                     $linkUrl = Route::url($item->link('comments'));
+                                                    $titleText = $item->comments()->total() . ' '
+                                                        . Lang::txt('COM_WISHLIST_COMMENTS');
                                                     ?>
-                                                    <a href="<?= $linkUrl ?>" title="<?= $item->comments()->total() ?> <?= Lang::txt('COM_WISHLIST_COMMENTS') ?>">
+                                                    <a href="<?= $linkUrl ?>" title="<?= $titleText ?>">
                                                         <?php echo $item->comments()->total(); ?>
                                                     </a>
                                                 </span>

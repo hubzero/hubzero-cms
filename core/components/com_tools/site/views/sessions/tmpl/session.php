@@ -402,7 +402,10 @@ if (!$this->app->sess) {
 
     if ($isiPad && $this->config->get('launch_ipad', 0) && $this->config->get('launch_ipad_app')) {
         ?>
-        <p class="tablet-app"><a class="btn icon-tablet" href="<?= $this->config->get('launch_ipad_app') ?>://tools/session/<?= $this->app->sess ?>"><?= Lang::txt('Launch in iPad app') ?></a></p>
+        <?php
+        $linkUrl = $this->config->get('launch_ipad_app') . '://tools/session/' . $this->app->sess;
+        ?>
+        <p class="tablet-app"><a class="btn icon-tablet" href="<?= $linkUrl ?>"><?= Lang::txt('Launch in iPad app') ?></a></p>
         <?php
     }
     ?>

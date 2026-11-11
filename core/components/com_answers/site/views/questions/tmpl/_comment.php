@@ -66,7 +66,10 @@ if (!$this->comment->get('item_id')) {
                     echo $name;
                     ?>
                 </strong>
-                <a class="permalink" href="<?= Route::url($this->base . '#' . ($this->depth == 1 ? 'a' : 'c') . $this->comment->get('id')) ?>" title="<?= Lang::txt('COM_ANSWERS_PERMALINK') ?>">
+                <?php
+                $linkUrl = Route::url($this->base . '#' . ($this->depth == 1 ? 'a' : 'c') . $this->comment->get('id'));
+                ?>
+                <a class="permalink" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_ANSWERS_PERMALINK') ?>">
                     <span class="comment-date-at"><?php echo Lang::txt('COM_ANSWERS_DATETIME_AT'); ?></span>
                     <span class="time"><time
                         datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>

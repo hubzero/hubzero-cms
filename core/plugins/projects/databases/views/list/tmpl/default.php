@@ -131,7 +131,11 @@ $this->css();
             <tr class="mini faded">
                 <td title="<?= $this->escape($r['description']) ?>" data-db-title="<?= $this->escape($r['title']) ?>"
                     data-db-id="<?= $r['id'] ?>">
-                    <a rel="noopener noreferrer" target="_blank" href="/<?= $this->dataviewer ?>/view/<?= $this->model->get('alias') ?>:dsl/<?= $r['database_name'] ?>/"><?= $this->escape($r['title']) ?></a>
+                    <?php
+                    $linkUrl = '/' . $this->dataviewer . '/view/' . $this->model->get('alias') . ':dsl/'
+                        . $r['database_name'] . '/';
+                    ?>
+                    <a rel="noopener noreferrer" target="_blank" href="<?= $linkUrl ?>"><?= $this->escape($r['title']) ?></a>
                 <?php if ($this->model->access('content')) { ?>
                     <span class="db-update" title="<?= Lang::txt('PLG_PROJECTS_DATABASES_CLICK_TO_EDIT') ?>"></span>
                 <?php } ?>

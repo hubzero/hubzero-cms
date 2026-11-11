@@ -161,8 +161,20 @@ $this->js('status.js', 'com_massmail');
     <!-- Postfix Outbound -->
     <div class="mm-section"><?php echo Lang::txt('COM_MASSMAIL_SECTION_POSTFIX'); ?></div>
     <div class="mm-statusline">
-        <span><span class="dot <?= $this->pfRunning ? 'ok' : 'bad' ?>"></span><?= Lang::txt('COM_MASSMAIL_PF_SERVICE') ?>: <strong><?= Lang::txt($this->pfRunning ? 'COM_MASSMAIL_PF_RUNNING' : 'COM_MASSMAIL_PF_STOPPED') ?></strong></span>
-        <span><span class="dot <?= $this->pfConfig['configured'] ? 'ok' : 'bad' ?>"></span><strong><?= Lang::txt($this->pfConfig['configured'] ? 'COM_MASSMAIL_PF_CONFIGURED' : 'COM_MASSMAIL_PF_NOT_CONFIGURED') ?></strong><?= $this->pfConfig['configured'] && $this->pfConfig['version'] ? ' <span class="mm-muted">' . $this->escape($this->pfConfig['version']) . '</span>' : '' ?></span>
+        <?php
+        $strongText = Lang::txt($this->pfRunning ? 'COM_MASSMAIL_PF_RUNNING' : 'COM_MASSMAIL_PF_STOPPED');
+        ?>
+        <span><span class="dot <?= $this->pfRunning ? 'ok' : 'bad' ?>"></span><?= Lang::txt('COM_MASSMAIL_PF_SERVICE') ?>: <strong><?= $strongText ?></strong></span>
+        <?php
+        $okClass = $this->pfConfig['configured'] ? 'ok' : 'bad';
+        $strongText = Lang::txt(
+            $this->pfConfig['configured'] ? 'COM_MASSMAIL_PF_CONFIGURED' : 'COM_MASSMAIL_PF_NOT_CONFIGURED',
+        );
+        $spanText = $this->pfConfig['configured'] && $this->pfConfig['version']
+            ? ' <span class="mm-muted">' . $this->escape($this->pfConfig['version']) . '</span>'
+            : '';
+        ?>
+        <span><span class="dot <?= $okClass ?>"></span><strong><?= $strongText ?></strong><?= $spanText ?></span>
         <span><?php echo Lang::txt('COM_MASSMAIL_PF_QUEUE'); ?>: <strong><?php echo $queueTxt; ?></strong></span>
         <?php
         $strongText = $this->lastSent ? $this->escape($this->lastSent) : '&mdash;';

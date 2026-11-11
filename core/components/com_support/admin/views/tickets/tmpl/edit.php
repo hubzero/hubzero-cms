@@ -189,7 +189,10 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                         <tbody>
                             <tr>
                                 <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_EMAIL'); ?>:</th>
-                                <td><a href="mailto:<?= $this->escape($this->row->get('email')) ?>"><?= $this->escape($this->row->get('email')) ?></a></td>
+                                <?php
+                                $linkUrl = 'mailto:' . $this->escape($this->row->get('email'));
+                                ?>
+                                <td><a href="<?= $linkUrl ?>"><?= $this->escape($this->row->get('email')) ?></a></td>
                             </tr>
                             <tr>
                                 <th scope="row"><?php echo Lang::txt('COM_SUPPORT_TICKET_DETAILS_USERTYPE'); ?>:</th>

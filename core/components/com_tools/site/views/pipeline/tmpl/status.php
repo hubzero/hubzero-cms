@@ -270,7 +270,10 @@ $prioritySelected = function ($value) use ($view) {
                                     <li class="history"><a href="<?= $ticketUrl ?>"
                                         title="<?= Lang::txt('COM_TOOLS_HISTORY_TIPS') ?>">History</a></li>
                                     <?php if ($this->status['state'] != 'Registered') { // hide for tools in registered status?>
-                                        <li class="wiki"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/wiki" title="<?= Lang::txt('COM_TOOLS_WIKI_TIPS') ?>">Wiki</a></li>
+                                        <?php
+                                        $linkUrl = $developer_url . $project_path . $this->status['toolname'] . '/wiki';
+                                        ?>
+                                        <li class="wiki"><a href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TOOLS_WIKI_TIPS') ?>">Wiki</a></li>
                                         <li class="sourcecode"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/browser" title="<?= Lang::txt('COM_TOOLS_SOURCE_TIPS') ?>"><?= Lang::txt('COM_TOOLS_SOURCE') ?></a></li>
                                         <li class="timeline"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/timeline" title="<?= Lang::txt('COM_TOOLS_TIMELINE_TIPS') ?>"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></a></li>
                                     <?php } else { ?>
@@ -281,7 +284,16 @@ $prioritySelected = function ($value) use ($view) {
                                         <li class="timeline"><span
                                             class="disabled"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></span></li>
                                     <?php } ?>
-                                    <li class="message"><a href="javascript:void(0);" title="<?= Lang::txt('COM_TOOLS_SEND_MESSAGE') . ' ' . Lang::txt('COM_TOOLS_TO') ?> <?= ($this->config->get('access-admin-component')) ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM')) : Lang::txt('COM_TOOLS_SITE_ADMIN') ?>" class="showmsg"><?= Lang::txt('COM_TOOLS_MESSAGE') ?></a></li>
+                                    <?php
+                                    $titleText = Lang::txt('COM_TOOLS_SEND_MESSAGE') . ' ' . Lang::txt('COM_TOOLS_TO')
+                                        . ' '
+                                        . (
+                                            ($this->config->get('access-admin-component'))
+                                                ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM'))
+                                                : Lang::txt('COM_TOOLS_SITE_ADMIN')
+                                        );
+                                    ?>
+                                    <li class="message"><a href="javascript:void(0);" title="<?= $titleText ?>" class="showmsg"><?= Lang::txt('COM_TOOLS_MESSAGE') ?></a></li>
                                     <?php if ($this->status['published'] != 1 && ToolsHtml::toolActive($this->status['state'])) {  // show cancel option only for tools under development?>
                                         <li class="canceltool"><a href="javascript:void(0);"
                                             title="<?= Lang::txt('COM_TOOLS_CANCEL_TIPS') ?>"
@@ -621,7 +633,10 @@ $prioritySelected = function ($value) use ($view) {
                         $areaCreated1Text = Lang::txt('COM_TOOLS_WHATSNEXT_AREA_CREATED1');
                         ?>
                         <?= ucfirst(Lang::txt('COM_TOOLS_THE')) ?> <?= $sitename ?>  <?= $areaCreated1Text ?>
-                        <a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/wiki"><?= Lang::txt('COM_TOOLS_PROJECT_AREA') ?></a>
+                        <?php
+                        $linkUrl = $developer_url . $project_path . $this->status['toolname'] . '/wiki';
+                        ?>
+                        <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_PROJECT_AREA') ?></a>
                         <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_AREA_CREATED2'); ?>
                         <a href="<?php echo $developer_url . '/tools'; ?>"><?php echo $developer_site; ?></a>.
                     </p>
@@ -644,7 +659,10 @@ $prioritySelected = function ($value) use ($view) {
                             href="<?= $rappture_url ?>">Rappture toolkit</a>.</li>
                         <?php } ?>
                     <li><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_GIT_INSTRUCTIONS'); ?></li>
-                    <li><a class="developer-wiki" href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/wiki/GettingStarted"><?= Lang::txt('COM_TOOLS_WHATSNEXT_FOLLOW_THESE_INSTRUCTIONS') ?></a> <?= Lang::txt('COM_TOOLS_WHATSNEXT_TO_ACCESS_CODE') ?>.</li>
+                        <?php
+                        $linkUrl = $developer_url . $project_path . $this->status['toolname'] . '/wiki/GettingStarted';
+                        ?>
+                    <li><a class="developer-wiki" href="<?= $linkUrl ?>"><?= Lang::txt('COM_TOOLS_WHATSNEXT_FOLLOW_THESE_INSTRUCTIONS') ?></a> <?= Lang::txt('COM_TOOLS_WHATSNEXT_TO_ACCESS_CODE') ?>.</li>
                     </ul>
                     <h2><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_WE_ARE_WAITING'); ?></h2>
                     <p><?php echo Lang::txt('COM_TOOLS_WHATSNEXT_CREATED_LET_US_KNOW'); ?>:</p>
@@ -829,7 +847,13 @@ $prioritySelected = function ($value) use ($view) {
                             <a class="create-resource"
                                 href="<?= $resourceUrl ?>"><?= Lang::txt('COM_TOOLS_TODO_CREATE_PAGE') ?></a>
                             <p class="warning">
-                                <?= Lang::txt('COM_TOOLS_PLEASE') ?> <a href="<?= Route::url('index.php?option=' . $this->option . '&task=resource&step=1&app=' . $this->status['toolname']) ?>"><?= strtolower(Lang::txt('COM_TOOLS_CREATE')) ?></a> <?= Lang::txt('COM_TOOLS_WHATSNEXT_PAGE_DESC') ?>.
+                                <?php
+                                $resourceUrl = Route::url(
+                                    'index.php?option=' . $this->option . '&task=resource&step=1&app='
+                                        . $this->status['toolname'],
+                                );
+                                ?>
+                                <?= Lang::txt('COM_TOOLS_PLEASE') ?> <a href="<?= $resourceUrl ?>"><?= strtolower(Lang::txt('COM_TOOLS_CREATE')) ?></a> <?= Lang::txt('COM_TOOLS_WHATSNEXT_PAGE_DESC') ?>.
                             </p>
                         <?php } ?>
                         </li>

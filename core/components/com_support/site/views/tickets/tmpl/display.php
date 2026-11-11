@@ -424,7 +424,11 @@ $this
                             ?>
                             <tr class="<?php echo $cls == 'odd' ? 'even' : 'odd'; ?>">
                                 <td class="status-<?php echo $row->status->get('id'); ?>">
-                                    <span class="hasTip" title="<?= Lang::txt('COM_SUPPORT_DETAILS') ?> :: <?= Lang::txt('COM_SUPPORT_COL_STATUS') . ': ' . $row->status->get('text') ?>">
+                                    <?php
+                                    $titleText = Lang::txt('COM_SUPPORT_DETAILS') . ' :: '
+                                        . Lang::txt('COM_SUPPORT_COL_STATUS') . ': ' . $row->status->get('text');
+                                    ?>
+                                    <span class="hasTip" title="<?= $titleText ?>">
                                         <span class="ticket-id">
                                             <?php echo $row->get('id'); ?>
                                         </span>
@@ -529,7 +533,24 @@ $this
                                             </span>
                                         <?php } ?>
                                         <?php if ($row->isOwned()) { ?>
-                                            <span class="ticket-owner hasTip" title="<?= Lang::txt('COM_SUPPORT_ASSIGNED_TO') ?>::<img border=&quot;1&quot; src=&quot;<?= $row->assignee->picture() ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?= $this->escape(stripslashes($row->assignee->get('username', ''))) ?><br /><?= $this->escape(stripslashes($row->assignee->get('organization', Lang::txt('COM_SUPPORT_UNKNOWN')))) ?>">
+                                            <?php
+                                            $titleText = Lang::txt('COM_SUPPORT_ASSIGNED_TO')
+                                                . '::<img border=&quot;1&quot; src=&quot;' . $row->assignee->picture()
+                                                . '&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; '
+                                                . 'width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; '
+                                                . 'margin-right: 0.5em;&quot; />'
+                                                . $this->escape(stripslashes($row->assignee->get('username', '')))
+                                                . '<br />'
+                                                . $this->escape(
+                                                    stripslashes(
+                                                        $row->assignee->get(
+                                                            'organization',
+                                                            Lang::txt('COM_SUPPORT_UNKNOWN'),
+                                                        ),
+                                                    ),
+                                                );
+                                            ?>
+                                            <span class="ticket-owner hasTip" title="<?= $titleText ?>">
                                                 <?= $this->escape(stripslashes($row->assignee->get('name', ''))) ?>
                                             </span>
                                         <?php } ?>
@@ -537,14 +558,21 @@ $this
                                     <?php } ?>
                                 </td>
                                 <td class="tkt-severity">
-                                    <span class="ticket-severity <?= $this->escape($row->get('severity', 'normal')) ?> hasTip" title="<?= Lang::txt('COM_SUPPORT_PRIORITY') ?>:&nbsp;<?= $this->escape($row->get('severity', 'normal')) ?>">
+                                    <?php
+                                    $extraClasses = $this->escape($row->get('severity', 'normal'));
+                                    $titleText = Lang::txt('COM_SUPPORT_PRIORITY') . ':&nbsp;'
+                                        . $this->escape($row->get('severity', 'normal'));
+                                    ?>
+                                    <span class="ticket-severity <?= $extraClasses ?> hasTip" title="<?= $titleText ?>">
                                         <span><?php echo $this->escape($row->get('severity', 'normal')); ?></span>
                                     </span>
                                     <?php if ($this->acl->check('delete', 'tickets')) { ?>
                                         <?php
                                         $actionUrl = Route::url($row->link('delete'));
+                                        $confirmText = Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE');
+                                        $buttonText = Lang::txt('JACTION_DELETE');
                                         ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                        <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= $confirmText ?>"><?= $buttonText ?></button>
                                     <?php } ?>
                                 </td>
                             </tr>

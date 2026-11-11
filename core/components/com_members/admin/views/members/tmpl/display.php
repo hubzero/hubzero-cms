@@ -527,7 +527,11 @@ $activationSelected = function ($value) use ($view) {
                     <?php if (!$row->get('lastvisitDate') || $row->get('lastvisitDate') == '0000-00-00 00:00:00') : ?>
                         <span class="never"><?php echo Lang::txt('COM_MEMBERS_NEVER'); ?></span>
                     <?php else : ?>
-                        <time datetime="<?= Date::of($row->get('lastvisitDate'))->format('Y-m-dTh:i:s') ?>"><?= Date::of($row->get('lastvisitDate'))->toLocal('Y-m-d') ?></time>
+                        <?php
+                        $datetime = Date::of($row->get('lastvisitDate'))->format('Y-m-dTh:i:s');
+                        $timeText = Date::of($row->get('lastvisitDate'))->toLocal('Y-m-d');
+                        ?>
+                        <time datetime="<?= $datetime ?>"><?= $timeText ?></time>
                     <?php endif; ?>
                 </td>
             </tr>

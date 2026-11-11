@@ -112,7 +112,18 @@ if ($revertAllowed && $this->pub->accepted()) {
                         </tr>
                         <tr>
                             <td class="tbl-lbl"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_LABEL') ?>:</td>
-                            <td class="tbl-input"><span <?= ($this->pub->versionAlias == 'dev' || $this->pub->state == 4) && $this->task != 'edit' && ($this->project->access('content')) ? 'id="edit-vlabel" class="pub-edit"' : '' ?>><?= $this->escape($this->pub->get('version_label')) ?></span> <?= $this->pub->main == 1 ? '<span id="v-label">(' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_DEFAULT') . ')</span>' : '' ?></td>
+                            <?php
+                            $attributes = ($this->pub->versionAlias == 'dev' || $this->pub->state == 4)
+                                && $this->task != 'edit'
+                                && ($this->project->access('content'))
+                                ? 'id="edit-vlabel" class="pub-edit"'
+                                : '';
+                            $cellText = $this->pub->main == 1
+                                ? '<span id="v-label">(' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_DEFAULT')
+                                    . ')</span>'
+                                : '';
+                            ?>
+                            <td class="tbl-input"><span <?= $attributes ?>><?= $this->escape($this->pub->get('version_label')) ?></span> <?= $cellText ?></td>
                         </tr>
                         <tr>
                             <td class="tbl-lbl"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSION_NUMBER') ?>:</td>

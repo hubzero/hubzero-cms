@@ -38,7 +38,14 @@ $this->css();
             $class = $row->state == 5 ? 'status-pending' : 'status-wip';
             ?>
             <li class="curation-task <?php echo $class; ?>">
-                <a href="<?= $row->state == 5 ? Route::url('index.php?option=com_publications&controller=curation&id=' . $row->id) : Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number) ?>"><img src="<?= Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb' ?>" alt="" />
+                <?php
+                $linkUrl = $row->state == 5
+                    ? Route::url('index.php?option=com_publications&controller=curation&id=' . $row->id)
+                    : Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number);
+                $sourceUrl = Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id)
+                    . '/Image:thumb';
+                ?>
+                <a href="<?= $linkUrl ?>"><img src="<?= $sourceUrl ?>" alt="" />
                 <?php echo $this->escape($row->title) . ' v.' . $this->escape($row->version_label); ?></a>
                 <span><?php if ($row->state == 5) {
                     ?><a href="<?= Route::url('index.php?option=com_publications&controller=curation&id=' . $row->id) ?>"><?= Lang::txt('MOD_MYCURATION_REVIEW') ?></a><?php

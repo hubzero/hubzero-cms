@@ -143,8 +143,9 @@ $this->css();
                                     . '&com=1&filterby=' . $this->filters['filterby'] . '&sortby='
                                     . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#comments',
                             );
+                            $titleText = $item->numreplies . ' ' . Lang::txt('COM_WISHLIST_COMMENTS');
                             ?>
-                            <span class="entry-comments"><a href="<?= $wishUrl ?>" title="<?= $item->numreplies ?> <?= Lang::txt('COM_WISHLIST_COMMENTS') ?>"><?= $item->numreplies ?></a></span>
+                            <span class="entry-comments"><a href="<?= $wishUrl ?>" title="<?= $titleText ?>"><?= $item->numreplies ?></a></span>
                         </span>
                     <?php } else { ?>
                         <span class="warning adjust"><?= Lang::txt('COM_WISHLIST_NOTICE_POSTING_REPORTED') ?></span>

@@ -463,14 +463,36 @@ $this
                                             </span>
                                         <?php } ?>
                                         <?php if ($row->isOwned()) { ?>
-                                            <span class="ticket-owner hasTip" title="<?= Lang::txt('COM_SUPPORT_TICKET_ASSIGNED_TO') ?>::<img border=&quot;1&quot; src=&quot;<?= $row->assignee->picture() ?>&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; margin-right: 0.5em;&quot; /><?= $this->escape(stripslashes($row->assignee->get('username'))) ?><br /><?= $this->escape(stripslashes($row->assignee->get('organization', Lang::txt('COM_SUPPORT_USER_ORG_UNKNOWN')))) ?>">
+                                            <?php
+                                            $titleText = Lang::txt('COM_SUPPORT_TICKET_ASSIGNED_TO')
+                                                . '::<img border=&quot;1&quot; src=&quot;' . $row->assignee->picture()
+                                                . '&quot; name=&quot;imagelib&quot; alt=&quot;User photo&quot; '
+                                                . 'width=&quot;40&quot; height=&quot;40&quot; style=&quot;float: left; '
+                                                . 'margin-right: 0.5em;&quot; />'
+                                                . $this->escape(stripslashes($row->assignee->get('username')))
+                                                . '<br />'
+                                                . $this->escape(
+                                                    stripslashes(
+                                                        $row->assignee->get(
+                                                            'organization',
+                                                            Lang::txt('COM_SUPPORT_USER_ORG_UNKNOWN'),
+                                                        ),
+                                                    ),
+                                                );
+                                            ?>
+                                            <span class="ticket-owner hasTip" title="<?= $titleText ?>">
                                                 <?php echo $this->escape(stripslashes($row->assignee->get('name'))); ?>
                                             </span>
                                         <?php } ?>
                                     </p>
                                     <?php } ?>
                                 <p class="tkt-severity">
-                                    <span class="ticket-severity <?= $this->escape($row->get('severity', 'normal')) ?> hasTip" title="<?= '<strong>' . Lang::txt('COM_SUPPORT_TICKET_PRIORITY') . ':</strong>&nbsp;' . $this->escape($row->get('severity', 'normal')) ?>">
+                                    <?php
+                                    $extraClasses = $this->escape($row->get('severity', 'normal'));
+                                    $titleText = '<strong>' . Lang::txt('COM_SUPPORT_TICKET_PRIORITY')
+                                        . ':</strong>&nbsp;' . $this->escape($row->get('severity', 'normal'));
+                                    ?>
+                                    <span class="ticket-severity <?= $extraClasses ?> hasTip" title="<?= $titleText ?>">
                                         <span><?php echo $this->escape($row->get('severity', 'normal')); ?></span>
                                     </span>
                                 </p>

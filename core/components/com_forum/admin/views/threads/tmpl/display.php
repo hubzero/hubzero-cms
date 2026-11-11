@@ -194,14 +194,86 @@ $filterStateSelected = function ($value) use ($view) {
                     <label for="checkall-toggle" class="sr-only
                         visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
-                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_FORUM_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_FORUM_COL_TITLE', 'title', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col"><?= Html::grid('sort', 'COM_FORUM_COL_STATE', 'state', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_FORUM_COL_STICKY', 'sticky', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_FORUM_COL_ACCESS', 'access', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_FORUM_COL_SCOPE', 'scope', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-5"><?= Html::grid('sort', 'COM_FORUM_COL_CREATOR', 'created_by', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
-                <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_FORUM_COL_CREATED', 'created', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
+                <?php
+                $headerText = Html::grid(
+                    'sort',
+                    'COM_FORUM_COL_ID',
+                    'id',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort'],
+                );
+                ?>
+                <th scope="col" class="priority-5"><?= $headerText ?></th>
+                <?php
+                $headerText = Html::grid(
+                    'sort',
+                    'COM_FORUM_COL_TITLE',
+                    'title',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort'],
+                );
+                ?>
+                <th scope="col"><?= $headerText ?></th>
+                <?php
+                $headerText = Html::grid(
+                    'sort',
+                    'COM_FORUM_COL_STATE',
+                    'state',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort'],
+                );
+                ?>
+                <th scope="col"><?= $headerText ?></th>
+                <?php
+                $headerText = Html::grid(
+                    'sort',
+                    'COM_FORUM_COL_STICKY',
+                    'sticky',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort'],
+                );
+                ?>
+                <th scope="col" class="priority-4"><?= $headerText ?></th>
+                <?php
+                $headerText = Html::grid(
+                    'sort',
+                    'COM_FORUM_COL_ACCESS',
+                    'access',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort'],
+                );
+                ?>
+                <th scope="col" class="priority-3"><?= $headerText ?></th>
+                <?php
+                $headerText = Html::grid(
+                    'sort',
+                    'COM_FORUM_COL_SCOPE',
+                    'scope',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort'],
+                );
+                ?>
+                <th scope="col" class="priority-3"><?= $headerText ?></th>
+                <?php
+                $headerText = Html::grid(
+                    'sort',
+                    'COM_FORUM_COL_CREATOR',
+                    'created_by',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort'],
+                );
+                ?>
+                <th scope="col" class="priority-5"><?= $headerText ?></th>
+                <?php
+                $headerText = Html::grid(
+                    'sort',
+                    'COM_FORUM_COL_CREATED',
+                    'created',
+                    @$this->filters['sort_Dir'],
+                    @$this->filters['sort'],
+                );
+                ?>
+                <th scope="col" class="priority-4"><?= $headerText ?></th>
             </tr>
         </thead>
         <tfoot>
@@ -290,13 +362,26 @@ $filterStateSelected = function ($value) use ($view) {
                         <?php echo $row->id; ?>
                     </td>
                     <td>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=thread&thread=' . $row->thread) ?>">
+                        <?php
+                        $threadUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id='
+                                . $this->filters['category_id'] . '&task=thread&thread=' . $row->thread,
+                        );
+                        ?>
+                        <a href="<?= $threadUrl ?>">
                             <?php echo $this->escape(stripslashes($row->title)); ?>
                         </a>
                     </td>
                     <td>
                         <?php if ($canDo->get('core.edit.state')) { ?>
-                            <a class="state <?= $cls ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=' . $task . '&id=' . $row->id . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $task) ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&category_id=' . $this->filters['category_id'] . '&task=' . $task . '&id='
+                                    . $row->id . '&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                            <a class="state <?= $cls ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $task) ?>">
                                 <span><?php echo $alt; ?></span>
                             </a>
                         <?php } else { ?>
@@ -307,7 +392,14 @@ $filterStateSelected = function ($value) use ($view) {
                     </td>
                     <td class="priority-4">
                         <?php if ($canDo->get('core.edit.state')) { ?>
-                            <a class="state <?= $scls ?>" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&category_id=' . $this->filters['category_id'] . '&task=sticky&sticky=' . $stickyTask . '&id=' . $row->id . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $stickyTitle) ?>">
+                            <?php
+                            $stickyUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                    . '&category_id=' . $this->filters['category_id'] . '&task=sticky&sticky='
+                                    . $stickyTask . '&id=' . $row->id . '&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
+                            <a class="state <?= $scls ?>" href="<?= $stickyUrl ?>" title="<?= Lang::txt('COM_FORUM_SET_TO', $stickyTitle) ?>">
                                 <span><?php echo $stickyAlt; ?></span>
                             </a>
                         <?php } else { ?>
@@ -323,7 +415,15 @@ $filterStateSelected = function ($value) use ($view) {
                     </td>
                     <td class="priority-3">
                         <span class="scope">
-                            <span><?= $row->scope . ' (' . (isset($list[$row->scope][$row->scope_id]) ? $this->escape($list[$row->scope][$row->scope_id]->caption) : $this->escape($row->scope_id)) . ')' ?></span>
+                            <?php
+                            $spanText = $row->scope . ' ('
+                                . (
+                                    isset($list[$row->scope][$row->scope_id])
+                                        ? $this->escape($list[$row->scope][$row->scope_id]->caption)
+                                        : $this->escape($row->scope_id)
+                                ) . ')';
+                            ?>
+                            <span><?= $spanText ?></span>
                         </span>
                     </td>
                     <td class="priority-5">

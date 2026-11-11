@@ -203,7 +203,13 @@ $roles = [
                 </a>
             </th>
             <th<?php echo $this->filters['sortby'] == 'role' ? ' class="activesort"' : ''; ?>>
-                <a class="re_sort" href="<?= Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=role&sortdir=' . $sortbyDir) . '#teamlist' ?>">
+                <?php
+                $linkUrl = Route::url(
+                    'index.php?option=' . $this->option . '&task=' . $this->task . '&alias='
+                        . $this->model->get('alias') . '&active=team&sortby=role&sortdir=' . $sortbyDir,
+                ) . '#teamlist';
+                ?>
+                <a class="re_sort" href="<?= $linkUrl ?>">
                     <?php echo Lang::txt('PLG_PROJECTS_TEAM_ROLE'); ?>
                 </a>
             </th>

@@ -254,8 +254,10 @@ $this
                                                     $route . '&id=' . $row->id . '&task=assign&vid=' . $row->version_id
                                                         . '&ajax=1&no_html=1',
                                                 );
+                                                $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN');
+                                                $linkText = Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN');
                                                 ?>
-                                                <a href="<?= $assignUrl ?>" class="btn icon-assign btn-secondary fancybox" title="<?= Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN') ?>"><?= Lang::txt('COM_PUBLICATIONS_CURATION_ASSIGN') ?></a>
+                                                <a href="<?= $assignUrl ?>" class="btn icon-assign btn-secondary fancybox" title="<?= $titleText ?>"><?= $linkText ?></a>
                                                 <?php
                                         }
                                         ?>
@@ -266,16 +268,20 @@ $this
                                                 $linkUrl = Route::url(
                                                     $route . '&id=' . $row->id . '&vid=' . $row->version_id,
                                                 );
+                                                $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_OVER_REVIEW');
+                                                $linkText = Lang::txt('COM_PUBLICATIONS_CURATION_REVIEW');
                                                 ?>
-                                                <a href="<?= $linkUrl ?>" class="btn icon-next btn-secondary btn-primary" title="<?= Lang::txt('COM_PUBLICATIONS_CURATION_OVER_REVIEW') ?>"><?= Lang::txt('COM_PUBLICATIONS_CURATION_REVIEW') ?></a>
+                                                <a href="<?= $linkUrl ?>" class="btn icon-next btn-secondary btn-primary" title="<?= $titleText ?>"><?= $linkText ?></a>
                                         <?php endif; ?>
                                             <?php echo $row->state == 7 ? $reviewed : ''; ?>
                                             <?php
                                             $historyUrl = Route::url(
                                                 $route . '&id=' . $row->id . '&task=history&ajax=1&no_html=1',
                                             );
+                                            $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_OVER_HISTORY');
+                                            $linkText = Lang::txt('COM_PUBLICATIONS_CURATION_HISTORY');
                                             ?>
-                                            <a href="<?= $historyUrl ?>" class="btn btn-secondary icon-history fancybox" title="<?= Lang::txt('COM_PUBLICATIONS_CURATION_OVER_HISTORY') ?>"><?= Lang::txt('COM_PUBLICATIONS_CURATION_HISTORY') ?></a>
+                                            <a href="<?= $historyUrl ?>" class="btn btn-secondary icon-history fancybox" title="<?= $titleText ?>"><?= $linkText ?></a>
                                             <?php
                                             $linkUrl = Route::url(
                                                 'index.php?option=com_publications&id=' . $row->id . '&v='

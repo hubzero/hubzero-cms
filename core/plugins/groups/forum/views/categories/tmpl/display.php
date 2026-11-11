@@ -308,7 +308,12 @@ $this
                                                 </a>
                                             <?php } ?>
                                             <?php if ($this->config->get('access-delete-thread')) { ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '/' . $row->get('id') . '/delete') . $sortingQueryString ?>" class="icon-delete delete"><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></button>
+                                                <?php
+                                                $actionUrl = Route::url($base . '/' . $row->get('id') . '/delete')
+                                                    . $sortingQueryString;
+                                                $buttonText = Lang::txt('PLG_GROUPS_FORUM_DELETE');
+                                                ?>
+                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete"><?= $buttonText ?></button>
                                             <?php } ?>
                                         </td>
                                     <?php } ?>

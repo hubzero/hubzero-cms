@@ -33,7 +33,10 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index') ?>">
+            <?php
+            $linkUrl = Route::url('index.php?option=com_help&component=' . substr($this->option, 4) . '&page=index');
+            ?>
+            <a class="icon-info btn popup" href="<?= $linkUrl ?>">
                 <span><?php echo Lang::txt('COM_COLLECTIONS_GETTING_STARTED'); ?></span>
             </a>
         </p>
@@ -215,7 +218,21 @@ $this
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COMMENT'); ?></span>
                                             </a>
                                             <?php endif; ?>
-                                            <a class="btn repost tooltips" href="<?= Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task, false, true)), false) ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
+                                            <?php
+                                            $linkUrl = Route::url(
+                                                'index.php?option=com_users&view=login&return='
+                                                    . base64_encode(
+                                                        Route::url(
+                                                            $base . '&controller=' . $this->controller . '&task='
+                                                                . $this->task,
+                                                            false,
+                                                            true,
+                                                        ),
+                                                    ),
+                                                false,
+                                            );
+                                            ?>
+                                            <a class="btn repost tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                     <?php } ?>

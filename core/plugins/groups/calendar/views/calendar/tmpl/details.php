@@ -217,7 +217,12 @@ $ignoreDst = $params->get('ignore_dst', 0) == 1 ? true : false;
             <tr>
                 <th scope="row" class="url"><span class="sr-only visually-hidden">Website:</span></th>
                 <td colspan="3">
-                    <a href="<?= (preg_match('#^https?://#i', $this->event->get('extra_info')) ? $this->escape($this->event->get('extra_info')) : '') ?>" rel="external">
+                    <?php
+                    $linkUrl = preg_match('#^https?://#i', $this->event->get('extra_info'))
+                        ? $this->escape($this->event->get('extra_info'))
+                        : '';
+                    ?>
+                    <a href="<?= $linkUrl ?>" rel="external">
                         <?php echo $this->escape($this->event->get('extra_info')); ?>
                     </a>
                 </td>
