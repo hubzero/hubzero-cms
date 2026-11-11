@@ -97,7 +97,10 @@ if (isset($this->messages)) {
                         <tbody>
                             <?php $x = 0; ?>
                             <?php foreach ($this->citations as $cite) : ?>
-                                <tr class="citation-row <?= ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished' : '' ?>">
+                                <?php
+                                $unpublishedClass = ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished' : '';
+                                ?>
+                                <tr class="citation-row <?= $unpublishedClass ?>">
                                     <td class="batch">
                                         <input type="checkbox" class="download-marker"
                                             aria-label="Select citation for download" name="download_marker[]"
@@ -195,7 +198,12 @@ if (isset($this->messages)) {
                                     <?php endif; ?>
                                 </tr>
                                 <tr>
-                                    <td <?= ($this->label == "none") ? 'colspan="5"' : 'colspan="6"' ?> class="citation-details <?= ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished-details' : '' ?>">
+                                    <?php
+                                    $unpublishedDetailsClass = ($cite->published == $cite::STATE_UNPUBLISHED)
+                                        ? 'unpublished-details'
+                                        : '';
+                                    ?>
+                                    <td <?= ($this->label == "none") ? 'colspan="5"' : 'colspan="6"' ?> class="citation-details <?= $unpublishedDetailsClass ?>">
                                         <?php echo $cite->citationDetails($this->openurl); ?>
                                         <?php if ($this->config->get('citations_show_badges', 'yes') == "yes") : ?>
                                             <?php echo $cite->badgeCloud(); ?>

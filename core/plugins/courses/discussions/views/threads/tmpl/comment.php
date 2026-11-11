@@ -95,7 +95,12 @@ if ($this->lecture) {
                     if (
                         !$this->course->offering()->member($this->comment->get('created_by'))->get('student')
                     ) { ?>
-                    <span class="role <?= strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias')) ?>">
+                        <?php
+                        $extraClasses = strtolower(
+                            $this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'),
+                        );
+                        ?>
+                    <span class="role <?= $extraClasses ?>">
                         <?= $this->escape(
                             stripslashes(
                                 $this->course->offering()->member($this->comment->get('created_by'))->get('role_title'),
@@ -103,7 +108,12 @@ if ($this->lecture) {
                         ) ?>
                     </span>
                     <?php } elseif (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) { ?>
-                        <span class="role <?= strtolower($this->course->offering()->member($this->comment->get('created_by'))->get('role_alias')) ?>">
+                        <?php
+                        $extraClasses = strtolower(
+                            $this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'),
+                        );
+                        ?>
+                        <span class="role <?= $extraClasses ?>">
                             <?= $this->escape(
                                 stripslashes(
                                     $this->course->offering()->member($this->comment->get('created_by'))->get(

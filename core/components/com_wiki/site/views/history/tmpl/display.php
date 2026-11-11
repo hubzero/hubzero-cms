@@ -250,7 +250,17 @@ $revisions = $this->page
                                     <?php echo $this->escape($xname); ?>
                                 </td>
                                 <td>
-                                    <?= Lang::txt('COM_WIKI_HISTORY_BYTES', number_format($revision->get('length'))) ?> (<span class="page-length <?= ($diff > 0) ? 'increase' : ($diff == 0 ? 'created' : 'decrease') ?>"><?= ($diff > 0) ? '+' . number_format($diff) : ($diff == 0 ? number_format($diff) : number_format($diff)) ?></span>)
+                                    <?php
+                                    $historyBytesText = Lang::txt(
+                                        'COM_WIKI_HISTORY_BYTES',
+                                        number_format($revision->get('length')),
+                                    );
+                                    $increaseClass = ($diff > 0) ? 'increase' : ($diff == 0 ? 'created' : 'decrease');
+                                    $pageLengthText = ($diff > 0)
+                                        ? '+' . number_format($diff)
+                                        : ($diff == 0 ? number_format($diff) : number_format($diff));
+                                    ?>
+                                    <?= $historyBytesText ?> (<span class="page-length <?= $increaseClass ?>"><?= $pageLengthText ?></span>)
                                 </td>
                                 <td>
                                     <?php echo $status; ?>

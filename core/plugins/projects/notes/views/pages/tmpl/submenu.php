@@ -72,7 +72,10 @@ if (!isset($this->controller)) {
     </div><!-- / #content-header-extra -->
 
     <ul class="sub-menu">
-        <li class="page-text<?= $this->controller == 'page' && ($this->task == 'display' || !$this->task) ? ' active' : '' ?>">
+        <?php
+        $activeClass = $this->controller == 'page' && ($this->task == 'display' || !$this->task) ? ' active' : '';
+        ?>
+        <li class="page-text<?= $activeClass ?>">
             <a href="<?php echo Route::url($this->page->link()); ?>"
                 title="<?php echo Lang::txt('COM_WIKI_TAB_ARTICLE'); ?>">
                 <span><?php echo Lang::txt('COM_WIKI_TAB_ARTICLE'); ?></span>

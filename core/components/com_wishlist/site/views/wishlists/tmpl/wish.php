@@ -571,7 +571,12 @@ $categoryChecked = function ($value) use ($view) {
                             </div>
 
                             <div class="form-group form-check">
-                                <label for="field-status" class="form-check-label<?= $this->wishlist->get('category') == 'resource' ? ' grantstatus' : '' ?>">
+                                <?php
+                                $grantstatusClass = $this->wishlist->get('category') == 'resource'
+                                    ? ' grantstatus'
+                                    : '';
+                                ?>
+                                <label for="field-status" class="form-check-label<?= $grantstatusClass ?>">
                                     <input type="radio" name="status" value="granted" id="field-status"
                                         class="form-check-input" <?= $grantedAttrs ?> />
                                     <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED'); ?>

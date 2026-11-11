@@ -51,24 +51,45 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                     <th>
                         <?php
                         $linkUrl = Route::url($this->model->link('team') . $sortAppend . '&sortby=name');
+                        $sortdirClass = $this->filters['sortby'] == 'name'
+                            ? strtolower($this->filters['sortdir']) . ' active'
+                            : '';
+                        $titleText = Lang::txt(
+                            'PLG_PROJECTS_TEAM_SORT_BY',
+                            strtolower(Lang::txt('PLG_PROJECTS_TEAM_NAME')),
+                        );
                         ?>
-                        <a class="sort-title <?= $this->filters['sortby'] == 'name' ? strtolower($this->filters['sortdir']) . ' active' : '' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_NAME'))) ?>">
+                        <a class="sort-title <?= $sortdirClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?>
                         </a>
                     </th>
                     <th>
                         <?php
                         $linkUrl = Route::url($this->model->link('team') . $sortAppend . '&sortby=role');
+                        $sortdirClass = $this->filters['sortby'] == 'role'
+                            ? strtolower($this->filters['sortdir']) . ' active'
+                            : '';
+                        $titleText = Lang::txt(
+                            'PLG_PROJECTS_TEAM_SORT_BY',
+                            strtolower(Lang::txt('PLG_PROJECTS_TEAM_ROLE')),
+                        );
                         ?>
-                        <a class="sort-title <?= $this->filters['sortby'] == 'role' ? strtolower($this->filters['sortdir']) . ' active' : '' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_ROLE'))) ?>">
+                        <a class="sort-title <?= $sortdirClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_ROLE'); ?>
                         </a>
                     </th>
                     <th class="priority-5">
                         <?php
                         $linkUrl = Route::url($this->model->link('team') . $sortAppend . '&sortby=date');
+                        $sortdirClass = $this->filters['sortby'] == 'date'
+                            ? strtolower($this->filters['sortdir']) . ' active'
+                            : '';
+                        $titleText = Lang::txt(
+                            'PLG_PROJECTS_TEAM_SORT_BY',
+                            strtolower(Lang::txt('PLG_PROJECTS_TEAM_JOINED')),
+                        );
                         ?>
-                        <a class="sort-title <?= $this->filters['sortby'] == 'date' ? strtolower($this->filters['sortdir']) . ' active' : '' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_JOINED'))) ?>">
+                        <a class="sort-title <?= $sortdirClass ?>" href="<?= $linkUrl ?>" title="<?= $titleText ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_JOINED'); ?>
                         </a>
                     </th>

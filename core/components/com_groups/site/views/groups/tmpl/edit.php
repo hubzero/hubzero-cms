@@ -357,7 +357,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                             <ul id="access">
                                 <?php for ($i = 0; $i < count($this->hub_group_plugins); $i++) : ?>
                                     <?php if ($this->hub_group_plugins[$i]['display_menu_tab']) : ?>
-                                        <li class="group_access_control_<?= strtolower($this->hub_group_plugins[$i]['title']) ?>">
+                                        <?php
+                                        $groupAccessControlSuffix = strtolower($this->hub_group_plugins[$i]['title']);
+                                        ?>
+                                        <li class="group_access_control_<?= $groupAccessControlSuffix ?>">
                                             <input type="hidden" name="group_plugin[<?= $i ?>][name]"
                                                 value="<?= $this->hub_group_plugins[$i]['name'] ?>">
                                             <?php

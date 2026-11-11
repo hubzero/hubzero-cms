@@ -78,7 +78,10 @@ if ($tmpl != 'component' && $this->sub) { ?>
 
 <nav aria-label="<?php echo Lang::txt('COM_WIKI_PAGE_MENU'); ?>">
 <ul class="sub-menu">
-    <li class="page-text<?= $this->controller == 'pages' && ($this->task == 'display' || !$this->task) ? ' active' : '' ?>">
+    <?php
+    $activeClass = $this->controller == 'pages' && ($this->task == 'display' || !$this->task) ? ' active' : '';
+    ?>
+    <li class="page-text<?= $activeClass ?>">
         <a href="<?php echo Route::url($this->page->link()); ?>">
             <span class="icon-align-left"><?php echo Lang::txt('COM_WIKI_TAB_ARTICLE'); ?></span>
         </a>
@@ -93,7 +96,12 @@ if ($tmpl != 'component' && $this->sub) { ?>
                 )
                 && ($this->page->getNamespace() != 'help' || $this->page->access('manage'))
             ) { ?>
-                <li class="page-edit<?= $this->controller == 'pages' && in_array($this->task, ['edit', 'preview', 'save']) ? ' active' : '' ?>">
+                <?php
+                $activeClass = $this->controller == 'pages' && in_array($this->task, ['edit', 'preview', 'save'])
+                    ? ' active'
+                    : '';
+                ?>
+                <li class="page-edit<?= $activeClass ?>">
                     <a href="<?php echo Route::url($this->page->link('edit')); ?>">
                         <span class="icon-pencil"><?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?></span>
                     </a>

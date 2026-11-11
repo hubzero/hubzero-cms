@@ -109,7 +109,10 @@ if ($this->getTitle() != Config::get('sitename')) {
                                         <jdoc:include type="modules" name="search" />
                                     </li>
                                 <?php if (!User::isGuest()) { ?>
-                                    <li class="user-account loggedin<?= User::authorise('core.admin') ? ' admin' : '' ?>">
+                                    <?php
+                                    $adminClass = User::authorise('core.admin') ? ' admin' : '';
+                                    ?>
+                                    <li class="user-account loggedin<?= $adminClass ?>">
                                         <a class="user-avatar"
                                             href="<?php echo Route::url(User::link()); ?>">
                                             <img src="<?php echo User::picture(); ?>"

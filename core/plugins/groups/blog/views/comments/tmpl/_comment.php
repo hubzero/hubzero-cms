@@ -180,7 +180,10 @@ if ($this->comment->isReported()) {
             </div>
 
         <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-            <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') ?>">
+            <?php
+            $hideClass = Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '';
+            ?>
+            <div class="addcomment comment-add<?= $hideClass ?>" id="comment-form<?= $this->comment->get('id') ?>">
                 <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post"
                     enctype="multipart/form-data">
                     <fieldset id="commentform<?php echo $this->comment->get('id'); ?>">

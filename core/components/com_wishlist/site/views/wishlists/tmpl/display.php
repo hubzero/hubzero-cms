@@ -189,8 +189,10 @@ if ($this->wishlist->get('id')) {
                                         $base . '&filterby=' . $this->filters['filterby'] . '&sortby=date&tags='
                                             . $this->filters['tag'],
                                     );
+                                    $activeClass = $this->filters['sortby'] == 'date' ? ' active' : '';
+                                    $sortDateText = Lang::txt('COM_WISHLIST_SORT_DATE');
                                     ?>
-                                    <li><a class="icon-arrow-down sort-date<?= $this->filters['sortby'] == 'date' ? ' active' : '' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WISHLIST_SORT_DATE') ?>"><?= Lang::txt('COM_WISHLIST_SORT_DATE') ?></a></li>
+                                    <li><a class="icon-arrow-down sort-date<?= $activeClass ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WISHLIST_SORT_DATE') ?>"><?= $sortDateText ?></a></li>
                                 </ul>
 
                                 <ul class="entries-menu filter-options"
@@ -219,30 +221,34 @@ if ($this->wishlist->get('id')) {
                                         $base . '&filterby=accepted&sortby=' . $this->filters['sortby'] . '&tags='
                                             . $this->filters['tag'],
                                     );
+                                    $activeClass = $this->filters['filterby'] == 'accepted' ? ' active' : '';
                                     ?>
-                                    <li><a class="filter-accepted<?= $this->filters['filterby'] == 'accepted' ? ' active' : '' ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_ACCEPTED') ?></a></li>
+                                    <li><a class="filter-accepted<?= $activeClass ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_ACCEPTED') ?></a></li>
                                     <?php
                                     $linkUrl = Route::url(
                                         $base . '&filterby=rejected&sortby=' . $this->filters['sortby'] . '&tags='
                                             . $this->filters['tag'],
                                     );
+                                    $activeClass = $this->filters['filterby'] == 'rejected' ? ' active' : '';
                                     ?>
-                                    <li><a class="filter-rejected<?= $this->filters['filterby'] == 'rejected' ? ' active' : '' ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_REJECTED') ?></a></li>
+                                    <li><a class="filter-rejected<?= $activeClass ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_REJECTED') ?></a></li>
                                     <?php
                                     $linkUrl = Route::url(
                                         $base . '&filterby=granted&sortby=' . $this->filters['sortby'] . '&tags='
                                             . $this->filters['tag'],
                                     );
+                                    $activeClass = $this->filters['filterby'] == 'granted' ? ' active' : '';
                                     ?>
-                                    <li><a class="filter-granted<?= $this->filters['filterby'] == 'granted' ? ' active' : '' ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_GRANTED') ?></a></li>
+                                    <li><a class="filter-granted<?= $activeClass ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_GRANTED') ?></a></li>
                                     <?php if (!User::isGuest()) { ?>
                                         <?php
                                         $linkUrl = Route::url(
                                             $base . '&filterby=submitter&sortby=' . $this->filters['sortby'] . '&tags='
                                                 . $this->filters['tag'],
                                         );
+                                        $activeClass = $this->filters['filterby'] == 'submitter' ? ' active' : '';
                                         ?>
-                                        <li><a class="filter-submitter<?= $this->filters['filterby'] == 'submitter' ? ' active' : '' ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_SUBMITTER') ?></a></li>
+                                        <li><a class="filter-submitter<?= $activeClass ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_SUBMITTER') ?></a></li>
                                     <?php } ?>
                                     <?php if ($this->wishlist->access('manage')) { //1 or 2?>
                                         <?php
@@ -250,23 +256,26 @@ if ($this->wishlist->get('id')) {
                                             $base . '&filterby=public&sortby=' . $this->filters['sortby'] . '&tags='
                                                 . $this->filters['tag'],
                                         );
+                                        $activeClass = $this->filters['filterby'] == 'public' ? ' active' : '';
                                         ?>
-                                        <li><a class="filter-public<?= $this->filters['filterby'] == 'public' ? ' active' : '' ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_PUBLIC') ?></a></li>
+                                        <li><a class="filter-public<?= $activeClass ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_PUBLIC') ?></a></li>
                                         <?php
                                         $linkUrl = Route::url(
                                             $base . '&filterby=private&sortby=' . $this->filters['sortby'] . '&tags='
                                                 . $this->filters['tag'],
                                         );
+                                        $activeClass = $this->filters['filterby'] == 'private' ? ' active' : '';
                                         ?>
-                                        <li><a class="filter-private<?= $this->filters['filterby'] == 'private' ? ' active' : '' ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_PRIVATE') ?></a></li>
+                                        <li><a class="filter-private<?= $activeClass ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_PRIVATE') ?></a></li>
                                         <?php if ($this->wishlist->access('own')) { // 2?>
                                             <?php
                                             $linkUrl = Route::url(
                                                 $base . '&filterby=mine&sortby=' . $this->filters['sortby'] . '&tags='
                                                     . $this->filters['tag'],
                                             );
+                                            $activeClass = $this->filters['filterby'] == 'mine' ? ' active' : '';
                                             ?>
-                                            <li><a class="filter-mine<?= $this->filters['filterby'] == 'mine' ? ' active' : '' ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_MINE') ?></a></li>
+                                            <li><a class="filter-mine<?= $activeClass ?>" href="<?= $linkUrl ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_MINE') ?></a></li>
                                         <?php } ?>
                                     <?php } ?>
                                 </ul>

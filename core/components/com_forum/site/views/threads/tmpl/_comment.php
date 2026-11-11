@@ -279,7 +279,10 @@ if ($this->comment->isReported()) {
                 && $this->config->get('threading') == 'tree'
                 && $this->depth < $this->config->get('threading_depth', 3)
             ) { ?>
-                <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') ?>">
+                <?php
+                $hideClass = Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '';
+                ?>
+                <div class="addcomment comment-add<?= $hideClass ?>" id="comment-form<?= $this->comment->get('id') ?>">
                     <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->thread->link()) ?>"
                         method="post" enctype="multipart/form-data">
                         <fieldset>

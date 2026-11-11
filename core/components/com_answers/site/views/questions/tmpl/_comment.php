@@ -149,7 +149,10 @@ if (!$this->comment->get('item_id')) {
             </p>
 
         <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-            <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>">
+            <?php
+            $hideClass = Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '';
+            ?>
+            <div class="addcomment comment-add<?= $hideClass ?>" id="comment-form<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>">
                 <?php if (User::get('guest')) { ?>
                 <p class="warning">
                     <?= Lang::txt(

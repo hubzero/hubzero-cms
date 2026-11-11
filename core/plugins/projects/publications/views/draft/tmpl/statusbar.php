@@ -28,7 +28,10 @@ $i = 1;
 
 ?>
 <?php if ($this->pub->id) { ?>
-    <p id="version-label" class="version-label<?= $active == 'status' ? ' active' : '' ?><?= $this->pub->state == 5 || $this->pub->state == 0 ? ' nobar' : '' ?>">
+    <?php
+    $nobarClass = $this->pub->state == 5 || $this->pub->state == 0 ? ' nobar' : '';
+    ?>
+    <p id="version-label" class="version-label<?= $active == 'status' ? ' active' : '' ?><?= $nobarClass ?>">
         <a href="<?php echo Route::url($this->pub->link('edit') . '&action=versions'); ?>"
             class="versions"
             id="v-picker"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;

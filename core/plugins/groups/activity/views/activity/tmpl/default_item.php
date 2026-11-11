@@ -56,7 +56,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
     id="activity<?php echo $this->row->get('id'); ?>"
     class="activity <?= $this->row->get('scope') ?> <?= $status . ($this->row->get('starred') ? ' starred' : '') ?>">
 
-    <div class="activity-actor-picture<?= $online ? ' tooltips" title="' . Lang::txt('PLG_GROUPS_ACTIVITY_ONLINE') : '' ?>">
+    <?php
+    $tooltipsClass = $online ? ' tooltips" title="' . Lang::txt('PLG_GROUPS_ACTIVITY_ONLINE') : '';
+    ?>
+    <div class="activity-actor-picture<?= $tooltipsClass ?>">
         <?php if ($creator->get('public')) { ?>
             <a class="user-img-wrap" href="<?php echo Route::url($creator->link()); ?>" title="<?php echo $name; ?>">
                 <img src="<?= $creator->picture() ?>"

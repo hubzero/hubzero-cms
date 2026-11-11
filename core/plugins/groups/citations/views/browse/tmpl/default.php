@@ -136,7 +136,10 @@ if (isset($this->messages)) {
                                 <?php if (!$this->isManager && $cite->published == $cite::STATE_UNPUBLISHED) {
                                     continue;
                                 } ?> 
-                                <tr class="citation-row <?= ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished' : '' ?>">
+                                <?php
+                                $unpublishedClass = ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished' : '';
+                                ?>
+                                <tr class="citation-row <?= $unpublishedClass ?>">
                                     <td class="batch">
                                         <?php
                                         $ariaLabel = $this->escape(
@@ -243,7 +246,12 @@ if (isset($this->messages)) {
                                                 <p><?php echo nl2br($this->escape($cite->abstract)); ?></p>
                                             </div>
                                         <?php endif; ?>
-                                        <div class="citation-details <?= ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished-details' : '' ?>">
+                                        <?php
+                                        $unpublishedDetailsClass = ($cite->published == $cite::STATE_UNPUBLISHED)
+                                            ? 'unpublished-details'
+                                            : '';
+                                        ?>
+                                        <div class="citation-details <?= $unpublishedDetailsClass ?>">
                                             <?php if ($this->config->get('citations_show_badges', 'yes') == 'yes') : ?>
                                                 <?php echo $cite->badgeCloud(); ?> 
                                             <?php endif; ?>

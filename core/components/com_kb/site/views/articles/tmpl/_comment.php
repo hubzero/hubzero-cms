@@ -124,7 +124,10 @@ if ($this->comment->isReported()) {
             </p>
 
         <?php if ($this->depth < $this->article->param('comments_depth', 3) && $this->article->commentsOpen()) { ?>
-            <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') ?>">
+            <?php
+            $hideClass = Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '';
+            ?>
+            <div class="addcomment comment-add<?= $hideClass ?>" id="comment-form<?= $this->comment->get('id') ?>">
                 <?php if (User::isGuest()) { ?>
                 <p class="warning">
                     <?= Lang::txt(

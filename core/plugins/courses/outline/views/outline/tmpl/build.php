@@ -117,7 +117,10 @@ endforeach;
             <ul class="asset-group-type-list">
 
             <?php foreach ($unit->assetgroups() as $agt) : ?>
-                <li class="asset-group-type-item <?php echo ($agt->get('state') == '1') ? 'published' : 'unpublished' ?>">
+                <?php
+                $publishedClass = ($agt->get('state') == '1') ? 'published' : 'unpublished';
+                ?>
+                <li class="asset-group-type-item <?= $publishedClass ?>">
                     <div class="asset-group-type-item-container">
                         <div class="asset-group-title-container">
                             <div class="asset-group-title title">

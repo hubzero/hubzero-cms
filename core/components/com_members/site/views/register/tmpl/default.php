@@ -249,7 +249,10 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
                 <?php if ($this->registrationPassword != Field::STATE_HIDDEN) { ?>
                         <div class="grid">
-                            <div class="col span<?= $this->registrationConfirmPassword != Field::STATE_HIDDEN ? '6' : '12' ?>">
+                            <?php
+                            $spanSuffix = $this->registrationConfirmPassword != Field::STATE_HIDDEN ? '6' : '12';
+                            ?>
+                            <div class="col span<?= $spanSuffix ?>">
                                 <div class="form-group">
                                     <label for="password"<?php echo !empty($this->xregistration->invalid['password']) && !is_array($this->xregistration->invalid['password'])
                                                 ? ' class="fieldWithErrors"'

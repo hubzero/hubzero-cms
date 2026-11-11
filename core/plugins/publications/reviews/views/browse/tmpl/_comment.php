@@ -237,7 +237,10 @@ if ($this->comment->get('publication_id')) {
             </div>
 
         <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-            <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') . '-' . $this->depth ?>">
+            <?php
+            $hideClass = Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '';
+            ?>
+            <div class="addcomment comment-add<?= $hideClass ?>" id="comment-form<?= $this->comment->get('id') . '-' . $this->depth ?>">
                 <?php if (User::isGuest()) { ?>
                 <p class="warning">
                     <?= Lang::txt(

@@ -140,7 +140,12 @@ $this
                 // are we published
                 $published = ($group->published) ? true : false;
                 ?>
-                <div class="group <?= (!$published) ? 'notpublished' : ($group->published == 2 ? 'archived' : 'published') ?>" id="group<?= $group->gidNumber ?>"
+                <?php
+                $notpublishedClass = (!$published)
+                    ? 'notpublished'
+                    : ($group->published == 2 ? 'archived' : 'published');
+                ?>
+                <div class="group <?= $notpublishedClass ?>" id="group<?= $group->gidNumber ?>"
                     data-id="<?php echo $group->gidNumber; ?>"
                     data-status="<?php echo $this->escape($status); ?>"
                     data-title="<?php echo $this->escape(stripslashes($group->description) . ' ' . $group->cn); ?>">

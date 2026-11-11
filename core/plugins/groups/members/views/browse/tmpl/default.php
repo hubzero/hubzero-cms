@@ -344,7 +344,12 @@ $option = 'com_groups';
                                 ?>
                         <tr<?php echo ($cls) ? ' class="' . $cls . '"' : ''; ?>>
                             <td class="photo">
-                                <span class="photo-wrap<?= $online ? ' tooltips" title="' . Lang::txt('PLG_GROUPS_MEMBERS_ONLINE') : '' ?>">
+                                <?php
+                                $tooltipsClass = $online
+                                    ? ' tooltips" title="' . Lang::txt('PLG_GROUPS_MEMBERS_ONLINE')
+                                    : '';
+                                ?>
+                                <span class="photo-wrap<?= $tooltipsClass ?>">
                                     <img width="50" height="50" src="<?php echo $pic; ?>" alt="" />
                                     <?php if ($online) { ?>
                                         <span class="online"><?= Lang::txt('PLG_GROUPS_MEMBERS_ONLINE') ?></span>

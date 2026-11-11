@@ -66,7 +66,10 @@ if (!$this->activity->log->get('anonymous')) {
 <div id="li_<?= $this->activity->log->get('id') ?>" class="activity <?= $new ? ' newitem' : '' ?>"
     data-recorded="<?= $recorded ?>">
 
-    <div class="activity-actor-picture<?= $online ? ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE') : '' ?>">
+    <?php
+    $tooltipsClass = $online ? ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE') : '';
+    ?>
+    <div class="activity-actor-picture<?= $tooltipsClass ?>">
         <?php if ($showProject) { ?>
             <span class="user-img-wrap">
                 <img class="project-image" src="<?= Route::url($this->model->link('thumb')) ?>"

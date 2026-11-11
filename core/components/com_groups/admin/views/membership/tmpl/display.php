@@ -380,7 +380,12 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                             : null; ?>
                         <?php if ($rowExpires) : ?>
                             <br />
-                            <span class="membership-term<?= (strtotime($rowExpires . ' UTC') <= time() + (30 * 86400)) ? ' term-expires-soon' : '' ?>">
+                            <?php
+                            $termExpiresSoonClass = (strtotime($rowExpires . ' UTC') <= time() + (30 * 86400))
+                                ? ' term-expires-soon'
+                                : '';
+                            ?>
+                            <span class="membership-term<?= $termExpiresSoonClass ?>">
                                 <?php echo Lang::txt(
                                     'COM_GROUPS_MEMBER_TERM_ENDS',
                                     Date::of($rowExpires)->toLocal(Lang::txt('DATE_FORMAT_HZ1')),

@@ -338,8 +338,12 @@ $quotaSelected = function ($value) use ($view) {
                             $linkUrl = Route::url(
                                 'index.php?option=' . $this->option . '&controller=team&project=' . $row->id,
                             );
+                            $syncedClass = ($row->owned_by_group && $row->sync_group) ? 'synced' : 'not-synced';
+                            $titleText = ($row->owned_by_group && $row->sync_group)
+                                ? Lang::txt('This team is synced with a group.')
+                                : Lang::txt('This team is comprised of selected individuals.');
                             ?>
-                            <a class="state <?= ($row->owned_by_group && $row->sync_group) ? 'synced' : 'not-synced' ?> team hasTip" title="<?= ($row->owned_by_group && $row->sync_group) ? Lang::txt('This team is synced with a group.') : Lang::txt('This team is comprised of selected individuals.') ?>" href="<?= $linkUrl ?>">
+                            <a class="state <?= $syncedClass ?> team hasTip" title="<?= $titleText ?>" href="<?= $linkUrl ?>">
                                 <span><?php echo Lang::txt('COM_PROJECTS_TEAM'); ?></span>
                             </a>
                         </td>

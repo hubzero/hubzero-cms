@@ -87,8 +87,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 . urlencode('f.state, f.priority, f.toolname') . '&search='
                                 . $this->escape(urlencode($this->filters['search'])),
                         );
+                        $activeClass = $this->filters['sortby'] == 'f.state, f.priority, f.toolname' ? ' active' : '';
                         ?>
-                        <a class="sort-status<?= $this->filters['sortby'] == 'f.state, f.priority, f.toolname' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS') ?>" rel="nofollow">
+                        <a class="sort-status<?= $activeClass ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_STATUS'); ?>
                         </a>
                     </li>
@@ -101,8 +102,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 . urlencode('f.state, f.registered') . '&search='
                                 . $this->escape(urlencode($this->filters['search'])),
                         );
+                        $activeClass = $this->filters['sortby'] == 'f.state, f.registered' ? ' active' : '';
                         ?>
-                        <a class="sort-status<?= $this->filters['sortby'] == 'f.state, f.registered' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS') ?>" rel="nofollow">
+                        <a class="sort-status<?= $activeClass ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_CONTRIBTOOL_SORTBY_STATUS') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_STATUS'); ?>
                         </a>
                     </li>
@@ -157,8 +159,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                 . urlencode('f.state_changed DESC') . '&search='
                                 . $this->escape(urlencode($this->filters['search'])),
                         );
+                        $activeClass = $this->filters['sortby'] == 'f.state_changed DESC' ? ' active' : '';
                         ?>
-                        <a class="sort-change <?= $this->filters['sortby'] == 'f.state_changed DESC' ? ' active' : '' ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_LAST_STATUS_CHANGE') ?>" rel="nofollow">
+                        <a class="sort-change <?= $activeClass ?>" href="<?= $pipelineUrl ?>" title="<?= Lang::txt('COM_TOOLS_LAST_STATUS_CHANGE') ?>" rel="nofollow">
                             <?php echo Lang::txt('COM_TOOLS_STATUS_CHANGE'); ?>
                         </a>
                     </li>
