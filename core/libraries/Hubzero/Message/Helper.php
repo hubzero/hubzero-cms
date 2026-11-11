@@ -41,7 +41,7 @@ class Helper extends Obj
             foreach ($uids as $uid) {
                 // Find any actions the user needs to take for this $component and $element
                 $action = Action::blank();
-                $mids = $action->getActionItems($component, $element, $uid, $type);
+                $mids = $action->getActionItems($type, $component, $element, $uid)->rows()->fieldsByKey('id');
 
                 // Check if the user has any action items
                 if (count($mids) > 0) {

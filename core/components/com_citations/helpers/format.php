@@ -679,7 +679,7 @@ class Format
         $database = App::get('db');
 
         // Get the associations
-        $assocs = Association::all()->whereEquals('cid', $citation->id);
+        $assocs = Association::all()->whereEquals('cid', $citation->id)->rows();
 
         if (count($assocs) > 0) {
             if (count($assocs) > 1) {
