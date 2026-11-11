@@ -16,13 +16,12 @@
 
     <arg name="extensions" value="php"/>
     <arg name="parallel" value="4"/>
-    <arg value="np"/>
+    <arg value="p"/>
     <ini name="memory_limit" value="-1"/>
 
     <rule ref="PSR12"/>
 
-    <!-- PSR-12 MUSTs that phpcs reports only as warnings, which the
-         arguments above hide -->
+    <!-- PSR-12 MUSTs that phpcs reports only as warnings -->
     <rule ref="PSR2.Classes.PropertyDeclaration.Underscore">
         <type>error</type>
     </rule>
