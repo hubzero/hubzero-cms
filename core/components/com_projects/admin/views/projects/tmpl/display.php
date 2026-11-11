@@ -50,14 +50,18 @@ if (substr($base, -13) == 'administrator') {
 
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_PROJECTS_SEARCH') ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_PROJECTS_SEARCH') ?>" />
 
-                <input type="submit" name="filter_submit" id="filter_submit" value="<?= Lang::txt('COM_PROJECTS_GO') ?>" />
+                <input type="submit" name="filter_submit" id="filter_submit"
+                    value="<?= Lang::txt('COM_PROJECTS_GO') ?>" />
             </div>
             <div class="col span6">
                 <label for="filter-filterby"><?php echo Lang::txt('COM_PROJECTS_FILTER_STATUS'); ?>:</label>
@@ -97,8 +101,10 @@ if (substr($base, -13) == 'administrator') {
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th class="priority-5" scope="col"><?= Html::grid('sort', 'ID', 'id', @$this->filters['sortdir'], @$this->filters['sortby']) ?></th>
                 <th class="priority-5" scope="col"> </th>
@@ -185,7 +191,8 @@ if (substr($base, -13) == 'administrator') {
                             <?php echo $row->id; ?>
                         </td>
                         <td class="priority-5">
-                            <img src="<?= rtrim($base, '/') . '/projects/' . $row->alias . '/media' ?>" width="30" height="30" alt="<?= $this->escape($row->alias) ?>" />
+                            <img src="<?= rtrim($base, '/') . '/projects/' . $row->alias . '/media' ?>" width="30"
+                                height="30" alt="<?= $this->escape($row->alias) ?>" />
                         </td>
                         <td>
                             <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $row->id . $filterstring) ?>"><?= $this->escape($row->title) ?></a><br />

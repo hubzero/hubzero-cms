@@ -37,12 +37,15 @@ $listDirn  = $this->escape($this->filters['direction']);
             <fieldset>
                 <?php if ($this->params->get('filter_field') != 'hide') :?>
                     <div class="container data-entry">
-                        <input class="entry-search-submit" type="submit" value="<?= Lang::txt('JGLOBAL_FILTER_LABEL') ?>" />
+                        <input class="entry-search-submit" type="submit"
+                            value="<?= Lang::txt('JGLOBAL_FILTER_LABEL') ?>" />
                         <fieldset class="entry-search">
                             <legend><?php echo Lang::txt('JGLOBAL_FILTER_LABEL'); ?></legend>
 
                             <label class="filter-search-lbl" for="filter-search"><?= Lang::txt('COM_CONTENT_' . $this->params->get('filter_field') . '_FILTER_LABEL') . '&#160;' ?>></label>
-                            <input type="text" name="filter-search" id="filter-search" value="<?= $this->escape($this->filters['filter']) ?>" placeholder="<?= Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />
+                            <input type="text" name="filter-search" id="filter-search"
+                                value="<?= $this->escape($this->filters['filter']) ?>"
+                                placeholder="<?= Lang::txt('COM_CONTENT_FILTER_SEARCH_DESC') ?>" />
                         </fieldset>
                     </div><!-- / .container -->
                 <?php endif; ?>

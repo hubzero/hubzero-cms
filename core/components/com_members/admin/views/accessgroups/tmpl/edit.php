@@ -41,19 +41,24 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form" class="editform form-validate"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_TITLE_DESC'); ?>">
-                    <label for="field-title"><?= Lang::txt('COM_MEMBERS_GROUP_FIELD_TITLE_LABEL') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" value="<?= $this->escape($this->row->get('title')) ?>" />
+                    <label for="field-title"><?= Lang::txt('COM_MEMBERS_GROUP_FIELD_TITLE_LABEL') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="fields[title]" id="field-title"
+                        value="<?= $this->escape($this->row->get('title')) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_DESC'); ?>">
-                    <label for="field-parent_id"><?= Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_LABEL') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <label for="field-parent_id"><?= Lang::txt('COM_MEMBERS_GROUP_FIELD_PARENT_LABEL') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <select name="fields[parent_id]" id="field-parent_id" class="required">
                         <?php foreach ($this->options as $option) :
                             if (User::authorise('core.admin') || (!Hubzero\Access\Access::checkGroup($option->get('id'), 'core.admin'))) {

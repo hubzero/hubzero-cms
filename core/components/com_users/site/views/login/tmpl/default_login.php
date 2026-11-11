@@ -108,7 +108,8 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                     <?php $image = $user->picture(0, false, false); ?>
                     <?php $img_properties = getimagesize(PATH_CORE . DS . $image); ?>
                     <?php $class = ($img_properties[0] > $img_properties[1]) ? 'wide' : 'tall'; ?>
-                    <img class="<?= $class ?>" src="<?= $user_img ?>" alt="<?= Lang::txt('COM_USERS_LOGIN_USER_PICTURE') ?>" />
+                    <img class="<?= $class ?>" src="<?= $user_img ?>"
+                        alt="<?= Lang::txt('COM_USERS_LOGIN_USER_PICTURE') ?>" />
                 <?php endif; ?>
             </div>
             <div class="default <?php echo ($primary || $login_provider_html == '') ? 'none' : 'block'; ?>">
@@ -136,12 +137,16 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                         <?php else : ?>
                             <div class="label-input-pair username">
                                 <label for="username"><?php echo Lang::txt('COM_USERS_LOGIN_USERNAME'); ?>:</label>
-                                <input type="text" name="username" id="username" class="username" placeholder="<?= strtolower(Lang::txt('COM_USERS_LOGIN_USERNAME')) ?>" required aria-required="true" />
+                                <input type="text" name="username" id="username" class="username"
+                                    placeholder="<?= strtolower(Lang::txt('COM_USERS_LOGIN_USERNAME')) ?>" required
+                                    aria-required="true" />
                             </div>
                         <?php endif; ?>
                         <div class="label-input-pair">
                             <label for="password"><?php echo Lang::txt('COM_USERS_LOGIN_PASSWORD'); ?>:</label>
-                            <input type="password" name="passwd" id="password" class="passwd" placeholder="<?= strtolower(Lang::txt('COM_USERS_LOGIN_PASSWORD')) ?>" autocomplete="off" required aria-required="true" />
+                            <input type="password" name="passwd" id="password" class="passwd"
+                                placeholder="<?= strtolower(Lang::txt('COM_USERS_LOGIN_PASSWORD')) ?>"
+                                autocomplete="off" required aria-required="true" />
                             <div class="spinner">
                                 <div class="bounce1"></div>
                                 <div class="bounce2"></div>
@@ -151,11 +156,14 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                         <div class="input-error" role="alert"></div>
                     </div>
                     <div class="submission">
-                        <input type="submit" value="<?= Lang::txt('COM_USERS_LOGIN') ?>" class="login-submit btn btn-primary" />
+                        <input type="submit" value="<?= Lang::txt('COM_USERS_LOGIN') ?>"
+                            class="login-submit btn btn-primary" />
                         <?php if (Plugin::isEnabled('system', 'remember')) : ?>
                             <div class="remember-wrap">
-                                <input type="checkbox" class="remember option" name="remember" id="remember" value="yes" <?= ($this->remember_me_default) ? 'checked="checked"' : '' ?> />
-                                <label for="remember" class="remember-me-label"><?= Lang::txt('COM_USERS_LOGIN_KEEP_LOGGED_IN') ?></label>
+                                <input type="checkbox" class="remember option" name="remember" id="remember"
+                                    value="yes" <?= ($this->remember_me_default) ? 'checked="checked"' : '' ?> />
+                                <label for="remember"
+                                    class="remember-me-label"><?= Lang::txt('COM_USERS_LOGIN_KEEP_LOGGED_IN') ?></label>
                             </div>
                         <?php endif; ?>
                     </div>

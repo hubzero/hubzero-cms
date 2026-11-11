@@ -24,7 +24,8 @@ $creator = $this->model->access('owner') ? 1 : 0;
 $i = 0;
 ?>
 <div id="plg-header">
-    <h3 class="files"><a href="<?= Route::url($this->model->link('files')) ?>"><?= $this->title ?></a> &raquo; <span class="subheader"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT') ?></span></h3>
+    <h3 class="files"><a href="<?= Route::url($this->model->link('files')) ?>"><?= $this->title ?></a> &raquo; <span
+        class="subheader"><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT') ?></span></h3>
 </div>
 
 <p><?php echo Lang::txt('PLG_PROJECTS_FILES_CONNECT_EXPLAIN'); ?></p>

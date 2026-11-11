@@ -88,8 +88,10 @@ if (count($matches) > 0) {
                     $query .= $this->model->title;
                 }
                 ?>
-                <a rel="external" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?= $this->escape($query) ?>">
-                    <img src="http://scholar.google.com/intl/en/scholar/images/scholar_logo_lg_2011.gif" alt="Google Scholar Search Results" width="100" />
+                <a rel="external" title="Google Scholar Search Results"
+                    href="http://scholar.google.com/scholar?q=<?= $this->escape($query) ?>">
+                    <img src="http://scholar.google.com/intl/en/scholar/images/scholar_logo_lg_2011.gif"
+                        alt="Google Scholar Search Results" width="100" />
                 </a>
             </td>
         </tr>

@@ -85,15 +85,19 @@ if ($this->model->groupOwner()) {
 
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form" class="editform form-validate"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
 
     <nav role="navigation" class="sub-navigation">
         <div id="submenu-box">
             <div class="submenu-box">
                 <div class="submenu-pad">
                     <ul id="submenu" class="coursesection">
-                        <li><a href="#page-details" onclick="return false;" id="details" class="active"><?= Lang::txt('JDETAILS') ?></a></li>
-                        <li><a href="#page-images" onclick="return false;" id="images"><?= Lang::txt('COM_PROJECTS_IMAGE') ?></a></li>
+                        <li><a href="#page-details" onclick="return false;" id="details"
+                            class="active"><?= Lang::txt('JDETAILS') ?></a></li>
+                        <li><a href="#page-images" onclick="return false;"
+                            id="images"><?= Lang::txt('COM_PROJECTS_IMAGE') ?></a></li>
                     </ul>
                     <div class="clr"></div>
                 </div>
@@ -111,13 +115,17 @@ if ($this->model->groupOwner()) {
                 <legend><span><?php echo Lang::txt('COM_PROJECTS_BASIC_INFO'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="title"><?= Lang::txt('COM_PROJECTS_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                    <input type="text" name="title" id="title" size="60" maxlength="250" class="required" value="<?= $this->escape(stripslashes($this->model->get('title'))) ?>" />
+                    <label for="title"><?= Lang::txt('COM_PROJECTS_TITLE') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                    <input type="text" name="title" id="title" size="60" maxlength="250" class="required"
+                        value="<?= $this->escape(stripslashes($this->model->get('title'))) ?>" />
                 </div>
 
                 <div class="input-wrap">
                     <label for="alias"><?php echo Lang::txt('COM_PROJECTS_ALIAS'); ?>:</label>
-                    <input type="text" name="alias" id="alias" size="60" maxlength="250" value="<?= $this->escape($this->model->get('alias')) ?>" readonly="readonly" disabled="disabled" />
+                    <input type="text" name="alias" id="alias" size="60" maxlength="250"
+                        value="<?= $this->escape($this->model->get('alias')) ?>" readonly="readonly"
+                        disabled="disabled" />
                 </div>
 
                 <div class="input-wrap">
@@ -211,12 +219,15 @@ if ($this->model->groupOwner()) {
 
                 <div class="input-wrap">
                     <input type="hidden" name="params[team_public]" value="0" />
-                    <input type="checkbox" class="option" name="params[team_public]" id="param-team_public" value="1" <?= $this->params->get('team_public') ? ' checked="checked"' : '' ?> />
+                    <input type="checkbox" class="option" name="params[team_public]" id="param-team_public"
+                        value="1" <?= $this->params->get('team_public') ? ' checked="checked"' : '' ?> />
                     <label for="param-team_public"><?php echo Lang::txt('COM_PROJECTS_TEAM_PUBLIC'); ?></label>
                 </div>
                 <div class="input-wrap">
                     <input type="hidden" name="params[publications_public]" value="0" />
-                    <input type="checkbox" class="option" name="params[publications_public]" id="param-publications_public" value="1" <?= $this->params->get('publications_public') ? ' checked="checked"' : '' ?> />
+                    <input type="checkbox" class="option" name="params[publications_public]"
+                        id="param-publications_public"
+                        value="1" <?= $this->params->get('publications_public') ? ' checked="checked"' : '' ?> />
                     <label for="param-publications_public"><?= Lang::txt('COM_PROJECTS_PUBLICATIONS_PUBLIC') ?></label>
                 </div>
                 <div class="input-wrap">
@@ -245,23 +256,34 @@ if ($this->model->groupOwner()) {
                 <?php if ($this->config->get('grantinfo', 0)) { ?>
                     <div class="input-wrap">
                         <label for="param-grant_title"><?= Lang::txt('COM_PROJECTS_TERMS_GRANT_TITLE') ?>:</label>
-                        <input name="params[grant_title]" id="param-grant_title" maxlength="250" type="text" value="<?= $this->escape(html_entity_decode($this->params->get('grant_title', ''))) ?>" class="long" />
+                        <input name="params[grant_title]" id="param-grant_title" maxlength="250" type="text"
+                            value="<?= $this->escape(html_entity_decode($this->params->get('grant_title', ''))) ?>"
+                            class="long" />
                     </div>
                     <div class="input-wrap">
                         <label for="param-grant_PI"><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_PI'); ?>:</label>
-                        <input name="params[grant_PI]" id="param-grant_PI" maxlength="250" type="text" value="<?= $this->escape(html_entity_decode($this->params->get('grant_PI', ''))) ?>" class="long" />
+                        <input name="params[grant_PI]" id="param-grant_PI" maxlength="250" type="text"
+                            value="<?= $this->escape(html_entity_decode($this->params->get('grant_PI', ''))) ?>"
+                            class="long" />
                     </div>
                     <div class="input-wrap">
-                        <label for="param-award_number"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER') ?>:</label>
-                        <input name="params[award_number]" id="param-award_number" maxlength="250" type="text" value="<?= $this->escape(html_entity_decode($this->params->get('award_number', ''))) ?>" class="long" />
+                        <label
+                            for="param-award_number"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER') ?>:</label>
+                        <input name="params[award_number]" id="param-award_number" maxlength="250" type="text"
+                            value="<?= $this->escape(html_entity_decode($this->params->get('award_number', ''))) ?>"
+                            class="long" />
                     </div>
                     <div class="input-wrap">
                         <label for="param-grant_agency"><?= Lang::txt('COM_PROJECTS_TERMS_GRANT_AGENCY') ?>:</label>
-                        <input name="params[grant_agency]" id="param-grant_agency" maxlength="250" type="text" value="<?= $this->escape(html_entity_decode($this->params->get('grant_agency', ''))) ?>" class="long" />
+                        <input name="params[grant_agency]" id="param-grant_agency" maxlength="250" type="text"
+                            value="<?= $this->escape(html_entity_decode($this->params->get('grant_agency', ''))) ?>"
+                            class="long" />
                     </div>
                     <div class="input-wrap">
                         <label for="param-grant_budget"><?= Lang::txt('COM_PROJECTS_TERMS_GRANT_BUDGET') ?>:</label>
-                        <input name="params[grant_budget]" id="param-grant_budget" maxlength="250" type="text" value="<?= $this->escape(html_entity_decode($this->params->get('grant_budget', ''))) ?>" class="long" />
+                        <input name="params[grant_budget]" id="param-grant_budget" maxlength="250" type="text"
+                            value="<?= $this->escape(html_entity_decode($this->params->get('grant_budget', ''))) ?>"
+                            class="long" />
                     </div>
                     <div class="input-wrap">
                         <label><?php echo Lang::txt('COM_PROJECTS_TERMS_GRANT_APPROVAL_CODE'); ?>:</label>
@@ -279,12 +301,16 @@ if ($this->model->groupOwner()) {
 
                     <div class="input-wrap">
                         <label for="param-quota"><?= Lang::txt('Files Quota') ?>: <?= ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES') . ')' ?></label>
-                        <input name="params[quota]" id="param-quota" maxlength="100" type="text" value="<?= \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2) ?>" class="short" />
+                        <input name="params[quota]" id="param-quota" maxlength="100" type="text"
+                            value="<?= \Components\Projects\Helpers\Html::convertSize($quota, 'b', 'GB', 2) ?>"
+                            class="short" />
                     </div>
 
                     <div class="input-wrap">
                         <label for="param-pubQuota"><?= Lang::txt('Publications Quota') ?>: <?= ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES') . ')' ?></label>
-                        <input name="params[pubQuota]" id="param-pubQuota" maxlength="100" type="text" value="<?= \Components\Projects\Helpers\Html::convertSize($pubQuota, 'b', 'GB', 2) ?>" class="short" />
+                        <input name="params[pubQuota]" id="param-pubQuota" maxlength="100" type="text"
+                            value="<?= \Components\Projects\Helpers\Html::convertSize($pubQuota, 'b', 'GB', 2) ?>"
+                            class="short" />
                     </div>
 
                     <?php if ($this->diskusage) { ?>
@@ -380,19 +406,24 @@ if ($this->model->groupOwner()) {
                     <?php echo Lang::txt('COM_PROJECTS_OPTIONS'); ?>:<br />
 
                     <input type="hidden" name="admin_action" value="" />
-                    <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_SEND_MESSAGE') ?>" class="btn" id="do-message" /> <span class="breaker"> | </span>
+                    <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_SEND_MESSAGE') ?>" class="btn"
+                        id="do-message" /> <span class="breaker"> | </span>
                     <?php if ($this->model->isActive()) { ?>
-                        <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_SUSPEND') ?>" class="btn" id="do-suspend" />
+                        <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_SUSPEND') ?>" class="btn"
+                            id="do-suspend" />
                     <?php } elseif ($this->model->isInactive() || $this->model->isDeleted()) { ?>
                         <input type="submit" value="<?= $this->suspended ? Lang::txt('COM_PROJECTS_OPTION_REINSTATE') : Lang::txt('COM_PROJECTS_OPTION_ACTIVATE') ?>" class="btn" id="do-reinstate" />
                     <?php } ?>
                     <?php if (!$this->model->isDeleted()) { ?>
-                        <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_DELETE') ?>" class="btn" id="do-delete" />
+                        <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_DELETE') ?>" class="btn"
+                            id="do-delete" />
                     <?php } ?>
                     <?php if ($this->model->isArchived()) { ?>
-                        <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_UNARCHIVE') ?>" class="btn" id="do-unarchive" />
+                        <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_UNARCHIVE') ?>" class="btn"
+                            id="do-unarchive" />
                     <?php } else { ?>
-                        <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_ARCHIVE') ?>" class="btn" id="do-archive" />
+                        <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_ARCHIVE') ?>" class="btn"
+                            id="do-archive" />
                     <?php } ?>
                 </div>
             </fieldset>
@@ -457,7 +488,8 @@ if ($this->model->groupOwner()) {
                         $size = filesize($path);
                     }
                     ?>
-                    <p><img src="<?= $this->model->picture('thumb') ?>" width="50" alt="<?= Lang::txt('COM_PROJECTS_IMAGE_THUMB') ?>" /></p>
+                    <p><img src="<?= $this->model->picture('thumb') ?>" width="50"
+                        alt="<?= Lang::txt('COM_PROJECTS_IMAGE_THUMB') ?>" /></p>
                     <table>
                         <tbody>
                             <tr>
@@ -487,7 +519,8 @@ if ($this->model->groupOwner()) {
                         $size = filesize($path);
                     }
                     ?>
-                    <p><img src="<?= $this->model->picture('master') ?>" width="200" alt="<?= Lang::txt('COM_PROJECTS_IMAGE_MASTER') ?>" /></p>
+                    <p><img src="<?= $this->model->picture('master') ?>" width="200"
+                        alt="<?= Lang::txt('COM_PROJECTS_IMAGE_MASTER') ?>" /></p>
                     <table>
                         <tbody>
                             <tr>
@@ -517,7 +550,8 @@ if ($this->model->groupOwner()) {
                         $size = filesize($path);
                     }
                     ?>
-                    <p><img src="<?= $this->model->picture('original') ?>" alt="<?= Lang::txt('COM_PROJECTS_IMAGE_ORIGINAL') ?>" /></p>
+                    <p><img src="<?= $this->model->picture('original') ?>"
+                        alt="<?= Lang::txt('COM_PROJECTS_IMAGE_ORIGINAL') ?>" /></p>
                     <table>
                         <tbody>
                             <tr>

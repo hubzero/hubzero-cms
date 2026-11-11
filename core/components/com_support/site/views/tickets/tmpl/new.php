@@ -78,14 +78,19 @@ endif;
             <div class="form-group">
                 <label for="reporter_login">
                     <?php echo Lang::txt('COM_SUPPORT_USERNAME'); ?>
-                    <input type="text" name="reporter[login]" class="form-control" value="<?= $this->escape($this->row->get('login', $this->row->submitter->get('username'))) ?>" id="reporter_login" />
+                    <input type="text" name="reporter[login]" class="form-control"
+                        value="<?= $this->escape($this->row->get('login', $this->row->submitter->get('username'))) ?>"
+                        id="reporter_login" />
                 </label>
             </div>
 
             <div class="form-group">
                 <label for="reporter_name"<?= ($this->getError() && !$this->row->get('name')) ? ' class="fieldWithErrors"' : '' ?>>
-                    <?= Lang::txt('COM_SUPPORT_NAME') ?> <span class="required"><?= Lang::txt('COM_SUPPORT_REQUIRED') ?></span>
-                    <input type="text" name="reporter[name]" class="form-control" value="<?= $this->escape($this->row->get('name', $this->row->submitter->get('name'))) ?>" id="reporter_name" />
+                    <?= Lang::txt('COM_SUPPORT_NAME') ?> <span
+                        class="required"><?= Lang::txt('COM_SUPPORT_REQUIRED') ?></span>
+                    <input type="text" name="reporter[name]" class="form-control"
+                        value="<?= $this->escape($this->row->get('name', $this->row->submitter->get('name'))) ?>"
+                        id="reporter_name" />
                 </label>
                 <?php if ($this->getError() && !$this->row->get('name')) : ?>
                     <p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_NAME'); ?></p>
@@ -94,8 +99,11 @@ endif;
 
             <div class="form-group">
                 <label for="reporter_email"<?= ($this->getError() && !$this->row->get('email')) ? ' class="fieldWithErrors"' : '' ?>>
-                    <?= Lang::txt('COM_SUPPORT_EMAIL') ?> <span class="required"><?= Lang::txt('COM_SUPPORT_REQUIRED') ?></span>
-                    <input type="email" name="reporter[email]" class="form-control" value="<?= $this->escape($this->row->get('email', $this->row->submitter->get('email'))) ?>" id="reporter_email" />
+                    <?= Lang::txt('COM_SUPPORT_EMAIL') ?> <span
+                        class="required"><?= Lang::txt('COM_SUPPORT_REQUIRED') ?></span>
+                    <input type="email" name="reporter[email]" class="form-control"
+                        value="<?= $this->escape($this->row->get('email', $this->row->submitter->get('email'))) ?>"
+                        id="reporter_email" />
                 </label>
                 <?php if ($this->getError() && !$this->row->get('email')) : ?>
                     <p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_EMAIL'); ?></p>
@@ -105,9 +113,15 @@ endif;
             <input type="hidden" name="reporter[org]" value="<?= $this->escape($this->row->get('organization', $this->row->submitter->get('organization'))) ?>" id="reporter_org" />
         </fieldset> 
     <?php else : ?>
-        <input type="hidden" name="reporter[login]" value="<?= $this->escape($this->row->get('login', $this->row->submitter->get('username'))) ?>" id="reporter_login" />
-        <input type="hidden" name="reporter[name]" value="<?= $this->escape($this->row->get('name', $this->row->submitter->get('name'))) ?>" id="reporter_name" />
-        <input type="hidden" name="reporter[email]" value="<?= $this->escape($this->row->get('email', $this->row->submitter->get('email'))) ?>" id="reporter_email" />
+        <input type="hidden" name="reporter[login]"
+            value="<?= $this->escape($this->row->get('login', $this->row->submitter->get('username'))) ?>"
+            id="reporter_login" />
+        <input type="hidden" name="reporter[name]"
+            value="<?= $this->escape($this->row->get('name', $this->row->submitter->get('name'))) ?>"
+            id="reporter_name" />
+        <input type="hidden" name="reporter[email]"
+            value="<?= $this->escape($this->row->get('email', $this->row->submitter->get('email'))) ?>"
+            id="reporter_email" />
     <?php endif; ?>
 
         <fieldset>
@@ -115,8 +129,10 @@ endif;
 
             <div class="form-group">
                 <label for="problem_long"<?= ($this->getError() && !$this->row->get('report')) ? ' class="fieldWithErrors"' : '' ?>>
-                    <?= Lang::txt('COM_SUPPORT_TROUBLE_DESCRIPTION') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
-                    <textarea name="problem[long]" cols="40" rows="10" class="form-control" id="problem_long"><?= $this->escape($this->row->get('report')) ?></textarea>
+                    <?= Lang::txt('COM_SUPPORT_TROUBLE_DESCRIPTION') ?> <span
+                        class="required"><?= Lang::txt('JREQUIRED') ?></span>
+                    <textarea name="problem[long]" cols="40" rows="10" class="form-control"
+                        id="problem_long"><?= $this->escape($this->row->get('report')) ?></textarea>
                 </label>
                 <?php if ($this->getError() && !$this->row->get('report')) : ?>
                     <p class="error"><?php echo Lang::txt('COM_SUPPORT_ERROR_MISSING_DESCRIPTION'); ?></p>
@@ -136,14 +152,16 @@ endif;
                             <div class="form-group">
                                 <label for="upload">
                                     <?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE'); ?>:
-                                    <input type="file" name="upload[]" id="upload" class="form-control-file" multiple="multiple" />
+                                    <input type="file" name="upload[]" id="upload" class="form-control-file"
+                                        multiple="multiple" />
                                 </label>
                             </div>
 
                             <div class="form-group">
                                 <label for="field-description">
                                     <?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE_DESCRIPTION'); ?>:
-                                    <input type="text" name="description" id="field-description" class="form-control" value="" />
+                                    <input type="text" name="description" id="field-description" class="form-control"
+                                        value="" />
                                 </label>
                             </div>
                         </noscript>
@@ -183,7 +201,8 @@ endif;
                                 if (count($gc) > 0) :
                                     echo $gc[0];
                                 else : ?>
-                                    <input type="text" name="group_id" id="acgroup" class="form-control" value="" autocomplete="off" />
+                                    <input type="text" name="group_id" id="acgroup" class="form-control" value=""
+                                        autocomplete="off" />
                                 <?php endif; ?>
                             </label>
                         </div>
@@ -218,7 +237,8 @@ endif;
                                 echo Lang::txt('COM_SUPPORT_COMMENT_STATUS'); ?>:
                                 <select name="problem[status]" id="ticket-field-status" class="form-control">
                                     <optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
-                                        <option value="0" selected="selected"><?= Lang::txt('COM_SUPPORT_COMMENT_OPT_NEW') ?></option>
+                                        <option value="0"
+                                            selected="selected"><?= Lang::txt('COM_SUPPORT_COMMENT_OPT_NEW') ?></option>
                                         <?php foreach (Components\Support\Models\Status::allOpen()->rows() as $status) : ?>
                                             <option value="<?= $status->get('id') ?>"><?= $this->escape($status->get('title')) ?></option>
                                         <?php endforeach; ?>
@@ -288,7 +308,8 @@ endif;
                 <legend><?php echo Lang::txt('COM_SUPPORT_HUMAN_CHECK'); ?></legend>
 
                 <label id="fbBotcheck-label" for="fbBotcheck">
-                    <?= Lang::txt('COM_SUPPORT_LEAVE_FIELD_BLANK') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
+                    <?= Lang::txt('COM_SUPPORT_LEAVE_FIELD_BLANK') ?> <span
+                        class="required"><?= Lang::txt('JREQUIRED') ?></span>
                     <input type="text" name="botcheck" id="fbBotcheck" value="" />
                 </label>
                 <?php

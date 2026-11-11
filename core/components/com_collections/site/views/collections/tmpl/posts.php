@@ -40,7 +40,8 @@ $this
     </div>
 </header>
 
-<form method="get" action="<?= Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task) ?>" id="collections">
+<form method="get" action="<?= Route::url($base . '&controller=' . $this->controller . '&task=' . $this->task) ?>"
+    id="collections">
     <?php
     $this
          ->view('_submenu')
@@ -56,7 +57,9 @@ $this
             <span class="input-cell">
                 <label for="filter-search">
                     <span><?php echo Lang::txt('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
-                    <input type="text" name="search" id="filter-search" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_COLLECTIONS_SEARCH_PLACEHOLDER') ?>" />
+                    <input type="text" name="search" id="filter-search"
+                        value="<?= $this->escape($this->filters['search']) ?>"
+                        placeholder="<?= Lang::txt('COM_COLLECTIONS_SEARCH_PLACEHOLDER') ?>" />
                 </label>
             </span>
             <span class="input-cell">
@@ -67,7 +70,8 @@ $this
 
     <section class="main section">
         <?php if ($this->rows->total() > 0) { ?>
-            <div id="posts" data-base="<?= Request::base(true) ?>" class="view-as <?= $mode . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
+            <div id="posts" data-base="<?= Request::base(true) ?>"
+                class="view-as <?= $mode . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
                 <?php if (!User::isGuest() && !Request::getInt('no_html', 0)) { ?>
                     <div class="post new-post">
                         <a class="icon-add add" href="<?= Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=collections&task=post/new') ?>">
@@ -79,7 +83,8 @@ $this
                 foreach ($this->rows as $row) {
                     $item = $row->item();
                     ?>
-                    <div class="post <?= $item->type() ?>" id="b<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>" data-closeup-url="<?= Route::url($base . '&controller=posts&post=' . $row->get('id')) ?>">
+                    <div class="post <?= $item->type() ?>" id="b<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>"
+                        data-closeup-url="<?= Route::url($base . '&controller=posts&post=' . $row->get('id')) ?>">
                         <div class="content">
                         <?php
                             $this
@@ -156,12 +161,15 @@ $this
                                 $name = $this->escape(stripslashes($row->creator()->get('name')));
 
                                 if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-                                    <a href="<?= Route::url($row->creator()->link() . '&active=collections') ?>" title="<?= $name ?>" class="img-link">
-                                        <img src="<?= $row->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                    <a href="<?= Route::url($row->creator()->link() . '&active=collections') ?>"
+                                        title="<?= $name ?>" class="img-link">
+                                        <img src="<?= $row->creator()->picture() ?>"
+                                            alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                                     </a>
                                 <?php } else { ?>
                                     <span class="img-link">
-                                        <img src="<?= $row->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                        <img src="<?= $row->creator()->picture() ?>"
+                                            alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                                     </span>
                                 <?php } ?>
                                 <p>
@@ -178,9 +186,11 @@ $this
                                     <br />
                                     <span class="entry-date">
                                         <span class="entry-date-at"><?= Lang::txt('COM_COLLECTIONS_AT') ?></span>
-                                        <span class="time"><time datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
+                                        <span class="time"><time
+                                            datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
                                         <span class="entry-date-on"><?= Lang::txt('COM_COLLECTIONS_ON') ?></span>
-                                        <span class="date"><time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
+                                        <span class="date"><time
+                                            datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
                                     </span>
                                 </p>
                             </div><!-- / .attribution -->

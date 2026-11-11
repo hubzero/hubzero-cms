@@ -54,7 +54,8 @@ $database = App::get('db');
 $pa = new \Components\Publications\Tables\Author($database);
 ?>
 <label for="pub-search"><?php echo Lang::txt('Search'); ?></label>
-<input id="pub-search" name="search" placeholder="Start typing here" type="text" data-list=".pub-selector-" autocomplete="off" />
+<input id="pub-search" name="search" placeholder="Start typing here" type="text" data-list=".pub-selector-"
+    autocomplete="off" />
 <div id="pub-selector-results">
     <ul class="pub-selector" id="pub-selector">
         <?php
@@ -94,10 +95,12 @@ $pa = new \Components\Publications\Tables\Author($database);
                 }
                 ?>
             <li class="type-publication allowed <?= $selected ? ' selectedfilter' : '' ?>" id="<?= $liId ?>">
-                <div class="item-thumb"><img src="<?= Route::url($item->link('thumb')) ?>" width="40" height="40" alt=""/></div>
+                <div class="item-thumb"><img src="<?= Route::url($item->link('thumb')) ?>" width="40" height="40"
+                    alt=""/></div>
                 <!-- <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span> -->
                 <span class="item-wrap">
-                    <?= $this->escape($item->get('title')) ?> <span class="item-version">(<?= $this->escape($item->get('version_label')) ?>)</span><br />
+                    <?= $this->escape($item->get('title')) ?> <span
+                        class="item-version">(<?= $this->escape($item->get('version_label')) ?>)</span><br />
                     <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span>
                 </span>
                 <span class="item-fullinfo">

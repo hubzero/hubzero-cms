@@ -50,20 +50,28 @@ $this
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
                     <input type="hidden" name="task" value="finalizeversion" />
-                    <input type="hidden" name="newstate" value="<?php echo \Components\Tools\Helpers\Html::getStatusNum('Approved') ?>" />
+                    <input type="hidden" name="newstate"
+                        value="<?php echo \Components\Tools\Helpers\Html::getStatusNum('Approved') ?>" />
                     <input type="hidden" name="id" value="<?php echo $this->status['toolid'] ?>" />
                     <input type="hidden" name="app" value="<?php echo $this->status['toolname'] ?>" />
                     <?php echo Html::input('token'); ?>
                     <div>
                         <h4>Tool Information <a class="edit button" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&app=' . $this->status['toolname']) ?>" title="Edit this version information">Edit</a></h4>
-                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_TITLE') ?>: </span><span class="desc"><?= $this->escape(stripslashes($this->status['title'])) ?></span></p>
-                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_VERSION') ?>: </span><span class="desc"><?= $this->escape(stripslashes($this->status['version'])) ?></span>
+                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_TITLE') ?>: </span><span
+                            class="desc"><?= $this->escape(stripslashes($this->status['title'])) ?></span></p>
+                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_VERSION') ?>: </span><span
+                            class="desc"><?= $this->escape(stripslashes($this->status['version'])) ?></span>
                             <span class="actionlink">[<a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&action=confirm&app=' . $this->status['toolname']) ?>">edit</a>]</span></p>
-                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_DESCRIPTION') ?>: </span><span class="desc"><?= $this->escape(stripslashes($this->status['description'])) ?></span></p>
-                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_TOOL_ACCESS') ?>: </span><span class="desc"> <?= $toolaccess ?></span></p>
-                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_SOURCE_CODE') ?>: </span><span class="desc"> <?= $codeaccess ?></span></p>
-                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_WIKI_ACCESS') ?>: </span><span class="desc"> <?= $wikiaccess ?></span></p>
-                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_SCREEN_SIZE') ?>: </span><span class="desc"> <?= $this->escape($this->status['vncGeometry']) ?></span></p>
+                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_DESCRIPTION') ?>: </span><span
+                            class="desc"><?= $this->escape(stripslashes($this->status['description'])) ?></span></p>
+                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_TOOL_ACCESS') ?>: </span><span
+                            class="desc"> <?= $toolaccess ?></span></p>
+                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_SOURCE_CODE') ?>: </span><span
+                            class="desc"> <?= $codeaccess ?></span></p>
+                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_WIKI_ACCESS') ?>: </span><span
+                            class="desc"> <?= $wikiaccess ?></span></p>
+                        <p><span class="heading"><?= Lang::txt('COM_TOOLS_SCREEN_SIZE') ?>: </span><span
+                            class="desc"> <?= $this->escape($this->status['vncGeometry']) ?></span></p>
                         <p><span class="heading"><?= Lang::txt('COM_TOOLS_DEVELOPERS') ?>: </span><span class="desc"> <?= \Components\Tools\Helpers\Html::getDevTeam($this->status['developers']) ?></span></p>
                         <p><span class="heading"><?= Lang::txt('COM_TOOLS_AUTHORS') ?>: </span><span class="desc"> <?= \Components\Tools\Helpers\Html::getDevTeam($this->status['authors']) ?></span></p>
                         <p><a href="<?= Route::url('index.php?option=com_resources&alias=' . $this->status['toolname'] . '&rev=dev') ?>"><?= Lang::txt('COM_TOOLS_PREVIEW_RES_PAGE') ?></a></p>

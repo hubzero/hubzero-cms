@@ -53,7 +53,8 @@ $this
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-<form action="<?= Route::url($base . '&task=post/save' . ($this->no_html ? '&no_html=' . $this->no_html : '')) ?>" method="post" id="hubForm" class="full" enctype="multipart/form-data">
+<form action="<?= Route::url($base . '&task=post/save' . ($this->no_html ? '&no_html=' . $this->no_html : '')) ?>"
+    method="post" id="hubForm" class="full" enctype="multipart/form-data">
     <fieldset>
         <legend><?= $item->get('id') ? ($this->entry->get('original') ? Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT_POST') : Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT_REPOST')) : Lang::txt('PLG_MEMBERS_COLLECTIONS_NEW_POST') ?></legend>
 
@@ -79,7 +80,8 @@ $this
                                     <div class="form-group">
                                         <label for="add-link">
                                             <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ADD_LINK'); ?>
-                                            <input type="text" name="assets[-1][filename]" id="add-link" class="form-control" value="http://" />
+                                            <input type="text" name="assets[-1][filename]" id="add-link"
+                                                class="form-control" value="http://" />
                                             <input type="hidden" name="assets[-1][id]" value="0" />
                                             <input type="hidden" name="assets[-1][type]" value="link" />
                                         </label>
@@ -108,15 +110,20 @@ $this
                             </span>
                             <span class="asset-file">
                             <?php if ($asset->get('type') == 'link') { ?>
-                                <input type="text" name="assets[<?= $i ?>][filename]" size="35" value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>" placeholder="http://" />
+                                <input type="text" name="assets[<?= $i ?>][filename]" size="35"
+                                    value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>"
+                                    placeholder="http://" />
                             <?php } else { ?>
                                 <?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
-                                <input type="hidden" name="assets[<?= $i ?>][filename]" value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][filename]"
+                                    value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>" />
                             <?php } ?>
                             </span>
                             <span class="asset-description">
-                                <input type="hidden" name="assets[<?= $i ?>][type]" value="<?= $this->escape(stripslashes($asset->get('type'))) ?>" />
-                                <input type="hidden" name="assets[<?= $i ?>][id]" value="<?= $this->escape($asset->get('id')) ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][type]"
+                                    value="<?= $this->escape(stripslashes($asset->get('type'))) ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][id]"
+                                    value="<?= $this->escape($asset->get('id')) ?>" />
                             <?php // The asset hangs off the item, so removing it removes it from
                                   // every repost too. The controller allows that only to the item's
                                   // owner; offering the link to anyone else is a 403 waiting to happen.
@@ -138,7 +145,8 @@ $this
                     <div class="form-group">
                         <label for="field-title">
                             <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_TITLE'); ?>
-                            <input type="text" name="fields[title]" id="field-title" class="form-control" value="<?= $this->escape(stripslashes($item->get('title', ''))) ?>" />
+                            <input type="text" name="fields[title]" id="field-title" class="form-control"
+                                value="<?= $this->escape(stripslashes($item->get('title', ''))) ?>" />
                         </label>
                     </div>
                     <input type="hidden" name="fields[type]" value="file" />
@@ -146,7 +154,9 @@ $this
                     <div class="form-group">
                         <label for="field-title">
                             <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_TITLE'); ?>
-                            <input type="text" name="fieldstitle" id="field-title" class="form-control disabled" disabled="disabled" value="<?= $this->escape(stripslashes($item->get('title', ''))) ?>" />
+                            <input type="text" name="fieldstitle" id="field-title" class="form-control disabled"
+                                disabled="disabled"
+                                value="<?= $this->escape(stripslashes($item->get('title', ''))) ?>" />
                         </label>
                     </div>
                 <?php } ?>
@@ -189,7 +199,8 @@ $this
             <div class="form-group">
                 <label for="post-collection_title">
                     <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_CREATE_COLLECTION'); ?>
-                    <input type="text" name="collection_title" id="post-collection_title" class="form-control" value="" />
+                    <input type="text" name="collection_title" id="post-collection_title" class="form-control"
+                        value="" />
                     <span class="hint"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_CREATE_COLLECTION_HINT') ?></span>
                 </label>
             </div>
@@ -205,7 +216,8 @@ $this
                         if (count($tf) > 0) {
                             echo $tf[0];
                         } else { ?>
-                            <input type="text" name="tags" id="actags" class="form-control" value="<?= $this->escape($item->tags('string')) ?>" />
+                            <input type="text" name="tags" id="actags" class="form-control"
+                                value="<?= $this->escape($item->tags('string')) ?>" />
                         <?php } ?>
                         <span class="hint"><?= Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_FIELD_TAGS_HINT') ?></span>
                     </label>
@@ -221,10 +233,12 @@ $this
     <input type="hidden" name="fields[created]" value="<?php echo $this->escape($item->get('created')); ?>" />
     <input type="hidden" name="fields[created_by]" value="<?php echo $this->escape($item->get('created_by')); ?>" />
     <input type="hidden" name="fields[dir]" id="field-dir" value="<?php echo $this->escape($dir); ?>" />
-    <input type="hidden" name="fields[access]" id="field-access" value="<?= $this->escape($item->get('access', 0)) ?>" />
+    <input type="hidden" name="fields[access]" id="field-access"
+        value="<?= $this->escape($item->get('access', 0)) ?>" />
 
     <input type="hidden" name="post[id]" value="<?php echo $this->escape($this->entry->get('id')); ?>" />
-    <input type="hidden" name="post[item_id]" id="post-item_id" value="<?= $this->escape($this->entry->get('item_id')) ?>" />
+    <input type="hidden" name="post[item_id]" id="post-item_id"
+        value="<?= $this->escape($this->entry->get('item_id')) ?>" />
 
     <input type="hidden" name="id" value="<?php echo $this->member->get('id'); ?>" />
     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -235,10 +249,12 @@ $this
     <?php echo Html::input('token'); ?>
 
     <p class="submit">
-        <input class="btn btn-success" type="submit" value="<?= Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE') ?>" />
+        <input class="btn btn-success" type="submit"
+            value="<?= Lang::txt('PLG_MEMBERS_' . strtoupper($this->name) . '_SAVE') ?>" />
 
         <?php if ($item->get('id')) { ?>
-            <a class="btn btn-secondary" href="<?= Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')) ?>">
+            <a class="btn btn-secondary"
+                href="<?= Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')) ?>">
                 <?php echo Lang::txt('JCANCEL'); ?>
             </a>
         <?php } ?>

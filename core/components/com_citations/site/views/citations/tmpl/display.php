@@ -65,12 +65,14 @@ $this
         </div><!-- / .col span3 -->
         <div class="col span9 omega">
             <div class="col span-half">
-                <form action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" method="get" class="search">
+                <form action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" method="get"
+                    class="search">
                     <fieldset>
                         <legend class="sr-only"><?php echo Lang::txt('COM_CITATIONS_FIND_CITATION'); ?></legend>
                         <p class="hz-v-align">
                             <span class="hz-input-combo">
-                                <input type="text" name="search" id="csearch" value="" aria-label="<?= Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD') ?>" />
+                                <input type="text" name="search" id="csearch" value=""
+                                    aria-label="<?= Lang::txt('COM_CITATIONS_FIND_CITATION_KEYWORD') ?>" />
                                 <input type="submit" value="<?php echo Lang::txt('COM_CITATIONS_SEARCH'); ?>" />
                             </span>
                         </p>

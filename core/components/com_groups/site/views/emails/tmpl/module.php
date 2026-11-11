@@ -83,7 +83,9 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
         </thead>
         <tbody>
             <tr>
-                <td id="ticket-number" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">
+                <td id="ticket-number"
+                    style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;"
+                    align="center">
                     #<?php echo $this->object->get('id'); ?>
                 </td>
                 <td width="100%" style="padding: 8px;">

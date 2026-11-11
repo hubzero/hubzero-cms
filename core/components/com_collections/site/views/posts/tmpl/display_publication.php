@@ -43,7 +43,8 @@ if ($imgPath) {
 <?php if ($imgPath) : ?>
 <div class="holder">
     <a href="<?php echo $url; ?>" rel="external nofollow noreferrer">
-        <img src="<?= Route::url($resource->link('masterimage')) ?>" alt="<?= $alt ?>" class="img" height="<?= $height ?>" />
+        <img src="<?= Route::url($resource->link('masterimage')) ?>" alt="<?= $alt ?>" class="img"
+            height="<?= $height ?>" />
     </a>
 </div>
 <?php endif; ?>

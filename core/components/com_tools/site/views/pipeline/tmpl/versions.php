@@ -60,14 +60,16 @@ $this
                     <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=saveversion&app=' . $this->status['toolname']) ?>" method="post" id="versionForm">
                         <fieldset class="versionfield">
                             <label for="newversion"><?php echo ucfirst(Lang::txt('COM_TOOLS_VERSION')); ?>: </label>
-                            <input type="text" name="newversion" id="newversion" value="<?= $this->escape($this->status['version']) ?>" size="20" maxlength="15" />
+                            <input type="text" name="newversion" id="newversion"
+                                value="<?= $this->escape($this->status['version']) ?>" size="20" maxlength="15" />
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
                             <input type="hidden" name="task" value="saveversion" />
                             <input type="hidden" name="newstate" value="<?php echo $this->escape($newstate); ?>" />
                             <input type="hidden" name="action" value="<?php echo $this->escape($this->action); ?>" />
                             <input type="hidden" name="id" value="<?= $this->escape($this->status['toolid']) ?>" />
-                            <input type="hidden" name="toolname" value="<?= $this->escape($this->status['toolname']) ?>" />
+                            <input type="hidden" name="toolname"
+                                value="<?= $this->escape($this->status['toolname']) ?>" />
                             <?php echo Html::input('token'); ?>
                             <input type="submit" value="<?php echo $submitlabel ?>" />
                         </fieldset>
@@ -151,11 +153,18 @@ $this
                         <td id="conftdone_<?php echo $i; ?>"></td>
                         <td colspan="4" id="conftdtwo_<?php echo $i; ?>">
                             <div id="confdiv_<?php echo $i; ?>" class="vmanage">
-                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_TITLE')) ?>: </span><span class="desc"><?= $this->escape($t->title) ?></span></p>
-                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_DESCRIPTION')) ?>: </span><span class="desc"><?= $this->escape($t->description) ?></span></p>
+                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_TITLE')) ?>: </span><span
+                                    class="desc"><?= $this->escape($t->title) ?></span></p>
+                                <p><span
+                                    class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_DESCRIPTION')) ?>: </span><span
+                                    class="desc"><?= $this->escape($t->description) ?></span></p>
                                 <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_AUTHORS')) ?>: </span><span class="desc"><?= \Components\Tools\Helpers\Html::getDevTeam($t->authors) ?></span></p>
-                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')) ?>: </span><span class="desc"><?= $toolaccess ?></span></p>
-                                <p><span class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')) ?>: </span><span class="desc"><?= $codeaccess ?></span></p>
+                                <p><span
+                                    class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')) ?>: </span><span
+                                    class="desc"><?= $toolaccess ?></span></p>
+                                <p><span
+                                    class="heading"><?= ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')) ?>: </span><span
+                                    class="desc"><?= $codeaccess ?></span></p>
                             <?= $handle != '' ? ' <p><span class="heading">' . Lang::txt('COM_TOOLS_DOI') . ': </span><span class="desc">' . $handle . '</span></p>' : '' ?>
                             </div>
                         </td>

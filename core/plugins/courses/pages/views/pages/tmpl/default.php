@@ -63,7 +63,9 @@ if (!$this->page) {
                 <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&unit=' . $this->page->get('url') . '&b=delete') ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_COURSES_PAGES_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?></button>
             </li>
             <li>
-                <a class="icon-edit edit" href="<?= Route::url($base . '&unit=' . $this->page->get('url') . '&b=edit') ?>" title="<?= Lang::txt('PLG_COURSES_PAGES_EDIT') ?>">
+                <a class="icon-edit edit"
+                    href="<?= Route::url($base . '&unit=' . $this->page->get('url') . '&b=edit') ?>"
+                    title="<?= Lang::txt('PLG_COURSES_PAGES_EDIT') ?>">
                     <?php echo Lang::txt('PLG_COURSES_PAGES_EDIT'); ?>
                 </a>
             </li>

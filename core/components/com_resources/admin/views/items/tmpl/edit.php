@@ -67,7 +67,8 @@ $this
     ->display();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form" class="editform">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -160,7 +161,8 @@ $this
                         <td>
                             <?php echo $this->row->ranking; ?>/10
                             <?php if ($this->row->ranking != '0') { ?>
-                                <input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking" data-task="resetranking" />
+                                <input type="button" name="reset_ranking" id="reset_ranking" value="Reset ranking"
+                                    data-task="resetranking" />
                             <?php } ?>
                         </td>
                     </tr>
@@ -169,7 +171,8 @@ $this
                         <td>
                             <?php echo $this->row->rating . '/5.0 (' . $this->row->times_rated . ')'; ?>
                             <?php if ($this->row->rating != '0.0') { ?>
-                                <input type="button" name="reset_rating" id="reset_rating" value="Reset rating" data-task="resetrating" />
+                                <input type="button" name="reset_rating" id="reset_rating" value="Reset rating"
+                                    data-task="resetrating" />
                                 <a class="btn btn-ratings" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=ratings&id=' . $this->row->id . '&no_html=1') ?>"><?= Lang::txt('COM_RESOURCES_VIEW') ?></a>
                             <?php } ?>
                         </td>
@@ -180,7 +183,8 @@ $this
                         <td>
                             <?php echo $this->row->hits; ?>
                             <?php if ($this->row->hits) { ?>
-                                <input type="button" name="reset_hits" id="reset_hits" value="Reset Hit Count" data-task="resethits" />
+                                <input type="button" name="reset_hits" id="reset_hits" value="Reset Hit Count"
+                                    data-task="resethits" />
                             <?php } ?>
                         </td>
                     </tr>
@@ -203,7 +207,8 @@ $this
             echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PUBLISHING'), 'publish-page');
         ?>
             <div class="paramlist">
-                 <input type="hidden" name="fields[standalone]" id="field-standalone" value="<?= $this->row->standalone ?>" />
+                 <input type="hidden" name="fields[standalone]" id="field-standalone"
+                     value="<?= $this->row->standalone ?>" />
 
                 <div class="input-wrap">
                     <label for="field-published"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATUS'); ?>:</label><br />
@@ -274,7 +279,8 @@ $this
                         </select>
                     </div>
                     <div class="col span3">
-                        <input type="button" value="<?= Lang::txt('COM_RESOURCES_APPLY') ?>" onclick="doFileoptions();" />
+                        <input type="button" value="<?= Lang::txt('COM_RESOURCES_APPLY') ?>"
+                            onclick="doFileoptions();" />
                     </div>
                 </div>
 
@@ -287,7 +293,8 @@ $this
             ?>
                 <textarea name="tags" id="tags" cols="35" rows="6"><?php echo $this->lists['tags']; ?></textarea>
                 <?php echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_BADGES'), 'badges-page'); ?>
-                <textarea name="badges" id="badges" cols="35" rows="6"><?= isset($this->lists['badges']) ? $this->lists['badges'] : '' ?></textarea>
+                <textarea name="badges" id="badges" cols="35"
+                    rows="6"><?= isset($this->lists['badges']) ? $this->lists['badges'] : '' ?></textarea>
                 <?php
                 echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
                 echo '<fieldset class="paramlist">' . $this->params->render() . '</fieldset>';
@@ -295,7 +302,8 @@ $this
             echo Html::sliders('panel', Lang::txt('COM_RESOURCES_FIELDSET_PARAMETERS'), 'params-page');
             ?>
                 <div class="input-wrap">
-                    <label for="param-link_action"><?= Lang::txt('COM_RESOURCES_FIELD_LINK_ACTION_HINT') ?>:</label><br />
+                    <label
+                        for="param-link_action"><?= Lang::txt('COM_RESOURCES_FIELD_LINK_ACTION_HINT') ?>:</label><br />
                     <select name="params[link_action]" id="param-link_action">
                         <option value="0"<?= !$this->params->get('link_action') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_DEFAULT') ?></option>
                         <option value="1"<?= $this->params->get('link_action') == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_FIELD_LINKED_ACTION_NEW_WINDOW') ?></option>

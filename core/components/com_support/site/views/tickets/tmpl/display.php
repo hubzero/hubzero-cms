@@ -171,10 +171,13 @@ $this
                         </ul>
                         <fieldset id="filter-bar">
                             <label for="filter_search"><?php echo Lang::txt('COM_SUPPORT_FIND'); ?>:</label>
-                            <input type="text" name="search" id="filter_search" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_SUPPORT_SEARCH_THIS_QUERY') ?>" />
+                            <input type="text" name="search" id="filter_search"
+                                value="<?= $this->escape($this->filters['search']) ?>"
+                                placeholder="<?= Lang::txt('COM_SUPPORT_SEARCH_THIS_QUERY') ?>" />
 
                             <input type="hidden" name="sort" value="<?= $this->escape($this->filters['sort']) ?>" />
-                            <input type="hidden" name="sortdir" value="<?= $this->escape($this->filters['sortdir']) ?>" />
+                            <input type="hidden" name="sortdir"
+                                value="<?= $this->escape($this->filters['sortdir']) ?>" />
                             <input type="hidden" name="show" value="<?= $this->escape($this->filters['show']) ?>" />
 
                             <input type="submit" class="submit" value="<?php echo Lang::txt('COM_SUPPORT_GO'); ?>" />

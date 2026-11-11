@@ -61,7 +61,9 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                     <td>
                         <ol class="attention-view">
                             <li class="raw">
-                                <a class="version" href="<?= Route::url($base . '&task=raw&moduleid=' . $needsAttention->get('id')) ?>" class="btn">
+                                <a class="version"
+                                    href="<?= Route::url($base . '&task=raw&moduleid=' . $needsAttention->get('id')) ?>"
+                                    class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_VIEW_RAW'); ?>
                                 </a>
                             </li>
@@ -77,7 +79,8 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                                 </li>
                             <?php endif; ?>
                             <li class="edit">
-                                <a href="<?= Route::url($base . '&task=edit&id[]=' . $needsAttention->get('id')) ?>" class="btn">
+                                <a href="<?= Route::url($base . '&task=edit&id[]=' . $needsAttention->get('id')) ?>"
+                                    class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_EDIT'); ?>
                                 </a>
                             </li>
@@ -86,12 +89,14 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                     <td>
                         <ol class="attention-actions">
                             <li class="<?php echo $needsAttention->get('checked_errors') ? 'completed' : ''; ?>">
-                                <a href="<?= Route::url($base . '&task=errors&id=' . $needsAttention->get('id')) ?>" class="btn">
+                                <a href="<?= Route::url($base . '&task=errors&id=' . $needsAttention->get('id')) ?>"
+                                    class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECK_FOR_ERRORS'); ?>
                                 </a>
                             </li>
                             <li class="<?php echo $needsAttention->get('scanned') ? 'completed' : ''; ?>">
-                                <a href="<?= Route::url($base . '&task=scan&id=' . $needsAttention->get('id')) ?>" class="btn">
+                                <a href="<?= Route::url($base . '&task=scan&id=' . $needsAttention->get('id')) ?>"
+                                    class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_SCAN_CONTENT'); ?>
                                 </a>
                             </li>
@@ -123,8 +128,10 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?></th>
@@ -136,7 +143,8 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
     <?php foreach ($this->modules as $k => $module) : ?>
             <tr>
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?= $k ?>" value="<?= $module->get('id') ?>" class="checkbox-toggle" />
+                    <input type="checkbox" name="id[]" id="cb<?= $k ?>" value="<?= $module->get('id') ?>"
+                        class="checkbox-toggle" />
                     <label for="cb<?= $k ?>" class="sr-only visually-hidden"><?= $module->get('id') ?></label>
                 </td>
                 <td>

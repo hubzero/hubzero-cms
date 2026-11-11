@@ -29,7 +29,8 @@ defined('_HZEXEC_') or die();
     <fieldset>
         <legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_DETAILS'); ?></legend>
         <label>
-            <?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_NAME') ?>: <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
+            <?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_NAME') ?>: <span
+                class="required"><?= Lang::txt('JREQUIRED') ?></span>
             <input type="text" name="role[name]" value="<?php echo $this->escape($this->role->name); ?>" >
         </label>
         <fieldset>
@@ -38,7 +39,8 @@ defined('_HZEXEC_') or die();
                 <label>
                     <?php $ckd = ($this->role->permissions->get($perm)) ? 'checked="checked"' : '' ?>
                     <input type="hidden" name="role[permissions][<?php echo $perm; ?>]" value="0" />
-                    <input class="option" type="checkbox" <?= $ckd ?> name="role[permissions][<?= $perm ?>]" value="1"> <?= $label ?>
+                    <input class="option" type="checkbox" <?= $ckd ?> name="role[permissions][<?= $perm ?>]"
+                        value="1"> <?= $label ?>
                 </label>
             <?php endforeach; ?>
         </fieldset>

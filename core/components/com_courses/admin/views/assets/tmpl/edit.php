@@ -42,7 +42,10 @@ if ($this->row->get('id')) {
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="<?= ($this->tmpl == 'component') ? 'component-form' : 'item-form' ?>" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="<?= ($this->tmpl == 'component') ? 'component-form' : 'item-form' ?>"
+    enctype="multipart/form-data" class="editform form-validate"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
 <?php if ($this->tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
@@ -109,16 +112,20 @@ if ($this->row->get('id')) {
                 </select>
             </div>
             <div class="input-wrap">
-                <label for="field-title"><?= Lang::txt('COM_COURSES_FIELD_TITLE') ?>:  <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                <input type="text" name="fields[title]" id="field-title" class="required" value="<?= $this->escape(stripslashes($this->row->get('title'))) ?>" size="50" />
+                <label for="field-title"><?= Lang::txt('COM_COURSES_FIELD_TITLE') ?>:  <span
+                    class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                <input type="text" name="fields[title]" id="field-title" class="required"
+                    value="<?= $this->escape(stripslashes($this->row->get('title'))) ?>" size="50" />
             </div>
             <div class="input-wrap">
                 <label for="field-url"><?php echo Lang::txt('COM_COURSES_FIELD_URL'); ?>:</label>
-                <input type="text" name="fields[url]" id="field-url" value="<?= $this->escape(stripslashes($this->row->get('url'))) ?>" size="50" />
+                <input type="text" name="fields[url]" id="field-url"
+                    value="<?= $this->escape(stripslashes($this->row->get('url'))) ?>" size="50" />
             </div>
             <div class="input-wrap">
                 <label for="field-content"><?php echo Lang::txt('COM_COURSES_FIELD_CONTENT'); ?>:</label>
-                <textarea name="fields[content]" id="field-content" rows="4" cols="35"><?= $this->escape(stripslashes($this->row->get('content'))) ?></textarea>
+                <textarea name="fields[content]" id="field-content" rows="4"
+                    cols="35"><?= $this->escape(stripslashes($this->row->get('content'))) ?></textarea>
             </div>
 
             <iframe width="100%" height="225" name="filelist" id="filelist" frameborder="0" src="<?= Route::url('index.php?option=' . $this->option . '&controller=media&tmpl=component&listdir=' . $id . '&course=' . $this->escape($this->course_id)) ?>"></iframe>

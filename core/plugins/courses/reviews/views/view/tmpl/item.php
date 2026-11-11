@@ -86,7 +86,8 @@ switch ($this->comment->get('rating')) {
                         <?php echo Lang::txt('JANONYMOUS'); ?>
                     <?php } ?>
                     </strong>
-                    <a class="permalink" href="<?= $this->url . '#c' . $this->comment->get('id') ?>" title="<?= Lang::txt('PLG_COURSES_REVIEWS_PERMALINK') ?>">
+                    <a class="permalink" href="<?= $this->url . '#c' . $this->comment->get('id') ?>"
+                        title="<?= Lang::txt('PLG_COURSES_REVIEWS_PERMALINK') ?>">
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
                         <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
@@ -129,10 +130,15 @@ switch ($this->comment->get('rating')) {
                     --></a>
                 <?php } ?>
                 <?php if (($this->params->get('access-delete-comment') && $this->comment->get('created_by') == User::get('id')) || $this->params->get('access-manage-comment')) { ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($rtrn . 'action=delete&comment=' . $this->comment->get('id')) ?>" class="icon-delete delete"><?= Lang::txt('PLG_COURSES_REVIEWS_DELETE') ?></button>
+                    <button type="submit" form="hz-post-action"
+                        formaction="<?= Route::url($rtrn . 'action=delete&comment=' . $this->comment->get('id')) ?>"
+                        class="icon-delete delete"><?= Lang::txt('PLG_COURSES_REVIEWS_DELETE') ?></button>
                 <?php } ?>
                 <?php if ($this->params->get('access-create-comment') && $this->depth < $this->params->get('comments_depth', 3)) { ?>
-                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_COURSES_REVIEWS_REPLY') ?>" href="<?= Route::url($rtrn . 'replyto=' . $this->comment->get('id') . '#post-comment') ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('PLG_COURSES_REVIEWS_REPLY') ?>"
+                        href="<?= Route::url($rtrn . 'replyto=' . $this->comment->get('id') . '#post-comment') ?>"
+                        rel="comment-form<?= $this->comment->get('id') ?>"><!--
                         --><?php echo Lang::txt('PLG_COURSES_REVIEWS_REPLY'); ?><!--
                     --></a>
                 <?php } ?>
@@ -164,9 +170,11 @@ switch ($this->comment->get('rating')) {
                                 <?= $this->editor('comment[content]', '', 35, 4, 'comment-' . $this->comment->get('id') . '-content', ['class' => 'minimal no-footer']) ?>
                             </label>
 
-                            <label class="reply-anonymous-label" for="comment-<?= $this->comment->get('id') ?>-anonymous">
+                            <label class="reply-anonymous-label"
+                                for="comment-<?= $this->comment->get('id') ?>-anonymous">
                                 <?php if ($this->params->get('comments_anon', 1)) { ?>
-                                    <input class="option" type="checkbox" name="comment[anonymous]" id="comment-<?= $this->comment->get('id') ?>-anonymous" value="1" />
+                                    <input class="option" type="checkbox" name="comment[anonymous]"
+                                        id="comment-<?= $this->comment->get('id') ?>-anonymous" value="1" />
                                     <?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
                                 <?php } else { ?>
                                     &nbsp; <input class="option" type="hidden" name="comment[anonymous]" value="0" />

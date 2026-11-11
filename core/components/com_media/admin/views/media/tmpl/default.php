@@ -55,7 +55,8 @@ $this->js();
                 <div class="media-header">
                     <div class="media-breadcrumbs-block">
                         <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=medialist&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1&folder=/') ?>" data-folder="/" class="media-breadcrumbs has-next-button folder-link" id="path_root">
-                            <img src="<?= Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true) ?>" alt="<?= COM_MEDIA_BASEURL ?>" />
+                            <img src="<?= Html::asset('image', 'assets/filetypes/folder.svg', '', null, true, true) ?>"
+                                alt="<?= COM_MEDIA_BASEURL ?>" />
                         </a>
                         <span id="media-breadcrumbs">
                             <?php

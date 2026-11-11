@@ -71,7 +71,8 @@ $extras = Event::trigger('resources.onResourcesList', [$this->line]);
 					');
                     ?>
                     <span class="rank">
-                        <span class="rank-<?= $r ?>" id="rank-<?= $this->line->get('id') ?>"><?= Lang::txt('COM_RESOURCES_THIS_HAS') ?></span>
+                        <span class="rank-<?= $r ?>"
+                            id="rank-<?= $this->line->get('id') ?>"><?= Lang::txt('COM_RESOURCES_THIS_HAS') ?></span>
                     </span>
                     <?= number_format($this->line->get('ranking'), 1) . ' ' . Lang::txt('COM_RESOURCES_RANKING') ?>
                 </dt>

@@ -63,7 +63,8 @@ $connection = \Components\Projects\Models\Orm\Connection::oneOrFail(Request::get
         ?>
         <li class="<?= $item->isDir() ? 'type-folder collapsed' : 'type-file' ?><?= $parentCss ?><?= $selected ? ' selectedfilter preselected' : '' ?><?= $allowed ?>" id="<?= $liId ?>" data-path="<?= $this->escape($item->getPath()) ?>" data-connection="<?= $connection->id ?>">
             <span class="item-info"><?php echo $item->isFile() ? $item->getSize() : ''; ?></span>
-            <span class="item-wrap <?= ($item->isDir() ? 'collapsor ' : ' ') . $levelCss ?>" id="<?= urlencode($connection->id . '://' . $item->getPath()) ?>">
+            <span class="item-wrap <?= ($item->isDir() ? 'collapsor ' : ' ') . $levelCss ?>"
+                id="<?= urlencode($connection->id . '://' . $item->getPath()) ?>">
                 <?php if ($item->isDir()) {
                     ?><span class="collapsor-indicator">&nbsp;</span><?php
                 } ?>

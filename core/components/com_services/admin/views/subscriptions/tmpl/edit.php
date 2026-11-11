@@ -50,7 +50,8 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
 
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form">
 
     <div class="grid">
         <div class="col span7">
@@ -79,7 +80,8 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
 
                 <div class="input-wrap">
                     <label for="field-notes"><?php echo Lang::txt('COM_SERVICES_FIELD_NOTES'); ?>:</label><br />
-                    <textarea name="notes" id="field-notes" cols="50" rows="10"><?= $this->escape(stripslashes($this->subscription->notes)) ?></textarea>
+                    <textarea name="notes" id="field-notes" cols="50"
+                        rows="10"><?= $this->escape(stripslashes($this->subscription->notes)) ?></textarea>
                 </div>
             </fieldset>
         </div>
@@ -153,7 +155,8 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
                     </div>
                     <div class="input-wrap">
                         <label for="field-received_refund"><?= Lang::txt('COM_SERVICES_FIELD_REFUND_POSTED') ?>:</label><br />
-                        <input type="text" name="received_refund" id="field-received_refund" value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
+                        <input type="text" name="received_refund" id="field-received_refund"
+                            value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
                         <?php if ($this->subscription->usepoints) {
                             echo Lang::txt('COM_SERVICES_POINTS');
                         } else {
@@ -169,7 +172,8 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
                 <div class="input-wrap">
                     <label for="field-received_payment"><?= Lang::txt('COM_SERVICES_FIELD_PAYMENT_RECEIVED') ?>:</label><br />
                     <?php if ($this->subscription->pendingpayment > 0) { ?>
-                        <input type="text" name="received_payment" id="field-received_payment" value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
+                        <input type="text" name="received_payment" id="field-received_payment"
+                            value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
                     <?php } else {
                         echo $this->subscription->pendingpayment;
                     } ?>
@@ -182,14 +186,16 @@ $priceline .= ($service->get('pointsprice') > 0) ? Lang::txt('COM_SERVICES_OR_PO
                 <div class="input-wrap">
                     <label for="field-newunits"><?= Lang::txt('COM_SERVICES_FIELD_ACTIVE_UNITS') ?>:</label><br />
                     <?php if ($this->subscription->pendingunits > 0 or $this->subscription->expires < $now) { ?>
-                        <input type="text" name="newunits" id="field-newunits" value="<?php echo $this->escape($this->subscription->pendingunits) ?>" />
+                        <input type="text" name="newunits" id="field-newunits"
+                            value="<?php echo $this->escape($this->subscription->pendingunits) ?>" />
                     <?php } else {
                         echo $this->subscription->pendingunits;
                     } ?>
                 </div>
                 <div class="input-wrap">
                     <input type="radio" name="action" id="field-action-cancelsub" value="cancelsub" />
-                    <label for="field-action-cancelsub"><?= Lang::txt('COM_SERVICES_FIELD_CANCEL_SUBSCRIPTION') ?></label>
+                    <label
+                        for="field-action-cancelsub"><?= Lang::txt('COM_SERVICES_FIELD_CANCEL_SUBSCRIPTION') ?></label>
                 </div>
             <?php } ?>
                 <div class="input-wrap">

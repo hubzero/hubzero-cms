@@ -57,11 +57,13 @@ $roles = [
 
         <div class="input-wrap <?php echo $this->model->get('sync_group') != 0 ? 'active' : ''; ?>">
             <label for="membership_sync">
-                <input class="option" data-action="syncall" name="sync_group" id="membership_sync" type="radio" value="1" <?= $this->model->get('sync_group') != 0 ? ' checked="checked"' : '' ?> />
+                <input class="option" data-action="syncall" name="sync_group" id="membership_sync" type="radio"
+                    value="1" <?= $this->model->get('sync_group') != 0 ? ' checked="checked"' : '' ?> />
                 <span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SYNC'); ?></span>
             </label>
 
-            <select id="sync-role-selector" name="syncRole" hidden aria-label="<?= Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SYNC') ?>">
+            <select id="sync-role-selector" name="syncRole" hidden
+                aria-label="<?= Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SYNC') ?>">
                 <?php foreach ($roles as $description => $value) : ?>
                     <option value="" selected disabled hidden>
                         <?php echo Lang::txt('PLG_PROJECTS_TEAM_SYNCING_DEFAULT'); ?>
@@ -74,7 +76,8 @@ $roles = [
 
             <div class="group-action group-action-syncall">
                 <?php // Always offer the button: it's also how the sync role above gets saved?>
-                <p><input type="submit" class="btn option" value="<?= Lang::txt('PLG_PROJECTS_TEAM_GROUP_SYNC') ?>" /></p>
+                <p><input type="submit" class="btn option"
+                    value="<?= Lang::txt('PLG_PROJECTS_TEAM_GROUP_SYNC') ?>" /></p>
                 <?php if (!count($notteam)) { ?>
                     <p class="icon-success"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_MEMBERS_TEAM'); ?></p>
                 <?php } ?>
@@ -83,7 +86,8 @@ $roles = [
 
         <div class="input-wrap <?php echo $this->model->get('sync_group') == 0 ? 'active' : ''; ?>">
             <label for="membership_custom">
-                <input class="option" data-action="selective" name="sync_group" id="membership_custom" type="radio" value="0" <?= $this->model->get('sync_group') == 0 ? ' checked="checked"' : '' ?> />
+                <input class="option" data-action="selective" name="sync_group" id="membership_custom" type="radio"
+                    value="0" <?= $this->model->get('sync_group') == 0 ? ' checked="checked"' : '' ?> />
                 <span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SELECT'); ?></span>
             </label>
 
@@ -156,7 +160,8 @@ $roles = [
 <div id="team-spacer">
     <div class="list-editing">
         <p>
-            <span><?= ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS')) ?>: <span class="prominent"><?= $this->total ?></span></span>
+            <span><?= ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS')) ?>: <span
+                class="prominent"><?= $this->total ?></span></span>
             <span id="team-manage" class="manage-options hidden">
                 <span class="faded"><?php echo Lang::txt('PLG_PROJECTS_TEAM_EDIT_ROLE'); ?></span>
                 <a href="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=team&action=delete') ?>" class="manage btn" id="t-delete" role="button"><?= Lang::txt('PLG_PROJECTS_TEAM_DELETE') ?></a>
@@ -234,7 +239,10 @@ $roles = [
             ?>
             <tr class="mline <?php $cls; ?>" id="tr_<?php echo $owner->id; ?>">
                 <td>
-                    <input type="checkbox" value="<?= $owner->id ?>" name="owner[]" aria-label="<?= $this->escape($owner->fullname) ?>" class="checkmember <?= $owner->groupid ? 'group:' . $owner->groupid : '' ?>" data-group="<?= $owner->groupid ?>" <?= $disabled ? 'disabled="disabled"' : '' ?> />
+                    <input type="checkbox" value="<?= $owner->id ?>" name="owner[]"
+                        aria-label="<?= $this->escape($owner->fullname) ?>"
+                        class="checkmember <?= $owner->groupid ? 'group:' . $owner->groupid : '' ?>"
+                        data-group="<?= $owner->groupid ?>" <?= $disabled ? 'disabled="disabled"' : '' ?> />
                 </td>
                 <td class="imagebox">
                     <span class="user-img-wrap">
@@ -242,11 +250,13 @@ $roles = [
                     </span>
                 </td>
                 <td>
-                    <?= $this->escape($owner->fullname) ?><span class="block mini short prominent"><?= $this->escape($username) ?></span>
+                    <?= $this->escape($owner->fullname) ?><span
+                        class="block mini short prominent"><?= $this->escape($username) ?></span>
                 </td>
                 <td class="mini nobsp">
                     <?php if (!$creator) { ?>
-                        <span data-owner="<?= $owner->id ?>" data-role="<?= $owner->role ?>" class="frole owner:<?= $owner->id ?> role:<?= $owner->role ?>" id="r<?= $owner->id ?>">
+                        <span data-owner="<?= $owner->id ?>" data-role="<?= $owner->role ?>"
+                            class="frole owner:<?= $owner->id ?> role:<?= $owner->role ?>" id="r<?= $owner->id ?>">
                     <?php } ?>
                     <?php echo $role; ?>
                     <?php if (!$creator) { ?>

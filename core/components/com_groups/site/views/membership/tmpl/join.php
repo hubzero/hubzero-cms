@@ -29,7 +29,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn');
     <div class="section-inner">
         <p class="info"><?= Lang::txt('COM_GROUPS_JOIN_CONFIRM', $this->escape($this->group->get('description'))) ?></p>
         <p>
-            <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=join') ?>" class="btn btn-success">
+            <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&task=join') ?>"
+                class="btn btn-success">
                 <?php echo Lang::txt('COM_GROUPS_TOOLBAR_JOIN'); ?>
             </button>
             <a class="btn btn-secondary" href="<?php echo Route::url($base); ?>">

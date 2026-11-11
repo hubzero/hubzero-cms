@@ -90,14 +90,16 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
             </span>
         <?php } elseif ($creator->get('public')) { ?>
             <a class="user-img-wrap" href="<?php echo Route::url($creator->link()); ?>" title="<?php echo $name; ?>">
-                <img src="<?= $creator->picture() ?>" alt="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name) ?>" />
+                <img src="<?= $creator->picture() ?>"
+                    alt="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name) ?>" />
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_ONLINE'); ?></span>
                 <?php } ?>
             </a>
         <?php } else { ?>
             <span class="user-img-wrap">
-                <img src="<?= $creator->picture() ?>" alt="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name) ?>" />
+                <img src="<?= $creator->picture() ?>"
+                    alt="<?= Lang::txt('PLG_MEMBERS_ACTIVITY_PROFILE_PICTURE', $name) ?>" />
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_ONLINE'); ?></span>
                 <?php } ?>
@@ -180,7 +182,8 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     <?php
                 }
                 ?>
-                <div class="activity-event-content<?= ($short) ? ' hide' : '' ?>" id="activity-event-content<?= $this->row->get('id') ?>">
+                <div class="activity-event-content<?= ($short) ? ' hide' : '' ?>"
+                    id="activity-event-content<?= $this->row->get('id') ?>">
                     <?php echo $content; ?>
                 </div>
                 <?php

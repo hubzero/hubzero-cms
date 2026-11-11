@@ -67,22 +67,28 @@ if (empty($this->meta->qtyTxt)) {
             <legend><span><?php echo Lang::txt('COM_STOREFRONT_DETAILS'); ?></span></legend>
 
             <div class="input-wrap">
-                <label for="field-title"><?= Lang::txt('COM_STOREFRONT_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                <input type="text" name="fields[pName]" id="field-title" size="30" maxlength="100" value="<?= $this->escape(stripslashes($this->row->getName())) ?>" />
+                <label for="field-title"><?= Lang::txt('COM_STOREFRONT_TITLE') ?>: <span
+                    class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                <input type="text" name="fields[pName]" id="field-title" size="30" maxlength="100"
+                    value="<?= $this->escape(stripslashes($this->row->getName())) ?>" />
             </div>
 
             <div class="input-wrap">
                 <label for="field-alais"><?php echo Lang::txt('Alias'); ?>:</label><br />
-                <input type="text" name="fields[pAlias]" id="field-alais" size="30" maxlength="100" value="<?= $this->escape(stripslashes($this->row->getAlias())) ?>" />
+                <input type="text" name="fields[pAlias]" id="field-alais" size="30" maxlength="100"
+                    value="<?= $this->escape(stripslashes($this->row->getAlias())) ?>" />
             </div>
 
             <div class="input-wrap">
-                <label for="field-pTagline"><?= Lang::txt('COM_STOREFRONT_TAGLINE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                <input type="text" name="fields[pTagline]" id="field-pTagline" size="30" maxlength="100" value="<?= $this->escape(stripslashes($this->row->getTagline())) ?>" />
+                <label for="field-pTagline"><?= Lang::txt('COM_STOREFRONT_TAGLINE') ?>: <span
+                    class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                <input type="text" name="fields[pTagline]" id="field-pTagline" size="30" maxlength="100"
+                    value="<?= $this->escape(stripslashes($this->row->getTagline())) ?>" />
             </div>
 
             <div class="input-wrap">
-                <label for="field-description"><?= Lang::txt('COM_STOREFRONT_DESCRIPTION') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                <label for="field-description"><?= Lang::txt('COM_STOREFRONT_DESCRIPTION') ?>: <span
+                    class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                 <?= $this->editor('fields[pDescription]', $this->escape(stripslashes($this->row->getDescription())), 50, 10, 'field-description', ['buttons' => false]) ?>
             </div>
 
@@ -99,7 +105,8 @@ if (empty($this->meta->qtyTxt)) {
                 <th class="key"><?php echo Lang::txt('COM_STOREFRONT_ID'); ?>:</th>
                 <td>
                     <?php echo $this->row->getId(); ?>
-                    <input type="hidden" name="fields[pId]" id="field-id" value="<?= $this->escape($this->row->getId()) ?>" />
+                    <input type="hidden" name="fields[pId]" id="field-id"
+                        value="<?= $this->escape($this->row->getId()) ?>" />
                 </td>
             </tr>
             <?php if ($this->row->getTypeInfo() && $this->row->getTypeInfo()->name == 'Software Download') { ?>
@@ -157,7 +164,8 @@ if (empty($this->meta->qtyTxt)) {
 
             <div class="input-wrap">
                 <label for="field-qtytxt"><?php echo Lang::txt('COM_STOREFRONT_QTY_TXT'); ?>:</label>
-                <input type="text" name="fields[pQtyTxt]" id="field-qtytxt" size="30" maxlength="100" value="<?= $this->escape(stripslashes($this->meta->qtyTxt)) ?>" />
+                <input type="text" name="fields[pQtyTxt]" id="field-qtytxt" size="30" maxlength="100"
+                    value="<?= $this->escape(stripslashes($this->meta->qtyTxt)) ?>" />
             </div>
         </fieldset>
 
@@ -343,7 +351,8 @@ if (empty($this->meta->qtyTxt)) {
                 }
                 ?>
                 <div id="img-container">
-                    <img id="img-display" src="<?= $path . DS . $pic ?>" alt="<?= Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE') ?>" />
+                    <img id="img-display" src="<?= $path . DS . $pic ?>"
+                        alt="<?= Lang::txt('COM_STOREFRONT_PRODUCT_IMAGE') ?>" />
                     <input type="hidden" name="currentfile" id="currentfile" value="<?php echo $img->imgId; ?>" />
                 </div>
 
@@ -378,7 +387,8 @@ if (empty($this->meta->qtyTxt)) {
                     </tbody>
                 </table>
 
-                <script type="text/javascript" src="<?= rtrim(Request::root(true), '/') ?>/core/assets/js/jquery.fileuploader.js"></script>
+                <script type="text/javascript"
+                    src="<?= rtrim(Request::root(true), '/') ?>/core/assets/js/jquery.fileuploader.js"></script>
                 <script type="text/javascript">
                     String.prototype.nohtml = function () {
                         if (this.indexOf('?') == -1) {

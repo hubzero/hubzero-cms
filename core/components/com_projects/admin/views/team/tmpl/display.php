@@ -38,7 +38,8 @@ Html::behavior('tooltip');
 $this->css();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <?php if ($groupSynced) { ?>
         <fieldset id="filter-bar">
             <p class="warning">
@@ -58,8 +59,10 @@ $this->css();
             <tr>
                 <?php //if (!$groupSynced) {?>
                     <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <?php //}?>
                 <?php // the controller names these sortby/sortdir (sort/sort_Dir were never set)?>
@@ -118,7 +121,8 @@ $this->css();
                         <?php if ($disabled) { ?>
                             <!-- <input type="hidden" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>" /> -->
                         <?php } else { ?>
-                            <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>" class="checkbox-toggle" />
+                            <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>"
+                                class="checkbox-toggle" />
                             <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->id ?></label>
                         <?php } ?>
                     </td>

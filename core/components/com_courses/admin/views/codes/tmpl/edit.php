@@ -35,7 +35,9 @@ $this->js();
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form" class="editform form-validate"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
@@ -48,7 +50,8 @@ $this->js();
                 <input type="hidden" name="task" value="save" />
 
                 <div class="input-wrap">
-                    <label for="field-section_id"><?= Lang::txt('COM_COURSES_FIELD_SECTION') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <label for="field-section_id"><?= Lang::txt('COM_COURSES_FIELD_SECTION') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <select name="fields[section_id]" id="field-section_id">
                         <option value="-1"><?php echo Lang::txt('COM_COURSES_SELECT'); ?></option>
                         <?php
@@ -81,8 +84,10 @@ $this->js();
                     </select>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-code"><?= Lang::txt('COM_COURSES_FIELD_CODE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="fields[code]" id="field-code" class="required" maxlength="10" value="<?= $this->escape(stripslashes($this->row->get('code'))) ?>" />
+                    <label for="field-code"><?= Lang::txt('COM_COURSES_FIELD_CODE') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="fields[code]" id="field-code" class="required" maxlength="10"
+                        value="<?= $this->escape(stripslashes($this->row->get('code'))) ?>" />
                 </div>
             </fieldset>
 
@@ -112,14 +117,17 @@ $this->js();
                             <th><label for="field-redeemed"><?= Lang::txt('COM_COURSES_FIELD_REDEEMED') ?>:</label></th>
                             <td>
                                 <?php echo $this->escape(stripslashes($this->row->get('redeemed'))); ?>
-                                <input type="hidden" name="fields[redeemed]" id="field-redeemed" class="datetime-field" value="<?= $this->escape(stripslashes($this->row->get('redeemed'))) ?>" />
+                                <input type="hidden" name="fields[redeemed]" id="field-redeemed" class="datetime-field"
+                                    value="<?= $this->escape(stripslashes($this->row->get('redeemed'))) ?>" />
                             </td>
                         </tr>
                         <tr>
-                            <th><label for="field-redeemed_by"><?= Lang::txt('COM_COURSES_FIELD_REDEEMED_BY') ?>:</label></th>
+                            <th><label
+                                for="field-redeemed_by"><?= Lang::txt('COM_COURSES_FIELD_REDEEMED_BY') ?>:</label></th>
                             <td>
                                 <?= $this->escape(stripslashes($this->row->redeemer()->get('name'))) . ' (' . $this->escape(stripslashes($this->row->redeemer()->get('username'))) . ')' ?>
-                                <input type="hidden" name="fields[redeemed_by]" id="field-redeemed_by" value="<?= $this->escape(stripslashes($this->row->get('redeemed_by'))) ?>" />
+                                <input type="hidden" name="fields[redeemed_by]" id="field-redeemed_by"
+                                    value="<?= $this->escape(stripslashes($this->row->get('redeemed_by'))) ?>" />
                             </td>
                         </tr>
                     <?php } else { ?>

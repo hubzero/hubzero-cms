@@ -28,7 +28,8 @@ $this
     ->js('ldap');
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form">
     <div class="grid">
         <div class="col span6">
             <p class="warning"><?php echo Lang::txt('COM_SYSTEM_LDAP_WARNING_IRREVERSIBLE'); ?></p>
@@ -46,7 +47,8 @@ $this
                             <td>
                                 <?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_USERS_TO_LDAP'); ?>
                                 <div class="progress-container">
-                                    <strong><?= Lang::txt('COM_SYSTEM_LDAP_RUN_PROGRESS') ?> <span class="progress-percentage">0%</span></strong>
+                                    <strong><?= Lang::txt('COM_SYSTEM_LDAP_RUN_PROGRESS') ?> <span
+                                        class="progress-percentage">0%</span></strong>
                                     <div class="progress"></div>
                                 </div>
                             </td>

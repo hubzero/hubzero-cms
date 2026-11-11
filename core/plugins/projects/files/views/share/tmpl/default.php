@@ -29,7 +29,8 @@ if (!empty($this->file)) {
 if ($this->getError()) {
     echo '<p class="witherror">' . $this->getError() . '</p>';
 } else { ?>
-<form id="hubForm-ajax" method="post" class="" action="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')) ?>">
+<form id="hubForm-ajax" method="post" class=""
+    action="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id')) ?>">
     <p class="notice">
     <?= $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_UNSHARE_FILES_CONFIRM') : Lang::txt('PLG_PROJECTS_FILES_SHARE_FILES_CONFIRM') ?>
     </p>
@@ -43,7 +44,8 @@ if ($this->getError()) {
         <input type="hidden" name="subdir" value="<?php echo $this->escape($this->subdir); ?>" />
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="service" value="<?php echo $this->service; ?>" />
-        <p class="send_to"><span class="<?= $remoteControl ? 'send_to_local' : 'send_to_remote' ?>"><span>&nbsp;</span></span></p>
+        <p class="send_to"><span
+            class="<?= $remoteControl ? 'send_to_local' : 'send_to_remote' ?>"><span>&nbsp;</span></span></p>
         <ul class="sample">
             <?php
                 // Display list item with file data
@@ -74,7 +76,8 @@ if ($this->getError()) {
                 foreach ($formats as $key => $value) {
                     ?>
                 <label <?php echo $ext == $key ? 'class="original-format"' : ''; ?> >
-                    <input type="radio" name="format" value="<?= $key ?>" <?= ($first && $i == 0) || $ext == $key ? 'checked="checked"' : '' ?> />
+                    <input type="radio" name="format"
+                        value="<?= $key ?>" <?= ($first && $i == 0) || $ext == $key ? 'checked="checked"' : '' ?> />
                     <?= $value ?> <?= $ext == $key ? '<span class="hint mini rightfloat"> [original format]</span>' : '' ?>
                 </label>
                     <?php

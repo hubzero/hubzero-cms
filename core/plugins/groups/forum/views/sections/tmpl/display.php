@@ -39,7 +39,9 @@ if ($this->config->get('access-manage-section')) {
                 <fieldset class="entry-search">
                     <legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LEGEND'); ?></legend>
                     <label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LABEL'); ?></label>
-                    <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER') ?>" />
+                    <input type="text" name="q" id="entry-search-field"
+                        value="<?= $this->escape($this->filters['search']) ?>"
+                        placeholder="<?= Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER') ?>" />
                 </fieldset>
             </div><!-- / .container -->
         </form>
@@ -77,12 +79,15 @@ if ($this->config->get('access-manage-section')) {
                     <caption>
                         <?php if ($this->config->get('access-edit-section') && $this->edit == $section->get('alias')) { ?>
                             <form action="<?= Route::url($base) ?>" method="post" id="s<?= $section->get('id') ?>">
-                                <input type="text" name="fields[title]" value="<?= $this->escape(stripslashes($section->get('title'))) ?>" />
+                                <input type="text" name="fields[title]"
+                                    value="<?= $this->escape(stripslashes($section->get('title'))) ?>" />
                                 <input type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />
 
                                 <input type="hidden" name="fields[id]" value="<?php echo $section->get('id'); ?>" />
-                                <input type="hidden" name="fields[scope]" value="<?= $this->escape($this->forum->get('scope')) ?>" />
-                                <input type="hidden" name="fields[scope_id]" value="<?= $this->escape($this->forum->get('scope_id')) ?>" />
+                                <input type="hidden" name="fields[scope]"
+                                    value="<?= $this->escape($this->forum->get('scope')) ?>" />
+                                <input type="hidden" name="fields[scope_id]"
+                                    value="<?= $this->escape($this->forum->get('scope_id')) ?>" />
                                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                                 <input type="hidden" name="cn" value="<?= $this->escape($this->group->get('cn')) ?>" />
                                 <input type="hidden" name="action" value="savesection" />
@@ -107,7 +112,8 @@ if ($this->config->get('access-manage-section')) {
                         <tfoot>
                             <tr>
                                 <td<?php echo $section->categories()->total() > 0 ? ' colspan="5"' : ''; ?>>
-                                    <a class="icon-add add btn" href="<?= Route::url($base . '&scope=' . $section->get('alias') . '/new') ?>">
+                                    <a class="icon-add add btn"
+                                        href="<?= Route::url($base . '&scope=' . $section->get('alias') . '/new') ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_CATEGORY'); ?></span>
                                     </a>
                                 </td>
@@ -154,7 +160,8 @@ if ($this->config->get('access-manage-section')) {
                                 <?php if ($this->config->get('access-edit-category') || $this->config->get('access-delete-category')) { ?>
                                     <td class="entry-options">
                                         <?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-category')) { ?>
-                                            <a class="icon-edit edit" href="<?= Route::url($row->link('edit')) ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_EDIT') ?>">
+                                            <a class="icon-edit edit" href="<?= Route::url($row->link('edit')) ?>"
+                                                title="<?= Lang::txt('PLG_GROUPS_FORUM_EDIT') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?></span>
                                             </a>
                                         <?php } ?>
@@ -199,8 +206,10 @@ if ($this->config->get('access-manage-section')) {
                         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                         <input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
                         <input type="hidden" name="fields[id]" value="" />
-                        <input type="hidden" name="fields[scope]" value="<?= $this->escape($this->forum->get('scope')) ?>" />
-                        <input type="hidden" name="fields[scope_id]" value="<?= $this->escape($this->forum->get('scope_id')) ?>" />
+                        <input type="hidden" name="fields[scope]"
+                            value="<?= $this->escape($this->forum->get('scope')) ?>" />
+                        <input type="hidden" name="fields[scope_id]"
+                            value="<?= $this->escape($this->forum->get('scope_id')) ?>" />
                         <input type="hidden" name="active" value="forum" />
                         <input type="hidden" name="action" value="savesection" />
 
@@ -217,7 +226,8 @@ if ($this->config->get('access-manage-section')) {
                 <tbody>
                     <tr>
                         <th><?php echo Lang::txt('PLG_GROUPS_FORUM_CATEGORIES'); ?></th>
-                        <td><span class="item-count"><?= $this->forum->count('categories', $this->filters) ?></span></td>
+                        <td><span
+                            class="item-count"><?= $this->forum->count('categories', $this->filters) ?></span></td>
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('PLG_GROUPS_FORUM_DISCUSSIONS'); ?></th>
@@ -276,9 +286,11 @@ if ($this->config->get('access-manage-section')) {
                     </span>
                     <span class="entry-date">
                         <span class="entry-date-at"><?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?></span>
-                        <span class="icon-time time"><time datetime="<?= $post->get('created') ?>"><?= $post->created('time') ?></time></span>
+                        <span class="icon-time time"><time
+                            datetime="<?= $post->get('created') ?>"><?= $post->created('time') ?></time></span>
                         <span class="entry-date-on"><?php echo Lang::txt('PLG_GROUPS_FORUM_ON'); ?></span>
-                        <span class="icon-date date"><time datetime="<?= $post->get('created') ?>"><?= $post->created('date') ?></time></span>
+                        <span class="icon-date date"><time
+                            datetime="<?= $post->get('created') ?>"><?= $post->created('date') ?></time></span>
                     </span>
                 <?php } else { ?>
                     <?php echo Lang::txt('PLG_GROUPS_FORUM_NONE'); ?>
@@ -297,9 +309,11 @@ if ($this->config->get('access-manage-section')) {
                         <legend><?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_SECTION'); ?></legend>
 
                         <span class="input-wrap">
-                            <label for="field-title"><span><?= Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE') ?></span></label>
+                            <label
+                                for="field-title"><span><?= Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE') ?></span></label>
                             <span class="input-cell">
-                                <input type="text" name="fields[title]" id="field-title" value="" placeholder="<?= Lang::txt('PLG_GROUPS_FORUM_ENTER_TITLE') ?>" />
+                                <input type="text" name="fields[title]" id="field-title" value=""
+                                    placeholder="<?= Lang::txt('PLG_GROUPS_FORUM_ENTER_TITLE') ?>" />
                             </span>
                             <span class="input-cell">
                                 <input type="submit" class="btn" value="<?= Lang::txt('PLG_GROUPS_FORUM_CREATE') ?>" />
@@ -309,8 +323,10 @@ if ($this->config->get('access-manage-section')) {
                         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                         <input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
                         <input type="hidden" name="fields[id]" value="" />
-                        <input type="hidden" name="fields[scope]" value="<?= $this->escape($this->forum->get('scope')) ?>" />
-                        <input type="hidden" name="fields[scope_id]" value="<?= $this->escape($this->forum->get('scope_id')) ?>" />
+                        <input type="hidden" name="fields[scope]"
+                            value="<?= $this->escape($this->forum->get('scope')) ?>" />
+                        <input type="hidden" name="fields[scope_id]"
+                            value="<?= $this->escape($this->forum->get('scope_id')) ?>" />
                         <input type="hidden" name="active" value="forum" />
                         <input type="hidden" name="action" value="savesection" />
 

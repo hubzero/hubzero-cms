@@ -41,7 +41,9 @@ $this->css('browse.css');
                 <fieldset class="entry-search">
                     <legend><?php echo Lang::txt('COM_COURSES_SEARCH_LEGEND'); ?></legend>
                     <label for="entry-search-field"><?php echo Lang::txt('COM_COURSES_SEARCH_LABEL'); ?></label>
-                    <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER') ?>" />
+                    <input type="text" name="search" id="entry-search-field"
+                        value="<?= $this->escape($this->filters['search']) ?>"
+                        placeholder="<?= Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER') ?>" />
                     <input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
                     <input type="hidden" name="index" value="<?php echo $this->escape($this->filters['index']); ?>" />
                 </fieldset>
@@ -169,9 +171,11 @@ $this->css('browse.css');
                                     </a>
                                 </h4>
                                 <p class="course-identity">
-                                    <a href="<?= Route::url($course->link()) ?>" aria-label="<?= $this->escape($course->get('title')) ?>">
+                                    <a href="<?= Route::url($course->link()) ?>"
+                                        aria-label="<?= $this->escape($course->get('title')) ?>">
                                         <?php if ($logo = $course->logo('url')) { ?>
-                                            <img src="<?= Route::url($logo) ?>" alt="<?= $this->escape($course->get('title')) ?>" />
+                                            <img src="<?= Route::url($logo) ?>"
+                                                alt="<?= $this->escape($course->get('title')) ?>" />
                                         <?php } else { ?>
                                             <span></span>
                                         <?php } ?>

@@ -43,13 +43,17 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                 <legend><span><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?= Lang::txt('COM_GROUPS_PAGES_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="page[title]" id="field-title" class="required" value="<?= $this->escape(stripslashes($this->page->get('title'))) ?>" />
+                    <label for="field-title"><?= Lang::txt('COM_GROUPS_PAGES_TITLE') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="page[title]" id="field-title" class="required"
+                        value="<?= $this->escape(stripslashes($this->page->get('title'))) ?>" />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-alias"><?= Lang::txt('COM_GROUPS_PAGES_ALIAS') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></label><br />
-                    <input type="text" name="page[alias]" id="field-alias" class="required" value="<?= $this->escape(stripslashes($this->page->get('alias'))) ?>" />
+                    <label for="field-alias"><?= Lang::txt('COM_GROUPS_PAGES_ALIAS') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></label><br />
+                    <input type="text" name="page[alias]" id="field-alias" class="required"
+                        value="<?= $this->escape(stripslashes($this->page->get('alias'))) ?>" />
                 </div>
             </fieldset>
 
@@ -108,7 +112,8 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
 
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_GROUPS_PAGES_STATE'); ?>:</label><br />
-                    <select name="page[state]" id="field-state" <?= $this->page->get('home') == 1 ? 'disabled="disabled"' : '' ?>>
+                    <select name="page[state]"
+                        id="field-state" <?= $this->page->get('home') == 1 ? 'disabled="disabled"' : '' ?>>
                         <?php
                         $states = [
                             1 => Lang::txt('COM_GROUPS_PAGES_STATE_PUBLISHED'),

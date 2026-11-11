@@ -53,7 +53,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                 <?php echo $this->folderList; ?>
             </div>
             <?php if ($this->authorized && $this->group->published == 1) { ?>
-                <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" enctype="multipart/form-data" class="upload-browser-uploader">
+                <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post"
+                    enctype="multipart/form-data" class="upload-browser-uploader">
                     <fieldset>
                         <div id="ajax-uploader" data-instructions="<?= Lang::txt('Click or drop file') ?>" data-action="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=ajaxupload&no_html=1&' . Session::getFormToken() . '=1') ?>">
                             <noscript>
@@ -66,7 +67,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                         <input type="hidden" name="task" value="upload" />
                         <?php // the media controller resolves the group from cn and answered 400 without it?>
                         <input type="hidden" name="cn" value="<?php echo $this->escape($this->group->get('cn')); ?>" />
-                        <input type="hidden" name="listdir" id="listdir" value="<?= $this->group->get('gidNumber') ?>" />
+                        <input type="hidden" name="listdir" id="listdir"
+                            value="<?= $this->group->get('gidNumber') ?>" />
                         <input type="hidden" name="tmpl" value="component" />
                         <?php echo Html::input('token'); ?>
                     </fieldset>

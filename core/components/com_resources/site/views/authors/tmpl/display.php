@@ -20,7 +20,8 @@ $this->css('create.css');
     <?php if ($this->getError()) { ?>
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php } ?>
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" id="authors-form" method="post" enctype="multipart/form-data">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"
+        id="authors-form" method="post" enctype="multipart/form-data">
         <fieldset>
             <div class="grid">
                 <div class="col span8">
@@ -108,11 +109,15 @@ if ($this->contributors) {
                 <tr class="author-<?php echo $contributor->authorid; ?>">
                     <td>
                         <span class="author-name"><?php echo $this->escape($name); ?></span><br />
-                        <input type="text" name="authors[<?= $contributor->authorid ?>][organization]" id="organization-<?= $contributor->authorid ?>" size="35" value="<?= $this->escape(stripslashes($contributor->organization)) ?>" placeholder="<?= Lang::txt('COM_CONTRIBUTE_AUTHORS_ORGANIZATION') ?>" />
+                        <input type="text" name="authors[<?= $contributor->authorid ?>][organization]"
+                            id="organization-<?= $contributor->authorid ?>" size="35"
+                            value="<?= $this->escape(stripslashes($contributor->organization)) ?>"
+                            placeholder="<?= Lang::txt('COM_CONTRIBUTE_AUTHORS_ORGANIZATION') ?>" />
                         <?php //echo ($contributor->org) ? ' <span class="caption">(' . $this->escape($contributor->org) . ')</span>' : '';?>
                     </td>
                     <td>
-                        <select name="authors[<?= $contributor->authorid ?>][role]" id="role-<?= $contributor->authorid ?>">
+                        <select name="authors[<?= $contributor->authorid ?>][role]"
+                            id="role-<?= $contributor->authorid ?>">
                             <option value=""<?= $contributor->role == '' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_AUTHOR') ?></option>
                             <?php
                             if ($this->roles) {

@@ -21,7 +21,8 @@ $this
      ->js('media.js');
 ?>
 <div id="file_browser">
-    <form action="<?= Route::url('index.php?option=' . $this->option) ?>" id="adminForm" method="post" enctype="multipart/form-data">
+    <form action="<?= Route::url('index.php?option=' . $this->option) ?>" id="adminForm" method="post"
+        enctype="multipart/form-data">
         <fieldset>
             <div id="themanager" class="manager">
                 <iframe src="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&tmpl=component&task=listfiles&listdir=' . $this->listdir) ?>" name="imgManager" id="imgManager" width="99%" height="180"></iframe>

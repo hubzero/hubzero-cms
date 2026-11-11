@@ -63,13 +63,16 @@ $this
         <div class="col span9 omega">
             <div class="grid">
                 <div class="col span-half">
-                    <form action="<?= Route::url('index.php?option=com_resources&task=browse') ?>" method="get" class="search">
+                    <form action="<?= Route::url('index.php?option=com_resources&task=browse') ?>" method="get"
+                        class="search">
                         <fieldset>
                             <legend class="sr-only"><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE'); ?></legend>
                             <p class="hz-v-align">
-                                <label for="rsearch" class="sr-only"><?= Lang::txt('COM_RESOURCES_SEARCH_LABEL') ?></label>
+                                <label for="rsearch"
+                                    class="sr-only"><?= Lang::txt('COM_RESOURCES_SEARCH_LABEL') ?></label>
                                 <span class="hz-input-combo">
-                                <input type="text" name="search" id="rsearch" value="" aria-label="<?= Lang::txt('COM_RESOURCES_SEARCH_LABEL') ?>" />
+                                <input type="text" name="search" id="rsearch" value=""
+                                    aria-label="<?= Lang::txt('COM_RESOURCES_SEARCH_LABEL') ?>" />
                                 <input type="submit" value="<?php echo Lang::txt('COM_RESOURCES_SEARCH'); ?>" />
                                 </span>
                             </p>

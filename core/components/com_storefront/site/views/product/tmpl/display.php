@@ -80,7 +80,8 @@ if (!empty($this->notifications)) {
                     </div>
                 <?php } ?>
 
-                <form id="productInfo" action="<?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) ?>" method="post">
+                <form id="productInfo" action="<?= htmlspecialchars($_SERVER['REQUEST_URI'], ENT_QUOTES) ?>"
+                    method="post">
                     <input type="hidden" name="pId" value="<?php echo $this->pId; ?>" />
 
                     <?php if (isset($this->options) && count($this->options)) { ?>

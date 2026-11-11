@@ -27,7 +27,8 @@ $this
     <div id="content-header-extra">
         <ul id="useroptions">
             <li class="last">
-                <a class="icon-browse browse btn" href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('EVENTS_BROWSE') ?></a>
+                <a class="icon-browse browse btn"
+                    href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('EVENTS_BROWSE') ?></a>
             </li>
         </ul>
     </div>
@@ -45,12 +46,14 @@ $this
             <legend><?= ($this->row->id) ? Lang::txt('EVENTS_UPDATE_EVENT') : Lang::txt('EVENTS_NEW_EVENT') ?></legend>
 
             <label>
-                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY') ?>: <span class="required"><?= Lang::txt('EVENTS_CAL_LANG_REQUIRED') ?></span>
+                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY') ?>: <span
+                    class="required"><?= Lang::txt('EVENTS_CAL_LANG_REQUIRED') ?></span>
                 <?= \Components\Events\Helpers\Html::buildCategorySelect($this->row->catid, '', $this->gid, $this->option) ?>
             </label>
 
             <label>
-                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE') ?>: <span class="required"><?= Lang::txt('EVENTS_CAL_LANG_REQUIRED') ?></span>
+                <?= Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE') ?>: <span
+                    class="required"><?= Lang::txt('EVENTS_CAL_LANG_REQUIRED') ?></span>
                 <input type="text" name="title" maxlength="250" value="<?= $this->escape(html_entity_decode(stripslashes($this->row->title ? $this->row->title : ''))) ?>" />
             </label>
 
@@ -66,7 +69,8 @@ $this
 
             <label>
                 <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_EXTRA'); ?>
-                <input type="text" name="extra_info" maxlength="240" value="<?= $this->escape(stripslashes($this->row->extra_info ? $this->row->extra_info : '')) ?>" />
+                <input type="text" name="extra_info" maxlength="240"
+                    value="<?= $this->escape(stripslashes($this->row->extra_info ? $this->row->extra_info : '')) ?>" />
             </label>
             <?php
             if ($this->fields) {
@@ -107,11 +111,16 @@ $this
                 <?= Lang::txt('EVENTS_CAL_LANG_EVENT_STARTDATE') . ' &amp; ' . Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME') ?></label>
                 <p>
                     <?php //echo Html::input('calendar', 'publish_up', $start_publish, array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10'));?>
-                    <input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10" value="<?= $this->times['start_publish'] ?>" />
-                    <input class="option" type="text" name="start_time" id="start_time" size="5" maxlength="6" value="<?= $this->times['start_time'] ?>" aria-label="<?= Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME') ?>" />
+                    <input class="option" type="text" name="publish_up" id="publish_up" size="10" maxlength="10"
+                        value="<?= $this->times['start_publish'] ?>" />
+                    <input class="option" type="text" name="start_time" id="start_time" size="5" maxlength="6"
+                        value="<?= $this->times['start_time'] ?>"
+                        aria-label="<?= Lang::txt('EVENTS_CAL_LANG_EVENT_STARTTIME') ?>" />
                     <?php if ($this->config->getCfg('calUseStdTime') == 'YES') { ?>
-                    <input class="option" id="start_pm0" name="start_pm" type="radio"  value="0" <?= !$this->times['start_pm'] ? 'checked="checked"' : '' ?> /><small>AM</small>
-                    <input class="option" id="start_pm1" name="start_pm" type="radio"  value="1" <?= $this->times['start_pm'] ? 'checked="checked"' : '' ?> /><small>PM</small>
+                    <input class="option" id="start_pm0" name="start_pm" type="radio"
+                         value="0" <?= !$this->times['start_pm'] ? 'checked="checked"' : '' ?> /><small>AM</small>
+                    <input class="option" id="start_pm1" name="start_pm" type="radio"
+                         value="1" <?= $this->times['start_pm'] ? 'checked="checked"' : '' ?> /><small>PM</small>
                     <?php } ?>
                 </p>
 
@@ -119,11 +128,16 @@ $this
                 <?= Lang::txt('EVENTS_CAL_LANG_EVENT_ENDDATE') . ' &amp; ' . Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME') ?></label>
                 <p>
                     <?php //echo Html::input('calendar', 'publish_down', $stop_publish, array('class'=>'option inputbox', 'size'=>'10',  'maxlength'=>'10'));?>
-                    <input class="option" type="text" name="publish_down" id="publish_down" size="10" maxlength="10" value="<?= $this->times['stop_publish'] ?>" />
-                    <input class="option" type="text" name="end_time" id="end_time" size="5" maxlength="6" value="<?= $this->times['end_time'] ?>" aria-label="<?= Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME') ?>" />
+                    <input class="option" type="text" name="publish_down" id="publish_down" size="10" maxlength="10"
+                        value="<?= $this->times['stop_publish'] ?>" />
+                    <input class="option" type="text" name="end_time" id="end_time" size="5" maxlength="6"
+                        value="<?= $this->times['end_time'] ?>"
+                        aria-label="<?= Lang::txt('EVENTS_CAL_LANG_EVENT_ENDTIME') ?>" />
                     <?php if ($this->config->getCfg('calUseStdTime') == 'YES') { ?>
-                    <input class="option" id="end_pm0" name="end_pm" type="radio"  value="0" <?= !$this->times['end_pm'] ? 'checked="checked"' : '' ?> /><small>AM</small>
-                    <input class="option" id="end_pm1" name="end_pm" type="radio"  value="1" <?= $this->times['end_pm'] ? 'checked="checked"' : '' ?> /><small>PM</small>
+                    <input class="option" id="end_pm0" name="end_pm" type="radio"
+                         value="0" <?= !$this->times['end_pm'] ? 'checked="checked"' : '' ?> /><small>AM</small>
+                    <input class="option" id="end_pm1" name="end_pm" type="radio"
+                         value="1" <?= $this->times['end_pm'] ? 'checked="checked"' : '' ?> /><small>PM</small>
                     <?php } ?>
                 </p>
 
@@ -135,8 +149,10 @@ $this
             <input type="hidden" name="state" value="<?php echo $this->escape($this->row->state); ?>" />
         </fieldset><div class="clear"></div>
 
-        <input type="hidden" name="email" value="<?= $this->escape(stripslashes($this->row->email ? $this->row->email : '')) ?>" />
-        <input type="hidden" name="restricted" value="<?= $this->escape(stripslashes($this->row->restricted ? $this->row->restricted : '')) ?>" />
+        <input type="hidden" name="email"
+            value="<?= $this->escape(stripslashes($this->row->email ? $this->row->email : '')) ?>" />
+        <input type="hidden" name="restricted"
+            value="<?= $this->escape(stripslashes($this->row->restricted ? $this->row->restricted : '')) ?>" />
         <p class="submit">
             <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('EVENTS_SAVE'); ?>" />
 

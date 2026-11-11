@@ -30,7 +30,8 @@ $viewer  = $this->data->viewer;
         <?php } ?>
         </span>
         <span class="item-title data-type">
-             <a href="<?= (preg_match('#^(https?://|dataviewer/)#i', $row->path) ? $this->escape($row->path) : '') ?>" rel="external"><?= $this->escape($title) ?></a>
+             <a href="<?= (preg_match('#^(https?://|dataviewer/)#i', $row->path) ? $this->escape($row->path) : '') ?>"
+                 rel="external"><?= $this->escape($title) ?></a>
             <span class="item-details"><?php echo $this->escape($details); ?></span>
         </span>
     </li>

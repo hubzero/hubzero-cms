@@ -84,18 +84,22 @@ if ($this->wishlist->get('id')) {
                 <div class="section-inner hz-layout-with-aside">
                     <div class="subject">
                         <div class="container data-entry">
-                            <input class="entry-search-submit" type="submit" value="<?= Lang::txt('COM_WISHLIST_SEARCH') ?>" />
+                            <input class="entry-search-submit" type="submit"
+                                value="<?= Lang::txt('COM_WISHLIST_SEARCH') ?>" />
                             <fieldset class="entry-search">
                                 <legend><?php echo Lang::txt('COM_WISHLIST_SEARCH_LEGEND'); ?></legend>
 
                                 <label for="entry-search-field"><?= Lang::txt('COM_WISHLIST_SEARCH_LABEL') ?></label>
-                                <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER') ?>" />
+                                <input type="text" name="search" id="entry-search-field"
+                                    value="<?= $this->escape($this->filters['search']) ?>"
+                                    placeholder="<?= Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER') ?>" />
 
                                 <input type="hidden" name="tags" value="<?php echo $this->escape($this->filters['tag']); /* xss fix for ticket 1413/1417 */ ?>" />
                                 <input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); /* xss fix for ticket 1413/1417 */ ?>" />
                                 <input type="hidden" name="filterby" value="<?php echo $this->escape($this->filters['filterby']); /* xss fix for ticket 1412/1419 */?>" />
 
-                                <input type="hidden" name="task" value="<?php echo $this->escape($this->task); /* XSS fix, see ticket 1420*/ ?>" />
+                                <input type="hidden" name="task"
+                                    value="<?php echo $this->escape($this->task); /* XSS fix, see ticket 1420*/ ?>" />
                                 <input type="hidden" name="newsearch" value="1" />
                             </fieldset>
                             <?php if ($this->filters['tag']) { ?>
@@ -125,8 +129,10 @@ if ($this->wishlist->get('id')) {
                         </div><!-- / .container data-entry -->
 
                         <div class="container">
-                            <nav class="entries-filters" aria-label="<?= Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS') ?>">
-                                <ul class="entries-menu order-options" data-label="<?= Lang::txt('COM_WISHLIST_SORT') ?>">
+                            <nav class="entries-filters"
+                                aria-label="<?= Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS') ?>">
+                                <ul class="entries-menu order-options"
+                                    data-label="<?= Lang::txt('COM_WISHLIST_SORT') ?>">
                                     <?php if ($this->wishlist->get('admin')) { ?>
                                         <li><a class="icon-arrow-down sort-ranking<?= $this->filters['sortby'] == 'ranking' ? ' active' : '' ?>" href="<?= Route::url($base . '&filterby=' . $this->filters['filterby'] . '&sortby=ranking&tags=' . $this->filters['tag']) ?>" title="<?= Lang::txt('COM_WISHLIST_SORT_RANKING_TITLE') ?>"><?= Lang::txt('COM_WISHLIST_SORT_RANKING') ?></a></li>
                                     <?php } ?>
@@ -138,7 +144,8 @@ if ($this->wishlist->get('id')) {
                                     <li><a class="icon-arrow-down sort-date<?= $this->filters['sortby'] == 'date' ? ' active' : '' ?>" href="<?= Route::url($base . '&filterby=' . $this->filters['filterby'] . '&sortby=date&tags=' . $this->filters['tag']) ?>" title="<?= Lang::txt('COM_WISHLIST_SORT_DATE') ?>"><?= Lang::txt('COM_WISHLIST_SORT_DATE') ?></a></li>
                                 </ul>
 
-                                <ul class="entries-menu filter-options" data-label="<?= Lang::txt('COM_WISHLIST_FILTER') ?>">
+                                <ul class="entries-menu filter-options"
+                                    data-label="<?= Lang::txt('COM_WISHLIST_FILTER') ?>">
                                     <li><a class="filter-all<?= $this->filters['filterby'] == 'all' ? ' active' : '' ?>" href="<?= Route::url($base . '&filterby=all&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']) ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_ALL') ?></a></li>
                                     <li><a class="filter-open<?= $this->filters['filterby'] == 'open' ? ' active' : '' ?>" href="<?= Route::url($base . '&filterby=open&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']) ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_OPEN') ?></a></li>
                                     <li><a class="filter-accepted<?= $this->filters['filterby'] == 'accepted' ? ' active' : '' ?>" href="<?= Route::url($base . '&filterby=accepted&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag']) ?>" rel="nofollow"><?= Lang::txt('COM_WISHLIST_FILTER_ACCEPTED') ?></a></li>
@@ -227,7 +234,8 @@ if ($this->wishlist->get('id')) {
                                         </th>
                                         <td>
                                     <?php if (!$item->isReported()) { ?>
-                                            <a class="entry-title" href="<?= Route::url($item->link('permalink', $filters)) ?>">
+                                            <a class="entry-title"
+                                                href="<?= Route::url($item->link('permalink', $filters)) ?>">
                                                 <?php echo $this->escape(stripslashes($item->get('subject'))); ?>
                                             </a>
                                             <br />

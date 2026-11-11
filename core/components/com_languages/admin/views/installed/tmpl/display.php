@@ -40,7 +40,8 @@ $client   = $this->filters['client_id'] ? Lang::txt('JADMINISTRATOR') : Lang::tx
 $clientId = $this->filters['client_id'];
 $pagination = $this->rows->pagination;
 ?>
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=installed&client=' . $clientId) ?>" method="post" id="adminForm" name="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=installed&client=' . $clientId) ?>"
+    method="post" id="adminForm" name="adminForm">
 
     <table class="adminlist">
         <thead>

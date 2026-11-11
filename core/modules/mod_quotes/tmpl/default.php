@@ -19,7 +19,8 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
     <div id="content-header-extra">
         <ul id="useroptions">
             <li>
-                <a href="<?= Route::url('index.php?option=com_feedback&task=success_story') ?>" class="icon-add btn add">
+                <a href="<?= Route::url('index.php?option=com_feedback&task=success_story') ?>"
+                    class="icon-add btn add">
                     <?php echo Lang::txt('MOD_QUOTES_ADD_YOUR_STORY'); ?>
                 </a>
             </li>

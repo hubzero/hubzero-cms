@@ -41,14 +41,16 @@ if (!empty($this->filters['search'])) {
                 ?>
                 <li>
                     <a <?= $this->catid == $row->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= Route::url($row->link() . $carry) ?>">
-                        <?= $this->escape(stripslashes($row->get('title'))) ?> <span class="item-count"><?= $row->get('articles', 0) ?></span>
+                        <?= $this->escape(stripslashes($row->get('title'))) ?> <span
+                            class="item-count"><?= $row->get('articles', 0) ?></span>
                     </a>
                     <?php if ($this->catid == $row->get('id') && $row->children($filters)->total() > 0) { ?>
                         <ul class="categories">
                         <?php foreach ($row->children() as $cat) { ?>
                             <li>
                                 <a <?= $this->category->get('id') == $cat->get('id') ? 'class="active" aria-current="page" ' : '' ?> href="<?= Route::url($cat->link() . $carry) ?>">
-                                    <?= $this->escape(stripslashes($cat->get('title'))) ?> <span class="item-count"><?= $cat->get('articles', 0) ?></span>
+                                    <?= $this->escape(stripslashes($cat->get('title'))) ?> <span
+                                        class="item-count"><?= $cat->get('articles', 0) ?></span>
                                 </a>
                             </li>
                         <?php } ?>

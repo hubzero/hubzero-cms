@@ -44,7 +44,8 @@ if ($this->import->get('id')) { ?>
                             id="mapping-<?php echo $mapping['name']; ?>">
                             <option value=""><?php echo Lang::txt('COM_MEMBERS_UNKNOWN'); ?></option>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_ACCOUNT'); ?>">
-                                <option value="id" <?= $mapping['field'] == 'id' ? 'selected="selected"' : '' ?>>id</option>
+                                <option
+                                    value="id" <?= $mapping['field'] == 'id' ? 'selected="selected"' : '' ?>>id</option>
                                 <option value="username" <?= $mapping['field'] == 'username' ? 'selected="selected"' : '' ?>>username</option>
                                 <option value="password" <?= $mapping['field'] == 'password' ? 'selected="selected"' : '' ?>>password</option>
                                 <option value="email" <?= $mapping['field'] == 'email' ? 'selected="selected"' : '' ?>>email</option>

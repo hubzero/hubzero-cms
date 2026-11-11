@@ -55,11 +55,13 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                         <?php echo Lang::txt('COM_WISHLIST_TITLE'); ?>:
                 <?php if ($this->wishlist->get('category') == 'resource') { ?>
                         <span class="highighted"><?php echo $this->escape($this->wishlist->get('title')); ?></span>
-                        <input name="fields[title]" id="field-title" type="hidden" value="<?= $this->escape($this->wishlist->get('title')) ?>" />
+                        <input name="fields[title]" id="field-title" type="hidden"
+                            value="<?= $this->escape($this->wishlist->get('title')) ?>" />
                     </label>
                     <p class="hint"><?php echo Lang::txt('COM_WISHLIST_TITLE_NOTE'); ?></p>
                 <?php } else { ?>
-                        <input name="fields[title]" id="field-title" class="form-control" type="text" value="<?= $this->escape($this->wishlist->get('title')) ?>" />
+                        <input name="fields[title]" id="field-title" class="form-control" type="text"
+                            value="<?= $this->escape($this->wishlist->get('title')) ?>" />
                     </label>
                 <?php } ?>
                 </div>
@@ -67,7 +69,8 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                 <div class="form-group">
                     <label for="field-description">
                         <?= Lang::txt('COM_WISHLIST_DESC') ?> (<?= Lang::txt('COM_WISHLIST_OPTIONAL') ?>):
-                        <textarea name="fields[description]" id="field-description" class="form-control" rows="10" cols="50"><?= $this->escape($this->wishlist->get('description')) ?></textarea>
+                        <textarea name="fields[description]" id="field-description" class="form-control" rows="10"
+                            cols="50"><?= $this->escape($this->wishlist->get('description')) ?></textarea>
                     </label>
                 </div>
 
@@ -291,7 +294,8 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
                             if (count($mc) > 0) {
                                 echo $mc[0];
                             } else { ?>
-                            <input type="text" name="newadvisory" id="field_newadvisory" class="form-control" value="" />
+                            <input type="text" name="newadvisory" id="field_newadvisory" class="form-control"
+                                value="" />
                             <?php } ?>
                             <span><?php echo Lang::txt('COM_WISHLIST_ENTER_LOGINS'); ?></span>
                         </label>
@@ -304,7 +308,8 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
             <?php } ?>
 
             <p class="submit">
-                <input class="btn btn-success" type="submit" name="submit" value="<?= Lang::txt('COM_WISHLIST_SAVE') ?>" />
+                <input class="btn btn-success" type="submit" name="submit"
+                    value="<?= Lang::txt('COM_WISHLIST_SAVE') ?>" />
 
                 <a class="btn btn-secondary" href="<?php echo Route::url($this->wishlist->link()); ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>

@@ -56,7 +56,8 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
         <div class="foldertree-list">
             <?php echo $this->folderList; ?>
         </div>
-        <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" enctype="multipart/form-data" class="upload-browser-uploader">
+        <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post"
+            enctype="multipart/form-data" class="upload-browser-uploader">
             <fieldset>
                 <div id="ajax-uploader" data-instructions="<?= Lang::txt('Click or drop file') ?>" data-action="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=ajaxupload&no_html=1&' . Session::getFormToken() . '=1') ?>">
                     <noscript>

@@ -48,8 +48,10 @@ if ($this->group && $this->model->get('sync_group') == 1) {
                 <h4><?php echo Lang::txt('PLG_PROJECTS_TEAM_LEAVE_PROJECT'); ?></h4>
                 <p>
                     <input type="hidden" name="confirm" value="1" />
-                    <span><input type="submit" class="btn btn-success active" value="<?= Lang::txt('PLG_PROJECTS_TEAM_QUIT') ?>" /></span>
-                    <span><a href="<?= Route::url($this->model->link()) ?>" class="btn btn-cancel"><?= Lang::txt('PLG_PROJECTS_TEAM_CANCEL') ?></a></span>
+                    <span><input type="submit" class="btn btn-success active"
+                        value="<?= Lang::txt('PLG_PROJECTS_TEAM_QUIT') ?>" /></span>
+                    <span><a href="<?= Route::url($this->model->link()) ?>"
+                        class="btn btn-cancel"><?= Lang::txt('PLG_PROJECTS_TEAM_CANCEL') ?></a></span>
                 </p>
             <?php } ?>
         </fieldset>

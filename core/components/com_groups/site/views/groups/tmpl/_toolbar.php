@@ -131,7 +131,8 @@ if ($this->group->isSuperGroup()) {
                     <?= Lang::txt('COM_GROUPS_GROUP') ?> <?php echo ($isManager) ? Lang::txt('COM_GROUPS_TOOLBAR_MANAGER') : Lang::txt('COM_GROUPS_TOOLBAR_MEMBER') ?>
                 </button>
                 <?php if (!empty($menuItems)) : ?>
-                    <button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true" aria-label="<?= Lang::txt('COM_GROUPS_TOOLBAR_MORE_OPTIONS') ?>">
+                    <button type="button" class="btn dropdown-toggle" aria-expanded="false" aria-haspopup="true"
+                        aria-label="<?= Lang::txt('COM_GROUPS_TOOLBAR_MORE_OPTIONS') ?>">
                         <span class="sr-only"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_MORE_OPTIONS'); ?></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">

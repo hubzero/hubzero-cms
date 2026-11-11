@@ -207,7 +207,8 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                         ?>:</label><br
                                />
                         <select name="params[restrict_direct_access]" id="param-link_action">
-                            <option value="0"<?= !$params->get('restrict_direct_access') ? ' selected="selected"' : '' ?>>
+                            <option
+                                value="0"<?= !$params->get('restrict_direct_access') ? ' selected="selected"' : '' ?>>
                                 <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT'); ?></option>
                             <option value="1"<?= $params->get('restrict_direct_access') == 1 ? ' selected="selected"' : '' ?>>
                                 <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_NO'); ?>

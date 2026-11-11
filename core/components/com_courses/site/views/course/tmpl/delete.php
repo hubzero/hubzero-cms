@@ -50,13 +50,15 @@ $this
             <div class="form-group">
                 <label for="msg">
                     <?php echo Lang::txt('COURSES_DELETE_MESSAGE'); ?>
-                    <textarea name="msg" id="msg" rows="12" class="form-control" cols="50"><?= $this->escape($this->msg) ?></textarea>
+                    <textarea name="msg" id="msg" rows="12" class="form-control"
+                        cols="50"><?= $this->escape($this->msg) ?></textarea>
                 </label>
             </div>
 
             <div class="form-group form-check">
                 <label for="confirmdel" class="form-check-label">
-                    <input type="checkbox" class="option form-check-input" name="confirmdel" id="confirmdel" value="1" />
+                    <input type="checkbox" class="option form-check-input" name="confirmdel" id="confirmdel"
+                        value="1" />
                     <?php echo Lang::txt('COURSES_DELETE_CONFIRM'); ?>
                 </label>
             </div>

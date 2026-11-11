@@ -73,12 +73,14 @@ if (!User::isGuest()) {
             </span>
         <?php else : ?>
             <span class="vote-like<?php echo $lcls; ?>">
-                <button type="submit" form="hz-post-action" formaction="<?= $like_link ?>" class="vote-button like" aria-label="<?= $like_title ?>">
+                <button type="submit" form="hz-post-action" formaction="<?= $like_link ?>" class="vote-button like"
+                    aria-label="<?= $like_title ?>">
                     <?= $this->item->get('helpful', 0) ?><span> <?= Lang::txt('COM_KB_VOTE_LIKE') ?></span>
                 </button>
             </span>
             <span class="vote-dislike<?php echo $lcls; ?>">
-                <button type="submit" form="hz-post-action" formaction="<?= $dislike_link ?>" class="vote-button dislike" aria-label="<?= $dislike_title ?>">
+                <button type="submit" form="hz-post-action" formaction="<?= $dislike_link ?>"
+                    class="vote-button dislike" aria-label="<?= $dislike_title ?>">
                     <?= $this->item->get('nothelpful', 0) ?><span> <?= Lang::txt('COM_KB_VOTE_DISLIKE') ?></span>
                 </button>
             </span>
@@ -91,13 +93,17 @@ if (!User::isGuest()) {
                 </span>
             </span>
             <span class="vote-dislike<?php echo $dcls; ?>">
-                <button type="submit" form="hz-post-action" formaction="<?= $dislike_link ?>" class="vote-button <?= ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral' ?>" aria-label="<?= $dislike_title ?>">
+                <button type="submit" form="hz-post-action" formaction="<?= $dislike_link ?>"
+                    class="vote-button <?= ($this->item->get('nothelpful', 0) > 0) ? 'dislike' : 'neutral' ?>"
+                    aria-label="<?= $dislike_title ?>">
                     <?= $this->item->get('nothelpful', 0) ?><span> <?= Lang::txt('COM_KB_VOTE_DISLIKE') ?></span>
                 </button>
             </span>
         <?php else : ?>
             <span class="vote-like<?php echo $lcls; ?>">
-                <button type="submit" form="hz-post-action" formaction="<?= $like_link ?>" class="vote-button <?= ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral' ?>" aria-label="<?= $like_title ?>">
+                <button type="submit" form="hz-post-action" formaction="<?= $like_link ?>"
+                    class="vote-button <?= ($this->item->get('helpful', 0) > 0) ? 'like' : 'neutral' ?>"
+                    aria-label="<?= $like_title ?>">
                     <?= $this->item->get('helpful', 0) ?><span> <?= Lang::txt('COM_KB_VOTE_LIKE') ?></span>
                 </button>
             </span>

@@ -85,7 +85,9 @@ $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&control
         </thead>
         <tbody>
             <tr>
-                <td id="ticket-number" style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;" align="center">
+                <td id="ticket-number"
+                    style="padding: 8px; font-size: 2.5em; font-weight: bold; text-align: center; padding: 8px 30px;"
+                    align="center">
                     <img src="<?php echo $base . '/' . ltrim($this->group->getLogo(), '/'); ?>" width="100px" />
                 </td>
                 <td width="100%" style="padding: 8px;">

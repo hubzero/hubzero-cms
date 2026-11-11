@@ -66,12 +66,15 @@ if (!$this->dependency) {
 }
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span4">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER') ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_NEWSLETTER_FILTER_SEARCH_PLACEHOLDER') ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_NEWSLETTER_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -89,8 +92,10 @@ if (!$this->dependency) {
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?= Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_NEWSLETTER_NEWSLETTER_FORMAT', 'type', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
@@ -115,7 +120,8 @@ if (!$this->dependency) {
                 <?php foreach ($this->rows as $newsletter) { ?>
                     <tr>
                         <td>
-                            <input type="checkbox" name="id[]" id="cb<?= $k ?>" value="<?= $newsletter->id ?>" class="checkbox-toggle" />
+                            <input type="checkbox" name="id[]" id="cb<?= $k ?>" value="<?= $newsletter->id ?>"
+                                class="checkbox-toggle" />
                             <label for="cb<?= $k ?>" class="sr-only visually-hidden"><?= $newsletter->id ?></label>
                         </td>
                         <td>

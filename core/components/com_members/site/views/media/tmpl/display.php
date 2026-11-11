@@ -15,7 +15,8 @@ defined('_HZEXEC_') or die();
 
 ?>
 <div id="member-picture">
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=media') ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=media') ?>" method="post"
+        enctype="multipart/form-data" name="filelist" id="filelist">
         <fieldset>
             <legend><?php echo Lang::txt('UPLOAD'); ?> <?php echo Lang::txt('WILL_REPLACE_EXISTING_IMAGE'); ?></legend>
 
@@ -45,7 +46,8 @@ defined('_HZEXEC_') or die();
                 list($width, $height, $type, $attr) = getimagesize($this->file_path . DS . $this->file);
                 ?>
                 <tr>
-                    <td rowspan="6"><img src="<?= $this->webpath . DS . $this->path . DS . $this->file ?>" alt="<?= Lang::txt('MEMBER_PICTURE') ?>" id="conimage" /></td>
+                    <td rowspan="6"><img src="<?= $this->webpath . DS . $this->path . DS . $this->file ?>"
+                        alt="<?= Lang::txt('MEMBER_PICTURE') ?>" id="conimage" /></td>
                     <td><?php echo Lang::txt('FILE'); ?>:</td>
                     <td><?php echo $this->file; ?></td>
                 </tr>

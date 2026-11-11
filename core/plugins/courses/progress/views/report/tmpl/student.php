@@ -272,7 +272,8 @@ $progress_timeline .= '</div>';
 <div class="progress">
     <?php if ($this->course->access('manage')) : ?>
         <div class="extra">
-            <a href="<?php echo Route::url($this->base . '&active=progress') ?>" class="back btn icon-back"><?php echo Lang::txt('Back to all students') ?></a>
+            <a href="<?php echo Route::url($this->base . '&active=progress') ?>"
+                class="back btn icon-back"><?php echo Lang::txt('Back to all students') ?></a>
         </div>
     <?php endif; ?>
 
@@ -336,7 +337,8 @@ $progress_timeline .= '</div>';
             a certificate of completion.
         </p>
         <p>
-            <a class="claim-item" href="<?= Route::url($this->course->offering()->link() . '&controller=certificate') ?>">
+            <a class="claim-item"
+                href="<?= Route::url($this->course->offering()->link() . '&controller=certificate') ?>">
                 <?php echo Lang::txt('Download your certificate!'); ?>
             </a>
         </p>
@@ -504,7 +506,8 @@ $progress_timeline .= '</div>';
 
     <?php if ($this->course->offering()->section()->badge()->isAvailable() && !$student->badge()->hasEarned()) : ?>
         <div class="recognition badge">
-            <img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125" alt="Badge" />
+            <img src="<?php echo $this->course->offering()->section()->badge()->get('img_url') ?>" width="125"
+                alt="Badge" />
             <h3>Work hard. Earn a badge.</h3>
             <p>
                 Upon successful completion of this course, you will be awarded a special <?php echo $this->escape(stripslashes($this->course->get('title'))) ?> badge.

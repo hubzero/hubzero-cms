@@ -87,7 +87,8 @@ endforeach;
                     <div class="unit-edit-wrap">
                         <form action="<?php echo Request::base(true); ?>/api/courses/unit/save" class="unit-edit-form">
                             <label for="title">Title:</label>
-                            <input class="unit-edit-text" name="title" type="text" value="<?= $this->escape($unit->get('title')) ?>" placeholder="title" />
+                            <input class="unit-edit-text" name="title" type="text"
+                                value="<?= $this->escape($unit->get('title')) ?>" placeholder="title" />
                             <input class="unit-edit-save" type="submit" value="Save" />
                             <input class="unit-edit-reset" type="reset" value="Cancel" />
                             <input type="hidden" name="course_id" value="<?php echo $course->get('id'); ?>" />
@@ -126,7 +127,8 @@ endforeach;
                             <form action="<?php echo Request::base(true); ?>/api/courses/assetgroup/save">
                                 <div class="label-input-pair">
                                     <label for="title">Title:</label>
-                                    <input class="" name="title" type="text" value="<?php echo $this->escape($agt->get('title')) ?>" />
+                                    <input class="" name="title" type="text"
+                                        value="<?php echo $this->escape($agt->get('title')) ?>" />
                                 </div>
                                 <div class="label-input-pair">
                                     <label for="state">Published:</label>
@@ -137,7 +139,8 @@ endforeach;
                                 </div>
                                 <div class="label-input-pair">
                                     <label for="description">Short Description:</label>
-                                    <input type="text" name="description" value="<?php echo $this->escape($agt->get('description')) ?>">
+                                    <input type="text" name="description"
+                                        value="<?php echo $this->escape($agt->get('description')) ?>">
                                     <span><?= Lang::txt('PLG_COURSES_OUTLINE_FIELD_SHORT_DESCRIPTION_HINT') ?></span>
                                 </div>
                                 <input class="asset-group-title-save" type="submit" value="Save" />

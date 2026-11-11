@@ -27,7 +27,8 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
 
 <div id="preview-window"></div>
 
-<form action="<?= Route::url($this->model->link('files')) ?>" method="post" enctype="multipart/form-data" id="plg-form" class="file-browser submit-ajax">
+<form action="<?= Route::url($this->model->link('files')) ?>" method="post" enctype="multipart/form-data" id="plg-form"
+    class="file-browser submit-ajax">
     <div id="plg-header">
         <h3 class="files">
             <a href="<?php echo Route::url($this->model->link('files')); ?>">
@@ -66,7 +67,8 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                     </a>
                     <?php }?>
                     <a href="<?= Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=download' . $subdirlink . '&a=1') ?>"
-                         class="fmanage js" id="a-download" title="<?= Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_TOOLTIP') ?>">
+                         class="fmanage js" id="a-download"
+                             title="<?= Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD_TOOLTIP') ?>">
                         <span><?php echo Lang::txt('PLG_PROJECTS_FILES_DOWNLOAD'); ?></span>
                     </a>
                     <?php if ($this->connection->provider->alias != 'github') {?>
@@ -85,13 +87,15 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                     <?php }?>
                     <?php if (count($metadata)) : ?>
                         <a href="<?= Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=annotate' . $subdirlink) ?>"
-                            class="fmanage js" id="a-annotate" title="<?= Lang::txt('PLG_PROJECTS_FILES_ANNOTATE_TOOLTIP') ?>">
+                            class="fmanage js" id="a-annotate"
+                                title="<?= Lang::txt('PLG_PROJECTS_FILES_ANNOTATE_TOOLTIP') ?>">
                             <span><?php echo Lang::txt('PLG_PROJECTS_FILES_ANNOTATE'); ?></span>
                         </a>
                     <?php endif;
                     if ($this->connection->id) : ?>
                         <a href="<?= Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=compile' . $subdirlink) ?>"
-                            class="fmanage js" id="a-handle" title="<?= Lang::txt('PLG_PROJECTS_FILES_COMPILE_TOOLTIP') ?>">
+                            class="fmanage js" id="a-handle"
+                                title="<?= Lang::txt('PLG_PROJECTS_FILES_COMPILE_TOOLTIP') ?>">
                             <span><?php echo Lang::txt('PLG_PROJECTS_FILES_COMPILE'); ?></span>
                         </a>
                     <?php endif; ?>
@@ -128,7 +132,8 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                     </a>
                 </th>
                 <th><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_BY')); ?></th>
-                <th class="centeralign nojs" aria-label="<?= Lang::txt('Options') ?>"><span class="sr-only">Options</span></th>
+                <th class="centeralign nojs" aria-label="<?= Lang::txt('Options') ?>"><span
+                    class="sr-only">Options</span></th>
             </tr>
         </thead>
         <tbody>

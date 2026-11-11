@@ -29,7 +29,8 @@ $this
                     <h3 class="post-comment-title" id="post-comment">
                         <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_A_COMMENT'); ?>
                     </h3>
-                    <form method="post" action="<?= Route::url($this->url) ?>" id="commentform" enctype="multipart/form-data">
+                    <form method="post" action="<?= Route::url($this->url) ?>" id="commentform"
+                        enctype="multipart/form-data">
                         <p class="comment-member-photo">
                             <?php
                             // commentreply= resolves any comment on the hub; only a
@@ -117,27 +118,32 @@ $this
                             <div class="form-group">
                                 <label for="comment_file">
                                     <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ATTACH_FILE'); ?>
-                                    <input type="file" class="form-control-file" name="comment_file" id="comment_file" />
+                                    <input type="file" class="form-control-file" name="comment_file"
+                                        id="comment_file" />
                                 </label>
                             </div>
                             <div class="form-group">
                                 <div class="form-check">
                                     <label class="comment-anonymous-label" class="form-check-label">
-                                        <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?= $comment->get('anonymous') ? ' checked="checked"' : '' ?> />
+                                        <input class="option form-check-input" type="checkbox" name="comment[anonymous]"
+                                            id="comment-anonymous"
+                                            value="1"<?= $comment->get('anonymous') ? ' checked="checked"' : '' ?> />
                                         <?php echo Lang::txt('PLG_HUBZERO_COMMENTS_POST_ANONYMOUSLY'); ?>
                                     </label>
                                 </div>
                             </div>
 
                             <p class="submit">
-                                <input type="submit" class="btn btn-success" name="submit" value="<?= Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT') ?>" />
+                                <input type="submit" class="btn btn-success" name="submit"
+                                    value="<?= Lang::txt('PLG_HUBZERO_COMMENTS_POST_COMMENT') ?>" />
                             </p>
 
                             <input type="hidden" name="comment[id]" value="<?php echo $comment->get('id'); ?>" />
                             <input type="hidden" name="comment[item_id]" value="<?php echo $this->obj_id; ?>" />
                             <input type="hidden" name="comment[item_type]" value="<?php echo $this->obj_type; ?>" />
                             <input type="hidden" name="comment[parent]" value="<?= $comment->get('parent') ?>" />
-                            <input type="hidden" name="comment[created_by]" value="<?= $comment->get('created_by') ?>" />
+                            <input type="hidden" name="comment[created_by]"
+                                value="<?= $comment->get('created_by') ?>" />
                             <input type="hidden" name="comment[state]" value="<?= $comment->get('state', 1) ?>" />
                             <input type="hidden" name="comment[access]" value="1" />
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

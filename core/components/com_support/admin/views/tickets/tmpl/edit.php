@@ -114,7 +114,8 @@ if (!$no_html) {
                         <span class="date"><time datetime="<?= $this->row->get('created') ?>"><?= Date::of($this->row->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
                     </a>
                 </div>
-                <blockquote class="ticket-content" cite="<?= $this->escape($this->row->get('login', $this->row->get('name'))) ?>">
+                <blockquote class="ticket-content"
+                    cite="<?= $this->escape($this->row->get('login', $this->row->get('name'))) ?>">
                     <p><?php echo $this->row->content; ?></p>
 
                     <?php if ($this->row->attachments->count()) { ?>
@@ -266,7 +267,8 @@ if (!$no_html) {
                     <li class="<?php echo $access . ' comment'; ?>" id="c<?php echo $comment->get('id'); ?>">
                         <p class="comment-member-photo">
                             <span class="comment-anchor"></span>
-                            <img src="<?= $comment->creator->picture() ?>" alt="<?= Lang::txt('COM_SUPPORT_PROFILE_IMAGE') ?>" />
+                            <img src="<?= $comment->creator->picture() ?>"
+                                alt="<?= Lang::txt('COM_SUPPORT_PROFILE_IMAGE') ?>" />
                         </p>
                         <p class="comment-head">
                             <strong>
@@ -354,7 +356,8 @@ if (!$no_html) {
                         <span class="date"><time><?= Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
                     </span>
 
-                    <label for="comment-field-access" class="private hasTip" title="<?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_FORM_EXPLANATION') ?>">
+                    <label for="comment-field-access" class="private hasTip"
+                        title="<?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_FORM_EXPLANATION') ?>">
                         <input type="checkbox" name="access" id="comment-field-access" value="1" />
                         <span><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_FIELD_ACCESS'); ?></span>
                     </label>
@@ -369,7 +372,8 @@ if (!$no_html) {
                         <div class="input-wrap">
                             <label for="comment-field-template">
                                 <select name="messages" id="comment-field-template">
-                                    <option value="custom"><?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_CUSTOM') ?></option>
+                                    <option
+                                        value="custom"><?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_CUSTOM') ?></option>
                                     <?php
                                     $hi = [];
                                     foreach ($this->lists['messages'] as $message) {
@@ -384,13 +388,16 @@ if (!$no_html) {
                             </label>
 
                             <label for="comment-field-content">
-                                <span class="label"><?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_LEGEND_COMMENTS') ?></span>
-                                <textarea name="comment" id="comment-field-comment" cols="75" rows="15"><?= $this->escape($this->comment->get('comment')) ?></textarea>
+                                <span
+                                    class="label"><?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_LEGEND_COMMENTS') ?></span>
+                                <textarea name="comment" id="comment-field-comment" cols="75"
+                                    rows="15"><?= $this->escape($this->comment->get('comment')) ?></textarea>
                             </label>
 
                             <?php if ($this->config->get('email_terse')) { ?>
                                 <label for="email_terse">
-                                    <input class="option" type="checkbox" name="email_terse" id="email_terse" value="1" checked="checked" />
+                                    <input class="option" type="checkbox" name="email_terse" id="email_terse" value="1"
+                                        checked="checked" />
                                     <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_TERSE'); ?>
                                 </label>
                             <?php } ?>
@@ -454,7 +461,8 @@ if (!$no_html) {
                                     ->display();
                                 ?>
                             </div>
-                            <input type="hidden" name="tmp_dir" id="comment-tmp_dir" value="<?= $this->escape($tmp) ?>" />
+                            <input type="hidden" name="tmp_dir" id="comment-tmp_dir"
+                                value="<?= $this->escape($tmp) ?>" />
                         </fieldset>
 
                         <div class="input-wrap">
@@ -473,7 +481,8 @@ if (!$no_html) {
                                     echo '<span class="hint">' . Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
                                 } else {
                                     ?> <span class="hint"><?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS') ?></span>
-                                    <input type="text" name="cc" id="comment-field-message" value="<?= implode(', ', $cc) ?>" />
+                                    <input type="text" name="cc" id="comment-field-message"
+                                        value="<?= implode(', ', $cc) ?>" />
                                 <?php } ?>
                             </label>
                         </div>
@@ -482,7 +491,8 @@ if (!$no_html) {
                             <div class="col span6">
                                 <div class="input-wrap">
                                     <label for="email_submitter">
-                                        <input class="option" type="checkbox" name="email_submitter" id="email_submitter" value="1" checked="checked" />
+                                        <input class="option" type="checkbox" name="email_submitter"
+                                            id="email_submitter" value="1" checked="checked" />
                                         <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_SUBMITTER'); ?>
                                     </label>
                                 </div>
@@ -490,7 +500,8 @@ if (!$no_html) {
                             <div class="col span6">
                                 <div class="input-wrap">
                                     <label for="email_owner">
-                                        <input class="option" type="checkbox" name="email_owner" id="email_owner" value="1" checked="checked" />
+                                        <input class="option" type="checkbox" name="email_owner" id="email_owner"
+                                            value="1" checked="checked" />
                                         <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEND_EMAIL_OWNER'); ?>
                                     </label>
                                 </div>
@@ -509,7 +520,8 @@ if (!$no_html) {
                             if (count($tf) > 0) {
                                 echo $tf[0];
                             } else { ?>
-                                <input type="text" name="tags" id="tags" value="<?= $this->escape($this->row->tags('string', null)) ?>" />
+                                <input type="text" name="tags" id="tags"
+                                    value="<?= $this->escape($this->row->tags('string', null)) ?>" />
                             <?php } ?>
                         </label>
                     </div>
@@ -531,7 +543,9 @@ if (!$no_html) {
                                     if (count($gc) > 0) {
                                         echo $gc[0];
                                     } else { ?>
-                                    <input type="text" name="ticket[group_id]" value="<?= $this->escape($this->row->get('group_id')) ?>" id="acgroup" value="" size="30" autocomplete="off" />
+                                    <input type="text" name="ticket[group_id]"
+                                        value="<?= $this->escape($this->row->get('group_id')) ?>" id="acgroup" value=""
+                                        size="30" autocomplete="off" />
                                     <?php } ?>
                                 </label>
                             </div>
@@ -592,7 +606,8 @@ if (!$no_html) {
                                                 <option value="<?= $status->get('id') ?>"<?= $this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
                                             <?php } ?>
                                         </optgroup>
-                                        <optgroup label="<?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED') ?>">
+                                        <optgroup
+                                            label="<?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED') ?>">
                                             <option value="0"<?= !$this->row->isOpen() && $this->row->get('status') == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED') ?></option>
                                             <?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
                                                 <option value="<?= $status->get('id') ?>"<?= !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>

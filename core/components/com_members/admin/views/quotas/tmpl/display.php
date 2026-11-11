@@ -42,7 +42,8 @@ $this
          ->display();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span5">
@@ -53,7 +54,9 @@ $this
                 </select>
 
                 <label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
             </div>
@@ -71,8 +74,10 @@ $this
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <!-- <th class="priority-6"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th> -->
                 <th class="priority-5"><?= Html::grid('sort', 'COM_MEMBERS_QUOTA_USER_ID', 'user_id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
@@ -100,7 +105,8 @@ $this
             ?>
             <tr class="<?= "row$k quota-row" ?>" data-quota="<?= Route::url('index.php?option=com_members&controller=quotas&task=getQuotaUsage&id=' . $row->get('id'), false) ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('user_id') ?>" class="checkbox-toggle" />
+                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('user_id') ?>"
+                        class="checkbox-toggle" />
                     <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->get('user_id') ?></label>
                 </td>
                 <td class="priority-5">

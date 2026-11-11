@@ -17,7 +17,8 @@ $id = str_replace('resource-', '', $this->result['id']);
 $extras = Event::trigger('resources.onResourcesList', [$id]);
 ?>
 
-<div class="result <?= isset($this->result['access_level']) ? $this->result['access_level'] : 'public' ?>" id="<?= $this->result['id'] ?>">
+<div class="result <?= isset($this->result['access_level']) ? $this->result['access_level'] : 'public' ?>"
+    id="<?= $this->result['id'] ?>">
     <div class="result-body">
         <!-- Cateogory : mandatory -->
         <span class="result-category"><?php echo ucfirst($this->result['hubtype']); ?></span>
@@ -53,7 +54,8 @@ $extras = Event::trigger('resources.onResourcesList', [$id]);
 
             <?php if (isset($this->result['date'])) : ?>
                 <?php $date = new \Hubzero\Utility\Date($this->result['date']); ?>
-                <span class="result-timestamp"><time datetime="<?= $this->result['date'] ?>"><?= $date->toLocal('Y-m-d h:mA') ?></time></span>
+                <span class="result-timestamp"><time
+                    datetime="<?= $this->result['date'] ?>"><?= $date->toLocal('Y-m-d h:mA') ?></time></span>
             <?php endif; ?>
             <span class="result-citation">
                 <?php

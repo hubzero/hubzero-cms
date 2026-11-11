@@ -47,11 +47,13 @@ if (count($this->users)) {
                 <fieldset class="deny-response">
                     <label for="responses-<?php echo $i; ?>-title">
                         <?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_TITLE'); ?>
-                        <input type="text" name="responses[<?= $i ?>][title]" id="responses-<?= $i ?>-title" maxlength="100" value="<?= $this->escape($response['title']) ?>" />
+                        <input type="text" name="responses[<?= $i ?>][title]" id="responses-<?= $i ?>-title"
+                            maxlength="100" value="<?= $this->escape($response['title']) ?>" />
                     </label>
                     <label for="responses-<?php echo $i; ?>-text">
                         <?php echo Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_TEXT'); ?>
-                        <textarea name="responses[<?= $i ?>][text]" id="responses-<?= $i ?>-text" rows="5" cols="50"><?= $this->escape($response['text']) ?></textarea>
+                        <textarea name="responses[<?= $i ?>][text]" id="responses-<?= $i ?>-text" rows="5"
+                            cols="50"><?= $this->escape($response['text']) ?></textarea>
                     </label>
                     <p class="deny-response-remove">
                         <button type="button" class="btn btn-danger icon-trash"><?= Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_REMOVE') ?></button>
@@ -61,7 +63,8 @@ if (count($this->users)) {
         </div>
 
         <p>
-            <button type="button" class="btn icon-add deny-response-add"><?= Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_ADD') ?></button>
+            <button type="button"
+                class="btn icon-add deny-response-add"><?= Lang::txt('PLG_GROUPS_MEMBERS_DENY_RESPONSE_ADD') ?></button>
         </p>
     </fieldset>
     <div class="clear"></div>

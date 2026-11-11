@@ -44,15 +44,19 @@ $base = $this->offering->link() . '&active=pages';
                 <div class="grid">
                     <div class="col span-half">
                         <label for="field-title">
-                            <?= Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE') ?> <span class="required"><?= Lang::txt('PLG_COURSES_PAGES_REQUIRED') ?></span>
-                            <input type="text" name="fields[title]" id="field-title" value="<?= $this->escape(stripslashes($this->model->get('title', ''))) ?>" />
+                            <?= Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE') ?> <span
+                                class="required"><?= Lang::txt('PLG_COURSES_PAGES_REQUIRED') ?></span>
+                            <input type="text" name="fields[title]" id="field-title"
+                                value="<?= $this->escape(stripslashes($this->model->get('title', ''))) ?>" />
                             <span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE_HINT'); ?></span>
                         </label>
                     </div>
                     <div class="col span-half omega">
                         <label for="field-url">
-                            <?= Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS') ?> <span class="optional"><?= Lang::txt('PLG_COURSES_PAGES_OPTINAL') ?></span>
-                            <input type="text" name="fields[url]" id="field-url" value="<?= $this->escape(stripslashes($this->model->get('url', ''))) ?>" />
+                            <?= Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS') ?> <span
+                                class="optional"><?= Lang::txt('PLG_COURSES_PAGES_OPTINAL') ?></span>
+                            <input type="text" name="fields[url]" id="field-url"
+                                value="<?= $this->escape(stripslashes($this->model->get('url', ''))) ?>" />
                             <span class="hint"><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS_HINT'); ?></span>
                         </label>
                     </div>
@@ -71,7 +75,8 @@ $base = $this->offering->link() . '&active=pages';
                 <?php } ?>
 
                 <label for="fields_content">
-                    <?= Lang::txt('PLG_COURSES_PAGES_FIELD_CONTENT') ?> <span class="required"><?= Lang::txt('PLG_COURSES_PAGES_REQUIRED') ?></span>
+                    <?= Lang::txt('PLG_COURSES_PAGES_FIELD_CONTENT') ?> <span
+                        class="required"><?= Lang::txt('PLG_COURSES_PAGES_REQUIRED') ?></span>
                     <?php
                         echo $this->editor('fields[content]', $this->escape($this->model->content('raw')), 35, 50, 'field_content');
                     ?>

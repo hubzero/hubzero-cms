@@ -70,7 +70,8 @@ if ($comment) {
 <table class="tbl-message" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tbody>
         <tr>
-            <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
+            <td align="left" valign="bottom"
+                style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
             <?php echo $this->escape($this->subject); ?>
             </td>
         </tr>
@@ -88,24 +89,31 @@ if ($comment) {
 </table>
 <!-- End Spacer -->
 
-<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
+<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0"
+    style="border-collapse: collapse; line-height: 1.6em;">
     <tbody>
         <tr>
             <td class="mobilehide" style="font-size: 2.5em; font-weight: bold; text-align: center; padding: 0 30px 8px 0; vertical-align: top;" align="center" valing="top">
             </td>
             <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
-                <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
+                <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0"
+                    border="0">
                     <tbody>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Title:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->model->get('title')) ?></td>
+                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right">Title:</th>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%"
+                                align="left"><?= $this->escape($this->model->get('title')) ?></td>
                         </tr>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Version:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->model->get('version_label')) ?></td>
+                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right">Version:</th>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%"
+                                align="left"><?= $this->escape($this->model->get('version_label')) ?></td>
                         </tr>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
+                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right">Created:</th>
                             <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left">@ <?= $this->model->created('time') ?> on <?= $this->model->created('date') ?></td>
                         </tr>
                         <tr>
@@ -113,8 +121,10 @@ if ($comment) {
                             <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->project->get('title')) ?> (<?= $this->escape($this->project->get('alias')) ?> <?= $this->project->isProvisioned() ? ' - ' . Lang::txt('provisioned') : '' ?>)</td>
                         </tr>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?= $pubLink ?>"><?= $pubLink ?></a></td>
+                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right">Link:</th>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a
+                                href="<?= $pubLink ?>"><?= $pubLink ?></a></td>
                         </tr>
                     </tbody>
                 </table>

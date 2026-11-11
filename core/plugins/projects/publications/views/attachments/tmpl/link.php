@@ -25,13 +25,16 @@ $viewer  = $this->data->viewer;
         <span class="item-options">
         <?php if ($viewer == 'edit') { ?>
             <span>
-                <a href="<?= Route::url($data->editUrl . '&action=edititem&aid=' . $data->id . '&p=' . $data->props) ?>" class="showinbox item-edit" title="<?= strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE')) ?>">&nbsp;</a>
+                <a href="<?= Route::url($data->editUrl . '&action=edititem&aid=' . $data->id . '&p=' . $data->props) ?>"
+                    class="showinbox item-edit"
+                    title="<?= strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_EDIT_LINK_TITLE')) ?>">&nbsp;</a>
                 <button type="submit" form="hz-post-action" formaction="<?= Route::url($data->editUrl . '&action=deleteitem&aid=' . $data->id . '&p=' . $data->props) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
             </span>
         <?php } ?>
         </span>
         <span class="item-title link-type">
-             <a href="<?= (preg_match('/^https?:\/\//i', $row->path) ? $this->escape($row->path) : '') ?>" rel="external"><?= $this->escape($title) ?></a>
+             <a href="<?= (preg_match('/^https?:\/\//i', $row->path) ? $this->escape($row->path) : '') ?>"
+                 rel="external"><?= $this->escape($title) ?></a>
             <span class="item-details"><?php echo $this->escape($details); ?></span>
         </span>
     </li>

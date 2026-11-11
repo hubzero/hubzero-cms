@@ -30,10 +30,13 @@ Toolbar::spacer();
 Toolbar::help('roles');
 
 ?>
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape(stripslashes($this->filters['search'])) ?>" placeholder="<?= Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER') ?>" />
+        <input type="text" name="search" id="filter_search" class="filter"
+            value="<?= $this->escape(stripslashes($this->filters['search'])) ?>"
+            placeholder="<?= Lang::txt('COM_COURSES_SEARCH_PLACEHOLDER') ?>" />
 
         <input type="submit" name="filter_submit" id="filter_submit" value="<?= Lang::txt('COM_COURSES_GO') ?>" />
         <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -43,8 +46,10 @@ Toolbar::help('roles');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_COURSES_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col" class="priority-3"><?= Html::grid('sort', 'COM_COURSES_COL_ALIAS', 'alias', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
@@ -76,7 +81,8 @@ Toolbar::help('roles');
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canDo->get('core.edit')) { ?>
-                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>" class="checkbox-toggle" />
+                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>"
+                            class="checkbox-toggle" />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     <?php } ?>
                 </td>

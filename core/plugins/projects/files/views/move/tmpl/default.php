@@ -106,7 +106,8 @@ if ($this->getError()) {
                 <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?= Lang::txt('JCANCEL') ?>" />
             <?php } else {  ?>
                 <span>
-                    <a id="cancel-action"  class="btn btn-cancel"  href="<?= $this->url . '?a=1' . $subdirlink ?>"><?= Lang::txt('JCANCEL') ?></a>
+                    <a id="cancel-action"  class="btn btn-cancel"
+                         href="<?= $this->url . '?a=1' . $subdirlink ?>"><?= Lang::txt('JCANCEL') ?></a>
                 </span>
             <?php } ?>
         </p>

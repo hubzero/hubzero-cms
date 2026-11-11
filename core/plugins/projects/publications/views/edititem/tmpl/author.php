@@ -47,7 +47,8 @@ $lastname = $author->lastName ? $author->lastName : $lastname;
 $department = $author->department;
 
 ?>
-<script src="<?= rtrim(Request::base(true), '/') ?>/core/plugins/projects/publications/assets/js/editauthor.js"></script>
+<script
+    src="<?= rtrim(Request::base(true), '/') ?>/core/plugins/projects/publications/assets/js/editauthor.js"></script>
 <div id="abox-content">
 <h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_EDIT_AUTHOR'); ?></h3>
     <form id="hubForm-ajax" method="post" action="">
@@ -60,7 +61,8 @@ $department = $author->department;
                 <input type="hidden" name="p" value="<?php echo $this->escape($this->props); ?>" />
                 <input type="hidden" name="action" value="saveitem" />
                 <input type="hidden" name="active" value="publications" />
-                <input type="hidden" name="option" value="<?= $this->project->isProvisioned() ? 'com_publications' : $this->option ?>" />
+                <input type="hidden" name="option"
+                    value="<?= $this->project->isProvisioned() ? 'com_publications' : $this->option ?>" />
                 <input type="hidden" name="backUrl" value="<?php echo $this->escape($this->backUrl); ?>" />
                 <?php if ($this->project->isProvisioned()) { ?>
                 <input type="hidden" name="task" value="submit" />
@@ -87,7 +89,8 @@ $department = $author->department;
                     <div class="clear"></div>
                     <label class="display_inline">
                         <span class="faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_SCHOOL_DEPARTMENT')) ?>*:</span>
-                        <input type="text" name="department" value="<?= $this->escape($department) ?>" maxlength="255" />
+                        <input type="text" name="department" value="<?= $this->escape($department) ?>"
+                            maxlength="255" />
                         <?php
                         if (Component::params('com_publications')->get('department')) {
                             echo "<div id='autocomplete-department' class='departmentAvailable'></div>";
@@ -111,26 +114,34 @@ $department = $author->department;
                     <?php if (!$author->username) { ?>
                         <label for="email">
                             <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_EMAIL')) ?>:</span>
-                            <input type="text" name="email" class="long" value="<?= $this->escape($author->invited_email ? $author->invited_email : '') ?>" maxlength="255" /><span class="optional"><?= Lang::txt('OPTIONAL') ?></span>
+                            <input type="text" name="email" class="long"
+                                value="<?= $this->escape($author->invited_email ? $author->invited_email : '') ?>"
+                                maxlength="255" /><span class="optional"><?= Lang::txt('OPTIONAL') ?></span>
                         </label>
                         <div class="clear"></div>
                     <?php } else { ?>
                         <label for="email">
                             <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_EMAIL')) ?>:</span>
-                            <input type="text" name="email" class="long" value="<?= $this->escape($author->p_email ? $author->p_email : '') ?>" maxlength="255" /><span class="optional"><?= Lang::txt('OPTIONAL') ?></span>
+                            <input type="text" name="email" class="long"
+                                value="<?= $this->escape($author->p_email ? $author->p_email : '') ?>"
+                                maxlength="255" /><span class="optional"><?= Lang::txt('OPTIONAL') ?></span>
                         </label>
                         <div class="clear"></div>
                     <?php } ?>
                     <label for="orcid">
                         <span class="leftshift faded"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ORCID_ID') ?>:</span>
-                        <input type="text" name="orcid"  class="long" placeholder="####-####-####-####" value="<?= $this->escape($author->orcid) ?>" maxlength="255"/>
-                        <p id="orcid-message" class="hint"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ORCID_ID_DESC') ?></p>
+                        <input type="text" name="orcid"  class="long" placeholder="####-####-####-####"
+                            value="<?= $this->escape($author->orcid) ?>" maxlength="255"/>
+                        <p id="orcid-message"
+                            class="hint"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_ORCID_ID_DESC') ?></p>
                         <span class="optional"><?php echo Lang::txt('OPTIONAL'); ?></span>
                     </label>
                     <div class="clear"></div>
                     <label for="credit">
                         <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_AUTHORS_AUTHOR_CREDIT')) ?>:</span>
-                        <input type="text" name="credit"  class="long" value="<?= htmlspecialchars($author->credit ?: '') ?>" maxlength="255"  /><span class="optional"><?= Lang::txt('OPTIONAL') ?></span>
+                        <input type="text" name="credit"  class="long"
+                            value="<?= htmlspecialchars($author->credit ?: '') ?>" maxlength="255"  /><span
+                            class="optional"><?= Lang::txt('OPTIONAL') ?></span>
                     </label>
                     <div class="clear"></div>
                 </div>

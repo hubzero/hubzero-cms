@@ -21,12 +21,15 @@ defined('_HZEXEC_') or die();
             $me      = ($profile->get('uidNumber') == User::get('id')) ? true : false;
         ?>
         <li <?php echo ($me) ? 'class="me"' : ''; ?>>
-            <a href="<?= $profile->link() ?>" class="tooltips" title="<?= $this->escape($profile->get('name')) ?> <?= ($me) ? '(You)' : '' ?>">
+            <a href="<?= $profile->link() ?>" class="tooltips"
+                title="<?= $this->escape($profile->get('name')) ?> <?= ($me) ? '(You)' : '' ?>">
                 <img src="<?php echo $profile->picture(0, true); ?>" alt="" />
                 <span><?php echo $this->escape($profile->get('name')); ?></span>
             </a>
             <?php if (!$me) : ?>
-                <a class="btn btn-danger btn-secondary remove confirm" data-txt-confirm="<?= Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_MEMBER_REMOVE_CONFIRM') ?>" href="<?= Route::url($member->link('remove')) ?>">
+                <a class="btn btn-danger btn-secondary remove confirm"
+                    data-txt-confirm="<?= Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_MEMBER_REMOVE_CONFIRM') ?>"
+                    href="<?= Route::url($member->link('remove')) ?>">
                     <?php echo Lang::txt('COM_DEVELOPER_API_APPLICATION_TEAM_MEMBER_REMOVE'); ?>
                 </a>
             <?php endif; ?>

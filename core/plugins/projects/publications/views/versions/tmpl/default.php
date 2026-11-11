@@ -26,7 +26,8 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
     <?php } ?>
     </div>
     <div class="list-editing">
-     <p><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TOTAL_VERSIONS')) ?>: <span class="prominent"><?= count($this->versions) ?></span></p>
+     <p><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TOTAL_VERSIONS')) ?>: <span
+         class="prominent"><?= count($this->versions) ?></span></p>
     </div>
     <?php if ($this->versions) { ?>
         <table class="listing">

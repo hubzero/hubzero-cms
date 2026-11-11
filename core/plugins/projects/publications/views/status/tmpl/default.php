@@ -76,7 +76,8 @@ if ($revertAllowed && $this->pub->accepted()) {
             <input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
             <input type="hidden" name="vid" id="vid" value="<?php echo $this->pub->version->get('id'); ?>" />
             <input type="hidden" name="base" id="base" value="<?php echo $this->pub->base; ?>" />
-            <input type="hidden" name="provisioned" id="provisioned" value="<?= $this->project->isProvisioned() ? 1 : 0 ?>" />
+            <input type="hidden" name="provisioned" id="provisioned"
+                value="<?= $this->project->isProvisioned() ? 1 : 0 ?>" />
             <?php if ($this->project->isProvisioned()) { ?>
             <input type="hidden" name="task" value="submit" />
             <?php } ?>

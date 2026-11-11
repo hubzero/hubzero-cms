@@ -54,7 +54,9 @@ if (isset($this->messages)) {
                     <input class="entry-search-submit" type="submit" value="Search" /> <!-- search button -->
                     <fieldset class="entry-search"> <!-- text box container -->
                         <legend><?php echo Lang::txt('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS'); ?></legend>
-                        <input type="text" name="filters[search]" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER') ?>" />
+                        <input type="text" name="filters[search]" id="entry-search-field"
+                            value="<?= $this->escape($this->filters['search']) ?>"
+                            placeholder="<?= Lang::txt('PLG_GROUPS_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER') ?>" />
                     </fieldset>
                 </div><!-- /.container .data-entry -->
 
@@ -94,10 +96,13 @@ if (isset($this->messages)) {
                             <?php if ($this->isManager) : ?>
                                 <tr class="hidden">
                                     <div class="admin">
-                                        <button type="submit" form="hz-post-action" formaction="<?= $bulkPublish ?>" class="btn icon-window-publish bulk" data-link="<?= $bulkPublish ?>">
+                                        <button type="submit" form="hz-post-action" formaction="<?= $bulkPublish ?>"
+                                            class="btn icon-window-publish bulk" data-link="<?= $bulkPublish ?>">
                                             <?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLISH_SELECTED'); ?>
                                         </button>
-                                        <button type="submit" form="hz-post-action" formaction="<?= $bulkDelete ?>" class="btn icon-delete bulk" data-protected="true" data-link="<?= $bulkDelete ?>">
+                                        <button type="submit" form="hz-post-action" formaction="<?= $bulkDelete ?>"
+                                            class="btn icon-delete bulk" data-protected="true"
+                                            data-link="<?= $bulkDelete ?>">
                                             <?php echo Lang::txt('PLG_GROUPS_CITATIONS_DELETE_SELECTED'); ?>
                                         </button>
                                         </td>
@@ -208,7 +213,9 @@ if (isset($this->messages)) {
                                     </td>
                                     <?php if ($this->isManager === true && $cite->scope == 'group') : ?>
                                         <td class="col-edit">
-                                            <a class="icon-edit edit individual" href="<?= Route::url($base . '&action=edit&id=' . $cite->id) ?>" title="<?= Lang::txt('PLG_GROUPS_CITATIONS_EDIT') ?>">
+                                            <a class="icon-edit edit individual"
+                                                href="<?= Route::url($base . '&action=edit&id=' . $cite->id) ?>"
+                                                title="<?= Lang::txt('PLG_GROUPS_CITATIONS_EDIT') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EDIT'); ?></span>
                                             </a>
                                         </td>
@@ -236,9 +243,11 @@ if (isset($this->messages)) {
                     <strong><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EXPORT_MULTIPLE'); ?></strong>
                     <p><?php echo Lang::txt('PLG_GROUPS_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
 
-                    <input type="submit" name="download" class="download" id="download-endnote" value="<?= Lang::txt('PLG_GROUPS_CITATIONS_ENDNOTE') ?>" />
+                    <input type="submit" name="download" class="download" id="download-endnote"
+                        value="<?= Lang::txt('PLG_GROUPS_CITATIONS_ENDNOTE') ?>" />
                     |
-                    <input type="submit" name="download" class="download" id="download-bibtex" value="<?= Lang::txt('PLG_GROUPS_CITATIONS_BIBTEX') ?>" />
+                    <input type="submit" name="download" class="download" id="download-bibtex"
+                        value="<?= Lang::txt('PLG_GROUPS_CITATIONS_BIBTEX') ?>" />
                     <!-- for serving up the file download -->
                     <iframe id="download-frame"></iframe>
                     <!-- end file serving -->
@@ -261,22 +270,27 @@ if (isset($this->messages)) {
                         if (count($tf) > 0) : ?>
                                 <?php echo $tf[0]; ?>
                         <?php else : ?>
-                                <input type="text" name="filters[tag]" id="actags" value="<?= $this->escape($this->filters['tag']) ?>" />
+                                <input type="text" name="filters[tag]" id="actags"
+                                    value="<?= $this->escape($this->filters['tag']) ?>" />
                         <?php endif; ?>
                     </label>
                     <label for="filter_author">
                         <?php echo Lang::txt('PLG_GROUPS_CITATIONS_AUTHORED_BY'); ?>
-                        <input type="text" name="filters[author]" id="filter_author" value="<?= $this->escape($this->filters['author']) ?>" />
+                        <input type="text" name="filters[author]" id="filter_author"
+                            value="<?= $this->escape($this->filters['author']) ?>" />
                     </label>
                     <label for="filter_publishedin">
                         <?php echo Lang::txt('PLG_GROUPS_CITATIONS_PUBLISHED_IN'); ?>
-                        <input type="text" name="filters[publishedin]" id="filter_publishedin" value="<?= $this->escape($this->filters['publishedin']) ?>" />
+                        <input type="text" name="filters[publishedin]" id="filter_publishedin"
+                            value="<?= $this->escape($this->filters['publishedin']) ?>" />
                     </label>
                     <label for="filter_year_start">
                         <?php echo Lang::txt('PLG_GROUPS_CITATIONS_YEAR'); ?><br />
-                        <input type="text" name="filters[year_start]" id="filter_year_start" class="half" value="<?= $this->escape($this->filters['year_start']) ?>" />
+                        <input type="text" name="filters[year_start]" id="filter_year_start" class="half"
+                            value="<?= $this->escape($this->filters['year_start']) ?>" />
                         to
-                        <input type="text" name="filters[year_end]" id="filter_year_end" class="half" value="<?= $this->escape($this->filters['year_end']) ?>" />
+                        <input type="text" name="filters[year_end]" id="filter_year_end" class="half"
+                            value="<?= $this->escape($this->filters['year_end']) ?>" />
                     </label>
                     <label for="filter_sort">
                         <?php echo Lang::txt('PLG_GROUPS_CITATIONS_SORT_BY'); ?>
@@ -298,7 +312,8 @@ if (isset($this->messages)) {
                     <input type="hidden" name="action" value="browse" />
 
                     <div class="btn-cluster">
-                        <input type="submit" class="btn btn-success" value="<?= Lang::txt('PLG_GROUPS_CITATIONS_FILTER') ?>" />
+                        <input type="submit" class="btn btn-success"
+                            value="<?= Lang::txt('PLG_GROUPS_CITATIONS_FILTER') ?>" />
                         <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations') ?>" class="btn">Reset</a>
                     </div>
                 </fieldset>

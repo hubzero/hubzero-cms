@@ -46,7 +46,9 @@ $this
                     <fieldset class="entry-search">
                         <legend><?php echo Lang::txt('COM_RESOURCES_FIND_RESOURCE'); ?></legend>
                         <label for="entry-search-field"><?php echo Lang::txt('COM_RESOURCES_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_RESOURCES_SEARCH_LABEL') ?>" />
+                        <input type="text" name="search" id="entry-search-field"
+                            value="<?= $this->escape($this->filters['search']) ?>"
+                            placeholder="<?= Lang::txt('COM_RESOURCES_SEARCH_LABEL') ?>" />
                         <input type="hidden" name="sortby" value="<?= $this->escape($this->filters['sortby']) ?>" />
                         <input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
                     </fieldset>
@@ -126,8 +128,10 @@ $this
                         <?php if (count($this->types) > 0) { ?>
                             <ul class="entries-menu filter-options">
                                 <li>
-                                    <label for="filter-type" class="sr-only visually-hidden"><?= Lang::txt('COM_RESOURCES_TYPE') ?></label>
-                                    <select name="type" id="filter-type" aria-label="<?= Lang::txt('COM_RESOURCES_TYPE') ?>">
+                                    <label for="filter-type"
+                                        class="sr-only visually-hidden"><?= Lang::txt('COM_RESOURCES_TYPE') ?></label>
+                                    <select name="type" id="filter-type"
+                                        aria-label="<?= Lang::txt('COM_RESOURCES_TYPE') ?>">
                                         <option value="" <?= (!$this->filters['type']) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_RESOURCES_ALL_TYPES') ?></option>
                                         <?php foreach ($this->types as $item) { ?>
                                             <?php

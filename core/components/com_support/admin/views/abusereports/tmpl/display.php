@@ -23,7 +23,8 @@ Html::behavior('framework');
 $this->view('_submenu')->display();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter-state"><?php echo Lang::txt('COM_SUPPORT_SHOW'); ?>:</label>
         <select name="state" id="filter-state" class="filter filter-submit">

@@ -84,7 +84,8 @@ if (!$this->sub) {
 
                 <div class="form-group form-check">
                     <label for="confirm-delete" class="form-check-label">
-                        <input class="option form-check-input" type="checkbox" name="confirm" id="confirm-delete" value="1" />
+                        <input class="option form-check-input" type="checkbox" name="confirm" id="confirm-delete"
+                            value="1" />
                         <?php echo Lang::txt('COM_WIKI_FIELD_CONFIRM_DELETE'); ?>
                     </label>
                 </div>

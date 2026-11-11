@@ -39,7 +39,8 @@ $this
     <p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?= Route::url('index.php?option=com_members&controller=imports&task=dorun') ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=com_members&controller=imports&task=dorun') ?>" method="post"
+    name="adminForm" id="adminForm">
 
     <fieldset class="adminform import-results">
 

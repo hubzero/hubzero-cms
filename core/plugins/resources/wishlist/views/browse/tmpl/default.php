@@ -113,7 +113,8 @@ $this->css();
                         <?php } elseif ($item->status == 0 || $item->status == 6) { ?>
                             <a class="nobonus tooltips" href="<?= Route::url('index.php?option=' . $this->option . '&task=wish&category=' . $this->wishlist->category . '&rid=' . $this->wishlist->referenceid . '&wishid=' . $item->id . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby=' . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action') ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED') ?>"><?= $item->bonus ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span></a>
                         <?php } else { ?>
-                            <span class="inactive" title="<?= Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED') ?>">&nbsp;</span>
+                            <span class="inactive"
+                                title="<?= Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED') ?>">&nbsp;</span>
                         <?php } ?>
                         </span>
                     </td>

@@ -78,7 +78,8 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $imgPath; ?>"
                         data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?= $imgPath ?>" alt="<?= $this->escape($alt) ?>" class="img" height="<?= $height ?>" />
+                        <img src="<?= $imgPath ?>" alt="<?= $this->escape($alt) ?>" class="img"
+                            height="<?= $height ?>" />
                     </a>
                 </div>
             <?php endif;
@@ -102,7 +103,8 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $asset->link('original'); ?>"
                         data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?= $asset->link('thumb') ?>" alt="<?= $this->escape($alt) ?>" class="img" width="50" height="50" />
+                        <img src="<?= $asset->link('thumb') ?>" alt="<?= $this->escape($alt) ?>" class="img" width="50"
+                            height="50" />
                     </a>
                     <?php
                 }

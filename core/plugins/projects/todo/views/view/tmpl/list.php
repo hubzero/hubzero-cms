@@ -47,7 +47,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
     <?php if (!$this->filters['state'] && $this->model->access('content')) { ?>
     <ul id="page_options" class="pluginOptions">
         <li>
-            <a class="icon-add add btn showinbox"  href="<?= Route::url($url . '&action=new&list=' . $this->filters['todolist']) ?>">
+            <a class="icon-add add btn showinbox"
+                 href="<?= Route::url($url . '&action=new&list=' . $this->filters['todolist']) ?>">
                 <?php echo Lang::txt('PLG_PROJECTS_TODO_ADD_TODO'); ?>
             </a>
         </li>
@@ -99,7 +100,8 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
             } ?>
         <?php } else { ?>
             <tr>
-                <td colspan="6"><p class="noresults"><?= Lang::txt('PLG_PROJECTS_TODO_NO_TODOS') . $where . '.' ?></p></td>
+                <td colspan="6"><p
+                    class="noresults"><?= Lang::txt('PLG_PROJECTS_TODO_NO_TODOS') . $where . '.' ?></p></td>
             </tr>
         <?php } ?>
         </tbody>

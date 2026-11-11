@@ -93,7 +93,8 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
                                 stroke-dashoffset="<?php echo round($offset, 2); ?>"></circle>
                     </svg>
                     <div class="gauge-center">
-                        <span class="gauge-percent" data-value="<?= $percent ?>"><?= $percent ?></span><span class="gauge-unit">%</span>
+                        <span class="gauge-percent" data-value="<?= $percent ?>"><?= $percent ?></span><span
+                            class="gauge-unit">%</span>
                         <span class="gauge-caption"><?php echo Lang::txt('COM_TOOLS_STORAGE_USED_LABEL'); ?></span>
                     </div>
                 </div>
@@ -151,22 +152,33 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
 
             <div class="storage-browser" id="storage-files">
                 <div class="sb-head">
-                    <nav class="sb-crumbs" id="sb-crumbs" aria-label="<?= Lang::txt('COM_TOOLS_STORAGE_YOUR_FILES') ?>"></nav>
+                    <nav class="sb-crumbs" id="sb-crumbs"
+                        aria-label="<?= Lang::txt('COM_TOOLS_STORAGE_YOUR_FILES') ?>"></nav>
                     <div class="sb-tools">
                         <input type="search" class="sb-filter" id="sb-filter" autocomplete="off"
                                placeholder="<?php echo Lang::txt('COM_TOOLS_STORAGE_FILTER'); ?>"
                                aria-label="<?php echo Lang::txt('COM_TOOLS_STORAGE_FILTER'); ?>" />
                         <button type="button" class="sb-tool-btn" id="sb-newfolder">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 11v6"/><path d="M9 14h6"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path
+                                d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path
+                                d="M12 11v6"/><path d="M9 14h6"/></svg>
                             <span><?php echo Lang::txt('COM_TOOLS_STORAGE_NEW_FOLDER'); ?></span>
                         </button>
                         <button type="button" class="sb-tool-btn" id="sb-upload-btn">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path
+                                d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path
+                                d="M12 3v12"/></svg>
                             <span><?php echo Lang::txt('COM_TOOLS_STORAGE_UPLOAD'); ?></span>
                         </button>
                         <input type="file" id="sb-file-input" multiple hidden />
-                        <button type="button" class="sb-refresh" id="sb-refresh" title="<?= Lang::txt('COM_TOOLS_STORAGE_REFRESH') ?>" aria-label="<?= Lang::txt('COM_TOOLS_STORAGE_REFRESH') ?>">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        <button type="button" class="sb-refresh" id="sb-refresh"
+                            title="<?= Lang::txt('COM_TOOLS_STORAGE_REFRESH') ?>"
+                            aria-label="<?= Lang::txt('COM_TOOLS_STORAGE_REFRESH') ?>">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path
+                                d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
                         </button>
                     </div>
                 </div>
@@ -195,10 +207,12 @@ $purgeUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $t
                 <p class="sb-state" id="sb-loading"><?php echo Lang::txt('COM_TOOLS_STORAGE_BROWSER_LOADING'); ?></p>
                 <p class="sb-state" id="sb-empty" hidden><?php echo Lang::txt('COM_TOOLS_STORAGE_BROWSER_EMPTY'); ?></p>
                 <p class="sb-state" id="sb-nomatch" hidden><?= Lang::txt('COM_TOOLS_STORAGE_BROWSER_NOMATCH') ?></p>
-                <p class="sb-state sb-error" id="sb-error" hidden><?= Lang::txt('COM_TOOLS_STORAGE_BROWSER_ERROR') ?></p>
+                <p class="sb-state sb-error" id="sb-error"
+                    hidden><?= Lang::txt('COM_TOOLS_STORAGE_BROWSER_ERROR') ?></p>
 
                 <noscript>
-                    <iframe src="<?= $filerUrl ?>" name="filer" id="filer" title="<?= Lang::txt('COM_TOOLS_STORAGE_YOUR_FILES') ?>"></iframe>
+                    <iframe src="<?= $filerUrl ?>" name="filer" id="filer"
+                        title="<?= Lang::txt('COM_TOOLS_STORAGE_YOUR_FILES') ?>"></iframe>
                 </noscript>
             </div>
 

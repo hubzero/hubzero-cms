@@ -64,22 +64,30 @@ if (!$no_html) { ?>
 <?php } ?>
     <span class="vote-like<?php echo $lcls; ?>">
     <?php if (User::isGuest() || $this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
-        <span class="vote-button <?= ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral' ?> <?= $cls ?>" title="<?= $like_title ?>">
+        <span class="vote-button <?= ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral' ?> <?= $cls ?>"
+            title="<?= $like_title ?>">
             <?= $this->item->get('positive', 0) ?><span> <?= Lang::txt('PLG_COURSES_REVIEWS_VOTE_LIKE') ?></span>
         </span>
     <?php } else { ?>
-        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->url . 'action=vote&voteup=' . $this->item->get('id')) ?>" class="vote-button <?= ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral' ?> <?= $cls ?>" title="<?= $like_title ?>">
+        <button type="submit" form="hz-post-action"
+            formaction="<?= Route::url($this->url . 'action=vote&voteup=' . $this->item->get('id')) ?>"
+            class="vote-button <?= ($this->item->get('positive', 0) > 0) ? 'like' : 'neutral' ?> <?= $cls ?>"
+            title="<?= $like_title ?>">
             <?= $this->item->get('positive', 0) ?><span> <?= Lang::txt('PLG_COURSES_REVIEWS_VOTE_LIKE') ?></span>
         </button>
     <?php } ?>
     </span>
     <span class="vote-dislike<?php echo $dcls; ?>">
     <?php if (User::isGuest() || $this->item->get('vote') || User::get('id') == $this->item->get('created_by')) { ?>
-        <span class="vote-button <?= ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral' ?> <?= $cls ?>" title="<?= $dislike_title ?>">
+        <span class="vote-button <?= ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral' ?> <?= $cls ?>"
+            title="<?= $dislike_title ?>">
             <?= $this->item->get('negative', 0) ?><span> <?= Lang::txt('PLG_COURSES_REVIEWS_VOTE_DISLIKE') ?></span>
         </span>
     <?php } else { ?>
-        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->url . 'action=vote&votedown=' . $this->item->get('id')) ?>" class="vote-button <?= ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral' ?> <?= $cls ?>" title="<?= $dislike_title ?>">
+        <button type="submit" form="hz-post-action"
+            formaction="<?= Route::url($this->url . 'action=vote&votedown=' . $this->item->get('id')) ?>"
+            class="vote-button <?= ($this->item->get('negative', 0) > 0) ? 'dislike' : 'neutral' ?> <?= $cls ?>"
+            title="<?= $dislike_title ?>">
             <?= $this->item->get('negative', 0) ?><span> <?= Lang::txt('PLG_COURSES_REVIEWS_VOTE_DISLIKE') ?></span>
         </button>
     <?php } ?>

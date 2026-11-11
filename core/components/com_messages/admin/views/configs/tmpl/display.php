@@ -20,7 +20,9 @@ Html::behavior('keepalive');
 
 $this->js('config.js');
 ?>
-<form action="<?= Route::url('index.php?option=com_messages&controller=configs') ?>" method="post" name="adminForm" id="config-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=com_messages&controller=configs') ?>" method="post" name="adminForm"
+    id="config-form" class="editform form-validate"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">
@@ -36,12 +38,14 @@ $this->js('config.js');
             <legend><?php echo Lang::txt('COM_MESSAGES_FIELD_LOCK_LABEL'); ?></legend>
 
             <div class="input-wrap">
-                <input type="radio" name="fields[lock]" id="cfg-lock-yes" value="1"<?= $this->item->get('lock', 0) ? ' checked="checked"' : '' ?> />
+                <input type="radio" name="fields[lock]" id="cfg-lock-yes"
+                    value="1"<?= $this->item->get('lock', 0) ? ' checked="checked"' : '' ?> />
                 <label for="cfg-lock-yes"><?php echo Lang::txt('JYes'); ?></label>
             </div>
 
             <div class="input-wrap">
-                <input type="radio" name="fields[lock]" id="cfg-lock-no" value="0"<?= !$this->item->get('lock', 0) ? ' checked="checked"' : '' ?> />
+                <input type="radio" name="fields[lock]" id="cfg-lock-no"
+                    value="0"<?= !$this->item->get('lock', 0) ? ' checked="checked"' : '' ?> />
                 <label for="cfg-lock-no"><?php echo Lang::txt('JNo'); ?></label>
             </div>
         </fieldset>
@@ -50,19 +54,22 @@ $this->js('config.js');
             <legend><?php echo Lang::txt('COM_MESSAGES_FIELD_MAIL_ON_NEW_LABEL'); ?></legend>
 
             <div class="input-wrap">
-                <input type="radio" name="fields[mail_on_new]" id="cfg-mail_on_new-yes" value="1"<?= $this->item->get('mail_on_new', 1) ? ' checked="checked"' : '' ?> />
+                <input type="radio" name="fields[mail_on_new]" id="cfg-mail_on_new-yes"
+                    value="1"<?= $this->item->get('mail_on_new', 1) ? ' checked="checked"' : '' ?> />
                 <label for="cfg-mail_on_new-yes"><?php echo Lang::txt('JYes'); ?></label>
             </div>
 
             <div class="input-wrap">
-                <input type="radio" name="fields[mail_on_new]" id="cfg-mail_on_new-no" value="0"<?= !$this->item->get('mail_on_new', 1) ? ' checked="checked"' : '' ?> />
+                <input type="radio" name="fields[mail_on_new]" id="cfg-mail_on_new-no"
+                    value="0"<?= !$this->item->get('mail_on_new', 1) ? ' checked="checked"' : '' ?> />
                 <label for="cfg-mail_on_new-no"><?php echo Lang::txt('JNo'); ?></label>
             </div>
         </fieldset>
 
         <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_MESSAGES_FIELD_AUTO_PURGE_DESC'); ?>">
             <label for="cfg-auto_purge"><?php echo Lang::txt('COM_MESSAGES_FIELD_AUTO_PURGE_LABEL'); ?></label>
-            <input type="text" name="fields[auto_purge]" id="cfg-auto_purge" value="<?= $this->item->get('auto_purge', 7) ?>" />
+            <input type="text" name="fields[auto_purge]" id="cfg-auto_purge"
+                value="<?= $this->item->get('auto_purge', 7) ?>" />
             <span class="hint"><?php echo Lang::txt('COM_MESSAGES_FIELD_AUTO_PURGE_DESC'); ?></span>
         </div>
 

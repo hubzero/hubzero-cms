@@ -109,11 +109,14 @@ if ($this->comment->get('publication_id')) {
 
             <p class="comment-title">
                 <strong><?php echo $name; ?></strong>
-                <a class="permalink" href="<?= Route::url($this->base . '#c' . $this->comment->get('id')) ?>" title="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_PERMALINK') ?>">
+                <a class="permalink" href="<?= Route::url($this->base . '#c' . $this->comment->get('id')) ?>"
+                    title="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_PERMALINK') ?>">
                     <span class="comment-date-at">@</span>
-                    <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
+                    <span class="time"><time
+                        datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
                     <span class="comment-date-on"><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_ON'); ?></span>
-                    <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
+                    <span class="date"><time
+                        datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
                 </a>
             </p>
             <?php if ($this->comment->get('publication_id')) { ?>
@@ -123,7 +126,8 @@ if ($this->comment->get('publication_id')) {
             <?php } ?>
 
     <?php if (Request::getWord('action') == 'edit' && Request::getInt('comment') == $this->comment->get('id')) { ?>
-            <form id="cform<?= $this->comment->get('id') ?>" class="comment-edit" action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
+            <form id="cform<?= $this->comment->get('id') ?>" class="comment-edit"
+                action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
                 <fieldset>
                     <legend><span><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_EDIT'); ?></span></legend>
 
@@ -152,7 +156,9 @@ if ($this->comment->get('publication_id')) {
                     </label>
 
                     <label class="comment-anonymous-label" for="comment_<?= $this->comment->get('id') ?>_anonymous">
-                        <input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?= $this->comment->get('id') ?>_anonymous" value="1" <?= $this->comment->get('anonymous') ? ' checked="checked"' : '' ?> />
+                        <input class="option" type="checkbox" name="comment[anonymous]"
+                            id="comment_<?= $this->comment->get('id') ?>_anonymous"
+                            value="1" <?= $this->comment->get('anonymous') ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
                     </label>
 
@@ -175,16 +181,24 @@ if ($this->comment->get('publication_id')) {
             <?php if (!$this->comment->get('reports')) { ?>
                 <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
                     <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLY') ?>" href="<?= Route::url($this->comment->link()) ?>" data-rel="comment-form<?= $this->comment->get('id') . '-' . $this->depth ?>"><!--
+                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLY') ?>"
+                        href="<?= Route::url($this->comment->link()) ?>"
+                        data-rel="comment-form<?= $this->comment->get('id') . '-' . $this->depth ?>"><!--
                     --><?php echo Lang::txt('JCANCEL'); ?><!--
                 --></a>
                     <?php } else { ?>
-                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLY') ?>" href="<?= Route::url($this->comment->link('reply')) ?>" data-rel="comment-form<?= $this->comment->get('id') . '-' . $this->depth ?>"><!--
+                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLY') ?>"
+                        href="<?= Route::url($this->comment->link('reply')) ?>"
+                        data-rel="comment-form<?= $this->comment->get('id') . '-' . $this->depth ?>"><!--
                     --><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLY'); ?><!--
                 --></a>
                     <?php } ?>
                 <?php } ?>
-                    <a class="icon-abuse abuse" data-txt-flagged="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_NOTICE_POSTING_REPORTED') ?>" href="<?= Route::url($this->comment->link('report')) ?>"><!--
+                    <a class="icon-abuse abuse"
+                        data-txt-flagged="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_NOTICE_POSTING_REPORTED') ?>"
+                        href="<?= Route::url($this->comment->link('report')) ?>"><!--
                     --><?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPORT_ABUSE'); ?><!--
                 --></a>
             <?php } ?>
@@ -198,14 +212,17 @@ if ($this->comment->get('publication_id')) {
                     <?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN') . '</a>') ?>
                 </p>
                 <?php } else { ?>
-                <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
+                <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post"
+                    enctype="multipart/form-data">
                     <fieldset>
                         <legend><span><?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
 
                         <input type="hidden" name="comment[id]" value="0" />
-                        <input type="hidden" name="comment[item_type]" value="<?= $this->comment->get('item_type') ?>" />
+                        <input type="hidden" name="comment[item_type]"
+                            value="<?= $this->comment->get('item_type') ?>" />
                         <input type="hidden" name="comment[item_id]" value="<?= $this->comment->get('item_id') ?>" />
-                        <input type="hidden" name="comment[parent]" value="<?= ($this->comment->get('publication_id')) ? 0 : $this->comment->get('id') ?>" />
+                        <input type="hidden" name="comment[parent]"
+                            value="<?= ($this->comment->get('publication_id')) ? 0 : $this->comment->get('id') ?>" />
                         <input type="hidden" name="comment[created]" value="" />
                         <input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
                         <input type="hidden" name="comment[state]" value="<?= $this->comment->get('state', 1) ?>" />
@@ -226,13 +243,16 @@ if ($this->comment->get('publication_id')) {
                             ?>
                         </label>
 
-                        <label class="comment-anonymous-label" for="comment_<?= $this->comment->get('id') ?>_reply_anonymous">
-                            <input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?= $this->comment->get('id') ?>_reply_anonymous" value="1" />
+                        <label class="comment-anonymous-label"
+                            for="comment_<?= $this->comment->get('id') ?>_reply_anonymous">
+                            <input class="option" type="checkbox" name="comment[anonymous]"
+                                id="comment_<?= $this->comment->get('id') ?>_reply_anonymous" value="1" />
                             <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
                         </label>
 
                         <p class="submitarea">
-                            <input type="submit" class="btn" value="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_SUBMIT') ?>" />
+                            <input type="submit" class="btn"
+                                value="<?= Lang::txt('PLG_PUBLICATIONS_REVIEWS_SUBMIT') ?>" />
                         </p>
                     </fieldset>
                 </form>

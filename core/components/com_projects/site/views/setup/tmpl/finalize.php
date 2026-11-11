@@ -79,7 +79,8 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                     <p class="info"><?php echo Lang::txt('COM_PROJECTS_ERROR_SETUP_TERMS_NOTE'); ?></p>
                 <?php else : ?>
                     <h4><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_WHY'); ?></h4>
-                    <p><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_BECAUSE') ?> <a href="<?= $privacylink ?>" rel="external nofollow"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a>.</p>
+                    <p><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_PRIVACY_BECAUSE') ?> <a href="<?= $privacylink ?>"
+                        rel="external nofollow"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a>.</p>
                 <?php endif; ?>
             </div>
             <fieldset>
@@ -88,7 +89,8 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                 <p class="notice"><?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_WHY_ASK'); ?></p>
 
                 <?php if ($this->config->get('restricted_data', 0) == 1) : ?>
-                    <h4 class="terms-question"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI') ?><span class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
+                    <h4 class="terms-question"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI') ?><span
+                        class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
                     <div class="form-group form-check">
                         <label for="restricted-yes" class="terms-label dark form-check-label">
                             <input class="option form-check-input restricted-answer" name="restricted" id="restricted-yes" type="radio" value="yes" <?= $this->model->params->get('restricted_data') == 'yes' ? 'checked="checked"' : '' ?> />
@@ -118,7 +120,8 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                             <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_IRB'); ?>
                             <div class="form-group form-check">
                                 <label for="agree_irb" class="form-check-label">
-                                    <input class="option form-check-input" name="agree_irb" id="agree_irb" type="checkbox" value="1"  />
+                                    <input class="option form-check-input" name="agree_irb" id="agree_irb"
+                                        type="checkbox" value="1"  />
                                     <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_IRB_AGREE'); ?>
                                 </label>
                             </div>
@@ -143,7 +146,8 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                             <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_FERPA'); ?>
                             <div class="form-group form-check">
                                 <label for="agree_ferpa" class="form-check-label">
-                                    <input class="option form-check-input" name="agree_ferpa" id="agree_ferpa" type="checkbox" value="1"  />
+                                    <input class="option form-check-input" name="agree_ferpa" id="agree_ferpa"
+                                        type="checkbox" value="1"  />
                                     <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_RESTRICTED_STOP_FERPA_AGREE'); ?>
                                 </label>
                             </div>
@@ -158,11 +162,13 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                     </div>
                 <?php endif; ?>
                 <?php if ($this->config->get('restricted_data', 0) == 2) : ?>
-                    <h4 class="terms-question"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI') ?><span class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
+                    <h4 class="terms-question"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_PHI') ?><span
+                        class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
 
                     <div class="form-group form-check">
                         <label for="restricted" class="terms-label dark form-check-label">
-                            <input class="option form-check-input" name="restricted" id="restricted" type="checkbox" value="no" />
+                            <input class="option form-check-input" name="restricted" id="restricted" type="checkbox"
+                                value="no" />
                             <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_SENSITIVE_DATA_AGREE'); ?>
                         </label>
                     </div>
@@ -181,13 +187,15 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                     <div class="form-group">
                         <div class="form-group form-check">
                             <label for="grant_info" class="form-check-label">
-                                <input class="option form-check-input" name="grant_info" id="grant_info-no" type="radio" value="0" checked="checked" />
+                                <input class="option form-check-input" name="grant_info" id="grant_info-no" type="radio"
+                                    value="0" checked="checked" />
                                 <?php echo Lang::txt('JNO'); ?>
                             </label>
                         </div>
                         <div class="form-group form-check">
                             <label for="grant_info" class="form-check-label">
-                                <input class="option form-check-input" name="grant_info" id="grant_info-yes" type="radio" value="1" />
+                                <input class="option form-check-input" name="grant_info" id="grant_info-yes"
+                                    type="radio" value="1" />
                                 <?php echo Lang::txt('JYES'); ?>
                             </label>
                         </div>
@@ -197,31 +205,40 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
                         <div class="form-group">
                             <label class="terms-label">
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_TITLE'); ?>:
-                                <input name="grant_title" maxlength="250" type="text" class="form-control" value="<?= $this->escape($this->model->params->get('grant_title')) ?>" class="long" />
+                                <input name="grant_title" maxlength="250" type="text" class="form-control"
+                                    value="<?= $this->escape($this->model->params->get('grant_title')) ?>"
+                                    class="long" />
                             </label>
                         </div>
                         <div class="form-group">
                             <label class="terms-label">
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_PI'); ?>:
-                                <input name="grant_PI" maxlength="250" type="text" class="form-control" value="<?= $this->escape($this->model->params->get('grant_PI')) ?>" class="long" />
+                                <input name="grant_PI" maxlength="250" type="text" class="form-control"
+                                    value="<?= $this->escape($this->model->params->get('grant_PI')) ?>" class="long" />
                             </label>
                         </div>
                         <div class="form-group">
                             <label class="terms-label">
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_AWARD_NUMBER'); ?>:
-                                <input name="award_number" maxlength="250" type="text" class="form-control" value="<?= $this->escape($this->model->params->get('award_number')) ?>" class="long" />
+                                <input name="award_number" maxlength="250" type="text" class="form-control"
+                                    value="<?= $this->escape($this->model->params->get('award_number')) ?>"
+                                    class="long" />
                             </label>
                         </div>
                         <div class="form-group">
                             <label class="terms-label">
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_AGENCY'); ?>:
-                                <input name="grant_agency" maxlength="250" type="text" class="form-control" value="<?= $this->escape($this->model->params->get('grant_agency')) ?>" class="long" />
+                                <input name="grant_agency" maxlength="250" type="text" class="form-control"
+                                    value="<?= $this->escape($this->model->params->get('grant_agency')) ?>"
+                                    class="long" />
                             </label>
                         </div>
                         <div class="form-group">
                             <label class="terms-label">
                                 <?php echo Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_BUDGET'); ?>:
-                                <input name="grant_budget" maxlength="250" type="text" class="form-control" value="<?= $this->escape($this->model->params->get('grant_budget')) ?>" class="long" />
+                                <input name="grant_budget" maxlength="250" type="text" class="form-control"
+                                    value="<?= $this->escape($this->model->params->get('grant_budget')) ?>"
+                                    class="long" />
                             </label>
                         </div>
                     </div>
@@ -234,7 +251,9 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
 
                 <div class="form-group form-check">
                     <label class="form-check-label terms-label">
-                        <h4><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE') ?> <a href="<?= $privacylink ?>" rel="external" ><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a>? <span class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
+                        <h4><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE') ?> <a href="<?= $privacylink ?>"
+                            rel="external" ><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a>? <span
+                            class="required"><?= Lang::txt('REQUIRED') ?></span></h4>
                         <input class="option form-check-input" name="agree" type="checkbox" value="1" />
                         <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_AGREE') ?> <a href="<?= $privacylink ?>" rel="external" ><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a> <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE_PROJECT') ?> <span class="prominent"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_ALL_MEMBERS') ?></span>.
                     </label>
@@ -243,7 +262,8 @@ $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/re
             <div class="clear" aria-hidden="true"></div>
 
             <div class="submitarea">
-                <input type="submit" value="<?= Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE') ?>" class="btn btn-success" id="btn-finalize" />
+                <input type="submit" value="<?= Lang::txt('COM_PROJECTS_SAVE_AND_CONTINUE') ?>" class="btn btn-success"
+                    id="btn-finalize" />
             </div>
         </form>
     </div>

@@ -39,7 +39,9 @@ $base = $this->course->offering()->link();
                 <div class="comments-options-bar">
                     <form class="comments-search" action="<?= Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')) ?>" method="get">
                         <fieldset>
-                            <input type="text" name="search" class="search" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('search ...') ?>" />
+                            <input type="text" name="search" class="search"
+                                value="<?= $this->escape($this->filters['search']) ?>"
+                                placeholder="<?= Lang::txt('search ...') ?>" />
                             <input type="submit" class="submit" value="<?php echo Lang::txt('Go'); ?>" />
                             <input type="hidden" name="action" value="search" />
                         </fieldset>
@@ -86,7 +88,8 @@ $base = $this->course->offering()->link();
                                 ->set('active', $this->thread)
                                 ->display();
                             ?>
-                            <input type="hidden" name="threads_lastchange" id="threads_lastchange" value="<?= $threads_lastchange ?>" />
+                            <input type="hidden" name="threads_lastchange" id="threads_lastchange"
+                                value="<?= $threads_lastchange ?>" />
                         </div>
                     </div>
                 </div><!-- / .comment-threads -->
@@ -128,7 +131,8 @@ $base = $this->course->offering()->link();
                             </p>
 
                             <label for="field_comment">
-                                <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS') ?></span>
+                                <span
+                                    class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS') ?></span>
                                 <?php
                                 echo $this->editor('fields[comment]', '', 35, 5, 'field_comment', ['class' => 'minimal no-footer']);
                                 ?>
@@ -140,7 +144,8 @@ $base = $this->course->offering()->link();
                             </label>
 
                             <label for="field-anonymous" class="comment-anonymous-label">
-                                <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
+                                <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"
+                                    value="1" />
                                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
                             </label>
 
@@ -149,14 +154,19 @@ $base = $this->course->offering()->link();
                             </p>
                         <?php } ?>
                         </fieldset>
-                        <input type="hidden" name="fields[category_id]" id="field-category_id" value="<?= $this->post->get('category_id') ?>" />
+                        <input type="hidden" name="fields[category_id]" id="field-category_id"
+                            value="<?= $this->post->get('category_id') ?>" />
                         <input type="hidden" name="fields[parent]" id="field-parent" value="0" />
                         <input type="hidden" name="fields[state]" id="field-state" value="1" />
-                        <input type="hidden" name="fields[scope]" id="field-scope" value="<?= $this->post->get('scope') ?>" />
-                        <input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?= $this->post->get('scope_id') ?>" />
-                        <input type="hidden" name="fields[scope_sub_id]" id="field-scope_sub_id" value="<?= $this->post->get('scope_sub_id') ?>" />
+                        <input type="hidden" name="fields[scope]" id="field-scope"
+                            value="<?= $this->post->get('scope') ?>" />
+                        <input type="hidden" name="fields[scope_id]" id="field-scope_id"
+                            value="<?= $this->post->get('scope_id') ?>" />
+                        <input type="hidden" name="fields[scope_sub_id]" id="field-scope_sub_id"
+                            value="<?= $this->post->get('scope_sub_id') ?>" />
                         <input type="hidden" name="fields[id]" id="field-id" value="" />
-                        <input type="hidden" name="fields[object_id]" id="field-object_id" value="<?= $this->post->get('object_id') ?>" />
+                        <input type="hidden" name="fields[object_id]" id="field-object_id"
+                            value="<?= $this->post->get('object_id') ?>" />
 
                         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                         <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />

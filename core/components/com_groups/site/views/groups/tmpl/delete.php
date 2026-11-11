@@ -22,7 +22,8 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-group btn" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')) ?>">
+            <a class="icon-group btn"
+                href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')) ?>">
                 <?php echo Lang::txt('COM_GROUPS_ACTION_BACK_TO_GROUP'); ?>
             </a>
         </p>
@@ -55,7 +56,8 @@ $this
 
             <div class="form-group form-check">
                 <label for="confirmdel">
-                    <?= Lang::txt('COM_GROUPS_DELETE_CONFIRM_CONFIRM', $this->group->get('cn')) ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
+                    <?= Lang::txt('COM_GROUPS_DELETE_CONFIRM_CONFIRM', $this->group->get('cn')) ?> <span
+                        class="required"><?= Lang::txt('JREQUIRED') ?></span>
                     <input type="text" name="confirmdel" id="confirmdel" value="" />
                 </label>
             </div>
@@ -63,7 +65,8 @@ $this
             <div class="form-group">
                 <label for="msg">
                     <?php echo Lang::txt('COM_GROUPS_DELETE_CONFIRM_BOX_MESSAGE_LABEL'); ?>
-                    <textarea class="form-control" name="msg" id="msg" rows="12" cols="50"><?= htmlentities($this->msg) ?></textarea>
+                    <textarea class="form-control" name="msg" id="msg" rows="12"
+                        cols="50"><?= htmlentities($this->msg) ?></textarea>
                 </label>
             </div>
         </fieldset>
@@ -77,7 +80,8 @@ $this
         <p class="submit">
             <input class="btn btn-danger" type="submit" value="<?php echo Lang::txt('DELETE'); ?>" />
 
-            <a class="btn btn-secondary" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')) ?>">
+            <a class="btn btn-secondary"
+                href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')) ?>">
                 <?php echo Lang::txt('JCANCEL'); ?>
             </a>
         </p>

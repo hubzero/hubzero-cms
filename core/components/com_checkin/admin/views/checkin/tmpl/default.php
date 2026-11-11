@@ -31,7 +31,9 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
     <fieldset id="filter-bar">
         <div class="filter-search">
             <label class="filter-search-lbl" for="filter_search"><?= Lang::txt('JSEARCH_FILTER_LABEL') ?></label>
-            <input type="text" name="filter_search" id="filter_search" class="filter" value="<?= $this->escape($this->state->get('filter.search')) ?>" placeholder="<?= Lang::txt('COM_CHECKIN_FILTER_SEARCH_DESC') ?>" />
+            <input type="text" name="filter_search" id="filter_search" class="filter"
+                value="<?= $this->escape($this->state->get('filter.search')) ?>"
+                placeholder="<?= Lang::txt('COM_CHECKIN_FILTER_SEARCH_DESC') ?>" />
 
             <button type="submit" class="btn"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
             <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -42,8 +44,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?= Html::grid('sort', 'COM_CHECKIN_DATABASE_TABLE', 'table', $listDirn, $listOrder) ?></th>
                 <th scope="col"><?= Html::grid('sort', 'COM_CHECKIN_ITEMS_TO_CHECK_IN', 'count', $listDirn, $listOrder) ?></th>

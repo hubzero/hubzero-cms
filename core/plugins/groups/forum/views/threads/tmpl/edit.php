@@ -63,7 +63,9 @@ $this
                         <div class="form-group">
                             <div class="form-check">
                                 <label for="field-sticky" class="form-check-label">
-                                    <input class="option form-check-input" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?= $this->post->get('sticky') ? ' checked="checked"' : '' ?> />
+                                    <input class="option form-check-input" type="checkbox" name="fields[sticky]"
+                                        id="field-sticky"
+                                        value="1"<?= $this->post->get('sticky') ? ' checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
                                 </label>
                             </div>
@@ -73,7 +75,9 @@ $this
                         <div class="form-group">
                             <div class="form-check">
                                 <label for="field-closed" class="form-check-label">
-                                    <input class="option form-check-input" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?= $this->post->get('closed') ? ' checked="checked"' : '' ?> />
+                                    <input class="option form-check-input" type="checkbox" name="fields[closed]"
+                                        id="field-closed"
+                                        value="1"<?= $this->post->get('closed') ? ' checked="checked"' : '' ?> />
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED_THREAD'); ?>
                                 </label>
                             </div>
@@ -81,8 +85,10 @@ $this
                     </div>
                 </div>
             <?php } else { ?>
-                <input type="hidden" name="fields[sticky]" id="field-sticky" value="<?= $this->escape($this->post->get('sticky')) ?>" />
-                <input type="hidden" name="fields[closed]" id="field-closed" value="<?= $this->escape($this->post->get('closed')) ?>" />
+                <input type="hidden" name="fields[sticky]" id="field-sticky"
+                    value="<?= $this->escape($this->post->get('sticky')) ?>" />
+                <input type="hidden" name="fields[closed]" id="field-closed"
+                    value="<?= $this->escape($this->post->get('closed')) ?>" />
             <?php } ?>
 
             <?php if (!$this->post->get('parent')) { ?>
@@ -96,12 +102,14 @@ $this
                         </label>
                     </div>
                 <?php } else { ?>
-                    <input type="hidden" name="fields[access]" id="field-access" value="<?= $this->post->get('access', 0) ?>" />
+                    <input type="hidden" name="fields[access]" id="field-access"
+                        value="<?= $this->post->get('access', 0) ?>" />
                 <?php } ?>
 
                 <div class="form-group">
                     <label for="field-category_id">
-                        <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY') ?> <span class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
+                        <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY') ?> <span
+                            class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
                         <select name="fields[category_id]" id="field-category_id" class="form-control">
                             <option value="0"><?= Lang::txt('PLG_GROUPS_FORUM_FIELD_CATEGORY_SELECT') ?></option>
                             <?php
@@ -132,20 +140,26 @@ $this
 
                 <div class="form-group">
                     <label for="field-title">
-                        <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE') ?> <span class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
-                        <input type="text" class="form-control" name="fields[title]" id="field-title" value="<?= $this->escape(stripslashes($this->post->get('title', ''))) ?>" />
+                        <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_TITLE') ?> <span
+                            class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
+                        <input type="text" class="form-control" name="fields[title]" id="field-title"
+                            value="<?= $this->escape(stripslashes($this->post->get('title', ''))) ?>" />
                     </label>
                 </div>
             <?php } else { ?>
-                <input type="hidden" name="fields[category_id]" id="field-category_id" value="<?= $this->escape($this->post->get('category_id')) ?>" />
-                <input type="hidden" name="fields[access]" id="field-access" value="<?= $this->post->get('access', 0) ?>" />
+                <input type="hidden" name="fields[category_id]" id="field-category_id"
+                    value="<?= $this->escape($this->post->get('category_id')) ?>" />
+                <input type="hidden" name="fields[access]" id="field-access"
+                    value="<?= $this->post->get('access', 0) ?>" />
             <?php } ?>
 
                 <div class="form-group">
                     <label for="field_comment">
                         <div>
-                            <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS') ?> <span class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
-                            <span class="note" style='float:right'>Use an @ sign to mention group users in the post</span>
+                            <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS') ?> <span
+                                class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
+                            <span class="note"
+                                style='float:right'>Use an @ sign to mention group users in the post</span>
                         </div>                      
                         <?php
                             $gid = $this->group->get('gidNumber');
@@ -213,7 +227,8 @@ $this
                                 </label>
                             </div>
                         </div>
-                        <input type="hidden" name="attachment" value="<?= $this->escape(stripslashes($attachment->get('id', ''))) ?>" />
+                        <input type="hidden" name="attachment"
+                            value="<?= $this->escape(stripslashes($attachment->get('id', ''))) ?>" />
                     </div>
                     <?php if ($attachment->get('id')) { ?>
                         <p class="warning">
@@ -225,7 +240,8 @@ $this
                 <?php if ($this->post->get('id')) { ?>
                     <div class="form-group">
                         <label for="field-notify" id="comment-notify-label">
-                            <input class="option" type="checkbox" name="notify" id="field-notify" value="1" checked="checked" />
+                            <input class="option" type="checkbox" name="notify" id="field-notify" value="1"
+                                checked="checked" />
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_NOTIFY'); ?>
                         </label>
                     </div>
@@ -237,7 +253,9 @@ $this
                     <div class="form-group">
                         <div class="form-check">
                             <label for="field-anonymous" class="comment-anonymous-label" class="form-check-label">
-                                <input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?= $this->post->get('anonymous') ? ' checked="checked"' : '' ?> />
+                                <input class="option form-check-input" type="checkbox" name="fields[anonymous]"
+                                    id="field-anonymous"
+                                    value="1"<?= $this->post->get('anonymous') ? ' checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
                             </label>
                         </div>

@@ -23,7 +23,8 @@ Toolbar::cancel();
 ?>
 <p class="crumbs"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_VERSIONS') ?></p>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm">
     <table class="adminlist">
         <thead>
             <tr>

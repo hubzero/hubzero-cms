@@ -48,7 +48,8 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
     <h2><?= Lang::txt('COM_BLOG') . ': ' . ($this->entry->isNew() ? Lang::txt('JACTION_NEW') : Lang::txt('JACTION_EDIT')) ?></h2>
 
     <div id="content-header-extra">
-        <p><a class="icon-archive archive btn" href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('COM_BLOG_ARCHIVE') ?></a></p>
+        <p><a class="icon-archive archive btn"
+            href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('COM_BLOG_ARCHIVE') ?></a></p>
     </div>
 </header>
 
@@ -68,8 +69,10 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 
                 <div class="form-group">
                     <label for="field-title"<?= $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '' ?>>
-                        <?= Lang::txt('COM_BLOG_FIELD_TITLE') ?> <span class="required"><?= Lang::txt('COM_BLOG_REQUIRED') ?></span>
-                        <input type="text" class="form-control" name="entry[title]" id="field-title" size="35" value="<?= $this->escape(stripslashes($this->entry->get('title', ''))) ?>" />
+                        <?= Lang::txt('COM_BLOG_FIELD_TITLE') ?> <span
+                            class="required"><?= Lang::txt('COM_BLOG_REQUIRED') ?></span>
+                        <input type="text" class="form-control" name="entry[title]" id="field-title" size="35"
+                            value="<?= $this->escape(stripslashes($this->entry->get('title', ''))) ?>" />
                     </label>
                     <?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
                         <p class="error"><?php echo Lang::txt('COM_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
@@ -78,7 +81,8 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
 
                 <div class="form-group">
                     <label for="entrycontent"<?= $this->task == 'save' && !$this->entry->get('content') ? ' class="fieldWithErrors"' : '' ?>>
-                        <?= Lang::txt('COM_BLOG_FIELD_CONTENT') ?> <span class="required"><?= Lang::txt('COM_BLOG_REQUIRED') ?></span>
+                        <?= Lang::txt('COM_BLOG_FIELD_CONTENT') ?> <span
+                            class="required"><?= Lang::txt('COM_BLOG_REQUIRED') ?></span>
                         <?= $this->editor('entry[content]', $this->escape($this->entry->content('raw')), 50, 40, 'entrycontent', ['class' => 'form-control']) ?>
                     </label>
                     <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>

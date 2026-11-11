@@ -217,7 +217,8 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
     <div id="novnc-modern-clip" role="dialog" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?>" hidden>
         <div class="nmc-head">
             <span class="nmc-title"><?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?></span>
-            <button type="button" class="nmc-close" aria-label="<?= Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_CLOSE') ?>" title="<?= Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_CLOSE') ?>">&times;</button>
+            <button type="button" class="nmc-close" aria-label="<?= Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_CLOSE') ?>"
+                title="<?= Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_CLOSE') ?>">&times;</button>
         </div>
         <p><?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD_HINT'); ?></p>
         <textarea spellcheck="false" aria-label="<?php echo Lang::txt('PLG_TOOLS_NOVNC_CLIPBOARD'); ?>"></textarea>

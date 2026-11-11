@@ -69,12 +69,15 @@ $this
     ->js();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span4">
                 <label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_MEMBERS_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
@@ -125,8 +128,10 @@ $this
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_MEMBERS_COL_ID', 'id', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?= Html::grid('sort', 'COM_MEMBERS_COL_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
@@ -222,7 +227,8 @@ $this
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <?php if ($canEdit) : ?>
-                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('id') ?>" class="checkbox-toggle" />
+                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('id') ?>"
+                            class="checkbox-toggle" />
                         <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->get('id') ?></label>
                     <?php endif; ?>
                 </td>
@@ -279,7 +285,9 @@ $this
                                 <span class="btn dropdown-toggle"></span>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a class="grid-action grid-boolean icon-unban" data-id="cb<?= $i ?>" data-task="unblock" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_UNBLOCK') ?></a>
+                                        <a class="grid-action grid-boolean icon-unban" data-id="cb<?= $i ?>"
+                                            data-task="unblock"
+                                            href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_UNBLOCK') ?></a>
                                     </li>
                                 </ul>
                             <?php endif; ?>
@@ -294,21 +302,28 @@ $this
                             <!-- <span class="authenticator"><?php echo $authenticator; ?></span> -->
                         <?php elseif ($row->get('activation') <= 0) : ?>
                             <div class="btn-group dropdown user-state unconfrmed">
-                                <span class="btn hasTip" title="<?= Lang::txt('COM_MEMBERS_STATUS_UNCONFIRMED_DESC') ?>">
+                                <span class="btn hasTip"
+                                    title="<?= Lang::txt('COM_MEMBERS_STATUS_UNCONFIRMED_DESC') ?>">
                                     <?php echo Lang::txt('COM_MEMBERS_STATUS_UNCONFIRMED'); ?>
                                 </span>
                                 <?php if ($canChange) : ?>
                                     <span class="btn dropdown-toggle"></span>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="grid-action grid-boolean icon-success" data-id="cb<?= $i ?>" data-task="confirm" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_CONFIRM') ?></a>
+                                            <a class="grid-action grid-boolean icon-success" data-id="cb<?= $i ?>"
+                                                data-task="confirm"
+                                                href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_CONFIRM') ?></a>
                                         </li>
                                         <li>
-                                            <a class="grid-action grid-boolean icon-resend" data-id="cb<?= $i ?>" data-task="resendConfirm" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_RESEND') ?></a>
+                                            <a class="grid-action grid-boolean icon-resend" data-id="cb<?= $i ?>"
+                                                data-task="resendConfirm"
+                                                href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_RESEND') ?></a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?= $i ?>" data-task="block" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_BLOCK') ?></a>
+                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?= $i ?>"
+                                                data-task="block"
+                                                href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_BLOCK') ?></a>
                                         </li>
                                     </ul>
                                 <?php endif; ?>
@@ -322,11 +337,15 @@ $this
                                     <span class="btn dropdown-toggle"></span>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="grid-action grid-boolean icon-approve" data-id="cb<?= $i ?>" data-task="approve" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_APPROVE') ?></a>
+                                            <a class="grid-action grid-boolean icon-approve" data-id="cb<?= $i ?>"
+                                                data-task="approve"
+                                                href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_APPROVE') ?></a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?= $i ?>" data-task="block" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_BLOCK') ?></a>
+                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?= $i ?>"
+                                                data-task="block"
+                                                href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_BLOCK') ?></a>
                                         </li>
                                     </ul>
                                 <?php endif; ?>
@@ -340,11 +359,15 @@ $this
                                     <span class="btn dropdown-toggle"></span>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a class="grid-action grid-boolean icon-unapprove" data-id="cb<?= $i ?>" data-task="disapprove" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_UNAPPROVE') ?></a>
+                                            <a class="grid-action grid-boolean icon-unapprove" data-id="cb<?= $i ?>"
+                                                data-task="disapprove"
+                                                href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_UNAPPROVE') ?></a>
                                         </li>
                                         <li class="divider"></li>
                                         <li>
-                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?= $i ?>" data-task="block" href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_BLOCK') ?></a>
+                                            <a class="grid-action grid-boolean icon-ban" data-id="cb<?= $i ?>"
+                                                data-task="block"
+                                                href="#toggle"><?= Lang::txt('COM_MEMBERS_ACTION_BLOCK') ?></a>
                                         </li>
                                     </ul>
                                 <?php endif; ?>

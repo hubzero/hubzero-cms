@@ -43,20 +43,25 @@ $this->js();
     <p class="error"><?php echo $error; ?></p>
 <?php endforeach; ?>
 
-<form action="<?= Route::url('index.php?option=com_members&controller=imports&task=save') ?>" method="post" name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=com_members&controller=imports&task=save') ?>" method="post"
+    name="adminForm" id="item-form" enctype="multipart/form-data" class="editform form-validate"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELDSET_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-name"><?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_NAME') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                    <input type="text" name="import[name]" id="field-name" class="required" value="<?= $this->escape($this->import->get('name')) ?>" />
+                    <label for="field-name"><?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_NAME') ?> <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                    <input type="text" name="import[name]" id="field-name" class="required"
+                        value="<?= $this->escape($this->import->get('name')) ?>" />
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-notes"><?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_NOTES') ?></label><br />
-                    <textarea name="import[notes]" id="field-notes" rows="5"><?= $this->escape($this->import->get('notes')) ?></textarea>
+                    <textarea name="import[notes]" id="field-notes"
+                        rows="5"><?= $this->escape($this->import->get('notes')) ?></textarea>
                 </div>
             </fieldset>
 
@@ -82,7 +87,8 @@ $this->js();
                             <?php if (isset($hooks->postparse)) : ?>
                                 <?php foreach ($hooks->postparse as $hook) : ?>
                                     <?php $importHook = $this->hooks->fetch('id', $hook); ?>
-                                    <option selected="selected" value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
+                                    <option selected="selected"
+                                        value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
                                 <?php endforeach; ?>
                             <?php endif; ?>
 
@@ -110,7 +116,8 @@ $this->js();
                         <select name="hooks[postmap][]" id="field-hookpostmap" multiple="multiple">
                             <?php foreach ($hooks->postmap as $hook) : ?>
                                 <?php $importHook = $this->hooks->fetch('id', $hook); ?>
-                                <option selected="selected" value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
+                                <option selected="selected"
+                                    value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
                             <?php endforeach; ?>
 
                             <?php foreach ($this->hooks as $hook) : ?>
@@ -137,7 +144,8 @@ $this->js();
                         <select name="hooks[postconvert][]" id="field-hookpostconvert" multiple="multiple">
                             <?php foreach ($hooks->postconvert as $hook) : ?>
                                 <?php $importHook = $this->hooks->fetch('id', $hook); ?>
-                                <option selected="selected" value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
+                                <option selected="selected"
+                                    value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
                             <?php endforeach; ?>
                             <?php foreach ($this->hooks as $hook) : ?>
                                 <?php if ($hook->get('event') != 'postconvert' || in_array($hook->get('id'), $hooks->postconvert)) {
@@ -247,7 +255,8 @@ $this->js();
                         <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE'); ?>
                     </label><br />
                     <select name="import[file]" id="field-importfile">
-                        <option value=""><?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_OPTION_NULL') ?></option>
+                        <option
+                            value=""><?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_OPTION_NULL') ?></option>
                         <?php if (isset($this->files)) : ?>
                             <?php foreach ($this->files as $file) : ?>
                                 <?php

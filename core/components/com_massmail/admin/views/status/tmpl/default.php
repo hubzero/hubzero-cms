@@ -153,9 +153,12 @@ $this->js('status.js', 'com_massmail');
 
 <?php // data-enlarge-hint, not data-hint: the admin template styles [data-hint] as an
       // inline tooltip anchor, which overrode this modal's display:none.?>
-<div class="mm-modal" id="mm-modal" role="dialog" aria-modal="true" aria-label="<?= $this->escape(Lang::txt('COM_MASSMAIL_CHART_ENLARGED')) ?>" data-enlarge-hint="<?= $this->escape(Lang::txt('COM_MASSMAIL_CLICK_ENLARGE')) ?>">
+<div class="mm-modal" id="mm-modal" role="dialog" aria-modal="true"
+    aria-label="<?= $this->escape(Lang::txt('COM_MASSMAIL_CHART_ENLARGED')) ?>"
+    data-enlarge-hint="<?= $this->escape(Lang::txt('COM_MASSMAIL_CLICK_ENLARGE')) ?>">
     <div class="mm-modal-inner">
-        <button type="button" class="mm-modal-close" aria-label="<?= $this->escape(Lang::txt('COM_MASSMAIL_CLOSE')) ?>">&times;</button>
+        <button type="button" class="mm-modal-close"
+            aria-label="<?= $this->escape(Lang::txt('COM_MASSMAIL_CLOSE')) ?>">&times;</button>
         <div class="mm-modal-body"></div>
     </div>
 </div>

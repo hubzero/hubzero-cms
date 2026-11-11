@@ -29,7 +29,8 @@ Html::behavior('tooltip');
          ->display();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_appname"><?php echo Lang::txt('COM_TOOLS_APPNAME'); ?>:</label>
         <select name="appname" id="filter_appname" class="filter filter-submit">
@@ -88,8 +89,10 @@ Html::behavior('tooltip');
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?= Html::grid('sort', 'COM_TOOLS_COL_SESSION', 'sessnum', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col" class="priority-2"><?= Html::grid('sort', 'COM_TOOLS_COL_OWNER', 'username', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
@@ -123,8 +126,10 @@ Html::behavior('tooltip');
                 ?>
                 <tr>
                     <td>
-                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $this->escape($row->sessnum) ?>" class="checkbox-toggle" />
-                        <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $this->escape($row->sessnum) ?></label>
+                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $this->escape($row->sessnum) ?>"
+                            class="checkbox-toggle" />
+                        <label for="cb<?= $i ?>"
+                            class="sr-only visually-hidden"><?= $this->escape($row->sessnum) ?></label>
                     </td>
                     <td>
                         <span class="editlinktip hasTip" title="<?= $this->escape(stripslashes($row->sessname)) ?>::Host: <?= $this->escape($row->exechost) ?>&lt;br /&gt;IP: <?= $this->escape($row->remoteip) ?>">

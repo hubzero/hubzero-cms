@@ -46,7 +46,8 @@ $this
         <div class="form-group">
             <label<?php echo $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : ''; ?>>
                 <?= Lang::txt('PLG_GROUPS_BLOG_TITLE') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
-                <input type="text" class="form-control" name="entry[title]" size="35" value="<?= $this->escape(stripslashes($this->entry->get('title', ''))) ?>" />
+                <input type="text" class="form-control" name="entry[title]" size="35"
+                    value="<?= $this->escape(stripslashes($this->entry->get('title', ''))) ?>" />
             </label>
             <?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
                 <p class="error"><?php echo Lang::txt('PLG_GROUPS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
@@ -55,7 +56,8 @@ $this
 
         <div class="form-group">
             <label for="entry_content">
-                <?= Lang::txt('PLG_GROUPS_BLOG_FIELD_CONTENT') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
+                <?= Lang::txt('PLG_GROUPS_BLOG_FIELD_CONTENT') ?> <span
+                    class="required"><?= Lang::txt('JREQUIRED') ?></span>
                 <?= $this->editor('entry[content]', $this->escape($this->entry->get('content')), 50, 30, 'entry_content', ['class' => 'form-control']) ?>
             </label>
             <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
@@ -83,7 +85,9 @@ $this
                 <div class="form-group">
                     <div class="form-check">
                         <label for="field-allow_comments" class="form-check-label">
-                            <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?= $this->entry->get('allow_comments') == 1 ? ' checked="checked"' : '' ?> />
+                            <input type="checkbox" class="option form-check-input" name="entry[allow_comments]"
+                                id="field-allow_comments"
+                                value="1"<?= $this->entry->get('allow_comments') == 1 ? ' checked="checked"' : '' ?> />
                             <?php echo Lang::txt('PLG_GROUPS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
                         </label>
                     </div>

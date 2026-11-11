@@ -33,7 +33,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                 <fieldset class="entry-search">
                     <legend><?php echo Lang::txt('COM_SEARCH_SITE'); ?></legend>
                     <label for="terms"><?php echo Lang::txt('COM_SEARCH_TERMS'); ?></label>
-                    <input type="text" name="terms" id="terms" value="<?= $this->escape($this->terms) ?>" placeholder="<?= Lang::txt('COM_SEARCH_TERMS_PLACEHOLDER') ?>" />
+                    <input type="text" name="terms" id="terms" value="<?= $this->escape($this->terms) ?>"
+                        placeholder="<?= Lang::txt('COM_SEARCH_TERMS_PLACEHOLDER') ?>" />
                 </fieldset>
             </form>
     <?php if ($this->results->valid()) : ?>
@@ -71,7 +72,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                 <?php foreach ($this->results as $res) : ?>
                     <li>
                         <?php $before = Event::trigger('search.onBeforeSearchRender' . ucfirst($res->getPlugin()), [$res]); ?>
-                        <p class="title"><a href="<?= $res->getLink() ?>"><?= $this->escape($res->getHighlightedTitle()) ?></a></p>
+                        <p class="title"><a
+                            href="<?= $res->getLink() ?>"><?= $this->escape($res->getHighlightedTitle()) ?></a></p>
                         <div class="summary">
                             <?php if ($res->hasMetadata()) : ?>
                                 <p class="details">
@@ -203,14 +205,16 @@ $show_weight = array_key_exists('show_weight', $_GET);
                     <?php if ($this->plugin) : ?>
                         <a href="<?= Route::url('index.php?option=com_search&terms=' . $this->url_terms) ?>"><?= Lang::txt('COM_SEARCH_FILTER_ALL') ?> <span class="item-count"><?= $this->results->getTotalCount() ?></span></a>
                     <?php else : ?>
-                        <strong><?= Lang::txt('COM_SEARCH_FILTER_ALL') ?> <span class="item-count"><?= $this->results->getTotalCount() ?></span></strong>
+                        <strong><?= Lang::txt('COM_SEARCH_FILTER_ALL') ?> <span
+                            class="item-count"><?= $this->results->getTotalCount() ?></span></strong>
                     <?php endif; ?>
                 </li>
             <?php foreach ($this->results->getResultCounts() as $cat => $def) : ?>
                 <?php if ($def['count']) : ?>
                     <li>
                         <?php if ($this->plugin == $cat && !$this->section) : ?>
-                            <strong><?= $this->escape($def['friendly_name']) ?> <span class="item-count"><?= $def['count'] ?></span></strong>
+                            <strong><?= $this->escape($def['friendly_name']) ?> <span
+                                class="item-count"><?= $def['count'] ?></span></strong>
                         <?php else : ?>
                             <a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $this->url_terms) ?>"><?= $this->escape($def['friendly_name']) ?> <span class="item-count"><?= $def['count'] ?></span></a>
                         <?php endif; ?>
@@ -225,7 +229,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                                     ?>
                                     <li><a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?= $this->escape($sdef['name']) ?> <span class="item-count"><?= $sdef['count'] ?></span></a></li>
                                 <?php else : ?>
-                                    <li><strong><?= $this->escape($sdef['name']) ?> <span class="item-count"><?= $sdef['count'] ?></span></strong></li>
+                                    <li><strong><?= $this->escape($sdef['name']) ?> <span
+                                        class="item-count"><?= $sdef['count'] ?></span></strong></li>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                             </ul>

@@ -29,24 +29,32 @@ $rows = $this->todo->entries('list', $this->filters);
     <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
         <ul class="entries-menu order-options">
             <li>
-                <a class="sort-content<?= $this->filters['sortby'] == 'content' ? ' active' : '' ?>" href="<?= Route::url($url . $sortAppend . '&sortby=content') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_CONTENT') ?>">
+                <a class="sort-content<?= $this->filters['sortby'] == 'content' ? ' active' : '' ?>"
+                    href="<?= Route::url($url . $sortAppend . '&sortby=content') ?>"
+                    title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_CONTENT') ?>">
                     &darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_CONTENT'); ?>
                 </a>
             </li>
             <li>
-                <a class="sort-project<?= $this->filters['sortby'] == 'project' ? ' active' : '' ?>" href="<?= Route::url($url . $sortAppend . '&sortby=project') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_PROJECT') ?>">
+                <a class="sort-project<?= $this->filters['sortby'] == 'project' ? ' active' : '' ?>"
+                    href="<?= Route::url($url . $sortAppend . '&sortby=project') ?>"
+                    title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_PROJECT') ?>">
                     &darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_PROJECT'); ?>
                 </a>
             </li>
             <?php if ($this->filters['state']  == 1) { ?>
             <li>
-                <a class="sort-due<?= $this->filters['sortby'] == 'complete' ? ' active' : '' ?>" href="<?= Route::url($url . $sortAppend . '&sortby=complete') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_COMPLETE') ?>">
+                <a class="sort-due<?= $this->filters['sortby'] == 'complete' ? ' active' : '' ?>"
+                    href="<?= Route::url($url . $sortAppend . '&sortby=complete') ?>"
+                    title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_COMPLETE') ?>">
                     &darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_COMPLETE'); ?>
                 </a>
             </li>
             <?php } else { ?>
             <li>
-                <a class="sort-complete<?= $this->filters['sortby'] == 'due' ? ' active' : '' ?>" href="<?= Route::url($url . $sortAppend . '&sortby=due') ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_DUE') ?>">
+                <a class="sort-complete<?= $this->filters['sortby'] == 'due' ? ' active' : '' ?>"
+                    href="<?= Route::url($url . $sortAppend . '&sortby=due') ?>"
+                    title="<?= Lang::txt('PLG_PROJECTS_TODO_SORTBY_DUE') ?>">
                     &darr; <?php echo Lang::txt('PLG_PROJECTS_TODO_SORT_DUE'); ?>
                 </a>
             </li>

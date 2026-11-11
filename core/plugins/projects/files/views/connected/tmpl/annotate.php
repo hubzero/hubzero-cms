@@ -57,7 +57,8 @@ $dubCore = [
                         <li>
                             <div class="entry key-value-pair" data-idx="<?php echo $i; ?>">
                                 <div class="entry-label">
-                                    <input class="dublin" type="text" name="key[<?= $i ?>]" maxlength="250" value="<?= $this->escape($element) ?>" readonly />
+                                    <input class="dublin" type="text" name="key[<?= $i ?>]" maxlength="250"
+                                        value="<?= $this->escape($element) ?>" readonly />
                                 </div>
                                 <div class="separator">:</div>
                                 <div class="entry-value">
@@ -75,11 +76,13 @@ $dubCore = [
                             <li>
                                 <div class="entry key-value-pair" data-idx="<?php echo $i; ?>">
                                     <div class="entry-label">
-                                        <input type="text" name="key[<?= $i ?>]" maxlength="250" value="<?= $this->escape($metadata) ?>" />
+                                        <input type="text" name="key[<?= $i ?>]" maxlength="250"
+                                            value="<?= $this->escape($metadata) ?>" />
                                     </div>
                                     <div class="separator">:</div>
                                     <div class="entry-value">
-                                        <input type="text" name="value[<?= $i ?>]" value="<?= $this->escape($value) ?>" />
+                                        <input type="text" name="value[<?= $i ?>]"
+                                            value="<?= $this->escape($value) ?>" />
                                     </div>
                                 </div>
                             </li>

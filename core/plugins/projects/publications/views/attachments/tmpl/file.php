@@ -28,13 +28,15 @@ if ($data->get('viewer') != 'freeze') {
             <?php if ($data->get('viewer') == 'edit') { ?>
             <span>
                 <?php if ($data->exists()) { ?>
-                <a href="<?= $data->get('downloadUrl') ?>" class="item-download" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD') ?>">&nbsp;</a>
+                <a href="<?= $data->get('downloadUrl') ?>" class="item-download"
+                    title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD') ?>">&nbsp;</a>
                 <?php } ?>
                 <a href="<?= Route::url($pub->link('editversion') . '&action=edititem&aid=' . $data->get('id') . '&p=' . $data->get('props')) ?>" class="showinbox item-edit" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL') ?>">&nbsp;</a>
                 <button type="submit" form="hz-post-action" formaction="<?= Route::url($pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p=' . $data->get('props')) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
             </span>
             <?php } elseif ($data->exists()) { ?>
-                <span><a href="<?= $data->get('downloadUrl') ?>" class="item-download" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD') ?>">&nbsp;</a></span>
+                <span><a href="<?= $data->get('downloadUrl') ?>" class="item-download"
+                    title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_DOWNLOAD') ?>">&nbsp;</a></span>
             <?php } ?>
         </span>
         <span class="item-title" id="<?php echo 'file-' . $data->get('id'); ?>">

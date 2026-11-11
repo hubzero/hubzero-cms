@@ -57,7 +57,8 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
             <input type="hidden" name="p" value="<?php echo $this->escape($this->props); ?>" />
             <input type="hidden" name="action" value="saveitem" />
             <input type="hidden" name="active" value="publications" />
-            <input type="hidden" name="option" value="<?= $this->project->isProvisioned() ? 'com_publications' : $this->option ?>" />
+            <input type="hidden" name="option"
+                value="<?= $this->project->isProvisioned() ? 'com_publications' : $this->option ?>" />
             <input type="hidden" name="backUrl" value="<?php echo $this->escape($this->backUrl); ?>" />
             <?php if ($this->project->isProvisioned()) { ?>
                 <input type="hidden" name="task" value="submit" />
@@ -89,7 +90,8 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
                     <?php } else { ?>
                         <p class="c-wrapper">
                             <span class="leftshift faded"><?= ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_FILE_PATH')) ?>*:</span>
-                            <span><?= $dirpath ?> <input type="text" name="filename" maxlength="100" value="<?= $this->escape(basename($this->row->path)) ?>" /></span>
+                            <span><?= $dirpath ?> <input type="text" name="filename" maxlength="100"
+                                value="<?= $this->escape(basename($this->row->path)) ?>" /></span>
                         </p>
                     <?php } ?>
                 <?php } ?>
@@ -97,7 +99,8 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
                 <p class="submitarea">
                     <input type="submit" class="btn" value="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_SAVE') ?>" />
                     <?php if ($this->ajax) { ?>
-                        <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?= Lang::txt('JCANCEL') ?>" />
+                        <input type="reset" id="cancel-action" class="btn btn-cancel"
+                            value="<?= Lang::txt('JCANCEL') ?>" />
                     <?php } else { ?>
                         <a href="<?= $this->backUrl ?>" class="btn btn-cancel"><?= Lang::txt('JCANCEL') ?></a>
                     <?php } ?>

@@ -33,13 +33,15 @@ if (!in_array($viewas, ['grid', 'list'])) {
 
 <ul id="page_options">
     <li>
-        <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=collections&page=index') ?>">
+        <a class="icon-info btn popup"
+            href="<?= Route::url('index.php?option=com_help&component=collections&page=index') ?>">
             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_GETTING_STARTED'); ?></span>
         </a>
     </li>
 </ul>
 
-<form method="get" action="<?= Route::url($base . '&scope=' . $this->collection->get('alias', 'posts')) ?>" id="collections">
+<form method="get" action="<?= Route::url($base . '&scope=' . $this->collection->get('alias', 'posts')) ?>"
+    id="collections">
     <?php
     $this
          ->view('_submenu', 'collection')
@@ -76,7 +78,12 @@ if (!in_array($viewas, ['grid', 'list'])) {
                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW'); ?></span>
                     </button>
                 <?php } else { ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=' . $this->collection->get('alias') . '/follow') ?>" class="icon-follow follow btn tooltips" data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW') ?>" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW_TITLE') ?>">
+                    <button type="submit" form="hz-post-action"
+                        formaction="<?= Route::url($base . '&scope=' . $this->collection->get('alias') . '/follow') ?>"
+                        class="icon-follow follow btn tooltips"
+                        data-text-follow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW') ?>"
+                        data-text-unfollow="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_UNFOLLOW') ?>"
+                        title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW_TITLE') ?>">
                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FOLLOW'); ?></span>
                     </button>
                 <?php } ?>
@@ -99,7 +106,8 @@ if (!in_array($viewas, ['grid', 'list'])) {
         <div id="posts" data-base="<?= rtrim(Request::base(true), '/') ?>" data-update="<?= Route::url('index.php?option=com_collections&controller=posts&task=reorder&' . Session::getFormToken() . '=1') ?>" class="view-<?= $viewas . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
             <?php if ($this->params->get('access-create-item') && !Request::getInt('no_html', 0)) { ?>
                 <div class="post new-post" id="post_0">
-                    <a class="icon-add add" href="<?= Route::url($base . '&scope=post/new&board=' . $this->collection->get('alias')) ?>">
+                    <a class="icon-add add"
+                        href="<?= Route::url($base . '&scope=post/new&board=' . $this->collection->get('alias')) ?>">
                         <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_NEW_POST'); ?>
                     </a>
                 </div>
@@ -108,7 +116,8 @@ if (!in_array($viewas, ['grid', 'list'])) {
             foreach ($this->rows as $row) {
                 $item = $row->item();
                 ?>
-                <div class="post <?= $item->type() ?>" id="post_<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>" data-closeup-url="<?= Route::url($base . '&scope=post/' . $row->get('id')) ?>">
+                <div class="post <?= $item->type() ?>" id="post_<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>"
+                    data-closeup-url="<?= Route::url($base . '&scope=post/' . $row->get('id')) ?>">
                     <div class="content">
                         <?php
                             $this
@@ -149,7 +158,8 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
                                         </a>
                                     <?php } ?>
-                                    <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&scope=post/' . $row->get('id') . '/collect') ?>">
+                                    <a class="btn repost" data-id="<?= $row->get('id') ?>"
+                                        href="<?= Route::url($base . '&scope=post/' . $row->get('id') . '/collect') ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                                     <?php if ($this->group->published == 1) { ?>
@@ -190,12 +200,15 @@ if (!in_array($viewas, ['grid', 'list'])) {
                             <?php
                             $name = $this->escape(stripslashes($row->creator()->get('name')));
                             if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-                                <a href="<?= Route::url($row->creator()->link()) ?>" title="<?= $name ?>" class="img-link">
-                                    <img src="<?= $row->creator()->picture() ?>" alt="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                <a href="<?= Route::url($row->creator()->link()) ?>" title="<?= $name ?>"
+                                    class="img-link">
+                                    <img src="<?= $row->creator()->picture() ?>"
+                                        alt="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                                 </a>
                             <?php } else { ?>
                                 <span class="img-link">
-                                    <img src="<?= $row->creator()->picture() ?>" alt="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                    <img src="<?= $row->creator()->picture() ?>"
+                                        alt="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                                 </span>
                             <?php } ?>
                             <p>
@@ -211,15 +224,20 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                 ?>
                                 <br />
                                 <span class="entry-date">
-                                    <span class="entry-date-at"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_DATE_AT') ?></span>
-                                    <span class="time"><time datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
-                                    <span class="entry-date-on"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_DATE_ON') ?></span>
-                                    <span class="date"><time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
+                                    <span
+                                        class="entry-date-at"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_DATE_AT') ?></span>
+                                    <span class="time"><time
+                                        datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
+                                    <span
+                                        class="entry-date-on"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_DATE_ON') ?></span>
+                                    <span class="date"><time
+                                        datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
                                 </span>
                             </p>
                         </div><!-- / .attribution -->
                         <?php if (!User::isGuest() && $this->params->get('access-create-item') && $this->filters['sort'] == 'ordering') { ?>
-                            <div class="sort-handle tooltips" title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_GRAB_TO_REORDER') ?>"></div>
+                            <div class="sort-handle tooltips"
+                                title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_GRAB_TO_REORDER') ?>"></div>
                         <?php } ?>
                     </div><!-- / .content -->
                 </div><!-- / .post -->

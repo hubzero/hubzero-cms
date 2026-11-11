@@ -31,7 +31,8 @@ Toolbar::title(Lang::txt('COM_MEMBERS_REGISTRATION') . ': ' . Lang::txt('COM_MEM
 <?php } ?>
 
 <?php if ($canDo->get('core.admin')) { ?>
-<form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="hubForm" id="item-form" method="post" enctype="multipart/form-data">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="hubForm" id="item-form" method="post"
+    enctype="multipart/form-data">
     <fieldset>
         <p><input type="file" class="option" name="upload" /></p>
         <input type="submit" class="option" value="Import" />

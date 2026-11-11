@@ -148,8 +148,10 @@ if ($this->message) { ?>
     $to   = str_replace('-', '/', str_replace('-00 00:00:00', '-01', $currentDownload->datetime));
     ?>
     <div class="chart-wrap">
-        <div id="chart-users" class="chart line multi-line" role="img" aria-label="<?= Lang::txt('PLG_USAGE_OVERVIEW_CHART_USERS_LABEL') ?>"></div>
-        <div id="chart-users-overview" class="chart line multi-line overview" role="img" aria-label="<?= Lang::txt('PLG_USAGE_OVERVIEW_CHART_TIMELINE_LABEL') ?>"></div>
+        <div id="chart-users" class="chart line multi-line" role="img"
+            aria-label="<?= Lang::txt('PLG_USAGE_OVERVIEW_CHART_USERS_LABEL') ?>"></div>
+        <div id="chart-users-overview" class="chart line multi-line overview" role="img"
+            aria-label="<?= Lang::txt('PLG_USAGE_OVERVIEW_CHART_TIMELINE_LABEL') ?>"></div>
     </div>
 
     <div class="grid charts" aria-live="polite" aria-atomic="false">
@@ -526,7 +528,8 @@ if ($this->message) { ?>
             <span class="usage-label"><?php echo Lang::txt('PLG_USAGE_OVERVIEW_SIMULATION_USERS'); ?></span>
 
             <div class="chart-wrap">
-                <div id="chart-sim-users" class="chart line" role="img" aria-label="<?= Lang::txt('PLG_USAGE_OVERVIEW_CHART_SIM_USERS_LABEL') ?>"></div>
+                <div id="chart-sim-users" class="chart line" role="img"
+                    aria-label="<?= Lang::txt('PLG_USAGE_OVERVIEW_CHART_SIM_USERS_LABEL') ?>"></div>
             </div>
         </div>
         <div class="col span6 omega usage-stat">
@@ -561,7 +564,8 @@ if ($this->message) { ?>
             <span class="usage-label"><?php echo Lang::txt('PLG_USAGE_OVERVIEW_SIMULATION_JOBS'); ?></span>
 
             <div class="chart-wrap">
-                <div id="chart-sim-jobs" class="chart line" role="img" aria-label="<?= Lang::txt('PLG_USAGE_OVERVIEW_CHART_SIM_JOBS_LABEL') ?>"></div>
+                <div id="chart-sim-jobs" class="chart line" role="img"
+                    aria-label="<?= Lang::txt('PLG_USAGE_OVERVIEW_CHART_SIM_JOBS_LABEL') ?>"></div>
             </div>
         </div>
     </div>

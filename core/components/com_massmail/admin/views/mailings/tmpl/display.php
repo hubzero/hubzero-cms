@@ -31,12 +31,15 @@ $statuses = \Components\Massmail\Models\Mailing::statuses();
 
 $this->css('display.css', 'com_massmail');
 ?>
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MASSMAIL_FILTER_SEARCH') ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_MASSMAIL_FILTER_SEARCH') ?>" />
                 <input type="submit" value="<?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>

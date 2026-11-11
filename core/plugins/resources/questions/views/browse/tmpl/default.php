@@ -78,23 +78,27 @@ $this->css();
                 </th>
                 <td>
                 <?php if (!$row->isReported()) { ?>
-                    <a class="entry-title" href="<?= Route::url($row->link()) ?>"><?= $this->escape(strip_tags($row->subject)) ?></a><br />
+                    <a class="entry-title"
+                        href="<?= Route::url($row->link()) ?>"><?= $this->escape(strip_tags($row->subject)) ?></a><br />
                 <?php } else { ?>
                     <span class="entry-title"><?= Lang::txt('PLG_RESOURCES_QUESTIONS_QUESTION_UNDER_REVIEW') ?></span><br />
                 <?php } ?>
                     <span class="entry-details">
                         <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ASKED_BY', $name); ?>
                         <span class="entry-date-at"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_AT'); ?></span>
-                        <span class="entry-time"><time datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
+                        <span class="entry-time"><time
+                            datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
                         <span class="entry-date-on"><?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_ON'); ?></span>
-                        <span class="entry-date"><time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
+                        <span class="entry-date"><time
+                            datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-state">
                             <?= ($row->get('state') == 1) ? Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_CLOSED') : Lang::txt('PLG_RESOURCES_QUESTIONS_STATE_OPEN') ?>
                         </span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-comments">
-                            <a href="<?= Route::url($row->link() . '#answers') ?>" title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_RESPONSES', $row->get('rcount')) ?>">
+                            <a href="<?= Route::url($row->link() . '#answers') ?>"
+                                title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_NUM_RESPONSES', $row->get('rcount')) ?>">
                                 <?php echo $row->responses->count(); ?>
                             </a>
                         </span>
@@ -110,7 +114,8 @@ $this->css();
                 <td class="voting">
                     <span class="vote-like">
                     <?php if (User::isGuest()) { ?>
-                        <span class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP_LOGIN') ?>">
+                        <span class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips"
+                            title="<?= Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_UP_LOGIN') ?>">
                             <?php echo Lang::txt('PLG_RESOURCES_QUESTIONS_VOTE_LIKES', $row->get('helpful', 0)); ?>
                         </span>
                     <?php } else { ?>

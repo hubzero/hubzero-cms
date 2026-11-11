@@ -51,10 +51,12 @@ if ($this->getError()) {
         <input type="hidden" name="id" value="<?php echo $this->project->get('id'); ?>" id="projectid" />
         <input type="hidden" name="active" value="publications" />
         <input type="hidden" name="action" value="savenew" />
-        <input type="hidden" name="option" value="<?= $this->project->isProvisioned() ? 'com_publications' : $this->option ?>" />
+        <input type="hidden" name="option"
+            value="<?= $this->project->isProvisioned() ? 'com_publications' : $this->option ?>" />
         <input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
         <input type="hidden" name="selected_version" value="<?php echo $this->selected_version; ?>" />
-        <input type="hidden" name="provisioned" id="provisioned" value="<?= $this->project->isProvisioned() ? 1 : 0 ?>" />
+        <input type="hidden" name="provisioned" id="provisioned"
+            value="<?= $this->project->isProvisioned() ? 1 : 0 ?>" />
         <?php if ($this->project->isProvisioned()) { ?>
         <input type="hidden" name="task" value="submit" />
         <?php } ?>
@@ -69,7 +71,8 @@ if ($this->getError()) {
         </label>
     </div>
         <p class="submitarea">
-            <input type="submit" class="btn active btn-success" value="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_NEW_VERSION') ?>" />
+            <input type="submit" class="btn active btn-success"
+                value="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_START_NEW_VERSION') ?>" />
                 <?php if ($this->ajax) { ?>
                 <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?= Lang::txt('JCANCEL') ?>" />
                 <?php } else {

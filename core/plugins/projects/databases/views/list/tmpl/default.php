@@ -47,7 +47,8 @@ $this->css();
         </li>
     </ul>
 <?php } ?>
-<div id="confirm-file-delete" class="confirm-file-delete" title="<?= Lang::txt('PLG_PROJECTS_DATABASES_DELETE_PROJECT_DATABASE') ?>">
+<div id="confirm-file-delete" class="confirm-file-delete"
+    title="<?= Lang::txt('PLG_PROJECTS_DATABASES_DELETE_PROJECT_DATABASE') ?>">
     <p>
         <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0; color: red;"></span>
         <?php echo Lang::txt('Confirm database deletion.'); ?>
@@ -100,7 +101,8 @@ $this->css();
             }
             ?>
             <tr class="mini faded">
-                <td title="<?= $this->escape($r['description']) ?>" data-db-title="<?= $this->escape($r['title']) ?>" data-db-id="<?= $r['id'] ?>">
+                <td title="<?= $this->escape($r['description']) ?>" data-db-title="<?= $this->escape($r['title']) ?>"
+                    data-db-id="<?= $r['id'] ?>">
                     <a rel="noopener noreferrer" target="_blank" href="/<?= $this->dataviewer ?>/view/<?= $this->model->get('alias') ?>:dsl/<?= $r['database_name'] ?>/"><?= $this->escape($r['title']) ?></a>
                 <?php if ($this->model->access('content')) { ?>
                     <span class="db-update" title="<?= Lang::txt('PLG_PROJECTS_DATABASES_CLICK_TO_EDIT') ?>"></span>

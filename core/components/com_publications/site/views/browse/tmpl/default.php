@@ -32,7 +32,9 @@ $this
                     <fieldset class="entry-search">
                         <legend><?php echo Lang::txt('Search'); ?></legend>
                         <label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('Enter keyword or phrase') ?>" />
+                        <input type="text" name="search" id="entry-search-field"
+                            value="<?= $this->escape($this->filters['search']) ?>"
+                            placeholder="<?= Lang::txt('Enter keyword or phrase') ?>" />
                         <input type="hidden" name="sortby" value="<?= $this->escape($this->filters['sortby']) ?>" />
                         <input type="hidden" name="tag" value="<?php echo $this->escape($this->filters['tag']); ?>" />
                     </fieldset>

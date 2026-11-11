@@ -15,7 +15,8 @@ use Hubzero\Facades\Session;
 defined('_HZEXEC_') or die();
 ?>
 <div id="media">
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" enctype="multipart/form-data" name="filelist" id="filelist">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"
+        method="post" enctype="multipart/form-data" name="filelist" id="filelist">
         <table class="formed">
             <thead>
                 <tr>
@@ -61,7 +62,8 @@ defined('_HZEXEC_') or die();
                 ?>
                 <tr>
                     <td rowspan="6">
-                        <img src="<?= substr($path, strlen(PATH_ROOT)) . '/' . $file ?>" alt="<?= Lang::txt('COM_TOOLS_FIELDSET_IMAGE') ?>" id="conimage" />
+                        <img src="<?= substr($path, strlen(PATH_ROOT)) . '/' . $file ?>"
+                            alt="<?= Lang::txt('COM_TOOLS_FIELDSET_IMAGE') ?>" id="conimage" />
                     </td>
                     <th><?php echo Lang::txt('COM_TOOLS_IMAGE_FILE'); ?>:</th>
                     <td><?php echo $this->escape($file); ?></td>

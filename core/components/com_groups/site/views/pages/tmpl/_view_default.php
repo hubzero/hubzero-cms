@@ -116,7 +116,9 @@ $memberAccess = \Hubzero\User\Group\Helper::getPluginAccess($this->group, 'membe
                 <?php } else { ?>
                     <div class="member">
                 <?php } ?>
-                        <img src="<?= $profile->picture(0, true) ?>" alt="<?= $this->escape(stripslashes($profile->get('name'))) ?>" class="member-border" width="50px" height="50px" />
+                        <img src="<?= $profile->picture(0, true) ?>"
+                            alt="<?= $this->escape(stripslashes($profile->get('name'))) ?>" class="member-border"
+                            width="50px" height="50px" />
                         <span class="name"><?php echo $this->escape(stripslashes($profile->get('name'))); ?></span>
                         <span class="org"><?= $this->escape(stripslashes($profile->get('organization', ''))) ?></span>
                 <?php if (in_array($profile->get('access'), User::getAuthorisedViewLevels())) { ?>

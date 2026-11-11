@@ -324,22 +324,31 @@ if ($type == 'hubpresenter' || $type == 'html5') {
             <div id="progress-bar"></div>
             <div id="control-buttons">
                 <div id="control-buttons-left">
-                    <a id="play-pause" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAY_VIDEO')) ?>" aria-pressed="false">
-                        <svg class="icon-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <a id="play-pause" class="control" href="javascript:void(0);" role="button"
+                        aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAY_VIDEO')) ?>"
+                        aria-pressed="false">
+                        <svg class="icon-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
                             <rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
                             <rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
                         </svg>
-                        <svg class="icon-play" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+                        <svg class="icon-play" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" style="display:none">
                             <path d="M7 5L19 12L7 19V5Z" fill="currentColor" />
                         </svg>
                     </a>
                     <div id="media-progress"></div>
                 </div>
                 <div id="control-buttons-right">
-                    <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_SETTINGS')) ?>" aria-haspopup="true" aria-expanded="false">
-                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor" stroke-width="1.75" />
-                            <text x="5" y="16.5" font-family="sans-serif" font-size="9" font-weight="700" fill="currentColor" text-anchor="start" dominant-baseline="auto">CC</text>
+                    <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false"
+                        aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_SETTINGS')) ?>"
+                        aria-haspopup="true" aria-expanded="false">
+                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor"
+                                stroke-width="1.75" />
+                            <text x="5" y="16.5" font-family="sans-serif" font-size="9" font-weight="700"
+                                fill="currentColor" text-anchor="start" dominant-baseline="auto">CC</text>
                         </svg>
                         <div class="control-container subtitle-controls">
                             <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
@@ -421,32 +430,47 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             </div>
                         </div>
                     </a>
-                    <a id="volume" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>" aria-haspopup="true" aria-expanded="false">
-                        <svg class="icon-vol-high" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <a id="volume" class="control" href="javascript:void(0);" role="button"
+                        aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>"
+                        aria-haspopup="true" aria-expanded="false">
+                        <svg class="icon-vol-high" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
                             <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
                             <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor" />
                             <path d="M14 3.23v2.06A7 7 0 0 1 19 12a7 7 0 0 1-5 6.71v2.06A9 9 0 0 0 21 12 9 9 0 0 0 14 3.23z" fill="currentColor" />
                         </svg>
-                        <svg class="icon-vol-medium" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+                        <svg class="icon-vol-medium" aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                            fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
                             <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
                             <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor" />
                         </svg>
-                        <svg class="icon-vol-low" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+                        <svg class="icon-vol-low" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" style="display:none">
                             <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
-                            <path d="M18.5 12a6.5 6.5 0 0 0-1-3.35v6.7A6.5 6.5 0 0 0 18.5 12z" fill="currentColor" opacity=".4" />
+                            <path d="M18.5 12a6.5 6.5 0 0 0-1-3.35v6.7A6.5 6.5 0 0 0 18.5 12z" fill="currentColor"
+                                opacity=".4" />
                         </svg>
-                        <svg class="icon-vol-mute" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+                        <svg class="icon-vol-mute" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" style="display:none">
                             <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
-                            <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                            <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                            <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                            <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
                         </svg>
                         <div class="control-container volume-controls">
-                            <label for="volume-bar" class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME') ?></label>
-                            <div id="volume-bar" role="slider" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
+                            <label for="volume-bar"
+                                class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME') ?></label>
+                            <div id="volume-bar" role="slider"
+                                aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>"
+                                aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
                         </div>
                     </a>
-                    <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAYBACK_SETTINGS')) ?>" aria-haspopup="true" aria-expanded="false">
-                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <a id="settings" class="control" href="javascript:void(0);" role="button"
+                        aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAYBACK_SETTINGS')) ?>"
+                        aria-haspopup="true" aria-expanded="false">
+                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor" />
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M19.4 13a7.6 7.6 0 0 0 .1-1c0-.34-.03-.67-.08-1l2.16-1.68a.5.5 0 0 0 .12-.64l-2.05-3.55a.5.5 0 0 0-.61-.22l-2.55 1.03a7.45 7.45 0 0 0-1.72-1l-.38-2.72A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42L9.13 5.14a7.45 7.45 0 0 0-1.72 1L4.86 5.11a.49.49 0 0 0-.61.22L2.2 8.88a.48.48 0 0 0 .12.64L4.48 11c-.05.33-.08.66-.08 1s.03.67.08 1L2.32 14.68a.5.5 0 0 0-.12.64l2.05 3.55c.12.22.38.3.61.22l2.55-1.03c.53.39 1.1.72 1.72 1l.38 2.72c.06.28.28.42.49.42h4c.22 0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 1.72-1l2.55 1.03c.23.08.49 0 .61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z" fill="currentColor" opacity=".7" />
                         </svg>
@@ -467,10 +491,15 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             </div>
                         </div>
                     </a>
-                    <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK_AT_TIME')) ?>" aria-haspopup="true" aria-expanded="false">
-                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    <a id="link" class="control" href="javascript:void(0);" role="button"
+                        aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK_AT_TIME')) ?>"
+                        aria-haspopup="true" aria-expanded="false">
+                        <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                         <div class="control-container link-controls">
                             <h3><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK') ?> <span><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_AT_POSITION') ?></span></h3>
@@ -492,7 +521,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
     <div id="transcript-container">
         <div id="transcript-toolbar">
             <div id="transcript-select"></div>
-            <input type="text" id="transcript-search" placeholder="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_SEARCH_TRANSCRIPT')) ?>" />
+            <input type="text" id="transcript-search"
+                placeholder="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_SEARCH_TRANSCRIPT')) ?>" />
             <a href="javascript:void(0);" id="font-bigger"></a>
             <a href="javascript:void(0);" id="font-smaller"></a>
         </div>
@@ -520,15 +550,19 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                     <ul class="no-js">
                         <?php $counter = 0; ?>
                         <?php foreach ($presentation->slides as $slide) : ?>
-                            <li id="slide_<?= $counter ?>" title="<?= $this->escape($slide->title) ?>" time="<?= $this->escape($slide->time) ?>">
+                            <li id="slide_<?= $counter ?>" title="<?= $this->escape($slide->title) ?>"
+                                time="<?= $this->escape($slide->time) ?>">
                                 <?php if ($slide->type == 'Image') : ?>
-                                    <img src="<?= $this->escape($content_folder . DS . $slide->media) ?>" alt="<?= $this->escape($slide->title) ?>" />
+                                    <img src="<?= $this->escape($content_folder . DS . $slide->media) ?>"
+                                        alt="<?= $this->escape($slide->title) ?>" />
                                 <?php else : ?>
                                     <video class="slidevideo">
                                         <?php foreach ($slide->media as $source) : ?>
-                                            <source src="<?= $this->escape($content_folder . DS . $source->source) ?>" />
+                                            <source
+                                                src="<?= $this->escape($content_folder . DS . $source->source) ?>" />
                                         <?php endforeach; ?>
-                                        <a href="<?= $this->escape($content_folder . DS . $slide->media[0]->source) ?>" class="flowplayer_slide" id="flowplayer_slide_<?= $counter ?>"></a>
+                                        <a href="<?= $this->escape($content_folder . DS . $slide->media[0]->source) ?>"
+                                            class="flowplayer_slide" id="flowplayer_slide_<?= $counter ?>"></a>
                                     </video>
                                     <img src="<?= $this->escape(isset($slide->media[3]) ? $content_folder . DS . $slide->media[3]->source : '') ?>" alt="<?= $this->escape($slide->title) ?>" class="imagereplacement" />
                                 <?php endif; ?>
@@ -542,12 +576,16 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                     <div id="progress-bar"></div>
                     <div id="control-buttons">
                         <div id="control-buttons-left">
-                            <a id="play-pause" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAY_VIDEO')) ?>" aria-pressed="false">
-                                <svg class="icon-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <a id="play-pause" class="control" href="javascript:void(0);" role="button"
+                                aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAY_VIDEO')) ?>"
+                                aria-pressed="false">
+                                <svg class="icon-pause" aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <rect x="6" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
                                     <rect x="14" y="5" width="4" height="14" rx="1.5" fill="currentColor" />
                                 </svg>
-                                <svg class="icon-play" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+                                <svg class="icon-play" aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
                                     <path d="M7 5L19 12L7 19V5Z" fill="currentColor" />
                                 </svg>
                             </a>
@@ -555,9 +593,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                         </div>
                         <div id="control-buttons-right">
                             <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_SETTINGS')) ?>" aria-haspopup="true" aria-expanded="false">
-                                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor" stroke-width="1.75" />
-                                    <text x="5" y="16.5" font-family="sans-serif" font-size="9" font-weight="700" fill="currentColor" text-anchor="start" dominant-baseline="auto">CC</text>
+                                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor"
+                                        stroke-width="1.75" />
+                                    <text x="5" y="16.5" font-family="sans-serif" font-size="9" font-weight="700"
+                                        fill="currentColor" text-anchor="start" dominant-baseline="auto">CC</text>
                                 </svg>
                                 <div class="control-container subtitle-controls">
                                     <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_TRANSCRIPT'); ?></h3>
@@ -639,32 +680,47 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     </div>
                                 </div>
                             </a>
-                            <a id="volume" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>" aria-haspopup="true" aria-expanded="false">
-                                <svg class="icon-vol-high" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <a id="volume" class="control" href="javascript:void(0);" role="button"
+                                aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>"
+                                aria-haspopup="true" aria-expanded="false">
+                                <svg class="icon-vol-high" aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
-                                    <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor" />
+                                    <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z"
+                                        fill="currentColor" />
                                     <path d="M14 3.23v2.06A7 7 0 0 1 19 12a7 7 0 0 1-5 6.71v2.06A9 9 0 0 0 21 12 9 9 0 0 0 14 3.23z" fill="currentColor" />
                                 </svg>
-                                <svg class="icon-vol-medium" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+                                <svg class="icon-vol-medium" aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
                                     <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
-                                    <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z" fill="currentColor" />
+                                    <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v8.05A4.5 4.5 0 0 0 16.5 12z"
+                                        fill="currentColor" />
                                 </svg>
-                                <svg class="icon-vol-low" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+                                <svg class="icon-vol-low" aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
                                     <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
-                                    <path d="M18.5 12a6.5 6.5 0 0 0-1-3.35v6.7A6.5 6.5 0 0 0 18.5 12z" fill="currentColor" opacity=".4" />
+                                    <path d="M18.5 12a6.5 6.5 0 0 0-1-3.35v6.7A6.5 6.5 0 0 0 18.5 12z"
+                                        fill="currentColor" opacity=".4" />
                                 </svg>
-                                <svg class="icon-vol-mute" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+                                <svg class="icon-vol-mute" aria-hidden="true" focusable="false" viewBox="0 0 24 24"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
                                     <path d="M3 9v6h4l5 5V4L7 9H3z" fill="currentColor" />
-                                    <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-                                    <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                    <line x1="17" y1="9" x2="23" y2="15" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" />
+                                    <line x1="23" y1="9" x2="17" y2="15" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" />
                                 </svg>
                                 <div class="control-container volume-controls">
-                                    <label for="volume-bar" class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME') ?></label>
-                                    <div id="volume-bar" role="slider" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
+                                    <label for="volume-bar"
+                                        class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME') ?></label>
+                                    <div id="volume-bar" role="slider"
+                                        aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_VOLUME')) ?>"
+                                        aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
                                 </div>
                             </a>
                             <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAYBACK_SETTINGS')) ?>" aria-haspopup="true" aria-expanded="false">
-                                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor" />
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M19.4 13a7.6 7.6 0 0 0 .1-1c0-.34-.03-.67-.08-1l2.16-1.68a.5.5 0 0 0 .12-.64l-2.05-3.55a.5.5 0 0 0-.61-.22l-2.55 1.03a7.45 7.45 0 0 0-1.72-1l-.38-2.72A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42L9.13 5.14a7.45 7.45 0 0 0-1.72 1L4.86 5.11a.49.49 0 0 0-.61.22L2.2 8.88a.48.48 0 0 0 .12.64L4.48 11c-.05.33-.08.66-.08 1s.03.67.08 1L2.32 14.68a.5.5 0 0 0-.12.64l2.05 3.55c.12.22.38.3.61.22l2.55-1.03c.53.39 1.1.72 1.72 1l.38 2.72c.06.28.28.42.49.42h4c.22 0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 1.72-1l2.55 1.03c.23.08.49 0 .61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z" fill="currentColor" opacity=".7" />
                                 </svg>
@@ -686,9 +742,14 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 </div>
                             </a>
                             <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK_AT_TIME')) ?>" aria-haspopup="true" aria-expanded="false">
-                                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
                                 </svg>
                                 <div class="control-container link-controls">
                                     <h3><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK') ?> <span><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_AT_POSITION') ?></span></h3>
@@ -711,7 +772,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
             <div id="presenter-right">
                 <div id="media" class="<?php echo $this->escape($cls); ?>">
                     <?php if ($__ptype == 'video') : ?>
-                        <video id="player" preload="auto" controls="controls" data-mediaid="<?= $this->asset->get('id') ?>">
+                        <video id="player" preload="auto" controls="controls"
+                            data-mediaid="<?= $this->asset->get('id') ?>">
                             <?php foreach ($__pmedia as $source) : ?>
                                 <?php
                                 switch (strtolower($source->type)) {
@@ -727,7 +789,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         break;
                                 }
                                 ?>
-                                <source src="<?= $this->escape($content_folder . DS . $source->source) ?>" type='<?= $this->escape($type) ?>'>
+                                <source src="<?= $this->escape($content_folder . DS . $source->source) ?>"
+                                    type='<?= $this->escape($type) ?>'>
                             <?php endforeach; ?>
                             <a href="<?= $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')) ?>" id="flowplayer"></a>
 
@@ -800,7 +863,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
         <div id="transcript-container">
             <div id="transcript-toolbar">
                 <div id="transcript-select"></div>
-                <input type="text" id="transcript-search" placeholder="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_SEARCH_TRANSCRIPT')) ?>" />
+                <input type="text" id="transcript-search"
+                    placeholder="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_SEARCH_TRANSCRIPT')) ?>" />
                 <a href="javascript:void(0);" id="font-bigger"></a>
                 <a href="javascript:void(0);" id="font-smaller"></a>
             </div>

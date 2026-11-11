@@ -24,7 +24,8 @@ $base = $this->offering->link() . '&active=forum';
                     <legend><?php echo Lang::txt('Search for posts'); ?></legend>
 
                     <label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
-                    <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" />
+                    <input type="text" name="q" id="entry-search-field"
+                        value="<?= $this->escape($this->filters['search']) ?>" />
 
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />

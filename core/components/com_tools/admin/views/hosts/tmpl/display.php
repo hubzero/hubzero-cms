@@ -24,13 +24,16 @@ Toolbar::help('hosts');
 $this->css();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?= Html::grid('sort', 'COM_TOOLS_COL_NAME', 'hostname', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?= Html::grid('sort', 'COM_TOOLS_COL_SERVICE_HOST', 'service_host', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
@@ -70,7 +73,8 @@ if ($this->rows) {
         ?>
             <tr>
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->hostname ?>" class="checkbox-toggle" />
+                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->hostname ?>"
+                        class="checkbox-toggle" />
                     <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $row->hostname ?></label>
                 </td>
                 <td>

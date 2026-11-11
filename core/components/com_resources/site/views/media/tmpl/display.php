@@ -21,7 +21,8 @@ $this
     ->css('component.css')
     ->js('media.js');
 ?>
-<form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="adminForm" id="adminForm" method="post"
+    enctype="multipart/form-data">
     <fieldset>
         <label for="upload">
             <input type="file" class="option" name="upload" id="upload" />

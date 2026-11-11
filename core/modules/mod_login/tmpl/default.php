@@ -106,12 +106,14 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                     <?php else : ?>
                         <div class="label-input-pair username">
                             <label for="username"><?php echo Lang::txt('MOD_LOGIN_USERNAME'); ?>:</label>
-                            <input tabindex="1" type="text" name="username" id="username" class="username" placeholder="<?= Lang::txt('MOD_LOGIN_USERNAME') ?>" />
+                            <input tabindex="1" type="text" name="username" id="username" class="username"
+                                placeholder="<?= Lang::txt('MOD_LOGIN_USERNAME') ?>" />
                         </div>
                     <?php endif; ?>
                     <div class="label-input-pair">
                         <label for="password"><?php echo Lang::txt('MOD_LOGIN_PASSWORD'); ?>:</label>
-                        <input tabindex="2" type="password" name="passwd" id="password" class="passwd" placeholder="<?= Lang::txt('MOD_LOGIN_PASSWORD') ?>" autocomplete="off" />
+                        <input tabindex="2" type="password" name="passwd" id="password" class="passwd"
+                            placeholder="<?= Lang::txt('MOD_LOGIN_PASSWORD') ?>" autocomplete="off" />
                         <div class="spinner">
                             <div class="bounce1"></div>
                             <div class="bounce2"></div>
@@ -125,7 +127,8 @@ if ($primary != 'hubzero' && !isset($refl[$primary])) {
                     <?php if (Plugin::isEnabled('system', 'remember')) : ?>
                         <div class="remember-wrap">
                             <input type="checkbox" class="remember option" name="remember" id="remember" value="yes" title="<?= Lang::txt('Remember Me') ?>" <?= ($remember_me_default) ? 'checked="checked"' : '' ?> />
-                            <label for="remember" class="remember-me-label"><?= Lang::txt('MOD_LOGIN_KEEP_LOGGED_IN') ?></label>
+                            <label for="remember"
+                                class="remember-me-label"><?= Lang::txt('MOD_LOGIN_KEEP_LOGGED_IN') ?></label>
                         </div>
                     <?php endif; ?>
                 </div>

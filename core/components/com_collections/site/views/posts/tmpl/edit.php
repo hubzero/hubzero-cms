@@ -76,7 +76,8 @@ if (!$dir) {
             <p>
                 <label for="filter-search">
                     <span><?php echo Lang::txt('COM_COLLECTIONS_SEARCH_LABEL'); ?></span>
-                    <input type="text" name="search" id="filter-search" value="" placeholder="<?= Lang::txt('COM_COLLECTIONS_SEARCH_PLACEHOLDER') ?>" />
+                    <input type="text" name="search" id="filter-search" value=""
+                        placeholder="<?= Lang::txt('COM_COLLECTIONS_SEARCH_PLACEHOLDER') ?>" />
                 </label>
                 <input type="submit" class="filter-submit" value="<?php echo Lang::txt('COM_COLLECTIONS_GO'); ?>" />
             </p>
@@ -138,15 +139,20 @@ if (!$dir) {
                             </span>
                             <span class="asset-file">
                         <?php if ($asset->get('type') == 'link') { ?>
-                                <input type="text" name="assets[<?= $i ?>][filename]" size="35" value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>" placeholder="http://" />
+                                <input type="text" name="assets[<?= $i ?>][filename]" size="35"
+                                    value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>"
+                                    placeholder="http://" />
                         <?php } else { ?>
                                 <?php echo $this->escape(stripslashes($asset->get('filename'))); ?>
-                                <input type="hidden" name="assets[<?= $i ?>][filename]" value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][filename]"
+                                    value="<?= $this->escape(stripslashes($asset->get('filename'))) ?>" />
                         <?php } ?>
                             </span>
                             <span class="asset-description">
-                                <input type="hidden" name="assets[<?= $i ?>][type]" value="<?= $this->escape(stripslashes($asset->get('type'))) ?>" />
-                                <input type="hidden" name="assets[<?= $i ?>][id]" value="<?= $this->escape($asset->get('id')) ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][type]"
+                                    value="<?= $this->escape(stripslashes($asset->get('type'))) ?>" />
+                                <input type="hidden" name="assets[<?= $i ?>][id]"
+                                    value="<?= $this->escape($asset->get('id')) ?>" />
                             <?php // The asset hangs off the item, so removing it removes it from
                                   // every repost too. The controller allows that only to the item's
                                   // owner; offering the link to anyone else is a 403 waiting to happen.
@@ -166,7 +172,8 @@ if (!$dir) {
 
                     <label for="field-title">
                         <?php echo Lang::txt('COM_COLLECTIONS_FIELD_TITLE'); ?>
-                        <input type="text" name="fields[title]" id="field-title" size="35" value="<?= $this->escape(stripslashes($item->get('title'))) ?>" />
+                        <input type="text" name="fields[title]" id="field-title" size="35"
+                            value="<?= $this->escape(stripslashes($item->get('title'))) ?>" />
                     </label>
     <?php } ?>
                     <label for="field_description">
@@ -234,7 +241,8 @@ if (!$dir) {
         <?php echo Html::input('token'); ?>
 
         <p class="submit">
-            <input class="btn btn-success" type="submit" value="<?= Lang::txt(strtoupper($this->option) . '_SAVE') ?>" />
+            <input class="btn btn-success" type="submit"
+                value="<?= Lang::txt(strtoupper($this->option) . '_SAVE') ?>" />
             <?php if ($item->get('id')) { ?>
                 <a class="btn btn-secondary" href="<?= Route::url($base . ($item->get('id') ? '&task=' . $this->collection->get('alias') : '')) ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>

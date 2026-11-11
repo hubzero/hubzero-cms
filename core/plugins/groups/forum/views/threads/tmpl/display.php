@@ -246,15 +246,18 @@ $this
                     </strong>
                     <span class="permalink">
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?></span>
-                        <span class="time"><time datetime="<?= $now ?>"><?= Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
+                        <span class="time"><time
+                            datetime="<?= $now ?>"><?= Date::toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_FORUM_ON'); ?></span>
-                        <span class="date"><time datetime="<?= $now ?>"><?= Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
+                        <span class="date"><time
+                            datetime="<?= $now ?>"><?= Date::toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
                     </span>
                 </p>
 
                 <label for="field_comment" id="addNewPostAreaGroup">
                     <div>
-                        <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS') ?> <span class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
+                        <?= Lang::txt('PLG_GROUPS_FORUM_FIELD_COMMENTS') ?> <span
+                            class="required"><?= Lang::txt('PLG_GROUPS_FORUM_REQUIRED') ?></span>
                         <span class="note" style='float:right'>Use an @ sign to mention group users in the post</span>
                     </div>
                     <?php
@@ -332,7 +335,8 @@ $this
                     </p>
                 </div>
             </fieldset>
-            <input type="hidden" name="fields[category_id]" value="<?= $this->escape($this->thread->get('category_id')) ?>" />
+            <input type="hidden" name="fields[category_id]"
+                value="<?= $this->escape($this->thread->get('category_id')) ?>" />
             <input type="hidden" name="fields[parent]" value="<?php echo $this->escape($this->thread->get('id')); ?>" />
             <input type="hidden" name="fields[thread]" value="<?php echo $this->escape($this->thread->get('id')); ?>" />
             <input type="hidden" name="fields[state]" value="1" />

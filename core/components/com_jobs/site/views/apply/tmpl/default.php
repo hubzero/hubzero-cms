@@ -67,7 +67,8 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
             </h3>
         </div>
 
-        <form id="hubForm" method="post" action="<?= Route::url('index.php?option=' . $this->option . "&task=saveapp") ?>">
+        <form id="hubForm" method="post"
+            action="<?= Route::url('index.php?option=' . $this->option . "&task=saveapp") ?>">
             <div class="explaination">
                 <p><?php echo Lang::txt('COM_JOBS_APPLY_HINT_COVER_LETTER'); ?></p>
             </div>
@@ -78,9 +79,11 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
                 <input type="hidden" id="appid" name="appid" value="<?php echo $appid; ?>" />
                 <input type="hidden" id="uid" name="uid" value="<?php echo User::get('id'); ?>" />
                 <?php echo Html::input('token'); ?>
-                <h3><?= Lang::txt('COM_JOBS_APPLY_MSG_TO_EMPLOYER') ?> <span class="opt">(<?= Lang::txt('COM_JOBS_OPTIONAL') ?>)</span></h3>
+                <h3><?= Lang::txt('COM_JOBS_APPLY_MSG_TO_EMPLOYER') ?> <span
+                    class="opt">(<?= Lang::txt('COM_JOBS_OPTIONAL') ?>)</span></h3>
                 <label>
-                    <textarea name="cover" id="cover" rows="10" cols="15"><?= $this->escape($application->cover) ?></textarea>
+                    <textarea name="cover" id="cover" rows="10"
+                        cols="15"><?= $this->escape($application->cover) ?></textarea>
                 </label>
             </fieldset>
             <div class="clear"></div>

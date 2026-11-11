@@ -394,7 +394,8 @@ Toolbar::cancel();
                         <option value="0">
                             <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_CHECKREQUIRED_NO'); ?>
                         </option>
-                        <option value="1" <?= $this->params->get('requiredfields', 1) == 1 ? 'selected="selected"' : '' ?>>
+                        <option
+                            value="1" <?= $this->params->get('requiredfields', 1) == 1 ? 'selected="selected"' : '' ?>>
                             <?php echo Lang::txt('COM_RESOURCES_IMPORT_EDIT_FIELD_CHECKREQUIRED_YES'); ?>
                         </option>
                     </select>

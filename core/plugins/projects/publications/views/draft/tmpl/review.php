@@ -73,7 +73,8 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
     <?php } else { ?>
     <p class="review-prompt"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INCOMPLETE'); ?></p>
     <div class="submitarea">
-        <a href="<?= Route::url($this->pub->link('editversion') . '&active=publications&action=continue') ?>" class="btn mini btn-success icon-next"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT') ?></a>
+        <a href="<?= Route::url($this->pub->link('editversion') . '&active=publications&action=continue') ?>"
+            class="btn mini btn-success icon-next"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTINUE_DRAFT') ?></a>
     </div>
     <?php } ?>
 
@@ -88,7 +89,9 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                 <div class="element-instructions">
                     <p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_INFO_PREVIEW'); ?></p>
                     <div class="submitarea">
-                        <a href="<?= Route::url($this->pub->link('version')) ?>" class="btn mini btn-primary active icon-next" rel="external"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE') ?></a>
+                        <a href="<?= Route::url($this->pub->link('version')) ?>"
+                            class="btn mini btn-primary active icon-next"
+                            rel="external"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PUB_PAGE') ?></a>
                     </div>
                 </div>
             </div>
@@ -142,8 +145,10 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                 <h5 class="element-title"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_DATE') ?></h5>
                 <div class="element-instructions">
                     <label>
-                        <span class="review-label"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN') ?>*:</span>
-                        <input type="text" id="publish_date" name="publish_date" value="<?= $this->escape($pubdate) ?>" placeholder="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE') ?>" />
+                        <span
+                            class="review-label"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_PUBLISH_WHEN') ?>*:</span>
+                        <input type="text" id="publish_date" name="publish_date" value="<?= $this->escape($pubdate) ?>"
+                            placeholder="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMMEDIATE') ?>" />
                         <span class="hint block"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_HINT_EMBARGO') ?></span>
                     </label>
 

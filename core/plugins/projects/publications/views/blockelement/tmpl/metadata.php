@@ -112,7 +112,8 @@ if ($coming) {
         <div class="block-subject">
             <span class="checker">&nbsp;</span>
             <h5 class="element-title"><?php echo $this->manifest->label; ?>
-            <span class="element-options"><a href="<?= $elementUrl ?>" class="edit-element" id="<?= $elName ?>-edit"><?= Lang::txt('[edit]') ?></a></span>
+            <span class="element-options"><a href="<?= $elementUrl ?>" class="edit-element"
+                id="<?= $elName ?>-edit"><?= Lang::txt('[edit]') ?></a></span>
             </h5>
             <?php if (!$coming && $value) {
                 // Parse editor text
@@ -190,10 +191,12 @@ if ($coming) {
             if ($active && $this->collapse) { ?>
                 <p class="element-move">
                     <span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
-                        <input type="button" value="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT') ?>" id="<?= $elName ?>-apply" class="save-element btn icon-next"/>
+                        <input type="button" value="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT') ?>"
+                            id="<?= $elName ?>-apply" class="save-element btn icon-next"/>
                     </span>
                     <span class="button-wrapper icon-apply">
-                        <input type="button" value="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES') ?>" id="apply-<?= $props ?>" class="save-element btn icon-apply" />
+                        <input type="button" value="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_APPLY_CHANGES') ?>"
+                            id="apply-<?= $props ?>" class="save-element btn icon-apply" />
                     </span>
                 </p>
             <?php } ?>

@@ -70,9 +70,11 @@ $membership_control = $params->get('membership_control', 1);
 <!--[if IE 7 ]>    <html dir="<?= $this->direction ?>" lang="<?= $this->language ?>" class="ie7"> <![endif]-->
 <!--[if IE 8 ]>    <html dir="<?= $this->direction ?>" lang="<?= $this->language ?>" class="ie8"> <![endif]-->
 <!--[if IE 9 ]>    <html dir="<?= $this->direction ?>" lang="<?= $this->language ?>" class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?= $this->direction ?>" lang="<?= $this->language ?>" class="<?= $b . ' ' . $b . $v ?>"> <!--<![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html dir="<?= $this->direction ?>" lang="<?= $this->language ?>"
+    class="<?= $b . ' ' . $b . $v ?>"> <!--<![endif]-->
     <head>
-        <link rel="stylesheet" type="text/css" media="screen" href="<?= \Hubzero\Document\Assets::getSystemStylesheet() ?>" />
+        <link rel="stylesheet" type="text/css" media="screen"
+            href="<?= \Hubzero\Document\Assets::getSystemStylesheet() ?>" />
         <link rel="stylesheet" href="<?php echo $this->asset('css/main.css'); ?>" type="text/css" />
         <link rel="stylesheet" href="<?php echo $this->asset('css/group.css'); ?>" type="text/css" />
         <jdoc:include type="head" />
@@ -90,7 +92,8 @@ $membership_control = $params->get('membership_control', 1);
                 </div>
                 <div class="col span8 omega">
                     <p id="tab">
-                        <a href="<?= Route::url('index.php?option=com_support') ?>" title="<?= Lang::txt('TPL_SYSTEM_HELP_HINT') ?>">
+                        <a href="<?= Route::url('index.php?option=com_support') ?>"
+                            title="<?= Lang::txt('TPL_SYSTEM_HELP_HINT') ?>">
                             <span><?php echo Lang::txt('TPL_SYSTEM_HELP'); ?></span>
                         </a>
                     </p>

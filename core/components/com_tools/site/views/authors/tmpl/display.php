@@ -16,7 +16,8 @@ $this->css('component.css');
 
 if ($this->version == 'dev') {
     ?>
-    <form action="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>" id="authors-form" method="post" enctype="multipart/form-data">
+    <form action="index.php?option=<?= $this->option ?>&amp;controller=<?= $this->controller ?>" id="authors-form"
+        method="post" enctype="multipart/form-data">
         <fieldset>
         <?php if ($this->getError()) { ?>
             <p class="error">

@@ -40,42 +40,51 @@ $this
 <?php if ($this->total) { ?>
     <div class="container">
         <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
-            <ul class="entries-menu order-options" data-label="<?= Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_STATE') ?>">
+            <ul class="entries-menu order-options"
+                data-label="<?= Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_STATE') ?>">
                 <li>
-                    <a class="sort-title<?= ($this->state == 'active') ? ' active' : '' ?>" href="<?= Route::url($base . '&filter=' . $this->filter) ?>">
+                    <a class="sort-title<?= ($this->state == 'active') ? ' active' : '' ?>"
+                        href="<?= Route::url($base . '&filter=' . $this->filter) ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ACTIVE'); ?>
                     </a>
                 </li>
                 <li>
-                    <a class="sort-alias<?= ($this->state == 'archived') ? ' active' : '' ?>" href="<?= Route::url($base . '&filter=' . $this->filter . '&state=archived') ?>">
+                    <a class="sort-alias<?= ($this->state == 'archived') ? ' active' : '' ?>"
+                        href="<?= Route::url($base . '&filter=' . $this->filter . '&state=archived') ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATE_ARCHIVED'); ?>
                     </a>
                 </li>
             </ul>
 
-            <ul class="entries-menu filter-options" data-label="<?= Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_MEMBERSHIP') ?>">
+            <ul class="entries-menu filter-options"
+                data-label="<?= Lang::txt('PLG_MEMBERS_GROUPS_BROWSE_FILTER_MEMBERSHIP') ?>">
                 <li>
-                    <a<?= ($this->filter == '') ? ' class="active"' : '' ?> data-status="all" href="<?= Route::url($base) ?>">
+                    <a<?= ($this->filter == '') ? ' class="active"' : '' ?> data-status="all"
+                        href="<?= Route::url($base) ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_ALL', $this->total); ?>
                     </a>
                 </li>
                 <li>
-                    <a<?= ($this->filter == 'managers') ? ' class="active"' : '' ?> data-status="manager" href="<?= Route::url($base . '&state=' . $this->state . '&filter=managers') ?>">
+                    <a<?= ($this->filter == 'managers') ? ' class="active"' : '' ?> data-status="manager"
+                        href="<?= Route::url($base . '&state=' . $this->state . '&filter=managers') ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MANAGER'); ?>
                     </a>
                 </li>
                 <li>
-                    <a<?= ($this->filter == 'members') ? ' class="active"' : '' ?> data-status="member" href="<?= Route::url($base . '&state=' . $this->state . '&filter=members') ?>">
+                    <a<?= ($this->filter == 'members') ? ' class="active"' : '' ?> data-status="member"
+                        href="<?= Route::url($base . '&state=' . $this->state . '&filter=members') ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_MEMBER'); ?>
                     </a>
                 </li>
                 <li>
-                    <a<?= ($this->filter == 'applicants') ? ' class="active"' : '' ?> data-status="applicant" href="<?= Route::url($base . '&state=' . $this->state . '&filter=applicants') ?>">
+                    <a<?= ($this->filter == 'applicants') ? ' class="active"' : '' ?> data-status="applicant"
+                        href="<?= Route::url($base . '&state=' . $this->state . '&filter=applicants') ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_APPLICANT'); ?>
                     </a>
                 </li>
                 <li>
-                    <a<?= ($this->filter == 'invitees') ? ' class="active"' : '' ?> data-status="invitee" href="<?= Route::url($base . '&state=' . $this->state . '&filter=invitees') ?>">
+                    <a<?= ($this->filter == 'invitees') ? ' class="active"' : '' ?> data-status="invitee"
+                        href="<?= Route::url($base . '&state=' . $this->state . '&filter=invitees') ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_GROUPS_STATUS_INVITEES'); ?>
                     </a>
                 </li>
@@ -125,7 +134,8 @@ $this
                     data-title="<?php echo $this->escape(stripslashes($group->description) . ' ' . $group->cn); ?>">
                     <div class="group-contents">
                         <?php if ($published) : ?>
-                            <a class="group-identity" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn) ?>">
+                            <a class="group-identity"
+                                href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn) ?>">
                         <?php else : ?>
                             <div class="group-identity">
                         <?php endif; ?>
@@ -134,7 +144,8 @@ $this
 
                             if ($group->logo && is_file($path)) :
                                 ?>
-                                <img src="<?= with(new Hubzero\Content\Moderator($path))->getUrl() ?>" alt="<?= $this->escape(stripslashes($group->description)) ?>" />
+                                <img src="<?= with(new Hubzero\Content\Moderator($path))->getUrl() ?>"
+                                    alt="<?= $this->escape(stripslashes($group->description)) ?>" />
                             <?php else : ?>
                                 <span><?php echo $this->escape(stripslashes($group->description)); ?></span>
                             <?php endif; ?>
@@ -147,7 +158,8 @@ $this
                         <div class="group-details">
                             <span class="group-alias"><?php echo $this->escape($group->cn); ?></span>
                             <?php if ($published) : ?>
-                                <a class="group-title" rel="<?= $group->gidNumber ?>" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn) ?>">
+                                <a class="group-title" rel="<?= $group->gidNumber ?>"
+                                    href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $group->cn) ?>">
                                     <?= $this->escape(Hubzero\Utility\Str::truncate(stripslashes($group->description), 60)) ?>
                                 </a>
                             <?php else : ?>

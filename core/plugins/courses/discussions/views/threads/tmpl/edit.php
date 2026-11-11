@@ -29,7 +29,8 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
     $this->post = new \Components\Forum\Models\Post($this->post);
 }
 ?>
-    <form action="<?= Route::url($base) ?>" method="post" id="commentform" class="comment-edit" enctype="multipart/form-data" data-thread="<?= $this->post->get('thread') ?>">
+    <form action="<?= Route::url($base) ?>" method="post" id="commentform" class="comment-edit"
+        enctype="multipart/form-data" data-thread="<?= $this->post->get('thread') ?>">
     <?php if (!$no_html) { ?>
         <p class="comment-member-photo">
             <a class="comment-anchor" name="commentform"></a>
@@ -101,7 +102,8 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
                 </div>
             </div>
         <?php } else { ?>
-            <input type="hidden" name="fields[category_id]" id="field-category_id" value="<?= $this->post->get('category_id') ?>" />
+            <input type="hidden" name="fields[category_id]" id="field-category_id"
+                value="<?= $this->post->get('category_id') ?>" />
         <?php } ?>
 
             <label for="field-anonymous" class="comment-anonymous-label">
@@ -121,7 +123,8 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
         <input type="hidden" name="fields[scope]" id="field-scope" value="<?= $this->post->get('scope', 'course') ?>" />
         <input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?= $this->post->get('scope_id') ?>" />
         <input type="hidden" name="fields[id]" id="field-id" value="<?php echo $this->post->get('id'); ?>" />
-        <input type="hidden" name="fields[object_id]" id="field-object_id" value="<?= $this->post->get('object_id') ?>" />
+        <input type="hidden" name="fields[object_id]" id="field-object_id"
+            value="<?= $this->post->get('object_id') ?>" />
         <input type="hidden" name="fields[thread]" id="field-thread" value="<?= $this->post->get('thread') ?>" />
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

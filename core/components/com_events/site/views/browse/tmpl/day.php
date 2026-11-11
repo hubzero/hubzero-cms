@@ -131,8 +131,10 @@ $this->css();
                 }
 
                 ?>
-                <a class="prv" rel="nofollow" href="<?= $prev ?>" title="<?= $prev_text ?>" aria-label="<?= $prev_text ?>">&lsaquo;</a>
-                <a class="nxt" rel="nofollow" href="<?= $next ?>" title="<?= $next_text ?>" aria-label="<?= $next_text ?>">&rsaquo;</a>
+                <a class="prv" rel="nofollow" href="<?= $prev ?>" title="<?= $prev_text ?>"
+                    aria-label="<?= $prev_text ?>">&lsaquo;</a>
+                <a class="nxt" rel="nofollow" href="<?= $next ?>" title="<?= $next_text ?>"
+                    aria-label="<?= $next_text ?>">&rsaquo;</a>
                 <?php echo $this->year; ?>
             </p>
         </div><!-- / .calendarwrap -->

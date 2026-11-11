@@ -55,28 +55,36 @@ $this->js('verify.js', 'com_massmail');
                 <div class="mm-pv-head">
                     <h4><?php echo Lang::txt('COM_MASSMAIL_PREVIEW_HEADING'); ?></h4>
                     <span class="mm-pv-toggle">
-                        <button type="button" id="mm-pv-btn-html" class="is-active"><?= Lang::txt('COM_MASSMAIL_PREVIEW_HTML') ?></button>
+                        <button type="button" id="mm-pv-btn-html"
+                            class="is-active"><?= Lang::txt('COM_MASSMAIL_PREVIEW_HTML') ?></button>
                         <button type="button" id="mm-pv-btn-text"><?= Lang::txt('COM_MASSMAIL_PREVIEW_TEXT') ?></button>
                     </span>
                 </div>
                 <div class="mm-env">
-                    <div class="mm-env-row"><span class="mm-env-label"><?= Lang::txt('COM_MASSMAIL_FROM') ?></span><span class="mm-env-val"><?= $this->escape($fromShown) ?></span></div>
+                    <div class="mm-env-row"><span class="mm-env-label"><?= Lang::txt('COM_MASSMAIL_FROM') ?></span><span
+                        class="mm-env-val"><?= $this->escape($fromShown) ?></span></div>
                     <?php if ($replyTo) { ?>
-                    <div class="mm-env-row"><span class="mm-env-label"><?= Lang::txt('COM_MASSMAIL_REPLY_TO') ?></span><span class="mm-env-val"><?= $this->escape($replyTo) ?></span></div>
+                    <div class="mm-env-row"><span
+                        class="mm-env-label"><?= Lang::txt('COM_MASSMAIL_REPLY_TO') ?></span><span
+                        class="mm-env-val"><?= $this->escape($replyTo) ?></span></div>
                     <?php } ?>
                     <div class="mm-env-row"><span class="mm-env-label"><?= Lang::txt('COM_MASSMAIL_SUBJECT') ?></span><span class="mm-env-val"><?= $this->escape(stripslashes((string) $row->get('subject'))) ?></span></div>
                 </div>
                 <div class="mm-pv-body">
-                    <iframe id="mm-pv-html" sandbox="" title="<?= $this->escape(Lang::txt('COM_MASSMAIL_PREVIEW_HTML')) ?>" srcdoc="<?= $this->escape($this->previewHtml) ?>"></iframe>
+                    <iframe id="mm-pv-html" sandbox=""
+                        title="<?= $this->escape(Lang::txt('COM_MASSMAIL_PREVIEW_HTML')) ?>"
+                        srcdoc="<?= $this->escape($this->previewHtml) ?>"></iframe>
                     <pre id="mm-pv-text" hidden><?php echo $this->escape($this->previewText); ?></pre>
                 </div>
             </div>
 
             <div class="mm-verify-actions">
-                <button type="button" class="btn mm-btn-accept mm-submit" data-task="launch"><?= $icSend . Lang::txt('COM_MASSMAIL_ACCEPT_SEND') ?></button>
+                <button type="button" class="btn mm-btn-accept mm-submit"
+                    data-task="launch"><?= $icSend . Lang::txt('COM_MASSMAIL_ACCEPT_SEND') ?></button>
                 <a class="btn mm-btn-neutral" href="<?= Route::url($base . '&task=edit&id=' . (int) $row->get('id')) ?>"><?= $icEdit . Lang::txt('COM_MASSMAIL_EDIT_MESSAGE') ?></a>
                 <span class="spacer"></span>
-                <a class="btn mm-btn-neutral" href="<?= Route::url($base) ?>"><?= $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT') ?></a>
+                <a class="btn mm-btn-neutral"
+                    href="<?= Route::url($base) ?>"><?= $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT') ?></a>
                 <button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')) ?>" formaction="<?= Route::url($base . '&task=discard&id=' . (int) $row->get('id')) ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DISCARD') ?></button>
             </div>
         </div>
@@ -134,7 +142,8 @@ $this->js('verify.js', 'com_massmail');
                     <div class="mm-disp mm-disp-approve">
                         <span class="mm-disp-title"><?php echo Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE'); ?></span>
                         <?php if ($disp['needs_general_approval']) { ?>
-                            <span class="mm-disp-sub"><?= Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE_GENERAL') ?></span>
+                            <span
+                                class="mm-disp-sub"><?= Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE_GENERAL') ?></span>
                         <?php } ?>
                         <?php if ($disp['needs_optout_approval']) { ?>
                             <span class="mm-disp-sub"><?= Lang::txt('COM_MASSMAIL_VERIFY_WILL_APPROVE_OPTOUT') ?></span>

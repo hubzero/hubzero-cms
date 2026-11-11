@@ -60,7 +60,8 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                 <label for="event_title">
                     <?php echo Lang::txt('Title:'); ?> <span class="required">Required</span>
-                    <input type="text" name="event[title]" id="event_title" value="<?= $this->escape($this->event->get('title')) ?>" />
+                    <input type="text" name="event[title]" id="event_title"
+                        value="<?= $this->escape($this->event->get('title')) ?>" />
                 </label>
 
                 <?php if (count($this->calendars) > 0 || $this->authorized == 'manager') : ?>
@@ -90,24 +91,28 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                 <label for="event_content">
                     <?php echo Lang::txt('Details:'); ?> <span class="optional">Optional</span>
-                    <textarea name="content" id="event_content" rows="10"><?= $this->escape($this->event->get('content')) ?></textarea>
+                    <textarea name="content" id="event_content"
+                        rows="10"><?= $this->escape($this->event->get('content')) ?></textarea>
                     <span class="hint"><?= Lang::txt('Limited HTML allowed (a, iframe, strong, em, u)') ?></span>
                 </label>
 
                 <label for="event_location">
                     <?php echo Lang::txt('Location:'); ?> <span class="optional">Optional</span>
-                    <input type="text" name="event[adresse_info]" id="event_location" value="<?= $this->escape($this->event->get('adresse_info')) ?>" />
+                    <input type="text" name="event[adresse_info]" id="event_location"
+                        value="<?= $this->escape($this->event->get('adresse_info')) ?>" />
                 </label>
 
                 <label for="event-contact_info">
                     <?php echo Lang::txt('Contact:'); ?> <span class="optional">Optional</span>
-                    <input type="text" name="event[contact_info]" id="event-contact_info" value="<?= $this->escape($this->event->get('contact_info')) ?>" />
+                    <input type="text" name="event[contact_info]" id="event-contact_info"
+                        value="<?= $this->escape($this->event->get('contact_info')) ?>" />
                     <span class="hint"><?= Lang::txt('Accepts names and email addresses. (ex. John Doe john_doe@domain.com)') ?></span>
                 </label>
 
                 <label for="event_website">
                     <?php echo Lang::txt('Website:'); ?> <span class="optional">Optional</span>
-                    <input type="text" name="event[extra_info]" id="event_website" value="<?= $this->escape($this->event->get('extra_info')) ?>" />
+                    <input type="text" name="event[extra_info]" id="event_website"
+                        value="<?= $this->escape($this->event->get('extra_info')) ?>" />
                 </label>
 
                 <fieldset>
@@ -126,8 +131,12 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         }
                         ?>
                         <div class="input-group">
-                            <input type="text" name="event[publish_up]" id="event_start_date" value="<?= $this->escape($publish_up_date) ?>" placeholder="mm/dd/yyyy" class="no-legacy-placeholder-support" />
-                            <input type="text" name="event[publish_up_time]" id="event_start_time" value="<?= $this->escape($publish_up_time) ?>" placeholder="h:mm am/pm" class="no-legacy-placeholder-support" />
+                            <input type="text" name="event[publish_up]" id="event_start_date"
+                                value="<?= $this->escape($publish_up_date) ?>" placeholder="mm/dd/yyyy"
+                                class="no-legacy-placeholder-support" />
+                            <input type="text" name="event[publish_up_time]" id="event_start_time"
+                                value="<?= $this->escape($publish_up_time) ?>" placeholder="h:mm am/pm"
+                                class="no-legacy-placeholder-support" />
                         </div>
                     </label>
 
@@ -144,8 +153,12 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         }
                         ?>
                         <div class="input-group">
-                            <input type="text" name="event[publish_down]" id="event_end_date" value="<?= $this->escape($publish_down_date) ?>" placeholder="mm/dd/yyyy" class="no-legacy-placeholder-support" />
-                            <input type="text" name="event[publish_down_time]" id="event_end_time" value="<?= $this->escape($publish_down_time) ?>" placeholder="h:mm am/pm" class="no-legacy-placeholder-support" />
+                            <input type="text" name="event[publish_down]" id="event_end_date"
+                                value="<?= $this->escape($publish_down_date) ?>" placeholder="mm/dd/yyyy"
+                                class="no-legacy-placeholder-support" />
+                            <input type="text" name="event[publish_down_time]" id="event_end_time"
+                                value="<?= $this->escape($publish_down_time) ?>" placeholder="h:mm am/pm"
+                                class="no-legacy-placeholder-support" />
                         </div>
                     </label>
 
@@ -166,7 +179,8 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         ?>
                     </label>
                     <label>
-                        <input type="checkbox" id="ignore_dst" name="params[ignore_dst]" value="1" <?= $ignoreDst ? "checked" : '' ?>/>
+                        <input type="checkbox" id="ignore_dst" name="params[ignore_dst]"
+                            value="1" <?= $ignoreDst ? "checked" : '' ?>/>
                         <?php echo Lang::txt('PLG_GROUPS_CALENDAR_IGNORE_DST'); ?>
                     </label>
                 </fieldset>
@@ -224,7 +238,8 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                     <div class="reccurance-options options-monthly">
                         <label>
                             <?php echo Lang::txt('Repeat Every:'); ?><br />
-                            <select name="reccurance[interval][monthly]" class="monthly-months event_recurrence_interval">
+                            <select name="reccurance[interval][monthly]"
+                                class="monthly-months event_recurrence_interval">
                                 <?php for ($i = 1, $n = 31; $i < $n; $i++) : ?>
                                     <?php $sel = ($repeating['freq'] == 'monthly' && $repeating['interval'] == $i) ? 'selected="selected' : ''; ?>
                                     <option <?php echo $sel; ?> value="<?php echo $i; ?>"><?php echo $i; ?></option>
@@ -249,15 +264,22 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                     <label for="ends" class="ends"><?= Lang::txt('Ends:') ?> <span class="optional">Optional</span>
                         <label for="never">
-                            <input id="never" class="option" type="radio" name="reccurance[ends][when]" value="never" <?= $repeating['end'] == 'never' ? 'checked="checked"' : '' ?> /> Never
+                            <input id="never" class="option" type="radio" name="reccurance[ends][when]"
+                                value="never" <?= $repeating['end'] == 'never' ? 'checked="checked"' : '' ?> /> Never
                         </label>
                         <label for="after">
-                            <input id="after" class="option" type="radio" name="reccurance[ends][when]" value="count"  <?= $repeating['end'] == 'count' ? 'checked="checked"' : '' ?> /> After
-                            <input type="text" name="reccurance[ends][count]" placeholder="x" class="after-input event_recurrence_end_count" value="<?= $repeating['count'] ?>" /> occurrences 
+                            <input id="after" class="option" type="radio" name="reccurance[ends][when]" value="count"
+                                 <?= $repeating['end'] == 'count' ? 'checked="checked"' : '' ?> /> After
+                            <input type="text" name="reccurance[ends][count]" placeholder="x"
+                                class="after-input event_recurrence_end_count"
+                                value="<?= $repeating['count'] ?>" /> occurrences 
                         </label>
                         <label for="on">
-                            <input id="on" class="option" type="radio" name="reccurance[ends][when]" value="until"  <?= $repeating['end'] == 'until' ? 'checked="checked"' : '' ?> /> On
-                            <input type="text" name="reccurance[ends][until]" placeholder="mm/dd/yyyy" class="on-input event_recurrence_end_date no-legacy-placeholder-support" value="<?= $repeating['until'] ?>" />
+                            <input id="on" class="option" type="radio" name="reccurance[ends][when]" value="until"
+                                 <?= $repeating['end'] == 'until' ? 'checked="checked"' : '' ?> /> On
+                            <input type="text" name="reccurance[ends][until]" placeholder="mm/dd/yyyy"
+                                class="on-input event_recurrence_end_date no-legacy-placeholder-support"
+                                value="<?= $repeating['until'] ?>" />
                         </label>
                     </label>
                 </fieldset>
@@ -269,26 +291,31 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                     <label id="include-registration-toggle">
                         <?php $ckd = (($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') || $includeRegistration) ? 'checked="checked"' : ''; ?>
-                        <input class="option" type="checkbox" id="include-registration" name="include-registration" value="1" <?= $ckd ?> />
+                        <input class="option" type="checkbox" id="include-registration" name="include-registration"
+                            value="1" <?= $ckd ?> />
                         <?php echo Lang::txt('Include registration for this event.'); ?>
                     </label>
 
                     <div id="registration-fields" class="<?php echo $ckd == '' ? ' hide' : ''; ?>">
                         <label for="event_registerby">
-                            <?= Lang::txt('Deadline:') ?> <span class="required"><?= Lang::txt('Required for Registration Tab to Appear') ?></span>
+                            <?= Lang::txt('Deadline:') ?> <span
+                                class="required"><?= Lang::txt('Required for Registration Tab to Appear') ?></span>
                             <?php
                                 $register_by = '';
                             if ($this->event->get('registerby') && $this->event->get('registerby') != '0000-00-00 00:00:00') {
                                 $register_by = Date::of($this->event->get('registerby'))->toLocal('m/d/Y @ g:i a');
                             }
                             ?>
-                            <input type="text" name="event[registerby]" id="event_registerby" value="<?= $this->escape($register_by) ?>" placeholder="mm/dd/yyyy @ h:mm am/pm" class="no-legacy-placeholder-support" />
+                            <input type="text" name="event[registerby]" id="event_registerby"
+                                value="<?= $this->escape($register_by) ?>" placeholder="mm/dd/yyyy @ h:mm am/pm"
+                                class="no-legacy-placeholder-support" />
                             <span class="hint"><?= Lang::txt('Deadlines are on Eastern Standard Time (EST).') ?></span>
                         </label>
 
                         <label>
                             <?php echo Lang::txt('Event Admin Email:'); ?> <span class="optional">Optional</span>
-                            <input type="text" name="event[email]" value="<?= $this->escape($this->event->get('email')) ?>" />
+                            <input type="text" name="event[email]"
+                                value="<?= $this->escape($this->event->get('email')) ?>" />
                             <span class="hint">
                                 <?= Lang::txt('A copy of event registrations will get sent to this event\'s admin email address.') ?>
                             </span>
@@ -296,7 +323,8 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                         <label>
                             <?php echo Lang::txt('Password:'); ?> <span class="optional">Optional</span>
-                            <input type="text" name="event[restricted]" value="<?= $this->escape($this->event->get('restricted')) ?>" />
+                            <input type="text" name="event[restricted]"
+                                value="<?= $this->escape($this->event->get('restricted')) ?>" />
                             <span class="hint">
                                 <?= Lang::txt('If you want registration to be restricted (invite only), enter the password users must enter to gain access to the registration form.') ?>
                             </span>
@@ -332,7 +360,8 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                     <div class="upload">
                         <span class="title"><?php echo Lang::txt('Upload Event'); ?></span>
-                        <span class="description"><?= Lang::txt('Drag &amp; Drop an Event File Here to Upload') ?></span>
+                        <span
+                            class="description"><?= Lang::txt('Drag &amp; Drop an Event File Here to Upload') ?></span>
                         <span class="button-container">
                             <span class="btn"><?php echo Lang::txt('or, Select Event'); ?>
                                 <input

@@ -66,7 +66,11 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
             ?>
                 <optgroup label="<?php echo $this->escape($dir)?>">
             <?php foreach ($files as $file) : ?>
-                <option data-dir="<?php echo $this->escape($dir)?>" data-hash="<?php echo $this->escape($file['hash'])?>" data-date="<?php echo $this->escape($file['date'])?>" value="<?php echo $this->escape($file['name'])?>" class="preview"><?php echo $this->escape($file['name'])?></option>
+                <option data-dir="<?php echo $this->escape($dir)?>"
+                    data-hash="<?php echo $this->escape($file['hash'])?>"
+                    data-date="<?php echo $this->escape($file['date'])?>"
+                    value="<?php echo $this->escape($file['name'])?>"
+                    class="preview"><?php echo $this->escape($file['name'])?></option>
             <?php endforeach; ?>
     <?php endforeach; ?>
         </select>
@@ -79,7 +83,9 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
     <h3><?php echo Lang::txt('Loading database'); ?>: <em><?php echo $this->escape($this->title)?></em>...</h3>
     <form style="display: none;" id="prj-db-select-form" method="POST" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=preview_data&raw_op=1')?>">
         <select id="prj-db-select-src">
-            <option selected data-dir="<?php echo $this->escape($this->dir)?>" value="<?php echo $this->escape($this->file)?>" class="preview"><?php echo $this->escape($this->file)?></option>
+            <option selected data-dir="<?php echo $this->escape($this->dir)?>"
+                value="<?php echo $this->escape($this->file)?>"
+                class="preview"><?php echo $this->escape($this->file)?></option>
         </select>
         <input type="hidden" name="dir" value="<?php echo $this->escape($this->dir)?>">
         <input type="hidden" name="file" value="<?php echo $this->escape($this->file)?>">
@@ -102,7 +108,8 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
 
 <div id="prj-db-step-2" class="prj-db-step" style="display: none;">
     <input type="submit" value="<?= Lang::txt('Next') ?> &raquo;" class="prj-db-next btn rightfloat" data-step='2' />
-    <input type="submit" value="&laquo; <?= Lang::txt('Back') ?>" class="prj-db-back btn rightfloat" data-warning="true" data-step='2' />
+    <input type="submit" value="&laquo; <?= Lang::txt('Back') ?>" class="prj-db-back btn rightfloat" data-warning="true"
+        data-step='2' />
     <h3><?php echo Lang::txt('Step 2: Verify Data'); ?> [<span id="prj-db-rec-limit"></span>]</h3>
     <div id="prj-db-preview-table-wrapper" style="height: 400px; overflow: auto; padding: 5px;"></div>
 </div>
@@ -111,8 +118,10 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
     <input type="submit" value="&laquo; Back" class="prj-db-back btn rightfloat" data-step='3' />
     <h3><?php echo Lang::txt('Step 3: Title &amp; Description, Finish'); ?></h3>
     <form id="prj-db-finish-form" method="post" action="<?php echo Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&active=databases&action=create_database&raw_op=1&' . Session::getFormToken() . '=1')?>">
-        <label for="prj-db-title"><?= Lang::txt('Title') ?>:<input type="text" name="prj-db-title" id="prj-db-title" /></label>
-        <label for="prj-db-desc"><?= Lang::txt('Description') ?>:<textarea name="prj-db-desc" id="prj-db-desc" cols="5" rows="10"></textarea></label>
+        <label for="prj-db-title"><?= Lang::txt('Title') ?>:<input type="text" name="prj-db-title"
+            id="prj-db-title" /></label>
+        <label for="prj-db-desc"><?= Lang::txt('Description') ?>:<textarea name="prj-db-desc" id="prj-db-desc" cols="5"
+            rows="10"></textarea></label>
         <input type="submit" value="<?php echo Lang::txt('Finish'); ?>" class="btn" id="prj-db-finish-btn" />
     </form>
 </div>
@@ -156,12 +165,15 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
             </select><br /><br />
             <div class="col-type-props" id="prj-db-col-type-text">
                 <label for="prj-db-col-truncate" title="<?= Lang::txt('Hide the overflow text, full text will be visible by hover-over or by clicking on the visible text') ?>">
-                    <input type="checkbox" class="col-prop" value="truncate" id="prj-db-col-truncate" /><?= Lang::txt('Limit text to a single line') ?>
+                    <input type="checkbox" class="col-prop" value="truncate"
+                        id="prj-db-col-truncate" /><?= Lang::txt('Limit text to a single line') ?>
                 </label>
             </div>
             <div class="col-type-props" id="prj-db-col-type-link" style="display: none;">
-                <label for="prj-db-col-linktype" title="<?= Lang::txt('Select if files are stored in the repository') ?>">
-                    <input type="checkbox" class="col-prop" value="repofiles" id="prj-db-col-linktype" /><?= Lang::txt('Repository Files?') ?>
+                <label for="prj-db-col-linktype"
+                    title="<?= Lang::txt('Select if files are stored in the repository') ?>">
+                    <input type="checkbox" class="col-prop" value="repofiles"
+                        id="prj-db-col-linktype" /><?= Lang::txt('Repository Files?') ?>
                 </label>
                 <br />
                 <label for="prj-db-col-linkpath"><?php echo Lang::txt('Repository Path'); ?>:</label><br />
@@ -182,12 +194,16 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
                 <option value="right"><?php echo Lang::txt('Right'); ?></option>
             </select><br /><br />
             <label for="prj-db-col-text-color"><?php echo Lang::txt('Text Color'); ?>:</label><br />
-            <input type='text' id="prj-db-col-text-color" class="col-prop color-picker dv-style" data-default='rgba(255, 255, 255, 0)' data-style-val='' data-style-type="color" />
-            <input type='button' class="color-picker-clear" data-target="prj-db-col-text-color" value="<?= Lang::txt('Clear') ?>" style="width: 50px;" />
+            <input type='text' id="prj-db-col-text-color" class="col-prop color-picker dv-style"
+                data-default='rgba(255, 255, 255, 0)' data-style-val='' data-style-type="color" />
+            <input type='button' class="color-picker-clear" data-target="prj-db-col-text-color"
+                value="<?= Lang::txt('Clear') ?>" style="width: 50px;" />
             <br /><br />
             <label for="prj-db-col-bg-color"><?php echo Lang::txt('Background Color'); ?>:</label><br />
-            <input type='text' id="prj-db-col-bg-color" class="col-prop color-picker dv-style" data-default='rgba(255, 255, 255, 0)' data-style-val='' data-style-type="background" />
-            <input type='button' class="color-picker-clear" data-target="prj-db-col-bg-color" value="<?= Lang::txt('Clear') ?>" style="width: 50px;" />
+            <input type='text' id="prj-db-col-bg-color" class="col-prop color-picker dv-style"
+                data-default='rgba(255, 255, 255, 0)' data-style-val='' data-style-type="background" />
+            <input type='button' class="color-picker-clear" data-target="prj-db-col-bg-color"
+                value="<?= Lang::txt('Clear') ?>" style="width: 50px;" />
             <br /><br />
         </div>
     </div>

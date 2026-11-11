@@ -49,7 +49,8 @@ $base = $this->offering->link();
             <div class="filters-inner">
                 <ul>
                     <li>
-                        <a class="download btn" href="<?= Route::url($base . '&active=notes&action=download&frmt=txt') ?>">
+                        <a class="download btn"
+                            href="<?= Route::url($base . '&active=notes&action=download&frmt=txt') ?>">
                             <span><?php echo Lang::txt('PLG_COURSES_NOTES_DOWNLOAD'); ?></span>
                         </a>
                     </li>
@@ -58,7 +59,9 @@ $base = $this->offering->link();
                 <p>
                     <label for="filter-search">
                         <span><?php echo Lang::txt('PLG_COURSES_NOTES_SEARCH'); ?></span>
-                        <input type="text" name="search" id="filter-search" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('PLG_COURSES_NOTES_SEARCH_NOTES') ?>" />
+                        <input type="text" name="search" id="filter-search"
+                            value="<?= $this->escape($this->filters['search']) ?>"
+                            placeholder="<?= Lang::txt('PLG_COURSES_NOTES_SEARCH_NOTES') ?>" />
                     </label>
                     <input type="submit" class="filter-submit" value="<?= Lang::txt('PLG_COURSES_NOTES_GO') ?>" />
                 </p>
@@ -91,7 +94,8 @@ $base = $this->offering->link();
             <div class="section">
                 <h3><?php echo $this->escape(stripslashes($lecture->get('title'))); ?></h3>
                 <?php foreach ($notes as $note) : ?>
-                    <div class="jSticky-medium static<?= $note->get('access') ? ' annotation' : '' ?>" id="note-<?= $note->get('id') ?>" data-id="<?= $note->get('id') ?>">
+                    <div class="jSticky-medium static<?= $note->get('access') ? ' annotation' : '' ?>"
+                        id="note-<?= $note->get('id') ?>" data-id="<?= $note->get('id') ?>">
                         <div class="jSticky-header">
                             <?php if ($note->get('timestamp') && $note->get('timestamp') != '00:00:00') : ?>
                                 <a href="<?= str_replace('%3A', ':', Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias') . '&time=' . $this->escape($note->get('timestamp')))) ?>" class="time"><?= $this->escape($note->get('timestamp')) ?></a>

@@ -66,14 +66,18 @@ $this->js();
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <div id="item-form-wrap">
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"
+        method="post" name="adminForm" id="item-form" class="editform form-validate"
+        data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
         <nav role="navigation" class="sub-navigation">
             <div id="submenu-box">
                 <div class="submenu-box">
                     <div class="submenu-pad">
                         <ul id="submenu" class="coursesection">
-                            <li><a href="#page-details" onclick="return false;" id="details" class="active"><?= Lang::txt('JDETAILS') ?></a></li>
-                            <li><a href="#page-files" onclick="return false;" id="files"><?= Lang::txt('COM_GROUPS_MEDIA') ?></a></li>
+                            <li><a href="#page-details" onclick="return false;" id="details"
+                                class="active"><?= Lang::txt('JDETAILS') ?></a></li>
+                            <li><a href="#page-files" onclick="return false;"
+                                id="files"><?= Lang::txt('COM_GROUPS_MEDIA') ?></a></li>
                             <!-- <li><a href="#" onclick="return false;" id="pages"><?= Lang::txt('COM_COURSES_FIELDSET_PAGES') ?></a></li> -->
                         </ul>
                         <div class="clr"></div>
@@ -97,7 +101,8 @@ $this->js();
                             <input type="hidden" name="task" value="save" />
 
                             <div class="input-wrap">
-                                <label for="field-type"><?= Lang::txt('COM_GROUPS_TYPE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                                <label for="field-type"><?= Lang::txt('COM_GROUPS_TYPE') ?>: <span
+                                    class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                                 <select name="group[type]" id="field-type" class="required">
                                     <option value="1"<?= ($this->group->type == '1') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_HUB') ?></option>
                                     <option value="3"<?= ($this->group->type == '3') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_GROUPS_TYPE_SUPER') ?></option>
@@ -132,17 +137,20 @@ $this->js();
                             </div>
 
                             <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_CN_HINT'); ?>">
-                                <label for="field-cn"><?= Lang::txt('COM_GROUPS_CN') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                                <label for="field-cn"><?= Lang::txt('COM_GROUPS_CN') ?>: <span
+                                    class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                                 <input type="text" name="group[cn]" id="field-cn" class="required" <?= $this->group->cn ? ' readonly="readonly"' : '' ?> value="<?= $this->escape(stripslashes($this->group->cn ?? '')) ?>" />
                                 <span class="hint"><?php echo Lang::txt('COM_GROUPS_CN_HINT'); ?></span>
                             </div>
                             <div class="input-wrap">
                                 <label for="field-description"><?= Lang::txt('COM_GROUPS_TITLE') ?>:</label><br />
-                                <input type="text" name="group[description]" id="field-description" value="<?= $this->escape(stripslashes($this->group->description ?? '')) ?>" />
+                                <input type="text" name="group[description]" id="field-description"
+                                    value="<?= $this->escape(stripslashes($this->group->description ?? '')) ?>" />
                             </div>
                             <div class="input-wrap">
                                 <label for="field-logo"><?php echo Lang::txt('COM_GROUPS_LOGO'); ?>:</label><br />
-                                <input type="text" name="group[logo]" id="field-logo" value="<?= $this->escape($this->group->logo) ?>" />
+                                <input type="text" name="group[logo]" id="field-logo"
+                                    value="<?= $this->escape($this->group->logo) ?>" />
                             </div>
 
                             <?php
@@ -192,7 +200,8 @@ $this->js();
                         <fieldset class="adminform">
                             <legend><span><?php echo Lang::txt('COM_GROUPS_PAGE_SETTINGS'); ?></span></legend>
 
-                            <div class="input-wrap" data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT_HINT') ?>">
+                            <div class="input-wrap"
+                                data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT_HINT') ?>">
                                 <label for="param-page_trusted"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_TRUSTEDCONTENT') ?>:</label>
                                 <select name="group[params][page_trusted]" id="param-page_trusted">
                                     <option <?= $trusted == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_TRUSTEDCONTENT_NO') ?></option>
@@ -200,7 +209,8 @@ $this->js();
                                 </select>
                             </div>
 
-                            <div class="input-wrap" data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT') ?>">
+                            <div class="input-wrap"
+                                data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS_HINT') ?>">
                                 <label for="param-page_comments"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_COMMENTS') ?>:</label>
                                 <select name="group[params][page_comments]" id="param-page_comments">
                                     <option <?= $comments == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO') ?></option>
@@ -209,8 +219,10 @@ $this->js();
                                 </select>
                             </div>
 
-                            <div class="input-wrap" data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_HINT') ?>">
-                                <label for="param-page_author"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR') ?>:</label>
+                            <div class="input-wrap"
+                                data-hint="<?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_HINT') ?>">
+                                <label
+                                    for="param-page_author"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR') ?>:</label>
                                 <select name="group[params][page_author]" id="param-page_author">
                                     <option <?= $author == 0 ? 'selected="selected"' : '' ?> value="0"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_NO') ?></option>
                                     <option <?= $author == 1 ? 'selected="selected"' : '' ?> value="1"><?= Lang::txt('COM_GROUPS_PAGES_SETTING_AUTHOR_YES') ?></option>
@@ -218,7 +230,9 @@ $this->js();
                             </div>
                             <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_GROUPS_TEMPLATE_HINT'); ?>">
                                 <label for="param-page_template"><?= Lang::txt('COM_GROUPS_TEMPLATE') ?>:</label>
-                                <input type="text" name="group[params][page_template]" value="<?= $this->escape($gparams->get('page_template', '')) ?>" id="param-page_template" />
+                                <input type="text" name="group[params][page_template]"
+                                    value="<?= $this->escape($gparams->get('page_template', '')) ?>"
+                                    id="param-page_template" />
                                 <span class="hint"><?php echo Lang::txt('COM_GROUPS_TEMPLATE_HINT'); ?></span>
                             </div>
                         </fieldset>
@@ -295,7 +309,8 @@ $this->js();
 
                             <div class="input-wrap">
                                 <label for="field-plugins"><?= Lang::txt('COM_GROUPS_PLUGIN_ACCESS') ?>:</label><br />
-                                <textarea name="group[plugins]" id="field-plugins" rows="10" cols="50"><?= $this->escape($this->group->plugins) ?></textarea>
+                                <textarea name="group[plugins]" id="field-plugins" rows="10"
+                                    cols="50"><?= $this->escape($this->group->plugins) ?></textarea>
                             </div>
 
                             <div class="input-wrap">

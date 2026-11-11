@@ -114,7 +114,8 @@ $area = Request::getString('area', 'about');
         <h2>
             <?php echo $this->escape($citation->title); ?>
             <?php if (User::get('id') == $citation->uid) : ?>
-                <a class="edit" href="<?= Route::url('index.php?option=com_citations&task=edit&id=' . $citation->id) ?>">Edit</a>
+                <a class="edit"
+                    href="<?= Route::url('index.php?option=com_citations&task=edit&id=' . $citation->id) ?>">Edit</a>
             <?php endif; ?>
         </h2>
 
@@ -597,7 +598,8 @@ $area = Request::getString('area', 'about');
                             $query .= $citation->title;
                         }
                         ?>
-                        <a rel="nofollow external" title="Google Scholar Search Results" href="http://scholar.google.com/scholar?q=<?= urlencode($query) ?>">
+                        <a rel="nofollow external" title="Google Scholar Search Results"
+                            href="http://scholar.google.com/scholar?q=<?= urlencode($query) ?>">
                             <img src="<?= Request::base(true) ?>/core/components/com_citations/assets/img/googlescholar.gif" alt="Google Scholar Search Results" width="100" />
                         </a>
                     </td>
@@ -608,7 +610,8 @@ $area = Request::getString('area', 'about');
                     <td>
                         <ul>
                             <li>
-                                <a rel="external" href="http://www.deepdyve.com/search?query=<?= urlencode($citation->title) ?>">
+                                <a rel="external"
+                                    href="http://www.deepdyve.com/search?query=<?= urlencode($citation->title) ?>">
                                     <?php echo Lang::txt('COM_CITATIONS_DEEP_DYVE'); ?>
                                 </a><?php echo Lang::txt('COM_CITATIONS_DEEP_DYVE_RENT'); ?>
                             </li>

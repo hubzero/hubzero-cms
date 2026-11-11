@@ -63,9 +63,11 @@
   <div class="redirect">
       <div class="container">
           <h1>Redirecting Soon...</h1>
-          <p>You will be redirected to <a href="<?php echo $this->escape($url) ?>" rel="noreferrer nofollow noopener"><?php echo $this->escape($domain) ?></a> in</p>
+          <p>You will be redirected to <a href="<?php echo $this->escape($url) ?>"
+              rel="noreferrer nofollow noopener"><?php echo $this->escape($domain) ?></a> in</p>
           <div class="counter" id="countdown"><?php echo $seconds ?></div>
-          <div class="footer">If you're not redirected, <a href="<?php echo $this->escape($url) ?>" rel="noreferrer nofollow noopener">click here</a>.</div>
+          <div class="footer">If you're not redirected, <a href="<?php echo $this->escape($url) ?>"
+              rel="noreferrer nofollow noopener">click here</a>.</div>
       </div>
 
       <script>

@@ -39,11 +39,14 @@ if ($this->comment->isReported()) {
         <div class="comment-content">
             <p class="comment-title">
                 <strong><?php echo $name; ?></strong>
-                <a class="permalink" href="<?= Route::url($this->base . '#c' . $this->comment->get('id')) ?>" title="<?= Lang::txt('PLG_GROUPS_BLOG_PERMALINK') ?>">
+                <a class="permalink" href="<?= Route::url($this->base . '#c' . $this->comment->get('id')) ?>"
+                    title="<?= Lang::txt('PLG_GROUPS_BLOG_PERMALINK') ?>">
                     <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_BLOG_AT'); ?></span>
-                    <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
+                    <span class="time"><time
+                        datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
                     <span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?></span>
-                    <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
+                    <span class="date"><time
+                        datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
                     <?php if ($this->comment->wasModified()) { ?>
                         &mdash; <?php echo Lang::txt('PLG_GROUPS_BLOG_EDITED'); ?>
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_BLOG_AT'); ?></span> 
@@ -59,7 +62,8 @@ if ($this->comment->isReported()) {
             && Request::getInt('comment') == $this->comment->get('id')
             && ($this->config->get('access-edit-comment') || User::get('id') == $this->comment->get('created_by'))
 ) { ?>
-            <form id="cform<?= $this->comment->get('id') ?>" class="comment-edit" action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
+            <form id="cform<?= $this->comment->get('id') ?>" class="comment-edit"
+                action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
                 <fieldset>
                     <legend><span><?php echo Lang::txt('PLG_GROUPS_BLOG_COMMENT_EDIT'); ?></span></legend>
 
@@ -87,8 +91,11 @@ if ($this->comment->isReported()) {
 
                     <div class="form-group">
                         <div class="form-check">
-                            <label class="form-check-label comment-anonymous-label" for="comment_<?= $this->comment->get('id') ?>_anonymous">
-                                <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?= $this->comment->get('id') ?>_anonymous" value="1" <?= $this->comment->get('anonymous') ? ' checked="checked"' : '' ?> />
+                            <label class="form-check-label comment-anonymous-label"
+                                for="comment_<?= $this->comment->get('id') ?>_anonymous">
+                                <input class="option form-check-input" type="checkbox" name="comment[anonymous]"
+                                    id="comment_<?= $this->comment->get('id') ?>_anonymous"
+                                    value="1" <?= $this->comment->get('anonymous') ? ' checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
                             </label>
                         </div>
@@ -114,11 +121,16 @@ if ($this->comment->isReported()) {
                 <?php } ?>
                 <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
                     <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_GROUPS_BLOG_REPLY') ?>" href="<?= Route::url($this->base) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('PLG_GROUPS_BLOG_REPLY') ?>"
+                        href="<?= Route::url($this->base) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('JCANCEL'); ?><!--
                 --></a>
                     <?php } else { ?>
-                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_GROUPS_BLOG_REPLY') ?>" href="<?= Route::url($this->base . '&reply=' . $this->comment->get('id')) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('PLG_GROUPS_BLOG_REPLY') ?>"
+                        href="<?= Route::url($this->base . '&reply=' . $this->comment->get('id')) ?>"
+                        rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('PLG_GROUPS_BLOG_REPLY'); ?><!--
                 --></a>
                     <?php } ?>
@@ -131,7 +143,8 @@ if ($this->comment->isReported()) {
 
         <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
             <div class="addcomment comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') ?>">
-                <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
+                <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post"
+                    enctype="multipart/form-data">
                     <fieldset id="commentform<?php echo $this->comment->get('id'); ?>">
                         <legend><span><?= Lang::txt('PLG_GROUPS_BLOG_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
 
@@ -160,8 +173,10 @@ if ($this->comment->isReported()) {
 
                         <div class="form-group">
                             <div class="form-check">
-                                <label for="comment-<?= $this->comment->get('id') ?>-anonymous" class="form-check-label comment-anonymous-label">
-                                    <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-<?= $this->comment->get('id') ?>-anonymous" value="1" />
+                                <label for="comment-<?= $this->comment->get('id') ?>-anonymous"
+                                    class="form-check-label comment-anonymous-label">
+                                    <input class="option form-check-input" type="checkbox" name="comment[anonymous]"
+                                        id="comment-<?= $this->comment->get('id') ?>-anonymous" value="1" />
                                     <?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
                                 </label>
                             </div>

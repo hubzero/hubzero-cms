@@ -66,7 +66,8 @@ $site = rtrim(Request::base(), '/');
     <table class="tbl-message" width="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
         <tbody>
             <tr>
-                <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
+                <td align="left" valign="bottom"
+                    style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
                     Below is a list of support tickets currently assigned to you.
                 </td>
             </tr>
@@ -133,12 +134,14 @@ $site = rtrim(Request::base(), '/');
                             #<?php echo $ticket->id; ?>
                         </td>
                         <td width="75%" style="padding: 8px;">
-                            <table style="border-collapse: collapse;" width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <table style="border-collapse: collapse;" width="100%" cellpadding="0" cellspacing="0"
+                                border="0">
                                 <tbody>
                                 <?php if (!$this->config->get('email_terse')) { ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $ticket->created ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;"
+                                            align="left"><?= $ticket->created ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
                                         <td style="text-align: left; padding: 0 0.5em;" align="left"><?= '--' ?></td>
                                     </tr>
@@ -146,20 +149,24 @@ $site = rtrim(Request::base(), '/');
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
                                         <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->name ? $ticket->name : 'Unknown') ?> <?= $ticket->login ? '(' . $this->escape($ticket->login) . ')' : '' ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->severity) ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;"
+                                            align="left"><?= $this->escape($ticket->severity) ?></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
+                                            valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
                                     </tr>
                                 <?php } ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
+                                            valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $ticket->status ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
+                                            valign="top" align="left"><?= $ticket->status ?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -229,12 +236,14 @@ $site = rtrim(Request::base(), '/');
                             #<?php echo $ticket->id; ?>
                         </td>
                         <td width="75%" style="padding: 8px;">
-                            <table style="border-collapse: collapse;" width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <table style="border-collapse: collapse;" width="100%" cellpadding="0" cellspacing="0"
+                                border="0">
                                 <tbody>
                                 <?php if (!$this->config->get('email_terse')) { ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $ticket->created ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;"
+                                            align="left"><?= $ticket->created ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
                                         <td style="text-align: left; padding: 0 0.5em;" align="left"><?= '--' ?></td>
                                     </tr>
@@ -242,20 +251,24 @@ $site = rtrim(Request::base(), '/');
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
                                         <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->name ? $ticket->name : 'Unknown') ?> <?= $ticket->login ? '(' . $this->escape($ticket->login) . ')' : '' ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->severity) ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;"
+                                            align="left"><?= $this->escape($ticket->severity) ?></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
+                                            valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
                                     </tr>
                                 <?php } ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
+                                            valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $ticket->status ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
+                                            valign="top" align="left"><?= $ticket->status ?></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -358,12 +371,14 @@ $site = rtrim(Request::base(), '/');
                             #<?php echo $ticket->id; ?>
                         </td>
                         <td width="75%" style="padding: 8px;">
-                            <table style="border-collapse: collapse;" width="100%" cellpadding="0" cellspacing="0" border="0">
+                            <table style="border-collapse: collapse;" width="100%" cellpadding="0" cellspacing="0"
+                                border="0">
                                 <tbody>
                                 <?php if (!$this->config->get('email_terse')) { ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Created:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $ticket->created ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;"
+                                            align="left"><?= $ticket->created ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Last activity:</th>
                                         <td style="text-align: left; padding: 0 0.5em;" align="left"><?= '--' ?></td>
                                     </tr>
@@ -371,20 +386,24 @@ $site = rtrim(Request::base(), '/');
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Creator:</th>
                                         <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->name ? $ticket->name : 'Unknown') ?> <?= $ticket->login ? '(' . $this->escape($ticket->login) . ')' : '' ?></td>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Severity:</th>
-                                        <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($ticket->severity) ?></td>
+                                        <td style="text-align: left; padding: 0 0.5em;"
+                                            align="left"><?= $this->escape($ticket->severity) ?></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Tags:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
+                                            valign="top" align="left"><?= $tags ? $tags : '--' ?></td>
                                     </tr>
                                 <?php } ?>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
+                                            valign="top" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
                                     </tr>
                                     <tr>
                                         <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Status:</th>
-                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;" valign="top" align="left"><?= $ticket->status ?></td>
+                                        <td colspan="3" style="text-align: left; padding: 0 0.5em; vertical-align: top;"
+                                            valign="top" align="left"><?= $ticket->status ?></td>
                                     </tr>
                                 </tbody>
                             </table>

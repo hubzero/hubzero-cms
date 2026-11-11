@@ -22,7 +22,8 @@ Toolbar::custom('doaddemail', 'save', '', 'COM_NEWSLETTER_TOOLBAR_SUBMIT', false
 Toolbar::cancel('cancelemail');
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" enctype="multipart/form-data">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm"
+    enctype="multipart/form-data">
     <fieldset class="adminform">
         <legend><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_ADD_EMAILS'); ?></legend>
 

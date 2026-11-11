@@ -19,7 +19,9 @@ defined('_HZEXEC_') or die();
     <h2 class="entry-title">
         <?php echo $this->escape(stripslashes($this->row->title)); ?>
         <?php if ($this->authorized || $this->row->created_by == User::get('id')) { ?>
-            <a class="edit" href="<?= Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+            <a class="edit"
+                href="<?= Route::url('index.php?option=' . $this->option . '&task=edit&id=' . $this->row->id) ?>"
+                title="<?= Lang::txt('JACTION_EDIT') ?>">
                 <?php echo strtolower(Lang::txt('JACTION_EDIT')); ?>
             </a>
             <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&task=delete&id=' . $this->row->id) ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>">

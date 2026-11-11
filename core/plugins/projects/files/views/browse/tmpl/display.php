@@ -192,7 +192,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
         <thead>
             <tr>
                 <?php if ($this->model->access('content')) { ?>
-                <th scope="col" class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" aria-label="<?= Lang::txt('PLG_PROJECTS_FILES_SELECT_ALL') ?>" class="js" /></th>
+                <th scope="col" class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle"
+                    aria-label="<?= Lang::txt('PLG_PROJECTS_FILES_SELECT_ALL') ?>" class="js" /></th>
                 <?php } ?>
                 <?php
                 $sortNameUrl = Route::url(
@@ -253,7 +254,8 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 <?php if ($this->repo->getAdapterName() == 'git') { ?>
                 <th scope="col"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_BY')); ?></th>
                 <?php }; ?>
-                <th scope="col" class="centeralign nojs" aria-label="<?= Lang::txt('Options') ?>"><span class="sr-only">Options</span></th>
+                <th scope="col" class="centeralign nojs" aria-label="<?= Lang::txt('Options') ?>"><span
+                    class="sr-only">Options</span></th>
                 <?php if ($this->publishing) { ?>
                 <th scope="col"><?php echo Lang::txt('PLG_PROJECTS_FILES_PUBLISHED'); ?></th>
                 <?php } ?>

@@ -27,7 +27,9 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
         <div class="grid">
             <div class="col span8">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" size="40" placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_IN_NAME') ?>" />
+                <input type="text" name="filter_search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>" size="40"
+                    placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_IN_NAME') ?>" />
 
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" flass="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>

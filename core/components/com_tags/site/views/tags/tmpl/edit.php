@@ -62,7 +62,8 @@ $this
                 // checkbox that silently does nothing.?>
                 <?php if ($this->config->get('access-manage-tag')) : ?>
                 <label for="field-admin">
-                    <input class="option" type="checkbox" name="fields[admin]" id="field-admin" value="1"<?= $this->tag->get('admin') ? ' checked="checked"' : '' ?> />
+                    <input class="option" type="checkbox" name="fields[admin]" id="field-admin"
+                        value="1"<?= $this->tag->get('admin') ? ' checked="checked"' : '' ?> />
                     <strong><?php echo Lang::txt('COM_TAGS_FIELD_ADMINISTRATION'); ?></strong>
                     <span class="hint">(<?php echo Lang::txt('COM_TAGS_FIELD_ADMINISTRATION_EXPLANATION'); ?>)</span>
                 </label>

@@ -77,8 +77,10 @@ $this
             <legend><?php echo Lang::txt('COM_CONTRIBUTE_COMPOSE_ABOUT'); ?></legend>
 
             <label for="field-title">
-                <?= Lang::txt('COM_CONTRIBUTE_COMPOSE_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                <input type="text" name="fields[title]" id="field-title" maxlength="250" value="<?= $this->escape(stripslashes($this->row->title ? $this->row->title : "")) ?>" />
+                <?= Lang::txt('COM_CONTRIBUTE_COMPOSE_TITLE') ?>: <span
+                    class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                <input type="text" name="fields[title]" id="field-title" maxlength="250"
+                    value="<?= $this->escape(stripslashes($this->row->title ? $this->row->title : "")) ?>" />
             </label>
 
             <label for="field-fulltxt">

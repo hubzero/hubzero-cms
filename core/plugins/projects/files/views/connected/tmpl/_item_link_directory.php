@@ -18,6 +18,7 @@ $directoryTitle = Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . " $this->itemName"
 $urlEncodedItemName = urlencode($this->itemName);
 ?>
 
-<a href="<?= $directoryBrowseUrl ?>" class="dir:<?= $urlEncodedItemName ?>" title="<?= $this->escape($directoryTitle) ?>">
+<a href="<?= $directoryBrowseUrl ?>" class="dir:<?= $urlEncodedItemName ?>"
+    title="<?= $this->escape($directoryTitle) ?>">
     <?php echo str_replace('&amp;#8230;', '&#8230;', $this->escape($directoryDisplayName)); ?>
 </a>

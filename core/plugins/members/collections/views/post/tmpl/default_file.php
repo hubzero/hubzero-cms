@@ -98,7 +98,9 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $asset->link('original'); ?>"
                         data-downloadtext="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?= $asset->link('thumb') ?>" alt="<?= $this->escape(stripslashes($asset->get('description', ''))) ?>" class="img" width="50" height="50" />
+                        <img src="<?= $asset->link('thumb') ?>"
+                            alt="<?= $this->escape(stripslashes($asset->get('description', ''))) ?>" class="img"
+                            width="50" height="50" />
                     </a>
                     <?php
                 }

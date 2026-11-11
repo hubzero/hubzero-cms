@@ -53,7 +53,8 @@ $crumbs = $draft
         
         <input type="hidden" name="version" value="<?php echo $this->pub->versionAlias; ?>" />
         <input type="hidden" name="pid" id="pid" value="<?php echo $this->pub->id; ?>" />
-        <input type="hidden" name="provisioned" id="provisioned" value="<?= $this->project->isProvisioned() ? 1 : 0 ?>" />
+        <input type="hidden" name="provisioned" id="provisioned"
+            value="<?= $this->project->isProvisioned() ? 1 : 0 ?>" />
         <?php if ($this->project->isProvisioned()) { ?>
             <input type="hidden" name="id" value="<?php echo $this->pub->id; ?>" />
             <input type="hidden" name="task" value="submit" />
@@ -83,7 +84,9 @@ $crumbs = $draft
             ?>
         <p class="warning"><?php echo $warning; ?></p>
         <?php } ?>
-        <p><span><input type="submit" value="<?= $crumbs ?>" class="btn btn-success active" /></span><span><a href="<?= Route::url($this->pub->link('editversion')) ?>" class="btn btn-cancel"><?= Lang::txt('JCANCEL') ?></a></span></p>
+        <p><span><input type="submit" value="<?= $crumbs ?>" class="btn btn-success active" /></span><span><a
+            href="<?= Route::url($this->pub->link('editversion')) ?>"
+            class="btn btn-cancel"><?= Lang::txt('JCANCEL') ?></a></span></p>
     <?php } ?>
 </form>
 </div>

@@ -133,11 +133,14 @@ $cc = [];
                 <div class="entry-content">
                     <p class="entry-title">
                         <strong><?php echo $name; ?></strong>
-                        <a class="permalink" href="<?= Route::url($this->row->link()) ?>" title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
+                        <a class="permalink" href="<?= Route::url($this->row->link()) ?>"
+                            title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
                             <span class="entry-date-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-                            <span class="time"><time datetime="<?= $this->row->created() ?>"><?= $this->row->created('time') ?></time></span>
+                            <span class="time"><time
+                                datetime="<?= $this->row->created() ?>"><?= $this->row->created('time') ?></time></span>
                             <span class="entry-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-                            <span class="date"><time datetime="<?= $this->row->created() ?>"><?= $this->row->created('date') ?></time></span>
+                            <span class="date"><time
+                                datetime="<?= $this->row->created() ?>"><?= $this->row->created('date') ?></time></span>
                         </a>
                     </p><!-- / .entry-title -->
                     <div class="entry-body">
@@ -159,7 +162,9 @@ $cc = [];
                                         echo $img;
                                     } else {
                                         ?>
-                                        <a class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>" href="<?= Route::url($attachment->link()) ?>" title="<?= $this->escape($attachment->get('description')) ?>">
+                                        <a class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>"
+                                            href="<?= Route::url($attachment->link()) ?>"
+                                            title="<?= $this->escape($attachment->get('description')) ?>">
                                             <p class="attachment-description"><?= $this->escape($attachment->get('description')) ?></p>
                                             <p class="attachment-meta">
                                                 <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
@@ -295,13 +300,15 @@ $cc = [];
                                 <?php echo $name; ?>
                             </strong>
                             <div class="comment-meta">
-                                <a class="permalink" href="<?= Route::url($comment->link()) ?>" title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
+                                <a class="permalink" href="<?= Route::url($comment->link()) ?>"
+                                    title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
                                     <span class="comment-date-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
                                     <span class="time"><time datetime="<?= $this->escape($comment->created()) ?>"><?= $comment->created('time') ?></time></span>
                                     <span class="comment-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
                                     <span class="date"><time datetime="<?= $this->escape($comment->created()) ?>"><?= $comment->created('date') ?></time></span>
                                 </a>
-                            <a class="copy-link show-hover-target" href="<?= $protocol . Request::getHttpHost() . Route::url($comment->link()) ?>">
+                            <a class="copy-link show-hover-target"
+                                href="<?= $protocol . Request::getHttpHost() . Route::url($comment->link()) ?>">
                                 <span class="lbl show-hover-child">Copy link</span>
                                 <?php echo Html::asset('icon', 'link'); ?>
                             </a>
@@ -332,7 +339,9 @@ $cc = [];
                                         echo $img;
                                     } else {
                                         ?>
-                                        <a class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>" href="<?= Route::url($attachment->link()) ?>" title="<?= $this->escape($attachment->get('description')) ?>">
+                                        <a class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>"
+                                            href="<?= Route::url($attachment->link()) ?>"
+                                            title="<?= $this->escape($attachment->get('description')) ?>">
                                             <p class="attachment-description"><?= $this->escape($attachment->get('description')) ?></p>
                                             <p class="attachment-meta">
                                                 <span class="attachment-size"><?= Hubzero\Utility\Number::formatBytes($attachment->size()) ?></span>
@@ -343,7 +352,8 @@ $cc = [];
                                     }
                                 } else {
                                     ?>
-                                    <div class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>" title="<?= $this->escape($attachment->get('description')) ?>">
+                                    <div class="attachment <?= Filesystem::extension($attachment->get('filename')) ?>"
+                                        title="<?= $this->escape($attachment->get('description')) ?>">
                                         <p class="attachment-description"><?= $this->escape($attachment->get('description')) ?></p>
                                         <p class="attachment-meta">
                                             <span class="attachment-size"><?= $this->escape($attachment->get('filename')) ?></span>
@@ -387,7 +397,8 @@ $cc = [];
             <h3>
                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_FORM'); ?>
             </h3>
-            <form action="<?= Route::url($this->row->link('update')) ?>" method="post" id="commentform" enctype="multipart/form-data">
+            <form action="<?= Route::url($this->row->link('update')) ?>" method="post" id="commentform"
+                enctype="multipart/form-data">
                 <p class="comment-member-photo">
                     <span class="comment-anchor"></span>
                     <?php
@@ -431,7 +442,8 @@ $cc = [];
                                 if (count($tf) > 0) {
                                     echo $tf[0];
                                 } else { ?>
-                                    <input type="text" name="tags" id="tags" class="form-control" value="<?= $this->escape($this->row->tags('string')) ?>" />
+                                    <input type="text" name="tags" id="tags" class="form-control"
+                                        value="<?= $this->escape($this->row->tags('string')) ?>" />
                                 <?php } ?>
                             </label>
                         </div>
@@ -453,7 +465,9 @@ $cc = [];
                                         if (count($gc) > 0) {
                                             echo $gc[0];
                                         } else { ?>
-                                            <input type="text" name="ticket[group_id]" value="<?= $this->row->get('group_id') ?>" class="form-control" id="acgroup" autocomplete="off" />
+                                            <input type="text" name="ticket[group_id]"
+                                                value="<?= $this->row->get('group_id') ?>" class="form-control"
+                                                id="acgroup" autocomplete="off" />
                                         <?php } ?>
                                     </label>
                                 </div>
@@ -505,14 +519,16 @@ $cc = [];
                             <?php if (!$this->row->isOpen()) { ?>
                                 <div class="form-group form-check">
                                     <label class="option form-check-label" for="field-status">
-                                        <input class="option form-check-input" type="checkbox" name="ticket[status]" id="field-status" value="1" />
+                                        <input class="option form-check-input" type="checkbox" name="ticket[status]"
+                                            id="field-status" value="1" />
                                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_REOPEN'); ?>
                                     </label>
                                 </div>
                             <?php } else { ?>
                                 <div class="form-group form-check">
                                     <label class="option form-check-label" for="field-status">
-                                        <input class="option form-check-input" type="checkbox" name="ticket[status]" id="field-status" value="0" />
+                                        <input class="option form-check-input" type="checkbox" name="ticket[status]"
+                                            id="field-status" value="0" />
                                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_CLOSE'); ?>
                                     </label>
                                 </div>
@@ -567,8 +583,10 @@ $cc = [];
                     <?php } ?>
                         <?php if ($this->row->access('create', 'comments') > 0) { ?>
                             <div class="form-group">
-                                <label for="messages" class="sr-only"><?= Lang::txt('COM_SUPPORT_COMMENT_MESSAGES') ?></label>
-                                    <select name="messages" id="messages" class="form-control" aria-label="<?= Lang::txt('COM_SUPPORT_COMMENT_MESSAGES') ?>">
+                                <label for="messages"
+                                    class="sr-only"><?= Lang::txt('COM_SUPPORT_COMMENT_MESSAGES') ?></label>
+                                    <select name="messages" id="messages" class="form-control"
+                                        aria-label="<?= Lang::txt('COM_SUPPORT_COMMENT_MESSAGES') ?>">
                                         <option value="mc"><?= Lang::txt('COM_SUPPORT_COMMENT_CUSTOM') ?></option>
                                         <?php
                                         $hi = [];
@@ -586,7 +604,8 @@ $cc = [];
                         <?php if ($this->row->access('create', 'private_comments')) { ?>
                             <div class="form-group form-check">
                                 <label for="make-private" class="form-check-label">
-                                    <input class="option form-check-input" type="checkbox" name="access" id="make-private" value="1" />
+                                    <input class="option form-check-input" type="checkbox" name="access"
+                                        id="make-private" value="1" />
                                     <?php echo Lang::txt('COM_SUPPORT_COMMENT_PRIVATE'); ?>
                                 </label>
                             </div>
@@ -597,14 +616,16 @@ $cc = [];
                     <?php } ?>
                         <div class="form-group">
                             <label for="comment" class="sr-only"><?php echo Lang::txt('COM_SUPPORT_COMMENT'); ?></label>
-                            <textarea name="comment" id="comment" class="form-control" rows="13" cols="35"><?= $this->comment->get('comment') ?></textarea>
+                            <textarea name="comment" id="comment" class="form-control" rows="13"
+                                cols="35"><?= $this->comment->get('comment') ?></textarea>
                         </div>
 
                         <?php if ($this->row->access('create', 'comments') > 0) { ?>
                             <?php if ($this->config->get('email_terse')) { ?>
                                 <div class="form-group form-check">
                                     <label for="email_terse" class="form-check-label">
-                                        <input class="option form-check-input" type="checkbox" name="email_terse" id="email_terse" value="1" checked="checked" />
+                                        <input class="option form-check-input" type="checkbox" name="email_terse"
+                                            id="email_terse" value="1" checked="checked" />
                                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_TERSE'); ?>
                                     </label>
                                 </div>
@@ -624,13 +645,15 @@ $cc = [];
                                 <div class="form-group">
                                     <label for="upload">
                                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE'); ?>:
-                                        <input type="file" name="upload[]" id="upload" class="form-control-file" multiple="multiple" />
+                                        <input type="file" name="upload[]" id="upload" class="form-control-file"
+                                            multiple="multiple" />
                                     </label>
                                 </div>
                                 <div class="form-group">
                                     <label for="field-description">
                                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_FILE_DESCRIPTION'); ?>:
-                                        <input type="text" name="description" id="field-description" class="form-control" value="" />
+                                        <input type="text" name="description" id="field-description"
+                                            class="form-control" value="" />
                                     </label>
                                 </div>
                             </noscript>
@@ -656,7 +679,8 @@ $cc = [];
                             <div class="col span6">
                                 <div class="form-group">
                                     <label for="email_submitter" class="form-check-label">
-                                        <input class="option form-check-input" type="checkbox" name="email_submitter" id="email_submitter" value="1" checked="checked" />
+                                        <input class="option form-check-input" type="checkbox" name="email_submitter"
+                                            id="email_submitter" value="1" checked="checked" />
                                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_SUBMITTER'); ?>
                                     </label>
                                 </div>
@@ -664,7 +688,8 @@ $cc = [];
                             <div class="col span6 omega">
                                 <div class="form-group">
                                     <label for="email_owner" class="form-check-label">
-                                        <input class="option form-check-input" type="checkbox" name="email_owner" id="email_owner" value="1" checked="checked" />
+                                        <input class="option form-check-input" type="checkbox" name="email_owner"
+                                            id="email_owner" value="1" checked="checked" />
                                         <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_OWNER'); ?>
                                     </label>
                                 </div>
@@ -679,7 +704,8 @@ $cc = [];
                                     echo '<span class="hint">' . Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS_AUTOCOMPLETE') . '</span>' . $mc[0];
                                 } else {
                                     ?> <span class="hint"><?= Lang::txt('COM_SUPPORT_COMMENT_SEND_EMAIL_CC_INSTRUCTIONS') ?></span>
-                                <input type="text" name="cc" id="acmembers" class="form-control" value="<?= implode(', ', $cc) ?>" size="35" />
+                                <input type="text" name="cc" id="acmembers" class="form-control"
+                                    value="<?= implode(', ', $cc) ?>" size="35" />
                                 <?php } ?>
                             </label>
                         </div>
@@ -693,7 +719,8 @@ $cc = [];
                     <?php echo Html::input('token'); ?>
 
                     <p class="submit">
-                        <input type="submit" class="btn btn-success" value="<?= Lang::txt('COM_SUPPORT_SUBMIT_COMMENT') ?>" />
+                        <input type="submit" class="btn btn-success"
+                            value="<?= Lang::txt('COM_SUPPORT_SUBMIT_COMMENT') ?>" />
                     </p>
                 </fieldset>
             </form>

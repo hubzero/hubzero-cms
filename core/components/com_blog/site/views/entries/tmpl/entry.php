@@ -57,7 +57,8 @@ $first = $this->archive
 
     <div id="content-header-extra">
         <p>
-            <a class="icon-archive archive btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=archive') ?>">
+            <a class="icon-archive archive btn"
+                href="<?= Route::url('index.php?option=' . $this->option . '&task=archive') ?>">
                 <?php echo Lang::txt('COM_BLOG_ARCHIVE'); ?>
             </a>
         </p>
@@ -133,10 +134,13 @@ $first = $this->archive
                         <?php echo $this->row->visibility('text'); ?>
                     </dd>
                     <dd class="entry-options">
-                        <a class="icon-edit edit" href="<?= Route::url($this->row->link('edit')) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                        <a class="icon-edit edit" href="<?= Route::url($this->row->link('edit')) ?>"
+                            title="<?= Lang::txt('JACTION_EDIT') ?>">
                             <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                         </a>
-                        <a class="icon-trash delete" data-confirm="<?= Lang::txt('COM_BLOG_CONFIRM_DELETE') ?>" href="<?= Route::url($this->row->link('delete')) ?>" title="<?= Lang::txt('JACTION_DELETE') ?>">
+                        <a class="icon-trash delete" data-confirm="<?= Lang::txt('COM_BLOG_CONFIRM_DELETE') ?>"
+                            href="<?= Route::url($this->row->link('delete')) ?>"
+                            title="<?= Lang::txt('JACTION_DELETE') ?>">
                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                         </a>
                     </dd>
@@ -189,7 +193,8 @@ $first = $this->archive
         <aside class="aside hide6">
             <?php if ($this->config->get('access-create-entry')) { ?>
                 <p>
-                    <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=new') ?>">
+                    <a class="icon-add add btn"
+                        href="<?= Route::url('index.php?option=' . $this->option . '&task=new') ?>">
                         <?php echo Lang::txt('COM_BLOG_NEW_ENTRY'); ?>
                     </a>
                 </p>
@@ -382,7 +387,8 @@ $first = $this->archive
 
                     <?php if (!User::isGuest()) { ?>
                         <label for="comment-anonymous-0">
-                            <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous-0" value="1" />
+                            <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous-0"
+                                value="1" />
                             <?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
                         </label>
 

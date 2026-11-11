@@ -37,7 +37,8 @@ $crumbOptions = [
 <div class="container">
     <h3><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS'); ?></h3>
 
-    <form action="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=wiki') ?>" method="post">
+    <form action="<?= Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=wiki') ?>"
+        method="post">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_TOC_LEGEND'); ?></legend>
 
@@ -49,7 +50,8 @@ $crumbOptions = [
             </select>
 
             <label for="toc_threshold"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD'); ?></label>
-            <input type="text" name="toc_threshold" id="toc_threshold" value="<?= $this->escape($threshold) ?>" placeholder="<?= Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD_DEFAULT', $defThresh) ?>" />
+            <input type="text" name="toc_threshold" id="toc_threshold" value="<?= $this->escape($threshold) ?>"
+                placeholder="<?= Lang::txt('PLG_GROUPS_WIKI_SETTINGS_THRESHOLD_DEFAULT', $defThresh) ?>" />
         </fieldset>
 
         <fieldset>

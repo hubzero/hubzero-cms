@@ -53,7 +53,9 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                 <label for="search">
                     <?php echo Lang::txt('COM_TOOLS_FIND_TOOL'); ?>
                 </label>
-                <input type="text" name="search" id="entry-search-text" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_TOOLS_SEARCH_PLACEHOLDER') ?>" />
+                <input type="text" name="search" id="entry-search-text"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_TOOLS_SEARCH_PLACEHOLDER') ?>" />
 
                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                 <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
@@ -210,7 +212,8 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                                     <?php echo strtolower(Lang::txt('COM_TOOLS_PROJECT')); ?>
                                 </span>
                             <?php } else { ?>
-                                <a class="entry-wiki" href="<?= $developer_url . $project_path . $row->toolname ?>/wiki" rel="external">
+                                <a class="entry-wiki" href="<?= $developer_url . $project_path . $row->toolname ?>/wiki"
+                                    rel="external">
                                     <?php echo strtolower(Lang::txt('COM_TOOLS_PROJECT')); ?>
                                 </a>
                             <?php } ?>

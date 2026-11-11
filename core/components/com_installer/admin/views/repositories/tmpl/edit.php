@@ -30,7 +30,10 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=save') ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form
+    action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=save') ?>"
+    method="post" name="adminForm" id="item-form" class="editform form-validate"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <?php if ($this->getError()) : ?>
             <div class="col span12">
@@ -42,23 +45,30 @@ $this->js();
                     <legend><span><?php echo Lang::txt('COM_INSTALLER_PACKAGES_BASIC_INFO'); ?></span></legend>
 
                     <div class="input-wrap">
-                        <label for="field-name"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_NAME') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                        <input name="name" id="field-name" type="text" class="required" value="<?= $this->escape(Arr::getValue($this->config, 'name', '')) ?>"></input>
+                        <label for="field-name"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_NAME') ?> <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                        <input name="name" id="field-name" type="text" class="required"
+                            value="<?= $this->escape(Arr::getValue($this->config, 'name', '')) ?>"></input>
                     </div>
 
                     <div class="input-wrap">
-                        <label for="field-alias"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_ALIAS') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                        <input name="alias" id="field-alias" type="text" class="required" value="<?= isset($this->alias) ? $this->escape($this->alias) : '' ?>"></input>
+                        <label for="field-alias"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_ALIAS') ?> <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                        <input name="alias" id="field-alias" type="text" class="required"
+                            value="<?= isset($this->alias) ? $this->escape($this->alias) : '' ?>"></input>
                     </div>
 
                     <div class="input-wrap">
                         <label for="field-description"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_DESCRIPTION') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                        <input name="description" id="field-description" type="text" class="required" value="<?= $this->escape(Arr::getValue($this->config, 'description', '')) ?>"></input>
+                        <input name="description" id="field-description" type="text" class="required"
+                            value="<?= $this->escape(Arr::getValue($this->config, 'description', '')) ?>"></input>
                     </div>
 
                     <div class="input-wrap">
-                        <label for="field-url"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_URL') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                        <input name="url" id="field-url" type="text" class="required" value="<?= $this->escape(Arr::getValue($this->config, 'url', '')) ?>"></input>
+                        <label for="field-url"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_URL') ?> <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                        <input name="url" id="field-url" type="text" class="required"
+                            value="<?= $this->escape(Arr::getValue($this->config, 'url', '')) ?>"></input>
                     </div>
 
                     <div class="input-wrap">

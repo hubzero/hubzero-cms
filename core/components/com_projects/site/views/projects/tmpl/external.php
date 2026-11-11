@@ -69,11 +69,13 @@ $this->css('theme' . $theme . '.css');
             <?php if ($this->model->allowMembershipRequest()) : ?>
                 <?php if (!$member || $member->status == 2) : ?>
                     <div class="btn-container tooltips span4">
-                        <a href="<?= $link ?>" class="tooltips btn btn-success"><?= Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ?></a>
+                        <a href="<?= $link ?>"
+                            class="tooltips btn btn-success"><?= Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ?></a>
                     </div>
                 <?php elseif ($member->get('status') == 3) : ?>
                     <div class="btn-container tooltips span4" title="Membership Request Pending">
-                        <a href="<?= $link ?>" class="tooltips btn btn-success" disabled><?= Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ?></a>
+                        <a href="<?= $link ?>" class="tooltips btn btn-success"
+                            disabled><?= Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ?></a>
                     </div>
                 <?php elseif ($member->get('status') == 4) : ?>
                     <?php
@@ -84,7 +86,8 @@ $this->css('theme' . $theme . '.css');
                     ?>
 
                     <div class="btn-container tooltips span4" title="<?php echo $this->escape($denyMessage);?>">
-                        <a href="<?= $link ?>" class="btn btn-success" disabled><?= Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ?></a>
+                        <a href="<?= $link ?>" class="btn btn-success"
+                            disabled><?= Lang::txt('COM_PROJECTS_REQUEST_MEMBERSHIP') ?></a>
                     </div>
                 <?php endif; ?>
             <?php endif; ?>

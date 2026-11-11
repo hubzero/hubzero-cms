@@ -22,7 +22,8 @@ $hideform = Request::getInt('hideform', 0);
 ?>
     <div id="small-page">
         <?php if (!$hideform) { ?>
-        <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
+        <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"
+            name="hubForm" id="attachments-form" method="post" enctype="multipart/form-data">
             <fieldset>
                 <label>
                     <input type="file" class="option" name="upload" />
@@ -106,7 +107,8 @@ $hideform = Request::getInt('hideform', 0);
                 ?>
                 <tr>
                     <td width="100%">
-                        <span class="ftitle item:name id:<?= $child->id ?>" data-id="<?= $child->id ?>" data-token="<?= Session::getFormToken() ?>">
+                        <span class="ftitle item:name id:<?= $child->id ?>" data-id="<?= $child->id ?>"
+                            data-token="<?= Session::getFormToken() ?>">
                             <?php echo $this->escape($child->title); ?>
                         </span>
                         <?= ($isFile) ? \Components\Resources\Helpers\Html::getFileAttribs($url, $base) : '<span class="caption">' . $this->escape($url) . '</span>' ?>

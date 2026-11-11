@@ -26,7 +26,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
     ? Lang::txt('COM_PROJECTS_LABEL_REVIEWER')
     : $role;
 ?>
-<div class="project-card" id="project-<?= $this->row->get('id') ?>" role="group" aria-label="<?= $this->escape($this->row->get('alias')) . ' ' . $this->escape($this->row->get('title')) ?>">
+<div class="project-card" id="project-<?= $this->row->get('id') ?>" role="group"
+    aria-label="<?= $this->escape($this->row->get('alias')) . ' ' . $this->escape($this->row->get('title')) ?>">
     <div class="project-contents">
         <?php
         $canView = ((!$this->row->inSetup() && $this->row->access('view'))
@@ -130,7 +131,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                         // [a11y] aria-label must contain visible text (SC 2.5.3) and be unique (SC 2.4.4)
                         $_ownerLabel = $_ownerTrunc . ' (' . $_ownerCn . ')';
                     ?>
-                    <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->row->groupOwner('cn')) ?>" aria-label="<?= $_ownerLabel ?>">
+                    <a href="<?= Route::url('index.php?option=com_groups&cn=' . $this->row->groupOwner('cn')) ?>"
+                        aria-label="<?= $_ownerLabel ?>">
                         <?php echo $_ownerTrunc; ?>
                     </a>
                 </span>
@@ -143,7 +145,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                     $name = $owner->get('name');
                 endif;
                 ?>
-                <span class="project-owner owner-user icon-user tooltips" title="<?= $this->escape(Lang::txt('This project is owned by %s', $name)) ?>">
+                <span class="project-owner owner-user icon-user tooltips"
+                    title="<?= $this->escape(Lang::txt('This project is owned by %s', $name)) ?>">
                     <?php
                     if ($owner->get('id') && in_array($owner->get('access'), User::getAuthorisedViewLevels())) :
                         $name = '<a href="' . Route::url('index.php?option=com_members&id=' . $owner->get('id')) . '">' . $this->escape($name) . '</a>';

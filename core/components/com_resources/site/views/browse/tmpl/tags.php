@@ -49,7 +49,9 @@ $this
             <input type="hidden" name="task" value="browsetags" />
         </fieldset>
 
-        <div id="tagbrowser" data-loader="<?= Request::base(true) ?>/core/components/com_resources/site/assets/img/loading.gif" role="region" aria-label="<?= Lang::txt('COM_RESOURCES_BROWSETAGS_LABEL') ?>">
+        <div id="tagbrowser"
+            data-loader="<?= Request::base(true) ?>/core/components/com_resources/site/assets/img/loading.gif"
+            role="region" aria-label="<?= Lang::txt('COM_RESOURCES_BROWSETAGS_LABEL') ?>">
             <p class="info"><?php echo Lang::txt('COM_RESOURCES_TAGBROWSER_EXPLANATION'); ?></p>
 
             <div id="level-1" role="region" aria-label="<?php echo Lang::txt('COM_RESOURCES_TAG'); ?>">
@@ -92,7 +94,8 @@ $this
             }
             ?>
             <p class="supported">
-                <?= Lang::txt('COM_RESOURCES_WHATS_THIS') ?> <a href="<?= $link ?>"><?= Lang::txt('COM_RESOURCES_ABOUT_TAG', $tag->get('raw_tag')) ?></a>
+                <?= Lang::txt('COM_RESOURCES_WHATS_THIS') ?> <a
+                    href="<?= $link ?>"><?= Lang::txt('COM_RESOURCES_ABOUT_TAG', $tag->get('raw_tag')) ?></a>
             </p>
             <?php
         }

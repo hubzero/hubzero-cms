@@ -55,11 +55,14 @@ foreach ($menus as $menu) {
                     <legend><?php echo Lang::txt('COM_GROUPS_PAGES_MODULE_DETAILS'); ?></legend>
 
                     <label for="field-title">
-                        <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_TITLE') ?>:</strong> <span class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
-                        <input type="text" name="module[title]" id="field-title" value="<?= $this->escape(stripslashes($this->module->get('title'))) ?>" />
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_TITLE') ?>:</strong> <span
+                            class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
+                        <input type="text" name="module[title]" id="field-title"
+                            value="<?= $this->escape(stripslashes($this->module->get('title'))) ?>" />
                     </label>
                     <label for="field-content">
-                        <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_CONTENT') ?>:</strong> <span class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_CONTENT') ?>:</strong> <span
+                            class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
                         <?php
                             $allowPhp      = true;
                             $allowScripts  = true;
@@ -112,7 +115,8 @@ foreach ($menus as $menu) {
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_GROUPS_PAGES_MODULE_MENU_ASSIGNMENT'); ?></legend>
                     <label for="field-assignment">
-                        <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT') ?>:</strong> <span class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT') ?>:</strong> <span
+                            class="required"><?= Lang::txt('COM_GROUPS_FIELD_REQUIRED') ?></span>
                         <select name="menu[assignment]" id="field-assignment" class="fancy-select">
                             <option value="0"><?= Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT_ALL') ?></option>
                             <option <?= !in_array(0, $activeMenu) ? 'selected="selected"' : '' ?> value=""><?= Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT_SELECTED') ?></option>
@@ -125,12 +129,14 @@ foreach ($menus as $menu) {
                                                  endif; ?>>
                         <label>
                             <button id="selectall"><?= Lang::txt('COM_GROUPS_PAGES_MODULE_SELECTION_ALL') ?></button>
-                            <button id="clearselection"><?= Lang::txt('COM_GROUPS_PAGES_MODULE_SELECTION_CLEAR') ?></button>
+                            <button
+                                id="clearselection"><?= Lang::txt('COM_GROUPS_PAGES_MODULE_SELECTION_CLEAR') ?></button>
                         </label>
                         <?php foreach ($this->pages as $page) : ?>
                             <label>
                                 <?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu)) ? 'checked="checked"' : ''; ?>
-                                <input type="checkbox" class="option" <?= $ckd ?> name="menu[assigned][]" value="<?= $page->get('id') ?>" /> <?= $page->get('title') ?>
+                                <input type="checkbox" class="option" <?= $ckd ?> name="menu[assigned][]"
+                                    value="<?= $page->get('id') ?>" /> <?= $page->get('title') ?>
                             </label>
                         <?php endforeach; ?>
                     </fieldset>
@@ -141,7 +147,8 @@ foreach ($menus as $menu) {
                     <legend><?php echo Lang::txt('COM_GROUPS_PAGES_MODULE_PUBLISH'); ?></legend>
 
                     <label for="field-state">
-                        <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_STATUS') ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL')?></span>
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_STATUS') ?>:</strong> <span
+                            class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL')?></span>
                         <select name="module[state]" id="field-state" class="fancy-select">
                             <option value="1"><?= Lang::txt('COM_GROUPS_PAGES_MODULE_STATUS_PUBLISHED') ?></option>
                             <option value="0"><?= Lang::txt('COM_GROUPS_PAGES_MODULE_STATUS_UNPUBLISHED') ?></option>
@@ -156,12 +163,15 @@ foreach ($menus as $menu) {
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_GROUPS_PAGES_MODULE_SETTINGS'); ?></legend>
                     <label for="field-position">
-                        <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_POSITION') ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL')?></span>
-                        <input type="text" name="module[position]" id="field-position" value="<?= $this->escape(stripslashes($this->module->get('position'))) ?>" />
+                        <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_POSITION') ?>:</strong> <span
+                            class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL')?></span>
+                        <input type="text" name="module[position]" id="field-position"
+                            value="<?= $this->escape(stripslashes($this->module->get('position'))) ?>" />
                     </label>
                     <?php if ($this->module->get('id')) : ?>
                         <label for="field-ordering">
-                            <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_ORDERING') ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL')?></span>
+                            <strong><?= Lang::txt('COM_GROUPS_PAGES_MODULE_ORDERING') ?>:</strong> <span
+                                class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL')?></span>
                             <select name="module[ordering]" id="field-ordering" class="fancy-select">
                                 <?php foreach ($this->order as $k => $order) : ?>
                                     <?php $sel = ($order->get('title') == $this->module->get('title')) ? 'selected="selected"' : ''; ?>

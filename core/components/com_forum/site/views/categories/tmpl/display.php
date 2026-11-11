@@ -49,14 +49,17 @@ $this->category->set('section_alias', $this->filters['section']);
 <section class="main section">
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-            <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=categories&task=search') ?>" method="get">
+            <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=categories&task=search') ?>"
+                method="get">
                 <div class="container data-entry">
                     <input class="entry-search-submit" type="submit" value="<?= Lang::txt('COM_FORUM_SEARCH') ?>" />
                     <fieldset class="entry-search">
                         <legend><span><?php echo Lang::txt('COM_FORUM_SEARCH_LEGEND'); ?></span></legend>
 
                         <label for="entry-search-field"><?php echo Lang::txt('COM_FORUM_SEARCH_LABEL'); ?></label>
-                        <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_FORUM_SEARCH_PLACEHOLDER') ?>" />
+                        <input type="text" name="q" id="entry-search-field"
+                            value="<?= $this->escape($this->filters['search']) ?>"
+                            placeholder="<?= Lang::txt('COM_FORUM_SEARCH_PLACEHOLDER') ?>" />
                     </fieldset>
                 </div><!-- / .container -->
 
@@ -178,7 +181,9 @@ $this->category->set('section_alias', $this->filters['section']);
                                         <?php if ($this->config->get('access-manage-thread') || $this->config->get('access-edit-thread') || $this->config->get('access-delete-thread')) { ?>
                                             <td class="entry-options">
                                                 <?php if ($this->config->get('access-manage-thread') || ($this->config->get('access-edit-thread') && $row->get('created_by') == User::get('id'))) { ?>
-                                                    <a class="icon-edit edit" href="<?= Route::url($row->link('edit')) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                                                    <a class="icon-edit edit"
+                                                        href="<?= Route::url($row->link('edit')) ?>"
+                                                        title="<?= Lang::txt('JACTION_EDIT') ?>">
                                                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                                                     </a>
                                                 <?php } ?>
@@ -233,9 +238,11 @@ $this->category->set('section_alias', $this->filters['section']);
                         </span>
                         <span class="entry-date">
                             <span class="entry-date-at"><?php echo Lang::txt('COM_FORUM_AT'); ?></span>
-                            <span class="icon-time time"><time datetime="<?= $last->created() ?>"><?= $last->created('time') ?></time></span>
+                            <span class="icon-time time"><time
+                                datetime="<?= $last->created() ?>"><?= $last->created('time') ?></time></span>
                             <span class="entry-date-on"><?php echo Lang::txt('COM_FORUM_ON'); ?></span>
-                            <span class="icon-date date"><time datetime="<?= $last->created() ?>"><?= $last->created('date') ?></time></span>
+                            <span class="icon-date date"><time
+                                datetime="<?= $last->created() ?>"><?= $last->created('date') ?></time></span>
                         </span>
                     <?php } else { ?>
                         <?php echo Lang::txt('COM_FORUM_NONE'); ?>

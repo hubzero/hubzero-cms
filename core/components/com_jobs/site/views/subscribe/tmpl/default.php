@@ -50,16 +50,19 @@ defined('_HZEXEC_') or die();
             <label for="companyName">
                 <?php echo Lang::txt('COM_JOBS_EMPLOYER_COMPANY_NAME'); ?>:
                 <span class="required"><?php echo Lang::txt('COM_JOBS_REQUIRED'); ?></span>
-                <input class="inputbox" type="text" id="companyName" name="companyName" size="50" maxlength="100" value="<?= $this->escape($this->employer->companyName) ?>" />
+                <input class="inputbox" type="text" id="companyName" name="companyName" size="50" maxlength="100"
+                    value="<?= $this->escape($this->employer->companyName) ?>" />
             </label>
             <label for="companyLocation">
                 <?php echo Lang::txt('COM_JOBS_EMPLOYER_COMPANY_LOCATION'); ?>:
                 <span class="required"><?php echo Lang::txt('COM_JOBS_REQUIRED'); ?></span>
-                <input class="inputbox" type="text" id="companyLocation" name="companyLocation" size="50" maxlength="200" value="<?= $this->escape($this->employer->companyLocation) ?>" />
+                <input class="inputbox" type="text" id="companyLocation" name="companyLocation" size="50"
+                    maxlength="200" value="<?= $this->escape($this->employer->companyLocation) ?>" />
             </label>
             <label for="companyWebsite">
                 <?php echo Lang::txt('COM_JOBS_EMPLOYER_COMPANY_WEBSITE'); ?>:
-                <input class="inputbox" type="text" id="companyWebsite" name="companyWebsite" size="50" maxlength="200" value="<?= $this->escape($this->employer->companyWebsite) ?>" />
+                <input class="inputbox" type="text" id="companyWebsite" name="companyWebsite" size="50" maxlength="200"
+                    value="<?= $this->escape($this->employer->companyWebsite) ?>" />
             </label>
         </fieldset>
         <div class="clear"></div>
@@ -119,7 +122,8 @@ defined('_HZEXEC_') or die();
                 $iniprice = $thissub ? 0 : $currentService->unitprice;
                 ?>
                 <div class="bindtogether product">
-                    <input class="option service" type="radio" name="serviceid" id="service_<?= $currentService->id ?>" value="<?= $currentService->id ?>"
+                    <input class="option service" type="radio" name="serviceid" id="service_<?= $currentService->id ?>"
+                        value="<?= $currentService->id ?>"
                     <?php if ($thissub or ($this->subscription->serviceid == 0 && $this->services->key() == 1)) {
                         echo 'checked="checked"';
                     }
@@ -159,19 +163,23 @@ defined('_HZEXEC_') or die();
                     </span>
 
                         <!-- GOOGLE Checkout (TBD) -->
-                        <input type="hidden" class="product-price" value="<?= $this->escape($currentService->unitprice) ?>" />
-                        <input type="hidden" class="product-title" value="<?= $this->escape($currentService->title) ?>" />
+                        <input type="hidden" class="product-price"
+                            value="<?= $this->escape($currentService->unitprice) ?>" />
+                        <input type="hidden" class="product-title"
+                            value="<?= $this->escape($currentService->title) ?>" />
 
                     </div>
                 </div>
-                <input type="hidden" name="price_<?= $currentService->id ?>" id="price_<?= $currentService->id ?>" value="<?= $this->escape($currentService->unitprice) ?>" />
+                <input type="hidden" name="price_<?= $currentService->id ?>" id="price_<?= $currentService->id ?>"
+                    value="<?= $this->escape($currentService->unitprice) ?>" />
                 <?php $this->services->next();
             }
             $btn = $this->subscription->id ? Lang::txt('COM_JOBS_SUBSCRIPTION_SAVE') : Lang::txt('COM_JOBS_SUBSCRIPTION_PROCESS_ORDER');
             ?>
             <label for="contact">
                 <?= Lang::txt('COM_JOBS_SUBSCRIPTION_CONTACT_PHONE') . ': <span class="required">' . Lang::txt('COM_JOBS_REQUIRED_WITH_PAYMENT') . '</span>' ?>
-                <input class="inputbox" type="text" id="contact" name="contact" size="50" maxlength="15" value="<?= $this->escape($this->subscription->contact) ?>" />
+                <input class="inputbox" type="text" id="contact" name="contact" size="50" maxlength="15"
+                    value="<?= $this->escape($this->subscription->contact) ?>" />
             </label>
 
             <div class="submitblock">

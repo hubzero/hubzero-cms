@@ -61,28 +61,38 @@ $this->js();
                 <?php endif; ?>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_TITLE_DESC'); ?>">
-                    <label for="field-title"><?= Lang::txt('JGLOBAL_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                    <input type="text" name="fields[title]" id="field-title" class="required" maxlength="50" value="<?= $this->escape($this->item->title) ?>" />
+                    <label for="field-title"><?= Lang::txt('JGLOBAL_TITLE') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                    <input type="text" name="fields[title]" id="field-title" class="required" maxlength="50"
+                        value="<?= $this->escape($this->item->title) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_TITLE_NATIVE_DESC'); ?>">
-                    <label for="field-title"><?= Lang::txt('COM_LANGUAGES_FIELD_TITLE_NATIVE_LABEL') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                    <input type="text" name="fields[title_native]" id="field-title_native" class="required" maxlength="50" value="<?= $this->escape($this->item->title_native) ?>" />
+                    <label for="field-title"><?= Lang::txt('COM_LANGUAGES_FIELD_TITLE_NATIVE_LABEL') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                    <input type="text" name="fields[title_native]" id="field-title_native" class="required"
+                        maxlength="50" value="<?= $this->escape($this->item->title_native) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_CODE_DESC'); ?>">
-                    <label for="field-sef"><?= Lang::txt('COM_LANGUAGES_FIELD_LANG_CODE_LABEL') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                    <input type="text" name="fields[sef]" id="field-sef" class="required" maxlength="7" value="<?= $this->escape($this->item->sef) ?>" />
+                    <label for="field-sef"><?= Lang::txt('COM_LANGUAGES_FIELD_LANG_CODE_LABEL') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                    <input type="text" name="fields[sef]" id="field-sef" class="required" maxlength="7"
+                        value="<?= $this->escape($this->item->sef) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_IMAGE_DESC'); ?>">
-                    <label for="field-image"><?= Lang::txt('COM_LANGUAGES_FIELD_IMAGE_LABEL') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                    <input type="text" name="fields[image]" id="field-image" class="required" maxlength="7" value="<?= $this->escape($this->item->image) ?>" />
+                    <label for="field-image"><?= Lang::txt('COM_LANGUAGES_FIELD_IMAGE_LABEL') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                    <input type="text" name="fields[image]" id="field-image" class="required" maxlength="7"
+                        value="<?= $this->escape($this->item->image) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_LANG_TAG_DESC'); ?>">
-                    <label for="field-lang_code"><?= Lang::txt('COM_LANGUAGES_FIELD_LANG_TAG_LABEL') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
-                    <input type="text" name="fields[lang_code]" id="field-lang_code" class="required" maxlength="7" value="<?= $this->escape($this->item->lang_code) ?>" />
+                    <label for="field-lang_code"><?= Lang::txt('COM_LANGUAGES_FIELD_LANG_TAG_LABEL') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label>
+                    <input type="text" name="fields[lang_code]" id="field-lang_code" class="required" maxlength="7"
+                        value="<?= $this->escape($this->item->lang_code) ?>" />
                 </div>
 
                 <?php if ($canDo->get('core.edit.state')) : ?>
@@ -105,12 +115,14 @@ $this->js();
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_DESCRIPTION_DESC'); ?>">
                     <label for="field-description"><?php echo Lang::txt('JGLOBAL_DESCRIPTION'); ?>:</label>
-                    <textarea name="fields[description]" id="field-description" rows="5" cols="80"><?= $this->escape($this->item->description) ?></textarea>
+                    <textarea name="fields[description]" id="field-description" rows="5"
+                        cols="80"><?= $this->escape($this->item->description) ?></textarea>
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('JGLOBAL_FIELD_ID_DESC'); ?>">
                     <label for="field-lang_id"><?php echo Lang::txt('JGLOBAL_FIELD_ID_LABEL'); ?>:</label>
-                    <input type="text" name="fields[lang_id]" id="field-lang_id" readonly="readonly" value="<?= $this->escape($this->item->lang_id) ?>" />
+                    <input type="text" name="fields[lang_id]" id="field-lang_id" readonly="readonly"
+                        value="<?= $this->escape($this->item->lang_id) ?>" />
                 </div>
             </fieldset>
         </div>
@@ -121,12 +133,14 @@ $this->js();
                 <fieldset class="panelform">
                     <div class="input-wrap" data-hint="<?php echo Lang::txt('JFIELD_META_KEYWORDS_DESC'); ?>">
                         <label for="field-metakey"><?php echo Lang::txt('JFIELD_META_KEYWORDS_LABEL'); ?>:</label>
-                        <textarea name="fields[metakey]" id="field-metakey" rows="3" cols="30"><?= $this->escape($this->item->metakey) ?></textarea>
+                        <textarea name="fields[metakey]" id="field-metakey" rows="3"
+                            cols="30"><?= $this->escape($this->item->metakey) ?></textarea>
                     </div>
 
                     <div class="input-wrap" data-hint="<?php echo Lang::txt('JFIELD_META_DESCRIPTION_DESC'); ?>">
                         <label for="field-metadesc"><?php echo Lang::txt('JFIELD_META_DESCRIPTION_LABEL'); ?>:</label>
-                        <textarea name="fields[metadesc]" id="field-metadesc" rows="3" cols="30"><?= $this->escape($this->item->metadesc) ?></textarea>
+                        <textarea name="fields[metadesc]" id="field-metadesc" rows="3"
+                            cols="30"><?= $this->escape($this->item->metadesc) ?></textarea>
                     </div>
                 </fieldset>
 
@@ -134,7 +148,8 @@ $this->js();
                 <fieldset class="panelform">
                     <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_LANGUAGES_FIELD_SITE_NAME_DESC'); ?>">
                         <label for="field-sitename"><?= Lang::txt('COM_LANGUAGES_FIELD_SITE_NAME_LABEL') ?>:</label>
-                        <input type="text" name="fields[sitename]" id="field-sitename" size="50" value="<?= $this->escape($this->item->sitename) ?>" />
+                        <input type="text" name="fields[sitename]" id="field-sitename" size="50"
+                            value="<?= $this->escape($this->item->sitename) ?>" />
                     </div>
                 </fieldset>
 

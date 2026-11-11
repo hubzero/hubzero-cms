@@ -84,17 +84,22 @@ $panels = [
 
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform" data-confirmreset="<?= Lang::txt('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET') ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form" class="editform"
+    data-confirmreset="<?= Lang::txt('COM_PUBLICATIONS_CONFIRM_RATINGS_RESET') ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
                 <div class="input-wrap">
-                    <label><?= Lang::txt('COM_PUBLICATIONS_FIELD_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="title" id="field-title" maxlength="250" class="required" value="<?= $this->escape(stripslashes($this->model->get('title'))) ?>" />
+                    <label><?= Lang::txt('COM_PUBLICATIONS_FIELD_TITLE') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="title" id="field-title" maxlength="250" class="required"
+                        value="<?= $this->escape(stripslashes($this->model->get('title'))) ?>" />
                 </div>
                 <div class="input-wrap">
-                    <label><?= Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <label><?= Lang::txt('COM_PUBLICATIONS_FIELD_CATEGORY') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <?php
                     // Draw category list
                     $this
@@ -108,7 +113,8 @@ $panels = [
                 </div>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ALIAS'); ?>:</label>
-                    <input type="text" name="alias" id="field-alias" maxlength="250" value="<?= $this->escape(stripslashes($this->model->get('alias'))) ?>" />
+                    <input type="text" name="alias" id="field-alias" maxlength="250"
+                        value="<?= $this->escape(stripslashes($this->model->get('alias'))) ?>" />
                 </div>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_SYNOPSIS'); ?>:</label>
@@ -159,7 +165,8 @@ $panels = [
                     if (count($tf) > 0) {
                         echo $tf[0];
                     } else { ?>
-                        <input type="text" name="tags" id="actags" value="<?= $this->escape($this->model->getTagsForEditing()) ?>" />
+                        <input type="text" name="tags" id="actags"
+                            value="<?= $this->escape($this->model->getTagsForEditing()) ?>" />
                     <?php } ?>
                 </div>
             </fieldset>
@@ -184,7 +191,8 @@ $panels = [
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_LINK'); ?></span></legend>
                 <div class="input-wrap">
-                    <input type="checkbox" name="disabledownloadlink" id="disabledownloadlink" <?= $this->model->version->downloadDisabled ? "checked" : '' ?>/>
+                    <input type="checkbox" name="disabledownloadlink"
+                        id="disabledownloadlink" <?= $this->model->version->downloadDisabled ? "checked" : '' ?>/>
                     <label for="disabledownloadlink"><?= Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_DESCRIPTION') ?></label>
                 </div>
             </fieldset>
@@ -225,7 +233,8 @@ $panels = [
                             <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RANKING'); ?>:</th>
                             <td><?php echo $this->model->get('master_ranking'); ?>/10
                                 <?php if ($this->model->get('master_ranking') != '0') { ?>
-                                    <input type="button" name="reset_ranking" id="reset_ranking" value="<?= Lang::txt('Reset ranking') ?>" />
+                                    <input type="button" name="reset_ranking" id="reset_ranking"
+                                        value="<?= Lang::txt('Reset ranking') ?>" />
                                 <?php } ?>
                             </td>
                         </tr>
@@ -233,7 +242,8 @@ $panels = [
                             <th><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_RATING'); ?>:</th>
                             <td><?= $rating . '/5.0 (' . $this->model->get('master_times_rated') . ' reviews)' ?>
                             <?php if ($rating != '0.0') { ?>
-                                <input type="button" name="reset_rating" id="reset_rating" value="<?= Lang::txt('Reset rating') ?>" />
+                                <input type="button" name="reset_rating" id="reset_rating"
+                                    value="<?= Lang::txt('Reset rating') ?>" />
                             <?php } ?>
                             </td>
                         </tr>
@@ -253,7 +263,8 @@ $panels = [
                         <tr>
                             <th scope="row"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_VERSION'); ?></th>
                             <td>
-                                <input type="text" name="version_label" id="field-version_label" maxlength="250" size="10" value="<?= $this->escape($this->model->get('version_label')) ?>" />
+                                <input type="text" name="version_label" id="field-version_label" maxlength="250"
+                                    size="10" value="<?= $this->escape($this->model->get('version_label')) ?>" />
                                 <?php echo ' (' . $status . ')'; ?>
                             </td>
                         </tr>
@@ -399,14 +410,19 @@ $panels = [
                 <div class="input-wrap">
                     <textarea name="message" id="message" rows="5" cols="50"></textarea>
                     <input type="hidden" name="admin_action" id="admin_action" value="" />
-                    <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_SEND_MESSAGE') ?>" class="btn" id="do-message" />
+                    <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_SEND_MESSAGE') ?>" class="btn"
+                        id="do-message" />
                     <?php if ($this->model->isPublished()) { ?>
-                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION') ?>" class="btn" id="do-unpublish" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_UNPUBLISH_VERSION') ?>"
+                            class="btn" id="do-unpublish" />
                     <?php } elseif ($this->model->isUnpublished()) { ?>
-                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION') ?>" class="btn" id="do-republish" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_REPUBLISH_VERSION') ?>"
+                            class="btn" id="do-republish" />
                     <?php } elseif ($this->model->isPending()) { ?>
-                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH') ?>" class="btn" id="do-publish" />
-                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT') ?>" class="btn" id="do-revert" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_APPROVE_AND_PUBLISH') ?>"
+                            class="btn" id="do-publish" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_ACTION_REVERT_TO_DRAFT') ?>"
+                            class="btn" id="do-revert" />
                     <?php } ?>
                 </div>
             </fieldset>

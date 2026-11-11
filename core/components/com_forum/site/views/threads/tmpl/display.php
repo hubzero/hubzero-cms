@@ -127,7 +127,8 @@ $now = Date::of('now')->toSql();
                 <h3 class="post-comment-title">
                     <?php echo Lang::txt('COM_FORUM_ADD_COMMENT'); ?>
                 </h3>
-                <form action="<?= Route::url($this->thread->link()) ?>" method="post" id="commentform" enctype="multipart/form-data">
+                <form action="<?= Route::url($this->thread->link()) ?>" method="post" id="commentform"
+                    enctype="multipart/form-data">
                     <p class="comment-member-photo">
                         <?php
                         $anon = (!User::isGuest() ? 0 : 1);
@@ -154,7 +155,8 @@ $now = Date::of('now')->toSql();
                             <label for="fieldcomment" id="addNewPostArea">
                                 <div>
                                     <?php echo Lang::txt('COM_FORUM_FIELD_COMMENTS'); ?>
-                                    <span class="note" style='float:right'>Use an @ sign to mention users in the post</span>
+                                    <span class="note"
+                                        style='float:right'>Use an @ sign to mention users in the post</span>
                                 </div>
                                 <?php echo $this->editor(
                                     'fields[comment]',
@@ -215,7 +217,8 @@ $now = Date::of('now')->toSql();
 
                             <?php if ($this->config->get('allow_anonymous')) { ?>
                                 <label for="field-anonymous" class="comment-anonymous-label">
-                                    <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
+                                    <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"
+                                        value="1" />
                                     <?php echo Lang::txt('COM_FORUM_FIELD_ANONYMOUS'); ?>
                                 </label>
                             <?php } ?>
@@ -241,7 +244,8 @@ $now = Date::of('now')->toSql();
                     <input type="hidden" name="fields[scope]" value="site" />
                     <input type="hidden" name="fields[scope_id]" value="0" />
                     <input type="hidden" name="fields[thread]" value="<?php echo $this->thread->get('id'); ?>" />
-                    <input type="hidden" name="fields[scope_sub_id]" value="<?= $this->thread->get('scope_sub_id') ?>" />
+                    <input type="hidden" name="fields[scope_sub_id]"
+                        value="<?= $this->thread->get('scope_sub_id') ?>" />
                     <input type="hidden" name="fields[object_id]" value="<?= $this->thread->get('object_id') ?>" />
 
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

@@ -23,7 +23,8 @@ $this
 
     <div id="content-header-extra">
         <p>
-            <a class="prev btn" href="<?= Route::url('index.php?option=' . $this->option) ?>" title="<?= Lang::txt('JCANCEL') ?>"><?= Lang::txt('JCANCEL') ?></a>
+            <a class="prev btn" href="<?= Route::url('index.php?option=' . $this->option) ?>"
+                title="<?= Lang::txt('JCANCEL') ?>"><?= Lang::txt('JCANCEL') ?></a>
         </p>
     </div><!-- / #content-header-extra -->
 </header>
@@ -41,7 +42,8 @@ $this
             <?php else : ?>
                 <div class="form-group">
                     <label class="course_alias_label" for="course_alias_field">
-                        <?= Lang::txt('COM_COURSES_FIELD_ALIAS') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                        <?= Lang::txt('COM_COURSES_FIELD_ALIAS') ?> <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                         <input name="course[alias]" id="course_alias_field" type="text" size="35" class="form-control" value="<?= $this->escape($this->course->get('alias')) ?>" autocomplete="off" data-route="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=courseavailability&no_html=1') ?>" />
                         <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_ALIAS_HINT'); ?></span>
                     </label>
@@ -50,15 +52,18 @@ $this
 
             <div class="form-group">
                 <label for="field-title">
-                    <?= Lang::txt('COM_COURSES_FIELD_TITLE') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                    <input type="text" name="course[title]" id="field-title" size="35" class="form-control" value="<?= $this->escape(stripslashes($this->course->get('title', ''))) ?>" />
+                    <?= Lang::txt('COM_COURSES_FIELD_TITLE') ?> <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                    <input type="text" name="course[title]" id="field-title" size="35" class="form-control"
+                        value="<?= $this->escape(stripslashes($this->course->get('title', ''))) ?>" />
                 </label>
             </div>
 
             <div class="form-group">
                 <label for="field-blurb">
                     <?php echo Lang::txt('COM_COURSES_FIELD_BLURB'); ?>
-                    <textarea name="course[blurb]" id="field-blurb" class="form-control" cols="50" rows="3"><?= $this->escape(stripslashes($this->course->get('blurb', ''))) ?></textarea>
+                    <textarea name="course[blurb]" id="field-blurb" class="form-control" cols="50"
+                        rows="3"><?= $this->escape(stripslashes($this->course->get('blurb', ''))) ?></textarea>
                     <span class="hint">
                         <?php echo Lang::txt('COM_COURSES_FIELD_BLURB_HINT'); ?>
                     </span>
@@ -74,7 +79,8 @@ $this
                     if (count($tf) > 0) {
                         echo implode("\n", $tf);
                     } else { ?>
-                        <input type="text" name="tags" id="actags" class="form-control" value="<?= $this->escape($this->course->tags('string')) ?>" />
+                        <input type="text" name="tags" id="actags" class="form-control"
+                            value="<?= $this->escape($this->course->tags('string')) ?>" />
                     <?php } ?>
 
                     <span class="hint"><?php echo Lang::txt('COM_COURSES_FIELD_TAGS_HINT'); ?></span>
@@ -83,7 +89,8 @@ $this
 
             <div class="form-group form-check">
                 <label for="params-allow_forks" class="form-check-label">
-                    <input type="checkbox" class="option form-check-input" name="params[allow_forks]" id="params-allow_forks" checked="checked" value="1" />
+                    <input type="checkbox" class="option form-check-input" name="params[allow_forks]"
+                        id="params-allow_forks" checked="checked" value="1" />
                     <?php echo Lang::txt('COM_COURSES_ALLOW_FORKS'); ?>
                 </label>
                 <span class="hint"><?php echo Lang::txt('COM_COURSES_ALLOW_FORKS_HINT'); ?></span>

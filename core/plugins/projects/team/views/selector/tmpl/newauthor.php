@@ -145,7 +145,8 @@ if (count($this->authors) > 0) {
             <div class="block">
                 <div class="block-liner">
                     <label for="department">
-                        <span class="formlabel"><?= ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_DEPARTMENT')) ?>:</span>
+                        <span
+                            class="formlabel"><?= ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SELECTOR_DEPARTMENT')) ?>:</span>
                         <input type="text" class="long" name="department" id="department" value="" maxlength="255" />
                         <?php
                         if (Component::params('com_publications')->get('department')) {

@@ -36,12 +36,15 @@ $this
     ->display();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span5">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('JSEARCH_FILTER') ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('JSEARCH_FILTER') ?>" />
             </div>
             <div class="col span7 align-right">
                 <label for="filter-reportnotes"><?php echo Lang::txt('COM_CART_SHOW_NOTES'); ?>:</label>
@@ -51,10 +54,13 @@ $this
                 </select>
                 &nbsp;&nbsp;
                 <label for="filter-report-from">From:</label>
-                <input type="text" name="report-from" id="filter-report-from" class="filter" value="<?= $this->escape($this->filters['report-from']) ?>" placeholder="<?= Lang::txt('From') ?>" />
+                <input type="text" name="report-from" id="filter-report-from" class="filter"
+                    value="<?= $this->escape($this->filters['report-from']) ?>"
+                    placeholder="<?= Lang::txt('From') ?>" />
                 &mdash;
                 <label for="filter-report-to">To:</label>
-                <input type="text" name="report-to" id="filter-report-to" class="filter" value="<?= $this->escape($this->filters['report-to']) ?>" placeholder="<?= Lang::txt('To') ?>" />
+                <input type="text" name="report-to" id="filter-report-to" class="filter"
+                    value="<?= $this->escape($this->filters['report-to']) ?>" placeholder="<?= Lang::txt('To') ?>" />
                 <input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
             </div>
         </div>
@@ -69,7 +75,8 @@ $this
 
                         echo ($user->get('id')) ? $this->escape($user->get('name') . ' (' . $user->get('username') . ')') : Lang::txt('COM_CART_USER_ID') . ': ' . (int) $this->filters['uidNumber'];
                     ?>
-                        <button type="button" id="filter_uidNumber-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>
+                        <button type="button"
+                            id="filter_uidNumber-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>
                     </th>
                 </tr>
             <?php } ?>

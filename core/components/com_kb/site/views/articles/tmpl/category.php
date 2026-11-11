@@ -44,7 +44,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
              ->display();
         ?>
         <p>
-            <a class="icon-main main-page btn" href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('COM_KB_MAIN') ?></a>
+            <a class="icon-main main-page btn"
+                href="<?= Route::url('index.php?option=' . $this->option) ?>"><?= Lang::txt('COM_KB_MAIN') ?></a>
         </p>
     </div>
 </header>

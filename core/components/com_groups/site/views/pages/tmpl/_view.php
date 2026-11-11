@@ -117,10 +117,12 @@ if (
 
             <div class="page-meta col span10">
                 <?php if ($this->page->get('id') != 0) : ?>
-                    <span class="created" title="<?= Lang::txt('COM_GROUPS_PAGES_PAGE_CREATED', $createdDate, $createdBy) ?>">
+                    <span class="created"
+                        title="<?= Lang::txt('COM_GROUPS_PAGES_PAGE_CREATED', $createdDate, $createdBy) ?>">
                         <?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_CREATED', $createdLink); ?>
                     </span>
-                    <span class="modified" title="<?= Lang::txt('COM_GROUPS_PAGES_PAGE_MODIFIED', $modifiedDate, $modifiedBy) ?>">
+                    <span class="modified"
+                        title="<?= Lang::txt('COM_GROUPS_PAGES_PAGE_MODIFIED', $modifiedDate, $modifiedBy) ?>">
                         <?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_MODIFIED', $modifiedDate, $modifiedLink); ?>
                     </span>
                 <?php endif; ?>
@@ -131,7 +133,8 @@ if (
                     <ul class="page-controls">
                     <?php if ($this->page->get('id') != 0) : ?>
                         <li>
-                            <a class="edit" title="<?= Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE') ?>" data-title="<?= Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE') ?>" href="<?= $editPageLink ?>">
+                            <a class="edit" title="<?= Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE') ?>"
+                                data-title="<?= Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE') ?>" href="<?= $editPageLink ?>">
                                 <span><?php echo Lang::txt('COM_GROUPS_PAGES_EDIT_PAGE'); ?></span>
                             </a>
                         </li>
@@ -145,12 +148,16 @@ if (
 
                         <?php if ($category->get('id') != '') : ?>
                             <li>
-                                <a href="<?= $categoryLink ?>" class="tooltips category category-<?= $category->get('id') ?>" title="In <?= $this->escape($category->get('title')) ?>"></a>
+                                <a href="<?= $categoryLink ?>"
+                                    class="tooltips category category-<?= $category->get('id') ?>"
+                                    title="In <?= $this->escape($category->get('title')) ?>"></a>
                             </li>
                         <?php endif; ?>
                     <?php else : ?>
                         <li>
-                            <a class="popup override" title="<?= Lang::txt('COM_GROUPS_PAGES_OVERRIDE_PAGE') ?>" data-title="<?= Lang::txt('COM_GROUPS_PAGES_OVERRIDE_PAGE') ?>" href="<?= $overrideHomeLink ?>">
+                            <a class="popup override" title="<?= Lang::txt('COM_GROUPS_PAGES_OVERRIDE_PAGE') ?>"
+                                data-title="<?= Lang::txt('COM_GROUPS_PAGES_OVERRIDE_PAGE') ?>"
+                                href="<?= $overrideHomeLink ?>">
                                 <span><?php echo Lang::txt('COM_GROUPS_PAGES_OVERRIDE_PAGE'); ?></span>
                             </a>
                         </li>

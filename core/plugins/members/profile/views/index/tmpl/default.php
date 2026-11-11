@@ -222,7 +222,8 @@ $legacy = [
 
     <?php if (isset($update_missing) && in_array("usageAgreement", array_keys($update_missing))) : ?>
         <div id="usage-agreement-popup">
-            <form action="<?= Route::url('index.php?option=com_members') ?>" method="post" data-section-registration="usageAgreement" data-section-profile="usageAgreement">
+            <form action="<?= Route::url('index.php?option=com_members') ?>" method="post"
+                data-section-registration="usageAgreement" data-section-profile="usageAgreement">
                 <h2><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NEW_TERMS_OF_USE'); ?></h2>
                 <div id="usage-agreement-box">
                     <?php /*<iframe id="usage-agreement" src="<?php echo Request::base(true); ?>/legal/terms?tmpl=component"></iframe>*/ ?>
@@ -352,13 +353,15 @@ $legacy = [
                         <br class="clear" />
                         <div class="section-edit-container">
                             <div class="section-edit-content">
-                                <form action="<?= Route::url('index.php?option=com_members') ?>" method="post" data-section-registration="password" data-section-profile="password">
+                                <form action="<?= Route::url('index.php?option=com_members') ?>" method="post"
+                                    data-section-registration="password" data-section-profile="password">
                                     <span class="section-edit-errors"></span>
                                     <?php if ($passtype == 'changelocal' || $passtype == 'changehub') : ?>
                                         <div class="input-wrap">
                                             <label for="password">
                                                 <?php echo Lang::txt('PLG_MEMBERS_PROFILE_PASSWORD_CURRENT'); ?>
-                                                <input type="password" name="oldpass" id="password" class="input-text" />
+                                                <input type="password" name="oldpass" id="password"
+                                                    class="input-text" />
                                             </label>
                                         </div>
                                     <?php endif; ?>
@@ -373,8 +376,10 @@ $legacy = [
                                         </label>
                                     </div>
                                     <input type="hidden" name="change" value="1" />
-                                    <input type="submit" class="section-edit-submit btn" value="<?= Lang::txt('PLG_MEMBERS_PROFILE_SAVE') ?>" />
-                                    <input type="reset" class="section-edit-cancel btn" value="<?= Lang::txt('JCANCEL') ?>" />
+                                    <input type="submit" class="section-edit-submit btn"
+                                        value="<?= Lang::txt('PLG_MEMBERS_PROFILE_SAVE') ?>" />
+                                    <input type="reset" class="section-edit-cancel btn"
+                                        value="<?= Lang::txt('JCANCEL') ?>" />
                                     <input type="hidden" name="option" value="com_members" />
                                     <input type="hidden" name="controller" value="profiles" />
                                     <input type="hidden" name="id" value="<?php echo $this->profile->get('id'); ?>" />
@@ -454,7 +459,8 @@ $legacy = [
                         </div>
                         <?php if ($isUser && Field::state('registrationEmail', 'RRRR', 'edit') != Components\Members\Models\Profile\Field::STATE_READONLY) : ?>
                             <br class="clear" />
-                            <input type="hidden" class="input-text" name="email" id="email" value="<?= $this->escape($this->profile->get('email')) ?>" />
+                            <input type="hidden" class="input-text" name="email" id="email"
+                                value="<?= $this->escape($this->profile->get('email')) ?>" />
                             <?php
                             if ($this->profile->get('access') > 2) {
                                 $access  = '<label>' . Lang::txt('PLG_MEMBERS_PROFILE_PRIVACY') . '</label>';
@@ -719,7 +725,8 @@ $legacy = [
                     $cls[] = 'hidden';
                 }
                 ?>
-                <li class="<?= implode(' ', $cls) ?> section" id="input-section-<?= $this->escape($field->get('name')) ?>">
+                <li class="<?= implode(' ', $cls) ?> section"
+                    id="input-section-<?= $this->escape($field->get('name')) ?>">
                     <div class="section-content">
                         <div class="key"><?php echo $field->get('label'); ?></div>
                         <div class="value"><?= (!empty($val)) ? (is_array($val) ? implode(', ', $val) : $val) : Lang::txt('PLG_MEMBERS_PROFILE_NOT_SET') ?></div>

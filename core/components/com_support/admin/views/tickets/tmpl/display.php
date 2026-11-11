@@ -115,7 +115,9 @@ $this
         <div class="pane pane-list">
             <div class="pane-inner" id="tickets">
 
-                <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="ticketForm">
+                <form
+                    action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"
+                    method="post" name="adminForm" id="ticketForm">
                     <div class="list-options">
                         <?php $direction = (strtolower($this->filters['sortdir']) == 'desc') ? 'asc' : 'desc'; ?>
                         <ul class="sort-options">
@@ -157,10 +159,14 @@ $this
                         </ul>
                         <fieldset id="filter-bar">
                             <label for="filter_search"><?php echo Lang::txt('COM_SUPPORT_FIND'); ?>:</label>
-                            <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_SUPPORT_FIND_IN_QUERY_PLACEHOLDER') ?>" />
+                            <input type="text" name="search" id="filter_search" class="filter"
+                                value="<?= $this->escape($this->filters['search']) ?>"
+                                placeholder="<?= Lang::txt('COM_SUPPORT_FIND_IN_QUERY_PLACEHOLDER') ?>" />
 
-                            <input type="hidden" name="filter_order" value="<?= $this->escape($this->filters['sort']) ?>" />
-                            <input type="hidden" name="filter_order_Dir" value="<?= $this->escape($this->filters['sortdir']) ?>" />
+                            <input type="hidden" name="filter_order"
+                                value="<?= $this->escape($this->filters['sort']) ?>" />
+                            <input type="hidden" name="filter_order_Dir"
+                                value="<?= $this->escape($this->filters['sortdir']) ?>" />
                             <input type="hidden" name="show" value="<?= $this->escape($this->filters['show']) ?>" />
 
                             <button type="submit"><?php echo Lang::txt('COM_SUPPORT_GO'); ?></button>
@@ -216,10 +222,12 @@ $this
                                 $this->css('#tktlist li .status-' . $row->status->get('id') . ' { border-left-color: #' . $row->status->get('color') . '; }');
                             }
                             ?>
-                        <li class="<?= !$row->isOpen() ? 'closed' : 'open' ?>" data-id="<?= $row->get('id') ?>" id="ticket-<?= $row->get('id') ?>">
+                        <li class="<?= !$row->isOpen() ? 'closed' : 'open' ?>" data-id="<?= $row->get('id') ?>"
+                            id="ticket-<?= $row->get('id') ?>">
                             <div class="ticket-wrap status-<?php echo $row->status->get('id'); ?>">
                                 <p>
-                                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('id') ?>" class="checkbox-toggle" />
+                                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->get('id') ?>"
+                                        class="checkbox-toggle" />
                                     <span class="ticket-id">
                                         # <?php echo $row->get('id'); ?>
                                     </span>
@@ -245,7 +253,8 @@ $this
                                             echo ($row->get('login')) ? ' (<a href="' . Route::url('index.php?option=com_members&task=edit&id=' . $this->escape($row->get('login'))) . '">' . $this->escape($row->get('login')) . '</a>)' : ''; ?>
                                     </span>
                                     <span class="ticket-datetime">
-                                        @ <time datetime="<?= $row->get('created') ?>"><?= $row->get('created') ?></time>
+                                        @ <time
+                                            datetime="<?= $row->get('created') ?>"><?= $row->get('created') ?></time>
                                     </span>
                                 </p>
                                 <p>

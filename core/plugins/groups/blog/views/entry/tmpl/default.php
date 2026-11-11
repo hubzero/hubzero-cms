@@ -112,10 +112,13 @@ $first = $this->archive
                 </dd>
                 <?php if ($this->group->published == 1) { ?>
                     <dd class="entry-options">
-                        <a class="icon-edit edit" href="<?= Route::url($this->row->link('edit')) ?>" title="<?= Lang::txt('PLG_GROUPS_BLOG_EDIT') ?>">
+                        <a class="icon-edit edit" href="<?= Route::url($this->row->link('edit')) ?>"
+                            title="<?= Lang::txt('PLG_GROUPS_BLOG_EDIT') ?>">
                             <span><?php echo Lang::txt('PLG_GROUPS_BLOG_EDIT'); ?></span>
                         </a>
-                        <a class="icon-delete delete" data-confirm="<?= Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE') ?>" href="<?= Route::url($this->row->link('delete')) ?>" title="<?= Lang::txt('PLG_GROUPS_BLOG_DELETE') ?>">
+                        <a class="icon-delete delete" data-confirm="<?= Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE') ?>"
+                            href="<?= Route::url($this->row->link('delete')) ?>"
+                            title="<?= Lang::txt('PLG_GROUPS_BLOG_DELETE') ?>">
                             <span><?php echo Lang::txt('PLG_GROUPS_BLOG_DELETE'); ?></span>
                         </a>
                     </dd>
@@ -277,12 +280,14 @@ $first = $this->archive
 
                         <?php if (!User::isGuest()) { ?>
                             <label for="comment_content">
-                                Your <?= ($replyto->get('id')) ? 'reply' : 'comments' ?>: <span class="required"><?= Lang::txt('PLG_GROUPS_BLOG_REQUIRED') ?></span>
+                                Your <?= ($replyto->get('id')) ? 'reply' : 'comments' ?>: <span
+                                    class="required"><?= Lang::txt('PLG_GROUPS_BLOG_REQUIRED') ?></span>
                                 <?= $this->editor('comment[content]', '', 40, 15, 'comment_content', ['class' => 'minimal no-footer']) ?>
                             </label>
 
                             <label class="comment-anonymous-label">
-                                <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+                                <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous"
+                                    value="1" />
                                 <?php echo Lang::txt('PLG_GROUPS_BLOG_POST_ANONYMOUS'); ?>
                             </label>
 

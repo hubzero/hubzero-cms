@@ -35,7 +35,8 @@ if ($this->token) {
             <button type="submit" form="hz-post-action" formaction="<?= Route::url($accept) ?>" class="btn btn-success">
                 <?php echo Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT'); ?>
             </button>
-            <a class="btn btn-secondary" href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')) ?>">
+            <a class="btn btn-secondary"
+                href="<?= Route::url('index.php?option=' . $this->option . '&cn=' . $this->group->get('cn')) ?>">
                 <?php echo Lang::txt('JCANCEL'); ?>
             </a>
         </p>

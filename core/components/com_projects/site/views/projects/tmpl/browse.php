@@ -50,7 +50,9 @@ $total = $this->model->entries('count', $this->filters);
             <fieldset class="entry-search">
                 <legend><?php echo Lang::txt('COM_PROJECTS_SEARCH'); ?></legend>
                 <label for="entry-search-field"><?php echo Lang::txt('COM_PROJECTS_ENTER_PHRASE'); ?></label>
-                <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_PROJECTS_ENTER_PHRASE') ?>" />
+                <input type="text" name="search" id="entry-search-field"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_PROJECTS_ENTER_PHRASE') ?>" />
                 <input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); ?>" />
             </fieldset>
         </div>

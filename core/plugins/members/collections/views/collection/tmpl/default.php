@@ -40,7 +40,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 
 <ul id="page_options">
     <li>
-        <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=collections&page=index') ?>">
+        <a class="icon-info btn popup"
+            href="<?= Route::url('index.php?option=com_help&component=collections&page=index') ?>">
             <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GETTING_STARTED'); ?></span>
         </a>
     </li>
@@ -73,15 +74,27 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
             <?php if (!User::isGuest()) { ?>
                 <?php if (!$this->params->get('access-create-item')) { ?>
                     <?php if ($this->collection->isFollowing()) { ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->collection->link() . '/unfollow') ?>" class="icon-unfollow unfollow btn tooltips" data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_THIS') ?>" data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS') ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_TITLE') ?>">
+                        <button type="submit" form="hz-post-action"
+                            formaction="<?= Route::url($this->collection->link() . '/unfollow') ?>"
+                            class="icon-unfollow unfollow btn tooltips"
+                            data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_THIS') ?>"
+                            data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS') ?>"
+                            title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_TITLE') ?>">
                             <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS'); ?></span>
                         </button>
                     <?php } else { ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->collection->link() . '/follow') ?>" class="icon-follow follow btn tooltips" data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_THIS') ?>" data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS') ?>" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_TITLE') ?>">
+                        <button type="submit" form="hz-post-action"
+                            formaction="<?= Route::url($this->collection->link() . '/follow') ?>"
+                            class="icon-follow follow btn tooltips"
+                            data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_THIS') ?>"
+                            data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW_THIS') ?>"
+                            title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_TITLE') ?>">
                             <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW_THIS'); ?></span>
                         </button>
                     <?php } ?>
-                    <a class="icon-repost repost btn tooltips" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT_TITLE') ?>" href="<?= Route::url($this->collection->link() . '/collect') ?>">
+                    <a class="icon-repost repost btn tooltips"
+                        title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT_TITLE') ?>"
+                        href="<?= Route::url($this->collection->link() . '/collect') ?>">
                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                     </a>
                 <?php } ?>
@@ -101,7 +114,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
         <div id="posts" data-base="<?= rtrim(Request::base(true), '/') ?>" data-update="<?= Route::url('index.php?option=com_collections&controller=posts&task=reorder&' . Session::getFormToken() . '=1') ?>" class="view-<?= $viewas . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
             <?php if ($this->params->get('access-create-collection') && !Request::getInt('no_html', 0)) { ?>
                 <div class="post new-post" id="post_0">
-                    <a class="icon-add add" href="<?= Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')) ?>">
+                    <a class="icon-add add"
+                        href="<?= Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')) ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_NEW_POST'); ?>
                     </a>
                 </div>
@@ -110,7 +124,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
         foreach ($this->rows as $row) {
             $item = $row->item();
             ?>
-            <div class="post <?= $item->type() ?>" id="post_<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>" data-closeup-url="<?= Route::url($base . '&task=post/' . $row->get('id')) ?>">
+            <div class="post <?= $item->type() ?>" id="post_<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>"
+                data-closeup-url="<?= Route::url($base . '&task=post/' . $row->get('id')) ?>">
                 <div class="content">
                     <?php
                         $this
@@ -148,7 +163,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                             <?php if (!User::isGuest()) { ?>
                                 <?php //if ($item->get('created_by') == User::get('id')) {?>
                                 <?php if ($row->get('created_by') == User::get('id')) { ?>
-                                    <a class="btn edit" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/edit') ?>">
+                                    <a class="btn edit" data-id="<?= $row->get('id') ?>"
+                                        href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/edit') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
                                     </a>
                                 <?php } else { ?>
@@ -164,11 +180,13 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                 <?php endif; ?>
-                                    <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/collect') ?>">
+                                    <a class="btn repost" data-id="<?= $row->get('id') ?>"
+                                        href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/collect') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                                 <?php if ($row->get('original') && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))) { ?>
-                                    <a class="btn delete" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/delete') ?>">
+                                    <a class="btn delete" data-id="<?= $row->get('id') ?>"
+                                        href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/delete') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
                                     </a>
                                 <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
@@ -199,11 +217,13 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                         $name = $this->escape(stripslashes($row->creator()->get('name')));
                         if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
                             <a href="<?= Route::url($row->creator()->link()) ?>" title="<?= $name ?>" class="img-link">
-                                <img src="<?= $row->creator()->picture() ?>" alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                <img src="<?= $row->creator()->picture() ?>"
+                                    alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                             </a>
                         <?php } else { ?>
                             <span class="img-link">
-                                <img src="<?= $row->creator()->picture() ?>" alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                <img src="<?= $row->creator()->picture() ?>"
+                                    alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                             </span>
                         <?php } ?>
                         <p>
@@ -220,14 +240,17 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                             <br />
                             <span class="entry-date">
                                 <span class="entry-date-at"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_AT') ?></span>
-                                <span class="time"><time datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
+                                <span class="time"><time
+                                    datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
                                 <span class="entry-date-on"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_ON') ?></span>
-                                <span class="date"><time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
+                                <span class="date"><time
+                                    datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
                             </span>
                         </p>
                     </div><!-- / .attribution -->
                     <?php if (!User::isGuest() && $this->params->get('access-create-item') && $this->filters['sort'] == 'ordering') { ?>
-                        <div class="sort-handle tooltips" title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_GRAB_TO_REORDER') ?>"></div>
+                        <div class="sort-handle tooltips"
+                            title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_GRAB_TO_REORDER') ?>"></div>
                     <?php } ?>
                 </div><!-- / .content -->
             </div><!-- / .post -->
@@ -261,7 +284,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                         <li><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_POST_INSTRUCTIONS_STEP4'); ?></li>
                     </ol>
                     <div class="new-post">
-                        <a class="icon-add add" href="<?= Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')) ?>">
+                        <a class="icon-add add"
+                            href="<?= Route::url($base . '&task=post/new&board=' . $this->collection->get('alias')) ?>">
                             <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_NEW_POST'); ?>
                         </a>
                     </div>

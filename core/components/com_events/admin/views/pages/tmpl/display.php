@@ -21,10 +21,13 @@ Toolbar::deleteList();
 
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER') ?>" />
+        <input type="text" name="search" id="filter_search" class="filter"
+            value="<?= $this->escape($this->filters['search']) ?>"
+            placeholder="<?= Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER') ?>" />
 
         <input type="submit" value="<?php echo Lang::txt('COM_EVENTS_SEARCH_GO'); ?>" />
     </fieldset>
@@ -40,8 +43,10 @@ Toolbar::deleteList();
             </tr>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th><?php echo Lang::txt('COM_EVENTS_ID'); ?></th>
                 <th><?php echo Lang::txt('COM_EVENTS_TITLE'); ?></th>
@@ -68,7 +73,8 @@ Toolbar::deleteList();
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
                     <td>
-                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>" class="checkbox-toggle" />
+                        <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->id ?>"
+                            class="checkbox-toggle" />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     </td>
                     <td><?php echo $row->id; ?></td>

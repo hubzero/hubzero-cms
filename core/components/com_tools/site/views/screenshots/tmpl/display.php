@@ -22,7 +22,8 @@ if ($this->getError()) { ?>
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="hubForm" id="screenshots-form" method="post" enctype="multipart/form-data">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="hubForm" id="screenshots-form" method="post"
+    enctype="multipart/form-data">
     <h3>
         <?php echo Lang::txt('COM_TOOLS_EXISTING_SS'); ?>
         <?php if ($this->published) { ?>
@@ -182,7 +183,8 @@ echo $html;
     </fieldset>
 </form>
 <?php if ($this->published && $this->version == 'dev') { ?>
-    <form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="copySSForm" method="post" enctype="multipart/form-data">
+    <form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="copySSForm" method="post"
+        enctype="multipart/form-data">
         <fieldset>
             <legend><?php echo Lang::txt('COM_TOOLS_COPY_SCREENSHOTS'); ?></legend>
 

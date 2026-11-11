@@ -34,7 +34,8 @@ Toolbar::title(Lang::txt('COM_MEMBERS') . ': Manage Points', 'user.png');
                     <tbody>
                         <tr>
                             <td><label for="uid">UID:</label></td>
-                            <td><input type="text" name="uid" id="uid" size="30" maxlength="250" value="" /> <input type="submit" value="Go" /></td>
+                            <td><input type="text" name="uid" id="uid" size="30" maxlength="250" value="" /> <input
+                                type="submit" value="Go" /></td>
                         </tr>
                     </tbody>
                 </table>

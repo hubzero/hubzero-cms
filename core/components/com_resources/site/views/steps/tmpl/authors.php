@@ -57,7 +57,8 @@ $this
             <div class="grid">
                 <div class="col span6">
                     <label for="group_owner">
-                        <?= Lang::txt('COM_CONTRIBUTE_GROUPS_GROUP') ?>: <span class="optional"><?= Lang::txt('COM_CONTRIBUTE_OPTIONAL') ?></span>
+                        <?= Lang::txt('COM_CONTRIBUTE_GROUPS_GROUP') ?>: <span
+                            class="optional"><?= Lang::txt('COM_CONTRIBUTE_OPTIONAL') ?></span>
                         <select name="group_owner" id="group_owner">
                             <option value=""><?php echo Lang::txt('COM_CONTRIBUTE_SELECT_GROUP'); ?></option>
                             <?php
@@ -83,7 +84,8 @@ $this
                 </div>
                 <div class="col span6 omega">
                     <label for="access">
-                        <?= Lang::txt('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL') ?>: <span class="optional"><?= Lang::txt('COM_CONTRIBUTE_OPTIONAL') ?></span>
+                        <?= Lang::txt('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL') ?>: <span
+                            class="optional"><?= Lang::txt('COM_CONTRIBUTE_OPTIONAL') ?></span>
                         <select name="access" id="access">
                             <option value="0"<?= $this->row->access == 0 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC') ?></option>
                             <option value="1"<?= $this->row->access == 1 ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED') ?></option>

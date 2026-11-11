@@ -15,7 +15,9 @@ defined('_HZEXEC_') or die();
 <?php if ($this->no_html) { ?>
     <div id="report-response">
         <div>
-            <p><?= Lang::txt('COM_SUPPORT_YOUR_TICKET') ?> # <span><a href="<?= Route::url('index.php?option=com_support&task=ticket&id=' . $this->ticket) ?>" title="View ticket"><?= $this->ticket ?></a></span></p>
+            <p><?= Lang::txt('COM_SUPPORT_YOUR_TICKET') ?> # <span><a
+                href="<?= Route::url('index.php?option=com_support&task=ticket&id=' . $this->ticket) ?>"
+                title="View ticket"><?= $this->ticket ?></a></span></p>
             <p><button class="btn btn-reset" title="<?= Lang::txt('COM_SUPPORT_NEW_REPORT') ?>"><?= Lang::txt('COM_SUPPORT_NEW_REPORT') ?></button></p>
         </div>
         <p>

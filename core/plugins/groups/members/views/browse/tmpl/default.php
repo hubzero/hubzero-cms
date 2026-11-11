@@ -107,11 +107,13 @@ $option = 'com_groups';
         <form action="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&filter=' . $this->filter) ?>" method="post">
 
             <div class="container data-entry">
-                <input class="entry-search-submit" type="submit" value="<?= Lang::txt('PLG_GROUPS_MEMBERS_SEARCH') ?>" />
+                <input class="entry-search-submit" type="submit"
+                    value="<?= Lang::txt('PLG_GROUPS_MEMBERS_SEARCH') ?>" />
                 <fieldset class="entry-search">
                     <legend><?php echo Lang::txt('PLG_GROUPS_MEMBERS_SEARCH_LEGEND'); ?></legend>
                     <label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_SEARCH_LABEL'); ?></label>
-                    <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->q) ?>" placeholder="<?= Lang::txt('PLG_GROUPS_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
+                    <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->q) ?>"
+                        placeholder="<?= Lang::txt('PLG_GROUPS_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
                 </fieldset>
             </div><!-- / .container -->
 
@@ -513,7 +515,9 @@ $option = 'com_groups';
                             <td>
                                 <div class="members-search-prompt">
                                     <div class="members-search-prompt-icon" aria-hidden="true">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                                            stroke-linecap="round" stroke-linejoin="round">
                                             <circle cx="11" cy="11" r="7"></circle>
                                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                         </svg>
@@ -582,7 +586,8 @@ $option = 'com_groups';
                         <input type="hidden" name="option" value="<?php echo $option; ?>" />
                         <input type="hidden" name="action" value="sortroles" />
                         <?php echo Html::input('token'); ?>
-                        <button type="submit" class="btn sort-roles" data-confirm="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SORT_CONFIRM')) ?>">
+                        <button type="submit" class="btn sort-roles"
+                            data-confirm="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SORT_CONFIRM')) ?>">
                             <?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_SORT'); ?>
                         </button>
                     </form>
@@ -592,7 +597,9 @@ $option = 'com_groups';
                         <?php $cls = ($role['id'] == $this->role_filter) ? 'active' : ''; ?>
                         <li id="roles_<?php echo (int) $role['id']; ?>">
                             <?php if ($canOrderRoles) : ?>
-                                <span class="role-mover" title="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_DRAG')) ?>" aria-hidden="true"></span>
+                                <span class="role-mover"
+                                    title="<?= $this->escape(Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_DRAG')) ?>"
+                                    aria-hidden="true"></span>
                             <?php endif; ?>
                             <?php if ($this->authorized == 'manager' && $this->membership_control == 1) : ?>
                                 <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=removerole&role=' . $role['id']) ?>" class="remove-role" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') ?>"><?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') ?></button>

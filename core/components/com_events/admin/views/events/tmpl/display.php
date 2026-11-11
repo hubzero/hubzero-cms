@@ -39,7 +39,9 @@ Html::behavior('tooltip');
 <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER') ?>" />
+        <input type="text" name="search" id="filter_search" class="filter"
+            value="<?= $this->escape($this->filters['search']) ?>"
+            placeholder="<?= Lang::txt('COM_EVENTS_SEARCH_PLACEHOLDER') ?>" />
 
         <?php echo $this->clist; ?>
         <?php echo $this->glist; ?>
@@ -52,8 +54,10 @@ Html::behavior('tooltip');
             <tr>
                 <th scope="col" class="priority-5"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ID'); ?></th>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE'); ?></th>
                 <th scope="col" class="priority-4"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></th>
@@ -94,13 +98,15 @@ for ($i = 0, $n = count($this->rows); $i < $n; $i++) {
                     <?php if ($row->checked_out && $row->checked_out != User::get('id')) { ?>
                         &nbsp;
                     <?php } else { ?>
-                        <input type="checkbox" id="cb<?= $i ?>" name="id[]" value="<?= $row->id ?>" class="checkbox-toggle" />
+                        <input type="checkbox" id="cb<?= $i ?>" name="id[]" value="<?= $row->id ?>"
+                            class="checkbox-toggle" />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     <?php } ?>
                 </td>
                 <td>
                     <?php if ($row->checked_out && $row->checked_out != User::get('id')) { ?>
-                        <span class="checkedout hasTip" title="Checked out::<?= $this->escape(stripslashes($row->editor ? $row->editor : '')) ?>">
+                        <span class="checkedout hasTip"
+                            title="Checked out::<?= $this->escape(stripslashes($row->editor ? $row->editor : '')) ?>">
                             <?php echo $this->escape(html_entity_decode(stripslashes($row->title))); ?>
                         </span>
                     <?php } else { ?>

@@ -41,7 +41,8 @@ if (count($items) > 0) { ?>
     foreach ($items as $item) {
         if ($item->revision == null || ($selected && $selected == $item->database_name)) {
             ?>
-        <li class="c-click databases" id="data::<?= $this->escape($item->database_name) ?>"><?= $this->escape($item->title) ?></li>
+        <li class="c-click databases"
+            id="data::<?= $this->escape($item->database_name) ?>"><?= $this->escape($item->title) ?></li>
             <?php
             $shown[] = $item->database_name;
         }
@@ -68,7 +69,9 @@ if (count($items) > 0) { ?>
         // Add missing items
         if (count($missing) > 0) {
             foreach ($missing as $miss) { ?>
-                <li class="c-click databases i-missing" id="data::<?= $this->escape($miss['id']) ?>"><?= $this->escape($miss['title']) ?><span class="c-missing"><?= Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE') ?></span></li>
+                <li class="c-click databases i-missing"
+                    id="data::<?= $this->escape($miss['id']) ?>"><?= $this->escape($miss['title']) ?><span
+                    class="c-missing"><?= Lang::txt('PLG_PROJECTS_DATA_MISSING_DATABASE') ?></span></li>
             <?php }
         }
 }

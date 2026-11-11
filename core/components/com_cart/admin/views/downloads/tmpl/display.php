@@ -42,12 +42,15 @@ $this
     ->display();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span5">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('JSEARCH_FILTER') ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('JSEARCH_FILTER') ?>" />
             </div>
             <div class="col span7 align-right">
                 <?php
@@ -62,10 +65,13 @@ $this
                 }
                 ?>
                 <label for="filter-report-from"><?php echo Lang::txt('From'); ?>:</label>
-                <input type="text" name="report-from" id="filter-report-from" class="filter" value="<?= $this->escape($this->filters['report-from']) ?>" placeholder="<?= Lang::txt('From') ?>" />
+                <input type="text" name="report-from" id="filter-report-from" class="filter"
+                    value="<?= $this->escape($this->filters['report-from']) ?>"
+                    placeholder="<?= Lang::txt('From') ?>" />
                 &mdash;
                 <label for="filter-report-to"><?php echo Lang::txt('To'); ?>:</label>
-                <input type="text" name="report-to" id="filter-report-to" class="filter" value="<?= $this->escape($this->filters['report-to']) ?>" placeholder="<?= Lang::txt('To') ?>" />
+                <input type="text" name="report-to" id="filter-report-to" class="filter"
+                    value="<?= $this->escape($this->filters['report-to']) ?>" placeholder="<?= Lang::txt('To') ?>" />
                 <input type="submit" value="<?php echo Lang::txt('Update'); ?>" />
             </div>
         </div>
@@ -82,7 +88,8 @@ $this
 
                         echo ($user->get('id')) ? $this->escape($user->get('name') . ' (' . $user->get('username') . ')') : Lang::txt('COM_CART_USER_ID') . ': ' . (int) $this->filters['uidNumber'];
                         ?>
-                            <button type="button" id="filter_uidNumber-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>
+                            <button type="button"
+                                id="filter_uidNumber-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>
                             <?php
                     }
                     if ($this->filters['pId']) {
@@ -91,7 +98,8 @@ $this
 
                         echo $product->getName();
                         ?>
-                            <button type="button" id="filter_pId-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>
+                            <button type="button"
+                                id="filter_pId-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>
                             <?php
                     }
                     if ($this->filters['sId']) {
@@ -100,7 +108,8 @@ $this
 
                         echo $sku->getName();
                         ?>
-                            <button type="button" id="filter_sId-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>
+                            <button type="button"
+                                id="filter_sId-clear"><?= Lang::txt('JSEARCH_FILTER_CLEAR') ?></button>
                             <?php
                     }
                     ?>
@@ -110,8 +119,10 @@ $this
             <?php } ?>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?= Html::grid('sort', 'COM_CART_PRODUCT', 'product', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?= Html::grid('sort', 'COM_CART_DOWNLOADED_BY', 'dName', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
@@ -157,7 +168,8 @@ $this
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->dId ?>" class="checkbox-toggle" />
+                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $row->dId ?>"
+                        class="checkbox-toggle" />
                     <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->dId; ?></label>
                 </td>
                 <td>
@@ -259,7 +271,8 @@ $this
     <input type="hidden" name="boxchecked" value="0" />
     <input type="hidden" name="filter_order" value="<?php echo $this->escape($this->filters['sort']); ?>" />
     <input type="hidden" name="filter_order_Dir" value="<?php echo $this->escape($this->filters['sort_Dir']); ?>" />
-    <input type="hidden" name="uidNumber" id="filter_uidNumber" value="<?= $this->escape($this->filters['uidNumber']) ?>" />
+    <input type="hidden" name="uidNumber" id="filter_uidNumber"
+        value="<?= $this->escape($this->filters['uidNumber']) ?>" />
     <input type="hidden" name="pId" id="filter_pId" value="<?php echo $this->escape($this->filters['pId']); ?>" />
     <input type="hidden" name="sId" id="filter_sId" value="<?php echo $this->escape($this->filters['sId']); ?>" />
 

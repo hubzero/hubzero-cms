@@ -187,7 +187,8 @@ $authors = implode(', ', $authors);
                                     <label for="templates">
                                         <?php echo Lang::txt('COM_WIKI_FIELD_TEMPLATE'); ?>:
                                         <select name="tplate" id="templates" class="form-control">
-                                            <option value="tc"><?= Lang::txt('COM_WIKI_FIELD_TEMPLATE_SELECT') ?></option>
+                                            <option
+                                                value="tc"><?= Lang::txt('COM_WIKI_FIELD_TEMPLATE_SELECT') ?></option>
                                             <?php
                                             $hi = [];
 
@@ -228,7 +229,8 @@ $authors = implode(', ', $authors);
                             <label for="title">
                                 <?php echo Lang::txt('COM_WIKI_FIELD_TITLE'); ?>:
                                 <span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
-                                <input type="text" name="page[title]" id="title" class="form-control" value="<?= $this->escape($this->page->get('title')) ?>" size="38" />
+                                <input type="text" name="page[title]" id="title" class="form-control"
+                                    value="<?= $this->escape($this->page->get('title')) ?>" size="38" />
                             </label>
                         </div>
 
@@ -276,7 +278,8 @@ $authors = implode(', ', $authors);
                                 if (!$this->page->exists() || $this->page->get('created_by') == User::get('id') || $this->page->access('manage')) { ?>
                                     <div class="form-group">
                                         <label for="params_mode">
-                                            <?= Lang::txt('COM_WIKI_FIELD_MODE') ?>: <span class="required"><?= Lang::txt('COM_WIKI_REQUIRED') ?></span>
+                                            <?= Lang::txt('COM_WIKI_FIELD_MODE') ?>: <span
+                                                class="required"><?= Lang::txt('COM_WIKI_REQUIRED') ?></span>
                                             <select name="params[mode]" id="params_mode" class="form-control">
                                                 <option value="knol"<?= $mode == 'knol' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WIKI_FIELD_MODE_KNOL') ?></option>
                                                 <option value="wiki"<?= $mode == 'wiki' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_WIKI_FIELD_MODE_WIKI') ?></option>
@@ -307,7 +310,8 @@ $authors = implode(', ', $authors);
                                         if (count($mc) > 0) {
                                             echo $mc[0];
                                         } else { ?>
-                                            <input type="text" name="authors" id="params_authors" class="form-control" value="<?= $this->escape($authors) ?>" />
+                                            <input type="text" name="authors" id="params_authors" class="form-control"
+                                                value="<?= $this->escape($authors) ?>" />
                                         <?php } ?>
                                     </label>
                                 </div>
@@ -333,11 +337,16 @@ $authors = implode(', ', $authors);
                                     </label>
                                 </div>
                             <?php } else { ?>
-                                <input type="hidden" name="params[mode]" value="<?= $this->escape($this->page->param('mode', 'wiki')) ?>" />
-                                <input type="hidden" name="params[hide_authors]" value="<?= $this->escape($this->page->param('hide_authors', 1)) ?>" />
-                                <input type="hidden" name="params[allow_changes]" value="<?= $this->escape($this->page->param('allow_changes', 1)) ?>" />
-                                <input type="hidden" name="params[allow_comments]" value="<?= $this->escape($this->page->param('allow_comments', 1)) ?>" />
-                                <input type="hidden" name="authors" id="params_authors" value="<?= $this->escape($authors) ?>" />
+                                <input type="hidden" name="params[mode]"
+                                    value="<?= $this->escape($this->page->param('mode', 'wiki')) ?>" />
+                                <input type="hidden" name="params[hide_authors]"
+                                    value="<?= $this->escape($this->page->param('hide_authors', 1)) ?>" />
+                                <input type="hidden" name="params[allow_changes]"
+                                    value="<?= $this->escape($this->page->param('allow_changes', 1)) ?>" />
+                                <input type="hidden" name="params[allow_comments]"
+                                    value="<?= $this->escape($this->page->param('allow_comments', 1)) ?>" />
+                                <input type="hidden" name="authors" id="params_authors"
+                                    value="<?= $this->escape($authors) ?>" />
                             <?php } ?>
 
                             <?php if ($this->page->access('manage')) { ?>
@@ -351,12 +360,18 @@ $authors = implode(', ', $authors);
                         </fieldset>
                         <div class="clear"></div>
                     <?php } else { ?>
-                        <input type="hidden" name="page[protected]" value="<?= $this->escape($this->page->get('protected', 0)) ?>" />
-                        <input type="hidden" name="params[mode]" value="<?= $this->escape($this->page->param('mode', 'wiki')) ?>" />
-                        <input type="hidden" name="params[hide_authors]" value="<?= $this->escape($this->page->param('hide_authors', 1)) ?>" />
-                        <input type="hidden" name="params[allow_changes]" value="<?= $this->escape($this->page->param('allow_changes', 1)) ?>" />
-                        <input type="hidden" name="params[allow_comments]" value="<?= $this->escape($this->page->param('allow_comments', 1)) ?>" />
-                        <input type="hidden" name="authors" id="params_authors" value="<?= $this->escape($authors) ?>" />
+                        <input type="hidden" name="page[protected]"
+                            value="<?= $this->escape($this->page->get('protected', 0)) ?>" />
+                        <input type="hidden" name="params[mode]"
+                            value="<?= $this->escape($this->page->param('mode', 'wiki')) ?>" />
+                        <input type="hidden" name="params[hide_authors]"
+                            value="<?= $this->escape($this->page->param('hide_authors', 1)) ?>" />
+                        <input type="hidden" name="params[allow_changes]"
+                            value="<?= $this->escape($this->page->param('allow_changes', 1)) ?>" />
+                        <input type="hidden" name="params[allow_comments]"
+                            value="<?= $this->escape($this->page->param('allow_comments', 1)) ?>" />
+                        <input type="hidden" name="authors" id="params_authors"
+                            value="<?= $this->escape($authors) ?>" />
                     <?php } ?>
 
                     <?php if ($this->page->access('edit')) { ?>
@@ -386,7 +401,8 @@ $authors = implode(', ', $authors);
                         <div class="form-group">
                             <label for="field-summary">
                                 <?php echo Lang::txt('COM_WIKI_FIELD_EDIT_SUMMARY'); ?>:
-                                <input type="text" name="revision[summary]" id="field-summary" class="form-control" value="<?= $this->escape($this->revision->get('summary')) ?>" size="38" />
+                                <input type="text" name="revision[summary]" id="field-summary" class="form-control"
+                                    value="<?= $this->escape($this->revision->get('summary')) ?>" size="38" />
                                 <span class="hint"><?php echo Lang::txt('COM_WIKI_FIELD_EDIT_SUMMARY_HINT'); ?></span>
                             </label>
                         </div>
@@ -399,16 +415,24 @@ $authors = implode(', ', $authors);
                     <input type="hidden" name="pagename" value="<?= $this->escape($this->page->get('pagename')) ?>" />
 
                     <input type="hidden" name="page[id]" value="<?php echo $this->escape($this->page->get('id')); ?>" />
-                    <input type="hidden" name="page[access]" value="<?= $this->escape($this->page->get('access', 1)) ?>" />
-                    <input type="hidden" name="page[state]" value="<?= $this->escape($this->page->get('state', 1)) ?>" />
-                    <input type="hidden" name="page[scope]" value="<?= $this->escape($this->page->get('scope', 'site')) ?>" />
-                    <input type="hidden" name="page[scope_id]" value="<?= $this->escape($this->page->get('scope_id', 0)) ?>" />
+                    <input type="hidden" name="page[access]"
+                        value="<?= $this->escape($this->page->get('access', 1)) ?>" />
+                    <input type="hidden" name="page[state]"
+                        value="<?= $this->escape($this->page->get('state', 1)) ?>" />
+                    <input type="hidden" name="page[scope]"
+                        value="<?= $this->escape($this->page->get('scope', 'site')) ?>" />
+                    <input type="hidden" name="page[scope_id]"
+                        value="<?= $this->escape($this->page->get('scope_id', 0)) ?>" />
 
                     <input type="hidden" name="revision[id]" value="<?= $this->escape($this->revision->get('id')) ?>" />
-                    <input type="hidden" name="revision[page_id]" value="<?= $this->escape($this->page->get('id')) ?>" />
-                    <input type="hidden" name="revision[version]" value="<?= $this->escape($this->revision->get('version')) ?>" />
-                    <input type="hidden" name="revision[created_by]" value="<?= $this->escape($this->revision->get('created_by')) ?>" />
-                    <input type="hidden" name="revision[created]" value="<?= $this->escape($this->revision->get('created')) ?>" />
+                    <input type="hidden" name="revision[page_id]"
+                        value="<?= $this->escape($this->page->get('id')) ?>" />
+                    <input type="hidden" name="revision[version]"
+                        value="<?= $this->escape($this->revision->get('version')) ?>" />
+                    <input type="hidden" name="revision[created_by]"
+                        value="<?= $this->escape($this->revision->get('created_by')) ?>" />
+                    <input type="hidden" name="revision[created]"
+                        value="<?= $this->escape($this->revision->get('created')) ?>" />
 
                     <?php foreach ($this->page->adapter()->routing('save') as $name => $val) { ?>
                         <input type="hidden" name="<?= $this->escape($name) ?>" value="<?= $this->escape($val) ?>" />
@@ -417,8 +441,10 @@ $authors = implode(', ', $authors);
                     <?php echo Html::input('token'); ?>
 
                     <p class="submit">
-                        <input type="submit" class="btn" name="preview" value="<?= Lang::txt('COM_WIKI_PREVIEW') ?>" /> &nbsp;
-                        <input type="submit" class="btn btn-success" name="submit" value="<?= Lang::txt('COM_WIKI_SUBMIT') ?>" />
+                        <input type="submit" class="btn" name="preview"
+                            value="<?= Lang::txt('COM_WIKI_PREVIEW') ?>" /> &nbsp;
+                        <input type="submit" class="btn btn-success" name="submit"
+                            value="<?= Lang::txt('COM_WIKI_SUBMIT') ?>" />
                     </p>
                 </form>
             </div>

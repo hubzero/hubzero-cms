@@ -49,7 +49,8 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                             <select name="tbl">
                                 <option value="invitees"><?= Lang::txt('COM_MEMBERS_GROUPS_INVITEES') ?></option>
                                 <option value="applicants"><?= Lang::txt('COM_MEMBERS_GROUPS_APPLICANTS') ?></option>
-                                <option value="members" selected="selected"><?= Lang::txt('COM_MEMBERS_GROUPS_MEMBERS') ?></option>
+                                <option value="members"
+                                    selected="selected"><?= Lang::txt('COM_MEMBERS_GROUPS_MEMBERS') ?></option>
                                 <option value="managers"><?= Lang::txt('COM_MEMBERS_GROUPS_MANAGERS') ?></option>
                             </select>
 
@@ -116,7 +117,9 @@ $canDo = (User::authorise('core.admin', 'com_groups') || User::authorise('core.m
                                         ?>
                                         <div class="input-wrap">
                                             <label for="memberoption-<?= $this->escape($option->id) ?>"><?= $this->escape($option->optionname) ?></label>
-                                            <input name="memberoption[<?= $this->escape($option->id) ?>]" id="memberoption-<?= $this->escape($option->id) ?>" size="3" value="<?= $this->escape($option->optionvalue) ?>" />
+                                            <input name="memberoption[<?= $this->escape($option->id) ?>]"
+                                                id="memberoption-<?= $this->escape($option->id) ?>" size="3"
+                                                value="<?= $this->escape($option->optionvalue) ?>" />
                                             <input type="submit" value="<?= Lang::txt('COM_MEMBERS_UPDATE') ?>" />
                                         </div>
                                         <?php

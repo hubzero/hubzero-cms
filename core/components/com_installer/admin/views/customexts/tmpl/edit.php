@@ -37,7 +37,8 @@ Html::behavior('tooltip');
 $this->js();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="item-form"
+    class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <?php if ($this->getErrors()) { ?>
         <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
     <?php } ?>
@@ -48,17 +49,20 @@ $this->js();
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('url'); ?><br />
-                    <input type="text" name="fields[url]" id="field-url" maxlength="250" class="required" value="<?= $this->escape(stripslashes($this->row->get('url'))) ?>" />
+                    <input type="text" name="fields[url]" id="field-url" maxlength="250" class="required"
+                        value="<?= $this->escape(stripslashes($this->row->get('url'))) ?>" />
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('name'); ?><br />
-                    <input type="text" name="fields[name]" id="field-name" maxlength="250" class="required" value="<?= $this->escape(stripslashes($this->row->get('name'))) ?>" />
+                    <input type="text" name="fields[name]" id="field-name" maxlength="250" class="required"
+                        value="<?= $this->escape(stripslashes($this->row->get('name'))) ?>" />
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('alias'); ?><br />
-                    <input type="text" name="fields[alias]" id="field-alias" maxlength="250" class="required" value="<?= $this->escape(stripslashes($this->row->get('alias'))) ?>" />
+                    <input type="text" name="fields[alias]" id="field-alias" maxlength="250" class="required"
+                        value="<?= $this->escape(stripslashes($this->row->get('alias'))) ?>" />
                 </div>
 
                 <div class="input-wrap">
@@ -79,17 +83,20 @@ $this->js();
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('description'); ?><br />
-                    <textarea name="fields[description]" id="field-description" rows="5"><?= $this->escape($this->row->get('description')) ?></textarea>
+                    <textarea name="fields[description]" id="field-description"
+                        rows="5"><?= $this->escape($this->row->get('description')) ?></textarea>
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('apikey'); ?><br />
-                    <input type="text" name="fields[apikey]" id="field-apikey" maxlength="250" value="<?= $this->escape(stripslashes($this->row->get('apikey'))) ?>" />
+                    <input type="text" name="fields[apikey]" id="field-apikey" maxlength="250"
+                        value="<?= $this->escape(stripslashes($this->row->get('apikey'))) ?>" />
                 </div>
 
                 <div class="input-wrap">
                     <?php echo $this->form->getLabel('git_branch'); ?><br />
-                    <input type="text" name="fields[git_branch]" id="field-git_branch" maxlength="250" value="<?= $this->escape(stripslashes($this->row->get('git_branch'))) ?>" />
+                    <input type="text" name="fields[git_branch]" id="field-git_branch" maxlength="250"
+                        value="<?= $this->escape(stripslashes($this->row->get('git_branch'))) ?>" />
                 </div>
 
                 <!-- <div class="input-wrap">

@@ -54,7 +54,8 @@ foreach ($profiles as $profile) {
 </header><!-- / #content-header-extra -->
 
 <section class="main section">
-    <form id="hubForm" class="edit-profile" method="post" action="<?= Route::url('index.php?option=' . $this->option) ?>" enctype="multipart/form-data">
+    <form id="hubForm" class="edit-profile" method="post"
+        action="<?= Route::url('index.php?option=' . $this->option) ?>" enctype="multipart/form-data">
 
         <fieldset>
             <legend><?php echo Lang::txt('Contact Information'); ?></legend>
@@ -71,19 +72,22 @@ foreach ($profiles as $profile) {
                 <div class="col span4">
                     <label>
                         <?php echo Lang::txt('FIRST_NAME'); ?>:
-                        <input type="text" name="name[first]" value="<?= $this->escape($this->profile->get('givenName')) ?>" />
+                        <input type="text" name="name[first]"
+                            value="<?= $this->escape($this->profile->get('givenName')) ?>" />
                     </label>
                 </div>
                 <div class="col span4">
                     <label>
                         <?php echo Lang::txt('MIDDLE_NAME'); ?>:
-                        <input type="text" name="name[middle]" value="<?= $this->escape($this->profile->get('middleName')) ?>" />
+                        <input type="text" name="name[middle]"
+                            value="<?= $this->escape($this->profile->get('middleName')) ?>" />
                     </label>
                 </div>
                 <div class="col span4 omega">
                     <label>
                         <?php echo Lang::txt('LAST_NAME'); ?>:
-                        <input type="text" name="name[last]" value="<?= $this->escape($this->profile->get('surname')) ?>" />
+                        <input type="text" name="name[last]"
+                            value="<?= $this->escape($this->profile->get('surname')) ?>" />
                     </label>
                 </div>
             </div>
@@ -92,13 +96,15 @@ foreach ($profiles as $profile) {
                 <div class="col span6">
                     <label>
                         <?php echo Lang::txt('Valid E-mail'); ?>:
-                        <input name="email" id="email" type="text" value="<?= $this->escape($this->profile->get('email')) ?>" />
+                        <input name="email" id="email" type="text"
+                            value="<?= $this->escape($this->profile->get('email')) ?>" />
                     </label>
                 </div>
                 <div class="col span6 omega">
                     <label>
                         <?php echo Lang::txt('Confirm E-mail'); ?>:
-                        <input name="email2" id="email2" type="text" value="<?= $this->escape($this->profile->get('email')) ?>" />
+                        <input name="email2" id="email2" type="text"
+                            value="<?= $this->escape($this->profile->get('email')) ?>" />
                     </label>
                 </div>
             </div>

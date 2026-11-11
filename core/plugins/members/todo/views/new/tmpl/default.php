@@ -36,7 +36,8 @@ $url = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active=
             <div id="td-item">
                 <span class="pin">&nbsp;</span>
                 <div class="todo-content">
-                    <textarea name="content" rows="10" cols="25" placeholder="<?= Lang::txt('PLG_MEMBERS_TODO_TYPEIT') ?>"></textarea>
+                    <textarea name="content" rows="10" cols="25"
+                        placeholder="<?= Lang::txt('PLG_MEMBERS_TODO_TYPEIT') ?>"></textarea>
                     <div class="todo-edits">
                         <?php if (count($this->projects) > 0) { ?>
                         <label><?php echo ucfirst(Lang::txt('PLG_MEMBERS_TODO_CHOOSE_PROJECT')); ?>:

@@ -51,7 +51,9 @@ foreach ($this->fields as $field) {
                     <div class="input-wrap">
                         <label for="filter-value-name">
                             <?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?>
-                            <input type="text" name="search" id="filter-value-name" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
+                            <input type="text" name="search" id="filter-value-name"
+                                value="<?= $this->escape($this->filters['search']) ?>"
+                                placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_PLACEHOLDER') ?>" />
                         </label>
                     </div>
 
@@ -93,7 +95,8 @@ foreach ($this->fields as $field) {
                                 <?php } elseif ($field->get('type') == 'select') { ?>
                                     <label for="filter-value-<?php echo $this->escape($field->get('name')); ?>">
                                         <?php echo $this->escape($field->get('label')); ?>
-                                        <select class="form-control" name="q[<?= $this->escape($field->get('name')) ?>]" id="filter-value-<?= $this->escape($field->get('name')) ?>">
+                                        <select class="form-control" name="q[<?= $this->escape($field->get('name')) ?>]"
+                                            id="filter-value-<?= $this->escape($field->get('name')) ?>">
                                             <option value="">- All -</option>
                                             <?php foreach ($field->options as $option) { ?>
                                                 <option value="<?= $this->escape($option->get('value')) ?>"<?= in_array($option->get('value'), $value) ? ' selected="selected"' : '' ?>><?= $this->escape($option->get('label')) ?></option>
@@ -112,7 +115,10 @@ foreach ($this->fields as $field) {
                                 <?php } else { ?>
                                     <label for="filter-value-<?php echo $this->escape($field->get('name')); ?>">
                                         <?php echo $this->escape($field->get('label')); ?>
-                                        <input type="text" class="form-control" name="q[<?= $this->escape($field->get('name')) ?>]" id="filter-value-<?= $this->escape($field->get('name')) ?>" value="<?= $this->escape(implode('', $value)) ?>" />
+                                        <input type="text" class="form-control"
+                                            name="q[<?= $this->escape($field->get('name')) ?>]"
+                                            id="filter-value-<?= $this->escape($field->get('name')) ?>"
+                                            value="<?= $this->escape(implode('', $value)) ?>" />
                                     </label>
                                 <?php } ?>
                             </div>
@@ -145,7 +151,8 @@ foreach ($this->fields as $field) {
                         </div>
                     </fieldset><!-- / sort -->
 
-                    <p class="members-filter-apply"><input class="btn" type="submit" value="<?= Lang::txt('COM_MEMBERS_APPLY') ?>" /></p>
+                    <p class="members-filter-apply"><input class="btn" type="submit"
+                        value="<?= Lang::txt('COM_MEMBERS_APPLY') ?>" /></p>
                 </fieldset>
             </div>
         </aside><!-- / .aside -->
@@ -224,7 +231,9 @@ foreach ($this->fields as $field) {
                     if (empty($this->hasFilter)) { ?>
                         <div class="members-search-prompt">
                             <div class="members-search-prompt-icon" aria-hidden="true">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <circle cx="11" cy="11" r="7"></circle>
                                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                                 </svg>
@@ -359,15 +368,18 @@ foreach ($this->fields as $field) {
                             }
                                 $_uniqueLabel .= ' (#' . $id . ')';
                             ?>
-                            <div class="result<?= ($cls) ? ' ' . $cls : '' ?>" role="group" aria-label="<?= $_uniqueLabel ?>">
+                            <div class="result<?= ($cls) ? ' ' . $cls : '' ?>" role="group"
+                                aria-label="<?= $_uniqueLabel ?>">
                                 <div class="result-body">
                                     <div class="result-img">
-                                        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $id) ?>" aria-label="<?= $_uniqueLabel ?>">
+                                        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $id) ?>"
+                                            aria-label="<?= $_uniqueLabel ?>">
                                             <img src="<?php echo $row->picture(); ?>" alt="" />
                                         </a>
                                     </div>
                                     <div class="result-title">
-                                        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $id) ?>" aria-label="<?= $_uniqueLabel ?>">
+                                        <a href="<?= Route::url('index.php?option=' . $this->option . '&id=' . $id) ?>"
+                                            aria-label="<?= $_uniqueLabel ?>">
                                             <?php echo $this->escape($name); ?>
                                         </a>
                                         <?php foreach ($this->fields as $c) { ?>

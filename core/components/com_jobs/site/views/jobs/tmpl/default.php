@@ -61,7 +61,9 @@ if ($this->subscriptionCode && $this->employer) {
                 <fieldset class="entry-search">
                     <legend></legend>
                     <label for="entry-search-field"><?php echo Lang::txt('Enter keyword or phrase'); ?></label>
-                    <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('Enter keyword or phrase') ?>" />
+                    <input type="text" name="q" id="entry-search-field"
+                        value="<?= $this->escape($this->filters['search']) ?>"
+                        placeholder="<?= Lang::txt('Enter keyword or phrase') ?>" />
                     <input type="hidden" name="limitstart" value="0" />
                     <input type="hidden" name="performsearch" value="1" />
                 </fieldset>

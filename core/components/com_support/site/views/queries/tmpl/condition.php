@@ -31,7 +31,8 @@ if ($this->condition->expressions) {
         $operators = $this->conditions->{$expression->fldval}->operators;
         $values    = $this->conditions->{$expression->fldval}->values;
         ?>
-        <p class="conditions"><button class="remove" alt="Remove">&times;</button> <select class="fld" aria-label="<?= Lang::txt('COM_SUPPORT_QUERY_FIELD') ?>">
+        <p class="conditions"><button class="remove" alt="Remove">&times;</button> <select class="fld"
+            aria-label="<?= Lang::txt('COM_SUPPORT_QUERY_FIELD') ?>">
             <option value="open"<?= $expression->fldval == 'open' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN') ?></option>
                 <option value="status"<?= $expression->fldval == 'status' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS') ?></option>
                 <option value="login"<?= $expression->fldval == 'login' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER') ?></option>
@@ -76,7 +77,8 @@ if ($this->condition->expressions) {
                 $expression->val = User::get('username');
             }
             ?>
-            <input type="text" class="val" aria-label="<?= Lang::txt('COM_SUPPORT_QUERY_VALUE') ?>" value="<?= $this->escape(stripslashes($expression->val)) ?>" />
+            <input type="text" class="val" aria-label="<?= Lang::txt('COM_SUPPORT_QUERY_VALUE') ?>"
+                value="<?= $this->escape(stripslashes($expression->val)) ?>" />
             <?php
         }
         ?>

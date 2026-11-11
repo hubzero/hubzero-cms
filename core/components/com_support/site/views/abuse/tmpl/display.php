@@ -61,7 +61,8 @@ if (!$no_html) {
                             echo ($this->report->href) ? '</a>' : '';
                         ?></p>
                         <?= ($this->report->subject) ? '<p><strong>' . $this->escape(stripslashes($this->report->subject)) . '</strong></p>' : '' ?>
-                        <blockquote cite="<?= ($this->report->anon != 0) ? Lang::txt('COM_SUPPORT_ANONYMOUS') : $name ?>">
+                        <blockquote
+                            cite="<?= ($this->report->anon != 0) ? Lang::txt('COM_SUPPORT_ANONYMOUS') : $name ?>">
                             <p><?php echo Sanitize::html($this->report->text); ?></p>
                         </blockquote>
                     </div>
@@ -73,19 +74,23 @@ if (!$no_html) {
 
                     <div class="form-group form-check">
                         <label class="option form-check-label" for="subject1">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject1" value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE') ?>" checked="checked" />
+                            <input type="radio" class="option form-check-input" name="subject" id="subject1"
+                                value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE') ?>" checked="checked" />
                             <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OFFENSIVE'); ?>
                         </label>
                         <label class="option form-check-label" for="subject2">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject2" value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID') ?>" />
+                            <input type="radio" class="option form-check-input" name="subject" id="subject2"
+                                value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID') ?>" />
                             <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_STUPID'); ?>
                         </label>
                         <label class="option form-check-label" for="subject3">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject3" value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM') ?>" />
+                            <input type="radio" class="option form-check-input" name="subject" id="subject3"
+                                value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM') ?>" />
                             <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_SPAM'); ?>
                         </label>
                         <label class="option form-check-label" for="subject4">
-                            <input type="radio" class="option form-check-input" name="subject" id="subject4" value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_OTHER') ?>" />
+                            <input type="radio" class="option form-check-input" name="subject" id="subject4"
+                                value="<?= Lang::txt('COM_SUPPORT_REPORT_ABUSE_OTHER') ?>" />
                             <?php echo Lang::txt('COM_SUPPORT_REPORT_ABUSE_OTHER'); ?>
                         </label>
                     </div>

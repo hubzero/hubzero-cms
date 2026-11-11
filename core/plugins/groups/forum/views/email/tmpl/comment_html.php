@@ -24,7 +24,8 @@ $bdcolor = '#e1e1e1';
 <?php if ($this->delimiter) {
     if (Component::params('com_groups')->get('email_comment_processing')) { ?>
     <!-- Start Header Spacer -->
-    <table class="tbl-delimiter" width="100%" cellpadding="0" cellspacing="0" border="0" style="border: 1px dashed #b5c6b5;">
+    <table class="tbl-delimiter" width="100%" cellpadding="0" cellspacing="0" border="0"
+        style="border: 1px dashed #b5c6b5;">
         <tbody>
             <tr>
                 <td height="30" style="border-collapse: collapse; color: #9bac9b;">
@@ -113,7 +114,8 @@ $bdcolor = '#e1e1e1';
         <tbody>
             <tr>
                 <td width="100%" style="padding: 8px;">
-                    <div class="mobilehide" id="ticket-number" style="float: left; font-weight: bold; text-align: center; padding: 10px;" align="center">
+                    <div class="mobilehide" id="ticket-number"
+                        style="float: left; font-weight: bold; text-align: center; padding: 10px;" align="center">
                         <?php if ($this->group->get('logo')) {
                             ?><img src="<?= rtrim(Request::root(), '/') . '/' . ltrim($this->group->getLogo(), '/') ?>" width="100" alt="<?= $this->escape($this->group->get('description')) ?>" /><?php
                         } else {
@@ -121,31 +123,43 @@ $bdcolor = '#e1e1e1';
                         }
                         ?>
                     </div>
-                    <table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
+                    <table style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0"
+                        border="0">
                         <tbody>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_THREAD') ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->thread->get('title')) ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                    align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_THREAD') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;"
+                                    align="left"><?= $this->escape($this->thread->get('title')) ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_CREATED') ?>:</th>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                    align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_CREATED') ?>:</th>
                                 <td style="text-align: left; padding: 0 0.5em;" align="left"><?= Lang::txt('PLG_GROUPS_FORUM_CREATED', $this->thread->created('time'), $this->thread->created('date')) ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_GROUP') ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->group->get('description')) ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                    align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_GROUP') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;"
+                                    align="left"><?= $this->escape($this->group->get('description')) ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_SECTION') ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->section->get('title')) ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                    align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_SECTION') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;"
+                                    align="left"><?= $this->escape($this->section->get('title')) ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_CATEGORY') ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->category->get('title')) ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                    align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_CATEGORY') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;"
+                                    align="left"><?= $this->escape($this->category->get('title')) ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_LINK') ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                    align="right"><?= Lang::txt('PLG_GROUPS_FORUM_DETAILS_LINK') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" align="left"><a
+                                    href="<?= $link ?>"><?= $link ?></a></td>
                             </tr>
                         </tbody>
                     </table>
@@ -154,7 +168,8 @@ $bdcolor = '#e1e1e1';
         </tbody>
     </table>
 
-    <table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0" cellpadding="0" cellspacing="0" border="0">
+    <table width="100%" id="ticket-comments" style="border-collapse: collapse; margin: 2em 0 0 0; padding: 0"
+        cellpadding="0" cellspacing="0" border="0">
         <tbody>
             <tr>
                 <th style="text-align: left;" align="left"><?= (!$this->post->get('anonymous')) ? $this->escape($this->post->creator->get('name')) : Lang::txt('JANONYMOUS') ?></th>
@@ -186,7 +201,8 @@ $bdcolor = '#e1e1e1';
             <?php if ($this->unsubscribe) { ?>
                 <tr>
                     <td colspan="2" style="padding: 2em 0 0 0; font-size: 0.9em;">
-                        <?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_UNSUBSCRIBE') ?>:<br /><a href="<?= $this->get('unsubscribe') ?>"><?= $this->get('unsubscribe') ?></a>
+                        <?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_UNSUBSCRIBE') ?>:<br /><a
+                            href="<?= $this->get('unsubscribe') ?>"><?= $this->get('unsubscribe') ?></a>
                     </td>
                 </tr>
             <?php } ?>

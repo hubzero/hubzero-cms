@@ -58,7 +58,9 @@ $this
             <fieldset class="entry-search">
                 <legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LEGEND'); ?></legend>
                 <label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LABEL'); ?></label>
-                <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER') ?>" />
+                <input type="text" name="q" id="entry-search-field"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER') ?>" />
             </fieldset>
         </div><!-- / .container -->
     </form>
@@ -208,7 +210,8 @@ $this
                                     <?php if ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread') || User::get('id') == $row->get('created_by')) { ?>
                                         <td class="entry-options">
                                             <?php if ($row->get('created_by') == User::get('id') || $this->config->get('access-edit-thread')) { ?>
-                                                <a class="icon-edit edit" href="<?= Route::url($base . '/' . $row->get('id') . '/edit') ?>">
+                                                <a class="icon-edit edit"
+                                                    href="<?= Route::url($base . '/' . $row->get('id') . '/edit') ?>">
                                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?>
                                                 </a>
                                             <?php } ?>

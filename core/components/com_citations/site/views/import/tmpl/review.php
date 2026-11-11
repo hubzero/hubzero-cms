@@ -167,7 +167,8 @@ $no_show = ["errors","duplicate"];
                 <table class="upload-list no-action">
                     <thead>
                         <tr>
-                            <th><input type="checkbox" class="checkall" name="select-all-no-attention" checked="checked" /></th>
+                            <th><input type="checkbox" class="checkall" name="select-all-no-attention"
+                                checked="checked" /></th>
                             <th><?= Lang::txt('COM_CITATIONS_IMPORT_REQUIRE_NO_ATTENTION', count($citations_require_no_attention)) ?></th>
                         </tr>
                     </thead>
@@ -175,7 +176,9 @@ $no_show = ["errors","duplicate"];
                         <?php $counter = 0; ?>
                             <?php foreach ($citations_require_no_attention as $c) : ?>
                             <tr>
-                                <td><input type="checkbox" class="check-single" name="citation_action_no_attention[<?= $counter++ ?>]" checked="checked" value="1" /></td>
+                                <td><input type="checkbox" class="check-single"
+                                    name="citation_action_no_attention[<?= $counter++ ?>]" checked="checked"
+                                    value="1" /></td>
                                 <td>
                                     <span class="citation-title">
                                         <?php

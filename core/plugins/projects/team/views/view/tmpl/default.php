@@ -45,7 +45,8 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
         <table id="teamlist" class="listing">
             <thead>
                 <tr>
-                    <th class="priority-3 imagebox" aria-label="<?= Lang::txt('Photo') ?>"><span class="sr-only">Photo</span></th>
+                    <th class="priority-3 imagebox" aria-label="<?= Lang::txt('Photo') ?>"><span
+                        class="sr-only">Photo</span></th>
                     <th>
                         <a class="sort-title <?= $this->filters['sortby'] == 'name' ? strtolower($this->filters['sortdir']) . ' active' : '' ?>" href="<?= Route::url($this->model->link('team') . $sortAppend . '&sortby=name') ?>" title="<?= Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_NAME'))) ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?>
@@ -109,7 +110,8 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                         <a class="user-img-wrap" href="<?= Route::url('index.php?option=com_members&id=' . $owner->userid) ?>" <?php if ($owner->fullname) {
                             ?>title="<?php echo $this->escape($owner->fullname) . ' (' . $owner->userid . ')'; ?>"<?php
                                                        } ?>>
-                            <img src="<?= $profile->picture() ?>" alt="<?= $owner->fullname ? $this->escape($owner->fullname) : '' ?>" />
+                            <img src="<?= $profile->picture() ?>"
+                                alt="<?= $owner->fullname ? $this->escape($owner->fullname) : '' ?>" />
                         </a>
                     </td>
                     <td>

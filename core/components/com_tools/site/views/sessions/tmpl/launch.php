@@ -50,7 +50,8 @@ $classicUrl = Route::url('index.php?option=com_tools&controller=sessions&app=' .
             <h2 class="tool-launch-heading"><?php echo Lang::txt('COM_TOOLS_LAUNCH_HEADING'); ?></h2>
             <p class="tool-launch-tool"><?php echo $this->escape($this->toolTitle); ?></p>
 
-            <div id="launch-spinner" class="tool-launch-spinner" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div id="launch-spinner" class="tool-launch-spinner"
+                aria-hidden="true"><span></span><span></span><span></span></div>
 
             <ol class="tool-launch-steps" aria-live="polite">
                 <li id="step-session" class="wait"><?php echo Lang::txt('COM_TOOLS_LAUNCH_STEP_SESSION'); ?></li>
@@ -61,7 +62,8 @@ $classicUrl = Route::url('index.php?option=com_tools&controller=sessions&app=' .
                 <li id="step-connect" class="wait"><?php echo Lang::txt('COM_TOOLS_LAUNCH_STEP_CONNECT'); ?></li>
             </ol>
 
-            <p id="launch-status" class="tool-launch-status" role="status" aria-live="polite"><?= Lang::txt('COM_TOOLS_LAUNCH_STARTING') ?></p>
+            <p id="launch-status" class="tool-launch-status" role="status"
+                aria-live="polite"><?= Lang::txt('COM_TOOLS_LAUNCH_STARTING') ?></p>
 
             <div id="launch-error" class="tool-launch-error" hidden>
                 <p id="launch-error-msg" class="tool-launch-error-msg"></p>

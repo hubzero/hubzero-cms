@@ -49,7 +49,8 @@ $email = $this->author->p_email ? $this->author->p_email : $this->author->invite
 <?php } ?>
 <p class="crumbs"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?> &raquo; <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id ?></a> &raquo; <?= $pageTitle ?></p>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
@@ -102,7 +103,8 @@ $email = $this->author->p_email ? $this->author->p_email : $this->author->invite
                     </td>
                 </tr>
                 <tr>
-                    <td class="key"><label><?= Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_LAST') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label></td>
+                    <td class="key"><label><?= Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_NAME_LAST') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label></td>
                     <td>
                         <input type="text" name="lastName" value="<?php echo $this->escape($lastname); ?>" size="25" />
                     </td>
@@ -110,13 +112,15 @@ $email = $this->author->p_email ? $this->author->p_email : $this->author->invite
                 <tr>
                     <td class="key"><label><?= Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_DEPARTMENT') ?>:</label></td>
                     <td>
-                        <input type="text" name="department" value="<?= $this->escape($this->author->department) ?>" size="25" />
+                        <input type="text" name="department" value="<?= $this->escape($this->author->department) ?>"
+                            size="25" />
                     </td>
                 </tr>
                 <tr>
                     <td class="key"><label><?= Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORGANIZATION') ?>:</label></td>
                     <td>
-                        <input type="text" name="organization" value="<?= $this->escape($this->author->organization) ?>" size="25" />
+                        <input type="text" name="organization" value="<?= $this->escape($this->author->organization) ?>"
+                            size="25" />
                     </td>
                 </tr>
                 <tr>
@@ -128,14 +132,16 @@ $email = $this->author->p_email ? $this->author->p_email : $this->author->invite
                 <tr>
                     <td class="key"><label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORCID'); ?>:</label></td>
                     <td>
-                        <input type="text" name="orcid" placeholder="####-####-####-####" value="<?= $this->escape($this->author->orcid) ?>" size="25" />
+                        <input type="text" name="orcid" placeholder="####-####-####-####"
+                            value="<?= $this->escape($this->author->orcid) ?>" size="25" />
                         <p><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_ORCID_ID_DESC'); ?></p>
                     </td>
                 </tr>
                 <tr>
                     <td class="key"><label><?= Lang::txt('COM_PUBLICATIONS_FIELD_AUTHOR_CREDIT') ?>:</label></td>
                     <td>
-                        <input type="text" name="credit" value="<?= $this->escape($this->author->credit) ?>" size="25" />
+                        <input type="text" name="credit" value="<?= $this->escape($this->author->credit) ?>"
+                            size="25" />
                     </td>
                 </tr>
             </tbody>

@@ -170,7 +170,8 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                         <th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_CREATED_BY_LABEL'); ?></th>
                         <td>
                             <?= $this->item->created_by ? $this->escape(User::getInstance($this->item->created_by)->get('name')) : Lang::txt('JUNKNOWN') ?>
-                            <input type="hidden" name="fields[created_by]" value="<?= $this->escape($this->item->created_by) ?>" />
+                            <input type="hidden" name="fields[created_by]"
+                                value="<?= $this->escape($this->item->created_by) ?>" />
                         </td> 
                     </tr>
                     <tr>
@@ -184,7 +185,8 @@ $dateModifiedString = $dateModified->format('Y-m-d H:i:s');
                             <th scope="row"><?php echo Lang::txt('COM_CONTENT_FIELD_MODIFIER_LABEL'); ?></th>
                             <td>
                                 <?= $this->item->modified_by ? $this->escape(User::getInstance($this->item->modified_by)->get('name')) : Lang::txt('JUNKNOWN') ?>
-                                <input type="hidden" name="fields[modified_by]" value="<?= $this->escape($this->item->modified_by) ?>" />
+                                <input type="hidden" name="fields[modified_by]"
+                                    value="<?= $this->escape($this->item->modified_by) ?>" />
                             </td> 
                         </tr>
                         <tr>

@@ -34,10 +34,12 @@ if (empty($this->tokens)) {
                                 readonly 
                                 class="token-input"
                             />
-                            <button type="button" class="token-action-btn" title="Show/Hide Token" data-token-toggle="<?= $tokenId ?>">
+                            <button type="button" class="token-action-btn" title="Show/Hide Token"
+                                data-token-toggle="<?= $tokenId ?>">
                                 <i class="icon-eye"></i>
                             </button>
-                            <button type="button" class="token-action-btn" title="Copy to Clipboard" data-token-copy="<?= $tokenId ?>">
+                            <button type="button" class="token-action-btn" title="Copy to Clipboard"
+                                data-token-copy="<?= $tokenId ?>">
                                 <i class="icon-copy"></i>
                             </button>
                         </div>

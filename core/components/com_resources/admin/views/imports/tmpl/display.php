@@ -35,14 +35,17 @@ Toolbar::help('import');
 $this->css('import');
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
 
     <table class="adminlist">
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?= Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?= Html::grid('sort', 'COM_RESOURCES_IMPORT_DISPLAY_FIELD_NUMRECORDS', 'count', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
@@ -65,8 +68,10 @@ $this->css('import');
                     <tr>
                         <td>
                             <?php if ($canDo->get('core.create')) : ?>
-                                <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $import->get('id') ?>" class="checkbox-toggle" />
-                                <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $import->get('id') ?></label>
+                                <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $import->get('id') ?>"
+                                    class="checkbox-toggle" />
+                                <label for="cb<?= $i ?>"
+                                    class="sr-only visually-hidden"><?= $import->get('id') ?></label>
                             <?php endif; ?>
                         </td>
                         <td>

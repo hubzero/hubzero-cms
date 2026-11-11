@@ -112,9 +112,11 @@ if (isset($this->entityId) && isset($this->entityType)) {
                 <ul class="no-js">
                     <?php $counter = 0; ?>
                     <?php foreach ($presentation->slides as $slide) : ?>
-                        <li id="slide_<?= $counter ?>" title="<?= $this->escape($slide->title) ?>" time="<?= $this->escape($slide->time) ?>">
+                        <li id="slide_<?= $counter ?>" title="<?= $this->escape($slide->title) ?>"
+                            time="<?= $this->escape($slide->time) ?>">
                             <?php if ($slide->type == 'Image') : ?>
-                                <img src="<?= with(new Moderator($content_folder . DS . $slide->media))->getUrl() ?>" alt="<?= $this->escape($slide->title) ?>" />
+                                <img src="<?= with(new Moderator($content_folder . DS . $slide->media))->getUrl() ?>"
+                                    alt="<?= $this->escape($slide->title) ?>" />
                             <?php else : ?>
                                 <video class="slidevideo">
                                     <?php foreach ($slide->media as $source) : ?>
@@ -136,9 +138,12 @@ if (isset($this->entityId) && isset($this->entityType)) {
                 <div id="progress-bar"></div>
                 <div id="control-buttons">
                     <div id="control-buttons-left" class="cf">
-                        <a id="previous" class="control" href="javascript:void(0);" title="Previous Slide"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_PREV') ?></a>
-                        <a id="play-pause" class="control" href="javascript:void(0);" title="Play Presentation"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_PAUSE') ?></a>
-                        <a id="next" class="control" href="javascript:void(0);" title="Next Slide"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_NEXT') ?></a>
+                        <a id="previous" class="control" href="javascript:void(0);"
+                            title="Previous Slide"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_PREV') ?></a>
+                        <a id="play-pause" class="control" href="javascript:void(0);"
+                            title="Play Presentation"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_PAUSE') ?></a>
+                        <a id="next" class="control" href="javascript:void(0);"
+                            title="Next Slide"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_NEXT') ?></a>
                         <div id="media-progress"></div>
                     </div>
                     <div id="control-buttons-right" class="cf">
@@ -231,7 +236,8 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                 <div id="volume-bar"></div>
                             </div>
                         </a>
-                        <a id="settings" class="control" href="javascript:void(0);" title="Adjust Settings for Playback">
+                        <a id="settings" class="control" href="javascript:void(0);"
+                            title="Adjust Settings for Playback">
                             <?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS'); ?>
                             <div class="control-container settings-controls">
                                 <h3><?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SETTINGS'); ?></h3>
@@ -262,7 +268,8 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                 </div> -->
                             </div>
                         </a>
-                        <a id="link" class="control" href="javascript:void(0);" title="<?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_THIS_SPOT') ?>">
+                        <a id="link" class="control" href="javascript:void(0);"
+                            title="<?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_THIS_SPOT') ?>">
                             <?php echo Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK'); ?>
                             <div class="control-container link-controls">
                                 <h3><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_TO_VIDEO') ?> <span><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_LINK_TO_VIDEO_AT_POSITION') ?></span></h3>
@@ -285,7 +292,9 @@ if (isset($this->entityId) && isset($this->entityType)) {
         <div id="presenter-right">
             <div id="media" class="<?php echo $cls; ?>">
                 <?php if (strtolower($presentation->type) == 'video') : ?>
-                    <video id="player" preload="auto" controls="controls" data-mediaid="<?= (isset($this->entityId)) ? $this->entityId : 0 ?>" data-mediatype="<?= (isset($this->entityType)) ? $this->entityType : '' ?>">
+                    <video id="player" preload="auto" controls="controls"
+                        data-mediaid="<?= (isset($this->entityId)) ? $this->entityId : 0 ?>"
+                        data-mediatype="<?= (isset($this->entityType)) ? $this->entityType : '' ?>">
                         <?php foreach ($presentation->media as $source) : ?>
                             <?php
                                 $type = '';
@@ -302,7 +311,8 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     break;
                             }
                             ?>
-                            <source src="<?= with(new Moderator($content_folder . DS . $source->source))->getUrl() ?>" type="<?= $type ?>">
+                            <source src="<?= with(new Moderator($content_folder . DS . $source->source))->getUrl() ?>"
+                                type="<?= $type ?>">
                         <?php endforeach; ?>
                         <a href="<?= with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl() ?>" id="flowplayer"></a>
 
@@ -320,7 +330,8 @@ if (isset($this->entityId) && isset($this->entityType)) {
                 <?php else : ?>
                     <audio id="player" preload="auto" controls="controls">
                         <?php foreach ($presentation->media as $source) : ?>
-                            <source src="<?= with(new Moderator($content_folder . DS . $source->source))->getUrl() ?>" />
+                            <source
+                                src="<?= with(new Moderator($content_folder . DS . $source->source))->getUrl() ?>" />
                         <?php endforeach; ?>
                         <a href="<?= with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl() ?>" id="flowplayer" duration="<?= isset($presentation->duration) && $presentation->duration ? $this->escape($presentation->duration) : '' ?>"></a>
                     </audio>
@@ -346,7 +357,8 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     $thumb = $content_folder . DS . $slide->media;
                                 }
                                 ?>
-                                <img src="<?= with(new Moderator($thumb))->getUrl() ?>" alt="<?= $this->escape($slide->title) ?>" />
+                                <img src="<?= with(new Moderator($thumb))->getUrl() ?>"
+                                    alt="<?= $this->escape($slide->title) ?>" />
                                 <span>
                                     <?php
                                         $num++;

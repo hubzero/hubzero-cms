@@ -175,9 +175,11 @@ $month = date("m", strtotime($this->event->get('publish_up')));
             <legend><?php echo Lang::txt('Demographics'); ?></legend>
             <?php if ($this->params->get('show_position')) : ?>
                 <label for="register[position]">
-                    <?= Lang::txt('Which best describes your current position?') ?> <span class="optional">Optional</span>
+                    <?= Lang::txt('Which best describes your current position?') ?> <span
+                        class="optional">Optional</span>
                     <select name="register[position]">
-                        <option value="" selected="selected"><?= Lang::txt('(select from list or enter below)') ?></option>
+                        <option value=""
+                            selected="selected"><?= Lang::txt('(select from list or enter below)') ?></option>
                         <option value="university"><?= Lang::txt('University / College Student or Staff') ?></option>
                         <option value="precollege"><?= Lang::txt('K-12 (Pre-College) Student or Staff') ?></option>
                         <option value="nationallab"><?php echo Lang::txt('National Laboratory'); ?></option>
@@ -192,7 +194,8 @@ $month = date("m", strtotime($this->event->get('publish_up')));
 
             <?php if ($this->params->get('show_degree')) : ?>
                 <fieldset>
-                    <legend><?= Lang::txt('Highest academic degree earned:') ?> <span class="optional">Optional</span></legend>
+                    <legend><?= Lang::txt('Highest academic degree earned:') ?> <span
+                        class="optional">Optional</span></legend>
                         <label>
                             <input type="radio" class="option" name="register[degree]" value="Bachelors" <?= (isset($this->register['degree']) && $this->register['degree'] == 'Bachelors') ? 'checked="checked"' : '' ?> />
                             <?php echo Lang::txt('Bachelors degree'); ?>
@@ -237,7 +240,8 @@ $month = date("m", strtotime($this->event->get('publish_up')));
                         <?php echo Lang::txt('Select one or more that apply.'); ?>
                     </p>
                     <label>
-                        <input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican" value="Native American" />
+                        <input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican"
+                            value="Native American" />
                         <?php echo Lang::txt('American Indian or Alaska Native'); ?>
                     </label>
                     <label class="indent"><?php echo Lang::txt('Tribal Affiliation(s):'); ?>
@@ -248,11 +252,13 @@ $month = date("m", strtotime($this->event->get('publish_up')));
                         <?php echo Lang::txt('Asian'); ?>
                     </label>
                     <label>
-                        <input type="checkbox" class="option" name="race[black]" id="raceblack" value="African American" />
+                        <input type="checkbox" class="option" name="race[black]" id="raceblack"
+                            value="African American" />
                         <?php echo Lang::txt('Black or African American'); ?>
                     </label>
                     <label>
-                        <input type="checkbox" class="option" name="race[hawaiian]" id="racehawaiian" value="Hawaiian" />
+                        <input type="checkbox" class="option" name="race[hawaiian]" id="racehawaiian"
+                            value="Hawaiian" />
                         <?php echo Lang::txt('Native Hawaiian or Other Pacific Islander'); ?>
                     </label>
                     <label>
@@ -260,7 +266,8 @@ $month = date("m", strtotime($this->event->get('publish_up')));
                         <?php echo Lang::txt('White'); ?>
                     </label>
                     <label>
-                        <input type="checkbox" class="option" name="race[hispanic]" id="racehispanic" value="Hispanic" />
+                        <input type="checkbox" class="option" name="race[hispanic]" id="racehispanic"
+                            value="Hispanic" />
                         <?php echo Lang::txt('Hispanic or Latino'); ?>
                     </label>
                     <label>
@@ -280,10 +287,12 @@ $month = date("m", strtotime($this->event->get('publish_up')));
                 <fieldset>
                     <legend><?= Lang::txt('Arrival Information:') ?> <span class="optional">Optional</span></legend>
                     <label><?php echo Lang::txt('Arrival Day'); ?>
-                        <input type="text" name="arrival[day]" value="<?= (isset($this->arrival['day'])) ? $this->arrival['day'] : '' ?>" />
+                        <input type="text" name="arrival[day]"
+                            value="<?= (isset($this->arrival['day'])) ? $this->arrival['day'] : '' ?>" />
                     </label>
                     <label><?php echo Lang::txt('Arrival Time'); ?>
-                        <input type="text" name="arrival[time]" value="<?= (isset($this->arrival['time'])) ? $this->arrival['time'] : '' ?>" />
+                        <input type="text" name="arrival[time]"
+                            value="<?= (isset($this->arrival['time'])) ? $this->arrival['time'] : '' ?>" />
                     </label>
                 </fieldset>
             <?php endif ?>
@@ -292,10 +301,12 @@ $month = date("m", strtotime($this->event->get('publish_up')));
             <fieldset>
                 <legend><?= Lang::txt('Departure Information:') ?> <span class="optional">Optional</span></legend>
                 <label><?php echo Lang::txt('Departure Day'); ?>
-                    <input type="text" name="departure[day]" value="<?= (isset($this->departure['day'])) ? $this->departure['day'] : '' ?>" />
+                    <input type="text" name="departure[day]"
+                        value="<?= (isset($this->departure['day'])) ? $this->departure['day'] : '' ?>" />
                 </label>
                 <label><?php echo Lang::txt('Departure Time'); ?>
-                    <input type="text" name="departure[time]" value="<?= (isset($this->departure['time'])) ? $this->departure['time'] : '' ?>" />
+                    <input type="text" name="departure[time]"
+                        value="<?= (isset($this->departure['time'])) ? $this->departure['time'] : '' ?>" />
                 </label>
             </fieldset>
             <?php endif; ?>
@@ -328,7 +339,8 @@ $month = date("m", strtotime($this->event->get('publish_up')));
         <fieldset>
             <legend><?php echo Lang::txt('Dinner'); ?></legend>
             <label for="filed-dinner">
-                <input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" <?= isset($this->dinner) && $this->dinner == 'yes' ? 'checked="checked"' : '' ?> />
+                <input type="checkbox" class="option" name="dinner" id="filed-dinner"
+                    value="yes" <?= isset($this->dinner) && $this->dinner == 'yes' ? 'checked="checked"' : '' ?> />
                 <?php echo Lang::txt('I plan to attend the dinner.'); ?>
             </label>
         </fieldset>

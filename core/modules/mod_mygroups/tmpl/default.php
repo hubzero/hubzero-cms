@@ -27,7 +27,8 @@ $this
         <li rel="allgroups<?= $this->module->id ?>" class="tab_title<?= !count($this->recentgroups) ? ' active' : '' ?>"><?= Lang::txt('MOD_MYGROUPS_ALL') ?></li>
     </ul>
 
-    <div id="recentgroups<?= $this->module->id ?>" class="tab_panel<?= count($this->recentgroups) > 0 ? ' active' : '' ?>">
+    <div id="recentgroups<?= $this->module->id ?>"
+        class="tab_panel<?= count($this->recentgroups) > 0 ? ' active' : '' ?>">
         <?php if (count($this->recentgroups) > 0) { ?>
             <ul class="compactlist mygroups">
                 <?php

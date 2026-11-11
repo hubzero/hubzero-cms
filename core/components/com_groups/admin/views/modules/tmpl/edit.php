@@ -36,11 +36,13 @@ Toolbar::cancel();
 
                 <div class="input-wrap">
                     <label for="field-title"><?php echo Lang::txt('COM_GROUPS_MODULES_TITLE'); ?>:</label>
-                    <input type="text" name="module[title]" id="field-title" value="<?= $this->escape($this->module->get('title')) ?>" size="50" />
+                    <input type="text" name="module[title]" id="field-title"
+                        value="<?= $this->escape($this->module->get('title')) ?>" size="50" />
                 </div>
                 <div class="input-wrap">
                     <label for="field-position"><?php echo Lang::txt('COM_GROUPS_MODULES_POSITION'); ?>:</label>
-                    <input type="text" name="module[position]" id="field-position" value="<?= $this->escape($this->module->get('position')) ?>" size="50" />
+                    <input type="text" name="module[position]" id="field-position"
+                        value="<?= $this->escape($this->module->get('position')) ?>" size="50" />
                 </div>
                 <div class="input-wrap">
                     <label for="field-type"><?php echo Lang::txt('COM_GROUPS_MODULES_STATUS'); ?>:</label>
@@ -95,7 +97,9 @@ Toolbar::cancel();
                         <div class="input-wrap">
                             <label for="assigned<?php echo $i; ?>">
                                 <?php $ckd = (in_array($page->get('id'), $activeMenu) || in_array(0, $activeMenu)) ? 'checked="checked"' : ''; ?>
-                                <input type="checkbox" class="option" <?= $ckd ?> name="menu[assigned][]" id="assigned<?= $i ?>" value="<?= $page->get('id') ?>" /> <?= $this->escape($page->get('title')) ?>
+                                <input type="checkbox" class="option" <?= $ckd ?> name="menu[assigned][]"
+                                    id="assigned<?= $i ?>"
+                                    value="<?= $page->get('id') ?>" /> <?= $this->escape($page->get('title')) ?>
                             </label>
                         </div>
                     <?php endforeach; ?>
@@ -161,7 +165,8 @@ Toolbar::cancel();
 
                 <div class="input-wrap">
                     <label for="field-content"><?php echo Lang::txt('COM_GROUPS_MODULES_CONTENT'); ?>:</label>
-                    <textarea name="module[content]" id="field-content" rows="20"><?= $this->escape($this->module->get('content')) ?></textarea>
+                    <textarea name="module[content]" id="field-content"
+                        rows="20"><?= $this->escape($this->module->get('content')) ?></textarea>
                 </div>
             </fieldset>
         </div>

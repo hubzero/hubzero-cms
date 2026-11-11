@@ -34,39 +34,48 @@ Html::behavior('keepalive');
 $this->js();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form" class="editform form-validate"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="pagetitle"><?= Lang::txt('COM_WIKI_FIELD_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="page[title]" id="pagetitle" class="required" size="30" maxlength="255" value="<?= $this->escape(stripslashes($this->row->get('title', ''))) ?>" />
+                    <label for="pagetitle"><?= Lang::txt('COM_WIKI_FIELD_TITLE') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="page[title]" id="pagetitle" class="required" size="30" maxlength="255"
+                        value="<?= $this->escape(stripslashes($this->row->get('title', ''))) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_WIKI_FIELD_PAGENAME_HINT'); ?>">
-                    <label for="pagename"><?= Lang::txt('COM_WIKI_FIELD_PAGENAME') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="page[pagename]" id="pagename" class="required" size="30" maxlength="255" value="<?= $this->escape(stripslashes($this->row->get('pagename', ''))) ?>" />
+                    <label for="pagename"><?= Lang::txt('COM_WIKI_FIELD_PAGENAME') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="page[pagename]" id="pagename" class="required" size="30" maxlength="255"
+                        value="<?= $this->escape(stripslashes($this->row->get('pagename', ''))) ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_WIKI_FIELD_PAGENAME_HINT'); ?></span>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-path"><?php echo Lang::txt('COM_WIKI_FIELD_PATH'); ?>:</label><br />
-                    <input type="text" name="page[path]" id="field-path" size="30" maxlength="255" value="<?= $this->escape(stripslashes($this->row->get('path', ''))) ?>" />
+                    <input type="text" name="page[path]" id="field-path" size="30" maxlength="255"
+                        value="<?= $this->escape(stripslashes($this->row->get('path', ''))) ?>" />
                 </div>
 
                 <div class="grid">
                     <div class="col span6">
                         <div class="input-wrap">
                             <label for="field-scope"><?php echo Lang::txt('COM_WIKI_FIELD_SCOPE'); ?>:</label><br />
-                            <input type="text" name="page[scope]" id="field-scope" size="30" maxlength="255" value="<?= $this->escape(stripslashes($this->row->get('scope', ''))) ?>" />
+                            <input type="text" name="page[scope]" id="field-scope" size="30" maxlength="255"
+                                value="<?= $this->escape(stripslashes($this->row->get('scope', ''))) ?>" />
                         </div>
                     </div>
                     <div class="col span6">
                         <div class="input-wrap">
                             <label for="field-scope_id"><?= Lang::txt('COM_WIKI_FIELD_SCOPE_ID') ?>:</label><br />
-                            <input type="text" name="page[scope_id]" id="field-scope_id" size="30" maxlength="255" value="<?= $this->escape(stripslashes($this->row->get('scope_id', ''))) ?>" />
+                            <input type="text" name="page[scope_id]" id="field-scope_id" size="30" maxlength="255"
+                                value="<?= $this->escape(stripslashes($this->row->get('scope_id', ''))) ?>" />
                         </div>
                     </div>
                 </div>
@@ -85,7 +94,8 @@ $this->js();
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_WIKI_FIELD_TAGS_HINT'); ?>">
                     <label for="field-tags"><?php echo Lang::txt('COM_WIKI_FIELD_TAGS'); ?>:</label><br />
-                    <textarea name="page[tags]" id="field-tags" cols="35" rows="3"><?= $this->escape(stripslashes($this->row->tags('string'))) ?></textarea>
+                    <textarea name="page[tags]" id="field-tags" cols="35"
+                        rows="3"><?= $this->escape(stripslashes($this->row->tags('string'))) ?></textarea>
                     <span class="hint"><?php echo Lang::txt('COM_WIKI_FIELD_TAGS_HINT'); ?></span>
                 </div>
             </fieldset>

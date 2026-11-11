@@ -62,9 +62,13 @@ $this->css();
                         <span class="entry-title"><?= Lang::txt('PLG_PUBLICATION_QUESTIONS_QUESTION_UNDER_REVIEW') ?></span><br />
                     <?php } ?>
                     <span class="entry-details">
-                        <?= Lang::txt('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name) ?> <span class="entry-date-at">@</span>
-                        <span class="entry-time"><time datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span> <span class="entry-date-on">on</span>
-                        <span class="entry-date"><time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
+                        <?= Lang::txt('PLG_PUBLICATION_QUESTIONS_ASKED_BY', $name) ?> <span
+                            class="entry-date-at">@</span>
+                        <span class="entry-time"><time
+                            datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span> <span
+                            class="entry-date-on">on</span>
+                        <span class="entry-date"><time
+                            datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
                         <span class="entry-details-divider">&bull;</span>
                         <span class="entry-state">
                             <?php echo ($row->get('state') == 1) ? Lang::txt('Closed') : Lang::txt('Open'); ?>
@@ -87,7 +91,8 @@ $this->css();
                 <td class="voting">
                     <span class="vote-like">
                         <?php if (User::isGuest()) { ?>
-                            <span class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips" title="Vote this up :: Please login to vote.">
+                            <span class="vote-button <?= ($row->get('helpful', 0) > 0) ? 'like' : 'neutral' ?> tooltips"
+                                title="Vote this up :: Please login to vote.">
                                 <?php echo $row->get('helpful', 0); ?><span> Like</span>
                             </span>
                         <?php } else { ?>

@@ -66,11 +66,14 @@ if ($this->comment->isReported()) {
 
             <p class="comment-title">
                 <strong><?php echo $name; ?></strong>
-                <a class="permalink" href="<?= Route::url($this->base . '#c' . $this->comment->get('id')) ?>" title="<?= Lang::txt('COM_KB_PERMALINK') ?>">
+                <a class="permalink" href="<?= Route::url($this->base . '#c' . $this->comment->get('id')) ?>"
+                    title="<?= Lang::txt('COM_KB_PERMALINK') ?>">
                     <span class="comment-date-at"><?php echo Lang::txt('COM_KB_DATETIME_AT'); ?></span>
-                    <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
+                    <span class="time"><time
+                        datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
                     <span class="comment-date-on"><?php echo Lang::txt('COM_KB_DATETIME_ON'); ?></span>
-                    <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
+                    <span class="date"><time
+                        datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
                 </a>
             </p>
 
@@ -94,16 +97,24 @@ if ($this->comment->isReported()) {
             <?php if (!$this->comment->get('reports')) { ?>
                 <?php if ($this->depth < $this->article->param('comments_depth', 3) && $this->article->commentsOpen()) { ?>
                     <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_KB_REPLY') ?>" href="<?= Route::url($this->comment->link()) ?>" data-rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('COM_KB_REPLY') ?>"
+                        href="<?= Route::url($this->comment->link()) ?>"
+                        data-rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('JCANCEL'); ?><!--
                 --></a>
                     <?php } else { ?>
-                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('COM_KB_REPLY') ?>" href="<?= Route::url($this->comment->link('reply')) ?>" data-rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('COM_KB_REPLY') ?>"
+                        href="<?= Route::url($this->comment->link('reply')) ?>"
+                        data-rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('COM_KB_REPLY'); ?><!--
                 --></a>
                     <?php } ?>
                 <?php } ?>
-                    <a class="icon-abuse abuse" data-txt-flagged="<?= Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE') ?>" href="<?= Route::url($this->comment->link('report')) ?>"><!--
+                    <a class="icon-abuse abuse"
+                        data-txt-flagged="<?= Lang::txt('COM_KB_COMMENT_REPORTED_AS_ABUSIVE') ?>"
+                        href="<?= Route::url($this->comment->link('report')) ?>"><!--
                     --><?php echo Lang::txt('COM_KB_REPORT_ABUSE'); ?><!--
                 --></a>
             <?php } ?>
@@ -116,21 +127,26 @@ if ($this->comment->isReported()) {
                     <?= Lang::txt('COM_KB_MUST_LOG_IN', Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true)))) ?>
                 </p>
                 <?php } else { ?>
-                <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
+                <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post"
+                    enctype="multipart/form-data">
                     <fieldset>
                         <legend><span><?= Lang::txt('COM_KB_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
 
                         <input type="hidden" name="comment[id]" value="0" />
-                        <input type="hidden" name="comment[parent]" value="<?= $this->escape($this->comment->get('id')) ?>" />
-                        <input type="hidden" name="comment[entry_id]" value="<?= $this->escape($this->comment->get('entry_id')) ?>" />
+                        <input type="hidden" name="comment[parent]"
+                            value="<?= $this->escape($this->comment->get('id')) ?>" />
+                        <input type="hidden" name="comment[entry_id]"
+                            value="<?= $this->escape($this->comment->get('entry_id')) ?>" />
                         <input type="hidden" name="comment[created]" value="" />
                         <input type="hidden" name="comment[created_by]" value="<?= $this->escape(User::get('id')) ?>" />
                         <input type="hidden" name="comment[state]" value="1" />
 
                         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                         <input type="hidden" name="controller" value="articles" />
-                        <input type="hidden" name="section" value="<?= $this->escape($this->article->get('salias')) ?>" />
-                        <input type="hidden" name="category" value="<?= $this->escape($this->article->get('calias')) ?>" />
+                        <input type="hidden" name="section"
+                            value="<?= $this->escape($this->article->get('salias')) ?>" />
+                        <input type="hidden" name="category"
+                            value="<?= $this->escape($this->article->get('calias')) ?>" />
                         <input type="hidden" name="alias" value="<?= $this->escape($this->article->get('alias')) ?>" />
                         <input type="hidden" name="task" value="savecomment" />
 
@@ -142,7 +158,8 @@ if ($this->comment->isReported()) {
                         </label>
 
                         <label class="comment-anonymous-label" for="comment_<?= $this->comment->get('id') ?>_anonymous">
-                            <input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?= $this->comment->get('id') ?>_anonymous" value="1" />
+                            <input class="option" type="checkbox" name="comment[anonymous]"
+                                id="comment_<?= $this->comment->get('id') ?>_anonymous" value="1" />
                             <?php echo Lang::txt('COM_KB_FIELD_ANONYMOUS'); ?>
                         </label>
 

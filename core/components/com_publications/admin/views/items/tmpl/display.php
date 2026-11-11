@@ -41,14 +41,18 @@ $this->js();
     <p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_COMPONENT_DISABLED'); ?></p>
 <?php } ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?>: </label>
-                <input type="text" name="search" id="filter_search"class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('JSEARCH_FILTER') ?>" />
+                <input type="text" name="search" id="filter_search"class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('JSEARCH_FILTER') ?>" />
 
-                <input type="submit" name="filter_submit" id="filter_submit" value="<?= Lang::txt('COM_PUBLICATIONS_GO') ?>" />
+                <input type="submit" name="filter_submit" id="filter_submit"
+                    value="<?= Lang::txt('COM_PUBLICATIONS_GO') ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
             <div class="col span6">

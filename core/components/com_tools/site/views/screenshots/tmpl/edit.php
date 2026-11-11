@@ -23,9 +23,11 @@ $title = ($this->shot && $this->shot->get('id')) ? $this->shot->get('title') : '
 <?php } ?>
     <div class="ss_pop">
         <div>
-            <img src="<?= $this->escape($this->wpath . '/' . $this->file) ?>" width="<?= $w ?>" height="<?= $h ?>" alt="" />
+            <img src="<?= $this->escape($this->wpath . '/' . $this->file) ?>" width="<?= $w ?>" height="<?= $h ?>"
+                alt="" />
         </div>
-        <form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="hubForm" id="ss-pop-form" method="post" enctype="multipart/form-data">
+        <form action="<?= Route::url('index.php?option=' . $this->option) ?>" name="hubForm" id="ss-pop-form"
+            method="post" enctype="multipart/form-data">
             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
             <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
             <input type="hidden" name="tmpl" value="component" />
@@ -39,7 +41,8 @@ $title = ($this->shot && $this->shot->get('id')) ? $this->shot->get('title') : '
             <fieldset class="uploading">
                 <label class="ss_title" for="ss_title">
                     <?php echo Lang::txt('COM_TOOLS_SS_TITLE'); ?>:
-                    <input type="text" name="title" id="ss_title"  size="127" maxlength="127" value="<?= $this->escape($title) ?>" class="input_restricted" />
+                    <input type="text" name="title" id="ss_title"  size="127" maxlength="127"
+                        value="<?= $this->escape($title) ?>" class="input_restricted" />
                 </label>
                 <input type="submit" id="ss_pop_save" value="<?php echo strtolower(Lang::txt('COM_TOOLS_SAVE')); ?>" />
             </fieldset>

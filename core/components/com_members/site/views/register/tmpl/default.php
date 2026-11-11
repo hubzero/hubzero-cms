@@ -138,7 +138,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                 ?>
                 <div class="explaination">
                     <p class="info">You can choose to log in via one of these services, and we'll help you fill in the info below!</p>
-                    <p>Already have an account? <a href="<?= Route::url('index.php?option=com_login') ?>">Log in here.</a></p>
+                    <p>Already have an account? <a
+                        href="<?= Route::url('index.php?option=com_login') ?>">Log in here.</a></p>
                 </div>
                 <fieldset>
                     <legend>Connect With</legend>
@@ -160,9 +161,12 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
         if (($this->task == 'create' || $this->task == 'proxycreate') && $emailusers) { ?>
             <div class="error">
                 <p>The email address "<?= $this->escape($this->registration['email']) ?>" is already registered. If you have lost or forgotten this <?= $this->sitename ?> login information, we can help you recover it:</p>
-                <p class="submit"><a href="<?= Route::url('index.php?option=com_members&task=remind') ?>" class="btn btn-danger">Email Existing Account Information</a>
+                <p class="submit"><a href="<?= Route::url('index.php?option=com_members&task=remind') ?>"
+                    class="btn btn-danger">Email Existing Account Information</a>
                 <p>If you are aware you already have another account registered to this email address, and are requesting another account because you need more resources, <?= $this->sitename ?> would be happy to work with you to raise your resource limits instead:</p>
-                <p class="submit"><a href="<?= Route::url('index.php?option=com_support&controller=tickets&task=new') ?>" class="btn btn-danger">Submit Request to Raise Existing Limits</a></p>
+                <p class="submit"><a
+                    href="<?= Route::url('index.php?option=com_support&controller=tickets&task=new') ?>"
+                    class="btn btn-danger">Submit Request to Raise Existing Limits</a></p>
             </div>
         <?php } ?>
 
@@ -202,7 +206,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                             <label for="userlogin">
                                 <?php echo Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN'); ?><br />
                                 <?php echo $this->escape($this->registration['login']); ?>
-                                <input name="login" id="userlogin" class="form-control" type="hidden" value="<?= $this->escape($this->registration['login']) ?>" />
+                                <input name="login" id="userlogin" class="form-control" type="hidden"
+                                    value="<?= $this->escape($this->registration['login']) ?>" />
                             </label>
                         </div>
                     <?php } elseif ($this->registrationUsername != Field::STATE_HIDDEN) { ?>
@@ -210,7 +215,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                             <label for="userlogin" <?= !empty($this->xregistration->invalid['login']) ? 'class="fieldWithErrors"' : '' ?>>
                                 <?= Lang::txt('COM_MEMBERS_REGISTER_USER_LOGIN') ?> <?= $this->registrationUsername == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
                                 <input name="login" id="userlogin" class="form-control" type="text" maxlength="32" value="<?= $this->escape($this->registration['login']) ?>"<?= ($this->registrationUsername == Field::STATE_REQUIRED) ? ' required aria-required="true"' : '' ?><?= !empty($this->xregistration->invalid['login']) ? ' aria-invalid="true"' : '' ?> aria-describedby="usernameHint" />
-                                <p class="hint" id="usernameHint"><?= Lang::txt('COM_MEMBERS_REGISTER_USERNAME_HINT') ?></p>
+                                <p class="hint"
+                                    id="usernameHint"><?= Lang::txt('COM_MEMBERS_REGISTER_USERNAME_HINT') ?></p>
                                 <?= !empty($this->xregistration->invalid['login']) ? '<span class="error" role="alert">' . $this->xregistration->invalid['login'] . '</span>' : '' ?>
                             </label>
                         </div>
@@ -516,7 +522,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
                     $errors = (!empty($this->xregistration->invalid[$field->get('name')])) ? '<span class="error" role="alert">' . $this->xregistration->invalid[$field->get('name')] . '</span>' : '';
                     ?>
-                    <div class="form-group<?= $errors ? ' fieldWithErrors' : '' ?>" id="input-<?= $this->escape($field->get('name')) ?>">
+                    <div class="form-group<?= $errors ? ' fieldWithErrors' : '' ?>"
+                        id="input-<?= $this->escape($field->get('name')) ?>">
                         <?php
                         echo $formfield->label;
                         echo $formfield->input;
@@ -605,7 +612,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
         <?php } ?>
 
         <p class="submit">
-            <input type="submit" class="btn btn-success" name="<?= $this->task ?>" value="<?= Lang::txt('COM_MEMBERS_REGISTER_BUTTON_' . strtoupper($this->task)) ?>" />
+            <input type="submit" class="btn btn-success" name="<?= $this->task ?>"
+                value="<?= Lang::txt('COM_MEMBERS_REGISTER_BUTTON_' . strtoupper($this->task)) ?>" />
         </p>
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

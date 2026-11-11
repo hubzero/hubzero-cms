@@ -106,12 +106,15 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
     </div>
 <?php endif; ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span8">
                 <label for="filter_search"><?php echo Lang::txt('COM_GROUPS_SEARCH'); ?>:</label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_GROUPS_SEARCH') ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_GROUPS_SEARCH') ?>" />
 
                 <label for="filter-status"><?php echo Lang::txt('COM_GROUPS_MEMBER_STATUS'); ?>:</label>
                 <select name="status" id="filter-status" class="filter filter-submit">
@@ -149,8 +152,10 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
             </tr>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col" class="priority-4"><?= Html::grid('sort', 'COM_GROUPS_USERID', 'uidNumber', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?= Html::grid('sort', 'COM_GROUPS_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
@@ -194,7 +199,9 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="checkbox" name="id[]" id="cb<?= $i ?>" value="<?= $this->escape((isset($row->uidNumber)) ? $row->uidNumber : $row->email) ?>" class="checkbox-toggle" />
+                    <input type="checkbox" name="id[]" id="cb<?= $i ?>"
+                        value="<?= $this->escape((isset($row->uidNumber)) ? $row->uidNumber : $row->email) ?>"
+                        class="checkbox-toggle" />
                     <label for="cb<?= $i ?>" class="sr-only visually-hidden"><?= $this->escape((isset($row->uidNumber)) ? $row->uidNumber : $row->email) ?></label>
                 </td>
                 <td class="priority-4">

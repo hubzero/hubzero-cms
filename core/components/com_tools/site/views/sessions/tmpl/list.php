@@ -78,7 +78,8 @@ if (strstr($newSession, '?')) {
                     <a class="disconnect" href="<?= Route::url('index.php?option=' . $this->option . '&task=unshare&app=' . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_DISCONNECT_TITLE') ?>">
                         <?php echo Lang::txt('COM_TOOLS_DISCONNECT'); ?>
                     </a>
-                    <span class="owner"><?= Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username ?></span>
+                    <span
+                        class="owner"><?= Lang::txt('COM_TOOLS_MY_SESSIONS_OWNER') . ': ' . $session->username ?></span>
                 </td>
                 <?php } ?>
             </tr>

@@ -19,7 +19,8 @@ if ($this->getError()) {
 $this->js('media.js');
 
 ?>
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"
+    name="adminForm" id="adminForm" method="post" enctype="multipart/form-data">
     <p><?= Lang::txt('COM_RESOURCES_MEDIA_PATH', $this->escape(str_replace(PATH_ROOT, 'ROOT', $this->path))) ?></p>
 
     <fieldset>
@@ -43,7 +44,8 @@ $this->js('media.js');
                 </tr>
                 <tr>
                     <td> </td>
-                    <td><input type="checkbox" name="batch" id="batch" value="1" /> <label for="batch"><?= Lang::txt('COM_RESOURCES_MEDIA_UPLOAD_UNPACK') ?></label></td>
+                    <td><input type="checkbox" name="batch" id="batch" value="1" /> <label
+                        for="batch"><?= Lang::txt('COM_RESOURCES_MEDIA_UPLOAD_UNPACK') ?></label></td>
                 </tr>
                 <tr>
                     <td><label for="foldername"><?= Lang::txt('COM_RESOURCES_MEDIA_CREATE_DIRECTORY') ?></label></td>

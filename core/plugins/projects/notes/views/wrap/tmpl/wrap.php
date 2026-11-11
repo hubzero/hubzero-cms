@@ -81,7 +81,8 @@ $listed = $publicStamp ? $publicStamp->listed : false;
 <?php if ($showSidePanel && $this->project->access('content')) { ?>
     <ul id="page_options" class="pluginOptions">
         <li>
-            <a class="icon-add add btn"  href="<?= Route::url($url . '&action=new') ?>" title="<?= Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE') ?>">
+            <a class="icon-add add btn"  href="<?= Route::url($url . '&action=new') ?>"
+                title="<?= Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE') ?>">
                 <?php echo Lang::txt('COM_PROJECTS_NOTES_ADD_NOTE'); ?>
             </a>
             <?php if (count($parentNotes) < 2) { ?>

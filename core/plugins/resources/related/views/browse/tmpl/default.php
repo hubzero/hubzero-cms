@@ -47,11 +47,13 @@ defined('_HZEXEC_') or die();
             }
             ?>
             <tr>
-                <td class="ranking"><?= number_format($line->ranking, 1) ?> <span class="rank-<?= $r ?>"><?= Lang::txt('PLG_RESOURCES_RELATED_RANKING') ?></span></td>
+                <td class="ranking"><?= number_format($line->ranking, 1) ?> <span
+                    class="rank-<?= $r ?>"><?= Lang::txt('PLG_RESOURCES_RELATED_RANKING') ?></span></td>
                 <td>
                 <?php if ($line->section != 'Topic') { ?>
                     <?php echo Lang::txt('PLG_RESOURCES_RELATED_PART_OF'); ?>
-                    <a href="<?= $sef ?>" class="fixedResourceTip" title="DOM:rsrce<?= $line->id ?>"><?= $this->escape(stripslashes($line->title)) ?></a>
+                    <a href="<?= $sef ?>" class="fixedResourceTip"
+                        title="DOM:rsrce<?= $line->id ?>"><?= $this->escape(stripslashes($line->title)) ?></a>
                     <div class="hide" id="rsrce<?php echo $line->id; ?>">
                         <h4><?php echo $this->escape(stripslashes($line->title)); ?></h4>
                         <div>

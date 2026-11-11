@@ -20,10 +20,14 @@ defined('_HZEXEC_') or die();
 // indexer, so nothing is left unescaped either way.
 ?>
 
-<div class="result <?= $this->escape(isset($this->result['access_level']) ? $this->result['access_level'] : 'public') ?>" id="<?= $this->escape($this->result['id']) ?>">
+<div
+    class="result <?= $this->escape(isset($this->result['access_level']) ? $this->result['access_level'] : 'public') ?>"
+    id="<?= $this->escape($this->result['id']) ?>">
 <div class="result-body">
     <!-- Title : mandatory -->
-    <h3 class="result-title"><a href="<?= htmlspecialchars((string) $this->result['url'], ENT_COMPAT, 'UTF-8', false) ?>" rel="nofollow"><b><!-- highlight portion --></b><?= $this->escape($this->result['title']) ?></a></h3>
+    <h3 class="result-title"><a
+        href="<?= htmlspecialchars((string) $this->result['url'], ENT_COMPAT, 'UTF-8', false) ?>"
+        rel="nofollow"><b><!-- highlight portion --></b><?= $this->escape($this->result['title']) ?></a></h3>
 
     <div class="result-extras">
         <!-- Cateogory : mandatory -->
@@ -31,7 +35,8 @@ defined('_HZEXEC_') or die();
 
         <?php if (isset($this->result['date'])) : ?>
             <?php $date = new \Hubzero\Utility\Date($this->result['date']); ?>
-            <span class="result-timestamp"><time datetime="<?= $this->escape($this->result['date']) ?>"><?= $date->toLocal('Y-m-d h:mA') ?></time></span>
+            <span class="result-timestamp"><time
+                datetime="<?= $this->escape($this->result['date']) ?>"><?= $date->toLocal('Y-m-d h:mA') ?></time></span>
         <?php endif; ?>
 
         <?php if (isset($this->result['author'])) : ?>
@@ -67,7 +72,8 @@ defined('_HZEXEC_') or die();
                     <?php if (!empty($tag['title'][0])) : ?>
                     <li>
                         <?php $description = !empty($tag['description']) ? $tag['description'] : $tag['title'][0];?>
-                        <a class="tag" href="<?= $baseTagUrl . '&tags=' . urlencode($description) ?>" data-tag="<?= $this->escape($description) ?>">
+                        <a class="tag" href="<?= $baseTagUrl . '&tags=' . urlencode($description) ?>"
+                            data-tag="<?= $this->escape($description) ?>">
                             <?php echo $this->escape($tag['title'][0]); ?>
                         </a>
                     </li>
@@ -87,7 +93,8 @@ defined('_HZEXEC_') or die();
     <?php endif; ?>
     <!-- Result URL -->
     <?php if (isset($this->result['url'])) : ?>
-    <div class="result-url"><a href="<?= htmlspecialchars((string) $this->result['url'], ENT_COMPAT, 'UTF-8', false) ?>" rel="nofollow"><?= htmlspecialchars((string) $this->result['url'], ENT_COMPAT, 'UTF-8', false) ?></a></div>
+    <div class="result-url"><a href="<?= htmlspecialchars((string) $this->result['url'], ENT_COMPAT, 'UTF-8', false) ?>"
+        rel="nofollow"><?= htmlspecialchars((string) $this->result['url'], ENT_COMPAT, 'UTF-8', false) ?></a></div>
     <?php endif; ?>
 </div> <!-- End Result Body -->
 </div> <!-- End Result -->

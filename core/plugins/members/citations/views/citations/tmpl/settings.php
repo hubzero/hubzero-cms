@@ -107,7 +107,8 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
             <div class="form-group">
                 <label for="format-selector">
                     <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_CITATION_FORMAT'); ?>:
-                    <select name="citation-format" id="format-selector" class="form-control" data-uid="<?= $this->member->get('id') ?>">
+                    <select name="citation-format" id="format-selector" class="form-control"
+                        data-uid="<?= $this->member->get('id') ?>">
                         <?php foreach ($this->formats as $format) : ?>
                                 <?php if ($format->style != 'custom-member-' . $this->member->get('id')) : ?>
                             <option <?= $this->currentFormat->id == $format->id ? 'selected' : '' ?> value="<?= $format->id ?>" data-format="<?= $format->format ?>">
@@ -134,7 +135,8 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
             <div class="clear"></div>
 
             <div class="form-group">
-                <label for="format-string" class="sr-only"><?= Lang::txt('PLG_MEMBERS_CITATIONS_FORMAT_STRING') ?></label>
+                <label for="format-string"
+                    class="sr-only"><?= Lang::txt('PLG_MEMBERS_CITATIONS_FORMAT_STRING') ?></label>
                     <textarea name="template" rows="10" id="format-string" class="form-control" aria-label="<?= Lang::txt('PLG_MEMBERS_CITATIONS_FORMAT_STRING') ?>"><?= addslashes($this->currentFormat->format) ?></textarea>
             </div>
 
@@ -164,7 +166,8 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
 
         <!-- submit -->
         <p class="submit">
-            <input class="btn btn-success" type="submit" name="create" value="<?= Lang::txt('PLG_MEMBERS_CITATIONS_SAVE') ?>" />
+            <input class="btn btn-success" type="submit" name="create"
+                value="<?= Lang::txt('PLG_MEMBERS_CITATIONS_SAVE') ?>" />
         </p>
 
         <div class="clear"></div>

@@ -19,7 +19,8 @@ $sort   = isset($this->filters['sort']) ? $this->filters['sort'] : '';
         <fieldset class="entry-search">
             <legend><?php echo Lang::txt('COM_KB_SEARCH_LEGEND'); ?></legend>
             <label for="entry-search-field"><?php echo Lang::txt('COM_KB_SEARCH_LABEL'); ?></label>
-            <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($search) ?>" placeholder="<?= Lang::txt('COM_KB_SEARCH_PLACEHOLDER') ?>" />
+            <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($search) ?>"
+                placeholder="<?= Lang::txt('COM_KB_SEARCH_PLACEHOLDER') ?>" />
             <?php if ($sort) { ?>
                 <input type="hidden" name="sort" value="<?php echo $this->escape($sort); ?>" />
             <?php } ?>

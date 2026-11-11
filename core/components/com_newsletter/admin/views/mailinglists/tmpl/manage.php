@@ -47,8 +47,10 @@ $this->js();
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?= Html::grid('sort', 'COM_NEWSLETTER_MAILINGLIST_MANAGE_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?></th>
@@ -74,7 +76,8 @@ $this->js();
                 <?php foreach ($this->list_emails as $le) { ?>
                     <tr>
                         <td width="30">
-                            <input type="checkbox" name="email_id[]" id="cb<?= $k ?>" value="<?= $le->id ?>" class="checkbox-toggle" />
+                            <input type="checkbox" name="email_id[]" id="cb<?= $k ?>" value="<?= $le->id ?>"
+                                class="checkbox-toggle" />
                             <label for="cb<?= $k ?>" class="sr-only visually-hidden"><?= $le->id ?></label>
                         </td>
                         <td>

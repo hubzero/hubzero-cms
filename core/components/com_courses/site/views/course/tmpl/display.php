@@ -77,7 +77,9 @@ $this
 
 <?php if ($this->course->access('edit', 'course') && $this->course->get('state') != 1) { ?>
     <div class="manager-options draft">
-        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->course->link() . '&task=publish') ?>" class="icon-edit btn btn-secondary btn-success">
+        <button type="submit" form="hz-post-action"
+            formaction="<?= Route::url($this->course->link() . '&task=publish') ?>"
+            class="icon-edit btn btn-secondary btn-success">
             <?php echo Lang::txt('COM_COURSES_PUBLISH'); ?>
         </button>
         <span><strong><?php echo Lang::txt('COM_COURSES_FIELDS_STATE_DRAFT'); ?></strong></span>
@@ -88,18 +90,22 @@ $this
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
             <?php if (($field == 'blurb' || $field == 'tags') && $this->course->access('edit', 'course')) { ?>
-                <form action="<?= Route::url('index.php?option=' . $this->option) ?>" class="form-inplace" method="post">
+                <form action="<?= Route::url('index.php?option=' . $this->option) ?>" class="form-inplace"
+                    method="post">
                     <div class="form-group">
                         <label for="field_title">
-                            <?= Lang::txt('COM_COURSES_FIELD_TITLE') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
-                            <input type="text" name="course[title]" id="field_title" class="form-control" value="<?= $this->escape($this->course->get('title')) ?>" />
+                            <?= Lang::txt('COM_COURSES_FIELD_TITLE') ?> <span
+                                class="required"><?= Lang::txt('JREQUIRED') ?></span>
+                            <input type="text" name="course[title]" id="field_title" class="form-control"
+                                value="<?= $this->escape($this->course->get('title')) ?>" />
                         </label>
                     </div>
 
                     <div class="form-group">
                         <label for="field_blurb">
                             <?php echo Lang::txt('COM_COURSES_FIELD_BLURB'); ?>
-                            <textarea name="course[blurb]" id="field_blurb" class="form-control" cols="50" rows="5"><?= $this->escape($this->course->get('blurb')) ?></textarea>
+                            <textarea name="course[blurb]" id="field_blurb" class="form-control" cols="50"
+                                rows="5"><?= $this->escape($this->course->get('blurb')) ?></textarea>
                         </label>
                     </div>
 
@@ -134,12 +140,14 @@ $this
 
                     <input type="hidden" name="gid" value="<?php echo $this->escape($this->course->get('alias')); ?>" />
                     <input type="hidden" name="course[id]" value="<?= $this->escape($this->course->get('id')) ?>" />
-                    <input type="hidden" name="course[alias]" value="<?= $this->escape($this->course->get('alias')) ?>" />
+                    <input type="hidden" name="course[alias]"
+                        value="<?= $this->escape($this->course->get('alias')) ?>" />
                 </form>
             <?php } else { ?>
                 <?php if ($this->course->access('edit', 'course')) { ?>
                     <div class="manager-options">
-                        <a class="icon-edit btn btn-secondary" href="<?= Route::url($this->course->link() . '&task=edit&field=blurb') ?>">
+                        <a class="icon-edit btn btn-secondary"
+                            href="<?= Route::url($this->course->link() . '&task=edit&field=blurb') ?>">
                             <?php echo Lang::txt('JACTION_EDIT'); ?>
                         </a>
                         <span><strong><?php echo Lang::txt('COM_COURSES_FIELDS_TITLE_BLURB'); ?></strong></span>
@@ -230,7 +238,8 @@ $this
             </div><!-- / .subject -->
             <aside class="aside">
                 <p>
-                    <a class="icon-add btn" id="add-offering" href="<?= Route::url($this->course->link() . '&task=newoffering') ?>">
+                    <a class="icon-add btn" id="add-offering"
+                        href="<?= Route::url($this->course->link() . '&task=newoffering') ?>">
                         <?php echo Lang::txt('COM_COURSES_CREATE_OFFERING'); ?>
                     </a>
                 </p>
@@ -293,8 +302,10 @@ $this
                                 <div class="col span-half">
                                     <div class="form-group">
                                         <label for="field-title">
-                                            <?= Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE') ?> <span class="required"><?= Lang::txt('PLG_COURSES_PAGES_REQUIRED') ?></span>
-                                            <input type="text" name="page[title]" id="field-title" class="form-control" value="<?= $this->escape(stripslashes($page->get('title'))) ?>" />
+                                            <?= Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE') ?> <span
+                                                class="required"><?= Lang::txt('PLG_COURSES_PAGES_REQUIRED') ?></span>
+                                            <input type="text" name="page[title]" id="field-title" class="form-control"
+                                                value="<?= $this->escape(stripslashes($page->get('title'))) ?>" />
                                             <span class="hint"><?= Lang::txt('PLG_COURSES_PAGES_FIELD_TITLE_HINT') ?></span>
                                         </label>
                                     </div>
@@ -302,8 +313,10 @@ $this
                                 <div class="col span-half omega">
                                     <div class="form-group">
                                         <label for="field-url">
-                                            <?= Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS') ?> <span class="optional"><?= Lang::txt('PLG_COURSES_PAGES_OPTINAL') ?></span>
-                                            <input type="text" name="page[url]" id="field-url" class="form-control" value="<?= $this->escape(stripslashes($page->get('url'))) ?>" />
+                                            <?= Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS') ?> <span
+                                                class="optional"><?= Lang::txt('PLG_COURSES_PAGES_OPTINAL') ?></span>
+                                            <input type="text" name="page[url]" id="field-url" class="form-control"
+                                                value="<?= $this->escape(stripslashes($page->get('url'))) ?>" />
                                             <span class="hint"><?= Lang::txt('PLG_COURSES_PAGES_FIELD_ALIAS_HINT') ?></span>
                                         </label>
                                     </div>
@@ -317,7 +330,8 @@ $this
                             </div>
 
                             <p class="submit">
-                                <input type="submit" class="btn btn-success" value="<?= Lang::txt('COM_COURSES_SAVE') ?>" />
+                                <input type="submit" class="btn btn-success"
+                                    value="<?= Lang::txt('COM_COURSES_SAVE') ?>" />
                                 <a class="btn btn-secondary" href="<?php echo Route::url($this->course->link()); ?>">
                                     <?php echo Lang::txt('JCANCEL'); ?>
                                 </a>
@@ -365,18 +379,23 @@ $this
         </div><!-- / .subject -->
         <aside class="aside">
         <?php if ($field == 'summary' && $this->course->access('edit', 'course')) { ?>
-            <form action="<?= Route::url('index.php?option=' . $this->option) ?>" class="form-inplace course-summary" method="post">
+            <form action="<?= Route::url('index.php?option=' . $this->option) ?>" class="form-inplace course-summary"
+                method="post">
                 <div class="form-group">
                     <label for="field_length">
                         <?php echo Lang::txt('COM_COURSES_COURSE_LENGTH'); ?><br />
-                        <input type="text" name="course[length]" id="field_length" class="form-control" value="<?= $this->escape($this->course->get('length')) ?>" placeholder="<?= Lang::txt('COM_COURSES_COURSE_LENGTH_HINT') ?>" />
+                        <input type="text" name="course[length]" id="field_length" class="form-control"
+                            value="<?= $this->escape($this->course->get('length')) ?>"
+                            placeholder="<?= Lang::txt('COM_COURSES_COURSE_LENGTH_HINT') ?>" />
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label for="field_effort">
                         <?php echo Lang::txt('COM_COURSES_COURSE_EFFORT'); ?><br />
-                        <input type="text" name="course[effort]" id="field_effort" class="form-control" value="<?= $this->escape($this->course->get('effort')) ?>" placeholder="<?= Lang::txt('COM_COURSES_COURSE_EFFORT_HINT') ?>" />
+                        <input type="text" name="course[effort]" id="field_effort" class="form-control"
+                            value="<?= $this->escape($this->course->get('effort')) ?>"
+                            placeholder="<?= Lang::txt('COM_COURSES_COURSE_EFFORT_HINT') ?>" />
                     </label>
                 </div>
 
@@ -402,7 +421,8 @@ $this
             if ($this->course->access('edit', 'course')) {
                 ?>
                 <div class="manager-options">
-                    <a class="icon-edit btn btn-secondary" href="<?= Route::url($this->course->link() . '&task=edit&field=summary') ?>">
+                    <a class="icon-edit btn btn-secondary"
+                        href="<?= Route::url($this->course->link() . '&task=edit&field=summary') ?>">
                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                     </a>
                     <span><strong><?php echo Lang::txt('COM_COURSES_SUMMARY'); ?></strong></span>
@@ -632,7 +652,8 @@ $this
         if ($this->course->access('edit', 'course')) {
             ?>
             <div class="manager-options">
-                <a class="icon-edit btn btn-secondary" id="manage-instructors" href="<?= Route::url($this->course->link() . '&task=instructors') ?>">
+                <a class="icon-edit btn btn-secondary" id="manage-instructors"
+                    href="<?= Route::url($this->course->link() . '&task=instructors') ?>">
                     <?php echo Lang::txt('COM_COURSES_MANAGE'); ?>
                 </a>
                 <span><strong><?php echo Lang::txt('COM_COURSES_MANAGE_INSTRUCTORS'); ?></strong></span>

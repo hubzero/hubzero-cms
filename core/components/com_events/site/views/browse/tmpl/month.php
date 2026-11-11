@@ -41,7 +41,8 @@ $this
 <section class="main section">
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-        <p id="toggle-prior"><strong><a id="toggle-prior-anchor" href="#" onClick="return false;">Show Past Events</a></strong></p>
+        <p id="toggle-prior"><strong><a id="toggle-prior-anchor" href="#"
+            onClick="return false;">Show Past Events</a></strong></p>
         <?php if (count($this->rows) > 0) { ?>
             <ul class="events">
                 <?php
@@ -124,8 +125,10 @@ $this
                 }
 
                 ?>
-                <a class="prv" rel="nofollow" href="<?= $prev ?>" title="<?= $prev_text ?>" aria-label="<?= $prev_text ?>">&lsaquo;</a>
-                <a class="nxt" rel="nofollow" href="<?= $next ?>" title="<?= $next_text ?>" aria-label="<?= $next_text ?>">&rsaquo;</a>
+                <a class="prv" rel="nofollow" href="<?= $prev ?>" title="<?= $prev_text ?>"
+                    aria-label="<?= $prev_text ?>">&lsaquo;</a>
+                <a class="nxt" rel="nofollow" href="<?= $next ?>" title="<?= $next_text ?>"
+                    aria-label="<?= $next_text ?>">&rsaquo;</a>
                 <?php echo $this->year; ?>
             </p>
         </div><!-- / .calendarwrap -->

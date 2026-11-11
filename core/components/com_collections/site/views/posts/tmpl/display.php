@@ -43,7 +43,10 @@ if (!$no_html) {
     <div class="grid">
         <div class="col span8">
 
-            <div class="post full <?= $item->type() ?>" id="p<?= $this->post->get('id') ?>" data-id="<?= $this->post->get('id') ?>" data-closeup-url="<?= Route::url($base . '&post=' . $this->post->get('id') . '&task=comment') ?>" data-width="600" data-height="350">
+            <div class="post full <?= $item->type() ?>" id="p<?= $this->post->get('id') ?>"
+                data-id="<?= $this->post->get('id') ?>"
+                data-closeup-url="<?= Route::url($base . '&post=' . $this->post->get('id') . '&task=comment') ?>"
+                data-width="600" data-height="350">
                 <div class="content">
                     <div class="creator attribution cf">
                         <?php if ($item->get('type') == 'file' || $item->get('type') == 'collection') { ?>
@@ -51,12 +54,15 @@ if (!$no_html) {
                             $name = $this->escape(stripslashes($item->creator()->get('name')));
 
                             if (in_array($item->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-                                <a href="<?= Route::url($item->creator()->link()) ?>" title="<?= $name ?>" class="img-link">
-                                    <img src="<?= $item->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                <a href="<?= Route::url($item->creator()->link()) ?>" title="<?= $name ?>"
+                                    class="img-link">
+                                    <img src="<?= $item->creator()->picture() ?>"
+                                        alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                                 </a>
                             <?php } else { ?>
                                 <span class="img-link">
-                                    <img src="<?= $item->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                    <img src="<?= $item->creator()->picture() ?>"
+                                        alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                                 </span>
                             <?php } ?>
                             <p>
@@ -64,9 +70,11 @@ if (!$no_html) {
                                 <br />
                                 <span class="entry-date">
                                     <span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
-                                    <span class="time"><time datetime="<?= $item->created() ?>"><?= $item->created('time') ?></time></span>
+                                    <span class="time"><time
+                                        datetime="<?= $item->created() ?>"><?= $item->created('time') ?></time></span>
                                     <span class="entry-date-on"><?php echo Lang::txt('COM_COLLECTIONS_ON'); ?></span>
-                                    <span class="date"><time datetime="<?= $item->created() ?>"><?= $item->created('date') ?></time></span>
+                                    <span class="date"><time
+                                        datetime="<?= $item->created() ?>"><?= $item->created('date') ?></time></span>
                                 </span>
                             </p>
                         <?php } else { ?>
@@ -89,7 +97,8 @@ if (!$no_html) {
                             <p><?php echo $item->tags('render'); ?></p>
                         </div><!-- / .tags-wrap -->
                     <?php } ?>
-                    <div class="meta" data-metadata-url="<?= Route::url($base . '&task=metadata&post=' . $this->post->get('id')) ?>">
+                    <div class="meta"
+                        data-metadata-url="<?= Route::url($base . '&task=metadata&post=' . $this->post->get('id')) ?>">
                         <p class="stats">
                             <span class="likes">
                                 <?php echo Lang::txt('COM_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>
@@ -112,12 +121,15 @@ if (!$no_html) {
                         $name = $this->escape(stripslashes($this->post->creator()->get('name')));
 
                         if (in_array($this->post->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-                            <a href="<?= Route::url($this->post->creator()->link()) ?>" title="<?= $name ?>" class="img-link">
-                                <img src="<?= $this->post->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                            <a href="<?= Route::url($this->post->creator()->link()) ?>" title="<?= $name ?>"
+                                class="img-link">
+                                <img src="<?= $this->post->creator()->picture() ?>"
+                                    alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                             </a>
                         <?php } else { ?>
                             <span class="img-link">
-                                <img src="<?= $this->post->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                <img src="<?= $this->post->creator()->picture() ?>"
+                                    alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                             </span>
                         <?php } ?>
                         <p>
@@ -163,7 +175,8 @@ if (!$no_html) {
                         ?>
                         <li class="comment" id="c<?php echo $comment->id; ?>">
                             <p class="comment-member-photo">
-                                <img src="<?= $cuser->picture($comment->anonymous) ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $cname) ?>" />
+                                <img src="<?= $cuser->picture($comment->anonymous) ?>"
+                                    alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $cname) ?>" />
                             </p>
                             <div class="comment-content">
                                 <p class="comment-title">
@@ -225,7 +238,8 @@ if (!$no_html) {
                             <?php echo Html::input('token'); ?>
 
                             <label for="comment-anonymous" class="comment-anonymous-label">
-                                <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+                                <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous"
+                                    value="1" />
                                 <?php echo Lang::txt('COM_COLLECTIONS_FIELD_ANONYMOUS'); ?>
                             </label>
 
@@ -271,10 +285,12 @@ if (!$no_html) {
                         <div class="actions">
                             <?php if (!User::isGuest()) { ?>
                                 <?php if ($this->collection->get('object_type') == 'member' && $this->collection->get('object_id') == User::get('id')) { ?>
-                                        <a class="btn edit" data-id="<?= $this->collection->get('id') ?>" href="<?= Route::url($this->collection->link() . '/edit') ?>">
+                                        <a class="btn edit" data-id="<?= $this->collection->get('id') ?>"
+                                            href="<?= Route::url($this->collection->link() . '/edit') ?>">
                                             <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                                         </a>
-                                        <a class="btn delete" data-id="<?= $this->collection->get('id') ?>" href="<?= Route::url($this->collection->link() . '/delete') ?>">
+                                        <a class="btn delete" data-id="<?= $this->collection->get('id') ?>"
+                                            href="<?= Route::url($this->collection->link() . '/delete') ?>">
                                             <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                                         </a>
                                 <?php } else { ?>
@@ -282,11 +298,19 @@ if (!$no_html) {
                                             <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                         </a>
                                     <?php if ($this->collection->isFollowing()) { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->collection->link() . '/unfollow') ?>" class="btn unfollow" data-id="<?= $this->collection->get('id') ?>" data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>">
+                                        <button type="submit" form="hz-post-action"
+                                            formaction="<?= Route::url($this->collection->link() . '/unfollow') ?>"
+                                            class="btn unfollow" data-id="<?= $this->collection->get('id') ?>"
+                                            data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>"
+                                            data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>">
                                             <span><?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW'); ?></span>
                                         </button>
                                     <?php } else { ?>
-                                        <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->collection->link() . '/follow') ?>" class="btn follow" data-id="<?= $this->collection->get('id') ?>" data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>">
+                                        <button type="submit" form="hz-post-action"
+                                            formaction="<?= Route::url($this->collection->link() . '/follow') ?>"
+                                            class="btn follow" data-id="<?= $this->collection->get('id') ?>"
+                                            data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>"
+                                            data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>">
                                             <span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
                                         </button>
                                     <?php } ?>
@@ -307,12 +331,15 @@ if (!$no_html) {
                         $name = $this->escape(stripslashes($this->collection->creator('name')));
 
                         if (in_array($this->collection->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-                            <a href="<?= Route::url($this->collection->creator()->link()) ?>" title="<?= $name ?>" class="img-link">
-                                <img src="<?= $this->collection->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                            <a href="<?= Route::url($this->collection->creator()->link()) ?>" title="<?= $name ?>"
+                                class="img-link">
+                                <img src="<?= $this->collection->creator()->picture() ?>"
+                                    alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                             </a>
                         <?php } else { ?>
                             <span class="img-link">
-                                <img src="<?= $this->collection->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                <img src="<?= $this->collection->creator()->picture() ?>"
+                                    alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                             </span>
                         <?php } ?>
                         <p>
@@ -343,7 +370,9 @@ if (!$no_html) {
         <h3><?php echo Lang::txt('COM_COLLECTIONS_ALSO_IN_THESE_COLLECTIONS'); ?></h3>
         <div id="posts">
             <?php foreach ($item->collections() as $collection) { ?>
-                <div class="post collection" id="b<?= $collection->get('id') ?>" data-id="<?= $collection->get('id') ?>" data-closeup-url="<?= Route::url($base . '&controller=collection&id=' . $collection->get('id')) ?>" data-width="600" data-height="350">
+                <div class="post collection" id="b<?= $collection->get('id') ?>" data-id="<?= $collection->get('id') ?>"
+                    data-closeup-url="<?= Route::url($base . '&controller=collection&id=' . $collection->get('id')) ?>"
+                    data-width="600" data-height="350">
                     <div class="content">
                         <?php
                         $this
@@ -374,10 +403,12 @@ if (!$no_html) {
                             <div class="actions">
                                 <?php if (!User::isGuest()) { ?>
                                     <?php if ($collection->get('object_type') == 'member' && $collection->get('object_id') == User::get('id')) { ?>
-                                            <a class="btn edit" data-id="<?= $collection->get('id') ?>" href="<?= Route::url($collection->link() . '/edit') ?>">
+                                            <a class="btn edit" data-id="<?= $collection->get('id') ?>"
+                                                href="<?= Route::url($collection->link() . '/edit') ?>">
                                                 <span><?php echo Lang::txt('JACTION_EDIT'); ?></span>
                                             </a>
-                                            <a class="btn delete" data-id="<?= $collection->get('id') ?>" href="<?= Route::url($collection->link() . '/delete') ?>">
+                                            <a class="btn delete" data-id="<?= $collection->get('id') ?>"
+                                                href="<?= Route::url($collection->link() . '/delete') ?>">
                                                 <span><?php echo Lang::txt('JACTION_DELETE'); ?></span>
                                             </a>
                                     <?php } else { ?>
@@ -385,11 +416,19 @@ if (!$no_html) {
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                         <?php if ($collection->isFollowing()) { ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($collection->link() . '/unfollow') ?>" class="btn unfollow" data-id="<?= $collection->get('id') ?>" data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>">
+                                            <button type="submit" form="hz-post-action"
+                                                formaction="<?= Route::url($collection->link() . '/unfollow') ?>"
+                                                class="btn unfollow" data-id="<?= $collection->get('id') ?>"
+                                                data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>"
+                                                data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW'); ?></span>
                                             </button>
                                         <?php } else { ?>
-                                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($collection->link() . '/follow') ?>" class="btn follow" data-id="<?= $collection->get('id') ?>" data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>">
+                                            <button type="submit" form="hz-post-action"
+                                                formaction="<?= Route::url($collection->link() . '/follow') ?>"
+                                                class="btn follow" data-id="<?= $collection->get('id') ?>"
+                                                data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>"
+                                                data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
                                             </button>
                                         <?php } ?>
@@ -410,17 +449,21 @@ if (!$no_html) {
                             $name = $this->escape(stripslashes($collection->creator()->get('name')));
 
                             if (in_array($collection->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-                                <a href="<?= Route::url($collection->creator()->link() . '&active=collections') ?>" title="<?= $name ?>" class="img-link" aria-label="<?= Lang::txt('COM_COLLECTIONS_VIEW_COLLECTIONS_BY', $name) ?>">
+                                <a href="<?= Route::url($collection->creator()->link() . '&active=collections') ?>"
+                                    title="<?= $name ?>" class="img-link"
+                                    aria-label="<?= Lang::txt('COM_COLLECTIONS_VIEW_COLLECTIONS_BY', $name) ?>">
                                     <img src="<?php echo $collection->creator()->picture(); ?>" alt="" />
                                 </a>
                             <?php } else { ?>
                                 <span class="img-link">
-                                    <img src="<?= $collection->creator()->picture() ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                    <img src="<?= $collection->creator()->picture() ?>"
+                                        alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                                 </span>
                             <?php } ?>
                             <p>
                                 <?php if (in_array($collection->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
-                                    <a href="<?= Route::url($collection->creator()->link() . '&active=collections') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_VIEW_COLLECTIONS_BY', $name) ?>">
+                                    <a href="<?= Route::url($collection->creator()->link() . '&active=collections') ?>"
+                                        aria-label="<?= Lang::txt('COM_COLLECTIONS_VIEW_COLLECTIONS_BY', $name) ?>">
                                         <?php echo $name; ?>
                                     </a>
                                 <?php } else { ?>

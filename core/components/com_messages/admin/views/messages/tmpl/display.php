@@ -57,12 +57,15 @@ $listOrder = $this->escape($this->filters['sort']);
 $listDirn  = $this->escape($this->filters['sort_Dir']);
 ?>
 
-<form action="<?= Route::url('index.php?option=com_messages&view=messages') ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=com_messages&view=messages') ?>" method="post" name="adminForm"
+    id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6 filter-search">
                 <label class="filter-search-lbl" for="filter_search"><?= Lang::txt('JSEARCH_FILTER_LABEL') ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MESSAGES_SEARCH_IN_SUBJECT') ?>" />
+                <input type="text" name="filter_search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_MESSAGES_SEARCH_IN_SUBJECT') ?>" />
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
             </div>
@@ -79,7 +82,8 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
         <thead>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" value="" title="<?= Lang::txt('JGLOBAL_CHECK_ALL') ?>" class="checkbox-toggle toggle-all" />
+                    <input type="checkbox" name="checkall-toggle" value="" title="<?= Lang::txt('JGLOBAL_CHECK_ALL') ?>"
+                        class="checkbox-toggle toggle-all" />
                 </th>
                 <th class="title">
                     <?php echo Html::grid('sort', 'COM_MESSAGES_HEADING_SUBJECT', 'subject', $listDirn, $listOrder); ?>

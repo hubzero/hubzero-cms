@@ -213,7 +213,8 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                                                     ?>
                         <?php if ($version['preview'] && $version['commitStatus'] != 'D') { ?>
                             <div id="preview-image">
-                                <img src="<?= $version['preview'] ?>" alt="<?= Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW') ?>" />
+                                <img src="<?= $version['preview'] ?>"
+                                    alt="<?= Lang::txt('PLG_PROJECTS_FILES_LOADING_PREVIEW') ?>" />
                             </div>
                         <?php } ?>
                         </div>

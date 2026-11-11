@@ -49,19 +49,23 @@ foreach ($this->getErrors() as $error) {
 }
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" id="item-form"
+    class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('JDETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?= Lang::txt('COM_CRON_FIELD_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="fields[title]" id="field-title" class="required" size="30" maxlength="250" value="<?= $this->escape(stripslashes($this->row->get('title', ''))) ?>" />
+                    <label for="field-title"><?= Lang::txt('COM_CRON_FIELD_TITLE') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="fields[title]" id="field-title" class="required" size="30" maxlength="250"
+                        value="<?= $this->escape(stripslashes($this->row->get('title', ''))) ?>" />
                 </div>
 
                 <div class="input-wrap">
-                    <label for="field-event"><?= Lang::txt('COM_CRON_FIELD_EVENT') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <label for="field-event"><?= Lang::txt('COM_CRON_FIELD_EVENT') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <select name="fields[event]" id="field-event" class="required">
                         <option value=""<?= (!$this->row->get('plugin')) ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_CRON_SELECT') ?></option>
                         <?php
@@ -135,7 +139,8 @@ foreach ($this->getErrors() as $error) {
                             $out = '<div class="input-wrap"><p><i>' . Lang::txt('COM_CRON_NO_PARAMETERS_FOUND') . '</i></p></div>';
                         }
                         ?>
-                        <fieldset class="adminform paramlist eventparams <?= $style ?>" id="params-<?= $plugin->plugin . '--' . $event['name'] ?>">
+                        <fieldset class="adminform paramlist eventparams <?= $style ?>"
+                            id="params-<?= $plugin->plugin . '--' . $event['name'] ?>">
                             <legend><span><?php echo Lang::txt('COM_CRON_FIELDSET_PARAMETERS'); ?></span></legend>
                             <?php echo $out; ?>
                         </fieldset>
@@ -168,7 +173,8 @@ foreach ($this->getErrors() as $error) {
                                 <label for="field-minute-c"><?php echo Lang::txt('COM_CRON_FIELD_MINUTE'); ?></label>:
                             </th>
                             <td>
-                                <input type="text" name="fields[minute][c]" id="field-minute-c" value="<?= $this->row->get('minute') ?>" />
+                                <input type="text" name="fields[minute][c]" id="field-minute-c"
+                                    value="<?= $this->row->get('minute') ?>" />
                             </td>
                             <td>
                                 <select name="fields[minute][s]" id="field-minute-s">
@@ -189,7 +195,8 @@ foreach ($this->getErrors() as $error) {
                                 <label for="field-hour-c"><?php echo Lang::txt('COM_CRON_FIELD_HOUR'); ?></label>:
                             </th>
                             <td>
-                                <input type="text" name="fields[hour][c]" id="field-hour-c" value="<?= $this->row->get('hour') ?>" />
+                                <input type="text" name="fields[hour][c]" id="field-hour-c"
+                                    value="<?= $this->row->get('hour') ?>" />
                             </td>
                             <td>
                                 <select name="fields[hour][s]" id="field-hour-s">
@@ -210,7 +217,8 @@ foreach ($this->getErrors() as $error) {
                                 <label for="field-day-c"><?= Lang::txt('COM_CRON_FIELD_DAY_OF_MONTH') ?></label>:
                             </th>
                             <td>
-                                <input type="text" name="fields[day][c]" id="field-day-c" value="<?= $this->row->get('day') ?>" />
+                                <input type="text" name="fields[day][c]" id="field-day-c"
+                                    value="<?= $this->row->get('day') ?>" />
                             </td>
                             <td>
                                 <select name="fields[day][s]" id="field-day-s">
@@ -227,7 +235,8 @@ foreach ($this->getErrors() as $error) {
                                 <label for="field-month-c"><?php echo Lang::txt('COM_CRON_FIELD_MONTH'); ?></label>:
                             </th>
                             <td>
-                                <input type="text" name="fields[month][c]" id="field-month-c" value="<?= $this->row->get('month') ?>" />
+                                <input type="text" name="fields[month][c]" id="field-month-c"
+                                    value="<?= $this->row->get('month') ?>" />
                             </td>
                             <td>
                                 <select name="fields[month][s]" id="field-month-s">
@@ -256,7 +265,8 @@ foreach ($this->getErrors() as $error) {
                                 <label for="field-dayofweek-c"><?= Lang::txt('COM_CRON_FIELD_DAY_OF_WEEK') ?></label>:
                             </th>
                             <td>
-                                <input type="text" name="fields[dayofweek][c]" id="field-dayofweek-c" value="<?= $this->row->get('dayofweek') ?>" />
+                                <input type="text" name="fields[dayofweek][c]" id="field-dayofweek-c"
+                                    value="<?= $this->row->get('dayofweek') ?>" />
                             </td>
                             <td>
                                 <select name="fields[dayofweek][s]" id="field-dayofweek-s">
@@ -283,7 +293,8 @@ foreach ($this->getErrors() as $error) {
                         <th><?php echo Lang::txt('COM_CRON_FIELD_ID'); ?>:</th>
                         <td>
                             <?php echo $this->escape($this->row->get('id')); ?>
-                            <input type="hidden" name="fields[id]" id="field-id" value="<?= $this->escape($this->row->get('id')) ?>" />
+                            <input type="hidden" name="fields[id]" id="field-id"
+                                value="<?= $this->escape($this->row->get('id')) ?>" />
                         </td>
                     </tr>
                     <tr>
@@ -292,7 +303,8 @@ foreach ($this->getErrors() as $error) {
                             <?php
                             echo $this->escape($this->row->creator->get('name'));
                             ?>
-                            <input type="hidden" name="fields[created_by]" id="field-created_by" value="<?= $this->escape($this->row->get('created_by')) ?>" />
+                            <input type="hidden" name="fields[created_by]" id="field-created_by"
+                                value="<?= $this->escape($this->row->get('created_by')) ?>" />
                         </td>
                     </tr>
                     <tr>
@@ -309,7 +321,8 @@ foreach ($this->getErrors() as $error) {
                             <?php
                             echo $this->escape($this->row->modifier->get('name', Lang::txt('COM_CRON_UNKNOWN')));
                             ?>
-                            <input type="hidden" name="fields[modified_by]" id="field-modified_by" value="<?= $this->escape($this->row->get('modified_by')) ?>" />
+                            <input type="hidden" name="fields[modified_by]" id="field-modified_by"
+                                value="<?= $this->escape($this->row->get('modified_by')) ?>" />
                         </td>
                     </tr>
                     <tr>
@@ -325,14 +338,16 @@ foreach ($this->getErrors() as $error) {
                         <th><?php echo Lang::txt('COM_CRON_FIELD_LAST_RUN'); ?>:</th>
                         <td>
                             <?php echo $this->escape($this->row->get('last_run')); ?>
-                            <input type="hidden" name="fields[last_run]" id="field-last_run" value="<?= $this->escape($this->row->get('last_run')) ?>" />
+                            <input type="hidden" name="fields[last_run]" id="field-last_run"
+                                value="<?= $this->escape($this->row->get('last_run')) ?>" />
                         </td>
                     </tr>
                     <tr>
                         <th><?php echo Lang::txt('COM_CRON_FIELD_NEXT_RUN'); ?>:</th>
                         <td>
                             <?php echo $this->escape($this->row->get('next_run')); ?>
-                            <input type="hidden" name="fields[next_run]" id="field-next_run" value="<?= $this->escape($this->row->get('next_run')) ?>" />
+                            <input type="hidden" name="fields[next_run]" id="field-next_run"
+                                value="<?= $this->escape($this->row->get('next_run')) ?>" />
                         </td>
                     </tr>
                 <?php } ?>
@@ -377,7 +392,8 @@ foreach ($this->getErrors() as $error) {
                 <div class="input-wrap">
                     <label for="field-detach">
                         <input type="hidden" name="params[detach]" value="0" />
-                        <input type="checkbox" name="params[detach]" id="field-detach" value="1"<?= ($detach ? ' checked="checked"' : '') ?> />
+                        <input type="checkbox" name="params[detach]" id="field-detach"
+                            value="1"<?= ($detach ? ' checked="checked"' : '') ?> />
                         <?php echo Lang::txt('COM_CRON_FIELD_DETACH'); ?>
                     </label>
                     <p class="hint"><?php echo Lang::txt('COM_CRON_FIELD_DETACH_DESC'); ?></p>

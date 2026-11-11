@@ -28,8 +28,11 @@ $listDirn  = $this->escape($this->filters['sort_Dir']);
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="filter-search col span5">
-                <label class="filter-search-lbl" for="filter_search"><?= Lang::txt('COM_MEMBERS_SEARCH_ASSETS') ?></label>
-                <input type="text" name="filter_search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_USERS') ?>" />
+                <label class="filter-search-lbl"
+                    for="filter_search"><?= Lang::txt('COM_MEMBERS_SEARCH_ASSETS') ?></label>
+                <input type="text" name="filter_search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_MEMBERS_SEARCH_USERS') ?>" />
                 <button type="submit"><?php echo Lang::txt('JSEARCH_FILTER_SUBMIT'); ?></button>
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_RESET'); ?></button>
             </div>

@@ -18,7 +18,8 @@ $this->css();
 <?php if ($this->recipient === '') : ?>
     <p class="error"><?php echo Lang::txt('MOD_RAPID_CONTACT_ERROR_NO_RECIPIENT'); ?></p>
 <?php else : ?>
-    <form method="post" action="<?= $this->escape($this->url) ?>" id="<?= $this->module->module ?>-form-<?= $this->module->id ?>" class="<?= $this->mod_class_suffix ?>">
+    <form method="post" action="<?= $this->escape($this->url) ?>"
+        id="<?= $this->module->module ?>-form-<?= $this->module->id ?>" class="<?= $this->mod_class_suffix ?>">
         <fieldset>
             <legend><?php echo Lang::txt('MOD_RAPID_CONTACT_FORM'); ?></legend>
 
@@ -37,7 +38,8 @@ $this->css();
                     <?php echo $this->name_label; ?>
                 </label>
                 <span class="input">
-                    <input type="text" class="form-control" id="contact-name<?= $this->module->id ?>" name="rp[name]" value="<?= $this->escape($this->posted['name']) ?>" />
+                    <input type="text" class="form-control" id="contact-name<?= $this->module->id ?>" name="rp[name]"
+                        value="<?= $this->escape($this->posted['name']) ?>" />
                 </span>
             </div>
 
@@ -46,7 +48,8 @@ $this->css();
                     <?= $this->email_label ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
                 </label>
                 <span class="input">
-                    <input type="email" class="form-control" id="contact-email<?= $this->module->id ?>" name="rp[email]" value="<?= $this->escape($this->posted['email']) ?>" />
+                    <input type="email" class="form-control" id="contact-email<?= $this->module->id ?>" name="rp[email]"
+                        value="<?= $this->escape($this->posted['email']) ?>" />
                 </span>
             </div>
 
@@ -55,7 +58,8 @@ $this->css();
                     <?php echo $this->subject_label; ?>
                 </label>
                 <span class="input">
-                    <input type="text" class="form-control" id="contact-subject<?= $this->module->id ?>" name="rp[subject]" value="<?= $this->escape($this->posted['subject']) ?>" />
+                    <input type="text" class="form-control" id="contact-subject<?= $this->module->id ?>"
+                        name="rp[subject]" value="<?= $this->escape($this->posted['subject']) ?>" />
                 </span>
             </div>
 
@@ -74,7 +78,8 @@ $this->css();
                         <?= $this->anti_spam_q ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
                     </label>
                     <span class="input">
-                        <input type="text" class="form-control" id="contact-antispam<?= $this->module->id ?>" name="rp[anti_spam_answer]" />
+                        <input type="text" class="form-control" id="contact-antispam<?= $this->module->id ?>"
+                            name="rp[anti_spam_answer]" />
                     </span>
                 </div>
             <?php endif; ?>

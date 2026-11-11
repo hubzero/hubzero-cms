@@ -31,7 +31,8 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
     <h3><?php echo Lang::txt('PLG_PROJECTS_FILES_UPLOAD_FILES'); ?></h3>
 <?php } ?>
 
-<form id="<?= $this->ajax ? 'hubForm-ajax' : 'plg-form' ?>" method="post" enctype="multipart/form-data" action="<?= $rUrl ?>">
+<form id="<?= $this->ajax ? 'hubForm-ajax' : 'plg-form' ?>" method="post" enctype="multipart/form-data"
+    action="<?= $rUrl ?>">
     <?php if (!$this->ajax) { ?>
         <div id="plg-header">
             <h3 class="files">
@@ -54,9 +55,11 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
         <div class="field-wrap">
             <div class="asset-uploader">
         <?php if (!$basic) { ?>
-                    <div id="ajax-uploader" data-action="<?= $this->url . '?action=save&amp;no_html=1&amp;ajax=1' . $subdirlink ?>" >
+                    <div id="ajax-uploader"
+                        data-action="<?= $this->url . '?action=save&amp;no_html=1&amp;ajax=1' . $subdirlink ?>" >
                         <label class="addnew">
-                            <input name="upload[]" type="file" class="option uploader" id="uploader" multiple="multiple" />
+                            <input name="upload[]" type="file" class="option uploader" id="uploader"
+                                multiple="multiple" />
                             <p class="hint ipadded"><?= Lang::txt('PLG_PROJECTS_FILES_MAX_UPLOAD') . ' ' . \Hubzero\Utility\Number::formatBytes($this->sizelimit) ?></p>
                         </label>
                         <div id="upload-body">
@@ -127,7 +130,8 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
         </div>
         <?php } ?>
 
-        <input type="hidden" name="MAX_FILE_SIZE" id="maxsize" value="<?= $this->params->get('maxUpload', '104857600') ?>" />
+        <input type="hidden" name="MAX_FILE_SIZE" id="maxsize"
+            value="<?= $this->params->get('maxUpload', '104857600') ?>" />
         <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
         <input type="hidden" name="action" id="formaction" value="save" />
         <input type="hidden" name="failed" id="failed" value="0" />
@@ -144,11 +148,13 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
 
         <div id="upload-submit">
         <p class="submitarea">
-            <input type="submit" value="<?= Lang::txt('PLG_PROJECTS_FILES_UPLOAD_NOW') ?>" class="btn btn-success active" id="f-upload"  />
+            <input type="submit" value="<?= Lang::txt('PLG_PROJECTS_FILES_UPLOAD_NOW') ?>"
+                class="btn btn-success active" id="f-upload"  />
             <?php if ($this->ajax) { ?>
                 <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?= Lang::txt('JCANCEL') ?>" />
             <?php } else {  ?>
-                <a id="cancel-action" class="btn btn-cancel" href="<?= $this->url . '?a=1' . $subdirlink ?>"><?= Lang::txt('JCANCEL') ?></a>
+                <a id="cancel-action" class="btn btn-cancel"
+                    href="<?= $this->url . '?a=1' . $subdirlink ?>"><?= Lang::txt('JCANCEL') ?></a>
             <?php } ?>
         </p>
         </div>

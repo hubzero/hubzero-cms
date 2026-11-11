@@ -110,7 +110,8 @@ if ($this->type == 'image') {
     echo '<iframe sandbox="allow-scripts allow-same-origin allow-popups" src="https://docs.google.com/viewer?url=' . urlencode(Request::base() . $downloadUrl) . '&amp;embedded=true#:0.page.0" width="100%" height="500" name="file_resource" frameborder="0" bgcolor="white"></iframe>' . "\n";
 } else { // View in html5-browser
     ?>
-    <p class="direct-download">Publication doesn't load in your browser or shows partial file? <a href="<?= Request::base() . $downloadUrl ?>">Download file</a></p>
+    <p class="direct-download">Publication doesn't load in your browser or shows partial file? <a
+        href="<?= Request::base() . $downloadUrl ?>">Download file</a></p>
     <?php if (strtolower($this->ext) == 'wmv') { ?>
         <object type="video/x-ms-wmv"
               data="<?php echo $this->url; ?>" width="100%" height="<?php echo $height; ?>">

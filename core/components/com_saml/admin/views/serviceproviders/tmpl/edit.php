@@ -46,37 +46,47 @@ $nameidSources = [
 ];
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form" class="editform form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form" class="editform form-validate"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_SAML_FIELDSET_DETAILS'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-name"><?= Lang::txt('COM_SAML_FIELD_NAME') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="fields[name]" id="field-name" class="required" maxlength="255" value="<?= $this->escape(stripslashes($this->row->get('name', ''))) ?>" />
+                    <label for="field-name"><?= Lang::txt('COM_SAML_FIELD_NAME') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="fields[name]" id="field-name" class="required" maxlength="255"
+                        value="<?= $this->escape(stripslashes($this->row->get('name', ''))) ?>" />
                 </div>
 
                 <div class="input-wrap" data-hint="<?= $this->escape(Lang::txt('COM_SAML_FIELD_ENTITY_ID_HINT')) ?>">
-                    <label for="field-entity_id"><?= Lang::txt('COM_SAML_FIELD_ENTITY_ID') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="fields[entity_id]" id="field-entity_id" class="required" maxlength="255" value="<?= $this->escape(stripslashes($this->row->get('entity_id', ''))) ?>" />
+                    <label for="field-entity_id"><?= Lang::txt('COM_SAML_FIELD_ENTITY_ID') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="fields[entity_id]" id="field-entity_id" class="required" maxlength="255"
+                        value="<?= $this->escape(stripslashes($this->row->get('entity_id', ''))) ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_SAML_FIELD_ENTITY_ID_HINT'); ?></span>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-description"><?php echo Lang::txt('COM_SAML_FIELD_DESCRIPTION'); ?>:</label><br />
-                    <textarea name="fields[description]" id="field-description" cols="50" rows="3"><?= $this->escape(stripslashes($this->row->get('description', ''))) ?></textarea>
+                    <textarea name="fields[description]" id="field-description" cols="50"
+                        rows="3"><?= $this->escape(stripslashes($this->row->get('description', ''))) ?></textarea>
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo $this->escape(Lang::txt('COM_SAML_FIELD_ACS_HINT')); ?>">
-                    <label for="field-acs_url"><?= Lang::txt('COM_SAML_FIELD_ACS') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="fields[acs_url]" id="field-acs_url" class="required" maxlength="500" value="<?= $this->escape(stripslashes($this->row->get('acs_url', ''))) ?>" />
+                    <label for="field-acs_url"><?= Lang::txt('COM_SAML_FIELD_ACS') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="fields[acs_url]" id="field-acs_url" class="required" maxlength="500"
+                        value="<?= $this->escape(stripslashes($this->row->get('acs_url', ''))) ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_SAML_FIELD_ACS_HINT'); ?></span>
                 </div>
 
                 <div class="input-wrap" data-hint="<?php echo $this->escape(Lang::txt('COM_SAML_FIELD_SLO_HINT')); ?>">
                     <label for="field-slo_url"><?php echo Lang::txt('COM_SAML_FIELD_SLO'); ?>:</label><br />
-                    <input type="text" name="fields[slo_url]" id="field-slo_url" maxlength="500" value="<?= $this->escape(stripslashes($this->row->get('slo_url', ''))) ?>" />
+                    <input type="text" name="fields[slo_url]" id="field-slo_url" maxlength="500"
+                        value="<?= $this->escape(stripslashes($this->row->get('slo_url', ''))) ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_SAML_FIELD_SLO_HINT'); ?></span>
                 </div>
             </fieldset>
@@ -85,14 +95,16 @@ $nameidSources = [
                 <legend><span><?php echo Lang::txt('COM_SAML_FIELDSET_TRUST'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-want_requests_signed"><?= Lang::txt('COM_SAML_FIELD_WANT_SIGNED') ?>:</label><br />
+                    <label
+                        for="field-want_requests_signed"><?= Lang::txt('COM_SAML_FIELD_WANT_SIGNED') ?>:</label><br />
                     <select name="fields[want_requests_signed]" id="field-want_requests_signed">
                         <option value="1"<?= $this->row->get('want_requests_signed', 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JYES') ?></option>
                         <option value="0"<?= !$this->row->get('want_requests_signed', 1) ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
                     </select>
                 </div>
 
-                <div class="input-wrap" data-hint="<?= $this->escape(Lang::txt('COM_SAML_FIELD_SIGN_ASSERTION_HINT')) ?>">
+                <div class="input-wrap"
+                    data-hint="<?= $this->escape(Lang::txt('COM_SAML_FIELD_SIGN_ASSERTION_HINT')) ?>">
                     <label for="field-sign_assertion"><?= Lang::txt('COM_SAML_FIELD_SIGN_ASSERTION') ?>:</label><br />
                     <select name="fields[sign_assertion]" id="field-sign_assertion">
                         <option value="0"<?= !$this->row->get('sign_assertion') ? ' selected="selected"' : '' ?>><?= Lang::txt('JNO') ?></option>
@@ -103,7 +115,8 @@ $nameidSources = [
 
                 <div class="input-wrap" data-hint="<?php echo $this->escape(Lang::txt('COM_SAML_FIELD_CERT_HINT')); ?>">
                     <label for="field-signing_cert"><?php echo Lang::txt('COM_SAML_FIELD_CERT'); ?>:</label><br />
-                    <textarea name="fields[signing_cert]" id="field-signing_cert" cols="50" rows="8" class="monospace"><?= $this->escape($this->row->get('signing_cert', '')) ?></textarea>
+                    <textarea name="fields[signing_cert]" id="field-signing_cert" cols="50" rows="8"
+                        class="monospace"><?= $this->escape($this->row->get('signing_cert', '')) ?></textarea>
                     <span class="hint"><?php echo Lang::txt('COM_SAML_FIELD_CERT_HINT'); ?></span>
                 </div>
 
@@ -155,15 +168,19 @@ $nameidSources = [
                     </select>
                 </div>
 
-                <div class="input-wrap" data-hint="<?= $this->escape(Lang::txt('COM_SAML_FIELD_ATTRIBUTE_MAP_HINT')) ?>">
+                <div class="input-wrap"
+                    data-hint="<?= $this->escape(Lang::txt('COM_SAML_FIELD_ATTRIBUTE_MAP_HINT')) ?>">
                     <label for="field-attribute_map"><?= Lang::txt('COM_SAML_FIELD_ATTRIBUTE_MAP') ?>:</label><br />
-                    <textarea name="fields[attribute_map]" id="field-attribute_map" cols="50" rows="6" class="monospace"><?= $this->escape($this->row->get('attribute_map', '')) ?></textarea>
+                    <textarea name="fields[attribute_map]" id="field-attribute_map" cols="50" rows="6"
+                        class="monospace"><?= $this->escape($this->row->get('attribute_map', '')) ?></textarea>
                     <span class="hint"><?php echo Lang::txt('COM_SAML_FIELD_ATTRIBUTE_MAP_HINT'); ?></span>
                 </div>
 
-                <div class="input-wrap" data-hint="<?= $this->escape(Lang::txt('COM_SAML_FIELD_ALLOWED_GROUPS_HINT')) ?>">
+                <div class="input-wrap"
+                    data-hint="<?= $this->escape(Lang::txt('COM_SAML_FIELD_ALLOWED_GROUPS_HINT')) ?>">
                     <label for="field-allowed_groups"><?= Lang::txt('COM_SAML_FIELD_ALLOWED_GROUPS') ?>:</label><br />
-                    <input type="text" name="allowed_groups" id="field-allowed_groups" value="<?= $this->escape($allowedGroups) ?>" />
+                    <input type="text" name="allowed_groups" id="field-allowed_groups"
+                        value="<?= $this->escape($allowedGroups) ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_SAML_FIELD_ALLOWED_GROUPS_HINT'); ?></span>
                 </div>
             </fieldset>
@@ -210,7 +227,8 @@ $nameidSources = [
                     <?php } ?>
                 </div>
 
-                <input type="hidden" name="fields[metadata_url]" value="<?= $this->escape($this->row->get('metadata_url', '')) ?>" />
+                <input type="hidden" name="fields[metadata_url]"
+                    value="<?= $this->escape($this->row->get('metadata_url', '')) ?>" />
             </fieldset>
         </div>
     </div>

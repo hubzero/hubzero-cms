@@ -55,7 +55,8 @@ $link = rtrim($base, '/') . '/' . trim($this->url, '/');
 <table class="tbl-message" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tbody>
         <tr>
-            <td align="left" valign="bottom" style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
+            <td align="left" valign="bottom"
+                style="border-collapse: collapse; color: #666; line-height: 1; padding: 5px; text-align: center;">
             <?php echo $this->subject; ?>
             </td>
         </tr>
@@ -73,25 +74,30 @@ $link = rtrim($base, '/') . '/' . trim($this->url, '/');
 </table>
 <!-- End Spacer -->
 
-<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
+<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0"
+    style="border-collapse: collapse; line-height: 1.6em;">
     <tbody>
         <tr>
             <td class="mobilehide" style="font-size: 2.5em; font-weight: bold; text-align: center; padding: 0 30px 8px 0; vertical-align: top;" align="center" valing="top">
             </td>
             <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
-                <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
+                <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0"
+                    border="0">
                     <tbody>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Publication:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->publication->get('title')) ?></td>
+                            <td style="text-align: left; padding: 0 0.5em;"
+                                align="left"><?= $this->escape($this->publication->get('title')) ?></td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Version:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->publication->get('version_label')) ?></td>
+                            <td style="text-align: left; padding: 0 0.5em;"
+                                align="left"><?= $this->escape($this->publication->get('version_label')) ?></td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">URL:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
+                            <td style="text-align: left; padding: 0 0.5em;" align="left"><a
+                                href="<?= $link ?>"><?= $link ?></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -134,7 +140,10 @@ $link = rtrim($base, '/') . '/' . trim($this->url, '/');
             <td align="left" valign="bottom">
                     <span>
                         This email was sent to you on behalf of <?php echo $base; ?> because you are subscribed
-                        to watch this publication. To unsubscribe, please follow the <a href="<?= $base . $this->unsubscribeLink ?>">unsubscribe link</a>. Visit our <a href="<?= Request::base() ?>/legal/privacy">Privacy Policy</a> and <a href="<?= Request::base() ?>/support">Support Center</a> if you have any questions.</span>
+                        to watch this publication. To unsubscribe, please follow the <a
+                            href="<?= $base . $this->unsubscribeLink ?>">unsubscribe link</a>. Visit our <a
+                            href="<?= Request::base() ?>/legal/privacy">Privacy Policy</a> and <a
+                            href="<?= Request::base() ?>/support">Support Center</a> if you have any questions.</span>
             </td>
         </tr>
     </tbody>

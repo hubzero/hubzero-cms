@@ -56,7 +56,8 @@ if ($this->params->get('stamp_logo')) {
                 <h3><?php echo Lang::txt('Compose Message to Group'); ?></h3>
                 <div class="form-group">
                     <label class="width-65" for="msg-recipient">
-                        <?= Lang::txt('GROUP_MESSAGE_USERS') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
+                        <?= Lang::txt('GROUP_MESSAGE_USERS') ?> <span
+                            class="required"><?= Lang::txt('JREQUIRED') ?></span>
                         <select name="users[]" id="msg-recipient" class="form-control">
                             <optgroup label="Group Status">
                                 <?php foreach ($group_statuses as $val => $name) { ?>
@@ -86,7 +87,8 @@ if ($this->params->get('stamp_logo')) {
                 </div>
                 <div class="form-group">
                     <label for="msg-subject">
-                        <?= Lang::txt('GROUP_MESSAGE_SUBJECT') ?> <span class="required"><?= Lang::txt('JREQUIRED') ?></span>
+                        <?= Lang::txt('GROUP_MESSAGE_SUBJECT') ?> <span
+                            class="required"><?= Lang::txt('JREQUIRED') ?></span>
                         <input type="text" class="form-control" name="subject" id="msg-subject" value="" />
                     </label>
                 </div>

@@ -21,7 +21,8 @@ $this
 
 <ul id="page_options">
     <li>
-        <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=collections&page=index') ?>">
+        <a class="icon-info btn popup"
+            href="<?= Route::url('index.php?option=com_help&component=collections&page=index') ?>">
             <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GETTING_STARTED'); ?></span>
         </a>
     </li>
@@ -75,7 +76,11 @@ $this
                             </td>
                             <td>
                                 <?php if ($this->params->get('access-manage-collection')) { ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->following()->link('unfollow')) ?>" class="icon-unfollow unfollow btn" data-id="<?= $row->get('following_id') ?>" data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW') ?>">
+                                    <button type="submit" form="hz-post-action"
+                                        formaction="<?= Route::url($row->following()->link('unfollow')) ?>"
+                                        class="icon-unfollow unfollow btn" data-id="<?= $row->get('following_id') ?>"
+                                        data-text-follow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_FOLLOW') ?>"
+                                        data-text-unfollow="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_UNFOLLOW'); ?></span>
                                     </button>
                                 <?php } ?>

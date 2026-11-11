@@ -16,10 +16,12 @@ defined('_HZEXEC_') or die();
             <span class="asset-handle"></span>
             <span class="asset-file">
             <?php if ($this->asset->get('type') == 'link') { ?>
-                <input type="text" name="assets[<?= $this->i ?>][filename]" size="35" value="<?= $this->escape(stripslashes($this->asset->get('filename'))) ?>" placeholder="http://" />
+                <input type="text" name="assets[<?= $this->i ?>][filename]" size="35"
+                    value="<?= $this->escape(stripslashes($this->asset->get('filename'))) ?>" placeholder="http://" />
             <?php } else { ?>
                 <?php echo $this->escape(stripslashes($this->asset->get('filename'))); ?>
-                <input type="hidden" name="assets[<?= $this->i ?>][filename]" value="<?= $this->escape(stripslashes($this->asset->get('filename'))) ?>" />
+                <input type="hidden" name="assets[<?= $this->i ?>][filename]"
+                    value="<?= $this->escape(stripslashes($this->asset->get('filename'))) ?>" />
             <?php } ?>
             </span>
             <span class="asset-description">

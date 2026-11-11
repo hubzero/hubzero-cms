@@ -190,20 +190,27 @@ $this
                                         <li class="sourcecode"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/browser" title="<?= Lang::txt('COM_TOOLS_SOURCE_TIPS') ?>"><?= Lang::txt('COM_TOOLS_SOURCE') ?></a></li>
                                         <li class="timeline"><a href="<?= $developer_url . $project_path . $this->status['toolname'] ?>/timeline" title="<?= Lang::txt('COM_TOOLS_TIMELINE_TIPS') ?>"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></a></li>
                                     <?php } else { ?>
-                                        <li class="wiki"><span class="disabled"><?= Lang::txt('COM_TOOLS_WIKI') ?></span></li>
-                                        <li class="sourcecode"><span class="disabled"><?= Lang::txt('COM_TOOLS_SOURCE_CODE') ?></span></li>
-                                        <li class="timeline"><span class="disabled"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></span></li>
+                                        <li class="wiki"><span
+                                            class="disabled"><?= Lang::txt('COM_TOOLS_WIKI') ?></span></li>
+                                        <li class="sourcecode"><span
+                                            class="disabled"><?= Lang::txt('COM_TOOLS_SOURCE_CODE') ?></span></li>
+                                        <li class="timeline"><span
+                                            class="disabled"><?= Lang::txt('COM_TOOLS_TIMELINE') ?></span></li>
                                     <?php } ?>
                                     <li class="message"><a href="javascript:void(0);" title="<?= Lang::txt('COM_TOOLS_SEND_MESSAGE') . ' ' . Lang::txt('COM_TOOLS_TO') ?> <?= ($this->config->get('access-admin-component')) ? strtolower(Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM')) : Lang::txt('COM_TOOLS_SITE_ADMIN') ?>" class="showmsg"><?= Lang::txt('COM_TOOLS_MESSAGE') ?></a></li>
                                     <?php if ($this->status['published'] != 1 && \Components\Tools\Helpers\Html::toolActive($this->status['state'])) {  // show cancel option only for tools under development?>
-                                        <li class="canceltool"><a href="javascript:void(0);" title="<?= Lang::txt('COM_TOOLS_CANCEL_TIPS') ?>" class="showcancel"><?= Lang::txt('JCANCEL') ?></a></li>
+                                        <li class="canceltool"><a href="javascript:void(0);"
+                                            title="<?= Lang::txt('COM_TOOLS_CANCEL_TIPS') ?>"
+                                            class="showcancel"><?= Lang::txt('JCANCEL') ?></a></li>
                                     <?php } ?>
                                 </ul>
                                 <div id="ctCancel">
                                     <p class="error">
-                                        <span class="cancel_warning"><?= Lang::txt('COM_TOOLS_CANCEL_WARNING') ?> </span>
+                                        <span
+                                            class="cancel_warning"><?= Lang::txt('COM_TOOLS_CANCEL_WARNING') ?> </span>
                                         <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=cancel&app=' . $this->status['toolname']) ?>"><?= Lang::txt('COM_TOOLS_CANCEL_YES') ?></a>
-                                        <span class="boundary">|</span> <a href="javascript:void(0);" class="hidecancel"><?= Lang::txt('COM_TOOLS_CANCEL_NO') ?></a>
+                                        <span class="boundary">|</span> <a href="javascript:void(0);"
+                                            class="hidecancel"><?= Lang::txt('COM_TOOLS_CANCEL_NO') ?></a>
                                     </p>
                                 </div>
                                 <div id="ctComment">
@@ -212,7 +219,8 @@ $this
                                     <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app=' . $this->status['toolname']) ?>" method="post" id="commentForm">
                                     <?php if ($this->config->get('access-admin-component')) { ?>
                                         <fieldset>
-                                            <label><input type="checkbox" name="access" value="1" /> <?= Lang::txt('COM_TOOLS_COMMENT_PRIVACY_TIPS') ?></label>
+                                            <label><input type="checkbox" name="access"
+                                                value="1" /> <?= Lang::txt('COM_TOOLS_COMMENT_PRIVACY_TIPS') ?></label>
                                         </fieldset>
                                     <?php } ?>
                                         <fieldset>
@@ -306,12 +314,14 @@ $this
                             <div class="form-group">
                                 <label for="comment">
                                     <?= Lang::txt('COM_TOOLS_MESSAGE_TO_DEV_TEAM') . ' (' . Lang::txt('COM_TOOLS_OPTIONAL') . ')' ?>
-                                    <textarea name="comment" id="comment" class="form-control" cols="40" rows="5"></textarea>
+                                    <textarea name="comment" id="comment" class="form-control" cols="40"
+                                        rows="5"></textarea>
                                 </label>
                             </div>
 
                             <p class="submit">
-                                <input type="submit" class="btn btn-success" value="<?= Lang::txt('COM_TOOLS_APPLY_CHANGE') ?>" />
+                                <input type="submit" class="btn btn-success"
+                                    value="<?= Lang::txt('COM_TOOLS_APPLY_CHANGE') ?>" />
                             </p>
                         </fieldset>
                     </form>
@@ -506,7 +516,8 @@ $this
                     <ul>
                         <li class="todo">
                             <?php echo Lang::txt('COM_TOOLS_WHATSNEXT_INSTALLED_TEST'); ?>:
-                            <a class="btn btn-primary launchtool" href="<?= $testpath ?>"><?= Lang::txt('COM_TOOLS_LAUNCH_TOOL') ?></a>
+                            <a class="btn btn-primary launchtool"
+                                href="<?= $testpath ?>"><?= Lang::txt('COM_TOOLS_LAUNCH_TOOL') ?></a>
                         </li>
                         <li class="todo">
                         <?php if ($this->status['resource_modified']) { ?>

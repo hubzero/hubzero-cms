@@ -27,7 +27,8 @@ $this
 
 <ul id="page_options">
     <li>
-        <a class="icon-info btn popup" href="<?= Route::url('index.php?option=com_help&component=collections&page=index') ?>">
+        <a class="icon-info btn popup"
+            href="<?= Route::url('index.php?option=com_help&component=collections&page=index') ?>">
             <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GETTING_STARTED'); ?></span>
         </a>
     </li>
@@ -55,7 +56,8 @@ $this
         foreach ($this->rows as $row) {
             $item = $row->item();
             ?>
-            <div class="post <?= $item->type() ?>" id="b<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>" data-closeup-url="<?= Route::url($base . '&task=post/' . $row->get('id')) ?>">
+            <div class="post <?= $item->type() ?>" id="b<?= $row->get('id') ?>" data-id="<?= $row->get('id') ?>"
+                data-closeup-url="<?= Route::url($base . '&task=post/' . $row->get('id')) ?>">
                 <div class="content">
                     <?php
                         $this
@@ -88,7 +90,8 @@ $this
                         <div class="actions">
                             <?php if (!User::isGuest()) { ?>
                                 <?php if ($item->get('created_by') == User::get('id')) { ?>
-                                    <a class="btn edit" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/edit') ?>">
+                                    <a class="btn edit" data-id="<?= $row->get('id') ?>"
+                                        href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/edit') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_EDIT'); ?></span>
                                     </a>
                                 <?php } else { ?>
@@ -99,11 +102,13 @@ $this
                                     <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&task=post/' . $row->get('id') . '/comment');?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
-                                    <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/collect') ?>">
+                                    <a class="btn repost" data-id="<?= $row->get('id') ?>"
+                                        href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/collect') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                                 <?php if ($row->get('original') && $item->get('created_by') == User::get('id')) { ?>
-                                    <a class="btn delete" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/delete') ?>">
+                                    <a class="btn delete" data-id="<?= $row->get('id') ?>"
+                                        href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/delete') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
                                     </a>
                                 <?php } ?>
@@ -126,11 +131,13 @@ $this
                         $name = $this->escape(stripslashes($row->creator()->get('name')));
                         if (in_array($row->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
                             <a href="<?= Route::url($row->creator()->link()) ?>" title="<?= $name ?>" class="img-link">
-                                <img src="<?= $row->creator()->picture() ?>" alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                <img src="<?= $row->creator()->picture() ?>"
+                                    alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                             </a>
                         <?php } else { ?>
                             <span class="img-link">
-                                <img src="<?= $row->creator()->picture() ?>" alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                                <img src="<?= $row->creator()->picture() ?>"
+                                    alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                             </span>
                         <?php } ?>
                         <p>
@@ -147,9 +154,11 @@ $this
                             <br />
                             <span class="entry-date">
                                 <span class="entry-date-at"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_AT') ?></span>
-                                <span class="time"><time datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
+                                <span class="time"><time
+                                    datetime="<?= $row->created() ?>"><?= $row->created('time') ?></time></span>
                                 <span class="entry-date-on"><?= Lang::txt('PLG_MEMBERS_COLLECTIONS_ON') ?></span>
-                                <span class="date"><time datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
+                                <span class="date"><time
+                                    datetime="<?= $row->created() ?>"><?= $row->created('date') ?></time></span>
                             </span>
                         </p>
                     </div><!-- / .attribution -->

@@ -121,7 +121,8 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                                 <?= $this->editor('comment', $comment->comment, 5, 5, 'comment' . $comment->id, ['class' => 'minimal no-footer']) ?>
 
                                 <p class="blog-submit">
-                                    <input type="submit" value="<?= Lang::txt('COM_PROJECTS_SAVE') ?>" class="btn c-submit" />
+                                    <input type="submit" value="<?= Lang::txt('COM_PROJECTS_SAVE') ?>"
+                                        class="btn c-submit" />
                                 </p>
                             </fieldset>
                         </form>

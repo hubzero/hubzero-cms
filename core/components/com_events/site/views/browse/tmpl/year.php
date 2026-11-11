@@ -41,7 +41,8 @@ $this
 <section class="main section">
     <div class="section-inner hz-layout-with-aside">
         <div class="subject">
-        <p id="toggle-prior"><strong><a id="toggle-prior-anchor" href="#" onClick="return false;">Show Past Events</a></strong></p>
+        <p id="toggle-prior"><strong><a id="toggle-prior-anchor" href="#"
+            onClick="return false;">Show Past Events</a></strong></p>
         <?php if (count($this->rows) > 0) { ?>
             <ul class="events">
             <?php
@@ -63,7 +64,8 @@ $this
         <?php } ?>
         </div><!-- / .subject -->
         <div class="aside">
-        <form action="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year) ?>" method="get" id="event-categories">
+        <form action="<?= Route::url('index.php?option=' . $this->option . '&year=' . $this->year) ?>" method="get"
+            id="event-categories">
             <fieldset>
                 <legend class="sr-only"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></legend>
                 <label for="event-category"><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_CATEGORY'); ?></label>

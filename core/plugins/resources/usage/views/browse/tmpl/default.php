@@ -164,9 +164,15 @@ $bars = [];
             <div class="col span9 omega">
                 <p class="zoom-controls" id="set-selection-users">
                     <?php echo Lang::txt('PLG_RESOURCES_USAGE_ZOOM'); ?>
-                    <a class="set-selection selected" rel="<?= $from ?> <?= $to ?>" href="<?= Route::url($url . '&period=12&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_YEAR_TO_DATE') ?>"><?= Lang::txt('1y') ?></a>
-                    <a class="set-selection" rel="<?= $half ?> <?= $to ?>" href="<?= Route::url($url . '&period=13&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS') ?>"><?= Lang::txt('6m') ?></a>
-                    <a class="set-selection" rel="<?= $qrtr ?> <?= $to ?>" href="<?= Route::url($url . '&period=3&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS') ?>"><?= Lang::txt('3m') ?></a>
+                    <a class="set-selection selected" rel="<?= $from ?> <?= $to ?>"
+                        href="<?= Route::url($url . '&period=12&dthis=' . $this->dthis) ?>"
+                        title="<?= Lang::txt('PLG_RESOURCES_USAGE_YEAR_TO_DATE') ?>"><?= Lang::txt('1y') ?></a>
+                    <a class="set-selection" rel="<?= $half ?> <?= $to ?>"
+                        href="<?= Route::url($url . '&period=13&dthis=' . $this->dthis) ?>"
+                        title="<?= Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS') ?>"><?= Lang::txt('6m') ?></a>
+                    <a class="set-selection" rel="<?= $qrtr ?> <?= $to ?>"
+                        href="<?= Route::url($url . '&period=3&dthis=' . $this->dthis) ?>"
+                        title="<?= Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS') ?>"><?= Lang::txt('3m') ?></a>
                 </p>
                 <div id="users-overview">
                 <?php
@@ -216,7 +222,8 @@ $bars = [];
                         <thead>
                             <tr>
                                 <th scope="col"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_TYPE'); ?></th>
-                                <th scope="col" colspan="2" class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_USERS') ?></th>
+                                <th scope="col" colspan="2"
+                                    class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_USERS') ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -321,7 +328,8 @@ $bars = [];
                                 ?>
                             <tr rel="<?php echo $this->escape($row->name); ?>">
                                 <td class="textual-data"><?php echo $this->escape($row->name); ?></td>
-                                <td><span class="bar-wrap"><span class="bar bar<?= $width ?>"></span><span class="value"><?= number_format($row->value) ?> (<?= $width ?>)</span></span></td>
+                                <td><span class="bar-wrap"><span class="bar bar<?= $width ?>"></span><span
+                                    class="value"><?= number_format($row->value) ?> (<?= $width ?>)</span></span></td>
                             </tr>
                                 <?php
                                 $i++;
@@ -342,7 +350,8 @@ $bars = [];
                         }
                         if (empty($dataset) || $cls == 'even') {
                             ?>
-                        <tr><td colspan="3" class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE') ?></td></tr>
+                        <tr><td colspan="3"
+                            class="textual-data"><?= Lang::txt('PLG_RESOURCES_USAGE_NO_DATA_AVAILABLE') ?></td></tr>
                             <?php
                         }
                         ?>
@@ -366,7 +375,8 @@ $bars = [];
                         <thead>
                             <tr>
                                 <th scope="col"><?php echo Lang::txt('PLG_RESOURCES_USAGE_COL_COUNTRY'); ?></th>
-                                <th scope="col" colspan="2" class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_USERS') ?></th>
+                                <th scope="col" colspan="2"
+                                    class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_USERS') ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -444,7 +454,8 @@ $bars = [];
                                     <img src="<?= $base ?>/components/com_members/site/assets/img/flags/<?= strtolower($codes[$row->name]['code']) ?>.gif" alt="<?= strtolower($codes[$row->name]['code']) ?>" />
                                 <?php }
                                 echo $row->name; ?></td>
-                                <td><span class="bar-wrap"><span class="bar bar<?= $width ?>"></span><span class="value"><?= number_format($row->value) ?> (<?= $width ?>%)</span></span></td>
+                                <td><span class="bar-wrap"><span class="bar bar<?= $width ?>"></span><span
+                                    class="value"><?= number_format($row->value) ?> (<?= $width ?>%)</span></span></td>
                             </tr>
                                 <?php
                                 $i++;
@@ -602,9 +613,15 @@ $bars = [];
                 <div class="col span9 omega">
                     <p class="zoom-controls" id="set-selection-runs">
                         <?php echo Lang::txt('Zoom'); ?>
-                        <a class="set-selection selected" rel="<?= $from ?> <?= $to ?>" href="<?= Route::url($url . '&period=12&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_YEAR_TO_DATE') ?>"><?= Lang::txt('1y') ?></a>
-                        <a class="set-selection" rel="<?= $half ?> <?= $to ?>" href="<?= Route::url($url . '&period=13&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS') ?>"><?= Lang::txt('6m') ?></a>
-                        <a class="set-selection" rel="<?= $qrtr ?> <?= $to ?>" href="<?= Route::url($url . '&period=3&dthis=' . $this->dthis) ?>" title="<?= Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS') ?>"><?= Lang::txt('3m') ?></a>
+                        <a class="set-selection selected" rel="<?= $from ?> <?= $to ?>"
+                            href="<?= Route::url($url . '&period=12&dthis=' . $this->dthis) ?>"
+                            title="<?= Lang::txt('PLG_RESOURCES_USAGE_YEAR_TO_DATE') ?>"><?= Lang::txt('1y') ?></a>
+                        <a class="set-selection" rel="<?= $half ?> <?= $to ?>"
+                            href="<?= Route::url($url . '&period=13&dthis=' . $this->dthis) ?>"
+                            title="<?= Lang::txt('PLG_RESOURCES_USAGE_SIX_MONTHS') ?>"><?= Lang::txt('6m') ?></a>
+                        <a class="set-selection" rel="<?= $qrtr ?> <?= $to ?>"
+                            href="<?= Route::url($url . '&period=3&dthis=' . $this->dthis) ?>"
+                            title="<?= Lang::txt('PLG_RESOURCES_USAGE_THREE_MONTHS') ?>"><?= Lang::txt('3m') ?></a>
                     </p>
                     <div id="runs-overview">
                     <?php
@@ -649,9 +666,12 @@ $bars = [];
                         <caption><?php echo Lang::txt('PLG_RESOURCES_USAGE_TBL_1_CAPTION'); ?></caption>
                         <thead>
                             <tr>
-                                <td class="numerical-data"><span class="sr-only"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_METRIC') ?></span></td>
-                                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_AVERAGE') ?></th>
-                                <th scope="col" class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_TOTAL') ?></th>
+                                <td class="numerical-data"><span
+                                    class="sr-only"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_METRIC') ?></span></td>
+                                <th scope="col"
+                                    class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_AVERAGE') ?></th>
+                                <th scope="col"
+                                    class="numerical-data"><?= Lang::txt('PLG_RESOURCES_USAGE_COL_TOTAL') ?></th>
                             </tr>
                         </thead>
                         <tbody>

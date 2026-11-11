@@ -46,9 +46,12 @@ Toolbar::cancel();
             ?>
             <tr>
                 <th scope="row">(<?php echo($i + 1); ?>)</th>
-                <td><input type="text" name="points[<?= $i ?>]" value="<?= $param ? $this->escape($param->points) : '' ?>" size="10" maxlength="10" /></td>
-                <td><input type="text" name="alias[<?= $i ?>]" value="<?= $param ? $this->escape($param->alias) : '' ?>" size="20" maxlength="50" /></td>
-                <td><input type="text" name="description[<?= $i ?>]" value="<?= $param ? $this->escape($param->description) : '' ?>" size="100" maxlength="255" /></td>
+                <td><input type="text" name="points[<?= $i ?>]"
+                    value="<?= $param ? $this->escape($param->points) : '' ?>" size="10" maxlength="10" /></td>
+                <td><input type="text" name="alias[<?= $i ?>]" value="<?= $param ? $this->escape($param->alias) : '' ?>"
+                    size="20" maxlength="50" /></td>
+                <td><input type="text" name="description[<?= $i ?>]"
+                    value="<?= $param ? $this->escape($param->description) : '' ?>" size="100" maxlength="255" /></td>
             </tr>
             <?php
             $i++;

@@ -92,11 +92,14 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
         </section>
     <div class="td-options">
         <?php if (!$this->row->isComplete() && $this->model->access('content')) { ?>
-        <span class="edit"><a href="<?= Route::url($url . '&action=edit') . '/?todoid=' . $this->row->get('id') ?>" class="showinbox"><?= Lang::txt('PLG_PROJECTS_TODO_EDIT') ?></a></span>
+        <span class="edit"><a href="<?= Route::url($url . '&action=edit') . '/?todoid=' . $this->row->get('id') ?>"
+            class="showinbox"><?= Lang::txt('PLG_PROJECTS_TODO_EDIT') ?></a></span>
         <span class="checked"><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=changestate') . '/?todoid=' . $this->row->get('id') . '&amp;state=1' ?>" class="confirm-checkoff"><?= Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF') ?></button></span>
         <?php } ?>
         <?php if ($deletable) { ?>
-        <span class="trash"><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=delete') . '/?todoid=' . $this->row->get('id') ?>" class="confirm-it" id="deltd"><?= Lang::txt('PLG_PROJECTS_TODO_DELETE') ?></button></span>
+        <span class="trash"><button type="submit" form="hz-post-action"
+            formaction="<?= Route::url($url . '&action=delete') . '/?todoid=' . $this->row->get('id') ?>"
+            class="confirm-it" id="deltd"><?= Lang::txt('PLG_PROJECTS_TODO_DELETE') ?></button></span>
         <?php } ?>
     </div>
     <div class="comment-wrap">
@@ -119,7 +122,8 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
         <form action="<?php echo Route::url($url); ?>" method="post" >
             <div class="addcomment td-comment">
                 <label><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TODO_NEW_COMMENT')); ?>:
-                    <textarea name="comment" rows="4" cols="50" class="commentarea" id="td-comment" placeholder="<?= Lang::txt('PLG_PROJECTS_TODO_WRITE_COMMENT') ?>"></textarea>
+                    <textarea name="comment" rows="4" cols="50" class="commentarea" id="td-comment"
+                        placeholder="<?= Lang::txt('PLG_PROJECTS_TODO_WRITE_COMMENT') ?>"></textarea>
                 </label>
                     <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                     <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />
@@ -129,7 +133,8 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
                     <input type="hidden" name="itemid" value="<?php echo $this->row->get('id'); ?>" />
                     <input type="hidden" name="parent_activity" value="<?php echo $this->row->get('activityid'); ?>" />
                     <?php echo Html::input('token'); ?>
-                    <p class="blog-submit"><input type="submit" class="btn" id="c-submit" value="<?= Lang::txt('PLG_PROJECTS_TODO_ADD_COMMENT') ?>" /></p>
+                    <p class="blog-submit"><input type="submit" class="btn" id="c-submit"
+                        value="<?= Lang::txt('PLG_PROJECTS_TODO_ADD_COMMENT') ?>" /></p>
             </div>
         </form>
         <?php } ?>

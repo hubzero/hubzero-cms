@@ -49,12 +49,14 @@ $tool_path = $config->get('tool_path');
 
         <p>
             <label for="title">Title:</label>
-            <input type="text" name="title" value="<?= $this->escape($asset->get('title')) ?>" placeholder="Asset Title" />
+            <input type="text" name="title" value="<?= $this->escape($asset->get('title')) ?>"
+                placeholder="Asset Title" />
         </p>
         <?php if ($asset->get('type') != 'form') : ?>
         <p>
             <label for="title">URL:</label>
-            <input type="text" name="url" value="<?php echo $this->escape($asset->get('url')) ?>" placeholder="Asset URL" />
+            <input type="text" name="url" value="<?php echo $this->escape($asset->get('url')) ?>"
+                placeholder="Asset URL" />
         </p>
         <?php endif; ?>
         <p>
@@ -100,7 +102,8 @@ $tool_path = $config->get('tool_path');
 
         <p>
             <label for="progress_factors">Include this item in the progress calculation?</label>
-            <input name="progress_factors" type="checkbox" value="1" <?= ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : '' ?>/>
+            <input name="progress_factors" type="checkbox"
+                value="1" <?= ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : '' ?>/>
             <input type="hidden" name="edit_progress_factors" value="1" />
         </p>
 

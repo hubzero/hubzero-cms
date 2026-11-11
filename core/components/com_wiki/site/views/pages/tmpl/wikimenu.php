@@ -73,7 +73,8 @@ if ($showtoc) {
                     <legend><?php echo Lang::txt('COM_WIKI_SEARCH_LEGEND'); ?></legend>
                     <label for="page-search-q">
                         <span><?php echo Lang::txt('COM_WIKI_SEARCH'); ?></span>
-                        <input type="text" name="q" id="page-search-q" value="" placeholder="<?= Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER') ?>" />
+                        <input type="text" name="q" id="page-search-q" value=""
+                            placeholder="<?= Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER') ?>" />
                     </label>
                     <input type="submit" class="btn page-search-submit" value="<?= Lang::txt('COM_WIKI_GO') ?>" />
                 </fieldset>

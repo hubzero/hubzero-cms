@@ -64,9 +64,11 @@ if (!$this->comment->get('item_id')) {
                 </strong>
                 <a class="permalink" href="<?= Route::url($this->base . '#' . ($this->depth == 1 ? 'a' : 'c') . $this->comment->get('id')) ?>" title="<?= Lang::txt('COM_ANSWERS_PERMALINK') ?>">
                     <span class="comment-date-at"><?php echo Lang::txt('COM_ANSWERS_DATETIME_AT'); ?></span>
-                    <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
+                    <span class="time"><time
+                        datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
                     <span class="comment-date-on"><?php echo Lang::txt('COM_ANSWERS_ON'); ?></span>
-                    <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
+                    <span class="date"><time
+                        datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
                 </a>
             </p>
 
@@ -113,7 +115,9 @@ if (!$this->comment->get('item_id')) {
                 --></a>
                     <?php } ?>
                 <?php } ?>
-                    <a class="icon-abuse abuse" data-txt-flagged="<?= Lang::txt('COM_ANSWERS_COMMENT_REPORTED_AS_ABUSIVE') ?>" href="<?= Route::url($this->comment->link('report')) ?>"><!--
+                    <a class="icon-abuse abuse"
+                        data-txt-flagged="<?= Lang::txt('COM_ANSWERS_COMMENT_REPORTED_AS_ABUSIVE') ?>"
+                        href="<?= Route::url($this->comment->link('report')) ?>"><!--
                     --><?php echo Lang::txt('COM_ANSWERS_REPORT_ABUSE'); ?><!--
                 --></a>
                 <?php if (User::get('id') == $this->question->get('created_by') && $this->question->isOpen() && $this->comment->get('qid') && $this->depth <= 1) { ?>
@@ -129,14 +133,17 @@ if (!$this->comment->get('item_id')) {
                     <?= Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>') ?>
                 </p>
                 <?php } else { ?>
-                <form id="cform<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>" action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
+                <form id="cform<?= $this->depth . $this->comment->get('item_type') . $this->comment->get('id') ?>"
+                    action="<?= Route::url($this->base) ?>" method="post" enctype="multipart/form-data">
                     <fieldset>
                         <legend><span><?= Lang::txt('COM_ANSWERS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
 
                         <input type="hidden" name="comment[id]" value="0" />
-                        <input type="hidden" name="comment[item_type]" value="<?= $this->comment->get('item_type', 'response') ?>" />
+                        <input type="hidden" name="comment[item_type]"
+                            value="<?= $this->comment->get('item_type', 'response') ?>" />
                         <input type="hidden" name="comment[item_id]" value="<?= $this->comment->get('item_id') ?>" />
-                        <input type="hidden" name="comment[parent]" value="<?= ($this->depth == 1) ? 0 : $this->comment->get('id') ?>" />
+                        <input type="hidden" name="comment[parent]"
+                            value="<?= ($this->depth == 1) ? 0 : $this->comment->get('id') ?>" />
                         <input type="hidden" name="comment[created]" value="" />
                         <input type="hidden" name="comment[created_by]" value="<?php echo User::get('id'); ?>" />
                         <input type="hidden" name="comment[state]" value="1" />
@@ -159,7 +166,8 @@ if (!$this->comment->get('item_id')) {
 
                         <div class="form-group">
                             <label class="comment-anonymous-label" for="comment_<?php echo $formSuffix; ?>_anonymous">
-                                <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?= $formSuffix ?>_anonymous" value="1" />
+                                <input class="option form-check-input" type="checkbox" name="comment[anonymous]"
+                                    id="comment_<?= $formSuffix ?>_anonymous" value="1" />
                                 <?php echo Lang::txt('COM_ANSWERS_POST_COMMENT_ANONYMOUSLY'); ?>
                             </label>
                         </div>

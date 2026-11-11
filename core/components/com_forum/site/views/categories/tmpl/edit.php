@@ -45,7 +45,9 @@ $this->css();
                     <div class="col span6">
                         <div class="form-group">
                             <label for="field-closed" class="comment-anonymous-label">
-                                <input class="option form-control" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?= $this->category->get('closed') ? ' checked="checked"' : '' ?> />
+                                <input class="option form-control" type="checkbox" name="fields[closed]"
+                                    id="field-closed"
+                                    value="3"<?= $this->category->get('closed') ? ' checked="checked"' : '' ?> />
                                 <?php echo Lang::txt('COM_FORUM_FIELD_CLOSED'); ?>
                             </label>
                         </div>
@@ -64,7 +66,8 @@ $this->css();
 
                 <div class="form-group">
                     <label for="field-section_id">
-                        <?= Lang::txt('COM_FORUM_FIELD_SECTION') ?> <span class="required"><?= Lang::txt('COM_FORUM_REQUIRED') ?></span>
+                        <?= Lang::txt('COM_FORUM_FIELD_SECTION') ?> <span
+                            class="required"><?= Lang::txt('COM_FORUM_REQUIRED') ?></span>
                         <select class="form-control" name="fields[section_id]" id="field-section_id">
                             <?php foreach ($this->forum->sections(['state' => 1])->rows() as $section) { ?>
                                 <option value="<?= $section->get('id') ?>"<?= $this->category->get('section_id') == $section->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape(stripslashes($section->get('title'))) ?></option>
@@ -75,8 +78,10 @@ $this->css();
 
                 <div class="form-group">
                     <label for="field-title">
-                        <?= Lang::txt('COM_FORUM_FIELD_TITLE') ?> <span class="required"><?= Lang::txt('COM_FORUM_REQUIRED') ?></span>
-                        <input type="text" class="form-control" name="fields[title]" id="field-title" value="<?= $this->escape(stripslashes($this->category->get('title', ''))) ?>" />
+                        <?= Lang::txt('COM_FORUM_FIELD_TITLE') ?> <span
+                            class="required"><?= Lang::txt('COM_FORUM_REQUIRED') ?></span>
+                        <input type="text" class="form-control" name="fields[title]" id="field-title"
+                            value="<?= $this->escape(stripslashes($this->category->get('title', ''))) ?>" />
                     </label>
                 </div>
 

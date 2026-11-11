@@ -29,7 +29,8 @@ $this
     ->js();
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form">
     <div class="grid">
     <div class="col span5">
         <fieldset class="adminform">
@@ -121,7 +122,8 @@ $this
                     ?>
                     <p>
                         <strong>Payment details:</strong><br>
-                        <input type="text" name="tiPaymentDetails" value="<?= $this->escape($this->tInfo->tiPaymentDetails) ?>" />
+                        <input type="text" name="tiPaymentDetails"
+                            value="<?= $this->escape($this->tInfo->tiPaymentDetails) ?>" />
                     </p>
                     <?php
                 }
@@ -163,8 +165,10 @@ $this
                             ?>
                             <span><?php echo $product; ?></span>
                         </td>
-                        <td><input type="text" name="tiPrice[<?= $itemInfo->sId ?>]" size="10" maxlength="100" value="<?= $itemOrdered['transactionInfo']->tiPrice ?>" /></td>
-                        <td><input type="text" name="tiQty[<?= $itemInfo->sId ?>]" size="10" maxlength="100" value="<?= $itemOrdered['transactionInfo']->qty ?>" /></td>
+                        <td><input type="text" name="tiPrice[<?= $itemInfo->sId ?>]" size="10" maxlength="100"
+                            value="<?= $itemOrdered['transactionInfo']->tiPrice ?>" /></td>
+                        <td><input type="text" name="tiQty[<?= $itemInfo->sId ?>]" size="10" maxlength="100"
+                            value="<?= $itemOrdered['transactionInfo']->qty ?>" /></td>
                     </tr>
                     <?php
                 }

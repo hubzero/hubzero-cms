@@ -33,7 +33,8 @@ if ($tmpl != 'component') {
 } ?>
 <p class="crumbs"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->get('id') . '&version=' . $this->pub->get('version_number')) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->get('id') ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO') ?></p>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form">
 <?php if ($tmpl == 'component') { ?>
     <fieldset>
         <div class="configuration">
@@ -101,7 +102,8 @@ if ($tmpl != 'component') {
                     <?php if ($attachments && count($attachments) > 1 && $multiZip) { ?>
                     <div class="input-wrap">
                         <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_BUNDLE_NAME'); ?>:</label>
-                        <input type="text" name="params[element<?= $this->elementId ?>bundlename]" maxlength="250" value="<?= $this->escape($bundleName) ?>" />
+                        <input type="text" name="params[element<?= $this->elementId ?>bundlename]" maxlength="250"
+                            value="<?= $this->escape($bundleName) ?>" />
                     </div>
                     <?php } ?>
                     <?php if ($attachments) { ?>
@@ -109,7 +111,8 @@ if ($tmpl != 'component') {
                             <div class="input-wrap withdivider">
                                 <p>[<?= $this->escape($attach->type) ?>] <?= $this->escape($attach->path) ?></p>
                                 <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_TITLE'); ?>:</label>
-                                <input type="text" name="attachments[<?= $attach->id ?>][title]" maxlength="250" value="<?= $this->escape($attach->title) ?>" />
+                                <input type="text" name="attachments[<?= $attach->id ?>][title]" maxlength="250"
+                                    value="<?= $this->escape($attach->title) ?>" />
                                 <?php if ($attach->role == 3) { ?>
                                     <label><?= Lang::txt('COM_PUBLICATIONS_FIELD_ATTACHMENT_GALLERY_DESCRIPTION') ?>:</label>
                                     <textarea name="attachments[<?= $attach->id ?>][attribs]" rows="10" cols="60" maxlength="5000" value="<?= $this->escape($attach->attribs) ?>" placeholder="Enter up to 5000 characters..."><?= $this->escape($attach->attribs) ?></textarea>

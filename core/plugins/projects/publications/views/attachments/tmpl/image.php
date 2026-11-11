@@ -58,7 +58,8 @@ $over  = $data->get('pubThumb') == 1 ? ' title="' . Lang::txt('PLG_PROJECTS_PUBL
             </span>
             <?php } ?>
         </span>
-        <span class="item-image<?= $class ?>" <?= $over ?>><a class="more-content" href="<?= $filePath ?>"><img alt="" src="<?= $thumbSrc ?>" /></a></span>
+        <span class="item-image<?= $class ?>" <?= $over ?>><a class="more-content" href="<?= $filePath ?>"><img alt=""
+            src="<?= $thumbSrc ?>" /></a></span>
         <span class="item-title">
             <?php echo $this->escape($data->get('title')); ?></span>
         <span class="item-details"><?php echo $this->escape($details); ?></span>

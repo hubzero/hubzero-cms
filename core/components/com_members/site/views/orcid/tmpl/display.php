@@ -75,13 +75,15 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
                 <div class="grid nobreak">
                     <div class="col span4">
                         <label for="first-name">
-                            <?= Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIRST_NAME') ?><span class="required"><?= Lang::txt('COM_MEMBERS_SEARCH_ORCID_REQUIRED') ?></span>
+                            <?= Lang::txt('COM_MEMBERS_PROFILE_ORCID_FIRST_NAME') ?><span
+                                class="required"><?= Lang::txt('COM_MEMBERS_SEARCH_ORCID_REQUIRED') ?></span>
                             <input type="text" id="first-name" name="first-name" value="<?= $this->escape($fname) ?>" />
                         </label>
                     </div>
                     <div class="col span4">
                         <label for="last-name">
-                            <?= Lang::txt('COM_MEMBERS_PROFILE_ORCID_LAST_NAME') ?><span class="required"><?= Lang::txt('COM_MEMBERS_SEARCH_ORCID_REQUIRED') ?></span>
+                            <?= Lang::txt('COM_MEMBERS_PROFILE_ORCID_LAST_NAME') ?><span
+                                class="required"><?= Lang::txt('COM_MEMBERS_SEARCH_ORCID_REQUIRED') ?></span>
                             <input type="text" id="last-name" name="last-name" value="<?= $this->escape($lname) ?>" />
                         </label>
                     </div>

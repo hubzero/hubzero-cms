@@ -75,19 +75,25 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 </table>
 <!-- End Spacer -->
 
-<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em; background-color: #fff7eb;">
+<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0"
+    style="border-collapse: collapse; line-height: 1.6em; background-color: #fff7eb;">
     <tbody>
         <tr>
-            <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9; border-bottom: 2px solid #e9e9e9;">
-                <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0" border="0">
+            <td width="100%"
+                style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9; border-bottom: 2px solid #e9e9e9;">
+                <table width="100%" style="border-collapse: collapse; font-size: 0.9em;" cellpadding="0" cellspacing="0"
+                    border="0">
                     <tbody>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Project:</th>
+                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right">Project:</th>
                             <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->project->get('title') . ' (' . $this->project->get('alias') . ')') ?></td>
                         </tr>
                         <tr>
-                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right">Link:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a href="<?= $link ?>"><?= $link ?></a></td>
+                            <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                align="right">Link:</th>
+                            <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><a
+                                href="<?= $link ?>"><?= $link ?></a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -106,15 +112,18 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
 </table>
 <!-- End Spacer -->
 
-<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
+<table id="project-info" width="100%"  cellpadding="0" cellspacing="0" border="0"
+    style="border-collapse: collapse; line-height: 1.6em;">
     <tbody>
         <tr>
             <td width="100%" style="padding: 18px 8px 8px 8px;">
-                <table width="100%" style="border-collapse: collapse; font-size: 1.2em;" cellpadding="0" cellspacing="0" border="0">
+                <table width="100%" style="border-collapse: collapse; font-size: 1.2em;" cellpadding="0" cellspacing="0"
+                    border="0">
                     <tbody>
                         <?php if (empty($this->activities)) { ?>
                             <tr>
-                                <td style="text-align: center; padding: 0 1em;" width="100%" align="left">There has been no activity in this project.</td>
+                                <td style="text-align: center; padding: 0 1em;" width="100%"
+                                    align="left">There has been no activity in this project.</td>
                             </tr>
                         <?php } else { ?>
                             <?php
@@ -179,7 +188,10 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
             <td align="left" valign="bottom">
                 <span>
                     This email was sent to you on behalf of <?php echo $base; ?> because you are subscribed
-                    to watch this project. To unsubscribe, please go to the <a href="<?= $link ?>">project feed</a> and adjust feed notification settings. Visit our <a href="<?= Request::base() ?>/legal/privacy">Privacy Policy</a> and <a href="<?= Request::base() ?>/support">Support Center</a> if you have any questions.
+                    to watch this project. To unsubscribe, please go to the <a
+                        href="<?= $link ?>">project feed</a> and adjust feed notification settings. Visit our <a
+                        href="<?= Request::base() ?>/legal/privacy">Privacy Policy</a> and <a
+                        href="<?= Request::base() ?>/support">Support Center</a> if you have any questions.
                 </span>
             </td>
         </tr>

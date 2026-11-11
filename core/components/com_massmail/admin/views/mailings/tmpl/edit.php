@@ -143,7 +143,8 @@ $this->js('edit.js', 'com_massmail');
 
 <div class="mm-compose">
 
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="hz-form">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"
+        method="post" name="adminForm" id="adminForm" enctype="multipart/form-data" class="hz-form">
         <div class="mm-grid">
             <div class="mm-main">
                 <div class="mm-card mm-mail">
@@ -154,7 +155,8 @@ $this->js('edit.js', 'com_massmail');
                                 <?php if ($editable) { ?>
                                     <?php // Filled in by the compose JS from the recipient config.?>
                                     <ul class="mm-to-chips" id="mm-to-summary"></ul>
-                                    <button type="button" class="mm-to-edit" id="mm-to-edit"><?= Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS') ?></button>
+                                    <button type="button" class="mm-to-edit"
+                                        id="mm-to-edit"><?= Lang::txt('COM_MASSMAIL_EDIT_RECIPIENTS') ?></button>
                                     <?php if ($badRcpt) {
                                         ?><span class="mm-required-note"><?= Lang::txt('COM_MASSMAIL_REQUIRED') ?></span><?php
                                     } ?>
@@ -174,12 +176,14 @@ $this->js('edit.js', 'com_massmail');
 
                         <div class="mm-mail-row">
                             <span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_FROM'); ?></span>
-                            <input class="mm-from-info" type="text" value="<?= $this->escape($fromShown) ?>" readonly title="<?= $this->escape(Lang::txt('COM_MASSMAIL_FROM_INFO_HINT')) ?>" />
+                            <input class="mm-from-info" type="text" value="<?= $this->escape($fromShown) ?>" readonly
+                                title="<?= $this->escape(Lang::txt('COM_MASSMAIL_FROM_INFO_HINT')) ?>" />
                         </div>
                         <div class="mm-mail-row">
                             <span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_REPLY_TO'); ?></span>
                             <?php if ($isSuper && $editable) { ?>
-                                <input type="text" name="fields[reply_to]" id="field-reply-to" value="<?= $this->escape($replyTo) ?>" />
+                                <input type="text" name="fields[reply_to]" id="field-reply-to"
+                                    value="<?= $this->escape($replyTo) ?>" />
                             <?php } else { ?>
                                 <span class="mm-mail-value"><?= $replyTo ? $this->escape($replyTo) : '&mdash;' ?></span>
                             <?php } ?>
@@ -187,7 +191,9 @@ $this->js('edit.js', 'com_massmail');
                         <div class="mm-mail-row">
                             <span class="mm-mail-label"><?php echo Lang::txt('COM_MASSMAIL_SUBJECT'); ?></span>
                             <?php if ($editable) { ?>
-                                <input class="mm-mail-subject<?= $badSubject ? ' mm-invalid' : '' ?>" type="text" name="fields[subject]" id="field-subject" value="<?= $this->escape($this->row->get('subject')) ?>" />
+                                <input class="mm-mail-subject<?= $badSubject ? ' mm-invalid' : '' ?>" type="text"
+                                    name="fields[subject]" id="field-subject"
+                                    value="<?= $this->escape($this->row->get('subject')) ?>" />
                             <?php } else { ?>
                                 <span class="mm-mail-value mm-mail-subject-ro"><?= $this->escape(stripslashes($this->row->get('subject'))) ?></span>
                             <?php } ?>
@@ -231,11 +237,15 @@ $this->js('edit.js', 'com_massmail');
                     <p class="mm-header-hint"><?= Lang::txt($isSuper ? 'COM_MASSMAIL_SENDER_OPTIONS_HINT' : 'COM_MASSMAIL_SENDER_LOCKED_HINT') ?></p>
                     <?php } else { ?>
                     <div class="mm-mail-body-ro">
-                        <iframe class="mm-message-body" sandbox="" title="<?= $this->escape(Lang::txt('COM_MASSMAIL_MESSAGE_HEADING')) ?>" srcdoc="<?= $this->escape($this->previewHtml) ?>"></iframe>
+                        <iframe class="mm-message-body" sandbox=""
+                            title="<?= $this->escape(Lang::txt('COM_MASSMAIL_MESSAGE_HEADING')) ?>"
+                            srcdoc="<?= $this->escape($this->previewHtml) ?>"></iframe>
                         <?php if (count($atts)) { ?>
                         <ul class="mm-chips">
                             <?php foreach ($atts as $att) { ?>
-                                <li class="mm-chip"><span class="mm-clip">&#128206;</span> <?= $this->escape($att->get('filename')) ?> <span class="mm-kb">(<?= round($att->get('size') / 1024) . ' KB' ?>)</span></li>
+                                <li class="mm-chip"><span
+                                    class="mm-clip">&#128206;</span> <?= $this->escape($att->get('filename')) ?> <span
+                                    class="mm-kb">(<?= round($att->get('size') / 1024) . ' KB' ?>)</span></li>
                             <?php } ?>
                         </ul>
                         <?php } ?>
@@ -246,10 +256,12 @@ $this->js('edit.js', 'com_massmail');
                 <?php if ($editable) { ?>
                 <div class="mm-compose-actions">
                     <?php if ($canDo->get('core.send')) { ?>
-                        <button type="button" class="btn mm-btn-send mm-submit" data-task="review"><?= $icSend . Lang::txt('COM_MASSMAIL_LAUNCH') ?></button>
+                        <button type="button" class="btn mm-btn-send mm-submit"
+                            data-task="review"><?= $icSend . Lang::txt('COM_MASSMAIL_LAUNCH') ?></button>
                     <?php } ?>
                     <span class="mm-spacer"></span>
-                    <button type="button" class="btn mm-btn-neutral mm-submit" data-task="save"><?= $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT') ?></button>
+                    <button type="button" class="btn mm-btn-neutral mm-submit"
+                        data-task="save"><?= $icSave . Lang::txt('COM_MASSMAIL_SAVE_DRAFT') ?></button>
                     <?php if (!$isNew) { ?>
                         <button type="submit" form="mm-action" class="btn mm-btn-danger mm-confirm" data-confirm="<?= $this->escape(Lang::txt('COM_MASSMAIL_CONFIRM_DISCARD')) ?>" formaction="<?= Route::url($base . '&task=discard&id=' . (int) $this->row->get('id')) ?>"><?= $icTrash . Lang::txt('COM_MASSMAIL_DISCARD') ?></button>
                     <?php } ?>
@@ -386,14 +398,16 @@ $this->js('edit.js', 'com_massmail');
                     <h4><?php echo Lang::txt('COM_MASSMAIL_DELIVERY'); ?></h4>
                     <div class="mm-delivery-toggle">
                         <label class="mm-dopt<?php echo $isScheduled ? '' : ' is-active'; ?>">
-                            <input type="radio" name="delivery_mode" value="now"<?= $isScheduled ? '' : ' checked="checked"' ?> />
+                            <input type="radio" name="delivery_mode"
+                                value="now"<?= $isScheduled ? '' : ' checked="checked"' ?> />
                             <span class="mm-dopt-body">
                                 <span class="mm-dopt-title"><?php echo Lang::txt('COM_MASSMAIL_DELIVER_NOW'); ?></span>
                                 <span class="mm-dopt-sub"><?= Lang::txt('COM_MASSMAIL_DELIVER_NOW_SUB') ?></span>
                             </span>
                         </label>
                         <label class="mm-dopt<?php echo $isScheduled ? ' is-active' : ''; ?>">
-                            <input type="radio" name="delivery_mode" value="schedule"<?= $isScheduled ? ' checked="checked"' : '' ?> />
+                            <input type="radio" name="delivery_mode"
+                                value="schedule"<?= $isScheduled ? ' checked="checked"' : '' ?> />
                             <span class="mm-dopt-body">
                                 <span class="mm-dopt-title"><?= Lang::txt('COM_MASSMAIL_DELIVER_SCHEDULE') ?></span>
                                 <span class="mm-dopt-sub"><?= Lang::txt('COM_MASSMAIL_DELIVER_SCHEDULE_SUB') ?></span>
@@ -441,23 +455,30 @@ $this->js('edit.js', 'com_massmail');
         <?php echo Html::input('token'); ?>
     </form>
 
-    <div id="mm-compose-config" hidden data-lang="<?= htmlspecialchars(json_encode($composeLang), ENT_QUOTES, 'UTF-8') ?>" data-state="<?= htmlspecialchars(json_encode($rcptState), ENT_QUOTES, 'UTF-8') ?>"></div>
+    <div id="mm-compose-config" hidden
+        data-lang="<?= htmlspecialchars(json_encode($composeLang), ENT_QUOTES, 'UTF-8') ?>"
+        data-state="<?= htmlspecialchars(json_encode($rcptState), ENT_QUOTES, 'UTF-8') ?>"></div>
 
     <?php if ($editable) { ?>
-    <div class="mm-modal" id="mm-rcpt-modal" role="dialog" aria-modal="true" aria-label="<?= $this->escape(Lang::txt('COM_MASSMAIL_RECIPIENTS')) ?>">
+    <div class="mm-modal" id="mm-rcpt-modal" role="dialog" aria-modal="true"
+        aria-label="<?= $this->escape(Lang::txt('COM_MASSMAIL_RECIPIENTS')) ?>">
         <div class="mm-modal-inner mm-rcpt-inner">
-            <button type="button" class="mm-modal-close" id="mm-rcpt-close" aria-label="<?= $this->escape(Lang::txt('COM_MASSMAIL_CLOSE')) ?>">&times;</button>
+            <button type="button" class="mm-modal-close" id="mm-rcpt-close"
+                aria-label="<?= $this->escape(Lang::txt('COM_MASSMAIL_CLOSE')) ?>">&times;</button>
             <h3><?php echo Lang::txt('COM_MASSMAIL_RECIPIENTS'); ?></h3>
             <p class="mm-preview mm-modal-count"><strong><?= Lang::txt('COM_MASSMAIL_WILL_REACH', number_format($preview)) ?></strong></p>
 
             <div class="mm-rcpt-section">
-                <label class="mm-everyone"><input type="checkbox" id="mb-all" /> <?= Lang::txt('COM_MASSMAIL_EVERYONE') ?></label>
+                <label class="mm-everyone"><input type="checkbox"
+                    id="mb-all" /> <?= Lang::txt('COM_MASSMAIL_EVERYONE') ?></label>
             </div>
             <div class="mm-rcpt-section">
                 <h5><?php echo Lang::txt('COM_MASSMAIL_RCPT_GROUPS'); ?></h5>
                 <ul class="mm-chips" id="mb-group-chips"></ul>
                 <div class="mm-ac-wrap">
-                    <input type="text" id="mb-group-search" placeholder="<?= $this->escape(Lang::txt('COM_MASSMAIL_GROUP_SEARCH')) ?>" autocomplete="off" spellcheck="false" readonly />
+                    <input type="text" id="mb-group-search"
+                        placeholder="<?= $this->escape(Lang::txt('COM_MASSMAIL_GROUP_SEARCH')) ?>" autocomplete="off"
+                        spellcheck="false" readonly />
                     <ul class="mm-ac-list" id="mb-group-ac" hidden></ul>
                 </div>
             </div>
@@ -465,7 +486,9 @@ $this->js('edit.js', 'com_massmail');
                 <h5><?php echo Lang::txt('COM_MASSMAIL_RCPT_PEOPLE'); ?></h5>
                 <ul class="mm-chips" id="mb-user-chips"></ul>
                 <div class="mm-ac-wrap">
-                    <input type="text" id="mb-user-search" placeholder="<?= $this->escape(Lang::txt('COM_MASSMAIL_PEOPLE_SEARCH')) ?>" autocomplete="off" spellcheck="false" readonly />
+                    <input type="text" id="mb-user-search"
+                        placeholder="<?= $this->escape(Lang::txt('COM_MASSMAIL_PEOPLE_SEARCH')) ?>" autocomplete="off"
+                        spellcheck="false" readonly />
                     <ul class="mm-ac-list" id="mb-user-ac" hidden></ul>
                 </div>
             </div>
@@ -478,11 +501,13 @@ $this->js('edit.js', 'com_massmail');
             <div class="mm-rcpt-section">
                 <h5><?php echo Lang::txt('COM_MASSMAIL_COMPLIANCE'); ?></h5>
                 <label class="mm-warn mm-optout-label"><input type="checkbox" form="adminForm" name="ignore_optout" id="field-optout" value="1"<?= ($ignore ? ' checked="checked"' : '') ?> /> <?= Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT') ?></label>
-                <p class="<?= $ignore ? 'warning' : 'info' ?> mm-optout-note" id="mm-optout-note"><?= Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT_HINT') ?></p>
+                <p class="<?= $ignore ? 'warning' : 'info' ?> mm-optout-note"
+                    id="mm-optout-note"><?= Lang::txt('COM_MASSMAIL_IGNORE_OPTOUT_HINT') ?></p>
             </div>
             <?php } ?>
             <div class="mm-modal-actions">
-                <button type="button" class="btn btn-primary" id="mb-done"><?= Lang::txt('COM_MASSMAIL_DONE') ?></button>
+                <button type="button" class="btn btn-primary"
+                    id="mb-done"><?= Lang::txt('COM_MASSMAIL_DONE') ?></button>
             </div>
         </div>
     </div>

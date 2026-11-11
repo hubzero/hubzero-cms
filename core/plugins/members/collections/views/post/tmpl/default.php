@@ -29,7 +29,9 @@ $this
 $allow_comments = Component::params('com_collections')->get('allow_comments');
 ?>
 
-<div class="post full <?= $item->type() ?>" id="b<?= $this->post->get('id') ?>" data-id="<?= $this->post->get('id') ?>" data-closeup-url="<?= Route::url($base . '&task=post/' . $this->post->get('id')) ?>" data-width="600" data-height="350">
+<div class="post full <?= $item->type() ?>" id="b<?= $this->post->get('id') ?>" data-id="<?= $this->post->get('id') ?>"
+    data-closeup-url="<?= Route::url($base . '&task=post/' . $this->post->get('id')) ?>" data-width="600"
+    data-height="350">
     <div class="content">
         <div class="creator attribution cf">
             <?php if ($item->get('type') == 'file' || $item->get('type') == 'collection') { ?>
@@ -38,11 +40,13 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
 
                 if (in_array($item->creator()->get('access'), User::getAuthorisedViewLevels())) { ?>
                     <a href="<?= Route::url($item->creator()->link()) ?>" title="<?= $name ?>" class="img-link">
-                        <img src="<?= $item->creator()->picture() ?>" alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                        <img src="<?= $item->creator()->picture() ?>"
+                            alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                     </a>
                 <?php } else { ?>
                     <span class="img-link">
-                        <img src="<?= $item->creator()->picture() ?>" alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
+                        <img src="<?= $item->creator()->picture() ?>"
+                            alt="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_PROFILE_PICTURE', $name) ?>" />
                     </span>
                 <?php } ?>
                 <p>
@@ -52,9 +56,11 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                     <br />
                     <span class="entry-date">
                         <span class="entry-date-at">@</span>
-                        <span class="time"><time datetime="<?= $item->created() ?>"><?= $item->created('time') ?></time></span>
+                        <span class="time"><time
+                            datetime="<?= $item->created() ?>"><?= $item->created('time') ?></time></span>
                         <span class="entry-date-on">on</span>
-                        <span class="date"><time datetime="<?= $item->created() ?>"><?= $item->created('date') ?></time></span>
+                        <span class="date"><time
+                            datetime="<?= $item->created() ?>"><?= $item->created('date') ?></time></span>
                     </span>
                 </p>
             <?php } else { ?>
@@ -98,8 +104,10 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
             </p>
         </div><!-- / .meta -->
         <div class="convo attribution clearfix">
-            <a href="<?= Route::url($this->post->creator()->link()) ?>" title="<?= $this->escape(stripslashes($this->post->creator()->get('name'))) ?>" class="img-link">
-                <img src="<?= $this->post->creator()->picture() ?>" alt="Profile picture of <?= $this->escape(stripslashes($this->post->creator()->get('name'))) ?>" />
+            <a href="<?= Route::url($this->post->creator()->link()) ?>"
+                title="<?= $this->escape(stripslashes($this->post->creator()->get('name'))) ?>" class="img-link">
+                <img src="<?= $this->post->creator()->picture() ?>"
+                    alt="Profile picture of <?= $this->escape(stripslashes($this->post->creator()->get('name'))) ?>" />
             </a>
             <p>
                 <?php
@@ -123,9 +131,11 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                 <br />
                 <span class="entry-date">
                     <span class="entry-date-at">@</span>
-                    <span class="time"><time datetime="<?= $this->post->created() ?>"><?= $this->post->created('time') ?></time></span>
+                    <span class="time"><time
+                        datetime="<?= $this->post->created() ?>"><?= $this->post->created('time') ?></time></span>
                     <span class="entry-date-on">on</span>
-                    <span class="date"><time datetime="<?= $this->post->created() ?>"><?= $this->post->created('date') ?></time></span>
+                    <span class="date"><time
+                        datetime="<?= $this->post->created() ?>"><?= $this->post->created('date') ?></time></span>
                 </span>
             </p>
         </div><!-- / .attribution -->
@@ -140,7 +150,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                 ?>
                 <div class="comment convo clearfix" id="c<?php echo $comment->get('id'); ?>">
                     <a href="<?php echo Route::url($cuser->link()); ?>" class="img-link">
-                        <img src="<?= $cuser->picture($comment->anonymous) ?>" class="profile user_image" alt="Profile picture of <?= $this->escape(stripslashes($cuser->get('name'))) ?>" />
+                        <img src="<?= $cuser->picture($comment->anonymous) ?>" class="profile user_image"
+                            alt="Profile picture of <?= $this->escape(stripslashes($cuser->get('name'))) ?>" />
                     </a>
                     <p>
                         <a href="<?= Route::url($cuser->link()) ?>"><?= $this->escape(stripslashes($cuser->get('name'))) ?></a> said <br />
@@ -168,7 +179,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
         <div class="commnts">
             <div class="comment convo clearfix">
                 <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>" class="img-link">
-                    <img src="<?= User::picture(0) ?>" class="profile user_image" alt="Profile picture of <?= $this->escape(stripslashes(User::get('name'))) ?>" />
+                    <img src="<?= User::picture(0) ?>" class="profile user_image"
+                        alt="Profile picture of <?= $this->escape(stripslashes(User::get('name'))) ?>" />
                 </a>
                 <p>
                     <a href="<?= Route::url('index.php?option=com_members&id=' . User::get('id')) ?>"><?= $this->escape(stripslashes(User::get('name'))) ?></a> will say <br />
@@ -179,7 +191,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                         <span class="date"><time datetime="<?= $now ?>"><?= Date::of($now)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time></span>
                     </span>
                 </p>
-                <form action="<?= Route::url($base . '&task=post/' . $this->post->get('id') . '/savecomment') ?>" method="post" id="comment-form" enctype="multipart/form-data">
+                <form action="<?= Route::url($base . '&task=post/' . $this->post->get('id') . '/savecomment') ?>"
+                    method="post" id="comment-form" enctype="multipart/form-data">
                     <fieldset>
                         <input type="hidden" name="comment[id]" value="0" />
                         <input type="hidden" name="comment[item_id]" value="<?php echo $item->get('id'); ?>" />

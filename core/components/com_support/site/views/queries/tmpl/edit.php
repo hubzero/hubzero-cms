@@ -41,7 +41,8 @@ if (!$tmpl && !$no_html) {
                 <table class="admintable">
                     <tbody>
                         <tr>
-                            <td class="key"><label for="field-iscore"><?= Lang::txt('COM_SUPPORT_FIELD_TYPE') ?></label></td>
+                            <td class="key"><label
+                                for="field-iscore"><?= Lang::txt('COM_SUPPORT_FIELD_TYPE') ?></label></td>
                             <td colspan="2">
                                 <select name="fields[iscore]" id="field-iscore">
                                     <optgroup label="<?php echo Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON'); ?>">
@@ -54,8 +55,11 @@ if (!$tmpl && !$no_html) {
                             </td>
                         </tr>
                         <tr>
-                            <td class="key"><label for="field-title"><?= Lang::txt('COM_SUPPORT_FIELD_TITLE') ?></label></td>
-                            <td colspan="2"><input type="text" name="fields[title]" id="field-title" data-empty="<?= Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE') ?>" value="<?= $this->escape(stripslashes($this->row->title)) ?>" /></td>
+                            <td class="key"><label
+                                for="field-title"><?= Lang::txt('COM_SUPPORT_FIELD_TITLE') ?></label></td>
+                            <td colspan="2"><input type="text" name="fields[title]" id="field-title"
+                                data-empty="<?= Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE') ?>"
+                                value="<?= $this->escape(stripslashes($this->row->title)) ?>" /></td>
                         </tr>
                         <tr>
                             <td colspan="3">
@@ -100,7 +104,8 @@ if (!$tmpl && !$no_html) {
                                 </select>
                             </td>
                             <td>
-                                <select name="fields[sort_dir]" id="field-sort_dir" aria-label="<?= Lang::txt('COM_SUPPORT_QUERY_SORT_DIRECTION') ?>">
+                                <select name="fields[sort_dir]" id="field-sort_dir"
+                                    aria-label="<?= Lang::txt('COM_SUPPORT_QUERY_SORT_DIRECTION') ?>">
                                     <option value="DESC"<?= strtolower($this->row->sort_dir) == 'desc' ? ' selected="selected"' : '' ?>>desc</option>
                                     <option value="ASC"<?= strtolower($this->row->sort_dir) == 'asc' ? ' selected="selected"' : '' ?>>asc</option>
                                 </select>
@@ -112,7 +117,8 @@ if (!$tmpl && !$no_html) {
         </div>
 
         <input type="hidden" name="fields[id]" value="<?php echo $this->row->id; ?>" />
-        <input type="hidden" name="fields[conditions]" id="field-conditions" value="<?= $this->escape(stripslashes($this->row->conditions)) ?>" />
+        <input type="hidden" name="fields[conditions]" id="field-conditions"
+            value="<?= $this->escape(stripslashes($this->row->conditions)) ?>" />
         <input type="hidden" name="fields[user_id]" value="<?php echo User::get('id'); ?>" />
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -142,7 +148,9 @@ if (!$tmpl && !$no_html) {
 
         <fieldset class="fields title">
             <label for="field-title"><?php echo Lang::txt('COM_SUPPORT_FIELD_TITLE'); ?></label>
-            <input type="text" name="fields[title]" id="field-title" data-empty="<?= Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE') ?>" value="<?= $this->escape(stripslashes($this->row->title)) ?>" />
+            <input type="text" name="fields[title]" id="field-title"
+                data-empty="<?= Lang::txt('COM_SUPPORT_QUERY_ERROR_MISSING_TITLE') ?>"
+                value="<?= $this->escape(stripslashes($this->row->title)) ?>" />
         </fieldset>
 
         <fieldset class="query">
@@ -200,7 +208,8 @@ if (!$tmpl && !$no_html) {
                     <option value="closed"<?= $this->row->sort == 'closed' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED') ?></option>
                     <option value="category"<?= $this->row->sort == 'category' ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY') ?></option>
                 </select>
-                <select name="fields[sort_dir]" id="field-sort_dir-inline" aria-label="<?= Lang::txt('COM_SUPPORT_QUERY_SORT_DIRECTION') ?>">
+                <select name="fields[sort_dir]" id="field-sort_dir-inline"
+                    aria-label="<?= Lang::txt('COM_SUPPORT_QUERY_SORT_DIRECTION') ?>">
                     <option value="DESC"<?= strtolower($this->row->sort_dir) == 'desc' ? ' selected="selected"' : '' ?>>desc</option>
                     <option value="ASC"<?= strtolower($this->row->sort_dir) == 'asc' ? ' selected="selected"' : '' ?>>asc</option>
                 </select>
@@ -208,7 +217,8 @@ if (!$tmpl && !$no_html) {
         </fieldset>
 
         <input type="hidden" name="fields[id]" value="<?php echo ($this->row->iscore == 0) ? $this->row->id : 0; ?>" />
-        <input type="hidden" name="fields[conditions]" id="field-conditions" value="<?= $this->escape(stripslashes($this->row->conditions)) ?>" />
+        <input type="hidden" name="fields[conditions]" id="field-conditions"
+            value="<?= $this->escape(stripslashes($this->row->conditions)) ?>" />
         <input type="hidden" name="fields[user_id]" value="<?php echo User::get('id'); ?>" />
 
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />

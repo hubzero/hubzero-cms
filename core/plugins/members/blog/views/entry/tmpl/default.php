@@ -107,10 +107,13 @@ $this
                     <?php echo $this->row->visibility('text'); ?>
                 </dd>
                 <dd class="entry-options">
-                    <a class="edit" href="<?= Route::url($this->row->link('edit')) ?>" title="<?= Lang::txt('PLG_MEMBERS_BLOG_EDIT') ?>">
+                    <a class="edit" href="<?= Route::url($this->row->link('edit')) ?>"
+                        title="<?= Lang::txt('PLG_MEMBERS_BLOG_EDIT') ?>">
                         <span><?php echo Lang::txt('PLG_MEMBERS_BLOG_EDIT'); ?></span>
                     </a>
-                    <a class="delete" data-confirm="<?= Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE') ?>" href="<?= Route::url($this->row->link('delete')) ?>" title="<?= Lang::txt('PLG_MEMBERS_BLOG_DELETE') ?>">
+                    <a class="delete" data-confirm="<?= Lang::txt('PLG_MEMBERS_BLOG_CONFIRM_DELETE') ?>"
+                        href="<?= Route::url($this->row->link('delete')) ?>"
+                        title="<?= Lang::txt('PLG_MEMBERS_BLOG_DELETE') ?>">
                         <span><?php echo Lang::txt('PLG_MEMBERS_BLOG_DELETE'); ?></span>
                     </a>
                 </dd>
@@ -241,7 +244,8 @@ $this
                     }
                     ?>
                     <label>
-                        <?= Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                        <?= Lang::txt('PLG_MEMBERS_BLOG_FIELD_COMMENTS') ?>: <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                         <?php
                         if (!User::isGuest()) {
                             echo $this->editor('comment[content]', '', 40, 15, 'commentcontent', ['class' => 'minimal no-footer']);
@@ -255,7 +259,8 @@ $this
 
                 <?php if (!User::isGuest()) { ?>
                     <label class="comment-anonymous-label">
-                        <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1" />
+                        <input class="option" type="checkbox" name="comment[anonymous]" id="comment-anonymous"
+                            value="1" />
                         <?php echo Lang::txt('PLG_MEMBERS_BLOG_POST_ANONYMOUS'); ?>
                     </label>
 

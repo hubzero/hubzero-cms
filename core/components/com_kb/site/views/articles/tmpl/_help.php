@@ -24,7 +24,8 @@ defined('_HZEXEC_') or die();
     <div class="container">
         <h3><?php echo Lang::txt('COM_KB_FEATURE_REQUEST'); ?></h3>
         <p>
-            <?= Lang::txt('COM_KB_HAVE_A_FEATURE_REQUEST') ?> <a href="<?= Route::url('index.php?option=com_wishlist') ?>"><?= Lang::txt('COM_KB_FEATURE_TELL_US') ?></a>
+            <?= Lang::txt('COM_KB_HAVE_A_FEATURE_REQUEST') ?> <a
+                href="<?= Route::url('index.php?option=com_wishlist') ?>"><?= Lang::txt('COM_KB_FEATURE_TELL_US') ?></a>
         </p>
     </div><!-- / .container -->
 <?php } ?>

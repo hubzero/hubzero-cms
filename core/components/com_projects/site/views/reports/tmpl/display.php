@@ -222,7 +222,8 @@ $this
 
             <table class="stats-wrap">
                 <tr class="stats-activity">
-                    <th scope="row" class="stats-h icon-bar-chart" rowspan="2"><span><?= Lang::txt('Activity') ?></span></th>
+                    <th scope="row" class="stats-h icon-bar-chart"
+                        rowspan="2"><span><?= Lang::txt('Activity') ?></span></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -303,7 +304,8 @@ $this
                                     $project = new Components\Projects\Models\Project($topProject->scope_id);
                                     ?>
                                     <li>
-                                        <span class="stats-ima-small"><img src="<?= $project->picture('thumb') ?>" alt="" /></span>
+                                        <span class="stats-ima-small"><img src="<?= $project->picture('thumb') ?>"
+                                            alt="" /></span>
                                         <?php if (!$project->get('private')) : ?>
                                             <a href="<?= Route::url('index.php?option=' . $this->option . '&task=view&alias=' . $project->get('alias')) ?>">
                                         <?php endif; ?>
@@ -515,7 +517,8 @@ $this
             <?php if ($this->publishing) : ?>
                 <table class="stats-wrap">
                     <tr class="stats-publications">
-                        <th scope="row" class="stats-h icon-success-sign" rowspan="2"><span><?= Lang::txt('Publications') ?></span></th>
+                        <th scope="row" class="stats-h icon-success-sign"
+                            rowspan="2"><span><?= Lang::txt('Publications') ?></span></th>
                         <th></th>
                         <th></th>
                         <th></th>

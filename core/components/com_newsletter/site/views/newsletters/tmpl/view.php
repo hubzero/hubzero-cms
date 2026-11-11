@@ -24,7 +24,8 @@ $this
         <ul>
             <?php if (isset($this->id) && $this->id != 0) : ?>
                 <li>
-                    <a href="<?= Route::url('index.php?option=com_newsletter&id=' . $this->id . '&task=output') ?>" class="btn icon-file">
+                    <a href="<?= Route::url('index.php?option=com_newsletter&id=' . $this->id . '&task=output') ?>"
+                        class="btn icon-file">
                         <?php echo Lang::txt('COM_NEWSLETTER_VIEW_SAVEASPDF'); ?>
                     </a>
                 </li>
@@ -93,7 +94,8 @@ $this
             <h3><?php echo Lang::txt('COM_NEWSLETTER_VIEW_NEWSLETTER_HELP'); ?></h3>
             <ul>
                 <li>
-                    <a class="popup" href="<?= Route::url('index.php?option=com_help&component=newsletter&page=index') ?>">
+                    <a class="popup"
+                        href="<?= Route::url('index.php?option=com_help&component=newsletter&page=index') ?>">
                         <?php echo Lang::txt('COM_NEWSLETTER_VIEW_NEWSLETTER_HELP'); ?>
                     </a>
                 </li>

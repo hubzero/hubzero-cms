@@ -99,23 +99,31 @@ $link = str_replace('/administrator', '', $link);
     </table>
     <!-- End Spacer -->
 
-    <table id="account-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
+    <table id="account-info" width="100%"  cellpadding="0" cellspacing="0" border="0"
+        style="border-collapse: collapse; line-height: 1.6em;">
         <tbody>
             <tr>
                 <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
-                    <table width="100%" style="border-collapse: collapse; font-size: 1em;" cellpadding="0" cellspacing="0" border="0">
+                    <table width="100%" style="border-collapse: collapse; font-size: 1em;" cellpadding="0"
+                        cellspacing="0" border="0">
                         <tbody>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('COM_MEMBERS_EMAIL_CREATED') ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->xprofile->get('registerDate') ?> (UTC)</td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                    align="right"><?= Lang::txt('COM_MEMBERS_EMAIL_CREATED') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%"
+                                    align="left"><?= $this->xprofile->get('registerDate') ?> (UTC)</td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('COM_MEMBERS_EMAIL_NAME') ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->escape($this->xprofile->get('name')) ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                    align="right"><?= Lang::txt('COM_MEMBERS_EMAIL_NAME') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%"
+                                    align="left"><?= $this->escape($this->xprofile->get('name')) ?></td>
                             </tr>
                             <tr>
-                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;" align="right"><?= Lang::txt('COM_MEMBERS_EMAIL_USERNAME') ?>:</th>
-                                <td style="text-align: left; padding: 0 0.5em;" width="100%" align="left"><?= $this->xprofile->get('username') ?></td>
+                                <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"
+                                    align="right"><?= Lang::txt('COM_MEMBERS_EMAIL_USERNAME') ?>:</th>
+                                <td style="text-align: left; padding: 0 0.5em;" width="100%"
+                                    align="left"><?= $this->xprofile->get('username') ?></td>
                             </tr>
                         </tbody>
                     </table>

@@ -68,18 +68,22 @@ if ($this->comment->isReported()) {
     $comment = $this->comment->comment;
 }
 ?>
-    <li class="comment <?= $cls ?><?= !$this->comment->get('parent') ? ' start' : '' ?>" id="c<?= $this->comment->get('id') ?>">
+    <li class="comment <?= $cls ?><?= !$this->comment->get('parent') ? ' start' : '' ?>"
+        id="c<?= $this->comment->get('id') ?>">
         <p class="comment-member-photo">
             <img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
         </p>
         <div class="comment-content">
             <p class="comment-title">
                 <strong><?php echo $name; ?></strong>
-                <a class="permalink" href="<?= Route::url($this->comment->link('anchor')) ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_PERMALINK') ?>">
+                <a class="permalink" href="<?= Route::url($this->comment->link('anchor')) ?>"
+                    title="<?= Lang::txt('PLG_GROUPS_FORUM_PERMALINK') ?>">
                     <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?></span>
-                    <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
+                    <span class="time"><time
+                        datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
                     <span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_FORUM_ON'); ?></span>
-                    <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
+                    <span class="date"><time
+                        datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
                     <?php if ($this->comment->wasModified()) { ?>
                         &mdash; <?php echo Lang::txt('PLG_GROUPS_FORUM_EDITED'); ?>
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?></span>
@@ -195,10 +199,13 @@ if ($this->comment->isReported()) {
                  || $this->config->get('access-edit-post')
 ) { ?>
                 <?php if ($this->comment->get('parent') && ($this->config->get('access-delete-post') || $this->comment->get('created_by') == User::get('id'))) { ?>
-                    <button type="submit" form="hz-post-action" formaction="<?= Route::url($this->comment->link('delete')) ?>" class="icon-delete delete" data-id="c<?= $this->comment->get('id') ?>"><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></button>
+                    <button type="submit" form="hz-post-action"
+                        formaction="<?= Route::url($this->comment->link('delete')) ?>" class="icon-delete delete"
+                        data-id="c<?= $this->comment->get('id') ?>"><?= Lang::txt('PLG_GROUPS_FORUM_DELETE') ?></button>
                 <?php } ?>
                 <?php if (($this->config->get('access-edit-thread') || $this->config->get('access-edit-post')) && $this->comment->get('created_by') == User::get('id')) { ?>
-                    <a class="icon-edit edit" data-id="c<?= $this->comment->get('id') ?>" href="<?= Route::url($this->comment->link('edit')) ?>"><!--
+                    <a class="icon-edit edit" data-id="c<?= $this->comment->get('id') ?>"
+                        href="<?= Route::url($this->comment->link('edit')) ?>"><!--
                         --><?php echo Lang::txt('PLG_GROUPS_FORUM_EDIT'); ?><!--
                     --></a>
                 <?php } ?>
@@ -207,24 +214,33 @@ if ($this->comment->isReported()) {
             <?php if (!$this->comment->isReported()) { ?>
                 <?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
                     <?php if (Request::getInt('reply', 0) == $this->comment->get('id')) { ?>
-                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_GROUPS_FORUM_REPLY') ?>" href="<?= Route::url($this->comment->link()) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                    <a class="icon-reply reply active" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('PLG_GROUPS_FORUM_REPLY') ?>"
+                        href="<?= Route::url($this->comment->link()) ?>"
+                        rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('JCANCEL'); ?><!--
                 --></a>
                     <?php } else { ?>
-                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_GROUPS_FORUM_REPLY') ?>" href="<?= Route::url($this->comment->link('reply')) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                    <a class="icon-reply reply" data-txt-active="<?= Lang::txt('JCANCEL') ?>"
+                        data-txt-inactive="<?= Lang::txt('PLG_GROUPS_FORUM_REPLY') ?>"
+                        href="<?= Route::url($this->comment->link('reply')) ?>"
+                        rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('PLG_GROUPS_FORUM_REPLY'); ?><!--
                 --></a>
                     <?php } ?>
                 <?php } ?>
-                <a class="icon-abuse abuse" href="<?= Route::url($this->comment->link('abuse')) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                <a class="icon-abuse abuse" href="<?= Route::url($this->comment->link('abuse')) ?>"
+                    rel="comment-form<?= $this->comment->get('id') ?>"><!--
                     --><?php echo Lang::txt('PLG_GROUPS_FORUM_REPORT_ABUSE'); ?><!--
                 --></a>
             <?php } ?>
             </div>
 
             <?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
-                <div class="comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>" id="comment-form<?= $this->comment->get('id') ?>">
-            <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->thread->link()) ?>" method="post" enctype="multipart/form-data">
+                <div class="comment-add<?= Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '' ?>"
+                    id="comment-form<?= $this->comment->get('id') ?>">
+            <form id="cform<?= $this->comment->get('id') ?>" action="<?= Route::url($this->thread->link()) ?>"
+                method="post" enctype="multipart/form-data">
                         <fieldset>
                             <legend><span><?= Lang::txt('PLG_GROUPS_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))) ?></span></legend>
 
@@ -232,10 +248,14 @@ if ($this->comment->isReported()) {
                             <input type="hidden" name="fields[state]" value="1" />
                             <input type="hidden" name="fields[access]" value="<?= $this->thread->get('access', 0) ?>" />
                             <input type="hidden" name="fields[scope]" value="<?= $this->thread->get('scope') ?>" />
-                            <input type="hidden" name="fields[category_id]" value="<?= $this->thread->get('category_id') ?>" />
-                            <input type="hidden" name="fields[scope_id]" value="<?= $this->thread->get('scope_id') ?>" />
-                            <input type="hidden" name="fields[scope_sub_id]" value="<?= $this->thread->get('scope_sub_id') ?>" />
-                            <input type="hidden" name="fields[object_id]" value="<?= $this->thread->get('object_id') ?>" />
+                            <input type="hidden" name="fields[category_id]"
+                                value="<?= $this->thread->get('category_id') ?>" />
+                            <input type="hidden" name="fields[scope_id]"
+                                value="<?= $this->thread->get('scope_id') ?>" />
+                            <input type="hidden" name="fields[scope_sub_id]"
+                                value="<?= $this->thread->get('scope_sub_id') ?>" />
+                            <input type="hidden" name="fields[object_id]"
+                                value="<?= $this->thread->get('object_id') ?>" />
                             <input type="hidden" name="fields[parent]" value="<?= $this->comment->get('id') ?>" />
                             <input type="hidden" name="fields[thread]" value="<?= $this->comment->get('thread') ?>" />
                             <input type="hidden" name="fields[created]" value="" />
@@ -261,15 +281,19 @@ if ($this->comment->isReported()) {
                             <div class="form-group">
                                 <label class="upload-label" for="comment-<?php echo $this->comment->get('id'); ?>-file">
                                     <span class="label-text"><?= Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE') ?>:</span>
-                                    <input type="file" class="form-control-file" name="upload" id="comment-<?= $this->comment->get('id') ?>-file" />
+                                    <input type="file" class="form-control-file" name="upload"
+                                        id="comment-<?= $this->comment->get('id') ?>-file" />
                                 </label>
                             </div>
 
                             <?php if ($this->config->get('allow_anonymous')) { ?>
                                 <div class="form-group">
                                     <div class="form-check">
-                                        <label class="form-check-label reply-anonymous-label" for="comment-<?= $this->comment->get('id') ?>-anonymous">
-                                            <input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="comment-<?= $this->comment->get('id') ?>-anonymous" value="1" />
+                                        <label class="form-check-label reply-anonymous-label"
+                                            for="comment-<?= $this->comment->get('id') ?>-anonymous">
+                                            <input class="option form-check-input" type="checkbox"
+                                                name="fields[anonymous]"
+                                                id="comment-<?= $this->comment->get('id') ?>-anonymous" value="1" />
                                             <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
                                         </label>
                                     </div>

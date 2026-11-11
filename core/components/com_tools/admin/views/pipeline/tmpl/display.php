@@ -24,12 +24,15 @@ $this->css();
 Html::behavior('tooltip');
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="grid">
             <div class="col span6">
                 <label for="filter_search"><?php echo Lang::txt('JSEARCH_FILTER'); ?></label>
-                <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_TOOLS_SEARCH_PLACEHOLDER') ?>" />
+                <input type="text" name="search" id="filter_search" class="filter"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('COM_TOOLS_SEARCH_PLACEHOLDER') ?>" />
 
                 <input type="submit" value="<?php echo Lang::txt('COM_TOOLS_GO'); ?>" />
                 <button type="button" class="filter-clear"><?php echo Lang::txt('JSEARCH_FILTER_CLEAR'); ?></button>
@@ -124,7 +127,8 @@ Html::behavior('tooltip');
             ?>
             <tr class="<?php echo "row$k"; ?>">
                 <td>
-                    <input type="radio" name="id" id="cb<?= $i ?>" value="<?php echo $row['id'] ?>" class="checkbox-toggle" />
+                    <input type="radio" name="id" id="cb<?= $i ?>" value="<?php echo $row['id'] ?>"
+                        class="checkbox-toggle" />
                 </td>
                 <td class="priority-5">
                     <?php echo $this->escape($row['id']); ?>
@@ -140,7 +144,8 @@ Html::behavior('tooltip');
                     </a>
                 </td>
                 <td>
-                    <span class="state <?= $state ?> hasTip" title="<?= $this->escape(Lang::txt(strtoupper($this->option) . '_' . strtoupper($state))) ?>">
+                    <span class="state <?= $state ?> hasTip"
+                        title="<?= $this->escape(Lang::txt(strtoupper($this->option) . '_' . strtoupper($state))) ?>">
                         <span><?= $this->escape(Lang::txt(strtoupper($this->option) . '_' . strtoupper($state))) ?></span>
                     </span>
                 </td>

@@ -51,7 +51,8 @@ $this
     <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&task=' . $this->task) ?>" method="post" id="hubForm">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&task=' . $this->task) ?>" method="post"
+        id="hubForm">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
         <input type="hidden" name="task" value="<?php echo $this->task; ?>" />

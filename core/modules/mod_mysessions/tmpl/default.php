@@ -74,8 +74,10 @@ $base = rtrim(Request::base(true), '/');
                         <?php if ($this->params->get('show_screenshots', 1)) : ?>
                             <div class="session-details-left">
                                 <div class="session-snapshot">
-                                    <a class="session-snapshot-link" href="<?= $snapshot ?>" title="<?= $this->escape($session->sessname) ?>">
-                                        <img class="snapshot snapshot-main" src="<?= $snapshot ?>" data-src="<?= $snapshot ?>" />
+                                    <a class="session-snapshot-link" href="<?= $snapshot ?>"
+                                        title="<?= $this->escape($session->sessname) ?>">
+                                        <img class="snapshot snapshot-main" src="<?= $snapshot ?>"
+                                            data-src="<?= $snapshot ?>" />
                                     </a>
                                 </div>
                             </div>
@@ -104,16 +106,19 @@ $base = rtrim(Request::base(true), '/');
                             <?php endif; ?>
 
                             <div class="session-buttons">
-                                <a class="btn icon-resume resume" href="<?= $resumeLink ?>" title="<?= Lang::txt('MOD_MYSESSIONS_RESUME_TITLE') ?>">
+                                <a class="btn icon-resume resume" href="<?= $resumeLink ?>"
+                                    title="<?= Lang::txt('MOD_MYSESSIONS_RESUME_TITLE') ?>">
                                     <?php echo ucfirst(Lang::txt('MOD_MYSESSIONS_RESUME')); ?>
                                 </a>
                                 <?php $tcls = ($this->params->get('terminate_double_check', 1)) ? 'terminate-confirm' : 'terminate'; ?>
                                 <?php if (User::get('username') == $session->username) : ?>
-                                    <a class="btn icon-terminate <?= $tcls ?>" href="<?= $terminateLink ?>" title="<?= Lang::txt('MOD_MYSESSIONS_TERMINATE_TITLE') ?>">
+                                    <a class="btn icon-terminate <?= $tcls ?>" href="<?= $terminateLink ?>"
+                                        title="<?= Lang::txt('MOD_MYSESSIONS_TERMINATE_TITLE') ?>">
                                         <?php echo ucfirst(Lang::txt('MOD_MYSESSIONS_TERMINATE')); ?>
                                     </a>
                                 <?php else : ?>
-                                    <a class="btn icon-disconnect disconnect" href="<?= $disconnectLink ?>" title="<?= Lang::txt('MOD_MYSESSIONS_DISCONNECT_TITLE') ?>">
+                                    <a class="btn icon-disconnect disconnect" href="<?= $disconnectLink ?>"
+                                        title="<?= Lang::txt('MOD_MYSESSIONS_DISCONNECT_TITLE') ?>">
                                         <?php echo ucfirst(Lang::txt('MOD_MYSESSIONS_DISCONNECT')); ?>
                                     </a>
                                 <?php endif; ?>

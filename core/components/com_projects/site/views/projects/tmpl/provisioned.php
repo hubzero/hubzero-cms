@@ -86,18 +86,22 @@ $this
                                 <label for="field-title">
                                     <span class="pub-info-pop tooltips" title="<?= Lang::txt('COM_PROJECTS_PROJECT_TITLE') . ' :: ' . Lang::txt('COM_PROJECTS_HINTS_TITLE') ?>">&nbsp;</span>
                                     <?php echo Lang::txt('COM_PROJECTS_PROJECT_TITLE'); ?>
-                                    <input name="title" id="field-title" maxlength="250" type="text" value="<?= $this->escape($this->pub->title) ?>" class="verifyme long" />
+                                    <input name="title" id="field-title" maxlength="250" type="text"
+                                        value="<?= $this->escape($this->pub->title) ?>" class="verifyme long" />
                                 </label>
 
                                 <label for="field-alias">
                                     <span class="pub-info-pop tooltips" title="<?= Lang::txt('COM_PROJECTS_CHOOSE_ALIAS') . '::' . Lang::txt('COM_PROJECTS_HINTS_NAME') ?>">&nbsp;</span>
                                     <?php echo Lang::txt('COM_PROJECTS_ALIAS_NAME'); ?>
                                     <span class="verification"></span>
-                                    <input name="new-alias" id="field-alias" maxlength="30" type="text" value="<?= $this->suggested ?>" class="verifyme long" />
+                                    <input name="new-alias" id="field-alias" maxlength="30" type="text"
+                                        value="<?= $this->suggested ?>" class="verifyme long" />
                                 </label>
                                 <p class="submitarea">
-                                    <input type="submit" id="b-continue" class="btn btn-primary active" value="<?= Lang::txt('COM_PROJECTS_ACTIVATE_CREATE_A_PROJECT') ?>" />
-                                    <span class="btn btncancel"><a href="<?= $url ?>"><?= Lang::txt(JCANCEL) ?></a></span>
+                                    <input type="submit" id="b-continue" class="btn btn-primary active"
+                                        value="<?= Lang::txt('COM_PROJECTS_ACTIVATE_CREATE_A_PROJECT') ?>" />
+                                    <span class="btn btncancel"><a
+                                        href="<?= $url ?>"><?= Lang::txt(JCANCEL) ?></a></span>
                                 </p>
                             </fieldset>
                         </form>

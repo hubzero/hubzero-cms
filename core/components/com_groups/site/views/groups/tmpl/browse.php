@@ -49,7 +49,9 @@ foreach ($this->notifications as $notification) {
                     <fieldset class="entry-search">
                         <legend><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_LEGEND'); ?></legend>
                         <label for="entry-search-field"><?= Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP') ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER') ?>" />
+                        <input type="text" name="search" id="entry-search-field"
+                            value="<?= $this->escape($this->filters['search']) ?>"
+                            placeholder="<?= Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER') ?>" />
                         <input type="hidden" name="sortby" value="<?= $this->escape($this->filters['sortby']) ?>" />
                         <input type="hidden" name="policy" value="<?= $this->escape($this->filters['policy']) ?>" />
                         <input type="hidden" name="index" value="<?= $this->escape($this->filters['index']) ?>" />

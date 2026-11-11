@@ -49,7 +49,9 @@ if ($group->get('published') == 1 && !User::isGuest()) {
 
 $published = ($group->get('published')) ? true : false;
 ?>
-<div class="group <?= (!$published) ? 'notpublished' : ($group->get('published') == 2 ? 'archived' : 'published') ?>" id="group<?= $group->get('gidNumber') ?>" role="group" aria-label="<?= $this->escape(stripslashes($group->get('description'))) ?>"
+<div class="group <?= (!$published) ? 'notpublished' : ($group->get('published') == 2 ? 'archived' : 'published') ?>"
+    id="group<?= $group->get('gidNumber') ?>" role="group"
+    aria-label="<?= $this->escape(stripslashes($group->get('description'))) ?>"
     data-id="<?php echo $group->get('gidNumber'); ?>"
     data-status="<?php echo $this->escape($status); ?>"
     data-title="<?php echo $this->escape(stripslashes($group->get('description')) . ' ' . $group->get('cn')); ?>">
@@ -61,9 +63,11 @@ $published = ($group->get('published')) ? true : false;
         <?php if ($published) : ?>
             <a class="group-identity group-link" href="<?php echo $groupUrl; ?>">
                 <?php if ($group->get('logo') && is_file($path)) : ?>
-                    <img src="<?= with(new Hubzero\Content\Moderator($path))->getUrl() ?>" alt="<?= $this->escape(stripslashes($group->get('description'))) ?>" />
+                    <img src="<?= with(new Hubzero\Content\Moderator($path))->getUrl() ?>"
+                        alt="<?= $this->escape(stripslashes($group->get('description'))) ?>" />
                 <?php else : ?>
-                    <span class="group-img-placeholder"><span class="sr-only"><?= $this->escape(stripslashes($group->get('description'))) ?></span></span>
+                    <span class="group-img-placeholder"><span
+                        class="sr-only"><?= $this->escape(stripslashes($group->get('description'))) ?></span></span>
                 <?php endif; ?>
                 <span class="group-details">
                     <span class="group-alias"><?php echo $this->escape($group->get('cn')); ?></span>
@@ -97,9 +101,11 @@ $published = ($group->get('published')) ? true : false;
         <?php else : ?>
             <div class="group-identity">
                 <?php if ($group->get('logo') && is_file($path)) : ?>
-                    <img src="<?= with(new Hubzero\Content\Moderator($path))->getUrl() ?>" alt="<?= $this->escape(stripslashes($group->get('description'))) ?>" />
+                    <img src="<?= with(new Hubzero\Content\Moderator($path))->getUrl() ?>"
+                        alt="<?= $this->escape(stripslashes($group->get('description'))) ?>" />
                 <?php else : ?>
-                    <span><span class="sr-only"><?= $this->escape(stripslashes($group->get('description'))) ?></span></span>
+                    <span><span
+                        class="sr-only"><?= $this->escape(stripslashes($group->get('description'))) ?></span></span>
                 <?php endif; ?>
             </div>
             <div class="group-details">
@@ -112,7 +118,8 @@ $published = ($group->get('published')) ? true : false;
 
         <?php if (!$published) : ?>
             <div class="group-meta">
-                <span class="not-published group-status"><?= Lang::txt('COM_GROUPS_STATUS_NOT_PUBLISHED_GROUP') ?></span>
+                <span
+                    class="not-published group-status"><?= Lang::txt('COM_GROUPS_STATUS_NOT_PUBLISHED_GROUP') ?></span>
             </div>
         <?php else : ?>
             <?php
@@ -191,7 +198,8 @@ $published = ($group->get('published')) ? true : false;
                                 <?php if (!$group->get('join_policy')) : ?>
                                     <button type="submit" form="hz-post-action" formaction="<?= $joinUrl ?>" class="btn btn-success" aria-label="<?= $joinLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></button>
                                 <?php else : ?>
-                                    <a class="btn btn-success" href="<?= $joinUrl ?>" aria-label="<?= $joinLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></a>
+                                    <a class="btn btn-success" href="<?= $joinUrl ?>"
+                                        aria-label="<?= $joinLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></a>
                                 <?php endif; ?>
                             </div>
                         </div>

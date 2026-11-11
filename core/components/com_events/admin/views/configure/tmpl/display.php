@@ -27,7 +27,8 @@ Toolbar::cancel();
             <tbody>
                 <tr>
                     <th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_ADMINMAIL'); ?></th>
-                    <td><input type="text" name="config[adminmail]" size="30" maxlength="50" value="<?= $this->config->adminmail ?>" /></td>
+                    <td><input type="text" name="config[adminmail]" size="30" maxlength="50"
+                        value="<?= $this->config->adminmail ?>" /></td>
                 </tr>
                 <tr>
                     <th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_FIRSTDAY'); ?></th>
@@ -91,7 +92,8 @@ Toolbar::cancel();
                 </tr>
                 <tr>
                     <th scope="row" class="key"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_CONFIG_NUMEVENTS'); ?></th>
-                    <td><input type="text" size="3" name="config[calEventListRowsPpg]" value="<?= $this->config->calEventListRowsPpg ?>" /></td>
+                    <td><input type="text" size="3" name="config[calEventListRowsPpg]"
+                        value="<?= $this->config->calEventListRowsPpg ?>" /></td>
                 </tr>
             </tbody>
         </table>
@@ -128,13 +130,16 @@ Toolbar::cancel();
                 }
                 ?>
                 <tr>
-                    <td><input type="text" name="fields[<?= $i ?>][title]" value="<?= $fields[$i][1] ?>" maxlength="255" /></td>
+                    <td><input type="text" name="fields[<?= $i ?>][title]" value="<?= $fields[$i][1] ?>"
+                        maxlength="255" /></td>
                     <td><select name="fields[<?php echo $i; ?>][type]">
                         <option value="text"<?= ($fields[$i][2] == 'text') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_EVENTS_CAL_LANG_TEXT') ?></option>
                         <option value="checkbox"<?= ($fields[$i][2] == 'checkbox') ? ' selected="selected"' : '' ?>><?= Lang::txt('COM_EVENTS_CAL_LANG_CHECKBOX') ?></option>
                     </select></td>
-                    <td><input type="checkbox" name="fields[<?= $i ?>][required]" value="1"<?= ($fields[$i][3]) ? ' checked="checked"' : '' ?> /></td>
-                    <td><input type="checkbox" name="fields[<?= $i ?>][show]" value="1"<?= ($fields[$i][4]) ? ' checked="checked"' : '' ?> /></td>
+                    <td><input type="checkbox" name="fields[<?= $i ?>][required]"
+                        value="1"<?= ($fields[$i][3]) ? ' checked="checked"' : '' ?> /></td>
+                    <td><input type="checkbox" name="fields[<?= $i ?>][show]"
+                        value="1"<?= ($fields[$i][4]) ? ' checked="checked"' : '' ?> /></td>
                 </tr>
                 <?php
             }

@@ -65,7 +65,8 @@ defined('_HZEXEC_') or die();
         ?>
         <li class="<?= $item->get('type') == 'folder' ? 'type-folder collapsed' : 'type-file' ?><?= $parentCss ?><?= $selected ? ' selectedfilter preselected' : '' ?><?= $allowed ?>" id="<?= $liId ?>" data-path="<?= $this->escape($item->get('localPath')) ?>" data-connection="<?= Request::getInt('cid', 0) ?>">
             <span class="item-info"><?= $item->get('type') == 'file' ? $item->getSize('formatted') : '' ?></span>
-            <span class="item-wrap <?= ($item->get('type') == 'folder' ? 'collapsor ' : '') . $levelCss ?>" id="<?= urlencode($item->get('localPath')) ?>">
+            <span class="item-wrap <?= ($item->get('type') == 'folder' ? 'collapsor ' : '') . $levelCss ?>"
+                id="<?= urlencode($item->get('localPath')) ?>">
                 <?php if ($item->get('type') == 'folder') {
                     ?><span class="collapsor-indicator">&nbsp;</span><?php
                 } ?>

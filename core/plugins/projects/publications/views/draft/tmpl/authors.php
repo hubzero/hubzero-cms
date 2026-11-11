@@ -78,7 +78,8 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
                         </span>
                     </span>
                     <span class="item-order"><?php echo $i; ?></span>
-                    <span class="item-title"><?= $this->escape($name) ?> <span class="item-subtext"><?= $org ? ' - ' . $this->escape($org) : '' ?></span></span>
+                    <span class="item-title"><?= $this->escape($name) ?> <span
+                        class="item-subtext"><?= $org ? ' - ' . $this->escape($org) : '' ?></span></span>
                     <span class="item-details"><?php echo $this->escape($details); ?></span>
                 </li>
                 <?php $i++;
@@ -86,7 +87,8 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
             </ul>
     <?php  }  ?>
             <div class="item-new">
-                <span><a href="<?= $selectUrl ?>" class="item-add showinbox"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CHOOSE_AUTHORS') ?></a></span>
+                <span><a href="<?= $selectUrl ?>"
+                    class="item-add showinbox"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_CHOOSE_AUTHORS') ?></a></span>
             </div>
         </div>
         

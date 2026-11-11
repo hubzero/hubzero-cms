@@ -30,7 +30,8 @@ $assets = [];
 
         <p>
             <label for="title">Title: </label><span class="required">*required</span>
-            <input type="text" name="title" class="wiki-title" placeholder="Wiki page title" value="<?= $this->escape($asset->get('title')) ?>" />
+            <input type="text" name="title" class="wiki-title" placeholder="Wiki page title"
+                value="<?= $this->escape($asset->get('title')) ?>" />
         </p>
 
         <label for="content">Content: </label>
@@ -117,7 +118,8 @@ endforeach;
 
         <p>
             <label for="progress_factors">Include this item in the progress calculation?</label>
-            <input name="progress_factors" type="checkbox" value="1" <?= ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : '' ?>/>
+            <input name="progress_factors" type="checkbox"
+                value="1" <?= ($asset->get('progress_factors.asset_id')) ? 'checked="checked"' : '' ?>/>
             <input type="hidden" name="edit_progress_factors" value="1" />
         </p>
 

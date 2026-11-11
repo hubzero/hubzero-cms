@@ -43,14 +43,17 @@ $this
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
 
-    <form action="<?= Route::url($this->member->link() . '&active=blog&task=save') ?>" method="post" id="hubForm" class="full">
+    <form action="<?= Route::url($this->member->link() . '&active=blog&task=save') ?>" method="post" id="hubForm"
+        class="full">
         <fieldset>
             <legend><?= Lang::txt($this->entry->isNew() ? 'PLG_MEMBERS_BLOG_NEW_ENTRY' : 'PLG_MEMBERS_BLOG_EDIT_DETAILS') ?></legend>
 
             <div class="form-group">
                 <label for="field-title"<?= $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : '' ?>>
-                    <?= Lang::txt('PLG_MEMBERS_BLOG_TITLE') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                    <input type="text" class="form-control" name="entry[title]" id="field-title" size="35" value="<?= $this->escape(stripslashes($this->entry->get('title', ''))) ?>" />
+                    <?= Lang::txt('PLG_MEMBERS_BLOG_TITLE') ?> <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                    <input type="text" class="form-control" name="entry[title]" id="field-title" size="35"
+                        value="<?= $this->escape(stripslashes($this->entry->get('title', ''))) ?>" />
                 </label>
                 <?php if ($this->task == 'save' && !$this->entry->get('title')) { ?>
                     <p class="error"><?php echo Lang::txt('PLG_MEMBERS_BLOG_ERROR_PROVIDE_TITLE'); ?></p>
@@ -59,7 +62,8 @@ $this
 
             <div class="form-group">
                 <label for="entrycontent">
-                    <?= Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT') ?> <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                    <?= Lang::txt('PLG_MEMBERS_BLOG_FIELD_CONTENT') ?> <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                     <?= $this->editor('entry[content]', $this->entry->get('content'), 50, 30, 'entrycontent', ['class' => 'form-control']) ?>
                 </label>
                 <?php if ($this->task == 'save' && !$this->entry->get('content')) { ?>
@@ -80,7 +84,8 @@ $this
                     <?php if (count($tf) > 0) {
                         echo implode("\n", $tf);
                     } else { ?>
-                        <input type="text" class="form-control" name="tags" id="actags" value="<?= $this->escape($this->entry->tags('string')) ?>" />
+                        <input type="text" class="form-control" name="tags" id="actags"
+                            value="<?= $this->escape($this->entry->tags('string')) ?>" />
                     <?php } ?>
                     <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_TAGS_HINT'); ?></span>
                 </label>
@@ -90,7 +95,9 @@ $this
                 <div class="col span6">
                     <div class="form-group">
                         <label for="field-allow_comments">
-                            <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?= $this->entry->get('allow_comments') == 1 ? ' checked="checked"' : '' ?> />
+                            <input type="checkbox" class="option form-check-input" name="entry[allow_comments]"
+                                id="field-allow_comments"
+                                value="1"<?= $this->entry->get('allow_comments') == 1 ? ' checked="checked"' : '' ?> />
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
                         </label>
                     </div>

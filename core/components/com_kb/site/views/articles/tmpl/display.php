@@ -162,7 +162,9 @@ Document::setTitle(Lang::txt('COM_KB'));
                         <div class="col span-half<?php echo $cls; ?>">
                             <h4>
                                 <a href="<?php echo Route::url($row->link()); ?>">
-                                    <?= $this->escape(stripslashes($row->get('title'))) ?> <span class="item-count">(<?= $row->get('articles', 0) ?>)</span> <span class="more">&raquo;</span>
+                                    <?= $this->escape(stripslashes($row->get('title'))) ?> <span
+                                        class="item-count">(<?= $row->get('articles', 0) ?>)</span> <span
+                                        class="more">&raquo;</span>
                                 </a>
                             </h4>
                             <?php if ($articles->count() > 0) { ?>

@@ -18,7 +18,8 @@ defined('_HZEXEC_') or die();
     <?php if ($this->params->get('button_show_add', 1)) { ?>
     <ul class="module-nav">
         <li>
-            <a class="icon-plus" href="<?= Route::url('index.php?option=com_wishlist&task=add&category=general&rid=1') ?>">
+            <a class="icon-plus"
+                href="<?= Route::url('index.php?option=com_wishlist&task=add&category=general&rid=1') ?>">
                 <?php echo Lang::txt('MOD_MYWISHES_NEW_WISH'); ?>
             </a>
         </li>

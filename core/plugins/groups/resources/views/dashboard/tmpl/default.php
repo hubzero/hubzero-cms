@@ -122,12 +122,14 @@ if ($this->results) {
             ?>
             <tr>
             <?php if ($this->config->get('show_ranking')) { ?>
-                <td class="ranking"><?= number_format($line->ranking, 1) ?> <span class="rank-<?= $r ?>"><?= Lang::txt('PLG_GROUPS_RESOURCES_RANKING') ?></span></td>
+                <td class="ranking"><?= number_format($line->ranking, 1) ?> <span
+                    class="rank-<?= $r ?>"><?= Lang::txt('PLG_GROUPS_RESOURCES_RANKING') ?></span></td>
             <?php } elseif ($this->config->get('show_rating')) { ?>
                 <td class="rating"><span class="avgrating<?= $class ?>"><span><?= Lang::txt('PLG_GROUPS_RESOURCES_OUT_OF_5_STARS', $line->rating) ?></span>&nbsp;</span></td>
             <?php } ?>
                 <td>
-                    <a href="<?= $line->href ?>" class="fixedResourceTip" title="DOM:rsrce<?= $line->id ?>"><?= $this->escape($line->title) ?></a>
+                    <a href="<?= $line->href ?>" class="fixedResourceTip"
+                        title="DOM:rsrce<?= $line->id ?>"><?= $this->escape($line->title) ?></a>
                     <div class="hide" id="rsrce<?php echo $line->id; ?>">
                         <h4><?php echo $this->escape($line->title); ?></h4>
                         <div>

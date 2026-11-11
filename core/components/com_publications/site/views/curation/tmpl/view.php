@@ -39,7 +39,8 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 </header><!-- / #content-header -->
 
 <section class="main section">
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" id="curation-form" name="curation-form">
+    <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"
+        method="post" id="curation-form" name="curation-form">
         <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
         <input type="hidden" name="controller" value="<?php echo $this->controller; ?>" />
         <input type="hidden" name="id" id="pid" value="<?= $this->pub->id ?>" data-route="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&id=' . $this->pub->id . '&task=save') ?>" />
@@ -74,17 +75,20 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
                     <span class="legend-checker-none"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_NONE') ?></span>
                     <span class="legend-checker-pass"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_PASS') ?></span>
                     <span class="legend-checker-fail"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_FAIL') ?></span>
-                    <span class="legend-checker-update"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_UPDATE') ?></span>
+                    <span
+                        class="legend-checker-update"><?= Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_UPDATE') ?></span>
                 </span>
             </p>
             <div class="clear"></div>
             <div class="submit-curation">
                 <p>
                     <span class="button-wrapper icon-kickback">
-                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_CURATION_LOOKS_BAD') ?>" class="btn btn-primary active icon-kickback btn-curate curate-kickback" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_CURATION_LOOKS_BAD') ?>"
+                            class="btn btn-primary active icon-kickback btn-curate curate-kickback" />
                     </span>
                     <span class="button-wrapper icon-apply">
-                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_CURATION_LOOKS_GOOD') ?>" class="btn btn-success active icon-apply btn-curate curate-save" />
+                        <input type="submit" value="<?= Lang::txt('COM_PUBLICATIONS_CURATION_LOOKS_GOOD') ?>"
+                            class="btn btn-success active icon-apply btn-curate curate-save" />
                     </span>
                 </p>
             </div>
@@ -116,7 +120,9 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 
     <div class="hidden">
         <div id="addnotice" class="addnotice">
-            <form id="notice-form" name="noticeForm" action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post">
+            <form id="notice-form" name="noticeForm"
+                action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"
+                method="post">
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_TITLE'); ?></legend>
 
@@ -135,12 +141,14 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
                     <div class="form-group">
                         <label for="notice-review">
                             <span class="block"><?= Lang::txt('COM_PUBLICATIONS_CURATION_NOTICE_LABEL') ?></span>
-                            <textarea name="review" id="notice-review" class="form-control" rows="5" cols="10"></textarea>
+                            <textarea name="review" id="notice-review" class="form-control" rows="5"
+                                cols="10"></textarea>
                         </label>
                     </div>
                 </fieldset>
                 <p class="submitarea">
-                    <input type="submit" id="notice-submit" class="btn" value="<?= Lang::txt('COM_PUBLICATIONS_CURATION_MARK_AS_FAIL') ?>" />
+                    <input type="submit" id="notice-submit" class="btn"
+                        value="<?= Lang::txt('COM_PUBLICATIONS_CURATION_MARK_AS_FAIL') ?>" />
                 </p>
             </form>
         </div>

@@ -60,7 +60,8 @@ if ($label == 'none') {
     <?php endif; ?>
 </header>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" id="citeform" method="get" class="<?= $batch_download ? " withBatchDownload" : '' ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" id="citeform" method="get"
+    class="<?= $batch_download ? " withBatchDownload" : '' ?>">
     <section class="main section">
         <div class="section-inner hz-layout-with-aside">
             <div class="subject">
@@ -69,7 +70,10 @@ if ($label == 'none') {
                     <fieldset class="entry-search">
                         <legend><?php echo Lang::txt('COM_CITATIONS_SEARCH_CITATIONS'); ?></legend>
                         <label for="entry-search-field"><?= Lang::txt('COM_CITATIONS_BROWSE_SEARCH_HELP') ?></label>
-                        <input type="text" name="search" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER') ?>" aria-label="<?= Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER') ?>" />
+                        <input type="text" name="search" id="entry-search-field"
+                            value="<?= $this->escape($this->filters['search']) ?>"
+                            placeholder="<?= Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER') ?>"
+                            aria-label="<?= Lang::txt('COM_CITATIONS_SEARCH_CITATIONS_PLACEHOLDER') ?>" />
                     </fieldset>
                 </div><!-- /.container .data-entry -->
                 <div class="container">
@@ -112,7 +116,8 @@ if ($label == 'none') {
                                 <tr>
                                     <?php if ($batch_download) : ?>
                                         <th class="batch">
-                                            <input type="checkbox" class="checkall-download" aria-label="Select all citations for download" />
+                                            <input type="checkbox" class="checkall-download"
+                                                aria-label="Select all citations for download" />
                                         </th>
                                     <?php endif; ?>
                                     <th colspan="2"><?php echo Lang::txt('COM_CITATIONS'); ?></th>
@@ -125,7 +130,9 @@ if ($label == 'none') {
                                         <?php $citeId = $cite->id; ?>
                                         <?php if ($batch_download) : ?>
                                             <td class="batch">
-                                                <input type="checkbox" class="download-marker" name="download_marker[]" id="download_marker<?= $citeId ?>" value="<?= $citeId ?>" aria-label="Select citation <?= (int) $citeId ?>" />
+                                                <input type="checkbox" class="download-marker" name="download_marker[]"
+                                                    id="download_marker<?= $citeId ?>" value="<?= $citeId ?>"
+                                                    aria-label="Select citation <?= (int) $citeId ?>" />
                                             </td>
                                         <?php endif; ?>
                                         <?php if ($label != "none") : ?>
@@ -261,9 +268,11 @@ if ($label == 'none') {
                     <legend><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE'); ?></legend>
                     <p><?php echo Lang::txt('COM_CITATIONS_EXPORT_MULTIPLE_DESC'); ?></p>
 
-                    <input type="submit" name="download" class="download" value="<?= Lang::txt('COM_CITATIONS_ENDNOTE') ?>" />
+                    <input type="submit" name="download" class="download"
+                        value="<?= Lang::txt('COM_CITATIONS_ENDNOTE') ?>" />
                     |
-                    <input type="submit" name="download" class="download" value="<?= Lang::txt('COM_CITATIONS_BIBTEX') ?>" />
+                    <input type="submit" name="download" class="download"
+                        value="<?= Lang::txt('COM_CITATIONS_BIBTEX') ?>" />
                 </fieldset>
             <?php endif; ?>
 
@@ -286,32 +295,38 @@ if ($label == 'none') {
                     if (count($tf) > 0) : ?>
                             <?php echo $tf[0]; ?>
                     <?php else : ?>
-                            <input type="text" name="tag" id="actags" value="<?= $this->escape($this->filters['tag']) ?>" />
+                            <input type="text" name="tag" id="actags"
+                                value="<?= $this->escape($this->filters['tag']) ?>" />
                     <?php endif; ?>
                 </label>
                 <label for="ackeywords">
                     <?php echo Lang::txt('COM_CITATIONS_KEYWORDS'); ?>:
-                    <input type="text" name="keyword" id="ackeywords" value="<?= $this->escape($this->filters['keyword']) ?>" />
+                    <input type="text" name="keyword" id="ackeywords"
+                        value="<?= $this->escape($this->filters['keyword']) ?>" />
                 </label>
                 <label for="author">
                     <?php echo Lang::txt('COM_CITATIONS_AUTHORED_BY'); ?>
-                    <input type="text" name="author" id="author" value="<?= $this->escape($this->filters['author']) ?>" />
+                    <input type="text" name="author" id="author"
+                        value="<?= $this->escape($this->filters['author']) ?>" />
                 </label>
                 <label for="publishedin">
                     <?php echo Lang::txt('COM_CITATIONS_PUBLISHED_IN'); ?>
-                    <input type="text" name="publishedin" id="publishedin" value="<?= $this->escape($this->filters['publishedin']) ?>" />
+                    <input type="text" name="publishedin" id="publishedin"
+                        value="<?= $this->escape($this->filters['publishedin']) ?>" />
                 </label>
                 <div class="grid">
                     <div class="col span6">
                         <label for="year_start">
                             <?php echo Lang::txt('COM_CITATIONS_YEAR'); ?> (from)
-                            <input type="text" name="year_start" id="year_start" value="<?= $this->escape($this->filters['year_start']) ?>" />
+                            <input type="text" name="year_start" id="year_start"
+                                value="<?= $this->escape($this->filters['year_start']) ?>" />
                         </label>
                     </div>
                     <div class="col span6 omega">
                         <label for="year_end">
                             <?php echo Lang::txt('COM_CITATIONS_YEAR'); ?> (to)
-                            <input type="text" name="year_end" id="year_end" value="<?= $this->escape($this->filters['year_end']) ?>" />
+                            <input type="text" name="year_end" id="year_end"
+                                value="<?= $this->escape($this->filters['year_end']) ?>" />
                         </label>
                     </div>
                 </div>
@@ -346,11 +361,13 @@ if ($label == 'none') {
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE'); ?></legend>
                     <label for="reftype_research">
-                        <input class="option" type="checkbox" name="reftype[research]" id="reftype_research" value="1"<?= isset($this->filters['reftype']['research']) ? ' checked="checked"' : '' ?> />
+                        <input class="option" type="checkbox" name="reftype[research]" id="reftype_research"
+                            value="1"<?= isset($this->filters['reftype']['research']) ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_RESEARCH'); ?>
                     </label>
                     <label for="reftype_education">
-                        <input class="option" type="checkbox" name="reftype[education]" id="reftype_education" value="1"<?= isset($this->filters['reftype']['education']) ? ' checked="checked"' : '' ?> />
+                        <input class="option" type="checkbox" name="reftype[education]" id="reftype_education"
+                            value="1"<?= isset($this->filters['reftype']['education']) ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_EDUCATION'); ?>
                     </label>
                     <label for="reftype_eduresearch">
@@ -365,34 +382,41 @@ if ($label == 'none') {
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY'); ?></legend>
                     <label for="geo_us">
-                        <input class="option" type="checkbox" name="geo[us]" id="geo_us" value="1"<?= isset($this->filters['geo']['us']) ? ' checked="checked"' : '' ?> />
+                        <input class="option" type="checkbox" name="geo[us]" id="geo_us"
+                            value="1"<?= isset($this->filters['geo']['us']) ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_US'); ?>
                     </label>
                     <label for="geo_na">
-                        <input class="option" type="checkbox" name="geo[na]" id="geo_na" value="1"<?= isset($this->filters['geo']['na']) ? ' checked="checked"' : '' ?> />
+                        <input class="option" type="checkbox" name="geo[na]" id="geo_na"
+                            value="1"<?= isset($this->filters['geo']['na']) ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_NORTH_AMERICA'); ?>
                     </label>
                     <label for="geo_eu">
-                        <input class="option" type="checkbox" name="geo[eu]" id="geo_eu" value="1"<?= isset($this->filters['geo']['eu']) ? ' checked="checked"' : '' ?> />
+                        <input class="option" type="checkbox" name="geo[eu]" id="geo_eu"
+                            value="1"<?= isset($this->filters['geo']['eu']) ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_EUROPE'); ?>
                     </label>
                     <label for="geo_as">
-                        <input class="option" type="checkbox" name="geo[as]" id="geo_as" value="1"<?= isset($this->filters['geo']['as']) ? ' checked="checked"' : '' ?> />
+                        <input class="option" type="checkbox" name="geo[as]" id="geo_as"
+                            value="1"<?= isset($this->filters['geo']['as']) ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_ASIA'); ?>
                     </label>
                 </fieldset>
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION'); ?></legend>
                     <label for="aff_university">
-                        <input class="option" type="checkbox" name="aff[university]" id="aff_university" value="1"<?= isset($this->filters['aff']['university']) ? ' checked="checked"' : '' ?> />
+                        <input class="option" type="checkbox" name="aff[university]" id="aff_university"
+                            value="1"<?= isset($this->filters['aff']['university']) ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION_UNIVERSITY'); ?>
                     </label>
                     <label for="aff_industry">
-                        <input class="option" type="checkbox" name="aff[industry]" id="aff_industry" value="1"<?= isset($this->filters['aff']['industry']) ? ' checked="checked"' : '' ?> />
+                        <input class="option" type="checkbox" name="aff[industry]" id="aff_industry"
+                            value="1"<?= isset($this->filters['aff']['industry']) ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION_INDUSTRY'); ?>
                     </label>
                     <label for="aff_government">
-                        <input class="option" type="checkbox" name="aff[government]" id="aff_government" value="1"<?= isset($this->filters['aff']['government']) ? ' checked="checked"' : '' ?> />
+                        <input class="option" type="checkbox" name="aff[government]" id="aff_government"
+                            value="1"<?= isset($this->filters['aff']['government']) ? ' checked="checked"' : '' ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION_GOVERNMENT'); ?>
                     </label>
                 </fieldset>

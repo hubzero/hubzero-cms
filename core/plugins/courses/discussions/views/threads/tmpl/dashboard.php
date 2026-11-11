@@ -49,10 +49,14 @@ if (count($inst) > 0) {
                 </div><!-- / .comments-toolbar -->
 
                 <div class="comments-options-bar">
-                    <form class="comments-search" action="<?= Route::url($base . '&active=discussions') ?>" method="get">
+                    <form class="comments-search" action="<?= Route::url($base . '&active=discussions') ?>"
+                        method="get">
                         <fieldset>
-                            <input type="text" name="search" class="search" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_SEARCH_PLACEHOLDER') ?>" />
-                            <input type="submit" class="submit" value="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_GO') ?>" />
+                            <input type="text" name="search" class="search"
+                                value="<?= $this->escape($this->filters['search']) ?>"
+                                placeholder="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_SEARCH_PLACEHOLDER') ?>" />
+                            <input type="submit" class="submit"
+                                value="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_GO') ?>" />
 
                             <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
                             <input type="hidden" name="gid" value="<?php echo $this->course->get('alias'); ?>" />
@@ -165,7 +169,8 @@ if (count($inst) > 0) {
                     if ($c) {
                         ?>
 
-                    <form action="<?= Route::url($base . '&active=discussions') ?>" method="post" id="commentform"<?= $this->data ? ' class="hide"' : '' ?> enctype="multipart/form-data">
+                    <form action="<?= Route::url($base . '&active=discussions') ?>" method="post"
+                        id="commentform"<?= $this->data ? ' class="hide"' : '' ?> enctype="multipart/form-data">
                         <p class="comment-member-photo">
                             <?php
                             $anon = 1;
@@ -194,7 +199,8 @@ if (count($inst) > 0) {
                             </p>
 
                             <label for="field_comment">
-                                <span class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS') ?></span>
+                                <span
+                                    class="label-text"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_COMMENTS') ?></span>
                                 <?php
                                 echo $this->editor('fields[comment]', '', 35, 5, 'field_comment', ['class' => 'minimal no-footer']);
                                 ?>
@@ -216,7 +222,8 @@ if (count($inst) > 0) {
                                         foreach ($this->sections as $section) {
                                             if ($section->get('categories')) {
                                                 ?>
-                                                <optgroup label="<?= $this->escape(stripslashes($section->get('title'))) ?>">
+                                                <optgroup
+                                                    label="<?= $this->escape(stripslashes($section->get('title'))) ?>">
                                                 <?php
                                                 foreach ($section->get('categories') as $category) {
                                                     if ($category->get('closed')) {
@@ -238,7 +245,8 @@ if (count($inst) > 0) {
                             </div>
 
                             <label for="field-anonymous" class="comment-anonymous-label">
-                                <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1" />
+                                <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"
+                                    value="1" />
                                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
                             </label>
 
@@ -250,8 +258,10 @@ if (count($inst) > 0) {
                         <input type="hidden" name="fields[parent]" id="field-parent" value="0" />
                         <input type="hidden" name="fields[state]" id="field-state" value="1" />
                         <input type="hidden" name="fields[scope]" id="field-scope" value="course" />
-                        <input type="hidden" name="fields[scope_id]" id="field-scope_id" value="<?= $this->filters['scope_id'] ?>" />
-                        <input type="hidden" name="fields[scope_sub_id]" id="field-scope_id" value="<?= $this->filters['scope_sub_id'] ?>" />
+                        <input type="hidden" name="fields[scope_id]" id="field-scope_id"
+                            value="<?= $this->filters['scope_id'] ?>" />
+                        <input type="hidden" name="fields[scope_sub_id]" id="field-scope_id"
+                            value="<?= $this->filters['scope_sub_id'] ?>" />
                         <input type="hidden" name="fields[id]" id="field-id" value="" />
                         <input type="hidden" name="fields[object_id]" id="field-object_id" value="" />
 

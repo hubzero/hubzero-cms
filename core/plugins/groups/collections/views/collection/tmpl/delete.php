@@ -19,7 +19,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <?php if ($this->getError()) { ?>
     <p class="error"><?php echo $this->getError(); ?></p>
 <?php } ?>
-    <form action="<?= Route::url($base . '&scope=' . $this->collection->get('alias') . '/delete') ?>" method="post" id="hubForm" class="full">
+    <form action="<?= Route::url($base . '&scope=' . $this->collection->get('alias') . '/delete') ?>" method="post"
+        id="hubForm" class="full">
         <fieldset>
             <legend><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_HEADER'); ?></legend>
 
@@ -29,7 +30,8 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 
             <div class="form-group form-check">
                 <label for="confirmdel" class="form-check-label">
-                    <input type="checkbox" class="option form-check-input" name="confirmdel" id="confirmdel" value="1" />
+                    <input type="checkbox" class="option form-check-input" name="confirmdel" id="confirmdel"
+                        value="1" />
                     <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE_COLLECTION_CONFIRM'); ?>
                 </label>
             </div>

@@ -19,7 +19,8 @@ if ($this->getError()) { ?>
 if (count($this->folders) > 0) { ?>
     <?php foreach ($this->folders as $folder) { ?>
         <li id="folder_<?php echo $this->escape($folder->id); ?>" class="open">
-            <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title" data-id="<?= $this->escape($folder->id) ?>"><?= $this->escape($folder->title) ?></span>
+            <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title"
+                data-id="<?= $this->escape($folder->id) ?>"><?= $this->escape($folder->title) ?></span>
             <span class="folder-options">
                 <button type="submit" form="hz-post-action" formaction="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=removefolder&id=' . $folder->id) ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
                     <?php echo Lang::txt('JACTION_DELETE'); ?>

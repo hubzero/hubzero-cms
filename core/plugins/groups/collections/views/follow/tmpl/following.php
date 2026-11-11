@@ -26,11 +26,15 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <ul id="page_options">
     <li>
         <?php if ($this->model->isFollowing()) { ?>
-        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=unfollow') ?>" class="icon-unfollow unfollow btn" data-text-follow="<?= Lang::txt('Follow All') ?>" data-text-unfollow="<?= Lang::txt('Unfollow All') ?>">
+        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=unfollow') ?>"
+            class="icon-unfollow unfollow btn" data-text-follow="<?= Lang::txt('Follow All') ?>"
+            data-text-unfollow="<?= Lang::txt('Unfollow All') ?>">
             <span><?php echo Lang::txt('Unfollow All'); ?></span>
         </button>
         <?php } else { ?>
-        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=follow') ?>" class="icon-follow follow btn" data-text-follow="<?= Lang::txt('Follow All') ?>" data-text-unfollow="<?= Lang::txt('Unfollow All') ?>">
+        <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=follow') ?>"
+            class="icon-follow follow btn" data-text-follow="<?= Lang::txt('Follow All') ?>"
+            data-text-unfollow="<?= Lang::txt('Unfollow All') ?>">
             <span><?php echo Lang::txt('Follow All'); ?></span>
         </button>
         <?php } ?>
@@ -86,7 +90,10 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                         </td>
                         <td>
                             <?php if ($this->params->get('access-manage-collection')) { ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= Route::url($row->following()->link('unfollow')) ?>" class="unfollow btn" data-id="<?= $row->get('following_id') ?>" data-text-follow="<?= Lang::txt('Follow') ?>" data-text-unfollow="<?= Lang::txt('Unfollow') ?>">
+                            <button type="submit" form="hz-post-action"
+                                formaction="<?= Route::url($row->following()->link('unfollow')) ?>" class="unfollow btn"
+                                data-id="<?= $row->get('following_id') ?>" data-text-follow="<?= Lang::txt('Follow') ?>"
+                                data-text-unfollow="<?= Lang::txt('Unfollow') ?>">
                                 <span><?php echo Lang::txt('Unfollow'); ?></span>
                             </button>
                             <?php } ?>

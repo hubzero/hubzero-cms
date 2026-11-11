@@ -20,7 +20,8 @@ $this
 ?>
 <ul id="page_options">
     <li>
-        <a class="icon-folder categories btn" href="<?= Route::url($base) ?>"><?= Lang::txt('PLG_GROUPS_FORUM_ALL_CATEGORIES') ?></a>
+        <a class="icon-folder categories btn"
+            href="<?= Route::url($base) ?>"><?= Lang::txt('PLG_GROUPS_FORUM_ALL_CATEGORIES') ?></a>
     </li>
 </ul>
 
@@ -31,7 +32,9 @@ $this
             <fieldset class="entry-search">
                 <legend><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LEGEND'); ?></legend>
                 <label for="entry-search-field"><?php echo Lang::txt('PLG_GROUPS_FORUM_SEARCH_LABEL'); ?></label>
-                <input type="text" name="q" id="entry-search-field" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER') ?>" />
+                <input type="text" name="q" id="entry-search-field"
+                    value="<?= $this->escape($this->filters['search']) ?>"
+                    placeholder="<?= Lang::txt('PLG_GROUPS_FORUM_SEARCH_PLACEHOLDER') ?>" />
             </fieldset>
         </div><!-- / .container -->
 

@@ -88,18 +88,21 @@ $this
             <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_NAME'); ?></legend>
             <div class="grid">
                 <div class="col span6">
-                    <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_FIRST_NAME') ?> <span class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
+                    <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_FIRST_NAME') ?> <span
+                        class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
                     <input type="text" name="register[firstname]" value="<?= (isset($this->register['firstname'])) ? $this->escape($this->register['firstname']) : '' ?>" /></label>
                 </div>
                 <div class="col span6 omega">
-                    <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_LAST_NAME') ?> <span class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
+                    <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_LAST_NAME') ?> <span
+                        class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
                     <input type="text" name="register[lastname]" value="<?= (isset($this->register['lastname'])) ? $this->escape($this->register['lastname']) : '' ?>" /></label>
                 </div>
             </div>
             <div class="grid">
                 <div class="col span6">
                 <?php if ($params->get('show_affiliation')) { ?>
-                    <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_AFFILIATION') ?> <span class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
+                    <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_AFFILIATION') ?> <span
+                        class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
                     <input type="text" name="register[affiliation]" value="<?= (isset($this->register['affiliation'])) ? $this->escape($this->register['affiliation']) : '' ?>" /></label>
                 <?php } ?>
                 </div>
@@ -164,7 +167,8 @@ $this
             <div class="grid">
                 <div class="col span6">
                 <?php if ($params->get('show_email')) { ?>
-                    <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_EMAIL') ?> <span class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
+                    <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_EMAIL') ?> <span
+                        class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
                     <input type="text" name="register[email]" value="<?= (isset($this->register['email'])) ? $this->escape($this->register['email']) : '' ?>" /></label>
                 <?php } ?>
                 </div>
@@ -190,13 +194,16 @@ $this
             <label>
                 <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION'); ?>
                 <select name="register[position]">
-                    <option value="" selected="selected"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NULL') ?></option>
+                    <option value=""
+                        selected="selected"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NULL') ?></option>
                     <option value="university"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNIVERSITY') ?></option>
                     <option value="precollege"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_PRECOLLEGE') ?></option>
                     <option value="nationallab"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_NATIONALLAB') ?></option>
-                    <option value="industry"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_INDUSTRY') ?></option>
+                    <option
+                        value="industry"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_INDUSTRY') ?></option>
                     <option value="government"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_GOVERNMENT') ?></option>
-                    <option value="military"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_MILITARY') ?></option>
+                    <option
+                        value="military"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_MILITARY') ?></option>
                     <option value="unemployed"><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNEMPLOYED') ?></option>
                 </select>
                 <input name="register[position_other]" type="text" value="<?= (isset($this->register['position_other'])) ? $this->escape($this->register['position_other']) : '' ?>" />
@@ -226,15 +233,22 @@ $this
             <fieldset>
                 <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE'); ?>:</legend>
                 <p class="hint"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_HINT'); ?></p>
-                <label><input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican" value="nativeamerican" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_AMERICAN') ?></label>
+                <label><input type="checkbox" class="option" name="race[nativeamerican]" id="racenativeamerican"
+                    value="nativeamerican" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_AMERICAN') ?></label>
                 <label class="indent"><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_AFFILIATIONS'); ?>:
                 <input name="race[nativetribe]" id="racenativetribe" type="text" value="" /></label>
-                <label><input type="checkbox" class="option" name="race[asian]" id="raceasian" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_ASIAN') ?></label>
-                <label><input type="checkbox" class="option" name="race[black]" id="raceblack" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_BLACK') ?></label>
-                <label><input type="checkbox" class="option" name="race[hawaiian]" id="racehawaiian" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_HAWAIIAN') ?></label>
-                <label><input type="checkbox" class="option" name="race[white]" id="racewhite" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_WHITE') ?></label>
-                <label><input type="checkbox" class="option" name="race[hispanic]" id="racehispanic" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_HISPANIC') ?></label>
-                <label><input type="checkbox" class="option" name="race[refused]" id="racerefused" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_NULL') ?></label>
+                <label><input type="checkbox" class="option" name="race[asian]"
+                    id="raceasian" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_ASIAN') ?></label>
+                <label><input type="checkbox" class="option" name="race[black]"
+                    id="raceblack" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_BLACK') ?></label>
+                <label><input type="checkbox" class="option" name="race[hawaiian]"
+                    id="racehawaiian" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_HAWAIIAN') ?></label>
+                <label><input type="checkbox" class="option" name="race[white]"
+                    id="racewhite" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_WHITE') ?></label>
+                <label><input type="checkbox" class="option" name="race[hispanic]"
+                    id="racehispanic" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_HISPANIC') ?></label>
+                <label><input type="checkbox" class="option" name="race[refused]"
+                    id="racerefused" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_RACE_OPTION_NULL') ?></label>
             </fieldset>
             <?php } ?>
         </fieldset>
@@ -248,7 +262,8 @@ $this
                 <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_ARRIVAL'); ?></legend>
 
                 <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_ARRIVAL_DAY'); ?>
-                <input type="text" name="arrival[day]" value="<?= (isset($this->arrival['day'])) ? $this->escape($this->arrival['day']) : '' ?>" /></label>
+                <input type="text" name="arrival[day]"
+                    value="<?= (isset($this->arrival['day'])) ? $this->escape($this->arrival['day']) : '' ?>" /></label>
 
                 <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_ARRIVAL_TIME'); ?>
                 <input type="text" name="arrival[time]" value="<?= (isset($this->arrival['time'])) ? $this->escape($this->arrival['time']) : '' ?>" /></label>
@@ -272,11 +287,13 @@ $this
         <fieldset>
             <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_DISABILITY'); ?></legend>
             <?php if ($params->get('show_disability')) { ?>
-            <label><input type="checkbox" class="option" name="disability" value="yes" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DISABILTIY') ?></label>
+            <label><input type="checkbox" class="option" name="disability"
+                value="yes" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DISABILTIY') ?></label>
             <?php } ?>
 
             <?php if ($params->get('show_dietary')) { ?>
-            <label><input type="checkbox" class="option" name="dietary[needs]" value="yes" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DIETARY') ?></label>
+            <label><input type="checkbox" class="option" name="dietary[needs]"
+                value="yes" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DIETARY') ?></label>
             <label class="indent">
                 <?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DIETARY_DETAILS'); ?>
                 <input type="text" name="dietary[specific]" />
@@ -288,7 +305,8 @@ $this
         <fieldset>
             <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_DINNER'); ?></legend>
 
-            <label for="filed-dinner"><input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DINNER') ?></label>
+            <label for="filed-dinner"><input type="checkbox" class="option" name="dinner" id="filed-dinner"
+                value="yes" /> <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_DINNER') ?></label>
         </fieldset>
     <?php } ?>
 

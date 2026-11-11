@@ -31,21 +31,25 @@ if ($tmpl != 'component' && $this->sub) { ?>
                 </li>
             <?php } ?>
             <li class="page-index">
-                <a class="icon-list-ul index btn" href="<?= Route::url($this->page->link('base') . '&pagename=Special:AllPages') ?>">
+                <a class="icon-list-ul index btn"
+                    href="<?= Route::url($this->page->link('base') . '&pagename=Special:AllPages') ?>">
                     <span><?php echo Lang::txt('COM_WIKI_INDEX'); ?></span>
                 </a>
             </li>
             <li class="page-search">
-                <a class="icon-search search btn" href="<?= Route::url($this->page->link('base') . '&pagename=Special:Search') ?>">
+                <a class="icon-search search btn"
+                    href="<?= Route::url($this->page->link('base') . '&pagename=Special:Search') ?>">
                     <?php echo Lang::txt('COM_WIKI_SEARCH'); ?>
                 </a>
                 <div class="page-search-form">
-                    <form action="<?= Route::url($this->page->link('base') . '&pagename=Special:Search') ?>" method="get">
+                    <form action="<?= Route::url($this->page->link('base') . '&pagename=Special:Search') ?>"
+                        method="get">
                         <fieldset>
                             <legend><?php echo Lang::txt('COM_WIKI_SEARCH_LEGEND'); ?></legend>
                             <label for="page-search-q">
                                 <span><?php echo Lang::txt('COM_WIKI_SEARCH'); ?></span>
-                                <input type="text" name="q" id="page-search-q" value="" placeholder="<?= Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER') ?>" />
+                                <input type="text" name="q" id="page-search-q" value=""
+                                    placeholder="<?= Lang::txt('COM_WIKI_SEARCH_PLACEHOLDER') ?>" />
                             </label>
                             <input type="submit" class="page-search-submit" value="<?= Lang::txt('COM_WIKI_GO') ?>" />
                         </fieldset>
@@ -59,7 +63,8 @@ if ($tmpl != 'component' && $this->sub) { ?>
                 if ($grp && !User::isGuest() && $grp->isManager(User::get('id'))) {
                     ?>
                     <li class="page-settings">
-                        <a class="icon-settings settings btn" href="<?= Route::url($this->page->link('base') . '&action=settings') ?>">
+                        <a class="icon-settings settings btn"
+                            href="<?= Route::url($this->page->link('base') . '&action=settings') ?>">
                             <?php echo Lang::txt('COM_WIKI_SETTINGS'); ?>
                         </a>
                     </li>

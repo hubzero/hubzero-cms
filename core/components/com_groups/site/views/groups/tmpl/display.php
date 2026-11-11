@@ -40,15 +40,18 @@ foreach ($this->notifications as $notification) {
 ?>
 
 <section id="introduction" class="section">
-    <form class="section-inner" action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" method="get">
+    <form class="section-inner" action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>"
+        method="get">
         <div class="grid">
             <div class="col span8">
                 <div class="container data-entry">
-                    <input class="entry-search-submit" type="submit" value="<?= Lang::txt('COM_GROUPS_BROWSE_SEARCH') ?>" />
+                    <input class="entry-search-submit" type="submit"
+                        value="<?= Lang::txt('COM_GROUPS_BROWSE_SEARCH') ?>" />
                     <fieldset class="entry-search">
                         <legend class="sr-only"><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP'); ?></legend>
                         <label for="gsearch"><?php echo Lang::txt('COM_GROUPS_BROWSE_SEARCH_HELP'); ?></label>
-                        <input type="text" name="search" id="gsearch" value="" placeholder="<?= Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER') ?>" />
+                        <input type="text" name="search" id="gsearch" value=""
+                            placeholder="<?= Lang::txt('COM_GROUPS_BROWSE_SEARCH_PLACEHOLDER') ?>" />
                     </fieldset>
                 </div><!-- / .container -->
                 <p><?php echo Lang::txt('COM_GROUPS_INTRO_WHAT_ARE_GROUPS_DESC'); ?></p>
@@ -56,7 +59,8 @@ foreach ($this->notifications as $notification) {
             </div>
             <div class="col span3 offset1 omega">
                 <div>
-                    <a class="btn icon-browse" href="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>">
+                    <a class="btn icon-browse"
+                        href="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>">
                         <?php echo Lang::txt('COM_GROUPS_INTRO_FIND_GROUP_BROWSE_BUTTON_TEXT'); ?>
                     </a>
                 </div>

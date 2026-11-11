@@ -27,7 +27,8 @@ Toolbar::cancel();
 
     <fieldset id="filter-bar">
         <label for="filter_search"><?php echo Lang::txt('COM_EVENTS_SEARCH'); ?>:</label>
-        <input type="text" name="search" id="filter_search" class="filter" value="<?= $this->escape($this->filters['search']) ?>" />
+        <input type="text" name="search" id="filter_search" class="filter"
+            value="<?= $this->escape($this->filters['search']) ?>" />
 
         <input type="submit" value="<?php echo Lang::txt('COM_EVENTS_GO'); ?>" />
     </fieldset>
@@ -36,8 +37,10 @@ Toolbar::cancel();
         <thead>
             <tr>
                 <th scope="col">
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th scope="col"><?= Html::grid('sort', 'COM_EVENTS_RESPONDANT_NAME', 'name', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
                 <th scope="col"><?= Html::grid('sort', 'COM_EVENTS_EMAIL', 'email', @$this->filters['sort_Dir'], @$this->filters['sort']) ?></th>
@@ -61,7 +64,8 @@ Toolbar::cancel();
                 ?>
                 <tr class="<?php echo "row$k"; ?>">
                     <td>
-                        <input type="checkbox" name="rid[]" id="cb<?= $i ?>" value="<?= $row->id ?>" class="checkbox-toggle" />
+                        <input type="checkbox" name="rid[]" id="cb<?= $i ?>" value="<?= $row->id ?>"
+                            class="checkbox-toggle" />
                         <label for="cb<?php echo $i; ?>" class="sr-only visually-hidden"><?php echo $row->id; ?></label>
                     </td>
                     <td>

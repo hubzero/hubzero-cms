@@ -60,7 +60,8 @@ $this
 
 <section class="section">
     <div class="section-inner">
-        <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" id="hubForm" enctype="multipart/form-data">
+        <form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" id="hubForm"
+            enctype="multipart/form-data">
             <div class="explaination">
                 <?php if (!$this->id) { ?>
                     <h3><?php echo Lang::txt('COM_TOOLS_SIDE_WHAT_TOOLNAME'); ?></h3>
@@ -83,14 +84,16 @@ $this
                     <label for="t_toolname">
                         <?php echo Lang::txt('COM_TOOLS_TOOLNAME'); ?>:
                         <?php if ($this->id) { ?>
-                            <input type="hidden" name="tool[toolname]" id="t_toolname" value="<?= $this->escape($this->defaults['toolname']) ?>" />
+                            <input type="hidden" name="tool[toolname]" id="t_toolname"
+                                value="<?= $this->escape($this->defaults['toolname']) ?>" />
                             <strong><?= $this->escape($this->defaults['toolname']) ?> (<?= ($this->editversion == 'current') ? Lang::txt('COM_TOOLS_CURRENT_VERSION') : Lang::txt('COM_TOOLS_DEV_VERSION') ?>)</strong>
                             <?php if (isset($this->defaults['published']) && $this->defaults['published']) { ?>
                                 <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=versions&app=' . $this->defaults['toolname']) ?>"><?= Lang::txt('COM_TOOLS_ALL_VERSIONS') ?></a>
                             <?php } ?>
                         <?php } else { ?>
                             <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
-                            <input type="text" name="tool[toolname]" id="t_toolname" maxlength="15" class="form-control" value="<?= $this->escape($this->defaults['toolname']) ?>" />
+                            <input type="text" name="tool[toolname]" id="t_toolname" maxlength="15" class="form-control"
+                                value="<?= $this->escape($this->defaults['toolname']) ?>" />
                             <span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TOOLNAME'); ?></span>
                         <?php } ?>
                     </label>
@@ -98,8 +101,10 @@ $this
 
                 <div class="form-group">
                     <label for="t_title">
-                        <?php echo Lang::txt('COM_TOOLS_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                        <input type="text" name="tool[title]" id="t_title" maxlength="127" class="form-control" value="<?= $this->escape(stripslashes($this->defaults['title'])) ?>" />
+                        <?php echo Lang::txt('COM_TOOLS_TITLE') ?>: <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                        <input type="text" name="tool[title]" id="t_title" maxlength="127" class="form-control"
+                            value="<?= $this->escape(stripslashes($this->defaults['title'])) ?>" />
                         <span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TITLE'); ?></span>
                     </label>
                 </div>
@@ -108,11 +113,13 @@ $this
                     <label for="t_version">
                         <?php echo Lang::txt('COM_TOOLS_VERSION') ?>:
                         <?php if ($this->editversion == 'current') { ?>
-                            <input type="hidden" name="tool[version]" id="t_version" value="<?= $this->escape($this->defaults['version']) ?>" />
+                            <input type="hidden" name="tool[version]" id="t_version"
+                                value="<?= $this->escape($this->defaults['version']) ?>" />
                             <strong><?php echo $this->escape($this->defaults['version']); ?></strong>
                             <span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION_PUBLISHED'); ?></span>
                         <?php } else { ?>
-                            <input type="text" name="tool[version]" id="t_version" maxlength="15" class="form-control" value="<?= $this->escape($this->defaults['version']) ?>" />
+                            <input type="text" name="tool[version]" id="t_version" maxlength="15" class="form-control"
+                                value="<?= $this->escape($this->defaults['version']) ?>" />
                             <span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VERSION'); ?></span>
                         <?php } ?>
                     </label>
@@ -120,8 +127,11 @@ $this
 
                 <div class="form-group">
                     <label for="t_description">
-                        <?php echo Lang::txt('COM_TOOLS_AT_A_GLANCE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                        <input type="text" name="tool[description]" id="t_description" maxlength="256" class="form-control" value="<?= $this->escape(stripslashes($this->defaults['description'])) ?>" />
+                        <?php echo Lang::txt('COM_TOOLS_AT_A_GLANCE') ?>: <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                        <input type="text" name="tool[description]" id="t_description" maxlength="256"
+                            class="form-control"
+                            value="<?= $this->escape(stripslashes($this->defaults['description'])) ?>" />
                         <span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_DESCRIPTION'); ?></span>
                     </label>
                 </div>
@@ -138,8 +148,12 @@ $this
                     <legend><?php echo ($this->id) ? Lang::txt('COM_TOOLS_APPLICATION_SCREEN_SIZE') : Lang::txt('COM_TOOLS_SUGGESTED_SCREEN_SIZE')  ?>:</legend>
                     <div class="form-group">
                         <div class="inline">
-                            <label for="vncGeometryX"><?= Lang::txt('COM_TOOLS_MARKER_WIDTH') ?> <input type="text" name="tool[vncGeometryX]" id="vncGeometryX" size="4" maxlength="4" class="form-control" value="<?= $this->escape($this->defaults['vncGeometryX']) ?>" /></label> x
-                            <label for="vncGeometryY"><?= Lang::txt('COM_TOOLS_MARKER_HEIGHT') ?> <input type="text" name="tool[vncGeometryY]" id="vncGeometryY" size="4" maxlength="4" class="form-control" value="<?= $this->escape($this->defaults['vncGeometryY']) ?>" /></label>
+                            <label for="vncGeometryX"><?= Lang::txt('COM_TOOLS_MARKER_WIDTH') ?> <input type="text"
+                                name="tool[vncGeometryX]" id="vncGeometryX" size="4" maxlength="4" class="form-control"
+                                value="<?= $this->escape($this->defaults['vncGeometryX']) ?>" /></label> x
+                            <label for="vncGeometryY"><?= Lang::txt('COM_TOOLS_MARKER_HEIGHT') ?> <input type="text"
+                                name="tool[vncGeometryY]" id="vncGeometryY" size="4" maxlength="4" class="form-control"
+                                value="<?= $this->escape($this->defaults['vncGeometryY']) ?>" /></label>
                         </div>
                     </div>
                     <p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_VNC'); ?></p>
@@ -149,12 +163,14 @@ $this
                     <div class="form-group">
                         <label for="t_hostreq">
                             <?php echo Lang::txt('COM_TOOLS_HOSTREQ') ?>:</span>
-                            <input type="text" name="tool[hostreq]" id="t_hostreq"  class="form-control" value="<?= $this->escape(stripslashes($this->defaults['hostreq'])) ?>" />
+                            <input type="text" name="tool[hostreq]" id="t_hostreq"  class="form-control"
+                                value="<?= $this->escape(stripslashes($this->defaults['hostreq'])) ?>" />
                             <span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_HOSTREQ'); ?></span>
                         </label>
                     </div>
                 <?php } else { ?>
-                    <input type="hidden" name="tool[hostreq]" id="t_hostreq" value="<?= $this->escape(stripslashes($this->defaults['hostreq'])) ?>" />
+                    <input type="hidden" name="tool[hostreq]" id="t_hostreq"
+                        value="<?= $this->escape(stripslashes($this->defaults['hostreq'])) ?>" />
                 <?php } ?>
             </fieldset>
 
@@ -201,7 +217,9 @@ $this
                         <legend><?php echo Lang::txt('COM_TOOLS_EDIT_GIT_URL'); ?>:</legend>
                         <label for="github">
                             <?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE') ?>: 
-                            <input readonly type="text" name="tool[github]" id="github" placeholder="<?= Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE') ?>" value="<?= $this->escape($this->defaults['github']) ?>" />
+                            <input readonly type="text" name="tool[github]" id="github"
+                                placeholder="<?= Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE') ?>"
+                                value="<?= $this->escape($this->defaults['github']) ?>" />
                         </label>
                         <?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
                             <p class="hint"><?php echo Lang::txt('COM_TOOLS_EDIT_URL_GITPUBPRIV'); ?></p>
@@ -278,8 +296,11 @@ $this
                     <fieldset id="gitExternalInput">
                         <legend><?php echo Lang::txt('COM_TOOLS_EDIT_GIT_URL'); ?>:</legend>
                         <label for="github">
-                            <?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE') ?>:  <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                            <input type="text" name="tool[github]" id="github" placeholder="<?= Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE') ?>" value="<?= $this->escape($this->defaults['github']) ?>" />
+                            <?php echo Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE') ?>:  <span
+                                class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                            <input type="text" name="tool[github]" id="github"
+                                placeholder="<?= Lang::txt('COM_TOOLS_EDIT_GIT_SOURCE_PASTE') ?>"
+                                value="<?= $this->escape($this->defaults['github']) ?>" />
                         </label>
                         <?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
                             <p class="hint"><?php echo Lang::txt('COM_TOOLS_EDIT_URL_GITPUBPRIV'); ?></p>
@@ -325,8 +346,10 @@ $this
 
                 <div class="form-group">
                     <label for="t_exec">
-                    <?= Lang::txt('COM_TOOLS_TOOL_ACCESS') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                        <span class="question-mark tooltips" title="<?= Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLACCESS') ?>">What should I choose?</span>
+                    <?= Lang::txt('COM_TOOLS_TOOL_ACCESS') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                        <span class="question-mark tooltips"
+                            title="<?= Lang::txt('COM_TOOLS_SIDE_TIPS_TOOLACCESS') ?>">What should I choose?</span>
                         <?= \Components\Tools\Helpers\Html::formSelect('tool[exec]', 't_exec', $execChoices, $this->defaults['exec'], 'groupchoices') ?>
                     </label>
                 </div>
@@ -340,23 +363,28 @@ $this
 
                 <div class="form-group">
                     <label for="t_code">
-                        <?= Lang::txt('COM_TOOLS_CODE_ACCESS') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                        <span class="question-mark tooltips" title="<?= Lang::txt('COM_TOOLS_SIDE_TIPS_CODEACCESS') ?>">What should I choose?</span>
+                        <?= Lang::txt('COM_TOOLS_CODE_ACCESS') ?>: <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                        <span class="question-mark tooltips"
+                            title="<?= Lang::txt('COM_TOOLS_SIDE_TIPS_CODEACCESS') ?>">What should I choose?</span>
                         <?= \Components\Tools\Helpers\Html::formSelect('tool[code]', 't_code', $codeChoices, $this->defaults['code']) ?>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label for="t_wiki">
-                        <?= Lang::txt('COM_TOOLS_WIKI_ACCESS') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                        <span class="question-mark tooltips" title="<?= Lang::txt('COM_TOOLS_SIDE_TIPS_WIKIACCESS') ?>">What should I choose?</span>
+                        <?= Lang::txt('COM_TOOLS_WIKI_ACCESS') ?>: <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                        <span class="question-mark tooltips"
+                            title="<?= Lang::txt('COM_TOOLS_SIDE_TIPS_WIKIACCESS') ?>">What should I choose?</span>
                         <?= \Components\Tools\Helpers\Html::formSelect('tool[wiki]', 't_wiki', $wikiChoices, $this->defaults['wiki']) ?>
                     </label>
                 </div>
 
                 <div class="form-group">
                     <label for="t_team">
-                        <?= Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
+                        <?= Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM') ?>: <span
+                            class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
                         <input type="text" name="tool[developers]" id="t_team" class="form-control" value="<?= \Components\Tools\Helpers\Html::getDevTeam($this->defaults['developers'], $this->id) ?>" />
                         <span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TEAM'); ?></span>
                     </label>

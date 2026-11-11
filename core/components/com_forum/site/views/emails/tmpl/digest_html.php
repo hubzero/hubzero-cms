@@ -69,7 +69,8 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
 </table>
 <!-- End Spacer -->
 
-<table id="digest-info" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; background-color: #f7f7f8; border: 1px solid #dddddd; border-radius: 6px;">
+<table id="digest-info" width="650" cellpadding="0" cellspacing="0" border="0"
+    style="border-collapse: collapse; background-color: #f7f7f8; border: 1px solid #dddddd; border-radius: 6px;">
     <tr>
         <td width="85" style="padding: 0 0 0 15px; opacity: 0.8;">
             <img width="80" src="<?= $base . '/core/components/com_forum/site/assets/img/group.png' ?>" alt="" />
@@ -102,7 +103,8 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
 
 <?php foreach ($this->posts as $group => $posts) : ?>
     <?php $group = Hubzero\User\Group::getInstance($group); ?>
-    <table id="group-discussions" width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
+    <table id="group-discussions" width="650" cellpadding="0" cellspacing="0" border="0"
+        style="border-collapse: collapse;">
         <tr>
             <td colspan="2" style="text-align: center; font-size: 14px; padding: 14px 0 4px;">
                 <strong><?php echo $this->escape($group->get('description')); ?></strong>
@@ -115,7 +117,8 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
                     <table width="650" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
                         <tr>
                             <td width="75" valign="top" style="padding: 10px 0;">
-                                <img width="50" height="50" style="border-radius: 50%;" src="<?= $base . '/members/' . $post->created_by . '/Image:thumb.png' ?>" alt="" />
+                                <img width="50" height="50" style="border-radius: 50%;"
+                                    src="<?= $base . '/members/' . $post->created_by . '/Image:thumb.png' ?>" alt="" />
                             </td>
                             <td style="padding: 10px 0;">
                                 <div style="border: 1px solid #dddddd; padding: 12px; border-radius: 6px; background: #ffffff;">

@@ -49,7 +49,9 @@ if (count($tabItems) > 0) { ?>
 <ul id="sub-menu" class="sub-menu">
     <?php foreach ($tabItems as $tab) { ?>
         <li id="sm-<?php echo $tab['name']; ?>"<?php echo $tab['active'] ? ' class="active"' : ''; ?>>
-            <a class="tab" data-rel="<?= $tab['name'] ?>" href="<?= Route::url($tab['url']) ?>"><span><?= $tab['label'] ?></span><span class="sr-only">: <?= $this->escape(stripslashes($this->resource->title)) ?></span></a>
+            <a class="tab" data-rel="<?= $tab['name'] ?>"
+                href="<?= Route::url($tab['url']) ?>"><span><?= $tab['label'] ?></span><span
+                class="sr-only">: <?= $this->escape(stripslashes($this->resource->title)) ?></span></a>
         </li>
     <?php } ?>
 </ul>

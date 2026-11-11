@@ -57,12 +57,14 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
         ?>
         <ul class="path">
             <?php if ($this->group->get('type') == 3) : ?>
-                <li><a data-folder="/" href="javascript:(void);"><?= Lang::txt('COM_GROUPS_MEDIA_PATH_SLASH_ROOT') ?></a></li>
+                <li><a data-folder="/"
+                    href="javascript:(void);"><?= Lang::txt('COM_GROUPS_MEDIA_PATH_SLASH_ROOT') ?></a></li>
             <?php endif; ?>
             <?php foreach ($segments as $segment) : ?>
                 <?php $folder .= DS . $segment; ?>
                 <li class="divider"><?php echo Lang::txt('COM_GROUPS_MEDIA_PATH_SLASH'); ?></li>
-                <li><a data-folder="<?= $this->escape($folder) ?>" href="javascript:(void);"><?= $this->escape($segment) ?></a></li>
+                <li><a data-folder="<?= $this->escape($folder) ?>"
+                    href="javascript:(void);"><?= $this->escape($segment) ?></a></li>
             <?php endforeach; ?>
         </ul>
         <div class="buttons"></div>
@@ -94,7 +96,9 @@ $editorQuery   = '&type=' . $type . '&editor=' . $editorName . '&editorFuncNum='
                         $renameFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=renamefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
                         $deleteFolderPath   = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . '&controller=media&task=deletefolder&folder=' . $dataFolder . '&tmpl=component&' . Session::getFormToken() . '=1');
                     ?>
-                    <a href="javascript:void(0);" data-action-delete="<?= $deleteFolderPath ?>" data-action-rename="<?= $renameFolderPath ?>" data-action-move="<?= $moveFolderPath ?>" data-folder="<?= $this->escape($dataFolder) ?>"><?= $this->escape($folder) ?></a>
+                    <a href="javascript:void(0);" data-action-delete="<?= $deleteFolderPath ?>"
+                        data-action-rename="<?= $renameFolderPath ?>" data-action-move="<?= $moveFolderPath ?>"
+                        data-folder="<?= $this->escape($dataFolder) ?>"><?= $this->escape($folder) ?></a>
                 </div>
                 <div class="modified">
                     --

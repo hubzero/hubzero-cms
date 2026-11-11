@@ -31,14 +31,17 @@ $this
 </header>
 
 <section class="main section">
-    <form class="section-inner hz-layout-with-aside" action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" method="get">
+    <form class="section-inner hz-layout-with-aside"
+        action="<?= Route::url('index.php?option=' . $this->option . '&task=browse') ?>" method="get">
         <div class="subject">
 
             <div class="container data-entry">
                 <input class="entry-search-submit" type="submit" value="<?php echo Lang::txt('COM_TAGS_SEARCH'); ?>" />
                 <fieldset class="entry-search">
                     <label for="entry-search-text"><?php echo Lang::txt('COM_TAGS_SEARCH_TAGS'); ?></label>
-                    <input type="text" name="search" id="entry-search-text" value="<?= $this->escape($this->filters['search']) ?>" placeholder="<?= Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER') ?>" />
+                    <input type="text" name="search" id="entry-search-text"
+                        value="<?= $this->escape($this->filters['search']) ?>"
+                        placeholder="<?= Lang::txt('COM_TAGS_SEARCH_PLACEHOLDER') ?>" />
                 </fieldset>
             </div><!-- / .container -->
 

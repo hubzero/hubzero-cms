@@ -15,9 +15,11 @@ defined('_HZEXEC_') or die();
         <fieldset>
             <input type="hidden" name="ajax" value="<?php echo $this->ajax; ?>" />
             <input type="hidden" id="selecteditems" name="selecteditems" value="" />
-            <input type="hidden" id="filterUrl" name="filterUrl" value="<?php echo $this->escape($this->filterUrl); /* built with plain &, escaped once here */ ?>" />
+            <input type="hidden" id="filterUrl" name="filterUrl"
+                value="<?php echo $this->escape($this->filterUrl); /* built with plain &, escaped once here */ ?>" />
             <?php foreach ($this->hiddenFields as $field) : ?>
-                <input type="hidden" name="<?= $this->escape($field['name']) ?>" value="<?= $this->escape($field['value']) ?>"
+                <input type="hidden" name="<?= $this->escape($field['name']) ?>"
+                    value="<?= $this->escape($field['value']) ?>"
                     <?php echo !empty($field['value']) ? 'id="' . $this->escape($field['value']) . '"' : '';?> />
             <?php endforeach; ?>
         </fieldset>

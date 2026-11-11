@@ -119,13 +119,15 @@ $this
                     ?>
                     <tr>
                         <td class="check">
-                            <input class="chkbox" type="checkbox" id="msg<?= $row->id ?>" value="<?= $row->id ?>" name="mid[]" />
+                            <input class="chkbox" type="checkbox" id="msg<?= $row->id ?>" value="<?= $row->id ?>"
+                                name="mid[]" />
                         </td>
                         <td class="status">
                             <?php echo $status; ?>
                         </td>
                         <td>
-                            <a class="<?= $subject_cls ?>" href="<?= Route::url($this->member->link() . '&active=messages&msg=' . $row->id) ?>">
+                            <a class="<?= $subject_cls ?>"
+                                href="<?= Route::url($this->member->link() . '&active=messages&msg=' . $row->id) ?>">
                                 <?php echo $this->escape(stripslashes($subject)); ?>
                             </a>
                         </td>

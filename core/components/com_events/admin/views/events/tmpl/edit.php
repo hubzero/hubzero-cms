@@ -35,19 +35,24 @@ $params = new \Hubzero\Html\Parameter($this->row->params, Component::path($this-
 $this->js('events.js');
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm" class="editform form-validate" id="item-form" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" method="post" name="adminForm"
+    class="editform form-validate" id="item-form"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <div class="grid">
         <div class="col span7">
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_EVENTS_EVENT'); ?></span></legend>
 
                 <div class="input-wrap">
-                    <label for="field-title"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE') ?>: <span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
-                    <input type="text" name="title" id="field-title" class="required" maxlength="250" value="<?= $this->escape(html_entity_decode(stripslashes($this->row->title))) ?>" /></td>
+                    <label for="field-title"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TITLE') ?>: <span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <input type="text" name="title" id="field-title" class="required" maxlength="250"
+                        value="<?= $this->escape(html_entity_decode(stripslashes($this->row->title))) ?>" /></td>
                 </div>
 
                 <div class="input-wrap">
-                    <label for="catid"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY') ?>:<span class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
+                    <label for="catid"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CATEGORY') ?>:<span
+                        class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span></label><br />
                     <?= \Components\Events\Helpers\Html::buildCategorySelect($this->row->catid, '', 0, $this->option) ?></td>
                 </div>
 
@@ -58,17 +63,20 @@ $this->js('events.js');
 
                 <div class="input-wrap">
                     <label for="field-adresse_info"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_ADRESSE') ?>:</label><br />
-                    <input type="text" name="adresse_info" id="field-adresse_info" maxlength="120" value="<?= $this->escape(stripslashes($this->row->adresse_info)) ?>" /></td>
+                    <input type="text" name="adresse_info" id="field-adresse_info" maxlength="120"
+                        value="<?= $this->escape(stripslashes($this->row->adresse_info)) ?>" /></td>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-contact_info"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_CONTACT') ?>:</label><br />
-                    <input type="text" name="contact_info" id="field-contact_info" maxlength="120" value="<?= $this->escape(stripslashes($this->row->contact_info)) ?>" /></td>
+                    <input type="text" name="contact_info" id="field-contact_info" maxlength="120"
+                        value="<?= $this->escape(stripslashes($this->row->contact_info)) ?>" /></td>
                 </div>
 
                 <div class="input-wrap">
                     <label for="field-extra_info"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_EXTRA') ?>:</label><br />
-                    <input type="text" name="extra_info" id="field-extra_info" maxlength="240" value="<?= $this->escape(stripslashes($this->row->extra_info)) ?>" /></td>
+                    <input type="text" name="extra_info" id="field-extra_info" maxlength="240"
+                        value="<?= $this->escape(stripslashes($this->row->extra_info)) ?>" /></td>
                 </div>
                     <?php
                     foreach ($this->fields as $field) {
@@ -92,7 +100,8 @@ $this->js('events.js');
                     ?>
                 <div class="input-wrap">
                     <label for="field-tags"><?php echo Lang::txt('COM_EVENTS_CAL_LANG_EVENT_TAGS'); ?>:</label><br />
-                    <input type="text" name="tags" id="field-tags" value="<?= (isset($this->tags)) ? $this->escape($this->tags) : '' ?>" />
+                    <input type="text" name="tags" id="field-tags"
+                        value="<?= (isset($this->tags)) ? $this->escape($this->tags) : '' ?>" />
                 </div>
             </fieldset>
             <fieldset class="adminform">
@@ -120,7 +129,8 @@ $this->js('events.js');
 
                     <div class="input-wrap">
                         <label for="field-repeating_rule"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE') ?></label><br />
-                        <input type="text" name="repeating_rule" value="<?= $this->escape(stripslashes($this->row->repeating_rule)) ?>" />
+                        <input type="text" name="repeating_rule"
+                            value="<?= $this->escape(stripslashes($this->row->repeating_rule)) ?>" />
                         <span class="block-hint"><?= Lang::txt('COM_EVENTS_CAL_LANG_EVENT_RECURRENCE_HINT', 'http://www.kanzaki.com/docs/ical/rrule.html') ?></span>
                     </div>
                 </fieldset>
@@ -142,7 +152,8 @@ $this->js('events.js');
 
                 <div class="input-wrap" data-hint="<?php echo Lang::txt('COM_EVENTS_RESTRICTED_HINT'); ?>">
                     <label for="field-restricted"><?php echo Lang::txt('COM_EVENTS_RESTRICTED'); ?>:</label><br />
-                    <input type="text" name="restricted" id="field-restricted" value="<?= $this->escape($this->row->restricted) ?>" />
+                    <input type="text" name="restricted" id="field-restricted"
+                        value="<?= $this->escape($this->row->restricted) ?>" />
                     <span class="hint"><?php echo Lang::txt('COM_EVENTS_RESTRICTED_HINT'); ?></span>
                 </div>
             </fieldset>

@@ -62,7 +62,9 @@ if (document.body && document.body.id === 'component-body') {
 }
 </script>
 
-<form action="<?= Route::url('index.php?option=' . $this->option) ?>" id="component-form" method="post" name="adminForm" autocomplete="off" class="form-validate" data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
+<form action="<?= Route::url('index.php?option=' . $this->option) ?>" id="component-form" method="post" name="adminForm"
+    autocomplete="off" class="form-validate"
+    data-invalid-msg="<?= $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED')) ?>">
     <fieldset>
         <div class="configuration">
             <div class="configuration-options">

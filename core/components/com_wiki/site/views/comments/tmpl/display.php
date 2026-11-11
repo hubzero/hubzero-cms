@@ -161,7 +161,8 @@ if (!$this->sub) {
         ?>
 
         <?php if (isset($this->mycomment) && $this->mycomment instanceof \Components\Wiki\Models\Comment) { ?>
-            <form action="<?= Route::url($this->page->link('comments')) ?>" method="post" id="commentform" class="section-inner">
+            <form action="<?= Route::url($this->page->link('comments')) ?>" method="post" id="commentform"
+                class="section-inner">
                 <h3 id="commentform-title">
                     <?php echo Lang::txt('COM_WIKI_ADD_COMMENT'); ?>
                 </h3>
@@ -190,13 +191,19 @@ if (!$this->sub) {
                         </label>
                     </div>
 
-                    <input type="hidden" name="comment[created]" value="<?= $this->escape($this->mycomment->get('created')) ?>" />
+                    <input type="hidden" name="comment[created]"
+                        value="<?= $this->escape($this->mycomment->get('created')) ?>" />
                     <input type="hidden" name="comment[id]" value="<?= $this->escape($this->mycomment->get('id')) ?>" />
-                    <input type="hidden" name="comment[created_by]" value="<?= $this->escape($this->mycomment->get('created_by')) ?>" />
-                    <input type="hidden" name="comment[state]" value="<?= $this->escape($this->mycomment->get('state', 1)) ?>" />
-                    <input type="hidden" name="comment[version]" value="<?= $this->escape($this->mycomment->get('version')) ?>" />
-                    <input type="hidden" name="comment[parent]" value="<?= $this->escape($this->mycomment->get('parent')) ?>" />
-                    <input type="hidden" name="comment[page_id]" value="<?= $this->escape($this->mycomment->get('page_id', $this->page->get('id'))) ?>" />
+                    <input type="hidden" name="comment[created_by]"
+                        value="<?= $this->escape($this->mycomment->get('created_by')) ?>" />
+                    <input type="hidden" name="comment[state]"
+                        value="<?= $this->escape($this->mycomment->get('state', 1)) ?>" />
+                    <input type="hidden" name="comment[version]"
+                        value="<?= $this->escape($this->mycomment->get('version')) ?>" />
+                    <input type="hidden" name="comment[parent]"
+                        value="<?= $this->escape($this->mycomment->get('parent')) ?>" />
+                    <input type="hidden" name="comment[page_id]"
+                        value="<?= $this->escape($this->mycomment->get('page_id', $this->page->get('id'))) ?>" />
 
                     <input type="hidden" name="pagename" value="<?php echo $this->escape($this->page->pagename); ?>" />
 
@@ -206,7 +213,9 @@ if (!$this->sub) {
 
                     <div class="form-group form-check">
                         <label class="comment-anonymous-label" class="form-check-label" for="comment-anonymous">
-                            <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?= $this->mycomment->get('anonymous') != 0 ? ' checked="checked"' : '' ?> />
+                            <input class="option form-check-input" type="checkbox" name="comment[anonymous]"
+                                id="comment-anonymous"
+                                value="1"<?= $this->mycomment->get('anonymous') != 0 ? ' checked="checked"' : '' ?> />
                             <?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?>
                         </label>
                     </div>

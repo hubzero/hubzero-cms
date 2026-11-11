@@ -50,13 +50,16 @@ $base = rtrim($base, '/');
 ?>
 
 <!-- Start Header -->
-<table class="tbl-header" cellpadding="2" cellspacing="3" border="0" width="100%" style="border-collapse: collapse; border-bottom: 2px solid #e1e1e1;">
+<table class="tbl-header" cellpadding="2" cellspacing="3" border="0" width="100%"
+    style="border-collapse: collapse; border-bottom: 2px solid #e1e1e1;">
     <tbody>
         <tr>
-            <td width="10%" nowrap="nowrap" align="left" valign="bottom" style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
+            <td width="10%" nowrap="nowrap" align="left" valign="bottom"
+                style="font-size: 1.4em; color: #999; padding: 0 10px 5px 0; text-align: left;">
                 <?php echo $this->sitename; ?>
             </td>
-            <td class="mobilehide" width="80%" align="left" valign="bottom" style="line-height: 1; padding: 0 0 5px 10px;">
+            <td class="mobilehide" width="80%" align="left" valign="bottom"
+                style="line-height: 1; padding: 0 0 5px 10px;">
                 <span style="font-weight: bold; font-size: 0.85em; color: #666; -webkit-text-size-adjust: none;">
                     <a href="<?= $base ?>" style="color: #666; font-weight: bold; text-decoration: none; border: none;"><?= $this->sitename ?></a>
                 </span>
@@ -99,7 +102,8 @@ $base = rtrim($base, '/');
 </table>
 <!-- ====== End Header Spacer ====== -->
 
-<table id="account-info" width="100%"  cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse; line-height: 1.6em;">
+<table id="account-info" width="100%"  cellpadding="0" cellspacing="0" border="0"
+    style="border-collapse: collapse; line-height: 1.6em;">
     <tbody>
         <tr>
             <td width="100%" style="padding: 18px 8px 8px 8px; border-top: 2px solid #e9e9e9;">
@@ -120,7 +124,8 @@ $base = rtrim($base, '/');
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
     <tbody>
         <tr style="border-collapse: collapse;">
-            <td height="30" style="border-collapse: collapse; color: #fff !important;"><div style="height: 30px !important; visibility: hidden;">----</div></td>
+            <td height="30" style="border-collapse: collapse; color: #fff !important;"><div
+                style="height: 30px !important; visibility: hidden;">----</div></td>
         </tr>
     </tbody>
 </table>

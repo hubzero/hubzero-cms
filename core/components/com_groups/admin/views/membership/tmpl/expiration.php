@@ -17,7 +17,8 @@ defined('_HZEXEC_') or die();
 $min = Date::of('now')->modify('+1 day')->format('Y-m-d');
 $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' days')->format('Y-m-d') : '';
 ?>
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="item-form">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="item-form">
     <div class="explaination">
         <p><?php echo Lang::txt('COM_GROUPS_MEMBER_TERM_EXPLANATION'); ?></p>
     </div>
@@ -61,7 +62,8 @@ $max = $this->maxDays > 0 ? Date::of('now')->modify('+' . $this->maxDays . ' day
 
             <div class="input-wrap">
                 <label for="expires"><?php echo Lang::txt('COM_GROUPS_MEMBER_TERM_ENDS_ON'); ?></label>
-                <input type="date" name="expires" id="expires" min="<?= $min ?>"<?= $max ? ' max="' . $max . '"' : '' ?> />
+                <input type="date" name="expires" id="expires"
+                    min="<?= $min ?>"<?= $max ? ' max="' . $max . '"' : '' ?> />
                 <?php if ($this->maxDays > 0) { ?>
                     <span class="hint"><?= Lang::txt('COM_GROUPS_MEMBERSHIP_TERM_HUB_MAX', $this->maxDays) ?></span>
                 <?php } ?>

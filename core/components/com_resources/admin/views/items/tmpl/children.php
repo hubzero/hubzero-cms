@@ -55,7 +55,8 @@ if ($this->filters['parent_id'] > 0) {
 }
 ?>
 
-<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
+    name="adminForm" id="adminForm">
     <table class="adminlist">
         <thead>
             <?php if ($this->filters['parent_id'] > 0) { ?>
@@ -67,8 +68,10 @@ if ($this->filters['parent_id'] > 0) {
             <?php } ?>
             <tr>
                 <th>
-                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value="" class="checkbox-toggle toggle-all" />
-                    <label for="checkall-toggle" class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
+                    <input type="checkbox" name="checkall-toggle" id="checkall-toggle" value=""
+                        class="checkbox-toggle toggle-all" />
+                    <label for="checkall-toggle"
+                        class="sr-only visually-hidden"><?= Lang::txt('JGLOBAL_CHECK_ALL') ?></label>
                 </th>
                 <th><?php echo Lang::txt('COM_RESOURCES_COL_ID'); ?></th>
                 <th><?php echo Lang::txt('COM_RESOURCES_COL_TITLE'); ?></th>
@@ -212,7 +215,8 @@ if ($this->filters['parent_id'] > 0) {
                 </td>
                 <td>
                     <?php if ((($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) && $row->checked_out != User::get('id')) || !$canDo->get('core.edit')) { ?>
-                        <span class="editlinktip hasTip" title="<?= Lang::txt('COM_RESOURCES_PUBLISH_INFO') ?>::<?= $info ?>">
+                        <span class="editlinktip hasTip"
+                            title="<?= Lang::txt('COM_RESOURCES_PUBLISH_INFO') ?>::<?= $info ?>">
                             <?php echo $this->escape(stripslashes($row->title)); ?>
                         </span>
                         <?= ($row->standalone != 1 && $row->path != '') ? '<br /><small>' . $this->escape($row->path) . '</small>' : '' ?>

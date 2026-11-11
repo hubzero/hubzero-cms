@@ -46,8 +46,10 @@ $this->js();
     <?php if ($this->page->isStatic() && $this->page->access('admin') && $this->controller == 'pages' && $this->task == 'display') { ?>
         <div id="<?php echo ($this->sub) ? 'sub-content-header' : 'content-header'; ?>-extra">
             <ul>
-                <li><a class="icon-edit edit btn" href="<?= Route::url($this->page->link('edit')) ?>"><?= Lang::txt('JACTION_EDIT') ?></a></li>
-                <li><a class="icon-history history btn" href="<?= Route::url($this->page->link('history')) ?>"><?= Lang::txt('COM_WIKI_HISTORY') ?></a></li>
+                <li><a class="icon-edit edit btn"
+                    href="<?= Route::url($this->page->link('edit')) ?>"><?= Lang::txt('JACTION_EDIT') ?></a></li>
+                <li><a class="icon-history history btn"
+                    href="<?= Route::url($this->page->link('history')) ?>"><?= Lang::txt('COM_WIKI_HISTORY') ?></a></li>
             </ul>
         </div><!-- /#content-header-extra -->
     <?php } ?>
