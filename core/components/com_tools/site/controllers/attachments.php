@@ -22,6 +22,10 @@ use Hubzero\Facades\App;
 
 /**
  * Controller class for contributing a tool
+ *
+ * @property  \Hubzero\Config\Registry  $rconfig  The resources component's parameters, set by execute()
+ * @property  int|false                 $_toolid  The tool of the resource, set by a task
+ * @property  int                       $_rid     The resource, set by a task
  */
 class Attachments extends SiteController
 {

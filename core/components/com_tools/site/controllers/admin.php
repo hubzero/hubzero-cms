@@ -21,6 +21,8 @@ use Hubzero\Facades\Date;
 
 /**
  * Controller class for contributing a tool
+ *
+ * @property  \Hubzero\Config\Registry  $rconfig  The resources component's parameters, set by execute()
  */
 class Admin extends SiteController
 {

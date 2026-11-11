@@ -20,6 +20,8 @@ use Hubzero\Facades\Config;
 
 /**
  * Controller class for tools (default)
+ *
+ * @property  string  $_title  The page title, set by buildTitle()
  */
 class Tools extends SiteController
 {

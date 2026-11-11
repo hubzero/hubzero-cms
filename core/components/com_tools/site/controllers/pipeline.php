@@ -27,6 +27,13 @@ use Hubzero\Facades\Notify;
 
 /**
  * Controller class for contributing a tool
+ *
+ * @property  \Hubzero\Config\Registry  $rconfig         The resources component's parameters, set by execute()
+ * @property  int|false                 $_toolid         The tool being worked on, set by a task
+ * @property  string                    $_action         The action request variable, set by a task
+ * @property  string                    $_error          An error to show, set by a task
+ * @property  string                    $_msg            A message for the user, set by a task
+ * @property  array                     $license_choice  The license chosen, set by savelicenseTask()
  */
 class Pipeline extends SiteController
 {

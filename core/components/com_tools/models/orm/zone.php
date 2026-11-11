@@ -15,6 +15,10 @@ use Hubzero\Facades\Lang;
  * Tool zone model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * Read through __get():
+ *
+ * @property  \Hubzero\Database\Rows  $locations  The zone's locations, through locations()
  */
 class Zone extends Relational
 {

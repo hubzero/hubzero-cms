@@ -20,6 +20,15 @@ use Hubzero\Facades\App;
 
 /**
  * Tools controller class for managing user disk storage
+ *
+ * @property  string     $_title     The page title, set by buildTitle()
+ * @property  bool       $exceeded   Whether the quota is exceeded, execute() and displayTask()
+ * @property  float|int  $percent    The share of the quota used, getDiskUsage()
+ * @property  float|int  $total      The quota in GB, set by getDiskUsage()
+ * @property  int        $remaining  The space remaining, set by getDiskUsage()
+ * @property  float|int  $used       The space used, set by getDiskUsage()
+ * @property  float|int  $soft       The soft quota, set by getDiskUsage()
+ * @property  float|int  $hard       The hard quota, set by getDiskUsage()
  */
 class Storage extends SiteController
 {

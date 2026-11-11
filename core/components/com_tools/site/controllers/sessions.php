@@ -26,6 +26,12 @@ use Hubzero\Facades\Plugin;
 
 /**
  * Tools controller class for simulation sessions
+ *
+ * @property  string     $_title     The page title, set by buildTitle()
+ * @property  object     $app        The tool asked for, set by a task
+ * @property  float|int  $percent    The share of the quota used, getDiskUsage()
+ * @property  float|int  $total      The quota in GB, set by getDiskUsage()
+ * @property  int        $remaining  The space remaining, set by getDiskUsage()
  */
 class Sessions extends SiteController
 {

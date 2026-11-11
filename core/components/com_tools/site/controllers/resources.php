@@ -23,6 +23,9 @@ use Hubzero\Facades\Notify;
 
 /**
  * Controller class for contributing a tool
+ *
+ * @property  \Hubzero\Config\Registry  $rconfig  The resources component's parameters, set by execute()
+ * @property  int|false                 $_toolid  The tool being edited, set by a task
  */
 class Resources extends SiteController
 {
