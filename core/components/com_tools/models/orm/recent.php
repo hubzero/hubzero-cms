@@ -88,7 +88,7 @@ class Recent extends Relational
         $records = self::all()
             ->whereEquals('uid', $uid)
             ->order('created', 'desc')
-            ->row();
+            ->rows();
 
         foreach ($records as $record) {
             if ($record->get('tool') == $tool) {
