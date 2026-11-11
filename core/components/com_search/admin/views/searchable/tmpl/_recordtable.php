@@ -64,11 +64,16 @@ $this->css('
                 </td>
                 <td>
                     <?php if (!in_array($document['id'], $this->blacklist)) : ?>
-                        <a class="button" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=addToBlackList'
-                        . '&id=' . $document['id']
-                        . '&facet=' . $this->facet
-                        . '&limit=' . $this->pagination->limit
-                        . '&limitstart=' . $this->pagination->limitstart); ?>"><?= Lang::txt('COM_SEARCH_ADD_BLACKLIST') ?></a>
+                        <?php
+                        $blacklistUrl = Route::url(
+                            'index.php?option=' . $this->option . '&task=addToBlackList'
+                                . '&id=' . $document['id']
+                                . '&facet=' . $this->facet
+                                . '&limit=' . $this->pagination->limit
+                                . '&limitstart=' . $this->pagination->limitstart,
+                        );
+                        ?>
+                        <a class="button" href="<?= $blacklistUrl ?>"><?= Lang::txt('COM_SEARCH_ADD_BLACKLIST') ?></a>
                     <?php else : ?>
                         <span><?php echo Lang::txt('COM_SEARCH_MARKED_FOR_REMOVAL'); ?></span>
                     <?php endif; ?>

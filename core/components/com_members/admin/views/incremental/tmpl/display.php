@@ -224,7 +224,12 @@ $groupDefs = $groups->getAllGroups();
                                 <select name="group-cols-<?php echo $idx; ?>[]">
                                     <option value="">Select profile field...</option>
                                 <?php foreach ($possibleCols as $colName => $colLabel) : ?>
-                                    <option value="<?= str_replace('"', '&quot;', $colName) ?>"<?= $colName == $col ? ' selected="selected"' : '' ?>><?= htmlentities($colLabel) ?></option>
+                                    <?php
+                                    $value = str_replace('"', '&quot;', $colName);
+                                    $selected = $colName == $col ? ' selected="selected"' : '';
+                                    $text = htmlentities($colLabel);
+                                    ?>
+                                    <option value="<?= $value ?>"<?= $selected ?>><?= $text ?></option>
                                 <?php endforeach; ?>
                                 </select>
                                 <?php
@@ -273,7 +278,9 @@ $groupDefs = $groups->getAllGroups();
                         <option value="day" <?php echo $unit == 'day' ? 'selected="selected" ' : ''; ?>>days</option>
                         <option value="week" <?php echo $unit == 'week' ? 'selected="selected" ' : ''; ?>>weeks</option>
                     </select>
-                    <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove recurrence</button>
+                    <button
+                        onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove
+                        recurrence</button>
                 </li>
                     <?php
                 endforeach;

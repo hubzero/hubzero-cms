@@ -133,8 +133,13 @@ if (
     if ($this->lastPubRelease && $this->lastPubRelease->id != $this->publication->version_id) { ?>
         <p>
             <?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE'); ?>
-            [<a href="<?php echo Route::url('index.php?option=' . $this->option . '&id='
-                    . $this->publication->id . '&v=' . $this->lastPubRelease->version_number); ?>"><?= $this->escape($this->lastPubRelease->version_label) ?></a>]
+            <?php
+            $releaseUrl = Route::url(
+                'index.php?option=' . $this->option . '&id='
+                    . $this->publication->id . '&v=' . $this->lastPubRelease->version_number,
+            );
+            ?>
+            [<a href="<?= $releaseUrl ?>"><?= $this->escape($this->lastPubRelease->version_label) ?></a>]
             <?php echo Lang::txt('COM_PUBLICATIONS_METADATA_ARCHIVE_INFO'); ?>
         </p>
     <?php }
