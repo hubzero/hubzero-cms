@@ -223,7 +223,12 @@ $allowCommentsChecked = function ($value) use ($view) {
                                                         continue;
                                                     }
                                                     ?>
-                                                    <option value="<?= $item->get('id') ?>"<?= $parentSelected($item->get('id')) ?>><?= $this->escape(stripslashes($item->get('pagename'))) ?></option>
+                                                    <?php
+                                                    $value = $item->get('id');
+                                                    $selected = $parentSelected($value);
+                                                    $title = $this->escape(stripslashes($item->get('pagename')));
+                                                    ?>
+                                                    <option value="<?= $value ?>"<?= $selected ?>><?= $title ?></option>
                                                     <?php
                                                 }
                                             }
@@ -373,7 +378,11 @@ $allowCommentsChecked = function ($value) use ($view) {
                                     $cls .= ' hide';
                                 }
 
-                                if (!$this->page->exists() || $this->page->get('created_by') == User::get('id') || $this->page->access('manage')) { ?>
+                                if (
+                                    !$this->page->exists()
+                                    || $this->page->get('created_by') == User::get('id')
+                                    || $this->page->access('manage')
+                                ) { ?>
                                     <div class="form-group">
                                         <label for="params_mode">
                                             <?= Lang::txt('COM_WIKI_FIELD_MODE') ?>: <span

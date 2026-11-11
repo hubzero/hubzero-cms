@@ -180,7 +180,10 @@ if (count($inst) > 0) {
                                                     $threadTitleText = $this->escape(stripslashes($row->get('title')));
                                                     ?>
                                                     <span class="thread-title"><?= $threadTitleText ?></span>
-                                                    <span class="thread-discussions count"><?= $row->get('threads') ?></span>
+                                                    <?php
+                                                    $threadCount = $row->get('threads');
+                                                    ?>
+                                                    <span class="thread-discussions count"><?= $threadCount ?></span>
                                                 </div><!-- / .thread-header -->
                                                 <div class="thread-content">
                                                     <?php
@@ -388,7 +391,13 @@ if (count($inst) > 0) {
                                     . 'it can be used.',
                             ) ?>
                             <?php if ($this->course->access('manage', 'offering')) { ?>
-                                <br /><br /><?= Lang::txt('Discussions require at least one section and category before posts can be made. Click the "manage" button to set up this forum.') ?>
+                                <?php
+                                $setupText = Lang::txt(
+                                    'Discussions require at least one section and category before posts can be made. '
+                                        . 'Click the "manage" button to set up this forum.',
+                                );
+                                ?>
+                                <br /><br /><?= $setupText ?>
                             <?php } ?>
                         </p>
                     <?php } ?>

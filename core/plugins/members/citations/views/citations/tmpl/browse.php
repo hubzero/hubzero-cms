@@ -190,11 +190,26 @@ if (isset($this->messages)) {
                                         <?php
                                         $deleteUrl = Route::url($base . '&action=delete&cid=' . $cite->id);
                                         ?>
-                                        <td class="col-delete"><button type="submit" form="hz-post-action" formaction="<?= $deleteUrl ?>" class="icon-delete delete individual protected" data-confirm="<?= Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE') ?>"><span><?= Lang::txt('PLG_MEMBERS_CITATIONS_DELETE') ?></span></button></td>
+                                        <?php
+                                        $confirm = Lang::txt('PLG_MEMBERS_CITATIONS_CONFIRM_DELETE');
+                                        $label = Lang::txt('PLG_MEMBERS_CITATIONS_DELETE');
+                                        ?>
+                                        <td class="col-delete"><button type="submit" form="hz-post-action"
+                                            formaction="<?= $deleteUrl ?>"
+                                            class="icon-delete delete individual protected"
+                                            data-confirm="<?= $confirm ?>"><span><?= $label ?></span></button></td>
                                         <?php
                                         $publishUrl = Route::url($base . '&action=publish&cid=' . $cite->id);
                                         ?>
-                                        <td class="col-publish"><button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="icon-window-publish individual publish"><span><?= ($cite->published == $cite::STATE_PUBLISHED) ? Lang::txt('PLG_MEMBERS_CITATIONS_UNPUBLISH') : '<strong>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH') . '</strong>' ?></span></button></td>
+                                        <?php
+                                        $label = ($cite->published == $cite::STATE_PUBLISHED)
+                                            ? Lang::txt('PLG_MEMBERS_CITATIONS_UNPUBLISH')
+                                            : '<strong>' . Lang::txt('PLG_MEMBERS_CITATIONS_PUBLISH') . '</strong>';
+                                        $classes = 'icon-window-publish individual publish';
+                                        ?>
+                                        <td class="col-publish"><button type="submit" form="hz-post-action"
+                                            formaction="<?= $publishUrl ?>"
+                                            class="<?= $classes ?>"><span><?= $label ?></span></button></td>
                                     <?php endif; ?>
                                 </tr>
                                 <tr>

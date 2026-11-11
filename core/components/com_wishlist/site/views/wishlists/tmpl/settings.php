@@ -79,37 +79,39 @@ if (!$this->wishlist->isPublic() && !$this->wishlist->access('manage')) { ?>
 
                     <div class="form-group form-check">
                         <label for="field-public-yes" class="form-check-label">
-                            <input class="option form-check-input" type="radio" name="fields[public]" id="field-public-yes" value="1" <?php
-                            if ($this->wishlist->get('public') == 1) {
-                                echo ' checked="checked"';
-                            }
-                            if (
-                                $this->wishlist->get('category') == 'resource'
-                                or (
-                                    $this->wishlist->get('category') == 'general'
-                                    && $this->wishlist->get('referenceid') == 1
-                                )
-                            ) {
-                                echo ' disabled="disabled"';
-                            } ?> /> <?php echo Lang::txt('COM_WISHLIST_PUBLIC'); ?>
+                            <input class="option form-check-input" type="radio" name="fields[public]"
+                                id="field-public-yes" value="1" <?php
+                                if ($this->wishlist->get('public') == 1) {
+                                    echo ' checked="checked"';
+                                }
+                                if (
+                                    $this->wishlist->get('category') == 'resource'
+                                    or (
+                                        $this->wishlist->get('category') == 'general'
+                                        && $this->wishlist->get('referenceid') == 1
+                                    )
+                                ) {
+                                    echo ' disabled="disabled"';
+                                } ?> /> <?php echo Lang::txt('COM_WISHLIST_PUBLIC'); ?>
                         </label>
                     </div>
 
                     <div class="form-group form-check">
                         <label for="field-public-no" class="form-check-label">
-                            <input class="option form-check-input" type="radio" name="fields[public]" id="field-public-no" value="0" <?php
-                            if ($this->wishlist->get('public') == 0) {
-                                echo ' checked="checked"';
-                            }
-                            if (
-                                $this->wishlist->get('category') == 'resource'
-                                or (
-                                    $this->wishlist->get('category') == 'general'
-                                    && $this->wishlist->get('referenceid') == 1
-                                )
-                            ) {
-                                echo ' disabled="disabled"';
-                            } ?> /> <?php echo Lang::txt('COM_WISHLIST_PRIVATE'); ?>
+                            <input class="option form-check-input" type="radio" name="fields[public]"
+                                id="field-public-no" value="0" <?php
+                                if ($this->wishlist->get('public') == 0) {
+                                    echo ' checked="checked"';
+                                }
+                                if (
+                                    $this->wishlist->get('category') == 'resource'
+                                    or (
+                                        $this->wishlist->get('category') == 'general'
+                                        && $this->wishlist->get('referenceid') == 1
+                                    )
+                                ) {
+                                    echo ' disabled="disabled"';
+                                } ?> /> <?php echo Lang::txt('COM_WISHLIST_PRIVATE'); ?>
                         </label>
                     </div>
                 </fieldset>

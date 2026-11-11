@@ -84,7 +84,15 @@ $this
                                     <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                 </th>
                                 <td>
-                                    <a class="entry-title" href="<?= Route::url($base . '&scope=' . $this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('alias') . '/' . $this->categories[$row->get('category_id')]->get('alias') . '/' . $row->get('thread')) ?>">
+                                    <?php
+                                    $category = $this->categories[$row->get('category_id')];
+                                    $threadUrl = Route::url(
+                                        $base . '&scope='
+                                            . $this->sections[$category->get('section_id')]->get('alias') . '/'
+                                            . $category->get('alias') . '/' . $row->get('thread'),
+                                    );
+                                    ?>
+                                    <a class="entry-title" href="<?= $threadUrl ?>">
                                         <span><?php echo $title; ?></span>
                                     </a>
                                     <span class="entry-details">
@@ -100,7 +108,14 @@ $this
                                 <td class="priority-4">
                                     <span><?php echo Lang::txt('PLG_GROUPS_FORUM_SECTION'); ?></span>
                                     <span class="entry-details section-name">
-                                        <?= $this->escape(Str::truncate($this->sections[$this->categories[$row->get('category_id')]->get('section_id')]->get('title'), 100, ['exact' => true])) ?>
+                                        <?php
+                                        $sectionTitle = Str::truncate(
+                                            $this->sections[$category->get('section_id')]->get('title'),
+                                            100,
+                                            ['exact' => true],
+                                        );
+                                        ?>
+                                        <?= $this->escape($sectionTitle) ?>
                                     </span>
                                 </td>
                                 <td class="priority-3">

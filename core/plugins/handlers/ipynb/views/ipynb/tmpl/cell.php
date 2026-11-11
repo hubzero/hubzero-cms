@@ -46,7 +46,10 @@ if ($cell->cell_type == 'code') :
                     In [<?= (isset($cell->prompt_number)) ? $this->escape($cell->prompt_number) : ' ' ?>]:
                 </div>
                 <div class="inner_cell">
-                    <pre name="code" class="<?= (isset($cell->language)) ? $this->escape($cell->language) : 'python' ?>:nogutter:nocontrols"><?= $this->escape($source) ?></pre>
+                    <?php
+                    $language = (isset($cell->language)) ? $this->escape($cell->language) : 'python';
+                    ?>
+                    <pre name="code" class="<?= $language ?>:nogutter:nocontrols"><?= $this->escape($source) ?></pre>
                 </div>
             </div>
         </div>
@@ -77,7 +80,10 @@ if ($cell->cell_type == 'code') :
                                 ?>
                                 <div class="output_img"><img src="<?= $sourceUrl ?>" alt="<?= $altText ?>" /></div>
                             <?php else : ?>
-                                <pre class="output"><?= $this->escape(isset($output->text) ? $text($output->text) : '') ?></pre>
+                                <?php
+                                $outputText = $this->escape(isset($output->text) ? $text($output->text) : '');
+                                ?>
+                                <pre class="output"><?= $outputText ?></pre>
                             <?php endif; ?>
                         <?php elseif ($output->output_type == 'stream') :
                                 $out[] = isset($output->text) ? $text($output->text) : '';
