@@ -15,6 +15,12 @@ use Hubzero\Facades\Component;
  * Billboard database model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * Columns read as properties:
+ *
+ * @property  int     $collection_id
+ * @property  string  $name
+ * @property  string  $alias
  */
 class Billboard extends Relational
 {

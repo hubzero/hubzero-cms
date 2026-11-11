@@ -14,6 +14,10 @@ use Hubzero\Facades\Lang;
 
 /**
  * Comment model
+ *
+ * Not a column, read and set through __get() and __set():
+ *
+ * @property  string  $base  The URL of the question the comment is on, cached by link()
  */
 class Comment extends ItemComment
 {

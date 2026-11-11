@@ -17,6 +17,11 @@ use Hubzero\Facades\Event;
 
 /**
  * Response model for Q&A
+ *
+ * Read through __get():
+ *
+ * @property  string    $answer    The answer column, parsed for display
+ * @property  Question  $question  The question answered, through question()
  */
 class Response extends Relational
 {

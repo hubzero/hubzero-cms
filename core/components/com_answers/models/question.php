@@ -24,6 +24,10 @@ use Hubzero\Facades\Event;
 
 /**
  * Question model for Q&A
+ *
+ * Read through __get():
+ *
+ * @property  \Hubzero\User\User|null  $creator  The user who asked, through creator()
  */
 class Question extends Relational
 {

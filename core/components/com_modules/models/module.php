@@ -17,6 +17,10 @@ use Hubzero\Facades\App;
 
 /**
  * Module extension model
+ *
+ * Read through __get():
+ *
+ * @property  Registry  $params  The params column as a registry, through transformParams()
  */
 class Module extends Relational
 {

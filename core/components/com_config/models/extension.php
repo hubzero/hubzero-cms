@@ -16,6 +16,10 @@ use Hubzero\Facades\Lang;
 
 /**
  * Plugin extension model
+ *
+ * Read through __get():
+ *
+ * @property  Registry  $params  The params column as a registry, through transformParams()
  */
 class Extension extends Relational
 {

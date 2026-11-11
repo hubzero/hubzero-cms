@@ -24,6 +24,11 @@ use Hubzero\Facades\Notify;
 
 /**
  * Menu item model
+ *
+ * Read through __get():
+ *
+ * @property  Registry  $params  The params column as a registry, through transformParams()
+ * @property  Item      $parent  The parent menu item, through parent()
  */
 class Item extends Nested
 {
