@@ -58,7 +58,7 @@ class Menu extends Relational
 
         // See if we're creating or updating
         $method = $this->isNew() ? 'createWithNoPk' : 'modifyWithNoPk';
-        $result = $this->$method($this->getAttributes());
+        $result = $this->$method();
 
         $result = ($result === false ? false : true);
 

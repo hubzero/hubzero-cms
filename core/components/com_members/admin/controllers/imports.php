@@ -40,7 +40,7 @@ class Imports extends AdminController
      */
     public function execute()
     {
-        if (!Admin::getActions('component')->get('core.admin')) {
+        if (!Admin::getActions()->get('core.admin')) {
             App::redirect(
                 Route::url('index.php?option=com_members', false),
                 Lang::txt('Not authorized'),

@@ -43,7 +43,7 @@ class Supporttickets extends Module
 
         $database = App::get('db');
 
-        $st = new Ticket($database);
+        $st = new Ticket();
 
         $types = [
             'common' => [],

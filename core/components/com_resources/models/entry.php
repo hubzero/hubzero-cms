@@ -70,6 +70,8 @@ use Hubzero\Facades\Route;
  * @property  \Hubzero\Database\Rows             $authors        The authors, through authors()
  * @property  string                             $tool           The tool instance, set by compileToolInfo()
  * @property  int                                $toolpublished  The tool version's state, set by compileToolInfo()
+ *
+ * @method \Components\Resources\Models\Type type() Through __call(), from transformType()
  */
 class Entry extends Relational implements \Hubzero\Search\Searchable
 {

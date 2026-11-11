@@ -89,6 +89,6 @@ class Course extends SingleSkuProduct
             }
         }
 
-        parent::verify($action);
+        parent::verify();
     }
 }

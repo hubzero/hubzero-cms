@@ -610,7 +610,7 @@ class Members extends AdminController
         $newSecret = trim(Request::getVar('resetSecret', '', 'post'));
         // set new secret if indicated
         if (null !== $newSecret && $newSecret == 1) {
-            $user->set('secret', Member::generateSecret(null));
+            $user->set('secret', Member::generateSecret());
             $user->save();
         }
 

@@ -1940,7 +1940,7 @@ class Jobs extends SiteController
         // jobs filters
         if ($jobs) {
             $filters['sortby']   = $this->getProperty('sortby') && $checkstored
-                ? $this->getProperty('sortby', 'title')
+                ? $this->getProperty('sortby')
                 : trim(Request::getWord('sortby', 'title'));
             $filters['category'] = $this->getProperty('category') && $checkstored
                 ? $this->getProperty('category')

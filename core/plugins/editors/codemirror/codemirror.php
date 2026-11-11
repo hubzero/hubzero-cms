@@ -251,7 +251,7 @@ class Codemirror extends Plugin
         Html::behavior('modal', 'a.modal-button');
 
         $html = [];
-        $results[] = $this->onGetInsertMethod($name);
+        $results[] = $this->onGetInsertMethod();
 
         foreach ($results as $result) {
             if (is_string($result) && trim($result)) {
