@@ -376,7 +376,9 @@ $paramsLayoutSelected = function ($value) use ($view) {
                                 . $this->model->get('id'),
                         );
                         ?>
-                        <?= Lang::txt('Maintenance options:') ?> &nbsp; <a href="<?= $gitgcUrl ?>"><?= Lang::txt('git gc --aggressive') ?></a> [<?= Lang::txt('Takes minutes to run') ?>]
+                        <?= Lang::txt('Maintenance options:') ?> &nbsp; <a
+                            href="<?= $gitgcUrl ?>"><?= Lang::txt('git gc --aggressive') ?></a>
+                            [<?= Lang::txt('Takes minutes to run') ?>]
                     </div>
 
                     <?php if ($cEnabled) { ?>

@@ -161,7 +161,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                                                 $current_type == 'Questions' ? 'Answers' : $current_type,
                                             );
                                             ?>
-                                            <h4><span class="expand"></span><?= $headingText ?> <small>(<?= $ctypec[$child->getSection()] ?>)</small></h4>
+                                            <h4><span class="expand"></span><?= $headingText ?>
+                                                <small>(<?= $ctypec[$child->getSection()] ?>)</small></h4>
                                             <ul class="child-result">
                                     <?php elseif ($last_type != $current_type) : ?>
                                             </ul>

@@ -74,7 +74,8 @@ $this->js();
                                             ? ' selected="selected"'
                                             : '';
                                         ?>
-                                        <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>>&nbsp; &nbsp; <?= $this->escape(stripslashes($section->get('title'))) ?></option>
+                                        <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>>&nbsp; &nbsp;
+                                            <?= $this->escape(stripslashes($section->get('title'))) ?></option>
                                         <?php
                                     }
                                     ?>

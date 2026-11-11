@@ -69,7 +69,8 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
                     $curationVersionText = Lang::txt('COM_PUBLICATIONS_CURATION_VERSION') . ' '
                         . $this->escape($this->pub->version_label);
                     ?>
-                    <span class="restype indlist"><?= $typetitle ?></span> <?= $this->escape(Str::truncate($this->pub->title, 65)) ?> | <?= $curationVersionText ?>
+                    <span class="restype indlist"><?= $typetitle ?></span>
+                        <?= $this->escape(Str::truncate($this->pub->title, 65)) ?> | <?= $curationVersionText ?>
                 </h3>
             </div>
             <p class="instruct">
