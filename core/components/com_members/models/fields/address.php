@@ -228,7 +228,7 @@ class Address extends Field
 
             $countries = Geocode::countries();
 
-            if ($countries && !empty($countries)) {
+            if ($countries) {
                 self::$countries = $countries;
             }
         }

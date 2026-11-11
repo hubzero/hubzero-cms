@@ -363,7 +363,7 @@ class Media extends SiteController
         // Check that the file type is allowed
         $allowed = ['png', 'jpe', 'jpeg', 'jpg', 'gif', 'jp2', 'jpx'];
 
-        if (!empty($allowed) && !in_array(strtolower($ext), $allowed)) {
+        if (!in_array(strtolower($ext), $allowed)) {
             $this->setError(Lang::txt('COM_MEMBERS_ERROR_UPLOADING_INVALID_FILE', implode(', ', $allowed)));
             return $this->displayTask($file['name'], $id);
         }

@@ -550,7 +550,7 @@ class Imports extends AdminController
     /**
      * Quote a value for a CSV file
      *
-     * @param   string  $val
+     * @param   string|null  $val
      * @return  string
      */
     public static function quoteCsv($val)

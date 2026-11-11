@@ -202,10 +202,6 @@ class Citations extends Plugin
             $view = $this->view('intro');
             $view->member = $this->member;
             $view->isAdmin = User::get('id') == $this->member->get('id');
-        } elseif ((int) $count == 0 && $isAdmin && isset($display) && $total <= 0) {
-            $view = $this->view('intro', 'browse');
-            $view->group = $this->member;
-            $view->isManager = $isAdmin;
         } else {
             // Initialize the view
             $view = $this->view('browse');

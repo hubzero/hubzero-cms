@@ -76,15 +76,19 @@ class Orcid extends Text
         $clientID = $config->get('orcid_' . $srv . '_client_id', '');
         $redirectURI = $config->get('orcid_' . $srv . '_redirect_uri', '');
         $userID = User::get('id');
+        $orcid = '';
+        $accessToken = '';
         if ($userID != 0) {
             $profile = \Components\Members\Models\Member::oneOrFail($userID);
+            $orcid = $profile->get('orcid');
+            $accessToken = $profile->get('access_token');
         }
 
         $oauthConfigured = ($srv !== 'public' && !empty($clientID) && !empty($redirectURI));
         $isSandbox = ($srv === 'sandbox');
 
         $html[] = '	<div class="orcid-actions">';
-        if ($userID != 0 && !empty($profile->get('orcid'))) {
+        if ($userID != 0 && !empty($orcid)) {
             $html[] = '<p>' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_ID_AUTHORIZED') . '</p>';
         } elseif ($oauthConfigured) {
             $html[] = '     <a id="authorize-orcid" class="btn" href="https://';
@@ -111,7 +115,7 @@ class Orcid extends Text
         // Grant permission to manage ORCID record
         $permissionURI = $config->get('orcid_' . $srv . '_permission_uri', '');
         $permissionConfigured = ($oauthConfigured && !empty($permissionURI));
-        if ($userID != 0 && !empty($profile->get('orcid')) && !empty($profile->get('access_token'))) {
+        if ($userID != 0 && !empty($orcid) && !empty($accessToken)) {
             $html[] = '<p>' . Lang::txt('COM_MEMBERS_PROFILE_ORCID_PERMISSION_AUTHORIZED') . '</p>';
         } elseif ($permissionConfigured) {
             $html[] = '     <a id="grant-orcid-management-permission" class="btn" href="https://';

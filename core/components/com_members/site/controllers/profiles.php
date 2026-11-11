@@ -124,7 +124,7 @@ class Profiles extends SiteController
                             $members = $this->database->loadColumn();
                         }
 
-                        if (!$members || empty($members)) {
+                        if (!$members) {
                             $members = [User::get('id')];
                         }
 
@@ -1534,7 +1534,7 @@ class Profiles extends SiteController
         // Name changed?
         $name = Request::getArray('name', [], 'post');
 
-        if ($name && !empty($name)) {
+        if ($name) {
             $name['first']  = strip_tags($name['first']);
             $name['middle'] = strip_tags($name['middle']);
             $name['last']   = strip_tags($name['last']);

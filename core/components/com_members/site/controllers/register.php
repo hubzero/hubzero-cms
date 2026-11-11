@@ -1879,7 +1879,7 @@ class Register extends SiteController
             ->set('login', $xprofile->get('username'))
             ->set('email', $xprofile->get('email'))
             ->set('code', $code)
-            ->set('redirect', (isset($redirect) ? $redirect : (isset($return) ? $return : '')))
+            ->set('redirect', (isset($redirect) ? $redirect : $return))
             ->set('sitename', Config::get('sitename'))
             ->setErrors($this->getErrors())
             ->display();

@@ -730,9 +730,9 @@ class Quotas extends AdminController
             ->select('id')
             ->rows();
 
-        if ($results->count() > 0) {
-            $updates = 0;
+        $updates = 0;
 
+        if ($results->count() > 0) {
             $class = Category::defaultEntry();
 
             if (!$class->get('id')) {

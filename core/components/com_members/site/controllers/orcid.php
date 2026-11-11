@@ -393,7 +393,8 @@ class Orcid extends SiteController
                     }
                 }
             } else {
-                if (!empty($first_name) && empty($last_name)) {
+                // Here a first name means the last name is empty
+                if (!empty($first_name)) {
                     $root = $this->fetchXml($first_name, null, null);
                     if (!empty($root)) {
                         $firstNameSearch = $this->parseTree($root);
@@ -408,7 +409,8 @@ class Orcid extends SiteController
                 }
 
                 if ($ins_option) {
-                    if (!empty($first_name) && empty($last_name)) {
+                    // Here a first name means the last name is empty
+                    if (!empty($first_name)) {
                         $root = $this->fetchXml($first_name, null, $ins_name);
                         if (!empty($root)) {
                             $firstNameOptSearch = $this->parseTree($root);
@@ -429,7 +431,8 @@ class Orcid extends SiteController
             if (!empty($first_name) && !empty($last_name)) {
                 $records = array_merge($defSearch, $optSearch);
             } else {
-                if (!empty($first_name) && empty($last_name)) {
+                // Here a first name means the last name is empty
+                if (!empty($first_name)) {
                     $records = array_merge($records, $firstNameSearch, $firstNameOptSearch);
                 }
 
