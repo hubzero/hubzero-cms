@@ -27,6 +27,49 @@ use Hubzero\Facades\Route;
  * Resource entry model
  *
  * @uses \Hubzero\Database\Relational
+ *
+ * Columns of #__resources, as read through the transformers where there is one:
+ *
+ * @property  int                                $id
+ * @property  string                             $title
+ * @property  \Components\Resources\Models\Type  $type              The type, through transformType()
+ * @property  int                                $logical_type
+ * @property  string                             $introtext
+ * @property  string                             $fulltxt
+ * @property  string                             $footertext
+ * @property  string                             $created
+ * @property  int                                $created_by
+ * @property  string                             $modified
+ * @property  int                                $modified_by
+ * @property  int                                $published
+ * @property  string                             $publish_up
+ * @property  string                             $publish_down
+ * @property  int                                $access
+ * @property  int                                $hits
+ * @property  string                             $path              Unslashed by transformPath()
+ * @property  int                                $checked_out
+ * @property  string                             $checked_out_time
+ * @property  int                                $standalone
+ * @property  \Hubzero\User\Group                $group_owner       The group, through transformGroupOwner()
+ * @property  string|null                        $group_access
+ * @property  string                             $rating            The rating as a CSS class, transformRating()
+ * @property  int                                $times_rated
+ * @property  \Hubzero\Config\Registry           $params            Through transformParams(), with the component's
+ * @property  \Hubzero\Config\Registry           $attribs           Through transformAttribs()
+ * @property  string                             $alias
+ * @property  float                              $ranking
+ * @property  string|null                        $license
+ *
+ * Not columns:
+ *
+ * @property  \Components\Resources\Models\Type  $logicaltype    The logical type, transformLogicaltype()
+ * @property  array                              $groups         The groups allowed access, transformGroups()
+ * @property  array                              $users          The users allowed access, transformUsers()
+ * @property  string                             $description    The full text for display, transformDescription()
+ * @property  string                             $access_level   The access level's name, transformAccessLevel()
+ * @property  \Hubzero\Database\Rows             $authors        The authors, through authors()
+ * @property  string                             $tool           The tool instance, set by compileToolInfo()
+ * @property  int                                $toolpublished  The tool version's state, set by compileToolInfo()
  */
 class Entry extends Relational implements \Hubzero\Search\Searchable
 {
