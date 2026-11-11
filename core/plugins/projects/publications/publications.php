@@ -2016,83 +2016,12 @@ class Publications extends Plugin
                 // email address is empty
                 $owner = $author->getAuthorByOwnerId($pub->version->id, $author->project_owner_id);
 
-                if (
-                    (empty($owner->user_id) && empty($owner->invited_email))
-                    || empty($owner->department)
-                    || empty($owner->organization)
-                ) {
-                    if (
-                        (empty($owner->user_id) && empty($owner->invited_email))
-                        && empty($owner->department)
-                        && empty($owner->organization)
-                    ) {
-                        Notify::error(
-                            Lang::txt(
-                                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_ORGANIZATION_EMAIL_ADDRESS_MISSING',
-                            ),
-                            'projects',
-                        );
-                    } elseif (
-                        (empty($owner->user_id) && empty($owner->invited_email))
-                        && empty($owner->department)
-                        && !empty($owner->organization)
-                    ) {
-                        Notify::error(
-                            Lang::txt(
-                                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_EMAIL_ADDRESS_MISSING',
-                            ),
-                            'projects',
-                        );
-                    } elseif (
-                        (empty($owner->user_id) && empty($owner->invited_email))
-                        && !empty($owner->department)
-                        && empty($owner->organization)
-                    ) {
-                        Notify::error(
-                            Lang::txt(
-                                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_ORGANIZATION_EMAIL_ADDRESS_MISSING',
-                            ),
-                            'projects',
-                        );
-                    } elseif (
-                        !(empty($owner->user_id) && empty($owner->invited_email))
-                        && empty($owner->department)
-                        && empty($owner->organization)
-                    ) {
-                        Notify::error(
-                            Lang::txt(
-                                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_ORGANIZATION_MISSING',
-                            ),
-                            'projects',
-                        );
-                    } elseif (
-                        (empty($owner->user_id) && empty($owner->invited_email))
-                        && !empty($owner->department)
-                        && !empty($owner->organization)
-                    ) {
-                        Notify::error(
-                            Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_EMAIL_ADDRESS_MISSING'),
-                            'projects',
-                        );
-                    } elseif (
-                        !(empty($owner->user_id) && empty($owner->invited_email))
-                        && empty($owner->department)
-                        && !empty($owner->organization)
-                    ) {
-                        Notify::error(
-                            Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_MISSING'),
-                            'projects',
-                        );
-                    } elseif (
-                        !(empty($owner->user_id) && empty($owner->invited_email))
-                        && !empty($owner->department)
-                        && empty($owner->organization)
-                    ) {
-                        Notify::error(
-                            Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INSTITUTION_MISSING'),
-                            'projects',
-                        );
-                    }
+                $noEmail        = empty($owner->user_id) && empty($owner->invited_email);
+                $noDepartment   = empty($owner->department);
+                $noOrganization = empty($owner->organization);
+
+                if ($noEmail || $noDepartment || $noOrganization) {
+                    Notify::error($this->contactMissingMessage($noEmail, $noDepartment, $noOrganization), 'projects');
 
                     App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->task));
                     return;
@@ -2290,6 +2219,41 @@ class Publications extends Plugin
         }
 
         App::redirect(Route::url($link, false));
+    }
+
+    /**
+     * Message for a repository contact that is missing details
+     *
+     * @param   bool    $email         No email address (an invited author without one)
+     * @param   bool    $department    No department
+     * @param   bool    $organization  No organization
+     * @return  string
+     */
+    private function contactMissingMessage($email, $department, $organization)
+    {
+        return match ([$email, $department, $organization]) {
+            [true, true, true] => Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_ORGANIZATION_EMAIL_ADDRESS_MISSING',
+            ),
+            [true, true, false] => Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_EMAIL_ADDRESS_MISSING',
+            ),
+            [true, false, true] => Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_ORGANIZATION_EMAIL_ADDRESS_MISSING',
+            ),
+            [false, true, true] => Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_ORGANIZATION_MISSING',
+            ),
+            [true, false, false] => Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_EMAIL_ADDRESS_MISSING',
+            ),
+            [false, true, false] => Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_DEPARTMENT_MISSING',
+            ),
+            [false, false, true] => Lang::txt(
+                'PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INSTITUTION_MISSING',
+            ),
+        };
     }
 
     /**
