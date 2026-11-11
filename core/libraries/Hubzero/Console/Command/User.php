@@ -359,9 +359,11 @@ class User extends Base implements CommandInterface
             $this->output->error("Sorry, we couldn't find a preexisting merge between these two users to undo");
         } else {
             if (count($results) > 0) {
+                $count    = count($results);
+                $progress = null;
+
                 if ($this->output->isInteractive()) {
                     $progress = $this->output->getProgressOutput();
-                    $count = count($results);
                     $progress->init('Unmerging records: ', 'ratio', $count);
                 }
 
@@ -381,7 +383,7 @@ class User extends Base implements CommandInterface
                         $dbo->setQuery($query);
                         $dbo->query();
 
-                        if ($this->output->isInteractive()) {
+                        if ($progress !== null) {
                             ++$counter;
                             $progress->setProgress($counter, $count);
                         } else {
@@ -390,7 +392,7 @@ class User extends Base implements CommandInterface
                     }
                 }
 
-                if ($this->output->isInteractive()) {
+                if ($progress !== null) {
                     $progress->done();
                     $this->output->addLine("Unmerged ({$counter}/{$count}) records successfully!", 'success');
                 }
