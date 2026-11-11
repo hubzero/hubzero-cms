@@ -23,7 +23,7 @@ Html::behavior('framework');
 ?>
 
 <?php if ($this->getError()) { ?>
-    <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
+    <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <?php $formAction = Route::url('index.php?option=' . $this->option); ?>
 <form action="<?php echo $formAction; ?>" method="post" name="adminForm" id="component-form">

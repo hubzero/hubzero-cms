@@ -71,7 +71,7 @@ jQuery(document).ready(function($){
 });
 </script>
 <?php if ($this->getError()) { ?>
-    <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
+    <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <?php
 $routeUrl = Route::url('index.php?option=' . $this->option);

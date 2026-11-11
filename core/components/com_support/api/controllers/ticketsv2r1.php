@@ -510,7 +510,7 @@ class Ticketsv2r1 extends ApiController
         }
         // Save the data
         if (!$ticket->save()) {
-            throw new Exception($ticket->getErrors(), 500);
+            throw new Exception(implode('; ', $ticket->getErrors()), 500);
         }
 
         // Now we have a ticket ID, lets check for attachments

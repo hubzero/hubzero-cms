@@ -41,7 +41,7 @@ $this->js('membership.js');
 ?>
 
 <?php if ($this->getError()) { ?>
-    <p class="error"><?php echo implode('<br />', $this->getError()); ?></p>
+    <p class="error"><?php echo implode('<br />', $this->getErrors()); ?></p>
 <?php } ?>
 <?php
 $formUrl = Route::url('index.php?option=' . $this->option);

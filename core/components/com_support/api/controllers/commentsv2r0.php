@@ -318,10 +318,10 @@ class Commentsv2r0 extends ApiController
 
         $comment->set('changelog', json_encode($changelog));
         if (!$comment->save()) {
-            throw new Exception($comment->getErrors(), 500);
+            throw new Exception(implode('; ', $comment->getErrors()), 500);
         }
         if (!$ticket->save()) {
-            throw new Exception($ticket->getErrors(), 500);
+            throw new Exception(implode('; ', $ticket->getErrors()), 500);
         }
 
         // There's now a ticket and a comment, lets add attachments

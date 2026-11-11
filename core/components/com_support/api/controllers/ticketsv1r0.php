@@ -440,7 +440,7 @@ class Ticketsv1r0 extends ApiController
 
         // Save the data
         if (!$ticket->save()) {
-            throw new Exception($ticket->getErrors(), 500);
+            throw new Exception(implode('; ', $ticket->getErrors()), 500);
         }
 
         // Any tags?

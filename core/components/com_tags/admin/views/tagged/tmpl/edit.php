@@ -43,7 +43,7 @@ $this->js();
 
 <?php
 if ($this->getError()) {
-    echo '<p class="error">' . implode('<br />', $this->getError()) . '</p>';
+    echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
 }
 ?>
 
