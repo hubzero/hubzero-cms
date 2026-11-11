@@ -523,6 +523,8 @@ class Checkout extends ComponentController
             $payments = Event::trigger('cart.onSelectedPayment', [$transaction, User::getInstance()]);
 
             $paymentResponse = false;
+            $paymentStatus = null;
+            $paymentInfo = null;
             foreach ($payments as $options) {
                 if ($options['response']) {
                     $paymentResponse = $options['response'];

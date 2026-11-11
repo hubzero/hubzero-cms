@@ -123,7 +123,7 @@ abstract class Cart
     public function getSavedShippingAddresses($uId)
     {
         if (!Helper::isNonNegativeInt($uId, false)) {
-            throw new \Exception(JGLOBAL_AUTH_USER_NOT_FOUND);
+            throw new \Exception(Lang::txt('JGLOBAL_AUTH_USER_NOT_FOUND'));
         }
 
         // Get all user addresses
@@ -884,10 +884,7 @@ abstract class Cart
         }
 
         // We can check what changes have been made here and return them
-
-        if ($returnChanges) {
-            $transactionItemsChanges = [];
-        }
+        $transactionItemsChanges = [];
 
         foreach ($tiInfo as $sId => $sInfo) {
             // Only items that belong to this transaction
@@ -993,11 +990,10 @@ abstract class Cart
     {
         $db = App::get('db');
 
-        if ($returnChanges) {
-            // get transaction info to check the changes against
-            $currerntTransactionInfo = self::getTransactionInfo($tId);
-            $transactionChanges = [];
-        }
+        // Get the transaction info to check the changes against and to
+        // recalculate the total from
+        $currerntTransactionInfo = self::getTransactionInfo($tId);
+        $transactionChanges = [];
 
         $setSql = [];
         foreach ($tInfo as $key => $val) {

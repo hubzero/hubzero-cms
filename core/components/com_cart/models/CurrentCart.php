@@ -800,7 +800,7 @@ class CurrentCart extends Cart
     public function getToken()
     {
         if (empty($this->tInfo)) {
-            throw new \Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
+            throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
         }
         return parent::generateSecurityToken($this->tInfo->tId);
     }
@@ -815,7 +815,7 @@ class CurrentCart extends Cart
     {
         if (empty($tId)) {
             if (empty($this->tInfo)) {
-                throw new \Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
+                throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
             }
             $tId = $this->tInfo->tId;
         }
@@ -832,7 +832,7 @@ class CurrentCart extends Cart
     public function finalizeTransaction()
     {
         if (empty($this->tInfo)) {
-            throw new \Exception(Lang::txt(COM_CART_NO_TRANSACTION_FOUND));
+            throw new \Exception(Lang::txt('COM_CART_NO_TRANSACTION_FOUND'));
         }
 
         $tiTotal = $this->tInfo->tiSubtotal
@@ -1236,6 +1236,7 @@ class CurrentCart extends Cart
 
                 // figure out the perk
                 if ($couponAction == 'discount') {
+                    $amountToDiscount = 0;
                     switch ($couponObjectType) {
                         case 'order':
                             $amountToDiscount = $cartInfo->totalCart - $itemsDiscountsTotal;

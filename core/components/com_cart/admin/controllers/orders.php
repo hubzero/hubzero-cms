@@ -168,6 +168,8 @@ class Orders extends AdminController
                 $log->details = json_decode($log->details);
 
                 foreach ($log->details as $item) {
+                    $msg = '';
+
                     if ($item->object == 'cart_transaction_item') {
                         // find the item's (SKU) info
                         $skuInfo = $transactionItems[$item->sId];

@@ -251,13 +251,10 @@ class Downloads extends AdminController
         }
 
         // Set message
-        switch ($state) {
-            case '1':
-                $message = Lang::txt('COM_CART_ACTIVATED', count($ids));
-                break;
-            case '0':
-                $message = Lang::txt('COM_CART_DEACTIVATED', count($ids));
-                break;
+        if ($state == 1) {
+            $message = Lang::txt('COM_CART_ACTIVATED', count($ids));
+        } else {
+            $message = Lang::txt('COM_CART_DEACTIVATED', count($ids));
         }
 
         // Redirect
@@ -385,6 +382,11 @@ class Downloads extends AdminController
                     $status = 'inactive';
                 }
 
+                // Start each row blank, so that a row missing some metadata
+                // does not repeat the previous row's values.
+                $metaUserInfoCsv = '';
+                $metaEula = '';
+
                 if ($row->meta) {
                     // userInfo
                     if (array_key_exists('userInfo', $row->meta) && $row->meta['userInfo']) {
@@ -404,12 +406,7 @@ class Downloads extends AdminController
                         if ($row->meta['eulaAccepted']['mtValue']) {
                             $metaEula = 'EULA accepted';
                         }
-                    } else {
-                        $metaEula = '';
                     }
-                } else {
-                    $metaUserInfoCsv = '';
-                    $metaEula = '';
                 }
 
                 // ouput to stream
