@@ -47,16 +47,14 @@ class Conditions extends Obj
     public $record;
 
     /**
-     * Display a form for adding/editing a record
+     * Constructor
+     *
+     * Use setRecord() to attach the query record the conditions belong to.
      *
      * @return  void
      */
-    public function __construct($record = null)
+    public function __construct()
     {
-        /*if ($record)
-        {
-            $this->setRecord($record);
-        }*/
         $this->database = App::get('db');
         $this->config = Component::params('com_support');
     }
