@@ -690,7 +690,7 @@ class ValidateTest extends Basic
         $this->assertFalse(Validate::range($value));
 
         $value = log(0);
-        $this->assertFalse(Validate::range($value), 0, 100000);
+        $this->assertFalse(Validate::range($value, 0, 100000));
     }
 
     /**
