@@ -67,7 +67,7 @@ class DefaultHandler extends Plugin
                 'size'     => $file->getClientSize(),
             ];
 
-            $return = Event::trigger('citation.onImport', [$new_file], $scope, $scope_id);
+            $return = Event::trigger('citation.onImport', [$new_file, $scope, $scope_id]);
             return $return[0];
         }
     }
