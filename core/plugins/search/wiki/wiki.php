@@ -166,7 +166,7 @@ class Wiki extends Plugin
 
                 $row = $db->setQuery($sql)->query()->loadObject();
 
-                if (!is_object($row) || empty($row)) {
+                if (!is_object($row)) {
                     return;
                 }
 
@@ -182,7 +182,8 @@ class Wiki extends Plugin
 					WHERE `#__tags_object`.objectid = {$id} AND `#__tags_object`.tbl = 'wiki';";
                 $tags = $db->setQuery($sql2)->query()->loadColumn();
 
-                // Determine the path
+                // Determine the path (an invalid group has none)
+                $path = '';
                 if ($row->scope == 'site') {
                     $path = '/wiki/' . $row->path;
                 } elseif ($row->scope == 'group') {

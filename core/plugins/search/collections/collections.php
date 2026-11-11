@@ -122,6 +122,8 @@ class Collections extends Plugin
                 */
                 $tags = [];
 
+                // A collection owned by anything else has no path
+                $path = '';
                 if ($row->object_type == 'member') {
                     $path = '/members/' . $row->object_id . '/collections/' . $row->alias;
                 } elseif ($row->object_type == 'group') {

@@ -123,7 +123,7 @@ class Groups extends Plugin
 
                 // Members 'own' the group
                 $group = \Hubzero\User\Group::getInstance($id);
-                if (!is_object($group) || empty($group)) {
+                if (!is_object($group)) {
                     return;
                 }
 

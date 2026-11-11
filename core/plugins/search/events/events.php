@@ -182,6 +182,8 @@ class Events extends Plugin
 					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'events';";
                 $tags = $db->setQuery($sql2)->query()->loadColumn();
 
+                // A scope without a page of its own has no path
+                $path = '';
                 if ($row->scope == 'event' || $row->scope == '') {
                     $path = '/events/details/' . $row->id;
                 } elseif ($row->scope == 'group') {

@@ -302,7 +302,7 @@ class Resources extends Plugin
 					WHERE #__tags_object.objectid = {$id} AND #__tags_object.tbl = 'resources';";
                 $tags = $db->setQuery($sql2)->query()->loadColumn();
 
-                if (!is_object($row) || empty($row)) {
+                if (!is_object($row)) {
                     return;
                 }
                 // Determine the path

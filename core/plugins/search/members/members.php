@@ -62,7 +62,7 @@ class Members extends Plugin
                 $sql = "SELECT * FROM `#__users` WHERE id={$id};";
                 $row = $db->setQuery($sql)->query()->loadObject();
 
-                if (!is_object($row) || empty($row)) {
+                if (!is_object($row)) {
                     return;
                 }
 

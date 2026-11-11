@@ -195,8 +195,14 @@ class Forum extends Plugin
 				AND parent=0;";
                 $rows = $db->setQuery($sql)->query()->loadObjectList();
 
+                // A thread without its opening post has nothing to index
+                if (empty($rows)) {
+                    return;
+                }
+
                 $titles = [];
                 $authors = [];
+                $author = ''; // set by each row below; the last one is kept
                 $tags = [];
                 $content = '';
                 foreach ($rows as $row) {
@@ -223,18 +229,18 @@ class Forum extends Plugin
                     } else {
                         $author = 'anonymous';
                     }
-
-                    // Get the scope
-                    if ($row->parent == 0) {
-                        $scope =  $row->scope;
-                        $scope_id = $row->scope_id;
-                        $access = $row->access;
-                        $state = $row->state;
-                        $category = $row->category;
-                        $section = $row->section;
-                        $owner = $row->created_by;
-                    }
                 }
+
+                // Get the scope from the last row, as the loop used to (every
+                // row is an opening post: the query asks only for parent=0)
+                $row = end($rows);
+                $scope = $row->scope;
+                $scope_id = $row->scope_id;
+                $access = $row->access;
+                $state = $row->state;
+                $category = $row->category;
+                $section = $row->section;
+                $owner = $row->created_by;
 
                 // Remove duplicates
                 $tags = array_unique($tags);

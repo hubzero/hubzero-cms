@@ -158,7 +158,7 @@ class Blogs extends Plugin
                 $sql = "SELECT * FROM #__blog_entries WHERE id={$id} AND state != 2;";
                 $row = $db->setQuery($sql)->query()->loadObject();
 
-                if (!is_object($row) || empty($row)) {
+                if (!is_object($row)) {
                     return;
                 }
 
@@ -179,6 +179,8 @@ class Blogs extends Plugin
                 $month = Date::of(strtotime($row->publish_up))->toLocal('m');
                 $alias = $row->alias;
 
+                // A scope without a page of its own has no path
+                $path = '';
                 if ($row->scope == 'site') {
                     $path = '/blog/' . $year . '/' . $month . '/' . $alias;
                 } elseif ($row->scope == 'member') {
