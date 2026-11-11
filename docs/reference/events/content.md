@@ -129,7 +129,7 @@ Fired from:
 - [`core/libraries/Hubzero/Html/Builder/Content.php:35`](../../../core/libraries/Hubzero/Html/Builder/Content.php#L35) with `[$context, &$article, &$params, 0]`
 - [`core/libraries/Hubzero/User/Group.php:1525`](../../../core/libraries/Hubzero/User/Group.php#L1525) with `[ 'com_groups.group.' . $type . '_desc', &$this, &$config, ]`
 - [`core/libraries/Hubzero/User/Profile.php:1538`](../../../core/libraries/Hubzero/User/Profile.php#L1538) with `[ 'com_members.profile.bio', &$this, &$config, ]`
-- [`core/plugins/members/profile/views/index/tmpl/default.php:260`](../../../core/plugins/members/profile/views/index/tmpl/default.php#L260) with `['com_content.article', &$page, &$params, 0]`
+- [`core/plugins/members/profile/views/index/tmpl/default.php:263`](../../../core/plugins/members/profile/views/index/tmpl/default.php#L263) with `['com_content.article', &$page, &$params, 0]`
 
 Listeners:
 

@@ -25,7 +25,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/site/views/register/tmpl/default.php:770`](../../../core/components/com_members/site/views/register/tmpl/default.php#L770)
+- [`core/components/com_members/site/views/register/tmpl/default.php:814`](../../../core/components/com_members/site/views/register/tmpl/default.php#L814)
 - [`core/components/com_members/site/views/register/tmpl/resend_request.php:43`](../../../core/components/com_members/site/views/register/tmpl/resend_request.php#L43)
 - [`core/components/com_support/site/controllers/tickets.php:804`](../../../core/components/com_support/site/controllers/tickets.php#L804)
 
