@@ -3520,7 +3520,7 @@ class FirebirdDriver extends BaseSqlDriver
         }
 
         $query = 'ALTER TABLE ' . $this->quoteName($table)
-            . ' DROP CONSTRAINT ' . $this->quoteName(trim($constraintName ?? ''));
+            . ' DROP CONSTRAINT ' . $this->quoteName(trim($constraintName));
 
         $this->setQuery($query);
         return (bool) $this->execute();
