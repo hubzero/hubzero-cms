@@ -326,13 +326,16 @@ If you develop in Docker, use the
 <pre><code class="language-bash">cd core
 vendor/bin/phpunit -c phpunit.xml.dist
 </code></pre>
-<p>Or one suite at a time — <code>libraries</code>, <code>components</code>, <code>plugins</code>:</p>
+<p>Or one suite at a time — <code>libraries</code>, <code>components</code>, <code>plugins</code>, <code>install</code>,
+<code>migrations</code>:</p>
 <pre><code class="language-bash">vendor/bin/phpunit -c phpunit.xml.dist --testsuite libraries
 </code></pre>
 <p>The <code>libraries</code> suite covers <code>libraries/Hubzero</code> and excludes three
 production classes that happen to be named <code>Test.php</code>. <code>components</code> globs
 <code>components/*/tests</code> and <code>components/*/helpers/tests</code>; <code>plugins</code> globs
-<code>plugins/*/*/tests</code>.</p>
+<code>plugins/*/*/tests</code>. <code>install</code> covers <code>bootstrap/Install/Tests</code>, and
+<code>migrations</code> covers <code>migrations/tests</code>, tests for core migrations run
+against SQLite.</p>
 <aside class="admonition admonition--note">
 <p><strong>Note:</strong> The <code>components/*/helpers/tests</code> glob matches exactly one
 directory, <code>com_resources/helpers/tests</code>, and collects nothing from it. The

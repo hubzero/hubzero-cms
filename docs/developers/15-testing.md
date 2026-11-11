@@ -103,7 +103,8 @@ cd core
 vendor/bin/phpunit -c phpunit.xml.dist
 ```
 
-Or one suite at a time — `libraries`, `components`, `plugins`:
+Or one suite at a time — `libraries`, `components`, `plugins`, `install`,
+`migrations`:
 
 ```bash
 vendor/bin/phpunit -c phpunit.xml.dist --testsuite libraries
@@ -112,7 +113,9 @@ vendor/bin/phpunit -c phpunit.xml.dist --testsuite libraries
 The `libraries` suite covers `libraries/Hubzero` and excludes three
 production classes that happen to be named `Test.php`. `components` globs
 `components/*/tests` and `components/*/helpers/tests`; `plugins` globs
-`plugins/*/*/tests`.
+`plugins/*/*/tests`. `install` covers `bootstrap/Install/Tests`, and
+`migrations` covers `migrations/tests`, tests for core migrations run
+against SQLite.
 
 > **Note:** The `components/*/helpers/tests` glob matches exactly one
 > directory, `com_resources/helpers/tests`, and collects nothing from it. The

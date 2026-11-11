@@ -25,6 +25,9 @@
         <testsuite name="install">
             <directory>bootstrap/Install/Tests</directory>
         </testsuite>
+        <testsuite name="migrations">
+            <directory>migrations/tests</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>
