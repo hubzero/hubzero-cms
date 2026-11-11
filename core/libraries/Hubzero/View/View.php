@@ -18,6 +18,22 @@ use Hubzero\Facades\App;
  * Base class for a View
  *
  * Inspired, in parts, by Joomla's JView class
+ *
+ * The helpers in Helper/ are called as methods of the view, by __call():
+ *
+ * @method string  autocompleter(mixed ...$args)
+ * @method string  autolink(string $text = null)
+ * @method string  clean(string $text = null)
+ * @method $this   css(string $stylesheet = '', string $extension = null, string $element = null)
+ * @method string  editor(string $name = '', string $content = '', mixed ...$args)
+ * @method mixed   grid(string $method, mixed ...$args)
+ * @method string  highlight(string $text = null, mixed $phrase = null, array $options = [])
+ * @method string  icon(string $symbol, bool $ariahidden = true)
+ * @method string  img(string $asset = '', string $extension = null, string $element = null)
+ * @method $this   js(string $asset = '', string $extension = null, string $element = null)
+ * @method string  obfuscate(string $text = null)
+ * @method mixed   pagination(int $total, int $start, int $limit)
+ * @method string  truncate(string $text = null, int $length = null, array $options = [])
  */
 class View extends Obj
 {

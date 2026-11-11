@@ -17,6 +17,12 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{archive: mixed, config: mixed, filters: mixed} $this
+ */
+
 $title = Lang::txt('COM_BLOG');
 
 if (Pathway::count() <= 0) {

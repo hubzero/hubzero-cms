@@ -13,6 +13,12 @@ use Hubzero\Facades\Request;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{archive: mixed} $this
+ */
+
 $base = rtrim(Request::base(true), '/');
 
 $this->css();

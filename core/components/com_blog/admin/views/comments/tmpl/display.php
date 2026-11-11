@@ -15,6 +15,12 @@ use Hubzero\Facades\Toolbar;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{entry: mixed, filters: mixed, rows: mixed, total: mixed} $this
+ */
+
 $canDo = Components\Blog\Admin\Helpers\Permissions::getActions('entry');
 
 Toolbar::title(Lang::txt('COM_BLOG_TITLE') . ': ' . Lang::txt('COM_BLOG_COL_COMMENTS'), 'blog');

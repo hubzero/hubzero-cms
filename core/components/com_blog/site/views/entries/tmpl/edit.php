@@ -16,6 +16,12 @@ use Hubzero\Facades\Route;
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{entry: mixed} $this
+ */
+
 if (Pathway::count() <= 0) {
     Pathway::append(
         Lang::txt('COM_BLOG'),

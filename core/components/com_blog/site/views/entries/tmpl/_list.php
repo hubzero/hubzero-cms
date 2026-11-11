@@ -8,6 +8,19 @@
 
 // No direct access
 defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Hubzero\Component\View&object{
+ *     base: mixed,
+ *     cls: mixed,
+ *     comments: mixed,
+ *     config: mixed,
+ *     depth: mixed,
+ *     parent: mixed,
+ * } $this
+ */
 ?>
 <?php
 if (isset($this->comments) && count($this->comments)) {
@@ -16,7 +29,7 @@ if (isset($this->comments) && count($this->comments)) {
         $cls = ($this->cls == 'odd') ? 'even' : 'odd';
     }
 
-    $this->depth++;
+    $depth = $this->depth + 1;
     ?>
 <ol class="comments" id="t<?php echo isset($this->parent) ? $this->parent : '0'; ?>">
     <?php
@@ -26,7 +39,7 @@ if (isset($this->comments) && count($this->comments)) {
              ->set('option', $this->option)
              ->set('comment', $comment)
              ->set('config', $this->config)
-             ->set('depth', $this->depth)
+             ->set('depth', $depth)
              ->set('cls', $cls)
              ->set('base', $this->base)
              ->display();
