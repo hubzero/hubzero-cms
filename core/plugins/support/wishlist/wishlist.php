@@ -54,7 +54,8 @@ class Wishlist extends Plugin
                 . "ws.subject as `subject`, 'wish' as parent_category, ws.anonymous as anon
 						FROM `#__wishlist_item` AS ws
 						WHERE ws.id=" . $database->quote($refid);
-        } elseif ($category == 'wishcomment') {
+        } else {
+            // wishcomment, the other category canHandle() accepts
             $query = "SELECT rr.id, rr.content as `text`, rr.created, rr.created_by as `author`, "
                 . "NULL as `subject`, rr.category as parent_category, rr.anonymous as anon
 						FROM `#__item_comments` AS rr

@@ -212,7 +212,8 @@ class Answers extends Plugin
                 $comment = \Components\Answers\Models\Question::oneOrFail($refid);
                 break;
 
-            case 'answercomment':
+            default:
+                // answercomment, the last category canHandle() accepts
                 $comment = \Components\Answers\Models\Comment::oneOrFail($refid);
                 break;
         }
@@ -251,7 +252,8 @@ class Answers extends Plugin
                 $comment = \Components\Answers\Models\Question::oneOrFail($refid);
                 break;
 
-            case 'answercomment':
+            default:
+                // answercomment, the last category canHandle() accepts
                 $comment = \Components\Answers\Models\Comment::oneOrFail($refid);
                 break;
         }

@@ -54,7 +54,8 @@ class Resources extends Plugin
 						NULL as subject, 'review' as parent_category, rr.anonymous as anon
 						FROM `#__resource_ratings` AS rr
 						WHERE rr.id=" . $database->quote($refid);
-        } elseif ($category == 'reviewcomment') {
+        } else {
+            // reviewcomment, the other category canHandle() accepts
             $query = "SELECT rr.id, rr.content as `text`, rr.created, rr.created_by as `author`,
 						NULL as subject, 'reviewcomment' as parent_category, rr.anonymous as anon
 						FROM `#__item_comments` AS rr

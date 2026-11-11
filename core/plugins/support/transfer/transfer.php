@@ -154,6 +154,10 @@ class Transfer extends Plugin
                     return false;
                 }
                 break;
+
+            default:
+                $this->setError(Lang::txt('PLG_SUPPORT_TRANSFER_ERROR_ITEM_NOT_FOUND'));
+                return false;
         }
 
         // If no author can be found, use current administrator
@@ -217,6 +221,10 @@ class Transfer extends Plugin
                 }
                 $newrow->set('wishlist', ($listid ? $listid : $mainlist));
                 break;
+
+            default:
+                $this->setError(Lang::txt('PLG_SUPPORT_TRANSFER_ERROR_MISSING_INFO'));
+                return false;
         }
 
         // Save new information

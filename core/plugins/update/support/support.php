@@ -154,6 +154,7 @@ class Support extends Plugin
         // Last activity within specified time range
         if ($created = $this->params->get('support_ticket_activity')) {
             $op = '';
+            $timestamp = null;
             switch ($created) {
                 // Created before (older than)
                 case '-day':
