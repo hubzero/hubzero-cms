@@ -185,8 +185,14 @@ class Asset extends Base
         if (!$this->dimensions) {
             $this->dimensions = [0, 0];
 
-            if ($this->isImage() && $this->exists()) {
-                $this->dimensions = getimagesize($this->path());
+            if ($this->image() && $this->exists()) {
+                $path  = $this->filespace() . DS . $this->get('item_id') . DS;
+                $path .= ltrim($this->get('filename'), DS);
+
+                $dimensions = getimagesize($path);
+                if ($dimensions) {
+                    $this->dimensions = $dimensions;
+                }
             }
         }
 
@@ -391,7 +397,7 @@ class Asset extends Base
             $this->set('filename', $file['name']);
 
             // Generate a thumbnail
-            $this->thumbnail();
+            $this->file('thumb');
         }
 
         return parent::store($check);

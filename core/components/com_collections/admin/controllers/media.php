@@ -39,8 +39,11 @@ class Media extends AdminController
 
         $post = Post::oneOrFail($item);
 
-        // Instantiate an attachment object
-        $asset = Asset::getInstance($file, $post->get('item_id'));
+        // The asset, named by ID or by filename, among those of the post's item
+        $asset = Asset::all()
+            ->whereEquals('item_id', (int) $post->get('item_id'))
+            ->whereEquals(is_numeric($file) ? 'id' : 'filename', $file)
+            ->row();
 
         // Ensure we have a path
         if (!$asset->get('filename')) {
@@ -48,7 +51,7 @@ class Media extends AdminController
         }
 
         // Get the configured upload path
-        $filename = $asset->filespace() . DS . $asset->get('item_id') . DS . ltrim($asset->get('filename'), DS);
+        $filename = $asset->path();
 
         // Ensure the file exist
         if (!file_exists($filename)) {
@@ -522,19 +525,18 @@ class Media extends AdminController
         // Incoming
         $listdir = Request::getInt('dir', 0, 'get');
 
-        if (!$listdir) {
-            $this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
-        } else {
-            $item = Item::getInstance($listdir);
+        // The list layout prints the item's assets, so it is always given an
+        // item: an unknown ID yields a new one, which has none
+        $item = Item::oneOrNew($listdir);
 
-            if (!$item->get('id')) {
-                $this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
-            }
+        if ($item->isNew()) {
+            $this->setError(Lang::txt('COM_COLLECTIONS_NO_ID'));
         }
 
         $this->view
             ->set('config', $this->config)
             ->set('listdir', $listdir)
+            ->set('item', $item)
             ->setErrors($this->getErrors())
             ->display();
     }
