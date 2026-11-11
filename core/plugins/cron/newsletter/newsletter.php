@@ -198,7 +198,8 @@ class Newsletter extends Plugin
                         case 2:
                             $lookahead = ' +1 week';
                             break;
-                        case 3:
+                        default:
+                            // 3, monthly: the last of the options the newsletter form offers
                             $lookahead = ' +1 month';
                             break;
                     }
@@ -222,6 +223,7 @@ class Newsletter extends Plugin
                         // Add recipients
                         $mailingList = \Components\Newsletter\Models\Mailinglist::oneOrNew($newMailing->lid);
                         $emails = $mailingList->emails()->rows();
+                        $values = [];
 
                         // @TODO Verify there is no helper method to determine whether or not to send email
                         foreach ($emails as $email) {

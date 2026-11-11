@@ -222,6 +222,7 @@ class Support extends Plugin
 
             if ($created = $params->get('support_ticketpending_activity', '-2week')) {
                 $op = '';
+                $timestamp = null;
                 switch ($created) {
                     // Created before (older than)
                     case '-day':
@@ -773,6 +774,7 @@ class Support extends Plugin
 
             if ($created = $params->get('support_ticketlist_activity', '--')) {
                 $op = '';
+                $timestamp = null;
                 switch ($created) {
                     // Created before (older than)
                     case '-day':
