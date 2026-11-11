@@ -18,6 +18,10 @@ use Hubzero\Facades\Request;
 
 /**
  * Blog model for a comment
+ *
+ * Not columns, read and set through __get() and __set():
+ *
+ * @property  string  $_contentParsed  The parsed content, cached by transformContent()
  */
 class Comment extends Relational
 {

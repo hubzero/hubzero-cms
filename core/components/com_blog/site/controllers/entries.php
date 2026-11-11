@@ -30,6 +30,9 @@ use Hubzero\Facades\Session;
 
 /**
  * Blog controller class for entries
+ *
+ * @property  \Components\Blog\Models\Archive  $model  The site blog, set by execute()
+ * @property  \Components\Blog\Models\Entry    $entry  The entry whose comments are fed, commentsTask()
  */
 class Entries extends SiteController
 {

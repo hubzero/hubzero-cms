@@ -24,6 +24,28 @@ use Hubzero\Facades\Route;
 
 /**
  * Model class for a blog entry
+ *
+ * Columns of #__blog_entries (params is a declared property):
+ *
+ * @property  int     $id
+ * @property  string  $title
+ * @property  string  $alias
+ * @property  string  $content         Parsed for display by transformContent()
+ * @property  string  $created
+ * @property  int     $created_by
+ * @property  int     $state
+ * @property  string  $publish_up
+ * @property  string  $publish_down
+ * @property  int     $scope_id
+ * @property  int     $hits
+ * @property  int     $allow_comments
+ * @property  string  $scope
+ * @property  int     $access
+ *
+ * Not columns, read and set through __get() and __set():
+ *
+ * @property  \Hubzero\User\User  $creator         The author, through creator() (a Member when com_members has one)
+ * @property  string              $_contentParsed  The parsed content, cached by transformContent()
  */
 class Entry extends Relational implements \Hubzero\Search\Searchable
 {
