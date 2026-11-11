@@ -53,11 +53,6 @@ class Plugins extends AdminController
         $this->registerTask('save2new', 'save');
         $this->registerTask('save2copy', 'save');
 
-        // Guess the message prefix. Defaults to the option.
-        if (empty($this->text_prefix)) {
-            $this->text_prefix = strtoupper($this->option);
-        }
-
         parent::execute();
     }
 

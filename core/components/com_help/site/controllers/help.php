@@ -57,7 +57,6 @@ class Help extends SiteController
             ]))
                 ->set('option', $this->option)
                 ->set('controller', $this->controller)
-                ->set('layoutExt', $this->layoutExt)
                 ->set('pages', $pages);
 
             $content = $view->loadTemplate();

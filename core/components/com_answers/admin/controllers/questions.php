@@ -17,7 +17,6 @@ use Hubzero\Facades\Event;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\User;
 use Hubzero\Facades\App;
-use Hubzero\Facades\Component;
 
 /**
  * Controller class for questions
@@ -31,8 +30,6 @@ class Questions extends AdminController
      */
     public function execute()
     {
-        $this->banking = Component::params('com_members')->get('bankAccounts');
-
         $this->registerTask('add', 'edit');
         $this->registerTask('apply', 'save');
         $this->registerTask('open', 'state');
