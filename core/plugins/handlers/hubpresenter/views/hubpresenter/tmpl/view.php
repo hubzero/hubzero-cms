@@ -140,14 +140,16 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                     $linkUrl = with(new Moderator($content_folder . DS . $slide->media[0]->source))
                                         ->getUrl();
                                     ?>
-                                    <a href="<?= $linkUrl ?>" class="flowplayer_slide" id="flowplayer_slide_<?= $counter ?>"></a>
+                                    <a href="<?= $linkUrl ?>" class="flowplayer_slide"
+                                        id="flowplayer_slide_<?= $counter ?>"></a>
                                 </video>
                                 <?php if (isset($slide->media[3])) : ?>
                                     <?php
                                     $sourceUrl = with(new Moderator($content_folder . DS . $slide->media[3]->source))
                                         ->getUrl();
                                     ?>
-                                <img src="<?= $sourceUrl ?>" alt="<?= $this->escape($slide->title) ?>" class="imagereplacement" />
+                                <img src="<?= $sourceUrl ?>" alt="<?= $this->escape($slide->title) ?>"
+                                    class="imagereplacement" />
                                 <?php endif; ?>
                             <?php endif; ?>
                         </li>

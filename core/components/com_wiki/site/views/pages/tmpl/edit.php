@@ -314,7 +314,9 @@ $allowCommentsChecked = function ($value) use ($view) {
                                     $dataList = rtrim(Request::base(true), '/') . '/index.php?option=com_wiki'
                                         . '&amp;no_html=1&amp;controller=media&amp;task=list&amp;listdir=' . $lid;
                                     ?>
-                                    <div id="file-manager" data-instructions="<?= Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE') ?>" data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
+                                    <div id="file-manager"
+                                        data-instructions="<?= Lang::txt('COM_WIKI_CLICK_OR_DROP_FILE') ?>"
+                                        data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
                                         <?php
                                         $sourceUrl = rtrim(Request::base(true), '/') . '/index.php?option=com_wiki'
                                             . '&amp;tmpl=component&amp;controller=media&amp;scope='

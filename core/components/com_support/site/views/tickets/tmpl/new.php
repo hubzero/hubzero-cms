@@ -312,7 +312,9 @@ endif;
                         $dataTimezone = timezone_offset_get(new DateTimeZone(Config::get('offset')), Date::getRoot())
                             / 60;
                         ?>
-                        <input type="text" name="problem[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?= $dataTimezone ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="" />
+                        <input type="text" name="problem[target_date]" class="datetime-field form-control"
+                            id="field-target_date" data-timezone="<?= $dataTimezone ?>"
+                            placeholder="YYYY-MM-DD hh:mm:ss" value="" />
                     </label>
                 </div>
 

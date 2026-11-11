@@ -704,7 +704,9 @@ $categorySelected = function ($value) use ($view) {
                                     ? $this->escape(Date::of($this->row->get('target_date'))->toLocal('Y-m-d H:i:s'))
                                     : '';
                                 ?>
-                                <input type="text" name="ticket[target_date]" class="datetime-field form-control" id="field-target_date" data-timezone="<?= $dataTimezone ?>" placeholder="YYYY-MM-DD hh:mm:ss" value="<?= $fieldValue ?>" />
+                                <input type="text" name="ticket[target_date]" class="datetime-field form-control"
+                                    id="field-target_date" data-timezone="<?= $dataTimezone ?>"
+                                    placeholder="YYYY-MM-DD hh:mm:ss" value="<?= $fieldValue ?>" />
                             </label>
                         </div>
 

@@ -164,7 +164,8 @@ $accessSelected = function ($value) use ($view) {
                                 ? $this->escape(Date::of($this->entry->get('publish_up'))->toLocal('Y-m-d H:i:s'))
                                 : '';
                             ?>
-                            <input type="text" class="form-control" name="entry[publish_up]" id="field-publish_up" data-timezone="<?= $dataTimezone ?>" value="<?= $fieldValue ?>" />
+                            <input type="text" class="form-control" name="entry[publish_up]" id="field-publish_up"
+                                data-timezone="<?= $dataTimezone ?>" value="<?= $fieldValue ?>" />
                             <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
                         </label>
                     </div>
@@ -182,7 +183,8 @@ $accessSelected = function ($value) use ($view) {
                                 ? $this->escape(Date::of($this->entry->get('publish_down'))->toLocal('Y-m-d H:i:s'))
                                 : '';
                             ?>
-                            <input type="text" class="form-control" name="entry[publish_down]" id="field-publish_down" data-timezone="<?= $dataTimezone ?>" value="<?= $fieldValue ?>" />
+                            <input type="text" class="form-control" name="entry[publish_down]" id="field-publish_down"
+                                data-timezone="<?= $dataTimezone ?>" value="<?= $fieldValue ?>" />
                             <span class="hint"><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PUBLISH_HINT'); ?></span>
                         </label>
                     </div>
