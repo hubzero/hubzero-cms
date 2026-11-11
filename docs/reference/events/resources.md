@@ -82,7 +82,7 @@ No plugin in the source tree listens for this event.
 Fired from:
 
 - [`core/components/com_resources/site/views/browse/tmpl/item.php:50`](../../../core/components/com_resources/site/views/browse/tmpl/item.php#L50) with `[$this->line]`
-- [`core/components/com_resources/site/views/search/tmpl/solr.php:17`](../../../core/components/com_resources/site/views/search/tmpl/solr.php#L17) with `[$id]`
+- [`core/components/com_resources/site/views/search/tmpl/solr.php:23`](../../../core/components/com_resources/site/views/search/tmpl/solr.php#L23) with `[$id]`
 
 Listeners:
 

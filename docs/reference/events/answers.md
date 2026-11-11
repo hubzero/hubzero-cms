@@ -21,7 +21,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_answers/site/views/questions/tmpl/search.php:154`](../../../core/components/com_answers/site/views/questions/tmpl/search.php#L154)
+- [`core/components/com_answers/site/views/questions/tmpl/search.php:162`](../../../core/components/com_answers/site/views/questions/tmpl/search.php#L162)
 
 Listeners:
 
