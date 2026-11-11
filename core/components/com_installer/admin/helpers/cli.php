@@ -89,10 +89,10 @@ class Cli
         if (isset($search)) {
             $args[] = '--search=' . $search;
         }
-        if (isset($upcoming) && $upcoming) {
+        if ($upcoming) {
             $args[] = '--include-upcoming';
         }
-        if (isset($installed) && !$installed) {
+        if (!$installed) {
             $args[] = '--exclude-installed';
         }
         if ($count) {

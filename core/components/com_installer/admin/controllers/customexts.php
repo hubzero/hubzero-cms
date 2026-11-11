@@ -309,7 +309,8 @@ class Customexts extends AdminController
             $model->set('params', $p->toString());
         }
 
-        // pluralize types
+        // pluralize types (a non-standard extension has no type directory)
+        $path_type = '';
         switch ($model->type) {
             case "component":
                 $path_type = "components";
@@ -440,7 +441,7 @@ class Customexts extends AdminController
             if ($success) {
                 if ($value == 1) {
                     $ntext = 'COM_INSTALLER_CUSTOMEXTS_N_EXTENSIONS_PUBLISHED';
-                } elseif ($value == 0) {
+                } else {
                     $ntext = 'COM_INSTALLER_CUSTOMEXTS_N_EXTENSIONS_UNPUBLISHED';
                 }
 
@@ -823,15 +824,17 @@ class Customexts extends AdminController
 
             // If enextion is enabled
             if ($extension->enabled == 1) {
-                $museCmd = 'removeRepo -path=' . escapeshellarg($extension->path);
-            } elseif ($extension->enabled == 0) {
-                // If enextion is disabled
+                $removeDir = $extension->path;
+            } else {
+                // If enextion is disabled, its repository was renamed with a
+                // leading "__" when it was unpublished
                 $pieces = explode("/", $extension->path);
                 $repodir = array_pop($pieces);
                 $extdir = implode("/", $pieces);
 
-                $museCmd = 'removeRepo -path=' . escapeshellarg($extdir . '/__' . $repodir);
+                $removeDir = $extdir . '/__' . $repodir;
             }
+            $museCmd = 'removeRepo -path=' . escapeshellarg($removeDir);
 
             // Run migrations
             $migrations_response = Cli::migration(
@@ -847,8 +850,6 @@ class Customexts extends AdminController
             // or "[false]"); an earlier check looked for the text of the update
             // command instead and so reported every removal as failed. Keep the
             // record when the directory is still there, so it can be retried.
-            $removeDir = ($extension->enabled == 1) ? $extension->path : $extdir . '/__' . $repodir;
-
             if (!is_dir($removeDir) && !is_link($removeDir)) {
                 // Nothing on disk for this registration (never cloned, or already
                 // removed by hand): there is nothing to fail at, drop the record.

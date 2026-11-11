@@ -271,7 +271,7 @@ class Manage extends AdminController
             if ($success) {
                 if ($value == 1) {
                     $ntext = 'COM_INSTALLER_CUSTOMEXTS_N_EXTENSIONS_PUBLISHED';
-                } elseif ($value == 0) {
+                } else {
                     $ntext = 'COM_INSTALLER_CUSTOMEXTS_N_EXTENSIONS_UNPUBLISHED';
                 }
 

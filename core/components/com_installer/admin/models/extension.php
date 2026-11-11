@@ -190,32 +190,34 @@ class Extension extends Relational
      */
     public function refreshManifestCache()
     {
-        // Need to find to find where the XML file is since we don't store this normally
+        // Need to find to find where the XML file is since we don't store this normally.
+        // Most extensions sit at the same path under app and core; languages set both.
+        $appPath = null;
         switch ($this->get('type')) {
             case 'component':
-                $path = DS . 'components' . DS . $this->get('element') . DS . $this->get('element') . '.xml';
+                $corePath = DS . 'components' . DS . $this->get('element') . DS . $this->get('element') . '.xml';
                 break;
 
             case 'plugin':
                 $folder = $this->get('folder');
                 $element = $this->get('element');
-                $path = DS . 'plugins' . DS . $folder . DS . $element . DS . $element . '.xml';
+                $corePath = DS . 'plugins' . DS . $folder . DS . $element . DS . $element . '.xml';
                 break;
 
             case 'module':
-                $path = DS . 'modules' . DS . $this->get('element') . DS . $this->get('element') . '.xml';
+                $corePath = DS . 'modules' . DS . $this->get('element') . DS . $this->get('element') . '.xml';
                 break;
 
             case 'template':
-                $path = DS . 'templates' . DS . $this->get('element') . DS . 'templateDetails.xml';
+                $corePath = DS . 'templates' . DS . $this->get('element') . DS . 'templateDetails.xml';
                 break;
 
             case 'package':
-                $path = DS . 'manifests' . DS . 'packages' . DS . $this->get('element') . '.xml';
+                $corePath = DS . 'manifests' . DS . 'packages' . DS . $this->get('element') . '.xml';
                 break;
 
             case 'library':
-                $path = DS . 'manifests' . DS . 'libraries' . DS . $this->get('element') . '.xml';
+                $corePath = DS . 'manifests' . DS . 'libraries' . DS . $this->get('element') . '.xml';
                 break;
 
             case 'language':
@@ -226,19 +228,20 @@ class Extension extends Relational
                 $appPath = DS . 'language' . DS . strtolower($client->name);
                 $appPath .= DS . $element . DS . $element . '.xml';
                 break;
+
+            default:
+                // No other type has a manifest to refresh from
+                return true;
         }
 
-        if (isset($appPath)) {
-            $paths = [
-                'app'  => Filesystem::cleanPath(PATH_APP . $appPath),
-                'core' => Filesystem::cleanPath(PATH_CORE . $corePath),
-            ];
-        } else {
-            $paths = [
-                'app'  => Filesystem::cleanPath(PATH_APP . $path),
-                'core' => Filesystem::cleanPath(PATH_CORE . $path),
-            ];
+        if ($appPath === null) {
+            $appPath = $corePath;
         }
+
+        $paths = [
+            'app'  => Filesystem::cleanPath(PATH_APP . $appPath),
+            'core' => Filesystem::cleanPath(PATH_CORE . $corePath),
+        ];
 
         $xml = null;
 
