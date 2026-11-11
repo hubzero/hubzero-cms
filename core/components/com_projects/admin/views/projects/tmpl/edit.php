@@ -224,7 +224,8 @@ $paramsLayoutSelected = function ($value) use ($view) {
                                     $optionText = $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30))
                                         . ' (' . $this->escape($g->cn) . ')';
                                     ?>
-                                    <option value="<?= $g->gidNumber ?>" <?= $selectedAttr ?>><?= $optionText ?></option>
+                                    <option
+                                        value="<?= $g->gidNumber ?>" <?= $selectedAttr ?>><?= $optionText ?></option>
                                 <?php } ?>
                             </select>
                         </label>

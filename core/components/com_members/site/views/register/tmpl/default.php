@@ -286,7 +286,9 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                                 ? ' aria-invalid="true"'
                                                 : '';
                                             ?>
-                                            <input name="password2" class="form-control" id="password2" type="password" value="<?= $this->escape($this->registration['confirmPassword']) ?>" autocomplete="off"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> />
+                                            <input name="password2" class="form-control" id="password2" type="password"
+                                                value="<?= $this->escape($this->registration['confirmPassword']) ?>"
+                                                autocomplete="off"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> />
                                             <?= !empty($this->xregistration->invalid['confirmPassword'])
                                                 ? '<span class="error" role="alert">'
                                                     . $this->xregistration->invalid['confirmPassword'] . '</span>'
@@ -391,7 +393,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                         ? ' readonly'
                                         : '';
                                     ?>
-                                    <input type="text" class="form-control" name="name[middle]" id="middle-name" value="<?= $fieldValue ?>"<?= $readonlyAttr ?> />
+                                    <input type="text" class="form-control" name="name[middle]" id="middle-name"
+                                        value="<?= $fieldValue ?>"<?= $readonlyAttr ?> />
                                 </label>
                             </div>
                         </div>
@@ -434,7 +437,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                             ? ' aria-invalid="true"'
                                             : '';
                                         ?>
-                                        <input class="form-control" name="email" id="email" type="email" value="<?= $fieldValue ?>"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> />
+                                        <input class="form-control" name="email" id="email" type="email"
+                                            value="<?= $fieldValue ?>"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> />
                                         <?= !empty($this->xregistration->invalid['email'])
                                             ? '<span class="error" role="alert">'
                                                 . $this->xregistration->invalid['email'] . '</span>'
@@ -467,7 +471,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                             ? ' aria-invalid="true"'
                                             : '';
                                         ?>
-                                        <input class="form-control" name="email2" id="email2" type="email" value="<?= $fieldValue ?>"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> />
+                                        <input class="form-control" name="email2" id="email2" type="email"
+                                            value="<?= $fieldValue ?>"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?> />
                                         <?= !empty($this->xregistration->invalid['confirmEmail'])
                                             ? '<span class="error" role="alert">'
                                                 . $this->xregistration->invalid['confirmEmail'] . '</span>'
@@ -698,7 +703,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                             ? 'checked="checked"'
                             : '';
                         ?>
-                        <input class="option form-check-input" type="checkbox" name="sendEmail" id="sendEmail" value="1" <?= $checkedAttr ?> />
+                        <input class="option form-check-input" type="checkbox" name="sendEmail" id="sendEmail"
+                            value="1" <?= $checkedAttr ?> />
                         <?= Lang::txt('COM_MEMBERS_REGISTER_RECEIVE_EMAIL_UPDATES') ?> <?= ($this->registrationOptIn == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : '' ?>
                     </label>
                     <?php echo $message; ?>
@@ -746,7 +752,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                         <?php
                         $checkedAttr = $this->registration['usageAgreement'] ? ' checked="checked"' : '';
                         ?>
-                        <input type="checkbox" class="option form-check-input" id="usageAgreement" value="1" name="usageAgreement"<?= $checkedAttr ?>/>
+                        <input type="checkbox" class="option form-check-input" id="usageAgreement" value="1"
+                            name="usageAgreement"<?= $checkedAttr ?>/>
                         <?php echo Lang::txt('COM_MEMBERS_REGISTER_TOS', Request::base(true)); ?>
                         <?= ($this->registrationTOU == Field::STATE_REQUIRED)
                             ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>'

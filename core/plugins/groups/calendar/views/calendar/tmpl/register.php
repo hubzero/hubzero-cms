@@ -299,7 +299,8 @@ $registerUrl = Route::url(
                                 ? 'checked="checked"'
                                 : '';
                             ?>
-                            <input type="radio" class="option" name="register[degree]" value="Bachelors" <?= $checkedAttr ?> />
+                            <input type="radio" class="option" name="register[degree]"
+                                value="Bachelors" <?= $checkedAttr ?> />
                             <?php echo Lang::txt('Bachelors degree'); ?>
                         </label>
                         <label>
@@ -308,7 +309,8 @@ $registerUrl = Route::url(
                                 ? 'checked="checked"'
                                 : '';
                             ?>
-                            <input type="radio" class="option" name="register[degree]" value="Masters" <?= $checkedAttr ?> />
+                            <input type="radio" class="option" name="register[degree]"
+                                value="Masters" <?= $checkedAttr ?> />
                             <?php echo Lang::txt('Masters degree'); ?>
                         </label>
                         <label>
@@ -317,7 +319,8 @@ $registerUrl = Route::url(
                                 ? 'checked="checked"'
                                 : '';
                             ?>
-                            <input type="radio" class="option" name="register[degree]" value="Doctoral" <?= $checkedAttr ?> />
+                            <input type="radio" class="option" name="register[degree]"
+                                value="Doctoral" <?= $checkedAttr ?> />
                             <?php echo Lang::txt('Doctoral degree'); ?>
                         </label>
                         <label>
@@ -326,7 +329,8 @@ $registerUrl = Route::url(
                                 ? 'checked="checked"'
                                 : '';
                             ?>
-                            <input type="radio" class="option" name="register[degree]" value="Other" <?= $checkedAttr ?> />
+                            <input type="radio" class="option" name="register[degree]"
+                                value="Other" <?= $checkedAttr ?> />
                             <?php echo Lang::txt('None of the above'); ?>
                         </label>
                 </fieldset>

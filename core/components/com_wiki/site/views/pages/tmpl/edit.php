@@ -365,7 +365,8 @@ $allowCommentsChecked = function ($value) use ($view) {
                                                     $selectedAttr = $mode == 'static' ? ' selected="selected"' : '';
                                                     $optionText = Lang::txt('COM_WIKI_FIELD_MODE_STATIC');
                                                     ?>
-                                                    <option value="static"<?= $selectedAttr ?>><?= $optionText ?></option>
+                                                    <option
+                                                        value="static"<?= $selectedAttr ?>><?= $optionText ?></option>
                                                 <?php } ?>
                                             </select>
                                         </label>

@@ -66,7 +66,8 @@ $this
                 <?php
                 $linkUrl = Route::url('index.php?option=com_resources&id=' . $this->id);
                 ?>
-                <?= Lang::txt('COM_CONTRIBUTE_PASSED_REVIEW') ?> <a href="<?= $linkUrl ?>"><?= Lang::txt('COM_CONTRIBUTE_VIEW_HERE') ?></a>
+                <?= Lang::txt('COM_CONTRIBUTE_PASSED_REVIEW') ?> <a
+                    href="<?= $linkUrl ?>"><?= Lang::txt('COM_CONTRIBUTE_VIEW_HERE') ?></a>
             </p>
         </div>
         <fieldset>
@@ -220,7 +221,8 @@ $this
                         $selectedAttr = $params->get('license') == $license->name ? ' selected="selected"' : '';
                         $optionText = $this->escape($license->title);
                         ?>
-                        <option value="<?= $this->escape($license->name) ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
+                        <option
+                            value="<?= $this->escape($license->name) ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                     <?php
                 }
                 $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="'

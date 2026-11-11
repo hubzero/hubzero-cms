@@ -111,7 +111,8 @@ $sectionIdSelected = function ($value) use ($view) {
                         <?php
                         $fieldText = $this->escape(stripslashes($this->category->get('description', '')));
                         ?>
-                        <textarea class="form-control" name="fields[description]" id="field-description" cols="35" rows="5"><?= $fieldText ?></textarea>
+                        <textarea class="form-control" name="fields[description]" id="field-description" cols="35"
+                            rows="5"><?= $fieldText ?></textarea>
                     </label>
                 </div>
             </fieldset>

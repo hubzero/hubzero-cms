@@ -212,7 +212,8 @@ $this->css();
                                 ? ' selected="selected"'
                                 : '';
                             ?>
-                            <option value="1"<?= $selectedAttr ?>><?= Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER') ?></option>
+                            <option
+                                value="1"<?= $selectedAttr ?>><?= Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER') ?></option>
                             <?php
                             $selectedAttr = $row->role == \Components\Projects\Models\Orm\Owner::ROLE_INVITEE
                                 || !$row->role

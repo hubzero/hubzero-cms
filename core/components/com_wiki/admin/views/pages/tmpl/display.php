@@ -69,7 +69,8 @@ $namespaceSelected = function ($value) use ($view) {
                         <?php
                         $selectedAttr = $val == $this->filters['scope'] ? ' selected="selected"' : '';
                         ?>
-                        <option value="<?= $this->escape($val) ?>"<?= $selectedAttr ?>><?= $this->escape($val) ?></option>
+                        <option
+                            value="<?= $this->escape($val) ?>"<?= $selectedAttr ?>><?= $this->escape($val) ?></option>
                     <?php } ?>
                 </select>
 

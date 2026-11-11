@@ -611,7 +611,8 @@ $categorySelected = function ($value) use ($view) {
                                                 'COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity),
                                             );
                                             ?>
-                                            <option value="<?= $severity ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
+                                            <option
+                                                value="<?= $severity ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                         <?php } ?>
                                     </select>
                                 </label>

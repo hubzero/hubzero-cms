@@ -255,7 +255,8 @@ $discoverabilityChecked = function ($value) use ($view) {
                                     ),
                                 );
                                 ?>
-                                <textarea name="restrict_msg" id="restrict_msg" rows="5" cols="50"><?= $fieldText ?></textarea>
+                                <textarea name="restrict_msg" id="restrict_msg" rows="5"
+                                    cols="50"><?= $fieldText ?></textarea>
                             </label>
                         </div>
                         <div class="form-group form-check">

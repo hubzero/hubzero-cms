@@ -103,7 +103,8 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
                             <?php
                             $fieldText = $this->escape($this->row->attribs);
                             ?>
-                            <textarea name="description" class="long" rows="10" cols="60" maxlength="5000" placeholder="Enter up to 5000 characters..."><?= $fieldText ?></textarea>
+                            <textarea name="description" class="long" rows="10" cols="60" maxlength="5000"
+                                placeholder="Enter up to 5000 characters..."><?= $fieldText ?></textarea>
                         </p>
                     <?php } else { ?>
                         <p class="c-wrapper">

@@ -36,7 +36,8 @@ if (!$this->no_html) {
                     $linkUrl = Route::url('index.php?option=' . $this->option . '&task=' . $name);
                     $ariaCurrentAttr = $isActive ? ' aria-current="page"' : '';
                     ?>
-                <li id="sm-<?= $i ?>"<?= $isActive ? ' class="active"' : '' ?>><a class="tab" href="<?= $linkUrl ?>"<?= $ariaCurrentAttr ?>><span><?= $cat[$name] ?></span></a></li>
+                <li id="sm-<?= $i ?>"<?= $isActive ? ' class="active"' : '' ?>><a class="tab"
+                    href="<?= $linkUrl ?>"<?= $ariaCurrentAttr ?>><span><?= $cat[$name] ?></span></a></li>
                     <?php
                     $i++;
                     $cs[] = $name;

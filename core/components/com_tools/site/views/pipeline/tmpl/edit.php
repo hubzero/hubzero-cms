@@ -247,7 +247,8 @@ $repohostChecked = function ($value) use ($view) {
                                     ? 'checked="checked"'
                                     : "disabled";
                                 ?>
-                                <input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?= $checkedAttr ?> class="option form-check-input" />
+                                <input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitexternal"
+                                    value="gitExternal" <?= $checkedAttr ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_EXT_GIT'); ?>
                             </label>
                         </div>
@@ -261,7 +262,8 @@ $repohostChecked = function ($value) use ($view) {
                                     ? 'checked="checked"'
                                     : "disabled";
                                 ?>
-                                <input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?= $checkedAttr ?> class="option form-check-input" />
+                                <input readonly type="radio" name="tool[repohost]" id="tool_repohost_gitlocal"
+                                    value="gitLocal" <?= $checkedAttr ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_GIT'); ?>
                             </label>
                         </div>
@@ -309,7 +311,8 @@ $repohostChecked = function ($value) use ($view) {
                                 ? 'checked="checked"'
                                 : '';
                             ?>
-                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?= $checkedAttr ?> class="option form-check-input" />
+                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard"
+                                value="standard" <?= $checkedAttr ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_RAPP'); ?>
                         </label>
                     </div>
@@ -349,7 +352,8 @@ $repohostChecked = function ($value) use ($view) {
                                     ? 'checked="checked"'
                                     : '';
                                 ?>
-                                <input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?= $checkedAttr ?> class="option form-check-input" />
+                                <input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal"
+                                    value="gitExternal" <?= $checkedAttr ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_EXT_GIT'); ?>
                             </label>
                         </div>
@@ -409,7 +413,8 @@ $repohostChecked = function ($value) use ($view) {
                                 ? 'checked="checked"'
                                 : '';
                             ?>
-                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?= $checkedAttr ?> class="option form-check-input" />
+                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard"
+                                value="standard" <?= $checkedAttr ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_RAPP'); ?>
                         </label>
                     </div>

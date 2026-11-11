@@ -177,7 +177,8 @@ foreach ($cats as $cat) {
                                 ? ' class="active"'
                                 : '';
                             ?>
-                            <a<?= $classAttr ?> rel="nofollow" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_TAGS_OPT_SORT_BY_DATE') ?>">
+                            <a<?= $classAttr ?> rel="nofollow" href="<?= $linkUrl ?>"
+                                title="<?= Lang::txt('COM_TAGS_OPT_SORT_BY_DATE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_OPT_DATE'); ?>
                             </a>
                         </li>

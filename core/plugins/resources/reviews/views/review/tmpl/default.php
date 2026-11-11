@@ -62,7 +62,8 @@ $actionUrl = Route::url(
                 $paragraphText = Lang::txt('PLG_RESOURCES_REVIEWS_FOR_REVIEWS');
                 $pointsExpText = Lang::txt('PLG_RESOURCES_REVIEWS_EARN_POINTS_EXP');
                 ?>
-                <p class="help"><?= Lang::txt('PLG_RESOURCES_REVIEWS_DID_YOU_KNOW_YOU_CAN') ?> <a href="<?= $this->infolink ?>"><?= $linkText ?></a> <?= $paragraphText ?>? <?= $pointsExpText ?></p>
+                <p class="help"><?= Lang::txt('PLG_RESOURCES_REVIEWS_DID_YOU_KNOW_YOU_CAN') ?> <a
+                    href="<?= $this->infolink ?>"><?= $linkText ?></a> <?= $paragraphText ?>? <?= $pointsExpText ?></p>
             <?php } ?>
 
             <fieldset>

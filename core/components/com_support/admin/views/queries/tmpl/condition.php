@@ -99,7 +99,8 @@ if ($this->condition->expressions) {
                         $selectedAttr = $expression->opval == $operator->val ? ' selected="selected"' : '';
                         $optionText = $this->escape($operator->label);
                         ?>
-                        <option value="<?= $this->escape($operator->val) ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
+                        <option
+                            value="<?= $this->escape($operator->val) ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                         <?php
                     }
                 }

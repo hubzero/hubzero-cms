@@ -649,7 +649,8 @@ $categoryChecked = function ($value) use ($view) {
                                         <?php
                                         $disabledAttr = ($this->wish->get('funds') <= 0) ? ' disabled="disabled"' : '';
                                         ?>
-                                        <input class="option form-control" type="text" maxlength="4" name="amount" id="field-amount" value=""<?= $disabledAttr ?> />
+                                        <input class="option form-control" type="text" maxlength="4" name="amount"
+                                            id="field-amount" value=""<?= $disabledAttr ?> />
                                         <span>
                                             (<?= Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') ?> <?= $this->wish->get('funds') ?> <?= Lang::txt('COM_WISHLIST_NOTICE_POINTS_AVAILABLE') ?>
                                             <?php
@@ -850,7 +851,8 @@ $categoryChecked = function ($value) use ($view) {
                     <?php
                     $linkText = Lang::txt('COM_WISHLIST_MAKE_A_COMMENT');
                     ?>
-                    <?= Lang::txt('COM_WISHLIST_NO_COMMENTS') ?> <a href="<?= Route::url($this->wish->link('comment')) ?>"><?= $linkText ?></a>.
+                    <?= Lang::txt('COM_WISHLIST_NO_COMMENTS') ?> <a
+                        href="<?= Route::url($this->wish->link('comment')) ?>"><?= $linkText ?></a>.
                 </p>
                     <?php
                 }

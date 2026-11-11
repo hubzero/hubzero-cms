@@ -27,7 +27,8 @@ $this
     $tombstoneReasonText = Lang::txt('COM_PUBLICATIONS_TOMBSTONE_REASON')
         . $this->escape(lcfirst((string) $this->record->unpublished_reason)) . ".";
     ?>
-    <p><?= Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_IDENTIFIER') ?><a target="_blank" rel="external" href="<?= $linkUrl ?>"><?= $linkText ?></a><?= $tombstoneReasonText ?></p>
+    <p><?= Lang::txt('COM_PUBLICATIONS_TOMBSTONE_DATASET_IDENTIFIER') ?><a target="_blank" rel="external"
+        href="<?= $linkUrl ?>"><?= $linkText ?></a><?= $tombstoneReasonText ?></p>
     <p><?php echo Lang::txt('COM_PUBLICATIONS_TOMBSTONE_CONTACT_PURR'); ?></p>
 </div>
 

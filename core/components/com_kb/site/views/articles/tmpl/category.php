@@ -82,7 +82,8 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title'));
                                 ? ' class="active" aria-current="page"'
                                 : '';
                             ?>
-                            <a<?= $attributes ?> href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_KB_SORT_BY_POPULAR') ?>">
+                            <a<?= $attributes ?> href="<?= $linkUrl ?>"
+                                title="<?= Lang::txt('COM_KB_SORT_BY_POPULAR') ?>">
                                 <?php echo Lang::txt('COM_KB_SORT_POPULAR'); ?>
                             </a>
                         </li>

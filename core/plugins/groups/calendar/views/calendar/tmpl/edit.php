@@ -106,7 +106,8 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                                         . '&active=calendar&action=addcalendar',
                                 );
                                 ?>
-                                <?= Lang::txt('Need a new calendar?') ?> <a href="<?= $addcalendarUrl ?>">Click here!</a>
+                                <?= Lang::txt('Need a new calendar?') ?> <a
+                                    href="<?= $addcalendarUrl ?>">Click here!</a>
                             </span>
                         <?php endif; ?>
                     </label>

@@ -152,7 +152,8 @@ $sortDirSelected = function ($value) use ($view) {
                                             : '';
                                         $optionText = $this->escape($field->get('label'));
                                         ?>
-                                        <option value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
+                                        <option
+                                            value="<?= $fieldValue ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>

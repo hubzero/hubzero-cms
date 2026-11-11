@@ -110,7 +110,8 @@ $adminLink = $base . '/administrator/index.php?option=com_groups&gid=' . $this->
                                     Lang::txt('DATE_FORMAT_HZ1'),
                                 );
                                 ?>
-                                <td style="text-align: left; padding: 0 0.5em;" align="left">@ <?= $cellText ?> on <?= $dateText ?></td>
+                                <td style="text-align: left; padding: 0 0.5em;"
+                                    align="left">@ <?= $cellText ?> on <?= $dateText ?></td>
                             </tr>
                             <tr>
                                 <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Created By:</th>

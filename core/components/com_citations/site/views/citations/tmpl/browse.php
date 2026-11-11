@@ -441,7 +441,8 @@ if ($label == 'none') {
                             ? ' checked="checked"'
                             : '';
                         ?>
-                        <input class="option" type="checkbox" name="reftype[cyberinfrastructure]" id="reftype_cyberinfrastructure" value="1"<?= $checkedAttr ?> />
+                        <input class="option" type="checkbox" name="reftype[cyberinfrastructure]"
+                            id="reftype_cyberinfrastructure" value="1"<?= $checkedAttr ?> />
                         <?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_CYBERINFRASTRUCTURE'); ?>
                     </label>
                 </fieldset>

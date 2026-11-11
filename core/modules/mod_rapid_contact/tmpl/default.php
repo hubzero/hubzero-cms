@@ -71,7 +71,8 @@ $this->css();
                     <?php
                     $fieldText = $this->escape(!isset($this->posted['message']) ? '' : $this->posted['message']);
                     ?>
-                    <textarea class="form-control" name="rp[message]" id="contact-comments<?= $this->module->id ?>" cols="35" rows="10"><?= $fieldText ?></textarea>
+                    <textarea class="form-control" name="rp[message]" id="contact-comments<?= $this->module->id ?>"
+                        cols="35" rows="10"><?= $fieldText ?></textarea>
                 </span>
             </div>
 

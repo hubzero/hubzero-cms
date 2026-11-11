@@ -76,7 +76,8 @@ $this->js();
                                     : '';
                                 $optionText = str_repeat('- ', $level) . $option->get('title');
                                 ?>
-                                <option value="<?= $option->get('id') ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
+                                <option
+                                    value="<?= $option->get('id') ?>"<?= $selectedAttr ?>><?= $optionText ?></option>
                                 <?php
                             }
                         endforeach; ?>

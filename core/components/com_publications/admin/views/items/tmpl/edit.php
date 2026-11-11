@@ -149,7 +149,8 @@ $featuredSelected = function ($value) use ($view) {
                     <?php
                     $fieldText = $this->escape(preg_replace("/\r\n/", "\r", trim($this->model->get('abstract'))));
                     ?>
-                    <textarea name="abstract" id="pub-abstract" cols="40" rows="3" class="pubinput"><?= $fieldText ?></textarea>
+                    <textarea name="abstract" id="pub-abstract" cols="40" rows="3"
+                        class="pubinput"><?= $fieldText ?></textarea>
                 </div>
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DESCRIPTION'); ?>:</label>
@@ -246,7 +247,8 @@ $featuredSelected = function ($value) use ($view) {
                         preg_replace("/\r\n/", "\r", trim($this->model->get('license_text', ''))),
                     );
                     ?>
-                    <textarea name="license_text" id="license_text" cols="40" rows="5" class="pubinput"><?= $fieldText ?></textarea>
+                    <textarea name="license_text" id="license_text" cols="40" rows="5"
+                        class="pubinput"><?= $fieldText ?></textarea>
                 </div>
             </fieldset>
             <fieldset class="adminform">

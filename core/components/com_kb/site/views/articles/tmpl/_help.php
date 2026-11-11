@@ -42,7 +42,8 @@ defined('_HZEXEC_') or die();
             <?php
             $newUrl = Route::url('index.php?option=com_support&controller=tickets&task=new');
             ?>
-            <?= Lang::txt('COM_KB_TROUBLE_FOUND_BUG') ?> <a href="<?= $newUrl ?>"><?= Lang::txt('COM_KB_TROUBLE_TELL_US') ?></a>
+            <?= Lang::txt('COM_KB_TROUBLE_FOUND_BUG') ?> <a
+                href="<?= $newUrl ?>"><?= Lang::txt('COM_KB_TROUBLE_TELL_US') ?></a>
         </p>
     </div><!-- / .container -->
 <?php } ?>

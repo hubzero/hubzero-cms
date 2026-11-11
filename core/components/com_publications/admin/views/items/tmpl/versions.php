@@ -32,7 +32,8 @@ $editUrl = Route::url(
 $linkUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
 $publicationText = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id;
 ?>
-<p class="crumbs"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= $editUrl ?>"><?= $publicationText ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_VERSIONS') ?></p>
+<p class="crumbs"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a
+    href="<?= $editUrl ?>"><?= $publicationText ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_VERSIONS') ?></p>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
     name="adminForm">
