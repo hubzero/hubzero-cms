@@ -27,6 +27,19 @@ use Hubzero\Facades\Plugin;
 
 /**
  * Base projects controller (extends \Hubzero\Component\SiteController)
+ *
+ * The controllers keep these on themselves through __set() and __get():
+ *
+ * @property  \Components\Projects\Models\Project  $model           The project, loaded by execute()
+ * @property  int                                  $_publishing     1 when publishing is enabled, set by execute()
+ * @property  int                                  $_setupComplete  The setup state of a finished project
+ * @property  int|string                           $_identifier     The incoming project id or alias
+ * @property  int                                  $_gid            The incoming or resolved group id
+ * @property  string                               $title           The page title, set by buildTitle()
+ * @property  string                               $_msg            The message login() shows
+ * @property  array                                $messages        Notifications, cached by getNotifications()
+ * @property  string                               $active          The active project tab
+ * @property  \Hubzero\User\Group|null             $group           The group that owns the project, if any
  */
 class Base extends SiteController
 {

@@ -29,6 +29,9 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Manage projects
+ *
+ * @property  int                                  $_publishing  1 when publishing is enabled, set by execute()
+ * @property  \Components\Projects\Models\Project  $model        The project saveTask() stored, for its helpers
  */
 class Projects extends AdminController
 {

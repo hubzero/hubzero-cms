@@ -20,6 +20,8 @@ use Hubzero\Facades\Notify;
 
 /**
  * Projects controller class for managing membership
+ *
+ * @property  \Components\Projects\Models\Project  $model  The project whose team is being changed
  */
 class Team extends AdminController
 {

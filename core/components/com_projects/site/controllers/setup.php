@@ -26,6 +26,10 @@ use Hubzero\Facades\Session;
 
 /**
  * Projects setup controller class
+ *
+ * @property  string  $section  The setup step being shown or saved, set by execute()
+ * @property  string  $next     The step to go to after saving
+ * @property  bool    $_notify  True when a newly activated project should be announced
  */
 class Setup extends Base
 {
