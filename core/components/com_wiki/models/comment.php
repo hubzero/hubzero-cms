@@ -19,6 +19,9 @@ use Hubzero\Facades\Event;
 
 /**
  * Wiki model for a comment
+ *
+ * @property  Page    $page  The page commented on, through page()
+ * @property  string  $base  The comment links' stem, cached by link()
  */
 class Comment extends Relational
 {

@@ -23,6 +23,9 @@ use Hubzero\Facades\Route;
 
 /**
  * Wiki controller class for page history
+ *
+ * @property  \Components\Wiki\Models\Page  $page        The page, loaded by execute()
+ * @property  string                        $_base_path  The site directory, or base_path from the config
  */
 class History extends SiteController
 {

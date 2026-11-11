@@ -16,6 +16,8 @@ use Hubzero\Facades\Request;
 
 /**
  * Wiki model for a page version
+ *
+ * @property  Page  $page  The page this is a version of, through page()
  */
 class Version extends Relational
 {

@@ -25,6 +25,9 @@ use Hubzero\Facades\Route;
 
 /**
  * Wiki controller class for comments
+ *
+ * @property  \Components\Wiki\Models\Page  $page        The page, loaded by execute()
+ * @property  string                        $_base_path  The site directory, or base_path from the config
  */
 class Comments extends SiteController
 {

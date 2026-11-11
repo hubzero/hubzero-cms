@@ -24,6 +24,8 @@ use Hubzero\Facades\Component;
 
 /**
  * Wiki controller class for media
+ *
+ * @property  \Components\Wiki\Models\Page  $page  The page, loaded by execute()
  */
 class Media extends SiteController
 {
