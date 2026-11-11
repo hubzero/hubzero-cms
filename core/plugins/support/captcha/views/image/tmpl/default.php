@@ -35,9 +35,7 @@ if (Request::isSecure()) {
         <div class="col span4 omega">
             <div class="captcha-wrap">
                 <img id="captchaCode<?php echo $this->total; ?>"
-                    src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>
-                    &amp;controller=<?php echo $this->controller;?>&amp;task=<?php echo $this->task; ?>
-                    &amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total;?>"
+                    src="<?php echo $base; ?>index.php?option=<?php echo $this->option; ?>&amp;controller=<?php echo $this->controller;?>&amp;task=<?php echo $this->task; ?>&amp;no_html=1&amp;showCaptcha=True&amp;instanceNo=<?php echo $this->total;?>"
                     alt="CAPTCHA Image" />
                 <?php
                 $titleText = Lang::txt('PLG_SUPPORT_IMAGECAPTCHA_REFRESH_CAPTCHA');

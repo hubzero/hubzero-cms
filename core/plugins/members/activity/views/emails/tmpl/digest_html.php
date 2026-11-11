@@ -107,8 +107,7 @@ $link = $base . '/' . trim($sef, '/');
         . ' font-size: 0.9em; line-height: 1.6em;'
         . ' background-image: -webkit-gradient(linear, 0 0, 100% 100%,';
     ?>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="<?php echo $tableStyle; ?>
-                                        color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="<?php echo $tableStyle; ?>color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
                                         color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
                                         color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
                                         to(transparent));

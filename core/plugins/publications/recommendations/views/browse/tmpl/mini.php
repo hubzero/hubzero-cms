@@ -36,6 +36,5 @@ $this->css();
     <?php } else { ?>
         <p><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_NO_RESULTS_FOUND'); ?></p>
     <?php } ?>
-    <p id="credits"><a href="<?php echo Request::base(true); ?>
-    /about/hubzero#recommendations"><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_POWERED_BY');?></a></p>
+    <p id="credits"><a href="<?php echo Request::base(true); ?>/about/hubzero#recommendations"><?php echo Lang::txt('PLG_PUBLICATION_RECOMMENDATIONS_POWERED_BY');?></a></p>
 </div>

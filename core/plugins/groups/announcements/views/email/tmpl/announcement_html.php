@@ -71,8 +71,7 @@ $tableStyle = 'border-collapse: collapse;'
         cellpadding="0"
         cellspacing="0"
         border="0"
-        style="<?php echo $tableStyle; ?>
-                                        color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
+        style="<?php echo $tableStyle; ?>color-stop(.25, rgba(255, 255, 255, .075)), color-stop(.25, transparent),
                                         color-stop(.5, transparent), color-stop(.5, rgba(255, 255, 255, .075)),
                                         color-stop(.75, rgba(255, 255, 255, .075)), color-stop(.75, transparent),
                                         to(transparent));
