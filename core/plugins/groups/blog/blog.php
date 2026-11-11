@@ -570,6 +570,7 @@ class Blog extends Plugin
         if (isset($this->entry) && is_object($this->entry)) {
             $row = $this->entry;
         } else {
+            $alias = '';
             $path = Request::path();
             if (strstr($path, '/')) {
                 $bits = $this->parseUrl();
@@ -781,7 +782,8 @@ class Blog extends Plugin
         $entry['scope_id'] = $this->group->get('gidNumber');
 
         $row->set($entry);
-        if ($row->get('alias') == '') {
+        $alias = $row->get('alias');
+        if ($alias == '') {
             $alias = $row->automaticAlias($row);
         }
 

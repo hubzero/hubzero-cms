@@ -720,6 +720,7 @@ class Citations extends Plugin
             ->rows();
 
         if ($authors->count()) {
+            $auths = [];
             foreach ($authors as $author) {
                 $auths[] = $author->get('author')
                     . ($author->get('uidNumber') ? '{{' . $author->get('uidNumber') . '}}' : '');
@@ -841,8 +842,10 @@ class Citations extends Plugin
              * @TODO move to API, possible use of whereIn()?
              */
 
+            $citationIDs = array_filter(array_map('intval', explode(',', $citationIDs)));
+
             // when no selection has been made
-            if ($bulk == true && $citationIDs == '') {
+            if (empty($citationIDs)) {
                 App::redirect(
                     Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
@@ -850,8 +853,8 @@ class Citations extends Plugin
                 );
                 return;
             }
+
             $published = [];
-            $citationIDs = array_filter(array_map('intval', explode(',', $citationIDs)));
             $string = 'PLG_GROUPS_CITATIONS_CITATION_PUBLISHED';
 
             // error, no such citation
@@ -969,8 +972,10 @@ class Citations extends Plugin
              * @TODO move to API, possible use of whereIn()?
              */
 
+            $citationIDs = array_filter(array_map('intval', explode(',', $citationIDs)));
+
             // when no selection has been made
-            if ($bulk == true && $citationIDs == '') {
+            if (empty($citationIDs)) {
                 App::redirect(
                     Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
@@ -980,7 +985,6 @@ class Citations extends Plugin
             }
 
             $deleted = [];
-            $citationIDs = array_filter(array_map('intval', explode(',', $citationIDs)));
             $string = 'PLG_GROUPS_CITATIONS_CITATION_DELETED';
 
             // error, no such citation
@@ -1377,12 +1381,8 @@ class Citations extends Plugin
             );
 
             // view variables
-            $view->citations_require_attention = (isset(
-                $citations_action_attention,
-            ) ? $citations_action_attention : null);
-            $view->citation_require_no_attention = (isset(
-                $citation_action_no_attention,
-            ) ? $citations_action_no_attention : null);
+            $view->citations_require_attention = $citations_action_attention;
+            $view->citation_require_no_attention = $citations_action_no_attention;
 
             // if we have citations not getting saved
             if (count($results['not_saved']) > 0) {
