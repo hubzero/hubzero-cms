@@ -23,10 +23,10 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_media/admin/controllers/media.php:578`](../../../core/components/com_media/admin/controllers/media.php#L578) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:607`](../../../core/components/com_media/admin/controllers/media.php#L607) with `['com_media.folder', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:704`](../../../core/components/com_media/admin/controllers/media.php#L704) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:733`](../../../core/components/com_media/admin/controllers/media.php#L733) with `['com_media.folder', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:582`](../../../core/components/com_media/admin/controllers/media.php#L582) with `['com_media.file', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:611`](../../../core/components/com_media/admin/controllers/media.php#L611) with `['com_media.folder', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:708`](../../../core/components/com_media/admin/controllers/media.php#L708) with `['com_media.file', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:737`](../../../core/components/com_media/admin/controllers/media.php#L737) with `['com_media.folder', &$object_file]`
 
 No plugin in the source tree listens for this event.
 
@@ -46,10 +46,10 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_media/admin/controllers/media.php:151`](../../../core/components/com_media/admin/controllers/media.php#L151) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:219`](../../../core/components/com_media/admin/controllers/media.php#L219) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:337`](../../../core/components/com_media/admin/controllers/media.php#L337) with `['com_media.file', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:487`](../../../core/components/com_media/admin/controllers/media.php#L487) with `['com_media.file', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:155`](../../../core/components/com_media/admin/controllers/media.php#L155) with `['com_media.folder', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:223`](../../../core/components/com_media/admin/controllers/media.php#L223) with `['com_media.folder', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:341`](../../../core/components/com_media/admin/controllers/media.php#L341) with `['com_media.file', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:491`](../../../core/components/com_media/admin/controllers/media.php#L491) with `['com_media.file', &$object_file, true]`
 
 No plugin in the source tree listens for this event.
 
@@ -67,10 +67,10 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_media/admin/controllers/media.php:559`](../../../core/components/com_media/admin/controllers/media.php#L559) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:588`](../../../core/components/com_media/admin/controllers/media.php#L588) with `['com_media.folder', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:685`](../../../core/components/com_media/admin/controllers/media.php#L685) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:714`](../../../core/components/com_media/admin/controllers/media.php#L714) with `['com_media.folder', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:563`](../../../core/components/com_media/admin/controllers/media.php#L563) with `['com_media.file', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:592`](../../../core/components/com_media/admin/controllers/media.php#L592) with `['com_media.folder', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:689`](../../../core/components/com_media/admin/controllers/media.php#L689) with `['com_media.file', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:718`](../../../core/components/com_media/admin/controllers/media.php#L718) with `['com_media.folder', &$object_file]`
 
 Listeners:
 
@@ -93,18 +93,18 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_answers/models/comment.php:77`](../../../core/components/com_answers/models/comment.php#L77) with `[ 'com_answers.comment.content', &$this, $this->isNew(), ]`
-- [`core/components/com_answers/models/question.php:518`](../../../core/components/com_answers/models/question.php#L518) with `[ 'com_answers.question.question', &$this, $this->isNew(), ]`
-- [`core/components/com_answers/models/response.php:432`](../../../core/components/com_answers/models/response.php#L432) with `[ 'com_answers.response.answer', &$this, $this->isNew(), ]`
+- [`core/components/com_answers/models/comment.php:81`](../../../core/components/com_answers/models/comment.php#L81) with `[ 'com_answers.comment.content', &$this, $this->isNew(), ]`
+- [`core/components/com_answers/models/question.php:522`](../../../core/components/com_answers/models/question.php#L522) with `[ 'com_answers.question.question', &$this, $this->isNew(), ]`
+- [`core/components/com_answers/models/response.php:437`](../../../core/components/com_answers/models/response.php#L437) with `[ 'com_answers.response.answer', &$this, $this->isNew(), ]`
 - [`core/components/com_blog/models/comment.php:345`](../../../core/components/com_blog/models/comment.php#L345) with `[ 'com_blog.comment.content', &$this, $this->isNew(), ]`
 - [`core/components/com_blog/models/entry.php:723`](../../../core/components/com_blog/models/entry.php#L723) with `[ 'com_blog.entry.content', &$this, $this->isNew(), ]`
 - [`core/components/com_forum/models/category.php:327`](../../../core/components/com_forum/models/category.php#L327) with `[ 'com_forum.category.description', &$this, $this->isNew(), ]`
 - [`core/components/com_forum/models/post.php:648`](../../../core/components/com_forum/models/post.php#L648) with `[ 'com_forum.post.comment', &$this, $this->isNew(), ]`
 - [`core/components/com_groups/site/controllers/groups.php:680`](../../../core/components/com_groups/site/controllers/groups.php#L680) with `[ 'com_groups.group.public_desc', &$g_public_desc, ($this->task == 'new'), ]`
 - [`core/components/com_kb/models/comment.php:379`](../../../core/components/com_kb/models/comment.php#L379) with `[ 'com_kb.comment.content', &$this, $this->isNew(), ]`
-- [`core/components/com_media/admin/controllers/media.php:136`](../../../core/components/com_media/admin/controllers/media.php#L136) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:201`](../../../core/components/com_media/admin/controllers/media.php#L201) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:319`](../../../core/components/com_media/admin/controllers/media.php#L319) with `['com_media.file', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:140`](../../../core/components/com_media/admin/controllers/media.php#L140) with `['com_media.folder', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:205`](../../../core/components/com_media/admin/controllers/media.php#L205) with `['com_media.folder', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:323`](../../../core/components/com_media/admin/controllers/media.php#L323) with `['com_media.file', &$object_file, true]`
 - and 4 more call sites
 
 Listeners:

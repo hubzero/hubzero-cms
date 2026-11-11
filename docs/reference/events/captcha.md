@@ -13,7 +13,7 @@ Fired from:
 
 - [`core/components/com_members/models/registration.php:644`](../../../core/components/com_members/models/registration.php#L644)
 - [`core/components/com_members/site/controllers/register.php:1248`](../../../core/components/com_members/site/controllers/register.php#L1248)
-- [`core/components/com_support/site/controllers/tickets.php:906`](../../../core/components/com_support/site/controllers/tickets.php#L906)
+- [`core/components/com_support/site/controllers/tickets.php:911`](../../../core/components/com_support/site/controllers/tickets.php#L911)
 
 Listeners:
 
@@ -27,7 +27,7 @@ Fired from:
 
 - [`core/components/com_members/site/views/register/tmpl/default.php:814`](../../../core/components/com_members/site/views/register/tmpl/default.php#L814)
 - [`core/components/com_members/site/views/register/tmpl/resend_request.php:43`](../../../core/components/com_members/site/views/register/tmpl/resend_request.php#L43)
-- [`core/components/com_support/site/controllers/tickets.php:804`](../../../core/components/com_support/site/controllers/tickets.php#L804)
+- [`core/components/com_support/site/controllers/tickets.php:809`](../../../core/components/com_support/site/controllers/tickets.php#L809)
 
 Listeners:
 

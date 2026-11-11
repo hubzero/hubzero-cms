@@ -12,8 +12,8 @@ Events in the `authfactors` group. A plugin in `core/plugins/authfactors/` recei
 Fired from:
 
 - [`core/components/com_login/admin/controllers/login.php:164`](../../../core/components/com_login/admin/controllers/login.php#L164)
-- [`core/components/com_login/site/controllers/auth.php:507`](../../../core/components/com_login/site/controllers/auth.php#L507)
-- [`core/components/com_users/site/controllers/auth.php:542`](../../../core/components/com_users/site/controllers/auth.php#L542)
+- [`core/components/com_login/site/controllers/auth.php:513`](../../../core/components/com_login/site/controllers/auth.php#L513)
+- [`core/components/com_users/site/controllers/auth.php:548`](../../../core/components/com_users/site/controllers/auth.php#L548)
 
 Listeners:
 

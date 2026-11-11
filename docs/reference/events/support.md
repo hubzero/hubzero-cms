@@ -45,7 +45,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:823`](../../../core/components/com_support/site/controllers/tickets.php#L823) with `[]`
+- [`core/components/com_support/site/controllers/tickets.php:828`](../../../core/components/com_support/site/controllers/tickets.php#L828) with `[]`
 
 No plugin in the source tree listens for this event.
 
@@ -79,7 +79,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:1369`](../../../core/components/com_support/site/controllers/tickets.php#L1369) with `[$row]`
+- [`core/components/com_support/site/controllers/tickets.php:1374`](../../../core/components/com_support/site/controllers/tickets.php#L1374) with `[$row]`
 
 Listeners:
 
@@ -107,6 +107,6 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/site/controllers/tickets.php:867`](../../../core/components/com_support/site/controllers/tickets.php#L867) with `[$reporter, $problem]`
+- [`core/components/com_support/site/controllers/tickets.php:872`](../../../core/components/com_support/site/controllers/tickets.php#L872) with `[$reporter, $problem]`
 
 No plugin in the source tree listens for this event.

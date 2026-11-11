@@ -267,8 +267,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_login/site/controllers/auth.php:831`](../../../core/components/com_login/site/controllers/auth.php#L831) with `[$parameters, $options]`
-- [`core/components/com_users/site/controllers/auth.php:892`](../../../core/components/com_users/site/controllers/auth.php#L892) with `[$parameters, $options]`
+- [`core/components/com_login/site/controllers/auth.php:837`](../../../core/components/com_login/site/controllers/auth.php#L837) with `[$parameters, $options]`
+- [`core/components/com_users/site/controllers/auth.php:898`](../../../core/components/com_users/site/controllers/auth.php#L898) with `[$parameters, $options]`
 - [`core/libraries/Hubzero/Auth/Manager.php:177`](../../../core/libraries/Hubzero/Auth/Manager.php#L177) with `[$parameters, $options]`
 
 Listeners:
@@ -280,8 +280,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_login/site/controllers/auth.php:841`](../../../core/components/com_login/site/controllers/auth.php#L841) with `[$parameters]`
-- [`core/components/com_users/site/controllers/auth.php:902`](../../../core/components/com_users/site/controllers/auth.php#L902) with `[$parameters]`
+- [`core/components/com_login/site/controllers/auth.php:847`](../../../core/components/com_login/site/controllers/auth.php#L847) with `[$parameters]`
+- [`core/components/com_users/site/controllers/auth.php:908`](../../../core/components/com_users/site/controllers/auth.php#L908) with `[$parameters]`
 - [`core/libraries/Hubzero/Auth/Manager.php:191`](../../../core/libraries/Hubzero/Auth/Manager.php#L191) with `[$parameters]`
 
 No plugin in the source tree listens for this event.

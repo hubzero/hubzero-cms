@@ -394,4 +394,4 @@ A path that starts with `/` is treated as internal and the hub prefixes the
 site root. The same menu item also carries the login and logout
 descriptions and images.
 
-<!--include: core/components/com_users/site/controllers/auth.php:127-143-->
+<!--include: core/components/com_users/site/controllers/auth.php:131-147-->
