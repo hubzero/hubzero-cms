@@ -279,7 +279,7 @@ class Course extends SiteController
         // Push back into edit mode if any errors
         if (!$course->bind($data)) {
             Notify::error($course->getError(), 'courses');
-            return $this->newTask($course);
+            return $this->editTask($course);
         }
 
         // Force into draft state
@@ -493,7 +493,7 @@ class Course extends SiteController
                 $response->message = $offering->getError();
             } else {
                 Notify::error($offering->getError(), 'courses');
-                $this->newTask($offering);
+                $this->newofferingTask($offering);
             }
             return;
         }

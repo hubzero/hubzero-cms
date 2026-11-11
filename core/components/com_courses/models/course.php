@@ -824,7 +824,7 @@ class Course extends Base
                 break;
 
             case 'clean':
-                $content = strip_tags($this->content('parsed'));
+                $content = strip_tags($this->description('parsed'));
                 break;
 
             case 'raw':
@@ -872,7 +872,7 @@ class Course extends Base
 
         if ($deep) {
             // Copy pages
-            foreach ($this->pages(['course_id' => $c_id, 'active' => [0, 1]], true) as $page) {
+            foreach ($this->pages(['course_id' => $c_id, 'active' => [0, 1]]) as $page) {
                 if (!$page->copy($this->get('course_id'))) {
                     $this->setError($page->getError());
                 }
