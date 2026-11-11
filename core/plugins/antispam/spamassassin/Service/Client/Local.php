@@ -389,7 +389,8 @@ class Local
                 'Message-class' => 'ham',
                 'Set' => 'local',
             ];
-        } elseif ($learnType == self::LEARN_FORGET) {
+        } else {
+            // self::LEARN_FORGET, the only other valid type
             $additionalHeaders = [
                 'Remove' => 'local',
             ];

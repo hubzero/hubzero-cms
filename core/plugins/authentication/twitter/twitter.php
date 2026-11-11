@@ -193,7 +193,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
         Session::clear('oauth2state', $this->name);
         Session::clear('oauth2verifier', $this->name);
 
-        if (isset($token) && $token) {
+        if ($token) {
             try {
                 $owner = $this->provider->getResourceOwner($token);
 
@@ -308,7 +308,7 @@ class Twitter extends \Hubzero\Plugin\OauthClient
         Session::clear('oauth2state', $this->name);
         Session::clear('oauth2verifier', $this->name);
 
-        if (isset($token) && $token) {
+        if ($token) {
             try {
                 $owner = $this->provider->getResourceOwner($token);
                 $id    = $owner->getId();

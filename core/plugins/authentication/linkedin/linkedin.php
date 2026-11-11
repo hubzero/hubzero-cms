@@ -190,7 +190,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
 
         Session::clear('oauth2state', $this->name);
 
-        if (isset($token) && $token) {
+        if ($token) {
             try {
                 $owner = $this->provider->getResourceOwner($token);
 
@@ -307,7 +307,7 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
 
         Session::clear('oauth2state', $this->name);
 
-        if (isset($token) && $token) {
+        if ($token) {
             try {
                 $owner = $this->provider->getResourceOwner($token);
                 $id    = $owner->getId();
