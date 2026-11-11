@@ -22,6 +22,8 @@ use Hubzero\Facades\Component;
 
 /**
  * Groups controller class for managing membership and group info
+ *
+ * @property  \Hubzero\User\Group  $group  The group, loaded by each task
  */
 class Membership extends AdminController
 {
@@ -785,8 +787,6 @@ class Membership extends AdminController
         // Load the group page
         $this->group = new Group();
         $this->group->read($gid);
-
-        $authorized = $this->authorized;
 
         $users = [];
         $useremails = [];
