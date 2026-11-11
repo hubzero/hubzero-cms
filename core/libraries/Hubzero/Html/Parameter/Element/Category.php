@@ -38,14 +38,6 @@ class Category extends Element
         $class     = (string) $node['class'];
         $filter    = explode(',', (string) $node['filter']);
 
-        if (!isset($extension)) {
-            // Alias for extension
-            $extension = (string) $node['scope'];
-            if (!isset($extension)) {
-                $extension = 'com_content';
-            }
-        }
-
         if (!$class) {
             $class = "inputbox";
         }

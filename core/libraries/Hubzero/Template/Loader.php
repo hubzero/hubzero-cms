@@ -291,7 +291,7 @@ class Loader
 
         $templates = $cache->get('com_templates.templates' . $client_id . $this->lang);
 
-        if (!$templates || empty($templates)) {
+        if (!$templates) {
             try {
                 $db = $this->app['db'];
 

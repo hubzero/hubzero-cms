@@ -461,7 +461,7 @@ class Group extends Obj
 
         $query .= " WHERE `gidNumber`=" . $db->quote($this->gidNumber) . ";";
 
-        if (($first != true) && !empty($query)) {
+        if ($first != true) {
             $db->setQuery($query);
 
             $result = $db->query();

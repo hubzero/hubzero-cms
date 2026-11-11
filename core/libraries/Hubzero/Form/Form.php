@@ -1330,53 +1330,52 @@ class Form
             return $false;
         }
 
-        // Make sure there is actually a group to find.
+        // Split the group into the names of its nested groups.
         $group = explode('.', $group);
-        if (!empty($group)) {
-            // Get any fields elements with the correct group name.
-            $elements = $this->xml->xpath('//fields[@name="' . (string) $group[0] . '"]');
 
-            if ($elements) {
-                // Check to make sure that there are no parent groups for each element.
-                foreach ($elements as $element) {
-                    if (!$element->xpath('ancestor::fields[@name]')) {
-                        $tmp[] = $element;
+        // Get any fields elements with the correct group name.
+        $elements = $this->xml->xpath('//fields[@name="' . (string) $group[0] . '"]');
+
+        if ($elements) {
+            // Check to make sure that there are no parent groups for each element.
+            foreach ($elements as $element) {
+                if (!$element->xpath('ancestor::fields[@name]')) {
+                    $tmp[] = $element;
+                }
+            }
+        }
+
+        // Iterate through the nested groups to find any matching form field groups.
+        for ($i = 1, $n = count($group); $i < $n; $i++) {
+            // Initialise some loop variables.
+            $validNames = array_slice($group, 0, $i + 1);
+            $current = $tmp;
+            $tmp = [];
+
+            // Check to make sure that there are no parent groups for each element.
+            foreach ($current as $element) {
+                // Get any fields elements with the correct group name.
+                $children = $element->xpath('descendant::fields[@name="' . (string) $group[$i] . '"]');
+
+                // For the found fields elements validate that they are in the correct groups.
+                foreach ($children as $fields) {
+                    // Get the group names as strings for ancestor fields elements.
+                    $attrs = $fields->xpath('ancestor-or-self::fields[@name]/@name');
+                    $names = array_map('strval', $attrs ? $attrs : []);
+
+                    // If the group names for the fields element match the valid names at this
+                    // level add the fields element.
+                    if ($validNames == $names) {
+                        $tmp[] = $fields;
                     }
                 }
             }
+        }
 
-            // Iterate through the nested groups to find any matching form field groups.
-            for ($i = 1, $n = count($group); $i < $n; $i++) {
-                // Initialise some loop variables.
-                $validNames = array_slice($group, 0, $i + 1);
-                $current = $tmp;
-                $tmp = [];
-
-                // Check to make sure that there are no parent groups for each element.
-                foreach ($current as $element) {
-                    // Get any fields elements with the correct group name.
-                    $children = $element->xpath('descendant::fields[@name="' . (string) $group[$i] . '"]');
-
-                    // For the found fields elements validate that they are in the correct groups.
-                    foreach ($children as $fields) {
-                        // Get the group names as strings for ancestor fields elements.
-                        $attrs = $fields->xpath('ancestor-or-self::fields[@name]/@name');
-                        $names = array_map('strval', $attrs ? $attrs : []);
-
-                        // If the group names for the fields element match the valid names at this
-                        // level add the fields element.
-                        if ($validNames == $names) {
-                            $tmp[] = $fields;
-                        }
-                    }
-                }
-            }
-
-            // Only include valid XML objects.
-            foreach ($tmp as $element) {
-                if ($element instanceof SimpleXMLElement) {
-                    $groups[] = $element;
-                }
+        // Only include valid XML objects.
+        foreach ($tmp as $element) {
+            if ($element instanceof SimpleXMLElement) {
+                $groups[] = $element;
             }
         }
 

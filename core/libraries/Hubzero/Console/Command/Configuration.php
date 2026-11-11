@@ -45,13 +45,11 @@ class Configuration extends Base implements CommandInterface
                 $options = [];
                 $option  = $this->output->getResponse('What do you want to configure [name|email|etc...] ?');
 
-                if (is_string($option) && !empty($option)) {
-                    $options[$option] = $this->output->getResponse("What do you want your {$option} to be?");
-                } elseif (empty($option)) {
+                if (empty($option)) {
                     $this->output->error("Please specify what option you want to set.");
-                } else {
-                    $this->output->error("The {$option} option is not currently supported.");
                 }
+
+                $options[$option] = $this->output->getResponse("What do you want your {$option} to be?");
             } else {
                 $this->output = $this->output->getHelpOutput();
                 $this->help();

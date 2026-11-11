@@ -75,7 +75,7 @@ class Loader implements LoaderInterface
     {
         $result = $this->byType($type, $plugin);
 
-        if (!$result || empty($result)) {
+        if (!$result) {
             $result = new stdClass();
             $result->params = '';
         }

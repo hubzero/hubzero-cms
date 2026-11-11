@@ -580,10 +580,6 @@ class Rule extends Relational
         }
 
         foreach ($words as $w) {
-            if (empty($w)) {
-                continue;
-            }
-
             // the name (or a part of it) inside the password, or the
             // password inside the name
             if (strpos($word, $w) !== false || strpos($w, $word) !== false) {

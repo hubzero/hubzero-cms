@@ -36,9 +36,9 @@ class ManyToMany extends OneToManyThrough
                 }
             }
 
-            if (!empty($associatives)) {
-                $row->associated = $associatives;
-            }
+            // An object is never empty(), so every row has always been given
+            // one, even with no associative fields to put in it
+            $row->associated = $associatives;
         }
 
         return $rows;

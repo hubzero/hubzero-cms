@@ -140,7 +140,7 @@ class ClassLoader
                 // Components\Blog\Models\Entry -> components/com_blog/Models/Entry.php
                 $name = array_shift($parts);
                 $file = implode('/', $parts) . '.php';
-                if (empty($file) || $file === '.php') {
+                if ($file === '.php') {
                     $file = "{$name}.php";
                 }
                 $lname = strtolower($name);
@@ -158,7 +158,7 @@ class ClassLoader
                 // \Modules\Menu\Menu -> modules/mod_menu/mod_menu.php
                 $name = array_shift($parts);
                 $file = implode('/', $parts) . '.php';
-                if (empty($file) || $file === '.php') {
+                if ($file === '.php') {
                     $file = "{$name}.php";
                 }
                 $lname = strtolower($name);
@@ -192,7 +192,7 @@ class ClassLoader
                 $lname = self::$pluginDirMap[$lname] ?? $lname;
 
                 $file = implode('/', $parts) . '.php';
-                if (empty($file) || $file === '.php') {
+                if ($file === '.php') {
                     $file = "{$name}.php";
                 }
                 $extensionDirs = ["{$base}/{$type}/{$lname}"];
@@ -205,7 +205,7 @@ class ClassLoader
                 $name = array_shift($parts);
                 $lname = strtolower($name);
                 $file = implode('/', $parts) . '.php';
-                if (empty($file) || $file === '.php') {
+                if ($file === '.php') {
                     $file = "{$name}.php";
                 }
                 $extensionDirs = [

@@ -46,7 +46,7 @@ class Country extends Select
 
             $countries = Geocode::countries();
 
-            if ($countries && !empty($countries)) {
+            if ($countries) {
                 self::$countries = $countries;
             }
         }
