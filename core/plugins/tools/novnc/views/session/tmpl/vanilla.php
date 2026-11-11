@@ -119,7 +119,9 @@ $novncVersion = '1.7.0';
                 if (reco && everConnected) { reco.disconnected(clean); }
             });
             rfb.addEventListener('credentialsrequired', () => rfb.sendCredentials({ password: password }));
-            rfb.addEventListener('securityfailure', (e) => setStatus('Security failure' + (e.detail && e.detail.reason ? ': ' + e.detail.reason : '') + '.'));
+            rfb.addEventListener('securityfailure', (e) => setStatus(
+                'Security failure' + (e.detail && e.detail.reason ? ': ' + e.detail.reason : '') + '.'
+            ));
 
             window.__vanillaRFB = rfb;
             console.log('[vanilla-novnc] connecting to', url);

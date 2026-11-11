@@ -147,7 +147,10 @@ $base = $this->offering->link();
                         txt = $(this).val();
 
                     typewatch(function () {
-                        $.post(url + id + '&action=save', $('#hz-post-action').serialize() + '&' + $.param({txt: txt}), function(data) {
+                        $.post(
+                            url + id + '&action=save',
+                            $('#hz-post-action').serialize() + '&' + $.param({txt: txt}),
+                            function(data) {
                             // Nothing going on here...
                         }, 'json');
                     }, 500);

@@ -403,7 +403,10 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
     function rememberExpand(mode) {
         try {
             if (mode && expandSavedFb) {
-                localStorage.setItem(EXPAND_KEY, JSON.stringify({ mode: mode, w: expandSavedFb.w, h: expandSavedFb.h, t: Date.now() }));
+                localStorage.setItem(
+                    EXPAND_KEY,
+                    JSON.stringify({ mode: mode, w: expandSavedFb.w, h: expandSavedFb.h, t: Date.now() })
+                );
             } else {
                 localStorage.removeItem(EXPAND_KEY);
             }
@@ -683,7 +686,9 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 
         const settle = () => {
             try {
-                if (!frame.isConnected || !frame.contentWindow || frame.contentWindow.location.href === 'about:blank') { return; }
+                if (!frame.isConnected || !frame.contentWindow || frame.contentWindow.location.href === 'about:blank') {
+                    return;
+                }
                 const c = xferClaim(frame);
                 xfer.content = c;
                 if (!c) {
@@ -1176,7 +1181,10 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
                 btn.classList.remove('active');
                 btn.setAttribute('aria-expanded', 'false');
             }
-            btn.addEventListener('click', (e) => { e.preventDefault(); if (menu.hidden) { open(); } else { close(); } });
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (menu.hidden) { open(); } else { close(); }
+            });
             menu.addEventListener('keydown', (e) => {
                 const list = items.map(([v, b]) => b);
                 const i = list.indexOf(document.activeElement);
@@ -1184,7 +1192,9 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
                 else if (e.key === 'ArrowDown') { e.preventDefault(); list[(i + 1) % list.length].focus(); }
                 else if (e.key === 'ArrowUp') { e.preventDefault(); list[(i - 1 + list.length) % list.length].focus(); }
             });
-            document.addEventListener('pointerdown', (e) => { if (!menu.hidden && !li.contains(e.target)) { close(); } }, true);
+            document.addEventListener('pointerdown', (e) => {
+                if (!menu.hidden && !li.contains(e.target)) { close(); }
+            }, true);
 
             li.appendChild(btn);
             li.appendChild(menu);
@@ -1303,7 +1313,10 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
             };
 
             function update() {
-                Object.keys(toggles).forEach((k) => toggles[k].setAttribute('aria-checked', held.has(k) ? 'true' : 'false'));
+                Object.keys(toggles).forEach((k) => toggles[k].setAttribute(
+                    'aria-checked',
+                    held.has(k) ? 'true' : 'false'
+                ));
                 btn.classList.toggle('held', held.size > 0);
                 const names = Object.keys(toggles).filter((k) => held.has(k)).map((k) => toggles[k].textContent);
                 btn.title = <?= json_encode(Lang::txt('PLG_TOOLS_NOVNC_KEYS')) ?> + (names.length ? ' (' + names.join('+') + ')' : '');
@@ -1331,14 +1344,22 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
                 btn.classList.remove('active');
                 btn.setAttribute('aria-expanded', 'false');
             }
-            btn.addEventListener('click', (e) => { e.preventDefault(); if (menu.hidden) { open(); } else { close(); } });
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (menu.hidden) { open(); } else { close(); }
+            });
             menu.addEventListener('keydown', (e) => {
                 const i = items.indexOf(document.activeElement);
                 if (e.key === 'Escape') { close(); btn.focus(); }
                 else if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
-                else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+                else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    items[(i - 1 + items.length) % items.length].focus();
+                }
             });
-            document.addEventListener('pointerdown', (e) => { if (!menu.hidden && !li.contains(e.target)) { close(); } }, true);
+            document.addEventListener('pointerdown', (e) => {
+                if (!menu.hidden && !li.contains(e.target)) { close(); }
+            }, true);
 
             li.appendChild(btn);
             li.appendChild(menu);
@@ -1422,8 +1443,14 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 
             function isFs()      { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
             function isTheater() { return document.body.classList.contains('app-theater'); }
-            function reqFs()  { if (wrap.requestFullscreen) { wrap.requestFullscreen(); } else if (wrap.webkitRequestFullscreen) { wrap.webkitRequestFullscreen(); } }
-            function exitFs() { if (document.exitFullscreen) { document.exitFullscreen(); } else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); } }
+            function reqFs() {
+                if (wrap.requestFullscreen) { wrap.requestFullscreen(); }
+                else if (wrap.webkitRequestFullscreen) { wrap.webkitRequestFullscreen(); }
+            }
+            function exitFs() {
+                if (document.exitFullscreen) { document.exitFullscreen(); }
+                else if (document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+            }
 
             const T_ON    = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_THEATER')); ?>;
             const T_OFF   = <?php echo json_encode(Lang::txt('PLG_TOOLS_NOVNC_THEATER_EXIT')); ?>;
@@ -1513,7 +1540,10 @@ $novncBase    = rtrim(Request::base(true), '/') . '/core/plugins/tools/novnc/ass
 
     // ----- Session title editing (as in the legacy engine) -------------------
     if ($ && $.fn.editable) {
-        $('#session-title.editable').editable('index.php?option=com_tools&controller=sessions&task=rename&no_html=1&id=' + $('#session-title').attr('rel'), {
+        $('#session-title.editable').editable(
+            'index.php?option=com_tools&controller=sessions&task=rename&no_html=1&id='
+                + $('#session-title').attr('rel'),
+            {
             id:     'title',
             name:   'name',
             width:  '200px',

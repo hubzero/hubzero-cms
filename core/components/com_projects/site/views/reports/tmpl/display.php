@@ -119,7 +119,8 @@ $this
 
                                     // Detect Safari browser (interactivity doesn't work somehow)
                                     var safari = false;
-                                    if (navigator.userAgent.indexOf('Safari') != -1 && navigator.userAgent.indexOf('Chrome') == -1)
+                                    if (navigator.userAgent.indexOf('Safari') != -1
+                                        && navigator.userAgent.indexOf('Chrome') == -1)
                                     {
                                         safari = true;
                                     }
@@ -155,7 +156,8 @@ $this
                                                 {
                                                     if (k == 0)
                                                     {
-                                                        showTooltip(graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
+                                                        showTooltip(
+                                                            graphx + points[k].xaxis.p2c(points[k].data[m][0]) - 15,
                                                             graphy + points[k].yaxis.p2c(points[k].data[m][1]) + 10,
                                                             points[k].data[m][1], append)
                                                     }

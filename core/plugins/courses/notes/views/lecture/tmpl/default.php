@@ -99,10 +99,14 @@ jQuery(document).ready(function(jQuery) {
             var id = $('#note-' + note.id).attr('data-id');
 
             if (_DEBUG) {
-                window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access + '&txt=' + note.text);
+                window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x
+                    + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access
+                    + '&txt=' + note.text);
             }
 
-            postNote(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access, {txt: note.text}, function(data) {
+            postNote(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y
+                + '&w=' + note.width + '&h=' + note.height + '&access=' + note.access,
+                {txt: note.text}, function(data) {
                 if (data.id != note.id) {
                     $('#note-' + note.id).attr('data-id', data.id);
                 }
@@ -120,10 +124,12 @@ jQuery(document).ready(function(jQuery) {
             }
 
             if (_DEBUG) {
-                window.console && console.log('calling: ' + url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
+                window.console && console.log('calling: ' + url + tme + '&action=save&x=' + note.pos_x
+                    + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
             }
 
-            postNote(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+            postNote(url + tme + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width
+                + '&h=' + note.height, {}, function(data) {
                 if (_DEBUG) {
                     window.console && console.log(data);
                 }
@@ -157,10 +163,12 @@ jQuery(document).ready(function(jQuery) {
             var id = $('#note-' + note.id).attr('data-id');
 
             if (_DEBUG) {
-                window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
+                window.console && console.log('calling: ' + url + id + '&action=save&x=' + note.pos_x
+                    + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height);
             }
 
-            postNote(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
+            postNote(url + id + '&time=' + note.timestamp + '&action=save&x=' + note.pos_x + '&y=' + note.pos_y
+                + '&w=' + note.width + '&h=' + note.height, {}, function(data) {
                 if (data.id != note.id) {
                     $('#note-' + note.id).attr('data-id', data.id);
                 }

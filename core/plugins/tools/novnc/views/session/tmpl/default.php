@@ -255,7 +255,11 @@ if (!$this->app->sess) {
                         if (!content) { return; }
                         var on = content.classList.toggle('privacy-on');
                         $(this).toggleClass('active', on)
-                            .attr({ 'aria-pressed': on ? 'true' : 'false', title: on ? titleShow : titleHide, 'aria-label': on ? titleShow : titleHide })
+                            .attr({
+                                'aria-pressed': on ? 'true' : 'false',
+                                title: on ? titleShow : titleHide,
+                                'aria-label': on ? titleShow : titleHide
+                            })
                             .html(on ? eyeOff : eyeOpen);
                     })
                     .appendTo(liHide);

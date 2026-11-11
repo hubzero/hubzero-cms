@@ -112,7 +112,10 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
                         var oversized = [];
                         for (var i = 0; i < input.files.length; i++) {
                             if (input.files[i].size > maxBytes) {
-                                oversized.push(input.files[i].name + ' (' + (input.files[i].size / (1024*1024*1024)).toFixed(2) + ' GB)');
+                                oversized.push(
+                                    input.files[i].name + ' ('
+                                        + (input.files[i].size / (1024*1024*1024)).toFixed(2) + ' GB)'
+                                );
                             }
                         }
                         if (oversized.length) {

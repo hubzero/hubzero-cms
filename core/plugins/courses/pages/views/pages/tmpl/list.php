@@ -44,7 +44,8 @@ if (!$no_html) { ?>
         function deleteFolder(folder, numFiles)
         {
             if (numFiles > 0) {
-                alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'+folder+'" first.');
+                alert('There are '+numFiles+' files/folders in "'+folder+'".\n\nPlease delete all files/folder in "'
+                    +folder+'" first.');
                 return false;
             }
 

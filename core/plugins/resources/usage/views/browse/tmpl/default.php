@@ -861,7 +861,8 @@ $bars = [];
                             max: new Date('<?php echo $to; ?>'),
                             tickFormatter: function (val, axis) {
                                 var d = new Date(val);
-                                return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
+                                //d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
+                                return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);
                             },
                             tickDecimals: 0
                         },
@@ -898,9 +899,13 @@ $bars = [];
                                 }
 
                                 $('#users-overview-total').text(item.datapoint[1]);
-                                $('#users-overview-date').text(month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy);
+                                $('#users-overview-date').text(
+                                    month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy
+                                );
                                 $('#runs-overview-total').text(datasets[1].data[item.dataIndex][1]);
-                                $('#runs-overview-date').text(month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy);
+                                $('#runs-overview-date').text(
+                                    month_short[item.series.data[item.dataIndex][0].getMonth()] + ' ' + yyyy
+                                );
 
                                 updateTables(yyyy, mm);
 
@@ -937,7 +942,10 @@ $bars = [];
                                     return month_short[d.getUTCMonth()] + " '" + d.getUTCFullYear().toString().substr(2);//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
                                 }
                             },
-                            yaxis: { color: 'transparent', min: 0, autoscaleMargin: 0.1, labelWidth: 25, tickDecimals: 0, minTickSize: 1 },
+                            yaxis: {
+                                color: 'transparent', min: 0, autoscaleMargin: 0.1,
+                                labelWidth: 25, tickDecimals: 0, minTickSize: 1
+                            },
                             selection: {
                                 mode: "x",
                                 color: '<?= $this->params->get("chart_color_selection", "rgba(0, 0, 0, 0.3)") ?>',
