@@ -88,9 +88,7 @@ $this
                         <?php if ($this->config->get('access-create-category')) { ?>
                             <tfoot>
                                 <tr>
-                                    <td<?php if ($section->categories()->total() > 0) {
-                                        echo ' colspan="5"';
-                                       } ?>>
+                                    <td<?php echo $section->categories()->total() > 0 ? ' colspan="5"' : ''; ?>>
                                         <a class="icon-add add btn" id="addto-<?php echo $section->get('id'); ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&section=' . $section->get('alias') . '&task=new'); ?>">
                                             <span><?php echo Lang::txt('COM_FORUM_NEW_CATEGORY'); ?></span>
                                         </a>
@@ -108,9 +106,7 @@ $this
                                         $icn = 'icon-lock';
                                     }
                                     ?>
-                                    <tr<?php if ($row->get('closed')) {
-                                        echo ' class="closed"';
-                                       } ?>>
+                                    <tr<?php echo $row->get('closed') ? ' class="closed"' : ''; ?>>
                                         <th class="priority-5" scope="row">
                                             <span class="entry-identifier <?php echo $icn; ?>"><?php echo $this->escape($row->get('id')); ?></span>
                                         </th>

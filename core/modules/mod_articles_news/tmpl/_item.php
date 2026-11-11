@@ -23,9 +23,7 @@ $item_heading = $params->get('item_heading', 'h4');
 
 <?php endif; ?>
 
-<?php if (!$params->get('intro_only')) :
-    echo $item->afterDisplayTitle;
-endif; ?>
+<?php echo !$params->get('intro_only') ? $item->afterDisplayTitle : ''; ?>
 
 <?php echo $item->beforeDisplayContent; ?>
 

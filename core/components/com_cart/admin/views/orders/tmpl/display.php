@@ -46,12 +46,8 @@ $this
             <div class="col span7 align-right">
                 <label for="filter-reportnotes"><?php echo Lang::txt('COM_CART_SHOW_NOTES'); ?>:</label>
                 <select name="report-notes" id="filter-report-notes" class="filter filter-submit">
-                    <option value="0"<?php if ($this->filters['report-notes'] === 0) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ALL'); ?></option>
-                    <option value="1"<?php if ($this->filters['report-notes'] === 1) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ONLY'); ?></option>
+                    <option value="0"<?php echo $this->filters['report-notes'] === 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ALL'); ?></option>
+                    <option value="1"<?php echo $this->filters['report-notes'] === 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CART_SHOW_NOTES_ONLY'); ?></option>
                 </select>
                 &nbsp;&nbsp;
                 <label for="filter-report-from">From:</label>

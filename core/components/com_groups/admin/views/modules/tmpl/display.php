@@ -85,16 +85,12 @@ Html::behavior('modal', 'a.version, a.preview', ['handler' => 'iframe', 'fullScr
                     </td>
                     <td>
                         <ol class="attention-actions">
-                            <li class="<?php if ($needsAttention->get('checked_errors')) {
-                                echo 'completed';
-                                       } ?>">
+                            <li class="<?php echo $needsAttention->get('checked_errors') ? 'completed' : ''; ?>">
                                 <a href="<?php echo Route::url($base . '&task=errors&id=' . $needsAttention->get('id')); ?>" class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_CHECK_FOR_ERRORS'); ?>
                                 </a>
                             </li>
-                            <li class="<?php if ($needsAttention->get('scanned')) {
-                                echo 'completed';
-                                       } ?>">
+                            <li class="<?php echo $needsAttention->get('scanned') ? 'completed' : ''; ?>">
                                 <a href="<?php echo Route::url($base . '&task=scan&id=' . $needsAttention->get('id')); ?>" class="btn">
                                     <?php echo Lang::txt('COM_GROUPS_MODULES_NEEDING_ATTENTION_SCAN_CONTENT'); ?>
                                 </a>

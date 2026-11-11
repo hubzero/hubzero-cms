@@ -96,9 +96,7 @@ foreach ($this->fields as $field) {
                                         <select class="form-control" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>">
                                             <option value="">- All -</option>
                                             <?php foreach ($field->options as $option) { ?>
-                                                <option value="<?php echo $this->escape($option->get('value')); ?>"<?php if (in_array($option->get('value'), $value)) {
-                                                    echo ' selected="selected"';
-                                                               } ?>><?php echo $this->escape($option->get('label')); ?></option>
+                                                <option value="<?php echo $this->escape($option->get('value')); ?>"<?php echo in_array($option->get('value'), $value) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($option->get('label')); ?></option>
                                             <?php } ?>
                                         </select>
                                     </label>
@@ -106,15 +104,9 @@ foreach ($this->fields as $field) {
                                     <label for="filter-value-<?php echo $this->escape($field->get('name')); ?>">
                                         <?php echo $this->escape($field->get('label')); ?>
                                         <?php if ($field->get('max')) { ?>
-                                            <input type="range" class="form-control" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>" min="<?php echo $field->get('min', 0); ?>" <?php if ($field->get('max')) {
-                                                echo ' max="' . $field->get('max') . '"';
-                                                                                             } ?> step="1" value="<?php echo $this->escape(implode('', $value)); ?>" />
+                                            <input type="range" class="form-control" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>" min="<?php echo $field->get('min', 0); ?>" <?php echo $field->get('max') ? ' max="' . $field->get('max') . '"' : ''; ?> step="1" value="<?php echo $this->escape(implode('', $value)); ?>" />
                                         <?php } else { ?>
-                                            <input type="number" class="form-control" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>" <?php if ($field->get('min')) {
-                                                echo ' min="' . $field->get('min') . '"';
-                                                                                              } ?> <?php if ($field->get('max')) {
-                                                                                              echo ' max="' . $field->get('max') . '"';
-                                                                                              } ?> value="<?php echo $this->escape(implode('', $value)); ?>" />
+                                            <input type="number" class="form-control" name="q[<?php echo $this->escape($field->get('name')); ?>]" id="filter-value-<?php echo $this->escape($field->get('name')); ?>" <?php echo $field->get('min') ? ' min="' . $field->get('min') . '"' : ''; ?> <?php echo $field->get('max') ? ' max="' . $field->get('max') . '"' : ''; ?> value="<?php echo $this->escape(implode('', $value)); ?>" />
                                         <?php } ?>
                                     </label>
                                 <?php } else { ?>
@@ -136,9 +128,7 @@ foreach ($this->fields as $field) {
                                 <select class="form-control" name="sort" id="filter-value-sort">
                                     <option value="name"><?php echo $this->escape('Name'); ?></option>
                                     <?php foreach ($this->fields as $field) : ?>
-                                        <option value="<?php echo $this->escape($field->get('name')); ?>"<?php if ($field->get('name') == $this->filters['sort']) {
-                                            echo ' selected="selected"';
-                                                       } ?>><?php echo $this->escape($field->get('label')); ?></option>
+                                        <option value="<?php echo $this->escape($field->get('name')); ?>"<?php echo $field->get('name') == $this->filters['sort'] ? ' selected="selected"' : ''; ?>><?php echo $this->escape($field->get('label')); ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>
@@ -148,12 +138,8 @@ foreach ($this->fields as $field) {
                             <label for="filter-value-sort-dir">
                                 <?php echo Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR'); ?>
                                 <select class="form-control" name="sort_Dir" id="filter-value-sort-dir">
-                                    <option value="asc"<?php if ($this->filters['sort_Dir'] == 'asc') {
-                                        echo ' selected="selected"';
-                                                       } ?>><?php echo $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_ASC')); ?></option>
-                                    <option value="desc"<?php if ($this->filters['sort_Dir'] == 'desc') {
-                                        echo ' selected="selected"';
-                                                        } ?>><?php echo $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_DESC')); ?></option>
+                                    <option value="asc"<?php echo $this->filters['sort_Dir'] == 'asc' ? ' selected="selected"' : ''; ?>><?php echo $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_ASC')); ?></option>
+                                    <option value="desc"<?php echo $this->filters['sort_Dir'] == 'desc' ? ' selected="selected"' : ''; ?>><?php echo $this->escape(Lang::txt('COM_MEMBERS_BROWSE_SORT_DIR_DESC')); ?></option>
                                 </select>
                             </label>
                         </div>

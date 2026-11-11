@@ -165,12 +165,8 @@ if ($this->page->get('id')) {
                     <label>
                         <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS'); ?>:</strong> <span class="required"><?php echo Lang::txt('COM_GROUPS_FIELD_REQUIRED'); ?></span>
                         <select name="page[state]" class="fancy-select" <?php echo $readonly; ?>>
-                            <option value="1" <?php if ($state == 1) {
-                                echo "selected";
-                                              } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_PUBLISHED'); ?></option>
-                            <option value="0" <?php if ($state == 0) {
-                                echo "selected";
-                                              } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_UNPUBLISHED'); ?></option>
+                            <option value="1" <?php echo $state == 1 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_PUBLISHED'); ?></option>
+                            <option value="0" <?php echo $state == 0 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_STATUS_UNPUBLISHED'); ?></option>
                         </select>
                     </label>
 
@@ -191,12 +187,8 @@ if ($this->page->get('id')) {
                         }
                         ?>
                         <select name="page[privacy]" class="fancy-select">
-                            <option value="default" <?php if ($privacy == "default") {
-                                echo 'selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVACY_INHERIT', $name); ?></option>
-                            <option value="members" <?php if ($privacy == "members") {
-                                echo 'selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVACY_PRIVATE'); ?></option>
+                            <option value="default" <?php echo $privacy == "default" ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVACY_INHERIT', $name); ?></option>
+                            <option value="members" <?php echo $privacy == "members" ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_PRIVACY_PRIVATE'); ?></option>
                         </select>
                     </label>
 
@@ -277,18 +269,10 @@ if ($this->page->get('id')) {
                     <label>
                         <strong><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS'); ?>:</strong> <span class="optional"><?php echo Lang::txt('COM_GROUPS_FIELD_OPTIONAL'); ?></span>
                         <select name="page[comments]" class="fancy-select">
-                            <option value="3" <?php if ($comments === 3) {
-                                echo "selected";
-                                              } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_INHERIT', $groupCommentSettingString); ?></option>
-                            <option value="0" <?php if ($comments === 0) {
-                                echo "selected";
-                                              } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO'); ?></option>
-                            <option value="1" <?php if ($comments === 1) {
-                                echo "selected";
-                                              } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES'); ?></option>
-                            <option value="2" <?php if ($comments === 2) {
-                                echo "selected";
-                                              } ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK'); ?></option>
+                            <option value="3" <?php echo $comments === 3 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_INHERIT', $groupCommentSettingString); ?></option>
+                            <option value="0" <?php echo $comments === 0 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_NO'); ?></option>
+                            <option value="1" <?php echo $comments === 1 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_YES'); ?></option>
+                            <option value="2" <?php echo $comments === 2 ? "selected" : ''; ?>><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_LOCK'); ?></option>
                         </select>
                         <span class="hint"><?php echo Lang::txt('COM_GROUPS_PAGES_PAGE_COMMENTS_HINT'); ?></span>
                     </label>

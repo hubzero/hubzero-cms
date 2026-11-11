@@ -53,9 +53,7 @@ $namespaces = \Components\Wiki\Models\Page::all()
         <label for="field-namespace">
             <?php echo Lang::txt('COM_WIKI_FIELD_NAMESPACE'); ?>
             <select name="namespace" id="field-namespace">
-                <option value=""<?php if ($namespace == '') {
-                    echo ' selected="selected"';
-                                } ?>><?php echo Lang::txt('COM_WIKI_ALL'); ?></option>
+                <option value=""<?php echo $namespace == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WIKI_ALL'); ?></option>
                 <?php foreach ($namespaces as $space) {
                     if (!trim($space->get('namespace'))) {
                         continue;

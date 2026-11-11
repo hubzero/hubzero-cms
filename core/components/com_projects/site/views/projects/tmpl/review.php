@@ -123,15 +123,11 @@ if ($this->getError()) {
                     <?php } ?>
                     </label>
                 </td>
-                <td class="tdmini"><?php if (!$approved) {
-                    echo '<span class="or">' . Lang::txt('COM_PROJECTS_OR') . '</span>';
-                                   } ?></td>
+                <td class="tdmini"><?php echo !$approved ? '<span class="or">' . Lang::txt('COM_PROJECTS_OR') . '</span>' : ''; ?></td>
                 <td>
                     <?php if (!$approved) { ?>
                     <label for="rejected" class="dark">
-                         <input class="option" name="rejected" id="rejected" type="checkbox" value="1" <?php if ($this->params->get('grant_status') == 2) {
-                                echo 'checked="checked"';
-                                                                                                       } ?> />
+                         <input class="option" name="rejected" id="rejected" type="checkbox" value="1" <?php echo $this->params->get('grant_status') == 2 ? 'checked="checked"' : ''; ?> />
                         <?php echo $this->params->get('grant_status') == 2 ? Lang::txt('COM_PROJECTS_SPS_REJECTED_KEEP') : Lang::txt('COM_PROJECTS_SPS_REJECT'); ?>
                     </label>
                     <?php } ?>

@@ -149,15 +149,9 @@ $this->css();
                         <span class="prominent"><?php echo Lang::txt('COM_PROJECTS_TEAM_OWNER') . ' / ' . $this->escape($role); ?></span>
                     <?php } else { ?>
                         <select name="role[<?php echo $row->userid; ?>]" onchange="Hubzero.submitbutton('update');">
-                            <option value="1"<?php if ($row->role == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER) {
-                                echo ' selected="selected"';
-                                             } ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER'); ?></option>
-                            <option value="0"<?php if ($row->role == \Components\Projects\Models\Orm\Owner::ROLE_INVITEE || !$row->role) {
-                                echo ' selected="selected"';
-                                             } ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR'); ?></option>
-                            <option value="5"<?php if ($row->role == \Components\Projects\Models\Orm\Owner::ROLE_REVIEWER) {
-                                echo ' selected="selected"';
-                                             } ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_REVIEWER'); ?></option>
+                            <option value="1"<?php echo $row->role == \Components\Projects\Models\Orm\Owner::ROLE_MANAGER ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_OWNER'); ?></option>
+                            <option value="0"<?php echo $row->role == \Components\Projects\Models\Orm\Owner::ROLE_INVITEE || !$row->role ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_COLLABORATOR'); ?></option>
+                            <option value="5"<?php echo $row->role == \Components\Projects\Models\Orm\Owner::ROLE_REVIEWER ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_TEAM_LABEL_REVIEWER'); ?></option>
                         </select>
                     <?php } ?>
                     </span>

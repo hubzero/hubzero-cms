@@ -76,9 +76,7 @@ if ($attachments) {
                     $liId = 'choice-' . $item->database_name;
                     $sel = in_array($item->database_name, $selected) ? true : false;
                     ?>
-                    <li class="c-click databases allowed <?php if ($sel) {
-                        echo ' selectedfilter';
-                                                         } ?>" id="<?php echo $liId; ?>">
+                    <li class="c-click databases allowed <?php echo $sel ? ' selectedfilter' : ''; ?>" id="<?php echo $liId; ?>">
                         <span class="item-info"></span>
                         <span class="item-wrap"><?php echo $this->escape($item->title); ?></span>
                         <span class="item-fullinfo">

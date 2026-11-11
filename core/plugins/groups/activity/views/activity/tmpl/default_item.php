@@ -56,9 +56,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
     id="activity<?php echo $this->row->get('id'); ?>"
     class="activity <?php echo $this->row->get('scope'); ?> <?php echo $status . ($this->row->get('starred') ? ' starred' : ''); ?>">
 
-    <div class="activity-actor-picture<?php if ($online) {
-        echo ' tooltips" title="' . Lang::txt('PLG_GROUPS_ACTIVITY_ONLINE');
-                                      } ?>">
+    <div class="activity-actor-picture<?php echo $online ? ' tooltips" title="' . Lang::txt('PLG_GROUPS_ACTIVITY_ONLINE') : ''; ?>">
         <?php if ($creator->get('public')) { ?>
             <a class="user-img-wrap" href="<?php echo Route::url($creator->link()); ?>" title="<?php echo $name; ?>">
                 <img src="<?php echo $creator->picture(); ?>" alt="<?php echo Lang::txt('PLG_GROUPS_ACTIVITY_PROFILE_PICTURE', $name); ?>" />
@@ -256,9 +254,7 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
         </div><!-- / .activity-body -->
 
         <?php if ($this->group->published == 1 && $this->row->log->get('scope') == 'activity.comment') { ?>
-            <div class="comment-add<?php if (Request::getInt('reply', 0) != $this->row->get('id')) {
-                echo ' hide';
-                                   } ?>" id="comment-form<?php echo $this->row->get('id'); ?>">
+            <div class="comment-add<?php echo Request::getInt('reply', 0) != $this->row->get('id') ? ' hide' : ''; ?>" id="comment-form<?php echo $this->row->get('id'); ?>">
                 <form id="cform<?php echo $this->row->get('id'); ?>" action="<?php echo Route::url($base); ?>" method="post" enctype="multipart/form-data">
                     <fieldset>
                         <legend><span><?php echo Lang::txt('PLG_GROUPS_ACTIVITY_REPLYING_TO', (!$this->row->log->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>

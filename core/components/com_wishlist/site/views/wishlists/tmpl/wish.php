@@ -435,9 +435,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                             </div>
 
                             <div class="form-group form-check">
-                                <label for="field-status" class="form-check-label<?php if ($this->wishlist->get('category') == 'resource') {
-                                    echo ' grantstatus';
-                                                                                 } ?>">
+                                <label for="field-status" class="form-check-label<?php echo $this->wishlist->get('category') == 'resource' ? ' grantstatus' : ''; ?>">
                                     <input type="radio" name="status" value="granted" id="field-status" class="form-check-input" <?php
                                         echo ($this->wish->get('status') == 1) ? 'checked="checked"' : '';
                                         echo ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) ? 'disabled="disabled"' : '';
@@ -531,9 +529,7 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                 <?php if ($this->wish->get('action') == 'move') { ?>
                     <div class="moveitem" id="action">
                         <form class="edit-form" id="moveWish" method="post" action="<?php echo Route::url('index.php?option=' . $this->option); ?>">
-                        <?php if ($this->getError()) {
-                            echo '<p class="error">' . $this->getError() . '</p>';
-                        } ?>
+                        <?php echo $this->getError() ? '<p class="error">' . $this->getError() . '</p>' : ''; ?>
                             <h4><?php echo Lang::txt('COM_WISHLIST_WISH_BELONGS_TO'); ?>:</h4>
                             <fieldset>
                                 <input type="hidden" name="option" value="<?php echo $this->option; ?>" />
@@ -565,18 +561,14 @@ if (!$assigned && ($this->wish->get('admin') == 2 or $this->wish->get('admin') =
                             <?php if ($this->wish->get('cats') && preg_replace("/group/", '', $this->wish->get('cats')) != $this->wish->get('cats')) { ?>
                                 <div class="form-group form-check">
                                     <label class="form-check-label" for="field-type-group">
-                                        <input class="option form-check-input" type="radio" name="type" value="group" id="field-type-group" <?php if ($this->wishlist->get('category') == 'group') {
-                                            echo 'checked="checked"';
-                                                                                                                                            } ?> />
+                                        <input class="option form-check-input" type="radio" name="type" value="group" id="field-type-group" <?php echo $this->wishlist->get('category') == 'group' ? 'checked="checked"' : ''; ?> />
                                         <?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group">
                                     <label for="acgroup" class="sr-only"><?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?></label>
-                                        <input type="text" name="group" value="<?php if ($this->wishlist->get('category') == 'group') {
-                                            echo $this->wishlist->item('alias');
-                                                                               } ?>" id="acgroup" class="form-control secondary_option" autocomplete="off" aria-label="<?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?>" />
+                                        <input type="text" name="group" value="<?php echo $this->wishlist->get('category') == 'group' ? $this->wishlist->item('alias') : ''; ?>" id="acgroup" class="form-control secondary_option" autocomplete="off" aria-label="<?php echo Lang::txt('COM_WISHLIST_GROUP_NAME'); ?>" />
                                 </div>
                             <?php } ?>
                                 <fieldset>

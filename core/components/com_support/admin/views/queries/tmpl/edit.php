@@ -64,27 +64,19 @@ if (!$tmpl) :
                             <td colspan="2">
                                 <select name="fields[iscore]" id="field-iscore">
                                     <optgroup label="<?php echo Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON'); ?>">
-                                        <option value="2"<?php if ($this->row->iscore == 2) {
-                                            echo ' selected="selected"';
-                                                         } ?>><?php
+                                        <option value="2"<?php echo $this->row->iscore == 2 ? ' selected="selected"' : ''; ?>><?php
                                             echo Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON_ACL');
-?></option>
-                                        <option value="4"<?php if ($this->row->iscore == 4) {
-                                            echo ' selected="selected"';
-                                                         } ?>><?php
+                                        ?></option>
+                                        <option value="4"<?php echo $this->row->iscore == 4 ? ' selected="selected"' : ''; ?>><?php
                                             echo Lang::txt('COM_SUPPORT_QUERY_TYPE_COMMON_NO_ACL');
-?></option>
+                                        ?></option>
                                     </optgroup>
-                                    <option value="1"<?php if ($this->row->iscore == 1) {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php
+                                    <option value="1"<?php echo $this->row->iscore == 1 ? ' selected="selected"' : ''; ?>><?php
                                         echo Lang::txt('COM_SUPPORT_QUERY_TYPE_MINE');
-?></option>
-                                    <option value="0"<?php if ($this->row->iscore == 0) {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php
+                                    ?></option>
+                                    <option value="0"<?php echo $this->row->iscore == 0 ? ' selected="selected"' : ''; ?>><?php
                                         echo Lang::txt('COM_SUPPORT_QUERY_TYPE_CUSTOM');
-?></option>
+                                    ?></option>
                                 </select>
                             </td>
                         </tr>
@@ -170,12 +162,8 @@ if (!$tmpl) :
                             </td>
                             <td>
                                 <select name="fields[sort_dir]" id="field-sort_dir">
-                                    <option value="DESC"<?php if (strtolower($this->row->sort_dir) == 'desc') {
-                                        echo ' selected="selected"';
-                                                        } ?>>desc</option>
-                                    <option value="ASC"<?php if (strtolower($this->row->sort_dir) == 'asc') {
-                                        echo ' selected="selected"';
-                                                       } ?>>asc</option>
+                                    <option value="DESC"<?php echo strtolower($this->row->sort_dir) == 'desc' ? ' selected="selected"' : ''; ?>>desc</option>
+                                    <option value="ASC"<?php echo strtolower($this->row->sort_dir) == 'asc' ? ' selected="selected"' : ''; ?>>asc</option>
                                 </select>
                             </td>
                         </tr>
@@ -290,9 +278,7 @@ if (!$tmpl) :
                         foreach ($folders as $folder) :
                             ?><option
                                 value="<?php echo $folder->id; ?>"
-                                <?php if ($this->row->folder_id == $folder->id) {
-                                    echo ' selected="selected"';
-                                } ?>
+                                <?php echo $this->row->folder_id == $folder->id ? ' selected="selected"' : ''; ?>
                             ><?php echo $this->escape(stripslashes($folder->title)); ?></option><?php
                         endforeach;
                     endif;
@@ -301,58 +287,28 @@ if (!$tmpl) :
 
                 <label for="field-sort"><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_BY'); ?></label>
                 <select name="fields[sort]" id="field-sort">
-                    <option value="open"<?php if ($this->row->sort == 'open') {
-                        echo ' selected="selected"';
-                                        } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
-                    <option value="status"<?php if ($this->row->sort == 'status') {
-                        echo ' selected="selected"';
-                                          } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
-                    <option value="login"<?php if ($this->row->sort == 'login') {
-                        echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
-                    <option value="owner"<?php if ($this->row->sort == 'owner') {
-                        echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
-                    <option value="group"<?php if ($this->row->sort == 'group') {
-                        echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('Group'); ?></option>
-                    <option value="id"<?php if ($this->row->sort == 'id') {
-                        echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
-                    <option value="report"<?php if ($this->row->sort == 'report') {
-                        echo ' selected="selected"';
-                                          } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
+                    <option value="open"<?php echo $this->row->sort == 'open' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
+                    <option value="status"<?php echo $this->row->sort == 'status' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
+                    <option value="login"<?php echo $this->row->sort == 'login' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
+                    <option value="owner"<?php echo $this->row->sort == 'owner' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
+                    <option value="group"<?php echo $this->row->sort == 'group' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Group'); ?></option>
+                    <option value="id"<?php echo $this->row->sort == 'id' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
+                    <option value="report"<?php echo $this->row->sort == 'report' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
                     <?php /*
                     <option value="resolved"<?php if ($this->row->sort == 'resolved') {
                         echo ' selected="selected"';
                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>
                     */ ?>
-                    <option value="severity"<?php if ($this->row->sort == 'severity') {
-                        echo ' selected="selected"';
-                                            } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
-                    <option value="tag"<?php if ($this->row->sort == 'tag') {
-                        echo ' selected="selected"';
-                                       } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
-                    <option value="type"<?php if ($this->row->sort == 'type') {
-                        echo ' selected="selected"';
-                                        } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
-                    <option value="created"<?php if ($this->row->sort == 'created') {
-                        echo ' selected="selected"';
-                                           } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
-                    <option value="closed"<?php if ($this->row->sort == 'closed') {
-                        echo ' selected="selected"';
-                                          } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
-                    <option value="category"<?php if ($this->row->sort == 'category') {
-                        echo ' selected="selected"';
-                                            } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
+                    <option value="severity"<?php echo $this->row->sort == 'severity' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
+                    <option value="tag"<?php echo $this->row->sort == 'tag' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
+                    <option value="type"<?php echo $this->row->sort == 'type' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
+                    <option value="created"<?php echo $this->row->sort == 'created' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
+                    <option value="closed"<?php echo $this->row->sort == 'closed' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
+                    <option value="category"<?php echo $this->row->sort == 'category' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
                 </select>
                 <select name="fields[sort_dir]" id="field-sort_dir">
-                    <option value="DESC"<?php if (strtolower($this->row->sort_dir) == 'desc') {
-                        echo ' selected="selected"';
-                                        } ?>>desc</option>
-                    <option value="ASC"<?php if (strtolower($this->row->sort_dir) == 'asc') {
-                        echo ' selected="selected"';
-                                       } ?>>asc</option>
+                    <option value="DESC"<?php echo strtolower($this->row->sort_dir) == 'desc' ? ' selected="selected"' : ''; ?>>desc</option>
+                    <option value="ASC"<?php echo strtolower($this->row->sort_dir) == 'asc' ? ' selected="selected"' : ''; ?>>asc</option>
                 </select>
             </p>
         </fieldset>

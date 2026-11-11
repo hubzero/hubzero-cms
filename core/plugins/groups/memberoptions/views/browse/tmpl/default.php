@@ -39,9 +39,7 @@ if ($forumCommentEmailNotifications) {
 
     <?php if ($forumCommentEmailNotifications) { ?>
         <div class="input-wrap">
-            <input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php if ($this->recvEmailOptionValue == 1) {
-                echo 'checked="checked"';
-                                                                                     } ?> />
+            <input type="checkbox" id="recvpostemail" value="1" name="recvpostemail" <?php echo $this->recvEmailOptionValue == 1 ? 'checked="checked"' : ''; ?> />
             <label for="recvpostemail"><?php echo Lang::txt('GROUP_RECEIVE_EMAILS_DISCUSSION_POSTS'); ?></label>
         </div>
     <?php } ?>

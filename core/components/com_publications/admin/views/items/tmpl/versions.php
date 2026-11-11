@@ -49,9 +49,7 @@ Toolbar::cancel();
             $class  = $this->pub->getStatusCss($v->state);
             $date   = $this->pub->getStatusDate($v);
             ?>
-            <tr class="mini <?php if ($v->main == 1) {
-                echo ' vprime';
-                            } ?>">
+            <tr class="mini <?php echo $v->main == 1 ? ' vprime' : ''; ?>">
                 <td class="centeralign"><?php echo $v->version_number ? $v->version_number : ''; ?></td>
                 <td><?php echo $v->id; ?></td>
                 <td><?php echo $this->escape($v->version_label); ?></td>

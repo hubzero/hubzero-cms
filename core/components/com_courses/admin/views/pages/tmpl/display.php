@@ -51,15 +51,9 @@ Toolbar::help('pages');
             <div class="col span6">
                 <label for="filter-active"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
                 <select name="active" id="filter-active" class="filter filter-submit">
-                    <option value="-1"<?php if ($this->filters['active'] == -1) {
-                        echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
-                    <option value="0"<?php if ($this->filters['active'] == 0) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
-                    <option value="1"<?php if ($this->filters['active'] == 1) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
+                    <option value="-1"<?php echo $this->filters['active'] == -1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
+                    <option value="0"<?php echo $this->filters['active'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
+                    <option value="1"<?php echo $this->filters['active'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
                 </select>
             </div>
         </div>

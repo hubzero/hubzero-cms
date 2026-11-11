@@ -58,9 +58,7 @@ $demotions = $logger->logs('list', ['gidNumber' => $this->group->get('gidNumber'
                     action="<?php echo $usageUrl; ?>"
                     method="get">
                     <select name="pid" id="page_view_selector">
-                        <option value=""<?php if ($this->pid == '') {
-                            echo "selected";
-                                        } ?>>All Group Page Views</option>
+                        <option value=""<?php echo $this->pid == '' ? "selected" : ''; ?>>All Group Page Views</option>
                         <?php foreach ($this->pages as $page) : ?>
                             <?php $sel = ($this->pid == $page['id']) ? "selected" : ""; ?>
                             <option <?php echo $sel; ?>

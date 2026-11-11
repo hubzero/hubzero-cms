@@ -63,9 +63,7 @@ defined('_HZEXEC_') or die();
         $allowed = $selected ? ' freeze' : $allowed;
 
         ?>
-        <li class="<?php echo $item->get('type') == 'folder' ? 'type-folder collapsed' : 'type-file'; ?><?php echo $parentCss; ?><?php if ($selected) {
-            echo ' selectedfilter preselected';
-                   } ?><?php echo $allowed; ?>" id="<?php echo $liId; ?>" data-path="<?php echo $this->escape($item->get('localPath')); ?>" data-connection="<?php echo Request::getInt('cid', 0); ?>">
+        <li class="<?php echo $item->get('type') == 'folder' ? 'type-folder collapsed' : 'type-file'; ?><?php echo $parentCss; ?><?php echo $selected ? ' selectedfilter preselected' : ''; ?><?php echo $allowed; ?>" id="<?php echo $liId; ?>" data-path="<?php echo $this->escape($item->get('localPath')); ?>" data-connection="<?php echo Request::getInt('cid', 0); ?>">
             <span class="item-info"><?php echo $item->get('type') == 'file' ? $item->getSize('formatted') : ''; ?></span>
             <span class="item-wrap <?php echo ($item->get('type') == 'folder' ? 'collapsor ' : '') . $levelCss; ?>" id="<?php echo urlencode($item->get('localPath')); ?>">
                 <?php if ($item->get('type') == 'folder') {

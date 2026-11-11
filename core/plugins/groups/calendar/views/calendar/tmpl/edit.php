@@ -151,9 +151,7 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                     <label for="event_allday">
                         <input type="hidden" name="event[allday]" value="0" />
-                        <input class="option" type="checkbox" id="event_allday" name="event[allday]" value="1" <?php if ($this->event->get('allday')) {
-                            echo 'checked="checked"';
-                                                                                                               } ?> /> <?php echo Lang::txt('All day event'); ?>
+                        <input class="option" type="checkbox" id="event_allday" name="event[allday]" value="1" <?php echo $this->event->get('allday') ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('All day event'); ?>
                         <span class="hint"><?php echo Lang::txt(' - can span multiple days'); ?></span>
                     </label>
                 </fieldset>
@@ -251,20 +249,14 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                     <label for="ends" class="ends"><?php echo Lang::txt('Ends:'); ?> <span class="optional">Optional</span>
                         <label for="never">
-                            <input id="never" class="option" type="radio" name="reccurance[ends][when]" value="never" <?php if ($repeating['end'] == 'never') {
-                                echo 'checked="checked"';
-                                                                                                                      } ?> /> Never
+                            <input id="never" class="option" type="radio" name="reccurance[ends][when]" value="never" <?php echo $repeating['end'] == 'never' ? 'checked="checked"' : ''; ?> /> Never
                         </label>
                         <label for="after">
-                            <input id="after" class="option" type="radio" name="reccurance[ends][when]" value="count"  <?php if ($repeating['end'] == 'count') {
-                                echo 'checked="checked"';
-                                                                                                                       } ?> /> After
+                            <input id="after" class="option" type="radio" name="reccurance[ends][when]" value="count"  <?php echo $repeating['end'] == 'count' ? 'checked="checked"' : ''; ?> /> After
                             <input type="text" name="reccurance[ends][count]" placeholder="x" class="after-input event_recurrence_end_count" value="<?php echo $repeating['count']; ?>" /> occurrences 
                         </label>
                         <label for="on">
-                            <input id="on" class="option" type="radio" name="reccurance[ends][when]" value="until"  <?php if ($repeating['end'] == 'until') {
-                                echo 'checked="checked"';
-                                                                                                                    } ?> /> On
+                            <input id="on" class="option" type="radio" name="reccurance[ends][when]" value="until"  <?php echo $repeating['end'] == 'until' ? 'checked="checked"' : ''; ?> /> On
                             <input type="text" name="reccurance[ends][until]" placeholder="mm/dd/yyyy" class="on-input event_recurrence_end_date no-legacy-placeholder-support" value="<?php echo $repeating['until']; ?>" />
                         </label>
                     </label>
@@ -281,9 +273,7 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
                         <?php echo Lang::txt('Include registration for this event.'); ?>
                     </label>
 
-                    <div id="registration-fields" class="<?php if ($ckd == '') {
-                        echo ' hide';
-                                                         } ?>">
+                    <div id="registration-fields" class="<?php echo $ckd == '' ? ' hide' : ''; ?>">
                         <label for="event_registerby">
                             <?php echo Lang::txt('Deadline:'); ?> <span class="required"><?php echo Lang::txt('Required for Registration Tab to Appear'); ?></span>
                             <?php

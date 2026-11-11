@@ -109,9 +109,7 @@ if ($this->getTitle() != Config::get('sitename')) {
                                         <jdoc:include type="modules" name="search" />
                                     </li>
                                 <?php if (!User::isGuest()) { ?>
-                                    <li class="user-account loggedin<?php if (User::authorise('core.admin')) {
-                                        echo ' admin';
-                                                                    } ?>">
+                                    <li class="user-account loggedin<?php echo User::authorise('core.admin') ? ' admin' : ''; ?>">
                                         <a class="user-avatar"
                                             href="<?php echo Route::url(User::link()); ?>">
                                             <img src="<?php echo User::picture(); ?>"
@@ -222,9 +220,7 @@ if ($this->getTitle() != Config::get('sitename')) {
 
             <div id="wrap">
                 <main id="content" class="<?php echo Request::getCmd('option', ''); ?>">
-                    <div class="inner<?php if ($this->countModules('left or right')) {
-                        echo ' withmenu';
-                                     } ?>">
+                    <div class="inner<?php echo $this->countModules('left or right') ? ' withmenu' : ''; ?>">
                     <?php if ($this->countModules('left or right')) : ?>
                         <section class="main section">
                             <div class="section-inner">

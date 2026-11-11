@@ -48,31 +48,21 @@ if ($this->message) { ?>
 ?>
 <nav class="time-periods">
     <ul>
-        <li<?php if ($this->period == 12) {
-            echo ' class="active"';
-           } ?>><a href="<?php echo $prior12Url; ?>"><span><?php
+        <li<?php echo $this->period == 12 ? ' class="active"' : ''; ?>><a href="<?php echo $prior12Url; ?>"><span><?php
             echo Lang::txt('PLG_USAGE_PERIOD_PRIOR12');
-?></span></a></li>
-        <li<?php if ($this->period == 1) {
-            echo ' class="active"';
-           } ?>><a href="<?php echo $monthUrl; ?>"><span><?php
+        ?></span></a></li>
+        <li<?php echo $this->period == 1 ? ' class="active"' : ''; ?>><a href="<?php echo $monthUrl; ?>"><span><?php
             echo Lang::txt('PLG_USAGE_PERIOD_MONTH');
-?></span></a></li>
-        <li<?php if ($this->period == 3) {
-            echo ' class="active"';
-           } ?>><a href="<?php echo $qtrUrl; ?>"><span><?php
+        ?></span></a></li>
+        <li<?php echo $this->period == 3 ? ' class="active"' : ''; ?>><a href="<?php echo $qtrUrl; ?>"><span><?php
             echo Lang::txt('PLG_USAGE_PERIOD_QTR');
-?></span></a></li>
-        <li<?php if ($this->period == 0) {
-            echo ' class="active"';
-           } ?>><a href="<?php echo $yearUrl; ?>"><span><?php
+        ?></span></a></li>
+        <li<?php echo $this->period == 0 ? ' class="active"' : ''; ?>><a href="<?php echo $yearUrl; ?>"><span><?php
             echo Lang::txt('PLG_USAGE_PERIOD_YEAR');
-?></span></a></li>
-        <li<?php if ($this->period == 13) {
-            echo ' class="active"';
-           } ?>><a href="<?php echo $fiscalUrl; ?>"><span><?php
+        ?></span></a></li>
+        <li<?php echo $this->period == 13 ? ' class="active"' : ''; ?>><a href="<?php echo $fiscalUrl; ?>"><span><?php
             echo Lang::txt('PLG_USAGE_PERIOD_FISCAL');
-?></span></a></li>
+        ?></span></a></li>
     </ul>
 </nav>
 
@@ -593,9 +583,7 @@ if ($this->message) { ?>
             ?>
             <div class="grid">
                 <?php foreach ($results as $i => $result) { ?>
-                    <div class="col span3 usage-stat<?php if ($i == 3 || $i == 7) {
-                        echo ' omega';
-                                                    } ?>">
+                    <div class="col span3 usage-stat<?php echo $i == 3 || $i == 7 ? ' omega' : ''; ?>">
                         <?php
                             $simId = preg_replace(
                                 '/[^a-z0-9\-_]/',
@@ -613,9 +601,7 @@ if ($this->message) { ?>
                         ><?php echo $simValue; ?></span>
                         <span class="usage-label"><?php echo $result->label; ?></span>
                     </div>
-                    <?php if ($i == 3 || $i == 7) {
-                        echo '</div><div class="grid">';
-                    } ?>
+                    <?php echo $i == 3 || $i == 7 ? '</div><div class="grid">' : ''; ?>
                 <?php } ?>
             </div>
             <?php
@@ -953,9 +939,7 @@ if ($this->message) { ?>
                         mode: "time",
                         //tickLength: 0,
                         tickDecimals: 0,
-                        <?php if (count($simusers) <= 12) {
-                            echo 'ticks: ' . count($simusers) . ',';
-                        } ?>
+                        <?php echo count($simusers) <= 12 ? 'ticks: ' . count($simusers) . ',' : ''; ?>
                         tickFormatter: function (val, axis) {
                             var d = new Date(val);
                             //return month_short[d.getUTCMonth()];//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);
@@ -1019,9 +1003,7 @@ if ($this->message) { ?>
                         mode: "time",
                         //tickLength: 0,
                         tickDecimals: 0,
-                        <?php if (count($simjobs) <= 12) {
-                            echo 'ticks: ' . count($simjobs) . ',';
-                        } ?>
+                        <?php echo count($simjobs) <= 12 ? 'ticks: ' . count($simjobs) . ',' : ''; ?>
                         tickFormatter: function (val, axis) {
                             var d = new Date(val);
                             //return month_short[d.getUTCMonth()];//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);

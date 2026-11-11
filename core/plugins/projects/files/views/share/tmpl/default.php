@@ -73,15 +73,9 @@ if ($this->getError()) {
                 $i = 0;
                 foreach ($formats as $key => $value) {
                     ?>
-                <label <?php if ($ext == $key) {
-                    echo 'class="original-format"';
-                       } ?> >
-                    <input type="radio" name="format" value="<?php echo $key; ?>" <?php if (($first && $i == 0) || $ext == $key) {
-                        echo 'checked="checked"';
-                                                             } ?> />
-                    <?php echo $value; ?> <?php if ($ext == $key) {
-                        echo '<span class="hint mini rightfloat"> [original format]</span>';
-                    } ?>
+                <label <?php echo $ext == $key ? 'class="original-format"' : ''; ?> >
+                    <input type="radio" name="format" value="<?php echo $key; ?>" <?php echo ($first && $i == 0) || $ext == $key ? 'checked="checked"' : ''; ?> />
+                    <?php echo $value; ?> <?php echo $ext == $key ? '<span class="hint mini rightfloat"> [original format]</span>' : ''; ?>
                 </label>
                     <?php
                     $i++;

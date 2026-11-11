@@ -77,12 +77,8 @@ if (isset($this->messages)) {
                                 }
                             }
                             ?>
-                            <li><a <?php if ($this->filters['filter'] == '' || $this->filters['filter'] == 'all') {
-                                echo 'class="active"';
-                                   } ?> href="<?php echo Route::url($base . '&action=browse' . $queryString . '&filters[filter]=all'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
-                            <li><a <?php if ($this->filters['filter'] == 'member') {
-                                echo 'class="active"';
-                                   } ?> href="<?php echo Route::url($base . '&action=browse' . $queryString . '&filters[filter]=member'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED'); ?></a></li>
+                            <li><a <?php echo $this->filters['filter'] == '' || $this->filters['filter'] == 'all' ? 'class="active"' : ''; ?> href="<?php echo Route::url($base . '&action=browse' . $queryString . '&filters[filter]=all'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_ALL'); ?></a></li>
+                            <li><a <?php echo $this->filters['filter'] == 'member' ? 'class="active"' : ''; ?> href="<?php echo Route::url($base . '&action=browse' . $queryString . '&filters[filter]=member'); ?>"><?php echo Lang::txt('PLG_GROUPS_CITATIONS_MEMBERCONTRIBUTED'); ?></a></li>
                         </ul>
                     </nav>
                     <?php endif; ?>

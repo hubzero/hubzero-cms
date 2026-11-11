@@ -153,9 +153,7 @@ $rows = $this->archive
                         ?>
                         <li class="<?php echo $cls; ?>" id="e<?php echo $row->get('id'); ?>">
                             <article>
-                                <h4 class="entry-title<?php if ($row->ended()) {
-                                    echo ' icon-eye-close';
-                                                      } ?>">
+                                <h4 class="entry-title<?php echo $row->ended() ? ' icon-eye-close' : ''; ?>">
                                     <a href="<?php echo Route::url($row->link()); ?>">
                                         <?php echo $this->escape(stripslashes($row->get('title'))); ?>
                                     </a>

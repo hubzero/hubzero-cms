@@ -60,9 +60,7 @@ if ($label == 'none') {
     <?php endif; ?>
 </header>
 
-<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="citeform" method="get" class="<?php if ($batch_download) {
-    echo " withBatchDownload";
-              } ?>">
+<form action="<?php echo Route::url('index.php?option=' . $this->option . '&task=browse'); ?>" id="citeform" method="get" class="<?php echo $batch_download ? " withBatchDownload" : ''; ?>">
     <section class="main section">
         <div class="section-inner hz-layout-with-aside">
             <div class="subject">
@@ -92,15 +90,9 @@ if ($label == 'none') {
                                 }
                             }
                             ?>
-                            <li><a <?php if ($this->filters['filter'] == '') {
-                                echo 'class="active"';
-                                   } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse' . $queryString . '&filter='); ?>"><?php echo Lang::txt('COM_CITATIONS_ALL'); ?></a></li>
-                            <li><a <?php if ($this->filters['filter'] == 'aff') {
-                                echo 'class="active"';
-                                   } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse' . $queryString . '&filter=aff'); ?>"><?php echo Lang::txt('COM_CITATIONS_AFFILIATED'); ?></a></li>
-                            <li><a <?php if ($this->filters['filter'] == 'nonaff') {
-                                echo 'class="active"';
-                                   } ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse' . $queryString . '&filter=nonaff'); ?>"><?php echo Lang::txt('COM_CITATIONS_NONAFFILIATED'); ?></a></li>
+                            <li><a <?php echo $this->filters['filter'] == '' ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse' . $queryString . '&filter='); ?>"><?php echo Lang::txt('COM_CITATIONS_ALL'); ?></a></li>
+                            <li><a <?php echo $this->filters['filter'] == 'aff' ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse' . $queryString . '&filter=aff'); ?>"><?php echo Lang::txt('COM_CITATIONS_AFFILIATED'); ?></a></li>
+                            <li><a <?php echo $this->filters['filter'] == 'nonaff' ? 'class="active"' : ''; ?> href="<?php echo Route::url('index.php?option=com_citations&task=browse' . $queryString . '&filter=nonaff'); ?>"><?php echo Lang::txt('COM_CITATIONS_NONAFFILIATED'); ?></a></li>
                         </ul>
                     </nav>
 
@@ -354,75 +346,53 @@ if ($label == 'none') {
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE'); ?></legend>
                     <label for="reftype_research">
-                        <input class="option" type="checkbox" name="reftype[research]" id="reftype_research" value="1"<?php if (isset($this->filters['reftype']['research'])) {
-                            echo ' checked="checked"';
-                                                                                                                      } ?> />
+                        <input class="option" type="checkbox" name="reftype[research]" id="reftype_research" value="1"<?php echo isset($this->filters['reftype']['research']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_RESEARCH'); ?>
                     </label>
                     <label for="reftype_education">
-                        <input class="option" type="checkbox" name="reftype[education]" id="reftype_education" value="1"<?php if (isset($this->filters['reftype']['education'])) {
-                            echo ' checked="checked"';
-                                                                                                                        } ?> />
+                        <input class="option" type="checkbox" name="reftype[education]" id="reftype_education" value="1"<?php echo isset($this->filters['reftype']['education']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_EDUCATION'); ?>
                     </label>
                     <label for="reftype_eduresearch">
-                        <input class="option" type="checkbox" name="reftype[eduresearch]" id="reftype_eduresearch" value="1"<?php if (isset($this->filters['reftype']['eduresearch'])) {
-                            echo ' checked="checked"';
-                                                                                                                            } ?> />
+                        <input class="option" type="checkbox" name="reftype[eduresearch]" id="reftype_eduresearch" value="1"<?php echo isset($this->filters['reftype']['eduresearch']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_EDUCATIONRESEARCH'); ?>
                     </label>
                     <label for="reftype_cyberinfrastructure">
-                        <input class="option" type="checkbox" name="reftype[cyberinfrastructure]" id="reftype_cyberinfrastructure" value="1"<?php if (isset($this->filters['reftype']['cyberinfrastructure'])) {
-                            echo ' checked="checked"';
-                                                                                                                                            } ?> />
+                        <input class="option" type="checkbox" name="reftype[cyberinfrastructure]" id="reftype_cyberinfrastructure" value="1"<?php echo isset($this->filters['reftype']['cyberinfrastructure']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_REFERENCE_TYPE_CYBERINFRASTRUCTURE'); ?>
                     </label>
                 </fieldset>
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY'); ?></legend>
                     <label for="geo_us">
-                        <input class="option" type="checkbox" name="geo[us]" id="geo_us" value="1"<?php if (isset($this->filters['geo']['us'])) {
-                            echo ' checked="checked"';
-                                                                                                  } ?> />
+                        <input class="option" type="checkbox" name="geo[us]" id="geo_us" value="1"<?php echo isset($this->filters['geo']['us']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_US'); ?>
                     </label>
                     <label for="geo_na">
-                        <input class="option" type="checkbox" name="geo[na]" id="geo_na" value="1"<?php if (isset($this->filters['geo']['na'])) {
-                            echo ' checked="checked"';
-                                                                                                  } ?> />
+                        <input class="option" type="checkbox" name="geo[na]" id="geo_na" value="1"<?php echo isset($this->filters['geo']['na']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_NORTH_AMERICA'); ?>
                     </label>
                     <label for="geo_eu">
-                        <input class="option" type="checkbox" name="geo[eu]" id="geo_eu" value="1"<?php if (isset($this->filters['geo']['eu'])) {
-                            echo ' checked="checked"';
-                                                                                                  } ?> />
+                        <input class="option" type="checkbox" name="geo[eu]" id="geo_eu" value="1"<?php echo isset($this->filters['geo']['eu']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_EUROPE'); ?>
                     </label>
                     <label for="geo_as">
-                        <input class="option" type="checkbox" name="geo[as]" id="geo_as" value="1"<?php if (isset($this->filters['geo']['as'])) {
-                            echo ' checked="checked"';
-                                                                                                  } ?> />
+                        <input class="option" type="checkbox" name="geo[as]" id="geo_as" value="1"<?php echo isset($this->filters['geo']['as']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_GEOGRAPHY_ASIA'); ?>
                     </label>
                 </fieldset>
                 <fieldset>
                     <legend><?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION'); ?></legend>
                     <label for="aff_university">
-                        <input class="option" type="checkbox" name="aff[university]" id="aff_university" value="1"<?php if (isset($this->filters['aff']['university'])) {
-                            echo ' checked="checked"';
-                                                                                                                  } ?> />
+                        <input class="option" type="checkbox" name="aff[university]" id="aff_university" value="1"<?php echo isset($this->filters['aff']['university']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION_UNIVERSITY'); ?>
                     </label>
                     <label for="aff_industry">
-                        <input class="option" type="checkbox" name="aff[industry]" id="aff_industry" value="1"<?php if (isset($this->filters['aff']['industry'])) {
-                            echo ' checked="checked"';
-                                                                                                              } ?> />
+                        <input class="option" type="checkbox" name="aff[industry]" id="aff_industry" value="1"<?php echo isset($this->filters['aff']['industry']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION_INDUSTRY'); ?>
                     </label>
                     <label for="aff_government">
-                        <input class="option" type="checkbox" name="aff[government]" id="aff_government" value="1"<?php if (isset($this->filters['aff']['government'])) {
-                            echo ' checked="checked"';
-                                                                                                                  } ?> />
+                        <input class="option" type="checkbox" name="aff[government]" id="aff_government" value="1"<?php echo isset($this->filters['aff']['government']) ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('COM_CITATIONS_AUTHOR_AFFILIATION_GOVERNMENT'); ?>
                     </label>
                 </fieldset>

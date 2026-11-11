@@ -68,13 +68,9 @@ $formAction = Route::url(
             <div class="col span7">
                 <label for="filter-type"><?php echo Lang::txt('COM_STOREFRONT_TYPE'); ?>:</label>
                 <select id="filter-type" name="type" class="filter filter-submit">
-                    <option value="-1"<?php if ($this->filters['type'] == -1) {
-                        echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_STOREFRONT_FILTER_TYPE'); ?></option>
+                    <option value="-1"<?php echo $this->filters['type'] == -1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_STOREFRONT_FILTER_TYPE'); ?></option>
                     <?php foreach ($this->types as $type) { ?>
-                        <option value="<?php echo $type->ptId; ?>"<?php if ($this->filters['type'] == $type->ptId) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo $type->ptName; ?></option>
+                        <option value="<?php echo $type->ptId; ?>"<?php echo $this->filters['type'] == $type->ptId ? ' selected="selected"' : ''; ?>><?php echo $type->ptName; ?></option>
                     <?php } ?>
                 </select>
             </div>

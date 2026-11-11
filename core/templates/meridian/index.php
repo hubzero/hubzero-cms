@@ -384,14 +384,10 @@ $this->setTitle(Config::get('sitename') . ' - ' . $this->getTitle());
     <?php if ($homePage) : ?>
         <?php require $homePage; ?>
     <?php else : ?>
-        <div class="inner<?php if ($this->countModules('left or right')) {
-            echo ' withmenu';
-                         } ?>">
+        <div class="inner<?php echo $this->countModules('left or right') ? ' withmenu' : ''; ?>">
             <?php if ($this->countModules('left or right')) : ?>
             <section class="main section">
-                <div class="section-inner<?php if ($this->countModules('left or right')) {
-                    echo ' hz-layout-with-aside';
-                                         } ?>">
+                <div class="section-inner<?php echo $this->countModules('left or right') ? ' hz-layout-with-aside' : ''; ?>">
             <?php endif; ?>
 
                     <?php if ($this->countModules('left')) : ?>

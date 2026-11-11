@@ -57,9 +57,7 @@ if ($review->exists()) {
                             id="review_rating_1"
                             name="rating"
                             type="radio"
-                            value="1"<?php if ($review->get('rating') == 1) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="1"<?php echo $review->get('rating') == 1 ? ' checked="checked"' : ''; ?> />
                         &#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
                         <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_RATING_POOR'); ?>
                     </label>
@@ -68,9 +66,7 @@ if ($review->exists()) {
                             id="review_rating_2"
                             name="rating"
                             type="radio"
-                            value="2"<?php if ($review->get('rating') == 2) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="2"<?php echo $review->get('rating') == 2 ? ' checked="checked"' : ''; ?> />
                         &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
                         <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_RATING_FAIR'); ?>
                     </label>
@@ -79,9 +75,7 @@ if ($review->exists()) {
                             id="review_rating_3"
                             name="rating"
                             type="radio"
-                            value="3"<?php if ($review->get('rating') == 3) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="3"<?php echo $review->get('rating') == 3 ? ' checked="checked"' : ''; ?> />
                         &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
                         <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_RATING_GOOD'); ?>
                     </label>
@@ -90,9 +84,7 @@ if ($review->exists()) {
                             id="review_rating_4"
                             name="rating"
                             type="radio"
-                            value="4"<?php if ($review->get('rating') == 4) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="4"<?php echo $review->get('rating') == 4 ? ' checked="checked"' : ''; ?> />
                         &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;
                         <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_RATING_VERY_GOOD'); ?>
                     </label>
@@ -101,9 +93,7 @@ if ($review->exists()) {
                             id="review_rating_5"
                             name="rating"
                             type="radio"
-                            value="5"<?php if ($review->get('rating') == 5) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="5"<?php echo $review->get('rating') == 5 ? ' checked="checked"' : ''; ?> />
                         &#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
                         <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_RATING_EXCELLENT'); ?>
                     </label>
@@ -140,9 +130,7 @@ if ($review->exists()) {
                         type="checkbox"
                         name="anonymous"
                         id="review-anonymous"
-                        value="1"<?php if ($review->get('anonymous') != 0) {
-                            echo ' checked="checked"';
-                                 } ?> />
+                        value="1"<?php echo $review->get('anonymous') != 0 ? ' checked="checked"' : ''; ?> />
                     <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_FORM_ANONYMOUS'); ?>
                 </label>
 

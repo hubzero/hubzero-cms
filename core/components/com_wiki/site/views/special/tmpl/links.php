@@ -87,21 +87,13 @@ endif;
             <thead>
                 <tr>
                     <th scope="col">
-                        <a<?php if ($sort == 'timestamp') {
-                            echo ' class="active"';
-                          } ?> href="<?php echo Route::url($this->page->link() . '&sort=timestamp&dir=' . $altdir); ?>">
-                            <?php if ($sort == 'timestamp') {
-                                echo ($dir == 'ASC') ? '&uarr;' : '&darr;';
-                            } ?> <?php echo Lang::txt('COM_WIKI_COL_DATE'); ?>
+                        <a<?php echo $sort == 'timestamp' ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->page->link() . '&sort=timestamp&dir=' . $altdir); ?>">
+                            <?php echo $sort == 'timestamp' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_DATE'); ?>
                         </a>
                     </th>
                     <th scope="col">
-                        <a<?php if ($sort == 'title') {
-                            echo ' class="active"';
-                          } ?> href="<?php echo Route::url($this->page->link() . '&sort=title&dir=' . $altdir); ?>">
-                            <?php if ($sort == 'title') {
-                                echo ($dir == 'ASC') ? '&uarr;' : '&darr;';
-                            } ?> <?php echo Lang::txt('COM_WIKI_COL_TITLE'); ?>
+                        <a<?php echo $sort == 'title' ? ' class="active"' : ''; ?> href="<?php echo Route::url($this->page->link() . '&sort=title&dir=' . $altdir); ?>">
+                            <?php echo $sort == 'title' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : ''; ?> <?php echo Lang::txt('COM_WIKI_COL_TITLE'); ?>
                         </a>
                     </th>
                 </tr>

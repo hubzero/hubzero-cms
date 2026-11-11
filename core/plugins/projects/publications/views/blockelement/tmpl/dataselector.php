@@ -99,15 +99,11 @@ if ($coming) {
     echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : '';
 ?>">
     <!-- Showing status only -->
-    <div class="element_overview<?php if ($active) {
-        echo ' hidden';
-                                } ?>">
+    <div class="element_overview<?php echo $active ? ' hidden' : ''; ?>">
         <div class="block-subject withhandler">
             <span class="checker">&nbsp;</span>
             <h5 class="element-title">
-                <?php echo $this->manifest->label; ?> <?php if ((count($this->attachments ? $this->attachments : []))) {
-                    echo '(' . (count($this->attachments ? $this->attachments : [])) . ')';
-                } ?>
+                <?php echo $this->manifest->label; ?> <?php echo count($this->attachments ? $this->attachments : []) ? '(' . (count($this->attachments ? $this->attachments : [])) . ')' : ''; ?>
                 <span class="element-options">
                     <a href="<?php echo $elementUrl; ?>"><?php echo Lang::txt('[edit]'); ?></a>
                 </span>
@@ -116,9 +112,7 @@ if ($coming) {
         <div class="block-aside-omega"></div>
     </div>
     <!-- Active editing -->
-    <div class="element_editing<?php if (!$active) {
-        echo ' hidden';
-                               } ?>">
+    <div class="element_editing<?php echo !$active ? ' hidden' : ''; ?>">
         <div class="block-subject withhandler">
             <span class="checker">&nbsp;</span>
             <label id="<?php echo $elName; ?>-lbl">
@@ -128,9 +122,7 @@ if ($coming) {
                 <?php if (!$required) {
                     ?><span class="optional"><?php echo Lang::txt('Optional'); ?></span><?php
                 } ?>
-                <?php echo $this->manifest->label; ?> <?php if ((count($this->attachments ? $this->attachments : []))) {
-                    echo '(' . (count($this->attachments ? $this->attachments : [])) . ')';
-                }?>
+                <?php echo $this->manifest->label; ?> <?php echo count($this->attachments ? $this->attachments : []) ? '(' . (count($this->attachments ? $this->attachments : [])) . ')' : ''; ?>
             </label>
             <?php echo $this->pub->_curationModel->drawCurationNotice($curatorStatus, $props, 'author', $elName); ?>
             <?php
@@ -253,9 +245,7 @@ if ($coming) {
             <div class="clear"></div>
             <div class="withhandler">
                 <p class="element-move">
-                    <?php if ($this->status->getError()) {
-                        echo '<span class="element-error">' . $this->status->getError() . '</span>';
-                    } ?>
+                    <?php echo $this->status->getError() ? '<span class="element-error">' . $this->status->getError() . '</span>' : ''; ?>
                     <span class="button-wrapper icon-next" id="next-<?php echo $props; ?>">
                         <input type="button"
                             value="<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GO_NEXT'); ?>"

@@ -121,16 +121,12 @@ if ($this->contributors) {
                     </td>
                     <td>
                         <select name="authors[<?php echo isset($contributor->authorid) ? $contributor->authorid : $contributor->id; ?>][role]" id="role-<?php echo isset($contributor->authorid) ? $contributor->authorid : $contributor->id; ?>">
-                            <option value=""<?php if ($contributor->role == '') {
-                                echo ' selected="selected"';
-                                            }?>><?php echo Lang::txt('COM_TOOLS_AUTHOR'); ?></option>
+                            <option value=""<?php echo $contributor->role == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_AUTHOR'); ?></option>
                             <?php
                             if ($this->roles) {
                                 foreach ($this->roles as $role) {
                                     ?>
-                                    <option value="<?php echo $this->escape($role->alias); ?>"<?php if ($contributor->role == $role->alias) {
-                                        echo ' selected="selected"';
-                                                   }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                                    <option value="<?php echo $this->escape($role->alias); ?>"<?php echo $contributor->role == $role->alias ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
                                     <?php
                                 }
                             }

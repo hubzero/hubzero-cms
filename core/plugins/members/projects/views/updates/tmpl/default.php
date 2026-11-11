@@ -46,9 +46,7 @@ $this->css();
     </li>
     <li class="active">
         <a href="<?php echo $updatesUrl; ?>">
-            <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) {
-                echo '<span class="s-new">' . $this->newcount . '</span>';
-            } ?>
+            <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?> <?php echo $this->newcount ? '<span class="s-new">' . $this->newcount . '</span>' : ''; ?>
         </a>
     </li>
 </ul>

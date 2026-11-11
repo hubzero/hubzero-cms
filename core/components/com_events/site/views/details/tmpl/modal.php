@@ -31,9 +31,7 @@ defined('_HZEXEC_') or die();
     <?php if ($this->pages || ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00')) { ?>
         <div id="sub-sub-menu">
             <ul>
-                <li<?php if ($this->page->alias == '') {
-                    echo ' class="active"';
-                   } ?>>
+                <li<?php echo $this->page->alias == '' ? ' class="active"' : ''; ?>>
                     <a class="tab" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1'); ?>">
                         <span><?php echo Lang::txt('EVENTS_OVERVIEW'); ?></span>
                     </a>
@@ -42,9 +40,7 @@ defined('_HZEXEC_') or die();
             if ($this->pages) {
                 foreach ($this->pages as $p) {
                     ?>
-                <li<?php if ($this->page->alias == $p->alias) {
-                    echo ' class="active"';
-                   } ?>>
+                <li<?php echo $this->page->alias == $p->alias ? ' class="active"' : ''; ?>>
                     <a class="tab" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page=' . $p->alias); ?>">
                         <span><?php echo $this->escape(trim(stripslashes($p->title))); ?></span>
                     </a>
@@ -54,9 +50,7 @@ defined('_HZEXEC_') or die();
             }
             ?>
             <?php if ($this->row->registerby && $this->row->registerby != '0000-00-00 00:00:00') { ?>
-                <li<?php if ($this->page->alias == 'register') {
-                    echo ' class="active"';
-                   } ?>>
+                <li<?php echo $this->page->alias == 'register' ? ' class="active"' : ''; ?>>
                     <a class="tab" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id . '&no_html=1&page=register'); ?>">
                         <span><?php echo Lang::txt('EVENTS_REGISTER'); ?></span>
                     </a>

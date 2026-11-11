@@ -68,9 +68,7 @@ $authorlist = '';
                         <?php if ($line->section == 'Topic') { ?>
                             <a href="<?php echo $sef; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>
                         <?php } else { ?>
-                            <?php if ($line->section == 'Series') {
-                                echo Lang::txt('PLG_PUBLICATION_RELATED_PART_OF');
-                            } ?>
+                            <?php echo $line->section == 'Series' ? Lang::txt('PLG_PUBLICATION_RELATED_PART_OF') : ''; ?>
                                 <a href="<?php echo $sef; ?>" class="fixedResourceTip" title="DOM:rsrce<?php echo $line->id; ?>"><?php echo $this->escape(stripslashes($line->title)); ?></a>
                                 <div class="hide" id="rsrce<?php echo $line->id; ?>">
                                     <h4><?php echo $this->escape(stripslashes($line->title)); ?></h4>

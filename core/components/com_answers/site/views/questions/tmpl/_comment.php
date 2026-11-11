@@ -123,9 +123,7 @@ if (!$this->comment->get('item_id')) {
             </p>
 
         <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-            <div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) {
-                echo ' hide';
-                                              } ?>" id="comment-form<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>">
+            <div class="addcomment comment-add<?php echo Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : ''; ?>" id="comment-form<?php echo $this->depth . $this->comment->get('item_type') . $this->comment->get('id'); ?>">
                 <?php if (User::get('guest')) { ?>
                 <p class="warning">
                     <?php echo Lang::txt('COM_ANSWERS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('COM_ANSWERS_LOGIN') . '</a>'); ?>

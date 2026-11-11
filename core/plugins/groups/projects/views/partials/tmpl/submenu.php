@@ -17,9 +17,7 @@ $groupProjectPlugins = Event::trigger('groups.onGroupProjects', [$this->group]);
 ?>
 
 <ul class="sub-menu">
-    <li <?php if ($this->tab == 'all') {
-        echo 'class="active"';
-        } ?> >
+    <li <?php echo $this->tab == 'all' ? 'class="active"' : ''; ?> >
         <?php
         $allUrl = Route::url(
             'index.php?option=com_groups&cn='
@@ -31,9 +29,7 @@ $groupProjectPlugins = Event::trigger('groups.onGroupProjects', [$this->group]);
             <?php echo Lang::txt('PLG_GROUPS_PROJECTS_LIST') . ' (' . $this->projectcount . ')'; ?>
         </a>
     </li>
-    <li <?php if ($this->tab == 'updates') {
-        echo 'class="active"';
-        } ?> >
+    <li <?php echo $this->tab == 'updates' ? 'class="active"' : ''; ?> >
         <?php
         $updatesUrl = Route::url(
             'index.php?option=com_groups&cn='
@@ -42,19 +38,13 @@ $groupProjectPlugins = Event::trigger('groups.onGroupProjects', [$this->group]);
         );
         ?>
         <a href="<?php echo $updatesUrl; ?>">
-            <?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php if ($this->newcount) {
-                echo '<span class="s-new">' . $this->newcount . '</span>';
-            } ?>
+            <?php echo Lang::txt('PLG_GROUPS_PROJECTS_UPDATES_FEED'); ?> <?php echo $this->newcount ? '<span class="s-new">' . $this->newcount . '</span>' : ''; ?>
         </a>
     </li>
     <?php foreach ($groupProjectPlugins as $plugin) { ?>
-        <li <?php if ($this->tab == $plugin->name) {
-            echo 'class="active"';
-            } ?> >
+        <li <?php echo $this->tab == $plugin->name ? 'class="active"' : ''; ?> >
             <a href="<?php echo $plugin->pathRoute ?>">
-                <?php echo $plugin->title ?> <?php if ($plugin->newcount) {
-                    echo '<span class="s-new">' . $plugin->newcount . '</span>';
-                } ?>
+                <?php echo $plugin->title ?> <?php echo $plugin->newcount ? '<span class="s-new">' . $plugin->newcount . '</span>' : ''; ?>
             </a>
         </li>
     <?php } ?>

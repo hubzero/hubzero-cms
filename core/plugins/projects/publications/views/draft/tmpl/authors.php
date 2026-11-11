@@ -114,9 +114,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
             $used = [];
 
             ?>
-            <div class="submitter groupowner"><p><strong><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER'); ?>*: </strong> <?php if ($this->pub->_project->groupOwner()) {
-                echo $this->escape($this->pub->_project->groupOwner('description')) . '(' . $this->escape($this->pub->_project->groupOwner('cn')) . ')';
-                                                         } ?></p>
+            <div class="submitter groupowner"><p><strong><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER'); ?>*: </strong> <?php echo $this->pub->_project->groupOwner() ? $this->escape($this->pub->_project->groupOwner('description')) . '(' . $this->escape($this->pub->_project->groupOwner('cn')) . ')' : ''; ?></p>
                 <?php if (!$this->pub->_project->groupOwner()) { ?>
                     <select name="group_owner">
                         <option value=""><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_GROUP_OWNER_NONE'); ?></option>
@@ -126,9 +124,7 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
                             }
                             $used[] = $g->gidNumber;
                             ?>
-                            <option value="<?php echo $g->gidNumber; ?>" <?php if ($this->pub->groupOwner('id') == $g->gidNumber) {
-                                echo 'selected="selected"';
-                                           } ?>><?php echo $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30) . ' (' . $g->cn . ')'); ?></option>
+                            <option value="<?php echo $g->gidNumber; ?>" <?php echo $this->pub->groupOwner('id') == $g->gidNumber ? 'selected="selected"' : ''; ?>><?php echo $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30) . ' (' . $g->cn . ')'); ?></option>
                         <?php } ?>
                     </select>
                 <?php } else { ?>

@@ -254,9 +254,7 @@ $this
                 <?php
             }
             ?>
-            <div class="results-none <?php if (count($this->groups)) {
-                echo 'hide';
-                                     } ?>">
+            <div class="results-none <?php echo count($this->groups) ? 'hide' : ''; ?>">
                 <p><?php echo Lang::txt('PLG_MEMBERS_GROUPS_NONE_FOUND'); ?></p>
             </div>
         </div><!-- / .groups -->

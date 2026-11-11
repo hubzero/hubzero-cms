@@ -311,9 +311,7 @@ $contactPhoneValue = $this->escape(
                         name="applyInternal"
                         id="applyInternal"
                         value="1"
-                        <?php if ($this->row->applyInternal) {
-                            echo 'checked="checked"';
-                        } ?>
+                        <?php echo $this->row->applyInternal ? 'checked="checked"' : ''; ?>
                     />
                     <label for="applyInternal">
                         <?php echo Lang::txt('COM_JOBS_FIELD_APPLY_INTERNAL'); ?>

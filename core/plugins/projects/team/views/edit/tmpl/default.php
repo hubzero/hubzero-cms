@@ -55,13 +55,9 @@ $roles = [
 
         <p class="notice"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_PROJECT_EDITING'); ?></p>
 
-        <div class="input-wrap <?php if ($this->model->get('sync_group') != 0) {
-            echo 'active';
-                               } ?>">
+        <div class="input-wrap <?php echo $this->model->get('sync_group') != 0 ? 'active' : ''; ?>">
             <label for="membership_sync">
-                <input class="option" data-action="syncall" name="sync_group" id="membership_sync" type="radio" value="1" <?php if ($this->model->get('sync_group') != 0) {
-                    echo ' checked="checked"';
-                                                                                                                          } ?> />
+                <input class="option" data-action="syncall" name="sync_group" id="membership_sync" type="radio" value="1" <?php echo $this->model->get('sync_group') != 0 ? ' checked="checked"' : ''; ?> />
                 <span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SYNC'); ?></span>
             </label>
 
@@ -85,13 +81,9 @@ $roles = [
             </div>
         </div>
 
-        <div class="input-wrap <?php if ($this->model->get('sync_group') == 0) {
-            echo 'active';
-                               } ?>">
+        <div class="input-wrap <?php echo $this->model->get('sync_group') == 0 ? 'active' : ''; ?>">
             <label for="membership_custom">
-                <input class="option" data-action="selective" name="sync_group" id="membership_custom" type="radio" value="0" <?php if ($this->model->get('sync_group') == 0) {
-                    echo ' checked="checked"';
-                                                                                                                              } ?> />
+                <input class="option" data-action="selective" name="sync_group" id="membership_custom" type="radio" value="0" <?php echo $this->model->get('sync_group') == 0 ? ' checked="checked"' : ''; ?> />
                 <span class="label-text"><?php echo Lang::txt('PLG_PROJECTS_TEAM_GROUP_LABEL_SELECT'); ?></span>
             </label>
 
@@ -178,32 +170,24 @@ $roles = [
         <tr>
             <th class="checkbox" aria-label="<?php echo Lang::txt('Select'); ?>"><span class="sr-only">Select</span></th>
             <th class="th_image" aria-label="<?php echo Lang::txt('Photo'); ?>"><span class="sr-only">Photo</span></th>
-            <th class="th_user i_user <?php if ($this->filters['sortby'] == 'name') {
-                echo 'activesort';
-                                      } ?>">
+            <th class="th_user i_user <?php echo $this->filters['sortby'] == 'name' ? 'activesort' : ''; ?>">
                 <a class="re_sort" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=name&sortdir=' . $sortbyDir); ?>">
                     <?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?>
                 </a>
             </th>
-            <th<?php if ($this->filters['sortby'] == 'role') {
-                echo ' class="activesort"';
-               } ?>>
+            <th<?php echo $this->filters['sortby'] == 'role' ? ' class="activesort"' : ''; ?>>
                 <a class="re_sort" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=role&sortdir=' . $sortbyDir) . '#teamlist'; ?>">
                     <?php echo Lang::txt('PLG_PROJECTS_TEAM_ROLE'); ?>
                 </a>
             </th>
-            <th<?php if ($this->filters['sortby'] == 'status') {
-                echo ' class="activesort"';
-               } ?>>
+            <th<?php echo $this->filters['sortby'] == 'status' ? ' class="activesort"' : ''; ?>>
                 <a class="re_sort" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=status&sortdir=' . $sortbyDir . '#teamlist'); ?>">
                     <?php echo Lang::txt('PLG_PROJECTS_TEAM_JOINED'); ?>
                 </a>
             </th>
             <th>
             </th>
-            <th class="i_group <?php if ($this->filters['sortby'] == 'group') {
-                echo 'activesort';
-                               } ?>">
+            <th class="i_group <?php echo $this->filters['sortby'] == 'group' ? 'activesort' : ''; ?>">
                 <?php if ($this->count_groups > 0) {
                     ?><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=' . $this->task . '&alias=' . $this->model->get('alias') . '&active=team&sortby=group&sortdir=' . $sortbyDir . '#teamlist'); ?>" class="re_sort" ><?php
                 } ?>
@@ -250,11 +234,7 @@ $roles = [
             ?>
             <tr class="mline <?php $cls; ?>" id="tr_<?php echo $owner->id; ?>">
                 <td>
-                    <input type="checkbox" value="<?php echo $owner->id; ?>" name="owner[]" aria-label="<?php echo $this->escape($owner->fullname); ?>" class="checkmember <?php if ($owner->groupid) {
-                        echo 'group:' . $owner->groupid;
-                                                  } ?>" data-group="<?php echo $owner->groupid; ?>" <?php if ($disabled) {
-                                                  echo 'disabled="disabled"';
-                                                  } ?> />
+                    <input type="checkbox" value="<?php echo $owner->id; ?>" name="owner[]" aria-label="<?php echo $this->escape($owner->fullname); ?>" class="checkmember <?php echo $owner->groupid ? 'group:' . $owner->groupid : ''; ?>" data-group="<?php echo $owner->groupid; ?>" <?php echo $disabled ? 'disabled="disabled"' : ''; ?> />
                 </td>
                 <td class="imagebox">
                     <span class="user-img-wrap">

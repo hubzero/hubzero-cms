@@ -93,9 +93,7 @@ $pa = new \Components\Publications\Tables\Author($database);
                     $info[] = 'doi:' . $this->escape($item->get('doi'));
                 }
                 ?>
-            <li class="type-publication allowed <?php if ($selected) {
-                echo ' selectedfilter';
-                                                } ?>" id="<?php echo $liId; ?>">
+            <li class="type-publication allowed <?php echo $selected ? ' selectedfilter' : ''; ?>" id="<?php echo $liId; ?>">
                 <div class="item-thumb"><img src="<?php echo Route::url($item->link('thumb')); ?>" width="40" height="40" alt=""/></div>
                 <!-- <span class="item-info"><?php echo implode(' <span>-</span> ', $info); ?></span> -->
                 <span class="item-wrap">

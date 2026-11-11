@@ -193,9 +193,7 @@ if (!$dir) {
                     <?php echo Lang::txt('COM_COLLECTIONS_SELECT_COLLECTION'); ?>
                     <select name="post[collection_id]" id="post-collection_id">
                     <?php foreach ($this->collections as $collection) { ?>
-                        <option value="<?php echo $this->escape($collection->get('id')); ?>"<?php if ($this->collection->get('id') == $collection->get('id')) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo $this->escape(stripslashes($collection->get('title'))); ?></option>
+                        <option value="<?php echo $this->escape($collection->get('id')); ?>"<?php echo $this->collection->get('id') == $collection->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($collection->get('title'))); ?></option>
                     <?php } ?>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_COLLECTIONS_SELECT_COLLECTION_HINT'); ?></span>

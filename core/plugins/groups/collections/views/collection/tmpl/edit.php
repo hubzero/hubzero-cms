@@ -133,9 +133,7 @@ $orderingLabel = Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT_ORDERING');
             <div class="col span6">
                 <div class="form-group">
                     <label for="field-layout"
-                        class="form-control<?php if ($this->task == 'save' && !$this->entry->get('layout')) {
-                            echo ' fieldWithErrors';
-                                           } ?>">
+                        class="form-control<?php echo $this->task == 'save' && !$this->entry->get('layout') ? ' fieldWithErrors' : ''; ?>">
                         <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_LAYOUT'); ?>
                         <select name="fields[layout]" id="field-layout">
                             <option value="grid"<?php echo $gridSelected; ?>><?php
@@ -151,9 +149,7 @@ $orderingLabel = Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT_ORDERING');
             <div class="col span6 omega">
                 <div class="form-group">
                     <label for="field-sort"
-                        class="form-control<?php if ($this->task == 'save' && !$this->entry->get('sort')) {
-                            echo ' fieldWithErrors';
-                                           } ?>">
+                        class="form-control<?php echo $this->task == 'save' && !$this->entry->get('sort') ? ' fieldWithErrors' : ''; ?>">
                         <?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_FIELD_SORT'); ?>
                         <select name="fields[sort]" id="field-sort">
                             <option value="created"<?php echo $createdSelected; ?>><?php

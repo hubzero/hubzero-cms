@@ -58,37 +58,27 @@ if ($this->review->get('id')) {
             <fieldset>
                 <legend><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_FORM_RATING'); ?>:</legend>
                 <label>
-                    <input class="option" id="review_rating_1" name="review[rating]" type="radio" value="1"<?php if ($this->review->get('rating') == 1) {
-                        echo ' checked="checked"';
-                                                                                                           } ?> />
+                    <input class="option" id="review_rating_1" name="review[rating]" type="radio" value="1"<?php echo $this->review->get('rating') == 1 ? ' checked="checked"' : ''; ?> />
                     &#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
                     <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_RATING_POOR'); ?>
                 </label>
                 <label>
-                    <input class="option" id="review_rating_2" name="review[rating]" type="radio" value="2"<?php if ($this->review->get('rating') == 2) {
-                        echo ' checked="checked"';
-                                                                                                           } ?> />
+                    <input class="option" id="review_rating_2" name="review[rating]" type="radio" value="2"<?php echo $this->review->get('rating') == 2 ? ' checked="checked"' : ''; ?> />
                     &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
                     <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_RATING_FAIR'); ?>
                 </label>
                 <label>
-                    <input class="option" id="review_rating_3" name="review[rating]" type="radio" value="3"<?php if ($this->review->get('rating') == 3) {
-                        echo ' checked="checked"';
-                                                                                                           } ?> />
+                    <input class="option" id="review_rating_3" name="review[rating]" type="radio" value="3"<?php echo $this->review->get('rating') == 3 ? ' checked="checked"' : ''; ?> />
                     &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
                     <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_RATING_GOOD'); ?>
                 </label>
                 <label>
-                    <input class="option" id="review_rating_4" name="review[rating]" type="radio" value="4"<?php if ($this->review->get('rating') == 4) {
-                        echo ' checked="checked"';
-                                                                                                           } ?> />
+                    <input class="option" id="review_rating_4" name="review[rating]" type="radio" value="4"<?php echo $this->review->get('rating') == 4 ? ' checked="checked"' : ''; ?> />
                     &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;
                     <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_RATING_VERY_GOOD'); ?>
                 </label>
                 <label>
-                    <input class="option" id="review_rating_5" name="review[rating]" type="radio" value="5"<?php if ($this->review->get('rating') == 5) {
-                        echo ' checked="checked"';
-                                                                                                           } ?> />
+                    <input class="option" id="review_rating_5" name="review[rating]" type="radio" value="5"<?php echo $this->review->get('rating') == 5 ? ' checked="checked"' : ''; ?> />
                     &#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
                     <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_RATING_EXCELLENT'); ?>
                 </label>
@@ -106,9 +96,7 @@ if ($this->review->get('id')) {
             </label>
 
             <label class="comment-anonymous-label">
-                <input class="option" type="checkbox" name="review[anonymous]" id="review-anonymous" value="1"<?php if ($this->review->get('anonymous') != 0) {
-                    echo ' checked="checked"';
-                                                                                                              } ?> />
+                <input class="option" type="checkbox" name="review[anonymous]" id="review-anonymous" value="1"<?php echo $this->review->get('anonymous') != 0 ? ' checked="checked"' : ''; ?> />
                 <?php echo Lang::txt('PLG_RESOURCES_REVIEWS_FORM_ANONYMOUS'); ?>
             </label>
 

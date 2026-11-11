@@ -108,9 +108,7 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
 
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_GROUPS_PAGES_STATE'); ?>:</label><br />
-                    <select name="page[state]" id="field-state" <?php if ($this->page->get('home') == 1) {
-                        echo 'disabled="disabled"';
-                                                                } ?>>
+                    <select name="page[state]" id="field-state" <?php echo $this->page->get('home') == 1 ? 'disabled="disabled"' : ''; ?>>
                         <?php
                         $states = [
                             1 => Lang::txt('COM_GROUPS_PAGES_STATE_PUBLISHED'),
@@ -142,14 +140,10 @@ Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => tru
                     }
                     ?>
                     <select name="page[privacy]" id="page[privacy]">
-                        <option value="default" <?php if ($this->page->get('privacy') == "default") {
-                            echo 'selected="selected"';
-                                                } ?>>
+                        <option value="default" <?php echo $this->page->get('privacy') == "default" ? 'selected="selected"' : ''; ?>>
                             <?php echo Lang::txt('COM_GROUPS_PAGES_PRIVACY_OPTION_INHERIT', $name); ?>
                         </option>
-                        <option value="members" <?php if ($this->page->get('privacy') == "members") {
-                            echo 'selected="selected"';
-                                                } ?>>
+                        <option value="members" <?php echo $this->page->get('privacy') == "members" ? 'selected="selected"' : ''; ?>>
                             <?php echo Lang::txt('COM_GROUPS_PAGES_PRIVACY_OPTION_PRIVATE'); ?>
                         </option>
                     </select>

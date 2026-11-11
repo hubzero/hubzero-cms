@@ -14,9 +14,7 @@ defined('_HZEXEC_') or die();
 
 $this->css('offering');
 ?>
-<header id="content-header"<?php if ($this->course->get('logo')) {
-    echo ' class="with-identity"';
-                           } ?>>
+<header id="content-header"<?php echo $this->course->get('logo') ? ' class="with-identity"' : ''; ?>>
     <h2>
         <?php echo $this->escape(stripslashes($this->course->get('title'))); ?>
     </h2>

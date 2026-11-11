@@ -73,9 +73,7 @@ foreach ($this->getErrors() as $error) {
                                     if ($plugin->events) {
                                         foreach ($plugin->events as $event) {
                                             ?>
-                                            <option value="<?php echo $plugin->plugin; ?>::<?php echo $event['name']; ?>"<?php if ($this->row->get('event') == $event['name']) {
-                                                echo ' selected="selected"';
-                                                           } ?>><?php echo $this->escape($event['label']); ?></option>
+                                            <option value="<?php echo $plugin->plugin; ?>::<?php echo $event['name']; ?>"<?php echo $this->row->get('event') == $event['name'] ? ' selected="selected"' : ''; ?>><?php echo $this->escape($event['label']); ?></option>
                                             <?php
                                         }
                                     }
@@ -174,28 +172,14 @@ foreach ($this->getErrors() as $error) {
                             </td>
                             <td>
                                 <select name="fields[minute][s]" id="field-minute-s">
-                                    <option value=""<?php if ($this->row->get('minute') == '') {
-                                        echo ' selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
-                                    <option value="*"<?php if ($this->row->get('minute') == '*') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
-                                    <option value="*/5"<?php if ($this->row->get('minute') == '*/5') {
-                                        echo ' selected="selected"';
-                                                       } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FIVE'); ?></option>
-                                    <option value="*/10"<?php if ($this->row->get('minute') == '*/10') {
-                                        echo ' selected="selected"';
-                                                        } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_TEN'); ?></option>
-                                    <option value="*/15"<?php if ($this->row->get('minute') == '*/15') {
-                                        echo ' selected="selected"';
-                                                        } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FIFTEEN'); ?></option>
-                                    <option value="*/30"<?php if ($this->row->get('minute') == '*/30') {
-                                        echo ' selected="selected"';
-                                                        } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_THIRTY'); ?></option>
+                                    <option value=""<?php echo $this->row->get('minute') == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
+                                    <option value="*"<?php echo $this->row->get('minute') == '*' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
+                                    <option value="*/5"<?php echo $this->row->get('minute') == '*/5' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FIVE'); ?></option>
+                                    <option value="*/10"<?php echo $this->row->get('minute') == '*/10' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_TEN'); ?></option>
+                                    <option value="*/15"<?php echo $this->row->get('minute') == '*/15' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FIFTEEN'); ?></option>
+                                    <option value="*/30"<?php echo $this->row->get('minute') == '*/30' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_THIRTY'); ?></option>
                                     <?php for ($i = 0, $n = 60; $i < $n; $i++) { ?>
-                                        <option value="<?php echo $i; ?>"<?php if ($this->row->get('minute') == (string) $i) {
-                                            echo ' selected="selected"';
-                                                       } ?>><?php echo $i; ?></option>
+                                        <option value="<?php echo $i; ?>"<?php echo $this->row->get('minute') == (string) $i ? ' selected="selected"' : ''; ?>><?php echo $i; ?></option>
                                     <?php } ?>
                                 </select>
                             </td>
@@ -209,28 +193,14 @@ foreach ($this->getErrors() as $error) {
                             </td>
                             <td>
                                 <select name="fields[hour][s]" id="field-hour-s">
-                                    <option value=""<?php if ($this->row->get('hour') == '') {
-                                        echo ' selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
-                                    <option value="*"<?php if ($this->row->get('hour') == '*') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
-                                    <option value="*/2"<?php if ($this->row->get('hour') == '*/2') {
-                                        echo ' selected="selected"';
-                                                       } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_OTHER'); ?></option>
-                                    <option value="*/4"<?php if ($this->row->get('hour') == '*/4') {
-                                        echo ' selected="selected"';
-                                                       } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FOUR'); ?></option>
-                                    <option value="*/6"<?php if ($this->row->get('hour') == '*/6') {
-                                        echo ' selected="selected"';
-                                                       } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_SIX'); ?></option>
-                                    <option value="0"<?php if ($this->row->get('hour') == "0") {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_MIDNIGHT'); ?></option>
+                                    <option value=""<?php echo $this->row->get('hour') == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
+                                    <option value="*"<?php echo $this->row->get('hour') == '*' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
+                                    <option value="*/2"<?php echo $this->row->get('hour') == '*/2' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_OTHER'); ?></option>
+                                    <option value="*/4"<?php echo $this->row->get('hour') == '*/4' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_FOUR'); ?></option>
+                                    <option value="*/6"<?php echo $this->row->get('hour') == '*/6' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_SIX'); ?></option>
+                                    <option value="0"<?php echo $this->row->get('hour') == "0" ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_MIDNIGHT'); ?></option>
                                     <?php for ($i = 1, $n = 24; $i < $n; $i++) { ?>
-                                        <option value="<?php echo $i; ?>"<?php if ($this->row->get('hour') == (string) $i) {
-                                            echo ' selected="selected"';
-                                                       } ?>><?php echo $i; ?></option>
+                                        <option value="<?php echo $i; ?>"<?php echo $this->row->get('hour') == (string) $i ? ' selected="selected"' : ''; ?>><?php echo $i; ?></option>
                                     <?php } ?>
                                 </select>
                             </td>
@@ -244,16 +214,10 @@ foreach ($this->getErrors() as $error) {
                             </td>
                             <td>
                                 <select name="fields[day][s]" id="field-day-s">
-                                    <option value=""<?php if ($this->row->get('day') == '') {
-                                        echo ' selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
-                                    <option value="*"<?php if ($this->row->get('day') == '*') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
+                                    <option value=""<?php echo $this->row->get('day') == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
+                                    <option value="*"<?php echo $this->row->get('day') == '*' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
                                     <?php for ($i = 1, $n = 32; $i < $n; $i++) { ?>
-                                        <option value="<?php echo $i; ?>"<?php if ($this->row->get('day') == (string) $i) {
-                                            echo ' selected="selected"';
-                                                       } ?>><?php echo $i; ?></option>
+                                        <option value="<?php echo $i; ?>"<?php echo $this->row->get('day') == (string) $i ? ' selected="selected"' : ''; ?>><?php echo $i; ?></option>
                                     <?php } ?>
                                 </select>
                             </td>
@@ -267,57 +231,23 @@ foreach ($this->getErrors() as $error) {
                             </td>
                             <td>
                                 <select name="fields[month][s]" id="field-month-s">
-                                    <option value=""<?php if ($this->row->get('month') == '') {
-                                        echo ' selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
-                                    <option value="*"<?php if ($this->row->get('month') == '*') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
-                                    <option value="*/2"<?php if ($this->row->get('month') == '*/2') {
-                                        echo ' selected="selected"';
-                                                       } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_OTHER'); ?></option>
-                                    <option value="*/3"<?php if ($this->row->get('month') == '*/4') {
-                                        echo ' selected="selected"';
-                                                       } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_THREE'); ?></option>
-                                    <option value="*/6"<?php if ($this->row->get('month') == '*/6') {
-                                        echo ' selected="selected"';
-                                                       } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_SIX'); ?></option>
-                                    <option value="1"<?php if ($this->row->get('month') == '1') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('JANUARY_SHORT'); ?></option>
-                                    <option value="2"<?php if ($this->row->get('month') == '2') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('FEBRUARY_SHORT'); ?></option>
-                                    <option value="3"<?php if ($this->row->get('month') == '3') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('MARCH_SHORT'); ?></option>
-                                    <option value="4"<?php if ($this->row->get('month') == '4') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('APRIL_SHORT'); ?></option>
-                                    <option value="5"<?php if ($this->row->get('month') == '5') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('MAY_SHORT'); ?></option>
-                                    <option value="6"<?php if ($this->row->get('month') == '6') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('JUNE_SHORT'); ?></option>
-                                    <option value="7"<?php if ($this->row->get('month') == '7') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('JULY_SHORT'); ?></option>
-                                    <option value="8"<?php if ($this->row->get('month') == '8') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('AUGUST_SHORT'); ?></option>
-                                    <option value="9"<?php if ($this->row->get('month') == '9') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('SEPTEMBER_SHORT'); ?></option>
-                                    <option value="10"<?php if ($this->row->get('month') == '10') {
-                                        echo ' selected="selected"';
-                                                      } ?>><?php echo Lang::txt('OCTOBER_SHORT'); ?></option>
-                                    <option value="11"<?php if ($this->row->get('month') == '11') {
-                                        echo ' selected="selected"';
-                                                      } ?>><?php echo Lang::txt('NOVEMBER_SHORT'); ?></option>
-                                    <option value="12"<?php if ($this->row->get('month') == '12') {
-                                        echo ' selected="selected"';
-                                                      } ?>><?php echo Lang::txt('DECEMBER_SHORT'); ?></option>
+                                    <option value=""<?php echo $this->row->get('month') == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
+                                    <option value="*"<?php echo $this->row->get('month') == '*' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
+                                    <option value="*/2"<?php echo $this->row->get('month') == '*/2' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_OTHER'); ?></option>
+                                    <option value="*/3"<?php echo $this->row->get('month') == '*/4' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_THREE'); ?></option>
+                                    <option value="*/6"<?php echo $this->row->get('month') == '*/6' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY_SIX'); ?></option>
+                                    <option value="1"<?php echo $this->row->get('month') == '1' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JANUARY_SHORT'); ?></option>
+                                    <option value="2"<?php echo $this->row->get('month') == '2' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('FEBRUARY_SHORT'); ?></option>
+                                    <option value="3"<?php echo $this->row->get('month') == '3' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('MARCH_SHORT'); ?></option>
+                                    <option value="4"<?php echo $this->row->get('month') == '4' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('APRIL_SHORT'); ?></option>
+                                    <option value="5"<?php echo $this->row->get('month') == '5' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('MAY_SHORT'); ?></option>
+                                    <option value="6"<?php echo $this->row->get('month') == '6' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNE_SHORT'); ?></option>
+                                    <option value="7"<?php echo $this->row->get('month') == '7' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JULY_SHORT'); ?></option>
+                                    <option value="8"<?php echo $this->row->get('month') == '8' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('AUGUST_SHORT'); ?></option>
+                                    <option value="9"<?php echo $this->row->get('month') == '9' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('SEPTEMBER_SHORT'); ?></option>
+                                    <option value="10"<?php echo $this->row->get('month') == '10' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('OCTOBER_SHORT'); ?></option>
+                                    <option value="11"<?php echo $this->row->get('month') == '11' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('NOVEMBER_SHORT'); ?></option>
+                                    <option value="12"<?php echo $this->row->get('month') == '12' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('DECEMBER_SHORT'); ?></option>
                                 </select>
                             </td>
                         </tr>
@@ -330,33 +260,15 @@ foreach ($this->getErrors() as $error) {
                             </td>
                             <td>
                                 <select name="fields[dayofweek][s]" id="field-dayofweek-s">
-                                    <option value=""<?php if ($this->row->get('dayofweek') == '') {
-                                        echo ' selected="selected"';
-                                                    } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
-                                    <option value="*"<?php if ($this->row->get('dayofweek') == '*') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
-                                    <option value="0"<?php if ($this->row->get('dayofweek') == '0') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('SUN'); ?></option>
-                                    <option value="1"<?php if ($this->row->get('dayofweek') == '1') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('MON'); ?></option>
-                                    <option value="2"<?php if ($this->row->get('dayofweek') == '2') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('TUE'); ?></option>
-                                    <option value="3"<?php if ($this->row->get('dayofweek') == '3') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('WED'); ?></option>
-                                    <option value="4"<?php if ($this->row->get('dayofweek') == '4') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('THU'); ?></option>
-                                    <option value="5"<?php if ($this->row->get('dayofweek') == '5') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('FRI'); ?></option>
-                                    <option value="6"<?php if ($this->row->get('dayofweek') == '6') {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('SAT'); ?></option>
+                                    <option value=""<?php echo $this->row->get('dayofweek') == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_CUSTOM'); ?></option>
+                                    <option value="*"<?php echo $this->row->get('dayofweek') == '*' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CRON_FIELD_OPT_EVERY'); ?></option>
+                                    <option value="0"<?php echo $this->row->get('dayofweek') == '0' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('SUN'); ?></option>
+                                    <option value="1"<?php echo $this->row->get('dayofweek') == '1' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('MON'); ?></option>
+                                    <option value="2"<?php echo $this->row->get('dayofweek') == '2' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('TUE'); ?></option>
+                                    <option value="3"<?php echo $this->row->get('dayofweek') == '3' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('WED'); ?></option>
+                                    <option value="4"<?php echo $this->row->get('dayofweek') == '4' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('THU'); ?></option>
+                                    <option value="5"<?php echo $this->row->get('dayofweek') == '5' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('FRI'); ?></option>
+                                    <option value="6"<?php echo $this->row->get('dayofweek') == '6' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('SAT'); ?></option>
                                 </select>
                             </td>
                         </tr>

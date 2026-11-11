@@ -45,9 +45,7 @@ $this->css();
                     <div class="col span6">
                         <div class="form-group">
                             <label for="field-closed" class="comment-anonymous-label">
-                                <input class="option form-control" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php if ($this->category->get('closed')) {
-                                    echo ' checked="checked"';
-                                                                                                                                    } ?> />
+                                <input class="option form-control" type="checkbox" name="fields[closed]" id="field-closed" value="3"<?php echo $this->category->get('closed') ? ' checked="checked"' : ''; ?> />
                                 <?php echo Lang::txt('COM_FORUM_FIELD_CLOSED'); ?>
                             </label>
                         </div>
@@ -69,9 +67,7 @@ $this->css();
                         <?php echo Lang::txt('COM_FORUM_FIELD_SECTION'); ?> <span class="required"><?php echo Lang::txt('COM_FORUM_REQUIRED'); ?></span>
                         <select class="form-control" name="fields[section_id]" id="field-section_id">
                             <?php foreach ($this->forum->sections(['state' => 1])->rows() as $section) { ?>
-                                <option value="<?php echo $section->get('id'); ?>"<?php if ($this->category->get('section_id') == $section->get('id')) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+                                <option value="<?php echo $section->get('id'); ?>"<?php echo $this->category->get('section_id') == $section->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
                             <?php } ?>
                         </select>
                     </label>

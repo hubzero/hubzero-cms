@@ -33,9 +33,7 @@ foreach ($subs as $s) :
             foreach ($s['options'] as $o) :
                 $selected = ($o == $s['preference']);
                 ?>
-                <option <?php if ($selected) {
-                    echo 'selected';
-                        } ?>>
+                <option <?php echo $selected ? 'selected' : ''; ?>>
                 <?php echo $o; ?>
                 </option>
             <?php endforeach; ?>

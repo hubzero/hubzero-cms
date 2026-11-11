@@ -57,24 +57,18 @@ if (User::get('id') == $this->user->get('id')) {
     $statusLabel = Lang::txt('PLG_MEMBERS_PROJECTS_STATUS');
     $roleLabel = Lang::txt('PLG_MEMBERS_PROJECTS_MY_ROLE');
     ?>
-                <th<?php if ($this->filters['sortby'] == 'title') {
-                    echo ' class="activesort"';
-                   } ?>>
+                <th<?php echo $this->filters['sortby'] == 'title' ? ' class="activesort"' : ''; ?>>
                     <a href="<?php echo $titleSortUrl; ?>"
                         class="re_sort"><?php echo $titleLabel; ?></a>
                 </th>
                 <?php if ($this->which == 'owned') { ?>
-                    <th<?php if ($this->filters['sortby'] == 'status') {
-                        echo ' class="activesort"';
-                       } ?>>
+                    <th<?php echo $this->filters['sortby'] == 'status' ? ' class="activesort"' : ''; ?>>
                         <a href="<?php echo $statusSortUrl; ?>"
                             class="re_sort"><?php echo $statusLabel; ?></a>
                     </th>
                 <?php } ?>
                 <?php if ($isUser) { ?>
-                    <th<?php if ($this->filters['sortby'] == 'role') {
-                        echo ' class="activesort"';
-                       } ?>>
+                    <th<?php echo $this->filters['sortby'] == 'role' ? ' class="activesort"' : ''; ?>>
                         <a href="<?php echo $roleSortUrl; ?>"
                             class="re_sort"><?php echo $roleLabel; ?></a>
                     </th>
@@ -113,9 +107,7 @@ if (User::get('id') == $this->user->get('id')) {
                         <?php } ?>
                     </td>
                     <td class="th_privacy">
-                        <?php if (!$row->isPublic()) {
-                            echo '<span class="privacy-icon">&nbsp;</span>';
-                        } ?>
+                        <?php echo !$row->isPublic() ? '<span class="privacy-icon">&nbsp;</span>' : ''; ?>
                     </td>
                     <td class="th_title">
                         <a href="<?php echo Route::url($row->link()); ?>"

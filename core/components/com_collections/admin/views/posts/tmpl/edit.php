@@ -186,9 +186,7 @@ $validationMsg = $this->escape(
                     <input type="checkbox"
                         name="fields[original]"
                         id="field-original"
-                        value="1"<?php if ($this->row->get('original') == 1) {
-                            echo ' checked="checked"';
-                                 } ?> />
+                        value="1"<?php echo $this->row->get('original') == 1 ? ' checked="checked"' : ''; ?> />
                     <label for="field-original">
                         <?php echo Lang::txt('COM_COLLECTIONS_FIELD_ORIGINAL'); ?>
                     </label>

@@ -108,26 +108,20 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                 <?php if ($this->model->access('content')) : ?>
                     <th class="checkbox"><input type="checkbox" name="toggle" value="" id="toggle" class="js" /></th>
                 <?php endif; ?>
-                <th class="asset_doc <?php if ($this->sortby == 'filename') {
-                    echo ' activesort';
-                                     } ?>">
+                <th class="asset_doc <?php echo $this->sortby == 'filename' ? ' activesort' : ''; ?>">
                     <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=filename&sortdir=' . $sortbyDir); ?>"
                         class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>">
                         <?php echo Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>
                     </a>
                 </th>
                 <th class="centeralign" aria-label="<?php echo Lang::txt('Type'); ?>"><span class="sr-only">Type</span></th>
-                <th <?php if ($this->sortby == 'size') {
-                    echo 'class="activesort"';
-                    } ?>>
+                <th <?php echo $this->sortby == 'size' ? 'class="activesort"' : ''; ?>>
                     <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=size&sortdir=' . $sortbyDir); ?>"
                         class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>">
                         <?php echo Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>
                     </a>
                 </th>
-                <th <?php if ($this->sortby == 'timestamp') {
-                    echo 'class="activesort"';
-                    } ?>>
+                <th <?php echo $this->sortby == 'timestamp' ? 'class="activesort"' : ''; ?>>
                     <a href="<?php echo Route::url($this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse' . $subdirlink . '&sortby=timestamp&sortdir=' . $sortbyDir); ?>"
                         class="re_sort" title="<?php echo Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?>">
                         <?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?>

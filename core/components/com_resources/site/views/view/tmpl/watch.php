@@ -178,9 +178,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
                     <optgroup label="<?php echo $this->escape($parent->title); ?>">
                         <?php foreach ($children as $c) : ?>
                             <?php if (Date::toSql() > $c->publish_up || User::authorise('core.admin')) : ?>
-                                <option <?php if ($c->title == $rr->title) {
-                                    echo "selected";
-                                        } ?> value="<?php echo $c->id; ?>"><?php echo $this->escape($c->title); ?></option>
+                                <option <?php echo $c->title == $rr->title ? "selected" : ''; ?> value="<?php echo $c->id; ?>"><?php echo $this->escape($c->title); ?></option>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </optgroup>
@@ -197,9 +195,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
 <div id="presenter-container" class="<?php echo $presenationFormat; ?>" data-id="<?php echo $this->resid; ?>">
     <div id="presenter-header">
         <div id="title"><?php echo $this->escape($rr->title); ?></div>
-        <div id="author"><?php if ($a) {
-            echo "by: " . implode(", ", $a);
-                         } ?></div>
+        <div id="author"><?php echo $a ? "by: " . implode(", ", $a) : ''; ?></div>
         <!--<div id="slide_title"></div>-->
     </div><!-- /#header -->
 
@@ -505,9 +501,7 @@ $presentation->subtitles = array_values($presentation->subtitles);
                             ?>
                             <source src="<?php echo $content_url . DS . $source->source; ?>" type="<?php echo $type; ?>" />
                         <?php endforeach; ?>
-                        <a href="<?php echo $content_url . DS . $presentation->media[0]->source; ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) {
-                            echo $presentation->duration;
-                                 } ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
+                        <a href="<?php echo $content_url . DS . $presentation->media[0]->source; ?>" id="flowplayer" duration="<?php echo isset($presentation->duration) && $presentation->duration ? $presentation->duration : ''; ?>" data-mediaid="<?php echo $rr->id; ?>"></a>
                     </audio>
 
                     <?php if (isset($presentation->placeholder) && $presentation->placeholder) : ?>

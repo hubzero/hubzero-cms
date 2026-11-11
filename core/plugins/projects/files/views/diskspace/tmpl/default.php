@@ -84,9 +84,7 @@ $warning = ($inuse > $approachingQuota) ? 1 : 0;
         </h3>
     </div>
 <?php } ?>
-    <div id="disk-usage" <?php if ($warning) {
-        echo 'class="quota-warning"';
-                         } ?>>
+    <div id="disk-usage" <?php echo $warning ? 'class="quota-warning"' : ''; ?>>
         <div class="disk-usage-wrapper">
             <?php
             $h3Text = ($this->by != 'admin')

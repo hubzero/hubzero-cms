@@ -88,9 +88,7 @@ Html::behavior('chart');
                         mode: "time",
                         tickLength: 0,
                         tickDecimals: 0,
-                        <?php if (count($c) <= 12) {
-                            echo 'ticks: ' . count($c) . ',';
-                        } ?>
+                        <?php echo count($c) <= 12 ? 'ticks: ' . count($c) . ',' : ''; ?>
                         tickFormatter: function (val, axis) {
                             var d = new Date(val);
                             return month_short[d.getUTCMonth()];//d.getUTCDate() + "/" + (d.getUTCMonth() + 1);

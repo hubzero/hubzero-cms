@@ -34,18 +34,10 @@ $this->css('admin.subscriptions.css');
     <fieldset id="filter-bar">
         <label for="filter-status"><?php echo Lang::txt('COM_SERVICES_FILTER_BY'); ?>:</label>
         <select name="filter_status" id="filter-status" class="filter filter-submit">
-            <option value="pending"<?php if ($this->filters['status'] == 'pending') {
-                echo ' selected="selected"';
-                                   } ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_PENDING'); ?></option>
-            <option value="active"<?php if ($this->filters['status'] == 'active') {
-                echo ' selected="selected"';
-                                  } ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_ACTIVE'); ?></option>
-            <option value="cancelled"<?php if ($this->filters['status'] == 'cancelled') {
-                echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_CANCELLED'); ?></option>
-            <option value="all"<?php if ($this->filters['status'] == 'all') {
-                echo ' selected="selected"';
-                               } ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_ALL'); ?></option>
+            <option value="pending"<?php echo $this->filters['status'] == 'pending' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_PENDING'); ?></option>
+            <option value="active"<?php echo $this->filters['status'] == 'active' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_ACTIVE'); ?></option>
+            <option value="cancelled"<?php echo $this->filters['status'] == 'cancelled' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_CANCELLED'); ?></option>
+            <option value="all"<?php echo $this->filters['status'] == 'all' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SERVICES_FILTER_BY_ALL'); ?></option>
         </select>
     </fieldset>
 

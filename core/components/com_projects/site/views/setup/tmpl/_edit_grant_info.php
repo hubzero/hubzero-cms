@@ -36,9 +36,7 @@ if (
                     id="grant_info-no"
                     type="radio"
                     value="0"
-                    <?php if (!$hasGrantInfo) {
-                        echo 'checked="checked"';
-                    } ?>
+                    <?php echo !$hasGrantInfo ? 'checked="checked"' : ''; ?>
                 />
                 <?php echo Lang::txt('JNO'); ?>
             </label>
@@ -51,17 +49,13 @@ if (
                     id="grant_info-yes"
                     type="radio"
                     value="1"
-                    <?php if ($hasGrantInfo) {
-                        echo 'checked="checked"';
-                    } ?>
+                    <?php echo $hasGrantInfo ? 'checked="checked"' : ''; ?>
                 />
                 <?php echo Lang::txt('JYES'); ?>
             </label>
         </div>
     </div>
-    <div class="grant_info <?php if (!$hasGrantInfo) {
-        echo 'hidden';
-                           } ?>" id="grant_info_block">
+    <div class="grant_info <?php echo !$hasGrantInfo ? 'hidden' : ''; ?>" id="grant_info_block">
         <?php if ($approved) : ?>
             <p class="notice notice_passed">
                 <?php echo Lang::txt('COM_PROJECTS_GRANT_APPROVED_WITH_CODE'); ?>
@@ -227,9 +221,7 @@ if (
                             id="param-grant_status"
                             type="checkbox"
                             value="0"
-                            <?php if ($this->model->params->get('grant_status') == 2) {
-                                echo 'checked="checked"';
-                            } ?>
+                            <?php echo $this->model->params->get('grant_status') == 2 ? 'checked="checked"' : ''; ?>
                         />
                         <?php
                         $langTxt1 = Lang::txt('COM_PROJECTS_SETUP_TERMS_GRANT_RESUBMIT_FOR_APPROVAL');

@@ -30,9 +30,7 @@ $warning          = ($inuse > $approachingQuota) ? 1 : 0;
 <?php echo Lang::txt('PLG_PROJECTS_FILES_DISK_SPACE'); ?>
 <a href="<?php echo $this->url . '/?action=diskspace'; ?>"
     title="<?php echo Lang::txt('PLG_PROJECTS_FILES_DISK_SPACE_TOOLTIP'); ?>"
-    ><span id="indicator-wrapper" <?php if ($warning) {
-        echo 'class="quota-warning"';
-                                  } ?>><span
+    ><span id="indicator-wrapper" <?php echo $warning ? 'class="quota-warning"' : ''; ?>><span
         id="indicator-area"
         class="used:<?php echo $inuse; ?>">&nbsp;</span><span
         id="indicator-value"><span><?php

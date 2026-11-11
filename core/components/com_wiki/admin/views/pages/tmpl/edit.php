@@ -129,23 +129,17 @@ $this->js();
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="params[hide_authors]" id="param-hide_authors"<?php if ($this->row->param('hide_authors') == 1) {
-                        echo ' checked="checked"';
-                                                                                              } ?> value="1" />
+                    <input type="checkbox" name="params[hide_authors]" id="param-hide_authors"<?php echo $this->row->param('hide_authors') == 1 ? ' checked="checked"' : ''; ?> value="1" />
                     <label for="param-hide_authors"><?php echo Lang::txt('COM_WIKI_FIELD_HIDE_AUTHORS'); ?></label>
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="params[allow_changes]" id="param-allow_changes"<?php if ($this->row->param('allow_changes') == 1) {
-                        echo ' checked="checked"';
-                                                                                                } ?> value="1" />
+                    <input type="checkbox" name="params[allow_changes]" id="param-allow_changes"<?php echo $this->row->param('allow_changes') == 1 ? ' checked="checked"' : ''; ?> value="1" />
                     <label for="param-allow_changes"><?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_CHANGES'); ?></label>
                 </div>
 
                 <div class="input-wrap">
-                    <input type="checkbox" name="params[allow_comments]" id="param-allow_comments"<?php if ($this->row->param('allow_comments') == 1) {
-                        echo ' checked="checked"';
-                                                                                                  } ?> value="1" />
+                    <input type="checkbox" name="params[allow_comments]" id="param-allow_comments"<?php echo $this->row->param('allow_comments') == 1 ? ' checked="checked"' : ''; ?> value="1" />
                     <label for="param-allow_comments"><?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?></label>
                 </div>
 

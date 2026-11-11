@@ -138,9 +138,7 @@ if ($this->getError()) { ?>
                             : 'United States';
                         ?>
                         <option value="<?php echo $this->escape($country->name); ?>"
-                            <?php if (strtoupper($country->name) == strtoupper($selected)) {
-                                echo ' selected="selected"';
-                            } ?>><?php echo $this->escape($country->name); ?></option>
+                            <?php echo strtoupper($country->name) == strtoupper($selected) ? ' selected="selected"' : ''; ?>><?php echo $this->escape($country->name); ?></option>
                         <?php
                     }
                     ?>

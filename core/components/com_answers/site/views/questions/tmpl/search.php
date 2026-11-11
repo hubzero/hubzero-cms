@@ -348,9 +348,7 @@ $area = urlencode($this->filters['area']);
                         $icn = ($row->isclosed()) ? 'icon-comments' : 'icon-comment-alt';
                         $icn = ($row->isReported()) ? 'icon-flag' : $icn;
                         ?>
-                            <tr<?php if ($cls) {
-                                echo ' class="' . $cls . '"';
-                               } ?>>
+                            <tr<?php echo $cls ? ' class="' . $cls . '"' : ''; ?>>
                                 <th class="priority-5" scope="row">
                                     <span class="entry-identifier <?php echo $icn; ?>">
                                         <?php echo $row->get('id'); ?>

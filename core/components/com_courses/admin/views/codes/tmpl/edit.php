@@ -65,9 +65,7 @@ $this->js();
                                     <?php
                                     foreach ($offering->sections() as $section) {
                                         ?>
-                                        <option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php if ($section->get('id') == $this->row->get('section_id')) {
-                                            echo ' selected="selected"';
-                                                       } ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+                                        <option value="<?php echo $this->escape(stripslashes($section->get('id'))); ?>"<?php echo $section->get('id') == $this->row->get('section_id') ? ' selected="selected"' : ''; ?>>&nbsp; &nbsp; <?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
                                         <?php
                                     }
                                     ?>

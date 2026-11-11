@@ -63,39 +63,29 @@ $this
                     <table class="listing">
                         <thead>
                             <tr>
-                                <th class="thtype<?php if ($this->filters['sortby'] == 'id') {
-                                    echo ' activesort';
-                                                 } ?>">
+                                <th class="thtype<?php echo $this->filters['sortby'] == 'id' ? ' activesort' : ''; ?>">
                                     <a href="<?php echo Route::url($route . '&t_sortby=id&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_ID'); ?>">
                                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ID'); ?>
                                     </a>
                                 </th>
                                 <th></th>
-                                <th<?php if ($this->filters['sortby'] == 'title') {
-                                    echo ' class="activesort"';
-                                   } ?>>
+                                <th<?php echo $this->filters['sortby'] == 'title' ? ' class="activesort"' : ''; ?>>
                                     <a href="<?php echo Route::url($route . '&t_sortby=title&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_TITLE'); ?>">
                                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_TITLE'); ?>
                                     </a>
                                 </th>
                                 <th></th>
-                                <th class="thtype<?php if ($this->filters['sortby'] == 'type') {
-                                    echo ' activesort';
-                                                 } ?>">
+                                <th class="thtype<?php echo $this->filters['sortby'] == 'type' ? ' activesort' : ''; ?>">
                                     <a href="<?php echo Route::url($route . '&t_sortby=type&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_CONTENT_TYPE'); ?>">
                                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_CONTENT_TYPE'); ?>
                                     </a>
                                 </th>
-                                <th<?php if ($this->filters['sortby'] == 'submitted') {
-                                    echo ' class="activesort"';
-                                   } ?>>
+                                <th<?php echo $this->filters['sortby'] == 'submitted' ? ' class="activesort"' : ''; ?>>
                                     <a href="<?php echo Route::url($route . '&t_sortby=submitted&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'); ?>">
                                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'); ?>
                                     </a>
                                 </th>
-                                <th<?php if ($this->filters['sortby'] == 'status') {
-                                    echo ' class="activesort"';
-                                   } ?>>
+                                <th<?php echo $this->filters['sortby'] == 'status' ? ' class="activesort"' : ''; ?>>
                                     <a href="<?php echo Route::url($route . '&t_sortby=status&t_sortdir=' . $sortbyDir); ?>" class="re_sort" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_STATUS'); ?>">
                                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_STATUS'); ?>
                                     </a>
@@ -146,9 +136,7 @@ $this
                                         </td>
                                         <td>
                                         <?php if ($row->state == 5) { ?>
-                                                <a href="<?php echo Route::url($route . '&id=' . $row->id); ?>" <?php if ($abstract) {
-                                                    echo 'title="' . $this->escape($abstract) . '"';
-                                                         } ?>>
+                                                <a href="<?php echo Route::url($route . '&id=' . $row->id); ?>" <?php echo $abstract ? 'title="' . $this->escape($abstract) . '"' : ''; ?>>
                                         <?php } ?>
                                         <?php echo $this->escape($row->title); ?>
                                         <?php if ($row->state == 5) { ?>
@@ -195,9 +183,7 @@ $this
                                         <?php if ($row->state == 5) : ?>
                                                 <a href="<?php echo Route::url($route . '&id=' . $row->id . '&vid=' . $row->version_id); ?>" class="btn icon-next btn-secondary btn-primary" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_OVER_REVIEW'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_REVIEW'); ?></a>
                                         <?php endif; ?>
-                                            <?php if ($row->state == 7) {
-                                                echo $reviewed;
-                                            } ?>
+                                            <?php echo $row->state == 7 ? $reviewed : ''; ?>
                                             <a href="<?php echo Route::url($route . '&id=' . $row->id . '&task=history&ajax=1&no_html=1'); ?>" class="btn btn-secondary icon-history fancybox" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_OVER_HISTORY'); ?>"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_HISTORY'); ?></a>
                                             <a href="<?php echo Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_number); ?>" class="public-page" title="<?php echo Lang::txt('COM_PUBLICATIONS_CURATION_VIEW_PUB_PAGE'); ?>">&nbsp;</a>
                                         </td>

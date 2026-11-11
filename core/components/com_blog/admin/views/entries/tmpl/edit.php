@@ -272,15 +272,9 @@ $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_BLOG_FIELD_STATE'); ?>:</label><br />
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?php if ($this->row->get('state') == 0) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php if ($this->row->get('state') == 1) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="2"<?php if ($this->row->get('state') == 2) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <option value="0"<?php echo $this->row->get('state') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+                        <option value="1"<?php echo $this->row->get('state') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                        <option value="2"<?php echo $this->row->get('state') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
                     </select>
                 </div>
 

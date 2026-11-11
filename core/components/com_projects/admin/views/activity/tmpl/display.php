@@ -76,33 +76,15 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                     <option value=""><?php
                         echo Lang::txt('COM_PROJECTS_FILTER_ACTION');
                     ?></option>
-                    <option value="created"<?php if ($this->filters['action'] == 'created') {
-                        echo ' selected="selected"';
-                                           } ?>>created</option>
-                    <option value="updated"<?php if ($this->filters['action'] == 'updated') {
-                        echo ' selected="selected"';
-                                           } ?>>updated</option>
-                    <option value="deleted"<?php if ($this->filters['action'] == 'deleted') {
-                        echo ' selected="selected"';
-                                           } ?>>deleted</option>
-                    <option value="joined"<?php if ($this->filters['action'] == 'joined') {
-                        echo ' selected="selected"';
-                                          } ?>>joined</option>
-                    <option value="uploaded"<?php if ($this->filters['action'] == 'uploaded') {
-                        echo ' selected="selected"';
-                                            } ?>>uploaded</option>
-                    <option value="accepted"<?php if ($this->filters['action'] == 'accepted') {
-                        echo ' selected="selected"';
-                                            } ?>>accepted</option>
-                    <option value="cancelled"<?php if ($this->filters['action'] == 'cancelled') {
-                        echo ' selected="selected"';
-                                             } ?>>cancelled</option>
-                    <option value="submitted"<?php if ($this->filters['action'] == 'submitted') {
-                        echo ' selected="selected"';
-                                             } ?>>submitted</option>
-                    <option value="emailed"<?php if ($this->filters['action'] == 'emailed') {
-                        echo ' selected="selected"';
-                                           } ?>>emailed</option>
+                    <option value="created"<?php echo $this->filters['action'] == 'created' ? ' selected="selected"' : ''; ?>>created</option>
+                    <option value="updated"<?php echo $this->filters['action'] == 'updated' ? ' selected="selected"' : ''; ?>>updated</option>
+                    <option value="deleted"<?php echo $this->filters['action'] == 'deleted' ? ' selected="selected"' : ''; ?>>deleted</option>
+                    <option value="joined"<?php echo $this->filters['action'] == 'joined' ? ' selected="selected"' : ''; ?>>joined</option>
+                    <option value="uploaded"<?php echo $this->filters['action'] == 'uploaded' ? ' selected="selected"' : ''; ?>>uploaded</option>
+                    <option value="accepted"<?php echo $this->filters['action'] == 'accepted' ? ' selected="selected"' : ''; ?>>accepted</option>
+                    <option value="cancelled"<?php echo $this->filters['action'] == 'cancelled' ? ' selected="selected"' : ''; ?>>cancelled</option>
+                    <option value="submitted"<?php echo $this->filters['action'] == 'submitted' ? ' selected="selected"' : ''; ?>>submitted</option>
+                    <option value="emailed"<?php echo $this->filters['action'] == 'emailed' ? ' selected="selected"' : ''; ?>>emailed</option>
                 </select>
 
                 <label for="filter_filter"><?php
@@ -116,11 +98,9 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                     <option value=""><?php
                         echo Lang::txt('COM_PROJECTS_FILTER_FILTER');
                     ?></option>
-                    <option value="starred"<?php if ($this->filters['filter'] == 'starred') {
-                        echo ' selected="selected"';
-                                           } ?>><?php
+                    <option value="starred"<?php echo $this->filters['filter'] == 'starred' ? ' selected="selected"' : ''; ?>><?php
                         echo Lang::txt('COM_PROJECTS_FILTER_STARRED');
-?></option>
+                    ?></option>
                 </select>
 
                 <label for="filter_state"><?php
@@ -131,20 +111,12 @@ $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
                     id="filter_state"
                     class="inputbox filter filter-submit"
                 >
-                    <option value="-1"<?php if ($this->filters['state'] == '-1') {
-                        echo ' selected="selected"';
-                                      } ?>><?php
+                    <option value="-1"<?php echo $this->filters['state'] == '-1' ? ' selected="selected"' : ''; ?>><?php
                         echo Lang::txt('COM_PROJECTS_ALL_STATES');
-?></option>
-                    <option value="0"<?php if ($this->filters['state'] === 0) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                    <option value="1"<?php if ($this->filters['state'] === 1) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                    <option value="2"<?php if ($this->filters['state'] === 2) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                    ?></option>
+                    <option value="0"<?php echo $this->filters['state'] === 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+                    <option value="1"<?php echo $this->filters['state'] === 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                    <option value="2"<?php echo $this->filters['state'] === 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
                 </select>
             </div>
         </div>

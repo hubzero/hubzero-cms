@@ -747,9 +747,7 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <?php foreach ($__pmedia as $source) : ?>
                                 <source src="<?php echo $this->escape($content_folder . DS . $source->source); ?>" />
                             <?php endforeach; ?>
-                            <a href="<?php echo $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')); ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) {
-                                echo $this->escape($presentation->duration);
-                                     } ?>"></a>
+                            <a href="<?php echo $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')); ?>" id="flowplayer" duration="<?php echo isset($presentation->duration) && $presentation->duration ? $this->escape($presentation->duration) : ''; ?>"></a>
                         </audio>
                     <?php endif; ?>
                     <div id="video-subtitles"></div>

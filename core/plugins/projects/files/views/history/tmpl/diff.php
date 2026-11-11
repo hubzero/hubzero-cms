@@ -78,13 +78,9 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
         <?php if (!$this->getError()) { ?>
         <div class="diff-legend">
             <span class="prominent"><?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF'); ?>:</span>
-            <label><input type="radio" value="side-by-side" name="mode"  <?php if ($this->params['mode'] == 'side-by-side') {
-                echo 'checked="checked"';
-                                                                         } ?>  /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE'); ?>
+            <label><input type="radio" value="side-by-side" name="mode"  <?php echo $this->params['mode'] == 'side-by-side' ? 'checked="checked"' : ''; ?>  /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_SIDE_BY_SIDE'); ?>
             </label>
-            <label><input type="radio" value="inline" name="mode" <?php if ($this->params['mode'] == 'inline') {
-                echo 'checked="checked"';
-                                                                  } ?> /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE'); ?>
+            <label><input type="radio" value="inline" name="mode" <?php echo $this->params['mode'] == 'inline' ? 'checked="checked"' : ''; ?> /> <?php echo Lang::txt('PLG_PROJECTS_FILES_DIFF_INLINE'); ?>
             </label>
             <input type="submit" value="Update" id="diff-update" class="btn" />
             <dl>
@@ -161,9 +157,7 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
                 </div>
             <?php } ?>
 
-            <?php if ($this->getError()) {
-                echo '<p class="witherror">' . $this->getError() . '</p>';
-            } ?>
+            <?php echo $this->getError() ? '<p class="witherror">' . $this->getError() . '</p>' : ''; ?>
         </fieldset>
 </form>
 <?php } ?>

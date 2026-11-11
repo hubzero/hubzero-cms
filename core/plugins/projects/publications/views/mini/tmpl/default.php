@@ -17,9 +17,7 @@ defined('_HZEXEC_') or die();
 $this->css();
 
 ?>
-<div class="sidebox<?php if (count($this->items) == 0) {
-    echo ' suggestions';
-                   } ?>">
+<div class="sidebox<?php echo count($this->items) == 0 ? ' suggestions' : ''; ?>">
     <h4>
         <a href="<?php echo Route::url($this->model->link('publications')); ?>" class="hlink" title="<?php echo Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')); ?>"><?php echo ucfirst(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')); ?></a>
         <?php if (count($this->items) > 0) { ?>

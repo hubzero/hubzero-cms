@@ -24,14 +24,10 @@ $this
         <li rel="recentgroups<?php echo $this->module->id; ?>"
             class="tab_title<?php echo $recentActive; ?>"
         ><?php echo Lang::txt('MOD_MYGROUPS_RECENT'); ?></li>
-        <li rel="allgroups<?php echo $this->module->id; ?>" class="tab_title<?php if (!count($this->recentgroups)) {
-            echo ' active';
-                          } ?>"><?php echo Lang::txt('MOD_MYGROUPS_ALL'); ?></li>
+        <li rel="allgroups<?php echo $this->module->id; ?>" class="tab_title<?php echo !count($this->recentgroups) ? ' active' : ''; ?>"><?php echo Lang::txt('MOD_MYGROUPS_ALL'); ?></li>
     </ul>
 
-    <div id="recentgroups<?php echo $this->module->id; ?>" class="tab_panel<?php if (count($this->recentgroups) > 0) {
-        echo ' active';
-                         } ?>">
+    <div id="recentgroups<?php echo $this->module->id; ?>" class="tab_panel<?php echo count($this->recentgroups) > 0 ? ' active' : ''; ?>">
         <?php if (count($this->recentgroups) > 0) { ?>
             <ul class="compactlist mygroups">
                 <?php
@@ -49,9 +45,7 @@ $this
         <?php } ?>
     </div>
 
-    <div id="allgroups<?php echo $this->module->id; ?>" class="tab_panel<?php if (!count($this->recentgroups)) {
-        echo ' active';
-                      } ?>">
+    <div id="allgroups<?php echo $this->module->id; ?>" class="tab_panel<?php echo !count($this->recentgroups) ? ' active' : ''; ?>">
         <?php
         $total = count($this->allgroups);
         if ($total > 0) { ?>

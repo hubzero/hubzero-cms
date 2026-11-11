@@ -207,18 +207,12 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                         ?>:</label><br
                                />
                         <select name="params[restrict_direct_access]" id="param-link_action">
-                            <option value="0"<?php if (!$params->get('restrict_direct_access')) {
-                                echo ' selected="selected"';
-                                             } ?>>
+                            <option value="0"<?php echo !$params->get('restrict_direct_access') ? ' selected="selected"' : ''; ?>>
                                 <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_DEFAULT'); ?></option>
-                            <option value="1"<?php if ($params->get('restrict_direct_access') == 1) {
-                                echo ' selected="selected"';
-                                             } ?>>
+                            <option value="1"<?php echo $params->get('restrict_direct_access') == 1 ? ' selected="selected"' : ''; ?>>
                                 <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_NO'); ?>
                             </option>
-                            <option value="2"<?php if ($params->get('restrict_direct_access') == 2) {
-                                echo ' selected="selected"';
-                                             } ?>>
+                            <option value="2"<?php echo $params->get('restrict_direct_access') == 2 ? ' selected="selected"' : ''; ?>>
                                 <?php echo Lang::txt('COM_RESOURCES_FIELD_RESTRICT_DIRECT_ACCESS_YES'); ?>
                             </option>
                         </select>
@@ -227,12 +221,8 @@ $params = new \Hubzero\Config\Registry($this->row->get('params'));
                 <div class="input-wrap">
                     <label for="field-state"><?php echo Lang::txt('COM_RESOURCES_FIELD_STATE'); ?>:</label><br />
                     <select name="type[state]" id="field-state">
-                        <option value="0"<?php if ($this->row->state == 0) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php if ($this->row->state == 1) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                        <option value="0"<?php echo $this->row->state == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+                        <option value="1"<?php echo $this->row->state == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
                     </select>
                 </div>
                 <div class="input-wrap">

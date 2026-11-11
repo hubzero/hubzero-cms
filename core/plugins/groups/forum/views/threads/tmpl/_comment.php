@@ -68,9 +68,7 @@ if ($this->comment->isReported()) {
     $comment = $this->comment->comment;
 }
 ?>
-    <li class="comment <?php echo $cls; ?><?php if (!$this->comment->get('parent')) {
-        echo ' start';
-                       } ?>" id="c<?php echo $this->comment->get('id'); ?>">
+    <li class="comment <?php echo $cls; ?><?php echo !$this->comment->get('parent') ? ' start' : ''; ?>" id="c<?php echo $this->comment->get('id'); ?>">
         <p class="comment-member-photo">
             <img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
         </p>
@@ -98,9 +96,7 @@ if ($this->comment->isReported()) {
                 <!-- Only show if people is logged in -->
                 <?php if (!User::isGuest()) { ?>
                     <div class="elementInline likeContainer">
-                        <a class="icon-heart like <?php if ($userLikesComment) {
-                            echo "userLiked";
-                                                  } ?>" href="#"
+                        <a class="icon-heart like <?php echo $userLikesComment ? "userLiked" : ''; ?>" href="#"
                         data-thread="<?php echo $this->thread->get('id'); ?>"
                         data-post="<?php echo $this->comment->get('id'); ?>"
                         data-user="<?php echo User::get('id'); ?>"
@@ -109,9 +105,7 @@ if ($this->comment->isReported()) {
                         data-count="<?php echo $countLike; ?>"
                         aria-label="<?php echo Lang::txt('PLG_GROUPS_FORUM_LIKE'); ?>"
                         ><span class="sr-only"><?php echo Lang::txt('PLG_GROUPS_FORUM_LIKE'); ?></span></a>
-                        <span class="likesStat <?php if ($countLike == 0) {
-                            echo "noLikes";
-                                               } ?>">
+                        <span class="likesStat <?php echo $countLike == 0 ? "noLikes" : ''; ?>">
                             <?php echo ($countLike > 0) ? "View Likes (" . $countLike . ")" : "No Likes"; ?>
                         </span>
                     </div>
@@ -229,9 +223,7 @@ if ($this->comment->isReported()) {
             </div>
 
             <?php if (!$this->thread->get('closed') && $this->config->get('threading') == 'tree' && $this->depth < $this->config->get('threading_depth', 3)) { ?>
-                <div class="comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) {
-                    echo ' hide';
-                                       } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+                <div class="comment-add<?php echo Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : ''; ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
             <form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->thread->link()); ?>" method="post" enctype="multipart/form-data">
                         <fieldset>
                             <legend><span><?php echo Lang::txt('PLG_GROUPS_FORUM_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>

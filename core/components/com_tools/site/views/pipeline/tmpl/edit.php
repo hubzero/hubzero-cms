@@ -214,18 +214,14 @@ $this
                     <legend><?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT'); ?>:</legend>
                     <div class="form-group form-check">
                         <label for="tool_publishType_standard" class="form-check-label">
-                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php if (!$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard') {
-                                echo 'checked="checked"';
-                                                                                                                         } ?> class="option form-check-input" />
+                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php echo !$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard' ? 'checked="checked"' : ''; ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_RAPP'); ?>
                         </label>
                     </div>
                     <?php if ($this->config->get('jupyter', 1)) { ?>
                         <div class="form-group form-check">
                             <label for="tool_publishType_jupyter"  class="form-check-label">
-                                <input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php if ($this->defaults['publishType'] == 'jupyter') {
-                                    echo 'checked="checked"';
-                                                                                                                           } ?> class="option form-check-input" />
+                                <input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php echo $this->defaults['publishType'] == 'jupyter' ? 'checked="checked"' : ''; ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_JUP'); ?>
                             </label>
                     </div>
@@ -234,9 +230,7 @@ $this
                     <?php if ($this->config->get('simtool', 1) && is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) { ?>
                     <div class="form-group form-check">
                         <label for="tool_publishType_simtool"  class="form-check-label">
-                            <input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?php if ($this->defaults['publishType'] == 'simtool') {
-                                echo 'checked="checked"';
-                                                                                                                       } ?> class="option form-check-input" />
+                            <input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?php echo $this->defaults['publishType'] == 'simtool' ? 'checked="checked"' : ''; ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_SIM'); ?>
                         </label>
                     </div>
@@ -249,9 +243,7 @@ $this
                     <?php if ($this->config->get('github', 1)) { ?>
                         <div class="form-group form-check">
                             <label for="tool_repohost_gitexternal" class="form-check-label">
-                                <input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php if (!$this->defaults['repohost'] || $this->defaults['repohost'] == 'gitExternal') {
-                                    echo 'checked="checked"';
-                                                                                                                             } ?> class="option form-check-input" />
+                                <input type="radio" name="tool[repohost]" id="tool_repohost_gitexternal" value="gitExternal" <?php echo !$this->defaults['repohost'] || $this->defaults['repohost'] == 'gitExternal' ? 'checked="checked"' : ''; ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_EXT_GIT'); ?>
                             </label>
                         </div>
@@ -260,9 +252,7 @@ $this
                     <?php if (file_exists('/usr/bin/addrepo.sh')) { ?>
                         <div class="form-group form-check">
                             <label for="tool_repohost_gitlocal" class="form-check-label">
-                                <input type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?php if ($this->defaults['repohost'] == 'gitLocal') {
-                                    echo 'checked="checked"';
-                                                                                                                       } ?> class="option form-check-input" />
+                                <input type="radio" name="tool[repohost]" id="tool_repohost_gitlocal" value="gitLocal" <?php echo $this->defaults['repohost'] == 'gitLocal' ? 'checked="checked"' : ''; ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_GIT'); ?>
                             </label>
                         </div>
@@ -270,9 +260,7 @@ $this
 
                     <div class="form-group form-check">
                         <label for="tool_repohost_svnlocal" class="form-check-label">
-                            <input type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php if ($this->defaults['repohost'] == 'svnLocal') {
-                                echo 'checked="checked"';
-                                                                                                                   } ?> class="option form-check-input" />
+                            <input type="radio" name="tool[repohost]" id="tool_repohost_svnlocal" value="svnLocal" <?php echo $this->defaults['repohost'] == 'svnLocal' ? 'checked="checked"' : ''; ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_LOCAL_SUBVERSION'); ?>
                         </label>
                     </div>
@@ -305,9 +293,7 @@ $this
                     <legend><?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT'); ?>:</legend>
                     <div class="form-group form-check">
                         <label for="tool_publishType_standard" class="form-check-label">
-                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php if (!$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard') {
-                                echo 'checked="checked"';
-                                                                                                                         } ?> class="option form-check-input" />
+                            <input type="radio" name="tool[publishType]" id="tool_publishType_standard" value="standard" <?php echo !$this->defaults['publishType'] || $this->defaults['publishType'] == 'standard' ? 'checked="checked"' : ''; ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_RAPP'); ?>
                         </label>
                     </div>
@@ -315,9 +301,7 @@ $this
                     <?php if ($this->config->get('jupyter', 1)) { ?>
                         <div class="form-group form-check">
                             <label for="tool_publishType_jupyter"  class="form-check-label">
-                                <input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php if ($this->defaults['publishType'] == 'jupyter') {
-                                    echo 'checked="checked"';
-                                                                                                                           } ?> class="option form-check-input" />
+                                <input type="radio" name="tool[publishType]" id="tool_publishType_jupyter" value="jupyter" <?php echo $this->defaults['publishType'] == 'jupyter' ? 'checked="checked"' : ''; ?> class="option form-check-input" />
                                 <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_JUP'); ?>
                             </label>
                     </div>
@@ -326,9 +310,7 @@ $this
                     <?php if ($this->config->get('simtool', 1) && is_file('/usr/share/hubzero-forge/svn/trunk/middleware/invoke.simtool')) { ?>
                     <div class="form-group form-check">
                         <label for="tool_publishType_simtool"  class="form-check-label">
-                            <input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?php if ($this->defaults['publishType'] == 'simtool') {
-                                echo 'checked="checked"';
-                                                                                                                       } ?> class="option form-check-input" />
+                            <input type="radio" name="tool[publishType]" id="tool_publishType_simtool" value="simtool" <?php echo $this->defaults['publishType'] == 'simtool' ? 'checked="checked"' : ''; ?> class="option form-check-input" />
                             <?php echo Lang::txt('COM_TOOLS_EDIT_PUB_OPT_SIM'); ?>
                         </label>
                     </div>

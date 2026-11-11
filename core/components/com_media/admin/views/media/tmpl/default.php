@@ -79,20 +79,14 @@ $this->js();
                         </span>
                     </div>
                     <div class="media-header-buttons">
-                        <a class="icon-th media-files-view thumbs-view hasTip <?php if (!$this->layout || $this->layout == 'thumbs') {
-                            echo 'active';
-                                                                              } ?>" data-view="thumbs" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=thumbs&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_MEDIA_THUMBNAIL_VIEW'); ?>">
+                        <a class="icon-th media-files-view thumbs-view hasTip <?php echo !$this->layout || $this->layout == 'thumbs' ? 'active' : ''; ?>" data-view="thumbs" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=thumbs&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_MEDIA_THUMBNAIL_VIEW'); ?>">
                             <?php echo Lang::txt('COM_MEDIA_THUMBNAIL_VIEW'); ?>
                         </a>
-                        <a class="icon-align-justify media-files-view hasTip listing-view <?php if ($this->layout == 'list') {
-                            echo 'active';
-                                                                                          } ?>" data-view="list" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=list&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_MEDIA_DETAIL_VIEW'); ?>">
+                        <a class="icon-align-justify media-files-view hasTip listing-view <?php echo $this->layout == 'list' ? 'active' : ''; ?>" data-view="list" href="<?php echo Route::url('index.php?option=' . $this->option . '&layout=list&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>" title="<?php echo Lang::txt('COM_MEDIA_DETAIL_VIEW'); ?>">
                             <?php echo Lang::txt('COM_MEDIA_DETAIL_VIEW'); ?>
                         </a>
                         <?php if (User::authorise('core.create', $this->option)) : ?>
-                            <a class="icon-folder-new media-files-action media-folder-new hasTip <?php if ($this->layout == 'list') {
-                                echo 'active';
-                                                                                                 } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>" data-prompt="<?php echo Lang::txt('COM_MEDIA_FOLDER_NAME'); ?>" title="<?php echo Lang::txt('COM_MEDIA_CREATE_FOLDER'); ?>">
+                            <a class="icon-folder-new media-files-action media-folder-new hasTip <?php echo $this->layout == 'list' ? 'active' : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&task=new&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1'); ?>" data-prompt="<?php echo Lang::txt('COM_MEDIA_FOLDER_NAME'); ?>" title="<?php echo Lang::txt('COM_MEDIA_CREATE_FOLDER'); ?>">
                                 <?php echo Lang::txt('COM_MEDIA_CREATE_FOLDER'); ?>
                             </a>
                         <?php endif; ?>

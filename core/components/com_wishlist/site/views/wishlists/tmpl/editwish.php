@@ -189,9 +189,7 @@ if ($this->wishlist->get('id')) {
                             id="field-reward"
                             class="form-control"
                             value=""
-                            size="5"<?php if ($this->funds <= 0) {
-                                echo ' disabled="disabled"';
-                                    } ?> />
+                            size="5"<?php echo $this->funds <= 0 ? ' disabled="disabled"' : ''; ?> />
                         <span class="subtext">
                             <?php echo Lang::txt('COM_WISHLIST_YOU_HAVE'); ?>
                             <strong><?php echo $this->escape($this->funds); ?></strong>

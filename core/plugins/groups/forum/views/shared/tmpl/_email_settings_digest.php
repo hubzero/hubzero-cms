@@ -29,9 +29,7 @@ $base = $this->base;
             <input type="checkbox"
                 class="edit-forum-options-receive-emails"
                 value="1"
-                name="recvpostemail"<?php if ($this->recvEmailOptionValue >= 1) {
-                    echo ' checked="checked"';
-                                    } ?> />
+                name="recvpostemail"<?php echo $this->recvEmailOptionValue >= 1 ? ' checked="checked"' : ''; ?> />
             <label>
                 <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_TOGGLE'); ?>
             </label>
@@ -43,11 +41,7 @@ $base = $this->base;
             <input type="radio"
                 name="recvpostemail"
                 class="edit-forum-options-immediate"
-                value="1"<?php if ($this->recvEmailOptionValue == 1) {
-                    echo ' checked="checked"';
-                         } ?><?php if ($this->recvEmailOptionValue == 0) {
-                         echo ' disabled="disabled"';
-                         } ?> />
+                value="1"<?php echo $this->recvEmailOptionValue == 1 ? ' checked="checked"' : ''; ?><?php echo $this->recvEmailOptionValue == 0 ? ' disabled="disabled"' : ''; ?> />
             <label>
                 <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_IMMEDIATELY'); ?>
             </label>
@@ -56,25 +50,13 @@ $base = $this->base;
             <input type="radio"
                 name="recvpostemail"
                 class="edit-forum-options-digest"
-                value="2"<?php if ($this->recvEmailOptionValue >= 2) {
-                    echo ' checked="checked"';
-                         } ?><?php if ($this->recvEmailOptionValue == 0) {
-                         echo ' disabled="disabled"';
-                         } ?> />
+                value="2"<?php echo $this->recvEmailOptionValue >= 2 ? ' checked="checked"' : ''; ?><?php echo $this->recvEmailOptionValue == 0 ? ' disabled="disabled"' : ''; ?> />
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_AS_A'); ?>
             <select name="recvpostemail"
-                class="edit-forum-options-frequency"<?php if ($this->recvEmailOptionValue < 2) {
-                    echo ' disabled="disabled"';
-                                                    } ?>>
-                <option value="2"<?php if ($this->recvEmailOptionValue == 2) {
-                    echo ' selected="selected"';
-                                 } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DAILY'); ?></option>
-                <option value="3"<?php if ($this->recvEmailOptionValue == 3) {
-                    echo ' selected="selected"';
-                                 } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_WEEKLY'); ?></option>
-                <option value="4"<?php if ($this->recvEmailOptionValue == 4) {
-                    echo ' selected="selected"';
-                                 } ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_MONTHLY'); ?></option>
+                class="edit-forum-options-frequency"<?php echo $this->recvEmailOptionValue < 2 ? ' disabled="disabled"' : ''; ?>>
+                <option value="2"<?php echo $this->recvEmailOptionValue == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DAILY'); ?></option>
+                <option value="3"<?php echo $this->recvEmailOptionValue == 3 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_WEEKLY'); ?></option>
+                <option value="4"<?php echo $this->recvEmailOptionValue == 4 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_MONTHLY'); ?></option>
             </select>
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DIGEST'); ?>
         </div>

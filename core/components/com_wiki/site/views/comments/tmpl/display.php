@@ -175,21 +175,11 @@ if (!$this->sub) {
                     <?php if ($this->page->config('comment_ratings') && !$this->mycomment->get('parent')) { ?>
                         <fieldset>
                             <legend><?php echo Lang::txt('COM_WIKI_FIELD_RATING'); ?>:</legend>
-                            <label for="review_rating_1"><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php if ($this->mycomment->get('rating') == 1) {
-                                echo ' checked="checked"';
-                                                                                                                                                 } ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_ONE'); ?></label>
-                            <label for="review_rating_2"><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php if ($this->mycomment->get('rating') == 2) {
-                                echo ' checked="checked"';
-                                                                                                                                                 } ?> /> &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
-                            <label for="review_rating_3"><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php if ($this->mycomment->get('rating') == 3) {
-                                echo ' checked="checked"';
-                                                                                                                                                 } ?> /> &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;</label>
-                            <label for="review_rating_4"><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php if ($this->mycomment->get('rating') == 4) {
-                                echo ' checked="checked"';
-                                                                                                                                                 } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;</label>
-                            <label for="review_rating_5"><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php if ($this->mycomment->get('rating') == 5) {
-                                echo ' checked="checked"';
-                                                                                                                                                 } ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_FIVE'); ?></label>
+                            <label for="review_rating_1"><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?php echo $this->mycomment->get('rating') == 1 ? ' checked="checked"' : ''; ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_ONE'); ?></label>
+                            <label for="review_rating_2"><input class="option" id="review_rating_2" name="comment[rating]" type="radio" value="2"<?php echo $this->mycomment->get('rating') == 2 ? ' checked="checked"' : ''; ?> /> &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
+                            <label for="review_rating_3"><input class="option" id="review_rating_3" name="comment[rating]" type="radio" value="3"<?php echo $this->mycomment->get('rating') == 3 ? ' checked="checked"' : ''; ?> /> &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;</label>
+                            <label for="review_rating_4"><input class="option" id="review_rating_4" name="comment[rating]" type="radio" value="4"<?php echo $this->mycomment->get('rating') == 4 ? ' checked="checked"' : ''; ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;</label>
+                            <label for="review_rating_5"><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?php echo $this->mycomment->get('rating') == 5 ? ' checked="checked"' : ''; ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?php echo Lang::txt('COM_WIKI_FIELD_RATING_FIVE'); ?></label>
                         </fieldset>
                     <?php } ?>
 
@@ -216,9 +206,7 @@ if (!$this->sub) {
 
                     <div class="form-group form-check">
                         <label class="comment-anonymous-label" class="form-check-label" for="comment-anonymous">
-                            <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php if ($this->mycomment->get('anonymous') != 0) {
-                                echo ' checked="checked"';
-                                                                                                                                             } ?> />
+                            <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment-anonymous" value="1"<?php echo $this->mycomment->get('anonymous') != 0 ? ' checked="checked"' : ''; ?> />
                             <?php echo Lang::txt('COM_WIKI_FIELD_ANONYMOUS'); ?>
                         </label>
                     </div>

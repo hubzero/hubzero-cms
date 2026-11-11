@@ -59,9 +59,7 @@ if ($this->getError()) {
         <input type="hidden" name="task" value="submit" />
         <?php } ?>
     </fieldset>
-    <div <?php if (!$this->ajax) {
-        echo 'class="vform"';
-         } ?>>
+    <div <?php echo !$this->ajax ? 'class="vform"' : ''; ?>>
         <p>
             <span class="faded"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PREVIOUS_LABEL')); ?></span> <?php echo $this->escape($this->pub->version_label); ?>
         </p>

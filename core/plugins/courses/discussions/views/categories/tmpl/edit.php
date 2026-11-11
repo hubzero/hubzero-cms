@@ -87,9 +87,7 @@ defined('_HZEXEC_') or die();
                                 type="checkbox"
                                 name="fields[closed]"
                                 id="field-closed"
-                                value="3"<?php if ($this->category->get('closed')) {
-                                    echo ' checked="checked"';
-                                         } ?>
+                                value="3"<?php echo $this->category->get('closed') ? ' checked="checked"' : ''; ?>
                                                                                                                    />
                             <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_CLOSED'); ?>
                         </label>

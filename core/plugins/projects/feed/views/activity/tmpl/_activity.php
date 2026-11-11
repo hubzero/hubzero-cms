@@ -65,9 +65,7 @@ if (!$this->activity->log->get('anonymous')) {
 ?>
 <div id="li_<?php echo $this->activity->log->get('id'); ?>" class="activity <?php echo $new ? ' newitem' : ''; ?>" data-recorded="<?php echo $recorded; ?>">
 
-    <div class="activity-actor-picture<?php if ($online) {
-        echo ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE');
-                                      } ?>">
+    <div class="activity-actor-picture<?php echo $online ? ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE') : ''; ?>">
         <?php if ($showProject) { ?>
             <span class="user-img-wrap">
                 <img class="project-image" src="<?php echo Route::url($this->model->link('thumb')); ?>" alt="<?php echo $this->escape($this->model->get('title')); ?>" />

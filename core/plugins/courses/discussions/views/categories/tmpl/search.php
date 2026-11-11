@@ -66,9 +66,7 @@ $base = $this->offering->alias() . '&active=forum';
                                     $cls[] = 'sticky';
                                 }
                                 ?>
-                                <tr<?php if (count($cls) > 0) {
-                                    echo ' class="' . implode(' ', $cls) . '"';
-                                   } ?>>
+                                <tr<?php echo count($cls) > 0 ? ' class="' . implode(' ', $cls) . '"' : ''; ?>>
                                     <th>
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>

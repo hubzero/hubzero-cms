@@ -39,9 +39,7 @@ $this->css();
                 <?php echo $this->escape($row->title) . ' v.' . $this->escape($row->version_label); ?></a>
                 <span><?php if ($row->state == 5) {
                     ?><a href="<?php echo Route::url('index.php?option=com_publications&controller=curation&id=' . $row->id); ?>"><?php echo Lang::txt('MOD_MYCURATION_REVIEW'); ?></a><?php
-                      } ?><?php if ($row->state == 7) {
-                      echo Lang::txt('MOD_MYCURATION_PENDING_CHANGES');
-                      } ?></span>
+                      } ?><?php echo $row->state == 7 ? Lang::txt('MOD_MYCURATION_PENDING_CHANGES') : ''; ?></span>
             </li>
             <?php
         }

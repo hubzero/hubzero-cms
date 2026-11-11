@@ -36,9 +36,7 @@ if (!count($fieldSets)) :
 
             <?php foreach ($this->form->getFieldset($name) as $field) : ?>
                 <?php if (!$field->hidden) : ?>
-                    <div class="input-wrap <?php if ($field->type == 'Spacer') {
-                        echo ' input-spacer';
-                                           } ?>">
+                    <div class="input-wrap <?php echo $field->type == 'Spacer' ? ' input-spacer' : ''; ?>">
                         <?php echo $field->label; ?><br />
                         <?php echo $field->input; ?>
                     </div>

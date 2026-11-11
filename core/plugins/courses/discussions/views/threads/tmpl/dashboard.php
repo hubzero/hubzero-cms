@@ -165,9 +165,7 @@ if (count($inst) > 0) {
                     if ($c) {
                         ?>
 
-                    <form action="<?php echo Route::url($base . '&active=discussions'); ?>" method="post" id="commentform"<?php if ($this->data) {
-                        echo ' class="hide"';
-                                  } ?> enctype="multipart/form-data">
+                    <form action="<?php echo Route::url($base . '&active=discussions'); ?>" method="post" id="commentform"<?php echo $this->data ? ' class="hide"' : ''; ?> enctype="multipart/form-data">
                         <p class="comment-member-photo">
                             <?php
                             $anon = 1;
@@ -274,9 +272,7 @@ if (count($inst) > 0) {
                             <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EMPTY_FORUM'); ?>
                         </p>
                     <?php } ?>
-                    <div class="comment-thread"><?php if ($this->data) {
-                        echo $this->data->html;
-                                                } ?></div>
+                    <div class="comment-thread"><?php echo $this->data ? $this->data->html : ''; ?></div>
                 </div><!-- / .comments-frame -->
             </div><!-- / .comments-panel -->
 

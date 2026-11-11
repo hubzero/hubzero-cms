@@ -16,9 +16,7 @@ $skipFields = ['license_type', 'state', 'main', 'secret', 'access'];
 <p id="recordcount"><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_NUMBER_RECORDS'); ?>: <?php echo count($this->items); ?></p>
 <ul class="pubitems" id="resultlist">
 <?php foreach ($this->items as $item) { ?>
-    <li<?php if (count($item['errors']) > 0) {
-        echo ' class="problem"';
-       } ?>>
+    <li<?php echo count($item['errors']) > 0 ? ' class="problem"' : ''; ?>>
         <h5><?php echo Lang::txt('COM_PUBLICATIONS_BATCH_RECORD') . ' ' . $i . ': ' . $this->escape($item['version']->title); ?></h5>
         <table class="records">
             <tbody>
@@ -40,9 +38,7 @@ $skipFields = ['license_type', 'state', 'main', 'secret', 'access'];
                         <td><?php echo $this->escape($value); ?></td>
                     </tr>
                 <?php } ?>
-                <tr<?php if (!$item['license']) {
-                    echo ' class="missing"';
-                   } ?>>
+                <tr<?php echo !$item['license'] ? ' class="missing"' : ''; ?>>
                     <td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_LICENSE'); ?></td>
                     <td><?php echo $item['license'] ? $this->escape($item['license']->title) : 'N/A'; ?></td>
                 </tr>
@@ -60,9 +56,7 @@ $skipFields = ['license_type', 'state', 'main', 'secret', 'access'];
                         } ?>
                     </td>
                 </tr>
-                <tr<?php if (empty($item['authors'])) {
-                    echo ' class="missing"';
-                   } ?>>
+                <tr<?php echo empty($item['authors']) ? ' class="missing"' : ''; ?>>
                     <td class="key"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_AUTHORS'); ?></td>
                     <td>
                         <table class="filelist">
@@ -77,9 +71,7 @@ $skipFields = ['license_type', 'state', 'main', 'secret', 'access'];
                             <tbody>
                             <?php if (!empty($item['authors'])) { ?>
                                 <?php foreach ($item['authors'] as $authorRecord) { ?>
-                                    <tr<?php if ($authorRecord['error']) {
-                                        echo ' class="missing"';
-                                       } ?>>
+                                    <tr<?php echo $authorRecord['error'] ? ' class="missing"' : ''; ?>>
                                         <td><?php echo (int) $authorRecord['author']->user_id; ?></td>
                                         <td><?php echo $authorRecord['error'] ? ' <span class="block prominent">' . $this->escape($authorRecord['error']) . '</span>' : ''; ?><?php echo $this->escape($authorRecord['author']->name); ?></td>
                                         <td><?php echo $this->escape($authorRecord['author']->organization); ?></td>
@@ -106,9 +98,7 @@ $skipFields = ['license_type', 'state', 'main', 'secret', 'access'];
                             <tbody>
                             <?php if (!empty($item['files'])) { ?>
                                 <?php foreach ($item['files'] as $filerecord) { ?>
-                                    <tr<?php if ($filerecord['error']) {
-                                        echo ' class="missing"';
-                                       } ?>>
+                                    <tr<?php echo $filerecord['error'] ? ' class="missing"' : ''; ?>>
                                         <td><?php echo $this->escape($filerecord['type']); ?></td>
                                         <td><?php echo $this->escape($filerecord['subtype']); ?></td>
                                         <td><?php echo $filerecord['error'] ? ' <span class="block prominent">' . $this->escape($filerecord['error']) . '</span>' : ''; ?><?php echo $this->escape($filerecord['attachment']->path); ?></td>

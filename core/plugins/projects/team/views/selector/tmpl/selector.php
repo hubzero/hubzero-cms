@@ -34,9 +34,7 @@ if (count($this->team) > 0) {
             $class = $selected ? '' : 'allowed';
 
             ?>
-            <li id="author-<?php echo $owner->id; ?>" class="type-author <?php echo $class; ?> <?php if ($selected) {
-                echo ' selectedfilter preselected';
-                           } ?>">
+            <li id="author-<?php echo $owner->id; ?>" class="type-author <?php echo $class; ?> <?php echo $selected ? ' selectedfilter preselected' : ''; ?>">
                 <span class="item-info"><?php echo $this->escape($org); ?></span>
                 <img width="30" height="30" src="<?php echo $thumb; ?>" class="a-ima" alt="<?php echo htmlentities($name); ?>" />
                 <span class="a-name"><?php echo $this->escape($name); ?>

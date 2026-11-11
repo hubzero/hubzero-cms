@@ -92,9 +92,7 @@ $base = $this->offering->link() . '&active=forum';
                                 $row->set('category', $this->filters['category']);
                                 $row->set('section', $this->filters['section']);
                                 ?>
-                                <tr<?php if (count($cls) > 0) {
-                                    echo ' class="' . implode(' ', $cls) . '"';
-                                   } ?>>
+                                <tr<?php echo count($cls) > 0 ? ' class="' . implode(' ', $cls) . '"' : ''; ?>>
                                     <th>
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>

@@ -82,15 +82,9 @@ $this
             <div class="col span8">
                 <label for="filter_emailConfirmed"><?php echo Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED'); ?></label>
                 <select name="activation" id="filter_emailConfirmed" class="inputbox filter filter-submit">
-                    <option value="0"<?php if ($this->filters['activation'] == 0) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED'); ?></option>
-                    <option value="1"<?php if ($this->filters['activation'] == 1) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED'); ?></option>
-                    <option value="-1"<?php if ($this->filters['activation'] == -1) {
-                        echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED'); ?></option>
+                    <option value="0"<?php echo $this->filters['activation'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_EMAIL_CONFIRMED'); ?></option>
+                    <option value="1"<?php echo $this->filters['activation'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_CONFIRMED'); ?></option>
+                    <option value="-1"<?php echo $this->filters['activation'] == -1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_FIELD_EMAIL_CONFIRMED_UNCONFIRMED'); ?></option>
                 </select>
 
                 <?php // This is who may view the profile (users.access), not the access group: that's the Group filter?>

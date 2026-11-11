@@ -16,9 +16,7 @@ $base = rtrim(Request::base(true), '/');
 
 if ($this->quote) {
     ?>
-    <div class="<?php echo $this->module->module; ?>"<?php if ($this->params->get('moduleid')) {
-        echo ' id="' . $this->params->get('moduleid') . '"';
-                } ?>>
+    <div class="<?php echo $this->module->module; ?>"<?php echo $this->params->get('moduleid') ? ' id="' . $this->params->get('moduleid') . '"' : ''; ?>>
         <blockquote cite="<?php echo $this->escape(stripslashes($this->quote->get('fullname'))); ?>">
             <p>
                 <?php

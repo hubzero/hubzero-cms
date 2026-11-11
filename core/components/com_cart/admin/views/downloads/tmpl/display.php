@@ -54,9 +54,7 @@ $this
                 if (!empty($this->filters['skuRequested'])) {
                     ?>
                     <select name="skuRequested" id="skuRequested" class="filter filter-submit">
-                        <option value="0"<?php if ($this->filters['skuRequested'] == -1) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('All SKUs'); ?></option>
+                        <option value="0"<?php echo $this->filters['skuRequested'] == -1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('All SKUs'); ?></option>
                         <option value="<?php echo $this->escape($this->filters['skuRequested']); ?>"><?php echo $this->escape($this->skuRequestedName); ?></option>
                     </select>
                     &nbsp;&nbsp;

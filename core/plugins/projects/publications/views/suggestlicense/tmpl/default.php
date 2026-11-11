@@ -69,9 +69,7 @@ if ($this->getError()) {
             <input type="hidden" name="task" value="submit" />
         <?php } ?>
     </fieldset>
-    <div <?php if (!$this->ajax) {
-        echo 'class="vform"';
-         } ?>>
+    <div <?php echo !$this->ajax ? 'class="vform"' : ''; ?>>
         <label class="a-label">
             <span class="faded block"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_LICENSE_TITLE'); ?></span>
             <input type="text" name="license_title"  class="long" value="" />

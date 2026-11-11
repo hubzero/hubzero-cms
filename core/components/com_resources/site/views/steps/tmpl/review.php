@@ -79,9 +79,7 @@ $this
                 foreach ($this->licenses as $license) {
                     if (substr($license->name, 0, 6) == 'custom') {
                         ?>
-                    <option value="custom"<?php if ($params->get('license') == $license->name) {
-                        echo ' selected="selected"';
-                                          } ?>><?php echo Lang::txt('Custom'); ?></option>
+                    <option value="custom"<?php echo $params->get('license') == $license->name ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Custom'); ?></option>
                         <?php
                         $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
                         $c = $this->escape(nl2br($license->text));
@@ -99,9 +97,7 @@ $this
                         continue;
                     } else {
                         ?>
-                    <option value="<?php echo $this->escape($license->name); ?>"<?php if ($params->get('license') == $license->name) {
-                        echo ' selected="selected"';
-                                   } ?>><?php echo $this->escape($license->title); ?></option>
+                    <option value="<?php echo $this->escape($license->name); ?>"<?php echo $params->get('license') == $license->name ? ' selected="selected"' : ''; ?>><?php echo $this->escape($license->title); ?></option>
                         <?php
                     }
                     $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';
@@ -178,9 +174,7 @@ $this
             foreach ($this->licenses as $license) {
                 if (substr($license->name, 0, 6) == 'custom') {
                     ?>
-                        <option value="custom"<?php if ($params->get('license') == $license->name) {
-                            echo ' selected="selected"';
-                                              } ?>><?php echo Lang::txt('Custom'); ?></option>
+                        <option value="custom"<?php echo $params->get('license') == $license->name ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('Custom'); ?></option>
                     <?php
                     $l[] = '<input type="hidden" id="license-custom" value="' . $this->escape(nl2br($license->text)) . '" />';
                     $c = $this->escape(nl2br($license->text));
@@ -198,9 +192,7 @@ $this
                     continue;
                 } else {
                     ?>
-                        <option value="<?php echo $this->escape($license->name); ?>"<?php if ($params->get('license') == $license->name) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo $this->escape($license->title); ?></option>
+                        <option value="<?php echo $this->escape($license->name); ?>"<?php echo $params->get('license') == $license->name ? ' selected="selected"' : ''; ?>><?php echo $this->escape($license->title); ?></option>
                     <?php
                 }
                 $l[] = '<input type="hidden" id="license-' . $this->escape($license->name) . '" value="' . $this->escape(nl2br($license->text)) . '" />';

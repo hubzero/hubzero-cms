@@ -12,9 +12,7 @@ use Hubzero\Facades\Route;
 // no direct access
 defined('_HZEXEC_') or die();
 ?>
-<li class="group<?php if ($group->published == 2) {
-    echo ' archived';
-                } ?>">
+<li class="group<?php echo $group->published == 2 ? ' archived' : ''; ?>">
     <a href="<?php echo Route::url('index.php?option=com_groups&cn=' . $group->cn); ?>"><?php echo $this->escape(stripslashes($group->description)); ?></a>
     <span><span class="<?php echo $status; ?> status"><?php echo Lang::txt('MOD_MYGROUPS_STATUS_' . strtoupper($status)); ?></span></span>
     <?php if (!$group->approved) : ?>

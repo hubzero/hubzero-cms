@@ -75,9 +75,7 @@ $this->js();
                            data-tag="<?php echo $tagStr; ?>"><?php
                                echo $this->escape($tag->tag);
                             ?></a></td>
-                    <td><?php if ($tag->admin == 1) {
-                        echo '<span class="check">admin</span>';
-                        } ?></td>
+                    <td><?php echo $tag->admin == 1 ? '<span class="check">admin</span>' : ''; ?></td>
                 </tr>
                 <?php
                 $k = 1 - $k;

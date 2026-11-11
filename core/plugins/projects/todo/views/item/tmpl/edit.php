@@ -101,9 +101,7 @@ $todoContent = $this->row->get('details')
                                     <?php echo $noneSelected; ?>
                                 ><?php echo $noListLabel; ?></option>
                             <?php foreach ($lists as $list) { ?>
-                                <option value="<?php echo $list->color; ?>" <?php if ($list->color == $color) {
-                                    echo 'selected="selected"';
-                                               } ?>><?php echo stripslashes($list->todolist); ?></option>
+                                <option value="<?php echo $list->color; ?>" <?php echo $list->color == $color ? 'selected="selected"' : ''; ?>><?php echo stripslashes($list->todolist); ?></option>
                             <?php } ?>
                             </select>
                         </label>
@@ -115,9 +113,7 @@ $todoContent = $this->row->get('details')
                                 <?php if ($member->userid && $member->userid != 0) {
                                     $team_ids[] = $member->userid; ?>
                                 <option value="<?php echo $member->userid; ?>"
-                                    class="nameopt" <?php if ($member->userid == $this->row->get('assigned_to')) {
-                                        echo 'selected="selected"';
-                                                    } ?>><?php echo $member->name; ?></option>
+                                    class="nameopt" <?php echo $member->userid == $this->row->get('assigned_to') ? 'selected="selected"' : ''; ?>><?php echo $member->name; ?></option>
                                 <?php } ?>
                             <?php } ?>
                             </select>

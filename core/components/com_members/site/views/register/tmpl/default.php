@@ -223,9 +223,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                     <label for="password"<?php echo !empty($this->xregistration->invalid['password']) && !is_array($this->xregistration->invalid['password'])
                                                 ? ' class="fieldWithErrors"'
                                                 : ''; ?>>
-                                        <?php echo Lang::txt('COM_MEMBERS_REGISTER_PASSWORD'); ?> <?php if ($this->registrationPassword == Field::STATE_REQUIRED) {
-                                            echo '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>';
-                                        } ?>
+                                        <?php echo Lang::txt('COM_MEMBERS_REGISTER_PASSWORD'); ?> <?php echo $this->registrationPassword == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
                                         <input name="password" id="password" class="form-control" type="password" value="<?php echo $this->escape($this->registration['password']); ?>" autocomplete="off"<?php echo ($this->registrationPassword == Field::STATE_REQUIRED) ? ' required aria-required="true"' : ''; ?><?php echo !empty($this->xregistration->invalid['password']) ? ' aria-invalid="true"' : ''; ?> aria-describedby="passrules" />
                                         <?php echo !empty($this->xregistration->invalid['password']) && !is_array($this->xregistration->invalid['password'])
                                                     ? '<span class="error" role="alert">' . $this->xregistration->invalid['password'] . '</span>'
@@ -237,9 +235,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                 <div class="col span6 omega">
                                     <div class="form-group">
                                         <label for="password2"<?php echo !empty($this->xregistration->invalid['confirmPassword']) ? ' class="fieldWithErrors"' : ''; ?>>
-                                            <?php echo Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_PASSWORD'); ?> <?php if ($this->registrationConfirmPassword == Field::STATE_REQUIRED) {
-                                                echo '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>';
-                                            } ?>
+                                            <?php echo Lang::txt('COM_MEMBERS_REGISTER_CONFIRM_PASSWORD'); ?> <?php echo $this->registrationConfirmPassword == Field::STATE_REQUIRED ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
                                             <input name="password2" class="form-control" id="password2" type="password" value="<?php echo $this->escape($this->registration['confirmPassword']); ?>" autocomplete="off"<?php echo ($this->registrationConfirmPassword == Field::STATE_REQUIRED) ? ' required aria-required="true"' : ''; ?><?php echo !empty($this->xregistration->invalid['confirmPassword']) ? ' aria-invalid="true"' : ''; ?> />
                                             <?php echo !empty($this->xregistration->invalid['confirmPassword']) ? '<span class="error" role="alert">' . $this->xregistration->invalid['confirmPassword'] . '</span>' : ''; ?>
                                         </label>
@@ -594,9 +590,7 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
                 <div class="form-group">
                     <label for="usageAgreement"<?php echo (!empty($this->xregistration->invalid['usageAgreement'])) ? ' class="fieldWithErrors"' : ''; ?>>
-                        <input type="checkbox" class="option form-check-input" id="usageAgreement" value="1" name="usageAgreement"<?php if ($this->registration['usageAgreement']) {
-                            echo ' checked="checked"';
-                                                                                                                                  } ?>/>
+                        <input type="checkbox" class="option form-check-input" id="usageAgreement" value="1" name="usageAgreement"<?php echo $this->registration['usageAgreement'] ? ' checked="checked"' : ''; ?>/>
                         <?php echo Lang::txt('COM_MEMBERS_REGISTER_TOS', Request::base(true)); ?>
                         <?php echo ($this->registrationTOU == Field::STATE_REQUIRED) ? '<span class="required">' . Lang::txt('COM_MEMBERS_REGISTER_FORM_REQUIRED') . '</span>' : ''; ?>
                     </label>

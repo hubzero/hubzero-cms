@@ -67,9 +67,7 @@ $this
                                 foreach ($this->groups as $group) {
                                     $listed = $listed || ($owner == $group->cn);
                                     ?>
-                                <option value="<?php echo $this->escape($group->cn); ?>"<?php if ($owner == $group->cn) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
+                                <option value="<?php echo $this->escape($group->cn); ?>"<?php echo $owner == $group->cn ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($group->description)); ?></option>
                                     <?php
                                 }
                             }
@@ -87,18 +85,10 @@ $this
                     <label for="access">
                         <?php echo Lang::txt('COM_CONTRIBUTE_GROUPS_ACCESS_LEVEL'); ?>: <span class="optional"><?php echo Lang::txt('COM_CONTRIBUTE_OPTIONAL'); ?></span>
                         <select name="access" id="access">
-                            <option value="0"<?php if ($this->row->access == 0) {
-                                echo ' selected="selected"';
-                                             } ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></option>
-                            <option value="1"<?php if ($this->row->access == 1) {
-                                echo ' selected="selected"';
-                                             } ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></option>
-                            <option value="3"<?php if ($this->row->access == 3) {
-                                echo ' selected="selected"';
-                                             } ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></option>
-                            <option value="4"<?php if ($this->row->access == 4) {
-                                echo ' selected="selected"';
-                                             } ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></option>
+                            <option value="0"<?php echo $this->row->access == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PUBLIC'); ?></option>
+                            <option value="1"<?php echo $this->row->access == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_REGISTERED'); ?></option>
+                            <option value="3"<?php echo $this->row->access == 3 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED'); ?></option>
+                            <option value="4"<?php echo $this->row->access == 4 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE'); ?></option>
                         </select>
                     </label>
                 </div>

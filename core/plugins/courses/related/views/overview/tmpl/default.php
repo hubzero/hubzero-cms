@@ -42,9 +42,7 @@ $this
             <?php
         }
         ?>
-        <div class="course-block col span-third<?php if ($cls) {
-            echo $cls;
-                                               } ?>">
+        <div class="course-block col span-third<?php echo $cls ? $cls : ''; ?>">
             <a href="<?php echo Route::url($course->link()); ?>">
                 <div class="course-details">
                     <div class="course-identity">

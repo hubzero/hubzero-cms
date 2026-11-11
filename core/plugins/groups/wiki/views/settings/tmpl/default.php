@@ -44,9 +44,7 @@ $crumbOptions = [
             <label for="automatic_toc"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_AUTOMATIC_TOC'); ?></label>
             <select name="automatic_toc" id="automatic_toc">
                 <?php foreach ($modes as $v => $label) { ?>
-                    <option value="<?php echo $this->escape($v); ?>"<?php if ((string) $mode === (string) $v) {
-                        echo ' selected="selected"';
-                                   } ?>><?php echo $this->escape($label); ?></option>
+                    <option value="<?php echo $this->escape($v); ?>"<?php echo (string) $mode === (string) $v ? ' selected="selected"' : ''; ?>><?php echo $this->escape($label); ?></option>
                 <?php } ?>
             </select>
 
@@ -60,9 +58,7 @@ $crumbOptions = [
             <label for="wiki_crumbs"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS'); ?></label>
             <select name="wiki_crumbs" id="wiki_crumbs">
                 <?php foreach ($crumbOptions as $v => $label) { ?>
-                    <option value="<?php echo $this->escape($v); ?>"<?php if ((string) $crumbs === (string) $v) {
-                        echo ' selected="selected"';
-                                   } ?>><?php echo $this->escape($label); ?></option>
+                    <option value="<?php echo $this->escape($v); ?>"<?php echo (string) $crumbs === (string) $v ? ' selected="selected"' : ''; ?>><?php echo $this->escape($label); ?></option>
                 <?php } ?>
             </select>
             <p class="hint"><?php echo Lang::txt('PLG_GROUPS_WIKI_SETTINGS_CRUMBS_HINT'); ?></p>

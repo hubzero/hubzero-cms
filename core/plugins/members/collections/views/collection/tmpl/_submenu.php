@@ -19,9 +19,7 @@ $base = $this->member->link() . '&active=' . $this->name;
     <nav>
         <ul class="sub-menu">
             <?php if ($this->params->get('access-manage-collection')) { ?>
-                <li<?php if ($this->active == 'livefeed') {
-                    echo ' class="active"';
-                   } ?>>
+                <li<?php echo $this->active == 'livefeed' ? ' class="active"' : ''; ?>>
                     <a class="livefeed tooltips"
                         href="<?php echo Route::url($base); ?>"
                         title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FEED_TITLE'); ?>">
@@ -29,9 +27,7 @@ $base = $this->member->link() . '&active=' . $this->name;
                     </a>
                 </li>
             <?php } ?>
-            <li<?php if ($this->active == 'collections') {
-                echo ' class="active"';
-               } ?>>
+            <li<?php echo $this->active == 'collections' ? ' class="active"' : ''; ?>>
                 <a class="collections count"
                     href="<?php echo Route::url($base . '&task=all'); ?>">
                     <span>
@@ -42,16 +38,12 @@ $base = $this->member->link() . '&active=' . $this->name;
                     </span>
                 </a>
             </li>
-            <li<?php if ($this->active == 'posts') {
-                echo ' class="active"';
-               } ?>>
+            <li<?php echo $this->active == 'posts' ? ' class="active"' : ''; ?>>
                 <a class="posts count" href="<?php echo Route::url($base . '&task=posts'); ?>">
                     <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_HEADER_NUM_POSTS', $this->posts); ?></span>
                 </a>
             </li>
-            <li<?php if ($this->active == 'followers') {
-                echo ' class="active"';
-               } ?>>
+            <li<?php echo $this->active == 'followers' ? ' class="active"' : ''; ?>>
                 <a class="followers count"
                     href="<?php echo Route::url($base . '&task=followers'); ?>">
                     <span>
@@ -62,9 +54,7 @@ $base = $this->member->link() . '&active=' . $this->name;
                     </span>
                 </a>
             </li>
-            <li<?php if ($this->active == 'following') {
-                echo ' class="active"';
-               } ?>>
+            <li<?php echo $this->active == 'following' ? ' class="active"' : ''; ?>>
                 <a class="following count"
                     href="<?php echo Route::url($base . '&task=following'); ?>">
                     <span>

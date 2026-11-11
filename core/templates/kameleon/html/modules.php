@@ -27,9 +27,7 @@ function modChrome_cpanel($module, &$params, &$attribs)
 {
     if ($module->content) {
         ?>
-        <div class="mod"<?php if (isset($attribs['id']) && $attribs['id']) {
-            echo ' id="' . $attribs['id'] . '"';
-                        } ?>>
+        <div class="mod"<?php echo isset($attribs['id']) && $attribs['id'] ? ' id="' . $attribs['id'] . '"' : ''; ?>>
         <?php if ($module->showtitle != 0) : ?>
             <h3 class="mod-title">
                 <?php echo $module->title; ?>

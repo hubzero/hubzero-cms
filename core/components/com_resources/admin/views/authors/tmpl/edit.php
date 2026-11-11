@@ -89,9 +89,7 @@ Toolbar::cancel();
                             </td>
                             <td>
                                 <select name="fields[<?php echo $i; ?>][role]">
-                                    <option value=""<?php if ($row->role == '') {
-                                        echo ' selected="selected"';
-                                                    }?>><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
+                                    <option value=""<?php echo $row->role == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
                                     <?php
                                     if ($this->roles) {
                                         foreach ($this->roles as $role) {

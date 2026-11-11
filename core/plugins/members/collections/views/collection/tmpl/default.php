@@ -87,20 +87,12 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                 <?php } ?>
             <?php } ?>
             <span class="options sort-options">
-                <a href="<?php echo Route::url($this->collection->link() . '&sort=created&viewas=' . $viewas); ?>" class="icon-created<?php if ($this->filters['sort'] == 'created') {
-                    echo ' selected';
-                         } ?>" data-view="sort-created" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_CREATED_SORT'); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_CREATED_SORT'); ?></a>
-                <a href="<?php echo Route::url($this->collection->link() . '&sort=ordering&viewas=' . $viewas); ?>" class="icon-ordering<?php if ($this->filters['sort'] == 'ordering') {
-                    echo ' selected';
-                         } ?>" data-view="sort-ordering" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ORDERING_SORT'); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ORDERING_SORT'); ?></a>
+                <a href="<?php echo Route::url($this->collection->link() . '&sort=created&viewas=' . $viewas); ?>" class="icon-created<?php echo $this->filters['sort'] == 'created' ? ' selected' : ''; ?>" data-view="sort-created" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_CREATED_SORT'); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_CREATED_SORT'); ?></a>
+                <a href="<?php echo Route::url($this->collection->link() . '&sort=ordering&viewas=' . $viewas); ?>" class="icon-ordering<?php echo $this->filters['sort'] == 'ordering' ? ' selected' : ''; ?>" data-view="sort-ordering" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ORDERING_SORT'); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_ORDERING_SORT'); ?></a>
             </span>
             <span class="options view-options">
-                <a href="<?php echo Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=grid'); ?>" class="icon-grid<?php if ($viewas == 'grid') {
-                    echo ' selected';
-                         } ?>" data-view="view-grid" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GRID_VIEW'); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GRID_VIEW'); ?></a>
-                <a href="<?php echo Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=list'); ?>" class="icon-list<?php if ($viewas == 'list') {
-                    echo ' selected';
-                         } ?>" data-view="view-list" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIST_VIEW'); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIST_VIEW'); ?></a>
+                <a href="<?php echo Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=grid'); ?>" class="icon-grid<?php echo $viewas == 'grid' ? ' selected' : ''; ?>" data-view="view-grid" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GRID_VIEW'); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_GRID_VIEW'); ?></a>
+                <a href="<?php echo Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=list'); ?>" class="icon-list<?php echo $viewas == 'list' ? ' selected' : ''; ?>" data-view="view-list" title="<?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIST_VIEW'); ?>"><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIST_VIEW'); ?></a>
             </span>
         </p>
     <?php } ?>

@@ -168,9 +168,7 @@ $this->js();
                 <td>
                     <a class="editlinktip hasTip" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id=' . $row->id . $filterstring); ?>" title="<?php echo Lang::txt('COM_PUBLICATIONS_PUBLISH_INFO');?>::<?php echo $info; ?>">
                         <span><?php echo $this->escape(stripslashes($row->title)); ?></span>
-                    </a><?php if ($checkedInfo) {
-                        echo $checkedInfo;
-                        } ?>
+                    </a><?php echo $checkedInfo ? $checkedInfo : ''; ?>
                 </td>
                 <td class="priority-4">
                     <?php echo $this->escape($row->version_label); ?>

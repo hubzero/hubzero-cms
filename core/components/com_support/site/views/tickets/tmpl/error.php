@@ -24,9 +24,7 @@ defined('_HZEXEC_') or die();
     </div>
     <h3><?php echo Lang::txt('COM_SUPPORT_ERROR'); ?></h3>
     <p><?php echo Lang::txt('COM_SUPPORT_ERROR_PROCESSING_DESCRIPTION'); ?></p>
-<?php if ($this->getError()) {
-    echo '<p>' . $this->getError() . '</p>';
-} ?>
+<?php echo $this->getError() ? '<p>' . $this->getError() . '</p>' : ''; ?>
 </div>
 
 <script type="text/javascript">window.top.window.HUB.Modules.ReportProblems.hideTimer();</script>

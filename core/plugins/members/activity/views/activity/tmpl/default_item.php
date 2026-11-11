@@ -72,9 +72,7 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
     id="activity<?php echo $this->row->get('id'); ?>"
     class="activity <?php echo $status . ($this->row->get('starred') ? ' starred' : ''); ?>">
 
-    <div class="activity-actor-picture<?php if ($online) {
-        echo ' tooltips" title="' . Lang::txt('PLG_MEMBERS_ACTIVITY_ONLINE');
-                                      } ?>">
+    <div class="activity-actor-picture<?php echo $online ? ' tooltips" title="' . Lang::txt('PLG_MEMBERS_ACTIVITY_ONLINE') : ''; ?>">
         <?php if ($this->row->log->get('created_by') == User::get('id')) { ?>
             <span class="user-img-wrap">
                 <span class="activity-context <?php

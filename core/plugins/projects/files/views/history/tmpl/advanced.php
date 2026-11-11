@@ -171,9 +171,7 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                             || $sLocals == $locals)) ? true : false;
 
                     ?>
-                <tr <?php if ($trclass) {
-                    echo 'class="' . $trclass . '"';
-                    } ?>>
+                <tr <?php echo $trclass ? 'class="' . $trclass . '"' : ''; ?>>
                     <?php if ($allowDiff) { ?>
                     <td><?php echo '@' . $v; ?></td>
                     <?php } ?>
@@ -183,16 +181,8 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                     <?php if ($allowDiff) { ?>
                     <td class="diffing">
                         <?php if (!$version['remote'] && count($this->versions) > 1) { ?>
-                        <input type="radio" value="<?php echo urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']); ?>" name="old" <?php if ($oldest) {
-                            echo 'checked="checked"';
-                                                   } ?> <?php if ($last) {
-                                                   echo 'disabled="disabled"';
-                                                   } ?> class="diff-old" />
-                        <input type="radio" value="<?php echo urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']); ?>" name="new" <?php if ($last) {
-                            echo 'checked="checked"';
-                                                   } ?> <?php if ($oldest) {
-                                                   echo 'disabled="disabled"';
-                                                   } ?> class="diff-new" />
+                        <input type="radio" value="<?php echo urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']); ?>" name="old" <?php echo $oldest ? 'checked="checked"' : ''; ?> <?php echo $last ? 'disabled="disabled"' : ''; ?> class="diff-old" />
+                        <input type="radio" value="<?php echo urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']); ?>" name="new" <?php echo $last ? 'checked="checked"' : ''; ?> <?php echo $oldest ? 'disabled="disabled"' : ''; ?> class="diff-new" />
                         <?php } ?>
                     </td>
                     <?php } ?>

@@ -52,9 +52,7 @@ Toolbar::help('pages');
                     <?php foreach ($this->scopes as $scope) {
                         $val = $scope->get('scope') . ':' . $scope->get('scope_id');
                         ?>
-                        <option value="<?php echo $this->escape($val); ?>"<?php if ($val == $this->filters['scope']) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo $this->escape($val); ?></option>
+                        <option value="<?php echo $this->escape($val); ?>"<?php echo $val == $this->filters['scope'] ? ' selected="selected"' : ''; ?>><?php echo $this->escape($val); ?></option>
                     <?php } ?>
                 </select>
 
@@ -66,9 +64,7 @@ Toolbar::help('pages');
                             continue;
                         }
                         ?>
-                        <option value="<?php echo $nspace->get('namespace'); ?>"<?php if ($this->filters['namespace'] == $nspace->get('namespace')) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo $nspace->get('namespace'); ?></option>
+                        <option value="<?php echo $nspace->get('namespace'); ?>"<?php echo $this->filters['namespace'] == $nspace->get('namespace') ? ' selected="selected"' : ''; ?>><?php echo $nspace->get('namespace'); ?></option>
                     <?php } ?>
                 </select>
             </div>

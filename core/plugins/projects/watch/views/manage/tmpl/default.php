@@ -45,9 +45,7 @@ $this->css();
                     <input type="checkbox"
                         name="category[<?php echo $name; ?>]"
                         value="1"
-                        <?php if ($checked == 1) {
-                            echo 'checked="checked"';
-                        } ?> />
+                        <?php echo $checked == 1 ? 'checked="checked"' : ''; ?> />
                     <span class="cat-icon"><span class="<?php echo $name; ?>"></span></span>
                     <span><?php echo $catLabel; ?></span>
                 </li>

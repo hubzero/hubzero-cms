@@ -16,16 +16,12 @@ $base = 'index.php?option=' . $this->option;
 ?>
     <nav>
         <ul class="sub-menu">
-            <li<?php if ($this->active == 'collections') {
-                echo ' class="active"';
-               } ?>>
+            <li<?php echo $this->active == 'collections' ? ' class="active"' : ''; ?>>
                 <a class="collections count active" href="<?php echo Route::url($base . '&task=all'); ?>">
                     <span><?php echo Lang::txt('COM_COLLECTIONS_HEADER_NUM_COLLECTIONS', $this->collections); ?></span>
                 </a>
             </li>
-            <li<?php if ($this->active == 'posts') {
-                echo ' class="active"';
-               } ?>>
+            <li<?php echo $this->active == 'posts' ? ' class="active"' : ''; ?>>
                 <a class="posts count" href="<?php echo Route::url($base . '&task=posts'); ?>">
                     <span><?php echo Lang::txt('COM_COLLECTIONS_HEADER_NUM_POSTS', $this->posts); ?></span>
                 </a>

@@ -59,17 +59,13 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
             . Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_PAGE') . '</a></span>';
 
             ?>
-            <tr class="mini <?php if ($v->main == 1) {
-                echo ' vprime';
-                            } ?>">
+            <tr class="mini <?php echo $v->main == 1 ? ' vprime' : ''; ?>">
                 <td class="centeralign"><?php echo $v->version_number ? $v->version_number : ''; ?></td>
                 <td><?php echo $this->escape($v->version_label); ?></td>
                 <td><?php echo $this->escape($v->title); ?></td>
                 <td>
                     <span class="<?php echo $class; ?>"><?php echo $status; ?></span>
-                    <?php if ($date) {
-                        echo '<span class="block ipadded faded">' . $date . '</span>';
-                    } ?>
+                    <?php echo $date ? '<span class="block ipadded faded">' . $date . '</span>' : ''; ?>
                 </td>
                 <td><?php echo $doi_notice; ?></td>
                 <td><?php echo $options; ?></td>

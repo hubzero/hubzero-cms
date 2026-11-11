@@ -37,39 +37,17 @@ Html::behavior('tooltip');
             <div class="col span6">
                 <label for="filter-state"><?php echo Lang::txt('COM_TOOLS_FIELD_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
-                    <option value="-1"<?php if ($this->filters['state'] == '-1') {
-                        echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_TOOLS_ALL_STATES'); ?></option>
-                    <option value="0"<?php if ($this->filters['state'] === 0) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                    <option value="1"<?php if ($this->filters['state'] === 1) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED'); ?></option>
-                    <option value="2"<?php if ($this->filters['state'] === 2) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_TOOLS_CREATED'); ?></option>
-                    <option value="3"<?php if ($this->filters['state'] === 3) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED'); ?></option>
-                    <option value="4"<?php if ($this->filters['state'] === 4) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED'); ?></option>
-                    <option value="5"<?php if ($this->filters['state'] === 5) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_TOOLS_UPDATED'); ?></option>
-                    <option value="6"<?php if ($this->filters['state'] === 6) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_TOOLS_APPROVED'); ?></option>
-                    <option value="7"<?php if ($this->filters['state'] === 7) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                    <option value="8"<?php if ($this->filters['state'] === 8) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_TOOLS_RETIRED'); ?></option>
-                    <option value="9"<?php if ($this->filters['state'] === 9) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_TOOLS_ABANDONED'); ?></option>
+                    <option value="-1"<?php echo $this->filters['state'] == '-1' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_ALL_STATES'); ?></option>
+                    <option value="0"<?php echo $this->filters['state'] === 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+                    <option value="1"<?php echo $this->filters['state'] === 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED'); ?></option>
+                    <option value="2"<?php echo $this->filters['state'] === 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_CREATED'); ?></option>
+                    <option value="3"<?php echo $this->filters['state'] === 3 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED'); ?></option>
+                    <option value="4"<?php echo $this->filters['state'] === 4 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED'); ?></option>
+                    <option value="5"<?php echo $this->filters['state'] === 5 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_UPDATED'); ?></option>
+                    <option value="6"<?php echo $this->filters['state'] === 6 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_APPROVED'); ?></option>
+                    <option value="7"<?php echo $this->filters['state'] === 7 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                    <option value="8"<?php echo $this->filters['state'] === 8 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_RETIRED'); ?></option>
+                    <option value="9"<?php echo $this->filters['state'] === 9 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_ABANDONED'); ?></option>
                 </select>
             </div>
         </div>

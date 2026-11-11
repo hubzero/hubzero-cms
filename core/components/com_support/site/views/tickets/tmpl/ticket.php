@@ -474,9 +474,7 @@ $cc = [];
                                     <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEVERITY'); ?>: <a class="icon-help tooltips popup" href="<?php echo Route::url('index.php?option=com_help&component=support&page=ticket#severity'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP'); ?>"><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_HELP'); ?></a>
                                     <select name="ticket[severity]" id="ticket-field-severity" class="form-control">
                                         <?php foreach ($this->lists['severities'] as $severity) { ?>
-                                            <option value="<?php echo $severity; ?>"<?php if ($severity == $this->row->get('severity')) {
-                                                echo ' selected="selected"';
-                                                           } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
+                                            <option value="<?php echo $severity; ?>"<?php echo $severity == $this->row->get('severity') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
                                         <?php } ?>
                                     </select>
                                 </label>
@@ -488,19 +486,13 @@ $cc = [];
                                         <select name="ticket[status]" id="status" class="form-control">
                                             <optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
                                                 <?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
-                                                    <option value="<?php echo $status->get('id'); ?>"<?php if ($this->row->isOpen() && $this->row->get('status') == $status->get('id')) {
-                                                        echo ' selected="selected"';
-                                                                   } ?>><?php echo $this->escape($status->get('title')); ?></option>
+                                                    <option value="<?php echo $status->get('id'); ?>"<?php echo $this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape($status->get('title')); ?></option>
                                                 <?php } ?>
                                             </optgroup>
                                             <optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
-                                                <option value="0"<?php if (!$this->row->isOpen() && $this->row->get('status') == 0) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
+                                                <option value="0"<?php echo !$this->row->isOpen() && $this->row->get('status') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_CLOSED'); ?></option>
                                                 <?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
-                                                    <option value="<?php echo $status->get('id'); ?>"<?php if (!$this->row->isOpen() && $this->row->get('status') == $status->get('id')) {
-                                                        echo ' selected="selected"';
-                                                                   } ?>><?php echo $this->escape($status->get('title')); ?></option>
+                                                    <option value="<?php echo $status->get('id'); ?>"<?php echo !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape($status->get('title')); ?></option>
                                                 <?php } ?>
                                             </optgroup>
                                         </select>
@@ -548,9 +540,7 @@ $cc = [];
                                         <?php
                                         foreach ($this->lists['categories'] as $category) {
                                             ?>
-                                            <option value="<?php echo $this->escape($category->alias); ?>"<?php if ($this->row->get('category') == $category->alias) {
-                                                echo ' selected="selected"';
-                                                           } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+                                            <option value="<?php echo $this->escape($category->alias); ?>"<?php echo $this->row->get('category') == $category->alias ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
                                             <?php
                                         }
                                         ?>

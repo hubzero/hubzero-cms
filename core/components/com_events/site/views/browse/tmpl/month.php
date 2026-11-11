@@ -31,18 +31,10 @@ $this
 
 <nav>
     <ul class="sub-menu">
-        <li<?php if ($this->task == 'year') {
-            echo ' class="active"';
-           } ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_YEAR'); ?></span></a></li>
-        <li<?php if ($this->task == 'month') {
-            echo ' class="active"';
-           } ?>><a rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_MONTH'); ?></span></a></li>
-        <li<?php if ($this->task == 'week') {
-            echo ' class="active"';
-           } ?>><a rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_WEEK'); ?></span></a></li>
-        <li<?php if ($this->task == 'day') {
-            echo ' class="active"';
-           } ?>><a rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_DAY'); ?></span></a></li>
+        <li<?php echo $this->task == 'year' ? ' class="active"' : ''; ?>><a href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_YEAR'); ?></span></a></li>
+        <li<?php echo $this->task == 'month' ? ' class="active"' : ''; ?>><a rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_MONTH'); ?></span></a></li>
+        <li<?php echo $this->task == 'week' ? ' class="active"' : ''; ?>><a rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day . '&task=week'); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_WEEK'); ?></span></a></li>
+        <li<?php echo $this->task == 'day' ? ' class="active"' : ''; ?>><a rel="nofollow" href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $this->year . '&month=' . $this->month . '&day=' . $this->day); ?>"><span><?php echo Lang::txt('EVENTS_CAL_LANG_REP_DAY'); ?></span></a></li>
     </ul>
 </nav>
 
@@ -82,9 +74,7 @@ $this
                     if ($this->categories) {
                         foreach ($this->categories as $id => $title) {
                             ?>
-                        <option value="<?php echo $id; ?>"<?php if ($this->category == $id) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo $this->escape(stripslashes($title)); ?></option>
+                        <option value="<?php echo $id; ?>"<?php echo $this->category == $id ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($title)); ?></option>
                             <?php
                         }
                     }

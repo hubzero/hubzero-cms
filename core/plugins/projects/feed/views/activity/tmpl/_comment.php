@@ -52,9 +52,7 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
 ?>
     <li class="activity <?php echo $newComment ? ' newitem' : ''; ?>" id="c_<?php echo $comment->id; ?>">
 
-        <div class="activity-actor-picture<?php if ($online) {
-            echo ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE');
-                                          } ?>">
+        <div class="activity-actor-picture<?php echo $online ? ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE') : ''; ?>">
             <span class="user-img-wrap">
                 <img class="comment-author" src="<?php echo $creator->picture($comment->admin); ?>" alt="<?php echo $this->escape(($comment->admin == 1) ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author); ?>" />
                 <?php if ($online) { ?>

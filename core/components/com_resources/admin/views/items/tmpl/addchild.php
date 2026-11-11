@@ -26,9 +26,7 @@ Request::setVar('hidemainmenu', 1);
     <fieldset class="adminform">
         <legend><span><?php echo Lang::txt('COM_RESOURCES_ADD_CHILD_CHOOSE'); ?></span></legend>
 
-        <?php if ($this->getError()) {
-            echo '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>';
-        } ?>
+        <?php echo $this->getError() ? '<p class="error">' . implode('<br />', $this->getErrors()) . '</p>' : ''; ?>
 
         <div class="grid">
             <div class="col span6">

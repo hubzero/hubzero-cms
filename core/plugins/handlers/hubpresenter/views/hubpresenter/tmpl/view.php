@@ -322,9 +322,7 @@ if (isset($this->entityId) && isset($this->entityType)) {
                         <?php foreach ($presentation->media as $source) : ?>
                             <source src="<?php echo with(new Moderator($content_folder . DS . $source->source))->getUrl(); ?>" />
                         <?php endforeach; ?>
-                        <a href="<?php echo with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl(); ?>" id="flowplayer" duration="<?php if (isset($presentation->duration) && $presentation->duration) {
-                            echo $this->escape($presentation->duration);
-                                 } ?>"></a>
+                        <a href="<?php echo with(new Moderator($content_folder . DS . $presentation->media[0]->source))->getUrl(); ?>" id="flowplayer" duration="<?php echo isset($presentation->duration) && $presentation->duration ? $this->escape($presentation->duration) : ''; ?>"></a>
                     </audio>
                 <?php endif; ?>
                 <div id="video-subtitles"></div>

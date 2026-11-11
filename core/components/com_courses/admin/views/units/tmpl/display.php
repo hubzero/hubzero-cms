@@ -57,21 +57,11 @@ Html::behavior('tooltip');
             <div class="col span6">
                 <label for="filter-state"><?php echo Lang::txt('COM_COURSES_FIELD_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit">
-                    <option value="-1"<?php if ($this->filters['state'] == -1) {
-                        echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
-                    <option value="0"<?php if ($this->filters['state'] == 0) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
-                    <option value="1"<?php if ($this->filters['state'] == 1) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
-                    <option value="3"<?php if ($this->filters['state'] == 3) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></option>
-                    <option value="2"<?php if ($this->filters['state'] == 2) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
+                    <option value="-1"<?php echo $this->filters['state'] == -1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_ALL_STATES'); ?></option>
+                    <option value="0"<?php echo $this->filters['state'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_UNPUBLISHED'); ?></option>
+                    <option value="1"<?php echo $this->filters['state'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_PUBLISHED'); ?></option>
+                    <option value="3"<?php echo $this->filters['state'] == 3 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_DRAFT'); ?></option>
+                    <option value="2"<?php echo $this->filters['state'] == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_COURSES_TRASHED'); ?></option>
                 </select>
             </div>
         </div>

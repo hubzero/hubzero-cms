@@ -24,9 +24,7 @@ if ($this->import->get('id')) { ?>
             </thead>
             <tbody>
             <?php foreach ($this->import->fields() as $mapping) { ?>
-                <tr<?php if (!$mapping['field']) {
-                    echo ' class="field-unknown"';
-                   } ?>>
+                <tr<?php echo !$mapping['field'] ? ' class="field-unknown"' : ''; ?>>
                     <td>
                         <label for="mapping-<?php echo $mapping['name']; ?>">
                             <?php echo $mapping['label']; ?>
@@ -70,9 +68,7 @@ if ($this->import->get('id')) { ?>
                             ?>
                             <optgroup label="<?php echo Lang::txt('COM_GROUPS_IMPORT_FIELDS_DETAILS'); ?>">
                                 <?php foreach ($columns as $column) : ?>
-                                    <option value="<?php echo $column; ?>" <?php if ($mapping['field'] == $column) {
-                                        echo 'selected="selected"';
-                                                   } ?>><?php echo $column; ?></option>
+                                    <option value="<?php echo $column; ?>" <?php echo $mapping['field'] == $column ? 'selected="selected"' : ''; ?>><?php echo $column; ?></option>
                                 <?php endforeach; ?>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_GROUPS_IMPORT_FIELDS_DESCRIPTION'); ?>">

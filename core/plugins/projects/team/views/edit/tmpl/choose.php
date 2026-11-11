@@ -61,9 +61,7 @@ $totalLabel = ucfirst(Lang::txt('PLG_PROJECTS_TEAM_TOTAL_MEMBERS'));
                         <th class="th_user i_user activesort">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?>
                         </th>
-                        <th<?php if ($this->filters['sortby'] == 'role') {
-                            echo ' class="activesort"';
-                           } ?>>
+                        <th<?php echo $this->filters['sortby'] == 'role' ? ' class="activesort"' : ''; ?>>
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_ROLE'); ?>
                         </th>
                     </tr>

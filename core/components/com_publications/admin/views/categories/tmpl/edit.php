@@ -106,9 +106,7 @@ Html::behavior('framework', true);
                     <label for="field-dc_type"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DC_TYPE'); ?>:</label>
                     <select name="prop[dc_type]" id="field-dc_type">
                         <?php foreach ($dcTypes as $dct) { ?>
-                        <option value="<?php echo $dct; ?>" <?php if ($this->escape($this->row->dc_type) == $dct) {
-                            echo 'selected="selected"';
-                                       } ?>><?php echo $dct; ?></option>
+                        <option value="<?php echo $dct; ?>" <?php echo $this->escape($this->row->dc_type) == $dct ? 'selected="selected"' : ''; ?>><?php echo $dct; ?></option>
                         <?php } ?>
                     </select>
                     <span class="hint"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DUBLIN_CORE'); ?></span>

@@ -62,13 +62,9 @@ $base = $this->offering->link() . '&active=pages';
                     <label for="field-section_id">
                         <?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_SECTION'); ?>
                         <select name="fields[section_id]" id="field-section_id">
-                            <option value="0"<?php if ($this->model->get('section_id') == 0) {
-                                echo ' selected="selected"';
-                                             } ?>><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_OPT_ALL_SECTIONS'); ?></option>
+                            <option value="0"<?php echo $this->model->get('section_id') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_COURSES_PAGES_FIELD_OPT_ALL_SECTIONS'); ?></option>
                         <?php foreach ($this->offering->sections() as $section) { ?>
-                            <option value="<?php echo $section->get('id'); ?>"<?php if ($section->get('id') == $this->model->get('section_id')) {
-                                echo ' selected="selected"';
-                                           } ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
+                            <option value="<?php echo $section->get('id'); ?>"<?php echo $section->get('id') == $this->model->get('section_id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->get('title'))); ?></option>
                         <?php } ?>
                         </select>
                     </label>

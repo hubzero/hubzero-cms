@@ -43,16 +43,12 @@ $this
                     <li id="folder_watching" class="open">
                         <span class="icon-watch folder"><?php echo Lang::txt('COM_SUPPORT_QUERIES_WATCHING'); ?></span>
                         <ul id="queries_watching" class="wqueries">
-                            <li<?php if (intval($this->filters['show']) == -1) {
-                                echo ' class="active"';
-                               }?>>
+                            <li<?php echo intval($this->filters['show']) == -1 ? ' class="active"' : ''; ?>>
                                 <a class="query" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
                                     <?php echo $this->escape(Lang::txt('COM_SUPPORT_QUERIES_WATCHING_OPEN')); ?> <span><?php echo $this->watch['open']; ?></span>
                                 </a>
                             </li>
-                            <li<?php if (intval($this->filters['show']) == -2) {
-                                echo ' class="active"';
-                               }?>>
+                            <li<?php echo intval($this->filters['show']) == -2 ? ' class="active"' : ''; ?>>
                                 <a class="query" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=-2&limitstart=0' . (intval($this->filters['show']) != -2 ? '&search=' : '')); ?>">
                                     <?php echo $this->escape(Lang::txt('COM_SUPPORT_QUERIES_WATCHING_CLOSED')); ?> <span><?php echo $this->watch['closed']; ?></span>
                                 </a>
@@ -76,9 +72,7 @@ $this
                                 </span>
                                 <ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
                                     <?php foreach ($folder->queries as $query) { ?>
-                                        <li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) {
-                                            echo ' class="active"';
-                                                      }?>>
+                                        <li id="query_<?php echo $this->escape($query->id); ?>" <?php echo intval($this->filters['show']) == $query->id ? ' class="active"' : ''; ?>>
                                             <a class="query" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')); ?>">
                                                 <?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->count; ?></span>
                                             </a>
@@ -129,44 +123,32 @@ $this
                                 <span class="sort-header"><?php echo Lang::txt('COM_SUPPORT_SORT_RESULTS'); ?></span>
                                 <ul>
                                     <li>
-                                        <a<?php if ($this->filters['sort'] == 'created') {
-                                            echo ' class="active ' . strtolower($this->filters['sortdir']) . '"';
-                                          } ?> href="javascript:tableOrdering('created','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
+                                        <a<?php echo $this->filters['sort'] == 'created' ? ' class="active ' . strtolower($this->filters['sortdir']) . '"' : ''; ?> href="javascript:tableOrdering('created','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_AGE'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a<?php if ($this->filters['sort'] == 'status') {
-                                            echo ' class="active ' . strtolower($this->filters['sortdir']) . '"';
-                                          } ?> href="javascript:tableOrdering('status','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
+                                        <a<?php echo $this->filters['sort'] == 'status' ? ' class="active ' . strtolower($this->filters['sortdir']) . '"' : ''; ?> href="javascript:tableOrdering('status','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_STATUS'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a<?php if ($this->filters['sort'] == 'severity') {
-                                            echo ' class="active ' . strtolower($this->filters['sortdir']) . '"';
-                                          } ?> href="javascript:tableOrdering('severity','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
+                                        <a<?php echo $this->filters['sort'] == 'severity' ? ' class="active ' . strtolower($this->filters['sortdir']) . '"' : ''; ?> href="javascript:tableOrdering('severity','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SEVERITY'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a<?php if ($this->filters['sort'] == 'summary') {
-                                            echo ' class="active ' . strtolower($this->filters['sortdir']) . '"';
-                                          } ?> href="javascript:tableOrdering('summary','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
+                                        <a<?php echo $this->filters['sort'] == 'summary' ? ' class="active ' . strtolower($this->filters['sortdir']) . '"' : ''; ?> href="javascript:tableOrdering('summary','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SUMMARY'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a<?php if ($this->filters['sort'] == 'group') {
-                                            echo ' class="active ' . strtolower($this->filters['sortdir']) . '"';
-                                          } ?> href="javascript:tableOrdering('group','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
+                                        <a<?php echo $this->filters['sort'] == 'group' ? ' class="active ' . strtolower($this->filters['sortdir']) . '"' : ''; ?> href="javascript:tableOrdering('group','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_GROUP'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a<?php if ($this->filters['sort'] == 'owner') {
-                                            echo ' class="active ' . strtolower($this->filters['sortdir']) . '"';
-                                          } ?> href="javascript:tableOrdering('owner','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
+                                        <a<?php echo $this->filters['sort'] == 'owner' ? ' class="active ' . strtolower($this->filters['sortdir']) . '"' : ''; ?> href="javascript:tableOrdering('owner','<?php echo $direction; ?>','');" title="<?php echo Lang::txt('COM_SUPPORT_COL_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_OWNER'); ?>
                                         </a>
                                     </li>

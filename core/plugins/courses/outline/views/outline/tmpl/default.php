@@ -169,9 +169,7 @@ if (!$offeringViewAccess && !$sparamsPreview) { ?>
                         <?php echo $this->escape(stripslashes($unit->get('title'))); ?>
                     </h3>
 
-                    <div class="unit-availability<?php if (!$unit->started()) {
-                        echo ' comingSoon';
-                                                 } ?>">
+                    <div class="unit-availability<?php echo !$unit->started() ? ' comingSoon' : ''; ?>">
                         <div class="details">
                             <div class="unit-description">
                                 <?php echo $this->escape(stripslashes($unit->get('description'))); ?>

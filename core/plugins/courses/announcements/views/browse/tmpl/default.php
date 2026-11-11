@@ -55,9 +55,7 @@ $base = $this->offering->link() . '&active=announcements';
         <div class="container">
             <?php if ($rows->total() > 0) { ?>
                 <?php foreach ($rows as $row) { ?>
-                    <div class="announcement<?php if ($row->get('priority')) {
-                        echo ' high';
-                                            } ?>">
+                    <div class="announcement<?php echo $row->get('priority') ? ' high' : ''; ?>">
                         <?php echo $row->content('parsed'); ?>
                         <dl class="entry-meta">
                             <dt class="entry-id"><?php echo $row->get('id'); ?></dt>

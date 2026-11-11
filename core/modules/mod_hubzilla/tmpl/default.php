@@ -28,9 +28,7 @@ $reveal = strtolower(Request::getWord('reveal', ''));
 
 $base = rtrim(Request::base(true), '/');
 ?>
-<div id="hubzilla"<?php if ($reveal == 'eastereggs') {
-    echo ' class="revealed"';
-                  } ?>>
+<div id="hubzilla"<?php echo $reveal == 'eastereggs' ? ' class="revealed"' : ''; ?>>
     <audio preload="auto" id="hubzilla-roar">
         <source src="<?php echo $base; ?>/core/modules/mod_hubzilla/assets/sounds/roar.ogg" type="audio/ogg" />
         <source src="<?php echo $base; ?>/core/modules/mod_hubzilla/assets/sounds/roar.mp3" type="audio/mp3" />

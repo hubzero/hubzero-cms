@@ -43,9 +43,7 @@ $this->css();
     <?php
     $i = 0;
     foreach ($this->polls as $poll) { ?>
-        <div class="col span4<?php if ($i == 2) {
-            echo ' omega';
-                             } ?>">
+        <div class="col span4<?php echo $i == 2 ? ' omega' : ''; ?>">
             <div class="poll">
                 <div class="details">
                     <?php if ($poll->get('open')) {

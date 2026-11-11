@@ -86,9 +86,7 @@ $this->js();
                         name="fields[permissions][group.invite]"
                         id="field-permissions-invite"
                         value="1"
-                        <?php if ($permissions->get('group.invite') == 1) {
-                            echo 'checked="checked"';
-                        } ?> />
+                        <?php echo $permissions->get('group.invite') == 1 ? 'checked="checked"' : ''; ?> />
                     <?php $txt = Lang::txt('COM_GROUPS_PERMISSION_INVITE'); ?>
                     <label for="field-permissions-invite"><?php echo $txt; ?></label>
                 </div>
@@ -99,9 +97,7 @@ $this->js();
                         name="fields[permissions][group.edit]"
                         id="field-permissions-edit"
                         value="1"
-                        <?php if ($permissions->get('group.edit') == 1) {
-                            echo 'checked="checked"';
-                        } ?> />
+                        <?php echo $permissions->get('group.edit') == 1 ? 'checked="checked"' : ''; ?> />
                     <label for="field-permissions-edit"><?php echo Lang::txt('COM_GROUPS_PERMISSION_EDIT'); ?></label>
                 </div>
 
@@ -111,9 +107,7 @@ $this->js();
                         name="fields[permissions][group.pages]"
                         id="field-permissions-pages"
                         value="1"
-                        <?php if ($permissions->get('group.pages') == 1) {
-                            echo 'checked="checked"';
-                        } ?> />
+                        <?php echo $permissions->get('group.pages') == 1 ? 'checked="checked"' : ''; ?> />
                     <label for="field-permissions-pages"><?php echo Lang::txt('COM_GROUPS_PERMISSION_PAGES'); ?></label>
                 </div>
             </fieldset>

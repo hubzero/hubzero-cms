@@ -94,9 +94,7 @@ $counts = $this->model->get('counts');
             continue;
         }*/
         ?>
-        <li<?php if ($tab['name'] == $this->active) {
-            echo ' class="active"';
-           } ?>>
+        <li<?php echo $tab['name'] == $this->active ? ' class="active"' : ''; ?>>
             <?php
             $tabUrl = Route::url(
                 'index.php?option=' . $this->option
@@ -126,9 +124,7 @@ $counts = $this->model->get('counts');
             <?php if (isset($tab['children']) && count($tab['children']) > 0) { ?>
                 <ul>
                     <?php foreach ($tab['children'] as $item) { ?>
-                        <li<?php if ($item['class']) {
-                            echo ' class="' . $item['class'] . '"';
-                           } ?>>
+                        <li<?php echo $item['class'] ? ' class="' . $item['class'] . '"' : ''; ?>>
                             <a class="tab-<?php echo $item['name']; ?>" data-icon="&#x
                                 <?php echo $item['icon']; ?>" href="<?php echo Route::url($item['url']); ?>">
                                 <span><?php echo $item['title']; ?></span>

@@ -52,10 +52,7 @@ $this->css();
         <li>
             <a href="<?php echo $updatesUrl; ?>">
                 <?php echo Lang::txt('PLG_MEMBERS_PROJECTS_UPDATES_FEED'); ?>
-                <?php if ($this->newcount) {
-                    echo '<span class="s-new">'
-                        . $this->newcount . '</span>';
-                } ?>
+                <?php echo $this->newcount ? '<span class="s-new">' . $this->newcount . '</span>' : ''; ?>
             </a>
         </li>
     </ul>
@@ -154,10 +151,7 @@ $this->css();
                                 </a>
                             </td>
                             <td class="th_privacy">
-                                <?php if (!$row->isPublic()) {
-                                    echo '<span class="privacy-icon">'
-                                        . '&nbsp;</span>';
-                                } ?>
+                                <?php echo !$row->isPublic() ? '<span class="privacy-icon">' . '&nbsp;</span>' : ''; ?>
                             </td>
                             <td class="th_title">
                                 <a href="<?php echo $rowUrl; ?>"

@@ -33,9 +33,7 @@ $this->css();
     <fieldset class="hub-mail">
         <div class="cont">
             <h3><?php echo Lang::txt('PLG_MEMBERS_MESSAGES_COMPOSE_MESSAGE'); ?></h3>
-            <label<?php if ($this->no_html) {
-                echo ' class="width-65"';
-                  } ?>>
+            <label<?php echo $this->no_html ? ' class="width-65"' : ''; ?>>
                 <?php echo Lang::txt('PLG_MEMBERS_MESSAGES_TO'); ?>
                 <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
                 <?php

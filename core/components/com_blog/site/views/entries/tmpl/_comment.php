@@ -84,9 +84,7 @@ if ($this->comment->isReported()) {
                     <div class="form-group">
                         <div class="form-check">
                             <label class="form-check-label comment-anonymous" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
-                                <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" <?php if ($this->comment->get('anonymous')) {
-                                    echo ' checked="checked"';
-                                                                                                                             } ?> />
+                                <input class="option form-check-input" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" <?php echo $this->comment->get('anonymous') ? ' checked="checked"' : ''; ?> />
                                 <?php echo Lang::txt('COM_BLOG_POST_ANONYMOUS'); ?>
                             </label>
                         </div>
@@ -130,9 +128,7 @@ if ($this->comment->isReported()) {
             </div>
 
             <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-            <div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) {
-                echo ' hide';
-                                              } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+            <div class="addcomment comment-add<?php echo Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : ''; ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
                 <form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->base); ?>" method="post" enctype="multipart/form-data">
                     <fieldset>
                         <legend><span><?php echo Lang::txt('COM_BLOG_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>

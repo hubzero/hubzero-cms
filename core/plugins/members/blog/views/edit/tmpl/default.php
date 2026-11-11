@@ -48,9 +48,7 @@ $this
             <legend><?php echo Lang::txt($this->entry->isNew() ? 'PLG_MEMBERS_BLOG_NEW_ENTRY' : 'PLG_MEMBERS_BLOG_EDIT_DETAILS'); ?></legend>
 
             <div class="form-group">
-                <label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) {
-                    echo ' class="fieldWithErrors"';
-                                        } ?>>
+                <label for="field-title"<?php echo $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : ''; ?>>
                     <?php echo Lang::txt('PLG_MEMBERS_BLOG_TITLE'); ?> <span class="required"><?php echo Lang::txt('JOPTION_REQUIRED'); ?></span>
                     <input type="text" class="form-control" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title', ''))); ?>" />
                 </label>
@@ -92,9 +90,7 @@ $this
                 <div class="col span6">
                     <div class="form-group">
                         <label for="field-allow_comments">
-                            <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) {
-                                echo ' checked="checked"';
-                                                                                                                                                   } ?> />
+                            <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php echo $this->entry->get('allow_comments') == 1 ? ' checked="checked"' : ''; ?> />
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_ALLOW_COMMENTS'); ?>
                         </label>
                     </div>
@@ -104,15 +100,9 @@ $this
                         <label for="field-state">
                             <?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY'); ?>
                             <select class="form-control" name="entry[access]" id="field-access">
-                                <option value="1"<?php if ($this->entry->get('access') == 1) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
-                                <option value="2"<?php if ($this->entry->get('access') == 2) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
-                                <option value="5"<?php if ($this->entry->get('access') > 2) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
+                                <option value="1"<?php echo $this->entry->get('access') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
+                                <option value="2"<?php echo $this->entry->get('access') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
+                                <option value="5"<?php echo $this->entry->get('access') > 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_MEMBERS_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
                             </select>
                         </label>
                     </div>

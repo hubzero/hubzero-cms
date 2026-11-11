@@ -58,9 +58,7 @@ $counts = $this->model->get('counts');
                 $tabTitleAttr = ucfirst(Lang::txt('COM_PROJECTS_PROJECT'))
                     . ' ' . ucfirst($tab['title']);
                 ?>
-                <li<?php if ($active) {
-                    echo ' class="active"';
-                   } ?> id="tab-<?php echo $tab['name']; ?>">
+                <li<?php echo $active ? ' class="active"' : ''; ?> id="tab-<?php echo $tab['name']; ?>">
                     <a
                         class="tab-<?php echo $tab['name']; ?>"
                         href="<?php echo $tabUrl; ?>/"

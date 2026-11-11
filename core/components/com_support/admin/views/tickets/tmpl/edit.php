@@ -555,9 +555,7 @@ if (!$no_html) {
                                 <?php
                                 foreach ($this->lists['categories'] as $category) {
                                     ?>
-                                <option value="<?php echo $this->escape($category->alias); ?>"<?php if ($category->alias == $this->row->get('category')) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+                                <option value="<?php echo $this->escape($category->alias); ?>"<?php echo $category->alias == $this->row->get('category') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
                                     <?php
                                 }
                                 ?>
@@ -578,9 +576,7 @@ if (!$no_html) {
                                     <?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_SEVERITY'); ?>
                                     <select name="ticket[severity]" id="ticket-field-severity">
                                         <?php foreach (\Components\Support\Helpers\Utilities::getSeverities() as $severity) { ?>
-                                            <option value="<?php echo $severity; ?>"<?php if ($severity == $this->row->get('severity')) {
-                                                echo ' selected="selected"';
-                                                           } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
+                                            <option value="<?php echo $severity; ?>"<?php echo $severity == $this->row->get('severity') ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
                                         <?php } ?>
                                     </select>
                                 </label>
@@ -593,19 +589,13 @@ if (!$no_html) {
                                     <select name="ticket[status]" id="ticket-field-status">
                                         <optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN'); ?>">
                                             <?php foreach (\Components\Support\Models\Status::allOpen()->rows() as $status) { ?>
-                                                <option value="<?php echo $status->get('id'); ?>"<?php if ($this->row->isOpen() && $this->row->get('status') == $status->get('id')) {
-                                                    echo ' selected="selected"';
-                                                               } ?>><?php echo $this->escape($status->get('title')); ?></option>
+                                                <option value="<?php echo $status->get('id'); ?>"<?php echo $this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape($status->get('title')); ?></option>
                                             <?php } ?>
                                         </optgroup>
                                         <optgroup label="<?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPTGROUP_CLOSED'); ?>">
-                                            <option value="0"<?php if (!$this->row->isOpen() && $this->row->get('status') == 0) {
-                                                echo ' selected="selected"';
-                                                             } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
+                                            <option value="0"<?php echo !$this->row->isOpen() && $this->row->get('status') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_CLOSED'); ?></option>
                                             <?php foreach (\Components\Support\Models\Status::allClosed()->rows() as $status) { ?>
-                                                <option value="<?php echo $status->get('id'); ?>"<?php if (!$this->row->isOpen() && $this->row->get('status') == $status->get('id')) {
-                                                    echo ' selected="selected"';
-                                                               } ?>><?php echo $this->escape($status->get('title')); ?></option>
+                                                <option value="<?php echo $status->get('id'); ?>"<?php echo !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape($status->get('title')); ?></option>
                                             <?php } ?>
                                         </optgroup>
                                     </select>

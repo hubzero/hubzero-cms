@@ -161,11 +161,7 @@ if ($this->model->groupOwner()) {
                         <?php echo Lang::txt('COM_PROJECTS_OWNER_LEAD'); ?>:
                         <select name="owned_by_user" class="block">
                             <?php foreach ($this->model->team($filters = ['status' => 1], true) as $member) {  ?>
-                                <option value="<?php echo $member->userid; ?>" <?php if ($member->userid == $this->model->get('owned_by_user')) {
-                                    echo 'selected="selected"';
-                                               } ?>><?php echo $this->escape($member->fullname); ?> <?php if ($member->userid == $this->model->get('owned_by_user')) {
-                                               echo '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')';
-                                               } ?></option>
+                                <option value="<?php echo $member->userid; ?>" <?php echo $member->userid == $this->model->get('owned_by_user') ? 'selected="selected"' : ''; ?>><?php echo $this->escape($member->fullname); ?> <?php echo $member->userid == $this->model->get('owned_by_user') ? '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')' : ''; ?></option>
                             <?php } ?>
                         </select>
                     </label>
@@ -178,17 +174,13 @@ if ($this->model->groupOwner()) {
                         <label for="owned_by_group">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_OWNER_CHOOSE_GROUP'); ?>:
                             <select name="owned_by_group" class="block">
-                                <option value="0" <?php if (!$this->model->groupOwner()) {
-                                    echo 'selected="selected"';
-                                                  } ?>><?php echo Lang::txt('PLG_PROJECTS_TEAM_NO_GROUP'); ?></option>
+                                <option value="0" <?php echo !$this->model->groupOwner() ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_PROJECTS_TEAM_NO_GROUP'); ?></option>
                                 <?php foreach ($groups as $g) {
                                     if (in_array($g->gidNumber, $used)) {
                                         continue;
                                     }
                                     $used[] = $g->gidNumber; ?>
-                                    <option value="<?php echo $g->gidNumber; ?>" <?php if ($g->gidNumber == $this->model->get('owned_by_group')) {
-                                        echo 'selected="selected"';
-                                                   } ?>><?php echo $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30)) . ' (' . $this->escape($g->cn) . ')'; ?></option>
+                                    <option value="<?php echo $g->gidNumber; ?>" <?php echo $g->gidNumber == $this->model->get('owned_by_group') ? 'selected="selected"' : ''; ?>><?php echo $this->escape(\Hubzero\Utility\Str::truncate($g->description, 30)) . ' (' . $this->escape($g->cn) . ')'; ?></option>
                                 <?php } ?>
                             </select>
                         </label>
@@ -219,27 +211,19 @@ if ($this->model->groupOwner()) {
 
                 <div class="input-wrap">
                     <input type="hidden" name="params[team_public]" value="0" />
-                    <input type="checkbox" class="option" name="params[team_public]" id="param-team_public" value="1" <?php if ($this->params->get('team_public')) {
-                        echo ' checked="checked"';
-                                                                                                                      } ?> />
+                    <input type="checkbox" class="option" name="params[team_public]" id="param-team_public" value="1" <?php echo $this->params->get('team_public') ? ' checked="checked"' : ''; ?> />
                     <label for="param-team_public"><?php echo Lang::txt('COM_PROJECTS_TEAM_PUBLIC'); ?></label>
                 </div>
                 <div class="input-wrap">
                     <input type="hidden" name="params[publications_public]" value="0" />
-                    <input type="checkbox" class="option" name="params[publications_public]" id="param-publications_public" value="1" <?php if ($this->params->get('publications_public')) {
-                        echo ' checked="checked"';
-                                                                                                                                      } ?> />
+                    <input type="checkbox" class="option" name="params[publications_public]" id="param-publications_public" value="1" <?php echo $this->params->get('publications_public') ? ' checked="checked"' : ''; ?> />
                     <label for="param-publications_public"><?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS_PUBLIC'); ?></label>
                 </div>
                 <div class="input-wrap">
                     <label for="param-layout"><?php echo Lang::txt('COM_PROJECTS_LAYOUT'); ?>:</label>
                     <select name="params[layout]" id="param-layout">
-                        <option value="standard" <?php if ($this->params->get('layout', 'standard') == 'standard') {
-                            echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('COM_PROJECTS_LAYOUT_STANDARD'); ?></option>
-                        <option value="extended" <?php if ($this->params->get('layout') == 'extended') {
-                            echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('COM_PROJECTS_LAYOUT_EXTENDED'); ?></option>
+                        <option value="standard" <?php echo $this->params->get('layout', 'standard') == 'standard' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_LAYOUT_STANDARD'); ?></option>
+                        <option value="extended" <?php echo $this->params->get('layout') == 'extended' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_LAYOUT_EXTENDED'); ?></option>
                     </select>
                 </div>
 
@@ -249,18 +233,10 @@ if ($this->model->groupOwner()) {
                         <?php echo strtoupper($this->params->get('restricted_data', 'no')); ?>
                         <?php if ($this->params->get('restricted_data') == 'yes') {
                             ?> (
-                            <?php if ($this->params->get('hipaa_data')  == 'yes') {
-                                echo 'HIPAA';
-                            } ?>
-                            <?php if ($this->params->get('ferpa_data')  == 'yes') {
-                                echo 'FERPA';
-                            } ?>
-                            <?php if ($this->params->get('export_data') == 'yes') {
-                                echo 'Export Controlled';
-                            } ?>
-                            <?php if ($this->params->get('irb_data') == 'yes') {
-                                echo 'IRB';
-                            } ?>
+                            <?php echo $this->params->get('hipaa_data')  == 'yes' ? 'HIPAA' : ''; ?>
+                            <?php echo $this->params->get('ferpa_data')  == 'yes' ? 'FERPA' : ''; ?>
+                            <?php echo $this->params->get('export_data') == 'yes' ? 'Export Controlled' : ''; ?>
+                            <?php echo $this->params->get('irb_data') == 'yes' ? 'IRB' : ''; ?>
                             )
                         <?php } ?>
                     </div>

@@ -71,9 +71,7 @@ $this
                                 $cls[] = 'sticky';
                             }
                             ?>
-                            <tr<?php if (count($cls) > 0) {
-                                echo ' class="' . implode(' ', $cls) . '"';
-                               } ?>>
+                            <tr<?php echo count($cls) > 0 ? ' class="' . implode(' ', $cls) . '"' : ''; ?>>
                                 <th class="priority-5">
                                     <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                 </th>

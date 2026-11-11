@@ -29,9 +29,7 @@ $base = $this->base;
                 class="option"
                 id="recvpostemail"
                 value="1"
-                name="recvpostemail"<?php if ($this->recvEmailOptionValue == 1) {
-                    echo ' checked="checked"';
-                                    } ?> />
+                name="recvpostemail"<?php echo $this->recvEmailOptionValue == 1 ? ' checked="checked"' : ''; ?> />
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS'); ?>
         </label>
         <input class="option" type="submit" value="<?php echo Lang::txt('PLG_GROUPS_FORUM_SAVE'); ?>" />

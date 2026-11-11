@@ -144,9 +144,7 @@ $backUrl = Route::url(
                             type="checkbox"
                             name="fields[email]"
                             id="field-email"
-                            value="1" <?php if ($this->announcement->get('email') == 1) {
-                                echo 'checked="checked"';
-                                      } ?> />
+                            value="1" <?php echo $this->announcement->get('email') == 1 ? 'checked="checked"' : ''; ?> />
                         <?php if ($this->announcement->get('sent') == 1) : ?>
                             <?php $resendText = Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_EMAIL_RESEND'); ?>
                             <span class="important"><?php echo $resendText; ?></span>
@@ -164,9 +162,7 @@ $backUrl = Route::url(
                             type="checkbox"
                             name="fields[priority]"
                             id="field-priority"
-                            value="1"<?php if ($this->announcement->get('priority')) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="1"<?php echo $this->announcement->get('priority') ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY'); ?>
                         <span class="tooltips"
                             title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_HIGH_PRIORITY_TITLE'); ?>"
@@ -179,9 +175,7 @@ $backUrl = Route::url(
                 <div class="form-check">
                     <label class="form-check-label" for="field-sticky" id="sticky-label">
                         <input class="option form-check-input" type="checkbox" name="fields[sticky]" id="field-sticky"
-                            value="1"<?php if ($this->announcement->get('sticky')) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="1"<?php echo $this->announcement->get('sticky') ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY'); ?>
                         <span class="tooltips"
                             title="<?php echo Lang::txt('PLG_GROUPS_ANNOUNCEMENTS_MARK_STICKY_TITLE'); ?>">?</span>

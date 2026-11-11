@@ -56,9 +56,7 @@ if (count($this->folders) > 0) { ?>
                 <?php foreach ($folder->queries()->order('ordering', 'asc')->rows() as $query) { ?>
                     <li
                         id="query_<?php echo $this->escape($query->id); ?>"
-                        <?php if ($this->show == $query->id) {
-                            echo ' class="active"';
-                        } ?>
+                        <?php echo $this->show == $query->id ? ' class="active"' : ''; ?>
                     >
                         <?php
                         $searchParam = (intval($this->show) != $query->id) ? '&search=' : '';

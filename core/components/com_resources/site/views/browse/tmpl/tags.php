@@ -41,9 +41,7 @@ $this
                         continue;
                     }
                     ?>
-                    <option value="<?php echo $this->escape($type->alias); ?>"<?php if ($type->id == $this->filters['type']) {
-                        echo ' selected="selected"';
-                                   } ?>><?php echo $this->escape(stripslashes($type->type)); ?></option>
+                    <option value="<?php echo $this->escape($type->alias); ?>"<?php echo $type->id == $this->filters['type'] ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($type->type)); ?></option>
                 <?php } ?>
                 </select>
             </label>

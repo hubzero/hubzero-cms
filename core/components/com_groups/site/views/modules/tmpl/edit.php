@@ -115,9 +115,7 @@ foreach ($menus as $menu) {
                         <strong><?php echo Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT'); ?>:</strong> <span class="required"><?php echo Lang::txt('COM_GROUPS_FIELD_REQUIRED'); ?></span>
                         <select name="menu[assignment]" id="field-assignment" class="fancy-select">
                             <option value="0"><?php echo Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT_ALL'); ?></option>
-                            <option <?php if (!in_array(0, $activeMenu)) {
-                                echo 'selected="selected"';
-                                    } ?> value=""><?php echo Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT_SELECTED'); ?></option>
+                            <option <?php echo !in_array(0, $activeMenu) ? 'selected="selected"' : ''; ?> value=""><?php echo Lang::txt('COM_GROUPS_PAGES_MODULE_ASSIGNMENT_SELECTED'); ?></option>
                         </select>
                     </label>
 

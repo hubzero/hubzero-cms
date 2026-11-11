@@ -123,9 +123,7 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
                             <p><?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_CLICK_CREATE_BUTTON'); ?></p>
                         </div>
                         <div class="col span4 omega">
-                            <p><a id="create-orcid" class="btn" href="https://<?php if ($this->config->get('orcid_service', 'members') == 'sandbox') {
-                                echo 'sandbox.';
-                                                                              }?>orcid.org/oauth/authorize?client_id=<?php echo $clientID ?>
+                            <p><a id="create-orcid" class="btn" href="https://<?php echo $this->config->get('orcid_service', 'members') == 'sandbox' ? 'sandbox.' : ''; ?>orcid.org/oauth/authorize?client_id=<?php echo $clientID ?>
                             <?php echo htmlspecialchars('&'); ?>response_type=code<?php echo htmlspecialchars('&'); ?>scope=/authenticate<?php echo htmlspecialchars('&'); ?>redirect_uri=<?php echo urlencode($redirectURI) ?><?php echo htmlspecialchars('&'); ?>family_names=<?php echo $this->escape($lname);?>
                             <?php echo htmlspecialchars('&'); ?>given_names=<?php echo $this->escape($fname);?><?php echo htmlspecialchars('&'); ?>email=<?php echo $this->escape($email);?> " rel="nofollow external">
                             <?php echo Lang::txt('COM_MEMBERS_PROFILE_ORCID_CREATE_OR_CONNECT'); ?></a></p>

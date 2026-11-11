@@ -36,16 +36,12 @@ $this->js('config.js');
             <legend><?php echo Lang::txt('COM_MESSAGES_FIELD_LOCK_LABEL'); ?></legend>
 
             <div class="input-wrap">
-                <input type="radio" name="fields[lock]" id="cfg-lock-yes" value="1"<?php if ($this->item->get('lock', 0)) {
-                    echo ' checked="checked"';
-                                                                                   } ?> />
+                <input type="radio" name="fields[lock]" id="cfg-lock-yes" value="1"<?php echo $this->item->get('lock', 0) ? ' checked="checked"' : ''; ?> />
                 <label for="cfg-lock-yes"><?php echo Lang::txt('JYes'); ?></label>
             </div>
 
             <div class="input-wrap">
-                <input type="radio" name="fields[lock]" id="cfg-lock-no" value="0"<?php if (!$this->item->get('lock', 0)) {
-                    echo ' checked="checked"';
-                                                                                  } ?> />
+                <input type="radio" name="fields[lock]" id="cfg-lock-no" value="0"<?php echo !$this->item->get('lock', 0) ? ' checked="checked"' : ''; ?> />
                 <label for="cfg-lock-no"><?php echo Lang::txt('JNo'); ?></label>
             </div>
         </fieldset>
@@ -54,16 +50,12 @@ $this->js('config.js');
             <legend><?php echo Lang::txt('COM_MESSAGES_FIELD_MAIL_ON_NEW_LABEL'); ?></legend>
 
             <div class="input-wrap">
-                <input type="radio" name="fields[mail_on_new]" id="cfg-mail_on_new-yes" value="1"<?php if ($this->item->get('mail_on_new', 1)) {
-                    echo ' checked="checked"';
-                                                                                                 } ?> />
+                <input type="radio" name="fields[mail_on_new]" id="cfg-mail_on_new-yes" value="1"<?php echo $this->item->get('mail_on_new', 1) ? ' checked="checked"' : ''; ?> />
                 <label for="cfg-mail_on_new-yes"><?php echo Lang::txt('JYes'); ?></label>
             </div>
 
             <div class="input-wrap">
-                <input type="radio" name="fields[mail_on_new]" id="cfg-mail_on_new-no" value="0"<?php if (!$this->item->get('mail_on_new', 1)) {
-                    echo ' checked="checked"';
-                                                                                                } ?> />
+                <input type="radio" name="fields[mail_on_new]" id="cfg-mail_on_new-no" value="0"<?php echo !$this->item->get('mail_on_new', 1) ? ' checked="checked"' : ''; ?> />
                 <label for="cfg-mail_on_new-no"><?php echo Lang::txt('JNo'); ?></label>
             </div>
         </fieldset>

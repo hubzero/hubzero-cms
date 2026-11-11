@@ -307,18 +307,14 @@ $month = date("m", strtotime($this->event->get('publish_up')));
             <legend><?php echo Lang::txt('Disability/Dietary needs'); ?></legend>
             <?php if ($this->params->get('show_disability')) : ?>
                 <label>
-                    <input type="checkbox" class="option" name="disability" value="yes" <?php if (isset($this->disability) && $this->disability == 'yes') {
-                        echo 'checked="checked"';
-                                                                                        } ?> />
+                    <input type="checkbox" class="option" name="disability" value="yes" <?php echo isset($this->disability) && $this->disability == 'yes' ? 'checked="checked"' : ''; ?> />
                     <?php echo Lang::txt('I have auxiliary aids or services due to a disability. Please contact me.'); ?>
                 </label>
             <?php endif; ?>
 
             <?php if ($this->params->get('show_dietary')) : ?>
                 <label>
-                    <input type="checkbox" class="option" name="dietary[needs]" value="yes" <?php if (isset($this->dietary['needs']) && $this->dietary['needs'] == 'yes') {
-                        echo 'checked="checked"';
-                                                                                            } ?> />
+                    <input type="checkbox" class="option" name="dietary[needs]" value="yes" <?php echo isset($this->dietary['needs']) && $this->dietary['needs'] == 'yes' ? 'checked="checked"' : ''; ?> />
                     <?php echo Lang::txt('I have specific dietary needs.'); ?>
                 </label>
                 <label class="indent"><?php echo Lang::txt('Please specify'); ?>
@@ -332,9 +328,7 @@ $month = date("m", strtotime($this->event->get('publish_up')));
         <fieldset>
             <legend><?php echo Lang::txt('Dinner'); ?></legend>
             <label for="filed-dinner">
-                <input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" <?php if (isset($this->dinner) && $this->dinner == 'yes') {
-                    echo 'checked="checked"';
-                                                                                                  } ?> />
+                <input type="checkbox" class="option" name="dinner" id="filed-dinner" value="yes" <?php echo isset($this->dinner) && $this->dinner == 'yes' ? 'checked="checked"' : ''; ?> />
                 <?php echo Lang::txt('I plan to attend the dinner.'); ?>
             </label>
         </fieldset>

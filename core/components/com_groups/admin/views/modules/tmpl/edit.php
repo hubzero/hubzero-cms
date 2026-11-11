@@ -84,9 +84,7 @@ Toolbar::cancel();
                     <label for="field-assignment"><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT'); ?>:</label>
                     <select name="menu[assignment]" id="field-assignment">
                         <option value="0"><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_ALL'); ?></option>
-                        <option <?php if (!in_array(0, $activeMenu)) {
-                            echo 'selected="selected"';
-                                } ?> value=""><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_SELECTED'); ?></option>
+                        <option <?php echo !in_array(0, $activeMenu) ? 'selected="selected"' : ''; ?> value=""><?php echo Lang::txt('COM_GROUPS_MODULES_MODULE_ASSIGNMENT_SELECTED'); ?></option>
                     </select>
                 </div>
 

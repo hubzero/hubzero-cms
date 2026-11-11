@@ -101,9 +101,7 @@ $this
                     type="checkbox"
                     name="fields[priority]"
                     id="field-priority"
-                    value="1" <?php if ($this->model->get('priority')) {
-                        echo ' checked="checked"';
-                              } ?> />
+                    value="1" <?php echo $this->model->get('priority') ? ' checked="checked"' : ''; ?> />
                 <?php echo Lang::txt('PLG_COURSES_ANNOUNCEMENTS_FIELD_PRIORITY'); ?>
             </label>
         </fieldset>

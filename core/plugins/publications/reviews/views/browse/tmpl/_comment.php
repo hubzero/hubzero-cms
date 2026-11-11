@@ -152,9 +152,7 @@ if ($this->comment->get('publication_id')) {
                     </label>
 
                     <label class="comment-anonymous-label" for="comment_<?php echo $this->comment->get('id'); ?>_anonymous">
-                        <input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" <?php if ($this->comment->get('anonymous')) {
-                            echo ' checked="checked"';
-                                                                                                    } ?> />
+                        <input class="option" type="checkbox" name="comment[anonymous]" id="comment_<?php echo $this->comment->get('id'); ?>_anonymous" value="1" <?php echo $this->comment->get('anonymous') ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_POST_COMMENT_ANONYMOUSLY'); ?>
                     </label>
 
@@ -194,9 +192,7 @@ if ($this->comment->get('publication_id')) {
             </div>
 
         <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-            <div class="addcomment comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) {
-                echo ' hide';
-                                              } ?>" id="comment-form<?php echo $this->comment->get('id') . '-' . $this->depth; ?>">
+            <div class="addcomment comment-add<?php echo Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : ''; ?>" id="comment-form<?php echo $this->comment->get('id') . '-' . $this->depth; ?>">
                 <?php if (User::isGuest()) { ?>
                 <p class="warning">
                     <?php echo Lang::txt('PLG_PUBLICATIONS_REVIEWS_PLEASE_LOGIN_TO_ANSWER', '<a href="' . Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($this->base, false, true))) . '">' . Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN') . '</a>'); ?>

@@ -24,9 +24,7 @@ if ($this->import->get('id')) { ?>
             </thead>
             <tbody>
             <?php foreach ($this->import->fields() as $mapping) { ?>
-                <tr<?php if (!$mapping['field']) {
-                    echo ' class="field-unknown"';
-                   } ?>>
+                <tr<?php echo !$mapping['field'] ? ' class="field-unknown"' : ''; ?>>
                     <td>
                         <label for="mapping-<?php echo $mapping['name']; ?>">
                             <?php echo $mapping['label']; ?>
@@ -46,82 +44,34 @@ if ($this->import->get('id')) { ?>
                             id="mapping-<?php echo $mapping['name']; ?>">
                             <option value=""><?php echo Lang::txt('COM_MEMBERS_UNKNOWN'); ?></option>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_ACCOUNT'); ?>">
-                                <option value="id" <?php if ($mapping['field'] == 'id') {
-                                    echo 'selected="selected"';
-                                                   } ?>>id</option>
-                                <option value="username" <?php if ($mapping['field'] == 'username') {
-                                    echo 'selected="selected"';
-                                                         } ?>>username</option>
-                                <option value="password" <?php if ($mapping['field'] == 'password') {
-                                    echo 'selected="selected"';
-                                                         } ?>>password</option>
-                                <option value="email" <?php if ($mapping['field'] == 'email') {
-                                    echo 'selected="selected"';
-                                                      } ?>>email</option>
-                                <option value="activation" <?php if ($mapping['field'] == 'activation') {
-                                    echo 'selected="selected"';
-                                                           } ?>>activation</option>
-                                <option value="sendEmail" <?php if ($mapping['field'] == 'sendEmail') {
-                                    echo 'selected="selected"';
-                                                          } ?>>sendEmail</option>
-                                <option value="usageAgreement" <?php if ($mapping['field'] == 'usageAgreement') {
-                                    echo 'selected="selected"';
-                                                               } ?>>usageAgreement</option>
-                                <option value="note" <?php if ($mapping['field'] == 'note') {
-                                    echo 'selected="selected"';
-                                                     } ?>>note</option>
-                                <option value="homeDirectory" <?php if ($mapping['field'] == 'homeDirectory') {
-                                    echo 'selected="selected"';
-                                                              } ?>>homeDirectory</option>
-                                <option value="modifiedDate" <?php if ($mapping['field'] == 'modifiedDate') {
-                                    echo 'selected="selected"';
-                                                             } ?>>modifiedDate</option>
-                                <option value="block" <?php if ($mapping['field'] == 'block') {
-                                    echo 'selected="selected"';
-                                                      } ?>>block</option>
-                                <option value="approved" <?php if ($mapping['field'] == 'approved') {
-                                    echo 'selected="selected"';
-                                                         } ?>>approved</option>
-                                <option value="loginShell" <?php if ($mapping['field'] == 'loginShell') {
-                                    echo 'selected="selected"';
-                                                           } ?>>loginShell</option>
-                                <option value="ftpShell" <?php if ($mapping['field'] == 'ftpShell') {
-                                    echo 'selected="selected"';
-                                                         } ?>>ftpShell</option>
-                                <option value="groups" <?php if ($mapping['field'] == 'groups') {
-                                    echo 'selected="selected"';
-                                                       } ?>>groups</option>
-                                <option value="projects" <?php if ($mapping['field'] == 'projects') {
-                                    echo 'selected="selected"';
-                                                         } ?>>projects</option>
-                                <option value="access" <?php if ($mapping['field'] == 'access') {
-                                    echo 'selected="selected"';
-                                                       } ?>>access</option>
+                                <option value="id" <?php echo $mapping['field'] == 'id' ? 'selected="selected"' : ''; ?>>id</option>
+                                <option value="username" <?php echo $mapping['field'] == 'username' ? 'selected="selected"' : ''; ?>>username</option>
+                                <option value="password" <?php echo $mapping['field'] == 'password' ? 'selected="selected"' : ''; ?>>password</option>
+                                <option value="email" <?php echo $mapping['field'] == 'email' ? 'selected="selected"' : ''; ?>>email</option>
+                                <option value="activation" <?php echo $mapping['field'] == 'activation' ? 'selected="selected"' : ''; ?>>activation</option>
+                                <option value="sendEmail" <?php echo $mapping['field'] == 'sendEmail' ? 'selected="selected"' : ''; ?>>sendEmail</option>
+                                <option value="usageAgreement" <?php echo $mapping['field'] == 'usageAgreement' ? 'selected="selected"' : ''; ?>>usageAgreement</option>
+                                <option value="note" <?php echo $mapping['field'] == 'note' ? 'selected="selected"' : ''; ?>>note</option>
+                                <option value="homeDirectory" <?php echo $mapping['field'] == 'homeDirectory' ? 'selected="selected"' : ''; ?>>homeDirectory</option>
+                                <option value="modifiedDate" <?php echo $mapping['field'] == 'modifiedDate' ? 'selected="selected"' : ''; ?>>modifiedDate</option>
+                                <option value="block" <?php echo $mapping['field'] == 'block' ? 'selected="selected"' : ''; ?>>block</option>
+                                <option value="approved" <?php echo $mapping['field'] == 'approved' ? 'selected="selected"' : ''; ?>>approved</option>
+                                <option value="loginShell" <?php echo $mapping['field'] == 'loginShell' ? 'selected="selected"' : ''; ?>>loginShell</option>
+                                <option value="ftpShell" <?php echo $mapping['field'] == 'ftpShell' ? 'selected="selected"' : ''; ?>>ftpShell</option>
+                                <option value="groups" <?php echo $mapping['field'] == 'groups' ? 'selected="selected"' : ''; ?>>groups</option>
+                                <option value="projects" <?php echo $mapping['field'] == 'projects' ? 'selected="selected"' : ''; ?>>projects</option>
+                                <option value="access" <?php echo $mapping['field'] == 'access' ? 'selected="selected"' : ''; ?>>access</option>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_REGISTER'); ?>">
-                                <option value="registerIP" <?php if ($mapping['field'] == 'registerIP') {
-                                    echo 'selected="selected"';
-                                                           } ?>>registerIP</option>
-                                <option value="registerHost" <?php if ($mapping['field'] == 'registerHost') {
-                                    echo 'selected="selected"';
-                                                             } ?>>registerHost</option>
-                                <option value="registerDate" <?php if ($mapping['field'] == 'registerDate') {
-                                    echo 'selected="selected"';
-                                                             } ?>>registerDate</option>
+                                <option value="registerIP" <?php echo $mapping['field'] == 'registerIP' ? 'selected="selected"' : ''; ?>>registerIP</option>
+                                <option value="registerHost" <?php echo $mapping['field'] == 'registerHost' ? 'selected="selected"' : ''; ?>>registerHost</option>
+                                <option value="registerDate" <?php echo $mapping['field'] == 'registerDate' ? 'selected="selected"' : ''; ?>>registerDate</option>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_NAME'); ?>">
-                                <option value="name" <?php if ($mapping['field'] == 'name') {
-                                    echo 'selected="selected"';
-                                                     } ?>>name</option>
-                                <option value="givenName" <?php if ($mapping['field'] == 'givenName') {
-                                    echo 'selected="selected"';
-                                                          } ?>>givenName</option>
-                                <option value="middleName" <?php if ($mapping['field'] == 'middleName') {
-                                    echo 'selected="selected"';
-                                                           } ?>>middleName</option>
-                                <option value="surname" <?php if ($mapping['field'] == 'surname') {
-                                    echo 'selected="selected"';
-                                                        } ?>>surname</option>
+                                <option value="name" <?php echo $mapping['field'] == 'name' ? 'selected="selected"' : ''; ?>>name</option>
+                                <option value="givenName" <?php echo $mapping['field'] == 'givenName' ? 'selected="selected"' : ''; ?>>givenName</option>
+                                <option value="middleName" <?php echo $mapping['field'] == 'middleName' ? 'selected="selected"' : ''; ?>>middleName</option>
+                                <option value="surname" <?php echo $mapping['field'] == 'surname' ? 'selected="selected"' : ''; ?>>surname</option>
                             </optgroup>
                             <optgroup label="<?php echo Lang::txt('COM_MEMBERS_IMPORT_FIELDS_PROFILE'); ?>">
                                 <?php

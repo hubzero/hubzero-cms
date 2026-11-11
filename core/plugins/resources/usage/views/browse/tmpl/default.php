@@ -133,23 +133,17 @@ $bars = [];
         <div id="user-overview-wrap" class="usage-wrap">
             <ul class="dataset-controls" id="set-data">
                 <li>
-                    <a id="monthly" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'monthly') {
-                        echo ' active';
-                                                  } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=1">
+                    <a id="monthly" class="dataset<?php echo $this->params->get('defaultDataset', 'cumulative') == 'monthly' ? ' active' : ''; ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=1">
                         <?php echo Lang::txt('PLG_RESOURCES_USAGE_MONTHLY'); ?>
                     </a>
                 </li>
                 <li>
-                    <a id="yearly" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'yearly') {
-                        echo ' active';
-                                                 } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=12">
+                    <a id="yearly" class="dataset<?php echo $this->params->get('defaultDataset', 'cumulative') == 'yearly' ? ' active' : ''; ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=12">
                         <?php echo Lang::txt('PLG_RESOURCES_USAGE_YEARLY'); ?>
                     </a>
                 </li>
                 <li>
-                    <a id="cumulative" class="dataset<?php if ($this->params->get('defaultDataset', 'cumulative') == 'cumulative') {
-                        echo ' active';
-                                                     } ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=14">
+                    <a id="cumulative" class="dataset<?php echo $this->params->get('defaultDataset', 'cumulative') == 'cumulative' ? ' active' : ''; ?>" href="<?php echo $base; ?>/index.php?option=com_resources&amp;id=<?php echo $this->resource->id; ?>&amp;active=usage&amp;action=overview&amp;period=14">
                         <?php echo Lang::txt('PLG_RESOURCES_USAGE_CUMULATIVE'); ?>
                     </a>
                 </li>

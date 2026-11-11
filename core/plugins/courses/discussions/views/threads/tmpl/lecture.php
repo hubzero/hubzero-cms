@@ -32,9 +32,7 @@ $base = $this->course->offering()->link();
                         <?php echo Lang::txt('%s Discussions', count($this->threads)); ?>
                     </p>
                     <p class="comments-controls">
-                        <a class="add<?php if (!$this->thread) {
-                            echo ' active';
-                                     } ?>" href="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" title="<?php echo Lang::txt('Start a new discussion'); ?>"><?php echo Lang::txt('New'); ?></a>
+                        <a class="add<?php echo !$this->thread ? ' active' : ''; ?>" href="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" title="<?php echo Lang::txt('Start a new discussion'); ?>"><?php echo Lang::txt('New'); ?></a>
                     </p>
                 </div><!-- / .comments-toolbar -->
 
@@ -100,9 +98,7 @@ $base = $this->course->offering()->link();
                 </div>
                 <div class="comments-frame">
 
-                    <form action="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="post" id="commentform"<?php if ($this->data) {
-                        echo ' class="hide"';
-                                  } ?> enctype="multipart/form-data">
+                    <form action="<?php echo Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias')); ?>" method="post" id="commentform"<?php echo $this->data ? ' class="hide"' : ''; ?> enctype="multipart/form-data">
 
                         <p class="comment-member-photo">
                             <a class="comment-anchor" name="commentform"></a>
@@ -177,9 +173,7 @@ $base = $this->course->offering()->link();
                         </p>
                     </form>
 
-                    <div class="comment-thread"><?php if ($this->data) {
-                        echo $this->data->html;
-                                                } ?></div>
+                    <div class="comment-thread"><?php echo $this->data ? $this->data->html : ''; ?></div>
 
                 </div><!-- / .comments-frame -->
             </div><!-- / .comments-panel -->

@@ -84,9 +84,7 @@ $this
 
                     <?php foreach ($fieldSet as $field) : ?>
                         <?php if (!$field->hidden) : ?>
-                            <div class="input-wrap <?php if ($field->type == 'Spacer') {
-                                echo ' input-spacer';
-                                                   } ?>">
+                            <div class="input-wrap <?php echo $field->type == 'Spacer' ? ' input-spacer' : ''; ?>">
                                 <?php $field->setValue($data->get($field->fieldname)); ?>
                                 <?php echo $field->label; ?>
                                 <?php echo $field->input; ?>

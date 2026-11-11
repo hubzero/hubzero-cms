@@ -62,16 +62,12 @@ $authIDs = [];
             <br /><?php echo Lang::txt('COM_RESOURCES_AUTHOR_AFFILIATION'); ?>: <input type="text" name="<?php echo $authname->authorid; ?>_organization" value="<?php echo $this->escape($org); ?>" />
 
             <select name="<?php echo $authname->authorid; ?>_role">
-                <option value=""<?php if ($authname->role == '') {
-                    echo ' selected="selected"';
-                                }?>><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
+                <option value=""<?php echo $authname->role == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_RESOURCES_ROLE_AUTHOR'); ?></option>
                 <?php
                 if ($this->roles) {
                     foreach ($this->roles as $role) {
                         ?>
-                            <option value="<?php echo $this->escape($role->alias); ?>"<?php if ($authname->role == $role->alias) {
-                                echo ' selected="selected"';
-                                           }?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                            <option value="<?php echo $this->escape($role->alias); ?>"<?php echo $authname->role == $role->alias ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
                         <?php
                     }
                 }

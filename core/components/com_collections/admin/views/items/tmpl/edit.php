@@ -413,15 +413,9 @@ $validationMsg = $this->escape(
                                 <?php echo $stateLabel; ?>:
                             </label><br />
                             <select name="fields[state]" id="field-state">
-                                <option value="0"<?php if ($this->row->get('state') == 0) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                                <option value="1"<?php if ($this->row->get('state') == 1) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                                <option value="2"<?php if ($this->row->get('state') == 2) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                                <option value="0"<?php echo $this->row->get('state') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+                                <option value="1"<?php echo $this->row->get('state') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                                <option value="2"<?php echo $this->row->get('state') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
                             </select>
                         </div>
 
@@ -438,15 +432,9 @@ $validationMsg = $this->escape(
                                 <?php echo $accessLabel; ?>:
                             </label><br />
                             <select name="fields[access]" id="field-access">
-                                <option value="0"<?php if ($this->row->get('access') == 0) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo $publicTxt; ?></option>
-                                <option value="1"<?php if ($this->row->get('access') == 1) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo $regTxt; ?></option>
-                                <option value="4"<?php if ($this->row->get('access') == 4) {
-                                    echo ' selected="selected"';
-                                                 } ?>><?php echo $privTxt; ?></option>
+                                <option value="0"<?php echo $this->row->get('access') == 0 ? ' selected="selected"' : ''; ?>><?php echo $publicTxt; ?></option>
+                                <option value="1"<?php echo $this->row->get('access') == 1 ? ' selected="selected"' : ''; ?>><?php echo $regTxt; ?></option>
+                                <option value="4"<?php echo $this->row->get('access') == 4 ? ' selected="selected"' : ''; ?>><?php echo $privTxt; ?></option>
                             </select>
                         </div>
                     </fieldset>

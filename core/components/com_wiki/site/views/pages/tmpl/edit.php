@@ -173,9 +173,7 @@ $authors = implode(', ', $authors);
                                                         continue;
                                                     }
                                                     ?>
-                                                    <option value="<?php echo $item->get('id'); ?>"<?php if ($this->page->get('parent') == $item->get('id')) {
-                                                        echo ' selected="selected"';
-                                                                   } ?>><?php echo $this->escape(stripslashes($item->get('pagename'))); ?></option>
+                                                    <option value="<?php echo $item->get('id'); ?>"<?php echo $this->page->get('parent') == $item->get('id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($item->get('pagename'))); ?></option>
                                                     <?php
                                                 }
                                             }
@@ -280,16 +278,10 @@ $authors = implode(', ', $authors);
                                         <label for="params_mode">
                                             <?php echo Lang::txt('COM_WIKI_FIELD_MODE'); ?>: <span class="required"><?php echo Lang::txt('COM_WIKI_REQUIRED'); ?></span>
                                             <select name="params[mode]" id="params_mode" class="form-control">
-                                                <option value="knol"<?php if ($mode == 'knol') {
-                                                    echo ' selected="selected"';
-                                                                    } ?>><?php echo Lang::txt('COM_WIKI_FIELD_MODE_KNOL'); ?></option>
-                                                <option value="wiki"<?php if ($mode == 'wiki') {
-                                                    echo ' selected="selected"';
-                                                                    } ?>><?php echo Lang::txt('COM_WIKI_FIELD_MODE_WIKI'); ?></option>
+                                                <option value="knol"<?php echo $mode == 'knol' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WIKI_FIELD_MODE_KNOL'); ?></option>
+                                                <option value="wiki"<?php echo $mode == 'wiki' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WIKI_FIELD_MODE_WIKI'); ?></option>
                                                 <?php if ($this->page->access('admin')) { ?>
-                                                    <option value="static"<?php if ($mode == 'static') {
-                                                        echo ' selected="selected"';
-                                                                          } ?>><?php echo Lang::txt('COM_WIKI_FIELD_MODE_STATIC'); ?></option>
+                                                    <option value="static"<?php echo $mode == 'static' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_WIKI_FIELD_MODE_STATIC'); ?></option>
                                                 <?php } ?>
                                             </select>
                                         </label>
@@ -322,27 +314,21 @@ $authors = implode(', ', $authors);
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_hide_authors">
-                                        <input class="option form-check-input" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php if ($this->page->param('hide_authors') == 1) {
-                                            echo ' checked="checked"';
-                                                                                                                                                   } ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox" name="params[hide_authors]" id="params_hide_authors"<?php echo $this->page->param('hide_authors') == 1 ? ' checked="checked"' : ''; ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_allow_changes">
-                                        <input class="option form-check-input" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?php if ($this->page->param('allow_changes') == 1) {
-                                            echo ' checked="checked"';
-                                                                                                                                                     } ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox" name="params[allow_changes]" id="params_allow_changes"<?php echo $this->page->param('allow_changes') == 1 ? ' checked="checked"' : ''; ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
                                     </label>
                                 </div>
 
                                 <div class="form-group form-check">
                                     <label class="<?php echo $cls; ?> form-check-label" for="params_allow_comments">
-                                        <input class="option form-check-input" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?php if ($this->page->param('allow_comments') == 1) {
-                                            echo ' checked="checked"';
-                                                                                                                                                       } ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox" name="params[allow_comments]" id="params_allow_comments"<?php echo $this->page->param('allow_comments') == 1 ? ' checked="checked"' : ''; ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
                                     </label>
                                 </div>
@@ -357,9 +343,7 @@ $authors = implode(', ', $authors);
                             <?php if ($this->page->access('manage')) { ?>
                                 <div class="form-group form-check">
                                     <label for="protected" class="form-check-label">
-                                        <input class="option form-check-input" type="checkbox" name="page[protected]" id="protected"<?php if ($this->page->isLocked()) {
-                                            echo ' checked="checked"';
-                                                                                                                                    } ?> value="1" />
+                                        <input class="option form-check-input" type="checkbox" name="page[protected]" id="protected"<?php echo $this->page->isLocked() ? ' checked="checked"' : ''; ?> value="1" />
                                         <?php echo Lang::txt('COM_WIKI_FIELD_STATE'); ?>
                                     </label>
                                 </div>

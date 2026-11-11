@@ -133,23 +133,15 @@ defined('_HZEXEC_') or die();
                         $access,
                     ); ?>
                 <?php else : ?>
-                    <option value="1"<?php if ($this->model->get('access') == 1) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?></option>
-                    <option value="2"<?php if ($this->model->get('access') == 2) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_REGISTERED'); ?></option>
-                    <option value="5"<?php if ($this->model->get('access') == 5) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?></option>
+                    <option value="1"<?php echo $this->model->get('access') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PUBLIC'); ?></option>
+                    <option value="2"<?php echo $this->model->get('access') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_REGISTERED'); ?></option>
+                    <option value="5"<?php echo $this->model->get('access') == 5 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_PROJECTS_PRIVACY_EDIT_PRIVATE'); ?></option>
                 <?php endif; ?>
             </select>
         </label>
     </div>
 
-    <fieldset id="access-public"<?php if ($this->model->get('access') == 5) {
-        echo ' class="hidden"';
-                                } ?>>
+    <fieldset id="access-public"<?php echo $this->model->get('access') == 5 ? ' class="hidden"' : ''; ?>>
         <legend><?php echo Lang::txt('COM_PROJECTS_OPTIONS_FOR_PUBLIC'); ?></legend>
 
         <div class="form-group form-check">
@@ -161,9 +153,7 @@ defined('_HZEXEC_') or die();
                     name="params[allow_membershiprequest]"
                     id="params-allow_membershiprequest"
                     value="1"
-                    <?php if ($this->model->params->get('allow_membershiprequest')) {
-                        echo ' checked="checked"';
-                    } ?>
+                    <?php echo $this->model->params->get('allow_membershiprequest') ? ' checked="checked"' : ''; ?>
                 /> <?php echo Lang::txt('COM_PROJECTS_MEMBERSHIPREQUEST'); ?>
             </label>
         </div>
@@ -177,9 +167,7 @@ defined('_HZEXEC_') or die();
                     name="params[team_public]"
                     id="params-team_public"
                     value="1"
-                    <?php if ($this->model->params->get('team_public')) {
-                        echo ' checked="checked"';
-                    } ?>
+                    <?php echo $this->model->params->get('team_public') ? ' checked="checked"' : ''; ?>
                 /> <?php echo Lang::txt('COM_PROJECTS_TEAM_PUBLIC'); ?>
             </label>
         </div>
@@ -194,9 +182,7 @@ defined('_HZEXEC_') or die();
                         name="params[publications_public]"
                         id="params-publications_public"
                         value="1"
-                        <?php if ($this->model->params->get('publications_public')) {
-                            echo ' checked="checked"';
-                        } ?>
+                        <?php echo $this->model->params->get('publications_public') ? ' checked="checked"' : ''; ?>
                     /> <?php echo Lang::txt('COM_PROJECTS_PUBLICATIONS_PUBLIC'); ?>
                 </label>
             </div>
@@ -214,9 +200,7 @@ defined('_HZEXEC_') or die();
                         name="params[notes_public]"
                         id="params-notes_public"
                         value="1"
-                        <?php if ($this->model->params->get('notes_public')) {
-                            echo ' checked="checked"';
-                        } ?>
+                        <?php echo $this->model->params->get('notes_public') ? ' checked="checked"' : ''; ?>
                     /> <?php echo Lang::txt('COM_PROJECTS_NOTES_PUBLIC'); ?>
                 </label>
             </div>
@@ -234,9 +218,7 @@ defined('_HZEXEC_') or die();
                         name="params[files_public]"
                         id="params-files_public"
                         value="1"
-                        <?php if ($this->model->params->get('files_public')) {
-                            echo ' checked="checked"';
-                        } ?>
+                        <?php echo $this->model->params->get('files_public') ? ' checked="checked"' : ''; ?>
                     /> <?php echo Lang::txt('COM_PROJECTS_FILES_PUBLIC'); ?>
                 </label>
             </div>

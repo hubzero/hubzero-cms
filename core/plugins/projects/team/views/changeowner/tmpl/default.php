@@ -40,12 +40,8 @@ $team = $this->model->team($filters = ['status' => 1]);
             <select name="owned_by_user" class="block">
         <?php foreach ($team as $member) {  ?>
             <option value="<?php echo $member->userid; ?>
-            " <?php if ($member->userid == $this->model->get('owned_by_user')) {
-                echo 'selected="selected"';
-              } ?>><?php echo $member->fullname; ?>
-                           <?php if ($member->userid == $this->model->get('owned_by_user')) {
-                                echo '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')';
-                           } ?></option>
+            " <?php echo $member->userid == $this->model->get('owned_by_user') ? 'selected="selected"' : ''; ?>><?php echo $member->fullname; ?>
+                           <?php echo $member->userid == $this->model->get('owned_by_user') ? '(' . Lang::txt('PLG_PROJECTS_TEAM_CURRENT_OWNER') . ')' : ''; ?></option>
         <?php } ?>
             </select>
         </label>
@@ -55,18 +51,14 @@ $team = $this->model->team($filters = ['status' => 1]);
         <label for="owned_by_group">
             <?php echo Lang::txt('PLG_PROJECTS_TEAM_CHANGE_OWNER_CHOOSE_GROUP'); ?>:
             <select name="owned_by_group" class="block">
-                <option value="0" <?php if (!$this->model->groupOwner()) {
-                    echo 'selected="selected"';
-                                  } ?>><?php echo Lang::txt('PLG_PROJECTS_TEAM_NO_GROUP'); ?></option>
+                <option value="0" <?php echo !$this->model->groupOwner() ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('PLG_PROJECTS_TEAM_NO_GROUP'); ?></option>
             <?php foreach ($this->groups as $g) {
                 if (in_array($g->gidNumber, $used)) {
                     continue;
                 }
                 $used[] = $g->gidNumber; ?>
             <option value="<?php echo $g->gidNumber; ?>
-            " <?php if ($g->gidNumber == $this->model->get('owned_by_group')) {
-                echo 'selected="selected"';
-              } ?>><?php echo \Hubzero\Utility\Str::truncate($g->description, 30)
+            " <?php echo $g->gidNumber == $this->model->get('owned_by_group') ? 'selected="selected"' : ''; ?>><?php echo \Hubzero\Utility\Str::truncate($g->description, 30)
                                . ' ('
                                . $g->cn
                                . ')'; ?></option>

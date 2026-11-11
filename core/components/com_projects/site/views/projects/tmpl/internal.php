@@ -130,16 +130,12 @@ $sideContent    = $sideContent && !empty($sideContent)
                      ->display();
             ?>
             <div id="plg-content" class="content-<?php echo $this->active; ?>">
-            <?php if ($notification) {
-                echo $notification;
-            } ?>
+            <?php echo $notification ? $notification : ''; ?>
             <?php if ($sideContent) { ?>
             <div class="grid">
                 <div class="col span9 main-col">
             <?php } ?>
-                    <?php if ($this->content) {
-                        echo $this->content;
-                    } ?>
+                    <?php echo $this->content ? $this->content : ''; ?>
                     <?php /*if ($this->active == 'info') {
                             // Display project info
                             $this->view('_info')

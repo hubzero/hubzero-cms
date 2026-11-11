@@ -317,9 +317,7 @@ $this->js();
                         <option value="UPDATE">
                             <?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_DATA_MODE_UPDATE'); ?>
                         </option>
-                        <option <?php if ($this->import->get('mode') == 'PATCH') {
-                            echo 'selected="selected"';
-                                } ?> value="PATCH">
+                        <option <?php echo $this->import->get('mode') == 'PATCH' ? 'selected="selected"' : ''; ?> value="PATCH">
                             <?php echo Lang::txt('COM_GROUPS_IMPORT_EDIT_FIELD_DATA_MODE_PATCH'); ?>
                         </option>
                     </select>

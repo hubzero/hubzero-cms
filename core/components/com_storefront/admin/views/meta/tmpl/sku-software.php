@@ -106,15 +106,9 @@ defined('_HZEXEC_') or die();
     <div class="input-wrap">
         <label for="field-serialManagement">Serial Number Management</label>
         <select name="fields[meta][serialManagement]" id="field-serialManagement">
-            <option value=""<?php if (!$serialManagement) {
-                echo ' selected="selected"';
-                            } ?>>No management</option>
-            <option value="single"<?php if ($serialManagement == "single") {
-                echo ' selected="selected"';
-                                  } ?>>Single Universal Number</option>
-            <option value="multiple"<?php if ($serialManagement == "multiple") {
-                echo ' selected="selected"';
-                                    } ?>>Multiple Unique Numbers</option>
+            <option value=""<?php echo !$serialManagement ? ' selected="selected"' : ''; ?>>No management</option>
+            <option value="single"<?php echo $serialManagement == "single" ? ' selected="selected"' : ''; ?>>Single Universal Number</option>
+            <option value="multiple"<?php echo $serialManagement == "multiple" ? ' selected="selected"' : ''; ?>>Multiple Unique Numbers</option>
         </select>
     </div>
 

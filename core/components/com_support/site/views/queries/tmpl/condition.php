@@ -32,55 +32,27 @@ if ($this->condition->expressions) {
         $values    = $this->conditions->{$expression->fldval}->values;
         ?>
         <p class="conditions"><button class="remove" alt="Remove">&times;</button> <select class="fld" aria-label="<?php echo Lang::txt('COM_SUPPORT_QUERY_FIELD'); ?>">
-            <option value="open"<?php if ($expression->fldval == 'open') {
-                echo ' selected="selected"';
-                                } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
-                <option value="status"<?php if ($expression->fldval == 'status') {
-                    echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
-                <option value="login"<?php if ($expression->fldval == 'login') {
-                    echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
-                <option value="owner"<?php if ($expression->fldval == 'owner') {
-                    echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
-                <option value="group"<?php if ($expression->fldval == 'group') {
-                    echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_GROUP'); ?></option>
-                <option value="id"<?php if ($expression->fldval == 'id') {
-                    echo ' selected="selected"';
-                                  } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
-                <option value="report"<?php if ($expression->fldval == 'report') {
-                    echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
+            <option value="open"<?php echo $expression->fldval == 'open' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OPEN'); ?></option>
+                <option value="status"<?php echo $expression->fldval == 'status' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_STATUS'); ?></option>
+                <option value="login"<?php echo $expression->fldval == 'login' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SUBMITTER'); ?></option>
+                <option value="owner"<?php echo $expression->fldval == 'owner' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_OWNER'); ?></option>
+                <option value="group"<?php echo $expression->fldval == 'group' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_GROUP'); ?></option>
+                <option value="id"<?php echo $expression->fldval == 'id' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_ID'); ?></option>
+                <option value="report"<?php echo $expression->fldval == 'report' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT'); ?></option>
                 <?php /*<option value="resolved"<?php if ($expression->fldval == 'resolved') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
-                <option value="severity"<?php if ($expression->fldval == 'severity') {
-                    echo ' selected="selected"';
-                                        } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
-                <option value="tag"<?php if ($expression->fldval == 'tag') {
-                    echo ' selected="selected"';
-                                   } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
-                <option value="type"<?php if ($expression->fldval == 'type') {
-                    echo ' selected="selected"';
-                                    } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
-                <option value="created"<?php if ($expression->fldval == 'created') {
-                    echo ' selected="selected"';
-                                       } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
-                <option value="closed"<?php if ($expression->fldval == 'closed') {
-                    echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
-                <option value="category"<?php if ($expression->fldval == 'category') {
-                    echo ' selected="selected"';
-                                        } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
+                <option value="severity"<?php echo $expression->fldval == 'severity' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY'); ?></option>
+                <option value="tag"<?php echo $expression->fldval == 'tag' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TAG'); ?></option>
+                <option value="type"<?php echo $expression->fldval == 'type' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_TYPE'); ?></option>
+                <option value="created"<?php echo $expression->fldval == 'created' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CREATED'); ?></option>
+                <option value="closed"<?php echo $expression->fldval == 'closed' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CLOSED'); ?></option>
+                <option value="category"<?php echo $expression->fldval == 'category' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_CATEGORY'); ?></option>
             </select>
             <select class="op" aria-label="<?php echo Lang::txt('COM_SUPPORT_QUERY_OPERATOR'); ?>">
         <?php
         if ($operators) {
             foreach ($operators as $operator) {
                 ?>
-                <option value="<?php echo $this->escape($operator->val); ?>"<?php if ($expression->opval == $operator->val) {
-                    echo ' selected="selected"';
-                               } ?>><?php echo $this->escape($operator->label); ?></option>
+                <option value="<?php echo $this->escape($operator->val); ?>"<?php echo $expression->opval == $operator->val ? ' selected="selected"' : ''; ?>><?php echo $this->escape($operator->label); ?></option>
                 <?php
             }
         }
@@ -93,9 +65,7 @@ if ($this->condition->expressions) {
             <?php
             foreach ($values as $value) {
                 ?>
-                <option value="<?php echo $this->escape($value->val); ?>"<?php if ($expression->val == $value->val) {
-                    echo ' selected="selected"';
-                               } ?>><?php echo $this->escape($value->label); ?></option>
+                <option value="<?php echo $this->escape($value->val); ?>"<?php echo $expression->val == $value->val ? ' selected="selected"' : ''; ?>><?php echo $this->escape($value->label); ?></option>
                 <?php
             }
             ?>

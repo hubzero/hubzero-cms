@@ -62,9 +62,7 @@ $this->js();
                                     ->where('rgt', '>', $option->get('rgt'))
                                     ->total();
                                 ?>
-                                <option value="<?php echo $option->get('id'); ?>"<?php if ($option->get('id') == $this->row->get('parent_id')) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo str_repeat('- ', $level) . $option->get('title'); ?></option>
+                                <option value="<?php echo $option->get('id'); ?>"<?php echo $option->get('id') == $this->row->get('parent_id') ? ' selected="selected"' : ''; ?>><?php echo str_repeat('- ', $level) . $option->get('title'); ?></option>
                                 <?php
                             }
                         endforeach; ?>

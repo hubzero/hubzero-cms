@@ -156,9 +156,7 @@ $this
                                 <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_AUTHORS')); ?>: </span><span class="desc"><?php echo \Components\Tools\Helpers\Html::getDevTeam($t->authors); ?></span></p>
                                 <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_TOOL_ACCESS')); ?>: </span><span class="desc"><?php echo $toolaccess; ?></span></p>
                                 <p><span class="heading"><?php echo ucfirst(Lang::txt('COM_TOOLS_CODE_ACCESS')); ?>: </span><span class="desc"><?php echo $codeaccess; ?></span></p>
-                            <?php if ($handle != '') {
-                                echo ' <p><span class="heading">' . Lang::txt('COM_TOOLS_DOI') . ': </span><span class="desc">' . $handle . '</span></p>';
-                            } ?>
+                            <?php echo $handle != '' ? ' <p><span class="heading">' . Lang::txt('COM_TOOLS_DOI') . ': </span><span class="desc">' . $handle . '</span></p>' : ''; ?>
                             </div>
                         </td>
                     </tr>

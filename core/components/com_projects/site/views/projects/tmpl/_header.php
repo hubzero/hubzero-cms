@@ -37,9 +37,7 @@ $start = ($this->showPrivacy == 2 && $this->model->access('member')) ? '<span cl
     . '</span> '
     . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) : ucfirst(Lang::txt('COM_PROJECTS_PROJECT'));
 ?>
-<header class="content-header<?php if (!$this->showPic) {
-    echo ' nopic';
-                             } ?>">
+<header class="content-header<?php echo !$this->showPic ? ' nopic' : ''; ?>">
     <?php if ($this->showPic) {
         // Check if there is a picture
         $thumbClass = '';

@@ -22,9 +22,7 @@ $todoTitle = Lang::txt('COM_PROJECTS_VIEW')
 $todoTab = ucfirst(Lang::txt('COM_PROJECTS_TAB_TODO'));
 $seeAll = ucfirst(Lang::txt('COM_PROJECTS_SEE_ALL'));
 ?>
-<div class="sidebox<?php if (count($this->items) == 0) {
-    echo ' suggestions';
-                   } ?>">
+<div class="sidebox<?php echo count($this->items) == 0 ? ' suggestions' : ''; ?>">
         <h4><a
             href="<?php echo $todoUrl; ?>"
             class="hlink"

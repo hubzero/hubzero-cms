@@ -57,14 +57,10 @@ $this->js();
                         <option value="postparse">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTPARSE'); ?>
                         </option>
-                        <option <?php if ($this->hook->get('event') == 'postmap') {
-                            echo 'selected="selected"';
-                                } ?> value="postmap">
+                        <option <?php echo $this->hook->get('event') == 'postmap' ? 'selected="selected"' : ''; ?> value="postmap">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTMAP'); ?>
                         </option>
-                        <option <?php if ($this->hook->get('event') == 'postconvert') {
-                            echo 'selected="selected"';
-                                } ?> value="postconvert">
+                        <option <?php echo $this->hook->get('event') == 'postconvert' ? 'selected="selected"' : ''; ?> value="postconvert">
                             <?php echo Lang::txt('COM_MEMBERS_IMPORTHOOK_EDIT_FIELD_TYPE_POSTCONVERT'); ?>
                         </option>
                     </select>

@@ -54,15 +54,9 @@ Toolbar::help('entries');
             <div class="col span6">
                 <label for="filter-filterby"><?php echo Lang::txt('COM_TAGS_FILTER'); ?>:</label>
                 <select name="filterby" id="filter-filterby" class="filter filter-submit">
-                    <option value="all"<?php if ($this->filters['by'] == 'all') {
-                        echo ' selected="selected"';
-                                       } ?>><?php echo Lang::txt('COM_TAGS_FILTER_ALL_TAGS'); ?></option>
-                    <option value="user"<?php if ($this->filters['by'] == 'user') {
-                        echo ' selected="selected"';
-                                        } ?>><?php echo Lang::txt('COM_TAGS_FILTER_USER_TAGS'); ?></option>
-                    <option value="admin"<?php if ($this->filters['by'] == 'admin') {
-                        echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_TAGS_FILTER_ADMIN_TAGS'); ?></option>
+                    <option value="all"<?php echo $this->filters['by'] == 'all' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TAGS_FILTER_ALL_TAGS'); ?></option>
+                    <option value="user"<?php echo $this->filters['by'] == 'user' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TAGS_FILTER_USER_TAGS'); ?></option>
+                    <option value="admin"<?php echo $this->filters['by'] == 'admin' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TAGS_FILTER_ADMIN_TAGS'); ?></option>
                 </select>
             </div>
         </div>

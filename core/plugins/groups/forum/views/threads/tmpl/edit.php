@@ -63,9 +63,7 @@ $this
                         <div class="form-group">
                             <div class="form-check">
                                 <label for="field-sticky" class="form-check-label">
-                                    <input class="option form-check-input" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php if ($this->post->get('sticky')) {
-                                        echo ' checked="checked"';
-                                                                                                                                            } ?> />
+                                    <input class="option form-check-input" type="checkbox" name="fields[sticky]" id="field-sticky" value="1"<?php echo $this->post->get('sticky') ? ' checked="checked"' : ''; ?> />
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_STICKY'); ?>
                                 </label>
                             </div>
@@ -75,9 +73,7 @@ $this
                         <div class="form-group">
                             <div class="form-check">
                                 <label for="field-closed" class="form-check-label">
-                                    <input class="option form-check-input" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php if ($this->post->get('closed')) {
-                                        echo ' checked="checked"';
-                                                                                                                                            } ?> />
+                                    <input class="option form-check-input" type="checkbox" name="fields[closed]" id="field-closed" value="1"<?php echo $this->post->get('closed') ? ' checked="checked"' : ''; ?> />
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_CLOSED_THREAD'); ?>
                                 </label>
                             </div>
@@ -125,9 +121,7 @@ $this
                                 if ($categories->count() > 0) { ?>
                                     <optgroup label="<?php echo $this->escape(stripslashes($section->get('title'))); ?>">
                                         <?php foreach ($categories as $category) { ?>
-                                            <option value="<?php echo $category->get('id'); ?>"<?php if ($this->category->get('alias') == $category->get('alias')) {
-                                                echo ' selected="selected"';
-                                                           } ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
+                                            <option value="<?php echo $category->get('id'); ?>"<?php echo $this->category->get('alias') == $category->get('alias') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->get('title'))); ?></option>
                                         <?php } ?>
                                     </optgroup>
                                 <?php } ?>
@@ -206,9 +200,7 @@ $this
                         <div class="col span-half">
                             <div class="form-group">
                                 <label for="upload">
-                                    <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>: <?php if ($attachment->get('filename')) {
-                                        echo '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>';
-                                    } ?>
+                                    <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_FILE'); ?>: <?php echo $attachment->get('filename') ? '<strong>' . $this->escape(stripslashes($attachment->get('filename'))) . '</strong>' : ''; ?>
                                     <input type="file" class="form-control-file" name="upload" id="upload" />
                                 </label>
                             </div>
@@ -245,9 +237,7 @@ $this
                     <div class="form-group">
                         <div class="form-check">
                             <label for="field-anonymous" class="comment-anonymous-label" class="form-check-label">
-                                <input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php if ($this->post->get('anonymous')) {
-                                    echo ' checked="checked"';
-                                                                                                                                              } ?> />
+                                <input class="option form-check-input" type="checkbox" name="fields[anonymous]" id="field-anonymous" value="1"<?php echo $this->post->get('anonymous') ? ' checked="checked"' : ''; ?> />
                                 <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_ANONYMOUS'); ?>
                             </label>
                         </div>

@@ -49,9 +49,7 @@ if ($this->lecture) {
     $this->base .= '&b=' . $this->lecture;
 }
 ?>
-    <li class="comment <?php echo $cls; ?><?php if (!$this->comment->get('parent')) {
-        echo ' start';
-                       } ?>" id="c<?php echo $this->comment->get('id'); ?>">
+    <li class="comment <?php echo $cls; ?><?php echo !$this->comment->get('parent') ? ' start' : ''; ?>" id="c<?php echo $this->comment->get('id'); ?>">
         <p class="comment-member-photo">
             <img src="<?php echo $this->comment->creator->picture($this->comment->get('anonymous')); ?>" alt="" />
         </p>
@@ -120,9 +118,7 @@ if ($this->lecture) {
             </p>
 
             <?php if ($this->depth < $this->config->get('comments_depth', 3)) { ?>
-                <div class="comment-add<?php if (Request::getInt('reply', 0) != $this->comment->get('id')) {
-                    echo ' hide';
-                                       } ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
+                <div class="comment-add<?php echo Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : ''; ?>" id="comment-form<?php echo $this->comment->get('id'); ?>">
                     <form id="cform<?php echo $this->comment->get('id'); ?>" action="<?php echo Route::url($this->comment->link('base')); ?>" method="post" enctype="multipart/form-data">
                         <fieldset id="commentform<?php echo $this->comment->get('id'); ?>">
                             <legend><span><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_REPLYING_TO', (!$this->comment->get('anonymous') ? $name : Lang::txt('JANONYMOUS'))); ?></span></legend>

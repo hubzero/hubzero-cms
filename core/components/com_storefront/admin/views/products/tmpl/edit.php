@@ -130,9 +130,7 @@ if (empty($this->meta->qtyTxt)) {
 
                     foreach ($this->types as $type) {
                         ?>
-                        <option value="<?php echo $type->ptId; ?>"<?php if ($this->row->getType() == $type->ptId) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo $type->ptName; ?></option>
+                        <option value="<?php echo $type->ptId; ?>"<?php echo $this->row->getType() == $type->ptId ? ' selected="selected"' : ''; ?>><?php echo $type->ptName; ?></option>
                         <?php
                     }
 
@@ -152,12 +150,8 @@ if (empty($this->meta->qtyTxt)) {
             <div class="input-wrap">
                 <label for="field-multi"><?php echo Lang::txt('COM_STOREFRONT_ALLOW_MULTIPLE'); ?>:</label>
                 <select name="fields[pAllowMultiple]" id="field-multi">
-                    <option value="0"<?php if ($this->row->getAllowMultiple() == 0) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
-                    <option value="1"<?php if ($this->row->getAllowMultiple() == 1) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
+                    <option value="0"<?php echo $this->row->getAllowMultiple() == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_STOREFRONT_NO'); ?></option>
+                    <option value="1"<?php echo $this->row->getAllowMultiple() == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_STOREFRONT_YES'); ?></option>
                 </select>
             </div>
 
@@ -173,12 +167,8 @@ if (empty($this->meta->qtyTxt)) {
             <div class="input-wrap">
                 <label for="field-state"><?php echo Lang::txt('COM_STOREFRONT_STATE'); ?>:</label>
                 <select name="fields[state]" id="field-state">
-                    <option value="0"<?php if ($this->row->getActiveStatus() == 0) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                    <option value="1"<?php if ($this->row->getActiveStatus() == 1) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                    <option value="0"<?php echo $this->row->getActiveStatus() == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+                    <option value="1"<?php echo $this->row->getActiveStatus() == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
                 </select>
             </div>
 
@@ -256,9 +246,7 @@ if (empty($this->meta->qtyTxt)) {
                             if ($cat->cActive || in_array($cat->cId, $collections)) {
                                 ?>
                                 <li>
-                                    <input type="checkbox" name="fields[collections][]" <?php if (in_array($cat->cId, $collections)) {
-                                        echo 'checked';
-                                                                                        } ?> value="<?php echo $cat->cId; ?>"
+                                    <input type="checkbox" name="fields[collections][]" <?php echo in_array($cat->cId, $collections) ? 'checked' : ''; ?> value="<?php echo $cat->cId; ?>"
                                            id="collection_<?php echo $cat->cId; ?>">
                                     <label for="collection_<?php echo $cat->cId; ?>">
                                         <?php echo $cat->cName; ?>
@@ -294,9 +282,7 @@ if (empty($this->meta->qtyTxt)) {
                                 ?>
                                 <li>
                                     <input type="checkbox"
-                                           name="fields[optionGroups][]" <?php if (in_array($og->ogId, $this->productOptionGroups)) {
-                                                echo 'checked';
-                                                                         } ?> value="<?php echo $og->ogId; ?>"
+                                           name="fields[optionGroups][]" <?php echo in_array($og->ogId, $this->productOptionGroups) ? 'checked' : ''; ?> value="<?php echo $og->ogId; ?>"
                                            id="optionGroup_<?php echo $og->ogId; ?>">
                                     <label for="optionGroup_<?php echo $og->ogId; ?>">
                                         <?php echo $og->ogName; ?>

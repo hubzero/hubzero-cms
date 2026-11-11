@@ -34,21 +34,11 @@ $this->js();
     <fieldset id="filter-bar">
         <label><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS'); ?>:</label>
         <select name="status">
-            <option value="all" <?php if ($this->filters['status'] == 'all') {
-                echo 'selected="selected"';
-                                } ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ALL'); ?></option>
-            <option value="active" <?php if ($this->filters['status'] == 'active') {
-                echo 'selected="selected"';
-                                   } ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ACTIVE'); ?></option>
-            <option value="removed" <?php if ($this->filters['status'] == 'removed') {
-                echo 'selected="selected"';
-                                    } ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_REMOVED'); ?></option>
-            <option value="unsubscribed" <?php if ($this->filters['status'] == 'unsubscribed') {
-                echo 'selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED'); ?></option>
-            <option value="inactive" <?php if ($this->filters['status'] == 'inactive') {
-                echo 'selected="selected"';
-                                     } ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE'); ?></option>
+            <option value="all" <?php echo $this->filters['status'] == 'all' ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ALL'); ?></option>
+            <option value="active" <?php echo $this->filters['status'] == 'active' ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_ACTIVE'); ?></option>
+            <option value="removed" <?php echo $this->filters['status'] == 'removed' ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_REMOVED'); ?></option>
+            <option value="unsubscribed" <?php echo $this->filters['status'] == 'unsubscribed' ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_UNSUBSCRIBED'); ?></option>
+            <option value="inactive" <?php echo $this->filters['status'] == 'inactive' ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_MAILINGLIST_MANAGE_STATUS_INACTIVE'); ?></option>
         </select>
         <input type="submit" value="<?php echo Lang::txt('Go'); ?>" id="btn-manage" />
     </fieldset>

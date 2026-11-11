@@ -211,15 +211,9 @@ $groupDefs = $groups->getAllGroups();
                     <p>
                         Beginning <input name="group-hours-<?php echo $idx; ?>" value="<?php echo $group['hours']; ?>" size="3" />
                         <select name="group-time-unit-<?php echo $idx; ?>">
-                            <option value="hour" <?php if ($unit == 'hour') {
-                                echo 'selected="selected" ';
-                                                 } ?>>hours</option>
-                            <option value="day" <?php if ($unit == 'day') {
-                                echo 'selected="selected" ';
-                                                } ?>>days</option>
-                            <option value="week" <?php if ($unit == 'week') {
-                                echo 'selected="selected" ';
-                                                 } ?>>weeks</option>
+                            <option value="hour" <?php echo $unit == 'hour' ? 'selected="selected" ' : ''; ?>>hours</option>
+                            <option value="day" <?php echo $unit == 'day' ? 'selected="selected" ' : ''; ?>>days</option>
+                            <option value="week" <?php echo $unit == 'week' ? 'selected="selected" ' : ''; ?>>weeks</option>
                         </select> after registration, prompt for:
                         <ul>
                         <?php foreach ($group['cols'] as $cidx => $col) : ?>
@@ -227,9 +221,7 @@ $groupDefs = $groups->getAllGroups();
                                 <select name="group-cols-<?php echo $idx; ?>[]">
                                     <option value="">Select profile field...</option>
                                 <?php foreach ($possibleCols as $colName => $colLabel) : ?>
-                                    <option value="<?php echo str_replace('"', '&quot;', $colName); ?>"<?php if ($colName == $col) {
-                                        echo ' selected="selected"';
-                                                   } ?>><?php echo htmlentities($colLabel); ?></option>
+                                    <option value="<?php echo str_replace('"', '&quot;', $colName); ?>"<?php echo $colName == $col ? ' selected="selected"' : ''; ?>><?php echo htmlentities($colLabel); ?></option>
                                 <?php endforeach; ?>
                                 </select>
                                 <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove field</button>
@@ -266,15 +258,9 @@ $groupDefs = $groups->getAllGroups();
                 <li>
                     <input name="recur-<?php echo $idx; ?>" value="<?php echo $r; ?>" size="3" />
                     <select name="recur-type-<?php echo $idx; ?>">
-                        <option value="hour" <?php if ($unit == 'hour') {
-                            echo 'selected="selected" ';
-                                             } ?>>hours</option>
-                        <option value="day" <?php if ($unit == 'day') {
-                            echo 'selected="selected" ';
-                                            } ?>>days</option>
-                        <option value="week" <?php if ($unit == 'week') {
-                            echo 'selected="selected" ';
-                                             } ?>>weeks</option>
+                        <option value="hour" <?php echo $unit == 'hour' ? 'selected="selected" ' : ''; ?>>hours</option>
+                        <option value="day" <?php echo $unit == 'day' ? 'selected="selected" ' : ''; ?>>days</option>
+                        <option value="week" <?php echo $unit == 'week' ? 'selected="selected" ' : ''; ?>>weeks</option>
                     </select>
                     <button onclick="this.parentNode.parentNode.removeChild(this.parentNode); return false">Remove recurrence</button>
                 </li>
@@ -316,12 +302,8 @@ $groupDefs = $groups->getAllGroups();
             </p>
             <p>
                 After reaching the end of this list: <br />
-                <input type="radio" name="repeat-type" value="0" <?php if ($repeatType !== 1) {
-                    echo 'checked="checked" ';
-                                                                 } ?>/> repeat prompting indefinitely using the last delay listed between attempts<br />
-                <input type="radio" name="repeat-type" value="1" <?php if ($repeatType === 1) {
-                    echo 'checked="checked" ';
-                                                                 } ?>/> stop prompting
+                <input type="radio" name="repeat-type" value="0" <?php echo $repeatType !== 1 ? 'checked="checked" ' : ''; ?>/> repeat prompting indefinitely using the last delay listed between attempts<br />
+                <input type="radio" name="repeat-type" value="1" <?php echo $repeatType === 1 ? 'checked="checked" ' : ''; ?>/> stop prompting
             </p>
         </fieldset>
     </fieldset>

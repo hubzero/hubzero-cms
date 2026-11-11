@@ -80,9 +80,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                     <?php if ($this->config->get('access-create-category')) { ?>
                         <tfoot>
                             <tr>
-                                <td<?php if ($section->categories()->total() > 0) {
-                                    echo ' colspan="5"';
-                                   } ?>>
+                                <td<?php echo $section->categories()->total() > 0 ? ' colspan="5"' : ''; ?>>
                                     <a class="icon-add add btn" href="<?php echo Route::url($base . '&b=' . $section->get('alias') . '&c=new'); ?>">
                                         <span><?php echo Lang::txt('Add Category'); ?></span>
                                     </a>
@@ -93,9 +91,7 @@ $base = $this->offering->link() . '&active=discussions&unit=manage';
                     <tbody>
                         <?php if ($categories->count() > 0) { ?>
                             <?php foreach ($categories as $row) { ?>
-                                <tr<?php if ($row->get('closed')) {
-                                    echo ' class="closed"';
-                                   } ?>>
+                                <tr<?php echo $row->get('closed') ? ' class="closed"' : ''; ?>>
                                     <th scope="row">
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>

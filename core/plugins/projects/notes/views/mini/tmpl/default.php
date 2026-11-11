@@ -15,9 +15,7 @@ use Hubzero\Facades\Route;
 defined('_HZEXEC_') or die();
 
 ?>
-<div class="sidebox<?php if (count($this->notes) == 0) {
-    echo ' suggestions';
-                   } ?>">
+<div class="sidebox<?php echo count($this->notes) == 0 ? ' suggestions' : ''; ?>">
     <?php
     $notesUrl = Route::url($this->model->link('notes'));
     $notesTitle = Lang::txt('COM_PROJECTS_VIEW') . ' '

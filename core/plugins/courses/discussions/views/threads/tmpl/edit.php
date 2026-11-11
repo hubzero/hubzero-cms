@@ -89,9 +89,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
                                 ?>
                             <optgroup label="<?php echo $this->escape(stripslashes($section->title)); ?>">
                                 <?php foreach ($section->categories as $category) { ?>
-                                <option value="<?php echo $category->id; ?>"<?php if ($category->id == $this->post->get('category_id')) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+                                <option value="<?php echo $category->id; ?>"<?php echo $category->id == $this->post->get('category_id') ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
                                 <?php } ?>
                             </optgroup>
                                 <?php
@@ -107,9 +105,7 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
         <?php } ?>
 
             <label for="field-anonymous" class="comment-anonymous-label">
-                <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"<?php if ($this->post->get('anonymous') == 1) {
-                    echo ' checked="checked"';
-                                                                                                   } ?> value="1" />
+                <input class="option" type="checkbox" name="fields[anonymous]" id="field-anonymous"<?php echo $this->post->get('anonymous') == 1 ? ' checked="checked"' : ''; ?> value="1" />
                 <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_FIELD_ANONYMOUS'); ?>
             </label>
 

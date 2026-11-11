@@ -31,13 +31,9 @@ Toolbar::help('tagged');
     <fieldset id="filter-bar">
         <label for="filter-tbl"><?php echo Lang::txt('COM_TAGS_FILTER'); ?>:</label>
         <select name="tbl" id="filter-tbl" class="filter filter-submit">
-            <option value=""<?php if (!$this->filters['tbl']) {
-                echo ' selected="selected"';
-                            } ?>><?php echo Lang::txt('COM_TAGS_FILTER_TYPE'); ?></option>
+            <option value=""<?php echo !$this->filters['tbl'] ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TAGS_FILTER_TYPE'); ?></option>
             <?php foreach ($this->types as $type) { ?>
-                <option value="<?php echo $type->get('tbl'); ?>"<?php if ($this->filters['tbl'] == $type->get('tbl')) {
-                    echo ' selected="selected"';
-                               } ?>><?php echo $type->get('tbl'); ?></option>
+                <option value="<?php echo $type->get('tbl'); ?>"<?php echo $this->filters['tbl'] == $type->get('tbl') ? ' selected="selected"' : ''; ?>><?php echo $type->get('tbl'); ?></option>
             <?php } ?>
         </select>
 

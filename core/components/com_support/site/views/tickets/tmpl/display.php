@@ -57,16 +57,12 @@ $this
                         <li id="folder_watching" class="open">
                             <span class="icon-watch folder"><?php echo Lang::txt('COM_SUPPORT_WATCH_LIST'); ?></span>
                             <ul id="queries_watching" class="wqueries">
-                                <li<?php if (intval($this->filters['show']) == -1) {
-                                    echo ' class="active"';
-                                   }?>>
+                                <li<?php echo intval($this->filters['show']) == -1 ? ' class="active"' : ''; ?>>
                                     <a class="aquery" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-1&limitstart=0' . (intval($this->filters['show']) != -1 ? '&search=' : '')); ?>">
                                         <?php echo $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_OPEN')); ?> <span><?php echo $this->watch['open']; ?></span>
                                     </a>
                                 </li>
-                                <li<?php if (intval($this->filters['show']) == -2) {
-                                    echo ' class="active"';
-                                   }?>>
+                                <li<?php echo intval($this->filters['show']) == -2 ? ' class="active"' : ''; ?>>
                                     <a class="aquery" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=-2&limitstart=0' . (intval($this->filters['show']) != -2 ? '&search=' : '')); ?>">
                                         <?php echo $this->escape(Lang::txt('COM_SUPPORT_WATCH_LIST_CLOSED')); ?> <span><?php echo $this->watch['closed']; ?></span>
                                     </a>
@@ -93,9 +89,7 @@ $this
                                 <?php } ?>
                                 <ul id="queries_<?php echo $this->escape($folder->id); ?>" class="queries">
                                     <?php foreach ($folder->queries as $query) { ?>
-                                        <li id="query_<?php echo $this->escape($query->id); ?>" <?php if (intval($this->filters['show']) == $query->id) {
-                                            echo ' class="active"';
-                                                      }?>>
+                                        <li id="query_<?php echo $this->escape($query->id); ?>" <?php echo intval($this->filters['show']) == $query->id ? ' class="active"' : ''; ?>>
                                             <a class="aquery" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $query->id . (intval($this->filters['show']) != $query->id ? '&search=&limitstart=0' : '')); ?>">
                                                 <?php echo $this->escape(stripslashes($query->title)); ?> <span><?php echo $query->get('count'); ?></span>
                                             </a>
@@ -143,44 +137,32 @@ $this
                                 <span class="sort-header"><?php echo Lang::txt('COM_SUPPORT_SORT_RESULTS'); ?></span>
                                 <ul>
                                     <li>
-                                        <a class="sort-age<?php if ($this->filters['sort'] == 'created') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                          } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=created&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <a class="sort-age<?php echo $this->filters['sort'] == 'created' ? ' active ' . strtolower($this->filters['sortdir']) : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=created&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_AGE'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-status<?php if ($this->filters['sort'] == 'status') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                             } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=status&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <a class="sort-status<?php echo $this->filters['sort'] == 'status' ? ' active ' . strtolower($this->filters['sortdir']) : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=status&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_STATUS'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-severity<?php if ($this->filters['sort'] == 'severity') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                               } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=severity&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <a class="sort-severity<?php echo $this->filters['sort'] == 'severity' ? ' active ' . strtolower($this->filters['sortdir']) : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=severity&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SEVERITY'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-summary<?php if ($this->filters['sort'] == 'summary') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                              } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=summary&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <a class="sort-summary<?php echo $this->filters['sort'] == 'summary' ? ' active ' . strtolower($this->filters['sortdir']) : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=summary&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SUMMARY'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-group<?php if ($this->filters['sort'] == 'group') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                            } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=group&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <a class="sort-group<?php echo $this->filters['sort'] == 'group' ? ' active ' . strtolower($this->filters['sortdir']) : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=group&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_GROUP'); ?>
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="sort-owner<?php if ($this->filters['sort'] == 'owner') {
-                                            echo ' active ' . strtolower($this->filters['sortdir']);
-                                                            } ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=owner&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
+                                        <a class="sort-owner<?php echo $this->filters['sort'] == 'owner' ? ' active ' . strtolower($this->filters['sortdir']) : ''; ?>" href="<?php echo Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=display&show=' . $this->filters['show'] . '&search=' . $this->filters['search'] . '&sort=owner&sortdir=' . $direction . '&limit=' . $this->filters['limit'] . '&limitstart=0'); ?>" title="<?php echo Lang::txt('COM_SUPPORT_CLICK_TO_SORT'); ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_OWNER'); ?>
                                         </a>
                                     </li>

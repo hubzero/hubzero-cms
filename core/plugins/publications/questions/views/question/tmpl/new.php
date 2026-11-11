@@ -100,9 +100,7 @@ $this->css();
                         name="question[reward]"
                         id="field-reward"
                         value=""
-                        size="5" <?php if ((int) $this->funds <= 0) {
-                            echo 'disabled="disabled" ';
-                                 } ?>/>
+                        size="5" <?php echo (int) $this->funds <= 0 ? 'disabled="disabled" ' : ''; ?>/>
                     <?php echo Lang::txt('COM_ANSWERS_YOU_HAVE'); ?>
                     <strong><?php echo $this->escape($this->funds); ?></strong>
                     <?php echo Lang::txt('COM_ANSWERS_POINTS_TO_SPEND'); ?>

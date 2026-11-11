@@ -40,34 +40,24 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
     <input type="hidden" name="action" value="team" />
 
     <div class="container">
-        <!-- <p class="msg-total"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SHOWING')); ?> <?php if ($this->total <= count($this->team)) {
-            echo Lang::txt('PLG_PROJECTS_TEAM_ALL');
-                                  } ?> <span class="prominent"><?php echo count($this->team); ?></span>  <?php if ($this->total > count($this->team)) {
-                                  echo Lang::txt('PLG_PROJECTS_TEAM_OUT_OF') . ' ' . $this->total;
-                                  } ?> <?php echo Lang::txt('PLG_PROJECTS_TEAM_MEMBERS'); ?></p> -->
+        <!-- <p class="msg-total"><?php echo ucfirst(Lang::txt('PLG_PROJECTS_TEAM_SHOWING')); ?> <?php echo $this->total <= count($this->team) ? Lang::txt('PLG_PROJECTS_TEAM_ALL') : ''; ?> <span class="prominent"><?php echo count($this->team); ?></span>  <?php echo $this->total > count($this->team) ? Lang::txt('PLG_PROJECTS_TEAM_OUT_OF') . ' ' . $this->total : ''; ?> <?php echo Lang::txt('PLG_PROJECTS_TEAM_MEMBERS'); ?></p> -->
 
         <table id="teamlist" class="listing">
             <thead>
                 <tr>
                     <th class="priority-3 imagebox" aria-label="<?php echo Lang::txt('Photo'); ?>"><span class="sr-only">Photo</span></th>
                     <th>
-                        <a class="sort-title <?php if ($this->filters['sortby'] == 'name') {
-                            echo strtolower($this->filters['sortdir']) . ' active';
-                                             } ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=name'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_NAME'))); ?>">
+                        <a class="sort-title <?php echo $this->filters['sortby'] == 'name' ? strtolower($this->filters['sortdir']) . ' active' : ''; ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=name'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_NAME'))); ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_NAME'); ?>
                         </a>
                     </th>
                     <th>
-                        <a class="sort-title <?php if ($this->filters['sortby'] == 'role') {
-                            echo strtolower($this->filters['sortdir']) . ' active';
-                                             } ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=role'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_ROLE'))); ?>">
+                        <a class="sort-title <?php echo $this->filters['sortby'] == 'role' ? strtolower($this->filters['sortdir']) . ' active' : ''; ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=role'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_ROLE'))); ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_ROLE'); ?>
                         </a>
                     </th>
                     <th class="priority-5">
-                        <a class="sort-title <?php if ($this->filters['sortby'] == 'date') {
-                            echo strtolower($this->filters['sortdir']) . ' active';
-                                             } ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=date'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_JOINED'))); ?>">
+                        <a class="sort-title <?php echo $this->filters['sortby'] == 'date' ? strtolower($this->filters['sortdir']) . ' active' : ''; ?>" href="<?php echo Route::url($this->model->link('team') . $sortAppend . '&sortby=date'); ?>" title="<?php echo Lang::txt('PLG_PROJECTS_TEAM_SORT_BY', strtolower(Lang::txt('PLG_PROJECTS_TEAM_JOINED'))); ?>">
                             <?php echo Lang::txt('PLG_PROJECTS_TEAM_JOINED'); ?>
                         </a>
                     </th>
@@ -114,9 +104,7 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                 }
                 $username = $owner->username ? $owner->username : $owner->invited_email;
                 ?>
-                <tr class="mline <?php if ($owner->userid == $this->uid) {
-                    echo 'native';
-                                 } ?>" id="tr_<?php echo $owner->id; ?>">
+                <tr class="mline <?php echo $owner->userid == $this->uid ? 'native' : ''; ?>" id="tr_<?php echo $owner->id; ?>">
                     <td class="priority-3 imagebox">
                         <a class="user-img-wrap" href="<?php echo Route::url('index.php?option=com_members&id=' . $owner->userid); ?>" <?php if ($owner->fullname) {
                             ?>title="<?php echo $this->escape($owner->fullname) . ' (' . $owner->userid . ')'; ?>"<?php

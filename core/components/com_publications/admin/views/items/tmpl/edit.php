@@ -184,9 +184,7 @@ $panels = [
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_LINK'); ?></span></legend>
                 <div class="input-wrap">
-                    <input type="checkbox" name="disabledownloadlink" id="disabledownloadlink" <?php if ($this->model->version->downloadDisabled) {
-                        echo "checked";
-                                                                                               } ?>/>
+                    <input type="checkbox" name="disabledownloadlink" id="disabledownloadlink" <?php echo $this->model->version->downloadDisabled ? "checked" : ''; ?>/>
                     <label for="disabledownloadlink"><?php echo Lang::txt('COM_PUBLICATIONS_FIELD_DISABLE_DOWNLOAD_DESCRIPTION'); ?></label>
                 </div>
             </fieldset>

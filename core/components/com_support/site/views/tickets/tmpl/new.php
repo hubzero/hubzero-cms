@@ -205,9 +205,7 @@ endif;
                                 <?php echo Lang::txt('COM_SUPPORT_COMMENT_SEVERITY'); ?>
                                 <select name="problem[severity]" id="ticket-field-severity" class="form-control">
                                     <?php foreach ($this->lists['severities'] as $severity) : ?>
-                                        <option value="<?php echo $severity; ?>"<?php if ($severity == 'normal') {
-                                            echo ' selected="selected"';
-                                                       } ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
+                                        <option value="<?php echo $severity; ?>"<?php echo $severity == 'normal' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>

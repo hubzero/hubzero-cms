@@ -84,9 +84,7 @@ if (
         </ul>
     <?php endif; ?>
 
-    <?php if (!$params->get('show_intro')) :
-        echo $this->item->event->afterDisplayTitle;
-    endif; ?>
+    <?php echo !$params->get('show_intro') ? $this->item->event->afterDisplayTitle : ''; ?>
 
     <?php echo $this->item->event->beforeDisplayContent; ?>
 
@@ -218,10 +216,7 @@ if (
                 ?>
                 <div class="img-fulltext-<?php echo htmlspecialchars($imgfloat); ?>">
                     <img
-                        <?php if ($images->image_fulltext_caption) :
-                            echo 'class="caption" title="'
-                                . htmlspecialchars($images->image_fulltext_caption) . '"';
-                        endif; ?>
+                        <?php echo $images->image_fulltext_caption ? 'class="caption" title="' . htmlspecialchars($images->image_fulltext_caption) . '"' : ''; ?>
                         src="<?php echo htmlspecialchars($images->image_fulltext); ?>"
                         alt="<?php echo htmlspecialchars($images->image_fulltext_alt); ?>"
                     />

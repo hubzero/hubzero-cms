@@ -72,9 +72,7 @@ $this->js();
                             <input type="number" name="fields[hardTimeout]" id="field-hardtimeout" min="0" step="any" value="<?php echo $this->escape($hardTimeout); ?>" aria-describedby="field-hardtimeout-hint" />
                             <select name="fields[hardTimeoutUnit]" id="field-hardtimeout-unit" aria-label="<?php echo Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_UNIT'); ?>">
                                 <?php foreach (array_keys(\Components\Tools\Helpers\Duration::UNITS) as $unit) : ?>
-                                    <option value="<?php echo $unit; ?>"<?php if ($unit == $hardTimeoutUnit) {
-                                        echo ' selected="selected"';
-                                                   } ?>><?php echo Lang::txt('COM_TOOLS_UNIT_' . strtoupper($unit)); ?></option>
+                                    <option value="<?php echo $unit; ?>"<?php echo $unit == $hardTimeoutUnit ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_UNIT_' . strtoupper($unit)); ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <span class="hint" id="field-hardtimeout-hint"><?php echo Lang::txt('COM_TOOLS_FIELD_HARD_TIMEOUT_HINT'); ?></span>

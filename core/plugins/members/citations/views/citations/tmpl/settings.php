@@ -110,15 +110,11 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
                     <select name="citation-format" id="format-selector" class="form-control" data-uid="<?php echo $this->member->get('id'); ?>">
                         <?php foreach ($this->formats as $format) : ?>
                                 <?php if ($format->style != 'custom-member-' . $this->member->get('id')) : ?>
-                            <option <?php if ($this->currentFormat->id == $format->id) {
-                                echo 'selected';
-                                    } ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
+                            <option <?php echo $this->currentFormat->id == $format->id ? 'selected' : ''; ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
                                     <?php echo $format->style; ?>
                             </option>
                                 <?php elseif ($format->style == 'custom-member-' . $this->member->get('id')) : ?>
-                                <option <?php if ($this->currentFormat->id == $format->id) {
-                                    echo 'selected';
-                                        } ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
+                                <option <?php echo $this->currentFormat->id == $format->id ? 'selected' : ''; ?> value="<?php echo $format->id; ?>" data-format="<?php echo $format->format; ?>">
                                     <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_CUSTOM_FORMAT'); ?>
                                 </option>
                                 <?php endif; ?> 

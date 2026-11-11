@@ -17,9 +17,7 @@ foreach ($list as $item) : ?>
         Components\Content\Site\Helpers\Route::getCategoryRoute($item->id),
     );
     ?>
-    <li <?php if ($_SERVER['PHP_SELF'] == $catRoute) {
-        echo ' class="active"';
-        } ?>>
+    <li <?php echo $_SERVER['PHP_SELF'] == $catRoute ? ' class="active"' : ''; ?>>
         <?php $levelup = $item->level - $startLevel - 1; ?>
         <h<?php echo $params->get('item_heading') + $levelup; ?>>
             <a href="<?php echo $catRoute; ?>">

@@ -184,9 +184,7 @@ $this->js();
                             id="review_rating_5"
                             name="comment[rating]"
                             type="radio"
-                            value="5"<?php if ($comment->get('rating') == 5) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="5"<?php echo $comment->get('rating') == 5 ? ' checked="checked"' : ''; ?> />
                         <label for="review_rating_5">
                             &#x272D;&#x272D;&#x272D;&#x272D;&#x272D;
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_EXCELLENT'); ?>
@@ -196,9 +194,7 @@ $this->js();
                             id="review_rating_4"
                             name="comment[rating]"
                             type="radio"
-                            value="4"<?php if ($comment->get('rating') == 4) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="4"<?php echo $comment->get('rating') == 4 ? ' checked="checked"' : ''; ?> />
                         <label for="review_rating_4">
                             &#x272D;&#x272D;&#x272D;&#x272D;&#x2729;
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_VERY_GOOD'); ?>
@@ -208,9 +204,7 @@ $this->js();
                             id="review_rating_3"
                             name="comment[rating]"
                             type="radio"
-                            value="3"<?php if ($comment->get('rating') == 3) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="3"<?php echo $comment->get('rating') == 3 ? ' checked="checked"' : ''; ?> />
                         <label for="review_rating_3">
                             &#x272D;&#x272D;&#x272D;&#x2729;&#x2729;
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_GOOD'); ?>
@@ -220,9 +214,7 @@ $this->js();
                             id="review_rating_2"
                             name="comment[rating]"
                             type="radio"
-                            value="2"<?php if ($comment->get('rating') == 2) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="2"<?php echo $comment->get('rating') == 2 ? ' checked="checked"' : ''; ?> />
                         <label for="review_rating_2">
                             &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_FAIR'); ?>
@@ -232,9 +224,7 @@ $this->js();
                             id="review_rating_1"
                             name="comment[rating]"
                             type="radio"
-                            value="1"<?php if ($comment->get('rating') == 1) {
-                                echo ' checked="checked"';
-                                     } ?> />
+                            value="1"<?php echo $comment->get('rating') == 1 ? ' checked="checked"' : ''; ?> />
                         <label for="review_rating_1">
                             &#x272D;&#x2729;&#x2729;&#x2729;&#x2729;
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_RATING_POOR'); ?>
@@ -268,9 +258,7 @@ $this->js();
                                 type="checkbox"
                                 name="comment[anonymous]"
                                 id="comment-anonymous"
-                                value="1"<?php if ($comment->get('anonymous')) {
-                                    echo ' checked="checked"';
-                                         } ?> />
+                                value="1"<?php echo $comment->get('anonymous') ? ' checked="checked"' : ''; ?> />
                             <?php echo Lang::txt('PLG_COURSES_REVIEWS_POST_ANONYMOUSLY'); ?>
                         <?php } else { ?>
                             &nbsp; <input class="option" type="hidden" name="comment[anonymous]" id="comment-anonymous"

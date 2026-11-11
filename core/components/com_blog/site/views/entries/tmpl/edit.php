@@ -67,9 +67,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                 <legend><?php echo Lang::txt($this->entry->isNew() ? 'COM_BLOG_NEW_ENTRY' : 'COM_BLOG_EDIT_DETAILS'); ?></legend>
 
                 <div class="form-group">
-                    <label for="field-title"<?php if ($this->task == 'save' && !$this->entry->get('title')) {
-                        echo ' class="fieldWithErrors"';
-                                            } ?>>
+                    <label for="field-title"<?php echo $this->task == 'save' && !$this->entry->get('title') ? ' class="fieldWithErrors"' : ''; ?>>
                         <?php echo Lang::txt('COM_BLOG_FIELD_TITLE'); ?> <span class="required"><?php echo Lang::txt('COM_BLOG_REQUIRED'); ?></span>
                         <input type="text" class="form-control" name="entry[title]" id="field-title" size="35" value="<?php echo $this->escape(stripslashes($this->entry->get('title', ''))); ?>" />
                     </label>
@@ -79,9 +77,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                 </div>
 
                 <div class="form-group">
-                    <label for="entrycontent"<?php if ($this->task == 'save' && !$this->entry->get('content')) {
-                        echo ' class="fieldWithErrors"';
-                                             } ?>>
+                    <label for="entrycontent"<?php echo $this->task == 'save' && !$this->entry->get('content') ? ' class="fieldWithErrors"' : ''; ?>>
                         <?php echo Lang::txt('COM_BLOG_FIELD_CONTENT'); ?> <span class="required"><?php echo Lang::txt('COM_BLOG_REQUIRED'); ?></span>
                         <?php echo $this->editor('entry[content]', $this->escape($this->entry->content('raw')), 50, 40, 'entrycontent', ['class' => 'form-control']); ?>
                     </label>
@@ -102,9 +98,7 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                     <div class="col span-half">
                         <div class="form-group form-check">
                             <label for="field-allow_comments" class="form-check-label">
-                                <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php if ($this->entry->get('allow_comments') == 1) {
-                                    echo ' checked="checked"';
-                                                                                                                                                       } ?> />
+                                <input type="checkbox" class="option form-check-input" name="entry[allow_comments]" id="field-allow_comments" value="1"<?php echo $this->entry->get('allow_comments') == 1 ? ' checked="checked"' : ''; ?> />
                                 <?php echo Lang::txt('COM_BLOG_FIELD_ALLOW_COMMENTS'); ?>
                             </label>
                         </div>
@@ -115,15 +109,9 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
                             <label for="field-access">
                                 <?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY'); ?>
                                 <select class="form-control" name="entry[access]" id="field-access">
-                                    <option value="1"<?php if ($this->entry->get('access') == 1) {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
-                                    <option value="2"<?php if ($this->entry->get('access') == 2) {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
-                                    <option value="5"<?php if ($this->entry->get('access') > 2) {
-                                        echo ' selected="selected"';
-                                                     } ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
+                                    <option value="1"<?php echo $this->entry->get('access') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PUBLIC'); ?></option>
+                                    <option value="2"<?php echo $this->entry->get('access') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_REGISTERED'); ?></option>
+                                    <option value="5"<?php echo $this->entry->get('access') > 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_BLOG_FIELD_PRIVACY_PRIVATE'); ?></option>
                                 </select>
                             </label>
                         </div>

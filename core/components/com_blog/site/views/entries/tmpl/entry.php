@@ -235,9 +235,7 @@ $first = $this->archive
                                         if (intval($key) <= $entry_month) {
                                             ?>
                                         <li>
-                                            <a <?php if ($entry_month == $key) {
-                                                echo 'class="active" ';
-                                               } ?>href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . $key); ?>">
+                                            <a <?php echo $entry_month == $key ? 'class="active" ' : ''; ?>href="<?php echo Route::url('index.php?option=' . $this->option . '&year=' . $i . '&month=' . $key); ?>">
                                                 <?php echo $month; ?>
                                             </a>
                                         </li>

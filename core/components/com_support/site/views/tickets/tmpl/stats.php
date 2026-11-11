@@ -112,17 +112,13 @@ foreach ($severities as $severity) {
 </header>
 
 <ul class="sub-menu">
-    <li id="sm-1"<?php if ($this->type == 0) {
-        echo ' class="active"';
-                 } ?>>
+    <li id="sm-1"<?php echo $this->type == 0 ? ' class="active"' : ''; ?>>
         <?php $statsUrl = Route::url('index.php?option=com_support&task=stats'); ?>
         <a class="tab" rel="submitted" href="<?php echo $statsUrl; ?>">
             <span><?php echo Lang::txt('COM_SUPPORT_TICKETS_SUBMITTED'); ?></span>
         </a>
     </li>
-    <li id="sm-2"<?php if ($this->type == 1) {
-        echo ' class="active"';
-                 } ?>>
+    <li id="sm-2"<?php echo $this->type == 1 ? ' class="active"' : ''; ?>>
         <?php $autoUrl = Route::url('index.php?option=com_support&task=stats&type=automatic'); ?>
         <a class="tab" rel="automatic" href="<?php echo $autoUrl; ?>">
             <span><?php echo Lang::txt('COM_SUPPORT_TICKETS_AUTOMATIC'); ?></span>
@@ -169,12 +165,8 @@ $formAction = Route::url(
                 <div class="form-group">
                     <label for="ticket-group"><?php echo Lang::txt('COM_SUPPORT_FILTER_GROUP'); ?></label>
                     <select name="group" id="ticket-group" class="form-control">
-                        <option value=""<?php if (!$this->group) {
-                            echo ' selected="selected"';
-                                        } ?>><?php echo Lang::txt('COM_SUPPORT_ALL'); ?></option>
-                        <option value="_none_"<?php if ($this->group == '_none_') {
-                            echo ' selected="selected"';
-                                              } ?>><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
+                        <option value=""<?php echo !$this->group ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_ALL'); ?></option>
+                        <option value="_none_"<?php echo $this->group == '_none_' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_SUPPORT_NONE'); ?></option>
                         <?php
                         if ($this->groups) {
                             foreach ($this->groups as $group) {

@@ -144,9 +144,7 @@ if (!$this->app->sess) {
                                         continue;
                                     }
                                     ?>
-                                    <option value="<?php echo $plugin->name; ?>"<?php if ($viewer == $plugin->name) {
-                                        echo ' selected="selected"';
-                                                   } ?>><?php echo $this->escape($plugin->title); ?></option>
+                                    <option value="<?php echo $plugin->name; ?>"<?php echo $viewer == $plugin->name ? ' selected="selected"' : ''; ?>><?php echo $this->escape($plugin->title); ?></option>
                                 <?php } ?>
                             </select>
                         </span>
@@ -166,9 +164,7 @@ if (!$this->app->sess) {
                 </form>
             </div>
         <?php } ?>
-        <div id="app-content" tabindex="1" class="<?php if ($readOnly) {
-            echo 'view-only';
-                                                  } ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px">
+        <div id="app-content" tabindex="1" class="<?php echo $readOnly ? 'view-only' : ''; ?>" style="width: <?php echo $this->output->width; ?>px; height: <?php echo $this->output->height; ?>px">
             <noscript>
                 <p class="warning">
                     <?php echo Lang::txt('COM_TOOLS_ERROR_NOSCRIPT'); ?>

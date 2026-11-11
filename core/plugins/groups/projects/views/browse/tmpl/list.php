@@ -71,9 +71,7 @@ switch ($this->which) {
                         <?php } ?>
                     </td>
                     <td class="th_privacy">
-                        <?php if (!$row->isPublic()) {
-                            echo '<span class="privacy-icon">&nbsp;</span>';
-                        } ?>
+                        <?php echo !$row->isPublic() ? '<span class="privacy-icon">&nbsp;</span>' : ''; ?>
                     </td>
                     <td class="th_title">
                         <?php if ($row->access('member') || $row->access('readonly')) { ?>

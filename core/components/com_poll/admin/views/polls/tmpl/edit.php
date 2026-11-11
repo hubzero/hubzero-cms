@@ -128,15 +128,9 @@ $optionLabel = Lang::txt('COM_POLL_FIELD_OPTION');
                         <?php echo Lang::txt('COM_POLL_FIELD_PUBLISHED'); ?>:
                     </label>
                     <select name="fields[state]" id="field-state">
-                        <option value="0"<?php if ($this->poll->get('state') == 0) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                        <option value="1"<?php if ($this->poll->get('state') == 1) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                        <option value="2"<?php if ($this->poll->get('state') == 2) {
-                            echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                        <option value="0"<?php echo $this->poll->get('state') == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+                        <option value="1"<?php echo $this->poll->get('state') == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                        <option value="2"<?php echo $this->poll->get('state') == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
                     </select>
                 </div>
                 <div class="input-wrap">

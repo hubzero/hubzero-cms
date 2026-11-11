@@ -27,9 +27,7 @@ $collTitle = $this->escape(stripslashes(
     $collection->get('title', Lang::txt('COM_COLLECTIONS_NONE')),
 ));
 ?>
-        <h4<?php if ($collection->get('access', 0) == 4) {
-            echo ' class="private"';
-           } ?>>
+        <h4<?php echo $collection->get('access', 0) == 4 ? ' class="private"' : ''; ?>>
             <a href="<?php echo Route::url($collection->link()); ?>">
                 <?php echo $collTitle; ?>
             </a>

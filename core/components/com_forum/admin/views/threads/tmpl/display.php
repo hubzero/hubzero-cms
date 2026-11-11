@@ -52,12 +52,8 @@ $access_levels = $db->loadAssocList();
             <div class="col span6">
                 <label for="scopeinfo"><?php echo Lang::txt('COM_FORUM_FILTER_SCOPE'); ?>:</label>
                 <select name="scopeinfo" id="scopeinfo" class="filter filter-submit">
-                    <option value=""<?php if ($this->filters['scopeinfo'] == '') {
-                        echo ' selected="selected"';
-                                    } ?>><?php echo Lang::txt('COM_FORUM_FILTER_SCOPE_SELECT'); ?></option>
-                    <option value="site:0"<?php if ($this->filters['scopeinfo'] == 'site:0') {
-                        echo ' selected="selected"';
-                                          } ?>><?php echo Lang::txt('COM_FORUM_NONE'); ?></option>
+                    <option value=""<?php echo $this->filters['scopeinfo'] == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_FILTER_SCOPE_SELECT'); ?></option>
+                    <option value="site:0"<?php echo $this->filters['scopeinfo'] == 'site:0' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_NONE'); ?></option>
                     <?php
                     $list = [];
                     foreach ($this->scopes as $result) {
@@ -94,9 +90,7 @@ $access_levels = $db->loadAssocList();
                         <?php
                         foreach ($this->sections as $section) {
                             ?>
-                            <option value="<?php echo $section->id; ?>"<?php if ($this->filters['section_id'] == $section->id) {
-                                echo ' selected="selected"';
-                                           } ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
+                            <option value="<?php echo $section->id; ?>"<?php echo $this->filters['section_id'] == $section->id ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($section->title)); ?></option>
                             <?php
                         }
                         ?>
@@ -110,9 +104,7 @@ $access_levels = $db->loadAssocList();
                         <?php
                         foreach ($this->categories as $category) {
                             ?>
-                            <option value="<?php echo $category->id; ?>"<?php if ($this->filters['category_id'] == $category->id) {
-                                echo ' selected="selected"';
-                                           } ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
+                            <option value="<?php echo $category->id; ?>"<?php echo $this->filters['category_id'] == $category->id ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($category->title)); ?></option>
                             <?php
                         }
                         ?>
@@ -122,18 +114,10 @@ $access_levels = $db->loadAssocList();
             <div class="col span6 align-right">
                 <label for="filter-state"><?php echo Lang::txt('COM_FORUM_FIELD_STATE'); ?>:</label>
                 <select name="state" id="filter-state" class="filter filter-submit"">
-                    <option value="-1"<?php if ($this->filters['state'] == '-1') {
-                        echo ' selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_FORUM_ALL_STATES'); ?></option>
-                    <option value="0"<?php if ($this->filters['state'] === 0) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
-                    <option value="1"<?php if ($this->filters['state'] === 1) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
-                    <option value="2"<?php if ($this->filters['state'] === 2) {
-                        echo ' selected="selected"';
-                                     } ?>><?php echo Lang::txt('JTRASHED'); ?></option>
+                    <option value="-1"<?php echo $this->filters['state'] == '-1' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_FORUM_ALL_STATES'); ?></option>
+                    <option value="0"<?php echo $this->filters['state'] === 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JUNPUBLISHED'); ?></option>
+                    <option value="1"<?php echo $this->filters['state'] === 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JPUBLISHED'); ?></option>
+                    <option value="2"<?php echo $this->filters['state'] === 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('JTRASHED'); ?></option>
                 </select>
 
                 <label for="filter-access"><?php echo Lang::txt('JFIELD_ACCESS_LABEL'); ?>:</label>

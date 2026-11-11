@@ -53,9 +53,7 @@ $diskUsageLabel = Lang::txt(
         </span>
     </h3>
 </div>
-    <div id="disk-usage" <?php if ($warning) {
-        echo 'class="quota-warning"';
-                         } ?>>
+    <div id="disk-usage" <?php echo $warning ? 'class="quota-warning"' : ''; ?>>
         <div class="disk-usage-wrapper">
             <h3><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_DISK_USAGE_QUOTA') . ': ' . $quota; ?></h3>
 <?php

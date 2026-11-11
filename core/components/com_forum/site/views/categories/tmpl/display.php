@@ -128,9 +128,7 @@ $this->category->set('section_alias', $this->filters['section']);
                                     $row->set('category', $this->filters['category']);
                                     $row->set('section', $this->filters['section']);
                                     ?>
-                                    <tr<?php if (count($cls) > 0) {
-                                        echo ' class="' . implode(' ', $cls) . '"';
-                                       } ?>>
+                                    <tr<?php echo count($cls) > 0 ? ' class="' . implode(' ', $cls) . '"' : ''; ?>>
                                         <th class="priority-5" scope="row">
                                             <span class="entry-identifier <?php echo $icn; ?>"><?php echo $this->escape($row->get('id')); ?></span>
                                         </th>

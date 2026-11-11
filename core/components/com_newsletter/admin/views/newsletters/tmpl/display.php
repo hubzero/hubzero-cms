@@ -78,15 +78,9 @@ if (!$this->dependency) {
             </div>
             <div class="col span8 align-right">
                 <select name="type" id="filter-type" class="filter filter-submit">
-                    <option value=""<?php if ($this->filters['type'] === '') {
-                        echo ' selected="selected"';
-                                    } ?>><?php echo Lang::txt('COM_NEWSLETTER_ALL_TYPES'); ?></option>
-                    <option value="html"<?php if ($this->filters['type'] === 'html') {
-                        echo ' selected="selected"';
-                                        } ?>><?php echo Lang::txt('COM_NEWSLETTER_TYPE_HTML'); ?></option>
-                    <option value="plain"<?php if ($this->filters['type'] === 'plain') {
-                        echo ' selected="selected"';
-                                         } ?>><?php echo Lang::txt('COM_NEWSLETTER_TYPE_PLAIN'); ?></option>
+                    <option value=""<?php echo $this->filters['type'] === '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_ALL_TYPES'); ?></option>
+                    <option value="html"<?php echo $this->filters['type'] === 'html' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_TYPE_HTML'); ?></option>
+                    <option value="plain"<?php echo $this->filters['type'] === 'plain' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_NEWSLETTER_TYPE_PLAIN'); ?></option>
                 </select>
             </div>
         </div>

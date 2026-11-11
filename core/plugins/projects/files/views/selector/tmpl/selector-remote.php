@@ -61,9 +61,7 @@ $connection = \Components\Projects\Models\Orm\Connection::oneOrFail(Request::get
         $allowed = $selected ? ' freeze' : $allowed;
 
         ?>
-        <li class="<?php echo $item->isDir() ? 'type-folder collapsed' : 'type-file'; ?><?php echo $parentCss; ?><?php if ($selected) {
-            echo ' selectedfilter preselected';
-                   } ?><?php echo $allowed; ?>" id="<?php echo $liId; ?>" data-path="<?php echo $this->escape($item->getPath()); ?>" data-connection="<?php echo $connection->id; ?>">
+        <li class="<?php echo $item->isDir() ? 'type-folder collapsed' : 'type-file'; ?><?php echo $parentCss; ?><?php echo $selected ? ' selectedfilter preselected' : ''; ?><?php echo $allowed; ?>" id="<?php echo $liId; ?>" data-path="<?php echo $this->escape($item->getPath()); ?>" data-connection="<?php echo $connection->id; ?>">
             <span class="item-info"><?php echo $item->isFile() ? $item->getSize() : ''; ?></span>
             <span class="item-wrap <?php echo ($item->isDir() ? 'collapsor ' : ' ') . $levelCss; ?>" id="<?php echo urlencode($connection->id . '://' . $item->getPath()); ?>">
                 <?php if ($item->isDir()) {

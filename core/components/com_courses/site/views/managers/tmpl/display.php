@@ -150,9 +150,7 @@ if (count($managers) > 0) {
                         <select name="entries[<?php echo $i; ?>][role_id]">
                     <?php foreach ($roles as $role) { ?>
                                 <?php $val = $role->id; ?>
-                                <option value="<?php echo $val; ?>"<?php if ($manager->get('role_id') == $role->id) {
-                                    echo ' selected="selected"';
-                                               } ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
+                                <option value="<?php echo $val; ?>"<?php echo $manager->get('role_id') == $role->id ? ' selected="selected"' : ''; ?>><?php echo $this->escape(stripslashes($role->title)); ?></option>
                     <?php } ?>
                     <?php
                     foreach ($offerings as $offering) {

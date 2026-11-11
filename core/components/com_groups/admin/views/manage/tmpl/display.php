@@ -99,41 +99,29 @@ $formAction = Route::url(
                 >
                     <option
                         value="all"
-                        <?php if ($typeFilter == 'all') {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $typeFilter == 'all' ? 'selected="selected"' : ''; ?>
                     ><?php echo $typeTxt; ?></option>
                     <option
                         value="hub"
-                        <?php if ($typeFilter == 'hub') {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $typeFilter == 'hub' ? 'selected="selected"' : ''; ?>
                     >Hub</option>
                     <option
                         value="super"
-                        <?php if ($typeFilter == 'super') {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $typeFilter == 'super' ? 'selected="selected"' : ''; ?>
                     >Super</option>
                     <?php if ($canDo->get('core.admin')) { ?>
                         <option
                             value="system"
-                            <?php if ($typeFilter == 'system') {
-                                echo 'selected="selected"';
-                            } ?>
+                            <?php echo $typeFilter == 'system' ? 'selected="selected"' : ''; ?>
                         >System</option>
                     <?php } ?>
                     <option
                         value="project"
-                        <?php if ($typeFilter == 'project') {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $typeFilter == 'project' ? 'selected="selected"' : ''; ?>
                     >Project</option>
                     <option
                         value="course"
-                        <?php if ($typeFilter == 'course') {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $typeFilter == 'course' ? 'selected="selected"' : ''; ?>
                     >Course</option>
                 </select>
 
@@ -153,21 +141,15 @@ $formAction = Route::url(
                 >
                     <option
                         value=""
-                        <?php if ($discFilter == null) {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $discFilter == null ? 'selected="selected"' : ''; ?>
                     ><?php echo $discTxt; ?></option>
                     <option
                         value="0"
-                        <?php if ($discFilter == 0 && $discFilter != null) {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $discFilter == 0 && $discFilter != null ? 'selected="selected"' : ''; ?>
                     ><?php echo $visTxt; ?></option>
                     <option
                         value="1"
-                        <?php if ($discFilter == 1) {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $discFilter == 1 ? 'selected="selected"' : ''; ?>
                     ><?php echo $hidTxt; ?></option>
                 </select>
 
@@ -189,33 +171,23 @@ $formAction = Route::url(
                 >
                     <option
                         value=""
-                        <?php if ($policyFilter == '') {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $policyFilter == '' ? 'selected="selected"' : ''; ?>
                     ><?php echo $policyTxt; ?></option>
                     <option
                         value="open"
-                        <?php if ($policyFilter == 'open') {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $policyFilter == 'open' ? 'selected="selected"' : ''; ?>
                     ><?php echo $publicTxt; ?></option>
                     <option
                         value="restricted"
-                        <?php if ($policyFilter == 'restricted') {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $policyFilter == 'restricted' ? 'selected="selected"' : ''; ?>
                     ><?php echo $restrictTxt; ?></option>
                     <option
                         value="invite"
-                        <?php if ($policyFilter == 'invite') {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $policyFilter == 'invite' ? 'selected="selected"' : ''; ?>
                     ><?php echo $inviteTxt; ?></option>
                     <option
                         value="closed"
-                        <?php if ($policyFilter == 'closed') {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $policyFilter == 'closed' ? 'selected="selected"' : ''; ?>
                     ><?php echo $closedTxt; ?></option>
                 </select>
 
@@ -236,27 +208,19 @@ $formAction = Route::url(
                 >
                     <option
                         value="-1"
-                        <?php if ($stateFilter == -1) {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $stateFilter == -1 ? 'selected="selected"' : ''; ?>
                     ><?php echo $stateTxt; ?></option>
                     <option
                         value="0"
-                        <?php if ($stateFilter == 0) {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $stateFilter == 0 ? 'selected="selected"' : ''; ?>
                     ><?php echo $unpubTxt; ?></option>
                     <option
                         value="1"
-                        <?php if ($stateFilter == 1) {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $stateFilter == 1 ? 'selected="selected"' : ''; ?>
                     ><?php echo $pubTxt; ?></option>
                     <option
                         value="2"
-                        <?php if ($stateFilter == 2) {
-                            echo 'selected="selected"';
-                        } ?>
+                        <?php echo $stateFilter == 2 ? 'selected="selected"' : ''; ?>
                     ><?php echo $archTxt; ?></option>
                 </select>
             </div>

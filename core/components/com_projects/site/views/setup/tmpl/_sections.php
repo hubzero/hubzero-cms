@@ -16,9 +16,7 @@ defined('_HZEXEC_') or die();
 <ul id="panelist">
     <?php foreach ($this->sections as $section) : ?>
         <?php if ($section != 'info') : ?>
-            <li <?php if ($section == $this->section) {
-                echo 'class="activepane"';
-                } ?>>
+            <li <?php echo $section == $this->section ? 'class="activepane"' : ''; ?>>
                 <?php
                 $routeUrl = Route::url(
                     'index.php?option='
@@ -34,9 +32,7 @@ defined('_HZEXEC_') or die();
                 </a>
             </li>
         <?php else : ?>
-            <li <?php if ($this->section == 'info' || $this->section == 'info_custom') {
-                echo 'class="activepane"';
-                } ?>>
+            <li <?php echo $this->section == 'info' || $this->section == 'info_custom' ? 'class="activepane"' : ''; ?>>
                 <?php
                 $routeUrl2 = Route::url(
                     'index.php?option='

@@ -48,12 +48,8 @@ $this
             <div class="col span5">
                 <label for="filter_search_field"><?php echo Lang::txt('COM_MEMBERS_SEARCH'); ?></label>
                 <select name="search_field" id="filter_search_field" class="filter">
-                    <option value="username"<?php if ($this->filters['search_field'] == 'username') {
-                        echo ' selected="selected"';
-                                            } ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_USERNAME'); ?></option>
-                    <option value="name"<?php if ($this->filters['search_field'] == 'name') {
-                        echo ' selected="selected"';
-                                        } ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_NAME'); ?></option>
+                    <option value="username"<?php echo $this->filters['search_field'] == 'username' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_USERNAME'); ?></option>
+                    <option value="name"<?php echo $this->filters['search_field'] == 'name' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_QUOTA_NAME'); ?></option>
                 </select>
 
                 <label for="filter_search"><?php echo Lang::txt('COM_MEMBERS_SEARCH_FOR'); ?></label>
@@ -63,13 +59,9 @@ $this
             </div>
             <div class="col span7">
                 <select name="class_alias" id="filter_class_alias" class="filter filter-submit">
-                    <option value=""<?php if ($this->filters['class_alias'] == '') {
-                        echo ' selected="selected"';
-                                    } ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS'); ?></option>
+                    <option value=""<?php echo $this->filters['class_alias'] == '' ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_MEMBERS_FILTER_QUOTA_CLASS'); ?></option>
                     <?php foreach ($this->classes as $class) : ?>
-                        <option value="<?php echo $this->escape($class->get('alias')); ?>"<?php if ($this->filters['class_alias'] == $class->get('alias')) {
-                            echo ' selected="selected"';
-                                       } ?>><?php echo $this->escape($class->get('alias')); ?></option>
+                        <option value="<?php echo $this->escape($class->get('alias')); ?>"<?php echo $this->filters['class_alias'] == $class->get('alias') ? ' selected="selected"' : ''; ?>><?php echo $this->escape($class->get('alias')); ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

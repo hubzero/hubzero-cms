@@ -72,9 +72,7 @@ if (!isset($this->controller)) {
     </div><!-- / #content-header-extra -->
 
     <ul class="sub-menu">
-        <li class="page-text<?php if ($this->controller == 'page' && ($this->task == 'display' || !$this->task)) {
-            echo ' active';
-                            } ?>">
+        <li class="page-text<?php echo $this->controller == 'page' && ($this->task == 'display' || !$this->task) ? ' active' : ''; ?>">
             <a href="<?php echo Route::url($this->page->link()); ?>"
                 title="<?php echo Lang::txt('COM_WIKI_TAB_ARTICLE'); ?>">
                 <span><?php echo Lang::txt('COM_WIKI_TAB_ARTICLE'); ?></span>
@@ -85,9 +83,7 @@ if (!isset($this->controller)) {
         ($this->page->isLocked() && $this->page->access('manage'))
         || (!$this->page->isLocked() && $this->page->access('edit'))
 ) { ?>
-        <li class="page-edit<?php if ($this->controller == 'page' && $this->task == 'edit') {
-            echo ' active';
-                            } ?>">
+        <li class="page-edit<?php echo $this->controller == 'page' && $this->task == 'edit' ? ' active' : ''; ?>">
             <a href="<?php echo Route::url($this->page->link('edit')); ?>"
                 title="<?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?>">
                 <span><?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?></span>
@@ -95,18 +91,14 @@ if (!isset($this->controller)) {
         </li>
     <?php } ?>
     <?php if ($this->page->access('view', 'comment')) { ?>
-        <li class="page-comments<?php if ($this->controller == 'comments') {
-            echo ' active';
-                                } ?>">
+        <li class="page-comments<?php echo $this->controller == 'comments' ? ' active' : ''; ?>">
             <a href="<?php echo Route::url($this->page->link('comments')); ?>"
                 title="<?php echo Lang::txt('COM_WIKI_TAB_COMMENTS'); ?>">
                 <span><?php echo Lang::txt('COM_WIKI_TAB_COMMENTS'); ?></span>
             </a>
         </li>
     <?php } ?>
-        <li class="page-history<?php if ($this->controller == 'history') {
-            echo ' active';
-                               } ?>">
+        <li class="page-history<?php echo $this->controller == 'history' ? ' active' : ''; ?>">
             <a href="<?php echo Route::url($this->page->link('history')); ?>"
                 title="<?php echo Lang::txt('COM_WIKI_TAB_HISTORY'); ?>">
                 <span><?php echo Lang::txt('COM_WIKI_TAB_HISTORY'); ?></span>
@@ -123,9 +115,7 @@ if (!isset($this->controller)) {
         ($this->page->isLocked() && $this->page->access('manage', 'page'))
             || (!$this->page->isLocked() && $this->page->access('delete', 'page'))
     ) { ?>
-        <li class="page-delete<?php if ($this->controller == 'page' && $this->task == 'delete') {
-            echo ' active';
-                              } ?>">
+        <li class="page-delete<?php echo $this->controller == 'page' && $this->task == 'delete' ? ' active' : ''; ?>">
             <a href="<?php echo Route::url($this->page->link('delete')); ?>"
                 title="<?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?>">
                 <span><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></span>

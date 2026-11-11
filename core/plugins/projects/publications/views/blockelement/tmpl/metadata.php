@@ -107,9 +107,7 @@ if ($coming) {
     echo ($curatorStatus->status == 3 && !$complete) ? ' el-skipped' : '';
 ?>">
     <!-- Showing status only -->
-    <div class="element_overview<?php if ($active) {
-        echo ' hidden';
-                                } ?>">
+    <div class="element_overview<?php echo $active ? ' hidden' : ''; ?>">
         <div class="block-aside"></div>
         <div class="block-subject">
             <span class="checker">&nbsp;</span>
@@ -129,9 +127,7 @@ if ($coming) {
         </div>
     </div>
     <!-- Active editing -->
-    <div class="element_editing<?php if (!$active) {
-        echo ' hidden';
-                               } ?>">
+    <div class="element_editing<?php echo !$active ? ' hidden' : ''; ?>">
         <div class="block-aside">
             <div class="block-info">
             <?php

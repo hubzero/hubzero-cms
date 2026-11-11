@@ -87,12 +87,8 @@ $this
     ?>
 
     <div class="toolinfo_note">
-        <?php if ($this->msg) {
-            echo '<p class="passed">' . $this->msg . '</p>';
-        } ?>
-        <?php if (\Components\Tools\Helpers\Html::getNumofTools($this->status)) {
-            echo '<p>' . \Components\Tools\Helpers\Html::getNumofTools($this->status) . '.</p>';
-        }?>
+        <?php echo $this->msg ? '<p class="passed">' . $this->msg . '</p>' : ''; ?>
+        <?php echo \Components\Tools\Helpers\Html::getNumofTools($this->status) ? '<p>' . \Components\Tools\Helpers\Html::getNumofTools($this->status) . '.</p>' : ''; ?>
     </div><!-- / .toolinfo_note -->
 
     <div class="grid">
@@ -269,31 +265,15 @@ $this
                                         <label for="tool-newstate">
                                             <?php echo Lang::txt('COM_TOOLS_FLIP_STATUS');?>:
                                             <select name="newstate" id="tool-newstate" class="form-control">
-                                                <option value="1"<?php if ($this->status['state'] == 1) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED');?></option>
-                                                <option value="2"<?php if ($this->status['state'] == 2) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_CREATED');?></option>
-                                                <option value="3"<?php if ($this->status['state'] == 3) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED');?></option>
-                                                <option value="4"<?php if ($this->status['state'] == 4) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED');?></option>
-                                                <option value="5"<?php if ($this->status['state'] == 5) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_UPDATED');?></option>
-                                                <option value="6"<?php if ($this->status['state'] == 6) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_APPROVED');?></option>
-                                                <option value="7"<?php if ($this->status['state'] == 7) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_PUBLISHED');?></option>
+                                                <option value="1"<?php echo $this->status['state'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_REGISTERED');?></option>
+                                                <option value="2"<?php echo $this->status['state'] == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_CREATED');?></option>
+                                                <option value="3"<?php echo $this->status['state'] == 3 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_UPLOADED');?></option>
+                                                <option value="4"<?php echo $this->status['state'] == 4 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_INSTALLED');?></option>
+                                                <option value="5"<?php echo $this->status['state'] == 5 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_UPDATED');?></option>
+                                                <option value="6"<?php echo $this->status['state'] == 6 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_APPROVED');?></option>
+                                                <option value="7"<?php echo $this->status['state'] == 7 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_PUBLISHED');?></option>
                                                 <?php if ($this->status['published'] == 1) { // admin can retire only tools that have a published flag on?>
-                                                    <option value="8"<?php if ($this->status['state'] == 8) {
-                                                        echo ' selected="selected"';
-                                                                     } ?>><?php echo Lang::txt('COM_TOOLS_RETIRED');?></option>
+                                                    <option value="8"<?php echo $this->status['state'] == 8 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_RETIRED');?></option>
                                                 <?php } ?>
                                             </select>
                                         </label>
@@ -304,21 +284,11 @@ $this
                                         <label for="tool-priority">
                                             <?php echo Lang::txt('COM_TOOLS_PRIORITY');?>:
                                             <select name="priority" id="tool-priority" class="form-control">
-                                                <option value="3"<?php if ($this->status['priority'] == 3) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_NORMAL');?></option>
-                                                <option value="2"<?php if ($this->status['priority'] == 2) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_HIGH');?></option>
-                                                <option value="1"<?php if ($this->status['priority'] == 1) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_CRITICAL');?></option>
-                                                <option value="4"<?php if ($this->status['priority'] == 4) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_LOW');?></option>
-                                                <option value="5"<?php if ($this->status['priority'] == 5) {
-                                                    echo ' selected="selected"';
-                                                                 } ?>><?php echo Lang::txt('COM_TOOLS_LOWEST');?></option>
+                                                <option value="3"<?php echo $this->status['priority'] == 3 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_NORMAL');?></option>
+                                                <option value="2"<?php echo $this->status['priority'] == 2 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_HIGH');?></option>
+                                                <option value="1"<?php echo $this->status['priority'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_CRITICAL');?></option>
+                                                <option value="4"<?php echo $this->status['priority'] == 4 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_LOW');?></option>
+                                                <option value="5"<?php echo $this->status['priority'] == 5 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TOOLS_LOWEST');?></option>
                                             </select>
                                         </label>
                                     </div>

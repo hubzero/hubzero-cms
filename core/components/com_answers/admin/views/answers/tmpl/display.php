@@ -51,15 +51,9 @@ $formAction = Route::url(
             <?php echo Lang::txt('COM_ANSWERS_FILTER_BY'); ?>
         </label>
         <select name="state" id="filter-state" class="filter filter-submit">
-            <option value="-1"<?php if ($this->filters['state'] == -1) {
-                echo ' selected="selected"';
-                              } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ALL_RESPONSES'); ?></option>
-            <option value="1"<?php if ($this->filters['state'] == 1) {
-                echo ' selected="selected"';
-                             } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ACCEPTED'); ?></option>
-            <option value="0"<?php if ($this->filters['state'] == 0) {
-                echo ' selected="selected"';
-                             } ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_UNACCEPTED'); ?></option>
+            <option value="-1"<?php echo $this->filters['state'] == -1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ALL_RESPONSES'); ?></option>
+            <option value="1"<?php echo $this->filters['state'] == 1 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_ACCEPTED'); ?></option>
+            <option value="0"<?php echo $this->filters['state'] == 0 ? ' selected="selected"' : ''; ?>><?php echo Lang::txt('COM_ANSWERS_FILTER_BY_UNACCEPTED'); ?></option>
         </select>
     </fieldset>
 

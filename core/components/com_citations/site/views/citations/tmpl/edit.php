@@ -471,16 +471,12 @@ $pid = Request::getInt('publication', 0);
             <legend><?php echo Lang::txt('COM_CITATIONS_AFFILIATION'); ?></legend>
 
             <label for="affiliated">
-                <input type="checkbox" class="option" name="fields[affiliated]" id="affiliated" value="1"<?php if ($this->row->affiliated) {
-                    echo ' checked="checked"';
-                                                                                                         } ?> />
+                <input type="checkbox" class="option" name="fields[affiliated]" id="affiliated" value="1"<?php echo $this->row->affiliated ? ' checked="checked"' : ''; ?> />
                 <?php echo Lang::txt('COM_CITATIONS_AFFILIATED_WITH_YOUR_ORG'); ?>
             </label>
 
             <label for="fundedby">
-                <input type="checkbox" class="option" name="fields[fundedby]" id="fundedby" value="1"<?php if ($this->row->fundedby) {
-                    echo ' checked="checked"';
-                                                                                                     } ?> />
+                <input type="checkbox" class="option" name="fields[fundedby]" id="fundedby" value="1"<?php echo $this->row->fundedby ? ' checked="checked"' : ''; ?> />
                 <?php echo Lang::txt('COM_CITATIONS_FUNDED_BY_YOUR_ORG'); ?>
             </label>
 

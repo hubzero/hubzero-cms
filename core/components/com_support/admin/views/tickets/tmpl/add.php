@@ -174,9 +174,7 @@ $formAction = Route::url(
                                     <?php $sl = Lang::txt('COM_SUPPORT_TICKET_SEVERITY_' . strtoupper($severity)); ?>
                                     <option
                                         value="<?php echo $severity; ?>"
-                                        <?php if ($severity == 'normal') {
-                                            echo ' selected="selected"';
-                                        } ?>
+                                        <?php echo $severity == 'normal' ? ' selected="selected"' : ''; ?>
                                     ><?php echo $sl; ?></option>
                                 <?php } ?>
                             </select>

@@ -223,9 +223,7 @@ $canEditAccess = !$this->page->exists()
                     <input class="option"
                         type="checkbox"
                         name="params[hide_authors]"
-                        id="params_hide_authors"<?php if ($this->page->param('hide_authors') == 1) {
-                            echo ' checked="checked"';
-                                                } ?>
+                        id="params_hide_authors"<?php echo $this->page->param('hide_authors') == 1 ? ' checked="checked"' : ''; ?>
                                                                                                               value="1"
                                                                                                               />
                     <?php echo Lang::txt('COM_WIKI_FIELD_HIDE_AUTHORS'); ?>
@@ -236,9 +234,7 @@ $canEditAccess = !$this->page->exists()
                     <input class="option"
                         type="checkbox"
                         name="params[allow_changes]"
-                        id="params_allow_changes"<?php if ($this->page->param('allow_changes') == 1) {
-                            echo ' checked="checked"';
-                                                 } ?> value="1" />
+                        id="params_allow_changes"<?php echo $this->page->param('allow_changes') == 1 ? ' checked="checked"' : ''; ?> value="1" />
                     <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_CHANGES'); ?>
                 </label>
 
@@ -246,9 +242,7 @@ $canEditAccess = !$this->page->exists()
                     <input class="option"
                         type="checkbox"
                         name="params[allow_comments]"
-                        id="params_allow_comments"<?php if ($this->page->param('allow_comments') == 1) {
-                            echo ' checked="checked"';
-                                                  } ?> value="1" />
+                        id="params_allow_comments"<?php echo $this->page->param('allow_comments') == 1 ? ' checked="checked"' : ''; ?> value="1" />
                     <?php echo Lang::txt('COM_WIKI_FIELD_ALLOW_COMMENTS'); ?>
                 </label>
         <?php } else { ?>
@@ -270,9 +264,7 @@ $canEditAccess = !$this->page->exists()
                     <input class="option"
                         type="checkbox"
                         name="page[state]"
-                        id="state"<?php if ($this->page->isLocked()) {
-                            echo ' checked="checked"';
-                                  } ?> value="1" />
+                        id="state"<?php echo $this->page->isLocked() ? ' checked="checked"' : ''; ?> value="1" />
                     <?php echo Lang::txt('COM_WIKI_FIELD_STATE'); ?>
                 </label>
             <?php } ?>

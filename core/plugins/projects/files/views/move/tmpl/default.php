@@ -69,9 +69,7 @@ if ($this->getError()) {
                 echo '<ul class="dirtree">';
                 ?>
                 <li>
-                    <input type="radio" name="newpath" value="" <?php if (!$this->subdir) {
-                        echo 'disabled="disabled" ';
-                                                                } ?> checked="checked" /> <span><?php echo Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
+                    <input type="radio" name="newpath" value="" <?php echo !$this->subdir ? 'disabled="disabled" ' : ''; ?> checked="checked" /> <span><?php echo Lang::txt('PLG_PROJECTS_FILES_HOME_DIRECTORY'); ?></span>
                 </li>
                 <?php
                 for ($i = 0; $i < count($dirs); $i++) {
@@ -87,11 +85,7 @@ if ($this->getError()) {
                     $leftMargin = ($level * 15) . 'px';
                     ?>
                 <li style="margin-left:<?php echo $leftMargin; ?>">
-                    <input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php if ($this->subdir == $dir) {
-                        echo 'disabled="disabled" ';
-                                                              } ?> /> <span><span class="folder <?php if ($this->subdir == $dir) {
-                                                              echo 'prominent ';
-                                                              } ?>"><?php echo $this->escape($dirname); ?></span></span>
+                    <input type="radio" name="newpath" value="<?php echo urlencode($dir); ?>" <?php echo $this->subdir == $dir ? 'disabled="disabled" ' : ''; ?> /> <span><span class="folder <?php echo $this->subdir == $dir ? 'prominent ' : ''; ?>"><?php echo $this->escape($dirname); ?></span></span>
                 </li>
                 <?php }
                 echo '</ul>';

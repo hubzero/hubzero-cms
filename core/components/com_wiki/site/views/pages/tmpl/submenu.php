@@ -73,9 +73,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
 
 <nav aria-label="<?php echo Lang::txt('COM_WIKI_PAGE_MENU'); ?>">
 <ul class="sub-menu">
-    <li class="page-text<?php if ($this->controller == 'pages' && ($this->task == 'display' || !$this->task)) {
-        echo ' active';
-                        } ?>">
+    <li class="page-text<?php echo $this->controller == 'pages' && ($this->task == 'display' || !$this->task) ? ' active' : ''; ?>">
         <a href="<?php echo Route::url($this->page->link()); ?>">
             <span class="icon-align-left"><?php echo Lang::txt('COM_WIKI_TAB_ARTICLE'); ?></span>
         </a>
@@ -83,26 +81,20 @@ if ($tmpl != 'component' && $this->sub) { ?>
     <?php if ($tmpl != 'component') { ?>
         <?php if ($this->page->exists() && !$this->page->isDeleted() && $this->page->getNamespace() != 'special') { ?>
             <?php if ((($this->page->isLocked() && $this->page->access('manage')) || ((!$this->page->isLocked() && $this->page->access('edit')) || $this->page->access('manage'))) && ($this->page->getNamespace() != 'help' || $this->page->access('manage'))) { ?>
-                <li class="page-edit<?php if ($this->controller == 'pages' && in_array($this->task, ['edit', 'preview', 'save'])) {
-                    echo ' active';
-                                    } ?>">
+                <li class="page-edit<?php echo $this->controller == 'pages' && in_array($this->task, ['edit', 'preview', 'save']) ? ' active' : ''; ?>">
                     <a href="<?php echo Route::url($this->page->link('edit')); ?>">
                         <span class="icon-pencil"><?php echo Lang::txt('COM_WIKI_TAB_EDIT'); ?></span>
                     </a>
                 </li>
             <?php } ?>
             <?php if ($this->page->config('comments', 1) && $this->page->access('view', 'comment')) { ?>
-                <li class="page-comments<?php if ($this->controller == 'comments') {
-                    echo ' active';
-                                        } ?>">
+                <li class="page-comments<?php echo $this->controller == 'comments' ? ' active' : ''; ?>">
                     <a href="<?php echo Route::url($this->page->link('comments')); ?>">
                         <span class="icon-comments"><?php echo Lang::txt('COM_WIKI_TAB_COMMENTS'); ?></span>
                     </a>
                 </li>
             <?php } ?>
-            <li class="page-history<?php if ($this->controller == 'history') {
-                echo ' active';
-                                   } ?>">
+            <li class="page-history<?php echo $this->controller == 'history' ? ' active' : ''; ?>">
                 <a href="<?php echo Route::url($this->page->link('history')); ?>">
                     <span class="icon-clock"><?php echo Lang::txt('COM_WIKI_TAB_HISTORY'); ?></span>
                 </a>
@@ -119,9 +111,7 @@ if ($tmpl != 'component' && $this->sub) { ?>
                 ($this->page->isLocked() && $this->page->access('manage', 'page'))
                     || ((!$this->page->isLocked() && $this->page->access('delete', 'page')) || $this->page->access('manage'))
             ) { ?>
-                <li class="page-delete<?php if ($this->controller == 'pages' && $this->task == 'delete') {
-                    echo ' active';
-                                      } ?>">
+                <li class="page-delete<?php echo $this->controller == 'pages' && $this->task == 'delete' ? ' active' : ''; ?>">
                     <a href="<?php echo Route::url($this->page->link('delete')); ?>">
                         <span class="icon-remove-sign"><?php echo Lang::txt('COM_WIKI_DELETE_PAGE'); ?></span>
                     </a>

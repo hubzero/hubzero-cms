@@ -55,21 +55,13 @@ $invalidMsg      = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
             <div class="input-wrap" data-hint="<?php echo $adminHint; ?>">
 <!--
     <input type="checkbox" name="fields[admin]" id="field-admin" value="1"
-        <?php if ($this->tag->get('admin') == 1) {
-            echo 'checked="checked"';
-        } ?> />
+        <?php echo $this->tag->get('admin') == 1 ? 'checked="checked"' : ''; ?> />
 -->
                 <label for="field-admin"><?php echo Lang::txt('COM_TAGS_FIELD_TYPE'); ?>:</label><br />
                 <select name="fields[admin]" id="field-admin">
-                    <option value="0" <?php if ($this->tag->get('admin') == 0) {
-                        echo 'selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_TAGS_FIELD_TYPE_USER'); ?></option>
-                    <option value="2" <?php if ($this->tag->get('admin') == 2) {
-                        echo 'selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_TAGS_FIELD_TYPE_CORE'); ?></option>
-                    <option value="1" <?php if (is_null($this->tag->get('admin')) || $this->tag->get('admin') == 1) {
-                        echo 'selected="selected"';
-                                      } ?>><?php echo Lang::txt('COM_TAGS_FIELD_TYPE_ADMIN'); ?></option>
+                    <option value="0" <?php echo $this->tag->get('admin') == 0 ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TAGS_FIELD_TYPE_USER'); ?></option>
+                    <option value="2" <?php echo $this->tag->get('admin') == 2 ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TAGS_FIELD_TYPE_CORE'); ?></option>
+                    <option value="1" <?php echo is_null($this->tag->get('admin')) || $this->tag->get('admin') == 1 ? 'selected="selected"' : ''; ?>><?php echo Lang::txt('COM_TAGS_FIELD_TYPE_ADMIN'); ?></option>
                 </select>
             </div>
 

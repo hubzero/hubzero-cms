@@ -79,18 +79,10 @@ endif;
         ?>
         <?php if ($this->section == 'map' && 0) { ?>
             <fieldset class="map-search">
-                <input type="hidden" name="minlat" id="minlat" value="<?php if (isset($this->minlat)) {
-                    echo $this->minlat;
-                                                                      } ?>" />
-                <input type="hidden" name="minlon" id="minlon" value="<?php if (isset($this->minlon)) {
-                    echo $this->minlon;
-                                                                      } ?>" />
-                <input type="hidden" name="maxlat" id="maxlat" value="<?php if (isset($this->maxlat)) {
-                    echo $this->maxlat;
-                                                                      } ?>" />
-                <input type="hidden" name="maxlon" id="maxlon" value="<?php if (isset($this->maxlon)) {
-                    echo $this->maxlon;
-                                                                      } ?>" />
+                <input type="hidden" name="minlat" id="minlat" value="<?php echo isset($this->minlat) ? $this->minlat : ''; ?>" />
+                <input type="hidden" name="minlon" id="minlon" value="<?php echo isset($this->minlon) ? $this->minlon : ''; ?>" />
+                <input type="hidden" name="maxlat" id="maxlat" value="<?php echo isset($this->maxlat) ? $this->maxlat : ''; ?>" />
+                <input type="hidden" name="maxlon" id="maxlon" value="<?php echo isset($this->maxlon) ? $this->maxlon : ''; ?>" />
             </fieldset>
         <?php } ?>
         </div>

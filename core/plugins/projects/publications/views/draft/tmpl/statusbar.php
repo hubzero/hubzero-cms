@@ -27,11 +27,7 @@ $i = 1;
 
 ?>
 <?php if ($this->pub->id) { ?>
-    <p id="version-label" class="version-label<?php if ($active == 'status') {
-        echo ' active';
-                                              } ?><?php if ($this->pub->state == 5 || $this->pub->state == 0) {
-                                              echo ' nobar';
-                                              } ?>">
+    <p id="version-label" class="version-label<?php echo $active == 'status' ? ' active' : ''; ?><?php echo $this->pub->state == 5 || $this->pub->state == 0 ? ' nobar' : ''; ?>">
         <a href="<?php echo Route::url($this->pub->link('edit') . '&action=versions'); ?>"
             class="versions"
             id="v-picker"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_VERSIONS'); ?></a> &raquo;
@@ -59,9 +55,7 @@ if ($this->pub->state == 5 || $this->pub->state == 0 || !$this->pub->project()->
     return false;
 }
 ?>
-    <ul id="status-bar" <?php if ($move) {
-        echo 'class="moving"';
-                        } ?>>
+    <ul id="status-bar" <?php echo $move ? 'class="moving"' : ''; ?>>
         <?php foreach ($this->pub->curation('blocks') as $blockId => $block) {
             $blockname = $block->name;
             $status    = $block->review && $block->review->status != 2
@@ -87,9 +81,7 @@ if ($this->pub->state == 5 || $this->pub->state == 0 || !$this->pub->project()->
             }
             $i++;
             ?>
-        <li<?php if ($blockId == $activenum) {
-            echo ' class="active"';
-           } ?>>
+        <li<?php echo $blockId == $activenum ? ' class="active"' : ''; ?>>
             <?php
             $stepUrl = Route::url(
                 $this->pub->link('editversion')

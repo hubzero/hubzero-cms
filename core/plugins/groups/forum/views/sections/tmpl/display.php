@@ -106,9 +106,7 @@ if ($this->config->get('access-manage-section')) {
                     <?php if ($this->config->get('access-create-category')) { ?>
                         <tfoot>
                             <tr>
-                                <td<?php if ($section->categories()->total() > 0) {
-                                    echo ' colspan="5"';
-                                   } ?>>
+                                <td<?php echo $section->categories()->total() > 0 ? ' colspan="5"' : ''; ?>>
                                     <a class="icon-add add btn" href="<?php echo Route::url($base . '&scope=' . $section->get('alias') . '/new'); ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_CATEGORY'); ?></span>
                                     </a>
@@ -119,9 +117,7 @@ if ($this->config->get('access-manage-section')) {
                     <tbody>
                         <?php if ($categories->count() > 0) { ?>
                             <?php foreach ($categories as $row) { ?>
-                                <tr<?php if ($row->get('closed')) {
-                                    echo ' class="closed"';
-                                   } ?>>
+                                <tr<?php echo $row->get('closed') ? ' class="closed"' : ''; ?>>
                                     <th class="priority-5" scope="row">
                                         <span class="entry-id"><?php echo $this->escape($row->get('id')); ?></span>
                                     </th>

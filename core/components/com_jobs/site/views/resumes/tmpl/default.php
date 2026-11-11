@@ -152,9 +152,7 @@ $resumesUrl = Route::url(
                     <div class="together">
                         <input class="option" type="radio"
                             name="sortby" value="lastupdate"
-                            <?php if ($filters['sortby'] != 'bestmatch') {
-                                echo ' checked="checked"';
-                            } ?> />
+                            <?php echo $filters['sortby'] != 'bestmatch' ? ' checked="checked"' : ''; ?> />
                         <?php echo Lang::txt('last update'); ?> &nbsp;
                         <input class="option" type="radio"
                             name="sortby" value="bestmatch"
