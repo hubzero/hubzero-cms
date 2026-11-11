@@ -105,7 +105,7 @@ foreach ($this->cats as $cat) {
     <?php echo Lang::txt('PLG_MEMBERS_CONTRIBUTIONS'); ?>
 </h3>
 
-<form method="get" action="<?php Route::url($this->member->link() . '&active=contributions'); ?>">
+<form method="get" action="<?php echo Route::url($this->member->link() . '&active=contributions'); ?>">
     <input type="hidden" name="area" value="<?php echo $this->escape($this->active) ?>" />
 
     <div class="container">

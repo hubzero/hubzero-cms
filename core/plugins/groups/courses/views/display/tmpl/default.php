@@ -24,7 +24,7 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
 <section class="section">
 <?php if (count($this->results) > 0) { ?>
     <div class="container" id="courses-container">
-        <form method="get" action="<?php Route::url($base); ?>">
+        <form method="get" action="<?php echo Route::url($base); ?>">
             <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
                 <?php
                 $qs  = ($this->filters['search'] ? '&search=' . $this->escape($this->filters['search']) : '');
