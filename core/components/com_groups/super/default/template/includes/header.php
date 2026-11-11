@@ -9,6 +9,8 @@
 
 use Hubzero\Facades\Route;
 
+/** @var \Components\Groups\Helpers\Template $this */
+
 ?>
 
 <div class="super-group-header-wrap">

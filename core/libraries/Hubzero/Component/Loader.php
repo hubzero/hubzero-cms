@@ -44,6 +44,13 @@ class Loader
     protected static $routers = [];
 
     /**
+     * Path of the component being rendered, for the client in use
+     *
+     * @var  string
+     */
+    private $componentPath = '';
+
+    /**
      * Constructor
      *
      * @param   object  $app
@@ -175,7 +182,8 @@ class Loader
         $file   = substr($option, 4);
 
         // Get component path
-        define('PATH_COMPONENT', $this->path($option) . DIRECTORY_SEPARATOR . $client);
+        $this->componentPath = $this->path($option) . DIRECTORY_SEPARATOR . $client;
+        define('PATH_COMPONENT', $this->componentPath);
         define('PATH_COMPONENT_SITE', $this->path($option) . DIRECTORY_SEPARATOR . 'site');
         define('PATH_COMPONENT_ADMINISTRATOR', $this->path($option) . DIRECTORY_SEPARATOR . 'admin');
 
@@ -332,9 +340,9 @@ class Loader
             );
         }
 
-        $path = PATH_COMPONENT;
+        $path = $this->componentPath;
 
-        $config = ['base_path' => PATH_COMPONENT];
+        $config = ['base_path' => $this->componentPath];
         $namespace = 'Components\\' . ucfirst($component) . '\Site\Controllers';
         $class = ucfirst($controller);
 

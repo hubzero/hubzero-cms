@@ -10,6 +10,8 @@
 use Hubzero\Facades\Document;
 use Hubzero\Facades\Route;
 
+/** @var \Components\Groups\Helpers\Template $this */
+
 // define base path
 $base = str_replace(PATH_ROOT, '', __DIR__);
 

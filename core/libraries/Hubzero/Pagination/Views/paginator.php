@@ -11,6 +11,8 @@ use Hubzero\Facades\Lang;
 
 defined('_HZEXEC_') or die();
 
+/** @var \Hubzero\Pagination\View $this */
+
 // Initialise variables.
 $limits = [];
 

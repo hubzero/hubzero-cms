@@ -320,7 +320,7 @@ class Schema implements StepInterface
         }
 
         $prefix = $dbConfig['dbprefix'] ?? 'jos_';
-        $schemaPath = INSTALL_ROOT . '/sql/mysql/schema.sql';
+        $schemaPath = dirname(__DIR__, 2) . '/sql/mysql/schema.sql';
 
         return $this->executeSqlFile($connection, $schemaPath, $prefix);
     }
@@ -343,7 +343,7 @@ class Schema implements StepInterface
         }
 
         $prefix = $dbConfig['dbprefix'] ?? 'jos_';
-        $dataPath = INSTALL_ROOT . '/sql/mysql/data.sql';
+        $dataPath = dirname(__DIR__, 2) . '/sql/mysql/data.sql';
 
         return $this->executeSqlFile($connection, $dataPath, $prefix);
     }
@@ -366,7 +366,7 @@ class Schema implements StepInterface
         }
 
         $prefix = $dbConfig['dbprefix'] ?? 'jos_';
-        $samplePath = INSTALL_ROOT . '/sql/mysql/starter.sql';
+        $samplePath = dirname(__DIR__, 2) . '/sql/mysql/starter.sql';
 
         if (!file_exists($samplePath)) {
             return true; // No sample file is OK

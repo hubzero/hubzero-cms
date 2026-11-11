@@ -253,7 +253,7 @@ class Settings implements StepInterface
                 continue;
             }
 
-            if (!copy(INSTALL_ROOT . '/config/' . $name . '.php', $target)) {
+            if (!copy(dirname(__DIR__, 2) . '/config/' . $name . '.php', $target)) {
                 return false;
             }
         }

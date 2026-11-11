@@ -12,6 +12,16 @@ use Hubzero\View\View as AbstractView;
 
 /**
  * Base class for a paginator View
+ *
+ * The paginator sets these before the layout is rendered:
+ *
+ * @property  integer    $limit    Records per page
+ * @property  integer    $start    Offset of the first record shown
+ * @property  integer    $total    Number of records
+ * @property  \stdClass  $pages    The page links and where the list of them starts and stops
+ * @property  boolean    $viewall  Whether every record is shown
+ * @property  array      $limits   The per-page choices on offer
+ * @property  string     $prefix   Prefix for the limit and limitstart field names
  */
 class View extends AbstractView
 {
