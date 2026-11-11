@@ -193,11 +193,15 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                     <td class="diffing">
                         <?php if (!$version['remote'] && count($this->versions) > 1) { ?>
                             <?php
-                            $fieldValue = urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']);
+                            $fieldValue = urlencode(
+                                $v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name'],
+                            );
                             ?>
                         <input type="radio" value="<?= $fieldValue ?>" name="old" <?= $oldest ? 'checked="checked"' : '' ?> <?= $last ? 'disabled="disabled"' : '' ?> class="diff-old" />
                             <?php
-                            $fieldValue = urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']);
+                            $fieldValue = urlencode(
+                                $v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name'],
+                            );
                             ?>
                         <input type="radio" value="<?= $fieldValue ?>" name="new" <?= $last ? 'checked="checked"' : '' ?> <?= $oldest ? 'disabled="disabled"' : '' ?> class="diff-new" />
                         <?php } ?>

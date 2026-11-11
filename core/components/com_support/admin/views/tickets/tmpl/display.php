@@ -346,7 +346,9 @@ $this
                                             <?php
                                             $titleText = Lang::txt(
                                                 'Target date: %s',
-                                                Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')),
+                                                Date::of($row->get('target_date'))->toLocal(
+                                                    Lang::txt('DATE_FORMAT_HZ1'),
+                                                ),
                                             );
                                             ?>
                                         <span class="ticket-target_date hasTip" title="<?= $titleText ?>">

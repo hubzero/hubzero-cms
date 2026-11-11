@@ -201,7 +201,8 @@ $this
                                                 ?>
                                                 <?php
                                                 $commentUrl = Route::url(
-                                                    $base . '&controller=posts&post=' . $row->get('id') . '&task=comment',
+                                                    $base . '&controller=posts&post=' . $row->get('id')
+                                                        . '&task=comment',
                                                 );
                                                 ?>
                                             <a class="btn comment" data-id="<?= $row->get('id') ?>"

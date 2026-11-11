@@ -379,8 +379,8 @@ $stateSelected = function ($value) use ($view) {
                         &nbsp;
                             <?php
                             $addUrl = Route::url(
-                                'index.php?option=' . $this->option . '&controller=pages&course=' . $this->course->get('id')
-                                    . '&offering=' . $row->get('id') . '&task=add',
+                                'index.php?option=' . $this->option . '&controller=pages&course='
+                                    . $this->course->get('id') . '&offering=' . $row->get('id') . '&task=add',
                             );
                             ?>
                         <a class="state add" href="<?= $addUrl ?>">
