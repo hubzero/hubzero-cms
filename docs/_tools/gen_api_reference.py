@@ -58,11 +58,18 @@ def parameters(doc: str) -> list[dict]:
         cleaned = re.sub(r",\s*}", "}", raw)
         cleaned = re.sub(r"\t", " ", cleaned)
         try:
-            params.append(json.loads(cleaned))
+            param = json.loads(cleaned)
         except json.JSONDecodeError:
             fields = dict(re.findall(r'"(\w+)"\s*:\s*"?([^",}\n]*)"?', cleaned))
             if fields:
                 params.append(fields)
+            continue
+        # A long description or list of allowed values may be written as an
+        # array of pieces, so the docblock can wrap; join them with spaces
+        for field in ("description", "allowedValues"):
+            if isinstance(param.get(field), list):
+                param[field] = " ".join(param[field])
+        params.append(param)
     return params
 
 

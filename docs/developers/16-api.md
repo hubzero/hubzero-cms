@@ -160,6 +160,18 @@ parameter info*, and the reference generator falls back to a loose regular
 expression that may pick up some fields and not others. Neither says anything
 on the page itself.
 
+A JSON string cannot span lines, so a `description` or `allowedValues` too
+long for the 120-column line limit is written as an array of strings
+instead. Both readers join the pieces with single spaces, so break where a
+space falls:
+
+```php
+ *      "description":   [
+ *          "Filter by a list of recipients (type:id) the activity was sent to.",
+ *          "Example: recipients=user:1000,project:2413"
+ *      ],
+```
+
 > **Note:** The two readers are separate implementations of the same
 > convention. `Generator` uses `phpDocumentor`'s reflection over the loaded
 > class; `gen_api_reference.py` matches the docblock with a regular

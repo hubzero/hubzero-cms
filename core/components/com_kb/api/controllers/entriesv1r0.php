@@ -131,7 +131,10 @@ class Entriesv1r0 extends ApiController
      * }
      * @apiParameter {
      *      "name":          "state",
-     *      "description":   "Only articles in this state, from published and unpublished categories alike. Super Users only; anyone else sees published articles whatever they pass. 'all' for every state.",
+     *      "description":   [
+     *          "Only articles in this state, from published and unpublished categories alike. Super Users only;",
+     *          "anyone else sees published articles whatever they pass. 'all' for every state."
+     *      ],
      *      "type":          "string",
      *      "required":      false,
      *      "default":       "1",
@@ -530,7 +533,10 @@ class Entriesv1r0 extends ApiController
      * }
      * @apiParameter {
      *      "name":          "parent_id",
-     *      "description":   "ID of the parent category; the root (1) makes it top-level. Passing it on an update moves the category, and its descendants with it.",
+     *      "description":   [
+     *          "ID of the parent category; the root (1) makes it top-level. Passing it on an update moves the",
+     *          "category, and its descendants with it."
+     *      ],
      *      "type":          "integer",
      *      "required":      false,
      *      "default":       1
@@ -551,7 +557,9 @@ class Entriesv1r0 extends ApiController
      * }
      * @apiParameter {
      *      "name":          "published",
-     *      "description":   "Published state. On a listing, the state to filter by -- Super Users only, 'all' for every state.",
+     *      "description":   [
+     *          "Published state. On a listing, the state to filter by -- Super Users only, 'all' for every state."
+     *      ],
      *      "type":          "string",
      *      "required":      false,
      *      "default":       1,

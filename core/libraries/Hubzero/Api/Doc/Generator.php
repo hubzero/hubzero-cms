@@ -325,6 +325,14 @@ class Generator
 
                     $endpoint['parameters'][] = (array) $parameter;
                     continue;
+                    // A long description or list of allowed values may be written as
+                    // an array of pieces, so the docblock can wrap; join them with spaces
+                    foreach (['description', 'allowedValues'] as $field) {
+                        if (isset($parameter->$field) && is_array($parameter->$field)) {
+                            $parameter->$field = implode(' ', $parameter->$field);
+                        }
+                    }
+
                 }
 
                 if ($name == 'uri') {

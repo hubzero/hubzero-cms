@@ -72,7 +72,10 @@ class Groupsv1r0 extends ApiController
      *      "type":          "string",
      *      "required":      false,
      *      "default":       "gidNumber,cn,description,created,created_by",
-     *      "allowedValues": "gidNumber, cn, description, published, approved, type, public_desc, join_policy, discoverability, logo, params, created, created_by"
+     *      "allowedValues": [
+     *          "gidNumber, cn, description, published, approved, type, public_desc, join_policy, discoverability,",
+     *          "logo, params, created, created_by"
+     *      ]
      * }
      * @return  void
      */
@@ -118,7 +121,10 @@ class Groupsv1r0 extends ApiController
      * @apiUri    /groups
      * @apiParameter {
      *      "name":          "cn",
-     *      "description":   "Group alias that appears in the url for group. Only lowercase alphanumeric chars allowed.",
+     *      "description":   [
+     *          "Group alias that appears in the url for group.",
+     *          "Only lowercase alphanumeric chars allowed."
+     *      ],
      *      "type":          "string",
      *      "required":      true,
      *      "default":       null
@@ -310,7 +316,10 @@ class Groupsv1r0 extends ApiController
      *      "type":          "string",
      *      "required":      false,
      *      "default":       "gidNumber,cn,description,created,created_by",
-     *      "allowedValues": "gidNumber, cn, description, published, approved, type, public_desc, join_policy, discoverability, logo, params, created, created_by"
+     *      "allowedValues": [
+     *          "gidNumber, cn, description, published, approved, type, public_desc, join_policy, discoverability,",
+     *          "logo, params, created, created_by"
+     *      ]
      * }
      * @return    void
      */

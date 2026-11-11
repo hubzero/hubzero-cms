@@ -99,7 +99,10 @@ class Entriesv1r1 extends ApiController
      * }
      * @apiParameter {
      *      "name":          "recipients",
-     *      "description":   "Filter by a list of recipients (type:id) the activity was sent to. Example: recipients=user:1000,project:2413",
+     *      "description":   [
+     *          "Filter by a list of recipients (type:id) the activity was sent to. Example:",
+     *          "recipients=user:1000,project:2413"
+     *      ],
      *      "type":          "string",
      *      "required":      false,
      *      "default":       ""
