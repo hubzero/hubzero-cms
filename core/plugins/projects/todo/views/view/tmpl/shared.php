@@ -69,7 +69,8 @@ $rows = $this->todo->entries('list', $this->filters);
             );
             $activeClass = !$this->filters['mine'] && !$this->filters['state'] ? ' active' : '';
             ?>
-            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE') ?>" class="filter-active<?= $activeClass ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE') ?></a></li>
+            <li><a href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE') ?>"
+                class="filter-active<?= $activeClass ?>"><?= Lang::txt('PLG_PROJECTS_TODO_FILTER_ACTIVE') ?></a></li>
             <?php
             $linkUrl = Route::url(
                 $url . '&sortdir=' . $this->filters['sortdir'] . '&sortby=' . $this->filters['sortby'] . '&mine=1',

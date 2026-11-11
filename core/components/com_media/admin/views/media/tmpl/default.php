@@ -111,7 +111,8 @@ $this->js();
                         );
                         $activeClass = !$this->layout || $this->layout == 'thumbs' ? 'active' : '';
                         ?>
-                        <a class="icon-th media-files-view thumbs-view hasTip <?= $activeClass ?>" data-view="thumbs" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_MEDIA_THUMBNAIL_VIEW') ?>">
+                        <a class="icon-th media-files-view thumbs-view hasTip <?= $activeClass ?>" data-view="thumbs"
+                            href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_MEDIA_THUMBNAIL_VIEW') ?>">
                             <?php echo Lang::txt('COM_MEDIA_THUMBNAIL_VIEW'); ?>
                         </a>
                         <?php
@@ -121,7 +122,8 @@ $this->js();
                         );
                         $activeClass = $this->layout == 'list' ? 'active' : '';
                         ?>
-                        <a class="icon-align-justify media-files-view hasTip listing-view <?= $activeClass ?>" data-view="list" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_MEDIA_DETAIL_VIEW') ?>">
+                        <a class="icon-align-justify media-files-view hasTip listing-view <?= $activeClass ?>"
+                            data-view="list" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_MEDIA_DETAIL_VIEW') ?>">
                             <?php echo Lang::txt('COM_MEDIA_DETAIL_VIEW'); ?>
                         </a>
                         <?php if (User::authorise('core.create', $this->option)) : ?>
@@ -132,7 +134,9 @@ $this->js();
                             );
                             $activeClass = $this->layout == 'list' ? 'active' : '';
                             ?>
-                            <a class="icon-folder-new media-files-action media-folder-new hasTip <?= $activeClass ?>" href="<?= $newUrl ?>" data-prompt="<?= Lang::txt('COM_MEDIA_FOLDER_NAME') ?>" title="<?= Lang::txt('COM_MEDIA_CREATE_FOLDER') ?>">
+                            <a class="icon-folder-new media-files-action media-folder-new hasTip <?= $activeClass ?>"
+                                href="<?= $newUrl ?>" data-prompt="<?= Lang::txt('COM_MEDIA_FOLDER_NAME') ?>"
+                                title="<?= Lang::txt('COM_MEDIA_CREATE_FOLDER') ?>">
                                 <?php echo Lang::txt('COM_MEDIA_CREATE_FOLDER'); ?>
                             </a>
                         <?php endif; ?>

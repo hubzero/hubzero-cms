@@ -343,7 +343,8 @@ $quotaSelected = function ($value) use ($view) {
                                 ? Lang::txt('This team is synced with a group.')
                                 : Lang::txt('This team is comprised of selected individuals.');
                             ?>
-                            <a class="state <?= $syncedClass ?> team hasTip" title="<?= $titleText ?>" href="<?= $linkUrl ?>">
+                            <a class="state <?= $syncedClass ?> team hasTip" title="<?= $titleText ?>"
+                                href="<?= $linkUrl ?>">
                                 <span><?php echo Lang::txt('COM_PROJECTS_TEAM'); ?></span>
                             </a>
                         </td>

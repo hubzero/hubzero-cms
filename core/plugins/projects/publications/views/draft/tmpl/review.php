@@ -70,7 +70,8 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
 <?php
 $draftCompleteClass = $complete ? 'draft-complete' : 'draft-incomplete';
 ?>
-<div id="<?= $elName ?>" class="draft-review <?= $draftCompleteClass ?> <?= $this->pub->state == 7 ? ' draft-resubmit' : '' ?>">
+<div id="<?= $elName ?>"
+    class="draft-review <?= $draftCompleteClass ?> <?= $this->pub->state == 7 ? ' draft-resubmit' : '' ?>">
     <?php if ($complete) { ?>
     <p class="review-prompt"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_REVIEW_COMPLETE'); ?></p>
     <?php } else { ?>

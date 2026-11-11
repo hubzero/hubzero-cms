@@ -240,7 +240,8 @@ if ($this->comment->get('publication_id')) {
             <?php
             $hideClass = Request::getInt('reply', 0) != $this->comment->get('id') ? ' hide' : '';
             ?>
-            <div class="addcomment comment-add<?= $hideClass ?>" id="comment-form<?= $this->comment->get('id') . '-' . $this->depth ?>">
+            <div class="addcomment comment-add<?= $hideClass ?>"
+                id="comment-form<?= $this->comment->get('id') . '-' . $this->depth ?>">
                 <?php if (User::isGuest()) { ?>
                 <p class="warning">
                     <?= Lang::txt(

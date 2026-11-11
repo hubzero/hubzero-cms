@@ -203,7 +203,8 @@ if (isset($this->messages)) {
                                         ? 'unpublished-details'
                                         : '';
                                     ?>
-                                    <td <?= ($this->label == "none") ? 'colspan="5"' : 'colspan="6"' ?> class="citation-details <?= $unpublishedDetailsClass ?>">
+                                    <td <?= ($this->label == "none") ? 'colspan="5"' : 'colspan="6"' ?>
+                                        class="citation-details <?= $unpublishedDetailsClass ?>">
                                         <?php echo $cite->citationDetails($this->openurl); ?>
                                         <?php if ($this->config->get('citations_show_badges', 'yes') == "yes") : ?>
                                             <?php echo $cite->badgeCloud(); ?>

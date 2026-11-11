@@ -260,7 +260,8 @@ $revisions = $this->page
                                         ? '+' . number_format($diff)
                                         : ($diff == 0 ? number_format($diff) : number_format($diff));
                                     ?>
-                                    <?= $historyBytesText ?> (<span class="page-length <?= $increaseClass ?>"><?= $pageLengthText ?></span>)
+                                    <?= $historyBytesText ?> (<span
+                                        class="page-length <?= $increaseClass ?>"><?= $pageLengthText ?></span>)
                                 </td>
                                 <td>
                                     <?php echo $status; ?>

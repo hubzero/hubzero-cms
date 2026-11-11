@@ -271,7 +271,8 @@ $this
                                             ? ' active ' . strtolower($this->filters['sortdir'])
                                             : '';
                                         ?>
-                                        <a class="sort-age<?= $activeClass ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <a class="sort-age<?= $activeClass ?>" href="<?= $displayUrl ?>"
+                                            title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_AGE'); ?>
                                         </a>
                                     </li>
@@ -287,7 +288,8 @@ $this
                                             ? ' active ' . strtolower($this->filters['sortdir'])
                                             : '';
                                         ?>
-                                        <a class="sort-status<?= $activeClass ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <a class="sort-status<?= $activeClass ?>" href="<?= $displayUrl ?>"
+                                            title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_STATUS'); ?>
                                         </a>
                                     </li>
@@ -303,7 +305,8 @@ $this
                                             ? ' active ' . strtolower($this->filters['sortdir'])
                                             : '';
                                         ?>
-                                        <a class="sort-severity<?= $activeClass ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <a class="sort-severity<?= $activeClass ?>" href="<?= $displayUrl ?>"
+                                            title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SEVERITY'); ?>
                                         </a>
                                     </li>
@@ -319,7 +322,8 @@ $this
                                             ? ' active ' . strtolower($this->filters['sortdir'])
                                             : '';
                                         ?>
-                                        <a class="sort-summary<?= $activeClass ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <a class="sort-summary<?= $activeClass ?>" href="<?= $displayUrl ?>"
+                                            title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_SUMMARY'); ?>
                                         </a>
                                     </li>
@@ -335,7 +339,8 @@ $this
                                             ? ' active ' . strtolower($this->filters['sortdir'])
                                             : '';
                                         ?>
-                                        <a class="sort-group<?= $activeClass ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <a class="sort-group<?= $activeClass ?>" href="<?= $displayUrl ?>"
+                                            title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_GROUP'); ?>
                                         </a>
                                     </li>
@@ -351,7 +356,8 @@ $this
                                             ? ' active ' . strtolower($this->filters['sortdir'])
                                             : '';
                                         ?>
-                                        <a class="sort-owner<?= $activeClass ?>" href="<?= $displayUrl ?>" title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
+                                        <a class="sort-owner<?= $activeClass ?>" href="<?= $displayUrl ?>"
+                                            title="<?= Lang::txt('COM_SUPPORT_CLICK_TO_SORT') ?>">
                                             <?php echo Lang::txt('COM_SUPPORT_COL_OWNER'); ?>
                                         </a>
                                     </li>
