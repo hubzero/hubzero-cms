@@ -158,7 +158,8 @@ class Mytools extends Module
                         if (in_array($tool->name, $favs)) {
                             $cls = 'favd';
                         }
-                    } elseif ($type = "favs") {
+                    } elseif ($type == 'favs' || $type == 'fav') {
+                        // The favourites tab ('favs') and its refresh after a change ('fav')
                         $cls = 'favds';
                     }
                     if ($this->supportedtag) {
@@ -177,8 +178,8 @@ class Mytools extends Module
                     $html .= "\t\t\t" . ' <a href="' . $pipelineUrl . '" class="tooltips" title="'
                         . $tooltipTitle . '">' . $tool->caption . '</a>' . "\n";
 
-                    // Only add the "favorites" button to the all tools list
-                    if ($type == 'all'  || $type == 'favs') {
+                    // Only the all tools and favourites lists get the "favorites" button
+                    if ($type == 'all' || $type == 'favs' || $type == 'fav') {
                         $favTitle = Lang::txt('MOD_MYTOOLS_ADD_TO_FAVORITES', $tool->caption);
                         $html .= "\t\t\t" . ' <a href="javascript:void(0);" class="fav" title="'
                             . $favTitle . '">' . $tool->caption . '</a>' . "\n";
