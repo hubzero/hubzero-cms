@@ -233,7 +233,7 @@ class Optiongroups extends AdminController
                 Request::checkToken();
 
                 // Incoming
-                $ogIds = Request::getInt('ogId', 0);
+                $ogIds = array_filter(array_map('intval', Request::getArray('ogId', [])));
 
                 // Make sure we have ID(s) to work with
                 if (empty($ogIds)) {

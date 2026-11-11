@@ -42,7 +42,7 @@ if (!empty($this->notifications)) {
 <section class="main section">
     <div class="section-inner">
         <?php
-        $errors = $this->getError();
+        $errors = $this->getErrors();
         if (!empty($errors)) {
             foreach ($errors as $error) {
                 echo '<p class="error">' . $error . '</p>';

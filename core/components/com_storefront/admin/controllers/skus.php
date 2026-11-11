@@ -281,7 +281,7 @@ class Skus extends AdminController
                 Request::checkToken();
 
                 // Incoming
-                $sIds = Request::getInt('sId', 0);
+                $sIds = array_filter(array_map('intval', Request::getArray('sId', [])));
 
                 // Make sure we have an ID to work with
                 if (empty($sIds)) {

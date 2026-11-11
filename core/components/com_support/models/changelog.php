@@ -119,7 +119,7 @@ class Changelog extends Obj
                                 $obj['after'] = trim($matches[1]);
                             } else {
                                 $obj['name']    = Lang::txt('COM_SUPPORT_NONE');
-                                $obj['address'] = trim($matches[2]);
+                                $obj['address'] = trim($matches[1]);
                             }
                         }
                     }
