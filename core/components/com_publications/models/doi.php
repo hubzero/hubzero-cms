@@ -206,6 +206,7 @@ class Doi extends Obj
             return false;
         }
 
+        $call = '';
         if ($doi) {
             if ($this->configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE) {
                 $call  = $this->configs->dataciteServiceURL . DS . 'id' . DS . 'doi:' . $doi;
@@ -344,6 +345,7 @@ class Doi extends Obj
         $type = $pub->masterType();
         $this->set('pubType', $type->id);
         $attachments = $pub->attachments();
+        $mimeTypes = [];
 
         if ($type->id == 1) {
             // get the quantity of files of file publication
@@ -370,7 +372,7 @@ class Doi extends Obj
                 $pub->version->id,
             );
 
-            if ($files != false && !empty($files)) {
+            if ($files != false) {
                 $quantity += count($files);
             }
 
@@ -384,7 +386,7 @@ class Doi extends Obj
             );
 
             // get MIME type of files in data directory
-            if ($files != false && !empty($files)) {
+            if ($files != false) {
                 foreach ($files as $file) {
                     $mimeType = mime_content_type($file);
                     if ($mimeType && !in_array($mimeType, $mimeTypes)) {
@@ -394,7 +396,6 @@ class Doi extends Obj
             }
         } else {
             $quantity = 0;
-            $mimeTypes = [];
         }
         $this->set('fileCount', $quantity);
         if ($type->id == 1 || $type->id == 7) {
@@ -926,7 +927,7 @@ class Doi extends Obj
             $result = explode(PHP_EOL, $fosTagObj->description);
             $valArr = explode(" | ", strip_tags($result[0]));
 
-            if (!empty($valArr) && preg_match("/^fos::/i", trim($valArr[0])) && !empty($valArr[1])) {
+            if (preg_match("/^fos::/i", trim($valArr[0])) && !empty($valArr[1])) {
                 $classificationCode = substr(trim($valArr[0]), 5);
                 $fosTagVal = trim($valArr[1]);
                 $xmlfile .= '<subject subjectScheme="Fields of Science and Technology (FOS)" '
@@ -1261,6 +1262,7 @@ class Doi extends Obj
         $url = $this->getServicePath();
 
         // Make service call to provision doi
+        $doi = null;
         if ($status == 'reserved') {
             $doi = $this->runCurl($url, $input);
         }
@@ -1356,6 +1358,7 @@ class Doi extends Obj
             return false;
         }
 
+        $postVals = '';
         if ($stateSwitch == self::STATE_FROM_PUBLISHED_TO_DRAFTREADY) {
             $postVals = "_status:unavailable";
         } elseif ($stateSwitch == self::STATE_FROM_DRAFTREADY_TO_PUBLISHED) {
@@ -1541,9 +1544,7 @@ class Doi extends Obj
         ) {
             if ($this->configs->dataciteEZIDSwitch == self::SWITCH_OPTION_DATACITE) {
                 $result = $this->dataciteDoiStatusUpdate($doi, $stateSwitch);
-            }
-
-            if ($this->configs->dataciteEZIDSwitch == self::SWITCH_OPTION_EZID) {
+            } else {
                 $result = $this->ezidDoiStatusUpdate($doi, $stateSwitch);
             }
 

@@ -699,7 +699,7 @@ class Types extends AdminController
         $url = Route::url($listUrl . '&task=edit&id=' . $id, false);
 
         $manifest = new stdClass();
-        if ($neworder && !empty($order)) {
+        if ($neworder) {
             $oManifest = $curation->manifest;
             foreach ($order as $o) {
                 if (trim($o)) {

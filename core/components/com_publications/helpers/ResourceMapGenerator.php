@@ -179,11 +179,11 @@ class ResourceMapGenerator
 
         $this->types = [];
         foreach ($allTypes as $type) {
-            $types[$type->id] = $type->name;
+            $this->types[$type->id] = $type->name;
         }
 
         // Get the type name of this resource
-        $this->type = $types[$type_id];
+        $this->type = $this->types[$type_id];
 
         // Get attachments
         $pubAttach = new \Components\Publications\Tables\Attachment($database);
@@ -218,7 +218,7 @@ class ResourceMapGenerator
 
         $datatype = mime_content_type($path);
 
-        if (isset($datatype) && !empty($datatype)) {
+        if (!empty($datatype)) {
             $xmlwriter->writeElement('dc:format', $datatype);
         }
 

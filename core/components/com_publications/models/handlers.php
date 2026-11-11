@@ -234,7 +234,7 @@ class Handlers extends Obj
         }
 
         // Attachments are needed
-        if (!$attachments || empty($attachments)) {
+        if (!$attachments) {
             return false;
         }
         // Check allowed formats
@@ -415,13 +415,13 @@ class Handlers extends Obj
     public function parseConfig($name, $configs = [], $savedConfig = [])
     {
         // Get custom config from db
-        if (!$savedConfig  || empty($savedConfig)) {
+        if (!$savedConfig) {
             $obj = new \Components\Publications\Tables\Handler($this->db);
             $savedConfig = $obj->getConfig($name);
         }
 
         // Overwrite default config with custom
-        if ($savedConfig && !empty($savedConfig)) {
+        if ($savedConfig) {
             foreach ($configs as $configName => $configValue) {
                 if ($configName == 'params') {
                     foreach ($configValue as $paramName => $paramValue) {

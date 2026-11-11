@@ -661,7 +661,7 @@ class Tags extends \Hubzero\Base\Obj
      *
      * @param      int $vid publication version id
      *
-     * @return     object or false
+     * @return     object|false
      */
     public function getFOSTag($vid)
     {

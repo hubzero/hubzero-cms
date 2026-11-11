@@ -157,7 +157,7 @@ class Curation extends Obj
             $manifest->params = new stdClass();
 
             // Build default manifest
-            if ($blocks && !empty($blocks)) {
+            if ($blocks) {
                 $i = 1;
                 foreach ($blocks as $blockname) {
                     $blockManifest = $blocksModel->getManifest($blockname);
@@ -810,6 +810,9 @@ class Curation extends Obj
 
         $i = 0;
         $k = 0;
+
+        // The last block seen is the first block if none needs attention
+        $blockId = null;
 
         // Check status for each
         foreach ($this->blocks as $blockId => $block) {

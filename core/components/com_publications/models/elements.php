@@ -518,6 +518,7 @@ class Elements
     public function display($node, $value = '')
     {
         // Get the type of the parameter.
+        $type = '';
         if (is_object($node)) {
             $type = $node->type;
         } elseif (is_array($node)) {
