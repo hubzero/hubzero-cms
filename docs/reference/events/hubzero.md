@@ -41,7 +41,7 @@ Fired from:
 - [`core/components/com_courses/site/views/managers/tmpl/display.php:36`](../../../core/components/com_courses/site/views/managers/tmpl/display.php#L36) with `[ ['members', 'usernames', 'field-usernames', '', ''], ]`
 - [`core/components/com_developer/admin/views/applications/tmpl/edit.php:153`](../../../core/components/com_developer/admin/views/applications/tmpl/edit.php#L153) with `[['members', 'team', 'acmembers', '', implode(', ', $currentTeam)]]`
 - [`core/components/com_developer/site/views/applications/tmpl/edit.php:130`](../../../core/components/com_developer/site/views/applications/tmpl/edit.php#L130) with `[['members', 'team', 'acmembers']]`
-- [`core/components/com_events/site/views/edit/tmpl/default.php:123`](../../../core/components/com_events/site/views/edit/tmpl/default.php#L123) with `[['tags', 'tags', 'actags','',$this->lists['tags']]]`
+- [`core/components/com_events/site/views/edit/tmpl/default.php:126`](../../../core/components/com_events/site/views/edit/tmpl/default.php#L126) with `[['tags', 'tags', 'actags','',$this->lists['tags']]]`
 - [`core/components/com_groups/site/views/groups/tmpl/edit.php:25`](../../../core/components/com_groups/site/views/groups/tmpl/edit.php#L25) with `[['tags', 'tags', 'actags','', $this->tags]]`
 - and 50 more call sites
 
