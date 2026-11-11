@@ -15,9 +15,9 @@
  * title card does not repeat and is free of that.
  *
  * How faint each band is decided by what has to be read through it: see
- * tools/screenshots/veneer.mjs, which composites the band over the ground it
- * sits on and reports the worst contrast a reader actually gets, overlapping
- * shapes included.
+ * the veneer.mjs screenshot check (kept outside the repository), which
+ * composites the band over the ground it sits on and reports the worst
+ * contrast a reader actually gets, overlapping shapes included.
  */
 
 // The shapes belong to the sample data repository, which this template draws
