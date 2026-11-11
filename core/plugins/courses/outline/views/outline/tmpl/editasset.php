@@ -62,26 +62,56 @@ $tool_path = $config->get('tool_path');
         <p>
             <label for="type">Type:</label>
             <select name="type">
-                <option value="video"<?= $asset->get('type') == 'video' ? ' selected="selected"' : '' ?>><?= Lang::txt('Video') ?></option>
-                <option value="file"<?= $asset->get('type') == 'file' ? ' selected="selected"' : '' ?>><?= Lang::txt('File') ?></option>
-                <option value="form"<?= $asset->get('type') == 'form' ? ' selected="selected"' : '' ?>><?= Lang::txt('Form') ?></option>
-                <option value="text"<?= $asset->get('type') == 'text' ? ' selected="selected"' : '' ?>><?= Lang::txt('Text') ?></option>
-                <option value="url"<?= $asset->get('type') == 'url' ? ' selected="selected"' : '' ?>><?= Lang::txt('URL') ?></option>
+                <option value="video"<?= $asset->get('type') == 'video' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Video') ?>
+                </option>
+                <option value="file"<?= $asset->get('type') == 'file' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('File') ?>
+                </option>
+                <option value="form"<?= $asset->get('type') == 'form' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Form') ?>
+                </option>
+                <option value="text"<?= $asset->get('type') == 'text' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Text') ?>
+                </option>
+                <option value="url"<?= $asset->get('type') == 'url' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('URL') ?>
+                </option>
             </select>
         </p>
         <p>
             <label for="subtype">Subtype:</label>
             <select name="subtype">
-                <option value="video"<?= $asset->get('subtype') == 'video' ? ' selected="selected"' : '' ?>><?= Lang::txt('Video') ?></option>
-                <option value="embedded"<?= $asset->get('subtype') == 'embedded' ? ' selected="selected"' : '' ?>><?= Lang::txt('Embedded') ?></option>
-                <option value="file"<?= $asset->get('subtype') == 'file' ? ' selected="selected"' : '' ?>><?= Lang::txt('File') ?></option>
-                <option value="exam"<?= $asset->get('subtype') == 'exam' ? ' selected="selected"' : '' ?>><?= Lang::txt('Exam') ?></option>
-                <option value="quiz"<?= $asset->get('subtype') == 'quiz' ? ' selected="selected"' : '' ?>><?= Lang::txt('Quiz') ?></option>
-                <option value="homework"<?= $asset->get('subtype') == 'homework' ? ' selected="selected"' : '' ?>><?= Lang::txt('Homework') ?></option>
-                <option value="note"<?= $asset->get('subtype') == 'note' ? ' selected="selected"' : '' ?>><?= Lang::txt('Note') ?></option>
-                <option value="wiki"<?= $asset->get('subtype') == 'wiki' ? ' selected="selected"' : '' ?>><?= Lang::txt('Wiki') ?></option>
-                <option value="link"<?= $asset->get('subtype') == 'link' ? ' selected="selected"' : '' ?>><?= Lang::txt('Link') ?></option>
-                <option value="tool"<?= $asset->get('subtype') == 'tool' ? ' selected="selected"' : '' ?>><?= Lang::txt('Tool') ?></option>
+                <option value="video"<?= $asset->get('subtype') == 'video' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Video') ?>
+                </option>
+                <option value="embedded"<?= $asset->get('subtype') == 'embedded' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Embedded') ?>
+                </option>
+                <option value="file"<?= $asset->get('subtype') == 'file' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('File') ?>
+                </option>
+                <option value="exam"<?= $asset->get('subtype') == 'exam' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Exam') ?>
+                </option>
+                <option value="quiz"<?= $asset->get('subtype') == 'quiz' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Quiz') ?>
+                </option>
+                <option value="homework"<?= $asset->get('subtype') == 'homework' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Homework') ?>
+                </option>
+                <option value="note"<?= $asset->get('subtype') == 'note' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Note') ?>
+                </option>
+                <option value="wiki"<?= $asset->get('subtype') == 'wiki' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Wiki') ?>
+                </option>
+                <option value="link"<?= $asset->get('subtype') == 'link' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Link') ?>
+                </option>
+                <option value="tool"<?= $asset->get('subtype') == 'tool' ? ' selected="selected"' : '' ?>>
+                    <?= Lang::txt('Tool') ?>
+                </option>
             </select>
         </p>
         <p>
@@ -89,7 +119,9 @@ $tool_path = $config->get('tool_path');
             <select name="scope_id">
                 <?php foreach ($assetgroups as $assetgroup) : ?>
                     <?php $selected = ($assetgroup['id'] == $this->scope_id) ? 'selected' : ''; ?>
-                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>><?= $this->escape($assetgroup['title']) ?></option>
+                    <option value="<?php echo $assetgroup['id'] ?>" <?php echo $selected ?>>
+                        <?= $this->escape($assetgroup['title']) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </p>
@@ -107,34 +139,31 @@ $tool_path = $config->get('tool_path');
             <input type="hidden" name="edit_progress_factors" value="1" />
         </p>
 
-        <?php if (
-        $tool_path
-                && $tools
-                && count($tools) > 0
-                && (($asset->get('type') == 'file' && $asset->get('subtype') == 'file')
-                    || ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool'))
-) : ?>
+        <?php
+        if (
+            $tool_path
+            && $tools
+            && count($tools) > 0
+            && (
+                ($asset->get('type') == 'file' && $asset->get('subtype') == 'file')
+                || ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool')
+            )
+        ) : ?>
             <p>
                 <label for="tool_param">Launch a tool with this file?</label>
                 <input name="tool_param" class="tool-param" type="checkbox" value="1" <?= ($asset->get('type') == 'url' && $asset->get('subtype') == 'tool') ? 'checked="checked"' : '' ?>/>
                 <input type="hidden" name="edit_tool_param" value="1" />
 
                 <select class="tool-list" name="tool_alias">
-                                                                         <?php foreach ($tools as $tool) : ?>
-                                                                                <?php preg_match(
-                                                                                    '/\/tools\/([0-9a-z]+)\//',
-                                                                                    $asset->get('url'),
-                                                                                    $substr,
-                                                                                ); ?>
-                                                                                <?php $selected = (
-                                                                                    $substr
-                                                                                    && isset($substr[1])
-                                                                                    && $substr[1] == $tool->alias
-                                                                                )
-                                                                                    ? 'selected="selected"'
-                                                                                    : ''; ?>
-                        <option value="<?php echo $this->escape($tool->alias) ?>" <?php echo $selected ?>><?php echo $this->escape($tool->title) ?></option>
-                                                                         <?php endforeach; ?>
+                    <?php foreach ($tools as $tool) : ?>
+                        <?php
+                        preg_match('/\/tools\/([0-9a-z]+)\//', $asset->get('url'), $substr);
+                        $selected = ($substr && isset($substr[1]) && $substr[1] == $tool->alias) ? 'selected="selected"' : '';
+                        ?>
+                        <option value="<?php echo $this->escape($tool->alias) ?>" <?php echo $selected ?>>
+                            <?php echo $this->escape($tool->title) ?>
+                        </option>
+                    <?php endforeach; ?>
                 </select>
             </p>
         <?php endif; ?>
