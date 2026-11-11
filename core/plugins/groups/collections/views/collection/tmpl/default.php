@@ -227,7 +227,8 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                                 . '&task=comment',
                                         );
                                         ?>
-                                        <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= $commentUrl ?>">
+                                        <a class="btn comment" data-id="<?= $row->get('id') ?>"
+                                            href="<?= $commentUrl ?>">
                                             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
                                         </a>
                                     <?php } ?>

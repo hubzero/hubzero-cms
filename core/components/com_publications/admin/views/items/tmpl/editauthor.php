@@ -72,7 +72,8 @@ $linkText = Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id;
                 <?php
                 $buttonText = Lang::txt('Cancel');
                 ?>
-                <button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?= $buttonText ?></button>
+                <button type="button"
+                    onclick="window.parent.document.getElementById('sbox-window').close();"><?= $buttonText ?></button>
             </div>
 
             <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_AUTHOR') ?>

@@ -59,7 +59,8 @@ $crumbsText = Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT_INFO');
                 <?php
                 $buttonText = Lang::txt('Cancel');
                 ?>
-                <button type="button" onclick="window.parent.document.getElementById('sbox-window').close();"><?= $buttonText ?></button>
+                <button type="button"
+                    onclick="window.parent.document.getElementById('sbox-window').close();"><?= $buttonText ?></button>
             </div>
 
             <?php echo Lang::txt('COM_PUBLICATIONS_EDIT_CONTENT') ?>
