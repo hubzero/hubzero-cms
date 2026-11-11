@@ -240,6 +240,8 @@ class DiffEngine
                 }
                 $matches = $ymatches[$line];
                 reset($matches);
+                // Set by the first loop below; the second loop only runs when the first stopped early.
+                $k = 0;
                 while ($y = current($matches)) {
                     next($matches);
                     if (empty($this->in_seq[$y])) {

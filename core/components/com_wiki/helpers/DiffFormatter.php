@@ -57,6 +57,7 @@ class DiffFormatter
     public function format($diff, ?\Closure $formatContextOutput = null)
     {
         $xi = $yi = 1;
+        $x0 = $y0 = 0;
         $block = false;
         $context = [];
 
