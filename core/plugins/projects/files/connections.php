@@ -29,6 +29,13 @@ use Hubzero\Facades\User;
 
 /**
  * Projects Files plugin (connections extension)
+ *
+ * Reads these from the plugin through __get():
+ *
+ * @property-read  \Components\Projects\Models\Project  $model   The project
+ * @property-read  string                               $subdir  The confined directory being browsed
+ * @property-read  array                                $area    The plugin's area name and title
+ * @property-read  \Hubzero\Config\Registry             $params  The plugin's parameters
  */
 class Connections
 {
@@ -594,7 +601,7 @@ class Connections
 
         // Assign view vars
         $view->set('items', $items);
-        $view->set('title', $this->_area['title']);
+        $view->set('title', $this->area['title']);
         $view->set('option', $this->option);
         $view->set('sortby', $sortby);
         $view->set('sortdir', $sortasc);
@@ -790,7 +797,7 @@ class Connections
         $view->set('subdir', $this->subdir);
         $view->set('ajax', $ajax);
         $view->set('sizelimit', $this->params->get('maxUpload', '104857600'));
-        $view->set('title', $this->_area['title']);
+        $view->set('title', $this->area['title']);
         $view->set('params', $this->params);
         $view->set('connection', $this->connection);
 

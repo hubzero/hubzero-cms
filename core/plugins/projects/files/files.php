@@ -31,7 +31,16 @@ use Components\Projects\Models\Orm\Project;
  */
 class Files extends Plugin
 {
-    protected $area;
+    /**
+     * This plugin's area (name and title), from onProjectAreas()
+     *
+     * Public, as are $model and $subdir: the connections controller reads
+     * them through its __get().
+     *
+     * @var  array
+     */
+    public $area;
+
     protected $connect;
     protected $database;
     protected $publishing;
@@ -40,10 +49,23 @@ class Files extends Plugin
     protected $task;
     protected $uid;
     protected $forceSync;
-    protected $model;
+
+    /**
+     * The project, as onProject() was given it
+     *
+     * @var  \Components\Projects\Models\Project
+     */
+    public $model;
+
     protected $publication;
     protected $repo;
-    protected $subdir;
+
+    /**
+     * The requested directory, confined to a path inside the repository
+     *
+     * @var  string
+     */
+    public $subdir;
 
     /**
      * Affects constructor behavior. If true, language files will be loaded automatically.
