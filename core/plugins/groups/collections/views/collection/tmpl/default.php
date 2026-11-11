@@ -218,7 +218,10 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                                 <span><?= $spanText ?></span>
                                             </button>
                                         <?php } ?>
-                                        <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment');?>">
+                                        <?php
+                                        // $base . '&scope=post/' . $row->get('id') . '/comment');
+                                        ?>
+                                        <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
                                             <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
                                         </a>
                                     <?php } ?>
@@ -287,7 +290,10 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                         title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_LIKE'); ?></span>
                                     </a>
-                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&scope=post/' . $row->get('id') . '/comment');?>">
+                                    <?php
+                                    // $base . '&scope=post/' . $row->get('id') . '/comment');
+                                    ?>
+                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
                                         <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                     <?php

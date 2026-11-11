@@ -95,9 +95,18 @@ if ($this->wishlist->get('id')) {
                                     value="<?= $this->escape($this->filters['search']) ?>"
                                     placeholder="<?= Lang::txt('COM_WISHLIST_SEARCH_PLACEHOLDER') ?>" />
 
-                                <input type="hidden" name="tags" value="<?php echo $this->escape($this->filters['tag']); /* xss fix for ticket 1413/1417 */ ?>" />
-                                <input type="hidden" name="sortby" value="<?php echo $this->escape($this->filters['sortby']); /* xss fix for ticket 1413/1417 */ ?>" />
-                                <input type="hidden" name="filterby" value="<?php echo $this->escape($this->filters['filterby']); /* xss fix for ticket 1412/1419 */?>" />
+                                <?php
+                                // xss fix for ticket 1413/1417
+                                ?>
+                                <input type="hidden" name="tags" value="<?= $this->escape($this->filters['tag']) ?>" />
+                                <?php
+                                // xss fix for ticket 1413/1417
+                                ?>
+                                <input type="hidden" name="sortby" value="<?= $this->escape($this->filters['sortby']) ?>" />
+                                <?php
+                                // xss fix for ticket 1412/1419
+                                ?>
+                                <input type="hidden" name="filterby" value="<?= $this->escape($this->filters['filterby']) ?>" />
 
                                 <input type="hidden" name="task"
                                     value="<?php echo $this->escape($this->task); /* XSS fix, see ticket 1420*/ ?>" />

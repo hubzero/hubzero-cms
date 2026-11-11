@@ -120,7 +120,10 @@ $this
                                         <span><?= $spanText ?></span>
                                     </button>
                                 <?php } ?>
-                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&task=post/' . $row->get('id') . '/comment');?>">
+                                    <?php
+                                    // $base . '&task=post/' . $row->get('id') . '/comment');
+                                    ?>
+                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                     <a class="btn repost" data-id="<?= $row->get('id') ?>"
@@ -145,7 +148,10 @@ $this
                                         title="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_WARNING_LOGIN_TO_LIKE') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_LIKE'); ?></span>
                                     </a>
-                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?php echo Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment'); //$base . '&task=post/' . $row->get('id') . '/comment');?>">
+                                    <?php
+                                    // $base . '&task=post/' . $row->get('id') . '/comment');
+                                    ?>
+                                    <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url('index.php?option=com_collections&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COMMENT'); ?></span>
                                     </a>
                                     <?php

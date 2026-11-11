@@ -841,6 +841,9 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
         <input type="hidden" name="act" value="submit" />
         <?php echo Html::input('token'); ?>
         <input type="hidden" name="base_uri" id="base_uri" value="<?php echo rtrim(Request::base(true), '/'); ?>" />
-        <input type="hidden" name="return" value="<?php echo urlencode($form_redirect); // urlencode is XSS protection added to this field, see ticket 1411?>" />
+        <?php
+        // urlencode is XSS protection added to this field, see ticket 1411
+        ?>
+        <input type="hidden" name="return" value="<?= urlencode($form_redirect) ?>" />
     </form>
 </section><!-- / .main section -->
