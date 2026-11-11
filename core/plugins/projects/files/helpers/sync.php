@@ -20,6 +20,11 @@ use Hubzero\Facades\User;
  */
 class Sync extends \Hubzero\Base\Obj
 {
+    /**
+     * Connection helper
+     *
+     * @var  \Components\Projects\Helpers\Connect
+     */
     protected $connect;
     protected $db;
     protected $logPath;

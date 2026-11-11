@@ -929,12 +929,12 @@ class Todo extends Plugin
                     'quote',
                     0,
                 );
-            }
 
-            // Store activity ID
-            if ($aid) {
-                $objC->activityid = $aid;
-                $objC->store();
+                // Store activity ID
+                if ($aid) {
+                    $objC->activityid = $aid;
+                    $objC->store();
+                }
             }
         }
 

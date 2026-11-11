@@ -1311,7 +1311,7 @@ class Team extends Plugin
         $message['multipart'] = $eview->loadTemplate();
         $message['multipart'] = str_replace("\n", "\r\n", $message['multipart']);
 
-        if (isset($uid) && $uid != 0 && $uid != false) {
+        if ($uid != 0 && $uid != false) {
             // Send HUB message
             $recipient = User::getInstance($uid);
 

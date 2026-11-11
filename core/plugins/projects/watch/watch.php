@@ -280,9 +280,7 @@ class Watch extends Plugin
                 ->whereEquals($r . '.state', \Hubzero\Activity\Recipient::STATE_PUBLISHED);
             //->whereEquals($l . '.parent', 0);
 
-            if (!empty($activities)) {
-                $recipient->whereIn($l . '.id', $activities);
-            }
+            $recipient->whereIn($l . '.id', $activities);
             $activities = $recipient->rows();
         }
 

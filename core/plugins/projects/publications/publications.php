@@ -1999,7 +1999,7 @@ class Publications extends Plugin
         if ($pub->config()->get('repository') && $this->task != 'revert') {
             $contact = Request::getArray('contact', [], 'post');
 
-            if (!$contact || empty($contact)) {
+            if (!$contact) {
                 $this->setError(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_ERROR_CONTACT_INFO_MISSING'));
             }
 
