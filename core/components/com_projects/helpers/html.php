@@ -470,7 +470,8 @@ class Html extends Obj
         );
 
         // Replace url links — split around existing <a> tags so URLs inside them are not double-wrapped
-        $urlPattern = '#\b((?<!href=")(https?://www[.]|[\w-]+://?|(?<!://)www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+        $urlPattern = '#\b((?<!href=")(https?://www[.]|[\w-]+://?|(?<!://)www[.])[^\s()<>]+'
+            . '(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
         $parts = preg_split('#(<a\s[^>]*>.*?</a>)#is', $string, -1, PREG_SPLIT_DELIM_CAPTURE);
         foreach ($parts as $i => &$part) {
             // Only process parts that are NOT existing <a> tags (odd indices are captured delimiters)

@@ -122,8 +122,8 @@ class Video extends WikiMacro
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
         $argues = preg_replace_callback(
-            '/[, '
-                . '](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)=(?:["\'])([^"]*)(?:["\'])/i',
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link)'
+                . '=(?:["\'])([^"]*)(?:["\'])/i',
             [&$this, 'parseAttributeValuePair'],
             $content,
         );

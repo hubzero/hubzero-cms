@@ -542,7 +542,9 @@ class Query extends Relational
                 $data = [
                     [
                         'title'      => 'Open tickets',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -552,7 +554,10 @@ class Query extends Relational
                     ],
                     [
                         'title'      => 'New tickets',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"},{"fldval":"status","flddisp":"Status","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"},{"fldval":"status","flddisp":"Status","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -562,7 +567,12 @@ class Query extends Relational
                     ],
                     [
                         'title'      => 'Unassigned',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":""},{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"NULL"}],"nestedexpressions":[]}]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR",'
+                            . '"expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":""},'
+                            . '{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"NULL"}],'
+                            . '"nestedexpressions":[]}]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -572,7 +582,9 @@ class Query extends Relational
                     ],
                     [
                         'title'      => 'Closed tickets',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"0"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"0"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -582,7 +594,8 @@ class Query extends Relational
                     ],
                     [
                         'title'      => 'All tickets',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"type","flddisp":"Type",'
+                            . '"opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -598,7 +611,13 @@ class Query extends Relational
                 $data = [
                     [
                         'title'      => 'Open tickets',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR",'
+                            . '"expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},'
+                            . '{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},'
+                            . '{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],'
+                            . '"nestedexpressions":[]}]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -608,7 +627,14 @@ class Query extends Relational
                     ],
                     [
                         'title'      => 'New tickets',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"},{"fldval":"status","flddisp":"Status","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"},{"fldval":"status","flddisp":"Status","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR",'
+                            . '"expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},'
+                            . '{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},'
+                            . '{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],'
+                            . '"nestedexpressions":[]}]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -618,7 +644,14 @@ class Query extends Relational
                     ],
                     [
                         'title'      => 'Unassigned',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]},{"operator":"OR","expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":""},{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"NULL"}],"nestedexpressions":[]}]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR",'
+                            . '"expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},'
+                            . '{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],'
+                            . '"nestedexpressions":[]},{"operator":"OR","expressions":[{"fldval":"owner",'
+                            . '"flddisp":"Owner","opval":"=","opdisp":"is","val":""},{"fldval":"owner",'
+                            . '"flddisp":"Owner","opval":"=","opdisp":"is","val":"NULL"}],"nestedexpressions":[]}]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -628,7 +661,13 @@ class Query extends Relational
                     ],
                     [
                         'title'      => 'Closed tickets',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"0"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"0"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR",'
+                            . '"expressions":[{"fldval":"group","flddisp":"Group","opval":"=","opdisp":"is","val":"*"},'
+                            . '{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},'
+                            . '{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],'
+                            . '"nestedexpressions":[]}]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -644,7 +683,11 @@ class Query extends Relational
                 $data = [
                     [
                         'title'      => 'Reported by me',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR",'
+                            . '"expressions":[{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is",'
+                            . '"val":"$me"}],"nestedexpressions":[]}]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -654,7 +697,11 @@ class Query extends Relational
                     ],
                     [
                         'title'      => 'Assigned to me',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"1"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR",'
+                            . '"expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is",'
+                            . '"val":"$me"}],"nestedexpressions":[]}]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',
@@ -664,7 +711,12 @@ class Query extends Relational
                     ],
                     [
                         'title'      => 'Assigned to me (closed)',
-                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed","opval":"=","opdisp":"is","val":"0"},{"fldval":"type","flddisp":"Type","opval":"=","opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR","expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is","val":"$me"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is","val":"$me"}],"nestedexpressions":[]}]}',
+                        'conditions' => '{"operator":"AND","expressions":[{"fldval":"open","flddisp":"Open/Closed",'
+                            . '"opval":"=","opdisp":"is","val":"0"},{"fldval":"type","flddisp":"Type","opval":"=",'
+                            . '"opdisp":"is","val":"0"}],"nestedexpressions":[{"operator":"OR",'
+                            . '"expressions":[{"fldval":"owner","flddisp":"Owner","opval":"=","opdisp":"is",'
+                            . '"val":"$me"},{"fldval":"login","flddisp":"Submitter","opval":"=","opdisp":"is",'
+                            . '"val":"$me"}],"nestedexpressions":[]}]}',
                         'query'      => '',
                         'user_id'    => 0,
                         'sort'       => 'created',

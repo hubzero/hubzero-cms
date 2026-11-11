@@ -118,16 +118,16 @@ class Video extends Macro
         // Get quoted attribute/value pairs
         // EX: [[Image(myimage.png, desc="My description, contains, commas")]]
         $argues = preg_replace_callback(
-            '/[, '
-                . '](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=(?:["\'])([^"]*)(?:["\'])/i',
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang'
+                . '|captionlabel|transcript)=(?:["\'])([^"]*)(?:["\'])/i',
             [&$this, 'parseAttributeValuePair'],
             $content,
         );
         // Get non-quoted attribute/value pairs
         // EX: [[Image(myimage.png, width=100)]]
         $argues = preg_replace_callback(
-            '/[, '
-                . '](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang|captionlabel|transcript)=([^"\',]*)(?:[, ]|$)/i',
+            '/[, ](alt|altimage|desc|title|width|height|align|border|longdesc|class|id|usemap|link|captions|captionlang'
+                . '|captionlabel|transcript)=([^"\',]*)(?:[, ]|$)/i',
             [&$this, 'parseAttributeValuePair'],
             $content,
         );

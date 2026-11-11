@@ -616,7 +616,9 @@ class Tinymce extends Plugin
 			function jInsertEditorText(text, editor) {
 				if (isBrowserIE()) {
 					if (window.parent.tinyMCE) {
-						window.parent.tinyMCE.selectedInstance.selection.moveToBookmark(window.parent.global_ie_bookmark);
+						window.parent.tinyMCE.selectedInstance.selection.moveToBookmark(
+							window.parent.global_ie_bookmark
+						);
 					}
 				}
 				tinyMCE.execInstanceCommand(editor, 'mceInsertContent',false,text);

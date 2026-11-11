@@ -463,7 +463,9 @@ class WikiParser
             'autourl'    => "(?<=[^=\"\'\[])\!?"  // Make sure it's not preceeded by quotes and brackets
                 //"(https?:|mailto:|ftp:|gopher:|news:|file:)" .  // protocol
                 //"([^ |\\/\"\']*\\/)*([^ |\\t\\n\\/\"\'\<]*[A-Za-z0-9\\/?=&~_])",  // link
-                . "(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»]))",
+                . "(?i)\b((?:(https?:|mailto:|ftp:|gopher:|news:|file:)\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)"
+                . "([^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+"
+                . "(\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»]))",
 
             // Email pattern
             'autoemail'    => "([\s]*)"  // whitespace
@@ -1310,12 +1312,14 @@ class WikiParser
 
         // Remove javascript: and vbscript: protocol
         $string = preg_replace(
-            '#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
+            '#([a-z]*)[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*)[\\x00-\x20]*j[\x00-\x20]*a[\x00-\x20]*v[\x00-\x20]*a'
+                . '[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
             '$1=$2nojavascript...',
             $string,
         );
         $string = preg_replace(
-            '#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
+            '#([a-z]*)[\x00-\x20]*=([\'\"]*)[\x00-\x20]*v[\x00-\x20]*b[\x00-\x20]*s[\x00-\x20]*c[\x00-\x20]*r'
+                . '[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:#iUu',
             '$1=$2novbscript...',
             $string,
         );
@@ -1333,7 +1337,8 @@ class WikiParser
             $string,
         );
         $string = preg_replace(
-            '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu',
+            '#(<[^>]+)style[\x00-\x20]*=[\x00-\x20]*([\`\'\"]*).*s[\x00-\x20]*c[\x00-\x20]*r[\x00-\x20]*i[\x00-\x20]*p'
+                . '[\x00-\x20]*t[\x00-\x20]*:*[^>]*>#iUu',
             "$1>",
             $string,
         );
@@ -1345,7 +1350,8 @@ class WikiParser
         do {
             $oldstring = $string;
             $string = preg_replace(
-                '#</*(applet|meta|xml|blink|link|head|body|style|script|embed|object|iframe|frame|frameset|ilayer|layer|bgsound|title|base)[^>]*>#i',
+                '#</*(applet|meta|xml|blink|link|head|body|style|script|embed|object|iframe|frame|frameset|ilayer|layer'
+                    . '|bgsound|title|base)[^>]*>#i',
                 '',
                 $string,
             );
@@ -2720,7 +2726,8 @@ class WikiParser
                 // No prefix (not in list)--go to paragraph mode
                 // XXX: use a stack for nestable elements like span, table and div
                 $openmatch  = preg_match(
-                    '/(?:<table|<blockquote|<h1|<h2|<h3|<h4|<h5|<h6|<pre|<tr|<p|<dl|<ul|<ol|<li|<\\/tr|<\\/td|<\\/th)/iS',
+                    '/(?:<table|<blockquote|<h1|<h2|<h3|<h4|<h5|<h6|<pre|<tr|<p|<dl|<ul|<ol|<li'
+                        . '|<\\/tr|<\\/td|<\\/th)/iS',
                     $t,
                 );
                 $closematch = preg_match(

@@ -56,19 +56,20 @@ class Migration20130426062338ComCourses extends Base
             //    - Joins grade_book -> assets -> (optional) asset_associations/groups.
             //    - Results in a single average score per user.
 
-            $scoreCriteria1 = <<<'SQL'
-                SELECT user_id, AVG(cgb.score) as average[[:scope:, '{{var}}' as scope]][[:scope:, {{var}}_id as scope_id]]
-                FROM #__courses_grade_book AS cgb
-                LEFT JOIN #__courses_assets AS ca ON cgb.scope_id = ca.id
-                [[::unit::LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id]]
-                [[::unit::LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id]]
-                WHERE ca.subtype = 'exam'
-                AND ca.state = 1
-                AND cgb.scope = 'asset'
-                [[:user_id:AND cgb.user_id = '{{var}}']]
-                [[:course_id:AND ca.course_id = '{{var}}']]
-                GROUP BY user_id[[::unit::, cag.unit_id]]
-                SQL;
+            $scoreCriteria1 = "SELECT user_id, AVG(cgb.score) as average[[:scope:, '{{var}}' as scope]]"
+                . "[[:scope:, {{var}}_id as scope_id]]\n"
+                . <<<'SQL'
+                    FROM #__courses_grade_book AS cgb
+                    LEFT JOIN #__courses_assets AS ca ON cgb.scope_id = ca.id
+                    [[::unit::LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id]]
+                    [[::unit::LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id]]
+                    WHERE ca.subtype = 'exam'
+                    AND ca.state = 1
+                    AND cgb.scope = 'asset'
+                    [[:user_id:AND cgb.user_id = '{{var}}']]
+                    [[:course_id:AND ca.course_id = '{{var}}']]
+                    GROUP BY user_id[[::unit::, cag.unit_id]]
+                    SQL;
 
             $this->db
                 ->getQuery(true)
@@ -126,19 +127,20 @@ class Migration20130426062338ComCourses extends Base
             //    - Note: This calculates the average of ALL exams (including the dropped one),
             //      even though the passing criteria drops the lowest.
 
-            $scoreCriteria2 = <<<'SQL'
-                SELECT user_id, AVG(cgb.score) as average[[:scope:, '{{var}}' as scope]][[:scope:, {{var}}_id as scope_id]]
-                FROM #__courses_grade_book AS cgb
-                LEFT JOIN #__courses_assets AS ca ON cgb.scope_id = ca.id
-                [[::unit::LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id]]
-                [[::unit::LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id]]
-                WHERE ca.subtype = 'exam'
-                AND ca.state = 1
-                AND cgb.scope = 'asset'
-                [[:user_id:AND cgb.user_id = '{{var}}']]
-                [[:course_id:AND ca.course_id = '{{var}}']]
-                GROUP BY user_id[[::unit::, cag.unit_id]]
-                SQL;
+            $scoreCriteria2 = "SELECT user_id, AVG(cgb.score) as average[[:scope:, '{{var}}' as scope]]"
+                . "[[:scope:, {{var}}_id as scope_id]]\n"
+                . <<<'SQL'
+                    FROM #__courses_grade_book AS cgb
+                    LEFT JOIN #__courses_assets AS ca ON cgb.scope_id = ca.id
+                    [[::unit::LEFT JOIN #__courses_asset_associations AS caa ON ca.id = caa.asset_id]]
+                    [[::unit::LEFT JOIN #__courses_asset_groups AS cag ON caa.scope_id = cag.id]]
+                    WHERE ca.subtype = 'exam'
+                    AND ca.state = 1
+                    AND cgb.scope = 'asset'
+                    [[:user_id:AND cgb.user_id = '{{var}}']]
+                    [[:course_id:AND ca.course_id = '{{var}}']]
+                    GROUP BY user_id[[::unit::, cag.unit_id]]
+                    SQL;
 
             $this->db
                 ->getQuery(true)

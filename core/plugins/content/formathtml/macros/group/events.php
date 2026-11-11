@@ -321,7 +321,8 @@ class Events extends GroupMacro
                     $content .= '        <div class="event-location location">';
                     if (
                         preg_match_all(
-                            '/(http|ftp|https):\/\/([\w-]+(?:(?:\.[\w_-]+)+))([\w.,@?()<>;^=%&:\/~+#-]*[\w@?(<^=%&\/~+#-])?/',
+                            '/(http|ftp|https):\/\/([\w-]+(?:(?:\.[\w_-]+)+))'
+                                . '([\w.,@?()<>;^=%&:\/~+#-]*[\w@?(<^=%&\/~+#-])?/',
                             $event->location,
                         )
                     ) {
