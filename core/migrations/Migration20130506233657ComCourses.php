@@ -48,7 +48,7 @@ class Migration20130506233657ComCourses extends Base
                 . 'Quizzes and homeworks do not count toward the final score.';
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__courses_grade_policies')
                 ->set([
                     'id'              => 1,

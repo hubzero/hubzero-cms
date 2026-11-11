@@ -26,7 +26,7 @@ class Migration20150115234546PlgGroupsWishlist extends Base
         if ($schema->tableExists('#__wishlist')) {
             // Get records
             $lists = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__wishlist')
                 ->where('category', '=', 'group')
@@ -45,7 +45,7 @@ class Migration20150115234546PlgGroupsWishlist extends Base
                 if (!$group || !is_object($group)) {
                     if ($schema->tableExists('#__wishlist_item')) {
                         $wishes = $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->select('*')
                             ->from('#__wishlist_item')
                             ->where('wishlist', '=', $list->id)
@@ -54,7 +54,7 @@ class Migration20150115234546PlgGroupsWishlist extends Base
                         foreach ($wishes as $wish) {
                             if ($schema->tableExists('#__wishlist_implementation')) {
                                 $this->db
-                                    ->getQuery(true)
+                                    ->getQuery()
                                     ->delete('#__wishlist_implementation')
                                     ->where('wishid', '=', $wish->id)
                                     ->execute();
@@ -62,7 +62,7 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 
                             if ($schema->tableExists('#__wish_attachments')) {
                                 $this->db
-                                    ->getQuery(true)
+                                    ->getQuery()
                                     ->delete('#__wish_attachments')
                                     ->where('wish', '=', $wish->id)
                                     ->execute();
@@ -70,7 +70,7 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 
                             if ($schema->tableExists('#__wishlist_vote')) {
                                 $this->db
-                                    ->getQuery(true)
+                                    ->getQuery()
                                     ->delete('#__wishlist_vote')
                                     ->where('wishid', '=', $wish->id)
                                     ->execute();
@@ -78,7 +78,7 @@ class Migration20150115234546PlgGroupsWishlist extends Base
                         }
 
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->delete('#__wishlist_item')
                             ->where('wishlist', '=', $list->id)
                             ->execute();
@@ -86,7 +86,7 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 
                     if ($schema->tableExists('#__wishlist_owners')) {
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->delete('#__wishlist_owners')
                             ->where('wishlist', '=', $list->id)
                             ->execute();
@@ -94,14 +94,14 @@ class Migration20150115234546PlgGroupsWishlist extends Base
 
                     if ($schema->tableExists('#__wishlist_ownergroups')) {
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->delete('#__wishlist_ownergroups')
                             ->where('wishlist', '=', $list->id)
                             ->execute();
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->delete('#__wishlist')
                         ->where('id', '=', $list->id)
                         ->execute();

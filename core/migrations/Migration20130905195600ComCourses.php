@@ -26,7 +26,7 @@ class Migration20130905195600ComCourses extends Base
         if ($schema->hasColumn('#__courses_grade_book', 'user_id')) {
             // Fix gradebook entires
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__courses_grade_book')
                 ->order('user_id', 'ASC')
@@ -41,7 +41,7 @@ class Migration20130905195600ComCourses extends Base
                     switch ($r->scope) {
                         case 'asset':
                             $course_id = $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->select('course_id')
                                 ->from('#__courses_assets')
                                 ->where('id', '=', $r->scope_id)
@@ -50,7 +50,7 @@ class Migration20130905195600ComCourses extends Base
 
                         case 'unit':
                             $course_id = $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->select('course_id')
                                 ->from('#__courses_units', 'cu')
                                 ->innerJoin('#__courses_offerings AS co', 'cu.offering_id', 'co.id')
@@ -64,7 +64,7 @@ class Migration20130905195600ComCourses extends Base
                     }
 
                     $id = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('id')
                         ->from('#__courses_members')
                         ->where('user_id', '=', $r->user_id)
@@ -75,14 +75,14 @@ class Migration20130905195600ComCourses extends Base
 
                     if ($id) {
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->update('#__courses_grade_book')
                             ->set(['user_id' => $id])
                             ->where('id', '=', $r->id)
                             ->execute();
                     } else {
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->delete('#__courses_grade_book')
                             ->where('id', '=', $r->id)
                             ->execute();
@@ -100,7 +100,7 @@ class Migration20130905195600ComCourses extends Base
 
         // Fix old asset views data that doesn't have course_id filled in...
         $results = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('asset_id')
             ->group('asset_id')
             ->from('#__courses_asset_views')
@@ -110,7 +110,7 @@ class Migration20130905195600ComCourses extends Base
         if ($results && count($results) > 0) {
             foreach ($results as $r) {
                 $id = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('course_id')
                     ->from('#__courses_assets')
                     ->where('id', '=', $r->asset_id)
@@ -118,7 +118,7 @@ class Migration20130905195600ComCourses extends Base
 
                 if ($id) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__courses_asset_views')
                         ->set(['course_id' => $id])
                         ->where('asset_id', '=', $r->asset_id)
@@ -129,7 +129,7 @@ class Migration20130905195600ComCourses extends Base
 
         // Fix asset views
         $results = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('*')
             ->from('#__courses_asset_views')
             ->loadObjectList();
@@ -137,7 +137,7 @@ class Migration20130905195600ComCourses extends Base
         if ($results && count($results) > 0) {
             foreach ($results as $r) {
                 $id = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('id')
                     ->from('#__courses_members')
                     ->where('user_id', '=', $r->viewed_by)
@@ -148,7 +148,7 @@ class Migration20130905195600ComCourses extends Base
 
                 if ($id) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__courses_asset_views')
                         ->set(['viewed_by' => $id])
                         ->where('id', '=', $r->id)
@@ -160,7 +160,7 @@ class Migration20130905195600ComCourses extends Base
         if ($schema->hasColumn('#__courses_form_respondents', 'user_id')) {
             // Fix form respondents
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__courses_form_respondents')
                 ->loadObjectList();
@@ -168,7 +168,7 @@ class Migration20130905195600ComCourses extends Base
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
                     $course_id = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('ca.course_id')
                         ->from('#__courses_form_respondents', 'cfr')
                         ->innerJoin('#__courses_form_deployments AS cfd', 'cfr.deployment_id', 'cfd.id')
@@ -178,7 +178,7 @@ class Migration20130905195600ComCourses extends Base
                         ->value('ca.course_id');
 
                     $id = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('id')
                         ->from('#__courses_members')
                         ->where('user_id', '=', $r->user_id)
@@ -188,7 +188,7 @@ class Migration20130905195600ComCourses extends Base
                         ->value('id');
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__courses_form_respondents')
                         ->set(['user_id' => $id])
                         ->where('id', '=', $r->id)

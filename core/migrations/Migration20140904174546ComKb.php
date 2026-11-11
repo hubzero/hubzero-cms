@@ -22,7 +22,7 @@ class Migration20140904174546ComKb extends Base
     public function up()
     {
         $results = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('*')
             ->from('#__faq')
             ->whereIn('alias', ['login2', 'pwreset'])

@@ -28,7 +28,7 @@ class Migration20130911070500ComCourses extends Base
         ) {
             $schema->addColumn('#__courses_asset_groups', 'params')->text()->notNull();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->select('id')
                 ->from('#__courses_asset_groups')
@@ -38,7 +38,7 @@ class Migration20130911070500ComCourses extends Base
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__courses_asset_groups')
                         ->set(['params' => 'discussions_category=1'])
                         ->where('parent', '=', $r->id)

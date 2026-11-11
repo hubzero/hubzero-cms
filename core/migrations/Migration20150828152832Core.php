@@ -25,7 +25,7 @@ class Migration20150828152832Core extends Base
         $schema = $this->db->schema();
 
         if ($schema->tableExists('#__extensions')) {
-            $query = $this->db->getQuery(true); // Helper variable for reuse
+            $query = $this->db->getQuery(); // Helper variable for reuse
 
             $query
                 ->update('#__extensions')
@@ -39,7 +39,7 @@ class Migration20150828152832Core extends Base
                 ->where('extension_id', '<', 10000)
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', '_HUB0_nW_', '')])
@@ -47,7 +47,7 @@ class Migration20150828152832Core extends Base
                 ->where('element', '=', 'com_system')
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'hubzero_network', '')])
@@ -55,7 +55,7 @@ class Migration20150828152832Core extends Base
                 ->where('element', '=', 'com_system')
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'hubzero.org', '')])
@@ -63,7 +63,7 @@ class Migration20150828152832Core extends Base
                 ->where('element', '=', 'com_system')
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set([
@@ -77,7 +77,7 @@ class Migration20150828152832Core extends Base
                 ->where('element', '=', 'com_usage')
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set(['manifest_cache' => ''])
@@ -85,7 +85,7 @@ class Migration20150828152832Core extends Base
                 ->where('element', '=', 'joomla')
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', ':10,', ':"10",')])
@@ -93,7 +93,7 @@ class Migration20150828152832Core extends Base
                 ->where('element', '=', 'com_media')
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'site\\/media', 'site/media')])
@@ -101,7 +101,7 @@ class Migration20150828152832Core extends Base
                 ->where('element', '=', 'com_media')
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'media\\/images', 'media/images')])
@@ -109,7 +109,7 @@ class Migration20150828152832Core extends Base
                 ->where('element', '=', 'com_media')
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'image\\/', 'image/')])
@@ -117,7 +117,7 @@ class Migration20150828152832Core extends Base
                 ->where('element', '=', 'com_media')
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'application\\/', 'application/')])
@@ -125,7 +125,7 @@ class Migration20150828152832Core extends Base
                 ->where('element', '=', 'com_media')
                 ->execute();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', 'text\\/', 'text/')])

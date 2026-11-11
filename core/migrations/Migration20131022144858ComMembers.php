@@ -27,7 +27,7 @@ class Migration20131022144858ComMembers extends Base
         if ($schema->tableExists('#__xprofiles_manager') && $schema->tableExists('#__user_notes')) {
             // Get admin user id number (probabaly 62)
             $admin_id = (int) $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__users')
                 ->where('username', '=', 'admin')
@@ -35,7 +35,7 @@ class Migration20131022144858ComMembers extends Base
 
             // Start by grabbing all xprofile_manager entries
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__xprofiles_manager')
                 ->loadObjectList();
@@ -43,7 +43,7 @@ class Migration20131022144858ComMembers extends Base
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__user_notes')
                         ->values([
                             'user_id'         => $r->uidNumber,

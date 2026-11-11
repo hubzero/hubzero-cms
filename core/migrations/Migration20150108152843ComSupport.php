@@ -35,7 +35,7 @@ class Migration20150108152843ComSupport extends Base
             $params->set('emails', implode(', ', $defs));
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => $params->toString()])
                 ->where('element', '=', 'com_support')
@@ -59,7 +59,7 @@ class Migration20150108152843ComSupport extends Base
             $params->set('emails', implode("\n", $defs));
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => $params->toString()])
                 ->where('element', '=', 'com_support')

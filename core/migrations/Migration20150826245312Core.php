@@ -25,7 +25,7 @@ class Migration20150826245312Core extends Base
 
         if ($schema->tableExists('#__languages')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__languages')
                 ->set(['access' => 1])
                 ->where('lang_id', '=', 1)

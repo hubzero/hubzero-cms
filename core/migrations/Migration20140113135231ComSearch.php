@@ -22,7 +22,7 @@ class Migration20140113135231ComSearch extends Base
     public function up()
     {
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -36,7 +36,7 @@ class Migration20140113135231ComSearch extends Base
             $this->deletePluginEntry('search');
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'element' => 'com_search',
@@ -47,7 +47,7 @@ class Migration20140113135231ComSearch extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__menu')
                 ->set([
                     'title' => 'com_search',
@@ -59,7 +59,7 @@ class Migration20140113135231ComSearch extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['folder' => 'search'])
                 ->where('folder', '=', 'ysearch')
@@ -67,7 +67,7 @@ class Migration20140113135231ComSearch extends Base
                 ->execute();
 
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['extension_id', 'name', 'element', 'folder'])
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -77,7 +77,7 @@ class Migration20140113135231ComSearch extends Base
             if ($results) {
                 foreach ($results as $result) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__extensions')
                         ->set(['name' => 'plg_' . $result->folder . '_' . $result->element])
                         ->where('extension_id', '=', (int) $result->extension_id)
@@ -93,7 +93,7 @@ class Migration20140113135231ComSearch extends Base
     public function down()
     {
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -103,7 +103,7 @@ class Migration20140113135231ComSearch extends Base
 
         if ($id) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'element' => 'com_ysearch',
@@ -115,7 +115,7 @@ class Migration20140113135231ComSearch extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['folder' => 'ysearch'])
                 ->where('folder', '=', 'search')
@@ -123,7 +123,7 @@ class Migration20140113135231ComSearch extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__menu')
                 ->set([
                     'title' => 'com_ysearch',
@@ -137,7 +137,7 @@ class Migration20140113135231ComSearch extends Base
             $this->addComponentEntry('search');
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['protected' => 1])
                 ->where('type', '=', 'component')
@@ -145,7 +145,7 @@ class Migration20140113135231ComSearch extends Base
                 ->execute();
 
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['extension_id', 'name', 'element', 'folder'])
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -155,7 +155,7 @@ class Migration20140113135231ComSearch extends Base
             if ($results) {
                 foreach ($results as $result) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__extensions')
                         ->set(['name' => 'plg_' . $result->folder . '_' . $result->element])
                         ->where('extension_id', '=', (int) $result->extension_id)

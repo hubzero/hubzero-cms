@@ -24,7 +24,7 @@ class Migration20141121144051ComCollections extends Base
 
         if ($schema->tableExists('#__collections_items')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'url'])
                 ->from('#__collections_items')
                 ->where('type', '=', 'article')
@@ -34,7 +34,7 @@ class Migration20141121144051ComCollections extends Base
                 foreach ($articles as $article) {
                     $article->url = rtrim($article->url, '&');
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__collections_items')
                         ->set(['url' => $article->url])
                         ->where('id', '=', $article->id)

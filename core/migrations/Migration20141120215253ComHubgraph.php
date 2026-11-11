@@ -34,7 +34,7 @@ class Migration20141120215253ComHubgraph extends Base
         if ($schema->tableExists('#__extensions')) {
             // Look for multiple entries
             $ids = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('element', '=', 'com_hubgraph')
@@ -46,7 +46,7 @@ class Migration20141120215253ComHubgraph extends Base
 
                 foreach ($ids as $id) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->delete('#__extensions')
                         ->where('extension_id', '=', (int) $id)
                         ->execute();

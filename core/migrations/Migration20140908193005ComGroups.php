@@ -49,7 +49,7 @@ class Migration20140908193005ComGroups extends Base
             // get a list of all hub & super groups
             // get a list of all hub & super groups
             $groups = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['gidNumber', 'cn', 'description'])
                 ->from('#__xgroups')
                 ->where('type', 'IN', [1, 3])
@@ -63,7 +63,7 @@ class Migration20140908193005ComGroups extends Base
             // create a default home page if one does not exist
             foreach ($groups as $group) {
                 $pages = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__xgroups_pages')
                     ->where('gidNumber', '=', $group->gidNumber)
@@ -84,7 +84,7 @@ class Migration20140908193005ComGroups extends Base
                 if ($homePage == null) {
                     // create page
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__xgroups_pages')
                         ->columns(['gidNumber', 'parent', 'depth', 'lft', 'alias', 'title', 'state', 'privacy', 'home'])
                         ->values([$group->gidNumber, 0, 0, 1, 'overview', 'Overview', 1, 'default', 1])
@@ -94,7 +94,7 @@ class Migration20140908193005ComGroups extends Base
 
                     // create page version
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__xgroups_pages_versions')
                         ->columns(['pageid', 'version', 'content', 'created', 'created_by'])
                         ->values([$homePageId, 1, $defaultHomePageContent, Expression::now(), 1000])
@@ -102,7 +102,7 @@ class Migration20140908193005ComGroups extends Base
                 } else {
                     // update the home page
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__xgroups_pages')
                         ->set(['parent' => 0, 'depth' => 0, 'lft' => 1, 'alias' => 'overview', 'title' => 'Overview'])
                         ->where('id', '=', $homePage->id)
@@ -119,7 +119,7 @@ class Migration20140908193005ComGroups extends Base
 
                     // update the left, right, parent, & depth
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__xgroups_pages')
                         ->set(['parent' => $homePageId, 'lft' => $left, 'rgt' => $right, 'depth' => 1])
                         ->where('id', '=', $page->id)
@@ -131,7 +131,7 @@ class Migration20140908193005ComGroups extends Base
 
                 // update the home page after weve computed all the left & rights
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__xgroups_pages')
                     ->set(['rgt' => $left])
                     ->where('id', '=', $homePageId)

@@ -27,7 +27,7 @@ class Migration20170203204306PlgFilesystemGoogledrive extends Base
 
         if ($schema->tableExists('#__projects_connection_providers')) {
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'googledrive')
@@ -35,7 +35,7 @@ class Migration20170203204306PlgFilesystemGoogledrive extends Base
 
             if (count($results) < 1) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__projects_connection_providers')
                     ->columns(['alias', 'name'])
                     ->values(['googledrive', 'Google Drive'])
@@ -55,7 +55,7 @@ class Migration20170203204306PlgFilesystemGoogledrive extends Base
 
         if ($schema->tableExists('#__projects_connection_providers')) {
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__projects_connection_providers')
                 ->where('alias', '=', 'googledrive')
@@ -63,7 +63,7 @@ class Migration20170203204306PlgFilesystemGoogledrive extends Base
 
             foreach ($results as $result) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->delete('#__projects_connections')
                     ->where('provider_id', '=', $result->id)
                     ->execute();
@@ -71,7 +71,7 @@ class Migration20170203204306PlgFilesystemGoogledrive extends Base
 
             if (count($results) > 0) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->delete('#__projects_connection_providers')
                     ->where('alias', '=', 'googledrive')
                     ->execute();

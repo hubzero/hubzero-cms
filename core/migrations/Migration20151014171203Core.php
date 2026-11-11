@@ -28,7 +28,7 @@ class Migration20151014171203Core extends Base
             // We changed the CMS to enforce the configuration option of site_login enabled.  Prior to this, it was
             // assuming true.  We need to default the database to emulate current behavior.
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['element', 'params'])
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')

@@ -32,7 +32,7 @@ class Migration20130415000000ComSupport extends Base
 
             // Closed tickets
             $clsd = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['c.ticket', 'c.created'])
                 ->from('#__support_comments', 'c')
                 ->leftJoin('#__support_tickets AS t', 'c.ticket', 't.id')
@@ -54,7 +54,7 @@ class Migration20130415000000ComSupport extends Base
 
             foreach ($closedTickets as $ticket => $closed) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__support_tickets')
                     ->set(['closed' => $closed])
                     ->where('id', '=', $ticket)

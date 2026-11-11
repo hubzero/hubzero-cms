@@ -30,12 +30,12 @@ class Migration20130828203404Core extends Base
         // View 1: contributor_ids_view - union of resource and wiki contributors
         try {
             $unionQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('uidNumber')
                 ->from('#__wiki_contributors_view');
 
             $selectQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('uidNumber')
                 ->from('#__resource_contributors_view')
                 ->union($unionQuery);
@@ -53,7 +53,7 @@ class Migration20130828203404Core extends Base
         // View 2: contributors_view - aggregates resource and wiki counts
         try {
             $selectQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('c.uidNumber', 'uidNumber')
                 ->select(Expression::coalesce('r.count', 0), 'resource_count')
                 ->select(Expression::coalesce('w.count', 0), 'wiki_count')
@@ -75,20 +75,20 @@ class Migration20130828203404Core extends Base
         // View 3: courses_form_latest_responses_view - latest form responses
         try {
             $subquery1 = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(Expression::count(0))
                 ->from('#__courses_form_responses', 'frei')
                 ->where('frei.respondent_id', '=', Expression::column('fre.respondent_id'))
                 ->where('frei.id', '>', Expression::column('fre.id'));
 
             $subquery2 = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(Expression::countDistinct('frei.question_id'))
                 ->from('#__courses_form_responses', 'frei')
                 ->where('frei.respondent_id', '=', Expression::column('fre.respondent_id'));
 
             $selectQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['fre.id', 'fre.respondent_id', 'fre.question_id', 'fre.answer_id'])
                 ->from('#__courses_form_responses', 'fre')
                 ->where($subquery1, '<', $subquery2);
@@ -106,7 +106,7 @@ class Migration20130828203404Core extends Base
         // View 4: resource_contributors_view - counts published resources per user
         try {
             $selectQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('m.uidNumber', 'uidNumber')
                 ->select(Expression::count('AA.authorid'), 'count')
                 ->from('#__xprofiles', 'm')
@@ -144,7 +144,7 @@ class Migration20130828203404Core extends Base
             );
 
             $selectQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('m.uidNumber', 'uidNumber')
                 ->select(Expression::count('w.id'), 'count')
                 ->from('#__xprofiles', 'm')

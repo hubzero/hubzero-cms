@@ -38,7 +38,7 @@ class Migration20170220041701ComSearch extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__solr_search_facets')
                 ->columns(['id', 'name', 'facet', 'state', 'protected', 'ordering', 'parent_id'])
                 ->values([

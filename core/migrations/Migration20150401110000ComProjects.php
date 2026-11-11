@@ -120,7 +120,7 @@ class Migration20150401110000ComProjects extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__project_tool_statuses')
                 ->columns([
                     'id',

@@ -26,7 +26,7 @@ class Migration20140703100727ComWiki extends Base
         if ($schema->hasColumn('#__wiki_comments', 'status')) {
             // Old flagged state was 1. Change it to 3.
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__wiki_comments')
                 ->set(['status' => 3])
                 ->where('status', '=', 1)
@@ -34,14 +34,14 @@ class Migration20140703100727ComWiki extends Base
 
             // Mark all published entries as 1
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__wiki_comments')
                 ->set(['status' => 1])
                 ->where('status', '=', 0)
                 ->execute();
 
             $ids = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('referenceid')
                 ->from('#__abuse_reports')
                 ->where('state', '=', 0)
@@ -52,7 +52,7 @@ class Migration20140703100727ComWiki extends Base
                 $ids = array_map('intval', $ids);
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__wiki_comments')
                     ->set(['status' => 3])
                     ->whereIn('id', $ids)
@@ -72,14 +72,14 @@ class Migration20140703100727ComWiki extends Base
 
         if ($schema->hasColumn('#__wiki_comments', 'status')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__wiki_comments')
                 ->set(['status' => 0])
                 ->where('status', '=', 1)
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__wiki_comments')
                 ->set(['status' => 1])
                 ->where('status', '=', 3)

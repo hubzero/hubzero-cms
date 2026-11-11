@@ -36,7 +36,7 @@ class Migration20130916080500ComWiki extends Base
                 ->execute();
 
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__wiki_page');
 
@@ -45,7 +45,7 @@ class Migration20130916080500ComWiki extends Base
             if ($pages) {
                 foreach ($pages as $page) {
                     $created = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('created')
                         ->from('#__wiki_version')
                         ->where('pageid', '=', $page->id)
@@ -54,7 +54,7 @@ class Migration20130916080500ComWiki extends Base
 
                     if ($created) {
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->update('#__wiki_page')
                             ->set(['created' => $created])
                             ->where('id', '=', $page->id)

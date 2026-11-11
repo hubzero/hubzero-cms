@@ -32,7 +32,7 @@ class Migration20261110130001ComStorefront extends Base
         }
 
         $misspelled = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('ptId')
             ->from('#__storefront_product_types')
             ->where('ptName', '=', 'SoftwareDownload')
@@ -43,7 +43,7 @@ class Migration20261110130001ComStorefront extends Base
         }
 
         $correct = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('ptId')
             ->from('#__storefront_product_types')
             ->where('ptName', '=', 'Software Download');
@@ -59,7 +59,7 @@ class Migration20261110130001ComStorefront extends Base
         }
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__storefront_product_types')
             ->set(['ptName' => 'Software Download'])
             ->where('ptName', '=', 'SoftwareDownload')

@@ -24,7 +24,7 @@ class Migration20150529141543ComCollections extends Base
 
         if ($schema->tableExists('#__collections_items')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__collections_items')
                 ->set(['access' => 0])
                 ->where('access', '=', 1)

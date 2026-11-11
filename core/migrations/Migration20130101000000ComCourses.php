@@ -476,20 +476,20 @@ class Migration20130101000000ComCourses extends Base
 
         // Create the view using query builder
         $sub1 = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(Expression::count(0))
             ->from('#__courses_form_responses', 'frei')
             ->where('frei.respondent_id', '=', Expression::column('fre.respondent_id'))
             ->where('frei.id', '>', Expression::column('fre.id'));
 
         $sub2 = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(Expression::countDistinct('frei.question_id'))
             ->from('#__courses_form_responses', 'frei')
             ->where('frei.respondent_id', '=', Expression::column('fre.respondent_id'));
 
         $selectSql = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(['fre.id', 'fre.respondent_id', 'fre.question_id', 'fre.answer_id'])
             ->from('#__courses_form_responses', 'fre')
             ->where(Expression::subquery($sub1), '<', Expression::subquery($sub2));

@@ -28,7 +28,7 @@ class Migration20160208183103ComFeedaggregator extends Base
         if ($schema->tableExists('#__feedaggregator_posts')) {
             // Grab rows first
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__feedaggregator_posts');
             $rows = $query->loadObjectList();
@@ -44,7 +44,7 @@ class Migration20160208183103ComFeedaggregator extends Base
             foreach ($rows as $row) {
                 $dt = Date::of(date("F j, Y, g:i a", $row->created))->toSql();
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__feedaggregator_posts')
                     ->set(['created' => $dt])
                     ->where('id', '=', $row->id)
@@ -63,7 +63,7 @@ class Migration20160208183103ComFeedaggregator extends Base
         if ($schema->tableExists('#__feedaggregator_posts')) {
             // Grab rows first
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__feedaggregator_posts');
             $rows = $query->loadObjectList();
@@ -79,7 +79,7 @@ class Migration20160208183103ComFeedaggregator extends Base
             foreach ($rows as $row) {
                 $dt = Date::of($row->created)->toUnix();
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__feedaggregator_posts')
                     ->set(['created' => $dt])
                     ->where('id', '=', $row->id)

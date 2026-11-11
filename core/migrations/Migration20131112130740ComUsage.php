@@ -66,7 +66,7 @@ class Migration20131112130740ComUsage extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $result = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__extensions')
                 ->where('element', '=', 'com_usage')
@@ -75,7 +75,7 @@ class Migration20131112130740ComUsage extends Base
             $params = (array) json_decode($result);
         } else {
             $result = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__plugins')
                 ->where('element', '=', 'com_usage')
@@ -108,7 +108,7 @@ class Migration20131112130740ComUsage extends Base
             $params = json_encode($params);
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => $params])
                 ->where('element', '=', 'com_usage')
@@ -122,7 +122,7 @@ class Migration20131112130740ComUsage extends Base
             $params = $p;
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__plugins')
                 ->set(['params' => $params])
                 ->where('element', '=', 'com_usage')
@@ -142,7 +142,7 @@ class Migration20131112130740ComUsage extends Base
                     ->execute();
 
                 $statsDb
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertMany(
                         'countries',
                         UsageMetricsSeed::rows('countries'),
@@ -483,7 +483,7 @@ class Migration20131112130740ComUsage extends Base
                     ->execute();
 
                 $statsDb
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertMany(
                         'domainclass',
                         UsageMetricsSeed::rows('domainclass'),
@@ -510,7 +510,7 @@ class Migration20131112130740ComUsage extends Base
                     ->execute();
 
                 $statsDb
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertMany(
                         'domainclasses',
                         UsageMetricsSeed::rows('domainclasses'),
@@ -537,7 +537,7 @@ class Migration20131112130740ComUsage extends Base
                     ->execute();
 
                 $statsDb
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertMany(
                         'summary_user',
                         UsageMetricsSeed::rows('summary_user'),
@@ -585,7 +585,7 @@ class Migration20131112130740ComUsage extends Base
                     ->execute();
 
                 $statsDb
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertMany(
                         'summary_andmore',
                         UsageMetricsSeed::rows('summary_andmore'),
@@ -612,7 +612,7 @@ class Migration20131112130740ComUsage extends Base
                     ->execute();
 
                 $statsDb
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertMany(
                         'summary_misc',
                         UsageMetricsSeed::rows('summary_misc'),
@@ -639,7 +639,7 @@ class Migration20131112130740ComUsage extends Base
                     ->execute();
 
                 $statsDb
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertMany(
                         'summary_simusage',
                         UsageMetricsSeed::rows('summary_simusage'),
@@ -665,7 +665,7 @@ class Migration20131112130740ComUsage extends Base
                     ->execute();
 
                 $statsDb
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertMany(
                         'continents',
                         UsageMetricsSeed::rows('continents'),
@@ -691,7 +691,7 @@ class Migration20131112130740ComUsage extends Base
                     ->execute();
 
                 $statsDb
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertMany(
                         'country_continent',
                         UsageMetricsSeed::rows('country_continent'),
@@ -718,7 +718,7 @@ class Migration20131112130740ComUsage extends Base
                     ->execute();
 
                 $statsDb
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertMany(
                         'exclude_list',
                         UsageMetricsSeed::rows('exclude_list'),

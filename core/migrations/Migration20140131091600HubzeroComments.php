@@ -24,7 +24,7 @@ class Migration20140131091600HubzeroComments extends Base
 
         if ($schema->tableExists('#__comments')) {
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__comments')
                 ->loadObjectList();

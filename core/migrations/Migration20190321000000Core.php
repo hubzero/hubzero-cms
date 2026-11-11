@@ -53,7 +53,7 @@ class Migration20190321000000Core extends Base
                     $this->log(sprintf('Changed `%s`.`%s` datetime default to NULL', $table, $field));
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update($table)
                         ->set([$field => null])
                         ->where($field, '=', '0000-00-00 00:00:00')

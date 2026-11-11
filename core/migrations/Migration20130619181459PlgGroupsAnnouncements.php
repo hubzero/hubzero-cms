@@ -53,7 +53,7 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
         // get citation params
         if ($schema->tableExists('#__extensions')) {
             $p = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -62,7 +62,7 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
                 ->value('params');
         } else {
             $p = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__plugins')
                 ->where('element', '=', 'messages')
@@ -79,7 +79,7 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
         // save new params
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => json_encode($params->toArray())])
                 ->where('element', '=', 'messages')
@@ -87,7 +87,7 @@ class Migration20130619181459PlgGroupsAnnouncements extends Base
                 ->execute();
         } else {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__plugins')
                 ->set(['params' => $params->toString()])
                 ->where('element', '=', 'messages')

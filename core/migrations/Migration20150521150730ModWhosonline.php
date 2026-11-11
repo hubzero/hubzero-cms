@@ -24,7 +24,7 @@ class Migration20150521150730ModWhosonline extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('element', '=', 'mod_whosonline')
@@ -36,7 +36,7 @@ class Migration20150521150730ModWhosonline extends Base
             } else {
                 // Set the first zone as default
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__extensions')
                     ->set(['state' => 0])
                     ->where('extension_id', '=', $id)

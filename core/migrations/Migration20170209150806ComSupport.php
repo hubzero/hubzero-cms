@@ -30,7 +30,7 @@ class Migration20170209150806ComSupport extends Base
         ) {
             // Update group aliases to IDs
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__support_tickets', 'u')
                 ->leftJoin('#__xgroups AS x', 'x.cn', 'u.group')
                 ->set(['u.group' => Expression::column('x.gidNumber')])
@@ -70,7 +70,7 @@ class Migration20170209150806ComSupport extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__support_tickets AS u')
                 ->leftJoin('#__xgroups AS x', 'x.gidNumber', 'u.group')
                 ->set(['u.group' => Expression::column('x.cn')])

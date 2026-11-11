@@ -25,7 +25,7 @@ class Migration20150624164611TplHubbasicadmin extends Base
 
         if ($schema->tableExists('#__template_styles')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('template')
                 ->from('#__template_styles')
                 ->where('client_id', '=', 1)
@@ -34,7 +34,7 @@ class Migration20150624164611TplHubbasicadmin extends Base
 
             if ($template == 'hubbasicadmin') {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__template_styles')
                     ->set(['home' => 1])
                     ->where('client_id', '=', 1)

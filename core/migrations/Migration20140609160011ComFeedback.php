@@ -62,7 +62,7 @@ class Migration20140609160011ComFeedback extends Base
 
         if ($schema->tableExists('#__selected_quotes')) {
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('sq.*')
                 ->select('f.id', 'fid')
                 ->from('#__selected_quotes', 'sq')
@@ -77,7 +77,7 @@ class Migration20140609160011ComFeedback extends Base
                     if ($result->fid) {
                         // Update existing feedback entry
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->update('#__feedback')
                             ->set([
                                 'user_id'       => $result->userid,
@@ -96,7 +96,7 @@ class Migration20140609160011ComFeedback extends Base
                     } else {
                         // Insert new feedback entry
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->insert('#__feedback')
                             ->set([
                                 'user_id'       => $result->userid,

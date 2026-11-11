@@ -26,7 +26,7 @@ class Migration20151026173235ComKb extends Base
 
         if ($schema->tableExists('#__faq')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__faq')
                 ->set(['fulltxt' => Expression::replace('fulltxt', 'HUBADDRESS', '{xhub:getcfg hubHostname}')])
                 ->execute();
@@ -34,7 +34,7 @@ class Migration20151026173235ComKb extends Base
 
         if ($schema->tableExists('#__kb_articles')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__kb_articles')
                 ->set(['fulltxt' => Expression::replace('fulltxt', 'HUBADDRESS', '{xhub:getcfg hubHostname}')])
                 ->execute();

@@ -25,7 +25,7 @@ class Migration20150904103241Extensions extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['client_id' => 0])
                 ->where('type', '=', 'component')
@@ -33,7 +33,7 @@ class Migration20150904103241Extensions extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['client_id' => 1])
                 ->where('type', '=', 'module')
@@ -51,7 +51,7 @@ class Migration20150904103241Extensions extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['client_id' => 1])
                 ->where('type', '=', 'component')
@@ -59,7 +59,7 @@ class Migration20150904103241Extensions extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['client_id' => 0])
                 ->where('type', '=', 'module')

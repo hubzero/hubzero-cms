@@ -31,7 +31,7 @@ class Migration20131111165410Core extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__extensions')
                 ->where('folder', '=', 'resources')
@@ -41,7 +41,7 @@ class Migration20131111165410Core extends Base
             $params = (array) json_decode($result);
         } else {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__plugins')
                 ->where('folder', '=', 'resources')
@@ -98,7 +98,7 @@ class Migration20131111165410Core extends Base
             $params = json_encode($params);
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => $params])
                 ->where('folder', '=', 'resources')
@@ -113,7 +113,7 @@ class Migration20131111165410Core extends Base
             $params = $p;
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__plugins')
                 ->set(['params' => $params])
                 ->where('folder', '=', 'resources')
@@ -134,7 +134,7 @@ class Migration20131111165410Core extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__resource_stats_tools_tops')
                 ->columns(['top', 'name', 'valfmt', 'size'])
                 ->values([1, 'Users By Country Of Residence', 1, 5])
@@ -156,7 +156,7 @@ class Migration20131111165410Core extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__stats_tops')
                 ->columns(['id', 'name', 'valfmt', 'size'])
                 ->values([1, 'Top Tools by Ranking', 1, 5])

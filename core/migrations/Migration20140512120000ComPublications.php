@@ -168,7 +168,7 @@ class Migration20140512120000ComPublications extends Base
 
             foreach ($blocks as $block) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__publication_blocks')
                     ->set($block)
                     ->execute();
@@ -192,7 +192,7 @@ class Migration20140512120000ComPublications extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__publication_handlers')
                 ->set([
                     'id'     => 1,

@@ -49,7 +49,7 @@ class Migration20130930160944ComBillboards extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__billboards')
                 ->set([
                     'collection_id'       => 1,
@@ -75,7 +75,7 @@ class Migration20130930160944ComBillboards extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__billboards')
                 ->set([
                     'collection_id'       => 1,
@@ -102,7 +102,7 @@ class Migration20130930160944ComBillboards extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__billboards')
                 ->set([
                     'collection_id'       => 1,
@@ -127,7 +127,7 @@ class Migration20130930160944ComBillboards extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__billboards')
                 ->set([
                     'collection_id'       => 1,
@@ -166,7 +166,7 @@ class Migration20130930160944ComBillboards extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__billboard_collection')
                 ->set(['name' => 'Home Default Billboard'])
                 ->execute();

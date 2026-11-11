@@ -25,7 +25,7 @@ class Migration20160518143900PlgContentCategories extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'name'    => 'plg_content_categories',
@@ -46,7 +46,7 @@ class Migration20160518143900PlgContentCategories extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'name'    => 'plg_content_joomla',

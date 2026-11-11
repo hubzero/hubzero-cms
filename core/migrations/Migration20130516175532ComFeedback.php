@@ -28,14 +28,14 @@ class Migration20130516175532ComFeedback extends Base
 
         if ($schema->tableExists('#__components')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__components')
                 ->set(['params' => Expression::replace('params', $oldPath, $newPath)])
                 ->where('option', '=', 'com_feedback')
                 ->execute();
         } else {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', $oldPath, $newPath)])
                 ->where('element', '=', 'com_feedback')
@@ -55,14 +55,14 @@ class Migration20130516175532ComFeedback extends Base
 
         if ($schema->tableExists('#__components')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__components')
                 ->set(['params' => Expression::replace('params', $oldPath, $newPath)])
                 ->where('option', '=', 'com_feedback')
                 ->execute();
         } else {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => Expression::replace('params', $oldPath, $newPath)])
                 ->where('element', '=', 'com_feedback')

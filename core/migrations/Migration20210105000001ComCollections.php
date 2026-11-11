@@ -25,7 +25,7 @@ class Migration20210105000001ComCollections extends Base
             if (!isset($allow_comments)) {
                 $params->set('allow_comments', 1);
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
                     ->where('name', '=', 'com_collections')

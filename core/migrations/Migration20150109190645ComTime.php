@@ -64,7 +64,7 @@ class Migration20150109190645ComTime extends Base
 
             // Add rows to table from old time_users table
             $liaisons = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__time_users')
                 ->where('liaison', '=', 1)
@@ -73,7 +73,7 @@ class Migration20150109190645ComTime extends Base
             if ($liaisons && count($liaisons) > 0) {
                 foreach ($liaisons as $liaison) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__time_liaisons')
                         ->columns(['user_id'])
                         ->values((int) $liaison->user_id)
@@ -108,7 +108,7 @@ class Migration20150109190645ComTime extends Base
         // Delete entries formally present just to represent a liaison, not an actually proxy relationship
         if ($schema->tableExists('#__time_proxies')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__time_proxies')
                 ->where('proxy_id', '=', 0)
                 ->execute();
@@ -116,7 +116,7 @@ class Migration20150109190645ComTime extends Base
 
         // Fix up entries in assets table to be singular
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__assets')
             ->set(['name' => Expression::replace(Expression::column('name'), 'com_time.hubs.', 'com_time.hub.')])
             ->execute();

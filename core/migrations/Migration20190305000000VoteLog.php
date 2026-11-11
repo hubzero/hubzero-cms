@@ -48,7 +48,7 @@ class Migration20190305000000VoteLog extends Base
                         ->execute();
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update($table)
                         ->set([$field => null])
                         ->where($field, '=', '0000-00-00 00:00:00')

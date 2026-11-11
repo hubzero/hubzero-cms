@@ -26,7 +26,7 @@ class Migration20140130105700ComAnswers extends Base
 
         if ($schema->hasColumn('#__answers_questions', 'created_by')) {
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'created_by'])
                 ->from('#__answers_questions')
                 ->loadObjectList();
@@ -34,14 +34,14 @@ class Migration20140130105700ComAnswers extends Base
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
                     $id = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('id')
                         ->from('#__users')
                         ->where('username', '=', $r->created_by)
                         ->value('id');
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__answers_questions')
                         ->set(['created_by' => (int) $id])
                         ->where('id', '=', $r->id)
@@ -54,7 +54,7 @@ class Migration20140130105700ComAnswers extends Base
 
         if ($schema->hasColumn('#__answers_responses', 'created_by')) {
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'created_by'])
                 ->from('#__answers_responses')
                 ->loadObjectList();
@@ -62,14 +62,14 @@ class Migration20140130105700ComAnswers extends Base
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
                     $id = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('id')
                         ->from('#__users')
                         ->where('username', '=', $r->created_by)
                         ->value('id');
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__answers_responses')
                         ->set(['created_by' => (int) $id])
                         ->where('id', '=', $r->id)
@@ -117,7 +117,7 @@ class Migration20140130105700ComAnswers extends Base
 
         if ($schema->hasColumn('#__answers_questions', 'created_by')) {
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'created_by'])
                 ->from('#__answers_questions')
                 ->loadObjectList();
@@ -125,14 +125,14 @@ class Migration20140130105700ComAnswers extends Base
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
                     $username = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('username')
                         ->from('#__users')
                         ->where('id', '=', (int) $r->created_by)
                         ->value('username');
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__answers_questions')
                         ->set(['created_by' => $username])
                         ->where('id', '=', $r->id)
@@ -145,7 +145,7 @@ class Migration20140130105700ComAnswers extends Base
 
         if ($schema->hasColumn('#__answers_responses', 'created_by')) {
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'created_by'])
                 ->from('#__answers_responses')
                 ->loadObjectList();
@@ -153,14 +153,14 @@ class Migration20140130105700ComAnswers extends Base
             if ($results && count($results) > 0) {
                 foreach ($results as $r) {
                     $username = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('username')
                         ->from('#__users')
                         ->where('id', '=', (int) $r->created_by)
                         ->value('username');
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__answers_responses')
                         ->set(['created_by' => $username])
                         ->where('id', '=', $r->id)

@@ -23,7 +23,7 @@ class Migration20140219221812ComCourses extends Base
     public function up()
     {
         $results = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(Expression::count('id'), 'num')
             ->select('section_id')
             ->select('scope')
@@ -38,7 +38,7 @@ class Migration20140219221812ComCourses extends Base
         if ($results && count($results) > 0) {
             foreach ($results as $result) {
                 $rows = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__courses_offering_section_dates')
                     ->where('section_id', '=', $result->section_id)
@@ -52,7 +52,7 @@ class Migration20140219221812ComCourses extends Base
 
                     foreach ($rows as $row) {
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->delete('#__courses_offering_section_dates')
                             ->where('id', '=', $row->id)
                             ->execute();

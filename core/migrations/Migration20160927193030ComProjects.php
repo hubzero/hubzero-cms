@@ -29,7 +29,7 @@ class Migration20160927193030ComProjects extends Base
                 . '"core.edit.state":[],"core.edit.own":[]}';
 
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__assets')
                 ->where('name', '=', 'com_projects')
@@ -48,7 +48,7 @@ class Migration20160927193030ComProjects extends Base
             } else {
                 // Set the first zone as default
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__assets')
                     ->set(['rules' => $rules])
                     ->where('id', '=', $id)
@@ -69,7 +69,7 @@ class Migration20160927193030ComProjects extends Base
                 . '"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}';
 
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__assets')
                 ->where('name', '=', 'com_projects')
@@ -88,7 +88,7 @@ class Migration20160927193030ComProjects extends Base
             } else {
                 // Set the first zone as default
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__assets')
                     ->set(['rules' => $rules])
                     ->where('id', '=', $id)

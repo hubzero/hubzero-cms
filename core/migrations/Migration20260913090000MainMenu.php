@@ -136,7 +136,7 @@ class Migration20260913090000MainMenu extends Base
         }
 
         $root = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->from('#__menu')
             ->where('level', '=', 0)
@@ -185,7 +185,7 @@ class Migration20260913090000MainMenu extends Base
         }
 
         $asset = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->select('rules')
             ->from('#__assets')
@@ -207,7 +207,7 @@ class Migration20260913090000MainMenu extends Base
         $rules['core.access'] = ['1' => 1];
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__assets')
             ->set(['rules' => json_encode($rules)])
             ->where('id', '=', (int) $asset->id)
@@ -228,7 +228,7 @@ class Migration20260913090000MainMenu extends Base
     protected function hasNavigation()
     {
         $items = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('COUNT(*)')
             ->from('#__menu')
             ->where('client_id', '=', 0)
@@ -268,7 +268,7 @@ class Migration20260913090000MainMenu extends Base
             list($title, $kind, $description) = $about;
 
             $exists = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__menu_types')
                 ->where('menutype', '=', $type)
@@ -289,7 +289,7 @@ class Migration20260913090000MainMenu extends Base
             }
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__menu_types')
                 ->values($values)
                 ->execute();
@@ -418,7 +418,7 @@ class Migration20260913090000MainMenu extends Base
         ], $item);
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->insert('#__menu')
             ->values($row)
             ->execute();
@@ -435,7 +435,7 @@ class Migration20260913090000MainMenu extends Base
     protected function componentId($option)
     {
         return (int) $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -458,7 +458,7 @@ class Migration20260913090000MainMenu extends Base
     protected function rebuild($parent, $left = 0)
     {
         $children = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->from('#__menu')
             ->where('parent_id', '=', (int) $parent)
@@ -473,7 +473,7 @@ class Migration20260913090000MainMenu extends Base
         }
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__menu')
             ->set(['lft' => (int) $left, 'rgt' => (int) $right])
             ->where('id', '=', (int) $parent)
@@ -507,7 +507,7 @@ class Migration20260913090000MainMenu extends Base
         ]);
 
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->from('#__modules')
             ->where('module', '=', 'mod_menu')
@@ -517,7 +517,7 @@ class Migration20260913090000MainMenu extends Base
 
         if ($id) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__modules')
                 ->set([
                     'position'  => 'user3',
@@ -534,7 +534,7 @@ class Migration20260913090000MainMenu extends Base
         // No menu module at all, which the base data does ship - but a hub
         // that deleted it should still come out of this with a navigation.
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->insert('#__modules')
             ->values([
                 'title'            => 'Main Menu',
@@ -559,7 +559,7 @@ class Migration20260913090000MainMenu extends Base
         // A module shows on the pages named here, and nought means all of
         // them. Without a row the module is published and drawn nowhere.
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->insert('#__modules_menu')
             ->values([
                 'moduleid' => (int) $this->db->insertid(),
@@ -581,7 +581,7 @@ class Migration20260913090000MainMenu extends Base
 
         foreach (array_keys($this->groups) as $alias) {
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__menu')
                 ->where('menutype', '=', 'mainmenu')
@@ -595,13 +595,13 @@ class Migration20260913090000MainMenu extends Base
             }
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__menu')
                 ->where('parent_id', '=', (int) $id)
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__menu')
                 ->where('id', '=', (int) $id)
                 ->execute();
@@ -609,7 +609,7 @@ class Migration20260913090000MainMenu extends Base
 
         foreach (array_keys($this->routes) as $alias) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__menu')
                 ->where('menutype', '=', 'components')
                 ->where('client_id', '=', 0)

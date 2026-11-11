@@ -25,7 +25,7 @@ class Migration20170124151456ComSupport extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $params = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__extensions')
                 ->where('name', '=', 'com_support')
@@ -44,7 +44,7 @@ class Migration20170124151456ComSupport extends Base
                 $params = json_encode($params);
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__extensions')
                     ->set(['params' => $params])
                     ->where('name', '=', 'com_support')
@@ -59,7 +59,7 @@ class Migration20170124151456ComSupport extends Base
     public function down()
     {
         $params = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('params')
             ->from('#__extensions')
             ->where('name', '=', 'com_support')
@@ -80,7 +80,7 @@ class Migration20170124151456ComSupport extends Base
             $params = json_encode($params);
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => $params])
                 ->where('name', '=', 'com_support')

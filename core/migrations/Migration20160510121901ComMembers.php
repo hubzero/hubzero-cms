@@ -112,7 +112,7 @@ class Migration20160510121901ComMembers extends Base
                 . 'activities ensuring that your work is recognized.';
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__user_profile_fields')
                 ->columns([
                     'id',
@@ -292,7 +292,7 @@ class Migration20160510121901ComMembers extends Base
 
             // Gender
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__user_profile_options')
                 ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
                 ->values([
@@ -304,7 +304,7 @@ class Migration20160510121901ComMembers extends Base
 
             // Race
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__user_profile_options')
                 ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
                 ->values([
@@ -319,7 +319,7 @@ class Migration20160510121901ComMembers extends Base
 
             // Hispanic
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__user_profile_options')
                 ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
                 ->values([
@@ -333,7 +333,7 @@ class Migration20160510121901ComMembers extends Base
 
             // Disability
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__user_profile_options')
                 ->columns(['id', 'field_id', 'value', 'label', 'ordering', 'checked'])
                 ->values([
@@ -350,7 +350,7 @@ class Migration20160510121901ComMembers extends Base
             // Organizations
             if ($schema->tableExists('#__xorganizations')) {
                 $organizations = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__xorganizations')
                     ->loadObjectList();
@@ -371,7 +371,7 @@ class Migration20160510121901ComMembers extends Base
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__user_profile_options')
                         ->columns($columns)
                         ->values($values)
@@ -384,7 +384,7 @@ class Migration20160510121901ComMembers extends Base
             // Organization types
             if ($schema->tableExists('#__xorganization_types')) {
                 $types = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__xorganization_types')
                     ->loadObjectList();
@@ -405,7 +405,7 @@ class Migration20160510121901ComMembers extends Base
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__user_profile_options')
                         ->columns($columns)
                         ->values($values)
@@ -418,7 +418,7 @@ class Migration20160510121901ComMembers extends Base
             // Reasons
             if ($schema->tableExists('#__xprofiles_reasons')) {
                 $reasons = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__xprofiles_reasons')
                     ->loadObjectList();
@@ -439,7 +439,7 @@ class Migration20160510121901ComMembers extends Base
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__user_profile_options')
                         ->columns($columns)
                         ->values($values)
@@ -473,7 +473,7 @@ class Migration20160510121901ComMembers extends Base
 
             if ($schema->tableExists('#__user_profile_options')) {
                 $organizations = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__user_profile_options')
                     ->where('field_id', '=', 1)
@@ -489,7 +489,7 @@ class Migration20160510121901ComMembers extends Base
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__xorganizations')
                         ->columns($columns)
                         ->values($values)
@@ -512,7 +512,7 @@ class Migration20160510121901ComMembers extends Base
 
             if ($schema->tableExists('#__user_profile_options')) {
                 $types = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__user_profile_options')
                     ->where('field_id', '=', 2)
@@ -532,7 +532,7 @@ class Migration20160510121901ComMembers extends Base
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__xorganization_types')
                         ->columns($columns)
                         ->values($values)
@@ -554,7 +554,7 @@ class Migration20160510121901ComMembers extends Base
 
             if ($schema->tableExists('#__user_profile_options')) {
                 $reasons = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__user_profile_options')
                     ->where('field_id', '=', 11)
@@ -570,7 +570,7 @@ class Migration20160510121901ComMembers extends Base
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__xprofiles_reasons')
                         ->columns($columns)
                         ->values($values)

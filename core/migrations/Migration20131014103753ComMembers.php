@@ -54,7 +54,7 @@ class Migration20131014103753ComMembers extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__users_quotas_classes')
                 ->set([
                     'id'          => 1,

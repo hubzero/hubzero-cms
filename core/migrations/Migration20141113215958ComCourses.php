@@ -25,7 +25,7 @@ class Migration20141113215958ComCourses extends Base
 
         if ($schema->tableExists('#__courses_form_deployments')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_form_deployments')
                 ->set(['start_time' => null, 'end_time' => null])
                 ->execute();

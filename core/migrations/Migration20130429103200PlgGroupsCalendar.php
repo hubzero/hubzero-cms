@@ -50,7 +50,7 @@ class Migration20130429103200PlgGroupsCalendar extends Base
 
             // set scope on all current site events
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__events')
                 ->set(['scope' => 'event'])
                 ->beginOrGroup()
@@ -65,7 +65,7 @@ class Migration20130429103200PlgGroupsCalendar extends Base
 
         if ($schema->tableExists('#__xgroups_events')) {
             // move group events to events table
-            $select = $this->db->getQuery(true);
+            $select = $this->db->getQuery();
             $select
                 ->select($this->db->quote('group'))
                 ->select('gidNumber', 'scope_id')
@@ -79,7 +79,7 @@ class Migration20130429103200PlgGroupsCalendar extends Base
                 ->from('#__xgroups_events');
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__events')
                 ->columns([
                     'scope',

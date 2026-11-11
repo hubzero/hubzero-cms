@@ -22,7 +22,7 @@ class Migration20130426071400Core extends Base
     public function up()
     {
         $result = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('introtext')
             ->from('#__content')
             ->where('alias', '=', 'licensing')
@@ -33,7 +33,7 @@ class Migration20130426071400Core extends Base
         $result = str_replace($search, 'unique middleware', $result);
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__content')
             ->set(['introtext' => $result])
             ->where('alias', '=', 'licensing')
@@ -41,7 +41,7 @@ class Migration20130426071400Core extends Base
             ->execute();
 
         $introtext = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('introtext')
             ->from('#__content')
             ->where('alias', '=', 'licensing')
@@ -51,7 +51,7 @@ class Migration20130426071400Core extends Base
         if ($introtext) {
             $introtext = str_replace('/feedback/report_problems/', '/support/ticket/new', $introtext);
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__content')
                 ->set(['introtext' => $introtext])
                 ->where('alias', '=', 'licensing')

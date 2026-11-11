@@ -28,7 +28,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
 
             // Check if there are any favorites
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__xfavorites')
                 ->order('uid', 'ASC');
@@ -41,7 +41,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
                 foreach ($results as $result) {
                     // Does this user already have this favorite as a collection item?
                     $query = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('p.id')
                         ->from('#__collections_posts', 'p')
                         ->innerJoin('#__collections_items AS i', 'p.item_id', 'i.id')
@@ -56,7 +56,7 @@ class Migration20140506104910PlgMembersFavorites extends Base
                         if (!isset($usrs[$result->uid])) {
                             // No ID yet. Check if the user has a default collection
                             $query = $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->select('p.id')
                                 ->from('#__collections', 'p')
                                 ->where('p.object_id', '=', $result->uid)

@@ -50,7 +50,7 @@ class Migration20140815153140ComCourses extends Base
 
         // Get deployments
         $deployments = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(['cfd.id', 'cf.asset_id'])
             ->from('#__courses_form_deployments', 'cfd')
             ->innerJoin('#__courses_forms AS cf', 'cfd.form_id', 'cf.id')
@@ -60,7 +60,7 @@ class Migration20140815153140ComCourses extends Base
             foreach ($deployments as $deployment) {
                 // Now set the score recorded dates for all existing forms
                 $results = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('pfr.member_id')
                     ->select('pfr.finished')
                     ->select(
@@ -89,7 +89,7 @@ class Migration20140815153140ComCourses extends Base
                     foreach ($results as $result) {
                         if (isset($result->finished)) {
                             $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->update('#__courses_grade_book')
                                 ->set(['score_recorded' => $result->finished])
                                 ->where('member_id', '=', (int) $result->member_id)

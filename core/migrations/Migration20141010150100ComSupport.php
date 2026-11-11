@@ -132,7 +132,7 @@ class Migration20141010150100ComSupport extends Base
 
             foreach ($folders as $folder) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__support_query_folders')
                     ->set($folder)
                     ->execute();
@@ -149,7 +149,7 @@ class Migration20141010150100ComSupport extends Base
 
             // Update "Common" queries
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__support_queries')
                 ->set(['folder_id' => 1])
                 ->where('iscore', '=', 2)
@@ -158,7 +158,7 @@ class Migration20141010150100ComSupport extends Base
 
             // Update "Mine" queries
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__support_queries')
                 ->set(['folder_id' => 2])
                 ->where('iscore', '=', 1)
@@ -167,7 +167,7 @@ class Migration20141010150100ComSupport extends Base
 
             // Update "Common not in ACL" queries
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__support_queries')
                 ->set(['folder_id' => 4])
                 ->where('iscore', '=', 4)
@@ -176,7 +176,7 @@ class Migration20141010150100ComSupport extends Base
 
             // Get all the "mine" queries
             $queries = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__support_queries')
                 ->where('folder_id', '=', 2)
@@ -194,7 +194,7 @@ class Migration20141010150100ComSupport extends Base
                     $data['iscore']    = 4;
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__support_queries')
                         ->set($data)
                         ->execute();

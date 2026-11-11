@@ -51,7 +51,7 @@ class Migration20190305000000Announcements extends Base
                         ->execute();
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update($tableName)
                         ->set([$field => null])
                         ->where($field, '=', '0000-00-00 00:00:00')

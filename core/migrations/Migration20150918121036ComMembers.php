@@ -36,13 +36,13 @@ class Migration20150918121036ComMembers extends Base
 
         if ($schema->tableExists('#__xprofiles_reasons')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->from('#__xprofiles_reasons');
             $rows = $query->count();
 
             if (!$rows) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__xprofiles_reasons')
                     ->values([
                         ['id' => 1, 'reason' => 'Required for class'],

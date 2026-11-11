@@ -24,7 +24,7 @@ class Migration20180821190002ComPublications extends Base
     public function up()
     {
         $results = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(['extension_id', 'params'])
             ->from('#__extensions')
             ->where('name', '=', 'com_publications')
@@ -45,7 +45,7 @@ class Migration20180821190002ComPublications extends Base
                     $params->ezid_doi_userpw = "";
                 }
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__extensions')
                     ->set(['params' => json_encode($params)])
                     ->where('extension_id', '=', $r->extension_id)

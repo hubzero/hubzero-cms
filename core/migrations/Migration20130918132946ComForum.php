@@ -27,7 +27,7 @@ class Migration20130918132946ComForum extends Base
 
         if ($schema->tableExists('#__components')) {
             $result = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__components')
                 ->where('name', '=', 'Forum')
@@ -35,7 +35,7 @@ class Migration20130918132946ComForum extends Base
 
             if ($result && empty($result->admin_menu_link)) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__components')
                     ->set(['admin_menu_link' => 'option=com_forum'])
                     ->where('id', '=', $result->id)

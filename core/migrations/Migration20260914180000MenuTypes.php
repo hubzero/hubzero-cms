@@ -63,7 +63,7 @@ class Migration20260914180000MenuTypes extends Base
 
         // The one that was a component menu without being called one
         $existing = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->from('#__menu_types')
             ->whereEquals('menutype', 'default')
@@ -76,7 +76,7 @@ class Migration20260914180000MenuTypes extends Base
         // A hub that has already made its own "components" menu keeps it, and
         // the old one is only retyped rather than renamed on top of it.
         $taken = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->from('#__menu_types')
             ->whereEquals('menutype', 'components')
@@ -112,7 +112,7 @@ class Migration20260914180000MenuTypes extends Base
         $strays = [];
 
         $rows = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->select('alias')
             ->select('link')
@@ -148,7 +148,7 @@ class Migration20260914180000MenuTypes extends Base
         // having pointed a module at them. Their level and parent do not
         // change, so neither do their paths.
         $display = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('menutype')
             ->from('#__menu_types')
             ->whereEquals('type', 'display')
@@ -163,7 +163,7 @@ class Migration20260914180000MenuTypes extends Base
 
         foreach ($strays as $id => $alias) {
             $params = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__menu')
                 ->whereEquals('id', $id)

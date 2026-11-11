@@ -78,7 +78,7 @@ class Migration20130813195602ComOaipmh extends Base
                 SQL;
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__oaipmh_dcspecs')
                 ->columns(['id', 'name', 'query', 'display'])
                 ->values([

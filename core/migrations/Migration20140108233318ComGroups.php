@@ -127,7 +127,7 @@ class Migration20140108233318ComGroups extends Base
         // remove content field from pages table
         if ($schema->hasColumn('#__xgroups_pages', 'content')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__xgroups_pages_versions')
                 ->columns([
                     'pageid',
@@ -141,7 +141,7 @@ class Migration20140108233318ComGroups extends Base
                 ])
                 ->fromSelect(
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select([
                             'id as pageid',
                             '1',
@@ -161,7 +161,7 @@ class Migration20140108233318ComGroups extends Base
         if ($schema->hasColumn('#__xgroups', 'overview_type')) {
             // get list of groups
             $groups = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['gidNumber', 'overview_type', 'overview_content'])
                 ->from('#__xgroups')
                 ->whereIn('type', [1, 3])
@@ -173,7 +173,7 @@ class Migration20140108233318ComGroups extends Base
                 if (trim((string) $group->overview_content) != '') {
                     // create page to store page info
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__xgroups_pages')
                         ->columns(['gidNumber', 'alias', 'title', 'ordering', 'state', 'privacy', 'home'])
                         ->values([
@@ -191,7 +191,7 @@ class Migration20140108233318ComGroups extends Base
 
                     // create page version to store page content
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__xgroups_pages_versions')
                         ->columns([
                             'pageid',
@@ -252,7 +252,7 @@ class Migration20140108233318ComGroups extends Base
             $schema->addColumn('#__xgroups_pages', 'content')->text();
 
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__xgroups_pages');
 
@@ -261,7 +261,7 @@ class Migration20140108233318ComGroups extends Base
             if ($pages) {
                 foreach ($pages as $page) {
                     $content = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('content')
                         ->from('#__xgroups_pages_versions')
                         ->where('pageid', '=', $page->id)
@@ -270,7 +270,7 @@ class Migration20140108233318ComGroups extends Base
 
                     if ($content) {
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->update('#__xgroups_pages')
                             ->set(['content' => $content])
                             ->where('id', '=', $page->id)
@@ -283,7 +283,7 @@ class Migration20140108233318ComGroups extends Base
         //move home content back to xgroups table and delete those records
         if ($schema->hasColumn('#__xgroups_pages', 'home')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('gidNumber')
                 ->from('#__xgroups');
 
@@ -292,7 +292,7 @@ class Migration20140108233318ComGroups extends Base
             if ($groups) {
                 foreach ($groups as $group) {
                     $page = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('content, home')
                         ->from('#__xgroups_pages')
                         ->where('gidNumber', '=', $group->gidNumber)
@@ -301,7 +301,7 @@ class Migration20140108233318ComGroups extends Base
 
                     if ($page) {
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->update('#__xgroups')
                             ->set([
                                 'overview_content' => $page->content,
@@ -314,7 +314,7 @@ class Migration20140108233318ComGroups extends Base
             }
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__xgroups_pages')
                 ->where('alias', '=', 'home_page')
                 ->execute();

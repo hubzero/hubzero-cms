@@ -33,7 +33,7 @@ class Migration20140224112212PlgWiki extends Base
 
         /* We do an update instead of the above remove/add so as to preserve state and params */
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__extensions')
             ->set([
                 'folder'  => 'wiki',
@@ -46,7 +46,7 @@ class Migration20140224112212PlgWiki extends Base
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__extensions')
             ->set([
                 'folder'  => 'wiki',
@@ -59,7 +59,7 @@ class Migration20140224112212PlgWiki extends Base
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__extensions')
             ->set([
                 'folder'  => 'wiki',
@@ -89,7 +89,7 @@ class Migration20140224112212PlgWiki extends Base
 
         /* We do an update instead of the above remove/add so as to preserve state and params */
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__extensions')
             ->set([
                 'folder'  => 'hubzero',
@@ -102,7 +102,7 @@ class Migration20140224112212PlgWiki extends Base
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__extensions')
             ->set([
                 'folder'  => 'hubzero',
@@ -115,7 +115,7 @@ class Migration20140224112212PlgWiki extends Base
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__extensions')
             ->set([
                 'folder'  => 'hubzero',

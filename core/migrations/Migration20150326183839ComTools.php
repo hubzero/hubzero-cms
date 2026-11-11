@@ -36,7 +36,7 @@ class Migration20150326183839ComTools extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__tool_session_classes')
                 ->set([
                     'alias' => 'default',
@@ -80,7 +80,7 @@ class Migration20150326183839ComTools extends Base
             if ($schema->hasColumn('#__xprofiles', 'jobsAllowed')) {
                 // Create a preferences entry for anyone who has a non-default value for jobs allowed
                 $rows = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select(['uidNumber', 'jobsAllowed'])
                     ->from('#__xprofiles')
                     ->where('jobsAllowed', '!=', 3)
@@ -90,7 +90,7 @@ class Migration20150326183839ComTools extends Base
                 if ($rows) {
                     foreach ($rows as $row) {
                         $exists = $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->select('id')
                             ->from('#__users_tool_preferences')
                             ->where('user_id', '=', $row->uidNumber)
@@ -100,7 +100,7 @@ class Migration20150326183839ComTools extends Base
 
                         if ($exists) {
                             $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->update('#__users_tool_preferences')
                                 ->set([
                                     'class_id' => 0,
@@ -110,7 +110,7 @@ class Migration20150326183839ComTools extends Base
                                 ->execute();
                         } else {
                             $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->insert('#__users_tool_preferences')
                                 ->set([
                                     'user_id'  => $row->uidNumber,
@@ -144,7 +144,7 @@ class Migration20150326183839ComTools extends Base
 
             // Create a preferences entry for anyone who has a non-default value for jobs allowed
             $rows = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__users_tool_preferences')
                 ->where('jobs', '!=', 3)
@@ -153,7 +153,7 @@ class Migration20150326183839ComTools extends Base
             if ($rows) {
                 foreach ($rows as $row) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__xprofiles')
                         ->set(['jobsAllowed' => $row->jobs])
                         ->where('uidNumber', '=', $row->user_id)
@@ -162,7 +162,7 @@ class Migration20150326183839ComTools extends Base
             }
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__xprofiles')
                 ->set(['jobsAllowed' => 3])
                 ->where('jobsAllowed', '=', 0)

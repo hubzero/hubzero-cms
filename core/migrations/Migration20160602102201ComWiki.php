@@ -29,7 +29,7 @@ class Migration20160602102201ComWiki extends Base
 
         // Create updated view with new table names
         $query = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('m.id', 'uidNumber')
             ->select('w.id', 'count', true)
             ->from('#__users', 'm')
@@ -67,7 +67,7 @@ class Migration20160602102201ComWiki extends Base
 
         // Recreate the old view with original table names
         $query = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('m.uidNumber', 'uidNumber')
             ->select('w.id', 'count', true)
             ->from('#__xprofiles', 'm')

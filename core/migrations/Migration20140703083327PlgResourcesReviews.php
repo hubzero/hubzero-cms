@@ -24,7 +24,7 @@ class Migration20140703083327PlgResourcesReviews extends Base
 
         if ($schema->hasColumn('#__resource_ratings', 'state')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('referenceid')
                 ->from('#__abuse_reports')
                 ->where('state', '=', 0)
@@ -34,7 +34,7 @@ class Migration20140703083327PlgResourcesReviews extends Base
 
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__resource_ratings')
                     ->set(['state' => 3])
                     ->whereIn('id', $ids)
@@ -44,7 +44,7 @@ class Migration20140703083327PlgResourcesReviews extends Base
 
         if ($schema->hasColumn('#__item_comments', 'state')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('referenceid')
                 ->from('#__abuse_reports')
                 ->where('state', '=', 0)
@@ -54,7 +54,7 @@ class Migration20140703083327PlgResourcesReviews extends Base
 
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__item_comments')
                     ->set(['state' => 3])
                     ->whereIn('id', $ids)
@@ -72,7 +72,7 @@ class Migration20140703083327PlgResourcesReviews extends Base
 
         if ($schema->hasColumn('#__resource_ratings', 'state')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__resource_ratings')
                 ->set(['state' => 1])
                 ->where('state', '=', 3)
@@ -81,7 +81,7 @@ class Migration20140703083327PlgResourcesReviews extends Base
 
         if ($schema->hasColumn('#__item_comments', 'state')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__item_comments')
                 ->set(['state' => 1])
                 ->where('state', '=', 3)

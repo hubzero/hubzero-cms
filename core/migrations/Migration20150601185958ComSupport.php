@@ -26,7 +26,7 @@ class Migration20150601185958ComSupport extends Base
 
         if ($schema->tableExists('#__support_tickets')) {
             $subquery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('created')
                 ->from('#__support_comments', 'c')
                 ->where('c.ticket', '=', Expression::column('t.id'))
@@ -34,7 +34,7 @@ class Migration20150601185958ComSupport extends Base
                 ->limit(1);
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__support_tickets', 't')
                 ->set(['t.closed' => $subquery])
                 ->where('t.open', '=', 0)

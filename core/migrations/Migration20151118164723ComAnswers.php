@@ -25,14 +25,14 @@ class Migration20151118164723ComAnswers extends Base
 
         if ($schema->tableExists('#__answers_questions_log')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__answers_questions_log');
             $rows = $query->loadObjectList();
 
             foreach ($rows as $row) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__item_votes')
                     ->set([
                         'id'        => null,
@@ -51,14 +51,14 @@ class Migration20151118164723ComAnswers extends Base
 
         if ($schema->tableExists('#__answers_log')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__answers_log');
             $rows = $query->loadObjectList();
 
             foreach ($rows as $row) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__item_votes')
                     ->set([
                         'id'        => null,
@@ -105,7 +105,7 @@ class Migration20151118164723ComAnswers extends Base
                 ->execute();
 
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__item_votes')
                 ->where('item_type', '=', 'question');
@@ -113,7 +113,7 @@ class Migration20151118164723ComAnswers extends Base
 
             foreach ($rows as $row) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__answers_questions_log')
                     ->set([
                         'id'          => null,
@@ -140,7 +140,7 @@ class Migration20151118164723ComAnswers extends Base
                 ->execute();
 
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__item_votes')
                 ->where('item_type', '=', 'response');
@@ -148,7 +148,7 @@ class Migration20151118164723ComAnswers extends Base
 
             foreach ($rows as $row) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__answers_log')
                     ->set([
                         'id'          => null,

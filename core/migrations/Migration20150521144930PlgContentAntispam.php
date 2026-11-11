@@ -25,7 +25,7 @@ class Migration20150521144930PlgContentAntispam extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('folder', '=', 'content')
@@ -38,7 +38,7 @@ class Migration20150521144930PlgContentAntispam extends Base
             } else {
                 // Set the first zone as default
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__extensions')
                     ->set(['state' => 0, 'name' => 'plg_content_antispam'])
                     ->where('extension_id', '=', $id)
@@ -56,7 +56,7 @@ class Migration20150521144930PlgContentAntispam extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('folder', '=', 'content')

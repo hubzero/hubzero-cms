@@ -24,7 +24,7 @@ class Migration20150105220027ComWiki extends Base
 
         if ($schema->tableExists('#__wiki_page')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__wiki_page')
                 ->set(['access' => 0])
                 ->where('access', '=', 1)

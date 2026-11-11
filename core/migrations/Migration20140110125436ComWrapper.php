@@ -22,7 +22,7 @@ class Migration20140110125436ComWrapper extends Base
     public function up()
     {
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -40,7 +40,7 @@ class Migration20140110125436ComWrapper extends Base
     public function down()
     {
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')

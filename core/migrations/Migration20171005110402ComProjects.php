@@ -33,7 +33,7 @@ class Migration20171005110402ComProjects extends Base
             && $schema->tableExists('#__project_activity')
         ) {
             $activities = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__project_activity')
                 ->order('id', 'ASC')
@@ -95,7 +95,7 @@ class Migration20171005110402ComProjects extends Base
                         $blog = true;
                         if ($schema->tableExists('#__project_microblog')) {
                             $comment = $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->select('*')
                                 ->from('#__project_microblog')
                                 ->where('id', '=', $activity->referenceid)
@@ -114,7 +114,7 @@ class Migration20171005110402ComProjects extends Base
 
                         if ($schema->tableExists('#__project_comments')) {
                             $comment = $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->select('*')
                                 ->from('#__project_comments')
                                 ->where('id', '=', $activity->referenceid)
@@ -133,7 +133,7 @@ class Migration20171005110402ComProjects extends Base
 
                         if ($schema->tableExists('#__project_comments')) {
                             $comment = $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->select('*')
                                 ->from('#__project_comments')
                                 ->where('id', '=', $activity->referenceid)
@@ -152,7 +152,7 @@ class Migration20171005110402ComProjects extends Base
 
                         if ($schema->tableExists('#__project_comments')) {
                             $comment = $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->select('*')
                                 ->from('#__project_comments')
                                 ->where('id', '=', $activity->referenceid)
@@ -274,7 +274,7 @@ class Migration20171005110402ComProjects extends Base
                 }
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__activity_logs')
                     ->set([
                         'created'     => $activity->recorded,
@@ -299,7 +299,7 @@ class Migration20171005110402ComProjects extends Base
 
                 // Add to the project's feed
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__activity_recipients')
                     ->set([
                         'log_id'   => $newids[$activity->id],
@@ -318,7 +318,7 @@ class Migration20171005110402ComProjects extends Base
                 if ($parent && $activity->state != 2) {
                     // Unset the parent's recipient record
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__activity_recipients')
                         ->set(['state' => 0])
                         ->where('state', '=', 1)
@@ -329,7 +329,7 @@ class Migration20171005110402ComProjects extends Base
 
                     // And add a new recipient record with an updated timestamp
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__activity_recipients')
                         ->set([
                             'log_id'   => $parent,
@@ -382,7 +382,7 @@ class Migration20171005110402ComProjects extends Base
             }
 
             $activities = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__activity_logs')
                 ->whereIn('scope', [
@@ -404,7 +404,7 @@ class Migration20171005110402ComProjects extends Base
 
                 if (isset($details)) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__project_activity')
                         ->set([
                             'projectid'     => $details->projectid,
@@ -427,7 +427,7 @@ class Migration20171005110402ComProjects extends Base
 
             if ($schema->tableExists('#__activity_recipients')) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->delete('#__activity_recipients')
                     ->whereIn('scope', ['project', 'project_managers'])
                     ->execute();

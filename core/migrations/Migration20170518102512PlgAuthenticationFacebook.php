@@ -25,7 +25,7 @@ class Migration20170518102512PlgAuthenticationFacebook extends Base
 
         if ($schema->tableExists('#__extensions') && $schema->hasColumn('#__extensions', 'params')) {
             $params = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__extensions')
                 ->where('element', '=', 'facebook')
@@ -38,7 +38,7 @@ class Migration20170518102512PlgAuthenticationFacebook extends Base
                 $params['graph_version'] = 'v2.9';
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__extensions')
                     ->set(['params' => json_encode($params)])
                     ->where('element', '=', 'facebook')

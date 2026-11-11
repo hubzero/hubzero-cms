@@ -35,7 +35,7 @@ class Migration20131024182332Core extends Base
         $new .= "<a href=\"/members/myaccount/account\">account page</a> for a quick password change form.</p>";
 
         $results = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('*')
             ->from('#__faq')
             ->where('alias', '=', 'pwchange')
@@ -49,7 +49,7 @@ class Migration20131024182332Core extends Base
 
                 if ($distance < 50) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__faq')
                         ->set(['fulltxt' => $new])
                         ->where('id', '=', $r->id)

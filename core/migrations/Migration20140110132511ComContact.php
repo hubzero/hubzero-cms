@@ -23,7 +23,7 @@ class Migration20140110132511ComContact extends Base
         $schema = $this->db->schema();
 
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -48,7 +48,7 @@ class Migration20140110132511ComContact extends Base
         $schema = $this->db->schema();
 
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')

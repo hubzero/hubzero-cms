@@ -25,7 +25,7 @@ class Migration20161220173600PlgResourcesReviews extends Base
 
         if ($schema->tableExists('#__vote_log') && $schema->tableExists('#__item_votes')) {
             $votes = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__vote_log')
                 ->where('category', '=', 'review')
@@ -33,7 +33,7 @@ class Migration20161220173600PlgResourcesReviews extends Base
 
             foreach ($votes as $vote) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__item_votes')
                     ->set([
                         'id'         => null,
@@ -48,7 +48,7 @@ class Migration20161220173600PlgResourcesReviews extends Base
             }
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__vote_log')
                 ->where('category', '=', 'review')
                 ->execute();
@@ -64,7 +64,7 @@ class Migration20161220173600PlgResourcesReviews extends Base
 
         if ($schema->tableExists('#__vote_log') && $schema->tableExists('#__item_votes')) {
             $votes = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__item_votes')
                 ->where('item_type', '=', 'review')
@@ -72,7 +72,7 @@ class Migration20161220173600PlgResourcesReviews extends Base
 
             foreach ($votes as $vote) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__vote_log')
                     ->set([
                         'id'          => null,
@@ -87,7 +87,7 @@ class Migration20161220173600PlgResourcesReviews extends Base
             }
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__item_votes')
                 ->where('item_type', '=', 'review')
                 ->execute();

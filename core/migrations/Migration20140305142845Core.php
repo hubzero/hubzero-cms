@@ -26,7 +26,7 @@ class Migration20140305142845Core extends Base
 
         // Now do our best guess as to whether or not this has already been run
         $results = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(['alias', 'created'])
             ->from('#__faq')
             ->whereIn('alias', ['login', 'login2', 'login3'])
@@ -102,7 +102,7 @@ class Migration20140305142845Core extends Base
 
         // Get distinct values
         $query = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select($column)
             ->distinct()
             ->from($table)
@@ -126,7 +126,7 @@ class Migration20140305142845Core extends Base
 
                 if ($newDate != $date) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update($table)
                         ->set([$column => $newDate])
                         ->where($column, '=', $date)

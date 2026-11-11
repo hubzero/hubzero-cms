@@ -108,7 +108,7 @@ class Migration20120101000006Core extends Base
         ];
 
         foreach ($updates as $update) {
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__faq')
                 ->set(['fulltxt' => $query->replace('fulltxt', $update[0], $update[1])])
@@ -275,14 +275,14 @@ class Migration20120101000006Core extends Base
 
         foreach ($licenses as $license) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('name')
                 ->from('#__resource_licenses')
                 ->where('name', '=', $license['name']);
 
             if ($query->doesntExist()) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertOrIgnore('#__resource_licenses')
                     ->values([
                         'name'      => $license['name'],
@@ -314,7 +314,7 @@ class Migration20120101000006Core extends Base
 
         foreach ($timezones as $tz_name => $tz_offset) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__events')
                 ->set(['time_zone' => $tz_offset])
                 ->where('time_zone', '=', $tz_name)
@@ -323,13 +323,13 @@ class Migration20120101000006Core extends Base
 
         // Initial population of users password table
         $select = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('uidNumber')
             ->select('userPassword')
             ->from('#__xprofiles');
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->insertIgnore('#__users_password')
             ->columns(['user_id', 'passhash'])
             ->fromSelect($select)
@@ -337,21 +337,21 @@ class Migration20120101000006Core extends Base
 
         // Update support tickets to use new open field
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__support_tickets')
             ->set(['open' => 0])
             ->where('status', '=', 2)
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__support_tickets')
             ->set(['status' => 2, 'open' => 1])
             ->where('status', '=', 1)
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__support_tickets')
             ->set(['status' => 1])
             ->where('owner', '!=', '')
@@ -362,7 +362,7 @@ class Migration20120101000006Core extends Base
 
         // Change xpoll module entries to use poll module
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__modules')
             ->set(['module' => 'mod_poll'])
             ->where('module', '=', 'mod_xpoll')
@@ -370,7 +370,7 @@ class Migration20120101000006Core extends Base
 
         // Change to use hub menu module
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__modules')
             ->set(['module' => 'mod_hubmenu'])
             ->where('module', '=', 'mod_menu')
@@ -378,7 +378,7 @@ class Migration20120101000006Core extends Base
             ->execute();
 
         // Update login redirect url
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->update('#__menu')
             ->set(['params' => $query->replace('params', 'login=/myhub', 'login=/members/myaccount/')])

@@ -25,7 +25,7 @@ class Migration20161111173852PlgSystemCache extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $params = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -38,7 +38,7 @@ class Migration20161111173852PlgSystemCache extends Base
 
                 if (isset($params->definitions)) {
                     $cparams = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('params')
                         ->from('#__extensions')
                         ->where('type', '=', 'plugin')
@@ -51,7 +51,7 @@ class Migration20161111173852PlgSystemCache extends Base
                     $cparams = json_encode($cparams);
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__extensions')
                         ->set(['params' => $cparams])
                         ->where('type', '=', 'plugin')

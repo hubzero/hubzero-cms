@@ -24,7 +24,7 @@ class Migration20150216135336LibJoomla extends Base
 
         if ($schema->tableExists('#__viewlevels')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('ordering')
                 ->from('#__viewlevels')
                 ->order('ordering', 'DESC');
@@ -36,7 +36,7 @@ class Migration20150216135336LibJoomla extends Base
                     $i++;
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__viewlevels')
                         ->set([
                             'id'       => null,
@@ -59,7 +59,7 @@ class Migration20150216135336LibJoomla extends Base
 
         if ($schema->tableExists('#__viewlevels')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__viewlevels')
                 ->whereIn('title', ['Protected', 'Private'])
                 ->execute();

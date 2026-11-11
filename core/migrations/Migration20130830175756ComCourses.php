@@ -23,7 +23,7 @@ class Migration20130830175756ComCourses extends Base
     public function up()
     {
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__courses_assets')
             ->set(['url' => Expression::substring('url', 30, 50)])
             ->where('type', '=', 'form')
@@ -31,7 +31,7 @@ class Migration20130830175756ComCourses extends Base
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__courses_assets')
             ->set(['url' => Expression::substring('url', 22)])
             ->where('type', '=', 'form')

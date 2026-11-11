@@ -23,7 +23,7 @@ class Migration20140110135511ComFinder extends Base
         $schema = $this->db->schema();
 
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -36,7 +36,7 @@ class Migration20140110135511ComFinder extends Base
             $this->deleteModuleEntry('mod_finder');
 
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__modules')
                 ->where('module', '=', 'mod_finder')
@@ -44,13 +44,13 @@ class Migration20140110135511ComFinder extends Base
 
             if (!empty($results)) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->delete('#__modules_menu')
                     ->whereIn('moduleid', $results)
                     ->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->delete('#__modules')
                     ->where('module', '=', 'mod_finder')
                     ->execute();
@@ -93,7 +93,7 @@ class Migration20140110135511ComFinder extends Base
         $schema = $this->db->schema();
 
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')

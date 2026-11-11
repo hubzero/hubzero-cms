@@ -69,7 +69,7 @@ class Migration20260914190000ComponentRoutes extends Base
         }
 
         $rows = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->select('element')
             ->select('enabled')
@@ -101,7 +101,7 @@ class Migration20260914190000ComponentRoutes extends Base
             // Anything already reachable under that name is left alone, whichever
             // menu it is filed under - a hub may have made its own.
             $exists = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__menu')
                 ->whereEquals('client_id', 0)
@@ -115,7 +115,7 @@ class Migration20260914190000ComponentRoutes extends Base
             $this->addComponentEntry(ucfirst($alias), $element, $enabled, '', false, true);
 
             $made = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__menu')
                 ->whereEquals('client_id', 0)

@@ -31,13 +31,13 @@ class Migration20130423001442ComCourses extends Base
             $schema->addColumn('#__courses_assets', 'subtype')->string(255)->notNull()->default('file')->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_assets')
                 ->set(['subtype' => Expression::raw('type')])
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_assets')
                 ->set(['subtype' => 'quiz'])
                 ->where('type', '=', 'exam')
@@ -45,7 +45,7 @@ class Migration20130423001442ComCourses extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_assets')
                 ->set(['subtype' => 'homework'])
                 ->where('type', '=', 'exam')
@@ -53,7 +53,7 @@ class Migration20130423001442ComCourses extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_assets')
                 ->set(['subtype' => 'embedded'])
                 ->where('type', '=', 'video')
@@ -62,28 +62,28 @@ class Migration20130423001442ComCourses extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_assets')
                 ->set(['type' => 'form'])
                 ->where('type', '=', 'exam')
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_assets')
                 ->set(['type' => 'text'])
                 ->where('type', '=', 'note')
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_assets')
                 ->set(['type' => 'text'])
                 ->where('type', '=', 'wiki')
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_assets')
                 ->set(['type' => 'url'])
                 ->where('type', '=', 'link')
@@ -100,7 +100,7 @@ class Migration20130423001442ComCourses extends Base
                 . '"group":[],"having":[]}';
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_grade_policies')
                 ->set([
                     'description' => $description,

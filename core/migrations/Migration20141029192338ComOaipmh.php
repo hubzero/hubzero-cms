@@ -22,7 +22,7 @@ class Migration20141029192338ComOaipmh extends Base
      **/
     public function up()
     {
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->update('#__oaipmh_dcspecs')
             ->set(['query' => Expression::replace('query', 'jos_', '#__')])

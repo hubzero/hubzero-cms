@@ -25,7 +25,7 @@ class Migration20190327000000Discover extends Base
 
         if ($schema->tableExists('#__content')) {
             $pages = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__content')
                 ->where('title', '=', 'Discover')
@@ -39,7 +39,7 @@ class Migration20190327000000Discover extends Base
                     $content = str_replace('href="/store"', 'href="/storefront"', $content);
 
                     $success = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__content')
                         ->set(['introtext' => $content])
                         ->where('id', '=', $page->id)
@@ -64,7 +64,7 @@ class Migration20190327000000Discover extends Base
 
         if ($schema->tableExists('#__content')) {
             $pages = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__content')
                 ->where('title', '=', 'Discover')
@@ -78,7 +78,7 @@ class Migration20190327000000Discover extends Base
                     $content = str_replace('href="/storefront"', 'href="/store"', $content);
 
                     $success = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__content')
                         ->set(['introtext' => $content])
                         ->where('id', '=', $page->id)

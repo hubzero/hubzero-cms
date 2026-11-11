@@ -52,7 +52,7 @@ class Migration20130829203107ComProjects extends Base
 
             // Make entries to enable HUB messaging
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__xmessage_component')
                 ->values([
                     'component' => 'com_projects',
@@ -62,7 +62,7 @@ class Migration20130829203107ComProjects extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__xmessage_component')
                 ->values([
                     'component' => 'com_projects',
@@ -72,7 +72,7 @@ class Migration20130829203107ComProjects extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__xmessage_component')
                 ->values([
                     'component' => 'com_projects',
@@ -209,14 +209,14 @@ class Migration20130829203107ComProjects extends Base
 
             if (
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('type')
                     ->from('#__project_types')
                     ->where('type', '=', 'General')
                     ->doesntExist()
             ) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertOrIgnore('#__project_types')
                     ->values([
                         'type'        => 'General',
@@ -230,14 +230,14 @@ class Migration20130829203107ComProjects extends Base
                 . 'or a collection of related resources';
             if (
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('type')
                     ->from('#__project_types')
                     ->where('type', '=', 'Content publication')
                     ->doesntExist()
             ) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertOrIgnore('#__project_types')
                     ->values([
                         'type'        => 'Content publication',
@@ -250,14 +250,14 @@ class Migration20130829203107ComProjects extends Base
             $desc3 = 'Projects created with the purpose to develop and publish a simulation tool or a code library';
             if (
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('type')
                     ->from('#__project_types')
                     ->where('type', '=', 'Application development')
                     ->doesntExist()
             ) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertOrIgnore('#__project_types')
                     ->values([
                         'type'        => 'Application development',
@@ -452,7 +452,7 @@ class Migration20130829203107ComProjects extends Base
         $schema->dropTable('#__project_remote_files');
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->delete('#__xmessage_component')
             ->where('component', '=', 'com_projects')
             ->execute();

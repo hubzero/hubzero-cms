@@ -88,7 +88,7 @@ class Migration20260915170000ComponentRoutesAll extends Base
         $found = [];
 
         $rows = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->select('element')
             ->select('enabled')

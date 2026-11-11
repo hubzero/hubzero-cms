@@ -39,7 +39,7 @@ class Migration20140325093000ComResources extends Base
         $found = false;
 
         $found = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('ROUTINE_NAME')
             ->from('information_schema.ROUTINES')
             ->where('ROUTINE_SCHEMA', '=', App::get('config')->get('db'))

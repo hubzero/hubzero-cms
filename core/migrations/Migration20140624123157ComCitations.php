@@ -31,7 +31,7 @@ class Migration20140624123157ComCitations extends Base
 
         // load all citations
         $citations = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(['id', 'uid'])
             ->from('#__citations')
             ->loadObjectList();
@@ -44,7 +44,7 @@ class Migration20140624123157ComCitations extends Base
                 }
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__citations')
                     ->set(['uid' => $newId])
                     ->where('id', '=', $citation->id)

@@ -29,7 +29,7 @@ class Migration20130708082138ComWiki extends Base
             && $schema->hasColumn('#__wiki_version', 'pageid')
         ) {
             $result = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('wv.*')
                 ->from('#__wiki_page', 'wp')
                 ->join('#__wiki_version AS wv', 'wp.id', 'wv.pageid')
@@ -46,7 +46,7 @@ class Migration20130708082138ComWiki extends Base
                 $pagehtml = preg_replace('/(xsearch)/', 'search', $result->pagehtml);
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__wiki_version')
                     ->set(['pagetext' => $pagetext, 'pagehtml' => $pagehtml])
                     ->where('id', '=', $result->id)

@@ -75,7 +75,7 @@ class Migration20160513140417ComMembers extends Base
             if ($schema->tableExists('#__users')) {
                 // Update users table with profile data
                 $results = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__xprofiles')
                     ->loadObjectList();
@@ -83,7 +83,7 @@ class Migration20160513140417ComMembers extends Base
                 if ($results) {
                     foreach ($results as $result) {
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->update('#__users')
                             ->set([
                                 'homeDirectory' => $result->homeDirectory,
@@ -101,7 +101,7 @@ class Migration20160513140417ComMembers extends Base
                 }
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__users')
                     ->set(['access' => 5])
                     ->where('id', 'IN', function ($query) {
@@ -123,7 +123,7 @@ class Migration20160513140417ComMembers extends Base
                 $fields = [];
                 if ($schema->tableExists('#__user_profile_fields')) {
                     $fields = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('*')
                         ->from('#__user_profile_fields')
                         ->loadAssocList('name');
@@ -139,7 +139,7 @@ class Migration20160513140417ComMembers extends Base
                     }
 
                     $subquery = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select([
                             'uidNumber',
                             Expression::literal($field),
@@ -152,7 +152,7 @@ class Migration20160513140417ComMembers extends Base
                         ->where($field, '!=', '');
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__user_profiles')
                         ->columns(['user_id', 'profile_key', 'profile_value', 'ordering', 'access'])
                         ->select($subquery)
@@ -173,7 +173,7 @@ class Migration20160513140417ComMembers extends Base
                     }
 
                     $subquery = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select([
                             'uidNumber',
                             Expression::literal($field),
@@ -186,7 +186,7 @@ class Migration20160513140417ComMembers extends Base
                         ->where($field, '!=', '');
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__user_profiles')
                         ->columns(['user_id', 'profile_key', 'profile_value', 'ordering', 'access'])
                         ->select($subquery)
@@ -196,7 +196,7 @@ class Migration20160513140417ComMembers extends Base
 
             if ($schema->tableExists('#__xprofiles_address')) {
                 $addresses = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__xprofiles_address')
                     ->loadObjectList();
@@ -226,7 +226,7 @@ class Migration20160513140417ComMembers extends Base
                     $id = $address->uidNumber;
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__user_profiles')
                         ->values([
                             'user_id'       => $id,

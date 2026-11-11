@@ -28,7 +28,7 @@ class Migration20170731201800ComResources extends Base
                 $schema->addColumn('#__resource_types', 'state')->integer(3)->notNull()->default('0');
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__resource_types')
                     ->set(['state' => 1])
                     ->execute();

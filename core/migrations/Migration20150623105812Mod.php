@@ -25,7 +25,7 @@ class Migration20150623105812Mod extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['element' => 'mod_adminmenu'])
                 ->where('client_id', '=', 1)
@@ -33,7 +33,7 @@ class Migration20150623105812Mod extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['element' => 'mod_adminlogin'])
                 ->where('client_id', '=', 1)
@@ -43,7 +43,7 @@ class Migration20150623105812Mod extends Base
 
         if ($schema->tableExists('#__modules')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__modules')
                 ->set(['module' => 'mod_adminmenu'])
                 ->where('client_id', '=', 1)
@@ -51,7 +51,7 @@ class Migration20150623105812Mod extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__modules')
                 ->set(['module' => 'mod_adminlogin'])
                 ->where('client_id', '=', 1)
@@ -71,7 +71,7 @@ class Migration20150623105812Mod extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['element' => 'mod_menu'])
                 ->where('client_id', '=', 1)
@@ -79,7 +79,7 @@ class Migration20150623105812Mod extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['element' => 'mod_login'])
                 ->where('client_id', '=', 1)
@@ -89,7 +89,7 @@ class Migration20150623105812Mod extends Base
 
         if ($schema->tableExists('#__modules')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__modules')
                 ->set(['module' => 'mod_menu'])
                 ->where('client_id', '=', 1)
@@ -97,7 +97,7 @@ class Migration20150623105812Mod extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__modules')
                 ->set(['module' => 'mod_login'])
                 ->where('client_id', '=', 1)

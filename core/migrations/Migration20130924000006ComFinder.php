@@ -139,7 +139,7 @@ class Migration20130924000006ComFinder extends Base
             // Insert root taxonomy entry
             // Insert root taxonomy entry
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__finder_taxonomy')
                 ->set([
                     'id'        => 1,
@@ -378,7 +378,7 @@ class Migration20130924000006ComFinder extends Base
 
         foreach ($terms as $term) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__finder_terms_common')
                 ->set([
                     'term'     => $term,

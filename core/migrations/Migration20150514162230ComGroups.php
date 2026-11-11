@@ -29,7 +29,7 @@ class Migration20150514162230ComGroups extends Base
                 . '"core.edit.state":[],"core.edit.own":[]}';
 
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__assets')
                 ->where('name', '=', 'com_groups')
@@ -48,7 +48,7 @@ class Migration20150514162230ComGroups extends Base
             } else {
                 // Set the first zone as default
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__assets')
                     ->set(['rules' => $rules])
                     ->where('id', '=', $id)
@@ -70,7 +70,7 @@ class Migration20150514162230ComGroups extends Base
                 . '"core.edit.own":[]}';
 
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__assets')
                 ->where('name', '=', 'com_groups')
@@ -89,7 +89,7 @@ class Migration20150514162230ComGroups extends Base
             } else {
                 // Set the first zone as default
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__assets')
                     ->set(['rules' => $rules])
                     ->where('id', '=', $id)

@@ -43,14 +43,14 @@ class Migration20160508203200ComWiki extends Base
                 $schema->addColumn('#__wiki_pages', 'namespace')->string(255)->notNull()->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__wiki_pages')
                     ->set(['namespace' => $this->db->quote('Help')])
                     ->where('pagename', 'LIKE', 'Help:%')
                     ->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__wiki_pages')
                     ->set(['namespace' => $this->db->quote('Template')])
                     ->where('pagename', 'LIKE', 'Template:%')
@@ -77,7 +77,7 @@ class Migration20160508203200ComWiki extends Base
 
             // Move state=1 (locked) to proected column
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__wiki_pages')
                 ->set(['protected' => 1])
                 ->where('state', '=', 1)
@@ -85,7 +85,7 @@ class Migration20160508203200ComWiki extends Base
 
             // Mark items as published (state=1)
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__wiki_pages')
                 ->set(['state' => 1])
                 ->where('state', '=', 0)
@@ -94,7 +94,7 @@ class Migration20160508203200ComWiki extends Base
             if ($schema->hasColumn('#__wiki_pages', 'group_cn')) {
                 // Convert group pages
                 $rows = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('w.id, w.scope, w.group_cn, g.gidNumber')
                     ->from('#__wiki_pages', 'w')
                     ->innerJoin('#__xgroups AS g', 'w.group_cn', 'g.cn')
@@ -104,7 +104,7 @@ class Migration20160508203200ComWiki extends Base
                     $row->scope = ltrim($row->scope, '/');
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__wiki_pages')
                         ->set(['scope' => 'group'])
                         ->set(['scope_id' => $row->gidNumber])
@@ -115,7 +115,7 @@ class Migration20160508203200ComWiki extends Base
 
                 // Convert projects
                 $rows = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('w.id, w.scope, w.group_cn')
                     ->from('#__wiki_pages', 'w')
                     ->where('w.group_cn', 'LIKE', 'pr-%')
@@ -126,14 +126,14 @@ class Migration20160508203200ComWiki extends Base
                     $row->group_cn = substr($row->group_cn, strlen('pr-'));
 
                     $row->pidNumber = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('id')
                         ->from('#__projects')
                         ->where('alias', '=', $row->group_cn)
                         ->value('id');
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__wiki_pages')
                         ->set(['scope' => 'project'])
                         ->set(['scope_id' => $row->pidNumber])
@@ -143,7 +143,7 @@ class Migration20160508203200ComWiki extends Base
                 }
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__wiki_pages')
                     ->set(['scope' => $this->db->quote('site')])
                     ->where('scope_id', '=', 0)
@@ -278,7 +278,7 @@ class Migration20160508203200ComWiki extends Base
 
             // Mark items as published (state=1)
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__wiki_pages')
                 ->set(['state' => 0])
                 ->where('state', '=', 1)
@@ -287,7 +287,7 @@ class Migration20160508203200ComWiki extends Base
             if ($schema->hasColumn('#__wiki_pages', 'protected')) {
                 // Mark items as published (state=1)
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__wiki_pages')
                     ->set(['state' => 1])
                     ->where('protected', '=', 1)
@@ -307,7 +307,7 @@ class Migration20160508203200ComWiki extends Base
 
                 // Convert group pages
                 $rows = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('w.id, w.path, w.scope, w.scope_id, g.cn')
                     ->from('#__wiki_pages', 'w')
                     ->joinOn('#__xgroups AS g', [
@@ -317,7 +317,7 @@ class Migration20160508203200ComWiki extends Base
                     ->loadObjectList();
                 foreach ($rows as $row) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__wiki_pages')
                         ->set(['group_cn' => $row->cn])
                         ->set(['scope' => $row->cn . '/wiki' . ($row->path ? '/' . $row->path : '')])
@@ -327,7 +327,7 @@ class Migration20160508203200ComWiki extends Base
 
                 // Convert projects
                 $rows = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('w.id, w.path, w.scope, w.scope_id, p.alias')
                     ->from('#__wiki_pages', 'w')
                     ->joinOn('#__projects AS p', [
@@ -338,7 +338,7 @@ class Migration20160508203200ComWiki extends Base
                 foreach ($rows as $row) {
                     $scopePath = $row->alias . '/wiki' . ($row->path ? '/' . $row->path : '');
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__wiki_pages')
                         ->set(['group_cn' => 'pre-' . $row->alias])
                         ->set(['scope' => $scopePath])
@@ -347,7 +347,7 @@ class Migration20160508203200ComWiki extends Base
                 }
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__wiki_pages')
                     ->set(['scope' => Expression::column('path')])
                     ->where('scope', '=', 'site')

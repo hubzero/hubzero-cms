@@ -52,7 +52,7 @@ class Migration20150520110000ComPublications extends Base
                 && $schema->hasColumn('#__publication_master_types', 'curation')
             ) {
                 $query = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('v.curation')
                     ->distinct()
                     ->select('t.id', 'type_id')
@@ -72,7 +72,7 @@ class Migration20150520110000ComPublications extends Base
                     foreach ($results as $result) {
                         // Determine version number
                         $query = $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->select('MAX(version_number)')
                             ->from('#__publication_curation_versions')
                             ->where('type_id', '=', $result->type_id);

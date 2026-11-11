@@ -25,7 +25,7 @@ class Migration20150813115100PlgSystemMemberhome extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('folder', '=', 'system')
@@ -48,7 +48,7 @@ class Migration20150813115100PlgSystemMemberhome extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('extension_id')
                 ->from('#__extensions')
                 ->where('folder', '=', 'system')

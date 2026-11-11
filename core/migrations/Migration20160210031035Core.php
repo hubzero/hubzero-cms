@@ -36,7 +36,7 @@ class Migration20160210031035Core extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__migrations')
                 ->set(['status' => 'success'])
                 ->execute();
@@ -59,7 +59,7 @@ class Migration20160210031035Core extends Base
             // Otherwise, you'd have entries in the table that will look like
             // successful runs, even though they weren't.
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__migrations')
                 ->where('status', '!=', 'success')
                 ->execute();

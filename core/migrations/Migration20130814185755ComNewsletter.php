@@ -40,7 +40,7 @@ class Migration20130814185755ComNewsletter extends Base
         }
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__cron_jobs')
             ->set(['params' => ''])
             ->where('plugin', '=', 'newsletter')

@@ -25,7 +25,7 @@ class Migration20160321145900ComResources extends Base
 
         if ($schema->tableExists('#__resource_types')) {
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__resource_types')
                 ->where('alias', '=', 'windowstools')
@@ -44,7 +44,7 @@ class Migration20160321145900ComResources extends Base
                     . '"plg_versions":"0","plg_wishlist":"1"}';
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__resource_types')
                     ->values([
                         'alias'         => 'windowstools',
@@ -69,7 +69,7 @@ class Migration20160321145900ComResources extends Base
 
         if ($schema->tableExists('#__resource_types')) {
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__resource_types')
                 ->where('alias', '=', 'windowstools')
@@ -77,7 +77,7 @@ class Migration20160321145900ComResources extends Base
 
             if ($id) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->delete('#__resource_types')
                     ->where('id', '=', (int) $id)
                     ->execute();

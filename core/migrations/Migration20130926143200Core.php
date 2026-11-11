@@ -29,7 +29,7 @@ class Migration20130926143200Core extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $result = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__template_styles')
                 ->where('home', '=', 0)
@@ -44,7 +44,7 @@ class Migration20130926143200Core extends Base
 
             if (!empty($templates)) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->delete('#__extensions')
                     ->where('type', '=', 'template')
                     ->whereIn('element', $templates)
@@ -57,7 +57,7 @@ class Migration20130926143200Core extends Base
                 $templates = $joomlas;
             }
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__template_styles')
                 ->whereIn('template', $templates)
                 ->where('home', '=', 0)
@@ -92,7 +92,7 @@ class Migration20130926143200Core extends Base
 
             foreach ($viewlevels as $level) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertOrIgnore('#__template_styles')
                     ->values([
                         'id'        => $level[0],
@@ -107,7 +107,7 @@ class Migration20130926143200Core extends Base
 
             // Insert all templates from extensions
             $result = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__extensions')
                 ->where('type', '=', 'template')
@@ -115,7 +115,7 @@ class Migration20130926143200Core extends Base
 
             foreach ($result as $r) {
                 $query = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('id')
                     ->from('#__template_styles')
                     ->where('template', '=', $r->element);
@@ -125,7 +125,7 @@ class Migration20130926143200Core extends Base
                 }
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__template_styles')
                     ->values([
                         'template'  => $r->element,

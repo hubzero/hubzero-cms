@@ -54,7 +54,7 @@ class Migration20150827120311Core extends Base
         ) {
             foreach ($this->files as $old => $renamed) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__migrations')
                     ->set(['file' => $renamed])
                     ->where('file', '=', $old)
@@ -76,7 +76,7 @@ class Migration20150827120311Core extends Base
         ) {
             foreach ($this->files as $old => $renamed) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__migrations')
                     ->set(['file' => $old])
                     ->where('file', '=', $renamed)

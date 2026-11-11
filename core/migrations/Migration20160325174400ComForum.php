@@ -24,21 +24,21 @@ class Migration20160325174400ComForum extends Base
 
         if ($schema->tableExists('#__forum_sections') && $schema->hasColumn('#__forum_sections', 'access')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->from('#__forum_sections')
                 ->increment('access');
         }
 
         if ($schema->tableExists('#__forum_categories') && $schema->hasColumn('#__forum_categories', 'access')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->from('#__forum_categories')
                 ->increment('access');
         }
 
         if ($schema->tableExists('#__forum_posts') && $schema->hasColumn('#__forum_posts', 'access')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->from('#__forum_posts')
                 ->increment('access');
         }
@@ -66,21 +66,21 @@ class Migration20160325174400ComForum extends Base
 
         if ($schema->tableExists('#__forum_sections') && $schema->hasColumn('#__forum_sections', 'access')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->from('#__forum_sections')
                 ->decrement('access');
         }
 
         if ($schema->tableExists('#__forum_categories') && $schema->hasColumn('#__forum_categories', 'access')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->from('#__forum_categories')
                 ->decrement('access');
         }
 
         if ($schema->tableExists('#__forum_posts') && $schema->hasColumn('#__forum_posts', 'access')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->from('#__forum_posts')
                 ->decrement('access');
         }

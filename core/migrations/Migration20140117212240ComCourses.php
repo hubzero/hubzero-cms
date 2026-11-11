@@ -38,7 +38,7 @@ class Migration20140117212240ComCourses extends Base
 
             // Mark all assets of type form as graded
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_assets')
                 ->set(['graded' => 1])
                 ->where('type', '=', 'form')
@@ -60,7 +60,7 @@ class Migration20140117212240ComCourses extends Base
 
             // Mark all assets of type form as graded
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__courses_assets')
                 ->set(['grade_weight' => Expression::column('subtype')])
                 ->where('type', '=', 'form')

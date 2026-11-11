@@ -25,7 +25,7 @@ class Migration20141110143234ComMembers extends Base
 
         if ($schema->tableExists('#__xorganization_types')) {
             $count = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->from('#__xorganization_types')
                 ->count();
 
@@ -46,7 +46,7 @@ class Migration20141110143234ComMembers extends Base
 
                 foreach ($types as $alias => $title) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__xorganization_types')
                         ->columns(['type', 'title'])
                         ->values([$alias, $title])

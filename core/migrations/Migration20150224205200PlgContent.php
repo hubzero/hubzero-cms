@@ -25,7 +25,7 @@ class Migration20150224205200PlgContent extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $plugin = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -44,7 +44,7 @@ class Migration20150224205200PlgContent extends Base
                 $params->set('noconflictSite', 0);
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
                     ->where('extension_id', '=', $plugin->extension_id)
@@ -52,7 +52,7 @@ class Migration20150224205200PlgContent extends Base
             }
 
             $plugin = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -66,7 +66,7 @@ class Migration20150224205200PlgContent extends Base
                 $params->set('convertFormat', 1);
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
                     ->where('extension_id', '=', $plugin->extension_id)
@@ -74,7 +74,7 @@ class Migration20150224205200PlgContent extends Base
             }
 
             $plugin = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -89,7 +89,7 @@ class Migration20150224205200PlgContent extends Base
                 $params->set('sanitizeBefore', 0);
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__extensions')
                     ->set(['params' => $params->toString()])
                     ->where('extension_id', '=', $plugin->extension_id)

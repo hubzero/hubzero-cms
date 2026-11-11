@@ -138,7 +138,7 @@ class Migration20130924000013Core extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__schemas')
                 ->values([
                     'extension_id' => 700,
@@ -227,7 +227,7 @@ class Migration20130924000013Core extends Base
 
                 foreach ($styles as $style) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insertOrIgnore('#__template_styles')
                         ->values([
                             'id'        => $style[0],
@@ -242,7 +242,7 @@ class Migration20130924000013Core extends Base
 
                 // Insert all templates from extensions
                 $result = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__extensions')
                     ->where('type', '=', 'template')
@@ -250,7 +250,7 @@ class Migration20130924000013Core extends Base
 
                 foreach ($result as $r) {
                     $query = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('id')
                         ->from('#__template_styles')
                         ->where('template', '=', $r->element)
@@ -261,7 +261,7 @@ class Migration20130924000013Core extends Base
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__template_styles')
                         ->values([
                             'template'  => $r->element,
@@ -275,14 +275,14 @@ class Migration20130924000013Core extends Base
 
                 // Update current templates to have home = 1 (one for site and one for admin)
                 $result = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select(['template', 'client_id'])
                     ->from('#__templates_menu')
                     ->loadObjectList();
 
                 foreach ($result as $r) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__template_styles')
                         ->set(['home' => '1'])
                         ->where('template', '=', $r->template)
@@ -291,7 +291,7 @@ class Migration20130924000013Core extends Base
 
                 // Now make sure something is set for the admin template
                 $query = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('id')
                     ->from('#__template_styles')
                     ->where('client_id', '=', 1)
@@ -300,7 +300,7 @@ class Migration20130924000013Core extends Base
 
                 if ($query->doesntExist()) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__template_styles')
                         ->set(['home' => '1'])
                         ->where('template', '=', 'hubbasicadmin')
@@ -365,7 +365,7 @@ class Migration20130924000013Core extends Base
 
             foreach ($updateSites as $site) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__update_sites')
                     ->values([
                         'update_site_id'       => $site[0],
@@ -393,7 +393,7 @@ class Migration20130924000013Core extends Base
 
             foreach ($updateSitesExtensions as $ext) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__update_sites_extensions')
                     ->values([
                         'update_site_id' => $ext[0],

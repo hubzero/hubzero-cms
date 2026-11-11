@@ -38,7 +38,7 @@ class Migration20140814103014ComSupport extends Base
 
             // Add default values
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__support_statuses')
                 ->columns(['id', 'open', 'title', 'alias'])
                 ->values([
@@ -50,7 +50,7 @@ class Migration20140814103014ComSupport extends Base
                 ->execute();
 
             $resolutions = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__support_resolutions')
                 ->loadObjectList();
@@ -70,14 +70,14 @@ class Migration20140814103014ComSupport extends Base
 
                 if (count($entries)) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insertMany('#__support_statuses', $entries);
                 }
             }
 
             // Update closed tickets
             $rows = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__support_statuses')
                 ->where('open', '=', 0)
@@ -86,7 +86,7 @@ class Migration20140814103014ComSupport extends Base
             if ($rows) {
                 foreach ($rows as $row) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__support_tickets')
                         ->set(['status' => $row->id])
                         ->where('resolved', '=', $row->alias)

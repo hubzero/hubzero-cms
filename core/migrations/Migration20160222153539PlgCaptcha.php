@@ -26,7 +26,7 @@ class Migration20160222153539PlgCaptcha extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'captcha',
@@ -38,7 +38,7 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'captcha',
@@ -53,7 +53,7 @@ class Migration20160222153539PlgCaptcha extends Base
             // This will preserve existing settings.
             $this->deletePluginEntry('captcha', 'recaptcha');
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'captcha',
@@ -75,7 +75,7 @@ class Migration20160222153539PlgCaptcha extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'hubzero',
@@ -87,7 +87,7 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'hubzero',
@@ -99,7 +99,7 @@ class Migration20160222153539PlgCaptcha extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set([
                     'folder'  => 'hubzero',

@@ -195,7 +195,7 @@ class Migration20130828201526ComPublications extends Base
 
             foreach ($categories as $category) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__publication_categories')
                     ->set([
                         'id'            => $category[0],

@@ -30,7 +30,7 @@ class Migration20170405140417ComMembers extends Base
             && $schema->hasColumn('#__users', 'registerDate')
         ) {
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['u.id', 'p.registerDate'])
                 ->from('#__users', 'u')
                 ->innerJoin('#__xprofiles AS p', 'p.uidNumber', 'u.id')
@@ -41,7 +41,7 @@ class Migration20170405140417ComMembers extends Base
             if ($results) {
                 foreach ($results as $result) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__users')
                         ->set(['registerDate' => $result->registerDate])
                         ->where('id', '=', $result->id)

@@ -25,7 +25,7 @@ class Migration20150901115230ComResources extends Base
 
         if ($schema->tableExists('#__resource_licenses')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__resource_licenses')
                 ->where('name', '=', 'cc40-by-nc-sa');
@@ -33,7 +33,7 @@ class Migration20150901115230ComResources extends Base
 
             if (!$id) {
                 $query = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('ordering')
                     ->from('#__resource_licenses')
                     ->order('ordering', 'desc');
@@ -65,7 +65,7 @@ class Migration20150901115230ComResources extends Base
                     . "For more information visit http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.";
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__resource_licenses')
                     ->set([
                         'ordering' => $ordering + 1,
@@ -88,7 +88,7 @@ class Migration20150901115230ComResources extends Base
 
         if ($schema->tableExists('#__resource_licenses')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__resource_licenses')
                 ->where('name', '=', 'cc40-by-nc-sa');
@@ -97,7 +97,7 @@ class Migration20150901115230ComResources extends Base
             if ($id) {
                 // Set the first zone as default
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->delete('#__resource_licenses')
                     ->where('name', '=', 'cc40-by-nc-sa')
                     ->execute();

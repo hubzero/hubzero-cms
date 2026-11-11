@@ -27,7 +27,7 @@ class Migration20140716182939Core extends Base
             $schema->addColumn('#__migrations', 'scope')->string(255)->notNull()->default('');
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__migrations')
                 ->set(['scope' => PATH_ROOT . DS . 'migrations'])
                 ->execute();
@@ -37,7 +37,7 @@ class Migration20140716182939Core extends Base
             $schema->addColumn('migrations', 'scope')->string(255)->notNull()->default('');
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('migrations')
                 ->set(['scope' => PATH_ROOT . DS . 'migrations'])
                 ->execute();

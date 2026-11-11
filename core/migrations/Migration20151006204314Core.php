@@ -31,7 +31,7 @@ class Migration20151006204314Core extends Base
             if ($files && count($files) > 0) {
                 foreach ($files as $file) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__migrations')
                         ->set(['scope' => 'app/migrations'])
                         ->where('file', '=', $file)

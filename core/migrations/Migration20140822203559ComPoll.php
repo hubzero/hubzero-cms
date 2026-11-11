@@ -30,7 +30,7 @@ class Migration20140822203559ComPoll extends Base
             $schema->addColumn('#__polls', 'alias')->string(255)->notNull()->default('')->execute();
 
             $polls = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'title'])
                 ->from('#__polls')
                 ->loadObjectList();
@@ -41,7 +41,7 @@ class Migration20140822203559ComPoll extends Base
                     $alias = strtolower($alias);
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__polls')
                         ->set(['alias' => $alias])
                         ->where('id', '=', $poll->id)

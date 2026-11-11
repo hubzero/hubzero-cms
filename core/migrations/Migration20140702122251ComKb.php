@@ -25,7 +25,7 @@ class Migration20140702122251ComKb extends Base
 
         if ($schema->hasColumn('#__faq_comments', 'state')) {
             $ids = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('referenceid')
                 ->from('#__abuse_reports')
                 ->where('state', '=', 0)
@@ -36,7 +36,7 @@ class Migration20140702122251ComKb extends Base
                 $ids = array_map('intval', $ids);
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__faq_comments')
                     ->set(['state' => 3])
                     ->whereIn('id', $ids)
@@ -54,7 +54,7 @@ class Migration20140702122251ComKb extends Base
 
         if ($schema->hasColumn('#__faq_comments', 'state')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__faq_comments')
                 ->set(['state' => 1])
                 ->where('state', '=', 3)

@@ -24,14 +24,14 @@ class Migration20151004090000ComPublications extends Base
 
         if ($schema->tableExists('#__publication_blocks')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('block')
                 ->from('#__publication_blocks')
                 ->where('block', '=', 'citations');
 
             if ($query->doesntExist()) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertOrIgnore('#__publication_blocks')
                     ->values([
                         'block'    => 'citations',
@@ -48,14 +48,14 @@ class Migration20151004090000ComPublications extends Base
             }
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__publication_blocks')
                 ->set(['ordering' => 8])
                 ->where('block', '=', 'notes')
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__publication_blocks')
                 ->set(['ordering' => 9])
                 ->where('block', '=', 'review')

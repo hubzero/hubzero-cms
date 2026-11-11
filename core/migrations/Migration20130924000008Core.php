@@ -48,7 +48,7 @@ class Migration20130924000008Core extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__languages')
                 ->columns([
                     'lang_id',

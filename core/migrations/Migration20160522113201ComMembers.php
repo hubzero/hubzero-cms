@@ -28,7 +28,7 @@ class Migration20160522113201ComMembers extends Base
                 $schema->addColumn('#__user_profile_fields', 'action_browse')->tinyInteger(2)->notNull()->default(0);
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__user_profile_fields')
                     ->set(['action_browse' => 1])
                     ->whereIn('name', ['organization', 'bio'])

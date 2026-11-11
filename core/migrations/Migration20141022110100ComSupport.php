@@ -24,7 +24,7 @@ class Migration20141022110100ComSupport extends Base
 
         if ($schema->tableExists('#__support_tickets')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'report'])
                 ->from('#__support_tickets')
                 ->where('created', '<', '2013-01-01 00:00:00')
@@ -42,7 +42,7 @@ class Migration20141022110100ComSupport extends Base
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__support_tickets')
                         ->set(['report' => $row->report, 'summary' => $row->summary])
                         ->where('id', '=', $row->id)

@@ -118,7 +118,7 @@ class Migration20130829211856ComPublications extends Base
 
             foreach ($levels as $level) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__publication_audience_levels')
                     ->set([
                         'label'       => $level[0],
@@ -309,7 +309,7 @@ class Migration20130829211856ComPublications extends Base
 
             foreach ($categories as $category) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__publication_categories')
                     ->set([
                         'name'          => $category[0],
@@ -352,7 +352,7 @@ class Migration20130829211856ComPublications extends Base
 
             foreach ($types as $type) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__publication_master_types')
                     ->set([
                         'type'          => $type[0],
@@ -525,7 +525,7 @@ class Migration20130829211856ComPublications extends Base
 
             foreach ($licenses as $lic) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__publication_licenses')
                     ->set([
                         'name'         => $lic[0],

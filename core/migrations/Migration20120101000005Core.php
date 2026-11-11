@@ -23,7 +23,7 @@ class Migration20120101000005Core extends Base
 
         if (!$schema->tableExists('#__resource_contributors_view')) {
             $selectQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('m.uidNumber', 'uidNumber')
                 ->select(Expression::count('AA.authorid'), 'count')
                 ->from('#__xprofiles', 'm')
@@ -57,7 +57,7 @@ class Migration20120101000005Core extends Base
             );
 
             $selectQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('m.uidNumber', 'uidNumber')
                 ->select(Expression::count('w.id'), 'count')
                 ->from('#__xprofiles', 'm')
@@ -88,12 +88,12 @@ class Migration20120101000005Core extends Base
 
         if (!$schema->tableExists('#__contributor_ids_view')) {
             $unionQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('uidNumber')
                 ->from('#__wiki_contributors_view');
 
             $selectQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('uidNumber')
                 ->from('#__resource_contributors_view')
                 ->union($unionQuery);
@@ -108,7 +108,7 @@ class Migration20120101000005Core extends Base
 
         if (!$schema->tableExists('#__contributors_view')) {
             $selectQuery = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('c.uidNumber', 'uidNumber')
                 ->select(Expression::coalesce('r.count', 0), 'resource_count')
                 ->select(Expression::coalesce('w.count', 0), 'wiki_count')

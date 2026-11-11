@@ -175,7 +175,7 @@ class Migration20150327144022ComStorefront extends Base
 
             // Data for table `#__storefront_product_types` */
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__storefront_product_types')
                 ->columns(['ptId', 'ptName', 'ptModel'])
                 ->values("1, 'Shippable merchandise', 'normal'")

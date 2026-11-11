@@ -36,7 +36,7 @@ class Migration20260912091500ComResources extends Base
         }
 
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->from('#__resource_types')
             ->where('alias', '=', 'windowstools')
@@ -47,7 +47,7 @@ class Migration20260912091500ComResources extends Base
         }
 
         $used = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('COUNT(*)')
             ->from('#__resources')
             ->where('type', '=', (int) $id)
@@ -62,7 +62,7 @@ class Migration20260912091500ComResources extends Base
         }
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->delete('#__resource_types')
             ->where('id', '=', (int) $id)
             ->execute();
@@ -78,7 +78,7 @@ class Migration20260912091500ComResources extends Base
         }
 
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->from('#__resource_types')
             ->where('alias', '=', 'windowstools')
@@ -89,7 +89,7 @@ class Migration20260912091500ComResources extends Base
         }
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->insert('#__resource_types')
             ->values([
                 'alias'         => 'windowstools',

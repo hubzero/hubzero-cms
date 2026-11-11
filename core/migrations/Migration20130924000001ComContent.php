@@ -138,7 +138,7 @@ class Migration20130924000001ComContent extends Base
         // Update "uncategorised" cat_id from 0
         // Update "uncategorised" cat_id from 0
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('id')
             ->from('#__categories')
             ->where('extension', '=', 'com_content')
@@ -147,7 +147,7 @@ class Migration20130924000001ComContent extends Base
 
         if (is_numeric($id)) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__content')
                 ->set(['catid' => $id])
                 ->where('catid', '=', 0)
@@ -158,7 +158,7 @@ class Migration20130924000001ComContent extends Base
         // Convert params to json
         // Convert params to json
         $results = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(['id', 'attribs'])
             ->from('#__content')
             ->beginOrGroup()
@@ -188,7 +188,7 @@ class Migration20130924000001ComContent extends Base
                 }
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__content')
                     ->set(['attribs' => json_encode($array)])
                     ->where('id', '=', $r->id)

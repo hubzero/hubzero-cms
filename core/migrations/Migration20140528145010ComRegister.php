@@ -26,7 +26,7 @@ class Migration20140528145010ComRegister extends Base
         if (!empty($rparams)) {
             $values = $rparams->toArray();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->select('*')
                 ->from('#__extensions')
@@ -42,7 +42,7 @@ class Migration20140528145010ComRegister extends Base
 
                 $data['params'] = $mparams->toString();
 
-                $query = $this->db->getQuery(true);
+                $query = $this->db->getQuery();
                 $query
                     ->update('#__extensions')
                     ->where('extension_id', '=', $data['extension_id']);
@@ -61,7 +61,7 @@ class Migration20140528145010ComRegister extends Base
 
         // Get the default menu identifier
         // Get the default menu identifier
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->select('extension_id')
             ->from('#__extensions')
@@ -71,7 +71,7 @@ class Migration20140528145010ComRegister extends Base
 
         // Check if there's a menu item for com_register
         // Could also filter by menutype: "... AND menutype=" . $this->db->quote($menutype)
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->select('id')
             ->from('#__menu')
@@ -81,7 +81,7 @@ class Migration20140528145010ComRegister extends Base
             // There is!
             // So, just update its link
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__menu')
                 ->set([
                     'link' => 'index.php?option=com_members&view=register&layout=create',
@@ -90,14 +90,14 @@ class Migration20140528145010ComRegister extends Base
                 ->where('id', '=', $id)
                 ->execute();
         } else {
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->select('menutype')
                 ->from('#__menu')
                 ->where('home', '=', 1);
             $menutype = $query->value('menutype');
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->select('ordering')
                 ->from('#__menu')
@@ -109,7 +109,7 @@ class Migration20140528145010ComRegister extends Base
             // No menu item for com_register so we need to create one for the new com_members controler
             // No menu item for com_register so we need to create one for the new com_members controler
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__menu')
                 ->columns([
                     'menutype',
@@ -182,7 +182,7 @@ class Migration20140528145010ComRegister extends Base
         $rparams = $this->getParams('com_members');
         $values = $rparams->toArray();
 
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->select('*')
             ->from('#__extensions')
@@ -198,7 +198,7 @@ class Migration20140528145010ComRegister extends Base
 
             $data['params'] = $mparams->toString();
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->update('#__extensions')
                 ->where('extension_id', '=', $data['extension_id']);

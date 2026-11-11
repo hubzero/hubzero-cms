@@ -105,7 +105,7 @@ class Migration20130924000011ComModules extends Base
 
         if ($first) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__modules')
                 ->set(['module' => 'mod_menu'])
                 ->where('module', '=', 'mod_mainmenu')
@@ -113,7 +113,7 @@ class Migration20130924000011ComModules extends Base
 
             // Add modules_menu entry admin modules that previously didn't need an entry
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__modules')
                 ->where('published', '=', '1')
@@ -123,7 +123,7 @@ class Migration20130924000011ComModules extends Base
             foreach ($results as $r) {
                 // First, make sure it isn't already there
                 $ret = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__modules_menu')
                     ->where('moduleid', '=', (int) $r->id)
@@ -135,7 +135,7 @@ class Migration20130924000011ComModules extends Base
                 }
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__modules_menu')
                     ->values([
                         'moduleid' => $r->id,
@@ -146,7 +146,7 @@ class Migration20130924000011ComModules extends Base
 
             // Update menu params (specifically to fix menu_image)
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'params', 'module'])
                 ->from('#__modules')
                 ->loadObjectList();
@@ -176,7 +176,7 @@ class Migration20130924000011ComModules extends Base
                         $array['showHere'] = 0;
                     } elseif ($r->module == 'mod_newsflash') {
                         $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->update('#__modules')
                             ->set(['module' => 'mod_articles_news'])
                             ->where('id', '=', $r->id)
@@ -191,7 +191,7 @@ class Migration20130924000011ComModules extends Base
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__modules')
                         ->set(['params' => json_encode($array)])
                         ->where('id', '=', $r->id)

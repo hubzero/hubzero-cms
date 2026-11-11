@@ -25,7 +25,7 @@ class Migration20150902104232ComContent extends Base
 
         if ($schema->tableExists('#__content')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__content')
                 ->where('alias', '=', 'discover');
@@ -42,7 +42,7 @@ class Migration20150902104232ComContent extends Base
 
                 if ($row->introtext == $old || $despaced == $olddespaced) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__content')
                         ->set(['introtext' => $this->updated])
                         ->where('id', '=', $row->id)
@@ -61,7 +61,7 @@ class Migration20150902104232ComContent extends Base
 
         if ($schema->tableExists('#__content')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__content')
                 ->where('alias', '=', 'discover');
@@ -78,7 +78,7 @@ class Migration20150902104232ComContent extends Base
 
                 if ($row->introtext == $old || $despaced == $olddespaced) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__content')
                         ->set(['introtext' => $this->previous])
                         ->where('id', '=', $row->id)

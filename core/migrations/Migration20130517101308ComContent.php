@@ -26,49 +26,49 @@ class Migration20130517101308ComContent extends Base
 
         if ($schema->tableExists('#__components')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__components')
                 ->set(['params' => Expression::replace(Expression::column('params'), "show_pdf_icon=\n", '')])
                 ->where('option', '=', 'com_content')
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__components')
                 ->set(['params' => Expression::replace(Expression::column('params'), "show_pdf_icon=0\n", '')])
                 ->where('option', '=', 'com_content')
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__components')
                 ->set(['params' => Expression::replace(Expression::column('params'), "show_pdf_icon=1\n", '')])
                 ->where('option', '=', 'com_content')
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__menu')
                 ->set(['params' => Expression::replace(Expression::column('params'), "show_pdf_icon=\n", '')])
                 ->whereLike('link', 'com_content')
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__menu')
                 ->set(['params' => Expression::replace(Expression::column('params'), "show_pdf_icon=0\n", '')])
                 ->whereLike('link', 'com_content')
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__menu')
                 ->set(['params' => Expression::replace(Expression::column('params'), "show_pdf_icon=1\n", '')])
                 ->whereLike('link', 'com_content')
                 ->execute();
         } else {
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['extension_id', 'params'])
                 ->from('#__extensions')
                 ->where('element', '=', 'com_content')
@@ -80,7 +80,7 @@ class Migration20130517101308ComContent extends Base
                     unset($params->show_pdf_icon);
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__extensions')
                         ->set(['params' => json_encode($params)])
                         ->where('extension_id', '=', $r->extension_id)
@@ -89,7 +89,7 @@ class Migration20130517101308ComContent extends Base
             }
 
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'params'])
                 ->from('#__menu')
                 ->whereLike('link', 'com_content')
@@ -101,7 +101,7 @@ class Migration20130517101308ComContent extends Base
                     unset($params->show_pdf_icon);
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__menu')
                         ->set(['params' => json_encode($params)])
                         ->where('id', '=', $r->id)

@@ -32,7 +32,7 @@ class Migration20160422095100ComUsers extends Base
 
                 if ($schema->tableExists('#__viewlevels')) {
                     $levels = $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('*')
                         ->from('#__viewlevels')
                         ->order('ordering', 'ASC')
@@ -52,7 +52,7 @@ class Migration20160422095100ComUsers extends Base
                 }
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__users', 'u')
                     ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                     ->set(['u.access' => $public])
@@ -60,7 +60,7 @@ class Migration20160422095100ComUsers extends Base
                     ->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__users', 'u')
                     ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                     ->set(['u.access' => $private])
@@ -79,7 +79,7 @@ class Migration20160422095100ComUsers extends Base
 
             if ($schema->tableExists('#__xprofiles') && $schema->hasColumn('#__xprofiles', 'regIP')) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__users', 'u')
                     ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                     ->setColumn('u.registerIP', 'x.regIP')
@@ -92,7 +92,7 @@ class Migration20160422095100ComUsers extends Base
             && $schema->hasColumn('#__xprofiles', 'mailPreferenceOption')
         ) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__users', 'u')
                 ->leftJoin('#__xprofiles AS x', 'u.id', 'x.uidNumber')
                 ->setColumn('u.sendEmail', 'x.mailPreferenceOption')

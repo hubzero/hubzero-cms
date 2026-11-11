@@ -29,7 +29,7 @@ class Migration20141202211549PlgMembersDashboard extends Base
         if ($schema->tableExists('#__xprofiles_dashboard_preferences')) {
             // delete all null user preferences
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__xprofiles_dashboard_preferences')
                 ->where('preferences', '=', '[]')
                 ->execute();
@@ -47,7 +47,7 @@ class Migration20141202211549PlgMembersDashboard extends Base
         if ($schema->tableExists('#__modules')) {
             // get top 6 modules
             $modules = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__modules')
                 ->where('position', '=', 'memberDashboard')

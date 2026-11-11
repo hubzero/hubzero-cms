@@ -23,7 +23,7 @@ class Migration20161018093917Core extends Base
     {
         /* Future migration should drop the table */
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->delete('#__session_log')
             ->execute();
     }

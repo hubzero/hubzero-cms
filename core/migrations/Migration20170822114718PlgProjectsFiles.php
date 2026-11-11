@@ -25,7 +25,7 @@ class Migration20170822114718PlgProjectsFiles extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $row = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__extensions')
                 ->where('folder', '=', 'projects')
@@ -38,7 +38,7 @@ class Migration20170822114718PlgProjectsFiles extends Base
                     $params->handler_base_path = rtrim($params->handler_base_path, '/') . '/{project}/{file}';
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__extensions')
                         ->set(['params' => json_encode($params)])
                         ->where('extension_id', '=', $row->extension_id)
@@ -57,7 +57,7 @@ class Migration20170822114718PlgProjectsFiles extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $row = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__extensions')
                 ->where('folder', '=', 'projects')
@@ -70,7 +70,7 @@ class Migration20170822114718PlgProjectsFiles extends Base
                     $params->handler_base_path = str_replace('{project}/{file}', '', $params->handler_base_path);
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__extensions')
                         ->set(['params' => json_encode($params)])
                         ->where('extension_id', '=', $row->extension_id)

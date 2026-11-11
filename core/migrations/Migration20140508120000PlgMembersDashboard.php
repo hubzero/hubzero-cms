@@ -25,7 +25,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 
         if (!$schema->tableExists('#__xprofiles_dashboard_preferences') && $schema->tableExists('#__myhub')) {
             $dashboardPlugin = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['extension_id', 'params'])
                 ->from('#__extensions')
                 ->where('folder', '=', 'members')
@@ -69,7 +69,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
             }
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => json_encode($params)])
                 ->where('extension_id', '=', $dashboardPlugin->extension_id)
@@ -88,7 +88,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
 
             // move over exxisting preferences
             $preferences = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__myhub')
                 ->group('uid')
@@ -125,7 +125,7 @@ class Migration20140508120000PlgMembersDashboard extends Base
             if (count($newpreferences) > 0) {
                 foreach ($newpreferences as $pref) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__xprofiles_dashboard_preferences')
                         ->columns(['uidNumber', 'preferences', 'modified'])
                         ->values([

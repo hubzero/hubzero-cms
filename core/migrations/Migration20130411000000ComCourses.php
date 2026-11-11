@@ -48,7 +48,7 @@ class Migration20130411000000ComCourses extends Base
                 . '"group":[],"having":[]}';
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__courses_grade_policies')
                 ->set([
                     'id'             => 1,

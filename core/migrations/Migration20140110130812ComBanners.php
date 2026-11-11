@@ -22,7 +22,7 @@ class Migration20140110130812ComBanners extends Base
     public function up()
     {
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')
@@ -35,7 +35,7 @@ class Migration20140110130812ComBanners extends Base
             $this->deleteModuleEntry('mod_banners');
 
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__modules')
                 ->where('module', '=', 'mod_banners')
@@ -43,13 +43,13 @@ class Migration20140110130812ComBanners extends Base
 
             if ($results) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->delete('#__modules_menu')
                     ->whereIn('moduleid', $results)
                     ->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->delete('#__modules')
                     ->where('module', '=', 'mod_banners')
                     ->execute();
@@ -70,7 +70,7 @@ class Migration20140110130812ComBanners extends Base
         $schema = $this->db->schema();
 
         $id = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('extension_id')
             ->from('#__extensions')
             ->where('type', '=', 'component')

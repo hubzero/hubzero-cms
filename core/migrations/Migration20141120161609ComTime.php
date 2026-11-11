@@ -38,7 +38,7 @@ class Migration20141120161609ComTime extends Base
                 ->execute();
 
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'date'])
                 ->from('#__time_records')
                 ->loadObjectList();
@@ -54,7 +54,7 @@ class Migration20141120161609ComTime extends Base
                     )->toSql();
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__time_records')
                         ->set(['date' => $date])
                         ->where('id', '=', (int) $result->id)
@@ -78,7 +78,7 @@ class Migration20141120161609ComTime extends Base
                 ->execute();
 
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'date', 'time'])
                 ->from('#__time_records')
                 ->loadObjectList();
@@ -92,7 +92,7 @@ class Migration20141120161609ComTime extends Base
                     $date = date('Y-m-d H:i:s', strtotime($result->date) + $result->time * 3600);
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__time_records')
                         ->set(['end' => $date])
                         ->where('id', '=', (int) $result->id)

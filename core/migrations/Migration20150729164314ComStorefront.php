@@ -42,7 +42,7 @@ class Migration20150729164314ComStorefront extends Base
 
         if ($schema->tableExists('#__storefront_product_types')) {
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->from('#__storefront_product_types')
                 ->where('ptName', '=', 'Software Download')
                 ->where('ptModel', '=', 'software');
@@ -50,7 +50,7 @@ class Migration20150729164314ComStorefront extends Base
 
             if (!$count) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__storefront_product_types')
                     ->columns(['ptName', 'ptModel'])
                     ->values(['Software Download', 'software'])
@@ -85,7 +85,7 @@ class Migration20150729164314ComStorefront extends Base
 
         if ($schema->tableExists('#__storefront_product_types')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__storefront_product_types')
                 ->where('ptName', '=', 'Software Download')
                 ->where('ptModel', '=', 'software')

@@ -26,7 +26,7 @@ class Migration20131113193815ComResources extends Base
 
         if ($schema->tableExists('#__resource_licenses')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__resource_licenses')
                 ->set(['text' => Expression::replace('text', 'â€”', '—')])
                 ->execute();

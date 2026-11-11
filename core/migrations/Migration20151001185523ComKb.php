@@ -27,7 +27,7 @@ class Migration20151001185523ComKb extends Base
         if ($schema->tableExists('#__faq_categories') && $schema->tableExists('#__categories')) {
             if ($schema->hasColumn('#__faq', 'section')) {
                 $query = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('*')
                     ->from('#__faq_categories');
                 $categories = $query->loadObjectList();
@@ -65,7 +65,7 @@ class Migration20151001185523ComKb extends Base
                 }
 
                 $query = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('MAX(rgt)')
                     ->from('#__categories');
                 $max = $query->value('MAX(rgt)');
@@ -73,7 +73,7 @@ class Migration20151001185523ComKb extends Base
                 if ($max) {
                     $max = intval($max);
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__categories')
                         ->set(['rgt' => $max + 1])
                         ->where('extension', '=', 'system')
@@ -82,7 +82,7 @@ class Migration20151001185523ComKb extends Base
                 }
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__categories')
                     ->set(['parent_id' => 1])
                     ->where('extension', '=', 'com_kb')
@@ -90,7 +90,7 @@ class Migration20151001185523ComKb extends Base
                     ->execute();
 
                 $query = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select(['id', 'section', 'category'])
                     ->from('#__faq');
                 $articles = $query->loadObjectList();
@@ -101,7 +101,7 @@ class Migration20151001185523ComKb extends Base
                     $article->category = (isset($par[$key]) ? $par[$key] : 0);
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__faq')
                         ->set(['category' => $article->category])
                         ->where('id', '=', (int) $article->id)
@@ -129,7 +129,7 @@ class Migration20151001185523ComKb extends Base
                 $schema->renameTable('#__faq_helpful_log', '#__kb_votes');
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__kb_votes')
                     ->set(['type' => 'article'])
                     ->where('type', '=', 'entry')
@@ -178,7 +178,7 @@ class Migration20151001185523ComKb extends Base
                 $schema->renameTable('#__kb_votes', '#__faq_helpful_log');
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__faq_helpful_log')
                     ->set(['type' => 'entry'])
                     ->where('type', '=', 'article')
@@ -192,7 +192,7 @@ class Migration20151001185523ComKb extends Base
             $schema->addIndex('#__faq', 'idx_section', 'section');
 
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__categories')
                 ->where('extension', '=', 'com_kb');
@@ -218,7 +218,7 @@ class Migration20151001185523ComKb extends Base
             }
 
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'category'])
                 ->from('#__faq');
             $articles = $query->loadObjectList();
@@ -227,7 +227,7 @@ class Migration20151001185523ComKb extends Base
                 $article->section = (isset($par[$article->category]) ? $par[$article->category] : 0);
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__faq')
                     ->set([
                         'section'  => $article->section,
@@ -290,7 +290,7 @@ class Migration20151001185523ComKb extends Base
 
         if ($this->db->schema()->tableExists('#__faq_categories')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__faq_categories')
                 ->values([
                     'id'          => null,
@@ -305,7 +305,7 @@ class Migration20151001185523ComKb extends Base
                 ->execute();
 
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__faq_categories')
                 ->where('title', '=', $tbl->title)

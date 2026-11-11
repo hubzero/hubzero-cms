@@ -60,7 +60,7 @@ class Migration20130924000007Core extends Base
 
             foreach ($usergroups as $group) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__usergroups')
                     ->values([
                         'id'        => $group[0],
@@ -92,7 +92,7 @@ class Migration20130924000007Core extends Base
 
             foreach ($viewlevels as $level) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insert('#__viewlevels')
                     ->values([
                         'id'       => $level[0],
@@ -107,7 +107,7 @@ class Migration20130924000007Core extends Base
             $tables = ['#__categories', '#__contact_details', '#__content', '#__menu', '#__modules'];
             foreach ($tables as $table) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update($table)
                     ->set(['access' => Expression::column('access')->plus(1)])
                     ->execute();
@@ -115,7 +115,7 @@ class Migration20130924000007Core extends Base
 
             // Add rows to usergroup map table for existing users
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'usertype'])
                 ->from('#__users')
                 ->loadObjectList();
@@ -148,7 +148,7 @@ class Migration20130924000007Core extends Base
                             break;
                     }
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->insert('#__user_usergroup_map')
                         ->values([
                             'user_id'  => $r->id,
@@ -160,7 +160,7 @@ class Migration20130924000007Core extends Base
 
             // Update user params (specifically to remove timezone)
             $results = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'params'])
                 ->from('#__users')
                 ->loadObjectList();
@@ -189,7 +189,7 @@ class Migration20130924000007Core extends Base
                     }
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__users')
                         ->set(['params' => json_encode($array)])
                         ->where('id', '=', $r->id)

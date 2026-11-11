@@ -27,7 +27,7 @@ class Migration20140627140011PlgResourcesReviews extends Base
             $schema->addColumn('#__resource_ratings', 'state')->tinyInteger(2)->notNull()->default(0);
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__resource_ratings')
                 ->set(['state' => 1])
                 ->where('resource_id', '!=', 0)

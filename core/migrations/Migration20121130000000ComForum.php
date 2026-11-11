@@ -44,7 +44,7 @@ class Migration20121130000000ComForum extends Base
                     ->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__forum_sections')
                     ->set(['scope' => 'group'])
                     ->where('scope_id', '>', 0)
@@ -52,7 +52,7 @@ class Migration20121130000000ComForum extends Base
                     ->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__forum_sections')
                     ->set(['scope' => 'site'])
                     ->where('scope_id', '=', 0)
@@ -81,7 +81,7 @@ class Migration20121130000000ComForum extends Base
                     ->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__forum_categories')
                     ->set(['scope' => 'group'])
                     ->where('scope_id', '>', 0)
@@ -89,7 +89,7 @@ class Migration20121130000000ComForum extends Base
                     ->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__forum_categories')
                     ->set(['scope' => 'site'])
                     ->where('scope_id', '=', 0)
@@ -118,7 +118,7 @@ class Migration20121130000000ComForum extends Base
                     ->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__forum_posts')
                     ->set(['scope' => 'group'])
                     ->where('scope_id', '>', 0)
@@ -126,7 +126,7 @@ class Migration20121130000000ComForum extends Base
                     ->execute();
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__forum_posts')
                     ->set(['scope' => 'site'])
                     ->where('scope_id', '=', 0)

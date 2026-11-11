@@ -25,7 +25,7 @@ class Migration20150121104223ModMenu extends Base
 
         if ($schema->tableExists('#__modules')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__modules')
                 ->set(['module' => 'mod_menu'])
                 ->where('client_id', '=', 1)

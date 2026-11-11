@@ -90,7 +90,7 @@ class Migration20130716202127ComNewsletter extends Base
                 . "\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</table>\n\t</body>\n</html>\t";
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__newsletter_templates')
                 ->columns([
                     'editable',
@@ -112,7 +112,7 @@ class Migration20130716202127ComNewsletter extends Base
                 . "Copyright - {{COPYRIGHT}}";
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__newsletter_templates')
                 ->columns([
                     'editable',
@@ -131,14 +131,14 @@ class Migration20130716202127ComNewsletter extends Base
             $params1 = "newsletter_queue_limit=2\nsupport_ticketreminder_severity=all\nsupport_ticketreminder_group=\n"
                 . "\n";
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->select('title')
                 ->from('#__cron_jobs')
                 ->where('title', '=', 'Process Newsletter Mailings');
             if ($query->doesntExist()) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertOrIgnore('#__cron_jobs')
                     ->columns([
                         'title',
@@ -175,14 +175,14 @@ class Migration20130716202127ComNewsletter extends Base
                     ->execute();
             }
 
-            $query = $this->db->getQuery(true);
+            $query = $this->db->getQuery();
             $query
                 ->select('title')
                 ->from('#__cron_jobs')
                 ->where('title', '=', 'Process Newsletter Opens & Click IP Addresses');
             if ($query->doesntExist()) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->insertOrIgnore('#__cron_jobs')
                     ->columns([
                         'title',
@@ -379,13 +379,13 @@ class Migration20130716202127ComNewsletter extends Base
         $schema->dropTable('#__newsletter_mailing_recipient_actions');
 
         //remove newsletter cron jobs
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->delete('#__cron_jobs')
             ->where('title', '=', 'Process Newsletter Mailings');
         $query->execute();
 
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->delete('#__cron_jobs')
             ->where('title', '=', 'Process Newsletter Opens & Click IP Addresses');

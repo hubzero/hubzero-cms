@@ -28,7 +28,7 @@ class Migration20150626141512Core extends Base
                 $components[] = $c;
             }
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['protected' => 1])
                 ->where('type', '=', 'component')
@@ -40,7 +40,7 @@ class Migration20150626141512Core extends Base
                 $modules[] = $c;
             }
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['protected' => 1])
                 ->where('type', '=', 'module')
@@ -52,7 +52,7 @@ class Migration20150626141512Core extends Base
                 $templates[] = $c;
             }
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['protected' => 1])
                 ->where('type', '=', 'template')
@@ -65,7 +65,7 @@ class Migration20150626141512Core extends Base
                     $contents[] = $c;
                 }
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__extensions')
                     ->set(['protected' => 1])
                     ->where('type', '=', 'plugin')

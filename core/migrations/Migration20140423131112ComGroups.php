@@ -26,14 +26,14 @@ class Migration20140423131112ComGroups extends Base
 
         // select all groups with duplicate cname's
         $subquery = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('cn')
             ->from('#__xgroups')
             ->group('cn')
             ->having(Expression::count(), '>', 1);
 
         $duplicateGroups = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(['gidNumber', 'cn', 'description'])
             ->from('#__xgroups')
             ->whereIn('cn', $subquery)

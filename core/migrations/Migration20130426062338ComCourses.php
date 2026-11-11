@@ -23,7 +23,7 @@ class Migration20130426062338ComCourses extends Base
     {
         if ($this->db->tableHasField('#__courses_grade_policies', 'score_criteria')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__courses_grade_policies')
                 ->where('id', '=', 1)
                 ->execute();
@@ -72,7 +72,7 @@ class Migration20130426062338ComCourses extends Base
                     SQL;
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__courses_grade_policies')
                 ->columns(['id', 'alias', 'description', 'type', 'grade_criteria', 'score_criteria', 'badge_criteria'])
                 ->values([
@@ -143,7 +143,7 @@ class Migration20130426062338ComCourses extends Base
                     SQL;
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__courses_grade_policies')
                 ->columns(['alias', 'description', 'type', 'grade_criteria', 'score_criteria', 'badge_criteria'])
                 ->values([

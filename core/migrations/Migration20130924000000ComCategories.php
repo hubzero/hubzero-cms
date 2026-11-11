@@ -152,35 +152,35 @@ class Migration20130924000000ComCategories extends Base
 
         // @FIXME: should we fix up references in the data to com_banner(s) here?
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__categories')
             ->set(['extension' => Expression::column('section')])
             ->where(Expression::substring('section', 1, 3), '=', 'com')
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__categories')
             ->set(['extension' => 'com_content'])
             ->where(Expression::substring('section', 1, 3), '!=', 'com')
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__categories')
             ->set(['parent_id' => 0])
             ->where(Expression::substring('section', 1, 3), '=', 'com')
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__categories')
             ->set(['parent_id' => Expression::column('section')])
             ->where(Expression::substring('section', 1, 3), '!=', 'com')
             ->execute();
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__categories')
             ->set(['alias' => Expression::lower('title')])
             ->beginOrGroup()
@@ -191,7 +191,7 @@ class Migration20130924000000ComCategories extends Base
 
         // UPDATE #__categories SET level=1
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->update('#__categories')
             ->set(['level' => 1])
             ->execute();
@@ -209,7 +209,7 @@ class Migration20130924000000ComCategories extends Base
 
         foreach ($defaults as $default) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__categories')
                 ->columns([
                     'parent_id',
@@ -267,7 +267,7 @@ class Migration20130924000000ComCategories extends Base
         }
 
         // Grab sections and insert them into categories
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->select('*')
             ->from('#__sections');
@@ -276,7 +276,7 @@ class Migration20130924000000ComCategories extends Base
         if (count($results) > 0) {
             foreach ($results as $r) {
                 // Collapse duplicate section/categories down into one level
-                $query = $this->db->getQuery(true);
+                $query = $this->db->getQuery();
                 $query
                     ->select('id')
                     ->from('#__categories')
@@ -284,7 +284,7 @@ class Migration20130924000000ComCategories extends Base
                 if ($$query->exists()) {
                     // Set any categories that were in recently added section
                     // to have that new category id as parent_id
-                    $query = $this->db->getQuery(true);
+                    $query = $this->db->getQuery();
                     $query
                         ->update('#__categories')
                         ->set(['parent_id' => 0])
@@ -294,7 +294,7 @@ class Migration20130924000000ComCategories extends Base
                     continue;
                 }
 
-                $query = $this->db->getQuery(true);
+                $query = $this->db->getQuery();
                 $query
                     ->insert('#__categories')
                     ->columns([
@@ -355,7 +355,7 @@ class Migration20130924000000ComCategories extends Base
                 $id = $this->db->insertid();
 
                 // Set any categories that were in recently added section to have that new category id as parent_id
-                $query = $this->db->getQuery(true);
+                $query = $this->db->getQuery();
                 $query
                     ->update('#__categories')
                     ->set(['parent_id' => $id, 'level' => 2])
@@ -366,7 +366,7 @@ class Migration20130924000000ComCategories extends Base
 
         // Insert root category and set all 1st level categories to point to it
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->insert('#__categories')
             ->columns([
                 'asset_id',
@@ -426,7 +426,7 @@ class Migration20130924000000ComCategories extends Base
 
         $rootId = $this->db->insertid();
 
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->update('#__categories')
             ->set(['parent_id' => $rootId])
@@ -435,7 +435,7 @@ class Migration20130924000000ComCategories extends Base
         $query->execute();
 
         // Fix up "path" field
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->update('#__categories')
             ->set(['path' => 'alias'], true)
@@ -446,7 +446,7 @@ class Migration20130924000000ComCategories extends Base
             ->where('level', '=', 1);
         $query->execute();
 
-        $query = $this->db->getQuery(true);
+        $query = $this->db->getQuery();
         $query
             ->select('*')
             ->from('#__categories')
@@ -459,7 +459,7 @@ class Migration20130924000000ComCategories extends Base
 
         if (count($results) > 0) {
             $aliases = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['id', 'alias'])
                 ->from('#__categories')
                 ->pluck('alias', 'id');
@@ -472,7 +472,7 @@ class Migration20130924000000ComCategories extends Base
                 $path = $alias . '/' . $r->alias;
 
                 // Save the sub-category path
-                $query = $this->db->getQuery(true);
+                $query = $this->db->getQuery();
                 $query
                     ->update('#__categories')
                     ->set(['path' => $this->db->quote($path)])

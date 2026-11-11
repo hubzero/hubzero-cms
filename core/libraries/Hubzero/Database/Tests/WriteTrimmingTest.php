@@ -98,19 +98,19 @@ class WriteTrimmingTest extends TestCase
      */
     public function testQueryBuilderWritesTrim()
     {
-        $this->db->getQuery(true)->insert('notes')->values(['title' => ' a ', 'body' => self::PADDED])->execute();
-        $this->db->getQuery(true)->insert('notes')->columns(['title', 'body'])->values([' b ', ' x '])->execute();
-        $this->db->getQuery(true)->insert('notes')->set(['title' => ' c ', 'body' => ' x '])->execute();
+        $this->db->getQuery()->insert('notes')->values(['title' => ' a ', 'body' => self::PADDED])->execute();
+        $this->db->getQuery()->insert('notes')->columns(['title', 'body'])->values([' b ', ' x '])->execute();
+        $this->db->getQuery()->insert('notes')->set(['title' => ' c ', 'body' => ' x '])->execute();
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->insert('notes')
             ->columns(['title', 'body'])
             ->values([[' d ', ' x '], [' e ', ' x ']])
             ->execute();
-        $this->db->getQuery(true)->insertMany('notes', [['title' => ' f ', 'body' => ' x ']]);
-        $this->db->getQuery(true)->insertManyIgnore('notes', [['title' => ' g ', 'body' => ' x ']]);
+        $this->db->getQuery()->insertMany('notes', [['title' => ' f ', 'body' => ' x ']]);
+        $this->db->getQuery()->insertManyIgnore('notes', [['title' => ' g ', 'body' => ' x ']]);
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->upsert('notes', ['title' => ' h ', 'body' => ' x '], ['body'], ['title'])
             ->execute();
 
@@ -118,8 +118,8 @@ class WriteTrimmingTest extends TestCase
         $this->assertSame([self::TRIMMED], $this->column("SELECT DISTINCT body FROM notes WHERE title = 'a'"));
         $this->assertSame(['x'], $this->column("SELECT DISTINCT body FROM notes WHERE title != 'a'"));
 
-        $this->db->getQuery(true)->update('notes')->set(['body' => ' y '])->whereEquals('title', 'b')->execute();
-        $this->db->getQuery(true)->update('notes')->set('body', ' z ')->whereEquals('title', 'c')->execute();
+        $this->db->getQuery()->update('notes')->set(['body' => ' y '])->whereEquals('title', 'b')->execute();
+        $this->db->getQuery()->update('notes')->set('body', ' z ')->whereEquals('title', 'c')->execute();
         $this->assertSame(['y', 'z'], $this->column("SELECT body FROM notes WHERE title IN ('b', 'c') ORDER BY title"));
     }
 
@@ -134,7 +134,7 @@ class WriteTrimmingTest extends TestCase
         $this->pdo()->exec("INSERT INTO tags (note_id, type) VALUES (1, 'x')");
 
         $having = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('body')
             ->from('notes')
             ->group('body')
@@ -143,7 +143,7 @@ class WriteTrimmingTest extends TestCase
         $this->assertSame(['x'], $having);
 
         $joined = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('notes.title')
             ->from('notes')
             ->join('tags', function (JoinBuilder $join) {

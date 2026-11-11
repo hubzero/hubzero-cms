@@ -24,7 +24,7 @@ class Migration20160810121746PlgContentFormathtml extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['enabled' => 1])
                 ->where('folder', '=', 'content')
@@ -42,7 +42,7 @@ class Migration20160810121746PlgContentFormathtml extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['enabled' => 0])
                 ->where('folder', '=', 'content')

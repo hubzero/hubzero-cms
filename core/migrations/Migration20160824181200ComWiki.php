@@ -26,7 +26,7 @@ class Migration20160824181200ComWiki extends Base
         if ($schema->tableExists('#__wiki_pages')) {
             // Convert group pages
             $rows = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('w.*')
                 ->select('g.cn')
                 ->from('#__wiki_pages', 'w')
@@ -58,14 +58,14 @@ class Migration20160824181200ComWiki extends Base
                 $project = substr($row->cn, strlen('pr-'));
 
                 $row->pidNumber = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('id')
                     ->from('#__projects')
                     ->where('alias', '=', $project)
                     ->value('id');
 
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__wiki_pages')
                     ->set([
                         'scope'    => 'project',

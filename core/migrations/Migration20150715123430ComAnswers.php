@@ -27,7 +27,7 @@ class Migration20150715123430ComAnswers extends Base
                 . '"core.delete":[],"core.edit":{"2":1},"core.edit.state":[],"core.edit.own":[]}';
 
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__assets')
                 ->where('name', '=', 'com_answers');
@@ -46,7 +46,7 @@ class Migration20150715123430ComAnswers extends Base
             } else {
                 // Set the first zone as default
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__assets')
                     ->set(['rules' => $rules])
                     ->where('id', '=', $id)
@@ -67,7 +67,7 @@ class Migration20150715123430ComAnswers extends Base
                 . '"core.delete":[],"core.edit":[],"core.edit.state":[],"core.edit.own":[]}';
 
             $query = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__assets')
                 ->where('name', '=', 'com_answers');
@@ -86,7 +86,7 @@ class Migration20150715123430ComAnswers extends Base
             } else {
                 // Set the first zone as default
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__assets')
                     ->set(['rules' => $rules])
                     ->where('id', '=', $id)

@@ -25,7 +25,7 @@ class Migration20130512175301PlgCoursesDiscussions extends Base
 
         if ($schema->tableExists('#__plugins')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__plugins')
                 ->set(['element' => 'discussions'])
                 ->where('element', '=', 'forum')
@@ -33,7 +33,7 @@ class Migration20130512175301PlgCoursesDiscussions extends Base
                 ->execute();
         } else {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['element' => 'discussions'])
                 ->where('element', '=', 'forum')
@@ -51,7 +51,7 @@ class Migration20130512175301PlgCoursesDiscussions extends Base
 
         if ($schema->tableExists('#__plugins')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__plugins')
                 ->set(['element' => 'forum'])
                 ->where('element', '=', 'discussions')
@@ -59,7 +59,7 @@ class Migration20130512175301PlgCoursesDiscussions extends Base
                 ->execute();
         } else {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['element' => 'forum'])
                 ->where('element', '=', 'discussions')

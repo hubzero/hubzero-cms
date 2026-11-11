@@ -30,7 +30,7 @@ class Migration20150202134839PlgAntispam extends Base
             // otherwise add the entry
             foreach (['akismet', 'mollom', 'spamassassin'] as $plg) {
                 $id = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('type', '=', 'plugin')
@@ -39,7 +39,7 @@ class Migration20150202134839PlgAntispam extends Base
                     ->value('extension_id');
                 if ($id) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__extensions')
                         ->set([
                             'folder' => 'antispam',
@@ -54,7 +54,7 @@ class Migration20150202134839PlgAntispam extends Base
 
             // Get the params from the old antispam plugin. We need the badwords list for the 'blacklist' plugin.
             $params = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__extensions')
                 ->where('type', '=', 'plugin')
@@ -125,7 +125,7 @@ class Migration20150202134839PlgAntispam extends Base
             // otherwise add the entry
             foreach (['akismet', 'mollom', 'spamassassin'] as $plg) {
                 $id = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('extension_id')
                     ->from('#__extensions')
                     ->where('type', '=', 'plugin')
@@ -134,7 +134,7 @@ class Migration20150202134839PlgAntispam extends Base
                     ->value('extension_id');
                 if ($id) {
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__extensions')
                         ->set([
                             'folder' => 'content',

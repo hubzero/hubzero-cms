@@ -188,7 +188,7 @@ class Migration20130924000003ComBanners extends Base
         // Update type based on custombannercode
         if ($schema->hasColumn('#__banners', 'type') && $schema->hasColumn('#__banners', 'custombannercode')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__banners')
                 ->set(['type' => 1])
                 ->where(Expression::trim('custombannercode'), '!=', '')
@@ -320,7 +320,7 @@ class Migration20130924000003ComBanners extends Base
         // Update state
         if ($schema->hasColumn('#__banner_clients', 'state')) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__banner_clients')
                 ->set(['state' => 1])
                 ->execute();
@@ -357,12 +357,12 @@ class Migration20130924000003ComBanners extends Base
             // Populate count from existing data
             // Populate count from existing data
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__banner_tracks')
                 ->columns(['track_date', 'track_type', 'banner_id', 'count'])
                 ->fromSelect(
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->select('track_date, track_type, banner_id')
                         ->select('count(*)', 'count')
                         ->from('#__banner_tracks')
@@ -373,7 +373,7 @@ class Migration20130924000003ComBanners extends Base
                 ->execute();
 
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->delete('#__banner_tracks')
                 ->where('count', '=', 0)
                 ->execute();

@@ -21,7 +21,7 @@ class Migration20260220000000ComContent extends Base
     public function up()
     {
         $row = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(['id', 'introtext'])
             ->from('#__content')
             ->where('id', '=', 1)
@@ -49,7 +49,7 @@ class Migration20260220000000ComContent extends Base
 
         if ($updated !== $row->introtext) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__content')
                 ->set(['introtext' => $updated])
                 ->where('id', '=', $row->id)
@@ -63,7 +63,7 @@ class Migration20260220000000ComContent extends Base
     public function down()
     {
         $row = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(['id', 'introtext'])
             ->from('#__content')
             ->where('id', '=', 1)
@@ -81,7 +81,7 @@ class Migration20260220000000ComContent extends Base
 
         if ($updated !== $row->introtext) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__content')
                 ->set(['introtext' => $updated])
                 ->where('id', '=', $row->id)

@@ -23,7 +23,7 @@ class Migration20141112191247ComCourses extends Base
     {
         // Get all of the course form deployments
         $deployments = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select(['cfd.*', 'cf.asset_id', 'cu.offering_id'])
             ->from('#__courses_form_deployments', 'cfd')
             ->leftJoin('#__courses_forms AS cf', 'cfd.form_id', 'cf.id')
@@ -45,7 +45,7 @@ class Migration20141112191247ComCourses extends Base
             foreach ($deployments as $deployment) {
                 // Get all of the sections that this deployment is in (based on offering_id from deployment query)
                 $sections = $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->select('id')
                     ->from('#__courses_offering_sections')
                     ->where('offering_id', '=', $deployment->offering_id)
@@ -55,7 +55,7 @@ class Migration20141112191247ComCourses extends Base
                 if ($sections && count($sections) > 0) {
                     foreach ($sections as $section) {
                         $found = $this->db
-                            ->getQuery(true)
+                            ->getQuery()
                             ->select('*')
                             ->from('#__courses_offering_section_dates')
                             ->where('section_id', '=', $section->id)
@@ -66,7 +66,7 @@ class Migration20141112191247ComCourses extends Base
                         if (!$found) {
                             // No date exists...so add it
                             $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->insert('#__courses_offering_section_dates')
                                 ->columns(['section_id', 'scope', 'scope_id', 'publish_up', 'publish_down', 'created'])
                                 ->values([
@@ -87,7 +87,7 @@ class Migration20141112191247ComCourses extends Base
                                 : $deployment->end_time;
 
                             $this->db
-                                ->getQuery(true)
+                                ->getQuery()
                                 ->update('#__courses_offering_section_dates')
                                 ->set([
                                     'publish_up' => $start,

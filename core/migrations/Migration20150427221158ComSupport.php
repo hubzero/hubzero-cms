@@ -25,7 +25,7 @@ class Migration20150427221158ComSupport extends Base
 
         if ($schema->tableExists('#__support_tickets') && $schema->tableExists('#__support_statuses')) {
             $open = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__support_statuses')
                 ->where('open', '=', 1)
@@ -33,7 +33,7 @@ class Migration20150427221158ComSupport extends Base
 
             if (count($open)) {
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__support_tickets')
                     ->set(['status' => 0])
                     ->where('open', '=', 0)

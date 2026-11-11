@@ -40,7 +40,7 @@ class Migration20130816143341ComCitations extends Base
         // get citation params
         if ($schema->tableExists('#__extensions')) {
             $rawCitationParams = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__extensions')
                 ->where('type', '=', 'component')
@@ -48,7 +48,7 @@ class Migration20130816143341ComCitations extends Base
                 ->value('params');
         } else {
             $rawCitationParams = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('params')
                 ->from('#__components')
                 ->where('option', '=', 'com_citations')
@@ -59,7 +59,7 @@ class Migration20130816143341ComCitations extends Base
 
         //insert default format
         $hasNullType = $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->select('typeid')
             ->from('#__citations_format')
             ->whereIsNull('typeid')
@@ -67,7 +67,7 @@ class Migration20130816143341ComCitations extends Base
 
         if (!$hasNullType) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__citations_format')
                 ->set([
                     'typeid' => null,

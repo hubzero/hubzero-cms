@@ -33,14 +33,14 @@ class Migration20130715111246ModIncrementalRegistration extends Base
 
         if (
             !$this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('*')
                 ->from('#__incremental_registration_labels')
                 ->where('field', '=', 'mailPreferenceOption')
                 ->exists()
         ) {
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->insert('#__incremental_registration_labels')
                 ->columns(['field', 'label'])
                 ->values(['mailPreferenceOption', 'E-Mail Updates'])
@@ -60,7 +60,7 @@ class Migration20130715111246ModIncrementalRegistration extends Base
         }
 
         $this->db
-            ->getQuery(true)
+            ->getQuery()
             ->delete('#__incremental_registration_labels')
             ->where('field', '=', 'mailPreferenceOption')
             ->execute();

@@ -26,7 +26,7 @@ class Migration20160729202716ComSearch extends Base
         if ($schema->tableExists('#__extensions')) {
             $params = '{"engine":"basic"}';
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__extensions')
                 ->set(['params' => $params])
                 ->where('name', '=', 'com_search')

@@ -25,7 +25,7 @@ class Migration20131021211223Core extends Base
 
         if ($schema->tableExists('#__extensions')) {
             $result = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select(['extension_id', 'params'])
                 ->from('#__extensions')
                 ->where('element', '=', 'com_media')
@@ -38,7 +38,7 @@ class Migration20131021211223Core extends Base
                     $params->upload_maxsize = $params->upload_maxsize / 1000000;
 
                     $this->db
-                        ->getQuery(true)
+                        ->getQuery()
                         ->update('#__extensions')
                         ->set(['params' => json_encode($params)])
                         ->where('extension_id', '=', $result->extension_id)

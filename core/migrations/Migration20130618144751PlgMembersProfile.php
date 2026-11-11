@@ -31,7 +31,7 @@ class Migration20130618144751PlgMembersProfile extends Base
 
             // Update existing data
             $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->update('#__xprofiles')
                 ->set(['mailPreferenceOption' => 1])
                 ->where('mailPreferenceOption', '=', 2)

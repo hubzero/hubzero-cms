@@ -30,7 +30,7 @@ class Migration20140813132614ComSupport extends Base
                 . "email or by submitting another problem report on our web site.\r\n\r\n"
                 . "Thanks again for your support!\r\n--the {sitename} team";
             $id = $this->db
-                ->getQuery(true)
+                ->getQuery()
                 ->select('id')
                 ->from('#__support_messages')
                 ->where('message', '=', $oldMessage)
@@ -43,7 +43,7 @@ class Migration20140813132614ComSupport extends Base
                     . "by sending email or by submitting another problem report on our web "
                     . "site.\r\n\r\nThanks again for your support!\r\n--the {sitename} team";
                 $this->db
-                    ->getQuery(true)
+                    ->getQuery()
                     ->update('#__support_messages')
                     ->set(['message' => $newMessage])
                     ->where('id', '=', $id)
