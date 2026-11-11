@@ -163,6 +163,8 @@ class Tool extends Content
         $filePaths = [];
         $return['projectFiles'] = [];
         foreach ($toAttach as $identifier) {
+            // Each file is named afresh: a remote file's name must not carry over to the next
+            $name = '';
             if ($conFile = $this->checkForRemoteConnection($identifier)) {
                 $tempFile = $this->writeRemoteTempFile($conFile);
                 if (!$tempFile) {
