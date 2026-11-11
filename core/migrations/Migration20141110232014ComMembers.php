@@ -44,12 +44,7 @@ class Migration20141110232014ComMembers extends Base
             $name       = $profile->name;
             $username   = $profile->username;
 
-            // all good
-            if ($firstname && $surname) {
-                continue;
-            }
-
-            if (empty($firstname) && empty($middlename) && empty($surname) && empty($name)) {
+            if (empty($firstname) && empty($middlename) && empty($name)) {
                 $name = $this->db
                     ->getQuery(true)
                     ->select('name')
@@ -61,7 +56,7 @@ class Migration20141110232014ComMembers extends Base
                 $firstname = $username;
             }
 
-            if (empty($firstname) && empty($middlename) && empty($surname)) {
+            if (empty($firstname) && empty($middlename)) {
                 $words = array_map('trim', explode(' ', $name));
                 $count = count($words);
 
