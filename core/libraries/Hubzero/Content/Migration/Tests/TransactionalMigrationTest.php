@@ -33,8 +33,8 @@ class TransactionalMigrationTest extends TestCase
     public function testUseTransactionDefaultsToTrue()
     {
         // Create a mock migration that extends Base
-        $migration = new class (null) extends Base {
-            public function __construct($db)
+        $migration = new class extends Base {
+            public function __construct()
             {
                 // Skip parent constructor to avoid needing real DB
             }
@@ -52,10 +52,10 @@ class TransactionalMigrationTest extends TestCase
     public function testMigrationCanOptOutOfTransactions()
     {
         // Create a mock migration that opts out
-        $migration = new class (null) extends Base {
+        $migration = new class extends Base {
             public $useTransaction = false;
 
-            public function __construct($db)
+            public function __construct()
             {
                 // Skip parent constructor
             }
@@ -73,10 +73,10 @@ class TransactionalMigrationTest extends TestCase
     public function testMigrationCanExplicitlyEnableTransactions()
     {
         // Create a mock migration that explicitly enables
-        $migration = new class (null) extends Base {
+        $migration = new class extends Base {
             public $useTransaction = true;
 
-            public function __construct($db)
+            public function __construct()
             {
                 // Skip parent constructor
             }
@@ -96,24 +96,24 @@ class TransactionalMigrationTest extends TestCase
         // We can't easily test the Migration class directly without a real DB,
         // but we can verify the logic by testing property detection
 
-        $migrationWithDefault = new class (null) extends Base {
-            public function __construct($db)
+        $migrationWithDefault = new class extends Base {
+            public function __construct()
             {
             }
         };
 
-        $migrationOptOut = new class (null) extends Base {
+        $migrationOptOut = new class extends Base {
             public $useTransaction = false;
 
-            public function __construct($db)
+            public function __construct()
             {
             }
         };
 
-        $migrationOptIn = new class (null) extends Base {
+        $migrationOptIn = new class extends Base {
             public $useTransaction = true;
 
-            public function __construct($db)
+            public function __construct()
             {
             }
         };
@@ -149,10 +149,10 @@ class TransactionalMigrationTest extends TestCase
     {
         // Simulate an old migration that doesn't override useTransaction
         // It should inherit the default true value from Base
-        $oldStyleMigration = new class (null) extends Base {
+        $oldStyleMigration = new class extends Base {
             // No useTransaction property - uses inherited default
 
-            public function __construct($db)
+            public function __construct()
             {
             }
 
