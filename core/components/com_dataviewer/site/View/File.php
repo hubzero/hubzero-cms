@@ -23,7 +23,9 @@ class File
             $file_name = basename($file);
             $full_path = $file;
         } elseif ($hash_list != '') {
+            // zipFiles() sends the archive and exits
             \Components\Dataviewer\Site\Lib\Dl::zipFiles($hash_list);
+            return;
         } else {
             $base_path = DvConfig::$dv_conf['base_path'];
             $file = Request::getString('f', false);

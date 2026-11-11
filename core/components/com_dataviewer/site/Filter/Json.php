@@ -506,20 +506,18 @@ class Json
                                 . '" target="_blank" href="' . $tl . '">'
                                 . '<img src="' . $runImg . '" /></a>';
 
-                            if (isset($colConf['dl'])) {
-                                $path = $rec[$colConf['dl']];
-                                $link = '';
-                                if (strpos($path, PATH_ROOT) === 0) {
-                                    $link = substr($path, strlen(PATH_ROOT) + 1);
-                                } else {
-                                    $hash = \Components\Dataviewer\Site\Lib\Dl::getDlHash($path);
-                                    $link = DvConfig::$com_name . '/file/' . $db_id . '/?hash=' . $hash;
-                                }
-                                $downImg = DvConfig::$html_path . '/download.png';
-                                $dl .= '<a title="Download File" data-data-file="' . $path
-                                    . '" class="dv_tools_dl_link" target="_blank" href="/' . $link
-                                    . '"><img src="' . $downImg . '" /></a>';
+                            $path = $rec[$colConf['dl']];
+                            $link = '';
+                            if (strpos($path, PATH_ROOT) === 0) {
+                                $link = substr($path, strlen(PATH_ROOT) + 1);
+                            } else {
+                                $hash = \Components\Dataviewer\Site\Lib\Dl::getDlHash($path);
+                                $link = DvConfig::$com_name . '/file/' . $db_id . '/?hash=' . $hash;
                             }
+                            $downImg = DvConfig::$html_path . '/download.png';
+                            $dl .= '<a title="Download File" data-data-file="' . $path
+                                . '" class="dv_tools_dl_link" target="_blank" href="/' . $link
+                                . '"><img src="' . $downImg . '" /></a>';
 
                             if (isset($colConf['tool_name']) && $rec[$colConf['tool_name']] == null) {
                                 $tool_link = '';
