@@ -176,30 +176,39 @@ class File extends Obj
 
         $image = null;
 
+        // Determine size
+        switch ($render) {
+            case 'medium':
+                $maxWidth = 600;
+                break;
+
+            case 'thumb':
+                $maxWidth = 80;
+                break;
+
+            default:
+                $maxWidth = 180;
+                break;
+        }
+
         if (!$hashed) {
             $hash = $hash ? $hash : $this->get('hash');
             $hash = $hash ? substr($hash, 0, 10) : '';
 
-            // Determine name and size
+            // Determine name
             switch ($render) {
                 case 'medium':
                     $hashed = md5($this->get('name') . '-' . $hash) . '.png';
-                    $maxWidth  = 600;
-                    $maxHeight = 600;
                     break;
 
                 case 'thumb':
                     $hashed = $hash ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash, 'png') : null;
-                    $maxWidth  = 80;
-                    $maxHeight = 80;
                     break;
 
                 default:
                     $hashed = $hash
                         ? Helpers\Html::createThumbName($this->get('name'), '-' . $hash . '-thumb', 'png')
                         : null;
-                    $maxWidth  = 180;
-                    $maxHeight = 180;
                     break;
             }
         }
