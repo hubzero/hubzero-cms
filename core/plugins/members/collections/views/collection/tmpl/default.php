@@ -247,6 +247,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                                 <?php
+                                $canEdit = $row->get('created_by') == User::get('id')
+                                    || $this->params->get('access-edit-item');
                                 if (
                                     $row->get('original')
                                     && (
@@ -258,7 +260,7 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                                         href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/delete') ?>">
                                         <span><?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_DELETE'); ?></span>
                                     </a>
-                                <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
+                                <?php } elseif ($canEdit) { ?>
                                     <?php
                                     $postUrl = Route::url($base . '&task=post/' . $row->get('id') . '/remove');
                                     ?>

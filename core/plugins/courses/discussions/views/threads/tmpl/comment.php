@@ -92,6 +92,8 @@ if ($this->lecture) {
                     && $this->course->offering()->member($this->comment->get('created_by'))->get('id')
                 ) { ?>
                     <?php
+                    $managesSection = !$this->course->offering()->access('manage')
+                        && $this->course->offering()->access('manage', 'section');
                     if (
                         !$this->course->offering()->member($this->comment->get('created_by'))->get('student')
                     ) { ?>
@@ -107,7 +109,7 @@ if ($this->lecture) {
                             ),
                         ) ?>
                     </span>
-                    <?php } elseif (!$this->course->offering()->access('manage') && $this->course->offering()->access('manage', 'section')) { ?>
+                    <?php } elseif ($managesSection) { ?>
                         <?php
                         $extraClasses = strtolower(
                             $this->course->offering()->member($this->comment->get('created_by'))->get('role_alias'),

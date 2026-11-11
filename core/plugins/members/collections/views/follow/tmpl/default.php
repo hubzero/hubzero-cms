@@ -119,6 +119,7 @@ if ($this->rows->total() > 0) {
                             <span><?php echo Lang::txt('Collect'); ?></span>
                         </a>
                 <?php
+                $canEdit = $row->get('created_by') == User::get('id') || $this->params->get('access-edit-item');
                 if (
                     $row->get('original')
                     && ($item->get('created_by') == User::get('id') || $this->params->get('access-delete-item'))
@@ -127,7 +128,7 @@ if ($this->rows->total() > 0) {
                             href="<?= Route::url($base . '&task=post/' . $row->get('id') . '/delete') ?>">
                             <span><?php echo Lang::txt('Delete'); ?></span>
                         </a>
-                <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-edit-item')) { ?>
+                <?php } elseif ($canEdit) { ?>
                         <button type="submit" form="hz-post-action"
                             formaction="<?= Route::url($base . '&task=post/' . $row->get('id') . '/remove') ?>"
                             class="unpost" data-id="<?= $row->get('id') ?>">

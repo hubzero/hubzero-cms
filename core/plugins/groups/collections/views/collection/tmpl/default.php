@@ -252,6 +252,8 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                             </a>
                                         <?php } ?>
                                         <?php
+                                        $canManage = $row->get('created_by') == User::get('id')
+                                            || $this->params->get('access-manage-collection');
                                         if (
                                             $row->get('original')
                                             && (
@@ -267,7 +269,7 @@ if (!in_array($viewas, ['grid', 'list'])) {
                                                 title="<?= Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE') ?>">
                                                 <span><?php echo Lang::txt('PLG_GROUPS_COLLECTIONS_DELETE'); ?></span>
                                             </a>
-                                        <?php } elseif ($row->get('created_by') == User::get('id') || $this->params->get('access-manage-collection')) { ?>
+                                        <?php } elseif ($canManage) { ?>
                                             <?php
                                             $actionUrl = Route::url(
                                                 $base . '&scope=post/' . $row->get('id') . '/remove',
