@@ -163,7 +163,7 @@ $filterStateSelected = function ($value) use ($view) {
             </div>
             <div class="col span6 align-right">
                 <label for="filter-state"><?php echo Lang::txt('COM_FORUM_FIELD_STATE'); ?>:</label>
-                <select name="state" id="filter-state" class="filter filter-submit"">
+                <select name="state" id="filter-state" class="filter filter-submit">
                     <option value="-1"<?= $stateSelected('-1') ?>><?= Lang::txt('COM_FORUM_ALL_STATES') ?></option>
                     <option value="0"<?= $filterStateSelected(0) ?>><?= Lang::txt('JUNPUBLISHED') ?></option>
                     <option value="1"<?= $filterStateSelected(1) ?>><?= Lang::txt('JPUBLISHED') ?></option>
