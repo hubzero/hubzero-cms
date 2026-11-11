@@ -161,6 +161,32 @@ use Hubzero\Facades\User;
  *
  * @uses  \Hubzero\Database\Exception\BadMethodCallException  to handle calls to undefined methods
  * @uses  \Hubzero\Database\Exception\RuntimeException        to handle scenarios with undefined rows
+ *
+ * Query methods most often reached through __call() and __callStatic(); each
+ * adds to the model's query and returns the model. Query has the rest.
+ *
+ * @method static static select(string $column, string $as = null, bool $count = false)
+ * @method static static deselect()
+ * @method static static join(string $table, string $leftKey = null, string $rightKey = null, string $type = 'inner')
+ * @method static static where(string $column, string $operator, mixed $value, string $logical = 'and', int $depth = 0)
+ * @method static static orWhere(string $column, string $operator, mixed $value, int $depth = 0)
+ * @method static static whereEquals(string $column, mixed $value, int $depth = 0)
+ * @method static static orWhereEquals(string $column, mixed $value, int $depth = 0)
+ * @method static static whereIn(string $column, array $values, int $depth = 0)
+ * @method static static orWhereIn(string $column, array $values, int $depth = 0)
+ * @method static static whereNotIn(string $column, array $values, int $depth = 0)
+ * @method static static whereLike(string $column, string $value, int $depth = 0)
+ * @method static static orWhereLike(string $column, string $value, int $depth = 0)
+ * @method static static whereIsNull(string $column, int $depth = 0)
+ * @method static static whereIsNotNull(string $column, int $depth = 0)
+ * @method static static whereRaw(string $string, array $bindings = [], int $depth = 0)
+ * @method static static orWhereRaw(string $string, array $bindings = [], int $depth = 0)
+ * @method static static group(string $column)
+ * @method static static having(string $column, string $operator, mixed $value)
+ * @method static static order(string $column, string $dir)
+ * @method static static unorder()
+ * @method static static start(int $start)
+ * @method static static limit(int $limit)
  */
 
 /** @phpstan-consistent-constructor */
