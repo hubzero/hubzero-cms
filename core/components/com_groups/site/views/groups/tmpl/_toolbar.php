@@ -37,6 +37,10 @@ if ($this->group->isSuperGroup()) {
 ?>
 
 <ul <?php echo $this->classOrId; ?>>
+    <?php
+    // Asked by several of the branches below
+    $isMember = in_array(User::get("id"), $this->group->get("members"));
+    ?>
     <?php if (User::isGuest() == 1) : ?>
         <li>
             <?php
@@ -64,15 +68,15 @@ if ($this->group->isSuperGroup()) {
                     class="invited btn btn-secondary"><?= Lang::txt('COM_GROUPS_TOOLBAR_DECLINE') ?></button>
             </li>
         <?php endif; ?>
-    <?php elseif ($this->group->get('join_policy') == 3 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
+    <?php elseif ($this->group->get('join_policy') == 3 && !$isMember) : ?>
         <li>
             <span class="closed" role="status"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_CLOSED'); ?></span>
         </li>
-    <?php elseif ($this->group->get('join_policy') == 2 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
+    <?php elseif ($this->group->get('join_policy') == 2 && !$isMember) : ?>
         <li>
             <span class="inviteonly" role="status"><?php echo Lang::txt('COM_GROUPS_TOOLBAR_INVITE_ONLY'); ?></span>
         </li>
-    <?php elseif ($this->group->get('join_policy') == 0 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
+    <?php elseif ($this->group->get('join_policy') == 0 && !$isMember) : ?>
         <?php if ($membership_control == 1) : ?>
             <li>
                 <?php
@@ -82,7 +86,7 @@ if ($this->group->isSuperGroup()) {
                     class="join btn"><?= Lang::txt('COM_GROUPS_TOOLBAR_JOIN') ?></button>
             </li>
         <?php endif; ?>
-    <?php elseif ($this->group->get('join_policy') == 1 && !in_array(User::get("id"), $this->group->get("members"))) : ?>
+    <?php elseif ($this->group->get('join_policy') == 1 && !$isMember) : ?>
         <?php if ($membership_control == 1) : ?>
             <?php if (in_array(User::get("id"), $this->group->get("applicants"))) : ?>
                 <li><span class="pending" role="status"><?= Lang::txt('COM_GROUPS_TOOLBAR_PENDING') ?></span></li>
