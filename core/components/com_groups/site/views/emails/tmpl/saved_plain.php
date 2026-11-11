@@ -87,11 +87,11 @@ $message .= $wasText('description', $nameNew, isset($before['description']) ? st
 
 $message .= "\t" . Lang::txt('Interests (Tags):') . ' ';
 
-    $gt = new \Components\Groups\Models\Tags($this->group->get('gidNumber'));
-    $tags = $gt->render('string');
+$gt = new \Components\Groups\Models\Tags($this->group->get('gidNumber'));
+$tags = $gt->render('string');
 
-    $message .= ($tags ? $tags : Lang::txt('[ Empty ]'));
-    $message .= $wasText('tags', $tags, isset($before['tags']) ? $before['tags'] : null) . "\n\n";
+$message .= ($tags ? $tags : Lang::txt('[ Empty ]'));
+$message .= $wasText('tags', $tags, isset($before['tags']) ? $before['tags'] : null) . "\n\n";
 
 $publicNew = strip_tags($this->group->get('public_desc', '[ Empty ]'));
 $message .= "\t" . Lang::txt('Public Description:') . ' ' . $publicNew;
@@ -118,82 +118,90 @@ $message .= $wasText(
 ) . "\n\n";
 
 $message .= "\t" . Lang::txt('Membership Settings/Join Policy:') . ' ';
-    $policy = $joinPolicyLabel($this->group->get('join_policy'));
-    $message .= $policy;
-    $message .= $wasText('join_policy', $policy, isset($before['join_policy']) ? $joinPolicyLabel($before['join_policy']) : null) . "\n\n";
+$policy = $joinPolicyLabel($this->group->get('join_policy'));
+$message .= $policy;
+$message .= $wasText(
+    'join_policy',
+    $policy,
+    isset($before['join_policy']) ? $joinPolicyLabel($before['join_policy']) : null,
+) . "\n\n";
 
 $message .= "\t" . Lang::txt('Discoverability:') . ' ';
-    $discoverability = $discoverabilityLabel($this->group->get('discoverability'));
-    $message .= $discoverability;
-    $message .= $wasText('discoverability', $discoverability, isset($before['discoverability']) ? $discoverabilityLabel($before['discoverability']) : null) . "\n\n";
+$discoverability = $discoverabilityLabel($this->group->get('discoverability'));
+$message .= $discoverability;
+$message .= $wasText(
+    'discoverability',
+    $discoverability,
+    isset($before['discoverability']) ? $discoverabilityLabel($before['discoverability']) : null,
+) . "\n\n";
 
 $message .= "\t" . Lang::txt('Access Permissions:') . "\n";
-    $levels = [
-        'anyone' => 'Any HUB Visitor',
-        'registered' => 'Only Registered User of the HUB',
-        'members' => 'Only Group Members',
-        'nobody' => 'Disabled/Off',
-    ];
+$levels = [
+    'anyone' => 'Any HUB Visitor',
+    'registered' => 'Only Registered User of the HUB',
+    'members' => 'Only Group Members',
+    'nobody' => 'Disabled/Off',
+];
 
-    // Get plugins
-    $group_plugins = Event::trigger('groups.onGroupAreas', []);
-    array_unshift($group_plugins, [
-        'name'             => 'overview',
-        'title'            => 'Overview',
-        'default_access'   => 'anyone',
-        'display_menu_tab' => true,
-    ]);
+// Get plugins
+$group_plugins = Event::trigger('groups.onGroupAreas', []);
+array_unshift($group_plugins, [
+    'name'             => 'overview',
+    'title'            => 'Overview',
+    'default_access'   => 'anyone',
+    'display_menu_tab' => true,
+]);
 
-    $access = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
-    $oldAccess = (isset($before['access']) && is_array($before['access'])) ? $before['access'] : null;
+$access = \Hubzero\User\Group\Helper::getPluginAccess($this->group);
+$oldAccess = (isset($before['access']) && is_array($before['access'])) ? $before['access'] : null;
 
-    foreach ($group_plugins as $plugin) {
-        if ($plugin['display_menu_tab'] == 1) {
-            $title  = $plugin['title'];
-            $perm = $access[$plugin['name']];
-            $line = "\t\t" . $title . ' => ' . $levels[$perm];
-            if ($oldAccess !== null && isset($oldAccess[$plugin['name']]) && $oldAccess[$plugin['name']] != $perm) {
-                $oldPerm  = $oldAccess[$plugin['name']];
-                $oldLabel = isset($levels[$oldPerm]) ? $levels[$oldPerm] : $oldPerm;
-                $line .= '   *** ' . Lang::txt('COM_GROUPS_EMAIL_WAS', $oldLabel) . ' ***';
-            }
-            $message .= $line . "\n";
+foreach ($group_plugins as $plugin) {
+    if ($plugin['display_menu_tab'] == 1) {
+        $title  = $plugin['title'];
+        $perm = $access[$plugin['name']];
+        $line = "\t\t" . $title . ' => ' . $levels[$perm];
+        if ($oldAccess !== null && isset($oldAccess[$plugin['name']]) && $oldAccess[$plugin['name']] != $perm) {
+            $oldPerm  = $oldAccess[$plugin['name']];
+            $oldLabel = isset($levels[$oldPerm]) ? $levels[$oldPerm] : $oldPerm;
+            $line .= '   *** ' . Lang::txt('COM_GROUPS_EMAIL_WAS', $oldLabel) . ' ***';
         }
+        $message .= $line . "\n";
     }
-    $message .= "\n";
+}
+$message .= "\n";
 
-    $params = Component::params('com_groups');
-    if ($params->get('email_forum_comments')) {
-        $autosub = $onOffLabel($this->group->get('discussion_email_autosubscribe'));
-        $message .= "\t" . Lang::txt('Discussion Group Emails Autosubscribe:') . ' ' . $autosub;
-        $message .= $wasText(
-            'discussion_email_autosubscribe',
-            $autosub,
-            isset($before['discussion_email_autosubscribe'])
-                ? $onOffLabel($before['discussion_email_autosubscribe'])
-                : null,
-        ) . "\n\n";
-    }
-
-    $message .= "\t" . Lang::txt('Page Comments:') . ' ';
-    $pageComments = $pageCommentsLabel($gparams->get('page_comments'));
-    $message .= $pageComments;
+$params = Component::params('com_groups');
+if ($params->get('email_forum_comments')) {
+    $autosub = $onOffLabel($this->group->get('discussion_email_autosubscribe'));
+    $message .= "\t" . Lang::txt('Discussion Group Emails Autosubscribe:') . ' ' . $autosub;
     $message .= $wasText(
-        'page_comments',
-        $pageComments,
-        isset($before['page_comments']) ? $pageCommentsLabel($before['page_comments']) : null,
-    ) . "\n";
+        'discussion_email_autosubscribe',
+        $autosub,
+        isset($before['discussion_email_autosubscribe'])
+            ? $onOffLabel($before['discussion_email_autosubscribe'])
+            : null,
+    ) . "\n\n";
+}
 
-    $message .= "\t" . Lang::txt('Page Author Details:') . ' ';
-    $pageAuthor = $pageAuthorLabel($gparams->get('page_author'));
-    $message .= $pageAuthor;
-    $message .= $wasText(
-        'page_author',
-        $pageAuthor,
-        isset($before['page_author']) ? $pageAuthorLabel($before['page_author']) : null,
-    ) . "\n";
+$message .= "\t" . Lang::txt('Page Comments:') . ' ';
+$pageComments = $pageCommentsLabel($gparams->get('page_comments'));
+$message .= $pageComments;
+$message .= $wasText(
+    'page_comments',
+    $pageComments,
+    isset($before['page_comments']) ? $pageCommentsLabel($before['page_comments']) : null,
+) . "\n";
 
-    $message .= "\n\n";
-    $message .= $base . '/' . $sef . "\n";
+$message .= "\t" . Lang::txt('Page Author Details:') . ' ';
+$pageAuthor = $pageAuthorLabel($gparams->get('page_author'));
+$message .= $pageAuthor;
+$message .= $wasText(
+    'page_author',
+    $pageAuthor,
+    isset($before['page_author']) ? $pageAuthorLabel($before['page_author']) : null,
+) . "\n";
 
-    echo $message;
+$message .= "\n\n";
+$message .= $base . '/' . $sef . "\n";
+
+echo $message;

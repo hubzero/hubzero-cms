@@ -266,7 +266,8 @@ $this
                                         <div class="col span6 omega">
                                             <span><?php
                                             // @TODO: Move this to a model
-                                            $db->setQuery("SELECT COUNT(*) FROM `#__xgroups_members` WHERE `gidNumber`=" . $group->gidNumber);
+                                            $countMembers = "SELECT COUNT(*) FROM `#__xgroups_members`";
+                                            $db->setQuery($countMembers . " WHERE `gidNumber`=" . $group->gidNumber);
                                             echo $db->loadResult();
                                             ?></span>
                                             <?php echo Lang::txt('PLG_MEMBERS_GROUPS_MEMBERS'); ?>

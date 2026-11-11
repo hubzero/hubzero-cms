@@ -75,6 +75,11 @@ $due  = ($this->wish->get('due') && $this->wish->get('due') != '0000-00-00 00:00
 
 $this->wish->set('positive', $this->wish->votes()->whereEquals('helpful', 'yes')->total());
 $this->wish->set('negative', $this->wish->votes()->whereEquals('helpful', 'no')->total());
+
+// The "granted" status: ticked once granted, locked while assigned to someone else
+$grantedLocked = $this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id');
+$grantedAttrs  = ($this->wish->get('status') == 1 ? 'checked="checked"' : '')
+    . ($grantedLocked ? 'disabled="disabled"' : '');
 ?>
     <header id="content-header">
         <h2><?= $this->escape($this->title) . ': ' . Lang::txt('COM_WISHLIST_WISH') . ' #' . (int) $this->wish->get('id') ?></h2>
@@ -518,15 +523,10 @@ $this->wish->set('negative', $this->wish->votes()->whereEquals('helpful', 'no')-
 
                             <div class="form-group form-check">
                                 <label for="field-status" class="form-check-label<?= $this->wishlist->get('category') == 'resource' ? ' grantstatus' : '' ?>">
-                                    <input type="radio" name="status" value="granted" id="field-status" class="form-check-input" <?php
-                                        echo ($this->wish->get('status') == 1) ? 'checked="checked"' : '';
-                                        echo ($this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')) ? 'disabled="disabled"' : '';
-                                    ?> />
+                                    <input type="radio" name="status" value="granted" id="field-status"
+                                        class="form-check-input" <?= $grantedAttrs ?> />
                                     <?php echo Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED'); ?>
-                                <?php
-                                if (
-                                    $this->wish->get('assigned') && $this->wish->get('assigned') != User::get('id')
-                                ) { ?>
+                                <?php if ($grantedLocked) { ?>
                                     <span class="forbidden"> - <?= Lang::txt('COM_WISHLIST_WISH_STATUS_GRANTED_WARNING') ?>
                                 <?php }
                                 // Throws error Hubzero\Base\Model; Method [versions] does not exist.
