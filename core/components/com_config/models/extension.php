@@ -120,6 +120,10 @@ class Extension extends Relational
                 $file = $this->get('element') . ($system ? '.sys' : '');
                 $path = '/templates/' . $this->get('element');
                 break;
+
+            default:
+                // No other kind of extension has a language file of its own.
+                return false;
         }
 
         return (Lang::load($file, PATH_APP . $path, null, false, true)
@@ -173,13 +177,11 @@ class Extension extends Relational
     public function save()
     {
         if (is_array($this->get('params'))) {
-            $params = new Registry($this->get('params'));
-
-            $this->set('params', $params);
+            $this->set('params', new Registry($this->get('params')));
         }
 
         if ($this->get('params') instanceof Registry) {
-            $this->set('params', (string) $params->toString());
+            $this->set('params', (string) $this->get('params')->toString());
         }
 
         return parent::save();
