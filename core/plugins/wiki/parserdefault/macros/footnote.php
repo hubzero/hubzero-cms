@@ -68,15 +68,14 @@ Examples:
         }
 
         if ($this->args) {
-            $p = new WikiParser(
-                'Footnotes',
-                $this->option,
-                $this->scope,
-                $this->pagename,
-                $this->pageid,
-                $this->filepath,
-                $this->domain,
-            );
+            $p = new WikiParser([
+                'option'   => $this->option,
+                'scope'    => $this->scope,
+                'pagename' => $this->pagename,
+                'pageid'   => $this->pageid,
+                'filepath' => $this->filepath,
+                'domain'   => $this->domain,
+            ]);
 
             // Args are either "note" or "label | note". The label (stub) lets a
             // later [[Footnote(label)]] reference the same footnote. When no label

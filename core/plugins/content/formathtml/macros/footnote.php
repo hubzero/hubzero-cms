@@ -50,15 +50,14 @@ class FootNote extends Macro
         $note = $this->args;
 
         if ($note) {
-            $p = new Parser(
-                'Footnotes',
-                $this->option,
-                $this->scope,
-                $this->pagename,
-                $this->pageid,
-                $this->filepath,
-                $this->domain,
-            );
+            $p = new Parser([
+                'option'   => $this->option,
+                'scope'    => $this->scope,
+                'pagename' => $this->pagename,
+                'pageid'   => $this->pageid,
+                'filepath' => $this->filepath,
+                'domain'   => $this->domain,
+            ]);
 
             $note = $p->parse(trim($note));
 
