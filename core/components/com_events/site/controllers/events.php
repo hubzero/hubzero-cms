@@ -267,6 +267,7 @@ class Events extends SiteController
          * Description for ''_CAL_CONF_DATEFORMAT''
          */
         define('_CAL_CONF_DATEFORMAT', $config->getCfg('dateformat'));
+        Html::$dateFormat = $config->getCfg('dateformat');
 
         $currentDate = new \Hubzero\Utility\Date('now', Config::get('offset'));
         $this->offset = $currentDate->getOffsetFromGMT(true);
@@ -517,7 +518,7 @@ class Events extends SiteController
         $month  = intval($this->month);
         $day    = intval($this->day);
 
-        $startday = intval(_CAL_CONF_STARDAY);
+        $startday = intval($this->config->getCfg('starday'));
         $numday = ((date("w", mktime(0, 0, 0, $month, $day, $year)) - $startday) % 7);
         if ($numday == -1) {
             $numday = 6;

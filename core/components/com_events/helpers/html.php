@@ -19,6 +19,14 @@ use Hubzero\Facades\User;
 class Html
 {
     /**
+     * How dates are written: the events configuration's "dateformat", which
+     * the site controller sets here, and also defines as _CAL_CONF_DATEFORMAT
+     *
+     * @var  mixed
+     */
+    public static $dateFormat = null;
+
+    /**
      * Auto-link strings matching URL patterns
      * @deprectated
      *
@@ -267,7 +275,7 @@ class Html
         $arr   = [];
         $tmpi  = '';
         for ($i = $start; $i <= $end; $i += $inc) {
-            if (_CAL_CONF_DATEFORMAT == 1) { // US time
+            if (self::$dateFormat == 1) { // US time
                 if ($i > 11) {
                     $tmpi = ($i - 12) . ' pm';
                 } else {
@@ -687,7 +695,7 @@ class Html
             $day = 1;
         }
 
-        $format_type = _CAL_CONF_DATEFORMAT;
+        $format_type = self::$dateFormat;
         $datestp     = (mktime(0, 0, 0, $month, $day, $year));
         $jour_fr     = date("j", $datestp);
         $numero_jour = date("w", $datestp);
