@@ -86,7 +86,10 @@ $this
 
             <label>
                 <?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_ADRESSE'); ?>
-                <input type="text" name="adresse_info" maxlength="120" value="<?= $this->escape(stripslashes($this->row->adresse_info ? $this->row->adresse_info : '')) ?>" />
+                <?php
+                $fieldValue = $this->escape(stripslashes($this->row->adresse_info ? $this->row->adresse_info : ''));
+                ?>
+                <input type="text" name="adresse_info" maxlength="120" value="<?= $fieldValue ?>" />
             </label>
 
             <label>

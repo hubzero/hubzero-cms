@@ -184,7 +184,10 @@ $priceline .= ($service->get('pointsprice') > 0)
                         } ?>
                     </div>
                     <div class="input-wrap">
-                        <label for="field-received_refund"><?= Lang::txt('COM_SERVICES_FIELD_REFUND_POSTED') ?>:</label><br />
+                        <?php
+                        $labelText = Lang::txt('COM_SERVICES_FIELD_REFUND_POSTED');
+                        ?>
+                        <label for="field-received_refund"><?= $labelText ?>:</label><br />
                         <input type="text" name="received_refund" id="field-received_refund"
                             value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />
                         <?php if ($this->subscription->usepoints) {
@@ -200,7 +203,10 @@ $priceline .= ($service->get('pointsprice') > 0)
                     <label for="field-action-activate"><?php echo Lang::txt('COM_SERVICES_FIELD_ACTIVATE'); ?></label>
                 </div>
                 <div class="input-wrap">
-                    <label for="field-received_payment"><?= Lang::txt('COM_SERVICES_FIELD_PAYMENT_RECEIVED') ?>:</label><br />
+                    <?php
+                    $labelText = Lang::txt('COM_SERVICES_FIELD_PAYMENT_RECEIVED');
+                    ?>
+                    <label for="field-received_payment"><?= $labelText ?>:</label><br />
                     <?php if ($this->subscription->pendingpayment > 0) { ?>
                         <input type="text" name="received_payment" id="field-received_payment"
                             value="<?php echo $this->escape($this->subscription->pendingpayment) ?>" />

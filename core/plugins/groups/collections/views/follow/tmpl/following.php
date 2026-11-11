@@ -66,7 +66,10 @@ $base = 'index.php?option=' . $this->option . '&cn=' . $this->group->get('cn') .
                     <tr class="<?php echo $row->get('following_type'); ?>">
                         <th>
                         <?php if ($row->following()->image()) { ?>
-                            <img src="<?= $row->following()->image() ?>" width="40" height="40" alt="Profile picture of <?= $this->escape(stripslashes($row->following()->title())) ?>" />
+                            <?php
+                            $altText = 'Profile picture of ' . $this->escape(stripslashes($row->following()->title()));
+                            ?>
+                            <img src="<?= $row->following()->image() ?>" width="40" height="40" alt="<?= $altText ?>" />
                         <?php } else { ?>
                             <span class="entry-id">
                                 <?php echo $row->get('following_id'); ?>

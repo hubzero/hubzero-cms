@@ -162,7 +162,10 @@ $this
                 <div class="col span6 omega">
                 <?php if ($params->get('show_title')) { ?>
                     <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_TITLE'); ?>
-                    <input type="text" name="register[title]" value="<?= (isset($this->register['title'])) ? $this->escape($this->register['title']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['title'])) ? $this->escape($this->register['title']) : '';
+                    ?>
+                    <input type="text" name="register[title]" value="<?= $fieldValue ?>" /></label>
                 <?php } ?>
                 </div>
             </div>
@@ -185,11 +188,17 @@ $this
             <div class="grid">
                 <div class="col span6">
                     <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_CITY'); ?>
-                    <input type="text" name="register[city]" value="<?= (isset($this->register['city'])) ? $this->escape($this->register['city']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['city'])) ? $this->escape($this->register['city']) : '';
+                    ?>
+                    <input type="text" name="register[city]" value="<?= $fieldValue ?>" /></label>
                 </div>
                 <div class="col span6 omega">
                     <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_STATE'); ?>
-                    <input type="text" name="register[state]" value="<?= (isset($this->register['state'])) ? $this->escape($this->register['state']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['state'])) ? $this->escape($this->register['state']) : '';
+                    ?>
+                    <input type="text" name="register[state]" value="<?= $fieldValue ?>" /></label>
                 </div>
             </div>
             <div class="grid">
@@ -226,7 +235,10 @@ $this
                 <div class="col span6 omega">
                 <?php if ($params->get('show_fax')) { ?>
                     <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_FAX'); ?>
-                    <input type="text" name="register[fax]" value="<?= (isset($this->register['fax'])) ? $this->escape($this->register['fax']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['fax'])) ? $this->escape($this->register['fax']) : '';
+                    ?>
+                    <input type="text" name="register[fax]" value="<?= $fieldValue ?>" /></label>
                 <?php } ?>
                 </div>
             </div>
@@ -235,7 +247,10 @@ $this
                 <?php if ($params->get('show_email')) { ?>
                     <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_EMAIL') ?> <span
                         class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
-                    <input type="text" name="register[email]" value="<?= (isset($this->register['email'])) ? $this->escape($this->register['email']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['email'])) ? $this->escape($this->register['email']) : '';
+                    ?>
+                    <input type="text" name="register[email]" value="<?= $fieldValue ?>" /></label>
                 <?php } ?>
                 </div>
                 <div class="col span6 omega">
@@ -392,7 +407,10 @@ $this
                     value="<?= (isset($this->arrival['day'])) ? $this->escape($this->arrival['day']) : '' ?>" /></label>
 
                 <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_ARRIVAL_TIME'); ?>
-                <input type="text" name="arrival[time]" value="<?= (isset($this->arrival['time'])) ? $this->escape($this->arrival['time']) : '' ?>" /></label>
+                <?php
+                $fieldValue = (isset($this->arrival['time'])) ? $this->escape($this->arrival['time']) : '';
+                ?>
+                <input type="text" name="arrival[time]" value="<?= $fieldValue ?>" /></label>
             </fieldset>
             <?php } ?>
 
@@ -401,10 +419,16 @@ $this
                 <legend><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELDSET_DEPARTURE'); ?></legend>
 
                 <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEPARTURE_DAY'); ?>
-                <input type="text" name="departure[day]" value="<?= (isset($this->departure['day'])) ? $this->escape($this->departure['day']) : '' ?>" /></label>
+                <?php
+                $fieldValue = (isset($this->departure['day'])) ? $this->escape($this->departure['day']) : '';
+                ?>
+                <input type="text" name="departure[day]" value="<?= $fieldValue ?>" /></label>
 
                 <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_DEPARTURE_TIME'); ?>
-                <input type="text" name="departure[time]" value="<?= (isset($this->departure['time'])) ? $this->escape($this->departure['time']) : '' ?>" /></label>
+                <?php
+                $fieldValue = (isset($this->departure['time'])) ? $this->escape($this->departure['time']) : '';
+                ?>
+                <input type="text" name="departure[time]" value="<?= $fieldValue ?>" /></label>
             </fieldset>
             <?php } ?>
         </fieldset>

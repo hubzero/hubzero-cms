@@ -186,7 +186,10 @@ $registerUrl = Route::url(
             <div class="grid">
                 <div class="col span6">
                     <label><?php echo Lang::txt('Zip/Postal code:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[zip]" value="<?= (isset($this->register['zip'])) ? $this->escape($this->register['zip']) : '' ?>" />
+                        <?php
+                        $fieldValue = (isset($this->register['zip'])) ? $this->escape($this->register['zip']) : '';
+                        ?>
+                        <input type="text" name="register[zip]" value="<?= $fieldValue ?>" />
                     </label>
                 </div>
                 <div class="col span6 omega">
@@ -219,7 +222,10 @@ $registerUrl = Route::url(
                 <div class="col span6 omega">
                 <?php if ($this->params->get('show_fax')) : ?>
                     <label><?php echo Lang::txt('Fax:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[fax]" value="<?= (isset($this->register['fax'])) ? $this->escape($this->register['fax']) : '' ?>" />
+                        <?php
+                        $fieldValue = (isset($this->register['fax'])) ? $this->escape($this->register['fax']) : '';
+                        ?>
+                        <input type="text" name="register[fax]" value="<?= $fieldValue ?>" />
                     </label>
                 <?php endif; ?>
                 </div>

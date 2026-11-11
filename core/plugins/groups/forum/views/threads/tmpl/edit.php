@@ -262,7 +262,10 @@ $aliasSelected = function ($value) use ($view) {
                             <div class="form-group">
                                 <label for="field-attach-descritpion">
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_FIELD_DESCRIPTION'); ?>:
-                                    <input type="text" class="form-control" name="description" id="field-attach-descritpion" value="<?= $this->escape(stripslashes($attachment->get('description', ''))) ?>" />
+                                    <?php
+                                    $fieldValue = $this->escape(stripslashes($attachment->get('description', '')));
+                                    ?>
+                                    <input type="text" class="form-control" name="description" id="field-attach-descritpion" value="<?= $fieldValue ?>" />
                                 </label>
                             </div>
                         </div>

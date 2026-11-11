@@ -73,8 +73,9 @@ if ($cell->cell_type == 'code') :
                                 <?php
                                 $sourceUrl = 'data:image/png;base64,'
                                     . preg_replace('/[^A-Za-z0-9+\/=]/', '', (string) $output->png);
+                                $altText = $this->escape(isset($output->text) ? $text($output->text) : '');
                                 ?>
-                                <div class="output_img"><img src="<?= $sourceUrl ?>" alt="<?= $this->escape(isset($output->text) ? $text($output->text) : '') ?>" /></div>
+                                <div class="output_img"><img src="<?= $sourceUrl ?>" alt="<?= $altText ?>" /></div>
                             <?php else : ?>
                                 <pre class="output"><?= $this->escape(isset($output->text) ? $text($output->text) : '') ?></pre>
                             <?php endif; ?>

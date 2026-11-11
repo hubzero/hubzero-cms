@@ -34,7 +34,10 @@ $no_html = Request::getInt('no_html', 0);
         ?>
         <div id="page_identity">
             <a href="<?php echo $link; ?>">
-                <img src="<?= $this->group->getLogo() ?>" alt="<?= Lang::txt('COM_GROUPS_OVERVIEW_LOGO', $this->escape($this->group->get('description'))) ?>" />
+                <?php
+                $altText = Lang::txt('COM_GROUPS_OVERVIEW_LOGO', $this->escape($this->group->get('description')));
+                ?>
+                <img src="<?= $this->group->getLogo() ?>" alt="<?= $altText ?>" />
             </a>
         </div><!-- /#page_identity -->
 

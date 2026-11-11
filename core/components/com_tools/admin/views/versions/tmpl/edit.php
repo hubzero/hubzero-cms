@@ -136,7 +136,10 @@ $this->js();
                                     </div>
                                     <div class="col span5">
                                         <div class="input-wrap">
-                                            <label for="field-doi"><?= Lang::txt('COM_TOOLS_FIELD_DOI_DOI') ?>:</label><br />
+                                            <?php
+                                            $labelText = Lang::txt('COM_TOOLS_FIELD_DOI_DOI');
+                                            ?>
+                                            <label for="field-doi"><?= $labelText ?>:</label><br />
                                             <input type="text" name="doi[doi]" id="field-doi"
                                                 value="<?= $this->escape($this->doi->doi) ?>" />
                                         </div>
@@ -144,7 +147,10 @@ $this->js();
                                 </div>
 
                                 <div class="input-wrap">
-                                    <label for="field-doi_label"><?= Lang::txt('COM_TOOLS_FIELD_DOI_LABEL') ?>:</label><br />
+                                    <?php
+                                    $labelText = Lang::txt('COM_TOOLS_FIELD_DOI_LABEL');
+                                    ?>
+                                    <label for="field-doi_label"><?= $labelText ?>:</label><br />
                                     <input type="text" name="doi[doi_label]" id="field-doi_label"
                                         value="<?= $this->escape($this->doi->doi_label) ?>" />
                                 </div>

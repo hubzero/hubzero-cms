@@ -141,7 +141,10 @@ if ($this->rows->total() > 0) {
                 <div class="convo attribution clearfix">
                     <a href="<?= Route::url('index.php?option=com_members&id=' . $item->get('created_by')) ?>"
                         title="<?= $this->escape(stripslashes($item->creator()->get('name'))) ?>" class="img-link">
-                        <img src="<?= $item->creator()->picture(0) ?>" alt="Profile picture of <?= $this->escape(stripslashes($item->creator()->get('name'))) ?>" />
+                        <?php
+                        $altText = 'Profile picture of ' . $this->escape(stripslashes($item->creator()->get('name')));
+                        ?>
+                        <img src="<?= $item->creator()->picture(0) ?>" alt="<?= $altText ?>" />
                     </a>
                     <p>
                         <a href="<?= Route::url('index.php?option=com_members&id=' . $item->get('created_by')) ?>">
