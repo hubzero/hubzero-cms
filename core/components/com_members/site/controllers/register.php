@@ -31,6 +31,10 @@ use Hubzero\Facades\Log;
 
 /**
  * Controller class for member registration
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $baseURL  The site's base URL, set by execute()
  */
 class Register extends SiteController
 {

@@ -32,6 +32,10 @@ use Hubzero\Facades\Component;
 
 /**
  * Manage site members
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  array  $validated  The password rules a new password failed, saveTask()
  */
 class Members extends AdminController
 {

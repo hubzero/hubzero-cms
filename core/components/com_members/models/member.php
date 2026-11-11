@@ -17,6 +17,11 @@ use Hubzero\Facades\Route;
 
 /**
  * User model
+ *
+ * Read through __get():
+ *
+ * @property  int                     $id        The ID column
+ * @property  \Hubzero\Database\Rows  $profiles  The profile fields, through profiles()
  */
 class Member extends User implements \Hubzero\Search\Searchable
 {
