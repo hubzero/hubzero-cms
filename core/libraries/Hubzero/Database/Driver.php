@@ -368,12 +368,10 @@ abstract class Driver implements LoggerAwareInterface
         switch ($method) {
             case 'q':
                 return $this->quote($args[0], isset($args[1]) ? $args[1] : true);
-                break;
 
             case 'nq':
             case 'qn':
                 return $this->quoteName($args[0], isset($args[1]) ? $args[1] : null);
-                break;
         }
 
         // This method doesn't exist

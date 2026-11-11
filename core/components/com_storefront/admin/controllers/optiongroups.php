@@ -191,7 +191,6 @@ class Optiongroups extends AdminController
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_STOREFRONT_OPTION_GROUP_SAVED'),
             );
-            return;
         }
         Notify::success(Lang::txt('COM_STOREFRONT_OPTION_GROUP_SAVED'));
 
@@ -244,7 +243,6 @@ class Optiongroups extends AdminController
                         Lang::txt('COM_STOREFRONT_NO_ID'),
                         'error',
                     );
-                    return;
                 }
 
                 $delete = Request::getInt('delete', 0);
@@ -278,7 +276,6 @@ class Optiongroups extends AdminController
                                 $e->getMessage(),
                                 $type,
                             );
-                            return;
                         }
                     }
 
@@ -344,7 +341,6 @@ class Optiongroups extends AdminController
                 $msg,
                 'error',
             );
-            return;
         }
 
         // Update record(s)

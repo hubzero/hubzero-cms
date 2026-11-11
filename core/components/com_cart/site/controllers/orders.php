@@ -119,6 +119,5 @@ class Orders extends ComponentController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
         );
-        return;
     }
 }

@@ -285,7 +285,6 @@ class Reviews extends Plugin
 
         if (!$item_id || !$how) {
             App::redirect($this->url);
-            return;
         }
 
         $item = \Components\Courses\Models\Comment::oneOrFail($item_id);
@@ -297,7 +296,6 @@ class Reviews extends Plugin
             || (int) $item->get('item_id') !== (int) $this->obj->get('id')
         ) {
             App::redirect($this->url);
-            return;
         }
 
         if (!$item->vote($how, User::get('id'))) {
@@ -310,7 +308,6 @@ class Reviews extends Plugin
                 $this->getError(),
                 'error',
             );
-            return;
         }
 
         $item->set('vote', $how);
@@ -324,7 +321,6 @@ class Reviews extends Plugin
                 Lang::txt('PLG_COURSES_REVIEWS_VOTE_SAVED'),
                 'message',
             );
-            return;
         }
 
         $this->view->setErrors($this->getErrors());
@@ -402,7 +398,6 @@ class Reviews extends Plugin
                     Lang::txt('PLG_COURSES_REVIEWS_NOTAUTH'),
                     'warning',
                 );
-                return;
             }
 
             // item_id and item_type decide which course a review appears under.
@@ -495,7 +490,6 @@ class Reviews extends Plugin
             // _redirect() is defined neither here nor on Hubzero\Plugin\Plugin,
             // so reaching this with no comment id was a fatal.
             App::redirect($this->url);
-            return;
         }
 
         // Initiate a comment object
@@ -511,7 +505,6 @@ class Reviews extends Plugin
             || (int) $comment->get('item_id') !== (int) $this->obj->get('id')
         ) {
             App::redirect($this->url);
-            return;
         }
 
         if (User::get('id') != $comment->get('created_by') && !$this->params->get('access-delete-comment')) {

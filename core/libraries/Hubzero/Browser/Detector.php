@@ -1142,19 +1142,15 @@ class Detector
         switch (strtolower($for)) {
             case 'major':
                 return $this->major();
-                break;
 
             case 'minor':
                 return $this->minor();
-                break;
 
             case 'platform':
                 return $this->platformVersion();
-                break;
 
             default:
                 return $this->majorVersion . '.' . $this->minorVersion;
-                break;
         }
     }
 

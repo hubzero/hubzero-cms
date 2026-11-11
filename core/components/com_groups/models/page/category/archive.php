@@ -63,7 +63,6 @@ class Archive extends Model
                     $this->categories = new ItemList($results);
                 }
                 return $this->categories;
-                break;
         }
     }
 }

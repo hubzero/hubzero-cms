@@ -23,7 +23,6 @@ class Dataviewer extends AbstractComponent
         // reach the admin area at all could therefore use the data viewer's admin.
         if (!\User::authorise('core.manage', 'com_dataviewer')) {
             \App::abort(404, \Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         DvConfig::init();

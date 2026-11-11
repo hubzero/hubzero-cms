@@ -31,7 +31,6 @@ class Wishlist extends AbstractComponent
         // Authorization check
         if (!User::authorise('core.manage', 'com_wishlist')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $controllerName = Request::getCmd('controller', 'lists');

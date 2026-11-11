@@ -943,7 +943,6 @@ class Files extends Plugin
             } else {
                 Notify::message($this->repo->getError(), 'error', 'projects');
                 App::redirect($url);
-                return;
             }
         }
 
@@ -1003,7 +1002,6 @@ class Files extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Repo::makeDirectory() runs the name through Filesystem::cleanPath(),
@@ -1713,8 +1711,6 @@ class Files extends Plugin
         } else {
             exit();
         }
-
-        return;
     }
 
     /**
@@ -2250,7 +2246,6 @@ class Files extends Plugin
 
                     // Redirect to file list
                     App::redirect(Route::url($url));
-                    return;
                 }
             }
 
@@ -2801,7 +2796,6 @@ class Files extends Plugin
 
                 // Redirect to connect screen
                 App::redirect(Route::url($this->model->link('files') . '&action=connect'));
-                return;
             } elseif (!$this->connect->makeConnection($service, $reauth, $return)) {
                 $this->setError($this->connect->getError());
             } else {

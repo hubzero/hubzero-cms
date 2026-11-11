@@ -147,7 +147,6 @@ class Outline extends Plugin
     {
         if (!$this->course->access('manage')) {
             App::abort(401, Lang::txt('Not Authorized'));
-            return;
         }
 
         // If we have a scope set, we're loading a specific outline piece (ex: a unit)

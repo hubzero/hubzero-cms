@@ -131,13 +131,11 @@ class Comment extends ItemComment
                 }
 
                 return $this->$property;
-                break;
 
             case 'raw':
             default:
                 $content = stripslashes($this->get($field, ''));
                 return preg_replace('/^(<!-- \{FORMAT:.*\} -->)/i', '', $content);
-                break;
         }
     }
 

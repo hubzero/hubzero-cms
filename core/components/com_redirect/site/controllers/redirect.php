@@ -75,7 +75,6 @@ class Redirect extends SiteController
         // "Cannot redirect to an empty URL" -- a 500 on a plain GET.
         if ($url === false || trim($url) === '') {
             App::redirect(Request::root());
-            return;
         }
         $host = parse_url($url);
 
@@ -87,12 +86,10 @@ class Redirect extends SiteController
         // the site root rather than a Host header the caller controls.
         if (is_array($host) && isset($host['scheme']) && !in_array(strtolower($host['scheme']), ['http', 'https'])) {
             App::redirect(Request::root());
-            return;
         }
 
         if ($enabled == "DISABLED") {
             App::redirect($url);
-            return;
         }
 
         if (!$host || !isset($host['host'])) {

@@ -69,7 +69,6 @@ class Group extends Base
         switch (strtolower($type)) {
             case 'base':
                 return $this->base . '?' . (string) $this->toQueryString($segments);
-                break;
 
             case 'edit':
                 if ($this->get('post')) {
@@ -113,7 +112,6 @@ class Group extends Base
             case 'abuse':
                 return 'index.php?option=com_support&task=reportabuse&category=forum&id='
                     . $this->get('post') . '&parent=' . $this->get('parent');
-                break;
 
             case 'permalink':
             default:

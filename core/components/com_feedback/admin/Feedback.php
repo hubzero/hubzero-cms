@@ -27,7 +27,6 @@ class Feedback extends AbstractComponent
     {
         if (!User::authorise('core.manage', 'com_feedback')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $controllerName = 'quotes';

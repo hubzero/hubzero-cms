@@ -37,7 +37,6 @@ class Authors extends SiteController
             App::redirect(
                 $this->config->get('contribtool_redirect', '/home'),
             );
-            return;
         }
 
         // Load the com_resources component config

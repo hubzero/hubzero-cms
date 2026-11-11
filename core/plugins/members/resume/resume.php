@@ -750,7 +750,6 @@ class Resume extends Plugin
         // Ensure we have a database object
         if (!$database) {
             App::abort(500, Lang::txt('DATABASE_NOT_FOUND'));
-            return;
         }
 
         // Incoming
@@ -767,7 +766,6 @@ class Resume extends Plugin
 
         if (!is_file($file)) {
             App::abort(404, Lang::txt('FILE_NOT_FOUND'));
-            return;
         }
 
         // Use user name as file name

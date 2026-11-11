@@ -187,7 +187,6 @@ class Jobs extends Base implements CommandInterface
                 'live_site is not set in the CMS configuration; set it (e.g. https://your-hub) so the cron tick knows '
                     . 'which URL to request.',
             );
-            return;
         }
 
         $url = $base . '/index.php?option=com_cron&task=tick&no_html=1';
@@ -206,7 +205,6 @@ class Jobs extends Base implements CommandInterface
                     . $tmp
                     . '/.cron-tick.lock; check that tmp_path exists and is writable',
             );
-            return;
         }
 
         if (!flock($lock, LOCK_EX | LOCK_NB)) {

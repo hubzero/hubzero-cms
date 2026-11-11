@@ -1476,16 +1476,12 @@ class Repo extends Obj
         switch ($get) {
             case 'total':
                 return $files;
-                break;
             case 'usage':
                 return $usage;
-                break;
             case 'diskspace':
                 return $diskSpace;
-                break;
             case 'commitCount':
                 return $commits;
-                break;
         }
     }
 

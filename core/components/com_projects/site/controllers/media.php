@@ -361,7 +361,6 @@ class Media extends Base
 
         // Return to project page
         App::redirect(Route::url($this->model->link(), false));
-        return;
     }
 
     /**

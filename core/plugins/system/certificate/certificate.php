@@ -29,7 +29,6 @@ class Certificate extends Plugin
         // First, check for presence of subject dn, which is the minimum required field
         if (!isset($_SERVER['SSL_CLIENT_S_DN']) || !$_SERVER['SSL_CLIENT_S_DN']) {
             App::redirect($this->params->get('failure_location', '/invalidcert.php'));
-            return;
         }
 
         if (User::isGuest()) {

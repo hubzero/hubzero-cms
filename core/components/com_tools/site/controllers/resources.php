@@ -65,7 +65,6 @@ class Resources extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=pipeline'),
             );
-            return;
         }
 
         // make sure user is authorized to go further
@@ -431,7 +430,6 @@ class Resources extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=pipeline'),
             );
-            return;
         }
 
         // Make sure user is authorized to go further

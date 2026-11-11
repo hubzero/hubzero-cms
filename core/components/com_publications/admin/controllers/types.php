@@ -115,7 +115,6 @@ class Types extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
-            return;
         }
 
         // Load curation
@@ -169,7 +168,6 @@ class Types extends AdminController
                     Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                     'notice',
                 );
-                return;
             }
 
             // Load curation
@@ -208,7 +206,6 @@ class Types extends AdminController
                     Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                     'notice',
                 );
-                return;
             }
 
             // Load curation
@@ -294,7 +291,6 @@ class Types extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
-            return;
         }
 
         // Load curation
@@ -396,7 +392,6 @@ class Types extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
-            return;
         }
 
         // Load curation
@@ -437,7 +432,6 @@ class Types extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'error',
             );
-            return;
         }
 
         $url = Route::url(
@@ -455,7 +449,6 @@ class Types extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_SAVING_ADVANCED_CURATION'),
                 'error',
             );
-            return;
         }
 
         App::redirect(
@@ -499,7 +492,6 @@ class Types extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
-            return;
         }
 
         // Load curation
@@ -539,7 +531,6 @@ class Types extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
-            return;
         }
 
         // Load curation
@@ -632,7 +623,6 @@ class Types extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
-            return;
         }
 
         // Load curation
@@ -688,7 +678,6 @@ class Types extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_TYPE'),
                 'notice',
             );
-            return;
         }
 
         // Load curation
@@ -821,7 +810,6 @@ class Types extends AdminController
         // Bind new data
         if (!$row->bind($fields)) {
             App::redirect($url, $row->getError(), 'error');
-            return;
         }
 
         // Save curation config
@@ -889,13 +877,11 @@ class Types extends AdminController
         // Check content
         if (!$row->check()) {
             App::redirect($url, $row->getError(), 'error');
-            return;
         }
 
         // Store new content
         if (!$row->store()) {
             App::redirect($url, $row->getError(), 'error');
-            return;
         }
 
         // Redirect to edit view?
@@ -981,7 +967,6 @@ class Types extends AdminController
                 Lang::txt('COM_PUBLICATIONS_NO_ITEM_SELECTED'),
                 'error',
             );
-            return;
         }
 
         $database = App::get('db');
@@ -998,7 +983,6 @@ class Types extends AdminController
                     Lang::txt('COM_PUBLICATIONS_TYPE_BEING_USED', $id),
                     'error',
                 );
-                return;
             }
 
             // Delete the type

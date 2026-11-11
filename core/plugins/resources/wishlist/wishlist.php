@@ -149,7 +149,6 @@ class Wishlist extends Plugin
             } elseif (!$wishlist->public && $rtrn != 'metadata') {
                 // not authorized
                 App::abort(403, Lang::txt('ALERTNOTAUTH'));
-                return;
             }
 
             $entries = \Components\Wishlist\Models\Wish::all()

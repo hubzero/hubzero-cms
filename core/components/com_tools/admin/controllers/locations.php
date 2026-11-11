@@ -211,7 +211,6 @@ class Locations extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             );
-            return;
         }
 
         $row = new Middleware\Location($id);
@@ -223,7 +222,6 @@ class Locations extends AdminController
                     Lang::txt('COM_TOOLS_ERROR_STATE_UPDATE_FAILED'),
                     'error',
                 );
-                return;
             }
         }
 

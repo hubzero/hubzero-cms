@@ -36,7 +36,6 @@ class Managers extends SiteController
         // Only a course manager (or super admin) may view or change managers
         if (User::get('usertype') != 'Super Administrator' && !$this->course->access('manage')) {
             App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
-            return;
         }
 
         parent::execute();

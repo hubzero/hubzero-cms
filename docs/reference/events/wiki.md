@@ -96,7 +96,7 @@ Fired from:
 
 - [`core/components/com_wiki/admin/controllers/pages.php:264`](../../../core/components/com_wiki/admin/controllers/pages.php#L264) with `[&$page, $isNew]`
 - [`core/components/com_wiki/site/controllers/history.php:482`](../../../core/components/com_wiki/site/controllers/history.php#L482) with `[&$this->page, false]`
-- [`core/components/com_wiki/site/controllers/pages.php:772`](../../../core/components/com_wiki/site/controllers/pages.php#L772) with `[&$this->page, $isNew]`
+- [`core/components/com_wiki/site/controllers/pages.php:771`](../../../core/components/com_wiki/site/controllers/pages.php#L771) with `[&$this->page, $isNew]`
 
 No plugin in the source tree listens for this event.
 

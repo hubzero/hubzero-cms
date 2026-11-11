@@ -158,7 +158,6 @@ class Blog extends Plugin
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
                     'warning',
                 );
-                return;
             }
 
             // check to see if user is member and plugin access requires members
@@ -554,7 +553,6 @@ class Blog extends Plugin
                 } else {
                     return false;
                 }
-                break;
         }
 
         return false;
@@ -602,13 +600,11 @@ class Blog extends Plugin
             )
         ) {
             App::abort(403, Lang::txt('PLG_GROUPS_BLOG_NOT_AUTH'));
-            return;
         }
 
         // make sure the group owns this
         if ($row->get('scope_id') != $this->group->get('gidNumber')) {
             App::abort(403, Lang::txt('PLG_GROUPS_BLOG_NOT_AUTH'));
-            return;
         }
 
         // Filters for returning results
@@ -677,7 +673,6 @@ class Blog extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($blog)),
             );
-            return;
         }
 
         if ($this->group->published != 1 || !$this->authorized || !$this->getPostingPermissions()) {
@@ -686,7 +681,6 @@ class Blog extends Plugin
                 Lang::txt('PLG_GROUPS_BLOG_ERROR_PERMISSION_DENIED'),
                 'error',
             );
-            return;
         }
 
         // Load the entry
@@ -732,7 +726,6 @@ class Blog extends Plugin
                 Lang::txt('GROUPS_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
 
         if ($this->group->published != 1 || !$this->authorized || !$this->getPostingPermissions()) {
@@ -970,7 +963,6 @@ class Blog extends Plugin
                 Lang::txt('GROUPS_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
 
         if ($this->group->published != 1) {

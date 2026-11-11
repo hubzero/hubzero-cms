@@ -628,14 +628,12 @@ class Wish extends Relational
             switch (strtolower($what)) {
                 case 'array':
                     return [];
-                    break;
 
                 case 'string':
                 case 'cloud':
                 case 'html':
                 default:
                     return '';
-                    break;
             }
         }
 

@@ -165,7 +165,6 @@ class Base extends SiteController
             $this->_msg,
             'warning',
         );
-        return;
     }
 
     /**

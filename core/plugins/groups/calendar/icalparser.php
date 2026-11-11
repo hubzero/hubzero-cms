@@ -201,7 +201,6 @@ class IcalParser
                     $section = substr($row, 6);
                     $counters[$section] = isset($counters[$section]) ? $counters[$section] + 1 : 0;
                     continue 2; // while
-                    break;
                 case 'END:DAYLIGHT':
                 case 'END:VALARM':
                 case 'END:VTIMEZONE':
@@ -212,7 +211,6 @@ class IcalParser
                 case 'END:VTODO':
                 case 'END:VCALENDAR':
                     continue 2; // while
-                    break;
             }
 
             list($key, $middle, $value, $allDay) = $this->parseRow($row);

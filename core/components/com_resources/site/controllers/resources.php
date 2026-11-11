@@ -1346,7 +1346,6 @@ class Resources extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option),
             );
-            return;
         }
 
         // Load the resource
@@ -1869,7 +1868,6 @@ class Resources extends SiteController
 
                 if (is_null($queried_logical_types) || !is_array($queried_logical_types)) {
                     App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_FEED_BAD_REQUEST'));
-                    return;
                 }
 
                 $relevant_logical_types_by_id = [];
@@ -2527,7 +2525,6 @@ class Resources extends SiteController
         // Ensure we have a tool to work with
         if (!$tool && !$resource) {
             App::abort(404, Lang::txt('COM_RESOURCES_RESOURCE_NOT_FOUND'));
-            return;
         }
 
         if ($tool) {

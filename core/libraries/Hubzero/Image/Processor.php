@@ -169,7 +169,6 @@ class Processor extends Obj
                     break;
                 default:
                     return false;
-                    break;
             }
 
             if ($this->image_type == IMAGETYPE_PNG) {

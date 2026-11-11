@@ -160,7 +160,6 @@ class Setup extends Base
         } else {
             // Setup complete, go to project page
             App::redirect(Route::url($this->model->link()));
-            return;
         }
 
         // Set layout
@@ -315,7 +314,6 @@ class Setup extends Base
                 $this->onAfterProjectCreate();
 
                 App::redirect(Route::url($this->model->link()));
-                return;
             }
         } else {
             // Save
@@ -337,7 +335,6 @@ class Setup extends Base
                     $this->onAfterProjectCreate();
 
                     App::redirect(Route::url($this->model->link()));
-                    return;
                 }
             }
         }
@@ -368,7 +365,6 @@ class Setup extends Base
             )
                 . $append,
         );
-        return;
     }
 
     /**

@@ -117,7 +117,6 @@ class Group extends Base
         switch (strtolower($type)) {
             case 'base':
                 return $this->base . '?' . (string) $this->toQueryString($this->segments);
-                break;
 
             case 'edit':
                 if ($this->get('wishid')) {
@@ -238,7 +237,6 @@ class Group extends Base
             case 'reportabuse':
                 return 'index.php?option=com_support&task=reportabuse&category=wish&id='
                     . $this->get('wishid') . '&parent=' . $this->get('wishlist');
-                break;
 
             case 'permalink':
             default:

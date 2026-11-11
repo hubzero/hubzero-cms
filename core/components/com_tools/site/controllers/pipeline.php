@@ -53,7 +53,6 @@ class Pipeline extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return),
             );
-            return;
         }
 
         $this->authorize();
@@ -160,7 +159,6 @@ class Pipeline extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
-            return;
         }
 
         if (!$this->_error) {
@@ -173,7 +171,6 @@ class Pipeline extends SiteController
         // check access rights
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         // get tool status
@@ -181,7 +178,6 @@ class Pipeline extends SiteController
 
         if (!$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
-            return;
         }
 
         $this->view->status = $status;
@@ -249,7 +245,6 @@ class Pipeline extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
-            return;
         }
 
         // get vars
@@ -263,7 +258,6 @@ class Pipeline extends SiteController
         // check access rights
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         // Create a Tool Version object
@@ -354,7 +348,6 @@ class Pipeline extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
-            return;
         }
 
         if (!$this->_error) {
@@ -364,7 +357,6 @@ class Pipeline extends SiteController
         // check access rights
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         // get tool status
@@ -372,7 +364,6 @@ class Pipeline extends SiteController
 
         if (!$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
-            return;
         }
 
         // Set the page title
@@ -436,7 +427,6 @@ class Pipeline extends SiteController
         // check access rights
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         // Create a Tool object
@@ -444,7 +434,6 @@ class Pipeline extends SiteController
 
         if (!$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_STATUS_CANNOT_FIND'));
-            return;
         }
 
         // get license
@@ -525,7 +514,6 @@ class Pipeline extends SiteController
         // Only tool admins/developers may change license and code access
         if (!$this->checkAccess($id)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         $hztv = \Components\Tools\Helpers\Version::getDevelopmentToolVersion($id);
@@ -732,7 +720,6 @@ class Pipeline extends SiteController
         // check access rights
         if ($this->_toolid && !$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         // get tool status
@@ -740,7 +727,6 @@ class Pipeline extends SiteController
 
         if ($this->_toolid && !$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_EDIT_CANNOT_FIND'));
-            return;
         }
 
         // Set the page title
@@ -883,7 +869,6 @@ class Pipeline extends SiteController
             // make sure user is authorized to go further
             if (!$this->checkAccess($id)) {
                 App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-                return;
             }
         }
 
@@ -1042,7 +1027,6 @@ class Pipeline extends SiteController
 
         if ($this->_error) {
             App::abort(500, $this->_error);
-            return;
         }
 
         // create/update developers group
@@ -1267,7 +1251,6 @@ class Pipeline extends SiteController
         // make sure user is authorized to go further
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         $newstate    = Request::getString('newstate', '');
@@ -1306,7 +1289,6 @@ class Pipeline extends SiteController
                         . '&controller=pipeline&task=license&action=confirm&app=' . $hztv->toolname,
                     ),
                 );
-                return;
             } else {
                 $status = $hztv->toArray();
                 $status['toolstate'] = $hzt->state;
@@ -1350,7 +1332,6 @@ class Pipeline extends SiteController
         // make sure user is authorized to go further
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         $action = Request::getString('action', '');
@@ -1391,7 +1372,6 @@ class Pipeline extends SiteController
         // make sure user is authorized to go further
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         $newstate    = Request::getString('newstate', '');
@@ -1459,7 +1439,6 @@ class Pipeline extends SiteController
         // make sure user is authorized to go further
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         $newstate    = Request::getString('newstate', '');
@@ -1596,7 +1575,6 @@ class Pipeline extends SiteController
         // make sure user is authorized to go further
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         $newstate = Request::getString('newstate', '');
@@ -2265,7 +2243,6 @@ class Pipeline extends SiteController
         // check access rights
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         // get tool status
@@ -2273,15 +2250,12 @@ class Pipeline extends SiteController
 
         if (!$status) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_EDIT_CANNOT_FIND'));
-            return;
         }
         if ($status['state'] == \Components\Tools\Helpers\Html::getStatusNum('Abandoned')) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_ALREADY_CANCELLED'));
-            return;
         }
         if ($status['published'] == 1) {
             App::abort(404, Lang::txt('COM_TOOLS_ERR_CANNOT_CANCEL_PUBLISHED_TOOL'));
-            return;
         }
 
         // unpublish resource page

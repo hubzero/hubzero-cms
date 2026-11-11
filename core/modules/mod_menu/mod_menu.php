@@ -166,7 +166,6 @@ class Menu extends Module
                         case 'separator':
                             // No further action needed.
                             continue 2;
-                            break;
 
 
                         case 'url':

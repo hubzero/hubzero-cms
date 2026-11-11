@@ -86,7 +86,6 @@ class Units extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
-            return;
         }
         $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 
@@ -230,7 +229,6 @@ class Units extends AdminController
                 Lang::txt('COM_COURSES_ERROR_NO_ID'),
                 'error',
             );
-            return;
         }
 
         $unit = \Components\Courses\Models\Unit::getInstance($id);
@@ -244,7 +242,6 @@ class Units extends AdminController
                 Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $unit->getError(),
                 'error',
             );
-            return;
         }
 
         // Redirect back to the courses page
@@ -338,7 +335,6 @@ class Units extends AdminController
                 $msg,
                 'error',
             );
-            return;
         }
 
         // Update record(s)

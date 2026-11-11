@@ -239,7 +239,6 @@ class Downloads extends AdminController
                 ($state == 1 ? Lang::txt('COM_CART_SELECT_ACTIVE') : Lang::txt('COM_CART_SELECT_INACTIVE')),
                 'error',
             );
-            return;
         }
 
         // Save downloads

@@ -366,10 +366,8 @@ class Helper
                 } else {
                     return "FY " . ($year + 1);
                 }
-                break;
             case 'calyear':
                 return $year;
-                break;
             case 'quarter':
                 if ($month <= 3) {
                     $qtr = '1st';
@@ -381,14 +379,12 @@ class Helper
                     $qtr = '4th';
                 }
                 return $qtr . ' Quarter ' . $year;
-                break;
             default:
                 if ($day > 0) {
                     return sprintf("%d/%d/%d", $month, $day, $year);
                 } else {
                     return sprintf("%d/%d", $month, $year);
                 }
-                break;
         }
     }
 

@@ -330,7 +330,6 @@ class Facebook extends \Hubzero\Plugin\OauthClient
                 Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', 'Mismatched state'),
                 'error',
             );
-            return;
         }
 
         $token = $this->provider->getAccessToken('authorization_code', ['code' => Request::getString('code')]);
@@ -348,7 +347,6 @@ class Facebook extends \Hubzero\Plugin\OauthClient
                     Lang::txt('PLG_AUTHENTICATION_FACEBOOK_ERROR_RETRIEVING_PROFILE', $e->getMessage()),
                     'error',
                 );
-                return;
             }
 
             $hzad = \Hubzero\Auth\Domain::getInstance('authentication', $this->name, '');

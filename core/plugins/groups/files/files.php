@@ -161,7 +161,6 @@ class Files extends Plugin
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
                     'warning',
                 );
-                return;
             }
 
             // Plugin was made public - Disallow uploading or editing

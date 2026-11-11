@@ -153,7 +153,6 @@ class Feed extends Plugin
                     1,
                 );
                 App::redirect(Route::url($model->link()));
-                return;
             }
 
             // Set vars

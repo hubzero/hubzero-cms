@@ -259,7 +259,6 @@ class Globus extends \Hubzero\Plugin\OauthClient
                     Lang::txt('PLG_AUTHENTICATION_GLOBUS_ERROR_RETRIEVING_PROFILE', $e->getMessage()),
                     'error',
                 );
-                return;
             }
 
             $hzad = \Hubzero\Auth\Domain::getInstance('authentication', 'globus', '');

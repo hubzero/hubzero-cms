@@ -232,7 +232,6 @@ class Pages extends AdminController
                 Lang::txt('COM_COURSES_ERROR_NO_ENTRIES_SELECTED'),
                 'error',
             );
-            return;
         }
 
         $tbl = new Tables\Page($this->database);
@@ -253,7 +252,6 @@ class Pages extends AdminController
                 $rtrn,
                 Lang::txt('COM_COURSES_ITEMS_REMOVED', $i),
             );
-            return;
         }
 
         App::redirect(

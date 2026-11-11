@@ -34,7 +34,6 @@ class Zones extends AdminController
     {
         if (!$this->config->get('zones')) {
             App::redirect(Route::url('index.php?option=' . $this->option, false));
-            return;
         }
 
         $this->registerTask('add', 'edit');
@@ -228,7 +227,6 @@ class Zones extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             );
-            return;
         }
 
         // Get the middleware database

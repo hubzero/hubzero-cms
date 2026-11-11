@@ -30,7 +30,6 @@ class Groups extends AbstractComponent
     {
         if (!User::authorise('core.manage', 'com_groups')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // build controller path

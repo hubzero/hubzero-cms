@@ -201,7 +201,6 @@ class Handlers extends AdminController
                         Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                         Lang::txt('COM_TOOLS_HANDLERS_DELETE_FAILED'),
                     );
-                    return;
                 }
             }
         }

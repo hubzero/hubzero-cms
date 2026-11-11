@@ -1568,7 +1568,6 @@ class Db2Driver extends BaseSqlDriver
                 return "({$date} - {$value} SECONDS)";
             default:
                 return "({$date} - {$value} DAYS)";
-                break;
         }
     }
 
@@ -1605,7 +1604,6 @@ class Db2Driver extends BaseSqlDriver
                 return "({$date} + {$value} SECONDS)";
             default:
                 return "({$date} + {$value} DAYS)";
-                break;
         }
     }
 

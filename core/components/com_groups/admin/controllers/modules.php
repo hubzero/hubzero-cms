@@ -49,7 +49,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
-            return;
         }
 
         $this->group = Group::getInstance($this->gid);
@@ -72,7 +71,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_NOT_ALLOWED'),
                 'warning',
             );
-            return;
         }
 
         // get page approvers
@@ -332,7 +330,6 @@ class Modules extends AdminController
                     $module->getError(),
                     'error',
                 );
-                return;
             }
         }
 
@@ -372,7 +369,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
                 'error',
             );
-            return;
         }
 
         // get reqest vars
@@ -412,7 +408,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
                 'error',
             );
-            return;
         }
 
         // get reqest vars
@@ -530,7 +525,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
                 'error',
             );
-            return;
         }
 
         // get request vars
@@ -550,7 +544,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_ALREADY_APPROVED'),
                 'warning',
             );
-            return;
         }
 
         // create file for page
@@ -617,7 +610,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
                 'error',
             );
-            return;
         }
 
         //get request vars
@@ -667,7 +659,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
                 'error',
             );
-            return;
         }
 
         // get request vars
@@ -687,7 +678,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_ALREADY_APPROVED'),
                 'warning',
             );
-            return;
         }
 
         // get flags
@@ -766,7 +756,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
                 'error',
             );
-            return;
         }
 
         //get request vars
@@ -817,7 +806,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
                 'error',
             );
-            return;
         }
 
         // get request vars
@@ -872,7 +860,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_AUTHORIZED_APPROVERS_ONLY'),
                 'error',
             );
-            return;
         }
 
         // get request vars
@@ -892,7 +879,6 @@ class Modules extends AdminController
                 Lang::txt('COM_GROUPS_MODULES_ALREADY_APPROVED'),
                 'warning',
             );
-            return;
         }
 
         // set approved and approved date and approver

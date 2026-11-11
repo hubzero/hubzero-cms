@@ -71,7 +71,6 @@ class Group extends Base
             case 'base':
                 unset($segments['pagename']);
                 return $this->base . '?' . (string) $this->toQueryString($segments);
-                break;
 
             case 'pdf':
             case 'new':

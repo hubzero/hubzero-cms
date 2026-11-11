@@ -614,7 +614,6 @@ class Messages extends Plugin
                 false,
             ),
         );
-        return;
     }
 
     /**
@@ -669,7 +668,6 @@ class Messages extends Plugin
                 false,
             ),
         );
-        return;
     }
 
     /**
@@ -731,7 +729,6 @@ class Messages extends Plugin
                 false,
             ),
         );
-        return;
     }
 
     /**
@@ -798,7 +795,6 @@ class Messages extends Plugin
                 false,
             ),
         );
-        return;
     }
 
     /**
@@ -848,7 +844,6 @@ class Messages extends Plugin
                 false,
             ),
         );
-        return;
     }
 
     /**
@@ -894,7 +889,6 @@ class Messages extends Plugin
                 false,
             ),
         );
-        return;
     }
 
     /**
@@ -998,7 +992,6 @@ class Messages extends Plugin
         Notify::success(Lang::txt('You have successfully saved your message settings.'));
 
         App::redirect(Route::url($member->link() . '&active=messages&action=settings', false));
-        return;
     }
 
     /**
@@ -1059,10 +1052,8 @@ class Messages extends Plugin
             if (!$no_html) {
                 Notify::error(Lang::txt('You must select a message recipient and enter a message.'));
                 App::redirect(Route::url($member->link() . '&active=messages&action=new', false));
-                return;
             }
             App::abort(500, Lang::txt('You must select a message recipient and enter a message.'));
-            return;
         }
 
         // Build the "from" data for the e-mail
@@ -1091,7 +1082,6 @@ class Messages extends Plugin
         if (!$no_html) {
             Notify::success(Lang::txt('You have successfully sent a message.'));
             App::redirect(Route::url($member->link() . '&active=messages&task=inbox', false));
-            return;
         }
     }
 

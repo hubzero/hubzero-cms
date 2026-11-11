@@ -874,7 +874,6 @@ class Progress extends Plugin
                 'You don\'t have permission to do this!',
                 'warning',
             );
-            return;
         }
 
         // Now, also make sure either section managers can edit, or user is a course manager
@@ -888,7 +887,6 @@ class Progress extends Plugin
                 'You don\'t have permission to do this!',
                 'warning',
             );
-            return;
         }
 
         // Get the grading policy id
@@ -909,7 +907,6 @@ class Progress extends Plugin
                     'The sum of all weights should be 100.',
                     'error',
                 );
-                return;
             }
         }
 
@@ -937,7 +934,6 @@ class Progress extends Plugin
                 'Something went wrong!',
                 'error',
             );
-            return;
         }
 
         if ($saveSection) {
@@ -956,7 +952,6 @@ class Progress extends Plugin
                 'Scoring policy successfully saved!',
                 'passed',
             );
-            return;
         }
     }
 
@@ -975,7 +970,6 @@ class Progress extends Plugin
                 'You don\'t have permission to do this!',
                 'warning',
             );
-            return;
         }
 
         // Now, also make sure either section managers can edit, or user is a course manager
@@ -989,7 +983,6 @@ class Progress extends Plugin
                 'You don\'t have permission to do this!',
                 'warning',
             );
-            return;
         }
 
         $section = $this->course->offering()->section();
@@ -1029,7 +1022,6 @@ class Progress extends Plugin
                 'Scoring policy successfully restored to the default configuration!',
                 'passed',
             );
-            return;
         }
     }
 }

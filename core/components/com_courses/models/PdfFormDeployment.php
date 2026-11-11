@@ -561,7 +561,6 @@ class PdfFormDeployment
         foreach (['resultsOpen', 'resultsClosed', 'timeLimit', 'allowedAttempts'] as $key) {
             if (!isset($data[$key])) {
                 App::abort(422, 'expected a value to be supplied for ' . $key);
-                return;
             }
 
             if (($key == 'endTime' || $key == 'startTime') && !empty($data[$key])) {

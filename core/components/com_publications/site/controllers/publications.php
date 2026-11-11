@@ -345,7 +345,6 @@ class Publications extends SiteController
         App::redirect(
             Route::url($this->_route . '&active=versions', false),
         );
-        return;
     }
 
     /**
@@ -559,7 +558,6 @@ class Publications extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option, false),
             );
-            return;
         }
 
         // Get our model and load publication data
@@ -578,7 +576,6 @@ class Publications extends SiteController
                 App::redirect(
                     Route::url($this->_route . '&v=' . $lastPubRelease->version_number, false),
                 );
-                return;
             }
         }
 
@@ -589,7 +586,6 @@ class Publications extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option, false),
             );
-            return;
         }
 
         // Is the visitor authorized to view this resource?
@@ -599,7 +595,6 @@ class Publications extends SiteController
                 App::redirect(
                     Route::url($this->_route . '&v=' . $lastPubRelease->version_number, false),
                 );
-                return;
             } else {
                 $this->blockAccess();
                 return;
@@ -764,7 +759,6 @@ class Publications extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option, false),
             );
-            return;
         }
 
         // Is the visitor authorized to view content?
@@ -805,7 +799,6 @@ class Publications extends SiteController
                     Lang::txt('COM_PUBLICATIONS_BUNDLE_UNAVAILABLE'),
                     'warning',
                 );
-                return;
             }
         }
 
@@ -912,7 +905,6 @@ class Publications extends SiteController
         // Do we need to redirect to content?
         if ($attModel->get('redirect')) {
             App::redirect($attModel->get('redirect'));
-            return;
         }
 
         return $content;
@@ -1027,7 +1019,6 @@ class Publications extends SiteController
 
         if ($status == \Components\Publications\Models\BundleQueue::STATUS_FAILED) {
             App::redirect($url, Lang::txt('COM_PUBLICATIONS_BUNDLE_UNAVAILABLE'), 'warning');
-            return;
         }
 
         App::redirect($url, Lang::txt('COM_PUBLICATIONS_BUNDLE_PREPARING'), 'info');
@@ -1103,7 +1094,6 @@ class Publications extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option, false),
             );
-            return;
         }
 
         // get license details
@@ -1142,7 +1132,6 @@ class Publications extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option, false),
             );
-            return;
         }
 
         // Get version authors
@@ -1369,7 +1358,6 @@ class Publications extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option, false),
             );
-            return;
         }
 
         // Load language file
@@ -1414,7 +1402,6 @@ class Publications extends SiteController
                 App::redirect(
                     Route::url('index.php?option=' . $this->option . '&task=submit', false),
                 );
-                return;
             }
 
             // Block unauthorized access
@@ -1428,7 +1415,6 @@ class Publications extends SiteController
                 App::redirect(
                     Route::url($project->link('publications') . '&pid=' . $pid . '&action=' . $action, false),
                 );
-                return;
             }
         }
 
@@ -1471,11 +1457,9 @@ class Publications extends SiteController
             return;
         } elseif (!$this->view->content && isset($content[0]['referer']) && $content[0]['referer'] != '') {
             App::redirect($content[0]['referer']);
-            return;
         } elseif (empty($content)) {
             // plugin disabled?
             App::redirect(Route::url('index.php?option=' . $this->option));
-            return;
         }
 
         // @FIXME: Handle errors appropriately. [QUBES][#732]
@@ -1551,13 +1535,11 @@ class Publications extends SiteController
         // Redirect if publishing is turned off
         if (!$this->_contributable || !$vid) {
             App::redirect(Route::url('index.php?option=' . $this->option));
-            return;
         }
 
         // Redirect if forks aren't allowed
         if (!$this->config->get('forks')) {
             App::redirect(Route::url('index.php?option=' . $this->option));
-            return;
         }
 
         // Load language file
@@ -1594,7 +1576,6 @@ class Publications extends SiteController
 
             if (!$project->exists()) {
                 App::redirect(Route::url('index.php?option=' . $this->option . '&task=submit'));
-                return;
             }
 
             // Block unauthorized access

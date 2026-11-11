@@ -95,7 +95,6 @@ class Roles extends AdminController
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
-            return;
         }
 
         // Load the group page
@@ -249,7 +248,6 @@ class Roles extends AdminController
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
-            return;
         }
 
         foreach ($ids as $id) {

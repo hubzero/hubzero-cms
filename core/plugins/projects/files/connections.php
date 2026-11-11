@@ -783,7 +783,6 @@ class Connections
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Incoming
@@ -920,7 +919,6 @@ class Connections
 
         // Redirect
         App::redirect($url);
-        return;
     }
 
     /**
@@ -1213,7 +1211,6 @@ class Connections
 
         // Redirect
         App::redirect($url);
-        return;
     }
 
     /**
@@ -1226,7 +1223,6 @@ class Connections
         // Check permissions
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Output HTML
@@ -1261,7 +1257,6 @@ class Connections
         // Check permissions
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Get incoming array of items
@@ -1287,7 +1282,6 @@ class Connections
 
         // Redirect
         App::redirect(Route::url($url, false));
-        return;
     }
 
     /**
@@ -1300,7 +1294,6 @@ class Connections
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Output HTML
@@ -1341,7 +1334,6 @@ class Connections
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Get incoming array of items
@@ -1386,7 +1378,6 @@ class Connections
 
         // Redirect
         App::redirect(Route::url($url, false));
-        return;
     }
 
     /**
@@ -1399,7 +1390,6 @@ class Connections
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Get incoming array of items
@@ -1438,7 +1428,6 @@ class Connections
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Rename
@@ -1504,7 +1493,6 @@ class Connections
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Create
@@ -1584,7 +1572,6 @@ class Connections
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Get the file entity

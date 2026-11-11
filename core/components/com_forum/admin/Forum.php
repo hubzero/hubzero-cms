@@ -30,7 +30,6 @@ class Forum extends AbstractComponent
     {
         if (!User::authorise('core.manage', 'com_forum')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $controllerName = Request::getCmd('controller', 'sections');

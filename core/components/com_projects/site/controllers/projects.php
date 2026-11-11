@@ -435,7 +435,6 @@ class Projects extends Base
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&task=setup&alias=' . $this->model->get('alias')),
             );
-            return;
         }
 
         // Sync with system group in case of changes
@@ -475,7 +474,6 @@ class Projects extends Base
             $pub = $this->model->getPublication();
             if ($pub && $pub->id) {
                 App::redirect(Route::url('index.php?option=com_publications&task=submit&pid=' . $pub->id));
-                return;
             } else {
                 throw new Exception(Lang::txt('COM_PROJECTS_PROJECT_NOT_FOUND'), 404);
             }
@@ -525,7 +523,6 @@ class Projects extends Base
 
                         // Go to project page
                         App::redirect(Route::url($this->model->link()));
-                        return;
                     }
                 } else {
                     // Error - different email
@@ -605,7 +602,6 @@ class Projects extends Base
                 }
 
                 App::redirect(Route::url($this->model->link()));
-                return;
             }
 
             // Plugin params
@@ -702,13 +698,11 @@ class Projects extends Base
         if (!$this->model->isProvisioned()) {
             // Redirect to project page
             App::redirect(Route::url($this->model->link()));
-            return;
         }
 
         // Redirect to setup if activation not complete
         if ($this->model->inSetup()) {
             App::redirect(Route::url($this->model->link('setup')));
-            return;
         }
 
         // Get publication of a provisioned project
@@ -828,7 +822,6 @@ class Projects extends Base
         // Already suspended
         if ($this->task == 'suspend' && $this->model->isInactive()) {
             App::redirect(Route::url($this->model->link()));
-            return;
         }
 
         // Suspended by admin: manager cannot activate
@@ -866,7 +859,6 @@ class Projects extends Base
             if (!$this->model->groupOwner('id')) {
                 // Nothing to fix
                 App::redirect(Route::url($this->model->link()));
-                return;
             }
             $this->model->set('owned_by_group', 0);
 
@@ -960,7 +952,6 @@ class Projects extends Base
         // project model.
         if (!is_object($json) || !isset($json->alias) || $json->alias === '') {
             App::redirect(Route::url('index.php'));
-            return;
         }
 
         $this->_identifier = $json->alias;
@@ -1324,7 +1315,6 @@ class Projects extends Base
                         . $filterby,
                 ),
             );
-            return;
         } else {
             // Instantiate a new view
             $this->view->setLayout('review');

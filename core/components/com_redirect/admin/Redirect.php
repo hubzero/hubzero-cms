@@ -29,7 +29,6 @@ class Redirect extends AbstractComponent
         // Access check.
         if (!User::authorise('core.manage', 'com_redirect')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // Include controller
@@ -41,7 +40,6 @@ class Redirect extends AbstractComponent
             )
         ) {
             App::abort(404, Lang::txt('Controller "%s" not found.', $controllerName));
-            return;
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst(strtolower($controllerName));
 

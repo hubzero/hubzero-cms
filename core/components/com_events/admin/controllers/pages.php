@@ -278,7 +278,6 @@ class Pages extends AdminController
                 Lang::txt('COM_EVENTS_PAGE_NO_EVENT_ID'),
                 'error',
             );
-            return;
         }
 
         // Get the element moving

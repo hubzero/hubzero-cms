@@ -110,7 +110,6 @@ class Router extends Base
                     $vars['type'] = $segments[1];
                     $vars['file'] = $segments[2];
                     return $vars;
-                    break;
 
                 case 'images':
                     $vars['task'] = $segments[0];

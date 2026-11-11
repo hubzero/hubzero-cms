@@ -379,7 +379,6 @@ class Products extends AdminController
                         Lang::txt('COM_STOREFRONT_NO_ID'),
                         'error',
                     );
-                    return;
                 }
 
                 $delete = Request::getInt('delete', 0);
@@ -403,7 +402,6 @@ class Products extends AdminController
                                 $e->getMessage(),
                                 $type,
                             );
-                            return;
                         }
                     }
 
@@ -419,7 +417,6 @@ class Products extends AdminController
                     $msg,
                     $type,
                 );
-                break;
         }
     }
 
@@ -470,7 +467,6 @@ class Products extends AdminController
                 Lang::txt('COM_STOREFRONT_NO_ID'),
                 'error',
             );
-            return;
         }
 
         // Load the article
@@ -484,7 +480,6 @@ class Products extends AdminController
                 $row->getError(),
                 'error',
             );
-            return;
         }
 
         App::redirect(
@@ -533,7 +528,6 @@ class Products extends AdminController
                 $msg,
                 'error',
             );
-            return;
         }
 
         // Update record(s)

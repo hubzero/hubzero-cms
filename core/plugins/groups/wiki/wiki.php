@@ -167,7 +167,6 @@ class Wiki extends Plugin
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
                     'warning',
                 );
-                return;
             }
 
             //check to see if user is member and plugin access requires members
@@ -225,7 +224,6 @@ class Wiki extends Plugin
                         ),
                         Lang::txt('PLG_GROUPS_WIKI_SETTINGS_SAVED'),
                     );
-                    return;
                 }
 
                 $view = $this

@@ -117,7 +117,6 @@ class Groupedlist extends Field
                             $element->getName(),
                         ),
                     );
-                    break;
             }
         }
 

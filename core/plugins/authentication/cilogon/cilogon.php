@@ -328,7 +328,6 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
                     Lang::txt('PLG_AUTHENTICATION_CILOGON_ERROR_RETRIEVING_PROFILE', $e->getMessage()),
                     'error',
                 );
-                return;
             }
 
             // Apply the same IdP restriction as a login does: a member must not
@@ -343,7 +342,6 @@ class Cilogon extends \Hubzero\Plugin\OauthClient
                         Lang::txt('PLG_AUTHENTICATION_CILOGON_IDP_NOT_ALLOWED'),
                         'error',
                     );
-                    return;
                 }
             }
 

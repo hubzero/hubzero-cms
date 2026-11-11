@@ -454,7 +454,6 @@ class Notes extends Plugin
         $page = $this->note->page($id);
         if (!$page->get('id')) {
             App::redirect(Route::url($this->model->link('notes')));
-            return;
         }
 
         $listed = $this->task == 'publist' ? 1 : 0;

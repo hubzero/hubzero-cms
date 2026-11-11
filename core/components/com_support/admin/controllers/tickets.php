@@ -602,7 +602,6 @@ class Tickets extends AdminController
                 ),
                 Lang::txt('COM_SUPPORT_TICKET_SUCCESSFULLY_SAVED', $ticket->get('id')),
             );
-            return;
         }
 
         $this->editTask();

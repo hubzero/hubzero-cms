@@ -579,14 +579,12 @@ class Page extends Relational
             switch (strtolower($as)) {
                 case 'array':
                     return [];
-                    break;
 
                 case 'string':
                 case 'cloud':
                 case 'html':
                 default:
                     return '';
-                    break;
             }
         }
 

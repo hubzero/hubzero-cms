@@ -336,7 +336,6 @@ class Todo extends Plugin
         // Check permission
         if ($this->task == 'edit' && !$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         $view = new \Hubzero\Plugin\View([
@@ -413,7 +412,6 @@ class Todo extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Check if assignee is owner
@@ -442,7 +440,6 @@ class Todo extends Plugin
         // Prevent resubmit
         if ($task == 'save' && $content == '' && $newlist == '') {
             App::redirect($this->model->link('todo'));
-            return;
         }
 
         // Save if not empty
@@ -673,7 +670,6 @@ class Todo extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Incoming
@@ -757,7 +753,6 @@ class Todo extends Plugin
         $url  = Route::url($this->model->link('todo'));
         $url .= $gobacklist ? '?list=' . $gobacklist : '';
         App::redirect($url);
-        return;
     }
 
     /**
@@ -819,7 +814,6 @@ class Todo extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Incoming
@@ -865,7 +859,6 @@ class Todo extends Plugin
 
         // Redirect
         App::redirect(Route::url($this->model->link('todo') . '&action=view&todoid=' . $todoid));
-        return;
     }
 
     /**
@@ -879,7 +872,6 @@ class Todo extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Incoming
@@ -947,6 +939,5 @@ class Todo extends Plugin
 
         // Redirect
         App::redirect(Route::url($this->model->link('todo') . '&action=view&todoid=' . $itemid));
-        return;
     }
 }

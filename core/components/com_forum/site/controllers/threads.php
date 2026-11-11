@@ -370,7 +370,6 @@ class Threads extends SiteController
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Set the page title
@@ -487,7 +486,6 @@ class Threads extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option),
             );
-            return;
         }
 
         if (
@@ -826,7 +824,6 @@ class Threads extends SiteController
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         if (!$this->config->get('access-delete-thread')) {

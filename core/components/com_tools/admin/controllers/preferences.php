@@ -260,7 +260,6 @@ class Preferences extends AdminController
                         Lang::txt('COM_TOOLS_USER_PREFS_MISSING_DEFAULT_CLASS'),
                         'error',
                     );
-                    return;
                 }
 
                 $row->set('class_id', $class->id);

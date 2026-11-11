@@ -528,23 +528,18 @@ class Publication extends Obj
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-                break;
 
             case 'time':
                 return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-                break;
 
             case 'datetime':
                 return $this->date($key, 'date') . ' &#64; ' . $this->date($key, 'time');
-                break;
 
             case 'timeago':
                 return \Components\Projects\Helpers\Html::timeAgo($this->get($key));
-                break;
 
             default:
                 return $this->get($key);
-                break;
         }
     }
 
@@ -673,7 +668,6 @@ class Publication extends Obj
         switch ($property) {
             case 'progress':
                 return $this->_curationModel->progress;
-                break;
 
             case 'blocks':
                 if ($blockId && isset($this->_curationModel->progress->blocks->$blockId)) {
@@ -681,7 +675,6 @@ class Publication extends Obj
                         switch ($blockProperty) {
                             case 'complete':
                                 return $this->_curationModel->progress->blocks->$blockId->status->status;
-                                break;
 
                             case 'elementStatus':
                                 if (
@@ -712,11 +705,9 @@ class Publication extends Obj
                                     }
                                 }
                                 return $this->_curationModel->progress->blocks->$blockId->manifest->elements;
-                                break;
 
                             case 'props':
                                 return $this->_curationModel->progress->blocks->$blockId->name . '-' . $blockId;
-                                break;
 
                             case 'required':
                                 return isset(
@@ -724,13 +715,11 @@ class Publication extends Obj
                                 )
                                     ? $this->_curationModel->progress->blocks->$blockId->manifest->params->required
                                     : 0;
-                                break;
 
                             case 'hasElements':
                                 return empty($this->_curationModel->progress->blocks->$blockId->manifest->elements)
                                     ? false
                                     : true;
-                                break;
 
                             default:
                                 if (isset($this->_curationModel->progress->blocks->$blockId->$blockProperty)) {
@@ -738,7 +727,6 @@ class Publication extends Obj
                                 } else {
                                     return null;
                                 }
-                                break;
                         }
                     }
                     return $this->_curationModel->progress->blocks->$blockId;
@@ -747,27 +735,21 @@ class Publication extends Obj
                     return false;
                 }
                 return $this->_curationModel->progress->blocks;
-                break;
 
             case 'complete':
                 return $this->_curationModel->progress->complete;
-                break;
 
             case 'lastBlock':
                 return $this->_curationModel->progress->lastBlock;
-                break;
 
             case 'firstBlock':
                 return $this->_curationModel->progress->firstBlock;
-                break;
 
             case 'params':
                 return $this->_curationModel->manifest->params;
-                break;
 
             default:
                 return $this->_curationModel;
-                break;
         }
     }
 

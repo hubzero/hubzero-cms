@@ -181,7 +181,6 @@ class Collections extends AdminController
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_STOREFRONT_COLLECTION_SAVED'),
             );
-            return;
         }
 
         Notify::success(Lang::txt('COM_STOREFRONT_COLLECTION_SAVED'));
@@ -233,7 +232,6 @@ class Collections extends AdminController
                         Lang::txt('COM_STOREFRONT_NO_ID'),
                         'error',
                     );
-                    return;
                 }
 
                 $delete = Request::getString('delete');
@@ -255,7 +253,6 @@ class Collections extends AdminController
                                 $e->getMessage(),
                                 $type,
                             );
-                            return;
                         }
                     }
 
@@ -271,7 +268,6 @@ class Collections extends AdminController
                     $msg,
                     $type,
                 );
-                break;
         }
     }
 
@@ -316,7 +312,6 @@ class Collections extends AdminController
                 $msg,
                 'error',
             );
-            return;
         }
 
         foreach ($ids as $cId) {

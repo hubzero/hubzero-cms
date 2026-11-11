@@ -589,7 +589,6 @@ class Pages
         // stops from displaying pages that dont exist
         if ($page === null) {
             App::abort(404, Lang::txt('Group Page Not Found'));
-            return;
         }
 
         // stops from displaying unpublished pages
@@ -610,7 +609,6 @@ class Pages
 
             // show 404
             App::abort(404, Lang::txt('Group Page Not Found'));
-            return;
         }
 
         // build page hit object

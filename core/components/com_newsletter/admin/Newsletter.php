@@ -30,7 +30,6 @@ class Newsletter extends AbstractComponent
     {
         if (!User::authorise('core.manage', 'com_newsletter')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // Instantiate controller
@@ -42,7 +41,6 @@ class Newsletter extends AbstractComponent
             )
         ) {
             App::abort(404, Lang::txt('JERROR_INVALID_CONTROLLER'));
-            return;
         }
         $controllerName = __NAMESPACE__ . '\\Controllers\\' . ucfirst($controllerName);
 

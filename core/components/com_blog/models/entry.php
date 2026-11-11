@@ -355,14 +355,12 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             switch (strtolower($what)) {
                 case 'array':
                     return [];
-                    break;
 
                 case 'string':
                 case 'cloud':
                 case 'html':
                 default:
                     return '';
-                    break;
             }
         }
 
@@ -403,14 +401,11 @@ class Entry extends Relational implements \Hubzero\Search\Searchable
             switch ($this->get('state')) {
                 case 1:
                     return 'published';
-                    break;
                 case 2:
                     return 'trashed';
-                    break;
                 case 0:
                 default:
                     return 'unpublished';
-                    break;
             }
         }
 

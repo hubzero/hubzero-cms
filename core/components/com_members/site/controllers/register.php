@@ -108,7 +108,6 @@ class Register extends SiteController
 
         if (!$admin && !$self) {
             App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_INVALID_SESSION_EDITING'));
-            return;
         }
 
         // Set the pathway
@@ -134,7 +133,6 @@ class Register extends SiteController
 
         if ($username != $xregistration->get('login')) {
             App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_REGISTRATION_DATA_MISMATCH'));
-            return;
         }
 
         if (!$xregistration->check('edit')) {
@@ -512,7 +510,6 @@ class Register extends SiteController
                         Lang::txt('This account appears to already exist. Please try logging in again.'),
                         'warning',
                     );
-                    return;
                 }
             }
 
@@ -706,7 +703,6 @@ class Register extends SiteController
                 App::redirect(
                     $suri,
                 );
-                return;
             } else {
                 // Instantiate a new view
                 $this->view
@@ -749,7 +745,6 @@ class Register extends SiteController
         $usersConfig = Component::params('com_members');
         if ($usersConfig->get('allowUserRegistration') == '0') {
             App::abort(404, Lang::txt('JGLOBAL_RESOURCE_NOT_FOUND'));
-            return;
         }
 
         $hzal = null;
@@ -957,7 +952,6 @@ class Register extends SiteController
                     // Did we successfully create/update an account?
                     if (!$result) {
                         App::abort(500, Lang::txt('COM_MEMBERS_REGISTER_ERROR_CREATING_ACCOUNT'));
-                        return;
                     }
 
                     // Send confirmation email

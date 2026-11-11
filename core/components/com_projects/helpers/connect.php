@@ -392,7 +392,6 @@ class Connect extends Obj
                 $authUrl = $this->createAuthUrl('google', $return);
                 //header('Location: ' . $authUrl);
                 App::redirect($authUrl);
-                return;
             }
         }
 

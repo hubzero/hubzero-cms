@@ -51,7 +51,6 @@ class Import extends SiteController
                 Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
                 'warning',
             );
-            return;
         }
 
         $this->importer = new Importer(
@@ -89,7 +88,6 @@ class Import extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option),
             );
-            return;
         }
 
         //are we only allowing admins?
@@ -100,7 +98,6 @@ class Import extends SiteController
                 Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
                 'warning',
             );
-            return;
         }
 
         // Set the page title
@@ -147,7 +144,6 @@ class Import extends SiteController
                 Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE'),
                 'error',
             );
-            return;
         }
 
         // make sure file is under 4MB
@@ -157,7 +153,6 @@ class Import extends SiteController
                 Lang::txt('COM_CITATIONS_IMPORT_FILE_TOO_BIG'),
                 'error',
             );
-            return;
         }
 
         // make sure we dont have any file errors
@@ -176,7 +171,6 @@ class Import extends SiteController
                 Lang::txt('COM_CITATIONS_IMPORT_PROCESS_FAILURE'),
                 'error',
             );
-            return;
         }
 
         if (!isset($citations[0]['attention'])) {
@@ -224,7 +218,6 @@ class Import extends SiteController
                 Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );
-            return;
         }
 
         // Set the page title
@@ -281,7 +274,6 @@ class Import extends SiteController
                 Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );
-            return;
         }
 
         // vars
@@ -347,8 +339,6 @@ class Import extends SiteController
                 Route::url('index.php?option=' . $this->option . '&task=import_saved'),
             );
         }
-
-        return;
     }
 
     /**
@@ -373,7 +363,6 @@ class Import extends SiteController
                 Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );
-            return;
         }
 
         // Set the page title

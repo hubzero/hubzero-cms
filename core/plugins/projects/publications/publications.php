@@ -642,7 +642,6 @@ class Publications extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Load publication
@@ -740,7 +739,6 @@ class Publications extends Plugin
         // Check permission
         if ($this->model->exists() && !$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Check for request forgeries (the remove buttons post the token)
@@ -771,14 +769,12 @@ class Publications extends Plugin
         if (!$pub->exists() && $new == false) {
             Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
             App::redirect(Route::url($pub->link('editbase')));
-            return;
         }
 
         // Is this pub from this project?
         if (!$pub->belongsToProject($this->model->get('id'))) {
             Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'), 'error', 'projects');
             App::redirect(Route::url($this->model->link('publications')));
-            return;
         }
 
         // Get curation
@@ -861,7 +857,6 @@ class Publications extends Plugin
         // Go back to panel after changes to individual attachment
         if ($this->task == 'saveitem') {
             App::redirect($back);
-            return;
         }
 
         // Get blockId & count
@@ -925,7 +920,6 @@ class Publications extends Plugin
 
         // Redirect
         App::redirect(htmlspecialchars_decode(Route::url($route)));
-        return;
     }
 
     /**
@@ -938,7 +932,6 @@ class Publications extends Plugin
         // Check permission
         if ($this->model->exists() && !$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Incoming
@@ -952,7 +945,6 @@ class Publications extends Plugin
         if (!$pub->exists()) {
             Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
             App::redirect(Route::url($pub->link('editbase')));
-            return;
         }
 
         $aid     = Request::getInt('aid', 0);
@@ -971,7 +963,6 @@ class Publications extends Plugin
         $route .= $blockId ? '&step=' . $blockId : '';
 
         App::redirect(Route::url($route, false));
-        return;
     }
 
     /**
@@ -1060,7 +1051,6 @@ class Publications extends Plugin
         // Check permission
         if ($this->model->exists() && !$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Output HTML
@@ -1079,7 +1069,6 @@ class Publications extends Plugin
         // Do we have a choice?
         if (count($choices) <= 1) {
             App::redirect(Route::url($view->route . '&action=edit'));
-            return;
         }
 
         // Append breadcrumbs
@@ -1119,7 +1108,6 @@ class Publications extends Plugin
         // Check permission
         if ($this->model->exists() && !$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Load publication & version classes
@@ -1282,7 +1270,6 @@ class Publications extends Plugin
             $pub = $this->createDraft();
             if (!$pub || !$pub->exists()) {
                 throw new \Exception(Lang::txt('Error creating a publication draft'), 500);
-                return;
             }
 
             // Get curation model
@@ -1298,7 +1285,6 @@ class Publications extends Plugin
                     ),
                 ),
             );
-            return;
         }
 
         if ($vid) {
@@ -1311,14 +1297,12 @@ class Publications extends Plugin
         if (!$pub->exists() || $pub->isDeleted()) {
             Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'error', 'projects');
             App::redirect(Route::url($pub->link('editbase')));
-            return;
         }
 
         // Make sure the publication belongs to the project
         if (!$pub->belongsToProject($this->model->get('id'))) {
             Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'), 'error', 'projects');
             App::redirect(Route::url($this->model->link('publications')));
-            return;
         }
 
         // Get curation model
@@ -1674,7 +1658,6 @@ class Publications extends Plugin
 
         // Redirect
         App::redirect(Route::url($pub->link('editversion') . '&section=license'));
-        return;
     }
 
     /**
@@ -1693,7 +1676,6 @@ class Publications extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Load default version
@@ -1708,7 +1690,6 @@ class Publications extends Plugin
         if (!$pub->belongsToProject($this->model->get('id'))) {
             Notify::message(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'), 'error', 'projects');
             App::redirect(Route::url($this->model->link('publications')));
-            return;
         }
 
         // Set curation model
@@ -1718,7 +1699,6 @@ class Publications extends Plugin
         if ($pub->version->checkVersion($pid, 'dev')) {
             // Redirect
             App::redirect(Route::url($pub->link('editdev')));
-            return;
         }
 
         // Can't start a new version if there is a finalized or submitted draft
@@ -1729,7 +1709,6 @@ class Publications extends Plugin
         ) {
             // Determine redirect path
             App::redirect(Route::url($pub->link('editdefault')));
-            return;
         }
 
         // Saving new version
@@ -1826,7 +1805,6 @@ class Publications extends Plugin
 
         // Redirect
         App::redirect(Route::url($pub->link('editdev')));
-        return;
     }
 
     /**
@@ -1881,7 +1859,6 @@ class Publications extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Load review step
@@ -1897,21 +1874,18 @@ class Publications extends Plugin
         if (!$pub->exists()) {
             Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NOT_FOUND'), 'projects');
             App::redirect(Route::url($pub->link('editbase')));
-            return;
         }
 
         // Agreement to terms is required
         if ($confirm && !$agree) {
             Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_REVIEW_AGREE_TERMS_REQUIRED'), 'projects');
             App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->task));
-            return;
         }
 
         // Check against quota
         if ($this->overQuota()) {
             Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_NO_DISK_SPACE'), 'projects');
             App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->task));
-            return;
         }
 
         // Set curation
@@ -1931,7 +1905,6 @@ class Publications extends Plugin
         if (!$pub->belongsToProject($this->model->get('id'))) {
             Notify::error(Lang::txt('PLG_PROJECTS_PUBLICATIONS_ERROR_PROJECT_ASSOC'), 'projects');
             App::redirect(Route::url($this->model->link('publications')));
-            return;
         }
 
         // Check that version label was not published before
@@ -2024,7 +1997,6 @@ class Publications extends Plugin
                     Notify::error($this->contactMissingMessage($noEmail, $noDepartment, $noOrganization), 'projects');
 
                     App::redirect(Route::url($pub->link('editversion') . '&action=' . $this->task));
-                    return;
                 }
 
                 $author->repository_contact = 1;
@@ -2671,7 +2643,6 @@ class Publications extends Plugin
         }
 
         App::redirect($baseUrl);
-        return;
     }
 
     /**
@@ -2696,7 +2667,6 @@ class Publications extends Plugin
 
         if (!$view->pub->exists() || !$view->pub->belongsToProject($this->model->get('id'))) {
             throw new \Exception(Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLICATION_VERSION_NOT_FOUND'), 404);
-            return;
         }
 
         // Append breadcrumbs

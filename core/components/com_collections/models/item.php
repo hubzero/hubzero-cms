@@ -180,15 +180,12 @@ class Item extends Base
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get('modified'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-                break;
 
             case 'time':
                 return Date::of($this->get('modified'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-                break;
 
             default:
                 return $this->get('modified');
-                break;
         }
     }
 
@@ -248,7 +245,6 @@ class Item extends Base
                     $this->cache['comments.count'] = $total;
                 }
                 return $this->cache['comments.count'];
-                break;
 
             case 'list':
             case 'results':
@@ -264,7 +260,6 @@ class Item extends Base
                     $this->cache['comments.list'] = $results;
                 }
                 return $this->cache['comments.list'];
-                break;
         }
     }
 
@@ -369,14 +364,12 @@ class Item extends Base
             switch (strtolower($as)) {
                 case 'array':
                     return [];
-                    break;
 
                 case 'string':
                 case 'cloud':
                 case 'html':
                 default:
                     return '';
-                    break;
             }
         }
 
@@ -722,7 +715,6 @@ class Item extends Base
                     $this->cache['collections.count'] = $tbl->getCount($filters);
                 }
                 return $this->cache['collections.count'];
-                break;
 
             case 'list':
             case 'results':
@@ -740,7 +732,6 @@ class Item extends Base
                     $this->cache['collections.list'] = new ItemList($results);
                 }
                 return $this->cache['collections.list'];
-                break;
         }
     }
 

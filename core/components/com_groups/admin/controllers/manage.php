@@ -454,7 +454,6 @@ class Manage extends AdminController
                     false,
                 ),
             );
-            return;
         }
 
         $this->cancelTask();
@@ -1157,7 +1156,6 @@ class Manage extends AdminController
                 // Delete group
                 if (!$group->delete()) {
                     App::abort(500, 'Unable to delete group');
-                    return;
                 }
 
                 // log publishing

@@ -87,7 +87,6 @@ class Admin extends SiteController
             App::redirect(
                 $this->config->get('contribtool_redirect', '/home'),
             );
-            return;
         }
 
         // Load the com_resources component config
@@ -117,7 +116,6 @@ class Admin extends SiteController
         // Do we have a tool ID
         if (!$this->toolid) {
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
-            return;
         }
 
         // Get the tool status
@@ -130,7 +128,6 @@ class Admin extends SiteController
         // Check for a status
         if (count($status) <= 0) {
             App::abort(500, Lang::txt('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
-            return;
         }
 
         $ldap_params = Component::params('com_system');
@@ -174,7 +171,6 @@ class Admin extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $alias),
             );
-            return;
         }
 
         $this->view->display();
@@ -200,7 +196,6 @@ class Admin extends SiteController
         // Do we have a tool ID
         if (!$this->toolid) {
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
-            return;
         }
 
         // Get the tool status
@@ -213,7 +208,6 @@ class Admin extends SiteController
         // Check for a status
         if (count($status) <= 0) {
             App::abort(500, Lang::txt('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
-            return;
         }
 
         // Github connection?
@@ -317,7 +311,6 @@ class Admin extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $alias),
             );
-            return;
         }
 
         $this->view->display();
@@ -343,7 +336,6 @@ class Admin extends SiteController
         // Do we have a tool ID
         if (!$this->toolid) {
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
-            return;
         }
 
         // Get the tool status
@@ -356,7 +348,6 @@ class Admin extends SiteController
         // Check for a status
         if (count($status) <= 0) {
             App::abort(500, Lang::txt('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
-            return;
         }
 
         // Create a Tool Version object
@@ -383,7 +374,6 @@ class Admin extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $alias),
             );
-            return;
         }
 
         $this->view->display();
@@ -409,7 +399,6 @@ class Admin extends SiteController
         // Do we have a tool ID
         if (!$this->toolid) {
             App::abort(403, Lang::txt('COM_TOOLS_ERROR_TOOL_NOT_FOUND'));
-            return;
         }
 
         // Get the tool status
@@ -422,7 +411,6 @@ class Admin extends SiteController
         // Check for a status
         if (count($status) <= 0) {
             App::abort(500, Lang::txt('COM_TOOLS_ERR_CANNOT_RETRIEVE'));
-            return;
         }
 
         $result = true;
@@ -712,7 +700,6 @@ class Admin extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=pipeline&task=status&app=' . $alias),
             );
-            return;
         }
 
         $this->view->display();

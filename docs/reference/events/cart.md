@@ -33,7 +33,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_cart/site/controllers/checkout.php:551`](../../../core/components/com_cart/site/controllers/checkout.php#L551) with `[$transaction, User::getInstance()]`
+- [`core/components/com_cart/site/controllers/checkout.php:550`](../../../core/components/com_cart/site/controllers/checkout.php#L550) with `[$transaction, User::getInstance()]`
 
 Listeners:
 
@@ -55,7 +55,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_cart/site/controllers/checkout.php:527`](../../../core/components/com_cart/site/controllers/checkout.php#L527) with `[$transaction, User::getInstance()]`
+- [`core/components/com_cart/site/controllers/checkout.php:526`](../../../core/components/com_cart/site/controllers/checkout.php#L526) with `[$transaction, User::getInstance()]`
 
 Listeners:
 

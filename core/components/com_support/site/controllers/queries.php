@@ -364,7 +364,6 @@ class Queries extends SiteController
                     Route::url($redirectUrl, false),
                     Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_SAVED'),
                 );
-                return;
             }
 
             $this->listTask();
@@ -414,7 +413,6 @@ class Queries extends SiteController
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
                 Lang::txt('COM_SUPPORT_QUERY_FOLDER_SUCCESSFULLY_REMOVED'),
             );
-            return;
         }
 
         $this->listTask();

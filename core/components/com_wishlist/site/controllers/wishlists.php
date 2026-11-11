@@ -185,7 +185,6 @@ class Wishlists extends SiteController
                 $this->_msg,
                 'warning',
             );
-            return;
         }
     }
 
@@ -213,7 +212,6 @@ class Wishlists extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option),
             );
-            return;
         }
 
         if ($id) {
@@ -712,7 +710,6 @@ class Wishlists extends SiteController
             App::redirect(
                 Route::url($wishlist->link('', '&saved=1')),
             );
-            return;
         }
 
         $fields = Request::getArray('fields', [], 'post');
@@ -2025,7 +2022,6 @@ class Wishlists extends SiteController
                 Lang::txt('Please be sure to provide both an importance and an effort'),
                 'error',
             );
-            return;
         }
 
         // is the wish ranked already?
@@ -2035,7 +2031,6 @@ class Wishlists extends SiteController
                 $wish->getError(),
                 'error',
             );
-            return;
         }
 
         // update priority on all wishes
@@ -2452,7 +2447,6 @@ class Wishlists extends SiteController
                 Lang::txt('COM_WISHLIST_ERROR_CANNOT_DELETE_REPLY'),
                 'error',
             );
-            return;
         }
 
         // Delete the comment

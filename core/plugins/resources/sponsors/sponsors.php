@@ -300,7 +300,6 @@ class Sponsors extends Plugin
                 Lang::txt('PLG_RESOURCES_SPONSORS_NO_ITEM_SELECTED'),
                 'error',
             );
-            return;
         }
 
         foreach ($ids as $id) {
@@ -372,7 +371,6 @@ class Sponsors extends Plugin
                 Lang::txt('PLG_RESOURCES_SPONSORS_SELECT_ITEM_TO', $action),
                 'error',
             );
-            return;
         }
 
         foreach ($ids as $id) {

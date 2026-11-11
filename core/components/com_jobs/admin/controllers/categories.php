@@ -185,7 +185,6 @@ class Categories extends AdminController
                 Lang::txt('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
                 'error',
             );
-            return;
         }
 
         $jc = new Category($this->database);

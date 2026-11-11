@@ -101,7 +101,6 @@ class Debug
                                 }
                                 break;
                                 break;
-                                break;
                             }
                         }
                     }

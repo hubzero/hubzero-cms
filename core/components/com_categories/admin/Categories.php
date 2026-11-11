@@ -29,7 +29,6 @@ class Categories extends AbstractComponent
         // Access check.
         if (!User::authorise('core.manage', Request::getCmd('extension'))) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // Determine task

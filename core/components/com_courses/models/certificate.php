@@ -193,7 +193,6 @@ class Certificate extends Base
     {
         if (!$this->exists()) {
             App::abort(422, 'No pages exist for nonexistent certificate.');
-            return;
         }
 
         $base   = $this->path('system');
@@ -242,18 +241,15 @@ class Certificate extends Base
             case 'system':
             case 'upload':
                 return PATH_APP . $this->base;
-                break;
 
             case 'web':
                 $reqBase = trim(Request::base(true), '/');
                 $base = str_replace('administrator', '', $reqBase);
                 $appPath = substr(PATH_APP, strlen(PATH_ROOT));
                 return rtrim($base, '/') . $appPath . $this->base;
-                break;
 
             default:
                 return $this->base;
-                break;
         }
     }
 

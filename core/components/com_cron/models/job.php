@@ -213,22 +213,18 @@ class Job extends Relational
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-                break;
 
             case 'time':
                 return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-                break;
 
             case 'relative':
                 return Date::of($this->get('created'))->relative();
-                break;
 
             default:
                 if ($as) {
                     return Date::of($this->get('created'))->toLocal($as);
                 }
                 return $this->get('created');
-                break;
         }
     }
 

@@ -58,7 +58,6 @@ class Test extends Scaffolding
 
             default:
                 $this->output->error('Sorry, that extension type is not currently supported');
-                break;
         }
 
         // Make sure the extension exists

@@ -56,7 +56,6 @@ class Syncgroup extends Base implements CommandInterface
 
         if (!$alias && !$all) {
             $this->output->error('Specify --alias=<alias> or --all (optionally --dry-run, --limit=N).');
-            return;
         }
 
         if ($alias) {

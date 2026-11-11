@@ -662,7 +662,6 @@ class Group extends Relational implements \Hubzero\Search\Searchable
                     if ($instance && $instance->get('gidNumber') == $group) {
                         // Match found
                         return $instance;
-                        break;
                     }
                 }
             }

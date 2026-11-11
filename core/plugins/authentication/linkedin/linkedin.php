@@ -297,7 +297,6 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
                 Lang::txt('PLG_AUTHENTICATION_LINKEDIN_ERROR'),
                 'error',
             );
-            return;
         }
 
         $token = $this->provider->getAccessToken(
@@ -318,7 +317,6 @@ class Linkedin extends \Hubzero\Plugin\OauthClient
                     Lang::txt('PLG_AUTHENTICATION_LINKEDIN_ERROR'),
                     'error',
                 );
-                return;
             }
 
             // Adopt a pre-v2 link for this member before looking one up

@@ -69,7 +69,6 @@ class Redirect extends GroupMacro
         // No delay time? Redirect now.
         if (!$delay) {
             App::redirect($url);
-            return;
         }
 
         // Delayed redirect

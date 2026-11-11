@@ -247,7 +247,6 @@ class Citations extends SiteController
                 Lang::txt('COM_CITATIONS_END_DATE_MUST_BE_AFTER_START_DATE'),
                 'error',
             );
-            return;
         }
 
         // Clean up filters a little
@@ -364,7 +363,6 @@ class Citations extends SiteController
         //make sure we have an id
         if (!$id || $id == 0) {
             App::abort(404, Lang::txt('COM_CITATIONS_MUST_HAVE_ID'));
-            return;
         }
 
         // set vars for view
@@ -377,7 +375,6 @@ class Citations extends SiteController
         // make sure citation is published
         if (!$this->view->citation->published) {
             App::abort(404, Lang::txt('COM_CITATIONS_NOT_PUBLISHED'));
-            return;
         }
 
         $this->view->associations = $this->view->citation
@@ -538,7 +535,6 @@ class Citations extends SiteController
             Lang::txt('COM_CITATIONS_NOT_LOGGEDIN'),
             'warning',
         );
-        return;
     }
 
     /**
@@ -570,7 +566,6 @@ class Citations extends SiteController
                 Lang::txt('COM_CITATIONS_CITATION_NOT_AUTH'),
                 'warning',
             );
-            return;
         }
 
 

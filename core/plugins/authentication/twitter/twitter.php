@@ -297,7 +297,6 @@ class Twitter extends \Hubzero\Plugin\OauthClient
                 Lang::txt('PLG_AUTHENTICATION_TWITTER_ERROR'),
                 'error',
             );
-            return;
         }
 
         $token = $this->provider->getAccessToken('authorization_code', [
@@ -318,7 +317,6 @@ class Twitter extends \Hubzero\Plugin\OauthClient
                     Lang::txt('PLG_AUTHENTICATION_TWITTER_ERROR'),
                     'error',
                 );
-                return;
             }
 
             $hzad = \Hubzero\Auth\Domain::getInstance('authentication', $this->name, '');

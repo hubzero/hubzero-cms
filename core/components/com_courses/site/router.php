@@ -175,7 +175,6 @@ class Router extends Base
                         $vars['controller'] = $segments[3];
                     }
                     return $vars;
-                    break;
 
                 case 'editoutline':
                 case 'offerings':

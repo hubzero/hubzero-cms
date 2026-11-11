@@ -57,7 +57,6 @@ class Site extends Base
         switch (strtolower($type)) {
             case 'base':
                 return $this->base . '?' . (string) $this->toQueryString($this->segments);
-                break;
 
             case 'edit':
                 if ($this->get('thread')) {
@@ -99,7 +98,6 @@ class Site extends Base
             case 'abuse':
                 return 'index.php?option=com_support&task=reportabuse&category=forum&id='
                     . $this->get('post') . '&parent=' . $this->get('parent');
-                break;
 
             case 'permalink':
             default:

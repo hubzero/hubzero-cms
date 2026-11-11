@@ -222,7 +222,6 @@ class Overrides extends AdminController
             $url = 'index.php?option=' . $this->option
                 . '&controller=' . $this->controller . '&task=edit';
             App::redirect(Route::url($url, false));
-            return;
         }
 
         // Redirect

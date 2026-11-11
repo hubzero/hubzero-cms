@@ -29,7 +29,6 @@ class Installer extends AbstractComponent
         // Access check.
         if (!User::authorise('core.manage', 'com_installer')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         if ($task = Request::getCmd('task')) {

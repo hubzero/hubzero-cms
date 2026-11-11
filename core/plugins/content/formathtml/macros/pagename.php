@@ -47,12 +47,10 @@ class PageName extends Macro
                 // Perform query
                 $this->db->setQuery($sql);
                 return stripslashes($this->db->loadResult());
-                break;
 
             case 'alias':
             default:
                 return $this->pagename;
-                break;
         }
     }
 }

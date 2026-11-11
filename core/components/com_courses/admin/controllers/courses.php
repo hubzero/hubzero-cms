@@ -213,7 +213,6 @@ class Courses extends AdminController
                 Lang::txt('COM_COURSES_ERROR_NO_ID'),
                 'error',
             );
-            return;
         }
 
         $course = \Components\Courses\Models\Course::getInstance($id);
@@ -224,7 +223,6 @@ class Courses extends AdminController
                 Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $course->getError(),
                 'error',
             );
-            return;
         }
 
         // Redirect back to the courses page

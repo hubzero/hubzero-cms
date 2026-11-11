@@ -380,7 +380,6 @@ class Asset extends Base
         // Get some needed libraries
         if (!$course->access('view')) {
             App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
-            return;
         }
 
         // Get the scope of the parent page the file is attached to
@@ -421,7 +420,6 @@ class Asset extends Base
             || strpos($resolved . DS, rtrim($allowedBase, DS) . DS) !== 0
         ) {
             App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
-            return;
         }
         $filename = $resolved;
 
@@ -437,7 +435,6 @@ class Asset extends Base
         } else {
             exit();
         }
-        return;
     }
 
     /**

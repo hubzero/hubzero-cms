@@ -197,7 +197,6 @@ class Options extends AdminController
                 Route::url($url, false),
                 Lang::txt('COM_STOREFRONT_OPTION_SAVED'),
             );
-            return;
         }
         Notify::success(Lang::txt('COM_STOREFRONT_OPTION_SAVED'));
 
@@ -252,7 +251,6 @@ class Options extends AdminController
                         Lang::txt('COM_STOREFRONT_NO_ID'),
                         'error',
                     );
-                    return;
                 }
 
                 $delete = Request::getInt('delete', 0);
@@ -286,7 +284,6 @@ class Options extends AdminController
                                 $e->getMessage(),
                                 $type,
                             );
-                            return;
                         }
                     }
 
@@ -355,7 +352,6 @@ class Options extends AdminController
                 $msg,
                 'error',
             );
-            return;
         }
 
         // Update record(s)

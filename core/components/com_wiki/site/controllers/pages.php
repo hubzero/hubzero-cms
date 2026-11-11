@@ -765,7 +765,6 @@ class Pages extends SiteController
             App::redirect(
                 Route::url($this->page->link()),
             );
-            return;
         }
 
         // Trigger after save event
@@ -923,7 +922,6 @@ class Pages extends SiteController
                     ->setErrors($this->getErrors())
                     ->display();
                 return;
-                break;
         }
 
         App::redirect(

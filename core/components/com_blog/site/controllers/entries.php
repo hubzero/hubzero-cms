@@ -115,7 +115,6 @@ class Entries extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
-            return;
         }
 
         // Load entry
@@ -188,7 +187,6 @@ class Entries extends SiteController
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
 
         if (
@@ -240,7 +238,6 @@ class Entries extends SiteController
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
 
         if (
@@ -373,7 +370,6 @@ class Entries extends SiteController
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
 
         if (
@@ -465,7 +461,6 @@ class Entries extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option),
             );
-            return;
         }
 
         // Set the mime encoding for the document
@@ -562,7 +557,6 @@ class Entries extends SiteController
                 Lang::txt('COM_BLOG_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
 
         // Check for request forgeries
@@ -700,7 +694,6 @@ class Entries extends SiteController
                     false,
                 ),
             );
-            return;
         }
 
         // Initiate a blog comment object
@@ -713,7 +706,6 @@ class Entries extends SiteController
                     false,
                 ),
             );
-            return;
         }
 
         // Mark all comments as deleted

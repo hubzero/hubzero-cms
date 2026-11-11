@@ -45,7 +45,6 @@ class Unconfirmed extends Plugin
                             false,
                         ),
                     );
-                    return;
                 }
             }
 

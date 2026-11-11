@@ -77,7 +77,6 @@ class Install extends Base implements CommandInterface
         // Create app directory structure
         if (!Install\AppDirectory::create($ansi, PATH_APP)) {
             $this->output->error('App directory creation failed.');
-            return;
         }
 
         // Load and display existing configuration status
@@ -99,7 +98,6 @@ class Install extends Base implements CommandInterface
         }
         if ($dbResult === false) {
             $this->output->error('Database configuration failed.');
-            return;
         }
 
         // Prompt before loading schema
@@ -121,13 +119,11 @@ class Install extends Base implements CommandInterface
         // Load database schema
         if (!Install\Schema::load($ansi, PATH_APP, PATH_CORE)) {
             $this->output->error('Schema loading failed.');
-            return;
         }
 
         // Load base data
         if (!Install\Schema::loadData($ansi, PATH_APP, PATH_CORE)) {
             $this->output->error('Base data loading failed.');
-            return;
         }
 
         // Ask about sample data
@@ -192,7 +188,6 @@ class Install extends Base implements CommandInterface
         $adminResult = Install\AdminUser::configure($ansi, PATH_APP, $adminDefaults);
         if ($adminResult === null) {
             $this->output->error('Admin user creation cancelled or failed.');
-            return;
         }
 
         // Final verification and next steps
@@ -327,13 +322,11 @@ class Install extends Base implements CommandInterface
         // Load database schema
         if (!Install\Schema::load($ansi, PATH_APP, PATH_CORE)) {
             $this->output->error('Schema loading failed.');
-            return;
         }
 
         // Load base data
         if (!Install\Schema::loadData($ansi, PATH_APP, PATH_CORE)) {
             $this->output->error('Base data loading failed.');
-            return;
         }
 
         $this->say("\n");
@@ -553,7 +546,6 @@ class Install extends Base implements CommandInterface
             $flavor = $finder->find($name);
         } catch (\Exception $e) {
             $this->output->error('The flavor files do not read: ' . $e->getMessage());
-            return;
         }
 
         if (!$flavor) {
@@ -561,7 +553,6 @@ class Install extends Base implements CommandInterface
                 "There is no '{$name}' flavor in " . implode(', ', $finder->directories())
                 . ". The hub is left as the data shipped it; 'muse repository:flavor set' can shape it later.",
             );
-            return;
         }
 
         $this->say("\n");
@@ -632,7 +623,6 @@ class Install extends Base implements CommandInterface
             }
         } catch (\PDOException $e) {
             $this->output->error('Could not connect to database: ' . $e->getMessage());
-            return;
         }
 
         $this->say("\n");

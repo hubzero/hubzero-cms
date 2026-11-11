@@ -161,7 +161,6 @@ class Images extends AdminController
             default:
                 echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')]);
                 return;
-                break;
         }
 
         if (!$object->save()) {
@@ -282,7 +281,6 @@ class Images extends AdminController
                 default:
                     echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')]);
                     return;
-                    break;
             }
             if (!$product->save()) {
                 $this->setError('Error updating product');
@@ -329,7 +327,6 @@ class Images extends AdminController
             default:
                 echo json_encode(['error' => Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE')]);
                 return;
-                break;
         }
 
         if (!$object->save()) {
@@ -436,7 +433,6 @@ class Images extends AdminController
             default:
                 $this->setError(Lang::txt('COM_STOREFRONT_ERROR_INVALID_TYPE'));
                 return '';
-                break;
         }
 
         return $path;

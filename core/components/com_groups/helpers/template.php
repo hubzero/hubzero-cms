@@ -129,7 +129,6 @@ class Template extends Document
             //we we dont have a super group template
             if ($template === null) {
                 App::abort(500, 'Missing "Super Group" template file.');
-                return;
             }
 
             // load the template & set docuement

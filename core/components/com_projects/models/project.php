@@ -238,23 +238,18 @@ class Project extends Model
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get($key))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-                break;
 
             case 'time':
                 return Date::of($this->get($key))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-                break;
 
             case 'datetime':
                 return $this->date($key, 'date') . ' &#64; ' . $this->date($key, 'time');
-                break;
 
             case 'timeago':
                 return \Components\Projects\Helpers\Html::timeAgo($this->get($key));
-                break;
 
             default:
                 return $this->get($key);
-                break;
         }
     }
 
@@ -1123,7 +1118,6 @@ class Project extends Model
         switch (strtolower($rtrn)) {
             case 'count':
                 return (int) $this->table->getCount($filters, $admin, $filters['uid'], $showDeleted, $setupComplete);
-                break;
 
             case 'group':
                 $group = isset($filters['group']) ? $filters['group'] : null;

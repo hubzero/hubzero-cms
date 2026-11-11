@@ -232,7 +232,6 @@ class Links extends Plugin
         );
 
         App::redirect($url);
-        return;
     }
 
     /**
@@ -278,7 +277,6 @@ class Links extends Plugin
                 false,
             ),
         );
-        return;
     }
 
     /**
@@ -354,7 +352,6 @@ class Links extends Plugin
                 false,
             ),
         );
-        return;
     }
 
     /**

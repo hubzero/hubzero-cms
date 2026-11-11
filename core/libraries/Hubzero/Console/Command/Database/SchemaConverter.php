@@ -72,7 +72,6 @@ class SchemaConverter
 
         if (!$from || !$to) {
             $this->output->error('Error: You must specify both --from and --to arguments');
-            return;
         }
 
         $from = strtolower($from);
@@ -83,7 +82,6 @@ class SchemaConverter
                 "Error: Unsupported source database type '$from'. Supported: "
                 . implode(', ', $this->supportedFrom),
             );
-            return;
         }
 
         if (!in_array($to, $this->supportedTo)) {
@@ -91,7 +89,6 @@ class SchemaConverter
                 "Error: Unsupported target database type '$to'. Supported: "
                 . implode(', ', $this->supportedTo),
             );
-            return;
         }
 
         // Get input/output files
@@ -101,7 +98,6 @@ class SchemaConverter
 
         if (!file_exists($inputFile)) {
             $this->output->error("Error: Input file not found: $inputFile");
-            return;
         }
 
         // Ensure output directory exists
@@ -109,7 +105,6 @@ class SchemaConverter
         if (!is_dir($outputDir)) {
             if (!mkdir($outputDir, 0755, true)) {
                 $this->output->error("Error: Could not create output directory: $outputDir");
-                return;
             }
         }
 

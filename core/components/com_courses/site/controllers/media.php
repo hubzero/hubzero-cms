@@ -227,7 +227,6 @@ class Media extends SiteController
             && !$course->access('edit', 'course')
         ) {
             App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
-            return;
         }
 
         // Build the upload path if it doesn't exist
@@ -494,7 +493,6 @@ class Media extends SiteController
             && !$course->access('edit', 'course')
         ) {
             App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
-            return;
         }
 
         $del_folder = DS
@@ -561,7 +559,6 @@ class Media extends SiteController
             && !$course->access('edit', 'course')
         ) {
             App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
-            return;
         }
 
         // Build the file path
@@ -605,7 +602,6 @@ class Media extends SiteController
             && !$course->access('edit', 'course')
         ) {
             App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
-            return;
         }
 
         // There is no media layout for this controller; send the user back to
@@ -638,7 +634,6 @@ class Media extends SiteController
             && !$course->access('edit', 'course')
         ) {
             App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH'));
-            return;
         }
 
         if (!$listdir) {
@@ -713,13 +708,11 @@ class Media extends SiteController
             $file = urldecode(substr($filename, 5));
         } else {
             App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
-            return;
         }
 
         //check to make sure we can access it
         if (!in_array(User::get('id'), $course->get('members')) || User::isGuest()) {
             App::abort(403, Lang::txt('COM_COURSES_NOT_AUTH') . ' ' . $file);
-            return;
         }
 
         // Build the path
@@ -731,7 +724,6 @@ class Media extends SiteController
         // Ensure the file exist
         if (!file_exists(PATH_APP . DS . $file_path)) {
             App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . ' ' . $file);
-            return;
         }
 
         // Serve up the file
@@ -742,7 +734,6 @@ class Media extends SiteController
 
         if (!$xserver->serve()) {
             App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
-            return;
         }
 
         exit();

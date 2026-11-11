@@ -28,7 +28,6 @@ class Modules extends AbstractComponent
         // Access check.
         if (!User::authorise('core.manage', 'com_modules')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // initiate controller

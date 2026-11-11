@@ -109,17 +109,14 @@ class Router extends Base
                         $vars['task'] = 'rateitem';
                         $vars['id'] = $segments[1];
                         return $vars;
-                        break;
                     case 'saveplan':
                         $vars['task'] = 'saveplan';
                         $vars['wishid'] = $segments[1];
                         return $vars;
-                        break;
                     case 'wish':
                         $vars['task'] = 'wish';
                         $vars['wishid'] = $segments[1];
                         return $vars;
-                        break;
                     default:
                         if (count($segments) >= 3 && $segments[0] == 'wishlist') {
                             $component = array_shift($segments);

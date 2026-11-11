@@ -386,7 +386,6 @@ class Migration extends Base implements CommandInterface
 
         if ($status === false) {
             $this->output->error('Error: Failed to retrieve migration status');
-            return;
         }
 
         // Display summary header

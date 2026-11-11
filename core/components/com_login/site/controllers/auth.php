@@ -800,7 +800,6 @@ class Auth extends SiteController
                                         false,
                                     ),
                                 );
-                                return;
                             } else {
                                 break;
                             }
@@ -879,7 +878,6 @@ class Auth extends SiteController
                                 false,
                             ),
                         );
-                        return;
                     } else {
                         App::redirect(
                             Route::url(
@@ -887,7 +885,6 @@ class Auth extends SiteController
                                 false,
                             ),
                         );
-                        return;
                     }
                 }
             }

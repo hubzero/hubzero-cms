@@ -29,7 +29,6 @@ class Cron extends AbstractComponent
     {
         if (!User::authorise('core.manage', 'com_cron')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         Submenu::addEntry(

@@ -47,7 +47,6 @@ class Offering extends SiteController
             App::redirect(
                 'index.php?option=' . $this->option,
             );
-            return;
         }
 
         // Load the course page
@@ -59,7 +58,6 @@ class Offering extends SiteController
             || $this->course->isUnpublished();
         if ($courseNotFound) {
             App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
-            return;
         }
 
         // No offering provided
@@ -69,7 +67,6 @@ class Offering extends SiteController
             App::redirect(
                 Route::url($url),
             );
-            return;
         }
 
         // Ensure we found the course info
@@ -81,14 +78,12 @@ class Offering extends SiteController
             || (!$canManageSection && $offeringObj->isUnpublished())
         ) {
             App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
-            return;
         }
 
         // Ensure the course has been published or has been approved
         $canManage = $this->course->offering()->access('manage', 'section');
         if (!$canManage && !$this->course->isAvailable()) {
             App::abort(404, Lang::txt('COM_COURSES_NOT_PUBLISHED'));
-            return;
         }
 
         parent::execute();
@@ -168,7 +163,6 @@ class Offering extends SiteController
             Lang::txt($message),
             'warning',
         );
-        return;
     }
 
     /**
@@ -183,7 +177,6 @@ class Offering extends SiteController
         $isAvailable = $this->course->offering()->isAvailable();
         if (!$canManage && !$isAvailable) {
             App::abort(404, Lang::txt('COM_COURSES_NO_OFFERING_FOUND'));
-            return;
         }
 
         $tmpl = $this->config->get('tmpl', '');
@@ -270,7 +263,6 @@ class Offering extends SiteController
                 Route::url($offering->link()),
                 Lang::txt('COM_COURSES_ALREADY_ENROLLED'),
             );
-            return;
         }
 
         $this->view->course = $this->course;
@@ -346,7 +338,6 @@ class Offering extends SiteController
                         App::redirect(
                             Route::url($enrollUrl),
                         );
-                        return;
                     }
                     // Redeem the code
                     // set('redeemed_by', User::get('id'));
@@ -396,7 +387,6 @@ class Offering extends SiteController
             App::redirect(
                 Route::url($link),
             );
-            return;
         }
 
         // If enrollment is srestricted and the user isn't enrolled yet
@@ -468,7 +458,6 @@ class Offering extends SiteController
                         $enrollmentRequiredMsg,
                         'warning',
                     );
-                    return;
                 }
             } elseif ($preview == 2) { // Preview is only for first unit
                 $units = $asset->units();
@@ -486,7 +475,6 @@ class Offering extends SiteController
                                     $enrollmentRequiredMsg,
                                     'warning',
                                 );
-                                return;
                             }
                         }
                     }
@@ -501,7 +489,6 @@ class Offering extends SiteController
         if (!$canManage && (!$offeringPublished || !$sectionPublished)) {
             $unavailableMsg = Lang::txt('COM_COURSES_ERROR_ASSET_UNAVAILABLE');
             App::abort(403, $unavailableMsg);
-            return;
         }
 
         $canManageAsset = $this->course->offering()->access('manage');
@@ -515,7 +502,6 @@ class Offering extends SiteController
                     Lang::txt('COM_COURSES_ERROR_ASSET_UNAVAILABLE'),
                     'warning',
                 );
-                return;
             }
         }
 
@@ -548,7 +534,6 @@ class Offering extends SiteController
                 $prereqMsg,
                 'warning',
             );
-            return;
         }
 
         // If requesting a file from a wiki type asset, then serve that up directly

@@ -397,16 +397,12 @@ class Results extends SiteController
         switch ($period) {
             case 'week':
                 return Lang::txt('COM_WHATSNEW_OPT_WEEK');
-                break;
             case 'month':
                 return Lang::txt('COM_WHATSNEW_OPT_MONTH');
-                break;
             case 'quarter':
                 return Lang::txt('COM_WHATSNEW_OPT_QUARTER');
-                break;
             case 'year':
                 return Lang::txt('COM_WHATSNEW_OPT_YEAR');
-                break;
             default:
                 $thisyear = date("Y", time());
                 for ($y = $thisyear; $y >= 2002; $y--) {

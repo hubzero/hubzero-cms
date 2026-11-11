@@ -274,19 +274,15 @@ class Application extends Container
         switch ($code) {
             case 405:
                 throw new MethodNotAllowedException($message, $code);
-                break;
 
             case 404:
                 throw new NotFoundException($message, $code);
-                break;
 
             case 403:
                 throw new NotAuthorizedException($message, $code);
-                break;
 
             default:
                 throw new RuntimeException($message, $code);
-                break;
         }
     }
 

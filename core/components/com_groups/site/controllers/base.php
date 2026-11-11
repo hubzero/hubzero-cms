@@ -95,7 +95,6 @@ class Base extends SiteController
             $message,
             'warning',
         );
-        return;
     }
 
 
@@ -245,7 +244,6 @@ class Base extends SiteController
         }
 
         App::abort($errorCode, $errorMessage);
-        return;
     }
 
     /**

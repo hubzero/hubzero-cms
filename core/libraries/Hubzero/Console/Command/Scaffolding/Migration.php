@@ -128,7 +128,6 @@ class Migration extends Scaffolding
                 break;
             default:
                 return false;
-                break;
         }
 
         return (is_dir($dir)) ? true : false;

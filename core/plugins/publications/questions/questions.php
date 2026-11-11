@@ -253,7 +253,6 @@ class Questions extends Plugin
                 Lang::txt('PLG_PUBLICATIONS_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
                 'warning',
             );
-            return;
         }
 
         if (!is_object($row)) {

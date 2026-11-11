@@ -282,7 +282,6 @@ class Versions extends AdminController
                     false,
                 ),
             );
-            return;
         }
 
         Notify::success(Lang::txt('COM_TOOLS_ITEM_SAVED'));

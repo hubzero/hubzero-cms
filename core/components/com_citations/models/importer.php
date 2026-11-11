@@ -342,7 +342,6 @@ class Importer extends Obj
                     case 'discard':
                         $results['not_saved'][] = $cra;
                         continue 2;
-                        break;
                 }
 
                 // remove duplicate flag

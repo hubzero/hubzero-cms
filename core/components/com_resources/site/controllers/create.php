@@ -157,7 +157,6 @@ class Create extends SiteController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
         );
-        return;
     }
 
     /**
@@ -691,7 +690,6 @@ class Create extends SiteController
         // Only the owner/author (or an admin) may edit an existing resource
         if ($rid && !$isTempId && !$this->authorizeResource($rid)) {
             App::abort(403, Lang::txt('Forbidden'));
-            return;
         }
 
         // Never let ownership/privileged columns be mass-assigned from the form.
@@ -936,7 +934,6 @@ class Create extends SiteController
         // Only the owner/author (or an admin) may change ownership/access
         if (!$this->authorizeResource($id)) {
             App::abort(403, Lang::txt('Forbidden'));
-            return;
         }
 
         $prev       = $row->get('group_owner');
@@ -1058,7 +1055,6 @@ class Create extends SiteController
 
         if (!$this->database->loadResult()) {
             App::abort(403, Lang::txt('Forbidden'));
-            return;
         }
 
         $tags = preg_split('/,\s*/', $_POST['tags']);
@@ -1513,7 +1509,6 @@ class Create extends SiteController
             App::redirect(
                 Route::url($resource->link()),
             );
-            return;
         }
 
         // If the resource gets published (auto-publish or the user is in the auto-approved list), trigger the
@@ -1548,13 +1543,11 @@ class Create extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&task=new'),
             );
-            return;
         }
 
         // Only the owner/author (or an admin) may delete this resource
         if (!$this->authorizeResource($id)) {
             App::abort(403, Lang::txt('Forbidden'));
-            return;
         }
 
         // Load the resource
@@ -1657,7 +1650,6 @@ class Create extends SiteController
                 App::redirect(
                     Route::url('index.php?option=' . $this->option . '&task=new'),
                 );
-                break;
         }
     }
 
@@ -1679,7 +1671,6 @@ class Create extends SiteController
             // Only the owner/author (or an admin) may retract this resource
             if (!$this->authorizeResource($id)) {
                 App::abort(403, Lang::txt('Forbidden'));
-                return;
             }
 
             // Check if it's in pending status

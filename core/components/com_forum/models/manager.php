@@ -300,7 +300,6 @@ class Manager extends Obj
                 default:
                     $this->setError(Lang::txt('Property value of "%s" not accepted', $what));
                     return 0;
-                    break;
             }
         }
 

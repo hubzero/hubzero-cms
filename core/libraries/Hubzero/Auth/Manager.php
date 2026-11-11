@@ -83,13 +83,10 @@ class Manager
                     switch ($authorisation->status) {
                         case Status::EXPIRED:
                             return new \Exception($this->app['language']->txt('JLIB_LOGIN_EXPIRED'), 102002);
-                            break;
                         case Status::DENIED:
                             return new \Exception($this->app['language']->txt('JLIB_LOGIN_DENIED'), 102003);
-                            break;
                         default:
                             return new \Exception($this->app['language']->txt('JLIB_LOGIN_AUTHORISATION'), 102004);
-                            break;
                     }
                 }
             }

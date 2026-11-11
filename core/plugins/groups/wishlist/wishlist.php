@@ -140,7 +140,6 @@ class Wishlist extends Plugin
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
                     'warning',
                 );
-                return;
             }
 
             //check to see if user is member and plugin access requires members

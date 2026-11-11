@@ -59,7 +59,6 @@ class Site extends Base
         switch (strtolower($type)) {
             case 'base':
                 return $this->base . '?' . (string) $this->toQueryString($this->segments);
-                break;
 
             case 'edit':
                 $segments['task']  = 'edit';

@@ -325,7 +325,6 @@ class Assetgroup extends Base
             case 'prev':
             case 'next':
                 return $this->siblings->fetch($dir);
-                break;
 
             default:
                 break;

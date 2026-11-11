@@ -298,13 +298,10 @@ class Post extends Relational implements \Hubzero\Search\Searchable
             case 0:
             case 1:
                 return 'public';
-                break;
             case 2:
                 return 'registered';
-                break;
             default:
                 return 'private';
-                break;
         }
     }
 

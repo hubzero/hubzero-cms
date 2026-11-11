@@ -49,7 +49,6 @@ class Tools extends SiteController
             App::redirect(
                 $this->config->get('mw_redirect', '/home'),
             );
-            return;
         }
 
         parent::execute();

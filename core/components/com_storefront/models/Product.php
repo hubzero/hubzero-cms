@@ -109,11 +109,9 @@ class Product
             case 'course':
                 $this->data->type = 20;
                 return true;
-                break;
             case 'product':
                 $this->data->type = 1;
                 return true;
-                break;
         }
 
         throw new \Exception(Lang::txt('COM_STOREFRONT_INVALID_PRODUCT_TYPE'));

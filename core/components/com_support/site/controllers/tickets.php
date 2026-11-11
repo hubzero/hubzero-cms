@@ -160,7 +160,6 @@ class Tickets extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
-            return;
         }
 
         // Only those who may read tickets get the statistics (the list offers
@@ -172,7 +171,6 @@ class Tickets extends SiteController
                     false,
                 ),
             );
-            return;
         }
 
         // Set the page title
@@ -528,7 +526,6 @@ class Tickets extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
-            return;
         }
 
         $filters = $this->getFilters();
@@ -1460,7 +1457,6 @@ class Tickets extends SiteController
                 Lang::txt('COM_SUPPORT_ERROR_MISSING_TICKET_ID'),
                 'error',
             );
-            return;
         }
 
         // Initiate database class and load info
@@ -1472,7 +1468,6 @@ class Tickets extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
-            return;
         }
 
         // Ensure the user is authorized to view this ticket
@@ -1614,7 +1609,6 @@ class Tickets extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
-            return;
         }
 
         // Check for request forgeries
@@ -1816,7 +1810,6 @@ class Tickets extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
-            return;
         }
 
         // Require POST to prevent accidental deletion by crawlers
@@ -1840,7 +1833,6 @@ class Tickets extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=tickets'),
             );
-            return;
         }
 
         // Load the record
@@ -2106,7 +2098,6 @@ class Tickets extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
-            return;
         }
 
         // Get the ID of the file requested

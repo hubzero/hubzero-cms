@@ -145,7 +145,6 @@ class Sessions extends SiteController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
         );
-        return;
     }
 
     /**
@@ -548,7 +547,6 @@ class Sessions extends SiteController
             App::redirect(
                 Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
             );
-            return;
         }
 
         // Get the parent toolname (appname without any revision number "_r423")
@@ -673,7 +671,6 @@ class Sessions extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=storage'),
             );
-            return;
         }
 
         // Get plugins
@@ -721,7 +718,6 @@ class Sessions extends SiteController
                 isset($output->user_message) ? $output->user_message : 'no reason given',
                 'error',
             );
-            return;
         }
         $app->sess = !empty($output->session) ? $output->session : '';
 
@@ -814,7 +810,6 @@ class Sessions extends SiteController
         // Double-check that the user can view this session.
         if (!$session->exists()) {
             App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $id);
-            return;
         }
 
         // Stop the old session
@@ -849,7 +844,6 @@ class Sessions extends SiteController
                 isset($output->user_message) ? $output->user_message : 'no reason given',
                 'error',
             );
-            return;
         }
 
         // Do we have a session ID?
@@ -864,7 +858,6 @@ class Sessions extends SiteController
         $reinvoked->set('zone_id', $zone);
         if (!$reinvoked->store()) {
             App::abort(500, $reinvoked->getError());
-            return;
         }
 
         // Redirect to the new session view
@@ -947,7 +940,6 @@ class Sessions extends SiteController
         // Ensure we found an active session
         if (!$row || !$row->sesstoken) {
             App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
-            return;
         }
 
         //$row = $rows[0];
@@ -961,12 +953,10 @@ class Sessions extends SiteController
         $rows = $mv->loadViewperm($sess, $owner);
         if (count($rows) != 1) {
             App::abort(404, Lang::txt('COM_TOOLS_ERROR_UNABLE_TO_GET_ENTRY_FOR', $sess, $owner));
-            return;
         }
 
         if ($confirm != 'Yes') {
             App::abort(404, Lang::txt('COM_TOOLS_ERROR_SHARE_NO_CONFIRM'));
-            return;
         }
 
         $ids = [];
@@ -1021,7 +1011,6 @@ class Sessions extends SiteController
 
             if ($mwViewperm->getError()) {
                 App::abort(500, $mwViewperm->getError());
-                return;
             }
         }
 
@@ -1074,7 +1063,6 @@ class Sessions extends SiteController
 
             if (!$ms->sesstoken) {
                 App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $sess);
-                return;
             }
         } else {
             // Otherwise, assume that the user wants to disconnect a session that's been shared with them.
@@ -1106,7 +1094,6 @@ class Sessions extends SiteController
             App::redirect(
                 Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
             );
-            return;
         }
 
         // Drop through and re-view the session...
@@ -1149,7 +1136,6 @@ class Sessions extends SiteController
                 Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND'),
                 'error',
             );
-            return;
         }
 
         $this->view->rtrn = Request::getString('return', '');
@@ -1165,7 +1151,6 @@ class Sessions extends SiteController
 
         if (!is_object($row) || !$row->appname) {
             App::abort(404, Lang::txt('COM_TOOLS_ERROR_SESSION_NOT_FOUND') . ': ' . $app->sess);
-            return;
         }
 
         $this->view->middleware = new \Components\Tools\Models\Middleware();
@@ -1215,7 +1200,6 @@ class Sessions extends SiteController
                     . '. '
                     . Lang::txt('MW_SESSION_NOT_FOUND_EXPLANATION'),
             );
-            return;
         }
 
         // Get their disk space usage
@@ -1273,7 +1257,6 @@ class Sessions extends SiteController
                 isset($output->user_message) ? $output->user_message : 'no reason given',
                 'error',
             );
-            return;
         }
 
         // If weber_auth is defined, set a cookie for it.
@@ -1575,7 +1558,6 @@ class Sessions extends SiteController
             App::redirect(
                 Route::url($redirect),
             );
-            return;
         }
 
         // Double-check that the user owns this session.
@@ -1593,7 +1575,6 @@ class Sessions extends SiteController
             App::redirect(
                 Route::url($redirect),
             );
-            return;
         }
 
         // Get plugins
@@ -1702,7 +1683,6 @@ class Sessions extends SiteController
         // Must be logged in
         if (User::isGuest()) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         $mwdb = \Components\Tools\Helpers\Utils::getMWDBO();
@@ -1790,7 +1770,6 @@ class Sessions extends SiteController
 
         if (!$rt->store()) {
             App::abort(500, $rt->getError());
-            return;
         }
     }
 

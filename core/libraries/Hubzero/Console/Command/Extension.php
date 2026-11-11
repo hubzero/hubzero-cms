@@ -231,7 +231,6 @@ class Extension extends Base implements CommandInterface
 
             default:
                 $this->output->error('This does not appear to be a valid extension name.');
-                break;
         }
 
         $this->output->addLine(

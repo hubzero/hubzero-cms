@@ -140,7 +140,6 @@ class Mailinglists extends SiteController
 
             //redirect
             App::redirect($redirect, Lang::txt('COM_NEWSLETTER_LOGIN_TO_SUBSCRIBE'), 'warning');
-            return;
         } else {
             //get mailing lists user belongs to
             $e = Email::blank()->getTableName();
@@ -217,7 +216,6 @@ class Mailinglists extends SiteController
                 Lang::txt('COM_NEWSLETTER_SUBSCRIBE_BADEMAIL'),
                 'error',
             );
-            return;
         }
 
         //validate list
@@ -228,7 +226,6 @@ class Mailinglists extends SiteController
                 Lang::txt('COM_NEWSLETTER_SUBSCRIBE_BADLIST'),
                 'error',
             );
-            return;
         }
 
         //load mailing list object
@@ -383,7 +380,6 @@ class Mailinglists extends SiteController
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE'),
                 'error',
             );
-            return;
         }
 
         //get newsletter mailing to get mailing list id mailing was sent to
@@ -396,7 +392,6 @@ class Mailinglists extends SiteController
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING'),
                 'error',
             );
-            return;
         }
 
         //is the mailing list to the default hub mailing list?
@@ -448,13 +443,11 @@ class Mailinglists extends SiteController
                 App::redirect(
                     Route::url('index.php?option=com_newsletter'),
                 );
-                return;
             }
 
             App::redirect(
                 Route::url('index.php?option=com_newsletter&task=subscribe'),
             );
-            return;
         }
 
         //build title
@@ -502,7 +495,6 @@ class Mailinglists extends SiteController
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_LINK_ISSUE'),
                 'error',
             );
-            return;
         }
 
         //get newsletter mailing to get mailing list id mailing was sent to
@@ -515,7 +507,6 @@ class Mailinglists extends SiteController
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_NO_MAILING'),
                 'error',
             );
-            return;
         }
 
         //are we unsubscribing from default list?
@@ -537,7 +528,6 @@ class Mailinglists extends SiteController
                     Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_MUST_LOGIN'),
                     'warning',
                 );
-                return;
             }
         } else {
             //update the emails status on the mailing list
@@ -555,7 +545,6 @@ class Mailinglists extends SiteController
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_UNSUBSCRIBE_ERROR'),
                 'error',
             );
-            return;
         }
 
         //insert unsubscribe reason
@@ -574,7 +563,6 @@ class Mailinglists extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_newsletter'),
             );
-            return;
         }
 
         App::redirect(
@@ -603,7 +591,6 @@ class Mailinglists extends SiteController
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE'),
                 'error',
             );
-            return;
         }
 
         //instantiate mailing list email object and load based on id
@@ -646,7 +633,6 @@ class Mailinglists extends SiteController
                 Lang::txt('COM_NEWSLETTER_MAILINGLIST_CONFIRMATION_LINK_ISSUE'),
                 'error',
             );
-            return;
         }
 
         //instantiate mailing list email object and load based on id

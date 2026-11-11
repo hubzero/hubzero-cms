@@ -30,7 +30,6 @@ class Media extends AbstractComponent
     {
         if (!User::authorise('core.manage', 'com_media')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $params = Component::params('com_media');

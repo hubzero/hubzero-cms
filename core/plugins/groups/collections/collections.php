@@ -263,7 +263,6 @@ class Collections extends Plugin
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
                     'warning',
                 );
-                return;
             }
 
             //check to see if user is member and plugin access requires members
@@ -521,7 +520,6 @@ class Collections extends Plugin
             Lang::txt('GROUPS_LOGIN_NOTICE'),
             'warning',
         );
-        return;
     }
 
     /**
@@ -731,7 +729,6 @@ class Collections extends Plugin
         $view->collection = $this->model->collection($view->filters['collection_id']);
         if (!$view->collection->exists()) {
             App::abort(404, Lang::txt('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
-            return;
         }
 
         $view->filters['collection_id'] = $view->collection->get('id');
@@ -816,7 +813,6 @@ class Collections extends Plugin
                 $collection = $this->model->collection(Request::getString('board', ''));
                 if (!$collection->exists()) {
                     App::abort(404, Lang::txt('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
-                    return;
                 }
                 $id = $collection->get('id');
                 $sfx = '&scope=' . $collection->get('alias') . '/unfollow';
@@ -825,7 +821,6 @@ class Collections extends Plugin
             default:
                 // follow() and unfollow() are only called with the cases above
                 App::abort(404);
-                return;
         }
 
         if (!$this->model->follow($id, $what, User::get('id'), 'member')) {
@@ -884,7 +879,6 @@ class Collections extends Plugin
                 $collection = $this->model->collection(Request::getString('board', ''));
                 if (!$collection->exists()) {
                     App::abort(404, Lang::txt('PLG_GROUPS_COLLECTIONS_ERROR_COLLECTION_DOES_NOT_EXIST'));
-                    return;
                 }
                 $id = $collection->get('id');
                 $sfx = '&scope=' . $collection->get('alias') . '/follow';
@@ -893,7 +887,6 @@ class Collections extends Plugin
             default:
                 // follow() and unfollow() are only called with the cases above
                 App::abort(404);
-                return;
         }
 
         if (!$this->model->unfollow($id, $what, User::get('id'), 'member')) {
@@ -1075,7 +1068,6 @@ class Collections extends Plugin
                 Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'),
                 'error',
             );
-            return;
         }
 
         $no_html = Request::getInt('no_html', 0);
@@ -2343,7 +2335,6 @@ class Collections extends Plugin
                 Lang::txt('PLG_GROUPS_COLLECTIONS_NOT_AUTH'),
                 'error',
             );
-            return;
         }
 
         $view = $this->view('edit', 'collection');

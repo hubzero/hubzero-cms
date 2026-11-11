@@ -38,7 +38,6 @@ class Membership extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option, false),
             );
-            return;
         }
 
         parent::execute();
@@ -67,7 +66,6 @@ class Membership extends AdminController
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
-            return;
         }
 
         // Load the group page
@@ -386,7 +384,6 @@ class Membership extends AdminController
                 Lang::txt('COM_GROUPS_MEMBERSHIP_EXPIRATION_UNAVAILABLE'),
                 'error',
             );
-            return;
         }
 
         $ids     = Request::getArray('id', []);
@@ -396,7 +393,6 @@ class Membership extends AdminController
 
         if ($mode != 'clear' && $expires === '') {
             App::redirect(Route::url($return, false), Lang::txt('PLG_GROUPS_MEMBERS_EXPIRATION_NO_DATE'), 'error');
-            return;
         }
 
         $done   = 0;

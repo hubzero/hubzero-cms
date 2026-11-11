@@ -130,7 +130,6 @@ class Reviews extends Plugin
                     Lang::txt('PLG_PUBLICATIONS_REVIEWS_LOGIN_NOTICE'),
                     'warning',
                 );
-                return;
             }
 
             $reviews = $r->getRatings($model->get('id'));

@@ -63,7 +63,6 @@ class Checkout extends ComponentController
     public function displayTask()
     {
         App::abort(404, Lang::txt('COM_CART_NO_CHECKOUT_STEP_FOUND'));
-        return;
     }
 
     /**
@@ -613,7 +612,6 @@ class Checkout extends ComponentController
             $message,
             'warning',
         );
-        return;
     }
 
     /**

@@ -249,7 +249,6 @@ class Group extends Obj
                     if ($instance && $instance->get('gidNumber') == $group) {
                         // Match found
                         return $instance;
-                        break;
                     }
                 }
             }

@@ -268,7 +268,7 @@ Deleting needs `core.delete` on `com_members`, and refuses to remove a Super
 User unless you are one yourself. For each checked account it calls `destroy()`
 on the member model:
 
-<!--include: core/components/com_members/models/member.php:440-481-->
+<!--include: core/components/com_members/models/member.php:438-479-->
 
 So the account's own profile field values, notes, hosts and tags go with it,
 and the `user.onUserAfterDelete` event carries the deletion outward. Seven

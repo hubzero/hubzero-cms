@@ -30,7 +30,6 @@ class Projects extends AbstractComponent
     {
         if (!User::authorise('core.manage', 'com_projects')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $controllerName = Request::getCmd('controller', 'projects');

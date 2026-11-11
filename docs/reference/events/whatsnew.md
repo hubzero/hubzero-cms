@@ -39,7 +39,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_whatsnew/site/controllers/results.php:445`](../../../core/components/com_whatsnew/site/controllers/results.php#L445)
+- [`core/components/com_whatsnew/site/controllers/results.php:441`](../../../core/components/com_whatsnew/site/controllers/results.php#L441)
 - [`core/modules/mod_whatsnew/mod_whatsnew.php:49`](../../../core/modules/mod_whatsnew/mod_whatsnew.php#L49)
 
 Listeners:

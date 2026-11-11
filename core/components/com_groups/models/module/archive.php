@@ -101,7 +101,6 @@ class Archive extends Obj
                     }
                 }
                 return new ItemList($unapproved);
-                break;
             case 'list':
             default:
                 $tbl = new Tables\Module($this->db);
@@ -112,7 +111,6 @@ class Archive extends Obj
                 }
                 $this->modules = new ItemList($results);
                 return $this->modules;
-                break;
         }
     }
 }

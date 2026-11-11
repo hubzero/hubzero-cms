@@ -29,6 +29,5 @@ class Admin extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->option . '&controller=items', false),
         );
-        return;
     }
 }

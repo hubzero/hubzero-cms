@@ -138,7 +138,6 @@ class Item extends Table
 
                 $this->db->setQuery($query);
                 return $this->db->loadResult();
-                break;
 
             case 'one':
                 $filters['limit'] = 1;
@@ -149,7 +148,6 @@ class Item extends Table
                 }
 
                 return $result;
-                break;
 
             case 'first':
                 $filters['start'] = 0;
@@ -161,14 +159,12 @@ class Item extends Table
                 }
 
                 return $result;
-                break;
 
             case 'all':
                 if (isset($filters['limit'])) {
                     unset($filters['limit']);
                 }
                 return $this->find('list', $filters);
-                break;
 
             case 'list':
             default:
@@ -209,7 +205,6 @@ class Item extends Table
 
                 $this->db->setQuery($query);
                 return $this->db->loadObjectList();
-                break;
         }
     }
 

@@ -90,7 +90,6 @@ class Test extends Base implements CommandInterface
                     'Sorry, we were not able to find an extension by that name or that extension type is not currently '
                         . 'supported',
                 );
-                break;
         }
 
         // Make sure the test directory exists

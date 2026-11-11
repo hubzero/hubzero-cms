@@ -226,7 +226,6 @@ class Overview extends Plugin
                         'key'    => 'users-visits-org-other',
                     ];
                     break;
-                    break;
 
                 default:
                     break;
@@ -334,7 +333,6 @@ class Overview extends Plugin
                         'value'  => $row->value,
                         'key'    => 'users-downloads-org-other',
                     ];
-                    break;
                     break;
 
                 default:

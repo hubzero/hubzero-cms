@@ -133,11 +133,9 @@ class Resources extends Plugin
         switch ($category) {
             case 'review':
                 return Lang::txt('PLG_SUPPORT_RESOURCES_REVIEW_OF', $parentid);
-                break;
 
             case 'reviewcomment':
                 return Lang::txt('PLG_SUPPORT_RESOURCES_COMMENT_OF', $parentid);
-                break;
         }
 
         return '';

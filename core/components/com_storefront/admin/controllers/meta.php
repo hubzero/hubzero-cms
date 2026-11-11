@@ -182,7 +182,6 @@ class Meta extends AdminController
                 ),
                 Lang::txt('COM_STOREFRONT_PRODUCT_SAVED'),
             );
-            return;
         }
         Notify::success(Lang::txt('COM_STOREFRONT_PRODUCT_SAVED'));
 

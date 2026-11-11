@@ -134,19 +134,16 @@ class Attachment extends Relational
                 return Route::url($url);
                 */
                 return with(new \Hubzero\Content\Moderator($this->link('file')))->getUrl();
-                break;
 
             case 'dir':
                 $path = Component::params('com_wishlist')->get('webpath');
                 return PATH_APP . DS . trim($path, '/') . DS . $this->get('wish');
-                break;
 
             case 'file':
             case 'server':
                 $path = Component::params('com_wishlist')->get('webpath');
                 return PATH_APP . DS . trim($path, '/') . DS . $this->get('wish')
                     . DS . ltrim($this->get('filename'), '/');
-                break;
         }
 
         return '';

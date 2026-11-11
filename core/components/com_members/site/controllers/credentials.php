@@ -471,7 +471,6 @@ class Credentials extends SiteController
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
                 'warning',
             );
-            return;
         }
 
         // Make sure the user isn't blocked or expired for inactivity
@@ -481,7 +480,6 @@ class Credentials extends SiteController
                 Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_USER_NOT_FOUND'),
                 'warning',
             );
-            return;
         }
 
         if (\Hubzero\User\Helper::isXDomainUser($user->get('id'))) {
@@ -541,7 +539,6 @@ class Credentials extends SiteController
                     $error,
                     'warning',
                 );
-                return;
             }
         }
 
@@ -566,7 +563,6 @@ class Credentials extends SiteController
                     Lang::txt('COM_MEMBERS_CREDENTIALS_ERROR_GENERIC'),
                     'warning',
                 );
-                return;
             }
         }
 

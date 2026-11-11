@@ -381,7 +381,6 @@ class View
                 // if the group is not supposed to be discoverable throw 404
                 if ($group->get('discoverability') == 1) {
                     App::abort(404, Lang::txt('Group Access Denied'));
-                    return;
                 }
 
                 // return message letting user know they dont have access

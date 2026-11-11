@@ -203,7 +203,6 @@ class Sections extends SiteController
                 Lang::txt('COM_FORUM_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
 
         // Check for request forgeries
@@ -226,7 +225,6 @@ class Sections extends SiteController
                 Lang::txt('COM_FORUM_MISSING_ID'),
                 'error',
             );
-            return;
         }
 
         // Check if user is authorized to delete entries
@@ -238,7 +236,6 @@ class Sections extends SiteController
                 Lang::txt('COM_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Set the section to "deleted"

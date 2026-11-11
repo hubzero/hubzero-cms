@@ -939,7 +939,6 @@ class Password
                 } else {
                     return substr(bin2hex(random_bytes(16)), 0, 2);
                 }
-                break;
 
             case 'crypt-md5':
                 if ($seed) {
@@ -947,7 +946,6 @@ class Password
                 } else {
                     return '$1$' . substr(bin2hex(random_bytes(16)), 0, 8) . '$';
                 }
-                break;
 
             case 'crypt-blowfish':
                 if ($seed) {
@@ -955,7 +953,6 @@ class Password
                 } else {
                     return '$2$' . substr(bin2hex(random_bytes(16)), 0, 12) . '$';
                 }
-                break;
 
             case 'crypt-sha512':
                 if ($seed) {
@@ -963,7 +960,6 @@ class Password
                 } else {
                     return '$6$' . substr(bin2hex(random_bytes(16)), 0, 8) . '$';
                 }
-                break;
 
             case 'ssha':
                 if ($seed) {
@@ -972,7 +968,6 @@ class Password
                     $salt = substr(pack('h*', bin2hex(random_bytes(16))), 0, 8);
                     return mhash_keygen_s2k(MHASH_SHA1, $plaintext, $salt, 4);
                 }
-                break;
 
             case 'smd5':
                 if ($seed) {
@@ -981,7 +976,6 @@ class Password
                     $salt = substr(pack('h*', bin2hex(random_bytes(16))), 0, 8);
                     return mhash_keygen_s2k(MHASH_MD5, $plaintext, $salt, 4);
                 }
-                break;
 
             case 'aprmd5':
                 /* 64 characters that are valid for APRMD5 passwords. */
@@ -996,7 +990,6 @@ class Password
                     }
                     return $salt;
                 }
-                break;
 
             default:
                 $salt = '';
@@ -1004,7 +997,6 @@ class Password
                     $salt = $seed;
                 }
                 return $salt;
-                break;
         }
     }
 

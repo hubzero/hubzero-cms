@@ -208,7 +208,6 @@ class Newsletters extends SiteController
                     Lang::txt('Unable to create the filepath.'),
                     'error',
                 );
-                return;
             }
         }
 
@@ -261,7 +260,6 @@ class Newsletters extends SiteController
                 Lang::txt('COM_NEWSLETTER_VIEW_OUTPUT_PDFERROR'),
                 'error',
             );
-            return;
         }
 
         //output as attachment

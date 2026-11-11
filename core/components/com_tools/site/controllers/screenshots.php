@@ -734,7 +734,6 @@ class Screenshots extends SiteController
         // Ensure we have an ID to work with
         if (!$rid) {
             App::abort(500, Lang::txt('COM_TOOLS_CONTRIBUTE_NO_ID'));
-            return;
         }
         // Get resource information
         $resource = Entry::oneOrFail($rid);

@@ -141,7 +141,6 @@ class Category extends Relational
             case 'component':
             case 'base':
                 return $this->base;
-                break;
 
             case 'edit':
                 $link .= '&task=edit';

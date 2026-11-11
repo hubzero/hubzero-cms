@@ -315,14 +315,12 @@ class Account extends Plugin
                     false,
                 ),
             );
-            return;
         }
 
         // Make sure this is an auth link account (i.e. no password set)
         $hzup = \Hubzero\User\Password::getInstance($this->member->get('id'));
         if (!empty($hzup->passhash)) {
             App::abort(404, Lang::txt('PLG_MEMBERS_ACCOUNT_NOT_LINKED_ACCOUNT'));
-            return;
         }
 
         // Generate a new random token and hash it
@@ -346,8 +344,6 @@ class Account extends Plugin
         App::redirect(
             Route::url($this->member->link() . '&active=account&task=confirmtoken', false),
         );
-
-        return;
     }
 
     /**
@@ -369,7 +365,6 @@ class Account extends Plugin
                         ),
                     ), false),
             );
-            return;
         }
 
         // Get the form input
@@ -429,7 +424,6 @@ class Account extends Plugin
         // Invalide token (or none pending: params may be empty or lack the key)
         if (!is_object($parts) || !isset($parts->auth_link_token) || $parts->auth_link_token != $token) {
             App::abort(404, Lang::txt('INVALID_TOKEN'));
-            return;
         }
 
         /*
@@ -460,8 +454,6 @@ class Account extends Plugin
         App::redirect(
             Route::url($this->member->link() . '&active=account&task=setlocalpass', false),
         );
-
-        return;
     }
 
     /**
@@ -483,7 +475,6 @@ class Account extends Plugin
                         ),
                     ), false),
             );
-            return;
         }
 
         // Get the token from the user state variable
@@ -504,7 +495,6 @@ class Account extends Plugin
                     false,
                 ),
             );
-            return;
         }
 
         // Get the password input
@@ -620,8 +610,6 @@ class Account extends Plugin
                 Route::url($this->member->link() . '&active=account', false),
             );
         }
-
-        return;
     }
 
     //----------------------------------------------
@@ -873,19 +861,16 @@ class Account extends Plugin
             || $memberId !== $userId
         ) {
             App::abort(403, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AUTHORIZED'));
-            return;
         }
 
         // First, make sure webdav is there
         if (!is_dir($this->webdavHome())) {
             App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NOT_AVAILABLE'));
-            return;
         }
 
         // ... and that the member has a home directory to write into
         if (!$this->ensureHomeDirectory()) {
             App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_NO_HOME_DIRECTORY'));
-            return;
         }
 
         $error = null;
@@ -897,7 +882,6 @@ class Account extends Plugin
             $this->logUnsafePath('write', $error);
 
             App::abort(500, Lang::txt($error));
-            return;
         }
 
         // Get the form input
@@ -906,7 +890,6 @@ class Account extends Plugin
         // Write to the file
         if (!$this->writeAuthorizedKeys($auth, $content)) {
             App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_KEY_UPLOAD_WRITE_FAILED'));
-            return;
         }
 
         // Set the redirect
@@ -983,7 +966,6 @@ class Account extends Plugin
         // Save the token
         if (!$db->query()) {
             App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_DATABASE_ERROR_TOKEN_NOT_SAVED'));
-            return;
         }
 
         return true;
@@ -1031,7 +1013,6 @@ class Account extends Plugin
         // Send the email
         if (!$msg->send()) {
             App::abort(500, Lang::txt('PLG_MEMBERS_ACCOUNT_CONFIRMATION_EMAIL_NOT_SENT'));
-            return;
         }
 
         return true;

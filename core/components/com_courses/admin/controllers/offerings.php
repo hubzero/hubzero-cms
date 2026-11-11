@@ -95,7 +95,6 @@ class Offerings extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
-            return;
         }
 
         // In case limit has been changed, adjust limitstart accordingly
@@ -239,7 +238,6 @@ class Offerings extends AdminController
                 Lang::txt('COM_COURSES_ERROR_NO_ID'),
                 'error',
             );
-            return;
         }
 
         $offering = \Components\Courses\Models\Offering::getInstance($id);
@@ -258,7 +256,6 @@ class Offerings extends AdminController
                 Lang::txt('COM_COURSES_ERROR_COPY_FAILED') . ': ' . $offering->getError(),
                 'error',
             );
-            return;
         }
 
         // Redirect back to the courses page

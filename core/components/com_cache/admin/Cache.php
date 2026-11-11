@@ -28,7 +28,6 @@ class Cache extends AbstractComponent
         // Access check.
         if (!User::authorise('core.manage', 'com_cache')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // Instantiate controller

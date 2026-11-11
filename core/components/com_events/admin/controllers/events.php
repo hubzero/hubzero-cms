@@ -588,7 +588,6 @@ class Events extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             );
-            return;
         }
 
         // Instantiate an event object
@@ -627,7 +626,6 @@ class Events extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             );
-            return;
         }
 
         // Instantiate an event object
@@ -666,7 +664,6 @@ class Events extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             );
-            return;
         }
 
         switch (strtolower(Request::getString('type', 'event'))) {
@@ -718,7 +715,6 @@ class Events extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
             );
-            return;
         }
 
         // Instantiate an event object

@@ -60,7 +60,6 @@ class Schema extends Base implements CommandInterface
 
         if (!$table1) {
             $this->output->error('Please provide at least one table name with --table1=tablename');
-            return;
         }
 
         // If only one table, introspect it
@@ -72,12 +71,10 @@ class Schema extends Base implements CommandInterface
         // Compare two tables
         if (!$schema->tableExists($table1)) {
             $this->output->error("Table '{$table1}' does not exist");
-            return;
         }
 
         if (!$schema->tableExists($table2)) {
             $this->output->error("Table '{$table2}' does not exist");
-            return;
         }
 
         $tableInfo1 = $schema->introspectTable($table1);
@@ -123,7 +120,6 @@ class Schema extends Base implements CommandInterface
 
         if (!$table) {
             $this->output->error('Please provide a table name: muse schema introspect --table=tablename');
-            return;
         }
 
         $this->introspectTable($table);
@@ -146,17 +142,14 @@ class Schema extends Base implements CommandInterface
 
         if (!$table1 || !$table2) {
             $this->output->error('Please provide both tables: muse schema sql --from=table1 --to=table2');
-            return;
         }
 
         if (!$schema->tableExists($table1)) {
             $this->output->error("Table '{$table1}' does not exist");
-            return;
         }
 
         if (!$schema->tableExists($table2)) {
             $this->output->error("Table '{$table2}' does not exist");
-            return;
         }
 
         $tableInfo1 = $schema->introspectTable($table1);
@@ -245,7 +238,6 @@ class Schema extends Base implements CommandInterface
 
             if ($tables === false) {
                 $this->output->error("Invalid filter pattern: {$filter}");
-                return;
             }
         }
 
@@ -281,7 +273,6 @@ class Schema extends Base implements CommandInterface
             $filterCallback = $this->buildTableFilterCallback($filter);
             if ($filterCallback === false) {
                 $this->output->error("Invalid filter pattern: {$filter}");
-                return;
             }
             $this->output->addLine("Applying filter: {$filter}", 'info');
         }
@@ -314,12 +305,10 @@ class Schema extends Base implements CommandInterface
 
         if (!$inputFile) {
             $this->output->error('Please provide a schema file: muse schema compare --input=schema.json');
-            return;
         }
 
         if (!file_exists($inputFile)) {
             $this->output->error("File not found: {$inputFile}");
-            return;
         }
 
         $db = \App::get('db');
@@ -337,7 +326,6 @@ class Schema extends Base implements CommandInterface
             $filterCallback = $this->buildTableFilterCallback($filter);
             if ($filterCallback === false) {
                 $this->output->error("Invalid filter pattern: {$filter}");
-                return;
             }
             $this->output->addLine("Applying filter: {$filter}", 'info');
         }
@@ -416,12 +404,10 @@ class Schema extends Base implements CommandInterface
         if (!$dryRun) {
             if (!is_dir($migrationDir)) {
                 $this->output->error("Migration directory does not exist: {$migrationDir}");
-                return;
             }
 
             if (!is_writable($migrationDir)) {
                 $this->output->error("Migration directory is not writable: {$migrationDir}");
-                return;
             }
         }
 
@@ -494,12 +480,10 @@ class Schema extends Base implements CommandInterface
 
         if (!is_dir($migrationDir)) {
             $this->output->error("Migration directory does not exist: {$migrationDir}");
-            return;
         }
 
         if (!is_writable($migrationDir)) {
             $this->output->error("Migration directory is not writable: {$migrationDir}");
-            return;
         }
 
         // Get component name
@@ -544,7 +528,6 @@ class Schema extends Base implements CommandInterface
     ): void {
         if (!file_exists($inputFile)) {
             $this->output->error("Schema file not found: {$inputFile}");
-            return;
         }
 
         $db = \App::get('db');
@@ -556,7 +539,6 @@ class Schema extends Base implements CommandInterface
 
         if ($targetData === null) {
             $this->output->error("Invalid JSON in schema file: {$inputFile}");
-            return;
         }
 
         $targetSchema = DatabaseInfo::fromArray($targetData);
@@ -652,12 +634,10 @@ class Schema extends Base implements CommandInterface
 
         if (!$schema->tableExists($table1)) {
             $this->output->error("Table '{$table1}' does not exist");
-            return;
         }
 
         if (!$schema->tableExists($table2)) {
             $this->output->error("Table '{$table2}' does not exist");
-            return;
         }
 
         $this->output->addLine("Comparing tables '{$table1}' and '{$table2}'...");
@@ -803,7 +783,6 @@ class Schema extends Base implements CommandInterface
             $filterCallback = $this->buildTableFilterCallback($filter);
             if ($filterCallback === false) {
                 $this->output->error("Invalid filter pattern: {$filter}");
-                return;
             }
             $this->output->addLine("Applying filter: {$filter}", 'info');
         }
@@ -875,7 +854,6 @@ class Schema extends Base implements CommandInterface
 
         if (!$name) {
             $this->output->error("Please provide a snapshot name: muse schema snapshot show <name>");
-            return;
         }
 
         $snapshotDir = $this->getSnapshotDirectory();
@@ -936,7 +914,6 @@ class Schema extends Base implements CommandInterface
                 . "  muse schema snapshot compare <name>           Compare current DB to snapshot\n"
                 . "  muse schema snapshot compare <from> --to=<to> Compare two snapshots",
             );
-            return;
         }
 
         $snapshotDir = $this->getSnapshotDirectory();
@@ -949,7 +926,6 @@ class Schema extends Base implements CommandInterface
             $filterCallback = $this->buildTableFilterCallback($filter);
             if ($filterCallback === false) {
                 $this->output->error("Invalid filter pattern: {$filter}");
-                return;
             }
             $this->output->addLine("Applying filter: {$filter}", 'info');
         }
@@ -1027,7 +1003,6 @@ class Schema extends Base implements CommandInterface
 
         if (!$name) {
             $this->output->error("Please provide a snapshot name: muse schema snapshot drift <name>");
-            return;
         }
 
         $snapshotDir = $this->getSnapshotDirectory();
@@ -1040,7 +1015,6 @@ class Schema extends Base implements CommandInterface
             $filterCallback = $this->buildTableFilterCallback($filter);
             if ($filterCallback === false) {
                 $this->output->error("Invalid filter pattern: {$filter}");
-                return;
             }
             $this->output->addLine("Applying filter: {$filter}", 'info');
         }
@@ -1129,7 +1103,6 @@ class Schema extends Base implements CommandInterface
 
         if (!$name) {
             $this->output->error("Please provide a snapshot name: muse schema snapshot delete <name>");
-            return;
         }
 
         $snapshotDir = $this->getSnapshotDirectory();
@@ -1140,7 +1113,6 @@ class Schema extends Base implements CommandInterface
 
             if (!$snapshot->exists($name)) {
                 $this->output->error("Snapshot not found: {$name}");
-                return;
             }
 
             // Confirm deletion unless --force is used
@@ -1176,7 +1148,6 @@ class Schema extends Base implements CommandInterface
                 . "  muse schema snapshot import <name> --file=<path>\n"
                 . "  muse schema snapshot import <name> <path>",
             );
-            return;
         }
 
         $snapshotDir = $this->getSnapshotDirectory();
@@ -1260,12 +1231,10 @@ class Schema extends Base implements CommandInterface
         if (!$dryRun) {
             if (!is_dir($migrationDir)) {
                 $this->output->error("Migration directory does not exist: {$migrationDir}");
-                return;
             }
 
             if (!is_writable($migrationDir)) {
                 $this->output->error("Migration directory is not writable: {$migrationDir}");
-                return;
             }
         }
 
@@ -1325,7 +1294,6 @@ class Schema extends Base implements CommandInterface
 
         if ($stats['tables'] === 0) {
             $this->output->error("No tables found to squash. Check your prefix and filter options.");
-            return;
         }
 
         // Show existing migration count
@@ -1593,7 +1561,6 @@ class Schema extends Base implements CommandInterface
 
         if (!$schema->tableExists($table)) {
             $this->output->error("Table '{$table}' does not exist");
-            return;
         }
 
         $tableInfo = $schema->introspectTable($table);
@@ -2147,7 +2114,6 @@ class Schema extends Base implements CommandInterface
         if (!is_dir($dir)) {
             if (!mkdir($dir, 0755, true)) {
                 $this->output->error("Failed to create directory: {$dir}");
-                return;
             }
         }
 
@@ -2201,7 +2167,6 @@ class Schema extends Base implements CommandInterface
         $sqlContent = implode("\n", $content);
         if (file_put_contents($path, $sqlContent) === false) {
             $this->output->error("Failed to write SQL file: {$path}");
-            return;
         }
 
         $this->output->addLine("SQL written to file:", 'success');

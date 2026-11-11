@@ -78,7 +78,6 @@ class Vote extends Relational
             case 'positive':
             case 'like':
                 return 'like';
-                break;
 
             case -1:
             case '-1':
@@ -87,7 +86,6 @@ class Vote extends Relational
             case 'dislike':
             default:
                 return 'dislike';
-                break;
         }
     }
 

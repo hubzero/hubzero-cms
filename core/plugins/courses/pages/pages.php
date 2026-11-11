@@ -231,7 +231,6 @@ class Pages extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
-            return;
         }
         if (!$this->view->offering->access('manage', 'section')) {
             return $this->list();
@@ -292,7 +291,6 @@ class Pages extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
-            return;
         }
         if (!$this->view->offering->access('manage', 'section')) {
             return $this->list();
@@ -361,7 +359,6 @@ class Pages extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
-            return;
         }
         if (!$this->view->offering->access('manage')) {
             return $this->list();
@@ -848,7 +845,6 @@ class Pages extends Plugin
     {
         if (!$this->view->course->access('view')) {
             App::abort(404, Lang::txt('COM_COURSES_NO_COURSE_FOUND'));
-            return;
         }
 
         // Get the scope of the parent page the file is attached to
@@ -866,7 +862,6 @@ class Pages extends Plugin
         // Ensure we have a path
         if (empty($filename)) {
             App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . $filename);
-            return;
         }
 
         $page = $this->view->offering->page(Request::getString('unit', ''));
@@ -899,7 +894,6 @@ class Pages extends Plugin
 
             if (!$found) {
                 App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . $filename);
-                return;
             }
         }
 
@@ -912,7 +906,6 @@ class Pages extends Plugin
         if (!$xserver->serve()) {
             // Should only get here on error
             App::abort(404, Lang::txt('COM_COURSES_SERVER_ERROR'));
-            return;
         } else {
             exit();
         }

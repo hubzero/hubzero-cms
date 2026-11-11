@@ -1630,7 +1630,6 @@ class Discussions extends Plugin
                 Lang::txt('You are not authorized to perform this action.'),
                 'warning',
             );
-            return;
         }
 
         $section->set($fields);
@@ -1712,7 +1711,6 @@ class Discussions extends Plugin
                 Lang::txt('PLG_COURSES_DISCUSSIONS_MISSING_ID'),
                 'error',
             );
-            return;
         }
 
         // Check if user is authorized to delete entries
@@ -1726,7 +1724,6 @@ class Discussions extends Plugin
                 Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Set the section to "deleted"
@@ -1888,7 +1885,6 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         // Get the section
@@ -1916,7 +1912,6 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url($this->base . '&unit=manage'),
             );
-            return;
         }
 
         return $this
@@ -1968,7 +1963,6 @@ class Discussions extends Plugin
                 Lang::txt('You are not authorized to perform this action.'),
                 'warning',
             );
-            return;
         }
 
         $category->set($fields);
@@ -1994,7 +1988,6 @@ class Discussions extends Plugin
                 Lang::txt('You are not authorized to perform this action.'),
                 'warning',
             );
-            return;
         }
 
         // Double-check that the user is authorized
@@ -2092,7 +2085,6 @@ class Discussions extends Plugin
                 Lang::txt('PLG_COURSES_DISCUSSIONS_MISSING_ID'),
                 'error',
             );
-            return;
         }
 
         // Check if user is authorized to delete entries
@@ -2104,7 +2096,6 @@ class Discussions extends Plugin
                 Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Set the category to "deleted"
@@ -2116,7 +2107,6 @@ class Discussions extends Plugin
                 $category->getError(),
                 'error',
             );
-            return;
         }
 
         // Log activity
@@ -2210,7 +2200,6 @@ class Discussions extends Plugin
             || $thread->get('scope') != $this->forum->get('scope')
         ) {
             App::abort(404, Lang::txt('PLG_COURSES_DISCUSSIONS_ERROR_THREAD_NOT_FOUND'));
-            return;
         }
 
         // Redirect if the thread is soft-deleted
@@ -2220,7 +2209,6 @@ class Discussions extends Plugin
                 Lang::txt('PLG_COURSES_DISCUSSIONS_ERROR_THREAD_NOT_FOUND'),
                 'error',
             );
-            return;
         }
 
         $filters['state'] = [Post::STATE_PUBLISHED, 3];
@@ -2237,7 +2225,6 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         $unit = $this->offering->unit($filters['category']);
@@ -2348,7 +2335,6 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         // Get the category
@@ -2411,7 +2397,6 @@ class Discussions extends Plugin
                         . base64_encode(Route::url($this->base, false, true)),
                 ),
             );
-            return;
         }
 
         // Incoming
@@ -2436,7 +2421,6 @@ class Discussions extends Plugin
                 Lang::txt('You are not authorized to perform this action.'),
                 'warning',
             );
-            return;
         }
 
         // Bind data
@@ -2462,7 +2446,6 @@ class Discussions extends Plugin
                 Lang::txt('You are not authorized to perform this action.'),
                 'warning',
             );
-            return;
         }
 
         // Double comment?
@@ -2510,7 +2493,6 @@ class Discussions extends Plugin
                 Lang::txt('You are not authorized to perform this action.'),
                 'warning',
             );
-            return;
         }
 
         if (!$post->get('object_id') && $category->get('object_id')) {
@@ -2592,7 +2574,6 @@ class Discussions extends Plugin
                 Lang::txt('PLG_COURSES_DISCUSSIONS_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
 
         // Check for request forgeries
@@ -2611,7 +2592,6 @@ class Discussions extends Plugin
                 Lang::txt('PLG_COURSES_DISCUSSIONS_MISSING_ID'),
                 'error',
             );
-            return;
         }
 
         // The post has to be in THIS offering's forum. oneOrFail() resolves any
@@ -2637,7 +2617,6 @@ class Discussions extends Plugin
                 Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Check if user is authorized to delete entries
@@ -2649,7 +2628,6 @@ class Discussions extends Plugin
                 Lang::txt('PLG_COURSES_DISCUSSIONS_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Trash the post
@@ -2665,7 +2643,6 @@ class Discussions extends Plugin
                 $post->getError(),
                 'error',
             );
-            return;
         }
 
         // Redirect to main listing
@@ -2772,13 +2749,11 @@ class Discussions extends Plugin
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         // Ensure we have a database object
         if (!$this->database) {
             App::abort(500, Lang::txt('PLG_COURSES_DISCUSSIONS_DATABASE_NOT_FOUND'));
-            return;
         }
 
         // Instantiate an attachment object.

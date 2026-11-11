@@ -43,8 +43,6 @@ class Mobile extends Plugin
             $url = preg_replace('/([?&])tmpl=fullsite(&|$)/', '$1', Request::current(true));
 
             App::redirect(rtrim($url, '?&'));
-
-            return;
         }
 
         // Every other request is only this plugin's business if the mobile

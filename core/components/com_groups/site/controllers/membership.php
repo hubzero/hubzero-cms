@@ -87,7 +87,6 @@ class Membership extends Base
         if ($this->view->group->get('approved') == 0) {
             $this->setNotification(Lang::txt('COM_GROUPS_PENDING_APPROVAL_WARNING'), 'error');
             App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
-            return;
         }
 
         // Ensure we found the group info
@@ -108,7 +107,6 @@ class Membership extends Base
         if ($gparams->get('membership_control', 1) == 0) {
             $this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
             App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
-            return;
         }
 
         $invites = Request::getArray('to', []);
@@ -600,7 +598,6 @@ class Membership extends Base
         if ($gparams->get('membership_control', 1) == 0) {
             $this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
             App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
-            return;
         }
 
         //get current members and invitees
@@ -615,7 +612,6 @@ class Membership extends Base
         //are we already a member
         if (in_array(User::get('id'), $members)) {
             App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get("cn")));
-            return;
         }
 
         // The invitation this token stands for, for THIS group: a token is issued
@@ -819,7 +815,6 @@ class Membership extends Base
         if ($gparams->get('membership_control', 1) == 0) {
             $this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
             App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
-            return;
         }
 
         //get request vars
@@ -961,7 +956,6 @@ class Membership extends Base
         if ($gparams->get('membership_control', 1) == 0) {
             $this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
             App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
-            return;
         }
 
         //get groups managers, members, applicants, and invtees
@@ -972,21 +966,18 @@ class Membership extends Base
         //check if already member, or applicant
         if (in_array(User::get('id'), $members)) {
             App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
-            return;
         }
 
         // check if applicant
         if (in_array(User::get('id'), $applicants)) {
             $this->setNotification(Lang::txt('COM_GROUPS_INVITE_ALREADY_APPLIED'), 'info');
             App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
-            return;
         }
 
         //is the group closed or invite only
         if ($this->view->group->get('join_policy') == 3 || $this->view->group->get('join_policy') == 2) {
             $this->setNotification(Lang::txt('COM_GROUPS_INVITE_UNABLE_TO_JOIN'), 'warning');
             App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
-            return;
         }
 
         //is the group restricted
@@ -1126,7 +1117,6 @@ class Membership extends Base
         if ($gparams->get('membership_control', 1) == 0) {
             $this->setNotification(Lang::txt('COM_GROUPS_MEMBERSHIP_MANAGED_ELSEWHERE'), 'error');
             App::redirect(Route::url('index.php?option=com_groups&cn=' . $this->view->group->get('cn')));
-            return;
         }
 
         //make sure group has restricted policy
@@ -1149,11 +1139,9 @@ class Membership extends Base
         // Check and store the reason
         if (!$row->check()) {
             App::abort(500, $row->getError());
-            return;
         }
         if (!$row->store()) {
             App::abort(500, $row->getError());
-            return;
         }
 
         // Log the membership request

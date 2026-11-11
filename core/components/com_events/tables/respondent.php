@@ -178,7 +178,6 @@ class Respondent extends Table
                     break;
                 default:
                     throw new Exception('Unhandled filter type ' . $key);
-                    break;
             }
         }
         $this->filters = implode(' AND ', array_values($this->filters));

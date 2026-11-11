@@ -30,7 +30,6 @@ class Publications extends AbstractComponent
     {
         if (!User::authorise('core.manage', 'com_publications')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // get controller name

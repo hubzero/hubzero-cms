@@ -521,7 +521,6 @@ class Databases extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
         // Set params
         $params = [
@@ -863,7 +862,6 @@ class Databases extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Check for request forgeries (the create form's action URL carries the token)
@@ -1229,7 +1227,6 @@ class Databases extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Incoming
@@ -1287,7 +1284,6 @@ class Databases extends Plugin
 
         // Redirect
         App::redirect($url);
-        return;
     }
 
     /**
@@ -1300,7 +1296,6 @@ class Databases extends Plugin
         // Check permission
         if (!$this->model->access('content')) {
             throw new \Exception(Lang::txt('ALERTNOTAUTH'), 403);
-            return;
         }
 
         // Check for request forgeries (the update dialog form posts the token)
@@ -1339,7 +1334,6 @@ class Databases extends Plugin
 
         // Redirect
         App::redirect($url);
-        return;
     }
 
     /**

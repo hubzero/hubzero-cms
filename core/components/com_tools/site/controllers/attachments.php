@@ -155,7 +155,6 @@ class Attachments extends SiteController
         // make sure user is authorized to go further
         if (!$this->checkAccess($this->_toolid)) {
             App::abort(403, Lang::txt('COM_TOOLS_ALERTNOTAUTH'));
-            return;
         }
 
         // Incoming file

@@ -733,7 +733,6 @@ class Course extends SiteController
                 $model->getError(),
                 'error',
             );
-            return;
         }
 
         if (!$model->store(true)) {
@@ -749,7 +748,6 @@ class Course extends SiteController
                 $model->getError(),
                 'error',
             );
-            return;
         }
 
         // Redirect back to the course page
@@ -779,14 +777,12 @@ class Course extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option),
             );
-            return;
         }
 
         if (!$this->course->access('edit', 'course')) {
             App::redirect(
                 Route::url($this->course->link()),
             );
-            return;
         }
 
         $model = $this->course->page(Request::getString('active', ''));
@@ -1078,7 +1074,6 @@ class Course extends SiteController
                 Lang::txt('COM_COURSES_NOT_LOGGEDIN'),
                 'warning',
             );
-            return;
         }
 
         // Ensure we found the course info

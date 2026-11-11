@@ -448,7 +448,6 @@ class Helper extends \Hubzero\Base\Obj
         }
 
         App::redirect(Route::url($publication->link('reviews')), $message);
-        return;
     }
 
     /**
@@ -511,6 +510,5 @@ class Helper extends \Hubzero\Base\Obj
             Route::url($publication->link('reviews')),
             Lang::txt('PLG_PUBLICATIONS_REVIEWS_REVIEW_DELETED'),
         );
-        return;
     }
 }

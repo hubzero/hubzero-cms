@@ -133,11 +133,9 @@ class Publications extends Plugin
         switch ($category) {
             case 'pubreview':
                 return Lang::txt('PLG_SUPPORT_PUBLICATIONS_REVIEW_OF', $parentid);
-                break;
 
             case 'pubreviewcomment':
                 return Lang::txt('PLG_SUPPORT_PUBLICATIONS_COMMENT_OF', $parentid);
-                break;
         }
     }
 

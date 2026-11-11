@@ -208,7 +208,6 @@ class PdfForm
     {
         if (!$this->id) {
             App::abort(422, 'No pages exist for equally nonexistent form');
-            return;
         }
 
         // Assume default base

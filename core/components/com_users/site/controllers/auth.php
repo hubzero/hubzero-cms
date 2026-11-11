@@ -937,12 +937,10 @@ class Auth extends SiteController
                         $url = 'index.php?option=com_users&task=user.logout&authenticator='
                             . $auth_domain_name;
                         App::redirect(Route::url($url, false));
-                        return;
                     } else {
                         $url = 'index.php?option=com_users&view=endsinglesignon&authenticator='
                             . $auth_domain_name;
                         App::redirect(Route::url($url, false));
-                        return;
                     }
                 }
             }

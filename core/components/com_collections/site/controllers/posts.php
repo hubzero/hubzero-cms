@@ -961,7 +961,6 @@ class Posts extends SiteController
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
                 Lang::txt('COM_COLLECTIONS_POSTS_REORDERED'),
             );
-            return;
         }
 
         $response = new \stdClass();
@@ -987,7 +986,6 @@ class Posts extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller),
             );
-            return;
         }
 
         $response = new \stdClass();

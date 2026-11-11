@@ -29,7 +29,6 @@ class Messages extends AbstractComponent
         // Access check.
         if (!User::authorise('core.manage', Request::getCmd('extension'))) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $controllerName = Request::getCmd('controller', 'messages');

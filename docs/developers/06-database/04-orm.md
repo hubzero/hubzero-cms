@@ -154,7 +154,7 @@ A method named `transformFoo()` makes `$model->foo` return its result instead
 of the raw attribute. `com_blog` uses one to hand back the entry's parameters
 as a `Registry` rather than a JSON string:
 
-<!--include: core/components/com_blog/models/entry.php:562-579-->
+<!--include: core/components/com_blog/models/entry.php:557-574-->
 
 A method named `helperFoo()` makes `$model->foo(...)` call it. Listing a field
 in `$parsed` makes `$model->field` return the content run through

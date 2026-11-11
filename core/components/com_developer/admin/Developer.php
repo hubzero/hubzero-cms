@@ -31,7 +31,6 @@ class Developer extends AbstractComponent
         // permissions check
         if (!User::authorise('core.manage', 'com_developer')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // Make extra sure that controller exists

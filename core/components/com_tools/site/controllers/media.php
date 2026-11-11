@@ -61,7 +61,6 @@ class Media extends SiteController
             && !User::authorise('core.manage', 'com_tools'))
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $path = $row->filespace() . DS . 'media';
@@ -184,7 +183,6 @@ class Media extends SiteController
             && !User::authorise('core.manage', 'com_tools'))
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $path = $row->filespace() . DS . 'media';

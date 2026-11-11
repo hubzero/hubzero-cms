@@ -31,8 +31,6 @@ $group  = Hubzero\User\Group::getInstance(Request::getCmd('cn', ''));
 // properties off false. Say the page does not exist, which is true.
 if (!$group || !$group->get('gidNumber')) {
     App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-
-    return;
 }
 
 // return url (if any)

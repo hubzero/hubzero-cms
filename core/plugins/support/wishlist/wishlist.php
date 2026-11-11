@@ -156,11 +156,9 @@ class Wishlist extends Plugin
         switch ($category) {
             case 'wish':
                 return Lang::txt('PLG_SUPPORT_WISHLIST_WISH_OF', $parentid);
-                break;
 
             case 'wishcomment':
                 return Lang::txt('PLG_SUPPORT_WISHLIST_COMMENT_OF', $parentid);
-                break;
         }
 
         return '';

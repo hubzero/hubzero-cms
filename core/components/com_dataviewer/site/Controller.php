@@ -72,7 +72,6 @@ class Controller
 
         if (!$dd) {
             throw new \Exception('Invalid DataView', 404);
-            return;
         }
 
         if (!self::authorize($dd)) {

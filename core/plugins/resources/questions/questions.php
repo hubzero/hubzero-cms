@@ -261,7 +261,6 @@ class Questions extends Plugin
                 Lang::txt('PLG_RESOURCES_QUESTIONS_LOGIN_TO_ASK_QUESTION'),
                 'warning',
             );
-            return;
         }
 
         $r_u = Component::params('com_answers')->get('restrict_users');

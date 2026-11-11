@@ -46,12 +46,10 @@ class PageName extends WikiMacro
                 $page = \Components\Wiki\Models\Page::oneByPath($this->pagename, $this->domain, $this->domain_id);
 
                 return stripslashes((string) $page->get('title'));
-                break;
 
             case 'alias':
             default:
                 return $this->pagename;
-                break;
         }
     }
 }

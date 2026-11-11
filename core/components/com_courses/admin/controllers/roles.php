@@ -197,7 +197,6 @@ class Roles extends AdminController
                 Lang::txt('COM_COURSES_ERROR_NO_ENTRIES_SELECTED'),
                 'error',
             );
-            return;
         }
 
         $rt = new Tables\Role($this->database);

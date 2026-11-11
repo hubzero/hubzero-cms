@@ -247,6 +247,5 @@ class Download extends ComponentController
             $message,
             'warning',
         );
-        return;
     }
 }

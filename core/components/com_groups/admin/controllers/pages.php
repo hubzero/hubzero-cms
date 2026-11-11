@@ -50,7 +50,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_MISSING_ID'),
                 'error',
             );
-            return;
         }
 
         // load group object
@@ -358,7 +357,6 @@ class Pages extends AdminController
                     Lang::txt('COM_GROUPS_PAGES_CANT_DELETE_HOME'),
                     'error',
                 );
-                return;
             }
 
             //set to deleted state
@@ -377,7 +375,6 @@ class Pages extends AdminController
                     $page->getError(),
                     'error',
                 );
-                return;
             }
         }
 
@@ -416,7 +413,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
-            return;
         }
 
         // get request vars
@@ -439,7 +435,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
                 'warning',
             );
-            return;
         }
 
         // get flags
@@ -522,7 +517,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
-            return;
         }
 
         // get request vars
@@ -545,7 +539,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
                 'warning',
             );
-            return;
         }
 
         // create file for page
@@ -619,7 +612,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
-            return;
         }
 
         //get request vars
@@ -675,7 +667,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
-            return;
         }
 
         //get request vars
@@ -730,7 +721,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
-            return;
         }
 
         //get request vars
@@ -784,7 +774,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
-            return;
         }
 
         // get request vars
@@ -807,7 +796,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_ALREADY_APPROVED'),
                 'warning',
             );
-            return;
         }
 
         // set approved and approved date and approver
@@ -830,7 +818,6 @@ class Pages extends AdminController
                 $currentVersion->getError(),
                 'error',
             );
-            return;
         }
 
         // send approved notifcation
@@ -872,7 +859,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
-            return;
         }
 
         // get reqest vars
@@ -922,7 +908,6 @@ class Pages extends AdminController
                 Lang::txt('COM_GROUPS_PAGES_MUST_BE_AUTHORIZED'),
                 'error',
             );
-            return;
         }
 
         // get reqest vars

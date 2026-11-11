@@ -72,11 +72,9 @@ class Tags extends Cloud
                     $this->cache['tags_string'] = implode(', ', $tags);
                 }
                 return $this->cache['tags_string'];
-                break;
 
             case 'array':
                 return $this->tags('list', $filters, $clear);
-                break;
 
             case 'cloud':
             case 'html':
@@ -97,7 +95,6 @@ class Tags extends Cloud
                     $this->cache['tags_cloud'] = $view->loadTemplate();
                 }
                 return $this->cache['tags_cloud'];
-                break;
         }
     }
 }

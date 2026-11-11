@@ -180,7 +180,6 @@ class Calendar extends Plugin
                         Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
                         'warning',
                     );
-                    return;
                 }
 
                 //check to see if user is member and plugin access requires members
@@ -572,7 +571,6 @@ class Calendar extends Plugin
                 Lang::txt('Only group members are allowed to create & edit events.'),
                 'warning',
             );
-            return;
         }
 
         //create the view
@@ -611,7 +609,6 @@ class Calendar extends Plugin
                     Lang::txt('You do not have the correct permissions to edit this event.'),
                     'error',
                 );
-                return;
             }
 
             // make sure this event is editable
@@ -629,7 +626,6 @@ class Calendar extends Plugin
                     Lang::txt('You cannot edit imported events from remote calendar subscriptions.'),
                     'error',
                 );
-                return;
             } else {
                 $allDay = $view->event->get('allday');
                 $endDate = $view->event->get('publish_down');
@@ -709,7 +705,6 @@ class Calendar extends Plugin
                 Lang::txt('Only group members are allowed to create & edit events.'),
                 'warning',
             );
-            return;
         }
 
         //get request vars
@@ -773,7 +768,6 @@ class Calendar extends Plugin
                     Lang::txt('You cannot edit imported events from remote calendar subscriptions.'),
                     'error',
                 );
-                return;
             }
         }
 
@@ -971,7 +965,6 @@ class Calendar extends Plugin
                 Lang::txt('You do not have the correct permissions to delete this event.'),
                 'error',
             );
-            return;
         }
 
         // make sure this event is editable
@@ -989,7 +982,6 @@ class Calendar extends Plugin
                 Lang::txt('You cannot delete imported events from remote calendar subscriptions.'),
                 'error',
             );
-            return;
         }
 
         // Check for request forgeries
@@ -1014,7 +1006,6 @@ class Calendar extends Plugin
                 Lang::txt('An error occurred while trying to delete the event. Please try again.'),
                 'error',
             );
-            return;
         }
 
         //inform user and return
@@ -1070,7 +1061,6 @@ class Calendar extends Plugin
                 Lang::txt('Event not found.'),
                 'error',
             );
-            return;
         }
 
         //get registrants count
@@ -1339,7 +1329,6 @@ class Calendar extends Plugin
                 Lang::txt('Event not found.'),
                 'error',
             );
-            return;
         }
 
         //get registrants count
@@ -1360,7 +1349,6 @@ class Calendar extends Plugin
                 Lang::txt('This event does not have registration.'),
                 'warning',
             );
-            return;
         }
 
         //make sure registration is open

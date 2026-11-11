@@ -31,7 +31,6 @@ class Wiki extends AbstractComponent
         // Authorization check
         if (!User::authorise('core.manage', 'com_wiki')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // Initiate controller

@@ -87,7 +87,6 @@ class Package extends Base implements CommandInterface
         }
         if (!isset($package) || !isset($version)) {
             $this->output->error('A package name and version is required');
-            return;
         }
 
         try {

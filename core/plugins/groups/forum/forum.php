@@ -184,7 +184,6 @@ class Forum extends Plugin
                     Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active_real)),
                     'warning',
                 );
-                return;
             }
 
             //check to see if user is member and plugin access requires members
@@ -636,7 +635,6 @@ class Forum extends Plugin
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         $section->set($fields);
@@ -1085,7 +1083,6 @@ class Forum extends Plugin
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         $category->set($fields);
@@ -1112,7 +1109,6 @@ class Forum extends Plugin
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Double-check that the user is authorized
@@ -1488,7 +1484,6 @@ class Forum extends Plugin
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         return $this
@@ -1618,7 +1613,6 @@ class Forum extends Plugin
                     Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
                     'warning',
                 );
-                return;
             }
         }
 
@@ -1631,7 +1625,6 @@ class Forum extends Plugin
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Bind data
@@ -1690,7 +1683,6 @@ class Forum extends Plugin
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Make sure the thread exists and is accepting new posts
@@ -2265,7 +2257,6 @@ class Forum extends Plugin
                 Lang::txt('PLG_GROUPS_FORUM_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Check if user is authorized to delete entries

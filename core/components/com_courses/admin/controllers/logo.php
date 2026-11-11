@@ -171,7 +171,6 @@ class Logo extends AdminController
             default:
                 echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_INVALID_TYPE')]);
                 return;
-                break;
         }
         if (!$model->store()) {
             echo json_encode(['error' => $model->getError()]);
@@ -315,7 +314,6 @@ class Logo extends AdminController
                     $this->setError(Lang::txt('COM_COURSES_ERROR_INVALID_TYPE'));
                     $this->displayTask($file['name'], $id);
                     return;
-                    break;
             }
             if (!$model->store()) {
                 $this->setError($model->getError());
@@ -377,7 +375,6 @@ class Logo extends AdminController
             default:
                 echo json_encode(['error' => Lang::txt('COM_COURSES_ERROR_INVALID_TYPE')]);
                 return;
-                break;
         }
 
         if (!file_exists($path . DS . $file) or !$file) {
@@ -473,7 +470,6 @@ class Logo extends AdminController
                     $this->setError(Lang::txt('COM_COURSES_ERROR_INVALID_TYPE'));
                     $this->displayTask($file, $id);
                     return;
-                    break;
             }
             if (!$model->store()) {
                 $this->setError($model->getError());
@@ -516,7 +512,6 @@ class Logo extends AdminController
             default:
                 $this->setError(Lang::txt('COM_COURSES_ERROR_INVALID_TYPE'));
                 return '';
-                break;
         }
 
         return $path;
@@ -564,7 +559,6 @@ class Logo extends AdminController
             default:
                 $this->setError(Lang::txt('COM_COURSES_ERROR_INVALID_TYPE'));
                 return;
-                break;
         }
 
         // Set any errors

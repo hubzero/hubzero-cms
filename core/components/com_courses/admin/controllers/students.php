@@ -297,7 +297,6 @@ class Students extends AdminController
                 Route::url($url, false),
                 ($c > 0 ? Lang::txt('COM_COURSES_STUDENTS_SAVED', $c) : null),
             );
-            return;
         }
 
         // Display edit form with posted data

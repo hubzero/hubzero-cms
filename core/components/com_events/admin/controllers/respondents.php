@@ -40,7 +40,6 @@ class Respondents extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option, false),
             );
-            return;
         }
 
         // Get filters

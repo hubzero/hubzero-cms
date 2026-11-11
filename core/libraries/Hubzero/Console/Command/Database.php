@@ -263,7 +263,6 @@ class Database extends Base implements CommandInterface
 
             default:
                 $this->output->error("Unsupported database driver: {$driver}");
-                return;
         }
 
         $this->output->addLine("Launching {$driver} client...");
@@ -292,7 +291,6 @@ class Database extends Base implements CommandInterface
 
         if (empty($sql)) {
             $this->output->error('Please provide a SQL query using --sql="YOUR QUERY" or as the third argument');
-            return;
         }
 
         // Replace #__ with the actual table prefix

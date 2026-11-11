@@ -117,11 +117,9 @@ class Request extends BaseRequest
         switch ($hash) {
             case 'server':
                 return $this->server($key, $default, $type);
-                break;
 
             case 'cookie':
                 return $this->cookie($key, $default, $type);
-                break;
 
             case 'files':
                 /*$result = $this->file($key, $default);
@@ -156,19 +154,15 @@ class Request extends BaseRequest
                     $result = (array) $result;
                 }
                 return $result;
-                break;
 
             case 'post':
                 return $this->request($key, $default, $type);
-                break;
 
             case 'get':
                 return $this->query($key, $default, $type);
-                break;
 
             default:
                 return $this->input($key, $default);
-                break;
         }
     }
 

@@ -31,12 +31,10 @@ if (!User::isGuest()) {
 
     if ($return) {
         App::redirect(Route::url($return, false));
-        return;
     }
 
     // Redirect to profile page.
     App::redirect(Route::url('index.php?option=com_members&task=myaccount', false));
-    return;
 }
 ?>
 <div class="logout<?php echo $this->pageclass_sfx; ?>">

@@ -48,7 +48,6 @@ class Bundle extends Base implements CommandInterface
 
         if (!$versionId) {
             $this->output->error('A version id is required: --version=<publication_version_id>');
-            return;
         }
 
         $queued = (bool) $this->arguments->getOpt('queue');
@@ -111,7 +110,6 @@ class Bundle extends Base implements CommandInterface
 
         if (!$versionId) {
             $this->output->error('A version id is required: --version=<publication_version_id>');
-            return;
         }
 
         if (BundleQueue::enqueueVersion($versionId)) {
@@ -157,7 +155,6 @@ class Bundle extends Base implements CommandInterface
 
         if (!$versionId) {
             $this->output->error('A version id is required: --version=<publication_version_id>');
-            return;
         }
 
         $row = BundleQueue::forVersion($versionId);

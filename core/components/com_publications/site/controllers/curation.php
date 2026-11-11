@@ -216,7 +216,6 @@ class Curation extends SiteController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=curation', false),
             );
-            return;
         }
 
         // Check curator authorization

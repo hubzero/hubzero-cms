@@ -1013,7 +1013,6 @@ class Projects extends AdminController
                 Lang::txt('Please specify a file/directory path to add and commit into project'),
                 'error',
             );
-            return;
         }
 
         // Delete base dir for .git repos

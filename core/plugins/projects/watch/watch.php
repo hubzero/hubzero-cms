@@ -105,15 +105,12 @@ class Watch extends Plugin
         switch ($this->action) {
             case 'save':
                 return $this->save();
-                break;
 
             case 'manage':
                 return ['html' => $this->manage()];
-                break;
 
             default:
                 return $this->status();
-                break;
         }
     }
 

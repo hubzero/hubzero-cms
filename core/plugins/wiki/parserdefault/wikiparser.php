@@ -1121,7 +1121,6 @@ class WikiParser
                     $txt = str_replace('#!wiki ' . $cls, '', $txt);
 
                     return '<div class="admon-' . $cls . '">' . $this->cleanXss($txt) . '</div>';
-                    break;
 
                 case 'html':
                     if ($this->get('fullparse')) {
@@ -1130,12 +1129,10 @@ class WikiParser
                     } else {
                         return '<strong>' . Lang::txt('PLG_WIKI_PARSERDEFAULT_HTML_NOT_ALLOWED') . '</strong>';
                     }
-                    break;
 
                 case 'htmlcomment':
                     $txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
                     return '<!-- ' . $this->encodeHtml($txt) . ' -->';
-                    break;
 
                 case 'c':
                 case 'cpp':
@@ -1170,14 +1167,12 @@ class WikiParser
                     }
 
                     return '<div class="pre ' . $t . '">' . $txt . '</div>';
-                    break;
 
                 case 'default':
                 default:
                     //$txt = preg_replace("/(\#\!$t\s*)/i", '', $txt);
                     //$txt = trim($txt, "\n\r\t");
                     return '<pre><code>' . $this->encodeHtml($txt) . '</code></pre>';
-                    break;
             }
         }
 

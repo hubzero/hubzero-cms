@@ -200,7 +200,6 @@ class Citations extends Plugin
                         Lang::txt('GROUPS_PLUGIN_REGISTERED', ucfirst($active)),
                         'warning',
                     );
-                    return;
                 }
 
                 // check to see if user is member and plugin access requires members
@@ -766,7 +765,6 @@ class Citations extends Plugin
             Lang::txt('PLG_GROUPS_CITATIONS_CITATION_SAVED'),
             'success',
         );
-        return;
     }
 
     /**
@@ -790,7 +788,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
                 'warning',
             );
-            return;
         }
 
         $id = Request::getInt('id', 0);
@@ -828,14 +825,12 @@ class Citations extends Plugin
                     Lang::txt($string),
                     'success',
                 );
-                return;
             } else {
                 App::redirect(
                     Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
                     'error',
                 );
-                return;
             }
         } elseif ((bool) $bulk) {
             /**
@@ -851,7 +846,6 @@ class Citations extends Plugin
                     Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
                     'warning',
                 );
-                return;
             }
 
             $published = [];
@@ -883,21 +877,18 @@ class Citations extends Plugin
                     Lang::txt($string),
                     'success',
                 );
-                return;
             } elseif ($citation->scope != self::PLUGIN_SCOPE) {
                 App::redirect(
                     Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
                     'error',
                 );
-                return;
             } else {
                 App::redirect(
                     Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_SAVE_ERROR'),
                     'error',
                 );
-                return;
             }
         } else {
             App::redirect(
@@ -905,7 +896,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
                 'error',
             );
-            return;
         }
     }
 
@@ -923,7 +913,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_GROUPS_CITATIONS_GROUP_MANAGER_ONLY'),
                 'warning',
             );
-            return;
         }
 
         // Check for request forgeries
@@ -957,14 +946,12 @@ class Citations extends Plugin
                     Lang::txt('PLG_GROUPS_CITATIONS_CITATION_DELETED'),
                     'success',
                 );
-                return;
             } else {
                 App::redirect(
                     Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
                     'error',
                 );
-                return;
             }
         } elseif ((bool) $bulk) {
             // for bulk citations operation
@@ -981,7 +968,6 @@ class Citations extends Plugin
                     Lang::txt('PLG_GROUPS_CITATIONS_SELECTION_NOT_FOUND'),
                     'warning',
                 );
-                return;
             }
 
             $deleted = [];
@@ -1009,21 +995,18 @@ class Citations extends Plugin
                     Lang::txt($string),
                     'success',
                 );
-                return;
             } elseif ($citation->scope != self::PLUGIN_SCOPE) {
                 App::redirect(
                     Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_PERMISSION_DENIED'),
                     'error',
                 );
-                return;
             } else {
                 App::redirect(
                     Route::url('index.php?option=com_groups&cn=' . $this->group->cn . '&active=citations'),
                     Lang::txt('PLG_GROUPS_CITATIONS_SAVE_ERROR'),
                     'error',
                 );
-                return;
             }
         } else {
             App::redirect(
@@ -1031,7 +1014,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_GROUPS_CITATIONS_CITATION_NOT_FOUND'),
                 'error',
             );
-            return;
         }
     }
 
@@ -1094,7 +1076,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_GROUPS_CITATIONS_SETTINGS_SAVED'),
                 'success',
             );
-            return;
         } else {
             // instansiate the view
             $view = $this->view('default', 'settings');
@@ -1219,7 +1200,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_MISSING_FILE'),
                 'error',
             );
-            return;
         }
 
         // make sure file is under 4MB
@@ -1235,7 +1215,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_FILE_TOO_BIG'),
                 'error',
             );
-            return;
         }
 
         // make sure we dont have any file errors
@@ -1251,7 +1230,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_PROCESS_FAILURE'),
                 'error',
             );
-            return;
         }
 
         // call the plugins
@@ -1271,7 +1249,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_GROUPS_CITATIONS_IMPORT_PROCESS_FAILURE'),
                 'error',
             );
-            return;
         }
 
         if (!isset($citations[0]['attention'])) {
@@ -1347,7 +1324,6 @@ class Citations extends Plugin
                 Lang::txt('COM_CITATIONS_IMPORT_MISSING_FILE_CONTINUE'),
                 'error',
             );
-            return;
         }
 
         // vars
@@ -1416,7 +1392,6 @@ class Citations extends Plugin
                 Lang::txt('PLG_GROUPS_CITATIONS_CITATION_SAVED'),
                 'success',
             );
-            return;
         }
     }
 
@@ -1448,7 +1423,6 @@ class Citations extends Plugin
             Lang::txt('PLG_GROUPS_CITATIONS_NOT_LOGGEDIN'),
             'warning',
         );
-        return;
     }
 
     /**

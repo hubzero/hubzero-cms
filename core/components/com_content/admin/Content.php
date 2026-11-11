@@ -31,7 +31,6 @@ class Content extends AbstractComponent
         // Access check.
         if (!User::authorise('core.manage', 'com_content')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $task = Request::getCmd('task');

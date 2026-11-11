@@ -66,7 +66,6 @@ class Codes extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
-            return;
         }
         $this->view->offering = \Components\Courses\Models\Offering::getInstance(
             $this->view->section->get('offering_id'),
@@ -396,7 +395,6 @@ class Codes extends AdminController
                 Lang::txt('No section specified'),
                 'warning',
             );
-            return;
         }
 
         // Incoming
@@ -418,7 +416,6 @@ class Codes extends AdminController
                 Lang::txt('No codes selected'),
                 'warning',
             );
-            return;
         }
 
         // Output header

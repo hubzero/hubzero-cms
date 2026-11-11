@@ -656,7 +656,6 @@ class Media extends SiteController
         // Ensure the file exist
         if (!file_exists(PATH_APP . DS . $file_path)) {
             App::abort(404, Lang::txt('The requested file could not be found: ') . ' ' . $file);
-            return;
         }
 
         // Serve up the image

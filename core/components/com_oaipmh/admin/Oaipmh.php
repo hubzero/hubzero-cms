@@ -30,7 +30,6 @@ class Oaipmh extends AbstractComponent
     {
         if (!User::authorise('core.manage', 'com_oaipmh')) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $task = Request::getCmd('task');

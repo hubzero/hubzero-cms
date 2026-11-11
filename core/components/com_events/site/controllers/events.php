@@ -291,17 +291,14 @@ class Events extends SiteController
         // make sure we have a valid year
         if ($this->year < 1000 || $this->year > 9999) {
             App::abort(404, Lang::txt('COM_EVENTS_YEAR_NOT_VALID'));
-            return;
         }
         // make sure we have a valid month
         if ($this->month < 1 || $this->month > 12) {
             App::abort(404, Lang::txt('COM_EVENTS_MONTH_NOT_VALID'));
-            return;
         }
         // make sure we have a valid day
         if ($this->day < 1 || $this->day > 31) {
             App::abort(404, Lang::txt('COM_EVENTS_DAY_NOT_VALID'));
-            return;
         }
 
         // geodynamics 2026-08-02: 404 for years outside the range in
@@ -345,7 +342,6 @@ class Events extends SiteController
                 || (int) $this->year > (int) $bounds->mx)
             ) {
                 App::abort(404, Lang::txt('COM_EVENTS_YEAR_NOT_VALID'));
-                return;
             }
         }
     }
@@ -728,10 +724,8 @@ class Events extends SiteController
                     false,
                 );
                 App::redirect($redirect);
-                return;
             } else {
                 App::abort(404, Lang::txt('EVENTS_CAL_LANG_NO_EVENTFOR') . ' ' . Lang::txt('EVENTS_CAL_LANG_THIS_DAY'));
-                return;
             }
         }
 
@@ -968,7 +962,6 @@ class Events extends SiteController
         // Ensure we have an ID
         if (!$id) {
             App::redirect(Route::url('index.php?option=' . $this->option));
-            return;
         }
 
         // Load event
@@ -978,7 +971,6 @@ class Events extends SiteController
         // Ensure we have an event
         if (!$event->title || $event->registerby == '0000-00-00 00:00:00') {
             App::redirect(Route::url('index.php?option=' . $this->option));
-            return;
         }
 
         $auth = $this->authorize('core.create');
@@ -1134,7 +1126,6 @@ class Events extends SiteController
         // Ensure we have an ID
         if (!$id) {
             App::redirect(Route::url('index.php?option=' . $this->option));
-            return;
         }
 
         // Load event
@@ -1145,7 +1136,6 @@ class Events extends SiteController
         // Ensure we have an event
         if (!$event->title) {
             App::redirect(Route::url('index.php?option=' . $this->option));
-            return;
         }
 
         // The same conditions eventregisterTask puts on showing the form:
@@ -1158,7 +1148,6 @@ class Events extends SiteController
                 Lang::txt('EVENTS_CLOSED_REGISTRATION'),
                 'warning',
             );
-            return;
         }
         if ($event->restricted && !Session::get('com_events.registration.' . $event->id)) {
             App::redirect(
@@ -1166,7 +1155,6 @@ class Events extends SiteController
                 Lang::txt('EVENTS_PROVIDE_PASSWORD'),
                 'warning',
             );
-            return;
         }
 
         $auth = $this->authorize('core.create');
@@ -1538,7 +1526,6 @@ class Events extends SiteController
             if (!$this->authorize('core.edit', $row->created_by)) {
                 // Not authorized - redirect
                 App::redirect(Route::url('index.php?option=' . $this->option));
-                return;
             }
 
             //get timezone
@@ -1582,7 +1569,6 @@ class Events extends SiteController
             // No ID - we're creating a new event; must be allowed to create
             if (!$this->authorize('core.create')) {
                 App::redirect(Route::url('index.php?option=' . $this->option));
-                return;
             }
 
             if ($row->publish_up && $row->publish_up != '0000-00-00 00:00:00') {
@@ -1815,7 +1801,6 @@ class Events extends SiteController
                 Lang::txt('EVENTS_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
 
         // Check for request forgeries
@@ -1824,7 +1809,6 @@ class Events extends SiteController
         // Ensure we have an ID to work with
         if (!$id) {
             App::redirect(Route::url('index.php?option=' . $this->option));
-            return;
         }
 
         // Load event object
@@ -1834,7 +1818,6 @@ class Events extends SiteController
         // Are they authorized to delete this event? (managers, core.delete, or the owner via core.edit.own)
         if (!$this->authorize('core.delete', $event->created_by)) {
             App::redirect(Route::url('index.php?option=' . $this->option));
-            return;
         }
 
         $event->state = 0; //unpublish the event
@@ -1947,7 +1930,6 @@ class Events extends SiteController
         if ($state == 'add') {
             if (!$this->authorize('core.create')) {
                 App::redirect(Route::url('index.php?option=' . $this->option));
-                return;
             }
         } else {
             $orig = new Event($this->database);
@@ -1958,7 +1940,6 @@ class Events extends SiteController
 
             if (!$this->authorize('core.edit', $orig->created_by)) {
                 App::redirect(Route::url('index.php?option=' . $this->option));
-                return;
             }
         }
 

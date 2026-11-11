@@ -104,7 +104,6 @@ class Certificates extends AdminController
                 Route::url('index.php?option=' . $this->option, false),
                 Lang::txt('COM_COURSES_SETTINGS_SAVED'),
             );
-            return;
         }
 
         $this->displayTask();
@@ -125,7 +124,6 @@ class Certificates extends AdminController
                 Lang::txt('COM_COURSES_ERROR_MISSING_CERTIFICATE'),
                 'error',
             );
-            return;
         }
 
         $certificate->render(User::getInstance());

@@ -57,7 +57,7 @@ default install, whatever `dbprefix` says on yours. Code never writes that
 prefix. It writes `#__`, and the driver substitutes the configured value as
 the statement goes out:
 
-<!--include: core/libraries/Hubzero/Database/Driver.php:1809-1827-->
+<!--include: core/libraries/Hubzero/Database/Driver.php:1807-1825-->
 
 So `#__users` in a query is `jos_users` in the database, and a query with a
 literal `jos_` in it is a bug: it breaks on any hub whose prefix differs.

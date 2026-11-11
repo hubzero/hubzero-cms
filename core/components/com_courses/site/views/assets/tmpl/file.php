@@ -34,7 +34,6 @@ $path = $this->model->path($this->course->get('id'));
 // Ensure we have a path
 if (empty($path)) {
     App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND'));
-    return;
 }
 
 // Add PATH_APP
@@ -43,7 +42,6 @@ $filename = PATH_APP . $path;
 // Ensure the file exist
 if (!file_exists($filename)) {
     App::abort(404, Lang::txt('COM_COURSES_FILE_NOT_FOUND') . ' ' . $filename);
-    return;
 }
 
 // Force certain extensions to the 'attachment' disposition

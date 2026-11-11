@@ -31,7 +31,6 @@ class Menus extends AbstractComponent
         // Access check.
         if (!User::authorise('core.manage', 'com_menus')) {
             App::abort(404, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // Determine task

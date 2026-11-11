@@ -250,7 +250,6 @@ abstract class Field
             case 'fieldname':
             case 'group':
                 return $this->$name;
-                break;
 
             case 'input':
                 // If the input hasn't yet been generated, generate it.
@@ -259,7 +258,6 @@ abstract class Field
                 }
 
                 return $this->input;
-                break;
 
             case 'label':
                 // If the label hasn't yet been generated, generate it.
@@ -268,10 +266,8 @@ abstract class Field
                 }
 
                 return $this->label;
-                break;
             case 'title':
                 return $this->getTitle();
-                break;
         }
 
         return null;

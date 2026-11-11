@@ -32,7 +32,6 @@ class SearchPlugin extends Scaffolding
             $this->addReplacement('extension', $extension);
         } else {
             $this->output->error("Error: must specify a hubtype.");
-            return;
         }
 
         // Determine our base path

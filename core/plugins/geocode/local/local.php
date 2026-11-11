@@ -41,7 +41,6 @@ class Local extends Plugin
 
             default:
                 return;
-                break;
         }
 
         return new \Plugins\Geocode\Local\LocalProvider(

@@ -140,7 +140,6 @@ class Jobs extends AdminController
                 Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
                 'error',
             );
-            return;
         }
 
         $this->view->job = $this->view->row->getOpening($id, User::get('id'), 1);
@@ -153,7 +152,6 @@ class Jobs extends AdminController
                     Lang::txt('COM_JOBS_ERROR_MISSING_EMPLOYER_INFO'),
                     'error',
                 );
-                return;
             }
         } else {
             // site admin
@@ -224,7 +222,6 @@ class Jobs extends AdminController
                     Lang::txt('COM_JOBS_ERROR_MISSING_JOB'),
                     'error',
                 );
-                return;
             }
         } else { // saving new job
             $subscription = \Components\Services\Models\Subscription::blank();
@@ -379,7 +376,6 @@ class Jobs extends AdminController
                 Lang::txt('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
                 'error',
             );
-            return;
         }
 
         $row = new Job($this->database);

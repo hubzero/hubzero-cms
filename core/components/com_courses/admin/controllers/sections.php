@@ -96,7 +96,6 @@ class Sections extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=courses', false),
             );
-            return;
         }
         $this->view->course = \Components\Courses\Models\Course::getInstance($this->view->offering->get('course_id'));
 

@@ -194,7 +194,6 @@ class Types extends AdminController
                 Lang::txt('COM_JOBS_ERROR_NO_ITEM_SELECTED'),
                 'error',
             );
-            return;
         }
 
         $jt = new Type($this->database);

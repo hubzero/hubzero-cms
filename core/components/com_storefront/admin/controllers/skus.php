@@ -236,7 +236,6 @@ class Skus extends AdminController
                 Route::url($url, false),
                 Lang::txt('COM_STOREFRONT_SKU_SAVED'),
             );
-            return;
         }
         Notify::success(Lang::txt('COM_STOREFRONT_SKU_SAVED'));
 
@@ -290,7 +289,6 @@ class Skus extends AdminController
                         Lang::txt('COM_STOREFRONT_NO_ID'),
                         'error',
                     );
-                    return;
                 }
 
                 $delete = Request::getInt('delete', 0);
@@ -314,7 +312,6 @@ class Skus extends AdminController
                                 $e->getMessage(),
                                 $type,
                             );
-                            return;
                         }
                     }
 
@@ -330,7 +327,6 @@ class Skus extends AdminController
                     $msg,
                     $type,
                 );
-                break;
         }
     }
 
@@ -377,7 +373,6 @@ class Skus extends AdminController
                 $msg,
                 'error',
             );
-            return;
         }
 
         // Update record(s)

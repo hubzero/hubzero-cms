@@ -388,13 +388,11 @@ class Points extends AdminController
 
             if (!$BT->save()) {
                 App::abort(500, $row->getError());
-                return;
             }
         }
 
         if (!$row->save()) {
             App::abort(500, $row->getError());
-            return;
         }
 
         App::redirect(

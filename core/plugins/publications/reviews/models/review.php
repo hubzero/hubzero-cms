@@ -117,15 +117,12 @@ class Review extends \Hubzero\Base\Model
         switch (strtolower($as)) {
             case 'date':
                 return Date::of($this->get('created'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
-                break;
 
             case 'time':
                 return Date::of($this->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1'));
-                break;
 
             default:
                 return $this->get('created');
-                break;
         }
     }
 
@@ -192,7 +189,6 @@ class Review extends \Hubzero\Base\Model
                         ->total();
                 }
                 return $this->comments_count;
-                break;
 
             case 'list':
             case 'results':
@@ -209,7 +205,6 @@ class Review extends \Hubzero\Base\Model
                     $this->comments = $results;
                 }
                 return $this->comments;
-                break;
         }
     }
 

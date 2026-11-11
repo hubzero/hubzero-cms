@@ -593,24 +593,19 @@ class Html
         switch ($state) {
             case 0:
                 return strtolower(Lang::txt('COM_PUBLICATIONS_UNPUBLISHED'));
-                break;
 
             case 4:
                 return strtolower(Lang::txt('COM_PUBLICATIONS_POSTED'));
-                break;
 
             case 5:
                 return strtolower(Lang::txt('COM_PUBLICATIONS_PENDING'));
-                break;
 
             case 6:
                 return strtolower(Lang::txt('COM_PUBLICATIONS_ARCHIVE'));
-                break;
 
             case 1:
             default:
                 return strtolower(Lang::txt('COM_PUBLICATIONS_PUBLISHED'));
-                break;
         }
     }
 

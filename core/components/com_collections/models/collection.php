@@ -403,7 +403,6 @@ class Collection extends Base
                 } else {
                     return 0;
                 }
-                break;
 
             case 'followers':
                 if (!isset($this->counts[$what])) {
@@ -414,7 +413,6 @@ class Collection extends Base
                     ]);
                 }
                 return $this->counts[$what];
-                break;
 
             case 'likes':
             case 'like':
@@ -428,7 +426,6 @@ class Collection extends Base
                     ]));
                 }
                 return (int) $this->get('likes', 0);
-                break;
 
             case 'reposts':
             case 'repost':
@@ -440,7 +437,6 @@ class Collection extends Base
                     ]));
                 }
                 return (int) $this->get('reposts', 0);
-                break;
 
             case 'posts':
             case 'post':
@@ -450,11 +446,9 @@ class Collection extends Base
                     ]));
                 }
                 return (int) $this->get('posts', 0);
-                break;
 
             default:
                 return 0;
-                break;
         }
     }
 

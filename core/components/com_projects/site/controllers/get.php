@@ -43,7 +43,6 @@ class Get extends SiteController
             App::redirect(
                 $route,
             );
-            return;
         }
 
         // Can only serve files or notes at the moment
@@ -51,7 +50,6 @@ class Get extends SiteController
             App::redirect(
                 $route,
             );
-            return;
         }
 
         // Serve requested item

@@ -93,7 +93,6 @@ class Module extends Model
                     $this->menu_items = new ItemList($results);
                 }
                 return $this->menu_items;
-                break;
         }
     }
 

@@ -513,7 +513,6 @@ class Jobs extends SiteController
                         Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_PENDING'),
                         'warning',
                     );
-                    return;
                 }
             }
 
@@ -690,7 +689,6 @@ class Jobs extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_jobs&task=subscribe'),
             );
-            return;
         }
 
         // do we have a subscription already?
@@ -834,7 +832,6 @@ class Jobs extends SiteController
             Route::url('index.php?option=com_jobs&task=dashboard'),
             $this->_msg,
         );
-        return;
     }
 
     /**
@@ -947,7 +944,6 @@ class Jobs extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_jobs&task=subscribe'),
             );
-            return;
         } elseif ($admin) {
             $employer->id = 1;
         } elseif (!isset($employer->id)) {
@@ -961,7 +957,6 @@ class Jobs extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_jobs&task=subscribe'),
             );
-            return;
         }
 
         $service = Service::oneOrNew($subscription->serviceid);
@@ -1203,7 +1198,6 @@ class Jobs extends SiteController
 
             if (!$ja->store()) {
                 throw new \Exception($ja->getError(), 500);
-                return;
             } else {
                 if ($this->task == 'withdraw') {
                     $this->_msg = Lang::txt('COM_JOBS_MSG_APPLICATION_WITHDRAWN');
@@ -1226,7 +1220,6 @@ class Jobs extends SiteController
         App::redirect(
             Route::url('index.php?option=com_jobs&task=job&code=' . $job->code),
         );
-        return;
     }
 
     /**
@@ -1277,7 +1270,6 @@ class Jobs extends SiteController
                 Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_INVALID'),
                 'warning',
             );
-            return;
         }
 
         // Set the pathway
@@ -1441,7 +1433,6 @@ class Jobs extends SiteController
                 Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_INVALID'),
                 'warning',
             );
-            return;
         }
 
         if (!$min) {
@@ -1591,7 +1582,6 @@ class Jobs extends SiteController
                 Route::url('index.php?option=com_jobs&task=dashboard'),
                 Lang::txt('COM_JOBS_MSG_JOB_REMOVED'),
             );
-            return;
         }
 
         // Set any errors
@@ -1644,7 +1634,6 @@ class Jobs extends SiteController
                         Lang::txt('COM_JOBS_WARNING_SUBSCRIPTION_PENDING'),
                         'warning',
                     );
-                    return;
                 }
             }
 
@@ -1652,7 +1641,6 @@ class Jobs extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_jobs&task=subscribe'),
             );
-            return;
         }
 
         if ($code) {

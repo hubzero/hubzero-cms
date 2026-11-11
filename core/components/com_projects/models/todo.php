@@ -147,7 +147,6 @@ class Todo extends Model
             case 'count':
                 $filters['count'] = 1;
                 return (int) $this->table->getTodos(null, $filters);
-                break;
 
             case 'list':
             case 'results':
@@ -160,7 +159,6 @@ class Todo extends Model
                     $results = [];
                 }
                 return new \Hubzero\Base\ItemList($results);
-                break;
         }
         return null;
     }

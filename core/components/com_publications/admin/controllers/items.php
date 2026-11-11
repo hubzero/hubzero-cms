@@ -146,7 +146,6 @@ class Items extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_CREATE_FRONT_END'),
                 'notice',
             );
-            return;
         }
 
         // Incoming version
@@ -164,7 +163,6 @@ class Items extends AdminController
         // If publication not found, raise error
         if (!$this->view->model->exists()) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
-            return;
         }
 
         // Fail if checked out not by 'me'
@@ -177,7 +175,6 @@ class Items extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_CHECKED_OUT'),
                 'notice',
             );
-            return;
         }
 
         // Editing existing
@@ -224,7 +221,6 @@ class Items extends AdminController
         // If publication not found, raise error
         if (!$this->view->pub->exists()) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
-            return;
         }
 
         $this->view->config = $this->config;
@@ -276,7 +272,6 @@ class Items extends AdminController
 
         if (!$this->model->exists()) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
-            return;
         }
 
         // Set curation
@@ -336,7 +331,6 @@ class Items extends AdminController
 
         if ($this->task == 'editauthor' && !$this->view->author) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_ERROR_NO_AUTHOR_RECORD'), 404);
-            return;
         }
 
         // Version ID
@@ -348,14 +342,12 @@ class Items extends AdminController
         // Load version
         if (!$this->view->row->load($vid)) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
-            return;
         }
 
         // Load publication
         $pid = Request::getInt('pid', $this->view->row->publication_id);
         if (!$this->view->pub->load($pid)) {
             throw new Exception(Lang::txt('COM_PUBLICATIONS_NOT_FOUND'), 404);
-            return;
         }
 
         // Instantiate project owner
@@ -398,7 +390,6 @@ class Items extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_AUTHOR'),
                 'error',
             );
-            return;
         }
 
         $url = 'index.php?option=' . $this->option . '&controller=' . $this->controller;
@@ -415,7 +406,6 @@ class Items extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_FAILED_TO_DELETE_AUTHOR'),
                 'error',
             );
-            return;
         }
 
         // Redirect back to publication
@@ -423,7 +413,6 @@ class Items extends AdminController
             Route::url($url, false),
             Lang::txt('COM_PUBLICATIONS_SUCCESS_DELETE_AUTHOR'),
         );
-        return;
     }
 
     /**
@@ -460,7 +449,6 @@ class Items extends AdminController
             App::redirect(
                 $url,
             );
-            return;
         }
 
         // Load publication model
@@ -472,7 +460,6 @@ class Items extends AdminController
                 Lang::txt('COM_PUBLICATIONS_NOT_FOUND'),
                 'error',
             );
-            return;
         }
 
         // Load publication project
@@ -492,7 +479,6 @@ class Items extends AdminController
                 $block->getError(),
                 'error',
             );
-            return;
         } else {
             // Update DOI in case changes
             if ($model->version->doi) {
@@ -519,7 +505,6 @@ class Items extends AdminController
                 $url,
                 Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR'),
             );
-            return;
         }
     }
 
@@ -555,7 +540,6 @@ class Items extends AdminController
                 Lang::txt('COM_PUBLICATIONS_NOT_FOUND'),
                 'error',
             );
-            return;
         }
 
         // Load publication project
@@ -580,7 +564,6 @@ class Items extends AdminController
                 $block->getError(),
                 'error',
             );
-            return;
         } else {
             // Update DOI in case changes
             if ($model->version->doi) {
@@ -606,7 +589,6 @@ class Items extends AdminController
                 $url,
                 Lang::txt('COM_PUBLICATIONS_SUCCESS_SAVED_AUTHOR'),
             );
-            return;
         }
     }
 
@@ -646,7 +628,6 @@ class Items extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
                 'error',
             );
-            return;
         }
 
         // Load publication model
@@ -945,7 +926,6 @@ class Items extends AdminController
                                     . ' ' . $doiService->getError(),
                                     'error',
                                 );
-                                return;
                             } else {
                                 $this->model->version->doi = $doi;
                             }
@@ -1281,7 +1261,6 @@ class Items extends AdminController
                     $this->model->version->getError(),
                     'error',
                 );
-                return;
             } elseif ($action) {
                 if ($this->model->version->state != 1) {
                     $this->model->_curationModel->removeLink();
@@ -1513,7 +1492,6 @@ class Items extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
                 'notice',
             );
-            return;
         }
 
         // Grab some filters for returning to place after editing
@@ -1531,7 +1509,6 @@ class Items extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
                 'notice',
             );
-            return;
         }
 
         // Get versions
@@ -1568,7 +1545,6 @@ class Items extends AdminController
                 Lang::txt('COM_PUBLICATIONS_ERROR_LOAD_PUBLICATION'),
                 'notice',
             );
-            return;
         }
 
         $version = count($ids) == 1 ? Request::getString('version', 'all') : 'all';
@@ -1682,8 +1658,6 @@ class Items extends AdminController
             $this->buildRedirectURL(),
             $output,
         );
-
-        return;
     }
 
     /**
@@ -1746,8 +1720,6 @@ class Items extends AdminController
         App::redirect(
             Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller, false),
         );
-
-        return;
     }
 
     /**
@@ -1872,7 +1844,6 @@ class Items extends AdminController
             $pub->_curationModel->removeLink();
             $pub->publication->checkin();
             App::redirect($url, Lang::txt('COM_PUBLICATIONS_BUNDLE_QUEUED'), 'success');
-            return;
         }
 
         // Produce archival package
@@ -1885,7 +1856,6 @@ class Items extends AdminController
 
             // Redirect
             App::redirect($url, Lang::txt('COM_PUBLICATIONS_ERROR_ARCHIVAL'), 'error');
-            return;
         }
 
         // Checkin the resource

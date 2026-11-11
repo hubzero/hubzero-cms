@@ -80,58 +80,47 @@ class Router extends Base
                     $vars['task'] = 'job';
                     $vars['code'] = $segments[1];
                     return $vars;
-                    break;
                 case 'editjob':
                     $vars['task'] = 'editjob';
                     $vars['code'] = $segments[1];
                     return $vars;
-                    break;
                 case 'editresume':
                     $vars['task'] = 'editresume';
                     $vars['id'] = $segments[1];
                     return $vars;
-                    break;
                 case 'apply':
                     $vars['task'] = 'apply';
                     $vars['code'] = $segments[1];
                     return $vars;
-                    break;
                 case 'editapp':
                     $vars['task'] = 'editapp';
                     $vars['code'] = $segments[1];
                     return $vars;
-                    break;
                 case 'withdraw':
                     $vars['task'] = 'withdraw';
                     $vars['code'] = $segments[1];
                     return $vars;
-                    break;
                 case 'confirmjob':
                     $vars['task'] = 'confirmjob';
                     $vars['code'] = $segments[1];
                     return $vars;
-                    break;
                 case 'unpublish':
                     $vars['task'] = 'unpublish';
                     $vars['code'] = $segments[1];
                     return $vars;
-                    break;
                 case 'reopen':
                     $vars['task'] = 'reopen';
                     $vars['code'] = $segments[1];
                     return $vars;
-                    break;
                 case 'remove':
                     $vars['task'] = 'remove';
                     $vars['code'] = $segments[1];
                     return $vars;
-                    break;
                 case 'browse':
                 case 'all':
                     $vars['task'] = 'browse';
                     $vars['employer'] = $segments[1];
                     return $vars;
-                    break;
             }
         }
 

@@ -261,7 +261,6 @@ if ($this->message) { ?>
                                     'color'  => 'rgba(124, 145, 64, 0.7)',
                                 ];
                                 break;
-                            break;
 
                             default:
                                 //$val = $row->value;
@@ -428,7 +427,6 @@ if ($this->message) { ?>
                                     'color'  => 'rgba(124, 145, 64, 0.7)',
                                 ];
                                 break;
-                            break;
 
                             default:
                                 //$val = $row->value;

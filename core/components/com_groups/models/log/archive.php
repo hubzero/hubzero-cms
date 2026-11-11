@@ -79,7 +79,6 @@ class Archive extends Model
                     $this->logs = new ItemList($results);
                 }
                 return $this->logs;
-                break;
         }
     }
 }

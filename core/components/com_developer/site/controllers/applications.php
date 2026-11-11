@@ -54,7 +54,6 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         $memberships = Member::all()
@@ -112,7 +111,6 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         // get developers apps
@@ -125,7 +123,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_DOES_NOT_EXIST'),
                 'warning',
             );
-            return;
         }
 
         // make sure its ours
@@ -135,7 +132,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // build pathway
@@ -174,7 +170,6 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         // check to see if we are passing in a model
@@ -195,7 +190,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_DOES_NOT_EXIST'),
                 'warning',
             );
-            return;
         }
 
         // make sure its ours
@@ -213,7 +207,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Pass any received errors to the view
@@ -257,7 +250,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // must be logged in
@@ -270,7 +262,6 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         // bind data to model -- only the fields the form owns. client_id,
@@ -289,7 +280,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_DOES_NOT_EXIST'),
                 'warning',
             );
-            return;
         }
 
         // make sure its ours
@@ -303,7 +293,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // attempt to save model
@@ -388,7 +377,6 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         // get developers apps
@@ -401,7 +389,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_DOES_NOT_EXIST'),
                 'warning',
             );
-            return;
         }
 
         // make sure we have access to delete
@@ -411,7 +398,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // attempt to delete app
@@ -423,7 +409,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_UNABLE_TO_DELETE'),
                 'error',
             );
-            return;
         }
 
         // Redirect back to the main listing with a success message
@@ -454,7 +439,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // must be logged in
@@ -467,7 +451,6 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         // get developers app
@@ -485,7 +468,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_UNABLE_TO_RESET_CLIENT_SECRET'),
                 'error',
             );
-            return;
         }
 
         // Redirect back the application
@@ -521,7 +503,6 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         // get access tokens apps
@@ -535,7 +516,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // delete the access token
@@ -576,7 +556,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // must be logged in
@@ -589,7 +568,6 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
 
         // get access tokens apps
@@ -628,7 +606,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // Must be logged in
@@ -651,7 +628,6 @@ class Applications extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode($return)),
             );
-            return;
         }
         $application = Application::oneOrFail($id);
 
@@ -717,7 +693,6 @@ class Applications extends SiteController
                 Lang::txt('COM_DEVELOPER_API_APPLICATION_NOT_AUTHORIZED'),
                 'warning',
             );
-            return;
         }
 
         // get team member
@@ -732,7 +707,6 @@ class Applications extends SiteController
                         Lang::txt('COM_DEVELOPER_API_APPLICATION_UNABLE_TO_DELETE_MEMBER'),
                         'error',
                     );
-                    return;
                 }
             }
         }

@@ -44,7 +44,6 @@ class Storage extends SiteController
             App::redirect(
                 $this->config->get('mw_redirect', '/home'),
             );
-            return;
         }
 
         // Get the task
@@ -62,7 +61,6 @@ class Storage extends SiteController
             App::redirect(
                 $this->config->get('mw_redirect', '/home'),
             );
-            return;
         }
 
         $this->authorize('storage');
@@ -126,7 +124,6 @@ class Storage extends SiteController
         App::redirect(
             Route::url('index.php?option=com_users&view=login&return=' . base64_encode($rtrn)),
         );
-        return;
     }
 
     /**
@@ -219,7 +216,6 @@ class Storage extends SiteController
             App::redirect(
                 Route::url($this->config->get('stopRedirect', 'index.php?option=com_members&task=myaccount')),
             );
-            return;
         }
 
         Request::checkToken();
@@ -369,14 +365,12 @@ class Storage extends SiteController
         // Without a username the path below would be everybody's storage directory
         if ($username === '') {
             App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
-            return;
         }
 
         $relative = \Hubzero\Filesystem\SafePath::relative($username . DS . $listdir . DS . $subdir);
 
         if ($relative === false) {
             App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
-            return;
         }
 
         $reason = null;
@@ -385,7 +379,6 @@ class Storage extends SiteController
         if ($path === false) {
             if ($reason != \Hubzero\Filesystem\SafePath::REASON_MISSING) {
                 App::abort(500, Lang::txt('COM_TOOLS_ERROR_BAD_FILE_PATH'));
-                return;
             }
 
             // A directory that doesn't exist (yet) is not an error here - the tasks

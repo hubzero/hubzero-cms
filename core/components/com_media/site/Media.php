@@ -41,7 +41,6 @@ class Media extends AbstractComponent
             &&  !(User::get('id') == $author && User::authorise('core.edit.own', $asset))
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         // Set the path definitions

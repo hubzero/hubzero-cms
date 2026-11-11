@@ -71,7 +71,6 @@ class Archive extends \Hubzero\Base\Obj
                     $this->productsCount = $warehouse->getProducts('count', false, $filters);
                 }
                 return $this->productsCount;
-                break;
 
             case 'list':
             case 'rows':
@@ -138,7 +137,6 @@ class Archive extends \Hubzero\Base\Obj
             case 'count':
                 $this->count = $warehouse->getProductSkus($pId, 'count', false);
                 return $this->count;
-                break;
 
             case 'list':
             case 'rows':
@@ -250,7 +248,6 @@ class Archive extends \Hubzero\Base\Obj
         switch (strtolower($rtrn)) {
             case 'count':
                 return $warehouse->getOptionGroupOptions($ogId, 'count', false);
-                break;
 
             case 'list':
             case 'rows':
@@ -327,7 +324,6 @@ class Archive extends \Hubzero\Base\Obj
                 $warehouse = new Warehouse();
                 $count = $warehouse->getCategories('count');
                 return $count;
-                break;
 
             case 'list':
             case 'rows':
@@ -339,7 +335,6 @@ class Archive extends \Hubzero\Base\Obj
                 }
                 $categories = new \Hubzero\Base\ItemList($results);
                 return $categories;
-                break;
         }
     }
 
@@ -364,7 +359,6 @@ class Archive extends \Hubzero\Base\Obj
                 $warehouse = new Warehouse();
                 $count = $warehouse->getCollections('count');
                 return $count;
-                break;
 
             case 'list':
             case 'rows':
@@ -376,7 +370,6 @@ class Archive extends \Hubzero\Base\Obj
                 }
                 $categories = new \Hubzero\Base\ItemList($results);
                 return $categories;
-                break;
         }
     }
 
@@ -420,7 +413,6 @@ class Archive extends \Hubzero\Base\Obj
                 $warehouse = new Warehouse();
                 $count = $warehouse->getOptionGroups('count');
                 return $count;
-                break;
 
             case 'list':
             case 'rows':
@@ -432,7 +424,6 @@ class Archive extends \Hubzero\Base\Obj
                 }
                 $categories = new \Hubzero\Base\ItemList($results);
                 return $categories;
-                break;
         }
     }
 

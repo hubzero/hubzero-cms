@@ -136,7 +136,6 @@ if (
                             Lang::txt('COM_COURSES_ERROR_ASSET_HAS_PREREQ', $requirements),
                             'warning',
                         );
-                        return;
                     }
 
                     echo $used_asset->render($this->course);

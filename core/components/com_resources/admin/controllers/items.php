@@ -527,7 +527,6 @@ class Items extends AdminController
                 Lang::txt('COM_RESOURCES_ERROR_MISSING_PARENT_ID'),
                 'error',
             );
-            return;
         }
 
         // Make sure we have children IDs
@@ -627,7 +626,6 @@ class Items extends AdminController
             App::redirect(
                 Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . $task, false),
             );
-            return;
         }
 
         // Is this a new resource?

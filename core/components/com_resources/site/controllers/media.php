@@ -94,7 +94,6 @@ class Media extends SiteController
         // -- see _isTempId(), which records what that does and does not buy.
         if (User::isGuest()) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
         if (
             !($this->isTempId($resource))
@@ -102,7 +101,6 @@ class Media extends SiteController
             && !User::authorise('core.manage', 'com_resources')
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $path = $row->filespace() . DS . 'media';
@@ -224,7 +222,6 @@ class Media extends SiteController
         // -- see _isTempId(), which records what that does and does not buy.
         if (User::isGuest()) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
         if (
             !($this->isTempId($resource))
@@ -232,7 +229,6 @@ class Media extends SiteController
             && !User::authorise('core.manage', 'com_resources')
         ) {
             App::abort(403, Lang::txt('JERROR_ALERTNOAUTHOR'));
-            return;
         }
 
         $path = $row->filespace() . DS . 'media';

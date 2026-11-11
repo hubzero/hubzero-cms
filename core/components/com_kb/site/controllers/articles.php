@@ -225,7 +225,6 @@ class Articles extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . base64_encode(Route::url($return, false))),
             );
-            return;
         }
 
         // Require POST
@@ -290,7 +289,6 @@ class Articles extends SiteController
                 App::redirect(
                     Route::url($row->link()),
                 );
-                return;
             }
             $this->articleTask();
         }
@@ -312,7 +310,6 @@ class Articles extends SiteController
                 Lang::txt('COM_KB_LOGIN_NOTICE'),
                 'warning',
             );
-            return;
         }
 
         // Check for request forgeries

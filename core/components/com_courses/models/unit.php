@@ -257,12 +257,10 @@ class Unit extends Base
                 foreach ($this->assetgroups as $group) {
                     if ($group->get('alias') == $idx) {
                         return $this->assetgroups;
-                        break;
                     } else {
                         foreach ($group->children() as $child) {
                             if ($child->get('alias') == $idx) {
                                 return $group->children();
-                                break;
                             }
                         }
                     }
@@ -337,7 +335,6 @@ class Unit extends Base
             case 'prev':
             case 'next':
                 return $this->siblings->fetch($dir);
-                break;
 
             default:
                 break;

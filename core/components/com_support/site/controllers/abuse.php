@@ -83,7 +83,6 @@ class Abuse extends SiteController
             App::redirect(
                 Route::url('index.php?option=com_users&view=login&return=' . $return, false),
             );
-            return;
         }
 
         // Incoming
