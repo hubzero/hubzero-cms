@@ -9,6 +9,7 @@
 namespace Components\Poll\Models;
 
 use Hubzero\Database\Relational;
+use Hubzero\Facades\Date;
 
 /**
  * Poll model
@@ -58,10 +59,11 @@ class Poll extends Relational
     {
         $alias = (isset($data['alias']) && $data['alias'] ? $data['alias'] : $data['title']);
         $alias = str_replace(' ', '-', $alias);
-        if (trim(str_replace('-', '', $this->alias)) == '') {
-            $alias = \Date::of('now')->format("%Y-%m-%d-%H-%M-%S");
+        $alias = preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+        if (trim(str_replace('-', '', $alias)) == '') {
+            $alias = Date::of('now')->format('Y-m-d-H-i-s');
         }
-        return preg_replace("/[^a-zA-Z0-9\-]/", '', strtolower($alias));
+        return $alias;
     }
 
     /**
