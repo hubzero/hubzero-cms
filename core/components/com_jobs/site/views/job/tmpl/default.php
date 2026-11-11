@@ -80,8 +80,9 @@ defined('_HZEXEC_') or die();
         <?php } ?>
         <?php if ($job->applied) {
             $withdrawUrl = Route::url('index.php?option=' . $this->option . '&task=withdraw&code=' . $job->code);
+            $editappUrl = Route::url('index.php?option=' . $this->option . '&task=editapp&code=' . $job->code);
             ?>
-            <span class="applied"><a href="<?php echo Route::url('index.php?option=' . $this->option . '&task=editapp&code=' . $job->code) ?>"><button class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION') ?></button></a><button type="submit" form="hz-post-action" formaction="<?= $withdrawUrl ?>" id="showconfirm" class="btn btn-danger"><?php echo Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION') ?></button>
+            <span class="applied"><a href="<?= $editappUrl ?>"><button class="btn btn-success"><?php echo Lang::txt('COM_JOBS_ACTION_EDIT_APPLICATION') ?></button></a><button type="submit" form="hz-post-action" formaction="<?= $withdrawUrl ?>" id="showconfirm" class="btn btn-danger"><?php echo Lang::txt('COM_JOBS_ACTION_WITHDRAW_APPLICATION') ?></button>
             </span>
         <?php } ?>
         <?php if ($owner && ($job->status == 1 || $job->status == 3)) {
@@ -96,8 +97,9 @@ defined('_HZEXEC_') or die();
         <?php } ?>
         <?php if ($job->status == 3) {
             $reopenUrl = Route::url('index.php?option=' . $this->option . '&task=reopen&code=' . $job->code);
+            $removeUrl = Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code);
             ?>
-            <span class="manageroptions"><button type="submit" form="hz-post-action" formaction="<?= $reopenUrl ?>" class="btn" title="<?php echo Lang::txt('COM_JOBS_ACTION_INCLUDE_INPUBLIC_LISTING') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button><button type="submit" form="hz-post-action" formaction="<?php echo Route::url('index.php?option=' . $this->option . '&task=remove&code=' . $job->code) ?>" class="btn" title="<?php echo Lang::txt('COM_JOBS_ACTION_DELETE_ALL_RECORDS') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_DELETE_THIS_JOB') ?></button></span>
+            <span class="manageroptions"><button type="submit" form="hz-post-action" formaction="<?= $reopenUrl ?>" class="btn" title="<?php echo Lang::txt('COM_JOBS_ACTION_INCLUDE_INPUBLIC_LISTING') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_REOPEN_THIS') ?></button><button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="btn" title="<?php echo Lang::txt('COM_JOBS_ACTION_DELETE_ALL_RECORDS') ?>"><?php echo Lang::txt('COM_JOBS_ACTION_DELETE_THIS_JOB') ?></button></span>
         <?php } ?>
         <?php
         if ($job->applied) {
