@@ -167,7 +167,7 @@ class Request extends BaseRequest
                 break;
 
             default:
-                return $this->input($key, $default, $type);
+                return $this->input($key, $default);
                 break;
         }
     }

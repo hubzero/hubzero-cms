@@ -644,7 +644,7 @@ class Translator extends Obj
 
                 // If the one we tried is different than the new name, try again
                 if ($oldFilename != $filename) {
-                    $result = $this->loadLanguage($filename, $extension, false);
+                    $result = $this->loadLanguage($filename, $extension);
                 }
             }
         }

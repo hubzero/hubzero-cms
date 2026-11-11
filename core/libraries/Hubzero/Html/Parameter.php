@@ -81,7 +81,7 @@ class Parameter extends Registry
      */
     public function def($key, $default = '', $group = '_default')
     {
-        $value = $this->get($key, (string) $default, $group);
+        $value = $this->get($key, (string) $default);
 
         return $this->set($key, $value);
     }
@@ -252,7 +252,7 @@ class Parameter extends Registry
         }
 
         // Get value.
-        $value = $this->get((string) $node['name'], (string) $node['default'], $group);
+        $value = $this->get((string) $node['name'], (string) $node['default']);
 
         return $element->render($node, $value, $control_name);
     }

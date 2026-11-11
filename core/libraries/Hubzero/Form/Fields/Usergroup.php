@@ -71,6 +71,6 @@ class Usergroup extends Field
             $options[] = $tmp;
         }
 
-        return Access::usergroup($this->name, $this->value, $attr, $options, $this->id);
+        return Access::usergroup($this->name, $this->value, $attr, $options);
     }
 }

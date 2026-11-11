@@ -66,7 +66,7 @@ class Rules implements Countable, Iterator
      */
     public function append($key, $value)
     {
-        if (!$this->has($key, $value)) {
+        if (!$this->has($key)) {
             $this->data[$key] = $this->close($value);
         }
 

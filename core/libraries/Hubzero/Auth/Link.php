@@ -312,10 +312,7 @@ class Link extends Relational
             ->whereEquals($l . '.user_id', $user_id)
             ->rows();
 
-        if (empty($results)) {
-            return false;
-        }
-
+        // An empty list, not false, when there are none: callers count it
         return $results->toArray();
     }
 
