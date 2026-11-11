@@ -16,6 +16,9 @@ class DvConfig
     public static $com_name = '';
     public static $html_path = '';
 
+    /** @var string  Absolute filesystem path to the html/ assets, also the constant DV_PATH_HTML */
+    public static $html_dir = '';
+
     public static function init()
     {
         static::$html_path = str_replace(PATH_ROOT, '', __DIR__) . '/html';
@@ -29,7 +32,8 @@ class DvConfig
         define('DV_COM', static::$com_name);
         define('DV_COM_PATH', $com_path);
         define('DV_COM_HTML', DV_COM_PATH . DS . 'html');
-        define('DV_PATH_HTML', __DIR__ . DS . 'html');
+        static::$html_dir = __DIR__ . DS . 'html';
+        define('DV_PATH_HTML', static::$html_dir);
 
         $params = Component::params('com_dataviewer');
 

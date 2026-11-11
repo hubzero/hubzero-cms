@@ -8,6 +8,7 @@
 
 namespace Components\Dataviewer\Site\Lib;
 
+use Components\Dataviewer\Site\DvConfig;
 use Hubzero\Facades\App;
 
 class Html
@@ -21,20 +22,20 @@ class Html
             return;
         }
 
-        if (file_exists(DV_PATH_HTML . DS . $script)) {
-            if (is_dir(DV_PATH_HTML . DS . $script)) {
+        if (file_exists(DvConfig::$html_dir . DS . $script)) {
+            if (is_dir(DvConfig::$html_dir . DS . $script)) {
                 $path = $script;
-                chdir(DV_PATH_HTML . DS . $path);
+                chdir(DvConfig::$html_dir . DS . $path);
                 foreach (glob("*.js") as $file) {
                     $document->addScript(
-                        DV_COM_HTML . '/' . $path . '/' . $file . '?mt='
-                        . filemtime(DV_PATH_HTML . DS . $path . DS . $file),
+                        DvConfig::$html_path . '/' . $path . '/' . $file . '?mt='
+                        . filemtime(DvConfig::$html_dir . DS . $path . DS . $file),
                     );
                 }
             } else {
                 $document->addScript(
-                    DV_COM_HTML . '/' . $script . '?mt='
-                    . filemtime(DV_PATH_HTML . DS . $script),
+                    DvConfig::$html_path . '/' . $script . '?mt='
+                    . filemtime(DvConfig::$html_dir . DS . $script),
                 );
             }
         }
@@ -49,20 +50,20 @@ class Html
             return;
         }
 
-        if (file_exists(DV_PATH_HTML . DS . $css)) {
-            if (is_dir(DV_PATH_HTML . DS . $css)) {
+        if (file_exists(DvConfig::$html_dir . DS . $css)) {
+            if (is_dir(DvConfig::$html_dir . DS . $css)) {
                 $path = $css;
-                chdir(DV_PATH_HTML . DS . $path);
+                chdir(DvConfig::$html_dir . DS . $path);
                 foreach (glob("*.css") as $file) {
                     $document->addStyleSheet(
-                        DV_COM_HTML . '/' . $path . '/' . $file . '?mt='
-                        . filemtime(DV_PATH_HTML . DS . $path . DS . $file),
+                        DvConfig::$html_path . '/' . $path . '/' . $file . '?mt='
+                        . filemtime(DvConfig::$html_dir . DS . $path . DS . $file),
                     );
                 }
             } else {
                 $document->addStyleSheet(
-                    DV_COM_HTML . '/' . $css . '?mt='
-                    . filemtime(DV_PATH_HTML . DS . $css),
+                    DvConfig::$html_path . '/' . $css . '?mt='
+                    . filemtime(DvConfig::$html_dir . DS . $css),
                 );
             }
         }

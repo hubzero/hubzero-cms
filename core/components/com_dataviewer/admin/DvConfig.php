@@ -17,6 +17,12 @@ class DvConfig
     public static $conf;
     public static $com_name = '';
 
+    /** @var string  Session-based request ID sent with each form, also the constant DB_RID */
+    public static $rid = '';
+
+    /** @var string  Component path relative to the document root, also the constant DB_PATH */
+    public static $com_path = '';
+
     public static function init()
     {
         // Request ID/CSRF prevention
@@ -27,7 +33,8 @@ class DvConfig
         if (!isset($_SESSION['db']['__rid'])) {
             $_SESSION['db']['__rid'] = sha1(uniqid('__rid', true));
         }
-        define('DB_RID', $_SESSION['db']['__rid']);
+        static::$rid = $_SESSION['db']['__rid'];
+        define('DB_RID', static::$rid);
 
         $document = App::get('document');
         static::$com_name = Request::get('option');
@@ -38,6 +45,7 @@ class DvConfig
 
         /* Paths */
         define('DB_COM', static::$com_name);
+        static::$com_path = $com_path;
         define('DB_PATH', $com_path);
 
 

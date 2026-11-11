@@ -20,7 +20,7 @@ class TaskConfig
         $base = DvConfig::$conf['dir_base'];
 
         $document = App::get('document');
-        $document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
+        $document->addScript(DvConfig::$com_path . DS . 'html' . DS . 'ace/ace.js');
 
         $db_id = \Components\Dataviewer\Admin\Libs\Security::dvIdentifier(Request::getString('db', false), 'db');
         $db_conf_file = $base . DS . $db_id . DS . 'database.json';
@@ -57,7 +57,7 @@ class TaskConfig
 <script>
     var com_name = '<?php echo DvConfig::$com_name; ?>';
     var db = '<?php echo $db_id; ?>';
-    var db_rid = '<?php echo DB_RID; ?>';
+    var db_rid = '<?php echo DvConfig::$rid; ?>';
     var db_back_link = "/administrator/index.php?option=com_<?php echo DvConfig::$conf['com_name']; ?>";
 </script>
 
@@ -129,7 +129,7 @@ e.g. make the data views publicly accessible
         $formAction = '/administrator/index.php?option=com_' . DvConfig::$conf['com_name'] . '&task=config_update';
         ?>
 <form id="db-conf-update-form" method="post" action="<?php echo $formAction; ?>">
-    <input name="<?php echo DB_RID; ?>" type="hidden" value="<?php echo DB_RID; ?>" />
+    <input name="<?php echo DvConfig::$rid; ?>" type="hidden" value="<?php echo DvConfig::$rid; ?>" />
     <input name="db" type="hidden" value="<?php echo $db_id; ?>" />
     <input name="update" type="hidden" value="true" />
     <input name="conf_text" type="hidden" value="" />

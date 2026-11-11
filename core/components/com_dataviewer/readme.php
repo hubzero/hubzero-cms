@@ -252,10 +252,13 @@ namespace Components\Dataviewer;
  * - `DvConfig::$dv_conf`   -- Primary configuration array (settings, ACL, DB config)
  * - `DvConfig::$com_name`  -- Component name without `com_` prefix ("dataviewer")
  * - `DvConfig::$html_path` -- Relative path to the html/ assets directory
+ * - `DvConfig::$html_dir`  -- Absolute filesystem path to the html/ assets directory
  *
  * Admin-side (`Components\Dataviewer\Admin\DvConfig`):
  * - `DvConfig::$conf`      -- Primary admin configuration array
  * - `DvConfig::$com_name`  -- Component name without `com_` prefix
+ * - `DvConfig::$rid`       -- Session-based CSRF token
+ * - `DvConfig::$com_path`  -- Relative component path from document root
  *
  * Site-side constants (defined in DvConfig::init()):
  * - `DV_COM`       -- Component name ("dataviewer")

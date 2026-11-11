@@ -21,7 +21,7 @@ class DataviewList
         $base = DvConfig::$conf['dir_base'];
 
         $document = App::get('document');
-        $document->addScript(DB_PATH . DS . 'html' . DS . 'ace/ace.js');
+        $document->addScript(DvConfig::$com_path . DS . 'html' . DS . 'ace/ace.js');
 
         $db_id = \Components\Dataviewer\Admin\Libs\Security::dvIdentifier(Request::getString('db', false), 'db');
         $db_conf_file = $base . DS . $db_id . DS . 'database.json';
@@ -162,7 +162,7 @@ class DataviewList
         ?>
         <form id="db-dd-remove-frm" method="post"
             action="<?php echo $removeAction; ?>" style="display: none;">
-                <input name="<?php echo DB_RID; ?>" type="hidden" value="<?php echo DB_RID; ?>" />
+                <input name="<?php echo DvConfig::$rid; ?>" type="hidden" value="<?php echo DvConfig::$rid; ?>" />
                 <input name="db" type="hidden" value="<?php echo $db_id; ?>" />
                 <input name="dd_name" type="hidden">
         </form>
@@ -180,7 +180,7 @@ class DataviewList
         ?>
         <div id="db-dd-new" style="display: none;" title="<?php echo $dialogTitle; ?>">
             <form method="post" action="<?php echo $newAction; ?>">
-                <input name="<?php echo DB_RID; ?>" type="hidden" value="<?php echo DB_RID; ?>" />
+                <input name="<?php echo DvConfig::$rid; ?>" type="hidden" value="<?php echo DvConfig::$rid; ?>" />
                 <input name="db" type="hidden" value="<?php echo $db_id; ?>" />
                 <label for="table">Select Table:</label>
                 <br />

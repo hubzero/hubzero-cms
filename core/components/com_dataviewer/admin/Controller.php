@@ -53,7 +53,7 @@ class Controller
             // Add task JS if exists
             if (file_exists(__DIR__ . DS . 'Tasks' . DS . 'html' . DS . $task . '.js')) {
                 $document = App::get('document');
-                $document->addScript(DB_PATH . DS . 'Tasks' . DS . 'html' . DS . $task . '.js?v=2');
+                $document->addScript(DvConfig::$com_path . DS . 'Tasks' . DS . 'html' . DS . $task . '.js?v=2');
             }
             $taskMap[$task]::execute();
         } else {

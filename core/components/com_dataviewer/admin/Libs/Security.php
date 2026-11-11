@@ -8,11 +8,13 @@
 
 namespace Components\Dataviewer\Admin\Libs;
 
+use Components\Dataviewer\Admin\DvConfig;
+
 class Security
 {
     public static function checkRid()
     {
-        if (isset($_POST[DB_RID]) && $_POST[DB_RID] == DB_RID) {
+        if (isset($_POST[DvConfig::$rid]) && $_POST[DvConfig::$rid] == DvConfig::$rid) {
             return true;
         }
 

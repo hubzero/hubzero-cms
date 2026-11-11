@@ -29,10 +29,10 @@ class Dataviewer extends AbstractComponent
         DvConfig::init();
 
         $document = App::get('document');
-        $document->addCustomTag('<meta name="csrf-token" content="' . DB_RID . '" />');
-        $document->addStyleSheet(DB_PATH . '/html/smoothness/jquery-ui.css');
-        $document->addStyleSheet(DB_PATH . '/html/main.css');
-        $document->addScript(DB_PATH . '/html/main.js');
+        $document->addCustomTag('<meta name="csrf-token" content="' . DvConfig::$rid . '" />');
+        $document->addStyleSheet(DvConfig::$com_path . '/html/smoothness/jquery-ui.css');
+        $document->addStyleSheet(DvConfig::$com_path . '/html/main.css');
+        $document->addScript(DvConfig::$com_path . '/html/main.js');
         $document->setTitle(DvConfig::$conf['app_title']);
 
         Controller::dispatch();
