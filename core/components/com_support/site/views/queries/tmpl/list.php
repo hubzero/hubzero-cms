@@ -35,8 +35,12 @@ if (count($this->folders) > 0) { ?>
                     'index.php?option=' . $this->option . '&controller=queries&task=editfolder&id=' . $folder->id
                         . '&tmpl=component&' . Session::getFormToken() . '=1',
                 );
+                $savefolderUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=queries&task=savefolder&'
+                        . Session::getFormToken() . '=1&fields[id]=' . $folder->id,
+                );
                 ?>
-                <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>" data-href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>" data-href="<?= $savefolderUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                     <?php echo Lang::txt('JACTION_EDIT'); ?>
                 </a>
             </span>

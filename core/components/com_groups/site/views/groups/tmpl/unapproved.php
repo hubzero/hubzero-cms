@@ -41,7 +41,8 @@ $this->css();
 
         <?php
         $myaccountUrl = Route::url('index.php?option=com_members&task=myaccount&active=groups');
+        $linkUrl = Route::url('index.php?option=com_groups');
         ?>
-        <p><a class="all-groups" href="<?= Route::url('index.php?option=com_groups') ?>"><?= Lang::txt('COM_GROUPS_ALL_GROUPS') ?></a> | <a class="my-groups" href="<?= $myaccountUrl ?>"><?= Lang::txt('COM_GROUPS_MY_GROUPS') ?></a></p>
+        <p><a class="all-groups" href="<?= $linkUrl ?>"><?= Lang::txt('COM_GROUPS_ALL_GROUPS') ?></a> | <a class="my-groups" href="<?= $myaccountUrl ?>"><?= Lang::txt('COM_GROUPS_MY_GROUPS') ?></a></p>
     </div>
 </section>

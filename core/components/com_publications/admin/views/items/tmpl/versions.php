@@ -29,8 +29,9 @@ Toolbar::cancel();
 $editUrl = Route::url(
     'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=edit&id[]=' . $this->pub->id,
 );
+$linkUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
 ?>
-<p class="crumbs"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= $editUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_VERSIONS') ?></p>
+<p class="crumbs"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION_MANAGER') ?></a> &raquo; <a href="<?= $editUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_PUBLICATION') . ' #' . $this->pub->id ?></a> &raquo; <?= Lang::txt('COM_PUBLICATIONS_VERSIONS') ?></p>
 
 <form action="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller) ?>" method="post"
     name="adminForm">

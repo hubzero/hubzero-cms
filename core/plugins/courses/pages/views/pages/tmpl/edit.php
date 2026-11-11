@@ -112,8 +112,9 @@ $sectionIdSelected = function ($value) use ($view) {
                             $uploadUrl = Route::url(
                                 $base . '&action=upload&no_html=1&' . Session::getFormToken() . '=1&section_id=',
                             );
+                            $dataListUrl = Route::url($base . '&action=list&no_html=1&section_id=');
                             ?>
-                            <div id="file-uploader" data-instructions="<?= Lang::txt('PLG_COURSES_PAGES_UPLOAD_INSTRUCTIONS') ?>" data-action="<?= $uploadUrl ?>" data-section="<?= $this->model->get('section_id') ?>" data-list="<?= Route::url($base . '&action=list&no_html=1&section_id=') ?>">
+                            <div id="file-uploader" data-instructions="<?= Lang::txt('PLG_COURSES_PAGES_UPLOAD_INSTRUCTIONS') ?>" data-action="<?= $uploadUrl ?>" data-section="<?= $this->model->get('section_id') ?>" data-list="<?= $dataListUrl ?>">
                                 <?php
                                 $listUrl = Route::url(
                                     $base . '&action=list&tmpl=component&page=' . $this->model->get('id')

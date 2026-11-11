@@ -98,8 +98,12 @@ $this
                                         'index.php?option=' . $this->option . '&controller=queries&task=editfolder&id='
                                             . $folder->id . '&tmpl=component&' . Session::getFormToken() . '=1',
                                     );
+                                    $dataHrefUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&controller=queries&task=savefolder&'
+                                            . Session::getFormToken() . '=1&fields[id]=' . $folder->id,
+                                    );
                                     ?>
-                                    <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>" data-href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=savefolder&' . Session::getFormToken() . '=1&fields[id]=' . $folder->id) ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
+                                    <a class="edit editfolder" data-id="<?= $this->escape($folder->id) ?>" href="<?= $editfolderUrl ?>" data-href="<?= $dataHrefUrl ?>" title="<?= Lang::txt('JACTION_EDIT') ?>">
                                         <?php echo Lang::txt('JACTION_EDIT'); ?>
                                     </a>
                                 </span>
@@ -168,8 +172,12 @@ $this
                             'index.php?option=' . $this->option . '&controller=queries&task=savefolder&'
                                 . Session::getFormToken() . '=1',
                         );
+                        $addfolderUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=queries&task=addfolder&'
+                                . Session::getFormToken() . '=1',
+                        );
                         ?>
-                        <a class="icon-folder" id="new-folder" href="<?= Route::url('index.php?option=' . $this->option . '&controller=queries&task=addfolder&' . Session::getFormToken() . '=1') ?>" data-href="<?= $savefolderUrl ?>" title="<?= Lang::txt('COM_SUPPORT_ADD_FOLDER') ?>" data-ptompt="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>">
+                        <a class="icon-folder" id="new-folder" href="<?= $addfolderUrl ?>" data-href="<?= $savefolderUrl ?>" title="<?= Lang::txt('COM_SUPPORT_ADD_FOLDER') ?>" data-ptompt="<?= Lang::txt('COM_SUPPORT_FOLDER_NAME') ?>">
                             <?php echo Lang::txt('COM_SUPPORT_ADD_FOLDER'); ?>
                         </a>
                     </li>
