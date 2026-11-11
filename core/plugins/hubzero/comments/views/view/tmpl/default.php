@@ -190,7 +190,10 @@ $this
 
                 <?php
                 if ($this->comments->count() > 1) :
-                    $currentOrderDir = User::getState('Plugins.Hubzero.Comments.Models.Comment.orderdir', \Plugins\Hubzero\Comments\Models\Comment::blank()->orderDir); // State or default
+                    $currentOrderDir = User::getState(
+                        'Plugins.Hubzero.Comments.Models.Comment.orderdir',
+                        \Plugins\Hubzero\Comments\Models\Comment::blank()->orderDir,
+                    );  // State or default
                     ?>
                 <nav class="entries-filters" aria-label="<?php echo Lang::txt('JGLOBAL_FILTER_AND_SORT_RESULTS'); ?>">
                     <form method="post" action="<?php echo Route::url($this->url); ?>" id="commentformcomments">

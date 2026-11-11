@@ -345,7 +345,10 @@ if ($label == 'none') {
                 <label for="actags">
                     <?php echo Lang::txt('COM_CITATIONS_TAGS'); ?>:
                     <?php
-                        $tf = Event::trigger('hubzero.onGetMultiEntry', [['tags', 'tag', 'actags', '', $this->escape($this->filters['tag'])]]);  // type, field name, field id, class, value
+                    $tf = Event::trigger(
+                        'hubzero.onGetMultiEntry',
+                        [['tags', 'tag', 'actags', '', $this->escape($this->filters['tag'])]],
+                    );  // type, field name, field id, class, value
                     if (count($tf) > 0) : ?>
                             <?php echo $tf[0]; ?>
                     <?php else : ?>

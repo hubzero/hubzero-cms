@@ -25,7 +25,9 @@ $db = App::get('db');
 $version = new \Components\Publications\Tables\Version($db);
 $version->load($row->object_id);
 
-$row->path = Route::url('index.php?option=com_publications&id=' . $version->publication_id . '&v=' . $version->version_number); //$row->object_id);
+$row->path = Route::url(
+    'index.php?option=com_publications&id=' . $version->publication_id . '&v=' . $version->version_number,
+);  //$row->object_id);
 $details = rtrim(Request::base(), '/') . '/' . ltrim($row->path, '/');
 ?>
     <li>

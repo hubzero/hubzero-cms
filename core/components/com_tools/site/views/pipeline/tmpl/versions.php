@@ -46,7 +46,8 @@ $this
 
 <section class="main section">
     <?php
-    ($this->status['published'] != 1 && !$this->status['version']) ? $hint = '1.0' : $hint = ''; // if tool is under dev and no version was specified before
+    // if tool is under dev and no version was specified before
+    ($this->status['published'] != 1 && !$this->status['version']) ? $hint = '1.0' : $hint = '';
     $statuspath = Route::url(
         'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=status&app='
             . $this->status['toolname'],

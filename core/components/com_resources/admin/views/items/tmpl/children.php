@@ -196,7 +196,9 @@ if ($this->filters['parent_id'] > 0) {
             }
 
             // See if it's checked out or not
-            if ($row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')) { // && $row->checked_out != User::get('id'))
+            if (
+                $row->checked_out || ($row->checked_out_time && $row->checked_out_time != '0000-00-00 00:00:00')
+            ) {  // && $row->checked_out != User::get('id'))
                 $date = Date::of($row->checked_out_time)->toLocal(Lang::txt('DATE_FORMAT_LC1'));
                 $time = Date::of($row->checked_out_time)->toLocal('H:i');
 
