@@ -16,6 +16,12 @@ use Hubzero\Facades\Component;
 
 /**
  * Wishlist model class
+ *
+ * Not columns, read and set through __get() and __set():
+ *
+ * @property  \Components\Wishlist\Models\Adapters\Base|null  $adapter      The scope's adapter, cached by adapter()
+ * @property  \Hubzero\Database\Rows                          $wishes       The wishes, through wishes()
+ * @property  \Hubzero\Database\Rows                          $ownergroups  The owner groups, through ownergroups()
  */
 class Wishlist extends Relational
 {

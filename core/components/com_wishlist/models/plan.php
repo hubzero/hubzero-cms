@@ -15,6 +15,10 @@ use Hubzero\Facades\Html;
 
 /**
  * Wishlist class for a wish plan model
+ *
+ * Not columns, read and set through __get() and __set():
+ *
+ * @property  string  $_aboutParsed  The parsed text, cached by transformContent()
  */
 class Plan extends Relational
 {

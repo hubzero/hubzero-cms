@@ -35,6 +35,21 @@ use Hubzero\Facades\Route;
 
 /**
  * Wishlist controller class
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  int     $banking      Whether points can be offered, set by execute() and a task
+ * @property  int     $_admin       The user's role on the list (0 to 3), set by authorizeAdmin()
+ * @property  string  $_title       The page title, set by buildTitle()
+ * @property  string  $_subtitle    The page subtitle, set by a task
+ * @property  string  $_list_title  The title of the list being shown
+ * @property  string  $_msg         A message for the user, set by a task
+ * @property  string  $_wishtitle   The subject of the wish being shown
+ * @property  string  $_wishpath    The link to the wish being shown
+ * @property  string  $_taskname    The pathway name of the task, set by a task
+ * @property  string  $_taskpath    The pathway link of the task, set by a task
+ * @property  int     $_listid      The list whose settings are shown, set by settingsTask()
+ * @property  int     $listid       The list being shown, kept for plugins (unread)
  */
 class Wishlists extends SiteController
 {

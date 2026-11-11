@@ -15,6 +15,10 @@ use Hubzero\Facades\Lang;
 
 /**
  * Wishlist class for a wish comment model
+ *
+ * Not columns, read and set through __get() and __set():
+ *
+ * @property  string  $_base  The link base, cached by link()
  */
 class Comment extends ItemComment
 {

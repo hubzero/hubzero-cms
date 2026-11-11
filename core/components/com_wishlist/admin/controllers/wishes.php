@@ -28,6 +28,10 @@ use Hubzero\Facades\App;
 
 /**
  * Cotnroller class for wishes
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $admingroup  The group that owns lists, set by editTask()
  */
 class Wishes extends AdminController
 {

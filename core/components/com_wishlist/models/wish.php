@@ -18,6 +18,15 @@ use Hubzero\Facades\Request;
 
 /**
  * Model class for a wishlist item
+ *
+ * Not columns, read and set through __get() and __set():
+ *
+ * @property  \Components\Wishlist\Models\Adapters\Base|null  $adapter       The scope's adapter, cached by adapter()
+ * @property  string                                          $_aboutParsed  Parsed text, cached by transformContent()
+ * @property  \Hubzero\Database\Rows                          $rankings      The rankings, through rankings()
+ * @property  \Hubzero\Database\Rows                          $votes         The votes, through votes()
+ * @property  \Hubzero\Database\Rows                          $comments      The top-level comments, through comments()
+ * @property  \Components\Wishlist\Models\Plan                $plan          The plan, through plan()
  */
 class Wish extends Relational
 {
