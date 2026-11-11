@@ -58,10 +58,9 @@ class Tags extends \Hubzero\Base\Obj
      * Constructor
      *
      * @param      object $db     Database
-     * @param      array  $config Optional configurations
      * @return     void
      */
-    public function __construct($db, $config = [])
+    public function __construct($db)
     {
         $this->db  = $db;
         $this->tbl = 'publications';
