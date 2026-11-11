@@ -405,8 +405,7 @@ class Spreadsheet
                                 $full_list .= '<li data-dv-id="' . $id . '">' . $col_label . '</li>';
                             }
                         }
-                    }
-                    ?>
+                    } ?>
         <div id="dv_customizer_panel"
             style="display: none; clear: both;  padding: 5px 10px 10px 5px; margin-top: 0;"
             class="ui-widget ui-widget-header ui-corner-bottom dv_top_pannel">
@@ -582,12 +581,12 @@ class Spreadsheet
             var dv_show_maps = <?php print Request::getString('show_map', 'undefined');?>;
         </script>
 
+            <?php
+            $downloadAction = DvConfig::$dv_conf['settings']['data_url'] . '&nolimit=true'
+                . $custom_view_url . $custom_field_url;
+            ?>
         <form style="display: none;" id="dv-spreadsheet-dl" method="POST"
-            action="<?php
-            print DvConfig::$dv_conf['settings']['data_url'];
-            ?>&nolimit=true<?php
-            print $custom_view_url . $custom_field_url;
-?>">
+            action="<?php print $downloadAction; ?>">
         </form>
     </div>
             <?php

@@ -713,6 +713,8 @@ class Html
                 'index.php?option=com_publications&id=' . $pub->id
                 . '&task=serve&v=' . $pub->version_number . '&render=archive',
             );
+            $bundleLabel = Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BUNDLE');
+            $packageLabel = Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE');
             ?>
             <div class="button-highlighter">
                 <p class="launch-primary <?php echo $icon; ?>"><a href="<?php echo $url; ?>"
@@ -723,9 +725,7 @@ class Html
                             <p><a href="<?php echo $url; ?>" title="<?php echo $title; ?>"
                                 class="download"><?php echo $title; ?></a></p>
                             <p><a href="<?php echo $archiveUrl; ?>" class="archival"
-                                title="<?php echo Lang::txt('COM_PUBLICATIONS_DOWNLOAD_BUNDLE'); ?>"><?php
-                                echo Lang::txt('COM_PUBLICATIONS_ARCHIVE_PACKAGE');
-                                ?></a></p>
+                                title="<?php echo $bundleLabel; ?>"><?php echo $packageLabel; ?></a></p>
                         </div>
                     </div>
                 <?php } ?>

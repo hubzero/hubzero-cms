@@ -42,23 +42,23 @@ class Html
      */
     public static function confirmscreen($returnurl, $actionurl, $action = 'cancelsubscription')
     {
+        if ($action == 'cancelsubscription') {
+            $what = strtolower(Lang::txt('COM_JOBSSUBSCRIPTION_CANCEL_THIS'));
+        } elseif ($action == 'withdrawapp') {
+            $what = Lang::txt('COM_JOBS_APPLICATION_WITHDRAW');
+        } else {
+            $what = Lang::txt('COM_JOBS_ACTION_PERFORM_THIS');
+        }
+        $yes  = strtoupper(Lang::txt('YES'));
+        $yes .= $action == 'cancelsubscription' ? ', ' . Lang::txt('COM_JOBS_ACTION_CANCEL_IT') : '';
+        $yes .= $action == 'withdrawapp' ? ', ' . Lang::txt('COM_JOBS_ACTION_WITHDRAW') : '';
+        $no  = strtoupper(Lang::txt('NO'));
+        $no .= $action == 'cancelsubscription' ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_CANCEL') : '';
+        $no .= $action == 'withdrawapp' ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_WITHDRAW') : '';
         ?>
         <div class="confirmwrap">
             <div class="confirmscreen">
-                <p class="warning"><?php echo Lang::txt('COM_JOBS_CONFIRM_ARE_YOU_SURE') . " ";
-                if ($action == 'cancelsubscription') {
-                    echo strtolower(Lang::txt('COM_JOBSSUBSCRIPTION_CANCEL_THIS'));
-                } elseif ($action == 'withdrawapp') {
-                    echo Lang::txt('COM_JOBS_APPLICATION_WITHDRAW');
-                } else {
-                    echo Lang::txt('COM_JOBS_ACTION_PERFORM_THIS');
-                }
-                $yes  = strtoupper(Lang::txt('YES'));
-                $yes .= $action == 'cancelsubscription' ? ', ' . Lang::txt('COM_JOBS_ACTION_CANCEL_IT') : '';
-                $yes .= $action == 'withdrawapp' ? ', ' . Lang::txt('COM_JOBS_ACTION_WITHDRAW') : '';
-                $no  = strtoupper(Lang::txt('NO'));
-                $no .= $action == 'cancelsubscription' ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_CANCEL') : '';
-                $no .= $action == 'withdrawapp' ? ', ' . Lang::txt('COM_JOBS_ACTION_DO_NOT_WITHDRAW') : ''; ?>
+                <p class="warning"><?php echo Lang::txt('COM_JOBS_CONFIRM_ARE_YOU_SURE') . " " . $what; ?>
                 </p>
                 <p><span class="yes"><button type="submit" form="hz-post-action"
                     formaction="<?php echo htmlspecialchars($actionurl); ?>"><?php echo $yes ?></button></span> <span

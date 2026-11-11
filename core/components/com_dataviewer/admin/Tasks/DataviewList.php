@@ -173,6 +173,10 @@ class DataviewList
         $newAction = '/administrator/index.php?option=com_' . DvConfig::$com_name
             . '&task=data_definition_new';
         $dialogTitle = $db_conf['name'] . ' Database : Add new Dataview';
+        $options = '';
+        foreach ($list as $table) {
+            $options .= '<option value="' . $table['TABLE_NAME'] . '">' . $table['TABLE_NAME'] . '</option>';
+        }
         ?>
         <div id="db-dd-new" style="display: none;" title="<?php echo $dialogTitle; ?>">
             <form method="post" action="<?php echo $newAction; ?>">
@@ -181,11 +185,7 @@ class DataviewList
                 <label for="table">Select Table:</label>
                 <br />
                 <select name="table" id="table">
-                <?php
-                foreach ($list as $table) {
-                    print '<option value="' . $table['TABLE_NAME'] . '">' . $table['TABLE_NAME'] . '</option>';
-                }
-                ?>
+                <?php print $options; ?>
                 </select>
 
                 <br />
