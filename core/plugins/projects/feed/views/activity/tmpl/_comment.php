@@ -117,7 +117,9 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                                     );
                                     $confirmText = Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= $confirmText ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>"
+                                        class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>"
+                                        data-confirm="<?= $confirmText ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                 </li>
                             <?php } ?>
                         </ul>

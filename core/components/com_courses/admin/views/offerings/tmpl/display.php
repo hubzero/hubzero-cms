@@ -199,14 +199,16 @@ $stateSelected = function ($value) use ($view) {
                             . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderup&' . $otoken . '=1',
                     );
                     ?>
-                    <a class="state" href="<?= $orderupUrl ?>" title="<?= Lang::txt('Move up') ?>" aria-label="<?= Lang::txt('Move up') ?>">&uarr;</a>
+                    <a class="state" href="<?= $orderupUrl ?>" title="<?= Lang::txt('Move up') ?>"
+                        aria-label="<?= Lang::txt('Move up') ?>">&uarr;</a>
                     <?php
                     $orderdownUrl = Route::url(
                         'index.php?option=' . $this->option . '&controller=' . $this->controller . '&course='
                             . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderdown&' . $otoken . '=1',
                     );
                     ?>
-                    <a class="state" href="<?= $orderdownUrl ?>" title="<?= Lang::txt('Move down') ?>" aria-label="<?= Lang::txt('Move down') ?>">&darr;</a>
+                    <a class="state" href="<?= $orderdownUrl ?>" title="<?= Lang::txt('Move down') ?>"
+                        aria-label="<?= Lang::txt('Move down') ?>">&darr;</a>
                 </td>
                 <td class="priority-5">
                     <?php echo $this->escape($row->get('id')); ?>

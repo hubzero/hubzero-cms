@@ -83,12 +83,14 @@ $this->comment->set('url', $rtrn);
                         <?php
                         $datetime = $this->comment->created();
                         ?>
-                        <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->created('time') ?></time></span>
+                        <span class="time"><time
+                            datetime="<?= $datetime ?>"><?= $this->comment->created('time') ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ON'); ?></span>
                         <?php
                         $datetime = $this->comment->created();
                         ?>
-                        <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->created('date') ?></time></span>
+                        <span class="date"><time
+                            datetime="<?= $datetime ?>"><?= $this->comment->created('date') ?></time></span>
                     </a>
                 </p>
 

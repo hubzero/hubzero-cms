@@ -114,7 +114,8 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
             $changestateUrl = Route::url($url . '&action=changestate') . '/?todoid=' . $this->row->get('id')
                 . '&amp;state=1';
             ?>
-        <span class="checked"><button type="submit" form="hz-post-action" formaction="<?= $changestateUrl ?>" class="confirm-checkoff"><?= Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF') ?></button></span>
+        <span class="checked"><button type="submit" form="hz-post-action" formaction="<?= $changestateUrl ?>"
+            class="confirm-checkoff"><?= Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF') ?></button></span>
         <?php } ?>
         <?php if ($deletable) { ?>
         <span class="trash"><button type="submit" form="hz-post-action"

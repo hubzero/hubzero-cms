@@ -21,7 +21,8 @@ defined('_HZEXEC_') or die();
             <?php
             $titleText = Lang::txt('COM_SUPPORT_NEW_REPORT');
             ?>
-            <p><button class="btn btn-reset" title="<?= $titleText ?>"><?= Lang::txt('COM_SUPPORT_NEW_REPORT') ?></button></p>
+            <p><button class="btn btn-reset"
+                title="<?= $titleText ?>"><?= Lang::txt('COM_SUPPORT_NEW_REPORT') ?></button></p>
         </div>
         <p>
             <?php echo Lang::txt('COM_SUPPORT_TROUBLE_THANKS'); ?><br /><br />

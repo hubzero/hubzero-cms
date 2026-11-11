@@ -106,24 +106,34 @@ if (!in_array($viewas, ['grid', 'list'])) {
                 $linkUrl = Route::url($this->collection->link() . '&sort=created&viewas=' . $viewas);
                 $titleText = Lang::txt('PLG_GROUPS_COLLECTIONS_CREATED_SORT');
                 ?>
-                <a href="<?= $linkUrl ?>" class="icon-created<?= $this->filters['sort'] == 'created' ? ' selected' : '' ?>" data-view="sort-created" title="<?= $titleText ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_CREATED_SORT') ?></a>
+                <a href="<?= $linkUrl ?>"
+                    class="icon-created<?= $this->filters['sort'] == 'created' ? ' selected' : '' ?>"
+                    data-view="sort-created"
+                    title="<?= $titleText ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_CREATED_SORT') ?></a>
                 <?php
                 $linkUrl = Route::url($this->collection->link() . '&sort=ordering&viewas=' . $viewas);
                 $titleText = Lang::txt('PLG_GROUPS_COLLECTIONS_ORDERING_SORT');
                 ?>
-                <a href="<?= $linkUrl ?>" class="icon-ordering<?= $this->filters['sort'] == 'ordering' ? ' selected' : '' ?>" data-view="sort-ordering" title="<?= $titleText ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_ORDERING_SORT') ?></a>
+                <a href="<?= $linkUrl ?>"
+                    class="icon-ordering<?= $this->filters['sort'] == 'ordering' ? ' selected' : '' ?>"
+                    data-view="sort-ordering"
+                    title="<?= $titleText ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_ORDERING_SORT') ?></a>
             </span>
             <span class="options view-options">
                 <?php
                 $linkUrl = Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=grid');
                 $titleText = Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW');
                 ?>
-                <a href="<?= $linkUrl ?>" class="icon-grid<?= $viewas == 'grid' ? ' selected' : '' ?>" data-view="view-grid" title="<?= $titleText ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW') ?></a>
+                <a href="<?= $linkUrl ?>" class="icon-grid<?= $viewas == 'grid' ? ' selected' : '' ?>"
+                    data-view="view-grid"
+                    title="<?= $titleText ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_GRID_VIEW') ?></a>
                 <?php
                 $linkUrl = Route::url($this->collection->link() . '&sort=' . $this->filters['sort'] . '&viewas=list');
                 $titleText = Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW');
                 ?>
-                <a href="<?= $linkUrl ?>" class="icon-list<?= $viewas == 'list' ? ' selected' : '' ?>" data-view="view-list" title="<?= $titleText ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW') ?></a>
+                <a href="<?= $linkUrl ?>" class="icon-list<?= $viewas == 'list' ? ' selected' : '' ?>"
+                    data-view="view-list"
+                    title="<?= $titleText ?>"><?= Lang::txt('PLG_GROUPS_COLLECTIONS_LIST_VIEW') ?></a>
             </span>
         </p>
     <?php } ?>

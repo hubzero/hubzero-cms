@@ -232,7 +232,8 @@ $this
                                                         'COM_PUBLICATIONS_CURATION_CHANGE_ASSIGNMENT',
                                                     );
                                                     ?>
-                                                    <a href="<?= $assignUrl ?>" class="fancybox" title="<?= $titleText ?>">
+                                                    <a href="<?= $assignUrl ?>" class="fancybox"
+                                                        title="<?= $titleText ?>">
                                                 <?php } ?>
                                                 <?php echo $this->escape($owner->get('name')); ?>
                                                 <?php if ($assign) { ?>
@@ -275,7 +276,8 @@ $this
                                             );
                                             $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_VIEW_PUB_PAGE');
                                             ?>
-                                            <a href="<?= $linkUrl ?>" class="public-page" title="<?= $titleText ?>">&nbsp;</a>
+                                            <a href="<?= $linkUrl ?>" class="public-page"
+                                                title="<?= $titleText ?>">&nbsp;</a>
                                         </td>
                                     </tr>
                                     <?php

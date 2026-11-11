@@ -87,12 +87,14 @@ Document::setTitle(Lang::txt('COM_KB') . ': ' . $this->category->get('title') . 
                         <?php
                         $datetime = $this->article->modified();
                         ?>
-                        <span class="entry-time"><time datetime="<?= $datetime ?>"><?= $this->article->modified('time') ?></time></span>
+                        <span class="entry-time"><time
+                            datetime="<?= $datetime ?>"><?= $this->article->modified('time') ?></time></span>
                         <span class="entry-date-on"><?php echo Lang::txt('COM_KB_DATETIME_ON'); ?></span>
                         <?php
                         $datetime = $this->article->modified();
                         ?>
-                        <span class="entry-date"><time datetime="<?= $datetime ?>"><?= $this->article->modified('date') ?></time></span>
+                        <span class="entry-date"><time
+                            datetime="<?= $datetime ?>"><?= $this->article->modified('date') ?></time></span>
                     </p>
                 </div><!-- / .container-block -->
             </article><!-- / .container -->

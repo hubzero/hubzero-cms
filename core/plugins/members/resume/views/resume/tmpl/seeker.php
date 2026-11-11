@@ -134,7 +134,8 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
                         Lang::txt('PLG_MEMBERS_RESUME_MEMBER_WEBSITE') . ': ' . $this->seeker->url,
                     );
                     ?>
-                    <a href="<?= $this->escape($url) ?>" class="web" rel="external" title="<?= $titleText ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_WEBSITE') ?></a>
+                    <a href="<?= $this->escape($url) ?>" class="web" rel="external"
+                        title="<?= $titleText ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_WEBSITE') ?></a>
                 </span>
             <?php } ?>
             <?php if ($this->seeker->linkedin) { ?>
@@ -146,7 +147,8 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
                         : '';
                     $titleText = Lang::txt('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN');
                     ?>
-                    <a href="<?= $linkUrl ?>" class="linkedin" rel="external" title="<?= $titleText ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_LINKEDIN') ?></a>
+                    <a href="<?= $linkUrl ?>" class="linkedin" rel="external"
+                        title="<?= $titleText ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_LINKEDIN') ?></a>
                 </span>
             <?php } ?>
         <?php } else { ?>

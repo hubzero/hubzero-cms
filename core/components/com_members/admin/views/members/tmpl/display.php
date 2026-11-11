@@ -410,7 +410,8 @@ $activationSelected = function ($value) use ($view) {
                         <?php
                         $titleText = Lang::txt('COM_MEMBERS_HEADING_GROUPS') . '::' . $row->get('group_names');
                         ?>
-                        <span class="hasTip" title="<?= $titleText ?>"><?= Lang::txt('COM_MEMBERS_MULTIPLE_GROUPS') ?></span>
+                        <span class="hasTip"
+                            title="<?= $titleText ?>"><?= Lang::txt('COM_MEMBERS_MULTIPLE_GROUPS') ?></span>
                     <?php else : ?>
                         <?php echo $row->get('group_names'); ?>
                     <?php endif; ?>
@@ -519,7 +520,8 @@ $activationSelected = function ($value) use ($view) {
                     <?php
                     $datetime = Date::of($row->get('registerDate'))->format('Y-m-dTh:i:s');
                     ?>
-                    <time datetime="<?= $datetime ?>"><?= Date::of($row->get('registerDate'))->toLocal('Y-m-d') ?></time>
+                    <time
+                        datetime="<?= $datetime ?>"><?= Date::of($row->get('registerDate'))->toLocal('Y-m-d') ?></time>
                 </td>
                 <td class="priority-6">
                     <?php if (!$row->get('lastvisitDate') || $row->get('lastvisitDate') == '0000-00-00 00:00:00') : ?>

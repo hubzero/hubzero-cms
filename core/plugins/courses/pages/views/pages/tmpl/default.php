@@ -64,7 +64,9 @@ if (!$this->page) {
                 $actionUrl = Route::url($base . '&unit=' . $this->page->get('url') . '&b=delete');
                 $confirmText = Lang::txt('PLG_COURSES_PAGES_CONFIRM_DELETE');
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" title="<?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?>" data-confirm="<?= $confirmText ?>"><?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete"
+                    title="<?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?>"
+                    data-confirm="<?= $confirmText ?>"><?= Lang::txt('PLG_COURSES_PAGES_DELETE') ?></button>
             </li>
             <li>
                 <a class="icon-edit edit"

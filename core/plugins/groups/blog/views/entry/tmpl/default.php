@@ -284,12 +284,14 @@ if (
                                 <?php
                                 $datetime = $replyto->get('created');
                                 ?>
-                                <span class="time"><time datetime="<?= $datetime ?>"><?= $replyto->created('time') ?></time></span>
+                                <span class="time"><time
+                                    datetime="<?= $datetime ?>"><?= $replyto->created('time') ?></time></span>
                                 <span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?></span>
                                 <?php
                                 $datetime = $replyto->get('created');
                                 ?>
-                                <span class="date"><time datetime="<?= $datetime ?>"><?= $replyto->created('date') ?></time></span>
+                                <span class="date"><time
+                                    datetime="<?= $datetime ?>"><?= $replyto->created('date') ?></time></span>
                             </p>
                             <p>
                                 <?= $this->escape(

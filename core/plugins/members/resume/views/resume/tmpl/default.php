@@ -230,7 +230,9 @@ $this->css('jobs', 'com_jobs');
                             $deleteresumeUrl = Route::url($this->member->link() . '&active=resume&action=deleteresume');
                             $titleText = Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME');
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $deleteresumeUrl ?>" class="trash" title="<?= $titleText ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE') ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= $deleteresumeUrl ?>"
+                                class="trash"
+                                title="<?= $titleText ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE') ?></button>
                         </td>
                     </tr>
                 </tbody>

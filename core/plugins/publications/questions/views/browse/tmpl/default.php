@@ -103,7 +103,8 @@ $this->css();
                                 $row->get('points', 0),
                             );
                             ?>
-                            <span class="entry-reward"><?= $row->get('points') ?> <a href="<?= $this->infolink ?>" title="<?= $titleText ?>">Points</a></span>
+                            <span class="entry-reward"><?= $row->get('points') ?> <a href="<?= $this->infolink ?>"
+                                title="<?= $titleText ?>">Points</a></span>
                         <?php } ?>
                     </td>
                 <?php } ?>

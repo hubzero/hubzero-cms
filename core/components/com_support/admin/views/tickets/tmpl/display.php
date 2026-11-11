@@ -84,7 +84,8 @@ $this
                                 <?php
                                 $dataId = $this->escape($folder->id);
                                 ?>
-                                <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title" data-id="<?= $dataId ?>"><?= $this->escape($folder->title) ?></span>
+                                <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title"
+                                    data-id="<?= $dataId ?>"><?= $this->escape($folder->title) ?></span>
                                 <span class="folder-options">
                                     <?php
                                     $removefolderUrl = Route::url(
@@ -139,7 +140,9 @@ $this
                                                 );
                                                 $confirmText = Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE');
                                                 ?>
-                                                <a class="delete" href="<?= $removeUrl ?>" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= $confirmText ?>">
+                                                <a class="delete" href="<?= $removeUrl ?>"
+                                                    title="<?= Lang::txt('JACTION_DELETE') ?>"
+                                                    data-confirm="<?= $confirmText ?>">
                                                     <?php echo Lang::txt('JACTION_DELETE'); ?>
                                                 </a>
                                                 <?php

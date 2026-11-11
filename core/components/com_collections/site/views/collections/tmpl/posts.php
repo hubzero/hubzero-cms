@@ -163,7 +163,8 @@ $this
                                                 $base . '&controller=posts&post=' . $row->get('id') . '&task=comment',
                                             );
                                             ?>
-                                            <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= $commentUrl ?>">
+                                            <a class="btn comment" data-id="<?= $row->get('id') ?>"
+                                                href="<?= $commentUrl ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COMMENT'); ?></span>
                                             </a>
                                         <?php endif; ?>
@@ -172,7 +173,8 @@ $this
                                                 $base . '&controller=posts&post=' . $row->get('id') . '&task=collect',
                                             );
                                             ?>
-                                            <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= $collectUrl ?>">
+                                            <a class="btn repost" data-id="<?= $row->get('id') ?>"
+                                                href="<?= $collectUrl ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                     <?php } else {
@@ -202,7 +204,8 @@ $this
                                                     $base . '&controller=posts&post=' . $row->get('id') . '&task=comment',
                                                 );
                                                 ?>
-                                            <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= $commentUrl ?>">
+                                            <a class="btn comment" data-id="<?= $row->get('id') ?>"
+                                                href="<?= $commentUrl ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COMMENT'); ?></span>
                                             </a>
                                             <?php endif; ?>

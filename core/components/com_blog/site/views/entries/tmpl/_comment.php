@@ -43,24 +43,28 @@ if ($this->comment->isReported()) {
                     <?php
                     $datetime = $this->comment->get('created');
                     ?>
-                    <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->created('time') ?></time></span>
+                    <span class="time"><time
+                        datetime="<?= $datetime ?>"><?= $this->comment->created('time') ?></time></span>
                     <span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span>
                     <?php
                     $datetime = $this->comment->get('created');
                     ?>
-                    <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->created('date') ?></time></span>
+                    <span class="date"><time
+                        datetime="<?= $datetime ?>"><?= $this->comment->created('date') ?></time></span>
                     <?php if ($this->comment->wasModified()) { ?>
                         &mdash; <?php echo Lang::txt('COM_BLOG_EDITED'); ?>
                         <span class="comment-date-at"><?php echo Lang::txt('COM_BLOG_AT'); ?></span> 
                         <?php
                         $datetime = $this->comment->modified();
                         ?>
-                        <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('time') ?></time></span> 
+                        <span class="time"><time
+                            datetime="<?= $datetime ?>"><?= $this->comment->modified('time') ?></time></span> 
                         <span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span> 
                         <?php
                         $datetime = $this->comment->modified();
                         ?>
-                        <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('date') ?></time></span>
+                        <span class="date"><time
+                            datetime="<?= $datetime ?>"><?= $this->comment->modified('date') ?></time></span>
                     <?php } ?>
                 </a>
             </p>
@@ -132,7 +136,9 @@ if ($this->comment->isReported()) {
                 );
                 $confirmText = Lang::txt('COM_BLOG_CONFIRM_DELETE');
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete" data-confirm="<?= $confirmText ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>"
+                    class="icon-delete delete"
+                    data-confirm="<?= $confirmText ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
             <?php } ?>
             <?php if (!$this->comment->isReported()) { ?>
                 <?php

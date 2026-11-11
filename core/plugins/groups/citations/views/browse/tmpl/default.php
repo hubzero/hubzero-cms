@@ -137,7 +137,8 @@ if (isset($this->messages)) {
                                             Lang::txt('PLG_GROUPS_CITATIONS_SELECT_CITATION') ?: 'Select citation',
                                         ) . ' ' . (int) $cite->id;
                                         ?>
-                                        <input type="checkbox" class="download-marker" name="download_marker[]" value="<?= $cite->id ?>" aria-label="<?= $ariaLabel ?>" />
+                                        <input type="checkbox" class="download-marker" name="download_marker[]"
+                                            value="<?= $cite->id ?>" aria-label="<?= $ariaLabel ?>" />
                                     </td>
                                     <?php if ($this->label != "none") : ?>
                                         <td class="citation-label <?php echo $this->citations_label_class; ?>">

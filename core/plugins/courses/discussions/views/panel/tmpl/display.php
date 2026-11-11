@@ -221,7 +221,8 @@ if (count($inst) > 0) {
                     <?php
                     $dataAdd = Lang::txt('Start a discussion');
                     ?>
-                    <p><span class="comments" data-comments="%s comments" data-add="<?= $dataAdd ?>"><?= Lang::txt('Start a discussion') ?></span></p>
+                    <p><span class="comments" data-comments="%s comments"
+                        data-add="<?= $dataAdd ?>"><?= Lang::txt('Start a discussion') ?></span></p>
                 </div><!-- / .comments-toolbar -->
                 <div class="comments-frame">
 

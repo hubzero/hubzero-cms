@@ -20,11 +20,13 @@ defined('_HZEXEC_') or die();
         <?php
         $titleText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW_TITLE');
         ?>
-        <a href="<?= $this->row->link('version') ?>" title="<?= $titleText ?>"><?= strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW')) ?></a> |
+        <a href="<?= $this->row->link('version') ?>"
+            title="<?= $titleText ?>"><?= strtolower(Lang::txt('PLG_PROJECTS_PUBLICATIONS_VIEW')) ?></a> |
         <?php
         $titleText = Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE_TITLE');
         ?>
-        <a href="<?= $this->row->link('editversion') ?>" title="<?= $titleText ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE') ?></a>
+        <a href="<?= $this->row->link('editversion') ?>"
+            title="<?= $titleText ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_MANAGE') ?></a>
     </span>
     <span class="pub-thumb"><img src="<?php echo Route::url($this->row->link('thumb')); ?>" alt=""/></span>
     <span class="pub-details">

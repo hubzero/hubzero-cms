@@ -94,11 +94,15 @@ $filterbySelected = function ($value) use ($view) {
                     <?php
                     $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse&sortby=owner' . $qs);
                     ?>
-                    <li><a<?= ($this->filters['sortby'] == 'owner') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER') ?>" rel="nofollow">&darr; <?= Lang::txt('COM_PROJECTS_OWNER') ?></a></li>
+                    <li><a<?= ($this->filters['sortby'] == 'owner') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>"
+                        title="<?= Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_OWNER') ?>"
+                        rel="nofollow">&darr; <?= Lang::txt('COM_PROJECTS_OWNER') ?></a></li>
                     <?php
                     $browseUrl = Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs);
                     ?>
-                    <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>" title="<?= Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE') ?>" rel="nofollow">&darr; <?= Lang::txt('COM_PROJECTS_TITLE') ?></a></li>
+                    <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= $browseUrl ?>"
+                        title="<?= Lang::txt('COM_PROJECTS_SORT_BY') . ' ' . Lang::txt('COM_PROJECTS_TITLE') ?>"
+                        rel="nofollow">&darr; <?= Lang::txt('COM_PROJECTS_TITLE') ?></a></li>
                 </ul>
                 <ul class="entries-menu filter-options" data-label="<?= Lang::txt('COM_PROJECTS_BROWSE_SHOW') ?>">
                     <li>

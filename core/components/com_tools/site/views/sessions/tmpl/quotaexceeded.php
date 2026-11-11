@@ -49,7 +49,8 @@ $this->css('tools.css');
                         . $session->appname . '&sess=' . $session->sessnum,
                 );
                 ?>
-                <td><a href="<?= $sessionUrl ?>" title="<?= Lang::txt('COM_TOOLS_RESUME_TITLE') ?>"><?= $this->escape($session->sessname) ?></a></td>
+                <td><a href="<?= $sessionUrl ?>"
+                    title="<?= Lang::txt('COM_TOOLS_RESUME_TITLE') ?>"><?= $this->escape($session->sessname) ?></a></td>
                 <td><?php echo $session->start; ?></td>
                 <td><?php echo $session->accesstime; ?></td>
                 <?php if (User::get('username') == $session->username) {
@@ -61,7 +62,8 @@ $this->css('tools.css');
                     <?php
                     $titleText = Lang::txt('COM_TOOLS_TERMINATE_TITLE');
                     ?>
-                <td><a class="closetool" href="<?= $stopUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_TERMINATE') ?></a></td>
+                <td><a class="closetool" href="<?= $stopUrl ?>"
+                    title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_TERMINATE') ?></a></td>
                 <?php } else {
                     $unshareUrl = Route::url(
                         'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unshare&app='

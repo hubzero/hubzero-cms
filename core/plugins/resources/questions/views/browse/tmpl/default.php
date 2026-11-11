@@ -115,7 +115,8 @@ $this->css();
                     <?php
                     $titleText = Lang::txt('COM_ANSWERS_THERE_IS_A_REWARD_FOR_ANSWERING', $row->get('points', 0));
                     ?>
-                    <span class="entry-reward"><?= $row->get('points') ?> <a href="<?= $this->infolink ?>" title="<?= $titleText ?>"><?= Lang::txt('PLG_RESOURCES_QUESTIONS_POINTS') ?></a></span>
+                    <span class="entry-reward"><?= $row->get('points') ?> <a href="<?= $this->infolink ?>"
+                        title="<?= $titleText ?>"><?= Lang::txt('PLG_RESOURCES_QUESTIONS_POINTS') ?></a></span>
                 <?php } ?>
                 </td>
             <?php } ?>

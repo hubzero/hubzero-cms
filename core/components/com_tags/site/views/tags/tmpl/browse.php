@@ -68,7 +68,8 @@ $this
                                         : 'icon-arrow-down'
                                 );
                             ?>
-                            <a class="<?= $classes ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE') ?>">
+                            <a class="<?= $classes ?>" href="<?= $url ?>"
+                                title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
                             </a>
                         </li>
@@ -89,7 +90,8 @@ $this
                                         : 'icon-arrow-down'
                                 );
                             ?>
-                            <a class="<?= $classes ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE') ?>">
+                            <a class="<?= $classes ?>" href="<?= $url ?>"
+                                title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA'); ?>
                             </a>
                         </li>

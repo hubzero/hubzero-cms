@@ -183,7 +183,8 @@ $option = 'com_groups';
                                                 . '&active=messages&action=new' . $append,
                                         );
                                         ?>
-                                    <a class="tooltips" href="<?= $newUrl ?>" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE') ?> :: <?= $title ?>">
+                                    <a class="tooltips" href="<?= $newUrl ?>"
+                                        title="<?= Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE') ?> :: <?= $title ?>">
                                         <?php echo Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE_ALL'); ?>
                                     </a>
                                     <?php } ?>
@@ -798,7 +799,8 @@ $option = 'com_groups';
                                         . '&active=members&action=editrole&role=' . $role['id'],
                                 );
                                 ?>
-                                <a class="edit-role" href="<?= $editroleUrl ?>" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_EDIT') ?>">
+                                <a class="edit-role" href="<?= $editroleUrl ?>"
+                                    title="<?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_EDIT') ?>">
                                     <?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_EDIT'); ?>
                                 </a>
                             <?php endif; ?>

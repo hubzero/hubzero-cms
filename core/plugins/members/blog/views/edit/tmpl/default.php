@@ -98,7 +98,8 @@ $accessSelected = function ($value) use ($view) {
                     $sourceUrl = Request::base(true) . '/index.php?option=com_blog&controller=media&id='
                         . $this->member->get('id') . '&scope=member&tmpl=component';
                     ?>
-                    <iframe width="100%" height="370" name="filer" id="filer" title="<?= Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES') ?>" src="<?= $sourceUrl ?>"></iframe>
+                    <iframe width="100%" height="370" name="filer" id="filer"
+                        title="<?= Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES') ?>" src="<?= $sourceUrl ?>"></iframe>
                 </div>
             </fieldset>
 

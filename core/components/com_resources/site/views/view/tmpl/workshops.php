@@ -194,21 +194,24 @@ if ($mode != 'preview') {
                                     $linkUrl = $live_site . '/resources/' . $this->model->id
                                         . '/feed.rss?content=audio';
                                     ?>
-                                    <a class="feed" id="resource-audio-feed" href="<?= $linkUrl ?>"><?= Lang::txt('Audio podcast') ?></a><br />
+                                    <a class="feed" id="resource-audio-feed"
+                                        href="<?= $linkUrl ?>"><?= Lang::txt('Audio podcast') ?></a><br />
                                 <?php } ?>
                                 <?php if ($video) { ?>
                                     <?php
                                     $linkUrl = $live_site . '/resources/' . $this->model->id
                                         . '/feed.rss?content=video';
                                     ?>
-                                    <a class="feed" id="resource-video-feed" href="<?= $linkUrl ?>"><?= Lang::txt('Video podcast') ?></a><br />
+                                    <a class="feed" id="resource-video-feed"
+                                        href="<?= $linkUrl ?>"><?= Lang::txt('Video podcast') ?></a><br />
                                 <?php } ?>
                                 <?php if ($notes) { ?>
                                     <?php
                                     $linkUrl = $live_site . '/resources/' . $this->model->id
                                         . '/feed.rss?content=slides';
                                     ?>
-                                    <a class="feed" id="resource-slides-feed" href="<?= $linkUrl ?>"><?= Lang::txt('Slides/Notes podcast') ?></a>
+                                    <a class="feed" id="resource-slides-feed"
+                                        href="<?= $linkUrl ?>"><?= Lang::txt('Slides/Notes podcast') ?></a>
                                 <?php } ?>
                             </p>
                             <?php

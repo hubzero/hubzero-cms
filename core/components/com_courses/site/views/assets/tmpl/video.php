@@ -465,7 +465,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                             Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR_PICKER'),
                                         );
                                         ?>
-                                        <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="<?= $ariaLabel ?>"></div>
+                                        <div id="font-color" data-color="FFF" role="button" tabindex="0"
+                                            aria-labelledby="font-color-label" aria-label="<?= $ariaLabel ?>"></div>
                                     </div>
                                 </div>
                                 <div class="grid">
@@ -478,7 +479,9 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                             Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND_PICKER'),
                                         );
                                         ?>
-                                        <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="<?= $ariaLabel ?>"></div>
+                                        <div id="background-color" data-color="000" role="button" tabindex="0"
+                                            aria-labelledby="background-color-label"
+                                            aria-label="<?= $ariaLabel ?>"></div>
                                     </div>
                                 </div>
                                 <div class="grid">
@@ -577,7 +580,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     <?php
                                     $ariaLabel = $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION'));
                                     ?>
-                                    <input type="text" id="timestamp-link" value="" aria-label="<?= $ariaLabel ?>" readonly />
+                                    <input type="text" id="timestamp-link" value="" aria-label="<?= $ariaLabel ?>"
+                                        readonly />
                                     <span class="hint"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_COPY_HINT') ?></span>
                                 </div>
                             </div>
@@ -642,7 +646,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         isset($slide->media[3]) ? $content_folder . DS . $slide->media[3]->source : '',
                                     );
                                     ?>
-                                    <img src="<?= $sourceUrl ?>" alt="<?= $this->escape($slide->title) ?>" class="imagereplacement" />
+                                    <img src="<?= $sourceUrl ?>" alt="<?= $this->escape($slide->title) ?>"
+                                        class="imagereplacement" />
                                 <?php endif; ?>
                             </li>
                             <?php $counter++; ?>
@@ -673,7 +678,9 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <?php
                             $ariaLabel = $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_SETTINGS'));
                             ?>
-                            <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="<?= $ariaLabel ?>" aria-haspopup="true" aria-expanded="false">
+                            <a id="subtitle" class="control" href="javascript:void(0);" role="button"
+                                aria-pressed="false" aria-label="<?= $ariaLabel ?>" aria-haspopup="true"
+                                aria-expanded="false">
                                 <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor"
@@ -788,7 +795,9 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                                     ),
                                                 );
                                                 ?>
-                                                <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="<?= $ariaLabel ?>"></div>
+                                                <div id="font-color" data-color="FFF" role="button" tabindex="0"
+                                                    aria-labelledby="font-color-label"
+                                                    aria-label="<?= $ariaLabel ?>"></div>
                                             </div>
                                         </div>
                                         <div class="grid">
@@ -803,7 +812,9 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                                     ),
                                                 );
                                                 ?>
-                                                <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="<?= $ariaLabel ?>"></div>
+                                                <div id="background-color" data-color="000" role="button" tabindex="0"
+                                                    aria-labelledby="background-color-label"
+                                                    aria-label="<?= $ariaLabel ?>"></div>
                                             </div>
                                         </div>
                                         <div class="grid">
@@ -864,7 +875,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <?php
                             $ariaLabel = $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAYBACK_SETTINGS'));
                             ?>
-                            <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="<?= $ariaLabel ?>" aria-haspopup="true" aria-expanded="false">
+                            <a id="settings" class="control" href="javascript:void(0);" role="button"
+                                aria-label="<?= $ariaLabel ?>" aria-haspopup="true" aria-expanded="false">
                                 <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor" />
@@ -894,7 +906,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <?php
                             $ariaLabel = $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK_AT_TIME'));
                             ?>
-                            <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="<?= $ariaLabel ?>" aria-haspopup="true" aria-expanded="false">
+                            <a id="link" class="control" href="javascript:void(0);" role="button"
+                                aria-label="<?= $ariaLabel ?>" aria-haspopup="true" aria-expanded="false">
                                 <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
@@ -914,7 +927,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                                 Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION'),
                                             );
                                             ?>
-                                            <input type="text" id="timestamp-link" value="" aria-label="<?= $ariaLabel ?>" readonly />
+                                            <input type="text" id="timestamp-link" value=""
+                                                aria-label="<?= $ariaLabel ?>" readonly />
                                             <span class="hint"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_COPY_HINT') ?></span>
                                         </div>
                                     </div>

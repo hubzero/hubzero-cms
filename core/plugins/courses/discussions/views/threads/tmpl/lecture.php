@@ -118,7 +118,8 @@ $dataActionUrl = Route::url(
                     <?php
                     $dataAdd = Lang::txt('Start a discussion');
                     ?>
-                    <p><span class="comments" data-comments="<?= Lang::txt('%s comments') ?>" data-add="<?= $dataAdd ?>"><?= Lang::txt('Start a discussion') ?></span></p>
+                    <p><span class="comments" data-comments="<?= Lang::txt('%s comments') ?>"
+                        data-add="<?= $dataAdd ?>"><?= Lang::txt('Start a discussion') ?></span></p>
                 </div>
                 <div class="comments-frame">
 

@@ -65,14 +65,16 @@ $over  = $data->get('pubThumb') == 1 ? ' title="' . Lang::txt('PLG_PROJECTS_PUBL
                         . $data->get('props'),
                 );
                 ?>
-                <a href="<?= $edititemUrl ?>" class="showinbox item-edit" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL') ?>">&nbsp;</a>
+                <a href="<?= $edititemUrl ?>" class="showinbox item-edit"
+                    title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL') ?>">&nbsp;</a>
                 <?php
                 $deleteitemUrl = Route::url(
                     $pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p='
                         . $data->get('props'),
                 );
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
+                <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove"
+                    title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
             </span>
             <?php } ?>
         </span>

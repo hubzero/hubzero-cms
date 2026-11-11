@@ -433,7 +433,8 @@ $repohostChecked = function ($value) use ($view) {
                             $this->id,
                         );
                         ?>
-                        <input type="text" name="tool[membergroups]" id="t_groups" class="form-control" value="<?= $fieldValue ?>" />
+                        <input type="text" name="tool[membergroups]" id="t_groups" class="form-control"
+                            value="<?= $fieldValue ?>" />
                         <p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_GROUPS'); ?></p>
                     </div>
                 </div>
@@ -478,7 +479,8 @@ $repohostChecked = function ($value) use ($view) {
                             $this->id,
                         );
                         ?>
-                        <input type="text" name="tool[developers]" id="t_team" class="form-control" value="<?= $fieldValue ?>" />
+                        <input type="text" name="tool[developers]" id="t_team" class="form-control"
+                            value="<?= $fieldValue ?>" />
                         <span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TEAM'); ?></span>
                     </label>
                 </div>

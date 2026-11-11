@@ -91,7 +91,8 @@ $this
                             ? 'active ' . strtolower($this->filters['sort_Dir'])
                             : $sortDir($this->filters, 'created');
                         ?>
-                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_CREATED') ?>">
+                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_CREATED') ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_CREATED'); ?>
                         </a>
                     </li>
@@ -104,7 +105,8 @@ $this
                             ? 'active ' . strtolower($this->filters['sort_Dir'])
                             : $sortDir($this->filters, 'activity');
                         ?>
-                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY') ?>">
+                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY') ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_ACTIVITY'); ?>
                         </a>
                     </li>
@@ -115,7 +117,8 @@ $this
                             ? 'active ' . strtolower($this->filters['sort_Dir'])
                             : $sortDir($this->filters, 'replies');
                         ?>
-                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS') ?>">
+                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS') ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_NUM_POSTS'); ?>
                         </a>
                     </li>
@@ -128,7 +131,8 @@ $this
                             ? 'active ' . strtolower($this->filters['sort_Dir'])
                             : $sortDir($this->filters, 'title', 'ASC');
                         ?>
-                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_TITLE') ?>">
+                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>"
+                            title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_TITLE') ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_TITLE'); ?>
                         </a>
                     </li>
@@ -268,7 +272,8 @@ $this
                                                 <?php
                                                 $datetime = $lastpost->created();
                                                 ?>
-                                                <time datetime="<?= $datetime ?>"><?= $lastpost->created('date') ?></time>
+                                                <time
+                                                    datetime="<?= $datetime ?>"><?= $lastpost->created('date') ?></time>
                                             </span>
                                             <?= Lang::txt(
                                                 'PLG_GROUPS_FORUM_BY_USER',

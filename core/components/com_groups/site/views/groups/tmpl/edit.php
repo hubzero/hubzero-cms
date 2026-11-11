@@ -127,7 +127,8 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 stripslashes($this->group->get('description') ? $this->group->get('description') : ''),
                             );
                             ?>
-                            <input type="text" name="description" id="field-description" size="35" class="form-control" value="<?= $fieldValue ?>" />
+                            <input type="text" name="description" id="field-description" size="35" class="form-control"
+                                value="<?= $fieldValue ?>" />
                         </label>
                     </div>
 
@@ -329,7 +330,8 @@ $discoverabilityChecked = function ($value) use ($view) {
                                             $ariaLabel = $this->escape($this->hub_group_plugins[$i]['title']) . ' '
                                                 . Lang::txt('COM_GROUPS_ACCESS');
                                             ?>
-                                            <select name="group_plugin[<?= $i ?>][access]" aria-label="<?= $ariaLabel ?>">
+                                            <select name="group_plugin[<?= $i ?>][access]"
+                                                aria-label="<?= $ariaLabel ?>">
                                                 <?php foreach ($levels as $level => $name) : ?>
                                                     <?php $sel = ($this->group_plugin_access[$this->hub_group_plugins[$i]['name']] == $level) ? 'selected' : ''; ?>
                                                     <?php

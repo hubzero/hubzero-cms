@@ -190,7 +190,8 @@ $featuredSelected = function ($value) use ($view) {
                         . $this->model->get('id') . '&vid=' . $this->model->get('version_id'),
                 );
                 ?>
-                <legend><span><?= Lang::txt('COM_PUBLICATIONS_FIELDSET_AUTHORS') ?></span> <span class="sidenote add"><a href="<?= $addauthorUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR') ?></a></span></legend>
+                <legend><span><?= Lang::txt('COM_PUBLICATIONS_FIELDSET_AUTHORS') ?></span> <span class="sidenote add"><a
+                    href="<?= $addauthorUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR') ?></a></span></legend>
 
                 <fieldset>
                 <div class="input-wrap" id="publiction-authors">

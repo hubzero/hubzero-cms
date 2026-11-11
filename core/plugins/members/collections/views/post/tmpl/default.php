@@ -164,12 +164,14 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                             <?php
                             $datetime = $comment->get('created');
                             ?>
-                            <span class="time"><time datetime="<?= $datetime ?>"><?= $comment->created('time') ?></time></span>
+                            <span class="time"><time
+                                datetime="<?= $datetime ?>"><?= $comment->created('time') ?></time></span>
                             <span class="entry-date-on">on</span>
                             <?php
                             $datetime = $comment->get('created');
                             ?>
-                            <span class="date"><time datetime="<?= $datetime ?>"><?= $comment->created('date') ?></time></span>
+                            <span class="date"><time
+                                datetime="<?= $datetime ?>"><?= $comment->created('date') ?></time></span>
                         </span>
                     </p>
                     <blockquote>

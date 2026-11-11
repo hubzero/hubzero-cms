@@ -182,7 +182,9 @@ $revisions = $this->page
                                         $revision->get('version'),
                                     );
                                     ?>
-                                    <input type="radio" name="diff" id="diff-<?= $revision->get('id') ?>" value="<?= $revision->get('version') ?>" aria-label="<?= $ariaLabel ?>" checked="checked" />
+                                    <input type="radio" name="diff" id="diff-<?= $revision->get('id') ?>"
+                                        value="<?= $revision->get('version') ?>" aria-label="<?= $ariaLabel ?>"
+                                        checked="checked" />
                                     </td>
                                 <?php } else { ?>
                                     <td>
@@ -193,7 +195,8 @@ $revisions = $this->page
                                             $revision->get('version'),
                                         );
                                         ?>
-                                        <input type="radio" name="oldid" id="oldid-<?= $revision->get('id') ?>" value="<?= $revision->get('version') ?>" aria-label="<?= $ariaLabel ?>"
+                                        <input type="radio" name="oldid" id="oldid-<?= $revision->get('id') ?>"
+                                            value="<?= $revision->get('version') ?>" aria-label="<?= $ariaLabel ?>"
                                         <?php if ($comparefirst == true) {
                                             echo ' checked="checked"';
                                             $comparefirst = false;
@@ -276,7 +279,9 @@ $revisions = $this->page
                                     );
                                     $titleText = Lang::txt('COM_WIKI_REVISION_DELETE');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-trash delete" title="<?= $titleText ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>"
+                                        class="icon-trash delete"
+                                        title="<?= $titleText ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                 </td>
                                 <?php } ?>
                             </tr>

@@ -109,7 +109,8 @@ $this
                                 <?php
                                 $dataId = $this->escape($folder->id);
                                 ?>
-                                <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title" data-id="<?= $dataId ?>"><?= $this->escape($folder->title) ?></span>
+                                <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title"
+                                    data-id="<?= $dataId ?>"><?= $this->escape($folder->title) ?></span>
                                 <?php if ($this->acl->check('read', 'tickets')) { ?>
                                     <span class="folder-options">
                                         <?php
@@ -168,7 +169,10 @@ $this
                                                     );
                                                     $confirmText = Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE');
                                                     ?>
-                                                    <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= $confirmText ?>">
+                                                    <button type="submit" form="hz-post-action"
+                                                        formaction="<?= $removeUrl ?>" class="delete"
+                                                        title="<?= Lang::txt('JACTION_DELETE') ?>"
+                                                        data-confirm="<?= $confirmText ?>">
                                                         <?php echo Lang::txt('JACTION_DELETE'); ?>
                                                     </button>
                                                     <?php

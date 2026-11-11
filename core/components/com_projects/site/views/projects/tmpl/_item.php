@@ -317,7 +317,8 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                             ) . '?reviewer=' . $this->filters['reviewer'] . '&filterby='
                                                 . $this->filters['filterby'];
                                             ?>
-                                            <a href="<?= $linkUrl ?>" class="showinbox"><?= Lang::txt('COM_PROJECTS_MANAGE') ?></a>
+                                            <a href="<?= $linkUrl ?>"
+                                                class="showinbox"><?= Lang::txt('COM_PROJECTS_MANAGE') ?></a>
                                         </span>
                                     </td>
                                 </tr>

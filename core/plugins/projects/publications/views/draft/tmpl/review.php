@@ -333,7 +333,8 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
                 ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT')
                 : Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT');
             ?>
-            <input type="submit" value="<?= $fieldValue ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
+            <input type="submit" value="<?= $fieldValue ?>" id="c-apply"
+                class="submitbutton btn btn-success active icon-apply" />
         </span>
     </div>
     <?php } ?>

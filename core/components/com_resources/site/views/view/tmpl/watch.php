@@ -558,7 +558,8 @@ $presentation->subtitles = array_values($presentation->subtitles);
                             ? $presentation->duration
                             : '';
                         ?>
-                        <a href="<?= $content_url . DS . $presentation->media[0]->source ?>" id="flowplayer" duration="<?= $duration ?>" data-mediaid="<?= $rr->id ?>"></a>
+                        <a href="<?= $content_url . DS . $presentation->media[0]->source ?>" id="flowplayer"
+                            duration="<?= $duration ?>" data-mediaid="<?= $rr->id ?>"></a>
                     </audio>
 
                     <?php if (isset($presentation->placeholder) && $presentation->placeholder) : ?>

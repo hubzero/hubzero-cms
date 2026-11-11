@@ -102,7 +102,8 @@ $listed = $publicStamp ? $publicStamp->listed : false;
                 $linkUrl = Route::url($base . $chr . 'action=new');
                 $titleText = Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE');
                 ?>
-                <a href="<?= $linkUrl ?>" class="icon-add add btn" title="<?= $titleText ?>"><?= Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE') ?></a>
+                <a href="<?= $linkUrl ?>" class="icon-add add btn"
+                    title="<?= $titleText ?>"><?= Lang::txt('COM_PROJECTS_NOTES_ADD_SUBPAGE') ?></a>
             <?php } ?>
         </li>
     </ul>

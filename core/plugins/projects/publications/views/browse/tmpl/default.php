@@ -53,7 +53,8 @@ $i = 1;
                     <?php
                     $linkUrl = $selfAssessmentGuide;
                     ?>
-                    <a class="icon-file btn" target="_blank" href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELF_ASSESSMENT_GUIDE') ?></a>
+                    <a class="icon-file btn" target="_blank"
+                        href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELF_ASSESSMENT_GUIDE') ?></a>
                 </li>
                 <?php } ?>
                 <li>

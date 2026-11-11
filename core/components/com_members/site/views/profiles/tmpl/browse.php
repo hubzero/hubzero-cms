@@ -466,7 +466,8 @@ $sortDirSelected = function ($value) use ($view) {
                                                     $this->escape($name),
                                                 );
                                                 ?>
-                                                <a class="icon-email btn message-member" href="<?= $newUrl ?>" title="<?= $titleText ?>">
+                                                <a class="icon-email btn message-member" href="<?= $newUrl ?>"
+                                                    title="<?= $titleText ?>">
                                                     <?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE'); ?>
                                                 </a>
                                             <?php } ?>

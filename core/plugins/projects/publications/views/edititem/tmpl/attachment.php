@@ -72,7 +72,8 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
                     <?php
                     $fieldValue = $this->escape($this->row && $this->row->title ? $this->row->title : $defaultTitle);
                     ?>
-                    <input type="text" name="title" maxlength="250" class="long" value="<?= $fieldValue ?>" placeholder="<?= $this->escape($placeholder) ?>" />
+                    <input type="text" name="title" maxlength="250" class="long" value="<?= $fieldValue ?>"
+                        placeholder="<?= $this->escape($placeholder) ?>" />
                 </label>
                 <?php if ($this->row->type == 'link') { ?>
                     <p class="c-wrapper">

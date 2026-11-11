@@ -333,7 +333,8 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                             $linkUrl = 'index.php?option=com_support&amp;controller=tickets&amp;task=edit&amp;id='
                                 . $this->row->get('id') . '#c' . $comment->get('id');
                             ?>
-                            <a class="permalink" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
+                            <a class="permalink" href="<?= $linkUrl ?>"
+                                title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
                                 <span class="time-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
                                 <span class="time"><time datetime="<?= $this->escape($comment->get('created')) ?>"><?= Date::of($comment->get('created'))->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></time></span>
                                 <span class="date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>

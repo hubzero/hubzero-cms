@@ -470,7 +470,8 @@ foreach ($this->getErrors() as $error) {
                             <?php
                             $fieldValue = $this->escape(Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s'));
                             ?>
-                            <input type="hidden" name="fields[modified]" id="field-modified" value="<?= $fieldValue ?>" />
+                            <input type="hidden" name="fields[modified]" id="field-modified"
+                                value="<?= $fieldValue ?>" />
                         </td>
                     </tr>
                 <?php } ?>

@@ -109,7 +109,8 @@ $department = $author->department;
                             ? htmlspecialchars($author->organization == null ? '' : $author->organization)
                             : htmlspecialchars($author->p_organization == null ? '' : $author->p_organization);
                         ?>
-                        <input type="text" name="organization" class="long" value="<?= $fieldValue ?>" maxlength="255" />
+                        <input type="text" name="organization" class="long" value="<?= $fieldValue ?>"
+                            maxlength="255" />
                         <?php
                             // Add in class for JS selector to conditionally retrieve data from RoR Api
                         if (Component::params('com_members')->get('rorApi')) {

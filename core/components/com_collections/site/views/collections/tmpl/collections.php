@@ -139,7 +139,8 @@ $this
                                                 $ariaLabel = Lang::txt('COM_COLLECTIONS_COLLECT') . ': '
                                                     . $this->escape($row->get('title'));
                                                 ?>
-                                                <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= $collectUrl ?>" aria-label="<?= $ariaLabel ?>">
+                                                <a class="btn repost" data-id="<?= $row->get('id') ?>"
+                                                    href="<?= $collectUrl ?>" aria-label="<?= $ariaLabel ?>">
                                                     <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                                 </a>
                                             <?php if ($row->isFollowing()) { ?>
@@ -148,7 +149,12 @@ $this
                                                 $ariaLabel = Lang::txt('COM_COLLECTIONS_UNFOLLOW') . ': '
                                                     . $this->escape($row->get('title'));
                                                 ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn unfollow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>" aria-label="<?= $ariaLabel ?>">
+                                                <button type="submit" form="hz-post-action"
+                                                    formaction="<?= $actionUrl ?>" class="btn unfollow"
+                                                    data-id="<?= $row->get('id') ?>"
+                                                    data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>"
+                                                    data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>"
+                                                    aria-label="<?= $ariaLabel ?>">
                                                     <span><?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW'); ?></span>
                                                 </button>
                                             <?php } else { ?>
@@ -157,7 +163,12 @@ $this
                                                 $ariaLabel = Lang::txt('COM_COLLECTIONS_FOLLOW') . ': '
                                                     . $this->escape($row->get('title'));
                                                 ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn follow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>" aria-label="<?= $ariaLabel ?>">
+                                                <button type="submit" form="hz-post-action"
+                                                    formaction="<?= $actionUrl ?>" class="btn follow"
+                                                    data-id="<?= $row->get('id') ?>"
+                                                    data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>"
+                                                    data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>"
+                                                    aria-label="<?= $ariaLabel ?>">
                                                     <span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
                                                 </button>
                                             <?php } ?>
@@ -172,7 +183,9 @@ $this
                                         $ariaLabel = Lang::txt('COM_COLLECTIONS_COLLECT') . ': '
                                             . $this->escape($row->get('title'));
                                         ?>
-                                        <a class="btn repost tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= $ariaLabel ?>">
+                                        <a class="btn repost tooltips" href="<?= $linkUrl ?>"
+                                            title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>"
+                                            aria-label="<?= $ariaLabel ?>">
                                             <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                         </a>
                                         <?php
@@ -184,7 +197,9 @@ $this
                                         $ariaLabel = Lang::txt('COM_COLLECTIONS_FOLLOW') . ': '
                                             . $this->escape($row->get('title'));
                                         ?>
-                                        <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= $ariaLabel ?>">
+                                        <a class="btn follow tooltips" href="<?= $linkUrl ?>"
+                                            title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>"
+                                            aria-label="<?= $ariaLabel ?>">
                                             <span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
                                         </a>
                                     <?php } ?>

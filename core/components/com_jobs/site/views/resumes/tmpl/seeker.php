@@ -123,7 +123,8 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
                     <?php
                     $titleText = $this->escape(Lang::txt('COM_JOBS_MEMBER_WEBSITE') . ': ' . $this->seeker->url);
                     ?>
-                    <a href="<?= $this->escape($url) ?>" class="web" rel="external" title="<?= $titleText ?>"><?= Lang::txt('COM_JOBS_WEBSITE') ?></a>
+                    <a href="<?= $this->escape($url) ?>" class="web" rel="external"
+                        title="<?= $titleText ?>"><?= Lang::txt('COM_JOBS_WEBSITE') ?></a>
                 </span>
             <?php } ?>
             <?php if ($this->seeker->linkedin) { ?>
@@ -136,7 +137,8 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
                             : 'https://' . ltrim($this->seeker->linkedin, '/'),
                     );
                     ?>
-                    <a href="<?= $linkUrl ?>" class="linkedin" rel="external" title="<?= Lang::txt('COM_JOBS_MEMBER_LINKEDIN') ?>"><?= Lang::txt('COM_JOBS_LINKEDIN') ?></a>
+                    <a href="<?= $linkUrl ?>" class="linkedin" rel="external"
+                        title="<?= Lang::txt('COM_JOBS_MEMBER_LINKEDIN') ?>"><?= Lang::txt('COM_JOBS_LINKEDIN') ?></a>
                 </span>
             <?php } ?>
         <?php } else { ?>

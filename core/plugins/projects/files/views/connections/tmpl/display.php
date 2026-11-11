@@ -119,7 +119,9 @@ $defaultName = $this->params->get('default_connection_name', '%s Master Reposito
                 );
                 $confirmText = Lang::txt('Are you sure you want to delete this connection?');
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $deleteconnectionUrl ?>" class="connection-delete icon-delete" title="<?= Lang::txt('Delete Connection') ?>" data-confirm="<?= $confirmText ?>"><?= Lang::txt('Delete') ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= $deleteconnectionUrl ?>"
+                    class="connection-delete icon-delete" title="<?= Lang::txt('Delete Connection') ?>"
+                    data-confirm="<?= $confirmText ?>"><?= Lang::txt('Delete') ?></button>
             </div>
             <?php endif; ?>
         </div>

@@ -53,12 +53,14 @@ if ($this->comment->isReported()) {
                         <?php
                         $datetime = $this->comment->modified();
                         ?>
-                        <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('time') ?></time></span> 
+                        <span class="time"><time
+                            datetime="<?= $datetime ?>"><?= $this->comment->modified('time') ?></time></span> 
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?></span> 
                         <?php
                         $datetime = $this->comment->modified();
                         ?>
-                        <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('date') ?></time></span>
+                        <span class="date"><time
+                            datetime="<?= $datetime ?>"><?= $this->comment->modified('date') ?></time></span>
                     <?php } ?>
                 </a>
             </p>
@@ -130,7 +132,9 @@ if ($this->comment->isReported()) {
                 );
                 $confirmText = Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE');
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete" data-confirm="<?= $confirmText ?>"><?= Lang::txt('PLG_GROUPS_BLOG_DELETE') ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>"
+                    class="icon-delete delete"
+                    data-confirm="<?= $confirmText ?>"><?= Lang::txt('PLG_GROUPS_BLOG_DELETE') ?></button>
             <?php } ?>
             <?php if (!$this->comment->isReported()) { ?>
                 <?php

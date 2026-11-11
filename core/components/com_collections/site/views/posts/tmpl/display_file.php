@@ -73,7 +73,8 @@ if ($assets->total() > 0) {
                             ? $this->escape(stripslashes($first->get('description')))
                             : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($first->get('filename'), DS));
                         ?>
-                        <img src="<?= $first->link('thumb') ?>" alt="<?= $altText ?>" class="img" height="<?= $height ?>" />
+                        <img src="<?= $first->link('thumb') ?>" alt="<?= $altText ?>" class="img"
+                            height="<?= $height ?>" />
                     </a>
                 </div>
             <?php else : ?>

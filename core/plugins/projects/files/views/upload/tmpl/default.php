@@ -170,7 +170,8 @@ $bc = \Components\Projects\Helpers\Html::buildFileBrowserCrumbs($this->subdir, $
             <?php
             $linkUrl = $this->url . '?action=upload&amp;basic=1' . $subdirlink;
             ?>
-            <p class="hint rightfloat mini faded"><?= Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_QUESTION') ?> <a href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD') ?></a>.</p>
+            <p class="hint rightfloat mini faded"><?= Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD_QUESTION') ?> <a
+                href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_FILES_BASIC_UPLOAD') ?></a>.</p>
         <?php } ?>
     </fieldset>
 </form>

@@ -100,7 +100,9 @@ foreach ($this->modules as $module) {
                             );
                             $titleText = Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE');
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="unpublished tooltips" title="<?= $titleText ?>"> <?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE') ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>"
+                                class="unpublished tooltips"
+                                title="<?= $titleText ?>"> <?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE') ?></button>
                         <?php else : ?>
                             <?php
                             $unpublishUrl = Route::url(

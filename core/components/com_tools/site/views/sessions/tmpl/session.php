@@ -118,7 +118,10 @@ if (!$this->app->sess) {
                                     . '=1',
                             );
                             ?>
-                            <a id="app-btn-close" class="terminate sessiontips icon-only" data-ts-action="terminate" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_TERMINATE')) ?>" href="<?= $stopUrl ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_WARNING') ?>" aria-label="<?= $this->escape(Lang::txt('COM_TOOLS_TERMINATE')) ?>">
+                            <a id="app-btn-close" class="terminate sessiontips icon-only" data-ts-action="terminate"
+                                data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_TERMINATE')) ?>"
+                                href="<?= $stopUrl ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_WARNING') ?>"
+                                aria-label="<?= $this->escape(Lang::txt('COM_TOOLS_TERMINATE')) ?>">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path
                                     d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
@@ -133,7 +136,9 @@ if (!$this->app->sess) {
                                     . '=1',
                             );
                             ?>
-                            <a id="app-btn-close" class="terminate sessiontips" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_STOP_SHARING')) ?>" href="<?= $unshareUrl ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_WARNING') ?>">
+                            <a id="app-btn-close" class="terminate sessiontips"
+                                data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_STOP_SHARING')) ?>"
+                                href="<?= $unshareUrl ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_WARNING') ?>">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path
                                     d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
@@ -149,7 +154,9 @@ if (!$this->app->sess) {
                                     . $this->app->sess,
                             );
                             ?>
-                            <a id="app-btn-options" class="options" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_OPTIONS')) ?>" href="<?= $linkUrl ?>">
+                            <a id="app-btn-options" class="options"
+                                data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_OPTIONS')) ?>"
+                                href="<?= $linkUrl ?>">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4"
                                     y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21"
@@ -527,7 +534,8 @@ if (!$this->app->sess) {
                                             . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1',
                                     );
                                     ?>
-                                    <a class="entry-remove" href="<?= $unshareUrl ?>" title="<?= Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER') ?>">
+                                    <a class="entry-remove" href="<?= $unshareUrl ?>"
+                                        title="<?= Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER') ?>">
                                         <span><?php echo Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?></span>
                                     </a>
                                 <?php endif; ?>

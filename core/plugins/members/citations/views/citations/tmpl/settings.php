@@ -76,7 +76,8 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
                 <?php
                 $altText = Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS');
                 ?>
-                <a href="http://ocoins.info/" rel="nofollow external" alt="<?= $altText ?>"><?= Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS') ?></a>
+                <a href="http://ocoins.info/" rel="nofollow external"
+                    alt="<?= $altText ?>"><?= Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS') ?></a>
             </p>
         </div>
         <fieldset>
@@ -160,7 +161,8 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
                     <?php
                     $ariaLabel = Lang::txt('PLG_MEMBERS_CITATIONS_FORMAT_STRING');
                     ?>
-                    <textarea name="template" rows="10" id="format-string" class="form-control" aria-label="<?= $ariaLabel ?>"><?= addslashes($this->currentFormat->format) ?></textarea>
+                    <textarea name="template" rows="10" id="format-string" class="form-control"
+                        aria-label="<?= $ariaLabel ?>"><?= addslashes($this->currentFormat->format) ?></textarea>
             </div>
 
             <table class="templateTable">

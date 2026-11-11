@@ -369,12 +369,14 @@ $categorySelected = function ($value) use ($view) {
                                     <?php
                                     $datetime = $this->escape($comment->created());
                                     ?>
-                                    <span class="time"><time datetime="<?= $datetime ?>"><?= $comment->created('time') ?></time></span>
+                                    <span class="time"><time
+                                        datetime="<?= $datetime ?>"><?= $comment->created('time') ?></time></span>
                                     <span class="comment-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
                                     <?php
                                     $datetime = $this->escape($comment->created());
                                     ?>
-                                    <span class="date"><time datetime="<?= $datetime ?>"><?= $comment->created('date') ?></time></span>
+                                    <span class="date"><time
+                                        datetime="<?= $datetime ?>"><?= $comment->created('date') ?></time></span>
                                 </a>
                             <a class="copy-link show-hover-target"
                                 href="<?= $protocol . Request::getHttpHost() . Route::url($comment->link()) ?>">

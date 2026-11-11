@@ -397,7 +397,8 @@ if ($this->wishlist->get('id')) {
                                                     . $item->get('bonus') . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' '
                                                     . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS');
                                                 ?>
-                                                <a class="bonus tooltips" href="<?= $linkUrl ?>" title="<?= $titleText ?>">
+                                                <a class="bonus tooltips" href="<?= $linkUrl ?>"
+                                                    title="<?= $titleText ?>">
                                                     <?= $item->get('bonus', 0) ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span>
                                                 </a>
                                             <?php } elseif ($item->isOpen() or $item->isAccepted()) { ?>
@@ -406,7 +407,8 @@ if ($this->wishlist->get('id')) {
                                                 $titleText = Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: '
                                                     . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED');
                                                 ?>
-                                                <a class="nobonus tooltips" href="<?= $linkUrl ?>" title="<?= $titleText ?>">
+                                                <a class="nobonus tooltips" href="<?= $linkUrl ?>"
+                                                    title="<?= $titleText ?>">
                                                     <?= $item->get('bonus', 0) ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span>
                                                 </a>
                                             <?php } else { ?>

@@ -42,7 +42,8 @@ if ($this->group->isSuperGroup()) {
             <?php
             $ariaLabel = Lang::txt('COM_GROUPS_TOOLBAR_LOGIN_ARIA');
             ?>
-            <a class="login btn" href="<?= $loginLink ?>" aria-label="<?= $ariaLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_LOGIN') ?></a>
+            <a class="login btn" href="<?= $loginLink ?>"
+                aria-label="<?= $ariaLabel ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_LOGIN') ?></a>
         </li>
     <?php elseif (in_array(User::get("id"), $this->group->get("invitees"))) : ?>
         <?php if ($membership_control == 1) : ?>

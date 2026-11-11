@@ -502,7 +502,8 @@ $progress_timeline .= '</div>';
                                     <?php
                                     $linkUrl = $this->escape($form['url']);
                                     ?>
-                                    <td class="grade-details-title"><a href="<?= $linkUrl ?>"><?php echo $this->escape($form['title']) ?></a></td>
+                                    <td class="grade-details-title"><a
+                                        href="<?= $linkUrl ?>"><?php echo $this->escape($form['title']) ?></a></td>
                                     <td class="grade-details-score">
                                         <?php echo $form['score'] . (is_numeric($form['score']) ? '%' : '') ?>
                                     </td>

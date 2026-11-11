@@ -173,7 +173,8 @@ $stateSelected = function ($value) use ($view) {
                             <?php
                             $datetime = gmdate('Y-m-d\TH:i:s\Z', $cert['valid_to']);
                             ?>
-                            <time datetime="<?= $datetime ?>"><?= Date::of($cert['valid_to'])->toLocal('Y-m-d') ?></time>
+                            <time
+                                datetime="<?= $datetime ?>"><?= Date::of($cert['valid_to'])->toLocal('Y-m-d') ?></time>
                         <?php } ?>
                     <?php } else { ?>
                         <span class="warning"><?php echo Lang::txt('COM_SAML_CERT_NONE'); ?></span>
