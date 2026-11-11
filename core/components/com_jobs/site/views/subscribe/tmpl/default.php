@@ -33,7 +33,11 @@ defined('_HZEXEC_') or die();
                 ?>
                 <li><a class="myjobs btn"
                     href="<?= $dashboardUrl ?>"><?= Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD') ?></a></li>
-                <li><a class="shortlist btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted' ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
+                <?php
+                $resumesUrl = Route::url('index.php?option=' . $this->option . '&task=resumes')
+                    . '?filterby=shortlisted';
+                ?>
+                <li><a class="shortlist btn" href="<?= $resumesUrl ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
             <?php } elseif ($this->admin) { ?>
                 <li><?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
                     <?php

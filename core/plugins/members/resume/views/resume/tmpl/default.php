@@ -139,7 +139,12 @@ $this->css('jobs', 'com_jobs');
 
                     <div class="submitblock">
                         <span class="selectgroup">
-                            <input type="submit" class="btn" value="<?= $this->editpref == 1 ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE') : Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE') ?>" />
+                            <?php
+                            $fieldValue = $this->editpref == 1
+                                ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE_AND_INCLUDE')
+                                : Lang::txt('PLG_MEMBERS_RESUME_ACTION_SAVE');
+                            ?>
+                            <input type="submit" class="btn" value="<?= $fieldValue ?>" />
                             <span>
                                 <a href="<?= Route::url($this->member->link() . '&active=resume') ?>"
                                     class="btn"><?= Lang::txt('JCANCEL') ?></a>
@@ -223,8 +228,9 @@ $this->css('jobs', 'com_jobs');
                         <td>
                             <?php
                             $deleteresumeUrl = Route::url($this->member->link() . '&active=resume&action=deleteresume');
+                            $titleText = Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME');
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $deleteresumeUrl ?>" class="trash" title="<?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE_THIS_RESUME') ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE') ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= $deleteresumeUrl ?>" class="trash" title="<?= $titleText ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_ACTION_DELETE') ?></button>
                         </td>
                     </tr>
                 </tbody>

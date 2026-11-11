@@ -115,7 +115,10 @@ $dataActionUrl = Route::url(
 
             <div class="comments-panel">
                 <div class="comments-toolbar">
-                    <p><span class="comments" data-comments="<?= Lang::txt('%s comments') ?>" data-add="<?= Lang::txt('Start a discussion') ?>"><?= Lang::txt('Start a discussion') ?></span></p>
+                    <?php
+                    $dataAdd = Lang::txt('Start a discussion');
+                    ?>
+                    <p><span class="comments" data-comments="<?= Lang::txt('%s comments') ?>" data-add="<?= $dataAdd ?>"><?= Lang::txt('Start a discussion') ?></span></p>
                 </div>
                 <div class="comments-frame">
 
@@ -209,7 +212,15 @@ $dataActionUrl = Route::url(
                         <input type="hidden" name="active" value="discussions" />
                         <input type="hidden" name="action" value="savethread" />
                         <input type="hidden" name="section" value="<?= $this->escape($this->filters['section']) ?>" />
-                        <input type="hidden" name="return" value="<?= base64_encode(Route::url($base . '&active=outline&unit=' . $this->unit->get('alias') . '&b=' . $this->lecture->get('alias'))) ?>" />
+                        <?php
+                        $fieldValue = base64_encode(
+                            Route::url(
+                                $base . '&active=outline&unit=' . $this->unit->get('alias') . '&b='
+                                    . $this->lecture->get('alias'),
+                            ),
+                        );
+                        ?>
+                        <input type="hidden" name="return" value="<?= $fieldValue ?>" />
 
                         <?php echo Html::input('token'); ?>
 

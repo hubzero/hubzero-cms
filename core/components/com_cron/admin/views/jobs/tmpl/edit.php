@@ -446,7 +446,10 @@ foreach ($this->getErrors() as $error) {
                         <th><?php echo Lang::txt('COM_CRON_FIELD_CREATED'); ?>:</th>
                         <td>
                             <?php echo $this->escape($this->row->get('created')); ?>
-                            <input type="hidden" name="fields[created]" id="field-created" value="<?= $this->escape(Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s')) ?>" />
+                            <?php
+                            $fieldValue = $this->escape(Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s'));
+                            ?>
+                            <input type="hidden" name="fields[created]" id="field-created" value="<?= $fieldValue ?>" />
                         </td>
                     </tr>
                 <?php if ($this->row->get('modified')) { ?>
@@ -464,7 +467,10 @@ foreach ($this->getErrors() as $error) {
                         <th><?php echo Lang::txt('COM_CRON_FIELD_MODIFIED'); ?>:</th>
                         <td>
                             <?php echo $this->escape($this->row->get('modified')); ?>
-                            <input type="hidden" name="fields[modified]" id="field-modified" value="<?= $this->escape(Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s')) ?>" />
+                            <?php
+                            $fieldValue = $this->escape(Date::of($this->row->get('created'))->toLocal('Y-m-d H:i:s'));
+                            ?>
+                            <input type="hidden" name="fields[modified]" id="field-modified" value="<?= $fieldValue ?>" />
                         </td>
                     </tr>
                 <?php } ?>

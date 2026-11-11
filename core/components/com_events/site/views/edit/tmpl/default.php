@@ -59,7 +59,12 @@ $this
             <label>
                 <?= Lang::txt('EVENTS_CAL_LANG_EVENT_TITLE') ?>: <span
                     class="required"><?= Lang::txt('EVENTS_CAL_LANG_REQUIRED') ?></span>
-                <input type="text" name="title" maxlength="250" value="<?= $this->escape(html_entity_decode(stripslashes($this->row->title ? $this->row->title : ''))) ?>" />
+                <?php
+                $fieldValue = $this->escape(
+                    html_entity_decode(stripslashes($this->row->title ? $this->row->title : '')),
+                );
+                ?>
+                <input type="text" name="title" maxlength="250" value="<?= $fieldValue ?>" />
             </label>
 
             <label>
@@ -177,7 +182,12 @@ $this
         <p class="submit">
             <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('EVENTS_SAVE'); ?>" />
 
-            <a class="btn btn-secondary" href="<?= $this->row->id ? Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id) : Route::url('index.php?option=' . $this->option) ?>">
+            <?php
+            $linkUrl = $this->row->id
+                ? Route::url('index.php?option=' . $this->option . '&task=details&id=' . $this->row->id)
+                : Route::url('index.php?option=' . $this->option);
+            ?>
+            <a class="btn btn-secondary" href="<?= $linkUrl ?>">
                 <?php echo Lang::txt('JCANCEL'); ?>
             </a>
         </p>

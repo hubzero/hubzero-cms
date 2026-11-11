@@ -105,7 +105,11 @@ $redirectURI = $this->config->get('orcid_' . $srv . '_redirect_uri', '');
                     </div>
                     <div class="col span4 omega">
                         <p>
-                            <a id="get-orcid-results" class="btn" onclick="<?= 'HUB.Orcid.fetchOrcidRecords(\'' . $this->escape(addslashes($fname)) . '\', \'' . $this->escape(addslashes($lname)) . '\');' ?>"><?= Lang::txt('Search ORCID') ?></a>
+                            <?php
+                            $onclick = 'HUB.Orcid.fetchOrcidRecords(\'' . $this->escape(addslashes($fname)) . '\', \''
+                                . $this->escape(addslashes($lname)) . '\');';
+                            ?>
+                            <a id="get-orcid-results" class="btn" onclick="<?= $onclick ?>"><?= Lang::txt('Search ORCID') ?></a>
                         </p>
                     </div>
                 </div>

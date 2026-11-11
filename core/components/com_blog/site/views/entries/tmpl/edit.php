@@ -208,7 +208,12 @@ $accessSelected = function ($value) use ($view) {
             <p class="submit">
                 <input class="btn btn-success" type="submit" value="<?php echo Lang::txt('JSAVE'); ?>" />
 
-                <a class="btn btn-secondary" href="<?= $this->entry->get('id') ? Route::url($this->entry->link()) : Route::url('index.php?option=' . $this->option) ?>">
+                <?php
+                $linkUrl = $this->entry->get('id')
+                    ? Route::url($this->entry->link())
+                    : Route::url('index.php?option=' . $this->option);
+                ?>
+                <a class="btn btn-secondary" href="<?= $linkUrl ?>">
                     <?php echo Lang::txt('JCANCEL'); ?>
                 </a>
             </p>

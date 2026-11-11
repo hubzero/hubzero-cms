@@ -80,9 +80,15 @@ $this->comment->set('url', $rtrn);
                     <a class="permalink" href="<?= $this->comment->link() ?>"
                         title="<?= Lang::txt('PLG_HUBZERO_COMMENTS_PERMALINK') ?>">
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_AT'); ?></span>
-                        <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->created();
+                        ?>
+                        <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->created('time') ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_ON'); ?></span>
-                        <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->created();
+                        ?>
+                        <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->created('date') ?></time></span>
                     </a>
                 </p>
 

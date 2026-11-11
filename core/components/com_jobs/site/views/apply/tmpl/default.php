@@ -40,7 +40,10 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
             <li>
                 <a class="myjobs btn" href="<?= $dashboardUrl ?>"><?= Lang::txt('COM_JOBS_EMPLOYER_DASHBOARD') ?></a>
             </li>
-            <li><a class="shortlist btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted' ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
+            <?php
+            $resumesUrl = Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted';
+            ?>
+            <li><a class="shortlist btn" href="<?= $resumesUrl ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
         <?php } elseif ($this->admin) { ?>
             <li>
                 <?php echo Lang::txt('COM_JOBS_NOTICE_YOU_ARE_ADMIN'); ?>
@@ -140,7 +143,12 @@ $owner       = (User::get('id') == $job->employerid or $this->admin) ? 1 : 0;
                 ?>
             </div>
             <p class="submit">
-                <input class="btn btn-success" type="submit" name="submit" value="<?= $this->task == 'editapp' ? Lang::txt('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION') : Lang::txt('COM_JOBS_ACTION_APPLY_THIS_JOB') ?>" />
+                <?php
+                $fieldValue = $this->task == 'editapp'
+                    ? Lang::txt('COM_JOBS_ACTION_SAVE_CHANGES_APPLICATION')
+                    : Lang::txt('COM_JOBS_ACTION_APPLY_THIS_JOB');
+                ?>
+                <input class="btn btn-success" type="submit" name="submit" value="<?= $fieldValue ?>" />
                     <?php
                     $jobUrl = Route::url('index.php?option=' . $this->option . '&task=job&id=' . $job->code);
                     ?>

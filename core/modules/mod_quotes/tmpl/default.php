@@ -42,7 +42,12 @@ $base = filter_var(Hubzero\Utility\Uri::getInstance()->toString(), FILTER_SANITI
                 <?php if (isset($this->filters['id']) && $this->filters['id'] != '') { ?>
                     <div class="breadcrumbs">
                         <p>
-                            <a href="<?= $this->escape(rtrim(str_replace('quoteid=' . $this->filters['id'], '', $base), '?')) ?>" class="breadcrumbs"><?= Lang::txt('MOD_QUOTES_NOTABLE_QUOTES') ?></a>
+                            <?php
+                            $linkUrl = $this->escape(
+                                rtrim(str_replace('quoteid=' . $this->filters['id'], '', $base), '?'),
+                            );
+                            ?>
+                            <a href="<?= $linkUrl ?>" class="breadcrumbs"><?= Lang::txt('MOD_QUOTES_NOTABLE_QUOTES') ?></a>
                             &rsaquo;
                             <strong><?php echo $this->escape(stripslashes($quote->get('fullname'))); ?></strong>
                         </p>

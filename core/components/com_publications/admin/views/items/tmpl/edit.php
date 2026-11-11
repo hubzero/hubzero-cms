@@ -184,7 +184,13 @@ $featuredSelected = function ($value) use ($view) {
                 </div>
             </fieldset>
             <fieldset class="adminform">
-                <legend><span><?= Lang::txt('COM_PUBLICATIONS_FIELDSET_AUTHORS') ?></span> <span class="sidenote add"><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addauthor&pid=' . $this->model->get('id') . '&vid=' . $this->model->get('version_id')) ?>"><?= Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR') ?></a></span></legend>
+                <?php
+                $addauthorUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=addauthor&pid='
+                        . $this->model->get('id') . '&vid=' . $this->model->get('version_id'),
+                );
+                ?>
+                <legend><span><?= Lang::txt('COM_PUBLICATIONS_FIELDSET_AUTHORS') ?></span> <span class="sidenote add"><a href="<?= $addauthorUrl ?>"><?= Lang::txt('COM_PUBLICATIONS_ADD_AUTHOR') ?></a></span></legend>
 
                 <fieldset>
                 <div class="input-wrap" id="publiction-authors">

@@ -68,16 +68,18 @@ if (isset($this->version) && $this->version->get('approved') == 0) {
                     'index.php?option=com_groups&cn=' . $this->group->get('cn')
                         . '&controller=pages&task=publish&pageid=' . $this->page->get('id'),
                 );
+                $titleText = Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE');
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="unpublished tooltips" title="<?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?>"><?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="unpublished tooltips" title="<?= $titleText ?>"><?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_PAGE') ?></button>
             <?php else : ?>
                 <?php
                 $unpublishUrl = Route::url(
                     'index.php?option=com_groups&cn=' . $this->group->get('cn')
                         . '&controller=pages&task=unpublish&pageid=' . $this->page->get('id'),
                 );
+                $titleText = Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE');
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>" class="published tooltips" title="<?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?>"><?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>" class="published tooltips" title="<?= $titleText ?>"><?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_PAGE') ?></button>
             <?php endif; ?>
         </div>
     <?php endif; ?>

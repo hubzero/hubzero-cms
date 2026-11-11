@@ -134,7 +134,14 @@ $listDirn  = $this->escape($this->filters['direction']);
                 <?php endif; ?>
                     <?php if (in_array($article->access, $this->user->getAuthorisedViewLevels())) : ?>
                         <td class="list-title">
-                            <a href="<?= Components\Content\Site\Helpers\Route::getArticleRoute($article->slug, $article->catid, $article->language) ?>">
+                            <?php
+                            $linkUrl = Components\Content\Site\Helpers\Route::getArticleRoute(
+                                $article->slug,
+                                $article->catid,
+                                $article->language,
+                            );
+                            ?>
+                            <a href="<?= $linkUrl ?>">
                                 <?php echo $this->escape($article->title); ?></a>
 
                             <?php if ($article->params->get('access-edit')) : ?>

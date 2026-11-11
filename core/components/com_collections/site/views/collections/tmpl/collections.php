@@ -136,22 +136,28 @@ $this
                                                     $base . '&controller=posts&board=' . $row->get('id')
                                                         . '&task=collect',
                                                 );
+                                                $ariaLabel = Lang::txt('COM_COLLECTIONS_COLLECT') . ': '
+                                                    . $this->escape($row->get('title'));
                                                 ?>
-                                                <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= $collectUrl ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($row->get('title')) ?>">
+                                                <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= $collectUrl ?>" aria-label="<?= $ariaLabel ?>">
                                                     <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                                 </a>
                                             <?php if ($row->isFollowing()) { ?>
                                                 <?php
                                                 $actionUrl = Route::url($row->link() . '/unfollow');
+                                                $ariaLabel = Lang::txt('COM_COLLECTIONS_UNFOLLOW') . ': '
+                                                    . $this->escape($row->get('title'));
                                                 ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn unfollow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') . ': ' . $this->escape($row->get('title')) ?>">
+                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn unfollow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>" aria-label="<?= $ariaLabel ?>">
                                                     <span><?php echo Lang::txt('COM_COLLECTIONS_UNFOLLOW'); ?></span>
                                                 </button>
                                             <?php } else { ?>
                                                 <?php
                                                 $actionUrl = Route::url($row->link() . '/follow');
+                                                $ariaLabel = Lang::txt('COM_COLLECTIONS_FOLLOW') . ': '
+                                                    . $this->escape($row->get('title'));
                                                 ?>
-                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn follow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($row->get('title')) ?>">
+                                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="btn follow" data-id="<?= $row->get('id') ?>" data-text-follow="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') ?>" data-text-unfollow="<?= Lang::txt('COM_COLLECTIONS_UNFOLLOW') ?>" aria-label="<?= $ariaLabel ?>">
                                                     <span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
                                                 </button>
                                             <?php } ?>
@@ -163,8 +169,10 @@ $this
                                                 . base64_encode(Route::url($row->link(), false, true)),
                                             false,
                                         );
+                                        $ariaLabel = Lang::txt('COM_COLLECTIONS_COLLECT') . ': '
+                                            . $this->escape($row->get('title'));
                                         ?>
-                                        <a class="btn repost tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($row->get('title')) ?>">
+                                        <a class="btn repost tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= $ariaLabel ?>">
                                             <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                         </a>
                                         <?php
@@ -173,8 +181,10 @@ $this
                                                 . base64_encode(Route::url($row->link(), false, true)),
                                             false,
                                         );
+                                        $ariaLabel = Lang::txt('COM_COLLECTIONS_FOLLOW') . ': '
+                                            . $this->escape($row->get('title'));
                                         ?>
-                                        <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($row->get('title')) ?>">
+                                        <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= $ariaLabel ?>">
                                             <span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
                                         </a>
                                     <?php } ?>

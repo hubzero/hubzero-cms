@@ -106,7 +106,10 @@ $this
                     <?php if (count($this->folders) > 0) { ?>
                         <?php foreach ($this->folders as $folder) { ?>
                             <li id="folder_<?php echo $this->escape($folder->id); ?>" class="open">
-                                <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title" data-id="<?= $this->escape($folder->id) ?>"><?= $this->escape($folder->title) ?></span>
+                                <?php
+                                $dataId = $this->escape($folder->id);
+                                ?>
+                                <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title" data-id="<?= $dataId ?>"><?= $this->escape($folder->title) ?></span>
                                 <?php if ($this->acl->check('read', 'tickets')) { ?>
                                     <span class="folder-options">
                                         <?php
@@ -163,8 +166,9 @@ $this
                                                         'index.php?option=' . $this->option
                                                             . '&controller=queries&task=remove&id=' . $query->id,
                                                     );
+                                                    $confirmText = Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE');
                                                     ?>
-                                                    <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
+                                                    <button type="submit" form="hz-post-action" formaction="<?= $removeUrl ?>" class="delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= $confirmText ?>">
                                                         <?php echo Lang::txt('JACTION_DELETE'); ?>
                                                     </button>
                                                     <?php
@@ -397,7 +401,15 @@ $this
                                             $row->get('target_date')
                                             && $row->get('target_date') != '0000-00-00 00:00:00'
                                         ) { ?>
-                                            <span class="ticket-target_date tooltips" title="<?= Lang::txt('COM_SUPPORT_TARGET_DATE', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))) ?>">
+                                            <?php
+                                            $titleText = Lang::txt(
+                                                'COM_SUPPORT_TARGET_DATE',
+                                                Date::of($row->get('target_date'))->toLocal(
+                                                    Lang::txt('DATE_FORMAT_HZ1'),
+                                                ),
+                                            );
+                                            ?>
+                                            <span class="ticket-target_date tooltips" title="<?= $titleText ?>">
                                                 <time datetime="<?= Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
                                             </span>
                                         <?php } ?>
@@ -436,8 +448,11 @@ $this
                                                 . $this->filters['search'] . '&limit=' . $this->filters['limit']
                                                 . '&limitstart=' . $this->filters['start'],
                                         );
+                                        $titleText = $this->escape(
+                                            str_replace(['<br />', '&amp;'], ['', '&'], $row->content),
+                                        );
                                         ?>
-                                        <a class="ticket-content" title="<?= $this->escape(str_replace(['<br />', '&amp;'], ['', '&'], $row->content)) ?>" href="<?= $linkUrl ?>">
+                                        <a class="ticket-content" title="<?= $titleText ?>" href="<?= $linkUrl ?>">
                                             <?= $row->content
                                                 ? \Hubzero\Utility\Str::truncate(strip_tags($row->content), 200)
                                                 : Lang::txt('COM_SUPPORT_NO_CONTENT_FOUND') ?>

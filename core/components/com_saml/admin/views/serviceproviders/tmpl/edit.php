@@ -239,7 +239,10 @@ $stateSelected = function ($value) use ($view) {
                     <?php if ($this->row->get('created')) { ?>
                         <tr>
                             <th class="key"><?php echo Lang::txt('COM_SAML_FIELD_CREATED'); ?>:</th>
-                            <td><time datetime="<?= $this->row->get('created') ?>"><?= $this->row->get('created') ?></time></td>
+                            <?php
+                            $datetime = $this->row->get('created');
+                            ?>
+                            <td><time datetime="<?= $datetime ?>"><?= $this->row->get('created') ?></time></td>
                         </tr>
                     <?php } ?>
                     <?php if ($this->row->get('metadata_url')) { ?>

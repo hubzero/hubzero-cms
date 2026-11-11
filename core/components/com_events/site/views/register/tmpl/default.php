@@ -128,12 +128,22 @@ $this
                 <div class="col span6">
                     <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_FIRST_NAME') ?> <span
                         class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
-                    <input type="text" name="register[firstname]" value="<?= (isset($this->register['firstname'])) ? $this->escape($this->register['firstname']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['firstname']))
+                        ? $this->escape($this->register['firstname'])
+                        : '';
+                    ?>
+                    <input type="text" name="register[firstname]" value="<?= $fieldValue ?>" /></label>
                 </div>
                 <div class="col span6 omega">
                     <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_LAST_NAME') ?> <span
                         class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
-                    <input type="text" name="register[lastname]" value="<?= (isset($this->register['lastname'])) ? $this->escape($this->register['lastname']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['lastname']))
+                        ? $this->escape($this->register['lastname'])
+                        : '';
+                    ?>
+                    <input type="text" name="register[lastname]" value="<?= $fieldValue ?>" /></label>
                 </div>
             </div>
             <div class="grid">
@@ -141,7 +151,12 @@ $this
                 <?php if ($params->get('show_affiliation')) { ?>
                     <label><?= Lang::txt('COM_EVENTS_REGISTER_FIELD_AFFILIATION') ?> <span
                         class="required"><?= Lang::txt('COM_EVENTS_REQUIRED') ?></span>
-                    <input type="text" name="register[affiliation]" value="<?= (isset($this->register['affiliation'])) ? $this->escape($this->register['affiliation']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['affiliation']))
+                        ? $this->escape($this->register['affiliation'])
+                        : '';
+                    ?>
+                    <input type="text" name="register[affiliation]" value="<?= $fieldValue ?>" /></label>
                 <?php } ?>
                 </div>
                 <div class="col span6 omega">
@@ -180,11 +195,19 @@ $this
             <div class="grid">
                 <div class="col span6">
                     <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_ZIP'); ?>
-                    <input type="text" name="register[postalcode]" value="<?= (isset($this->register['postalcode'])) ? $this->escape($this->register['postalcode']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['postalcode']))
+                        ? $this->escape($this->register['postalcode'])
+                        : '';
+                    ?>
+                    <input type="text" name="register[postalcode]" value="<?= $fieldValue ?>" /></label>
                 </div>
                 <div class="col span6 omega">
                     <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_COUNTRY'); ?>
-                    <input type="text" name="register[country]" value="<?= (isset($this->register['country'])) ? $this->escape($this->register['country']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['country'])) ? $this->escape($this->register['country']) : '';
+                    ?>
+                    <input type="text" name="register[country]" value="<?= $fieldValue ?>" /></label>
                 </div>
             </div>
             <?php } ?>
@@ -192,7 +215,12 @@ $this
                 <div class="col span6">
                 <?php if ($params->get('show_telephone')) { ?>
                     <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_PHONE'); ?>
-                    <input type="text" name="register[telephone]" value="<?= (isset($this->register['telephone'])) ? $this->escape($this->register['telephone']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['telephone']))
+                        ? $this->escape($this->register['telephone'])
+                        : '';
+                    ?>
+                    <input type="text" name="register[telephone]" value="<?= $fieldValue ?>" /></label>
                 <?php } ?>
                 </div>
                 <div class="col span6 omega">
@@ -213,7 +241,10 @@ $this
                 <div class="col span6 omega">
                 <?php if ($params->get('show_website')) { ?>
                     <label><?php echo Lang::txt('COM_EVENTS_REGISTER_FIELD_WEBSITE'); ?>
-                    <input type="text" name="register[website]" value="<?= (isset($this->register['website'])) ? $this->escape($this->register['website']) : '' ?>" /></label>
+                    <?php
+                    $fieldValue = (isset($this->register['website'])) ? $this->escape($this->register['website']) : '';
+                    ?>
+                    <input type="text" name="register[website]" value="<?= $fieldValue ?>" /></label>
                 <?php } ?>
                 </div>
             </div>
@@ -254,7 +285,12 @@ $this
                         <?= Lang::txt('COM_EVENTS_REGISTER_FIELD_POSITION_OPTION_UNEMPLOYED') ?>
                     </option>
                 </select>
-                <input name="register[position_other]" type="text" value="<?= (isset($this->register['position_other'])) ? $this->escape($this->register['position_other']) : '' ?>" />
+                <?php
+                $fieldValue = (isset($this->register['position_other']))
+                    ? $this->escape($this->register['position_other'])
+                    : '';
+                ?>
+                <input name="register[position_other]" type="text" value="<?= $fieldValue ?>" />
             </label>
             <?php } ?>
 

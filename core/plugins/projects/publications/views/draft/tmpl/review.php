@@ -328,7 +328,12 @@ $props = $this->pub->curation('blocks', $this->step, 'props');
     <div class="submitarea" id="submit-area">
         <span class="submit-question"><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_CURATION_LOOKING_GOOD'); ?></span>
         <span class="button-wrapper icon-apply">
-            <input type="submit" value="<?= $this->pub->isWorked() ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT') : Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT') ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
+            <?php
+            $fieldValue = $this->pub->isWorked()
+                ? Lang::txt('PLG_PROJECTS_PUBLICATIONS_RESUBMIT_DRAFT')
+                : Lang::txt('PLG_PROJECTS_PUBLICATIONS_SUBMIT_DRAFT');
+            ?>
+            <input type="submit" value="<?= $fieldValue ?>" id="c-apply" class="submitbutton btn btn-success active icon-apply" />
         </span>
     </div>
     <?php } ?>

@@ -122,7 +122,12 @@ $discoverabilityChecked = function ($value) use ($view) {
                         <label for="field-description">
                             <?= Lang::txt('COM_GROUPS_DETAILS_FIELD_DESCRIPTION') ?> <span
                                 class="required"><?= Lang::txt('COM_GROUPS_REQUIRED') ?></span>
-                            <input type="text" name="description" id="field-description" size="35" class="form-control" value="<?= $this->escape(stripslashes($this->group->get('description') ? $this->group->get('description') : '')) ?>" />
+                            <?php
+                            $fieldValue = $this->escape(
+                                stripslashes($this->group->get('description') ? $this->group->get('description') : ''),
+                            );
+                            ?>
+                            <input type="text" name="description" id="field-description" size="35" class="form-control" value="<?= $fieldValue ?>" />
                         </label>
                     </div>
 
@@ -172,8 +177,10 @@ $discoverabilityChecked = function ($value) use ($view) {
                                         $sel = (str_replace($remove, '', $logo) == $this->group->get('logo'))
                                             ? 'selected'
                                             : '';
+                                        $fieldValue = rtrim(Request::root(true), '/')
+                                            . str_replace(PATH_ROOT, '', $logo);
                                         ?>
-                                        <option <?= $sel ?> value="<?= rtrim(Request::root(true), '/') . str_replace(PATH_ROOT, '', $logo) ?>"><?= str_replace($remove, '', $logo) ?></option>
+                                        <option <?= $sel ?> value="<?= $fieldValue ?>"><?= str_replace($remove, '', $logo) ?></option>
                                     <?php endforeach; ?>
                                 </select>
                             </label>
@@ -318,7 +325,11 @@ $discoverabilityChecked = function ($value) use ($view) {
                                             <input type="hidden" name="group_plugin[<?= $i ?>][name]"
                                                 value="<?= $this->hub_group_plugins[$i]['name'] ?>">
                                             <span class="menu_item_title"><?= $this->hub_group_plugins[$i]['title'] ?></span>
-                                            <select name="group_plugin[<?= $i ?>][access]" aria-label="<?= $this->escape($this->hub_group_plugins[$i]['title']) . ' ' . Lang::txt('COM_GROUPS_ACCESS') ?>">
+                                            <?php
+                                            $ariaLabel = $this->escape($this->hub_group_plugins[$i]['title']) . ' '
+                                                . Lang::txt('COM_GROUPS_ACCESS');
+                                            ?>
+                                            <select name="group_plugin[<?= $i ?>][access]" aria-label="<?= $ariaLabel ?>">
                                                 <?php foreach ($levels as $level => $name) : ?>
                                                     <?php $sel = ($this->group_plugin_access[$this->hub_group_plugins[$i]['name']] == $level) ? 'selected' : ''; ?>
                                                     <?php

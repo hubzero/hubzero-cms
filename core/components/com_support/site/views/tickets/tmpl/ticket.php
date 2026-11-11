@@ -366,9 +366,15 @@ $categorySelected = function ($value) use ($view) {
                                 <a class="permalink" href="<?= Route::url($comment->link()) ?>"
                                     title="<?= Lang::txt('COM_SUPPORT_PERMALINK') ?>">
                                     <span class="comment-date-at"><?php echo Lang::txt('COM_SUPPORT_AT'); ?></span>
-                                    <span class="time"><time datetime="<?= $this->escape($comment->created()) ?>"><?= $comment->created('time') ?></time></span>
+                                    <?php
+                                    $datetime = $this->escape($comment->created());
+                                    ?>
+                                    <span class="time"><time datetime="<?= $datetime ?>"><?= $comment->created('time') ?></time></span>
                                     <span class="comment-date-on"><?php echo Lang::txt('COM_SUPPORT_ON'); ?></span>
-                                    <span class="date"><time datetime="<?= $this->escape($comment->created()) ?>"><?= $comment->created('date') ?></time></span>
+                                    <?php
+                                    $datetime = $this->escape($comment->created());
+                                    ?>
+                                    <span class="date"><time datetime="<?= $datetime ?>"><?= $comment->created('date') ?></time></span>
                                 </a>
                             <a class="copy-link show-hover-target"
                                 href="<?= $protocol . Request::getHttpHost() . Route::url($comment->link()) ?>">

@@ -111,7 +111,14 @@ if (!$this->app->sess) {
                     </li>
                     <?php if ($this->app->owns) { ?>
                         <li>
-                            <a id="app-btn-close" class="terminate sessiontips icon-only" data-ts-action="terminate" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_TERMINATE')) ?>" href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=stop&sess=' . $this->app->sess . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_WARNING') ?>" aria-label="<?= $this->escape(Lang::txt('COM_TOOLS_TERMINATE')) ?>">
+                            <?php
+                            $stopUrl = Route::url(
+                                'index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=stop&sess='
+                                    . $this->app->sess . '&return=' . $this->rtrn . '&' . Session::getFormToken()
+                                    . '=1',
+                            );
+                            ?>
+                            <a id="app-btn-close" class="terminate sessiontips icon-only" data-ts-action="terminate" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_TERMINATE')) ?>" href="<?= $stopUrl ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_WARNING') ?>" aria-label="<?= $this->escape(Lang::txt('COM_TOOLS_TERMINATE')) ?>">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path
                                     d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
@@ -119,7 +126,14 @@ if (!$this->app->sess) {
                         </li>
                     <?php } else { ?>
                         <li>
-                            <a id="app-btn-close" class="terminate sessiontips" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_STOP_SHARING')) ?>" href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_WARNING') ?>">
+                            <?php
+                            $unshareUrl = Route::url(
+                                'index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess='
+                                    . $this->app->sess . '&return=' . $this->rtrn . '&' . Session::getFormToken()
+                                    . '=1',
+                            );
+                            ?>
+                            <a id="app-btn-close" class="terminate sessiontips" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_STOP_SHARING')) ?>" href="<?= $unshareUrl ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_WARNING') ?>">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path
                                     d="M18.36 6.64A9 9 0 1 1 5.64 6.64"/><line x1="12" y1="2" x2="12" y2="12"/></svg>
@@ -129,7 +143,13 @@ if (!$this->app->sess) {
                     <?php } ?>
                     <?php if (count($plugins) > 1) { ?>
                         <li>
-                            <a id="app-btn-options" class="options" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_OPTIONS')) ?>" href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess) ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess='
+                                    . $this->app->sess,
+                            );
+                            ?>
+                            <a id="app-btn-options" class="options" data-help="<?= $this->escape(Lang::txt('COM_TOOLS_HELP_OPTIONS')) ?>" href="<?= $linkUrl ?>">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4"
                                     y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21"
@@ -146,7 +166,13 @@ if (!$this->app->sess) {
         </div><!-- #app-header -->
         <?php if (count($plugins) > 1) { ?>
             <div id="app-options">
-                <form method="get" action="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess) ?>">
+                <?php
+                $actionUrl = Route::url(
+                    'index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess='
+                        . $this->app->sess,
+                );
+                ?>
+                <form method="get" action="<?= $actionUrl ?>">
                     <fieldset>
                         <?php
                         $viewer = ($declared ? $declared : null); //Session::get('tool_viewer'));
@@ -271,7 +297,13 @@ if (!$this->app->sess) {
                         </p>
                     </div><!-- / .col span6 -->
                     <div class="col span6 omega">
-                        <form name="share" id="app-zone" method="post" action="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=reinvoke&sess=' . $this->app->sess) ?>">
+                        <?php
+                        $reinvokeUrl = Route::url(
+                            'index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=reinvoke&sess='
+                                . $this->app->sess,
+                        );
+                        ?>
+                        <form name="share" id="app-zone" method="post" action="<?= $reinvokeUrl ?>">
                             <p><?php echo Lang::txt('COM_TOOLS_ZONE_WARNING_CHANGE'); ?></p>
                             <p><label for="field-zone">
                                 <?php echo Lang::txt('COM_TOOLS_ZONE_RELAUNCH'); ?>
@@ -378,7 +410,15 @@ if (!$this->app->sess) {
                     <input type="hidden" name="task" value="share" />
                     <input type="hidden" name="sess" value="<?php echo $this->escape($this->app->sess); ?>" />
                     <input type="hidden" name="app" value="<?php echo $this->escape($this->toolname); ?>" />
-                    <input type="hidden" name="return" value="<?= base64_encode(Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess=' . $this->app->sess)) ?>" />
+                    <?php
+                    $fieldValue = base64_encode(
+                        Route::url(
+                            'index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=session&sess='
+                                . $this->app->sess,
+                        ),
+                    );
+                    ?>
+                    <input type="hidden" name="return" value="<?= $fieldValue ?>" />
 
                     <label for="field-username">
                         <?php echo Lang::txt('COM_TOOLS_SHARE_SESSION_WITH'); ?>
@@ -480,7 +520,14 @@ if (!$this->app->sess) {
                                     <?php if (strtolower($row->readonly) == 'yes') : ?>
                                         <span class="readonly"><?= Lang::txt('COM_TOOLS_SESSION_READ_ONLY') ?></span>
                                     <?php endif; ?>
-                                    <a class="entry-remove" href="<?= Route::url('index.php?option=' . $this->option . '&app=' . $this->toolname . '&task=unshare&sess=' . $this->app->sess . '&username=' . $row->viewuser . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1') ?>" title="<?= Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER') ?>">
+                                    <?php
+                                    $unshareUrl = Route::url(
+                                        'index.php?option=' . $this->option . '&app=' . $this->toolname
+                                            . '&task=unshare&sess=' . $this->app->sess . '&username=' . $row->viewuser
+                                            . '&return=' . $this->rtrn . '&' . Session::getFormToken() . '=1',
+                                    );
+                                    ?>
+                                    <a class="entry-remove" href="<?= $unshareUrl ?>" title="<?= Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER') ?>">
                                         <span><?php echo Lang::txt('COM_TOOLS_SESSION_SHARED_REMOVE_USER'); ?></span>
                                     </a>
                                 <?php endif; ?>

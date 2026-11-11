@@ -138,8 +138,9 @@ $prioritySelected = function ($value) use ($view) {
                                     'index.php?option=' . $this->option . '&controller=' . $this->controller
                                         . '&task=edit&app=' . $this->status['toolname'],
                                 );
+                                $titleText = Lang::txt('COM_TOOLS_EDIT_TIPS');
                                 ?>
-                                <a class="edit button" href="<?= $editUrl ?>" title="<?= Lang::txt('COM_TOOLS_EDIT_TIPS') ?>"><?= Lang::txt('COM_TOOLS_EDIT') ?></a>
+                                <a class="edit button" href="<?= $editUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_EDIT') ?></a>
                             <?php } ?>
                             </th>
                         </tr>
@@ -348,29 +349,33 @@ $prioritySelected = function ($value) use ($view) {
                                     'index.php?option=' . $this->option . '&controller=admin&task=addrepo&app='
                                         . $this->status['toolname'],
                                 );
+                                $titleText = Lang::txt('COM_TOOLS_COMMAND_ADD_REPO_TIPS');
                                 ?>
-                                <div class="col span3" id="createtool"><a class="icon-create btn admincall" data-action-txt="<?= Lang::txt('Creating tool project area...') ?>" href="<?= $addrepoUrl ?>" title="<?= Lang::txt('COM_TOOLS_COMMAND_ADD_REPO_TIPS') ?>"><?= Lang::txt('COM_TOOLS_COMMAND_ADD_REPO') ?></a></div>
+                                <div class="col span3" id="createtool"><a class="icon-create btn admincall" data-action-txt="<?= Lang::txt('Creating tool project area...') ?>" href="<?= $addrepoUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_COMMAND_ADD_REPO') ?></a></div>
                                 <?php
                                 $installUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=admin&task=install&app='
                                         . $this->status['toolname'],
                                 );
+                                $titleText = Lang::txt('COM_TOOLS_COMMAND_INSTALL_TIPS');
                                 ?>
-                                <div class="col span3" id="installtool"><a class="icon-install btn admincall" data-action-txt="<?= Lang::txt('Installing tool...') ?>" href="<?= $installUrl ?>" title="<?= Lang::txt('COM_TOOLS_COMMAND_INSTALL_TIPS') ?>"><?= Lang::txt('COM_TOOLS_COMMAND_INSTALL') ?></a></div>
+                                <div class="col span3" id="installtool"><a class="icon-install btn admincall" data-action-txt="<?= Lang::txt('Installing tool...') ?>" href="<?= $installUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_COMMAND_INSTALL') ?></a></div>
                                 <?php
                                 $publishUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=admin&task=publish&app='
                                         . $this->status['toolname'],
                                 );
+                                $titleText = Lang::txt('COM_TOOLS_COMMAND_PUBLISH_TIPS');
                                 ?>
-                                <div class="col span3" id="publishtool"><a class="icon-publish btn admincall" data-action-txt="<?= Lang::txt('Publishing tool...') ?>" href="<?= $publishUrl ?>" title="<?= Lang::txt('COM_TOOLS_COMMAND_PUBLISH_TIPS') ?>"><?= Lang::txt('COM_TOOLS_COMMAND_PUBLISH') ?></a></div>
+                                <div class="col span3" id="publishtool"><a class="icon-publish btn admincall" data-action-txt="<?= Lang::txt('Publishing tool...') ?>" href="<?= $publishUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_COMMAND_PUBLISH') ?></a></div>
                                 <?php
                                 $retireUrl = Route::url(
                                     'index.php?option=' . $this->option . '&controller=admin&task=retire&app='
                                         . $this->status['toolname'],
                                 );
+                                $titleText = Lang::txt('COM_TOOLS_COMMAND_RETIRE_TIPS');
                                 ?>
-                                <div class="col span3 omega" id="retiretool"><a class="icon-retire btn admincall" data-action-txt="<?= Lang::txt('Retiring tool...') ?>" href="<?= $retireUrl ?>" title="<?= Lang::txt('COM_TOOLS_COMMAND_RETIRE_TIPS') ?>"><?= Lang::txt('COM_TOOLS_COMMAND_RETIRE') ?></a></div>
+                                <div class="col span3 omega" id="retiretool"><a class="icon-retire btn admincall" data-action-txt="<?= Lang::txt('Retiring tool...') ?>" href="<?= $retireUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_COMMAND_RETIRE') ?></a></div>
                             </div>
                             <div id="ctSending"></div>
                             <div id="ctSuccess"></div>

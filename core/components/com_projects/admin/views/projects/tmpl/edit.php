@@ -457,7 +457,12 @@ $paramsLayoutSelected = function ($value) use ($view) {
                         <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_SUSPEND') ?>" class="btn"
                             id="do-suspend" />
                     <?php } elseif ($this->model->isInactive() || $this->model->isDeleted()) { ?>
-                        <input type="submit" value="<?= $this->suspended ? Lang::txt('COM_PROJECTS_OPTION_REINSTATE') : Lang::txt('COM_PROJECTS_OPTION_ACTIVATE') ?>" class="btn" id="do-reinstate" />
+                        <?php
+                        $fieldValue = $this->suspended
+                            ? Lang::txt('COM_PROJECTS_OPTION_REINSTATE')
+                            : Lang::txt('COM_PROJECTS_OPTION_ACTIVATE');
+                        ?>
+                        <input type="submit" value="<?= $fieldValue ?>" class="btn" id="do-reinstate" />
                     <?php } ?>
                     <?php if (!$this->model->isDeleted()) { ?>
                         <input type="submit" value="<?= Lang::txt('COM_PROJECTS_OPTION_DELETE') ?>" class="btn"

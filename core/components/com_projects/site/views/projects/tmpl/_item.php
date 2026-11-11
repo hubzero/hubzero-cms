@@ -128,7 +128,12 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
             <?php endif;*/ ?>
 
             <?php if ($this->row->groupOwner()) : ?>
-                <span class="project-owner owner-group icon-group tooltips" title="<?= $this->escape(Lang::txt('This project is owned by the %s group', $this->row->groupOwner('description'))) ?>">
+                <?php
+                $titleText = $this->escape(
+                    Lang::txt('This project is owned by the %s group', $this->row->groupOwner('description')),
+                );
+                ?>
+                <span class="project-owner owner-group icon-group tooltips" title="<?= $titleText ?>">
                     <?php
                         $_ownerTrunc = $this->escape(
                             Hubzero\Utility\Str::truncate($this->row->groupOwner('description'), 25),
@@ -305,7 +310,14 @@ $role = $this->row->access('readonly') && !$this->row->isArchived()
                                         ?>
 
                                         <span class="manage">
-                                            <a href="<?= Route::url('index.php?option=' . $this->option . '&task=process&id=' . $this->row->get('id')) . '?reviewer=' . $this->filters['reviewer'] . '&filterby=' . $this->filters['filterby'] ?>" class="showinbox"><?= Lang::txt('COM_PROJECTS_MANAGE') ?></a>
+                                            <?php
+                                            $linkUrl = Route::url(
+                                                'index.php?option=' . $this->option . '&task=process&id='
+                                                    . $this->row->get('id'),
+                                            ) . '?reviewer=' . $this->filters['reviewer'] . '&filterby='
+                                                . $this->filters['filterby'];
+                                            ?>
+                                            <a href="<?= $linkUrl ?>" class="showinbox"><?= Lang::txt('COM_PROJECTS_MANAGE') ?></a>
                                         </span>
                                     </td>
                                 </tr>

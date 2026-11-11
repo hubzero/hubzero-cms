@@ -94,7 +94,12 @@ if (!$this->sub) {
                     <?php echo Lang::txt('COM_WIKI_FIELD_CONFIRM_DELETE_HINT'); ?>
                 </p>
 
-                <input type="hidden" name="pagename" value="<?= $this->escape(($this->page->get('path') ? $this->page->get('path') . '/' : '') . $this->page->get('pagename')) ?>" />
+                <?php
+                $fieldValue = $this->escape(
+                    ($this->page->get('path') ? $this->page->get('path') . '/' : '') . $this->page->get('pagename'),
+                );
+                ?>
+                <input type="hidden" name="pagename" value="<?= $fieldValue ?>" />
                 <input type="hidden" name="page_id" value="<?php echo $this->escape($this->page->get('id')); ?>" />
 
                 <?php foreach ($this->page->adapter()->routing('delete') as $name => $val) { ?>

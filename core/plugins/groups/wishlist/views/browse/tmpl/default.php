@@ -176,8 +176,14 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                         . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby='
                                         . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action',
                                 );
+                                $titleText = Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' ::'
+                                    . $this->escape($item->bonusgivenby) . ' '
+                                    . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' '
+                                    . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->bonus . ' '
+                                    . Lang::txt('COM_WISHLIST_POINTS') . ' '
+                                    . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS');
                                 ?>
-                                <a class="bonus tooltips" href="<?= $wishUrl ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' ::' . $this->escape($item->bonusgivenby) . ' ' . Lang::txt('COM_WISHLIST_MULTIPLE_USERS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_CONTRIBUTED_TOTAL') . ' ' . $item->bonus . ' ' . Lang::txt('COM_WISHLIST_POINTS') . ' ' . Lang::txt('COM_WISHLIST_WISH_BONUS_AS_BONUS') ?>">
+                                <a class="bonus tooltips" href="<?= $wishUrl ?>" title="<?= $titleText ?>">
                                     <?= $item->bonus ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span>
                                 </a>
                             <?php } elseif ($item->status == 0 || $item->status == 6) { ?>
@@ -188,8 +194,10 @@ $url = Route::url('index.php?option=com_groups&cn=' . $this->group->get('cn') . 
                                         . '&action=addbonus&filterby=' . $this->filters['filterby'] . '&sortby='
                                         . $this->filters['sortby'] . '&tags=' . $this->filters['tag'] . '#action',
                                 );
+                                $titleText = Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: '
+                                    . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED');
                                 ?>
-                                <a class="nobonus tooltips" href="<?= $wishUrl ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') . ' :: ' . Lang::txt('COM_WISHLIST_WISH_BONUS_NO_USERS_CONTRIBUTED') ?>">
+                                <a class="nobonus tooltips" href="<?= $wishUrl ?>" title="<?= $titleText ?>">
                                     <?= $item->bonus ?> <span><?= Lang::txt('COM_WISHLIST_POINTS') ?></span>
                                 </a>
                             <?php } else { ?>

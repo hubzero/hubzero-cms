@@ -188,9 +188,15 @@ $categoryChecked = function ($value) use ($view) {
                         <a class="permalink" href="<?= Route::url($this->wish->link()) ?>" rel="bookmark"
                             title="<?= Lang::txt('COM_WISHLIST_PERMALINK') ?>">
                             <span class="entry-date-at"><?php echo Lang::txt('COM_WISHLIST_AT'); ?></span>
-                            <span class="time"><time datetime="<?= $this->wish->proposed() ?>"><?= $this->wish->proposed('time') ?></time></span>
+                            <?php
+                            $datetime = $this->wish->proposed();
+                            ?>
+                            <span class="time"><time datetime="<?= $datetime ?>"><?= $this->wish->proposed('time') ?></time></span>
                             <span class="entry-date-on"><?php echo Lang::txt('COM_WISHLIST_ON'); ?></span>
-                            <span class="date"><time datetime="<?= $this->wish->proposed() ?>"><?= $this->wish->proposed('date') ?></time></span>
+                            <?php
+                            $datetime = $this->wish->proposed();
+                            ?>
+                            <span class="date"><time datetime="<?= $datetime ?>"><?= $this->wish->proposed('date') ?></time></span>
                         </a>
                     </p><!-- / .wish-title -->
 
@@ -455,14 +461,18 @@ $categoryChecked = function ($value) use ($view) {
                                         ) { ?>
                                             <?php
                                             $linkUrl = Route::url($this->wish->link('addbonus'));
+                                            $titleText = Lang::txt('COM_WISHLIST_WISH_ADD_BONUS');
                                             ?>
-                                            <a class="bonus tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') ?>">+ <?= $this->wish->get('bonus', 0) ?></a>
+                                            <a class="bonus tooltips" href="<?= $linkUrl ?>" title="<?= $titleText ?>">+ <?= $this->wish->get('bonus', 0) ?></a>
                                         <?php } elseif ($this->wish->isOpen() or $this->wish->isAccepted()) { ?>
                                             <a class="no-bonus tooltips"
                                                 href="<?= Route::url($this->wish->link('addbonus')) ?>"
                                                 title="<?= Lang::txt('COM_WISHLIST_WISH_ADD_BONUS') ?>">0</a>
                                         <?php } else { ?>
-                                            <span class="bonus-inactive" title="<?= Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED') ?>">&nbsp;</span>
+                                            <?php
+                                            $titleText = Lang::txt('COM_WISHLIST_WISH_BONUS_NOT_ACCEPTED');
+                                            ?>
+                                            <span class="bonus-inactive" title="<?= $titleText ?>">&nbsp;</span>
                                         <?php } ?>
                                         </span>
                                     <?php } ?>
@@ -685,7 +695,12 @@ $categoryChecked = function ($value) use ($view) {
 
                                 <div class="form-group">
                                     <label class="form-check-label" for="acresource">
-                                        <input class="form-control secondary_option" type="text" name="resource" id="acresource" aria-label="<?= Lang::txt('COM_WISHLIST_RESOURCE') ?>" value="<?= ($this->wishlist->get('category') == 'resource') ? $this->wishlist->get('referenceid') : '' ?>" autocomplete="off" />
+                                        <?php
+                                        $fieldValue = ($this->wishlist->get('category') == 'resource')
+                                            ? $this->wishlist->get('referenceid')
+                                            : '';
+                                        ?>
+                                        <input class="form-control secondary_option" type="text" name="resource" id="acresource" aria-label="<?= Lang::txt('COM_WISHLIST_RESOURCE') ?>" value="<?= $fieldValue ?>" autocomplete="off" />
                                     </label>
                                 </div>
 
@@ -705,7 +720,12 @@ $categoryChecked = function ($value) use ($view) {
                                 <div class="form-group">
                                     <label for="acgroup"
                                         class="sr-only"><?= Lang::txt('COM_WISHLIST_GROUP_NAME') ?></label>
-                                        <input type="text" name="group" value="<?= $this->wishlist->get('category') == 'group' ? $this->wishlist->item('alias') : '' ?>" id="acgroup" class="form-control secondary_option" autocomplete="off" aria-label="<?= Lang::txt('COM_WISHLIST_GROUP_NAME') ?>" />
+                                        <?php
+                                        $fieldValue = $this->wishlist->get('category') == 'group'
+                                            ? $this->wishlist->item('alias')
+                                            : '';
+                                        ?>
+                                        <input type="text" name="group" value="<?= $fieldValue ?>" id="acgroup" class="form-control secondary_option" autocomplete="off" aria-label="<?= Lang::txt('COM_WISHLIST_GROUP_NAME') ?>" />
                                 </div>
                             <?php } ?>
                                 <fieldset>

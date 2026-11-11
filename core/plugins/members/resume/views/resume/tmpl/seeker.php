@@ -95,8 +95,11 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
         <span id="o<?php echo $this->seeker->uid; ?>">
             <?php
             $shortlistUrl = Route::url('index.php?option=com_jobs&oid=' . $this->seeker->uid . '&task=shortlist');
+            $titleText = isset($this->seeker->shortlisted) && $this->seeker->shortlisted
+                ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_REMOVE_FROM_SHORTLIST')
+                : Lang::txt('PLG_MEMBERS_RESUME_ACTION_ADD_TO_SHORTLIST');
             ?>
-            <a href="<?= $shortlistUrl ?>" class="favvit" title="<?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_REMOVE_FROM_SHORTLIST') : Lang::txt('PLG_MEMBERS_RESUME_ACTION_ADD_TO_SHORTLIST') ?>">
+            <a href="<?= $shortlistUrl ?>" class="favvit" title="<?= $titleText ?>">
                 <?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted
                     ? Lang::txt('PLG_MEMBERS_RESUME_ACTION_REMOVE_FROM_SHORTLIST')
                     : Lang::txt('PLG_MEMBERS_RESUME_ACTION_ADD_TO_SHORTLIST') ?>
@@ -126,13 +129,24 @@ $resume = is_file(PATH_APP . $path . DS . $this->seeker->filename) ? $path . DS 
                 ?>
                 <span class="mini"> | </span>
                 <span class="mini">
-                    <a href="<?= $this->escape($url) ?>" class="web" rel="external" title="<?= $this->escape(Lang::txt('PLG_MEMBERS_RESUME_MEMBER_WEBSITE') . ': ' . $this->seeker->url) ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_WEBSITE') ?></a>
+                    <?php
+                    $titleText = $this->escape(
+                        Lang::txt('PLG_MEMBERS_RESUME_MEMBER_WEBSITE') . ': ' . $this->seeker->url,
+                    );
+                    ?>
+                    <a href="<?= $this->escape($url) ?>" class="web" rel="external" title="<?= $titleText ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_WEBSITE') ?></a>
                 </span>
             <?php } ?>
             <?php if ($this->seeker->linkedin) { ?>
                 <span class="mini"> | </span>
                 <span class="mini">
-                    <a href="<?= (preg_match('#^https?://#i', $this->seeker->linkedin) ? $this->escape($this->seeker->linkedin) : '') ?>" class="linkedin" rel="external" title="<?= Lang::txt('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN') ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_LINKEDIN') ?></a>
+                    <?php
+                    $linkUrl = preg_match('#^https?://#i', $this->seeker->linkedin)
+                        ? $this->escape($this->seeker->linkedin)
+                        : '';
+                    $titleText = Lang::txt('PLG_MEMBERS_RESUME_MEMBER_LINKEDIN');
+                    ?>
+                    <a href="<?= $linkUrl ?>" class="linkedin" rel="external" title="<?= $titleText ?>"><?= Lang::txt('PLG_MEMBERS_RESUME_LINKEDIN') ?></a>
                 </span>
             <?php } ?>
         <?php } else { ?>

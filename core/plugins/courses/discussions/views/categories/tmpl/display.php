@@ -70,7 +70,15 @@ $base = $this->offering->link() . '&active=forum';
                     <?php if (!$this->category->get('closed')) { ?>
                         <tfoot>
                             <tr>
-                                <td colspan="<?= ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4' ?>">
+                                <?php
+                                $colspan = (
+                                    $this->config->get('access-delete-thread')
+                                    || $this->config->get('access-edit-thread')
+                                )
+                                    ? '5'
+                                    : '4';
+                                ?>
+                                <td colspan="<?= $colspan ?>">
                                     <?php
                                     $linkUrl = Route::url($base . '&unit=' . $this->filters['category'] . '&b=new');
                                     ?>
@@ -209,7 +217,15 @@ $base = $this->offering->link() . '&active=forum';
                             }
                         } else { ?>
                                 <tr>
-                                    <td colspan="<?= ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4' ?>">
+                                    <?php
+                                    $colspan = (
+                                        $this->config->get('access-delete-thread')
+                                        || $this->config->get('access-edit-thread')
+                                    )
+                                        ? '5'
+                                        : '4';
+                                    ?>
+                                    <td colspan="<?= $colspan ?>">
                                         <?php echo Lang::txt('There are currently no discussions.'); ?>
                                     </td>
                                 </tr>

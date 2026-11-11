@@ -271,7 +271,10 @@ $emailnewSelected = function ($value) use ($view) {
             <fieldset class="adminform">
                 <legend><span><?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELDSET_DATA'); ?></span></legend>
 
-                <div class="input-wrap" data-hint="<?= Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_HINT', $this->import->fileSpacePath()) ?>">
+                <?php
+                $dataHint = Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE_HINT', $this->import->fileSpacePath());
+                ?>
+                <div class="input-wrap" data-hint="<?= $dataHint ?>">
                     <label for="field-importfile">
                         <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_FILE'); ?>
                     </label><br />
@@ -292,7 +295,10 @@ $emailnewSelected = function ($value) use ($view) {
                     </span>
                 </div>
 
-                <div class="input-wrap" data-hint="<?= str_replace('<br />', "\n", Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_HINT')) ?>">
+                <?php
+                $dataHint = str_replace('<br />', "\n", Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE_HINT'));
+                ?>
+                <div class="input-wrap" data-hint="<?= $dataHint ?>">
                     <label for="field-importmode">
                         <?php echo Lang::txt('COM_MEMBERS_IMPORT_EDIT_FIELD_DATA_MODE'); ?>
                     </label><br />

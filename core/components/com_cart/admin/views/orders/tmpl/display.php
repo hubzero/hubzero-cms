@@ -156,7 +156,13 @@ $this
             <tr class="<?php echo "row$k"; ?>">
                 <td>
                     <span>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id=' . $row->tId) ?>">
+                        <?php
+                        $viewUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=view&id='
+                                . $row->tId,
+                        );
+                        ?>
+                        <a href="<?= $viewUrl ?>">
                             <?php echo $this->escape(stripslashes($row->tId)); ?>
                         </a>
                     </span>
@@ -166,7 +172,13 @@ $this
                 </td>
                 <td>
                     <span>
-                        <a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=items&order=' . $row->tId) ?>">
+                        <?php
+                        $itemsUrl = Route::url(
+                            'index.php?option=' . $this->option . '&controller=' . $this->controller
+                                . '&task=items&order=' . $row->tId,
+                        );
+                        ?>
+                        <a href="<?= $itemsUrl ?>">
                             <?php echo $this->escape(stripslashes($row->tiItemsQty)); ?>
                         </a>
                     </span>

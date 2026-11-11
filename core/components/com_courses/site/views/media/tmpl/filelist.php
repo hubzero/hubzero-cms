@@ -83,7 +83,11 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                         </td>
                         <td>
                             <?php if (is_object($course)) : ?>
-                                <a href="#" class="icon-path filepath" data-path="<?= 'https://' . $_SERVER['HTTP_HOST'] . DS . 'courses' . DS . $course->get('cn') . DS . 'File:' . $docs[$doc_name] ?>" title="<?= Lang::txt('COM_COURSES_SHOW_FILE_PATH') ?>">
+                                <?php
+                                $dataPath = 'https://' . $_SERVER['HTTP_HOST'] . DS . 'courses' . DS
+                                    . $course->get('cn') . DS . 'File:' . $docs[$doc_name];
+                                ?>
+                                <a href="#" class="icon-path filepath" data-path="<?= $dataPath ?>" title="<?= Lang::txt('COM_COURSES_SHOW_FILE_PATH') ?>">
                                     <?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>
                                 </a>
                             <?php endif; ?>
@@ -108,7 +112,11 @@ $course = \Components\Courses\Models\Course::getInstance($this->listdir);
                         </td>
                         <td>
                             <?php if (is_object($course)) : ?>
-                                <a href="#" class="icon-path filepath" data-path="<?= 'https://' . $_SERVER['HTTP_HOST'] . DS . 'courses' . DS . $course->get('cn') . DS . 'Image:' . $images[$image_name] ?>" title="<?= Lang::txt('COM_COURSES_SHOW_FILE_PATH') ?>">
+                                <?php
+                                $dataPath = 'https://' . $_SERVER['HTTP_HOST'] . DS . 'courses' . DS
+                                    . $course->get('cn') . DS . 'Image:' . $images[$image_name];
+                                ?>
+                                <a href="#" class="icon-path filepath" data-path="<?= $dataPath ?>" title="<?= Lang::txt('COM_COURSES_SHOW_FILE_PATH') ?>">
                                     <?php echo Lang::txt('COM_COURSES_SHOW_FILE_PATH'); ?>
                                 </a>
                             <?php endif; ?>

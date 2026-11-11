@@ -112,8 +112,9 @@ $ext = $this->item->get('type') == 'file' ? $this->item->get('ext') : 'folder';
             $browseUrl = Route::url(
                 $this->model->link('files') . '/&action=browse&subdir=' . urlencode($this->item->get('localPath')),
             );
+            $titleText = Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $name;
             ?>
-            <a href="<?= $browseUrl ?>" class="dir:<?= urlencode($name) ?>" title="<?= Lang::txt('PLG_PROJECTS_FILES_GO_TO_DIR') . ' ' . $name ?>"><?= \Components\Projects\Helpers\Html::shortenFileName($name, 60) ?></a>
+            <a href="<?= $browseUrl ?>" class="dir:<?= urlencode($name) ?>" title="<?= $titleText ?>"><?= \Components\Projects\Helpers\Html::shortenFileName($name, 60) ?></a>
         <?php } ?>
     </td>
     <td class="shrinked middle_valign"></td>

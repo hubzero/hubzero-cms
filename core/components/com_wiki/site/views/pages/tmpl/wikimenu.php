@@ -93,16 +93,20 @@ if ($showtoc) {
                 <li class="page-main">
                     <?php
                     $linkUrl = Route::url($this->page->link('base'));
+                    $ariaLabel = $this->escape(Lang::txt('COM_WIKI_MAIN_PAGE')) . ' — '
+                        . $this->escape(Lang::txt('COM_WIKI'));
                     ?>
-                    <a href="<?= $linkUrl ?>" aria-label="<?= $this->escape(Lang::txt('COM_WIKI_MAIN_PAGE')) . ' — ' . $this->escape(Lang::txt('COM_WIKI')) ?>">
+                    <a href="<?= $linkUrl ?>" aria-label="<?= $ariaLabel ?>">
                         <?php echo Lang::txt('COM_WIKI_MAIN_PAGE'); ?>
                     </a>
                 </li>
                 <li class="page-help">
                     <?php
                     $linkUrl = Route::url($this->page->link('base') . '&pagename=Help:Index');
+                    $ariaLabel = $this->escape(Lang::txt('COM_WIKI_HELP')) . ' — '
+                        . $this->escape(Lang::txt('COM_WIKI'));
                     ?>
-                    <a href="<?= $linkUrl ?>" aria-label="<?= $this->escape(Lang::txt('COM_WIKI_HELP')) . ' — ' . $this->escape(Lang::txt('COM_WIKI')) ?>">
+                    <a href="<?= $linkUrl ?>" aria-label="<?= $ariaLabel ?>">
                         <?php echo Lang::txt('COM_WIKI_HELP'); ?>
                     </a>
                 </li>

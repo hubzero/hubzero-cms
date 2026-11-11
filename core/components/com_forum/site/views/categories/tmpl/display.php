@@ -74,8 +74,16 @@ $this->category->set('section_alias', $this->filters['section']);
                                         '&sortby=created&sortdir=' . $sortDir($this->filters, 'created'),
                                     ),
                                 );
+                                $classes = ($this->filters['sortby'] == 'created')
+                                    ? 'active '
+                                        . (
+                                            strtolower($this->filters['sort_Dir']) == 'desc'
+                                                ? 'icon-arrow-down'
+                                                : 'icon-arrow-up'
+                                        )
+                                    : 'icon-arrow-down';
                                 ?>
-                                <a class="<?= ($this->filters['sortby'] == 'created') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_CREATED') ?>" rel="nofollow">
+                                <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_CREATED') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_CREATED'); ?>
                                 </a>
                             </li>
@@ -87,8 +95,16 @@ $this->category->set('section_alias', $this->filters['section']);
                                         '&sortby=activity&sortdir=' . $sortDir($this->filters, 'activity'),
                                     ),
                                 );
+                                $classes = ($this->filters['sortby'] == 'activity')
+                                    ? 'active '
+                                        . (
+                                            strtolower($this->filters['sort_Dir']) == 'desc'
+                                                ? 'icon-arrow-down'
+                                                : 'icon-arrow-up'
+                                        )
+                                    : 'icon-arrow-down';
                                 ?>
-                                <a class="<?= ($this->filters['sortby'] == 'activity') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_ACTIVITY') ?>" rel="nofollow">
+                                <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_ACTIVITY') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_ACTIVITY'); ?>
                                 </a>
                             </li>
@@ -100,8 +116,16 @@ $this->category->set('section_alias', $this->filters['section']);
                                         '&sortby=replies&sortdir=' . $sortDir($this->filters, 'replies'),
                                     ),
                                 );
+                                $classes = ($this->filters['sortby'] == 'replies')
+                                    ? 'active '
+                                        . (
+                                            strtolower($this->filters['sort_Dir']) == 'desc'
+                                                ? 'icon-arrow-down'
+                                                : 'icon-arrow-up'
+                                        )
+                                    : 'icon-arrow-down';
                                 ?>
-                                <a class="<?= ($this->filters['sortby'] == 'replies') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-down' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS') ?>" rel="nofollow">
+                                <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_NUM_POSTS') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_NUM_POSTS'); ?>
                                 </a>
                             </li>
@@ -113,8 +137,16 @@ $this->category->set('section_alias', $this->filters['section']);
                                         '&sortby=title&sortdir=' . $sortDir($this->filters, 'title', 'ASC'),
                                     ),
                                 );
+                                $classes = ($this->filters['sortby'] == 'title')
+                                    ? 'active '
+                                        . (
+                                            strtolower($this->filters['sort_Dir']) == 'desc'
+                                                ? 'icon-arrow-down'
+                                                : 'icon-arrow-up'
+                                        )
+                                    : 'icon-arrow-up';
                                 ?>
-                                <a class="<?= ($this->filters['sortby'] == 'title') ? 'active ' . (strtolower($this->filters['sort_Dir']) == 'desc' ? 'icon-arrow-down' : 'icon-arrow-up') : 'icon-arrow-up' ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_TITLE') ?>" rel="nofollow">
+                                <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_FORUM_SORT_BY_TITLE') ?>" rel="nofollow">
                                     <?php echo Lang::txt('COM_FORUM_SORT_TITLE'); ?>
                                 </a>
                             </li>

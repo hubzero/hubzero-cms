@@ -60,7 +60,15 @@ $this
                                     . $filters,
                             );
                             ?>
-                            <a class="<?= $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down') ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE') ?>">
+                            <?php
+                            $classes = $cls
+                                . (
+                                    $cls
+                                        ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down')
+                                        : 'icon-arrow-down'
+                                );
+                            ?>
+                            <a class="<?= $classes ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_POPULARITY'); ?>
                             </a>
                         </li>
@@ -74,8 +82,14 @@ $this
                                     . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'asc' : 'desc') : 'asc')
                                     . $filters,
                             );
+                            $classes = $cls
+                                . (
+                                    $cls
+                                        ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down')
+                                        : 'icon-arrow-down'
+                                );
                             ?>
-                            <a class="<?= $cls . ($cls ? ($this->filters['sort_Dir'] == 'desc' ? 'icon-arrow-up' : 'icon-arrow-down') : 'icon-arrow-down') ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE') ?>">
+                            <a class="<?= $classes ?>" href="<?= $url ?>" title="<?= Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA_TITLE') ?>">
                                 <?php echo Lang::txt('COM_TAGS_BROWSE_SORT_ALPHA'); ?>
                             </a>
                         </li>
@@ -178,8 +192,12 @@ $this
                                                     . '&limit=' . $this->filters['limit'] . '&limitstart='
                                                     . $this->filters['start'],
                                             );
+                                            $titleText = Lang::txt(
+                                                'COM_TAGS_EDIT_TAG',
+                                                $this->escape(stripslashes($row->get('raw_tag'))),
+                                            );
                                             ?>
-                                            <a class="icon-edit edit" href="<?= $editUrl ?>" title="<?= Lang::txt('COM_TAGS_EDIT_TAG', $this->escape(stripslashes($row->get('raw_tag')))) ?>">
+                                            <a class="icon-edit edit" href="<?= $editUrl ?>" title="<?= $titleText ?>">
                                                 <?php echo Lang::txt('JACTION_EDIT'); ?>
                                             </a>
                                         <?php } ?>
@@ -191,7 +209,12 @@ $this
                     } else {
                         ?>
                         <tr class="odd">
-                            <td colspan="<?= $this->config->get('access-edit-tag') || $this->config->get('access-delete-tag') ? 4 : 2 ?>">
+                            <?php
+                            $colspan = $this->config->get('access-edit-tag') || $this->config->get('access-delete-tag')
+                                ? 4
+                                : 2;
+                            ?>
+                            <td colspan="<?= $colspan ?>">
                                 <?php echo Lang::txt('COM_TAGS_NO_RESULTS'); ?>
                             </td>
                         </tr>

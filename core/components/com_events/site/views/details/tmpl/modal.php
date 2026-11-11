@@ -189,7 +189,10 @@ defined('_HZEXEC_') or die();
                 <div class="container">
                     <h3><?php echo Lang::txt('EVENTS_CAL_LANG_EVENT_EXTRA'); ?></h3>
                     <p class="entry-link">
-                        <a href="<?= $this->escape(stripslashes($this->row->extra_info)) ?>"><?= $this->escape(stripslashes($this->row->extra_info)) ?></a>
+                        <?php
+                        $linkUrl = $this->escape(stripslashes($this->row->extra_info));
+                        ?>
+                        <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($this->row->extra_info)) ?></a>
                     </p>
                 </div>
             <?php } ?>

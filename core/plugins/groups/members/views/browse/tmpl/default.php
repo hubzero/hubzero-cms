@@ -71,7 +71,12 @@ $option = 'com_groups';
                             'group.invite',
                         )
 ) : ?>
-                    <a class="icon-add add btn" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite') ?>">
+                    <?php
+                    $inviteUrl = Route::url(
+                        'index.php?option=' . $option . '&cn=' . $this->group->get('cn') . '&task=invite',
+                    );
+                    ?>
+                    <a class="icon-add add btn" href="<?= $inviteUrl ?>">
                         <?php echo Lang::txt('PLG_GROUPS_MEMBERS_INVITE_MEMBERS'); ?>
                     </a>
                     <?php endif; ?>
@@ -118,7 +123,12 @@ $option = 'com_groups';
 
 <section class="section">
     <div class="subject">
-        <form action="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&filter=' . $this->filter) ?>" method="post">
+        <?php
+        $actionUrl = Route::url(
+            'index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&filter=' . $this->filter,
+        );
+        ?>
+        <form action="<?= $actionUrl ?>" method="post">
 
             <div class="container data-entry">
                 <input class="entry-search-submit" type="submit"
@@ -167,7 +177,13 @@ $option = 'com_groups';
                                             }
                                         }
                                         ?>
-                                    <a class="tooltips" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=messages&action=new' . $append) ?>" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE') ?> :: <?= $title ?>">
+                                        <?php
+                                        $newUrl = Route::url(
+                                            'index.php?option=' . $option . '&cn=' . $this->group->cn
+                                                . '&active=messages&action=new' . $append,
+                                        );
+                                        ?>
+                                    <a class="tooltips" href="<?= $newUrl ?>" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE') ?> :: <?= $title ?>">
                                         <?php echo Lang::txt('PLG_GROUPS_MEMBERS_MESSAGE_ALL'); ?>
                                     </a>
                                     <?php } ?>
@@ -190,7 +206,13 @@ $option = 'com_groups';
                                 || ($this->authorized == 'admin' || $this->authorized == 'manager')
                             ) { ?>
                                     <li>
-                                        <a class="<?= $filter . $active ?>" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&filter=' . $filter) ?>"><?= $name ?>
+                                        <?php
+                                        $linkUrl = Route::url(
+                                            'index.php?option=' . $option . '&cn=' . $this->group->cn
+                                                . '&active=members&filter=' . $filter,
+                                        );
+                                        ?>
+                                        <a class="<?= $filter . $active ?>" href="<?= $linkUrl ?>"><?= $name ?>
                                             <?php
                                             if ($filter == 'pending') {
                                                 echo '(' . count($this->group->get('applicants')) . ')';
@@ -737,7 +759,12 @@ $option = 'com_groups';
                         <?php echo Html::input('token'); ?>
                     </form>
                     <p class="roles-order-hint"><?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_ORDER_HINT'); ?></p>
-                    <form class="roles-sort" action="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members') ?>" method="post">
+                    <?php
+                    $actionUrl = Route::url(
+                        'index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members',
+                    );
+                    ?>
+                    <form class="roles-sort" action="<?= $actionUrl ?>" method="post">
                         <input type="hidden" name="cn" value="<?php echo $this->escape($this->group->cn); ?>" />
                         <input type="hidden" name="active" value="members" />
                         <input type="hidden" name="option" value="<?php echo $option; ?>" />
@@ -765,11 +792,23 @@ $option = 'com_groups';
                                 );
                                 ?>
                                 <button type="submit" form="hz-post-action" formaction="<?= $removeroleUrl ?>" class="remove-role" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') ?>"><?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_REMOVE') ?></button>
-                                <a class="edit-role" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&action=editrole&role=' . $role['id']) ?>" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_EDIT') ?>">
+                                <?php
+                                $editroleUrl = Route::url(
+                                    'index.php?option=' . $option . '&cn=' . $this->group->cn
+                                        . '&active=members&action=editrole&role=' . $role['id'],
+                                );
+                                ?>
+                                <a class="edit-role" href="<?= $editroleUrl ?>" title="<?= Lang::txt('PLG_GROUPS_MEMBERS_ROLE_EDIT') ?>">
                                     <?php echo Lang::txt('PLG_GROUPS_MEMBERS_ROLE_EDIT'); ?>
                                 </a>
                             <?php endif; ?>
-                            <a class="role <?= $cls ?>" href="<?= Route::url('index.php?option=' . $option . '&cn=' . $this->group->cn . '&active=members&role_filter=' . $role['id']) ?>">
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $option . '&cn=' . $this->group->cn
+                                    . '&active=members&role_filter=' . $role['id'],
+                            );
+                            ?>
+                            <a class="role <?= $cls ?>" href="<?= $linkUrl ?>">
                                 <?php echo $this->escape($role['name']); ?>
                             </a>
                         </li>

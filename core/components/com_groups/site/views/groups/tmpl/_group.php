@@ -149,8 +149,9 @@ $published = ($group->get('published')) ? true : false;
                         $acceptUrl = Route::url(
                             'index.php?option=' . $this->option . '&cn=' . $group->get('cn') . '&task=accept',
                         );
+                        $titleText = Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT');
                         ?>
-                        <button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>" class="btn btn-success accept tooltips" title="<?= Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT') ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT') ?></button>
+                        <button type="submit" form="hz-post-action" formaction="<?= $acceptUrl ?>" class="btn btn-success accept tooltips" title="<?= $titleText ?>"><?= Lang::txt('COM_GROUPS_TOOLBAR_ACCEPT') ?></button>
                     <?php else : ?>
                         <div>
                             <div>

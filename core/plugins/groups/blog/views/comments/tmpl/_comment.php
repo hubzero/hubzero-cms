@@ -50,9 +50,15 @@ if ($this->comment->isReported()) {
                     <?php if ($this->comment->wasModified()) { ?>
                         &mdash; <?php echo Lang::txt('PLG_GROUPS_BLOG_EDITED'); ?>
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_BLOG_AT'); ?></span> 
-                        <span class="time"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('time') ?></time></span> 
+                        <?php
+                        $datetime = $this->comment->modified();
+                        ?>
+                        <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('time') ?></time></span> 
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_BLOG_ON'); ?></span> 
-                        <span class="date"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('date') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->modified();
+                        ?>
+                        <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('date') ?></time></span>
                     <?php } ?>
                 </a>
             </p>
@@ -122,8 +128,9 @@ if ($this->comment->isReported()) {
                 $deletecommentUrl = Route::url(
                     $this->base . '&action=deletecomment&comment=' . $this->comment->get('id'),
                 );
+                $confirmText = Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE');
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete" data-confirm="<?= Lang::txt('PLG_GROUPS_BLOG_CONFIRM_DELETE') ?>"><?= Lang::txt('PLG_GROUPS_BLOG_DELETE') ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete" data-confirm="<?= $confirmText ?>"><?= Lang::txt('PLG_GROUPS_BLOG_DELETE') ?></button>
             <?php } ?>
             <?php if (!$this->comment->isReported()) { ?>
                 <?php

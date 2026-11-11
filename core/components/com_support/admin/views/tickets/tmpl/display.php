@@ -81,7 +81,10 @@ $this
                     <?php if (count($this->folders) > 0) { ?>
                         <?php foreach ($this->folders as $folder) { ?>
                             <li id="folder_<?php echo $this->escape($folder->id); ?>" class="open">
-                                <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title" data-id="<?= $this->escape($folder->id) ?>"><?= $this->escape($folder->title) ?></span>
+                                <?php
+                                $dataId = $this->escape($folder->id);
+                                ?>
+                                <span class="icon-folder folder" id="<?= $this->escape($folder->id) ?>-title" data-id="<?= $dataId ?>"><?= $this->escape($folder->title) ?></span>
                                 <span class="folder-options">
                                     <?php
                                     $removefolderUrl = Route::url(
@@ -134,8 +137,9 @@ $this
                                                         . '&controller=queries&task=remove&id=' . $query->id . '&'
                                                         . Session::getFormToken() . '=1',
                                                 );
+                                                $confirmText = Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE');
                                                 ?>
-                                                <a class="delete" href="<?= $removeUrl ?>" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('COM_SUPPORT_QUERIES_CONFIRM_DELETE') ?>">
+                                                <a class="delete" href="<?= $removeUrl ?>" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= $confirmText ?>">
                                                     <?php echo Lang::txt('JACTION_DELETE'); ?>
                                                 </a>
                                                 <?php
@@ -336,7 +340,13 @@ $this
                                             $row->get('target_date')
                                             && $row->get('target_date') != '0000-00-00 00:00:00'
                                         ) { ?>
-                                        <span class="ticket-target_date hasTip" title="<?= Lang::txt('Target date: %s', Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1'))) ?>">
+                                            <?php
+                                            $titleText = Lang::txt(
+                                                'Target date: %s',
+                                                Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')),
+                                            );
+                                            ?>
+                                        <span class="ticket-target_date hasTip" title="<?= $titleText ?>">
                                             <time datetime="<?= Date::of($row->get('target_date'))->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($row->get('target_date'))->toLocal(Lang::txt('DATE_FORMAT_HZ1')) ?></time>
                                         </span>
                                         <?php } ?>

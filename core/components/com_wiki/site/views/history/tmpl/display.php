@@ -176,12 +176,24 @@ $revisions = $this->page
                                     <td><?php /* [a11y] old-version radio placeholder */ ?></td>
                                     <td>
                                         <label class="sr-only" for="diff-<?= $revision->get('id') ?>"><?= Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')) ?></label>
-                                    <input type="radio" name="diff" id="diff-<?= $revision->get('id') ?>" value="<?= $revision->get('version') ?>" aria-label="<?= Lang::txt('COM_WIKI_HISTORY_COMPARE_NEW_VERSION', $revision->get('version')) ?>" checked="checked" />
+                                    <?php
+                                    $ariaLabel = Lang::txt(
+                                        'COM_WIKI_HISTORY_COMPARE_NEW_VERSION',
+                                        $revision->get('version'),
+                                    );
+                                    ?>
+                                    <input type="radio" name="diff" id="diff-<?= $revision->get('id') ?>" value="<?= $revision->get('version') ?>" aria-label="<?= $ariaLabel ?>" checked="checked" />
                                     </td>
                                 <?php } else { ?>
                                     <td>
                                         <label class="sr-only" for="oldid-<?= $revision->get('id') ?>"><?= Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')) ?></label>
-                                        <input type="radio" name="oldid" id="oldid-<?= $revision->get('id') ?>" value="<?= $revision->get('version') ?>" aria-label="<?= Lang::txt('COM_WIKI_HISTORY_COMPARE_OLD_VERSION', $revision->get('version')) ?>"
+                                        <?php
+                                        $ariaLabel = Lang::txt(
+                                            'COM_WIKI_HISTORY_COMPARE_OLD_VERSION',
+                                            $revision->get('version'),
+                                        );
+                                        ?>
+                                        <input type="radio" name="oldid" id="oldid-<?= $revision->get('id') ?>" value="<?= $revision->get('version') ?>" aria-label="<?= $ariaLabel ?>"
                                         <?php if ($comparefirst == true) {
                                             echo ' checked="checked"';
                                             $comparefirst = false;
@@ -194,8 +206,10 @@ $revisions = $this->page
                                     $linkUrl = Route::url(
                                         $this->page->link('', 'version=' . $revision->get('version')),
                                     );
+                                    $titleText = Lang::txt('COM_WIKI_REVISION_SUMMARY') . ' :: '
+                                        . $this->escape(strip_tags((string) $summary));
                                     ?>
-                                    <a href="<?= $linkUrl ?>" class="tooltips" title="<?= Lang::txt('COM_WIKI_REVISION_SUMMARY') . ' :: ' . $this->escape(strip_tags((string) $summary)) ?>">
+                                    <a href="<?= $linkUrl ?>" class="tooltips" title="<?= $titleText ?>">
                                         <time datetime="<?= $revision->get('created') ?>"><?= $this->escape(Date::of($revision->get('created'))->toLocal('Y-m-d H:i:s')) ?></time>
                                     </a>
                                 </td>
@@ -260,8 +274,9 @@ $revisions = $this->page
                                     $actionUrl = Route::url(
                                         $this->page->link('deleterevision', 'oldid=' . $revision->get('id')),
                                     );
+                                    $titleText = Lang::txt('COM_WIKI_REVISION_DELETE');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-trash delete" title="<?= Lang::txt('COM_WIKI_REVISION_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-trash delete" title="<?= $titleText ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                 </td>
                                 <?php } ?>
                             </tr>

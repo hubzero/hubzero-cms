@@ -86,7 +86,14 @@ $debugUrl = Route::url(
                 </th>
                 <?php foreach ($this->actions as $key => $action) : ?>
                     <th>
-                        <span class="hasTip" title="<?= htmlspecialchars(Lang::txt($key) . '::' . Lang::txt($action[1]), ENT_COMPAT, 'UTF-8') ?>"><?= Lang::txt($key) ?></span>
+                        <?php
+                        $titleText = htmlspecialchars(
+                            Lang::txt($key) . '::' . Lang::txt($action[1]),
+                            ENT_COMPAT,
+                            'UTF-8',
+                        );
+                        ?>
+                        <span class="hasTip" title="<?= $titleText ?>"><?= Lang::txt($key) ?></span>
                     </th>
                 <?php endforeach; ?>
                 <th>

@@ -88,8 +88,11 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
         <span id="o<?php echo $this->seeker->uid; ?>">
             <?php
             $shortlistUrl = Route::url('index.php?option=com_jobs&oid=' . $this->seeker->uid . '&task=shortlist');
+            $titleText = isset($this->seeker->shortlisted) && $this->seeker->shortlisted
+                ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST')
+                : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST');
             ?>
-            <a href="<?= $shortlistUrl ?>" class="favvit" title="<?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST') : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST') ?>">
+            <a href="<?= $shortlistUrl ?>" class="favvit" title="<?= $titleText ?>">
                 <?= isset($this->seeker->shortlisted) && $this->seeker->shortlisted
                     ? Lang::txt('COM_JOBS_ACTION_REMOVE_FROM_SHORTLIST')
                     : Lang::txt('COM_JOBS_ACTION_ADD_TO_SHORTLIST') ?>
@@ -117,13 +120,23 @@ echo isset($this->seeker->shortlisted) && $this->seeker->shortlisted ? ' shortli
                 ?>
                 <span class="mini"> | </span>
                 <span class="mini">
-                    <a href="<?= $this->escape($url) ?>" class="web" rel="external" title="<?= $this->escape(Lang::txt('COM_JOBS_MEMBER_WEBSITE') . ': ' . $this->seeker->url) ?>"><?= Lang::txt('COM_JOBS_WEBSITE') ?></a>
+                    <?php
+                    $titleText = $this->escape(Lang::txt('COM_JOBS_MEMBER_WEBSITE') . ': ' . $this->seeker->url);
+                    ?>
+                    <a href="<?= $this->escape($url) ?>" class="web" rel="external" title="<?= $titleText ?>"><?= Lang::txt('COM_JOBS_WEBSITE') ?></a>
                 </span>
             <?php } ?>
             <?php if ($this->seeker->linkedin) { ?>
                 <span class="mini"> | </span>
                 <span class="mini">
-                    <a href="<?= $this->escape(preg_match('#^https?://#i', $this->seeker->linkedin) ? $this->seeker->linkedin : 'https://' . ltrim($this->seeker->linkedin, '/')) ?>" class="linkedin" rel="external" title="<?= Lang::txt('COM_JOBS_MEMBER_LINKEDIN') ?>"><?= Lang::txt('COM_JOBS_LINKEDIN') ?></a>
+                    <?php
+                    $linkUrl = $this->escape(
+                        preg_match('#^https?://#i', $this->seeker->linkedin)
+                            ? $this->seeker->linkedin
+                            : 'https://' . ltrim($this->seeker->linkedin, '/'),
+                    );
+                    ?>
+                    <a href="<?= $linkUrl ?>" class="linkedin" rel="external" title="<?= Lang::txt('COM_JOBS_MEMBER_LINKEDIN') ?>"><?= Lang::txt('COM_JOBS_LINKEDIN') ?></a>
                 </span>
             <?php } ?>
         <?php } else { ?>

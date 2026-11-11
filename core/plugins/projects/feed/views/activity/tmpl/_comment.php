@@ -54,7 +54,10 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
 
         <div class="activity-actor-picture<?= $online ? ' tooltips" title="' . Lang::txt('PLG_PROJECTS_FEED_ONLINE') : '' ?>">
             <span class="user-img-wrap">
-                <img class="comment-author" src="<?= $creator->picture($comment->admin) ?>" alt="<?= $this->escape(($comment->admin == 1) ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author) ?>" />
+                <?php
+                $altText = $this->escape(($comment->admin == 1) ? Lang::txt('COM_PROJECTS_ADMIN') : $comment->author);
+                ?>
+                <img class="comment-author" src="<?= $creator->picture($comment->admin) ?>" alt="<?= $altText ?>" />
                 <?php if ($online) { ?>
                     <span class="online"><?php echo Lang::txt('PLG_PROJECTS_FEED_ONLINE'); ?></span>
                 <?php } ?>
@@ -112,8 +115,9 @@ if (isset($this->online) && in_array($comment->created_by, $this->online)) {
                                     $deletecommentUrl = Route::url(
                                         $this->model->link('feed') . '&action=deletecomment&cid=' . $comment->id,
                                     );
+                                    $confirmText = Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION');
                                     ?>
-                                    <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= Lang::txt('PLG_PROJECTS_BLOG_DELETE_CONFIRMATION') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                    <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete tooltips" title="<?= Lang::txt('JACTION_DELETE') ?>" data-confirm="<?= $confirmText ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
                                 </li>
                             <?php } ?>
                         </ul>

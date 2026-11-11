@@ -114,12 +114,22 @@ $registerUrl = Route::url(
         <div class="grid">
             <div class="col span6">
                 <label><?php echo Lang::txt('First Name:'); ?> <span class="required">Required</span>
-                    <input type="text" name="register[first_name]" value="<?= (isset($this->register['first_name'])) ? $this->escape($this->register['first_name']) : '' ?>" />
+                    <?php
+                    $fieldValue = (isset($this->register['first_name']))
+                        ? $this->escape($this->register['first_name'])
+                        : '';
+                    ?>
+                    <input type="text" name="register[first_name]" value="<?= $fieldValue ?>" />
                 </label>
             </div>
             <div class="col span6 omega">
                 <label><?php echo Lang::txt('Last Name:'); ?> <span class="required">Required</span>
-                    <input type="text" name="register[last_name]" value="<?= (isset($this->register['last_name'])) ? $this->escape($this->register['last_name']) : '' ?>" />
+                    <?php
+                    $fieldValue = (isset($this->register['last_name']))
+                        ? $this->escape($this->register['last_name'])
+                        : '';
+                    ?>
+                    <input type="text" name="register[last_name]" value="<?= $fieldValue ?>" />
                 </label>
             </div>
         </div>
@@ -129,14 +139,22 @@ $registerUrl = Route::url(
                 <div class="col span6">
                 <?php if ($this->params->get('show_affiliation')) : ?>
                     <label><?php echo Lang::txt('Affiliation:'); ?> <span class="required">Required</span>
-                        <input type="text" name="register[affiliation]" value="<?= (isset($this->register['affiliation'])) ? $this->escape($this->register['affiliation']) : '' ?>" />
+                        <?php
+                        $fieldValue = (isset($this->register['affiliation']))
+                            ? $this->escape($this->register['affiliation'])
+                            : '';
+                        ?>
+                        <input type="text" name="register[affiliation]" value="<?= $fieldValue ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
                 <div class="col span6 omega">
                 <?php if ($this->params->get('show_title')) : ?>
                     <label><?php echo Lang::txt('Title:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[title]" value="<?= (isset($this->register['title'])) ? $this->escape($this->register['title']) : '' ?>" />
+                        <?php
+                        $fieldValue = (isset($this->register['title'])) ? $this->escape($this->register['title']) : '';
+                        ?>
+                        <input type="text" name="register[title]" value="<?= $fieldValue ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
@@ -150,12 +168,18 @@ $registerUrl = Route::url(
             <div class="grid">
                 <div class="col span6">
                     <label><?php echo Lang::txt('City:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[city]" value="<?= (isset($this->register['city'])) ? $this->escape($this->register['city']) : '' ?>" />
+                        <?php
+                        $fieldValue = (isset($this->register['city'])) ? $this->escape($this->register['city']) : '';
+                        ?>
+                        <input type="text" name="register[city]" value="<?= $fieldValue ?>" />
                     </label>
                 </div>
                 <div class="col span6 omega">
                     <label><?php echo Lang::txt('State/Province:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[state]" value="<?= (isset($this->register['state'])) ? $this->escape($this->register['state']) : '' ?>" />
+                        <?php
+                        $fieldValue = (isset($this->register['state'])) ? $this->escape($this->register['state']) : '';
+                        ?>
+                        <input type="text" name="register[state]" value="<?= $fieldValue ?>" />
                     </label>
                 </div>
             </div>
@@ -167,7 +191,12 @@ $registerUrl = Route::url(
                 </div>
                 <div class="col span6 omega">
                     <label><?php echo Lang::txt('Country:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[country]" value="<?= (isset($this->register['country'])) ? $this->escape($this->register['country']) : '' ?>" />
+                        <?php
+                        $fieldValue = (isset($this->register['country']))
+                            ? $this->escape($this->register['country'])
+                            : '';
+                        ?>
+                        <input type="text" name="register[country]" value="<?= $fieldValue ?>" />
                     </label>
                 </div>
             </div>
@@ -178,7 +207,12 @@ $registerUrl = Route::url(
                 <div class="col span6">
                 <?php if ($this->params->get('show_telephone')) : ?>
                     <label><?php echo Lang::txt('Telephone:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[telephone]" value="<?= (isset($this->register['telephone'])) ? $this->escape($this->register['telephone']) : '' ?>" />
+                        <?php
+                        $fieldValue = (isset($this->register['telephone']))
+                            ? $this->escape($this->register['telephone'])
+                            : '';
+                        ?>
+                        <input type="text" name="register[telephone]" value="<?= $fieldValue ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
@@ -197,14 +231,22 @@ $registerUrl = Route::url(
                 <div class="col span6">
                 <?php if ($this->params->get('show_email')) : ?>
                     <label><?php echo Lang::txt('E-mail:'); ?> <span class="required">required</span>
-                        <input type="text" name="register[email]" value="<?= (isset($this->register['email'])) ? $this->escape($this->register['email']) : '' ?>" />
+                        <?php
+                        $fieldValue = (isset($this->register['email'])) ? $this->escape($this->register['email']) : '';
+                        ?>
+                        <input type="text" name="register[email]" value="<?= $fieldValue ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
                 <div class="col span6 omega">
                 <?php if ($this->params->get('show_website')) : ?>
                     <label><?php echo Lang::txt('Website:'); ?> <span class="optional">Optional</span>
-                        <input type="text" name="register[website]" value="<?= (isset($this->register['website'])) ? $this->escape($this->register['website']) : '' ?>" />
+                        <?php
+                        $fieldValue = (isset($this->register['website']))
+                            ? $this->escape($this->register['website'])
+                            : '';
+                        ?>
+                        <input type="text" name="register[website]" value="<?= $fieldValue ?>" />
                     </label>
                 <?php endif; ?>
                 </div>
@@ -236,7 +278,12 @@ $registerUrl = Route::url(
                         <option value="military"><?php echo Lang::txt('Military'); ?></option>
                         <option value="unemployed"><?php echo Lang::txt('Retired / Unemployed'); ?></option>
                     </select>
-                    <input name="register[position_other]" type="text" value="<?= (isset($this->register['position_other'])) ? $this->escape($this->register['position_other']) : '' ?>" />
+                    <?php
+                    $fieldValue = (isset($this->register['position_other']))
+                        ? $this->escape($this->register['position_other'])
+                        : '';
+                    ?>
+                    <input name="register[position_other]" type="text" value="<?= $fieldValue ?>" />
                 </label>
             <?php endif; ?>
 
@@ -377,7 +424,10 @@ $registerUrl = Route::url(
                     <?php echo Lang::txt('I have specific dietary needs.'); ?>
                 </label>
                 <label class="indent"><?php echo Lang::txt('Please specify'); ?>
-                    <input type="text" name="dietary[specific]" value="<?= isset($this->dietary['specific']) ? $this->escape($this->dietary['specific']) : '' ?>" />
+                    <?php
+                    $fieldValue = isset($this->dietary['specific']) ? $this->escape($this->dietary['specific']) : '';
+                    ?>
+                    <input type="text" name="dietary[specific]" value="<?= $fieldValue ?>" />
                 </label>
             <?php endif; ?>
         </fieldset>

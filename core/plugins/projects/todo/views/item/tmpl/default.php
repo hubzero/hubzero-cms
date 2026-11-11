@@ -110,7 +110,11 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
         <?php if (!$this->row->isComplete() && $this->model->access('content')) { ?>
         <span class="edit"><a href="<?= Route::url($url . '&action=edit') . '/?todoid=' . $this->row->get('id') ?>"
             class="showinbox"><?= Lang::txt('PLG_PROJECTS_TODO_EDIT') ?></a></span>
-        <span class="checked"><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=changestate') . '/?todoid=' . $this->row->get('id') . '&amp;state=1' ?>" class="confirm-checkoff"><?= Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF') ?></button></span>
+            <?php
+            $changestateUrl = Route::url($url . '&action=changestate') . '/?todoid=' . $this->row->get('id')
+                . '&amp;state=1';
+            ?>
+        <span class="checked"><button type="submit" form="hz-post-action" formaction="<?= $changestateUrl ?>" class="confirm-checkoff"><?= Lang::txt('PLG_PROJECTS_TODO_TODO_CHECK_OFF') ?></button></span>
         <?php } ?>
         <?php if ($deletable) { ?>
         <span class="trash"><button type="submit" form="hz-post-action"

@@ -168,9 +168,18 @@ if ($mode != 'preview') {
                         $live_site = rtrim(Request::base(), '/');
                         ?>
                         <p>
-                            <a class="feed" id="resource-audio-feed" href="<?= $live_site . '/resources/' . $this->model->id . '/feed.rss?content=audio' ?>"><?= Lang::txt('Audio podcast') ?></a><br />
-                            <a class="feed" id="resource-video-feed" href="<?= $live_site . '/resources/' . $this->model->id . '/feed.rss?content=video' ?>"><?= Lang::txt('Video podcast') ?></a><br />
-                            <a class="feed" id="resource-slides-feed" href="<?= $live_site . '/resources/' . $this->model->id . '/feed.rss?content=slides' ?>"><?= Lang::txt('Slides/Notes podcast') ?></a>
+                            <?php
+                            $linkUrl = $live_site . '/resources/' . $this->model->id . '/feed.rss?content=audio';
+                            ?>
+                            <a class="feed" id="resource-audio-feed" href="<?= $linkUrl ?>"><?= Lang::txt('Audio podcast') ?></a><br />
+                            <?php
+                            $linkUrl = $live_site . '/resources/' . $this->model->id . '/feed.rss?content=video';
+                            ?>
+                            <a class="feed" id="resource-video-feed" href="<?= $linkUrl ?>"><?= Lang::txt('Video podcast') ?></a><br />
+                            <?php
+                            $linkUrl = $live_site . '/resources/' . $this->model->id . '/feed.rss?content=slides';
+                            ?>
+                            <a class="feed" id="resource-slides-feed" href="<?= $linkUrl ?>"><?= Lang::txt('Slides/Notes podcast') ?></a>
                         </p>
                         <?php
                         if ($this->tab != 'play') {

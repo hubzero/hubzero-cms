@@ -167,7 +167,10 @@ $citationFormat = $this->publication->config('citation_format', 'apa');
                 </div>
                 <div class="col span6 omega">
                     <label for="doi">
-                        <abbr title="<?= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_DOI') ?>"><?= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_DOI') ?></abbr>:
+                        <?php
+                        $titleText = Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_DOI');
+                        ?>
+                        <abbr title="<?= $titleText ?>"><?= Lang::txt('PLG_PROJECTS_LINKS_SELECTOR_CITE_DOI') ?></abbr>:
                         <input type="text" name="cite[doi]" id="doi" size="30" maxlength="250"
                             value="<?= $this->escape($this->row->doi) ?>" />
                     </label>

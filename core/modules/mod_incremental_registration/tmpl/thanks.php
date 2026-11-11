@@ -22,5 +22,10 @@ defined('_HZEXEC_') or die();
         <?php echo Lang::txt('MOD_INCREMENTAL_REGISTRATION_REDIRECTED_SOON'); ?>
     </p>
 
-    <a href="<?= $this->escape(Request::getString('REQUEST_URI', Request::getString('REDIRECT_REQUEST_URI', '', 'server'), 'server')) ?>"><?= Lang::txt('MOD_INCREMENTAL_REGISTRATION_CLICK_IF_NOT_REDIRECTED') ?></a>
+    <?php
+    $linkUrl = $this->escape(
+        Request::getString('REQUEST_URI', Request::getString('REDIRECT_REQUEST_URI', '', 'server'), 'server'),
+    );
+    ?>
+    <a href="<?= $linkUrl ?>"><?= Lang::txt('MOD_INCREMENTAL_REGISTRATION_CLICK_IF_NOT_REDIRECTED') ?></a>
 </div>

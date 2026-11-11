@@ -50,7 +50,11 @@ if ($this->getError()) {
 } ?>
 
 <?php if ($this->model->exists()) { ?>
-    <form action="<?= Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&task=process') . '?reviewer=' . $this->reviewer ?>" method="post" id="<?= $this->ajax ? 'hubForm-ajax' : 'plg-form' ?>" >
+    <?php
+    $processUrl = Route::url('index.php?option=' . $this->option . '&id=' . $this->model->get('id') . '&task=process')
+        . '?reviewer=' . $this->reviewer;
+    ?>
+    <form action="<?= $processUrl ?>" method="post" id="<?= $this->ajax ? 'hubForm-ajax' : 'plg-form' ?>" >
 
     <fieldset>
         <input type="hidden" name="id" value="<?php echo $this->model->get('id'); ?>" />

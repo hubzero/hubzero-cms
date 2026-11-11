@@ -73,9 +73,15 @@ if ($this->lecture) {
                     <?php if ($this->comment->wasModified()) { ?>
                         &mdash; <?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_EDITED'); ?>
                         <span class="comment-date-at">@</span>
-                        <span class="time"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('time') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->modified();
+                        ?>
+                        <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('time') ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_DISCUSSIONS_ON'); ?></span>
-                        <span class="date"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('date') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->modified();
+                        ?>
+                        <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('date') ?></time></span>
                     <?php } ?>
                 </a>
                 <?php

@@ -461,8 +461,12 @@ $sortDirSelected = function ($value) use ($view) {
                                                     'index.php?option=' . $this->option . '&id=' . User::get('id')
                                                         . '&active=messages&task=new&to[]=' . $row->get('id'),
                                                 );
+                                                $titleText = Lang::txt(
+                                                    'COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE',
+                                                    $this->escape($name),
+                                                );
                                                 ?>
-                                                <a class="icon-email btn message-member" href="<?= $newUrl ?>" title="<?= Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE_TO_TITLE', $this->escape($name)) ?>">
+                                                <a class="icon-email btn message-member" href="<?= $newUrl ?>" title="<?= $titleText ?>">
                                                     <?php echo Lang::txt('COM_MEMBERS_BROWSE_SEND_MESSAGE'); ?>
                                                 </a>
                                             <?php } ?>

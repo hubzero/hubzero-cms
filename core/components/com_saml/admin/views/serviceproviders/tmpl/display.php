@@ -170,7 +170,10 @@ $stateSelected = function ($value) use ($view) {
                         <?php } elseif ($cert['valid_to'] < ($now + $certWarn)) { ?>
                             <span class="warning"><?php echo Date::of($cert['valid_to'])->toLocal('Y-m-d'); ?></span>
                         <?php } else { ?>
-                            <time datetime="<?= gmdate('Y-m-d\TH:i:s\Z', $cert['valid_to']) ?>"><?= Date::of($cert['valid_to'])->toLocal('Y-m-d') ?></time>
+                            <?php
+                            $datetime = gmdate('Y-m-d\TH:i:s\Z', $cert['valid_to']);
+                            ?>
+                            <time datetime="<?= $datetime ?>"><?= Date::of($cert['valid_to'])->toLocal('Y-m-d') ?></time>
                         <?php } ?>
                     <?php } else { ?>
                         <span class="warning"><?php echo Lang::txt('COM_SAML_CERT_NONE'); ?></span>

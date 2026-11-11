@@ -164,9 +164,15 @@ if (!$no_html) {
                             <br />
                             <span class="entry-date">
                                 <span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
-                                <span class="time"><time datetime="<?= $this->post->created() ?>"><?= $this->post->created('time') ?></time></span>
+                                <?php
+                                $datetime = $this->post->created();
+                                ?>
+                                <span class="time"><time datetime="<?= $datetime ?>"><?= $this->post->created('time') ?></time></span>
                                 <span class="entry-date-on"><?php echo Lang::txt('COM_COLLECTIONS_ON'); ?></span>
-                                <span class="date"><time datetime="<?= $this->post->created() ?>"><?= $this->post->created('date') ?></time></span>
+                                <?php
+                                $datetime = $this->post->created();
+                                ?>
+                                <span class="date"><time datetime="<?= $datetime ?>"><?= $this->post->created('date') ?></time></span>
                             </span>
                         </p>
                     </div><!-- / .attribution -->
@@ -227,7 +233,13 @@ if (!$no_html) {
                     ?>
                     <form action="<?= $savecommentUrl ?>" method="post" id="commentform" enctype="multipart/form-data">
                         <p class="comment-member-photo">
-                            <img src="<?= User::picture(0) ?>" alt="<?= Lang::txt('COM_COLLECTIONS_PROFILE_PICTURE', $this->escape(stripslashes(User::get('name')))) ?>" />
+                            <?php
+                            $altText = Lang::txt(
+                                'COM_COLLECTIONS_PROFILE_PICTURE',
+                                $this->escape(stripslashes(User::get('name'))),
+                            );
+                            ?>
+                            <img src="<?= User::picture(0) ?>" alt="<?= $altText ?>" />
                         </p>
 
                         <fieldset>
@@ -375,8 +387,10 @@ if (!$no_html) {
                                         ),
                                     false,
                                 );
+                                $ariaLabel = Lang::txt('COM_COLLECTIONS_COLLECT') . ': '
+                                    . $this->escape($this->collection->get('title'));
                                 ?>
-                                <a class="btn repost tooltips" href="<?= $collectUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($this->collection->get('title')) ?>">
+                                <a class="btn repost tooltips" href="<?= $collectUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= $ariaLabel ?>">
                                     <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                 </a>
                                 <?php
@@ -385,8 +399,10 @@ if (!$no_html) {
                                         . base64_encode(Route::url($this->collection->link(), false, true)),
                                     false,
                                 );
+                                $ariaLabel = Lang::txt('COM_COLLECTIONS_FOLLOW') . ': '
+                                    . $this->escape($this->collection->get('title'));
                                 ?>
-                                <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($this->collection->get('title')) ?>">
+                                <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= $ariaLabel ?>">
                                     <span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
                                 </a>
                             <?php } ?>
@@ -423,9 +439,15 @@ if (!$no_html) {
                             <br />
                             <span class="entry-date">
                                 <span class="entry-date-at"><?php echo Lang::txt('COM_COLLECTIONS_AT'); ?></span>
-                                <span class="time"><time datetime="<?= $this->collection->created() ?>"><?= $this->collection->created('time') ?></time></span>
+                                <?php
+                                $datetime = $this->collection->created();
+                                ?>
+                                <span class="time"><time datetime="<?= $datetime ?>"><?= $this->collection->created('time') ?></time></span>
                                 <span class="entry-date-on"><?php echo Lang::txt('COM_COLLECTIONS_ON'); ?></span>
-                                <span class="date"><time datetime="<?= $this->collection->created() ?>"><?= $this->collection->created('date') ?></time></span>
+                                <?php
+                                $datetime = $this->collection->created();
+                                ?>
+                                <span class="date"><time datetime="<?= $datetime ?>"><?= $this->collection->created('date') ?></time></span>
                             </span>
                         </p>
                     </div><!-- / .attribution -->
@@ -528,8 +550,10 @@ if (!$no_html) {
                                             ),
                                         false,
                                     );
+                                    $ariaLabel = Lang::txt('COM_COLLECTIONS_COLLECT') . ': '
+                                        . $this->escape($collection->get('title'));
                                     ?>
-                                    <a class="btn repost tooltips" href="<?= $collectUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_COLLECT') . ': ' . $this->escape($collection->get('title')) ?>">
+                                    <a class="btn repost tooltips" href="<?= $collectUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_COLLECT') ?>" aria-label="<?= $ariaLabel ?>">
                                         <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                     </a>
                                     <?php
@@ -538,8 +562,10 @@ if (!$no_html) {
                                             . base64_encode(Route::url($collection->link(), false, true)),
                                         false,
                                     );
+                                    $ariaLabel = Lang::txt('COM_COLLECTIONS_FOLLOW') . ': '
+                                        . $this->escape($collection->get('title'));
                                     ?>
-                                    <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= Lang::txt('COM_COLLECTIONS_FOLLOW') . ': ' . $this->escape($collection->get('title')) ?>">
+                                    <a class="btn follow tooltips" href="<?= $linkUrl ?>" title="<?= Lang::txt('COM_COLLECTIONS_WARNING_LOGIN_TO_FOLLOW') ?>" aria-label="<?= $ariaLabel ?>">
                                         <span><?php echo Lang::txt('COM_COLLECTIONS_FOLLOW'); ?></span>
                                     </a>
                                 <?php } ?>

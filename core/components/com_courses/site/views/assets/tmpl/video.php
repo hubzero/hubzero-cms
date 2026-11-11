@@ -460,7 +460,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         <span id="font-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR') ?>:</span>
                                     </div>
                                     <div class="col span6 omega input">
-                                        <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR_PICKER')) ?>"></div>
+                                        <?php
+                                        $ariaLabel = $this->escape(
+                                            Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR_PICKER'),
+                                        );
+                                        ?>
+                                        <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="<?= $ariaLabel ?>"></div>
                                     </div>
                                 </div>
                                 <div class="grid">
@@ -468,7 +473,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         <span id="background-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND') ?>:</span>
                                     </div>
                                     <div class="col span6 omega input">
-                                        <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND_PICKER')) ?>"></div>
+                                        <?php
+                                        $ariaLabel = $this->escape(
+                                            Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND_PICKER'),
+                                        );
+                                        ?>
+                                        <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="<?= $ariaLabel ?>"></div>
                                     </div>
                                 </div>
                                 <div class="grid">
@@ -564,7 +574,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <div class="grid">
                                 <div class="input">
                                     <label for="timestamp-link" class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION') ?></label>
-                                    <input type="text" id="timestamp-link" value="" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION')) ?>" readonly />
+                                    <?php
+                                    $ariaLabel = $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION'));
+                                    ?>
+                                    <input type="text" id="timestamp-link" value="" aria-label="<?= $ariaLabel ?>" readonly />
                                     <span class="hint"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_COPY_HINT') ?></span>
                                 </div>
                             </div>
@@ -624,7 +637,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         <a href="<?= $this->escape($content_folder . DS . $slide->media[0]->source) ?>"
                                             class="flowplayer_slide" id="flowplayer_slide_<?= $counter ?>"></a>
                                     </video>
-                                    <img src="<?= $this->escape(isset($slide->media[3]) ? $content_folder . DS . $slide->media[3]->source : '') ?>" alt="<?= $this->escape($slide->title) ?>" class="imagereplacement" />
+                                    <?php
+                                    $sourceUrl = $this->escape(
+                                        isset($slide->media[3]) ? $content_folder . DS . $slide->media[3]->source : '',
+                                    );
+                                    ?>
+                                    <img src="<?= $sourceUrl ?>" alt="<?= $this->escape($slide->title) ?>" class="imagereplacement" />
                                 <?php endif; ?>
                             </li>
                             <?php $counter++; ?>
@@ -652,7 +670,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <div id="media-progress"></div>
                         </div>
                         <div id="control-buttons-right">
-                            <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_SETTINGS')) ?>" aria-haspopup="true" aria-expanded="false">
+                            <?php
+                            $ariaLabel = $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTIONS_SETTINGS'));
+                            ?>
+                            <a id="subtitle" class="control" href="javascript:void(0);" role="button" aria-pressed="false" aria-label="<?= $ariaLabel ?>" aria-haspopup="true" aria-expanded="false">
                                 <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <rect x="2" y="5" width="20" height="14" rx="2.5" stroke="currentColor"
@@ -760,7 +781,14 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                                 <span id="font-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR') ?>:</span>
                                             </div>
                                             <div class="col span6 omega input">
-                                                <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR_PICKER')) ?>"></div>
+                                                <?php
+                                                $ariaLabel = $this->escape(
+                                                    Lang::txt(
+                                                        'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_FONT_COLOR_PICKER',
+                                                    ),
+                                                );
+                                                ?>
+                                                <div id="font-color" data-color="FFF" role="button" tabindex="0" aria-labelledby="font-color-label" aria-label="<?= $ariaLabel ?>"></div>
                                             </div>
                                         </div>
                                         <div class="grid">
@@ -768,7 +796,14 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                                 <span id="background-color-label"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND') ?>:</span>
                                             </div>
                                             <div class="col span6 omega input">
-                                                <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND_PICKER')) ?>"></div>
+                                                <?php
+                                                $ariaLabel = $this->escape(
+                                                    Lang::txt(
+                                                        'COM_COURSES_VIDEO_CONTROL_CAPTION_OPTION_BACKGROUND_PICKER',
+                                                    ),
+                                                );
+                                                ?>
+                                                <div id="background-color" data-color="000" role="button" tabindex="0" aria-labelledby="background-color-label" aria-label="<?= $ariaLabel ?>"></div>
                                             </div>
                                         </div>
                                         <div class="grid">
@@ -826,7 +861,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         aria-valuemin="0" aria-valuemax="100" aria-valuenow="75"></div>
                                 </div>
                             </a>
-                            <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAYBACK_SETTINGS')) ?>" aria-haspopup="true" aria-expanded="false">
+                            <?php
+                            $ariaLabel = $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_PLAYBACK_SETTINGS'));
+                            ?>
+                            <a id="settings" class="control" href="javascript:void(0);" role="button" aria-label="<?= $ariaLabel ?>" aria-haspopup="true" aria-expanded="false">
                                 <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor" />
@@ -853,7 +891,10 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     </div>
                                 </div>
                             </a>
-                            <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK_AT_TIME')) ?>" aria-haspopup="true" aria-expanded="false">
+                            <?php
+                            $ariaLabel = $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_SHARE_LINK_AT_TIME'));
+                            ?>
+                            <a id="link" class="control" href="javascript:void(0);" role="button" aria-label="<?= $ariaLabel ?>" aria-haspopup="true" aria-expanded="false">
                                 <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
@@ -868,7 +909,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                     <div class="grid">
                                         <div class="input">
                                             <label for="timestamp-link" class="sr-only"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION') ?></label>
-                                            <input type="text" id="timestamp-link" value="" aria-label="<?= $this->escape(Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION')) ?>" readonly />
+                                            <?php
+                                            $ariaLabel = $this->escape(
+                                                Lang::txt('COM_COURSES_VIDEO_CONTROL_LINK_AT_POSITION'),
+                                            );
+                                            ?>
+                                            <input type="text" id="timestamp-link" value="" aria-label="<?= $ariaLabel ?>" readonly />
                                             <span class="hint"><?= Lang::txt('COM_COURSES_VIDEO_CONTROL_COPY_HINT') ?></span>
                                         </div>
                                     </div>
@@ -904,7 +950,12 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 <source src="<?= $this->escape($content_folder . DS . $source->source) ?>"
                                     type='<?= $this->escape($type) ?>'>
                             <?php endforeach; ?>
-                            <a href="<?= $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')) ?>" id="flowplayer"></a>
+                            <?php
+                            $linkUrl = $this->escape(
+                                (isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : ''),
+                            );
+                            ?>
+                            <a href="<?= $linkUrl ?>" id="flowplayer"></a>
 
                             <?php if (isset($subs) && count($subs) > 0) : ?>
                                 <?php foreach ($subs as $sub) : ?>
@@ -922,7 +973,15 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                             <?php foreach ($__pmedia as $source) : ?>
                                 <source src="<?php echo $this->escape($content_folder . DS . $source->source); ?>" />
                             <?php endforeach; ?>
-                            <a href="<?= $this->escape((isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : '')) ?>" id="flowplayer" duration="<?= isset($presentation->duration) && $presentation->duration ? $this->escape($presentation->duration) : '' ?>"></a>
+                            <?php
+                            $linkUrl = $this->escape(
+                                (isset($__pmedia[0]) ? $content_folder . DS . $__pmedia[0]->source : ''),
+                            );
+                            $duration = isset($presentation->duration) && $presentation->duration
+                                ? $this->escape($presentation->duration)
+                                : '';
+                            ?>
+                            <a href="<?= $linkUrl ?>" id="flowplayer" duration="<?= $duration ?>"></a>
                         </audio>
                     <?php endif; ?>
                     <div id="video-subtitles"></div>

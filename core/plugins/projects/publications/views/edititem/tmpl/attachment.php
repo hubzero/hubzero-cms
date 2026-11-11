@@ -69,7 +69,10 @@ $placeholder = $this->row->title && $this->row->title != $defaultTitle ? $this->
 
                 <label for="title">
                     <span class="leftshift faded"><?= $this->row->type == 'link' ? ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_TITLE')) : ucfirst(Lang::txt('PLG_PROJECTS_PUBLICATIONS_LABEL')) ?>:</span>
-                    <input type="text" name="title" maxlength="250" class="long" value="<?= $this->escape($this->row && $this->row->title ? $this->row->title : $defaultTitle) ?>" placeholder="<?= $this->escape($placeholder) ?>" />
+                    <?php
+                    $fieldValue = $this->escape($this->row && $this->row->title ? $this->row->title : $defaultTitle);
+                    ?>
+                    <input type="text" name="title" maxlength="250" class="long" value="<?= $fieldValue ?>" placeholder="<?= $this->escape($placeholder) ?>" />
                 </label>
                 <?php if ($this->row->type == 'link') { ?>
                     <p class="c-wrapper">

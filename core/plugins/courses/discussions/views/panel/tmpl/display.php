@@ -218,7 +218,10 @@ if (count($inst) > 0) {
 
             <div class="comments-panel">
                 <div class="comments-toolbar">
-                    <p><span class="comments" data-comments="%s comments" data-add="<?= Lang::txt('Start a discussion') ?>"><?= Lang::txt('Start a discussion') ?></span></p>
+                    <?php
+                    $dataAdd = Lang::txt('Start a discussion');
+                    ?>
+                    <p><span class="comments" data-comments="%s comments" data-add="<?= $dataAdd ?>"><?= Lang::txt('Start a discussion') ?></span></p>
                 </div><!-- / .comments-toolbar -->
                 <div class="comments-frame">
 

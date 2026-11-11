@@ -385,12 +385,22 @@ if ($label == 'none') {
                     <fieldset>
                         <label for="startuploaddate">
                             <?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN'); ?>
-                            <input type="text" name="startuploaddate" id="startuploaddate" value="<?= str_replace(' 00:00:00', '', $this->escape($this->filters['startuploaddate'])) ?>" />
+                            <?php
+                            $fieldValue = str_replace(
+                                ' 00:00:00',
+                                '',
+                                $this->escape($this->filters['startuploaddate']),
+                            );
+                            ?>
+                            <input type="text" name="startuploaddate" id="startuploaddate" value="<?= $fieldValue ?>" />
                             <div class="hint"><?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
                         </label>
                         <label for="enduploaddate">
                             <?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN_AND'); ?><br/>
-                            <input type="text" name="enduploaddate" id="enduploaddate" value="<?= str_replace(' 00:00:00', '', $this->escape($this->filters['enduploaddate'])) ?>" />
+                            <?php
+                            $fieldValue = str_replace(' 00:00:00', '', $this->escape($this->filters['enduploaddate']));
+                            ?>
+                            <input type="text" name="enduploaddate" id="enduploaddate" value="<?= $fieldValue ?>" />
                             <div class="hint"><?php echo Lang::txt('COM_CITATIONS_UPLOADED_BETWEEN_HINT'); ?></div>
                         </label>
                     </fieldset>

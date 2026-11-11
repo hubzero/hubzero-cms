@@ -105,7 +105,12 @@ if ($this->getError()) {
             <?php echo $this->file->get('type') == 'folder'
                 ? '<input type="hidden" name="folder" value="' . $this->escape($this->file->get('name')) . '" />'
                 : '<input type="hidden" name="asset" value="' . $this->escape($this->file->get('name')) . '" />'; ?>
-            <input type="submit" value="<?= $remoteControl ? Lang::txt('PLG_PROJECTS_FILES_ACTION_UNSHARE') : Lang::txt('PLG_PROJECTS_FILES_ACTION_SHARE') ?>" id="submit-ajaxform" class="btn" />
+            <?php
+            $fieldValue = $remoteControl
+                ? Lang::txt('PLG_PROJECTS_FILES_ACTION_UNSHARE')
+                : Lang::txt('PLG_PROJECTS_FILES_ACTION_SHARE');
+            ?>
+            <input type="submit" value="<?= $fieldValue ?>" id="submit-ajaxform" class="btn" />
             <input type="reset" id="cancel-action" class="btn btn-cancel" value="<?php echo Lang::txt('JCANCEL'); ?>" />
         </p>
     </fieldset>

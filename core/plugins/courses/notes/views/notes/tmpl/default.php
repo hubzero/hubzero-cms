@@ -101,7 +101,18 @@ $base = $this->offering->link();
                         id="note-<?= $note->get('id') ?>" data-id="<?= $note->get('id') ?>">
                         <div class="jSticky-header">
                             <?php if ($note->get('timestamp') && $note->get('timestamp') != '00:00:00') : ?>
-                                <a href="<?= str_replace('%3A', ':', Route::url($base . '&active=outline&unit=' . $unit->get('alias') . '&b=' . $lecture->get('alias') . '&time=' . $this->escape($note->get('timestamp')))) ?>" class="time"><?= $this->escape($note->get('timestamp')) ?></a>
+                                <?php
+                                $linkUrl = str_replace(
+                                    '%3A',
+                                    ':',
+                                    Route::url(
+                                        $base . '&active=outline&unit=' . $unit->get('alias') . '&b='
+                                            . $lecture->get('alias') . '&time='
+                                            . $this->escape($note->get('timestamp')),
+                                    ),
+                                );
+                                ?>
+                                <a href="<?= $linkUrl ?>" class="time"><?= $this->escape($note->get('timestamp')) ?></a>
                             <?php endif; ?>
                         </div>
                         <div class="jStickyNote">

@@ -346,7 +346,10 @@ $progress_timeline .= '</div>';
                 Thanks for working hard and claiming your badge. We hope you have the chance to earn another one soon!
             </p>
             <p>
-                <a class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getBadgesUrl() ?>">View your badges!</a>
+                <?php
+                $linkUrl = $this->course->offering()->section()->badge()->getBadgesUrl();
+                ?>
+                <a class="claim-item" href="<?= $linkUrl ?>">View your badges!</a>
             </p>
         <?php elseif ($student->badge()->get('action') == 'deny') : ?>
             <h3>Congratulations! You earned the badge!</h3>
@@ -354,7 +357,10 @@ $progress_timeline .= '</div>';
                 You chose to deny the badge. That's not a problem. If you change your mind, you can always go back and claim it!
             </p>
             <p>
-                <a class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getDeniedUrl() ?>">View denied badges</a>
+                <?php
+                $linkUrl = $this->course->offering()->section()->badge()->getDeniedUrl();
+                ?>
+                <a class="claim-item" href="<?= $linkUrl ?>">View denied badges</a>
             </p>
         <?php else : ?>
             <h3>Congratulations! You've earned the badge...and you deserve it!</h3>
@@ -364,7 +370,10 @@ $progress_timeline .= '</div>';
             </p>
             <?php if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
                 <p>
-                    <a class="claim-item" href="<?php echo $this->course->offering()->section()->badge()->getClaimUrl() ?>">Claim your badge!</a>
+                    <?php
+                    $linkUrl = $this->course->offering()->section()->badge()->getClaimUrl();
+                    ?>
+                    <a class="claim-item" href="<?= $linkUrl ?>">Claim your badge!</a>
                 </p>
             <?php else : ?>
                 <p>
@@ -490,7 +499,10 @@ $progress_timeline .= '</div>';
                                 }
                                 ?>
                                 <tr class="<?php echo $class ?>">
-                                    <td class="grade-details-title"><a href="<?php echo $this->escape($form['url']) ?>"><?php echo $this->escape($form['title']) ?></a></td>
+                                    <?php
+                                    $linkUrl = $this->escape($form['url']);
+                                    ?>
+                                    <td class="grade-details-title"><a href="<?= $linkUrl ?>"><?php echo $this->escape($form['title']) ?></a></td>
                                     <td class="grade-details-score">
                                         <?php echo $form['score'] . (is_numeric($form['score']) ? '%' : '') ?>
                                     </td>

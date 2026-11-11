@@ -277,7 +277,12 @@ if (isset($this->messages)) {
                         </select>
                     </label>
                     <input type="hidden" name="idlist" value="<?php echo $this->escape($this->filters['idlist']); ?>"/>
-                    <input type="hidden" name="referer" value="<?= isset($_SERVER['HTTP_REFERER']) ? htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES) : '' ?>" />
+                    <?php
+                    $fieldValue = isset($_SERVER['HTTP_REFERER'])
+                        ? htmlspecialchars($_SERVER['HTTP_REFERER'], ENT_QUOTES)
+                        : '';
+                    ?>
+                    <input type="hidden" name="referer" value="<?= $fieldValue ?>" />
                     <input type="hidden" name="action" value="browse" />
 
                     <div class="btn-cluster">

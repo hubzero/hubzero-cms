@@ -134,7 +134,13 @@ $idSelected = function ($value) use ($view) {
                                   // every repost too. The controller allows that only to the item's
                                   // owner; offering the link to anyone else is a 403 waiting to happen.
                                 if ($item->get('created_by') == User::get('id')) { ?>
-                                <button type="submit" form="hz-post-action" formaction="<?= Route::url($base . '&scope=post/' . $this->entry->get('id') . '/edit&remove=' . $asset->get('id')) ?>" class="delete" data-id="<?= $this->escape($asset->get('id')) ?>" title="<?= Lang::txt('Delete this asset') ?>">
+                                    <?php
+                                    $actionUrl = Route::url(
+                                        $base . '&scope=post/' . $this->entry->get('id') . '/edit&remove='
+                                            . $asset->get('id'),
+                                    );
+                                    ?>
+                                <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="delete" data-id="<?= $this->escape($asset->get('id')) ?>" title="<?= Lang::txt('Delete this asset') ?>">
                                       <?php echo Lang::txt('delete'); ?>
                                 </button>
                                 <?php } ?>

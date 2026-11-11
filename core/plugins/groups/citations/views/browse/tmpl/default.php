@@ -98,7 +98,12 @@ if (isset($this->messages)) {
                         <thead>
                             <tr>
                                 <th class="batch">
-                                    <input type="checkbox" class="checkall-download" aria-label="<?= $this->escape(Lang::txt('PLG_GROUPS_CITATIONS_SELECT_ALL') ?: 'Select all citations') ?>" />
+                                    <?php
+                                    $ariaLabel = $this->escape(
+                                        Lang::txt('PLG_GROUPS_CITATIONS_SELECT_ALL') ?: 'Select all citations',
+                                    );
+                                    ?>
+                                    <input type="checkbox" class="checkall-download" aria-label="<?= $ariaLabel ?>" />
                                 </th>
                                 <th colspan="6"><?php echo Lang::txt('PLG_GROUPS_CITATIONS'); ?></th>
                             </tr>
@@ -127,7 +132,12 @@ if (isset($this->messages)) {
                                 } ?> 
                                 <tr class="citation-row <?= ($cite->published == $cite::STATE_UNPUBLISHED) ? 'unpublished' : '' ?>">
                                     <td class="batch">
-                                        <input type="checkbox" class="download-marker" name="download_marker[]" value="<?= $cite->id ?>" aria-label="<?= $this->escape(Lang::txt('PLG_GROUPS_CITATIONS_SELECT_CITATION') ?: 'Select citation') . ' ' . (int) $cite->id ?>" />
+                                        <?php
+                                        $ariaLabel = $this->escape(
+                                            Lang::txt('PLG_GROUPS_CITATIONS_SELECT_CITATION') ?: 'Select citation',
+                                        ) . ' ' . (int) $cite->id;
+                                        ?>
+                                        <input type="checkbox" class="download-marker" name="download_marker[]" value="<?= $cite->id ?>" aria-label="<?= $ariaLabel ?>" />
                                     </td>
                                     <?php if ($this->label != "none") : ?>
                                         <td class="citation-label <?php echo $this->citations_label_class; ?>">

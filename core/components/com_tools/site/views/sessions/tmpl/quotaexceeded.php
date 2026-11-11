@@ -43,7 +43,13 @@ $this->css('tools.css');
                 $cls = ($cls == 'odd') ? 'even' : 'odd';
                 ?>
             <tr class="<?php echo $cls; ?>">
-                <td><a href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=session&app=' . $session->appname . '&sess=' . $session->sessnum) ?>" title="<?= Lang::txt('COM_TOOLS_RESUME_TITLE') ?>"><?= $this->escape($session->sessname) ?></a></td>
+                <?php
+                $sessionUrl = Route::url(
+                    'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=session&app='
+                        . $session->appname . '&sess=' . $session->sessnum,
+                );
+                ?>
+                <td><a href="<?= $sessionUrl ?>" title="<?= Lang::txt('COM_TOOLS_RESUME_TITLE') ?>"><?= $this->escape($session->sessname) ?></a></td>
                 <td><?php echo $session->start; ?></td>
                 <td><?php echo $session->accesstime; ?></td>
                 <?php if (User::get('username') == $session->username) {
@@ -52,7 +58,10 @@ $this->css('tools.css');
                             . $session->appname . '&sess=' . $session->sessnum . '&' . Session::getFormToken() . '=1',
                     );
                     ?>
-                <td><a class="closetool" href="<?= $stopUrl ?>" title="<?= Lang::txt('COM_TOOLS_TERMINATE_TITLE') ?>"><?= Lang::txt('COM_TOOLS_TERMINATE') ?></a></td>
+                    <?php
+                    $titleText = Lang::txt('COM_TOOLS_TERMINATE_TITLE');
+                    ?>
+                <td><a class="closetool" href="<?= $stopUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('COM_TOOLS_TERMINATE') ?></a></td>
                 <?php } else {
                     $unshareUrl = Route::url(
                         'index.php?option=' . $this->option . '&controller=' . $this->controller . '&task=unshare&app='

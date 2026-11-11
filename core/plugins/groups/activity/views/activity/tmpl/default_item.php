@@ -122,7 +122,10 @@ $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=a
                             : Route::url('index.php?option=com_projects&alias=' . $project->get('alias'));
                         ?>
                         <div class="activity-source icon-project">
-                            <a href="<?= $this->escape($projectDetailUrl) ?>"><?= $this->escape(stripslashes($project->get('title'))) ?></a>
+                            <?php
+                            $linkUrl = $this->escape($projectDetailUrl);
+                            ?>
+                            <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($project->get('title'))) ?></a>
                         </div>
                         <?php
                     }

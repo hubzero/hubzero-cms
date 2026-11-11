@@ -46,8 +46,9 @@ if (count($inst) > 0) {
                     <p class="comments-controls">
                         <?php
                         $linkUrl = Route::url($base . '&active=discussions');
+                        $titleText = Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC');
                         ?>
-                        <a class="add active" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_COURSES_DISCUSSIONS_NEW_TOPIC') ?>"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_NEW') ?></a>
+                        <a class="add active" href="<?= $linkUrl ?>" title="<?= $titleText ?>"><?= Lang::txt('PLG_COURSES_DISCUSSIONS_NEW') ?></a>
                     </p>
                 </div><!-- / .comments-toolbar -->
 

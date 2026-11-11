@@ -87,8 +87,11 @@ $this
                     <li>
                         <?php
                         $linkUrl = Route::url($base . '&sortby=created&sortdir=' . $sortDir($this->filters, 'created'));
+                        $classes = $this->filters['sortby'] == 'created'
+                            ? 'active ' . strtolower($this->filters['sort_Dir'])
+                            : $sortDir($this->filters, 'created');
                         ?>
-                        <a class="<?= $this->filters['sortby'] == 'created' ? 'active ' . strtolower($this->filters['sort_Dir']) : $sortDir($this->filters, 'created') ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_CREATED') ?>">
+                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_CREATED') ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_CREATED'); ?>
                         </a>
                     </li>
@@ -97,16 +100,22 @@ $this
                         $linkUrl = Route::url(
                             $base . '&sortby=activity&sortdir=' . $sortDir($this->filters, 'activity'),
                         );
+                        $classes = $this->filters['sortby'] == 'activity'
+                            ? 'active ' . strtolower($this->filters['sort_Dir'])
+                            : $sortDir($this->filters, 'activity');
                         ?>
-                        <a class="<?= $this->filters['sortby'] == 'activity' ? 'active ' . strtolower($this->filters['sort_Dir']) : $sortDir($this->filters, 'activity') ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY') ?>">
+                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_ACTIVITY') ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_ACTIVITY'); ?>
                         </a>
                     </li>
                     <li>
                         <?php
                         $linkUrl = Route::url($base . '&sortby=replies&sortdir=' . $sortDir($this->filters, 'replies'));
+                        $classes = $this->filters['sortby'] == 'replies'
+                            ? 'active ' . strtolower($this->filters['sort_Dir'])
+                            : $sortDir($this->filters, 'replies');
                         ?>
-                        <a class="<?= $this->filters['sortby'] == 'replies' ? 'active ' . strtolower($this->filters['sort_Dir']) : $sortDir($this->filters, 'replies') ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS') ?>">
+                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_NUM_POSTS') ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_NUM_POSTS'); ?>
                         </a>
                     </li>
@@ -115,8 +124,11 @@ $this
                         $linkUrl = Route::url(
                             $base . '&sortby=title&sortdir=' . $sortDir($this->filters, 'title', 'ASC'),
                         );
+                        $classes = $this->filters['sortby'] == 'title'
+                            ? 'active ' . strtolower($this->filters['sort_Dir'])
+                            : $sortDir($this->filters, 'title', 'ASC');
                         ?>
-                        <a class="<?= $this->filters['sortby'] == 'title' ? 'active ' . strtolower($this->filters['sort_Dir']) : $sortDir($this->filters, 'title', 'ASC') ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_TITLE') ?>">
+                        <a class="<?= $classes ?>" href="<?= $linkUrl ?>" title="<?= Lang::txt('PLG_GROUPS_FORUM_SORT_BY_TITLE') ?>">
                             <?php echo Lang::txt('PLG_GROUPS_FORUM_SORT_TITLE'); ?>
                         </a>
                     </li>
@@ -147,7 +159,14 @@ $this
                 <?php if (!$this->category->get('closed') && $this->config->get('access-create-thread')) { ?>
                     <thead>
                         <tr>
-                            <td colspan="<?= ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4' ?>">
+                            <?php
+                            $colspan = (
+                                $this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')
+                            )
+                                ? '5'
+                                : '4';
+                            ?>
+                            <td colspan="<?= $colspan ?>">
                                 <a class="icon-add add btn" href="<?php echo Route::url($base . '/new'); ?>">
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
                                 </a>
@@ -157,7 +176,14 @@ $this
                     <?php if (count($this->threads) > 10) {?>
                     <tfoot>
                         <tr>
-                            <td colspan="<?= ($this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')) ? '5' : '4' ?>">
+                            <?php
+                            $colspan = (
+                                $this->config->get('access-delete-thread') || $this->config->get('access-edit-thread')
+                            )
+                                ? '5'
+                                : '4';
+                            ?>
+                            <td colspan="<?= $colspan ?>">
                                 <a class="icon-add add btn" href="<?php echo Route::url($base . '/new'); ?>">
                                     <?php echo Lang::txt('PLG_GROUPS_FORUM_NEW_DISCUSSION'); ?>
                                 </a>
@@ -239,7 +265,10 @@ $this
                                             }
                                             ?>
                                             <span class="entry-date">
-                                                <time datetime="<?= $lastpost->created() ?>"><?= $lastpost->created('date') ?></time>
+                                                <?php
+                                                $datetime = $lastpost->created();
+                                                ?>
+                                                <time datetime="<?= $datetime ?>"><?= $lastpost->created('date') ?></time>
                                             </span>
                                             <?= Lang::txt(
                                                 'PLG_GROUPS_FORUM_BY_USER',

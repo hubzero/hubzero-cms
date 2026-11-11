@@ -64,7 +64,12 @@ $dubCore = [
                                 </div>
                                 <div class="separator">:</div>
                                 <div class="entry-value">
-                                    <input type="text" name="value[<?= $i ?>]" value="<?= (isset($this->metadata[$element])) ? $this->escape($this->metadata[$element]) : '' ?>" />
+                                    <?php
+                                    $fieldValue = (isset($this->metadata[$element]))
+                                        ? $this->escape($this->metadata[$element])
+                                        : '';
+                                    ?>
+                                    <input type="text" name="value[<?= $i ?>]" value="<?= $fieldValue ?>" />
                                 </div>
                             </div>
                         </li>

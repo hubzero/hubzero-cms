@@ -92,15 +92,27 @@ switch ($this->comment->get('rating')) {
                     <a class="permalink" href="<?= $this->url . '#c' . $this->comment->get('id') ?>"
                         title="<?= Lang::txt('PLG_COURSES_REVIEWS_PERMALINK') ?>">
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
-                        <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->created();
+                        ?>
+                        <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->created('time') ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
-                        <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->created();
+                        ?>
+                        <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->created('date') ?></time></span>
                         <?php if ($this->comment->wasModified()) { ?>
                             &mdash; <?php echo Lang::txt('Edited'); ?>
                             <span class="comment-date-at"><?php echo Lang::txt('PLG_COURSES_REVIEWS_AT'); ?></span>
-                            <span class="time"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('time') ?></time></span>
+                            <?php
+                            $datetime = $this->comment->modified();
+                            ?>
+                            <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('time') ?></time></span>
                             <span class="comment-date-on"><?php echo Lang::txt('PLG_COURSES_REVIEWS_ON'); ?></span>
-                            <span class="date"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('date') ?></time></span>
+                            <?php
+                            $datetime = $this->comment->modified();
+                            ?>
+                            <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('date') ?></time></span>
                         <?php } ?>
                     </a>
                 </p>

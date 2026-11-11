@@ -193,8 +193,20 @@ $stateSelected = function ($value) use ($view) {
                 </td>
                 <td class="order nowrap">
                     <?php $otoken = Session::getFormToken(); ?>
-                    <a class="state" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderup&' . $otoken . '=1') ?>" title="<?= Lang::txt('Move up') ?>" aria-label="<?= Lang::txt('Move up') ?>">&uarr;</a>
-                    <a class="state" href="<?= Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller . '&course=' . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderdown&' . $otoken . '=1') ?>" title="<?= Lang::txt('Move down') ?>" aria-label="<?= Lang::txt('Move down') ?>">&darr;</a>
+                    <?php
+                    $orderupUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&course='
+                            . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderup&' . $otoken . '=1',
+                    );
+                    ?>
+                    <a class="state" href="<?= $orderupUrl ?>" title="<?= Lang::txt('Move up') ?>" aria-label="<?= Lang::txt('Move up') ?>">&uarr;</a>
+                    <?php
+                    $orderdownUrl = Route::url(
+                        'index.php?option=' . $this->option . '&controller=' . $this->controller . '&course='
+                            . $this->course->get('id') . '&id=' . $row->get('id') . '&task=orderdown&' . $otoken . '=1',
+                    );
+                    ?>
+                    <a class="state" href="<?= $orderdownUrl ?>" title="<?= Lang::txt('Move down') ?>" aria-label="<?= Lang::txt('Move down') ?>">&darr;</a>
                 </td>
                 <td class="priority-5">
                     <?php echo $this->escape($row->get('id')); ?>
@@ -297,7 +309,13 @@ $stateSelected = function ($value) use ($view) {
                         </span>
                         <?php if ($canDo->get('core.manage')) { ?>
                         &nbsp;
-                        <a class="state add" href="<?= Route::url('index.php?option=' . $this->option . '&controller=sections&offering=' . $row->get('id') . '&task=add') ?>">
+                            <?php
+                            $addUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=sections&offering=' . $row->get('id')
+                                    . '&task=add',
+                            );
+                            ?>
+                        <a class="state add" href="<?= $addUrl ?>">
                             <span><?php echo Lang::txt('[ + ]'); ?></span>
                         </a>
                         <?php } ?>
@@ -332,7 +350,13 @@ $stateSelected = function ($value) use ($view) {
                         <?php echo $units; ?>
                         <?php if ($canDo->get('core.manage')) { ?>
                         &nbsp;
-                        <a class="state add" href="<?= Route::url('index.php?option=' . $this->option . '&controller=units&offering=' . $row->get('id') . '&task=add') ?>">
+                            <?php
+                            $addUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=units&offering=' . $row->get('id')
+                                    . '&task=add',
+                            );
+                            ?>
+                        <a class="state add" href="<?= $addUrl ?>">
                             <span><?php echo Lang::txt('COM_COURSES_ADD'); ?></span>
                         </a>
                         <?php } ?>
@@ -351,7 +375,13 @@ $stateSelected = function ($value) use ($view) {
                         <?php echo $pages; ?>
                         <?php if ($canDo->get('core.manage')) { ?>
                         &nbsp;
-                        <a class="state add" href="<?= Route::url('index.php?option=' . $this->option . '&controller=pages&course=' . $this->course->get('id') . '&offering=' . $row->get('id') . '&task=add') ?>">
+                            <?php
+                            $addUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=pages&course=' . $this->course->get('id')
+                                    . '&offering=' . $row->get('id') . '&task=add',
+                            );
+                            ?>
+                        <a class="state add" href="<?= $addUrl ?>">
                             <span><?php echo Lang::txt('COM_COURSES_ADD'); ?></span>
                         </a>
                         <?php } ?>

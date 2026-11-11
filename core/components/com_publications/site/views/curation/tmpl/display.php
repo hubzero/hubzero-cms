@@ -72,8 +72,10 @@ $this
                                 <th class="thtype<?php echo $this->filters['sortby'] == 'id' ? ' activesort' : ''; ?>">
                                     <?php
                                     $linkUrl = Route::url($route . '&t_sortby=id&t_sortdir=' . $sortbyDir);
+                                    $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' '
+                                        . Lang::txt('COM_PUBLICATIONS_CURATION_ID');
                                     ?>
-                                    <a href="<?= $linkUrl ?>" class="re_sort" title="<?= Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_ID') ?>">
+                                    <a href="<?= $linkUrl ?>" class="re_sort" title="<?= $titleText ?>">
                                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_ID'); ?>
                                     </a>
                                 </th>
@@ -81,8 +83,10 @@ $this
                                 <th<?php echo $this->filters['sortby'] == 'title' ? ' class="activesort"' : ''; ?>>
                                     <?php
                                     $linkUrl = Route::url($route . '&t_sortby=title&t_sortdir=' . $sortbyDir);
+                                    $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' '
+                                        . Lang::txt('COM_PUBLICATIONS_CURATION_TITLE');
                                     ?>
-                                    <a href="<?= $linkUrl ?>" class="re_sort" title="<?= Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_TITLE') ?>">
+                                    <a href="<?= $linkUrl ?>" class="re_sort" title="<?= $titleText ?>">
                                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_TITLE'); ?>
                                     </a>
                                 </th>
@@ -90,24 +94,30 @@ $this
                                 <th class="thtype<?= $this->filters['sortby'] == 'type' ? ' activesort' : '' ?>">
                                     <?php
                                     $linkUrl = Route::url($route . '&t_sortby=type&t_sortdir=' . $sortbyDir);
+                                    $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' '
+                                        . Lang::txt('COM_PUBLICATIONS_CURATION_CONTENT_TYPE');
                                     ?>
-                                    <a href="<?= $linkUrl ?>" class="re_sort" title="<?= Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_CONTENT_TYPE') ?>">
+                                    <a href="<?= $linkUrl ?>" class="re_sort" title="<?= $titleText ?>">
                                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_CONTENT_TYPE'); ?>
                                     </a>
                                 </th>
                                 <th<?php echo $this->filters['sortby'] == 'submitted' ? ' class="activesort"' : ''; ?>>
                                     <?php
                                     $linkUrl = Route::url($route . '&t_sortby=submitted&t_sortdir=' . $sortbyDir);
+                                    $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED') . ' '
+                                        . Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED');
                                     ?>
-                                    <a href="<?= $linkUrl ?>" class="re_sort" title="<?= Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED') ?>">
+                                    <a href="<?= $linkUrl ?>" class="re_sort" title="<?= $titleText ?>">
                                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_SUBMITTED'); ?>
                                     </a>
                                 </th>
                                 <th<?php echo $this->filters['sortby'] == 'status' ? ' class="activesort"' : ''; ?>>
                                     <?php
                                     $linkUrl = Route::url($route . '&t_sortby=status&t_sortdir=' . $sortbyDir);
+                                    $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' '
+                                        . Lang::txt('COM_PUBLICATIONS_CURATION_STATUS');
                                     ?>
-                                    <a href="<?= $linkUrl ?>" class="re_sort" title="<?= Lang::txt('COM_PUBLICATIONS_CURATION_SORT_BY') . ' ' . Lang::txt('COM_PUBLICATIONS_CURATION_STATUS') ?>">
+                                    <a href="<?= $linkUrl ?>" class="re_sort" title="<?= $titleText ?>">
                                         <?php echo Lang::txt('COM_PUBLICATIONS_CURATION_STATUS'); ?>
                                     </a>
                                 </th>
@@ -171,7 +181,13 @@ $this
                                         <?php echo $row->id; ?>
                                         </td>
                                         <td class="pub-image">
-                                            <img width="30" height="30" src="<?= Route::url('index.php?option=com_publications&id=' . $row->id . '&v=' . $row->version_id) . '/Image:thumb' ?>" alt="" />
+                                            <?php
+                                            $sourceUrl = Route::url(
+                                                'index.php?option=com_publications&id=' . $row->id . '&v='
+                                                    . $row->version_id,
+                                            ) . '/Image:thumb';
+                                            ?>
+                                            <img width="30" height="30" src="<?= $sourceUrl ?>" alt="" />
                                         </td>
                                         <td>
                                         <?php if ($row->state == 5) { ?>
@@ -212,8 +228,11 @@ $this
                                                         $route . '&id=' . $row->id . '&task=assign&vid='
                                                             . $row->version_id . '&ajax=1&no_html=1',
                                                     );
+                                                    $titleText = Lang::txt(
+                                                        'COM_PUBLICATIONS_CURATION_CHANGE_ASSIGNMENT',
+                                                    );
                                                     ?>
-                                                    <a href="<?= $assignUrl ?>" class="fancybox" title="<?= Lang::txt('COM_PUBLICATIONS_CURATION_CHANGE_ASSIGNMENT') ?>">
+                                                    <a href="<?= $assignUrl ?>" class="fancybox" title="<?= $titleText ?>">
                                                 <?php } ?>
                                                 <?php echo $this->escape($owner->get('name')); ?>
                                                 <?php if ($assign) { ?>
@@ -254,8 +273,9 @@ $this
                                                 'index.php?option=com_publications&id=' . $row->id . '&v='
                                                     . $row->version_number,
                                             );
+                                            $titleText = Lang::txt('COM_PUBLICATIONS_CURATION_VIEW_PUB_PAGE');
                                             ?>
-                                            <a href="<?= $linkUrl ?>" class="public-page" title="<?= Lang::txt('COM_PUBLICATIONS_CURATION_VIEW_PUB_PAGE') ?>">&nbsp;</a>
+                                            <a href="<?= $linkUrl ?>" class="public-page" title="<?= $titleText ?>">&nbsp;</a>
                                         </td>
                                     </tr>
                                     <?php

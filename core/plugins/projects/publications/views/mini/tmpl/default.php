@@ -21,8 +21,10 @@ $this->css();
     <h4>
         <?php
         $linkUrl = Route::url($this->model->link('publications'));
+        $titleText = Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' '
+            . strtolower(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS'));
         ?>
-        <a href="<?= $linkUrl ?>" class="hlink" title="<?= Lang::txt('COM_PROJECTS_VIEW') . ' ' . strtolower(Lang::txt('COM_PROJECTS_PROJECT')) . ' ' . strtolower(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')) ?>"><?= ucfirst(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')) ?></a>
+        <a href="<?= $linkUrl ?>" class="hlink" title="<?= $titleText ?>"><?= ucfirst(Lang::txt('COM_PROJECTS_TAB_PUBLICATIONS')) ?></a>
         <?php if (count($this->items) > 0) { ?>
             <?php
             $linkUrl = Route::url($this->model->link('publications'));

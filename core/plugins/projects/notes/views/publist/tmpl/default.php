@@ -26,7 +26,10 @@ if (count($this->items) > 0) {
                 $page = \Components\Wiki\Models\Page::one($ref->pageid);
                 if ($page && $page->get('id')) {
                     ?>
-        <li class="notes"><a href="<?= Route::url($this->model->link('stamp') . '&s=' . $item->stamp) ?>"><?= $this->escape($page->get('title')) ?></li>
+                    <?php
+                    $linkUrl = Route::url($this->model->link('stamp') . '&s=' . $item->stamp);
+                    ?>
+        <li class="notes"><a href="<?= $linkUrl ?>"><?= $this->escape($page->get('title')) ?></li>
                 <?php }
             }
         } ?>

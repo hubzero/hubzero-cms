@@ -553,7 +553,12 @@ $presentation->subtitles = array_values($presentation->subtitles);
                             ?>
                             <source src="<?= $content_url . DS . $source->source ?>" type="<?= $type ?>" />
                         <?php endforeach; ?>
-                        <a href="<?= $content_url . DS . $presentation->media[0]->source ?>" id="flowplayer" duration="<?= isset($presentation->duration) && $presentation->duration ? $presentation->duration : '' ?>" data-mediaid="<?= $rr->id ?>"></a>
+                        <?php
+                        $duration = isset($presentation->duration) && $presentation->duration
+                            ? $presentation->duration
+                            : '';
+                        ?>
+                        <a href="<?= $content_url . DS . $presentation->media[0]->source ?>" id="flowplayer" duration="<?= $duration ?>" data-mediaid="<?= $rr->id ?>"></a>
                     </audio>
 
                     <?php if (isset($presentation->placeholder) && $presentation->placeholder) : ?>

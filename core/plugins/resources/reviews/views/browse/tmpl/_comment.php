@@ -114,9 +114,15 @@ if ($this->comment->get('resource_id')) {
                         <span class="comment-date-unknown"><?= Lang::txt('PLG_RESOURCES_REVIEWS_UNKNOWN') ?></span>
                     <?php } else { ?>
                         <span class="comment-date-at">@</span>
-                        <span class="time"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('time') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->created();
+                        ?>
+                        <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->created('time') ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_RESOURCES_REVIEWS_ON'); ?></span>
-                        <span class="date"><time datetime="<?= $this->comment->created() ?>"><?= $this->comment->created('date') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->created();
+                        ?>
+                        <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->created('date') ?></time></span>
                     <?php } ?>
                 </a>
             </p>

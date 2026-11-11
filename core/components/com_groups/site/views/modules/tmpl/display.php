@@ -98,8 +98,9 @@ foreach ($this->modules as $module) {
                                 'index.php?option=com_groups&cn=' . $this->group->get('cn')
                                     . '&controller=modules&task=publish&moduleid=' . $module->get('id'),
                             );
+                            $titleText = Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE');
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="unpublished tooltips" title="<?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE') ?>"> <?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE') ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= $publishUrl ?>" class="unpublished tooltips" title="<?= $titleText ?>"> <?= Lang::txt('COM_GROUPS_PAGES_PUBLISH_MODULE') ?></button>
                         <?php else : ?>
                             <?php
                             $unpublishUrl = Route::url(

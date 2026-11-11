@@ -94,7 +94,11 @@ $accessSelected = function ($value) use ($view) {
             <fieldset>
                 <legend><?php echo Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES'); ?></legend>
                 <div class="field-wrap">
-                    <iframe width="100%" height="370" name="filer" id="filer" title="<?= Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES') ?>" src="<?= Request::base(true) . '/index.php?option=com_blog&controller=media&id=' . $this->member->get('id') . '&scope=member&tmpl=component' ?>"></iframe>
+                    <?php
+                    $sourceUrl = Request::base(true) . '/index.php?option=com_blog&controller=media&id='
+                        . $this->member->get('id') . '&scope=member&tmpl=component';
+                    ?>
+                    <iframe width="100%" height="370" name="filer" id="filer" title="<?= Lang::txt('PLG_MEMBERS_BLOG_UPLOADED_FILES') ?>" src="<?= $sourceUrl ?>"></iframe>
                 </div>
             </fieldset>
 

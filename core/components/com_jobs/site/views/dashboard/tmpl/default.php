@@ -65,7 +65,11 @@ if ($this->masterAdmin) {
     <?php if ($this->emp && !$this->masterAdmin) { ?>
         <div id="content-header-extra">
             <ul id="useroptions">
-                <li><a class="shortlist btn" href="<?= Route::url('index.php?option=' . $this->option . '&task=resumes') . '?filterby=shortlisted' ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
+                <?php
+                $resumesUrl = Route::url('index.php?option=' . $this->option . '&task=resumes')
+                    . '?filterby=shortlisted';
+                ?>
+                <li><a class="shortlist btn" href="<?= $resumesUrl ?>"><?= Lang::txt('COM_JOBS_SHORTLIST') ?></a></li>
             </ul>
         </div><!-- / #content-header-extra -->
     <?php } ?>

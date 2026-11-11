@@ -110,7 +110,13 @@ if (
                 $tag = \Components\Tags\Models\Tag::oneByTag($this->model->params->get('supportedtag'));
                 ?>
             <p class="supported">
-                <a href="<?= $this->model->params->get('supportedlink', Route::url('index.php?option=com_tags&tag=' . $tag->get('tag'))) ?>"><?= $this->escape(stripslashes($tag->get('raw_tag'))) ?></a>
+                <?php
+                $linkUrl = $this->model->params->get(
+                    'supportedlink',
+                    Route::url('index.php?option=com_tags&tag=' . $tag->get('tag')),
+                );
+                ?>
+                <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($tag->get('raw_tag'))) ?></a>
             </p>
                 <?php
             }

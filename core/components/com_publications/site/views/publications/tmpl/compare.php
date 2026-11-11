@@ -38,7 +38,10 @@ $this->css('compare.css');
                                     }
                                 }
                                 ?>
-                                <time datetime="<?= Date::of($dt)->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($dt)->toLocal() ?></time></span>
+                                <?php
+                                $datetime = Date::of($dt)->format('Y-m-d\TH:i:s\Z');
+                                ?>
+                                <time datetime="<?= $datetime ?>"><?= Date::of($dt)->toLocal() ?></time></span>
                             <?php } else { ?>
                                 --
                             <?php } ?>
@@ -63,7 +66,10 @@ $this->css('compare.css');
                                     }
                                 }
                                 ?>
-                                <time datetime="<?= Date::of($dt)->format('Y-m-d\TH:i:s\Z') ?>"><?= Date::of($dt)->toLocal() ?></time></span>
+                                <?php
+                                $datetime = Date::of($dt)->format('Y-m-d\TH:i:s\Z');
+                                ?>
+                                <time datetime="<?= $datetime ?>"><?= Date::of($dt)->toLocal() ?></time></span>
                             <?php } else { ?>
                                 --
                             <?php } ?>

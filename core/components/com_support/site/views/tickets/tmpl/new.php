@@ -116,7 +116,10 @@ endif;
                 <?php endif; ?>
             </div>
 
-            <input type="hidden" name="reporter[org]" value="<?= $this->escape($this->row->get('organization', $this->row->submitter->get('organization'))) ?>" id="reporter_org" />
+            <?php
+            $fieldValue = $this->escape($this->row->get('organization', $this->row->submitter->get('organization')));
+            ?>
+            <input type="hidden" name="reporter[org]" value="<?= $fieldValue ?>" id="reporter_org" />
         </fieldset> 
     <?php else : ?>
         <input type="hidden" name="reporter[login]"

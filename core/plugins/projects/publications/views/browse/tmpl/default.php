@@ -50,7 +50,10 @@ $i = 1;
             <?php } else { ?>
                 <?php if (!empty($selfAssessmentGuide)) { ?>
                 <li>
-                    <a class="icon-file btn" target="_blank" href="<?= $selfAssessmentGuide ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELF_ASSESSMENT_GUIDE') ?></a>
+                    <?php
+                    $linkUrl = $selfAssessmentGuide;
+                    ?>
+                    <a class="icon-file btn" target="_blank" href="<?= $linkUrl ?>"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_SELF_ASSESSMENT_GUIDE') ?></a>
                 </li>
                 <?php } ?>
                 <li>

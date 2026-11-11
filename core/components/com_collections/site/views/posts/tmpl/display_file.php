@@ -68,7 +68,12 @@ if ($assets->total() > 0) {
                         data-rel="post<?php echo $this->row->get('id'); ?>"
                         data-download="<?php echo $first->link('original'); ?>"
                         data-downloadtext="<?php echo Lang::txt('COM_COLLECTIONS_DOWNLOAD'); ?>">
-                        <img src="<?= $first->link('thumb') ?>" alt="<?= ($first->get('description')) ? $this->escape(stripslashes($first->get('description'))) : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($first->get('filename'), DS)) ?>" class="img" height="<?= $height ?>" />
+                        <?php
+                        $altText = ($first->get('description'))
+                            ? $this->escape(stripslashes($first->get('description')))
+                            : Lang::txt('COM_COLLECTIONS_IMAGE_ALT', ltrim($first->get('filename'), DS));
+                        ?>
+                        <img src="<?= $first->link('thumb') ?>" alt="<?= $altText ?>" class="img" height="<?= $height ?>" />
                     </a>
                 </div>
             <?php else : ?>

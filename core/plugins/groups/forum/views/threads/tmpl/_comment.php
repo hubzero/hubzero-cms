@@ -87,9 +87,15 @@ if ($this->comment->isReported()) {
                     <?php if ($this->comment->wasModified()) { ?>
                         &mdash; <?php echo Lang::txt('PLG_GROUPS_FORUM_EDITED'); ?>
                         <span class="comment-date-at"><?php echo Lang::txt('PLG_GROUPS_FORUM_AT'); ?></span>
-                        <span class="time"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('time') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->modified();
+                        ?>
+                        <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('time') ?></time></span>
                         <span class="comment-date-on"><?php echo Lang::txt('PLG_GROUPS_FORUM_ON'); ?></span>
-                        <span class="date"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('date') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->modified();
+                        ?>
+                        <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('date') ?></time></span>
                     <?php } ?>
                 </a>
             </p>

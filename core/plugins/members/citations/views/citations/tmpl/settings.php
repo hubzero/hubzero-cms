@@ -73,7 +73,10 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
         <div class="explaination">
             <p>
                 <?php echo Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_WHAT_ARE_COINS'); ?><br />
-                <a href="http://ocoins.info/" rel="nofollow external" alt="<?= Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS') ?>"><?= Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS') ?></a>
+                <?php
+                $altText = Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS');
+                ?>
+                <a href="http://ocoins.info/" rel="nofollow external" alt="<?= $altText ?>"><?= Lang::txt('PLG_MEMBERS_CITATIONS_SETTINGS_READ_MORE_COINS') ?></a>
             </p>
         </div>
         <fieldset>
@@ -154,7 +157,10 @@ $base = Route::url($this->member->link() . '&active=' . $this->viewName);
             <div class="form-group">
                 <label for="format-string"
                     class="sr-only"><?= Lang::txt('PLG_MEMBERS_CITATIONS_FORMAT_STRING') ?></label>
-                    <textarea name="template" rows="10" id="format-string" class="form-control" aria-label="<?= Lang::txt('PLG_MEMBERS_CITATIONS_FORMAT_STRING') ?>"><?= addslashes($this->currentFormat->format) ?></textarea>
+                    <?php
+                    $ariaLabel = Lang::txt('PLG_MEMBERS_CITATIONS_FORMAT_STRING');
+                    ?>
+                    <textarea name="template" rows="10" id="format-string" class="form-control" aria-label="<?= $ariaLabel ?>"><?= addslashes($this->currentFormat->format) ?></textarea>
             </div>
 
             <table class="templateTable">

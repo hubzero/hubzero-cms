@@ -185,7 +185,10 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
             <li id="member-profile-completeness" class="hide">
                 <?php echo Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS'); ?>
                 <div id="meter">
-                    <span id="meter-percent" data-percent="<?= $this->completeness ?>" data-percent-level="<?= !isset($this->completeness_level) ? '' : $this->completeness_level ?>"></span>
+                    <?php
+                    $dataPercentLevel = !isset($this->completeness_level) ? '' : $this->completeness_level;
+                    ?>
+                    <span id="meter-percent" data-percent="<?= $this->completeness ?>" data-percent-level="<?= $dataPercentLevel ?>"></span>
                 </div>
                 <?php if ($isUser && $isIncrementalEnabled) : ?>
                     <span id="completeness-info"><?= Lang::txt('PLG_MEMBERS_PROFILE_COMPLETENESS_MEANS') ?></span>

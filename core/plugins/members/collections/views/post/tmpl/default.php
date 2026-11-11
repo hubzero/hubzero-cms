@@ -161,9 +161,15 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                         <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($cuser->get('name'))) ?></a> said <br />
                         <span class="entry-date">
                             <span class="entry-date-at">@</span>
-                            <span class="time"><time datetime="<?= $comment->get('created') ?>"><?= $comment->created('time') ?></time></span>
+                            <?php
+                            $datetime = $comment->get('created');
+                            ?>
+                            <span class="time"><time datetime="<?= $datetime ?>"><?= $comment->created('time') ?></time></span>
                             <span class="entry-date-on">on</span>
-                            <span class="date"><time datetime="<?= $comment->get('created') ?>"><?= $comment->created('date') ?></time></span>
+                            <?php
+                            $datetime = $comment->get('created');
+                            ?>
+                            <span class="date"><time datetime="<?= $datetime ?>"><?= $comment->created('date') ?></time></span>
                         </span>
                     </p>
                     <blockquote>

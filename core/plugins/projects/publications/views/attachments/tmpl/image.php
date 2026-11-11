@@ -59,8 +59,20 @@ $over  = $data->get('pubThumb') == 1 ? ' title="' . Lang::txt('PLG_PROJECTS_PUBL
                 <a href="<?= $saveitemUrl ?>" class="item-default"
                     title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_IMAGE_MAKE_DEFAULT') ?>">&nbsp;</a>
                 <?php } ?>
-                <a href="<?= Route::url($pub->link('editversion') . '&action=edititem&aid=' . $data->get('id') . '&p=' . $data->get('props')) ?>" class="showinbox item-edit" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL') ?>">&nbsp;</a>
-                <button type="submit" form="hz-post-action" formaction="<?= Route::url($pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p=' . $data->get('props')) ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
+                <?php
+                $edititemUrl = Route::url(
+                    $pub->link('editversion') . '&action=edititem&aid=' . $data->get('id') . '&p='
+                        . $data->get('props'),
+                );
+                ?>
+                <a href="<?= $edititemUrl ?>" class="showinbox item-edit" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_RELABEL') ?>">&nbsp;</a>
+                <?php
+                $deleteitemUrl = Route::url(
+                    $pub->link('editversion') . '&action=deleteitem&aid=' . $data->get('id') . '&p='
+                        . $data->get('props'),
+                );
+                ?>
+                <button type="submit" form="hz-post-action" formaction="<?= $deleteitemUrl ?>" class="item-remove" title="<?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_REMOVE') ?>">&nbsp;</button>
             </span>
             <?php } ?>
         </span>

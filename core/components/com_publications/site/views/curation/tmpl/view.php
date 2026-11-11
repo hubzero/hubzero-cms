@@ -69,7 +69,12 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory(
             </div>
             <p class="instruct">
                 <span class="pubimage">
-                    <img src="<?= Route::url('index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_id) . '/Image:thumb' ?>" alt="" />
+                    <?php
+                    $sourceUrl = Route::url(
+                        'index.php?option=com_publications&id=' . $this->pub->id . '&v=' . $this->pub->version_id,
+                    ) . '/Image:thumb';
+                    ?>
+                    <img src="<?= $sourceUrl ?>" alt="" />
                 </span>
                 <strong class="block">
                     <?php

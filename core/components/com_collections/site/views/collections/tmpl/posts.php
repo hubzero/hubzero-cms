@@ -74,7 +74,12 @@ $this
                 class="view-as <?= $mode . ' ' . (User::isGuest() ? 'loggedout' : 'loggedin') ?>">
                 <?php if (!User::isGuest() && !Request::getInt('no_html', 0)) { ?>
                     <div class="post new-post">
-                        <a class="icon-add add" href="<?= Route::url('index.php?option=com_members&id=' . User::get('id') . '&active=collections&task=post/new') ?>">
+                        <?php
+                        $postUrl = Route::url(
+                            'index.php?option=com_members&id=' . User::get('id') . '&active=collections&task=post/new',
+                        );
+                        ?>
+                        <a class="icon-add add" href="<?= $postUrl ?>">
                             <?php echo Lang::txt('COM_COLLECTIONS_NEW_POST'); ?>
                         </a>
                     </div>
@@ -103,7 +108,13 @@ $this
                                     <?php echo $tags; ?>
                                 </div>
                         <?php } ?>
-                            <div class="meta" data-metadata-url="<?= Route::url('index.php?option=com_collections&controller=posts&task=metadata&post=' . $row->get('id')) ?>">
+                            <?php
+                            $metadataUrl = Route::url(
+                                'index.php?option=com_collections&controller=posts&task=metadata&post='
+                                    . $row->get('id'),
+                            );
+                            ?>
+                            <div class="meta" data-metadata-url="<?= $metadataUrl ?>">
                                 <p class="stats">
                                     <span class="likes">
                                     <?php echo Lang::txt('COM_COLLECTIONS_NUM_LIKES', $item->get('positive', 0)); ?>
@@ -147,11 +158,21 @@ $this
                                         // Display comment button only if enabled
                                         if ($this->config->get('allow_comments')) :
                                             ?>
-                                            <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
+                                            <?php
+                                            $commentUrl = Route::url(
+                                                $base . '&controller=posts&post=' . $row->get('id') . '&task=comment',
+                                            );
+                                            ?>
+                                            <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= $commentUrl ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COMMENT'); ?></span>
                                             </a>
                                         <?php endif; ?>
-                                            <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=collect') ?>">
+                                            <?php
+                                            $collectUrl = Route::url(
+                                                $base . '&controller=posts&post=' . $row->get('id') . '&task=collect',
+                                            );
+                                            ?>
+                                            <a class="btn repost" data-id="<?= $row->get('id') ?>" href="<?= $collectUrl ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COLLECT'); ?></span>
                                             </a>
                                     <?php } else {
@@ -176,7 +197,12 @@ $this
                                             // Display comment button only if enabled
                                             if ($this->config->get('allow_comments')) :
                                                 ?>
-                                            <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= Route::url($base . '&controller=posts&post=' . $row->get('id') . '&task=comment') ?>">
+                                                <?php
+                                                $commentUrl = Route::url(
+                                                    $base . '&controller=posts&post=' . $row->get('id') . '&task=comment',
+                                                );
+                                                ?>
+                                            <a class="btn comment" data-id="<?= $row->get('id') ?>" href="<?= $commentUrl ?>">
                                                 <span><?php echo Lang::txt('COM_COLLECTIONS_COMMENT'); ?></span>
                                             </a>
                                             <?php endif; ?>

@@ -126,8 +126,11 @@ if (
                 ) { ?>
                     <?php
                     $linkUrl = Route::url($profile->link());
+                    $titleText = $this->escape(
+                        Lang::txt('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name'))),
+                    );
                     ?>
-                    <a href="<?= $linkUrl ?>" class="member" title="<?= $this->escape(Lang::txt('COM_GROUPS_MEMBER_PROFILE', stripslashes($profile->get('name')))) ?>">
+                    <a href="<?= $linkUrl ?>" class="member" title="<?= $titleText ?>">
                 <?php } else { ?>
                     <div class="member">
                 <?php } ?>

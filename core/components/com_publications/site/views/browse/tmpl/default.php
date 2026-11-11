@@ -71,7 +71,12 @@ $categorySelected = function ($value) use ($view) {
                             foreach ($tags as $tag) {
                                 ?>
                                 <li>
-                                    <a href="<?= Route::url($url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag))) ?>">
+                                    <?php
+                                    $linkUrl = Route::url(
+                                        $url . '&tag=' . implode(',', $rt->parseTopTags($this->filters['tag'], $tag)),
+                                    );
+                                    ?>
+                                    <a href="<?= $linkUrl ?>">
                                         <?php echo $this->escape(stripslashes($tag)); ?>
                                         <span class="remove">x</a>
                                     </a>
@@ -120,8 +125,18 @@ $categorySelected = function ($value) use ($view) {
                         $qs .= ($this->filters['tag'] ? '&tag=' . $this->escape($this->filters['tag']) : '');
                         ?>
                         <ul class="entries-menu order-options">
-                            <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs) ?>" title="<?= Lang::txt('Sort by title') ?>" rel="nofollow">&darr; <?= Lang::txt('Title') ?></a></li>
-                            <li><a<?= ($this->filters['sortby'] == 'date') ? ' class="active"' : '' ?> href="<?= Route::url('index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs) ?>" title="<?= Lang::txt('Sort by date published') ?>" rel="nofollow">&darr; <?= Lang::txt('Published') ?></a></li>
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&task=browse&sortby=title' . $qs,
+                            );
+                            ?>
+                            <li><a<?= ($this->filters['sortby'] == 'title') ? ' class="active"' : '' ?> href="<?= $linkUrl ?>" title="<?= Lang::txt('Sort by title') ?>" rel="nofollow">&darr; <?= Lang::txt('Title') ?></a></li>
+                            <?php
+                            $linkUrl = Route::url(
+                                'index.php?option=' . $this->option . '&task=browse&sortby=date' . $qs,
+                            );
+                            ?>
+                            <li><a<?= ($this->filters['sortby'] == 'date') ? ' class="active"' : '' ?> href="<?= $linkUrl ?>" title="<?= Lang::txt('Sort by date published') ?>" rel="nofollow">&darr; <?= Lang::txt('Published') ?></a></li>
                             <?php if ($this->config->get('show_ranking')) {
                                 $browseUrl = Route::url(
                                     'index.php?option=' . $this->option . '&task=browse&sortby=ranking' . $qs,

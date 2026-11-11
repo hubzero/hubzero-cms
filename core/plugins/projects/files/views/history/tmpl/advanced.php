@@ -192,14 +192,23 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                     <?php if ($allowDiff) { ?>
                     <td class="diffing">
                         <?php if (!$version['remote'] && count($this->versions) > 1) { ?>
-                        <input type="radio" value="<?= urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']) ?>" name="old" <?= $oldest ? 'checked="checked"' : '' ?> <?= $last ? 'disabled="disabled"' : '' ?> class="diff-old" />
-                        <input type="radio" value="<?= urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']) ?>" name="new" <?= $last ? 'checked="checked"' : '' ?> <?= $oldest ? 'disabled="disabled"' : '' ?> class="diff-new" />
+                            <?php
+                            $fieldValue = urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']);
+                            ?>
+                        <input type="radio" value="<?= $fieldValue ?>" name="old" <?= $oldest ? 'checked="checked"' : '' ?> <?= $last ? 'disabled="disabled"' : '' ?> class="diff-old" />
+                            <?php
+                            $fieldValue = urlencode($v . '@' . substr($version['hash'], 0, 10) . '@' . $version['name']);
+                            ?>
+                        <input type="radio" value="<?= $fieldValue ?>" name="new" <?= $last ? 'checked="checked"' : '' ?> <?= $oldest ? 'disabled="disabled"' : '' ?> class="diff-new" />
                         <?php } ?>
                     </td>
                     <?php } ?>
                     <td class="commit-details">
                             <?php if ($version['movedTo']) { ?>
-                                <span class="moved"><span class="<?= $version['movedTo'] == 'remote' ? 'send_to_remote' : 'send_to_local' ?>"><span>&nbsp;</span></span></span>
+                                <?php
+                                $classes = $version['movedTo'] == 'remote' ? 'send_to_remote' : 'send_to_local';
+                                ?>
+                                <span class="moved"><span class="<?= $classes ?>"><span>&nbsp;</span></span></span>
                             <?php } ?>
                         <span class="commitstatus"><?php echo $status; ?></span>
                         <span class="block italic faded">

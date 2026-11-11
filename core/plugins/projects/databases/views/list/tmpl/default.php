@@ -41,7 +41,13 @@ $this->css();
 <?php if ($this->model->access('content')) { ?>
     <ul id="page_options" class="pluginOptions">
         <li>
-            <a class="icon-add add btn"  href="<?= Route::url('index.php?option=' . $this->option . '&alias=' . $this->model->get('alias') . '&active=databases&action=create') . '#content' ?>">
+            <?php
+            $createUrl = Route::url(
+                'index.php?option=' . $this->option . '&alias=' . $this->model->get('alias')
+                    . '&active=databases&action=create',
+            ) . '#content';
+            ?>
+            <a class="icon-add add btn"  href="<?= $createUrl ?>">
                 <?php echo Lang::txt('PLG_PROJECTS_DATA_START'); ?>
             </a>
         </li>

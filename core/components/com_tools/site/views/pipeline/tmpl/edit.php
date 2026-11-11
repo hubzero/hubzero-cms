@@ -427,7 +427,13 @@ $repohostChecked = function ($value) use ($view) {
 
                 <div id="groupname" class="<?php echo ($this->defaults['exec'] == '@GROUP') ? '' : 'hide'; ?>">
                     <div class="form-group">
-                        <input type="text" name="tool[membergroups]" id="t_groups" class="form-control" value="<?= \Components\Tools\Helpers\Html::getGroups($this->defaults['membergroups'], $this->id) ?>" />
+                        <?php
+                        $fieldValue = \Components\Tools\Helpers\Html::getGroups(
+                            $this->defaults['membergroups'],
+                            $this->id,
+                        );
+                        ?>
+                        <input type="text" name="tool[membergroups]" id="t_groups" class="form-control" value="<?= $fieldValue ?>" />
                         <p class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_GROUPS'); ?></p>
                     </div>
                 </div>
@@ -466,14 +472,23 @@ $repohostChecked = function ($value) use ($view) {
                     <label for="t_team">
                         <?= Lang::txt('COM_TOOLS_DEVELOPMENT_TEAM') ?>: <span
                             class="required"><?= Lang::txt('JOPTION_REQUIRED') ?></span>
-                        <input type="text" name="tool[developers]" id="t_team" class="form-control" value="<?= \Components\Tools\Helpers\Html::getDevTeam($this->defaults['developers'], $this->id) ?>" />
+                        <?php
+                        $fieldValue = \Components\Tools\Helpers\Html::getDevTeam(
+                            $this->defaults['developers'],
+                            $this->id,
+                        );
+                        ?>
+                        <input type="text" name="tool[developers]" id="t_team" class="form-control" value="<?= $fieldValue ?>" />
                         <span class="hint"><?php echo Lang::txt('COM_TOOLS_HINT_TEAM'); ?></span>
                     </label>
                 </div>
             </fieldset>
 
             <p class="submit">
-                <input type="submit" class="btn btn-success" value="<?= (!$this->id) ? Lang::txt('COM_TOOLS_REGISTER_TOOL') : Lang::txt('COM_TOOLS_SAVE_CHANGES') ?>" />
+                <?php
+                $fieldValue = (!$this->id) ? Lang::txt('COM_TOOLS_REGISTER_TOOL') : Lang::txt('COM_TOOLS_SAVE_CHANGES');
+                ?>
+                <input type="submit" class="btn btn-success" value="<?= $fieldValue ?>" />
 
                 <?php if ($this->id) { ?>
                     <?php

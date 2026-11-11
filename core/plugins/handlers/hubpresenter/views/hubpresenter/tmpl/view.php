@@ -347,7 +347,10 @@ if (isset($this->entityId) && isset($this->entityType)) {
                                 </div>
                             </div>
                         </a>
-                        <a id="switch" class="control" href="javascript:void(0);" title="<?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SWITCH_VIDEO_SLIDES') ?>"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SWITCH') ?></a>
+                        <?php
+                        $titleText = Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SWITCH_VIDEO_SLIDES');
+                        ?>
+                        <a id="switch" class="control" href="javascript:void(0);" title="<?= $titleText ?>"><?= Lang::txt('PLG_HANDLERS_HUBPRESENTER_CONTROL_SWITCH') ?></a>
                     </div>
                 </div>
             </div><!-- /#control-box -->

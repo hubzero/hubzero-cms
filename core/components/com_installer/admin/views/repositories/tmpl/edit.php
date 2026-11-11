@@ -77,8 +77,14 @@ $this->js();
                     <div class="input-wrap">
                         <label for="field-type"><?= Lang::txt('COM_INSTALLER_PACKAGES_REPOSITORY_TYPE') ?></label>
                         <select name="type" id="field-type">
-                            <option value="github" selected="<?= Arr::getValue($this->config, 'type', '') == 'github' ? 'true' : '' ?>">Github</option>
-                            <option value="gitlab" selected="<?= Arr::getValue($this->config, 'type', '') == 'gitlab' ? 'true' : '' ?>">Gitlab</option>
+                            <?php
+                            $selected = Arr::getValue($this->config, 'type', '') == 'github' ? 'true' : '';
+                            ?>
+                            <option value="github" selected="<?= $selected ?>">Github</option>
+                            <?php
+                            $selected = Arr::getValue($this->config, 'type', '') == 'gitlab' ? 'true' : '';
+                            ?>
+                            <option value="gitlab" selected="<?= $selected ?>">Gitlab</option>
                         </select>
                     </div>
                 </fieldset>

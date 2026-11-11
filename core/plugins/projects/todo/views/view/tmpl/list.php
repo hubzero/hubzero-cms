@@ -96,16 +96,18 @@ $url = 'index.php?option=' . $this->option . '&alias=' . $this->model->get('alia
                 <td><span class="ordernum"><?php echo $order; ?></span></td>
                 <?php
                 $viewUrl = Route::url($url . '&action=view') . '/?todoid=' . $row->get('id');
+                $titleText = Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT');
                 ?>
-                <td><a href="<?= $viewUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT') ?>"><?= \Hubzero\Utility\Str::truncate($row->get('content'), 120) ?></a></td>
+                <td><a href="<?= $viewUrl ?>" title="<?= $titleText ?>"><?= \Hubzero\Utility\Str::truncate($row->get('content'), 120) ?></a></td>
                 <td class="mini faded"><?= $row->isComplete() ? $row->closer('name') : $row->owner('name') ?></td>
                 <td class="mini nowrap">
                     <?= $row->isComplete() ? $row->closed('date') : $row->due('date') . $oNote ?>
                 </td>
                 <?php
                 $viewUrl = Route::url($url . '&action=view') . '/?todoid=' . $row->get('id');
+                $titleText = Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT');
                 ?>
-                <td class="mini"><a href="<?= $viewUrl ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_TODO_VIEW_COMMENTS_AND_EDIT') ?>"><?= $row->comments('count') ?></a></td>
+                <td class="mini"><a href="<?= $viewUrl ?>" title="<?= $titleText ?>"><?= $row->comments('count') ?></a></td>
                 <td><?php if (!$row->isComplete()) {
                     ?><button type="submit" form="hz-post-action" formaction="<?= Route::url($url . '&action=changestate') . '/?todoid=' . $row->get('id') . '&amp;state=1' ?>" title="<?= Lang::txt('PLG_PROJECTS_TODO_CHECK_OFF') ?>" class="unchecked confirm-checkoff">&nbsp;</button><?php
                     } ?></td>

@@ -40,15 +40,27 @@ if ($this->comment->isReported()) {
                 <a class="permalink" href="<?= Route::url($this->base . '#c' . $this->comment->get('id')) ?>"
                     title="<?= Lang::txt('COM_BLOG_PERMALINK') ?>">
                     <span class="comment-date-at"><?php echo Lang::txt('COM_BLOG_AT'); ?></span>
-                    <span class="time"><time datetime="<?= $this->comment->get('created') ?>"><?= $this->comment->created('time') ?></time></span>
+                    <?php
+                    $datetime = $this->comment->get('created');
+                    ?>
+                    <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->created('time') ?></time></span>
                     <span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span>
-                    <span class="date"><time datetime="<?= $this->comment->get('created') ?>"><?= $this->comment->created('date') ?></time></span>
+                    <?php
+                    $datetime = $this->comment->get('created');
+                    ?>
+                    <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->created('date') ?></time></span>
                     <?php if ($this->comment->wasModified()) { ?>
                         &mdash; <?php echo Lang::txt('COM_BLOG_EDITED'); ?>
                         <span class="comment-date-at"><?php echo Lang::txt('COM_BLOG_AT'); ?></span> 
-                        <span class="time"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('time') ?></time></span> 
+                        <?php
+                        $datetime = $this->comment->modified();
+                        ?>
+                        <span class="time"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('time') ?></time></span> 
                         <span class="comment-date-on"><?php echo Lang::txt('COM_BLOG_ON'); ?></span> 
-                        <span class="date"><time datetime="<?= $this->comment->modified() ?>"><?= $this->comment->modified('date') ?></time></span>
+                        <?php
+                        $datetime = $this->comment->modified();
+                        ?>
+                        <span class="date"><time datetime="<?= $datetime ?>"><?= $this->comment->modified('date') ?></time></span>
                     <?php } ?>
                 </a>
             </p>
@@ -118,8 +130,9 @@ if ($this->comment->isReported()) {
                 $deletecommentUrl = Route::url(
                     $this->base . '&action=deletecomment&comment=' . $this->comment->get('id'),
                 );
+                $confirmText = Lang::txt('COM_BLOG_CONFIRM_DELETE');
                 ?>
-                <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete" data-confirm="<?= Lang::txt('COM_BLOG_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                <button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>" class="icon-delete delete" data-confirm="<?= $confirmText ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
             <?php } ?>
             <?php if (!$this->comment->isReported()) { ?>
                 <?php

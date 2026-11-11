@@ -124,7 +124,13 @@ $base = rtrim(Request::base(true), '/');
         ?>
             <table class="pubstats-wrap">
                 <tr><td colspan="6" class="pubstats-h">
-                    <img src="<?= Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->publication_version_id) . '/Image:thumb' ?>" alt=""/>
+                    <?php
+                    $sourceUrl = Route::url(
+                        'index.php?option=com_publications&id=' . $stat->publication_id . '&v='
+                            . $stat->publication_version_id,
+                    ) . '/Image:thumb';
+                    ?>
+                    <img src="<?= $sourceUrl ?>" alt=""/>
                     <span class="h-title"><a href="<?= Route::url('index.php?option=com_publications&id=' . $stat->publication_id . '&v=' . $stat->version_number) ?>"><?= $this->escape($stat->title) ?></a></span>
                     <span class="block mini faded"><?= Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUBLISHED') . ' ' . Date::of($stat->published_up)->toLocal('M d, Y') . ' ' . Lang::txt('PLG_PROJECTS_PUBLICATIONS_IN') . ' ' . $stat->cat_name ?></span>
                 </td></tr>

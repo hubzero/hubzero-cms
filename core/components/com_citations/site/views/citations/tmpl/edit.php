@@ -273,7 +273,10 @@ $formatSelected = function ($value) use ($view) {
                 </div>
                 <div class="col span6 omega">
                     <label for="doi">
-                        <abbr title="<?= Lang::txt('COM_CITATIONS_DOI_FULL') ?>"><?= Lang::txt('COM_CITATIONS_DOI') ?></abbr>:
+                        <?php
+                        $titleText = Lang::txt('COM_CITATIONS_DOI_FULL');
+                        ?>
+                        <abbr title="<?= $titleText ?>"><?= Lang::txt('COM_CITATIONS_DOI') ?></abbr>:
                         <input type="text" name="fields[doi]" id="doi" size="30" maxlength="250"
                             value="<?= $this->escape($this->row->doi) ?>" />
                     </label>

@@ -70,7 +70,10 @@ Toolbar::cancel();
             <div class="input-wrap">
                 <div class="grid">
                     <div class="col span4">
-                        <input type="text" name="story[readmore_title]" value="<?= $this->escape($this->story->readmore_title) ?>" placeholder="<?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_TITLE_PLACEHOLDER') ?>" />
+                        <?php
+                        $placeholderText = Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_TITLE_PLACEHOLDER');
+                        ?>
+                        <input type="text" name="story[readmore_title]" value="<?= $this->escape($this->story->readmore_title) ?>" placeholder="<?= $placeholderText ?>" />
                     </div>
                     <div class="col span8">
                         <input type="text" name="story[readmore_link]" value="<?= $this->escape($this->story->readmore_link) ?>" placeholder="<?= Lang::txt('COM_NEWSLETTER_NEWSLETTER_STORY_READMORE_LINK_PLACEHOLDER') ?>" />
