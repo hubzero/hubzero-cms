@@ -92,7 +92,9 @@ $idSelected = function ($value) use ($view) {
                             $dataList = $jbase . '/index.php?option=com_collections&amp;no_html=1&amp;controller=media'
                                 . '&amp;task=list&amp;dir=';
                             ?>
-                            <div id="ajax-uploader" data-txt-instructions="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_CLICK_OR_DROP_FILE') ?>" data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
+                            <div id="ajax-uploader"
+                                data-txt-instructions="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_CLICK_OR_DROP_FILE') ?>"
+                                data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
                                 <noscript>
                                     <div class="form-group">
                                         <label for="upload">
@@ -114,7 +116,10 @@ $idSelected = function ($value) use ($view) {
                             $dataList = $jbase . '/index.php?option=com_collections&amp;no_html=1&amp;controller=media'
                                 . '&amp;task=list&amp;dir=';
                             ?>
-                            <div id="link-adder" data-base="<?= rtrim(Request::base(true), '/') ?>" data-txt-delete="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-instructions="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_CLICK_TO_ADD_LINK') ?>" data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
+                            <div id="link-adder" data-base="<?= rtrim(Request::base(true), '/') ?>"
+                                data-txt-delete="<?= Lang::txt('JACTION_DELETE') ?>"
+                                data-txt-instructions="<?= Lang::txt('PLG_MEMBERS_COLLECTIONS_CLICK_TO_ADD_LINK') ?>"
+                                data-action="<?= $dataActionUrl ?>" data-list="<?= $dataList ?>">
                                 <noscript>
                                     <div class="form-group">
                                         <label for="add-link">
