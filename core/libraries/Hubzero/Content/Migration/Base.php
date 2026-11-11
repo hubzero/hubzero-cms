@@ -79,7 +79,7 @@ class Base
     /**
      * Db object available to migrations
      *
-     * @var  string
+     * @var  \Hubzero\Database\Driver
      **/
     protected $db;
 
