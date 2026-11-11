@@ -287,7 +287,8 @@ class Warehouse extends \Hubzero\Base\Obj
         // ### Do the collection
         if ($action == 'update') {
             $sql = "UPDATE `#__storefront_collections` SET ";
-        } elseif ($action == 'add') {
+        } else {
+            // add, the only other allowed action
             $sql = "INSERT INTO `#__storefront_collections` SET ";
         }
 
@@ -1401,7 +1402,8 @@ class Warehouse extends \Hubzero\Base\Obj
 
         if ($action == 'update') {
             $sql = "UPDATE `#__storefront_coupons` SET ";
-        } elseif ($action == 'add') {
+        } else {
+            // add, the only other allowed action
             $sql = "INSERT INTO `#__storefront_coupons` SET ";
         }
 

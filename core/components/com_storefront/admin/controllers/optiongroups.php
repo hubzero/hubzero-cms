@@ -216,9 +216,6 @@ class Optiongroups extends AdminController
 
                 // Incoming
                 $id = Request::getArray('id', [0]);
-                if (!is_array($id) && !empty($id)) {
-                    $id = [$id];
-                }
 
                 $this->view->ogId = $id;
 
@@ -371,7 +368,8 @@ class Optiongroups extends AdminController
             case '1':
                 $message = Lang::txt('COM_STOREFRONT_ITEMS_PUBLISHED', count($ids));
                 break;
-            case '0':
+            default:
+                // stateTask() is only given 1 or 0
                 $message = Lang::txt('COM_STOREFRONT_ITEMS_UNPUBLISHED', count($ids));
                 break;
         }

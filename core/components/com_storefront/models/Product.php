@@ -39,7 +39,7 @@ class Product
 
         $this->data = new \stdClass();
 
-        if (isset($pId) && is_numeric($pId) && $pId) {
+        if (is_numeric($pId) && $pId) {
             $this->setId($pId);
             $this->load();
         }

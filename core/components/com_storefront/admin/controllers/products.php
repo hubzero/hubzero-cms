@@ -245,7 +245,8 @@ class Products extends AdminController
 
         $obj = new Archive();
 
-        // Save product
+        // Save product (if loading it fails, the edit form reloads it from the request)
+        $product = null;
         try {
             $product = new Product($fields['pId']);
 
@@ -353,9 +354,6 @@ class Products extends AdminController
 
                 // Incoming
                 $id = Request::getArray('id', []);
-                if (!is_array($id) && !empty($id)) {
-                    $id = [$id];
-                }
                 $this->view->pIds = $id;
 
                 // Set any errors
@@ -558,7 +556,8 @@ class Products extends AdminController
             case '1':
                 $message = Lang::txt('COM_STOREFRONT_ITEMS_PUBLISHED', count($ids));
                 break;
-            case '0':
+            default:
+                // stateTask() is only given 1 or 0
                 $message = Lang::txt('COM_STOREFRONT_ITEMS_UNPUBLISHED', count($ids));
                 break;
         }
@@ -569,7 +568,7 @@ class Products extends AdminController
                 case '1':
                     $action = 'published';
                     break;
-                case '0':
+                default:
                     $action = 'unpublished';
                     break;
             }

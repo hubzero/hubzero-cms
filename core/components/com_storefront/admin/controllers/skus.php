@@ -212,6 +212,10 @@ class Skus extends AdminController
         } elseif ($pId) {
             // create new SKU
             $sku = Sku::newInstance($pId);
+        } else {
+            Notify::error(Lang::txt('COM_STOREFRONT_NO_ID'));
+            $this->cancelTask();
+            return;
         }
 
         // Save SKU
@@ -259,9 +263,6 @@ class Skus extends AdminController
 
                 // Incoming
                 $id = Request::getArray('id', [0]);
-                if (!is_array($id) && !empty($id)) {
-                    $id = [$id];
-                }
                 $this->view->sId = $id;
 
                 $this->view->pId = $pId;
@@ -400,7 +401,8 @@ class Skus extends AdminController
             case '1':
                 $message = Lang::txt('COM_STOREFRONT_ITEMS_PUBLISHED', count($ids));
                 break;
-            case '0':
+            default:
+                // stateTask() is only given 1 or 0
                 $message = Lang::txt('COM_STOREFRONT_ITEMS_UNPUBLISHED', count($ids));
                 break;
         }
@@ -412,7 +414,7 @@ class Skus extends AdminController
                 case '1':
                     $action = 'published';
                     break;
-                case '0':
+                default:
                     $action = 'unpublished';
                     break;
             }

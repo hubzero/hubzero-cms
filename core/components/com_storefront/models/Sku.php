@@ -35,7 +35,7 @@ class Sku
     public function __construct($sId = false)
     {
         $this->data = new \stdClass();
-        if (isset($sId) && is_numeric($sId) && $sId) {
+        if (is_numeric($sId) && $sId) {
             $this->load($sId);
         }
     }

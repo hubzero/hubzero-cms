@@ -381,7 +381,7 @@ class Collection
      * Get collection image
      *
      * @param   void
-     * @return  Object      Collection image
+     * @return  object|false|null  Collection image, or false or null when there is none
      */
     public function getImage($forceReload = false)
     {
