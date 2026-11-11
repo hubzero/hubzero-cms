@@ -916,6 +916,55 @@
 		width: 100%;
 		display: block;
 	}
+	
+	#anonymous-review-panel {
+		background: #f7f9f4;
+		border: 1px solid #d3c3b4;
+		width: 50%;
+		border-radius: 20px 20px 0 0;
+	}
+	
+	#anonymous-review-panel .c-inner {
+		padding: 1em 1em 1em 1.5em;
+	}
+	
+	#anonymous-review-panel p, #anon-review-form {
+		padding: 0.2em 0.5em 0.2em 0.5em;
+	}
+	
+	#anonymous-review-panel #anon-review-form label {
+		text-transform: capitalize;
+		font-size: 0.9rem;
+	}
+	
+	#generate-failure-notice {
+		background-color: #fef2f2;
+		color: #991b1b;
+		border: 1px solid #f87171;
+		padding: 12px 16px;
+		border-radius: 6px;
+		font-size: 0.95rem;
+		font-weight: 500;
+		margin: 1rem 0 1rem 0;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+	}
+	
+	#review-url-value {
+		width: 100%;
+		max-width: 400px;
+	}
+	
+	#review-url-box {
+		margin: 2em 0;
+		padding: 0.2em 0.5em 0.2em 0.5em;
+	}
+	
+	#copy-status {
+		margin: 0.5em 0;
+		color: #1f2937;
+	}
 
 /* Attached notes */
 	ul#c-browser li.wikilevel_2:before,

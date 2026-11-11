@@ -116,6 +116,17 @@ class Router extends Base
 
 			return $vars;
 		}
+		if ($segments[0] === 'review')
+		{
+			$vars['controller'] = 'review';
+
+			if (!empty($segments[1]))
+			{
+				$vars['task'] = $segments[1];
+			}
+
+			return $vars;
+		}
 
 		if (is_numeric($segments[0]))
 		{

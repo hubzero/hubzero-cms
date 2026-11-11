@@ -34,6 +34,8 @@ use Config;
 use Date;
 use Filesystem;
 
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'review.php';
+
 /**
  * Primary component controller
  */
@@ -782,6 +784,8 @@ class Publications extends SiteController
 		$file       = Request::getString('file', '');
 		$disp       = Request::getString('disposition');
 		$disp       = in_array($disp, array('inline', 'attachment')) ? $disp : 'attachment';
+		$rawToken   = Request::getString('token', '');
+		$validToken = false;
 
 		// Get our model and load publication data
 		$this->model = new Models\Publication($this->_identifier, $this->_version, $vid);
@@ -795,12 +799,62 @@ class Publications extends SiteController
 			);
 			return;
 		}
+		
+		if ($rawToken)
+		{
+			$tokenHash = hash('sha256', $rawToken);
+
+			$review = new Models\Review();
+			$record = $review->getAnonReviewRecordByTokenHash($tokenHash);
+
+			if (!$record)
+			{
+				// invalid rawToken
+				App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=review&task=validate&token=' . urlencode($rawToken), false));
+				return;
+			}
+			
+			if ((int) $record->publication_id !== (int) $this->model->get('id') || (int) $record->version_number !== (int) $this->model->get('version_number')
+				|| (int) $record->publication_version_id !== (int) $this->model->get('version_id'))
+			{
+				throw new \Exception(
+					Lang::txt('COM_PUBLICATIONS_REVIEW_TOKEN_PUB_MISMATCH'),
+					403
+				);
+			}
+			
+			if (!$review->isAnonReviewRecordUnexpired($record))
+			{
+				App::redirect(Route::url('index.php?option=' . $this->_option . '&controller=review&task=validate&token=' . urlencode($rawToken), false));
+				return;
+			}
+						
+			$validToken = true;
+		}
 
 		// Is the visitor authorized to view content?
-		if (!$this->model->access('view-all'))
+		if (!$this->model->access('view-all') && !$validToken)
 		{
 			$this->_blockAccess();
 			return true;
+		}
+		
+		$hasNormalAccess = $this->model->access('view-all');
+		$hasReviewAccess = $validToken && $render === 'archive';
+
+		if (!$hasNormalAccess && !$hasReviewAccess)
+		{
+			$this->_blockAccess();
+			return true;
+		}
+
+		// Apply the download-disabled rule to token-only access.
+		if (!$hasNormalAccess && $hasReviewAccess && $this->model->version->downloadDisabled)
+		{
+			throw new \Exception(
+				Lang::txt('COM_PUBLICATIONS_DOWNLOAD_DATASET_DISABLED'),
+				403
+			);
 		}
 
 		// Set curation

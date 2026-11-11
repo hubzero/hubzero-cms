@@ -8,6 +8,8 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+$this->js('anonymousreview.js', 'projects', 'publications');
+
 // Build our citation object
 if ($this->pub->version->get('doi'))
 {
@@ -58,6 +60,71 @@ if ($revertAllowed && $this->pub->accepted())
 	}
 }
 
+// review form
+$isSubmitted = $this->pub->isPending();
+$reviewRecord = isset($this->review_record) ? $this->review_record : null;
+$hasReviewRecord = is_object($reviewRecord);
+$reviewUrl = '';
+$showCopy = false;
+
+$submitter = $this->pub->submitter();
+
+$canGenerate = !User::isGuest()
+	&& is_object($submitter)
+	&& isset($submitter->role, $submitter->status, $submitter->user_id)
+	&& $submitter->role === 'submitter'
+	&& (int) $submitter->status === 1
+	&& (int) $submitter->user_id === (int) User::get('id');
+
+$sessionKey = 'anon_review_url:' . User::get('id') . ':' . $this->pub->version->publication_id . ':' . $this->pub->version->version_number;
+$sessionToken = Session::get($sessionKey, '');
+$expectedTokenHash = '';
+
+if ($hasReviewRecord)
+{
+	$expectedTokenHash = isset($reviewRecord->token_hash)
+		? (string) $reviewRecord->token_hash
+		: '';
+
+	$reviewModel = new \Components\Publications\Models\Review();
+
+	$tokenMatches = is_string($sessionToken)
+		&& $sessionToken !== ''
+		&& $expectedTokenHash !== ''
+		&& hash_equals($expectedTokenHash, hash('sha256', $sessionToken));
+
+	if ($canGenerate && $tokenMatches && $reviewModel->isAnonReviewRecordUnexpired($reviewRecord))
+	{
+		$showCopy = true;
+		$route = Route::url('index.php?option=com_publications&controller=review&task=validate&token=' . urlencode($sessionToken), false);
+
+		if (strpos($route, '/') === 0)
+		{
+			$origin = substr(Request::root(), 0, -strlen(Request::root(true)));
+			$reviewUrl = $origin . $route;
+		}
+		elseif (preg_match('#^https?://#i', $route))
+		{
+			$reviewUrl = $route;
+		}
+		else
+		{
+			$reviewUrl = rtrim(Request::root(), '/') . '/' . $route;
+		}
+	}
+}
+
+// An existing record with no usable session token can be replaced.
+$showGenerate = $canGenerate && !$showCopy;
+$isRegeneration = $hasReviewRecord;
+
+$generateLabel = $isRegeneration
+	? 'PLG_PROJECTS_PUBLICATIONS_REVIEW_GENERATE_NEW_URL'
+	: 'PLG_PROJECTS_PUBLICATIONS_REVIEW_GENERATE_URL';
+
+$confirmMessage = $isRegeneration
+	? 'PLG_PROJECTS_PUBLICATIONS_REVIEW_REGENERATE_CONFIRM'
+	: 'PLG_PROJECTS_PUBLICATIONS_REVIEW_CONFIRM';
 ?>
 
 <form action="<?php echo Route::url($this->pub->link('edit')); ?>" method="post" id="plg-form" enctype="multipart/form-data">
@@ -316,6 +383,69 @@ if ($revertAllowed && $this->pub->accepted())
 	<?php } ?>
  </div>
 </form>
+<?php if ($isSubmitted): ?>
+<div id="anonymous-review-panel" class="grid">
+	<div class="c-inner">
+		<h4><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_TITLE'); ?></h4>
+
+		<?php if ($showGenerate): ?>
+			<p><?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_INTRO'); ?></p>
+
+			<form id="anon-review-form" method="post" action="<?php echo $this->escape(Route::url('index.php?option=com_publications&controller=review&task=generate&format=raw', false)); ?>"
+				data-confirm="<?php echo $this->escape(Lang::txt($confirmMessage)); ?>"
+				data-error="<?php echo $this->escape(Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_GENERATE_FAILED')); ?>">
+				<input type="hidden" name="publication_id"
+					value="<?php echo (int) $this->pub->version->publication_id; ?>" />
+				<input type="hidden" name="version_number"
+					value="<?php echo (int) $this->pub->version->version_number; ?>" />
+				<input type="hidden" name="publication_version_id"
+					value="<?php echo (int) $this->pub->version->id; ?>" />
+
+				<input type="hidden" name="expected_token_hash"
+					value="<?php echo $this->escape($expectedTokenHash); ?>" />
+
+				<?php echo \Html::input('token'); ?>
+
+				<label for="review-expire-date">
+					<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_EXPIRY_DATE'); ?>
+				</label>
+				<input type="datetime-local" id="review-expire-date" name="expired" value="" />
+
+				<button type="submit" id="generate-review-link" class="icon-add btn">
+					<?php echo Lang::txt($generateLabel); ?>
+				</button>
+
+				<div id="generate-failure-notice" class="hidden" role="alert"></div>
+			</form>
+		<?php elseif (!$showCopy): ?>
+			<div class="review-status-message">
+				<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_GENERATE_NOT_AVAILABLE'); ?>
+			</div>
+		<?php endif; ?>
+
+		<?php if ($showGenerate || $showCopy): ?>
+			<div id="review-url-box"<?php if (!$showCopy) echo ' class="hidden"'; ?>>
+				<input type="text" id="review-url-value"
+					value="<?php echo $this->escape($reviewUrl); ?>" readonly />
+
+				<button
+					type="button"
+					id="copy-review-link"
+					class="icon-copy btn<?php if (!$showCopy) echo ' disabled'; ?>"
+					data-copied="<?php echo $this->escape(Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_URL_COPIED')); ?>"
+					data-failed="<?php echo $this->escape(Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_COPY_FAILED')); ?>"
+					data-unavailable="<?php echo $this->escape(Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_COPY_NOT_AVAILABLE')); ?>"
+					<?php if (!$showCopy) echo 'disabled'; ?>
+				>
+					<?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_REVIEW_COPY'); ?>
+				</button>
+
+				<div id="copy-status" class="hidden" role="status"></div>
+			</div>
+		<?php endif; ?>
+	</div>
+</div>
+<?php endif; ?>
 <?php // We need this to make CKEditor checker work ?>
 <script>
 jQuery(document).ready(function($) {

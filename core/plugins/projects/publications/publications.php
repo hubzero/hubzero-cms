@@ -9,6 +9,7 @@
 defined('_HZEXEC_') or die();
 
 include_once \Component::path('com_publications') . DS . 'models' . DS . 'publication.php';
+include_once \Component::path('com_publications') . DS . 'models' . DS . 'review.php';
 
 /**
  * Project publications
@@ -1425,6 +1426,11 @@ class plgProjectsPublications extends \Hubzero\Plugin\Plugin
 		$view->selected_version = $version;
 		$view->pubconfig        = $this->_pubconfig;
 		$view->task             = $this->_task;
+		
+		// Get anonymous review Record
+		$review_model = new \Components\Publications\Models\Review();
+		$review_record = $review_model->getAnonReviewRecordByPubIdVerNum($pub->get('id'), $pub->version->version_number);
+		$view->review_record = $review_record;
 
 		// Append breadcrumbs
 		$this->_appendBreadcrumbs($pub->get('title'), $pub->link('edit'), $version);

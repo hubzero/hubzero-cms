@@ -71,6 +71,12 @@ $typetitle = \Components\Publications\Helpers\Html::writePubCategory($this->pub-
 					<span class="legend-checker-update"><?php echo Lang::txt('COM_PUBLICATIONS_CURATION_LEGEND_UPDATE'); ?></span>
 				</span>
 			</p>
+			<?php if ($this->reviewRecord): ?>
+				<?php $expired = Date::of($this->reviewRecord->expired)->toLocal('M d, Y'); ?>
+				<div class="anonymous-review-note">
+					<p class="warning"><?php echo Lang::txt('COM_PUBLICATIONS_REVIEW_RECORD_EXPIRE_NOTICE', $this->escape($expired)); ?></p>
+				</div>
+			<?php endif; ?>
 			<div class="clear"></div>
 			<div class="submit-curation">
 				<p>

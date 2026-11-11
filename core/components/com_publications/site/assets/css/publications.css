@@ -1729,3 +1729,7 @@ padding-bottom: 2rem;
 .tombstone-section > p > a {
 background-image: none;
 }
+/*review*/
+#anon-review-content a {
+	margin: 1em 0 1em 0;
+}

@@ -28,6 +28,7 @@ use Event;
 
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'publication.php';
 include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'curation.php';
+include_once dirname(dirname(__DIR__)) . DS . 'models' . DS . 'review.php';
 require_once \Component::path('com_projects') . DS . 'helpers' . DS . 'html.php';
 
 /**
@@ -246,12 +247,17 @@ class Curation extends SiteController
 
 		// Set the pathway
 		$this->_buildPathway();
+		
+		// Get anonymous review record
+		$reviewModel = new Models\Review();
+		$reviewRecord = $reviewModel->getAnonReviewRecordByPubIdVerNum($pid, $this->_pub->version->version_number);
 
 		$this->view
 			->set('history', $history)
 			->set('pub', $this->_pub)
 			->set('title', $this->_title)
 			->set('option', $this->_option)
+			->set('reviewRecord', $reviewRecord)
 			->setErrors($this->getErrors())
 			->display();
 	}
