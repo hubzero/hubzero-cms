@@ -600,6 +600,11 @@ class Tickets extends SiteController
 
         $matchQuery = false;
 
+        // Whichever of the three cases below applies -- a saved query, the
+        // watch list, or the first query there is -- sets these
+        $tickets = [];
+        $total   = 0;
+
         foreach ($folders as $folder) {
             foreach ($folder->queries->sort('ordering') as $query) {
                 if ($query->get('id') != $filters['show']) {

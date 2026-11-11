@@ -215,8 +215,8 @@ class Commentsv2r0 extends ApiController
             throw new Exception(Lang::txt('Not authorized'), 403);
         }
 
-        $ticket_id = Request::getInt('ticket', null);
-        if (!isset($ticket_id)) {
+        $ticket_id = Request::getInt('ticket', 0);
+        if (!$ticket_id) {
             throw new Exception(Lang::txt('Bad request - ticket ID required'), 400);
         }
 
