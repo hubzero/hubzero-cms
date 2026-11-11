@@ -70,7 +70,7 @@ A component view resolves its layout through
 [`Hubzero\View\View::setPath()`](../../../core/libraries/Hubzero/View/View.php),
 which builds the search list:
 
-<!--include: core/libraries/Hubzero/View/View.php:561-595-->
+<!--include: core/libraries/Hubzero/View/View.php:557-591-->
 
 Paths are pushed onto the front of the stack, so the last one added is
 searched first. For a component view the order is:

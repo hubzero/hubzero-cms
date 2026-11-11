@@ -64,7 +64,7 @@ API version 1.1, task `checkpass` in [`profilesv1r1.php`](../../../core/componen
 
 Retrieves option values for a profile field
 
-API version 1.0, task `fieldValues` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L577).
+API version 1.0, task `fieldValues` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L575).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -74,7 +74,7 @@ API version 1.0, task `fieldValues` in [`profilesv1r0.php`](../../../core/compon
 
 Retrieves option values for a profile field
 
-API version 1.1, task `fieldValues` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L692).
+API version 1.1, task `fieldValues` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L690).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -112,13 +112,13 @@ API version 1.1, task `list` in [`profilesv1r1.php`](../../../core/components/co
 
 Get a list of oranizations used throughout member profiles
 
-API version 1.0, task `organizations` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L528).
+API version 1.0, task `organizations` in [`profilesv1r0.php`](../../../core/components/com_members/api/controllers/profilesv1r0.php#L526).
 
 ## GET /members/organizations (v1.1)
 
 Get a list of oranizations used throughout member profiles
 
-API version 1.1, task `organizations` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L643).
+API version 1.1, task `organizations` in [`profilesv1r1.php`](../../../core/components/com_members/api/controllers/profilesv1r1.php#L641).
 
 ## GET /members/{id} (v1.0)
 

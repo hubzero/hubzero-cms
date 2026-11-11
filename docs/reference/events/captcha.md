@@ -11,7 +11,7 @@ Events in the `captcha` group. A plugin in `core/plugins/captcha/` receives an e
 
 Fired from:
 
-- [`core/components/com_members/models/registration.php:645`](../../../core/components/com_members/models/registration.php#L645)
+- [`core/components/com_members/models/registration.php:644`](../../../core/components/com_members/models/registration.php#L644)
 - [`core/components/com_members/site/controllers/register.php:1244`](../../../core/components/com_members/site/controllers/register.php#L1244)
 - [`core/components/com_support/site/controllers/tickets.php:895`](../../../core/components/com_support/site/controllers/tickets.php#L895)
 

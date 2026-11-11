@@ -31,7 +31,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/create.php:1508`](../../../core/components/com_resources/site/controllers/create.php#L1508) with `[$resource]`
+- [`core/components/com_resources/site/controllers/create.php:1505`](../../../core/components/com_resources/site/controllers/create.php#L1505) with `[$resource]`
 
 No plugin in the source tree listens for this event.
 
@@ -39,7 +39,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_resources/site/controllers/create.php:1334`](../../../core/components/com_resources/site/controllers/create.php#L1334) with `[$resource]`
+- [`core/components/com_resources/site/controllers/create.php:1333`](../../../core/components/com_resources/site/controllers/create.php#L1333) with `[$resource]`
 
 Listeners:
 

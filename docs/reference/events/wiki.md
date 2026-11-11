@@ -70,7 +70,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_wiki/admin/controllers/pages.php:345`](../../../core/components/com_wiki/admin/controllers/pages.php#L345) with `[$id]`
+- [`core/components/com_wiki/admin/controllers/pages.php:344`](../../../core/components/com_wiki/admin/controllers/pages.php#L344) with `[$id]`
 
 No plugin in the source tree listens for this event.
 

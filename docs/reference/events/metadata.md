@@ -11,8 +11,8 @@ Events in the `metadata` group. A plugin in `core/plugins/metadata/` receives an
 
 Fired from:
 
-- [`core/plugins/projects/files/connections.php:1345`](../../../core/plugins/projects/files/connections.php#L1345) with `[$oldName, $item->getAbsolutePath()]`
-- [`core/plugins/projects/files/connections.php:1429`](../../../core/plugins/projects/files/connections.php#L1429) with `[$oldName, $entity->getAbsolutePath()]`
+- [`core/plugins/projects/files/connections.php:1349`](../../../core/plugins/projects/files/connections.php#L1349) with `[$oldName, $item->getAbsolutePath()]`
+- [`core/plugins/projects/files/connections.php:1433`](../../../core/plugins/projects/files/connections.php#L1433) with `[$oldName, $entity->getAbsolutePath()]`
 
 Listeners:
 
@@ -22,7 +22,7 @@ Listeners:
 
 Fired from:
 
-- [`core/plugins/projects/files/connections.php:1532`](../../../core/plugins/projects/files/connections.php#L1532)
+- [`core/plugins/projects/files/connections.php:1536`](../../../core/plugins/projects/files/connections.php#L1536)
 
 No plugin in the source tree listens for this event.
 
@@ -30,11 +30,11 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/api/controllers/filefsv1r0.php:983`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L983) with `[$entity]`
-- [`core/components/com_projects/api/controllers/filefsv1r0.php:1066`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L1066) with `[$entity]`
-- [`core/components/com_projects/api/controllers/filesv1r0.php:1102`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1102) with `[$entity]`
-- [`core/components/com_projects/api/controllers/filesv1r0.php:1186`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1186) with `[$entity]`
-- [`core/plugins/projects/files/connections.php:1539`](../../../core/plugins/projects/files/connections.php#L1539) with `[$entity]`
+- [`core/components/com_projects/api/controllers/filefsv1r0.php:980`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L980) with `[$entity]`
+- [`core/components/com_projects/api/controllers/filefsv1r0.php:1063`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L1063) with `[$entity]`
+- [`core/components/com_projects/api/controllers/filesv1r0.php:1107`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1107) with `[$entity]`
+- [`core/components/com_projects/api/controllers/filesv1r0.php:1191`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1191) with `[$entity]`
+- [`core/plugins/projects/files/connections.php:1543`](../../../core/plugins/projects/files/connections.php#L1543) with `[$entity]`
 
 Listeners:
 
@@ -44,9 +44,9 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/api/controllers/filefsv1r0.php:1069`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L1069) with `[$entity, array_merge($oldmetadata, $metadata)]`
-- [`core/components/com_projects/api/controllers/filesv1r0.php:1189`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1189) with `[$entity, array_merge($oldmetadata, $metadata)]`
-- [`core/plugins/projects/files/connections.php:1594`](../../../core/plugins/projects/files/connections.php#L1594) with `[ $entity, $metadata, ]`
+- [`core/components/com_projects/api/controllers/filefsv1r0.php:1066`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L1066) with `[$entity, array_merge($oldmetadata, $metadata)]`
+- [`core/components/com_projects/api/controllers/filesv1r0.php:1194`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1194) with `[$entity, array_merge($oldmetadata, $metadata)]`
+- [`core/plugins/projects/files/connections.php:1598`](../../../core/plugins/projects/files/connections.php#L1598) with `[ $entity, $metadata, ]`
 
 Listeners:
 

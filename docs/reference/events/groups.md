@@ -55,9 +55,9 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/admin/controllers/manage.php:427`](../../../core/components/com_groups/admin/controllers/manage.php#L427) with `[$before, $group]`
-- [`core/components/com_groups/admin/controllers/manage.php:1255`](../../../core/components/com_groups/admin/controllers/manage.php#L1255) with `[$before, $group]`
-- [`core/components/com_groups/site/controllers/groups.php:793`](../../../core/components/com_groups/site/controllers/groups.php#L793) with `[$before, $group]`
+- [`core/components/com_groups/admin/controllers/manage.php:425`](../../../core/components/com_groups/admin/controllers/manage.php#L425) with `[$before, $group]`
+- [`core/components/com_groups/admin/controllers/manage.php:1253`](../../../core/components/com_groups/admin/controllers/manage.php#L1253) with `[$before, $group]`
+- [`core/components/com_groups/site/controllers/groups.php:791`](../../../core/components/com_groups/site/controllers/groups.php#L791) with `[$before, $group]`
 
 Listeners:
 
@@ -91,8 +91,8 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/admin/controllers/manage.php:1154`](../../../core/components/com_groups/admin/controllers/manage.php#L1154) with `[$group]`
-- [`core/components/com_groups/site/controllers/groups.php:1135`](../../../core/components/com_groups/site/controllers/groups.php#L1135) with `[$group]`
+- [`core/components/com_groups/admin/controllers/manage.php:1152`](../../../core/components/com_groups/admin/controllers/manage.php#L1152) with `[$group]`
+- [`core/components/com_groups/site/controllers/groups.php:1133`](../../../core/components/com_groups/site/controllers/groups.php#L1133) with `[$group]`
 
 Listeners:
 
@@ -107,7 +107,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_groups/site/controllers/groups.php:1036`](../../../core/components/com_groups/site/controllers/groups.php#L1036) with `[$this->view->group]`
+- [`core/components/com_groups/site/controllers/groups.php:1034`](../../../core/components/com_groups/site/controllers/groups.php#L1034) with `[$this->view->group]`
 
 Listeners:
 
@@ -139,7 +139,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_groups/site/controllers/groups.php:808`](../../../core/components/com_groups/site/controllers/groups.php#L808) with `[$group]`
+- [`core/components/com_groups/site/controllers/groups.php:806`](../../../core/components/com_groups/site/controllers/groups.php#L806) with `[$group]`
 
 No plugin in the source tree listens for this event.
 

@@ -42,7 +42,7 @@ $path = PATH_APP . DS . $resourcePath . DS . 'content' . DS . $name;
 The same join appears in `com_resources`, which builds every media path this
 way rather than concatenating separators of its own:
 
-<!--include: core/components/com_resources/helpers/hubpresenter.php:104-104-->
+<!--include: core/components/com_resources/helpers/hubpresenter.php:107-107-->
 
 ## Version
 

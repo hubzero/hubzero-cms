@@ -600,7 +600,7 @@ API version 1.0, task `list` in [`commentsv1r0.php`](../../../core/components/co
 
 Delete a ticket comment
 
-API version 1.0, task `delete` in [`commentsv1r0.php`](../../../core/components/com_support/api/controllers/commentsv1r0.php#L607).
+API version 1.0, task `delete` in [`commentsv1r0.php`](../../../core/components/com_support/api/controllers/commentsv1r0.php#L609).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -633,7 +633,7 @@ API version 2.1, task `delete` in [`commentsv2r1.php`](../../../core/components/
 
 Displays details for a ticket comment
 
-API version 1.0, task `read` in [`commentsv1r0.php`](../../../core/components/com_support/api/controllers/commentsv1r0.php#L491).
+API version 1.0, task `read` in [`commentsv1r0.php`](../../../core/components/com_support/api/controllers/commentsv1r0.php#L493).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
@@ -644,7 +644,7 @@ API version 1.0, task `read` in [`commentsv1r0.php`](../../../core/components/co
 
 Update a ticket comment
 
-API version 1.0, task `update` in [`commentsv1r0.php`](../../../core/components/com_support/api/controllers/commentsv1r0.php#L568).
+API version 1.0, task `update` in [`commentsv1r0.php`](../../../core/components/com_support/api/controllers/commentsv1r0.php#L570).
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|

@@ -11,11 +11,11 @@ Events in the `content` group. A plugin in `core/plugins/content/` receives an e
 
 Fired from:
 
-- [`core/components/com_answers/site/controllers/questions.php:621`](../../../core/components/com_answers/site/controllers/questions.php#L621) with `['Question']`
+- [`core/components/com_answers/site/controllers/questions.php:620`](../../../core/components/com_answers/site/controllers/questions.php#L620) with `['Question']`
 - [`core/components/com_blog/site/controllers/entries.php:155`](../../../core/components/com_blog/site/controllers/entries.php#L155) with `['Blog']`
 - [`core/components/com_groups/site/controllers/groups.php:356`](../../../core/components/com_groups/site/controllers/groups.php#L356) with `['Group']`
 - [`core/components/com_projects/site/controllers/projects.php:677`](../../../core/components/com_projects/site/controllers/projects.php#L677) with `['Project']`
-- [`core/components/com_resources/site/controllers/create.php:1521`](../../../core/components/com_resources/site/controllers/create.php#L1521) with `['Resource']`
+- [`core/components/com_resources/site/controllers/create.php:1518`](../../../core/components/com_resources/site/controllers/create.php#L1518) with `['Resource']`
 
 No plugin in the source tree listens for this event.
 

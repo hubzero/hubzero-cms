@@ -43,8 +43,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_projects/api/controllers/filefsv1r0.php:909`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L909) with `$plugin_params`
-- [`core/components/com_projects/api/controllers/filesv1r0.php:1027`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1027) with `$plugin_params`
+- [`core/components/com_projects/api/controllers/filefsv1r0.php:906`](../../../core/components/com_projects/api/controllers/filefsv1r0.php#L906) with `$plugin_params`
+- [`core/components/com_projects/api/controllers/filesv1r0.php:1032`](../../../core/components/com_projects/api/controllers/filesv1r0.php#L1032) with `$plugin_params`
 
 Listeners:
 
@@ -94,11 +94,11 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_projects/admin/controllers/projects.php:527`](../../../core/components/com_projects/admin/controllers/projects.php#L527) with `[$this->model]`
-- [`core/components/com_projects/admin/controllers/projects.php:696`](../../../core/components/com_projects/admin/controllers/projects.php#L696) with `[$model]`
-- [`core/components/com_projects/admin/controllers/projects.php:748`](../../../core/components/com_projects/admin/controllers/projects.php#L748) with `[$model]`
-- [`core/components/com_projects/admin/controllers/projects.php:802`](../../../core/components/com_projects/admin/controllers/projects.php#L802) with `[$model]`
-- [`core/components/com_projects/admin/controllers/projects.php:854`](../../../core/components/com_projects/admin/controllers/projects.php#L854) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:528`](../../../core/components/com_projects/admin/controllers/projects.php#L528) with `[$this->model]`
+- [`core/components/com_projects/admin/controllers/projects.php:697`](../../../core/components/com_projects/admin/controllers/projects.php#L697) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:749`](../../../core/components/com_projects/admin/controllers/projects.php#L749) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:803`](../../../core/components/com_projects/admin/controllers/projects.php#L803) with `[$model]`
+- [`core/components/com_projects/admin/controllers/projects.php:855`](../../../core/components/com_projects/admin/controllers/projects.php#L855) with `[$model]`
 - [`core/components/com_projects/api/controllers/projectsv2r0.php:566`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L566) with `[&$row, $isNew]`
 - [`core/components/com_projects/api/controllers/projectsv2r0.php:1074`](../../../core/components/com_projects/api/controllers/projectsv2r0.php#L1074) with `[&$row, $isNew]`
 - [`core/components/com_projects/site/controllers/setup.php:341`](../../../core/components/com_projects/site/controllers/setup.php#L341) with `[$this->model]`

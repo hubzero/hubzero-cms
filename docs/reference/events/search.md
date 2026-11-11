@@ -22,7 +22,7 @@ Listeners:
 
 Fired from:
 
-- [`core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:428`](../../../core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L428)
+- [`core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php:430`](../../../core/libraries/Hubzero/Search/Adapters/SolrQueryAdapter.php#L430)
 
 No plugin in the source tree listens for this event.
 
