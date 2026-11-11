@@ -25,8 +25,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_members/site/views/register/tmpl/default.php:568`](../../../core/components/com_members/site/views/register/tmpl/default.php#L568)
-- [`core/components/com_members/site/views/register/tmpl/resend_request.php:39`](../../../core/components/com_members/site/views/register/tmpl/resend_request.php#L39)
+- [`core/components/com_members/site/views/register/tmpl/default.php:599`](../../../core/components/com_members/site/views/register/tmpl/default.php#L599)
+- [`core/components/com_members/site/views/register/tmpl/resend_request.php:42`](../../../core/components/com_members/site/views/register/tmpl/resend_request.php#L42)
 - [`core/components/com_support/site/controllers/tickets.php:793`](../../../core/components/com_support/site/controllers/tickets.php#L793)
 
 Listeners:

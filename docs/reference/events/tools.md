@@ -31,7 +31,7 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_tools/site/views/sessions/tmpl/session.php:296`](../../../core/components/com_tools/site/views/sessions/tmpl/session.php#L296) with `[$this->app, $this->output, $readOnly]`
+- [`core/components/com_tools/site/views/sessions/tmpl/session.php:334`](../../../core/components/com_tools/site/views/sessions/tmpl/session.php#L334) with `[$this->app, $this->output, $readOnly]`
 
 No plugin in the source tree listens for this event.
 

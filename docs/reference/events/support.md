@@ -70,8 +70,8 @@ Listeners:
 
 Fired from:
 
-- [`core/components/com_support/admin/views/tickets/tmpl/edit.php:365`](../../../core/components/com_support/admin/views/tickets/tmpl/edit.php#L365) with `[$this->row]`
-- [`core/components/com_support/site/views/tickets/tmpl/ticket.php:559`](../../../core/components/com_support/site/views/tickets/tmpl/ticket.php#L559) with `[$this->row]`
+- [`core/components/com_support/admin/views/tickets/tmpl/edit.php:388`](../../../core/components/com_support/admin/views/tickets/tmpl/edit.php#L388) with `[$this->row]`
+- [`core/components/com_support/site/views/tickets/tmpl/ticket.php:595`](../../../core/components/com_support/site/views/tickets/tmpl/ticket.php#L595) with `[$this->row]`
 
 No plugin in the source tree listens for this event.
 

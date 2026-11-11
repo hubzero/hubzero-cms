@@ -30,7 +30,7 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_search/site/views/basic/tmpl/default.php:73`](../../../core/components/com_search/site/views/basic/tmpl/default.php#L73)
+- [`core/components/com_search/site/views/basic/tmpl/default.php:74`](../../../core/components/com_search/site/views/basic/tmpl/default.php#L74)
 
 No plugin in the source tree listens for this event.
 
