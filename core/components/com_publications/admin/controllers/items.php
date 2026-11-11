@@ -27,6 +27,8 @@ use Hubzero\Facades\Notify;
 
 /**
  * Manage publications
+ *
+ * @property  Models\Publication  $model  The publication being edited or saved
  */
 class Items extends AdminController
 {

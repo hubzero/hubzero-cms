@@ -21,6 +21,17 @@ use Hubzero\Facades\App;
 
 /**
  * Manage publication batch
+ *
+ * processTask() and parse() keep these on it through __set() and __get():
+ *
+ * @property  \Components\Projects\Models\Project       $project        The project the publications go into
+ * @property  object|false                              $mastertype     The master type's row, by getType()
+ * @property  string|false|null                         $data           The uploaded XML
+ * @property  \XMLReader                                $reader         The reader over $data
+ * @property  int                                       $_uid           The user creating the publications
+ * @property  \Components\Publications\Models\Curation  $curationModel  The master type's curation
+ * @property  string                                    $projectPath    The project repository's path
+ * @property  string                                    $site           The hub's base URL, without a slash
  */
 class Batchcreate extends AdminController
 {
