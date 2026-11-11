@@ -846,7 +846,9 @@ $bars = [];
                                             data[i]['code'] + '.gif" alt="' + data[i]['code'] + '" /> '
                                         : '') +
                                     data[i]['label'] + '</td>' +
-                                '<td><span class="bar-wrap"><span class="bar" style="width: ' + Math.round(((data[i]['data']/total)*100), 2) + '%;"></span><span class="value">' + data[i]['data'] + ' (' + Math.round(((data[i]['data']/total)*100), 2) + '%)</span></span></td>' +
+                                '<td><span class="bar-wrap"><span class="bar" style="width: ' +
+                                    Math.round(((data[i]['data']/total)*100), 2) + '%;"></span><span class="value">' +
+                                    data[i]['data'] + ' (' + Math.round(((data[i]['data']/total)*100), 2) + '%)</span></span></td>' +
                                 //'<td>' + Math.round(((data[i]['data']/total)*100),2) + '%</td>' +
                             '</tr>'
                         );

@@ -218,7 +218,13 @@ if (!$this->app->sess) {
             // to exercise the recovery sequence). Icon-only; hover for the label.
             if (!app.hasClass('no-reconnect') && !$('#app-btn-reconnect').length) {
                 var liRe = $('<li></li>');
-                $('<a class="reconnect" id="app-btn-reconnect" href="#" title="<?= Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_BTN') ?>" aria-label="<?= Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_BTN') ?>"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></a>')
+                $('<a class="reconnect" id="app-btn-reconnect" href="#"'
+                    + ' title="<?= Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_BTN') ?>"'
+                    + ' aria-label="<?= Lang::txt('PLG_TOOLS_NOVNC_RECONNECT_BTN') ?>">'
+                    + '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"'
+                    + ' stroke-linejoin="round" aria-hidden="true"><polyline points="23 4 23 10 17 10"/>'
+                    + '<polyline points="1 20 1 14 7 14"/>'
+                    + '<path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></a>')
                     .on('click', function(event) {
                         event.preventDefault();
                         if (window.SessionTimer) { window.SessionTimer.refresh(); }
