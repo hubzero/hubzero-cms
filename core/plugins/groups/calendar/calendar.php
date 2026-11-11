@@ -1195,8 +1195,7 @@ class Calendar extends Plugin
 
         //make sure we have a username and password
         if (
-            !isset($httpBasicUsername)
-            || !isset($httpBasicPassword)
+            !isset($httpBasicPassword)
             || $httpBasicUsername == ''
             || $httpBasicPassword == ''
         ) {
@@ -1379,7 +1378,7 @@ class Calendar extends Plugin
                 && !isset($this->register)
             ) {
                 //if we entered a password and it was bad lets tell the user
-                if (isset($password) && $password != '') {
+                if ($password != '') {
                     $this->setError('The password entered is incorrect.');
                 }
                 $view->setLayout('register_restricted');
@@ -1520,11 +1519,11 @@ class Calendar extends Plugin
 
         $eventsRespondent->highest_degree   = (isset($register['degree'])) ? $register['degree'] : '';
         $eventsRespondent->gender           = (isset($register['sex'])) ? $register['sex'] : '';
-        $eventsRespondent->disability_needs = (isset($disability) && strtolower($disability) == 'yes') ? 1 : null;
+        $eventsRespondent->disability_needs = (strtolower($disability) == 'yes') ? 1 : null;
         $eventsRespondent->dietary_needs    = (isset($dietary['needs']) && strtolower($dietary['needs']) == 'yes')
             ? $dietary['specific']
             : null;
-        $eventsRespondent->attending_dinner = (isset($dinner) && $dinner == 'yes') ? 1 : 0;
+        $eventsRespondent->attending_dinner = ($dinner == 'yes') ? 1 : 0;
         $eventsRespondent->bind($register);
 
         //did we save properly

@@ -400,6 +400,8 @@ class Messages extends Plugin
                 // Collects the members of any roles addressed (an empty role
                 // otherwise left this unset)
                 $members = [];
+                $action = '';
+                $group_id = 0;
 
                 foreach ($mbrs as $mbr) {
                     if (strstr($mbr, '_')) {

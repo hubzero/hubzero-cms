@@ -778,10 +778,8 @@ class Groups extends Base
         $group->set('params', $gParams->toString());
         $group->update();
 
-        if (isset($customFields)) {
-            foreach ($customFields as $field) {
-                $field->saveGroupAnswers($group->get('gidNumber'));
-            }
+        foreach ($customFields as $field) {
+            $field->saveGroupAnswers($group->get('gidNumber'));
         }
         // Process tags
         $gt = new Tags($group->get('gidNumber'));

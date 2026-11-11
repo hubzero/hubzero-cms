@@ -107,11 +107,8 @@ class Record extends \Hubzero\Content\Import\Model\Record
         $keys = [];
         if ($this->mode == 'PATCH') {
             foreach ($this->description as $k => $p) {
+                // Skips empty values, including empty arrays
                 if (!$p) {
-                    continue;
-                }
-
-                if (is_array($p) && empty($p)) {
                     continue;
                 }
 

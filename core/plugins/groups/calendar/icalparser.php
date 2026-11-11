@@ -245,16 +245,16 @@ class IcalParser
     {
         preg_match('#^([\w-]+);?(.*?):(.*)$#i', $row, $matches);
 
-        $key    = false;
-        $middle = null;
-        $value  = null;
-        $allDay = false;
+        $key      = false;
+        $middle   = null;
+        $value    = null;
+        $allDay   = false;
+        $timezone = null;
 
         if ($matches) {
             $key = $matches[1];
             $middle = $matches[2];
             $value = $matches[3];
-            $timezone = null;
 
             if ($key === 'X-WR-TIMEZONE' || $key === 'TZID') {
                 if (isset($this->windows_timezones[$value])) {

@@ -388,10 +388,8 @@ class Manage extends AdminController
         $group->set('params', $params);
         $group->update();
 
-        if (isset($customFields)) {
-            foreach ($customFields as $field) {
-                $field->saveGroupAnswers($group->get('gidNumber'));
-            }
+        foreach ($customFields as $field) {
+            $field->saveGroupAnswers($group->get('gidNumber'));
         }
 
         // create home page

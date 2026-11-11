@@ -473,6 +473,7 @@ class Media extends Base
     {
         // vars for later
         $message = '';
+        $url = '';
 
         // do upload
         $upload = $this->doUpload();
@@ -1071,7 +1072,7 @@ class Media extends Base
         $editorFunc   = Request::getInt('editorFuncNum', 0, 'get');
         $type         = Request::getString('type', 'image', 'get');
 
-        if (isset($editorName) && $editorName != '') {
+        if ($editorName != '') {
             $base = ($_SERVER['SERVER_PORT'] == 443) ? 'https://' : 'http://';
             $base .= $_SERVER['HTTP_HOST'];
             $listFilesUrl = $base

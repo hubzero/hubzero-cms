@@ -1778,7 +1778,7 @@ class Forum extends Plugin
 
         // Email the group and insert email tokens to allow them to respond to group posts via email
         $params = Component::params('com_groups');
-        if ($params->get('email_forum_comments') && (isset($moving) && $moving == false)) {
+        if ($params->get('email_forum_comments') && $moving == false) {
             // A notification failure must never break the post submission: the
             // post is already saved, so any error here (mail send, template
             // render, bad recipient) is logged and swallowed instead of
@@ -1947,7 +1947,6 @@ class Forum extends Plugin
         );
         // If this is a post in a thread and not the thread starter...
         if ($post->get('parent')) {
-            $thread = isset($thread) ? $thread : Post::oneOrFail($post->get('thread'));
             $thread->set('last_activity', ($fields['id'] ? $post->get('modified') : $post->get('created')));
             $thread->save();
 

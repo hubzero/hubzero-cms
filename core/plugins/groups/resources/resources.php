@@ -550,8 +550,8 @@ class Resources extends Plugin
         }
 
         if ($limit) {
+            $total = 0;
             if ($this->total != null) {
-                $total = 0;
                 $t = $this->total;
                 foreach ($t as $l) {
                     $total += $l;
