@@ -55,7 +55,8 @@ $this
                         </tr>
                         <tr>
                             <td class="key"><?php if ($canRun) {
-                                ?><input type="submit" name="deleteUsers" id="deleteUsers" value="<?= Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP') ?>" /><?php
+                                ?><input type="submit" name="deleteUsers" id="deleteUsers"
+                                    value="<?= Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP') ?>" /><?php
                                             } ?></td>
                             <td><?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_USERS_FROM_LDAP'); ?></td>
                         </tr>
@@ -69,13 +70,15 @@ $this
                     <tbody>
                         <tr>
                             <td class="key"><?php if ($canRun) {
-                                ?><input type="submit" name="exportGroups" id="exportGroups" value="<?= Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP') ?>" /><?php
+                                ?><input type="submit" name="exportGroups" id="exportGroups"
+                                    value="<?= Lang::txt('COM_SYSTEM_LDAP_EXPORT_TO_LDAP') ?>" /><?php
                                             } ?></td>
                             <td><?php echo Lang::txt('COM_SYSTEM_LDAP_EXPORT_GROUPS_TO_LDAP'); ?></td>
                         </tr>
                         <tr>
                             <td class="key"><?php if ($canRun) {
-                                ?><input type="submit" name="deleteGroups" id="deleteGroups" value="<?= Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP') ?>" /><?php
+                                ?><input type="submit" name="deleteGroups" id="deleteGroups"
+                                    value="<?= Lang::txt('COM_SYSTEM_LDAP_DELETE_FROM_LDAP') ?>" /><?php
                                             } ?></td>
                             <td><?php echo Lang::txt('COM_SYSTEM_LDAP_DELETE_GROUPS_FROM_LDAP'); ?></td>
                         </tr>

@@ -231,7 +231,8 @@ $this
                     <img src="<?php
                         $size = $this->course->logo('size');
                         echo Route::url($logo);
-                    ?>" class="<?= ($size['width'] >= $size['height']) ? 'landscape' : 'portrait' ?>" alt="<?= $this->escape($this->course->get('title')) ?>" />
+                    ?>" class="<?= ($size['width'] >= $size['height']) ? 'landscape' : 'portrait' ?>"
+                        alt="<?= $this->escape($this->course->get('title')) ?>" />
                 <?php } else { ?>
                     <span></span>
                 <?php } ?>

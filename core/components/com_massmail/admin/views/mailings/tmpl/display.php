@@ -95,7 +95,8 @@ $this->css('display.css', 'com_massmail');
                 <td>
                     <a href="<?php echo $link; ?>"><?php echo $this->escape(stripslashes($row->get('subject'))); ?></a>
                     <?php if ((int) $row->get('ignore_optout')) {
-                        ?><span class="badge badge-warning" title="<?= Lang::txt('COM_MASSMAIL_IGNORES_OPTOUT') ?>">!</span><?php
+                        ?><span class="badge badge-warning"
+                            title="<?= Lang::txt('COM_MASSMAIL_IGNORES_OPTOUT') ?>">!</span><?php
                     } ?>
                 </td>
                 <?php

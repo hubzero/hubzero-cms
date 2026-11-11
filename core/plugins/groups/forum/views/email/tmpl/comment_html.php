@@ -121,7 +121,8 @@ $bdcolor = '#e1e1e1';
                     <div class="mobilehide" id="ticket-number"
                         style="float: left; font-weight: bold; text-align: center; padding: 10px;" align="center">
                         <?php if ($this->group->get('logo')) {
-                            ?><img src="<?= rtrim(Request::root(), '/') . '/' . ltrim($this->group->getLogo(), '/') ?>" width="100" alt="<?= $this->escape($this->group->get('description')) ?>" /><?php
+                            ?><img src="<?= rtrim(Request::root(), '/') . '/' . ltrim($this->group->getLogo(), '/') ?>"
+                                width="100" alt="<?= $this->escape($this->group->get('description')) ?>" /><?php
                         } else {
                             ?><div style="width: 1.2em; font-size: 4em; padding: 20px;">&#8220;</div><?php
                         }

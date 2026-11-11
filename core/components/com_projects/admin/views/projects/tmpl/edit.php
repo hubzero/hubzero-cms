@@ -433,7 +433,8 @@ $paramsLayoutSelected = function ($value) use ($view) {
                     <tr>
                         <th scope="row"><?php echo Lang::txt('COM_PROJECTS_TODOS'); ?>:</th>
                         <td><?php echo $this->counts['todo']; ?> <?php if ($this->counts['todos_completed'] > 0) {
-                            ?>( +<?= $this->counts['todos_completed'] ?> <?= Lang::txt('COM_PROJECTS_TODOS_COMPLETED') ?>)<?php
+                            ?>( +<?= $this->counts['todos_completed'] ?>
+                                <?= Lang::txt('COM_PROJECTS_TODOS_COMPLETED') ?>)<?php
                             } ?></td>
                     </tr>
                 <?php endif; ?>

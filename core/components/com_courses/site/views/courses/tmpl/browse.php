@@ -257,7 +257,8 @@ $this->css('browse.css');
                                                         : $name
                                                 );
                                             }
-                                            echo Lang::txt('COM_COURSES_COURSE_INSTRUCTORS'); ?>: <span class="entry-instructors"><?= implode(', ', $names) ?></span><?php
+                                            echo Lang::txt('COM_COURSES_COURSE_INSTRUCTORS'); ?>: <span
+                                                class="entry-instructors"><?= implode(', ', $names) ?></span><?php
                                         }
                                         ?>
                                     </dd>

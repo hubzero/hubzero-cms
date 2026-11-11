@@ -88,7 +88,8 @@ if (!$no_html) { ?>
                             );
                             ?>
                             <a class="delete" href="<?= $removeUrl ?>" <?php if (!$no_html) {
-                                ?>target="filer" onclick="return deleteFile('<?= $this->escape(addslashes($name)) ?>');"<?php
+                                ?>target="filer"
+                                    onclick="return deleteFile('<?= $this->escape(addslashes($name)) ?>');"<?php
                                                     } ?> title="<?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>">
                                 <?php echo Lang::txt('PLG_COURSES_PAGES_DELETE'); ?>
                             </a>
