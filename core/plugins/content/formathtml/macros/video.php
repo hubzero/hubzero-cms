@@ -17,6 +17,8 @@ use Hubzero\Facades\Route;
 
 /**
  * Wiki macro class for displaying a youtube video
+ *
+ * @property  array  $imgs  The extensions of image files, set by link()
  */
 class Video extends Macro
 {

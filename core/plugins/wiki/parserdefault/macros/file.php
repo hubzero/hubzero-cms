@@ -20,6 +20,9 @@ use Hubzero\Facades\User;
 
 /**
  * A wiki macro for embedding or linking to files
+ *
+ * @property  \Hubzero\Config\Registry  $config  The wiki's parameters, loaded by render()
+ * @property  array                    $imgs    The extensions shown as images, set by render()
  */
 class File extends WikiMacro
 {

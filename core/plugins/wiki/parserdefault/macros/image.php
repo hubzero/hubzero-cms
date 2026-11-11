@@ -20,6 +20,9 @@ use Hubzero\Facades\Route;
 
 /**
  * A wiki macro for embedding images
+ *
+ * @property  \Hubzero\Config\Registry  $config  The wiki's parameters, loaded by render()
+ * @property  array                    $imgs    The extensions accepted as images, set by render()
  */
 class Image extends WikiMacro
 {

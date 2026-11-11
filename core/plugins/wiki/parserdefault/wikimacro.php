@@ -6,16 +6,28 @@
  * @license    http://opensource.org/licenses/MIT MIT
  */
 
-/**
- * Base class for wiki macros
- * Should be extended
- */
-
 namespace Plugins\Wiki\Parserdefault;
 
 use Hubzero\Facades\App;
 use Hubzero\Facades\Lang;
 
+/**
+ * Base class for wiki macros
+ * Should be extended
+ *
+ * The parser hands each macro its context through __set(), which keeps it
+ * in $data (setting $args also clears the parsed arguments):
+ *
+ * @property  string|null  $args        The text between the macro's parentheses
+ * @property  string       $option      The component the content belongs to
+ * @property  string       $scope       The path of the page the content belongs to
+ * @property  string       $pagename    The name of that page
+ * @property  int          $pageid      The id of that page, or the upload folder id of an unsaved one
+ * @property  string       $domain      The kind of wiki the page is in (site, group, project)
+ * @property  int          $domain_id   The id of the group or project whose wiki it is (0 for the site)
+ * @property  string       $uniqPrefix  The parser's token, for ids unique to this rendering
+ * @property  string       $filepath    The upload path to use instead of the wiki's, if any
+ */
 class WikiMacro
 {
     /**
