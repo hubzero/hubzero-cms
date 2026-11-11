@@ -1161,10 +1161,13 @@ class BibTex
         $ret = "<table border='0' padding='1px' class='prettytable'>";
         foreach ($this->data as $entry) {
             $line    = $this->htmlstring;
-            $title   = '';
-            $journal = '';
-            $year    = '';
-            $authors = '';
+            $title     = '';
+            $journal   = '';
+            $year      = '';
+            $authors   = '';
+            $volume    = '';
+            $pages     = '';
+            $publisher = '';
             if (array_key_exists('title', $entry)) {
                 $title = $this->unwrap($entry['title']);
             }

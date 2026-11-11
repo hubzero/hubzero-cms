@@ -72,7 +72,7 @@ class Import extends SiteController
     public function displayTask()
     {
         $gid = Request::getString('group');
-        if (isset($gid) && $gid != '') {
+        if ($gid != '') {
             $this->view->gid = $gid;
         }
 
@@ -297,7 +297,7 @@ class Import extends SiteController
             $citations_action_no_attention,
         );
 
-        if (isset($group) && $group != '') {
+        if ($group != '') {
             $gob = new \Components\Groups\Tables\Group($this->database);
             $cn = $gob->getName($group);
 

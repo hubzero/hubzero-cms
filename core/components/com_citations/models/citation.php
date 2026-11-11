@@ -583,8 +583,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      */
     public function getModelName()
     {
-        $this->modelName = 'citations';
-        return $this->modelName;
+        return 'citations';
     }
 
     /**
@@ -1102,16 +1101,7 @@ class Citation extends Relational implements \Hubzero\Search\Searchable
      */
     public static function keyExistsOrIsNotEmpty($key, $row)
     {
-        $value = true;
-        if (isset($value)) {
-            if ($row->$key != '' && $row->$key != '0' && $row->$key != '0000-00-00 00:00:00') {
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        return $row->$key != '' && $row->$key != '0' && $row->$key != '0000-00-00 00:00:00';
     }
 
     /**

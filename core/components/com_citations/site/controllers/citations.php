@@ -735,7 +735,7 @@ class Citations extends SiteController
         $updateAuthorsId = false;
         if ($row->isNew()) {
             $row->set('created', Date::toSql());
-            $updateAuthorsId = (isset($id) && $id < 0) ? $id : false;
+            $updateAuthorsId = $id < 0 ? $id : false;
         }
 
         if (!filter_var($row->url, FILTER_VALIDATE_URL)) {
