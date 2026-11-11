@@ -1090,12 +1090,16 @@ class Connections
                     // Init the destination file (format <filename.ext>.part<#chunk>)
                     // The file is stored in a temporary directory identified by the
                     // project ID, the base64 encoded destination and the filename
-                    if (isset($_POST['flowIdentifier']) && trim($_POST['flowIdentifier']) != '') {
-                        $temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
-                        $temp_dir .= rtrim(strtr(base64_encode($this->subdir), '+/', '-_'), '=')
-                            . '_'
-                            . $_POST['flowIdentifier'];
+                    // Without an identifier there is no directory to collect the chunks in
+                    if (!isset($_POST['flowIdentifier']) || trim($_POST['flowIdentifier']) == '') {
+                        header("HTTP/1.0 404 Error Uploading File");
+                        exit();
                     }
+
+                    $temp_dir  = sys_get_temp_dir() . DS . $this->model->get('id') . '_';
+                    $temp_dir .= rtrim(strtr(base64_encode($this->subdir), '+/', '-_'), '=')
+                        . '_'
+                        . $_POST['flowIdentifier'];
 
                     $dest_file = $temp_dir . DS . $_POST['flowFilename'] . '.part' . $_POST['flowChunkNumber'];
 

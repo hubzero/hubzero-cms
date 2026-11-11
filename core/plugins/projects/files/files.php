@@ -1119,10 +1119,9 @@ class Files extends Plugin
                 $view->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_DELETE'));
             } else {
                 foreach ($items as $element) {
-                    foreach ($element as $type => $item) {
-                        // Get type and item name
-                        break;
-                    }
+                    // Get type and item name
+                    $type = array_key_first($element);
+                    $item = $element[$type];
                     // Build metadata object
                     $view->items[] = $this->repo->getMetadata($item, $type, $params);
                 }
@@ -1143,10 +1142,9 @@ class Files extends Plugin
         // Delete checked items
         if (!empty($items)) {
             foreach ($items as $element) {
-                foreach ($element as $type => $item) {
-                    // Get type and item name
-                    break;
-                }
+                // Get type and item name
+                $type = array_key_first($element);
+                $item = $element[$type];
 
                 // Must have a name
                 if (trim($item) == '') {
@@ -1337,10 +1335,9 @@ class Files extends Plugin
                 ];
 
                 foreach ($items as $element) {
-                    foreach ($element as $type => $item) {
-                        // Get type and item name
-                        break;
-                    }
+                    // Get type and item name
+                    $type = array_key_first($element);
+                    $item = $element[$type];
                     // Build metadata object
                     $view->items[] = $this->repo->getMetadata($item, $type, $params);
                 }
@@ -1371,10 +1368,9 @@ class Files extends Plugin
         // Move checked items
         if (!empty($items)) {
             foreach ($items as $element) {
-                foreach ($element as $type => $item) {
-                    // Get type and item name
-                    break;
-                }
+                // Get type and item name
+                $type = array_key_first($element);
+                $item = $element[$type];
 
                 // Must have a name
                 if (trim($item) == '') {
@@ -1775,10 +1771,9 @@ class Files extends Plugin
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHOW_HISTORY'));
         } else {
             foreach ($items as $element) {
-                foreach ($element as $type => $item) {
-                    // Get type and item name
-                    break;
-                }
+                // Get type and item name
+                $type = array_key_first($element);
+                $item = $element[$type];
 
                 // Must have a name
                 if (trim($item) == '') {
@@ -1846,6 +1841,8 @@ class Files extends Plugin
         }
 
         // File download
+        $downloadPath = '';
+        $serveas = '';
         if (count($items) > 1) {
             $archive = $this->archiveFiles($items);
 
@@ -2123,6 +2120,10 @@ class Files extends Plugin
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_COMPILE_NO_DATA'));
         }
 
+        // Path to the content to preview, relative to the output directory
+        $contentFile = null;
+        $cType = null;
+
         // LaTeX file?
         if ($tex && !empty($view->data)) {
             // Clean up data from Windows characters - important!
@@ -2316,6 +2317,7 @@ class Files extends Plugin
         // Combine file and folder data
         $items = $this->sortIncoming();
 
+        $file = null;
         if (empty($items)) {
             $this->setError(Lang::txt('PLG_PROJECTS_FILES_ERROR_NO_FILES_TO_SHARE'));
         } else {
