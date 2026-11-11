@@ -135,6 +135,20 @@ class Post extends Relational implements \Hubzero\Search\Searchable
     }
 
     /**
+     * Get the parent collection, loading it once
+     *
+     * Relational has a private $collection property of its own, so in this
+     * class $this->collection only reaches the relationship by falling
+     * through to Relational::__get(). This asks for the relationship by name.
+     *
+     * @return  object
+     */
+    private function parentCollection()
+    {
+        return $this->makeRelationship('collection')->getRelationship('collection');
+    }
+
+    /**
      * Get represented item
      *
      * @return  object
@@ -229,16 +243,18 @@ class Post extends Relational implements \Hubzero\Search\Searchable
      */
     public function searchResult()
     {
-        if ($this->item->state != 1 || $this->collection->state != 1) {
+        $collection = $this->parentCollection();
+
+        if ($this->item->state != 1 || $collection->state != 1) {
             return false;
         }
         $post = new stdClass();
         $post->title = $this->item->title;
-        $ownerType = $this->collection->object_type;
+        $ownerType = $collection->object_type;
         $post->owner_type = $ownerType == 'member' ? 'user' : $ownerType;
         $post->access_level = $this->getAccessLevel();
         $post->author[] = $this->creator->name;
-        $post->owner = $this->collection->object_id;
+        $post->owner = $collection->object_id;
         $post->hubtype = self::searchNamespace();
         $post->id = $this->searchId();
         $post->description = $this->description;
@@ -253,10 +269,12 @@ class Post extends Relational implements \Hubzero\Search\Searchable
      */
     public function getAccessLevel()
     {
+        $collection = $this->parentCollection();
+
         $accessLevel = [];
-        $accessLevel[] = $this->collection->access;
-        if ($this->collection->object_type == 'group') {
-            $group = \Hubzero\User\Group::getInstance($this->collection->object_id);
+        $accessLevel[] = $collection->access;
+        if ($collection->object_type == 'group') {
+            $group = \Hubzero\User\Group::getInstance($collection->object_id);
             if ($group) {
                 $groupAccess = \Hubzero\User\Group\Helper::getPluginAccess($group, 'collections');
                 if ($groupAccess == 'anyone') {
