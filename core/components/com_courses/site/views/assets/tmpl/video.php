@@ -581,7 +581,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                 . '2.72c.06.28.28.42.49.42h4c.22 0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 1.72-1l2.55 '
                                 . '1.03c.23.08.49 0 .61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z';
                             ?>
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="<?= $pathData ?>" fill="currentColor" opacity=".7" />
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="<?= $pathData ?>" fill="currentColor"
+                                opacity=".7" />
                         </svg>
                         <div class="control-container settings-controls">
                             <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>
@@ -976,7 +977,8 @@ if ($type == 'hubpresenter' || $type == 'html5') {
                                         . '2.72c.06.28.28.42.49.42h4c.22 0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 '
                                         . '1.72-1l2.55 1.03c.23.08.49 0 .61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z';
                                     ?>
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="<?= $pathData ?>" fill="currentColor" opacity=".7" />
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="<?= $pathData ?>"
+                                        fill="currentColor" opacity=".7" />
                                 </svg>
                                 <div class="control-container settings-controls">
                                     <h3><?php echo Lang::txt('COM_COURSES_VIDEO_CONTROL_SETTINGS'); ?></h3>

@@ -317,7 +317,8 @@ $this->css('
                             . '0 .43-.14.49-.42l.38-2.72a7.45 7.45 0 0 0 1.72-1l2.55 1.03c.23.08.49 0 '
                             . '.61-.22l2.05-3.55a.5.5 0 0 0-.12-.64L19.4 13z';
                         ?>
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="<?= $pathData ?>" fill="currentColor" opacity=".7"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="<?= $pathData ?>" fill="currentColor"
+                            opacity=".7"/>
                     </svg>
                     <div class="control-container settings-controls">
                         <h3>Settings</h3>
@@ -366,7 +367,8 @@ $this->css('
                         $pathData = 'M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 '
                             . '0 0 0 2 2h3';
                         ?>
-                        <path d="<?= $pathData ?>" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="<?= $pathData ?>" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"/>
                     </svg>
                     <svg class="icon-shrink" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg" style="display:none">
@@ -374,7 +376,8 @@ $this->css('
                         $pathData = 'M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 '
                             . '0 0 1 2 2v3';
                         ?>
-                        <path d="<?= $pathData ?>" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="<?= $pathData ?>" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round"/>
                     </svg>
                 </a>
             </div>

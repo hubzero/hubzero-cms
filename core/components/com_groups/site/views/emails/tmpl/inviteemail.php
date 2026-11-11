@@ -200,7 +200,8 @@ $register = $base . '/' . ltrim(Route::url('index.php?option=com_members&control
                                                         . 'letter-spacing: 1px; font-size: 1.5em; text-shadow: 0 1px '
                                                         . '1px rgba(0,0,0,0.25);';
                                                     ?>
-                                                    <a style="<?= $aStyle ?>" align="center" href="<?= $accept ?>"><?= Lang::txt('Accept Invite') ?></a>
+                                                    <a style="<?= $aStyle ?>" align="center"
+                                                        href="<?= $accept ?>"><?= Lang::txt('Accept Invite') ?></a>
                                                 </td>
                                             </tr>
                                         </table>

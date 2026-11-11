@@ -163,7 +163,8 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
                                         . '#999999; font-weight: normal;';
                                     $headerText = Date::of($a->created)->toLocal(Lang::txt('DATE_FORMAT_HZ1'));
                                     ?>
-                                    <th style="<?= $thStyle ?>" align="right"><?= $headerText ?> &#64; <?= Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></th>
+                                    <th style="<?= $thStyle ?>" align="right"><?= $headerText ?> &#64;
+                                        <?= Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></th>
                                     <td style="text-align: left; ?>; padding: 1em 3em 0 3em;" width="100%" align="left"><span style="color: #8a7460;"><?= $name ?></span> <?= $a->action ?><?php if ($content) {
                                         ?>:<?php
                                                                                                                                                       } ?></td>
