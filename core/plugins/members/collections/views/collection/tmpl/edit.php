@@ -122,8 +122,13 @@ $this->css();
         <div class="grid">
             <div class="col span6">
                 <div class="form-group">
+                    <?php
+                    $fieldWithErrorsClass = $this->task == 'save' && !$this->entry->get('layout')
+                        ? ' fieldWithErrors'
+                        : '';
+                    ?>
                     <label for="field-layout"
-                        class="form-control<?= $this->task == 'save' && !$this->entry->get('layout') ? ' fieldWithErrors' : '' ?>">
+                        class="form-control<?= $fieldWithErrorsClass ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_LAYOUT'); ?>
                         <?php
                         $layout = $this->entry->get('layout');
@@ -146,8 +151,13 @@ $this->css();
             </div>
             <div class="col span6 omega">
                 <div class="form-group">
+                    <?php
+                    $fieldWithErrorsClass = $this->task == 'save' && !$this->entry->get('sort')
+                        ? ' fieldWithErrors'
+                        : '';
+                    ?>
                     <label for="field-sort"
-                        class="form-control<?= $this->task == 'save' && !$this->entry->get('sort') ? ' fieldWithErrors' : '' ?>">
+                        class="form-control<?= $fieldWithErrorsClass ?>">
                         <?php echo Lang::txt('PLG_MEMBERS_COLLECTIONS_FIELD_SORT'); ?>
                         <?php
                         $sort = $this->entry->get('sort');

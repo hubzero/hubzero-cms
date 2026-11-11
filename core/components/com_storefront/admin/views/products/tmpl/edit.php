@@ -460,8 +460,15 @@ $activeStatusSelected = function ($value) use ($view) {
                             <span id="img-name"><?php echo $image; ?></span>
                         </td>
                         <td>
+                            <?php
+                            $removeUrl = Route::url(
+                                'index.php?option=' . $this->option
+                                    . '&controller=images&tmpl=component&task=remove&type=product&id='
+                                    . $this->row->getId() . '&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
                             <a id="img-delete <?php echo $image ? '' : 'hide'; ?>"
-                               href="<?= Route::url('index.php?option=' . $this->option . '&controller=images&tmpl=component&task=remove&type=product&id=' . $this->row->getId() . '&' . Session::getFormToken() . '=1') ?>"
+                               href="<?= $removeUrl ?>"
                                title="<?php echo Lang::txt('Delete'); ?>">[ x ]</a>
                         </td>
                     </tr>

@@ -177,9 +177,10 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                         $this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse'
                             . $subdirlink . '&sortby=filename&sortdir=' . $sortbyDir,
                     );
+                    $titleText = Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME');
                     ?>
                     <a href="<?= $browseUrl ?>"
-                        class="re_sort" title="<?= Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_NAME') ?>">
+                        class="re_sort" title="<?= $titleText ?>">
                         <?php echo Lang::txt('PLG_PROJECTS_FILES_NAME'); ?>
                     </a>
                 </th>
@@ -190,9 +191,10 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                         $this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse'
                             . $subdirlink . '&sortby=size&sortdir=' . $sortbyDir,
                     );
+                    $titleText = Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE');
                     ?>
                     <a href="<?= $browseUrl ?>"
-                        class="re_sort" title="<?= Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . Lang::txt('PLG_PROJECTS_FILES_SIZE') ?>">
+                        class="re_sort" title="<?= $titleText ?>">
                         <?php echo Lang::txt('PLG_PROJECTS_FILES_SIZE'); ?>
                     </a>
                 </th>
@@ -202,9 +204,11 @@ $sortbyDir  = $this->sortdir == 'ASC' ? 'DESC' : 'ASC';
                         $this->model->link('files') . '&connection=' . $this->connection->id . '&action=browse'
                             . $subdirlink . '&sortby=timestamp&sortdir=' . $sortbyDir,
                     );
+                    $titleText = Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' '
+                        . ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED'));
                     ?>
                     <a href="<?= $browseUrl ?>"
-                        class="re_sort" title="<?= Lang::txt('PLG_PROJECTS_FILES_SORT_BY') . ' ' . ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')) ?>">
+                        class="re_sort" title="<?= $titleText ?>">
                         <?php echo ucfirst(Lang::txt('PLG_PROJECTS_FILES_MODIFIED')); ?>
                     </a>
                 </th>

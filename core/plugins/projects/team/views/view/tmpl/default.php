@@ -182,8 +182,14 @@ $sortAppend = '&sortdir=' . urlencode($sortbyDir);
                                 id="<?= 'form-approve-' . $owner->id ?>" class="btn btn-success">
                                 <?php echo Lang::txt('PLG_PROJECTS_TEAM_APPROVE_REQUEST'); ?>
                             </button>
+                            <?php
+                            $teamUrl = Route::url(
+                                'index.php?option=com_projects&alias=' . $this->model->get('alias')
+                                    . '&task=team&action=denymembership&owner=' . $owner->userid,
+                            );
+                            ?>
                             <a id="<?php echo 'form-deny-' . $owner->id;?>"
-                                href="<?= Route::url('index.php?option=com_projects&alias=' . $this->model->get('alias') . '&task=team&action=denymembership&owner=' . $owner->userid) ?>"
+                                href="<?= $teamUrl ?>"
                                 class="btn btn-danger modal">
                                 <?php echo Lang::txt('PLG_PROJECTS_TEAM_DENY_REQUEST'); ?>
                             </a>

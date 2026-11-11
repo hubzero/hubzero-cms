@@ -35,9 +35,10 @@ $this->js('media.js');
                 'index.php?option=' . $this->option . '&controller=' . $this->controller
                     . '&task=list&tmpl=component&listdir=' . $this->listdir . '&subdir=' . $this->subdir,
             );
+            $listUrl = Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component');
             ?>
             <iframe src="<?= $listUrl ?>" name="imgManager" id="imgManager" width="98%" height="180"
-                data-dir="<?= Route::url('index.php?option=' . $this->option . '&controller=media&task=list&tmpl=component') ?>"></iframe>
+                data-dir="<?= $listUrl ?>"></iframe>
         </div>
     </fieldset>
 

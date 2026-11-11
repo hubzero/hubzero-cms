@@ -541,9 +541,19 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                 $this->js('jquery.fileuploader.js', 'system');
                             }
                             ?>
+                            <?php
+                            $listUrl = Route::url(
+                                'index.php?option=com_support&controller=media&task=list&no_html=1&ticket='
+                                    . $this->row->get('id') . '&comment=' . $tmp,
+                            );
+                            $uploadUrl = Route::url(
+                                'index.php?option=com_support&controller=media&task=upload&no_html=1&ticket='
+                                    . $this->row->get('id') . '&comment=' . $tmp,
+                            );
+                            ?>
                             <div id="ajax-uploader"
-                                data-action="<?= Route::url('index.php?option=com_support&controller=media&task=upload&no_html=1&ticket=' . $this->row->get('id') . '&comment=' . $tmp) ?>"
-                                data-list="<?= Route::url('index.php?option=com_support&controller=media&task=list&no_html=1&ticket=' . $this->row->get('id') . '&comment=' . $tmp) ?>"
+                                data-action="<?= $uploadUrl ?>"
+                                data-list="<?= $listUrl ?>"
                                 data-instructions="<?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_FILE_INSTRUCTIONS') ?>">
                                 <noscript>
                                     <div class="input-wrap">

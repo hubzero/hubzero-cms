@@ -57,22 +57,31 @@ $recvEmailOptionValueSelected = function ($value) use ($view) {
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_INTERVAL'); ?>
         </div>
         <div>
+            <?php
+            $disabledAttr = $this->recvEmailOptionValue == 0 ? ' disabled="disabled"' : '';
+            ?>
             <input type="radio"
                 name="recvpostemail"
                 class="edit-forum-options-immediate"
-                value="1"<?= $recvEmailOptionValueChecked(1) ?><?= $this->recvEmailOptionValue == 0 ? ' disabled="disabled"' : '' ?> />
+                value="1"<?= $recvEmailOptionValueChecked(1) ?><?= $disabledAttr ?> />
             <label>
                 <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_IMMEDIATELY'); ?>
             </label>
         </div>
         <div>
+            <?php
+            $disabledAttr = $this->recvEmailOptionValue == 0 ? ' disabled="disabled"' : '';
+            ?>
             <input type="radio"
                 name="recvpostemail"
                 class="edit-forum-options-digest"
-                value="2"<?= $this->recvEmailOptionValue >= 2 ? ' checked="checked"' : '' ?><?= $this->recvEmailOptionValue == 0 ? ' disabled="disabled"' : '' ?> />
+                value="2"<?= $this->recvEmailOptionValue >= 2 ? ' checked="checked"' : '' ?><?= $disabledAttr ?> />
             <?php echo Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_AS_A'); ?>
+            <?php
+            $disabledAttr = $this->recvEmailOptionValue < 2 ? ' disabled="disabled"' : '';
+            ?>
             <select name="recvpostemail"
-                class="edit-forum-options-frequency"<?= $this->recvEmailOptionValue < 2 ? ' disabled="disabled"' : '' ?>>
+                class="edit-forum-options-frequency"<?= $disabledAttr ?>>
                 <option value="2"<?= $recvEmailOptionValueSelected(2) ?>>
                     <?= Lang::txt('PLG_GROUPS_FORUM_EMAIL_POSTS_DAILY') ?>
                 </option>

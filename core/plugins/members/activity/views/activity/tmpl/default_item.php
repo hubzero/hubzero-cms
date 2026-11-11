@@ -259,15 +259,26 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                 <ul class="activity-options-main">
                     <?php if (!$this->row->log->get('parent')) { ?>
                         <li>
+                            <?php
+                            $titleText = ($this->row->get('starred'))
+                                ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR')
+                                : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR');
+                            $starUrl = Route::url($base . '&action=star&activity=' . $this->row->get('id'));
+                            $unstarUrl = Route::url($base . '&action=unstar&activity=' . $this->row->get('id'));
+                            $actionUrl = Route::url(
+                                $base . '&action=' . ($this->row->get('starred') ? 'un' : '') . 'star&activity='
+                                    . $this->row->get('id'),
+                            );
+                            ?>
                             <button type="submit" form="hz-post-action"
                                 data-id="activity<?php echo $this->row->get('id'); ?>"
                                 class="icon-starred tooltips"
-                                formaction="<?= Route::url($base . '&action=' . ($this->row->get('starred') ? 'un' : '') . 'star&activity=' . $this->row->get('id')) ?>"
-                                data-hrf-active="<?= Route::url($base . '&action=unstar&activity=' . $this->row->get('id')) ?>"
-                                data-hrf-inactive="<?= Route::url($base . '&action=star&activity=' . $this->row->get('id')) ?>"
+                                formaction="<?= $actionUrl ?>"
+                                data-hrf-active="<?= $unstarUrl ?>"
+                                data-hrf-inactive="<?= $starUrl ?>"
                                 data-txt-active="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR'); ?>"
                                 data-txt-inactive="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?>"
-                                title="<?= ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR') ?>"><!--
+                                title="<?= $titleText ?>"><!--
                                 --><?= ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR') ?><!--
                             --></button>
                         </li>

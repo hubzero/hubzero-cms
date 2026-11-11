@@ -144,9 +144,19 @@ $this->js();
                             <?php
                             $this->js('jquery.fileuploader.js', 'system');
                             ?>
+                            <?php
+                            $displayUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=medialist&task=display&tmpl=' . $tmpl
+                                    . '&' . Session::getFormToken() . '=1',
+                            );
+                            $uploadUrl = Route::url(
+                                'index.php?option=' . $this->option . '&controller=media&task=upload&tmpl=' . $tmpl
+                                    . '&' . Session::getFormToken() . '=1',
+                            );
+                            ?>
                             <div id="ajax-uploader"
-                                data-action="<?= Route::url('index.php?option=' . $this->option . '&controller=media&task=upload&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1') ?>"
-                                data-list="<?= Route::url('index.php?option=' . $this->option . '&controller=medialist&task=display&tmpl=' . $tmpl . '&' . Session::getFormToken() . '=1') ?>"
+                                data-action="<?= $uploadUrl ?>"
+                                data-list="<?= $displayUrl ?>"
                                 data-instructions="<?php echo Lang::txt('COM_MEDIA_UPLOAD_INSTRUCTIONS'); ?>"
                                 data-instructions-btn="<?php echo Lang::txt('COM_MEDIA_UPLOAD_INSTRUCTIONS_BTN'); ?>">
                                 <noscript>

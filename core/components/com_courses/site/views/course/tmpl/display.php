@@ -237,9 +237,15 @@ $this
                     <span></span>
                 <?php } ?>
             <?php if ($this->course->access('edit', 'course')) { ?>
+                <?php
+                $uploadUrl = Route::url(
+                    'index.php?option=' . $this->option . '&no_html=1&controller=media&task=upload&listdir='
+                        . $this->course->get('id') . '&' . Session::getFormToken() . '=1',
+                );
+                ?>
                 <div id="ajax-uploader"
                     data-instructions="<?php echo Lang::txt('COM_COURSES_CLICK_OR_DROP_FILE'); ?>"
-                    data-action="<?= Route::url('index.php?option=' . $this->option . '&no_html=1&controller=media&task=upload&listdir=' . $this->course->get('id') . '&' . Session::getFormToken() . '=1') ?>">
+                    data-action="<?= $uploadUrl ?>">
                     <noscript>
                         <form action="<?= Route::url($this->course->link()) ?>" class="form-inplace" method="post">
                             <div class="form-group">

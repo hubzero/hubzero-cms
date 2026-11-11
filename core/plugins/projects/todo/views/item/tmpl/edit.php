@@ -116,8 +116,13 @@ $todoContent = $this->row->get('details')
                             <?php foreach ($this->team as $member) { ?>
                                 <?php if ($member->userid && $member->userid != 0) {
                                     $team_ids[] = $member->userid; ?>
+                                    <?php
+                                    $selectedAttr = $member->userid == $this->row->get('assigned_to')
+                                        ? 'selected="selected"'
+                                        : '';
+                                    ?>
                                 <option value="<?php echo $member->userid; ?>"
-                                    class="nameopt" <?= $member->userid == $this->row->get('assigned_to') ? 'selected="selected"' : '' ?>><?= $member->name ?></option>
+                                    class="nameopt" <?= $selectedAttr ?>><?= $member->name ?></option>
                                 <?php } ?>
                             <?php } ?>
                             </select>
