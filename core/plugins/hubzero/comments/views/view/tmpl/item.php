@@ -195,7 +195,14 @@ $this->comment->set('url', $rtrn);
                             $this->params->get('access-create-comment')
                             && $this->depth < $this->params->get('comments_depth', 3)
                         ) { ?>
-                            <a class="icon-reply reply" data-txt-active="<?= Lang::txt('PLG_HUBZERO_COMMENTS_CANCEL') ?>" data-txt-inactive="<?= Lang::txt('PLG_HUBZERO_COMMENTS_REPLY') ?>"href="<?= Route::url($this->comment->link('reply')) ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
+                            <?php
+                            $active = Lang::txt('PLG_HUBZERO_COMMENTS_CANCEL');
+                            $inactive = Lang::txt('PLG_HUBZERO_COMMENTS_REPLY');
+                            $url = Route::url($this->comment->link('reply'));
+                            ?>
+                            <a class="icon-reply reply" data-txt-active="<?= $active ?>"
+                                data-txt-inactive="<?= $inactive ?>"
+                                href="<?= $url ?>" rel="comment-form<?= $this->comment->get('id') ?>"><!--
                                 --><?php echo Lang::txt('PLG_HUBZERO_COMMENTS_REPLY'); ?><!--
                             --></a>
                         <?php } ?>

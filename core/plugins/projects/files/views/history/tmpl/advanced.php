@@ -229,7 +229,8 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                             <?php echo $this->escape($version['name']); ?>
                             <?php echo $version['size'] ? ', ' . $version['size'] : '';  ?>
                         </span>
-                        <div class="commitcontent"><?php if ($version['content'] && in_array($version['commitStatus'], ['A', 'M'])) {
+                        <div class="commitcontent"><?php
+                        if ($version['content'] && in_array($version['commitStatus'], ['A', 'M'])) {
                             $over = strlen($version['content']) >= $charLimit ? 1 : 0;
                             $content = $over
                                 ? \Hubzero\Utility\Str::truncate($version['content'], $charLimit)
@@ -248,8 +249,8 @@ $allowDiff = ($this->file->isBinary() || $this->file->get('converted') || $candi
                                     . '</p>';
                                 echo '</div>';
                             }
-                                                   }
-                                                    ?>
+                        }
+                        ?>
                         <?php if ($version['preview'] && $version['commitStatus'] != 'D') { ?>
                             <div id="preview-image">
                                 <img src="<?= $version['preview'] ?>"

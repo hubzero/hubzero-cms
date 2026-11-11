@@ -88,7 +88,12 @@ $i = 0;
                 ?>
             <p><span class="prominent darker"><?= $spanText ?></span></p>
             <p>
-                <span><?= Lang::txt('PLG_PROJECTS_FILES_CONNECT_REMOTE_DIR') ?>:</span> <span class="prominent darker"><?= $service['remote_dir'] ?></span> <?php if ($connected && $openUrl) {
+                <?php
+                $label = Lang::txt('PLG_PROJECTS_FILES_CONNECT_REMOTE_DIR');
+                $dir = $service['remote_dir'];
+                $showOpen = $connected && $openUrl;
+                ?>
+                <span><?= $label ?>:</span> <span class="prominent darker"><?= $dir ?></span> <?php if ($showOpen) {
                     ?><span><a href="<?php echo $openUrl; ?>" rel="external">[open]</a></span><?php
                       } ?>
             </p>

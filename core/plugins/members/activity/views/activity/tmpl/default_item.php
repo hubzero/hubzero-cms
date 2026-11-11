@@ -132,7 +132,10 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                     $scope = explode('.', $this->row->log->get('scope'));
                     echo $this->escape($scope[0]);
                 ?></span>
-                <span class="activity-time"><time datetime="<?= Date::of($this->row->get('created'))->format('Y-m-d\TH:i:s\Z') ?>"><?php
+                <?php
+                $datetime = Date::of($this->row->get('created'))->format('Y-m-d\TH:i:s\Z');
+                ?>
+                <span class="activity-time"><time datetime="<?= $datetime ?>"><?php
                     $dt = Date::of($this->row->get('created'));
                     $ct = Date::of('now');
 
@@ -284,7 +287,13 @@ $base = 'index.php?option=com_members&id=' . $this->member->get('id') . '&active
                                 data-txt-active="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR'); ?>"
                                 data-txt-inactive="<?php echo Lang::txt('PLG_MEMBERS_ACTIVITY_STAR'); ?>"
                                 title="<?= $titleText ?>"><!--
-                                --><?= ($this->row->get('starred')) ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR') : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR') ?><!--
+                                <?php
+                                // (this block sits inside the comment that closes on the next line)
+                                $starText = ($this->row->get('starred'))
+                                    ? Lang::txt('PLG_MEMBERS_ACTIVITY_UNSTAR')
+                                    : Lang::txt('PLG_MEMBERS_ACTIVITY_STAR');
+                                ?>
+                                --><?= $starText ?><!--
                             --></button>
                         </li>
                     <?php } ?>

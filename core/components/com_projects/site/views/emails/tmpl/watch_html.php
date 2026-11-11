@@ -165,7 +165,9 @@ $link = rtrim($base, '/') . '/' . trim($sef, '/');
                                     ?>
                                     <th style="<?= $thStyle ?>" align="right"><?= $headerText ?> &#64;
                                         <?= Date::of($a->created)->toLocal(Lang::txt('TIME_FORMAT_HZ1')) ?></th>
-                                    <td style="text-align: left; padding: 1em 3em 0 3em;" width="100%" align="left"><span style="color: #8a7460;"><?= $name ?></span> <?= $a->action ?><?= $content ? ':' : '' ?></td>
+                                    <td style="text-align: left; padding: 1em 3em 0 3em;" width="100%"
+                                        align="left"><span style="color: #8a7460;"><?= $name ?></span>
+                                        <?= $a->action ?><?= $content ? ':' : '' ?></td>
                                 </tr>
                                 <?php if ($content) { ?>
                                     <tr>

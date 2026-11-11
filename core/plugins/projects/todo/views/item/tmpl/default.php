@@ -140,13 +140,18 @@ $assignee = $this->row->owner('name') ? $this->row->owner('name') : Lang::txt('P
                     $dateText = ProjectsHtml::timeAgo($comment->get('created')) . ' '
                         . Lang::txt('PLG_PROJECTS_TODO_AGO');
                     ?>
-                    <p class="todo-assigned"><?= $comment->creator('name') ?> <span class="date"> &middot; <?= $dateText ?> </span> <?php if ($comment->get('created_by') == $this->uid) {
+                    <?php
+                    $who = $comment->creator('name');
+                    $mine = $comment->get('created_by') == $this->uid;
+                    ?>
+                    <p class="todo-assigned"><?= $who ?> <span class="date"> &middot; <?= $dateText ?> </span>
+                    <?php if ($mine) {
                         $deletecommentUrl = Route::url($url . '&action=deletecomment') . '/?todoid='
                             . $this->row->get('id') . '&amp;cid=' . $comment->get('id');
                         $buttonText = Lang::txt('PLG_PROJECTS_TODO_DELETE');
                         ?><button type="submit" form="hz-post-action" formaction="<?= $deletecommentUrl ?>"
                             class="confirm-it" id="delc-<?= $comment->get('id') ?>">[<?= $buttonText ?>]</button><?php
-                                             } ?></p>
+                    } ?></p>
                 </li>
             <?php } ?>
             </ul>
