@@ -107,7 +107,8 @@ $statusSelected = function ($value) use ($view) {
             <?php if ($this->wishlist->id) { ?>
                 <tr>
                     <th colspan="<?php echo (!$this->wishlist->id) ? 9 : 8; ?>">
-                        (<?= $this->escape(stripslashes($this->wishlist->category)) ?>) &nbsp; <?= $this->escape(stripslashes($this->wishlist->title)) ?>
+                        (<?= $this->escape(stripslashes($this->wishlist->category)) ?>) &nbsp;
+                            <?= $this->escape(stripslashes($this->wishlist->title)) ?>
                     </th>
                 </tr>
             <?php } ?>

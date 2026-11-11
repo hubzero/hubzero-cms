@@ -97,7 +97,8 @@ $priceline .= ($service->get('pointsprice') > 0)
                 <div class="input-wrap">
                     <label><?php echo Lang::txt('COM_SERVICES_FIELD_EMPLOYER'); ?>:</label><br />
                     <?= Lang::txt('Company Name') ?>: <?= $this->escape($this->subscription->companyName) ?> <br />
-                    <?= Lang::txt('Company Location') ?>: <?= $this->escape($this->subscription->companyLocation) ?> <br />
+                    <?= Lang::txt('Company Location') ?>: <?= $this->escape($this->subscription->companyLocation) ?>
+                        <br />
                     <?= Lang::txt('Company URL') ?>: <?= $this->escape($this->subscription->companyWebsite) ?>
                 </div>
 

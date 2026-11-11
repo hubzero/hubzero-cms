@@ -22,21 +22,25 @@ $this
 <?php if (isset($this->isSelf) && $this->isSelf) { ?>
     <p class="passed">Your account has been updated successfully.</p>
     <?php if ($this->updateEmail) { ?>
-        <p>Thank you for updating your account. In order to continue to use this account you must verify your new email address.</p>
+        <p>Thank you for updating your account. In order to continue to use this account you must verify your new email
+            address.</p>
         <?php if ($this->getError()) { ?>
             <p class="error"><?php echo $this->getError(); ?></p>
         <?php } else { ?>
-            <p>A confirmation email has been sent to <?= $this->escape($this->xprofile->get('email')) ?>. You must click the link in that email to activate your account and begin using <?= $this->sitename ?>.</p>
+            <p>A confirmation email has been sent to <?= $this->escape($this->xprofile->get('email')) ?>. You must click
+                the link in that email to activate your account and begin using <?= $this->sitename ?>.</p>
         <?php } ?>
     <?php } ?>
 <?php } else { ?>
     <p class="passed">The account has been updated successfully.</p>
     <?php if ($this->updateEmail) { ?>
-        <p>The user of this account has been notified of the change. In order to continue to use this account they will need to verify the new email address.</p>
+        <p>The user of this account has been notified of the change. In order to continue to use this account they will
+            need to verify the new email address.</p>
         <?php if ($this->getError()) { ?>
             <p class="error"><?php echo $this->getError(); ?></p>
         <?php } else { ?>
-            <p>A confirmation email has been sent to <?= $this->escape($this->xprofile->get('email')) ?>. They must click the link in that email to activate your account and begin using <?= $this->sitename ?>.</p>
+            <p>A confirmation email has been sent to <?= $this->escape($this->xprofile->get('email')) ?>. They must
+                click the link in that email to activate your account and begin using <?= $this->sitename ?>.</p>
         <?php } ?>
     <?php } ?>
 <?php } ?>

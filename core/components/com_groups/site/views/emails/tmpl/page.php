@@ -196,7 +196,9 @@ $page = new \Components\Groups\Models\Page($this->object->get('id'));
         <tbody>
             <tr>
                 <td align="left" valign="bottom">
-                    <span><?= Config::get('sitename') ?> sent this email because you are listed as a group page approver for this hub. Visit our <a href="<?= rtrim($base, '/') ?>/legal/privacy">Privacy Policy</a> and <a href="<?= rtrim($base, '/') ?>/support">Support Center</a> if you have any questions.</span>
+                    <span><?= Config::get('sitename') ?> sent this email because you are listed as a group page approver
+                        for this hub. Visit our <a href="<?= rtrim($base, '/') ?>/legal/privacy">Privacy Policy</a> and
+                        <a href="<?= rtrim($base, '/') ?>/support">Support Center</a> if you have any questions.</span>
                 </td>
             </tr>
         </tbody>

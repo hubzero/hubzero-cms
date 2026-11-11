@@ -110,7 +110,8 @@ $this->css($css);
 
                 <p>
                     A request has been made to reset your <?= $this->config->get('sitename') ?> account password.
-                    This account has had no web sign-in for a long time, so password sign-in, password resets and SSH/SFTP access have been disabled.
+                    This account has had no web sign-in for a long time, so password sign-in, password resets and
+                        SSH/SFTP access have been disabled.
                 </p>
 
                 <p>

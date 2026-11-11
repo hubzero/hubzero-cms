@@ -162,7 +162,8 @@ $show_weight = array_key_exists('show_weight', $_GET);
                                             </ul>
                                         </li>
                                         <li>
-                                            <h4><span class="expand"></span><?= $this->escape($current_type) ?> <small>(<?= $ctypec[$child->getSection()] ?>)</small></h4>
+                                            <h4><span class="expand"></span><?= $this->escape($current_type) ?>
+                                                <small>(<?= $ctypec[$child->getSection()] ?>)</small></h4>
                                             <ul class="child-result">
                                             <?php
                                     endif;

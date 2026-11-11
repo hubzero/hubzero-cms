@@ -18,7 +18,9 @@ $this
 </header>
 
 <section class="main section">
-    <p class="passed">If an account matching that email address or username exists and still needs verification, a new confirmation email has been sent. Please check your inbox (and your spam folder) and click the link to activate your account on <?= $this->escape($this->hubName) ?>.</p>
+    <p class="passed">If an account matching that email address or username exists and still needs verification, a new
+        confirmation email has been sent. Please check your inbox (and your spam folder) and click the link to activate
+        your account on <?= $this->escape($this->hubName) ?>.</p>
     <?php
     $resendUrl = Route::url('index.php?option=com_members&controller=register&task=resend');
     ?>

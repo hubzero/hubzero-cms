@@ -42,7 +42,9 @@ $this
             <p>&nbsp;</p>
 
             <p><strong>Alternative to deleting</strong></p>
-            <p>You could set the course join policy to closed to restrict further membership activity and set the discoverability to hidden so the course is hidden to the world but still there later if you decide you want to use the course again.</p>
+            <p>You could set the course join policy to closed to restrict further membership activity and set the
+                discoverability to hidden so the course is hidden to the world but still there later if you decide you
+                want to use the course again.</p>
             <?php
             $editUrl = Route::url(
                 'index.php?option=' . $this->option . '&gid=' . $this->course->get('alias') . '&task=edit',

@@ -171,22 +171,26 @@ $this->css();
     </table>
 
     <div id="update-db-help-dialog" title="How to update a database" style="display: none;">
-        <strong>If you want to just update the way the data is displayed and do not want to change the data, skip to <span style="color: blue;">Step 4</span>.</strong>
+        <strong>If you want to just update the way the data is displayed and do not want to change the data, skip to
+            <span style="color: blue;">Step 4</span>.</strong>
         <h3 style="margin: 1.2em 0 .4em 0;">Step 1: Download the CSV file used for creating the database.</h3>
         <ul>
-            <li>You can either use the "Source File" link or you can download the file from the Files section of the project</li>
+            <li>You can either use the "Source File" link or you can download the file from the Files section of the
+                project</li>
             <li>Your spreadsheet will now have the DataStore information included in the first 3 rows</li>
         </ul>
         <h3 style="margin: 1.2em 0 .4em 0;">Step 2: Update the data in your spreadsheet.</h3>
         <ul>
             <li>You can add rows, delete rows and change data in rows</li>
             <li>Only change rows that are <strong>BELOW</strong> the <strong>DATASTART</strong> row</li>
-            <li>Make sure your data matches the data types you defined for your columns, <br />the data types are listed in the 2<sup>nd</sup> row for your convenience</li>
+            <li>Make sure your data matches the data types you defined for your columns, <br />the data types are listed
+                in the 2<sup>nd</sup> row for your convenience</li>
             <li>Save your file in the same CSV format</li>
         </ul>
         <h3 style="margin: 1.2em 0 .4em 0;">Step 3: Upload the updated CSV file to the project's File area .</h3>
         <ul>
-            <li>Make sure to upload to the same folder. <br />Your uploaded file has to replace the CSV file that is there now</li>
+            <li>Make sure to upload to the same folder. <br />Your uploaded file has to replace the CSV file that is
+                there now</li>
         </ul>
         <h3 style="margin: 1.2em 0 .4em 0;">Step 4: Return to the Database area and click on "Update Database"</h3>
         <ul>

@@ -316,7 +316,9 @@ $ferpaDataChecked = function ($value) use ($view) {
                         <?php
                         $agreeProjectText = Lang::txt('COM_PROJECTS_SETUP_TERMS_QUESTION_AGREE_PROJECT');
                         ?>
-                        <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_AGREE') ?> <a href="<?= $privacylink ?>" rel="external" ><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a> <?= $agreeProjectText ?> <span class="prominent"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_ALL_MEMBERS') ?></span>.
+                        <?= Lang::txt('COM_PROJECTS_SETUP_TERMS_AGREE') ?> <a href="<?= $privacylink ?>"
+                            rel="external" ><?= Lang::txt('COM_PROJECTS_SETUP_TERMS') ?></a> <?= $agreeProjectText ?>
+                            <span class="prominent"><?= Lang::txt('COM_PROJECTS_SETUP_TERMS_ALL_MEMBERS') ?></span>.
                     </label>
                 </div>
             </fieldset>

@@ -91,7 +91,8 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         <a<?php echo $sort == 'created_by' ? ' class="active"' : ''; ?> href="<?php
                               echo Route::url($this->page->link() . '&sort=created_by&dir=' . $altdir);
                         ?>">
-                            <?= $sort == 'created_by' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_CREATOR') ?>
+                            <?= $sort == 'created_by' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?>
+                                <?= Lang::txt('COM_WIKI_COL_CREATOR') ?>
                         </a>
                     </th>
                     <th scope="col">
@@ -99,7 +100,8 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         $linkUrl = Route::url($this->page->link() . '&sort=summary&dir=' . $altdir);
                         ?>
                         <a<?= $sort == 'summary' ? ' class="active"' : '' ?> href="<?= $linkUrl ?>">
-                            <?= $sort == 'summary' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_EDIT_SUMMARY') ?>
+                            <?= $sort == 'summary' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?>
+                                <?= Lang::txt('COM_WIKI_COL_EDIT_SUMMARY') ?>
                         </a>
                     </th>
                 </tr>

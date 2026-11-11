@@ -142,7 +142,8 @@ $this
                                             );
                                             ?>
                                             <a class="query" href="<?= $linkUrl ?>">
-                                                <?= $this->escape(stripslashes($query->title)) ?> <span><?= $query->count ?></span>
+                                                <?= $this->escape(stripslashes($query->title)) ?>
+                                                    <span><?= $query->count ?></span>
                                             </a>
                                             <span class="query-options">
                                                 <?php

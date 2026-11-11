@@ -547,7 +547,9 @@ $prioritySelected = function ($value) use ($view) {
                     case 1:
                         ?>
                     <p>
-                        <?= Lang::txt('COM_TOOLS_TEAM_WILL_CREATE') ?> <a class="developer-site" href="<?= $developer_url ?>/tools"><?= $developer_site ?></a>, <?= Lang::txt('COM_TOOLS_WHATSNEXT_REGISTERED_INSTRUCTIONS') ?>.
+                        <?= Lang::txt('COM_TOOLS_TEAM_WILL_CREATE') ?> <a class="developer-site"
+                            href="<?= $developer_url ?>/tools"><?= $developer_site ?></a>,
+                            <?= Lang::txt('COM_TOOLS_WHATSNEXT_REGISTERED_INSTRUCTIONS') ?>.
                         <?php
                         $hasBeenText = Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN');
                         $yourRequestText = Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_YOUR_REQUEST');
@@ -732,7 +734,9 @@ $prioritySelected = function ($value) use ($view) {
                         $canTestText = Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST');
                         ?>
                         <?= $theText ?> <?= $sitename ?> <?= $teamNeedsText ?> <?= $sitename ?> <?= $canTestText ?>.
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= ToolsHtml::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE') ?>.
+                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?>
+                            <?= ToolsHtml::timeAgo($this->status['changed']) ?>
+                            <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE') ?>.
                         <?php
                         $receiveResponseText = Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE');
                         ?>
@@ -936,7 +940,9 @@ $prioritySelected = function ($value) use ($view) {
                         $canTestText = Lang::txt('COM_TOOLS_WHATSNEXT_UPLOADED_SO_YOU_CAN_TEST');
                         ?>
                         <?= $theText ?> <?= $sitename ?> <?= $teamNeedsText ?> <?= $sitename ?> <?= $canTestText ?>.
-                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?> <?= ToolsHtml::timeAgo($this->status['changed']) ?> <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE') ?>.
+                        <?= Lang::txt('COM_TOOLS_WHATSNEXT_IT_HAS_BEEN') ?>
+                            <?= ToolsHtml::timeAgo($this->status['changed']) ?>
+                            <?= Lang::txt('COM_TOOLS_WHATSNEXT_SINCE_LAST_STATUS_CHANGE') ?>.
                         <?php
                         $receiveResponseText = Lang::txt('COM_TOOLS_WHATSNEXT_YOU_WILL_RECEIVE_RESPONSE');
                         ?>

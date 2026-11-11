@@ -661,7 +661,9 @@ $categoryChecked = function ($value) use ($view) {
                                         <input class="option form-control" type="text" maxlength="4" name="amount"
                                             id="field-amount" value=""<?= $disabledAttr ?> />
                                         <span>
-                                            (<?= Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') ?> <?= $this->wish->get('funds') ?> <?= Lang::txt('COM_WISHLIST_NOTICE_POINTS_AVAILABLE') ?>
+                                            (<?= Lang::txt('COM_WISHLIST_NOTICE_OUT_OF') ?>
+                                                <?= $this->wish->get('funds') ?>
+                                                <?= Lang::txt('COM_WISHLIST_NOTICE_POINTS_AVAILABLE') ?>
                                             <?php
                                             $linkUrl = Route::url(
                                                 'index.php?option=com_members&id=' . User::get('id') . '&active=points',

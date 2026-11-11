@@ -110,7 +110,10 @@ foreach ($this->modules as $module) {
                                     . '&controller=modules&task=unpublish&moduleid=' . $module->get('id'),
                             );
                             ?>
-                            <button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>" class="published tooltips" title="<?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE') ?>"> <?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE') ?></button>
+                            <button type="submit" form="hz-post-action" formaction="<?= $unpublishUrl ?>"
+                                class="published tooltips"
+                                title="<?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE') ?>">
+                                <?= Lang::txt('COM_GROUPS_PAGES_UNPUBLISH_MODULE') ?></button>
                         <?php endif; ?>
                     </div>
 

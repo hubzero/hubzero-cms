@@ -29,7 +29,10 @@ $this
             <h2><?php echo $this->title; ?></h2>
         </header>
 
-        <h3 class="prov-header"><a href="<?= $route ?>"><?= ucfirst(Lang::txt('COM_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a href="<?= $url ?>"> "<?= $this->escape(Str::truncate($this->pub->title, 65)) ?>"</a> &raquo; <?= Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT') ?></h3>
+        <h3 class="prov-header"><a
+            href="<?= $route ?>"><?= ucfirst(Lang::txt('COM_PROJECTS_PUBLICATIONS_MY_SUBMISSIONS')) ?></a> &raquo; <a
+            href="<?= $url ?>"> "<?= $this->escape(Str::truncate($this->pub->title, 65)) ?>"</a> &raquo;
+            <?= Lang::txt('COM_PROJECTS_PROVISIONED_PROJECT') ?></h3>
 
         <?php
             // Display status message

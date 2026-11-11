@@ -43,7 +43,11 @@ if (!$data || empty($data->qrcode)) {
 <form class="gauth2fa" action="<?php echo $this->escape(Request::current()); ?>" method="POST">
     <div class="title">Google Authenticator Setup</div>
 
-    <p class="subtitle"> Please scan with the <a target="_blank" rel="noopener noreferrer" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_US"> Google Authenticator </a> or the <a target="_blank" rel="noopener noreferrer" href="https://play.google.com/store/apps/details?id=com.duosecurity.duomobile&hl=en_US"> Duo Mobile</a>  App on your device. </p>
+    <p class="subtitle"> Please scan with the <a target="_blank" rel="noopener noreferrer"
+        href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&hl=en_US"> Google
+        Authenticator </a> or the <a target="_blank" rel="noopener noreferrer"
+        href="https://play.google.com/store/apps/details?id=com.duosecurity.duomobile&hl=en_US"> Duo Mobile</a>  App on
+        your device. </p>
 
        <p class="qrcode">
        <a  href="<?= $this->escape($data->qrcode) ?>"><img style="border: 0; padding:10px"

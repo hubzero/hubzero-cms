@@ -203,7 +203,9 @@ $ignoreDst = $eventParams->get('ignore_dst') == 1 ? true : false;
 
                     <label for="event_allday">
                         <input type="hidden" name="event[allday]" value="0" />
-                        <input class="option" type="checkbox" id="event_allday" name="event[allday]" value="1" <?= $this->event->get('allday') ? 'checked="checked"' : '' ?> /> <?= Lang::txt('All day event') ?>
+                        <input class="option" type="checkbox" id="event_allday" name="event[allday]" value="1"
+                            <?= $this->event->get('allday') ? 'checked="checked"' : '' ?> />
+                            <?= Lang::txt('All day event') ?>
                         <span class="hint"><?php echo Lang::txt(' - can span multiple days'); ?></span>
                     </label>
                 </fieldset>

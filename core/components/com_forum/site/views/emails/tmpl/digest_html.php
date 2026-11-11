@@ -76,9 +76,11 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
             <img width="80" src="<?= $base . '/core/components/com_forum/site/assets/img/group.png' ?>" alt="" />
         </td>
         <td width="565" style="padding: 14px;">
-            <span style="font-weight: bold; font-size: 14px; color: #333;">Your <?= $this->escape($this->interval) ?> group discussion digest</span>
+            <span style="font-weight: bold; font-size: 14px; color: #333;">Your <?= $this->escape($this->interval) ?>
+                group discussion digest</span>
             <hr style="border: none; border-top: 1px solid #dddddd; margin: 8px 0;" />
-            <span>You have <strong><?= $posts ?></strong> new post<?= ($posts != 1 ? 's' : '') ?> across <strong><?= $groups ?></strong> of your group<?= ($groups != 1 ? 's' : '') ?>.</span>
+            <span>You have <strong><?= $posts ?></strong> new post<?= ($posts != 1 ? 's' : '') ?> across
+                <strong><?= $groups ?></strong> of your group<?= ($groups != 1 ? 's' : '') ?>.</span>
         </td>
     </tr>
 </table>
@@ -132,7 +134,8 @@ $preheader = 'You have ' . $posts . ' new post' . ($posts != 1 ? 's' : '')
                                             $name = User::getInstance($post->created_by)->get('name');
                                         }
                                         ?>
-                                        <strong style="color: #555;"><?= $this->escape($name) ?></strong> &middot; <?= Date::of($post->created)->toLocal('M j, Y g:i a') ?>
+                                        <strong style="color: #555;"><?= $this->escape($name) ?></strong> &middot;
+                                            <?= Date::of($post->created)->toLocal('M j, Y g:i a') ?>
                                     </div>
                                     <div style="color: #333;">
                                         <?php echo $post->comment; ?>

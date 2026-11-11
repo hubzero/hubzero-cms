@@ -248,7 +248,8 @@ $discoverabilityChecked = function ($value) use ($view) {
                                 );
                                 ?>
                                 <strong><?= $strongText ?></strong>
-                                (<?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS_DESC') ?>) <span class="optional"><?= Lang::txt('COM_GROUPS_OPTIONAL') ?></span>
+                                (<?= Lang::txt('COM_GROUPS_MEMBERSHIP_SETTINGS_RESTRICTED_SETTING_CREDENTIALS_DESC') ?>)
+                                    <span class="optional"><?= Lang::txt('COM_GROUPS_OPTIONAL') ?></span>
                                 <?php
                                 $fieldText = htmlentities(
                                     stripslashes(

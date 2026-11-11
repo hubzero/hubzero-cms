@@ -237,7 +237,8 @@ $pageNav->setAdditionalUrlParam('sortby', $this->filters['sortby']);
                 <caption>
                     <?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_FILTER_' . strtoupper($this->filters['filterby'])); ?>
                     <span>
-                        (<?= (count($this->rows) > 0) ? $this->filters['start'] + 1 : 0 ?> - <?= $this->filters['start'] + count($this->rows) ?> of <?= $pageNav->total ?>)
+                        (<?= (count($this->rows) > 0) ? $this->filters['start'] + 1 : 0 ?> -
+                            <?= $this->filters['start'] + count($this->rows) ?> of <?= $pageNav->total ?>)
                     </span>
                 </caption>
                 <thead>

@@ -112,7 +112,8 @@ foreach ($profiles as $profile) {
                     </label>
                 </div>
             </div>
-            <p class="warning">Important! If you change your E-Mail address you <strong>must</strong> confirm receipt of the confirmation e-mail in order to re-activate your account.</p>
+            <p class="warning">Important! If you change your E-Mail address you <strong>must</strong> confirm receipt of
+                the confirmation e-mail in order to re-activate your account.</p>
         </fieldset>
 
         <fieldset>

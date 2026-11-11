@@ -108,7 +108,8 @@ $no_show = ["errors","duplicate"];
                                                             type="radio"
                                                             class="citation_require_attention_option"
                                                             name="citation_action_attention[<?php echo $counter; ?>]"
-                                                            value="both" /> <?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_KEEP') ?>
+                                                            value="both" />
+                                                                <?= Lang::txt('COM_CITATIONS_IMPORT_CITATION_KEEP') ?>
                                                     </label>
                                                     <label>
                                                         <input

@@ -139,7 +139,8 @@ $accessSelected = function ($value) use ($view) {
                 <?php
                 $strongText = Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED');
                 ?>
-                <strong><?= $strongText ?></strong> = <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION') ?><br />
+                <strong><?= $strongText ?></strong> =
+                    <?= Lang::txt('COM_CONTRIBUTE_ACCESS_PROTECTED_EXPLANATION') ?><br />
                 <?php
                 $strongText = Lang::txt('COM_CONTRIBUTE_ACCESS_PRIVATE');
                 ?>

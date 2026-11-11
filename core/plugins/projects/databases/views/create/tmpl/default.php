@@ -117,9 +117,12 @@ if (count($this->files) > 0 && (!isset($this->db_id))) {
 } else {
     ?>
     <h3><?php echo Lang::txt('Sorry, you need to have CSV formatted spreadsheet files to create databases.'); ?></h3>
-    <p><?= Lang::txt('Maybe the file has already been used for a database. Please') ?> <a href="/projects/<?php echo $this->model->get('alias')?>/databases"><?= Lang::txt('go back') ?></a> <?= Lang::txt('and remove the database that\'s using the file') ?>
+    <p><?= Lang::txt('Maybe the file has already been used for a database. Please') ?> <a
+        href="/projects/<?php echo $this->model->get('alias')?>/databases"><?= Lang::txt('go back') ?></a>
+        <?= Lang::txt('and remove the database that\'s using the file') ?>
     <span class="and_or prominent">or</span>
-    <a href="/projects/<?php echo $this->model->get('alias')?>/files"><?= Lang::txt('Click here') ?></a> <?= Lang::txt('to upload a new CSV file') ?>.</p>
+    <a href="/projects/<?php echo $this->model->get('alias')?>/files"><?= Lang::txt('Click here') ?></a>
+        <?= Lang::txt('to upload a new CSV file') ?>.</p>
     <?php
 }
 ?>

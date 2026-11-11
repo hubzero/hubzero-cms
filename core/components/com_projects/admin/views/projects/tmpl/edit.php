@@ -348,14 +348,16 @@ $paramsLayoutSelected = function ($value) use ($view) {
                     <legend><?php echo Lang::txt('COM_PROJECTS_FILES'); ?></legend>
 
                     <div class="input-wrap">
-                        <label for="param-quota"><?= Lang::txt('Files Quota') ?>: <?= ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES') . ')' ?></label>
+                        <label for="param-quota"><?= Lang::txt('Files Quota') ?>:
+                            <?= ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES') . ')' ?></label>
                         <input name="params[quota]" id="param-quota" maxlength="100" type="text"
                             value="<?= ProjectsHtml::convertSize($quota, 'b', 'GB', 2) ?>"
                             class="short" />
                     </div>
 
                     <div class="input-wrap">
-                        <label for="param-pubQuota"><?= Lang::txt('Publications Quota') ?>: <?= ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES') . ')' ?></label>
+                        <label for="param-pubQuota"><?= Lang::txt('Publications Quota') ?>:
+                            <?= ' (' . Lang::txt('COM_PROJECTS_FILES_GBYTES') . ')' ?></label>
                         <input name="params[pubQuota]" id="param-pubQuota" maxlength="100" type="text"
                             value="<?= ProjectsHtml::convertSize($pubQuota, 'b', 'GB', 2) ?>"
                             class="short" />
@@ -384,7 +386,8 @@ $paramsLayoutSelected = function ($value) use ($view) {
                                         . '&task=fixsync&id=' . $this->model->get('id'),
                                 );
                                 ?>
-                                <a href="<?= $fixsyncUrl ?>"><?= Lang::txt('download sync log') ?></a> &nbsp; [<?= Lang::txt('Also fixes stalled sync') ?>]
+                                <a href="<?= $fixsyncUrl ?>"><?= Lang::txt('download sync log') ?></a> &nbsp;
+                                    [<?= Lang::txt('Also fixes stalled sync') ?>]
                             <?php } ?>
                         </div>
                     <?php } ?>

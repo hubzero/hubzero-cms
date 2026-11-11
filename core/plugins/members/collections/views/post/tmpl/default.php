@@ -158,7 +158,8 @@ $allow_comments = Component::params('com_collections')->get('allow_comments');
                         <?php
                         $linkUrl = Route::url($cuser->link());
                         ?>
-                        <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($cuser->get('name'))) ?></a> said <br />
+                        <a href="<?= $linkUrl ?>"><?= $this->escape(stripslashes($cuser->get('name'))) ?></a> said
+                            <br />
                         <span class="entry-date">
                             <span class="entry-date-at">@</span>
                             <?php

@@ -17,7 +17,8 @@ if (empty($this->tokens)) {
 <div class="doc-section" id="active-session-tokens">
     <h3 class="endpoint-header collapsed">Active Session Tokens</h3>
     <div class="endpoint-content collapsed">
-        <p class="information"><strong>You are currently authenticated!</strong> Below are your active session tokens that you
+        <p class="information"><strong>You are currently authenticated!</strong> Below are your active session tokens
+            that you
             can use to make API requests.</p>
 
         <div class="tokens-list">

@@ -169,7 +169,8 @@ $this
                                             );
                                             ?>
                                             <a class="aquery" href="<?= $displayUrl ?>">
-                                                <?= $this->escape(stripslashes($query->title)) ?> <span><?= $query->get('count') ?></span>
+                                                <?= $this->escape(stripslashes($query->title)) ?>
+                                                    <span><?= $query->get('count') ?></span>
                                             </a>
                                             <?php if ($this->acl->check('read', 'tickets')) { ?>
                                                 <span class="query-options">

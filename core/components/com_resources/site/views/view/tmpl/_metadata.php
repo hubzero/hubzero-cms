@@ -76,7 +76,8 @@ if (
             ?>
             <dl class="rankinfo">
                 <dt class="ranking">
-                    <span class="rank"><span class="rank-<?= $r ?>" id="rank-<?= $this->model->id ?>">This resource has a</span></span> <?= number_format($rank, 1) ?> Ranking
+                    <span class="rank"><span class="rank-<?= $r ?>" id="rank-<?= $this->model->id ?>">This resource has
+                        a</span></span> <?= number_format($rank, 1) ?> Ranking
                 </dt>
                 <dd>
                     <p>

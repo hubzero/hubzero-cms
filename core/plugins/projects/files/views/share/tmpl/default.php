@@ -90,7 +90,8 @@ if ($this->getError()) {
                 <label <?php echo $ext == $key ? 'class="original-format"' : ''; ?> >
                     <input type="radio" name="format"
                         value="<?= $key ?>" <?= ($first && $i == 0) || $ext == $key ? 'checked="checked"' : '' ?> />
-                    <?= $value ?> <?= $ext == $key ? '<span class="hint mini rightfloat"> [original format]</span>' : '' ?>
+                    <?= $value ?>
+                        <?= $ext == $key ? '<span class="hint mini rightfloat"> [original format]</span>' : '' ?>
                 </label>
                     <?php
                     $i++;

@@ -120,7 +120,10 @@ if ($comment) {
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap; vertical-align: top;" align="right">Project:</th>
-                            <td style="text-align: left; padding: 0 0.5em;" align="left"><?= $this->escape($this->project->get('title')) ?> (<?= $this->escape($this->project->get('alias')) ?> <?= $this->project->isProvisioned() ? ' - ' . Lang::txt('provisioned') : '' ?>)</td>
+                            <td style="text-align: left; padding: 0 0.5em;"
+                                align="left"><?= $this->escape($this->project->get('title')) ?>
+                                (<?= $this->escape($this->project->get('alias')) ?>
+                                <?= $this->project->isProvisioned() ? ' - ' . Lang::txt('provisioned') : '' ?>)</td>
                         </tr>
                         <tr>
                             <th style="text-align: right; padding: 0 0.5em; font-weight: bold; white-space: nowrap;"

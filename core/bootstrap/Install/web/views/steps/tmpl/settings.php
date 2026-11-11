@@ -45,7 +45,8 @@ $metadescVal = htmlspecialchars($config['metadesc'] ?? '');
             <label for="live_site">Site URL</label>
             <input type="url" id="live_site" name="live_site"
                    value="<?php echo $liveSiteVal; ?>" placeholder="https://example.com">
-            <small>The address the hub is served at. Scheduled tasks need it; leave it blank only to work it out from each request.</small>
+            <small>The address the hub is served at. Scheduled tasks need it; leave it blank only to work it out from
+                each request.</small>
         </div>
 
         <div class="form-group">

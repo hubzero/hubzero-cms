@@ -48,7 +48,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
             if (!empty($this->xregistration->missing)) {
                 ?>
                 <div class="help">
-                    <?= $this->sitename ?> requires additional registration information before your account can be used.<br />
+                    <?= $this->sitename ?> requires additional registration information before your account can be
+                        used.<br />
                     All fields marked <span class="required">required</span> must be filled in.
                 </div>
                 <?php
@@ -147,7 +148,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
             if (!empty($provider_html)) {
                 ?>
                 <div class="explaination">
-                    <p class="info">You can choose to log in via one of these services, and we'll help you fill in the info below!</p>
+                    <p class="info">You can choose to log in via one of these services, and we'll help you fill in the
+                        info below!</p>
                     <p>Already have an account? <a
                         href="<?= Route::url('index.php?option=com_login') ?>">Log in here.</a></p>
                 </div>
@@ -170,10 +172,14 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
         if (($this->task == 'create' || $this->task == 'proxycreate') && $emailusers) { ?>
             <div class="error">
-                <p>The email address "<?= $this->escape($this->registration['email']) ?>" is already registered. If you have lost or forgotten this <?= $this->sitename ?> login information, we can help you recover it:</p>
+                <p>The email address "<?= $this->escape($this->registration['email']) ?>" is already registered. If you
+                    have lost or forgotten this <?= $this->sitename ?> login information, we can help you recover
+                    it:</p>
                 <p class="submit"><a href="<?= Route::url('index.php?option=com_members&task=remind') ?>"
                     class="btn btn-danger">Email Existing Account Information</a>
-                <p>If you are aware you already have another account registered to this email address, and are requesting another account because you need more resources, <?= $this->sitename ?> would be happy to work with you to raise your resource limits instead:</p>
+                <p>If you are aware you already have another account registered to this email address, and are
+                    requesting another account because you need more resources, <?= $this->sitename ?> would be happy to
+                    work with you to raise your resource limits instead:</p>
                 <p class="submit"><a
                     href="<?= Route::url('index.php?option=com_support&controller=tickets&task=new') ?>"
                     class="btn btn-danger">Submit Request to Raise Existing Limits</a></p>
@@ -186,7 +192,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
                 <?php if ($this->showMissing && !empty($this->xregistration->missing)) : ?>
                     <?php if ($this->task == 'update') : ?>
-                        <br />We are missing some vital information regarding your account! Please confirm the information below so we can better serve you. Thank you!
+                        <br />We are missing some vital information regarding your account! Please confirm the
+                            information below so we can better serve you. Thank you!
                     <?php else : ?>
                         <br />Missing required information:
                     <?php endif; ?>
@@ -496,7 +503,9 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
 
                     <?php if ($this->registrationEmail != Field::STATE_HIDDEN) { ?>
                         <?php if ($this->task == 'proxycreate') { ?>
-                            <p class="warning">Important! The user <strong>MUST</strong> click on the email confirmation link that you will send them in order for them to start using the account you have created for them.</p>
+                            <p class="warning">Important! The user <strong>MUST</strong> click on the email confirmation
+                                link that you will send them in order for them to start using the account you have
+                                created for them.</p>
                         <?php } elseif ($this->task == 'create') { ?>
                             <?php
                             $usersConfig    = Component::params('com_members');
@@ -510,7 +519,9 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                 </p>
                             <?php } ?>
                         <?php } else { ?>
-                            <p class="warning">Important! If you change your e-mail address you <strong>must</strong> confirm receipt of the confirmation e-mail from <?= Str::obfuscate(Config::get('mailfrom')) ?> in order to re-activate your account.</p>
+                            <p class="warning">Important! If you change your e-mail address you <strong>must</strong>
+                                confirm receipt of the confirmation e-mail from
+                                <?= Str::obfuscate(Config::get('mailfrom')) ?> in order to re-activate your account.</p>
                         <?php } ?>
                     <?php } ?>
                 <?php } ?>

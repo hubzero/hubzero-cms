@@ -354,7 +354,8 @@ $progress_timeline .= '</div>';
         <?php elseif ($student->badge()->get('action') == 'deny') : ?>
             <h3>Congratulations! You earned the badge!</h3>
             <p>
-                You chose to deny the badge. That's not a problem. If you change your mind, you can always go back and claim it!
+                You chose to deny the badge. That's not a problem. If you change your mind, you can always go back and
+                    claim it!
             </p>
             <p>
                 <?php
@@ -365,7 +366,8 @@ $progress_timeline .= '</div>';
         <?php else : ?>
             <h3>Congratulations! You've earned the badge...and you deserve it!</h3>
             <p>
-                You've completed all of the requirements of <?php echo $this->escape(stripslashes($this->course->get('title'))) ?>, qualifying you to receive
+                You've completed all of the requirements of
+                    <?php echo $this->escape(stripslashes($this->course->get('title'))) ?>, qualifying you to receive
                 a special badge.
             </p>
             <?php if ($this->course->offering()->section()->badge()->getClaimUrl()) : ?>
@@ -392,7 +394,8 @@ $progress_timeline .= '</div>';
     <div class="recognition certificate earned">
         <h3>Congratulations!</h3>
         <p>
-            You've completed all of the requirements of <?= $this->escape(stripslashes($this->course->get('title'))) ?>, qualifying you to receive
+            You've completed all of the requirements of <?= $this->escape(stripslashes($this->course->get('title'))) ?>,
+                qualifying you to receive
             a certificate of completion.
         </p>
         <p>
@@ -577,8 +580,10 @@ $progress_timeline .= '</div>';
                 alt="Badge" />
             <h3>Work hard. Earn a badge.</h3>
             <p>
-                Upon successful completion of this course, you will be awarded a special <?php echo $this->escape(stripslashes($this->course->get('title'))) ?> badge.
-                This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open Badges Backpack.
+                Upon successful completion of this course, you will be awarded a special
+                    <?php echo $this->escape(stripslashes($this->course->get('title'))) ?> badge.
+                This badge can be saved to your Purdue Passport Badges Backpack, and subsequently, your Mozilla Open
+                    Badges Backpack.
                 To learn more about Purdue's Passport initiative, please visit the
                 <a href="https://www.openpassport.org/Login" rel="nofollow external">Open Passport website</a>.
             </p>

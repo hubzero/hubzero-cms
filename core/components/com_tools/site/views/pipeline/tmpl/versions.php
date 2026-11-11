@@ -77,7 +77,9 @@ $this
                 && $this->status['state'] != \Components\Tools\Helpers\Html::getStatusNum('Published')
             ) { ?>
                 <?php if ($this->action == 'confirm' or $this->action == 'edit') { ?>
-                    <h4><?= Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM') ?> <?= ($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT') : Lang::txt('COM_TOOLS_THIS') ?> <?= Lang::txt('COM_TOOLS_TOOL_RELEASE') ?>:</h4>
+                    <h4><?= Lang::txt('COM_TOOLS_VERSION_PLS_CONFIRM') ?>
+                        <?= ($this->action == 'edit') ? Lang::txt('COM_TOOLS_NEXT') : Lang::txt('COM_TOOLS_THIS') ?>
+                        <?= Lang::txt('COM_TOOLS_TOOL_RELEASE') ?>:</h4>
                 <?php } elseif ($this->action == 'new' && $this->status['toolname']) { // new version is required?>
                     <h4><?php echo Lang::txt('COM_TOOLS_CONTRIBTOOL_ENTER_UNIQUE_VERSION'); ?>:</h4>
                 <?php } ?>

@@ -196,7 +196,9 @@ $ratingChecked = function ($value) use ($view) {
                             <?php
                             $labelText = Lang::txt('COM_WIKI_FIELD_RATING_ONE');
                             ?>
-                            <label for="review_rating_1"><input class="option" id="review_rating_1" name="comment[rating]" type="radio" value="1"<?= $ratingChecked(1) ?> /> &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?= $labelText ?></label>
+                            <label for="review_rating_1"><input class="option" id="review_rating_1"
+                                name="comment[rating]" type="radio" value="1"<?= $ratingChecked(1) ?> />
+                                &#x272D;&#x2729;&#x2729;&#x2729;&#x2729; <?= $labelText ?></label>
                             <label for="review_rating_2"><input class="option" id="review_rating_2"
                                 name="comment[rating]" type="radio"
                                 value="2"<?= $ratingChecked(2) ?> /> &#x272D;&#x272D;&#x2729;&#x2729;&#x2729;</label>
@@ -209,7 +211,9 @@ $ratingChecked = function ($value) use ($view) {
                             <?php
                             $labelText = Lang::txt('COM_WIKI_FIELD_RATING_FIVE');
                             ?>
-                            <label for="review_rating_5"><input class="option" id="review_rating_5" name="comment[rating]" type="radio" value="5"<?= $ratingChecked(5) ?> /> &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?= $labelText ?></label>
+                            <label for="review_rating_5"><input class="option" id="review_rating_5"
+                                name="comment[rating]" type="radio" value="5"<?= $ratingChecked(5) ?> />
+                                &#x272D;&#x272D;&#x272D;&#x272D;&#x272D; <?= $labelText ?></label>
                         </fieldset>
                     <?php } ?>
 

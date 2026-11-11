@@ -51,7 +51,9 @@ if (!$this->getError()) {
         <?php if ($this->project->isPublic()) { ?>
         <h4><?php echo Lang::txt('COM_PROJECTS_NOTES_PUB_LINK_LIST_SHOW_ON_PUBLIC'); ?></h4>
         <label>
-        <input type="radio" name="action" value="<?= 'publist' ?>" <?= $this->publicStamp->listed ? 'checked="checked"' : '' ?> /> <?= Lang::txt('COM_PROJECTS_NOTES_PUB_LIST') ?>
+        <input type="radio" name="action" value="<?= 'publist' ?>"
+            <?= $this->publicStamp->listed ? 'checked="checked"' : '' ?> />
+            <?= Lang::txt('COM_PROJECTS_NOTES_PUB_LIST') ?>
         </label>
         <label class="block">
         <input type="radio" name="action" value="<?= 'unlist' ?>"

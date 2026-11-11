@@ -229,7 +229,9 @@ $expirationPastDue = \Hubzero\User\Group\Membership::supported()
                 <?php
                 $linkUrl = Route::url('index.php?option=' . $this->option);
                 ?>
-                <th colspan="8"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_GROUPS') ?></a> > (<?= $this->escape(stripslashes($this->group->get('cn'))) ?>) <?= $this->escape(stripslashes($this->group->get('description'))) ?></th>
+                <th colspan="8"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_GROUPS') ?></a> >
+                    (<?= $this->escape(stripslashes($this->group->get('cn'))) ?>)
+                    <?= $this->escape(stripslashes($this->group->get('description'))) ?></th>
             </tr>
             <tr>
                 <th scope="col">

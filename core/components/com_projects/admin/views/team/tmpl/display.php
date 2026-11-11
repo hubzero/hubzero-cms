@@ -70,7 +70,9 @@ $this->css();
                 <?php
                 $linkUrl = Route::url('index.php?option=' . $this->option);
                 ?>
-                <th colspan="8"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PROJECTS') ?></a>  > (<?= $this->escape(stripslashes($this->project->get('alias'))) ?>) <?= $this->escape(stripslashes($this->project->get('title'))) ?></th>
+                <th colspan="8"><a href="<?= $linkUrl ?>"><?= Lang::txt('COM_PROJECTS') ?></a>  >
+                    (<?= $this->escape(stripslashes($this->project->get('alias'))) ?>)
+                    <?= $this->escape(stripslashes($this->project->get('title'))) ?></th>
             </tr>
             <tr>
                 <?php //if (!$groupSynced) {?>

@@ -90,14 +90,16 @@ $altdir = ($dir == 'ASC') ? 'DESC' : 'ASC';
                         <a<?php echo $sort == 'created_by' ? ' class="active"' : ''; ?> href="<?php
                               echo Route::url($this->page->link() . '&sort=created_by&dir=' . $altdir);
                         ?>">
-                            <?= $sort == 'created_by' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_UPLOADER') ?>
+                            <?= $sort == 'created_by' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?>
+                                <?= Lang::txt('COM_WIKI_COL_UPLOADER') ?>
                         </a>
                     </th>
                     <th scope="col">
                         <a<?php echo $sort == 'description' ? ' class="active"' : ''; ?> href="<?php
                               echo Route::url($this->page->link() . '&sort=description&dir=' . $altdir);
                         ?>">
-                            <?= $sort == 'description' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?> <?= Lang::txt('COM_WIKI_COL_DESCRIPTION') ?>
+                            <?= $sort == 'description' ? ($dir == 'ASC') ? '&uarr;' : '&darr;' : '' ?>
+                                <?= Lang::txt('COM_WIKI_COL_DESCRIPTION') ?>
                         </a>
                     </th>
                 </tr>
