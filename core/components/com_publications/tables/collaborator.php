@@ -31,7 +31,7 @@ class Collaborator extends Table
      *
      * @param   string  $name
      *
-     * @return  object or false
+     * @return  object|false
      */
     public function getCollaboratorByName($name)
     {
@@ -68,12 +68,13 @@ class Collaborator extends Table
                 . $this->db->quote($orcid) . ","
                 . $this->db->quote($accessToken) . ","
                 . $this->db->quote(date('Y-m-d H:i:s')) . ")";
+        } elseif (empty($record->orcid) && empty($record->access_token)) {
+            $query = "UPDATE $this->tableName SET orcid=" . $this->db->quote($orcid)
+                . " AND access_token=" . $this->db->quote($accessToken)
+                . " WHERE name=" . $this->db->quote($name);
         } else {
-            if (empty($record->orcid) && empty($record->access_token)) {
-                $query = "UPDATE $this->tableName SET orcid=" . $this->db->quote($orcid)
-                    . " AND access_token=" . $this->db->quote($accessToken)
-                    . " WHERE name=" . $this->db->quote($name);
-            }
+            // The collaborator already has ORCID details; nothing is written
+            return false;
         }
 
         $this->db->setQuery($query);

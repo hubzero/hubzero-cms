@@ -529,19 +529,15 @@ class Version extends Table
                 $found = 0;
 
                 // Change param
-                if (!empty($params)) {
-                    foreach ($params as $p) {
-                        if (trim($p) != '' && trim($p) != '=') {
-                            $extracted = explode('=', $p);
-                            if (!empty($extracted)) {
-                                $in .= $extracted[0] . '=';
-                                $default = isset($extracted[1]) ? $extracted[1] : 0;
-                                $in .= $extracted[0] == $param ? $value : $default;
-                                $in .= "\n";
-                                if ($extracted[0] == $param) {
-                                    $found = 1;
-                                }
-                            }
+                foreach ($params as $p) {
+                    if (trim($p) != '' && trim($p) != '=') {
+                        $extracted = explode('=', $p);
+                        $in .= $extracted[0] . '=';
+                        $default = isset($extracted[1]) ? $extracted[1] : 0;
+                        $in .= $extracted[0] == $param ? $value : $default;
+                        $in .= "\n";
+                        if ($extracted[0] == $param) {
+                            $found = 1;
                         }
                     }
                 }
@@ -576,16 +572,14 @@ class Version extends Table
         $query .= " JOIN #__publications as p ON p.id = v.publication_id ";
         $query .= " WHERE v.state != 2 ";
 
-        if (!empty($validProjects)) {
-            $query .= " AND p.project_id IN (";
+        $query .= " AND p.project_id IN (";
 
-            $tquery = '';
-            foreach ($validProjects as $v) {
-                $tquery .= "'" . $v . "',";
-            }
-            $tquery = substr($tquery, 0, strlen($tquery) - 1);
-            $query .= $tquery . ") ";
+        $tquery = '';
+        foreach ($validProjects as $v) {
+            $tquery .= "'" . $v . "',";
         }
+        $tquery = substr($tquery, 0, strlen($tquery) - 1);
+        $query .= $tquery . ") ";
 
         $this->db->setQuery($query);
 

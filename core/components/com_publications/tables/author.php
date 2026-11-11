@@ -959,6 +959,10 @@ class Author extends Table
                     . $this->db->quote($this->ordering)
                     . " ORDER BY ordering LIMIT 1";
                 break;
+
+            default:
+                // Unknown direction: there is no neighbour to find
+                return false;
         }
         $this->db->setQuery($sql);
         if ($result = $this->db->loadAssoc()) {

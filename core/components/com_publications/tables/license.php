@@ -186,7 +186,7 @@ class License extends Table
         $exclude = isset($manifest->params->exclude) ? $manifest->params->exclude : [];
 
         $query = "SELECT * FROM $this->tableName WHERE active=1 ";
-        if ($include && !empty($include)) {
+        if ($include) {
             $query .= " AND (";
             $i = 0;
             foreach ($include as $inc) {
@@ -196,7 +196,7 @@ class License extends Table
             }
             $query .= ")";
         }
-        if ($exclude && !empty($exclude)) {
+        if ($exclude) {
             $query .= " AND (";
             $i = 0;
             foreach ($exclude as $ex) {

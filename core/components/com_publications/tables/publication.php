@@ -613,16 +613,14 @@ class Publication extends Table
             $query .= " FROM #__projects as p ";
             $query .= " JOIN $this->tableName as pub ON p.id = pub.project_id  ";
             $query .= " WHERE p.state != 2 AND p.provisioned != 1";
-            if (!empty($validProjects)) {
-                $query .= " AND p.id IN ( ";
+            $query .= " AND p.id IN ( ";
 
-                $tquery = '';
-                foreach ($validProjects as $v) {
-                    $tquery .= "'" . $v . "',";
-                }
-                $tquery = substr($tquery, 0, strlen($tquery) - 1);
-                $query .= $tquery . ") ";
+            $tquery = '';
+            foreach ($validProjects as $v) {
+                $tquery .= "'" . $v . "',";
             }
+            $tquery = substr($tquery, 0, strlen($tquery) - 1);
+            $query .= $tquery . ") ";
             $query .= " GROUP BY p.id ";
             $this->db->setQuery($query);
             $result = $this->db->loadObjectList();
@@ -638,16 +636,14 @@ class Publication extends Table
 
         $query .= " WHERE 1=1 ";
 
-        if (!empty($validProjects)) {
-            $query .= " AND P.project_id IN ( ";
+        $query .= " AND P.project_id IN ( ";
 
-            $tquery = '';
-            foreach ($validProjects as $v) {
-                $tquery .= "'" . $v . "',";
-            }
-            $tquery = substr($tquery, 0, strlen($tquery) - 1);
-            $query .= $tquery . ") ";
+        $tquery = '';
+        foreach ($validProjects as $v) {
+            $tquery .= "'" . $v . "',";
         }
+        $tquery = substr($tquery, 0, strlen($tquery) - 1);
+        $query .= $tquery . ") ";
 
         if ($get == 'advanced' || $get == 'released') {
             $query .= $get == 'advanced'
