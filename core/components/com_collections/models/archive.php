@@ -343,6 +343,8 @@ class Archive extends Obj
                 }
             }
             if (count($members) > 0 || count($groups) > 0) {
+                $query1 = '';
+                $query2 = '';
                 if (count($members) > 0) {
                     $query1 = "SELECT id FROM `#__collections` WHERE object_id IN ("
                         . implode(',', $members)
@@ -357,7 +359,7 @@ class Archive extends Obj
                     $query = "( $query1 ) UNION ( $query2 );";
                 } elseif (count($members) > 0) {
                     $query = $query1;
-                } elseif (count($groups) > 0) {
+                } else {
                     $query = $query2;
                 }
 

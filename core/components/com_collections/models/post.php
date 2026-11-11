@@ -72,6 +72,9 @@ class Post extends Base
             $key = $oid->id;
         } elseif (is_array($oid)) {
             $key = $oid['id'];
+        } else {
+            // Without an identifier, every caller shares one empty instance
+            $key = '';
         }
 
         if (!isset($instances[$key])) {

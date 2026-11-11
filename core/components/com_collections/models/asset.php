@@ -82,6 +82,9 @@ class Asset extends Base
             $key = $oid->id . '_' . $item_id;
         } elseif (is_array($oid)) {
             $key = $oid['id'] . '_' . $item_id;
+        } else {
+            // Without an identifier, every caller shares one empty instance
+            $key = '';
         }
 
         if (!isset($instances[$key])) {

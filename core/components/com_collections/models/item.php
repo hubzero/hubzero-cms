@@ -126,6 +126,9 @@ class Item extends Base
             $key = $oid->id;
         } elseif (is_array($oid)) {
             $key = $oid['id'];
+        } else {
+            // Without an identifier, every caller shares one empty instance
+            $key = '';
         }
 
         if (!isset($instances[$key])) {
@@ -490,6 +493,7 @@ class Item extends Base
 
         if ($this->get('_assets')) {
             $k = 0;
+            $a = null;
 
             foreach ($this->get('_assets') as $i => $asset) {
                 $k++;
@@ -507,7 +511,9 @@ class Item extends Base
                     $this->setError($a->getError());
                 }
             }
-            $a->reorder();
+            if ($a) {
+                $a->reorder();
+            }
         }
 
         if ($files = $this->get('_files')) {

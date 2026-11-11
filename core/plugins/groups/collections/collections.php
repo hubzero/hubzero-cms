@@ -821,6 +821,11 @@ class Collections extends Plugin
                 $id = $collection->get('id');
                 $sfx = '&scope=' . $collection->get('alias') . '/unfollow';
                 break;
+
+            default:
+                // follow() and unfollow() are only called with the cases above
+                App::abort(404);
+                return;
         }
 
         if (!$this->model->follow($id, $what, User::get('id'), 'member')) {
@@ -884,6 +889,11 @@ class Collections extends Plugin
                 $id = $collection->get('id');
                 $sfx = '&scope=' . $collection->get('alias') . '/follow';
                 break;
+
+            default:
+                // follow() and unfollow() are only called with the cases above
+                App::abort(404);
+                return;
         }
 
         if (!$this->model->unfollow($id, $what, User::get('id'), 'member')) {

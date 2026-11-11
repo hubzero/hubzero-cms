@@ -376,6 +376,10 @@ class Collections extends AdminController
                 case 'archive':
                     $message = Lang::txt('COM_COLLECTIONS_ITEMS_TRASHED', $success);
                     break;
+                default:
+                    // Any task other than "publish" unpublished the items
+                    $message = Lang::txt('COM_COLLECTIONS_ITEMS_UNPUBLISHED', $success);
+                    break;
             }
 
             Notify::success($message);
