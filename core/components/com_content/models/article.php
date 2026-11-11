@@ -25,6 +25,48 @@ use Hubzero\Facades\Route;
 
 /**
  * Model class for an article
+ *
+ * Columns of #__content, as read through the transformers where there is one:
+ *
+ * @property  int                       $id
+ * @property  int                       $asset_id
+ * @property  string                    $title
+ * @property  string                    $alias
+ * @property  string                    $title_alias
+ * @property  string                    $introtext
+ * @property  string                    $fulltext
+ * @property  string                    $state             As text (Published...), through transformState()
+ * @property  int                       $sectionid
+ * @property  int                       $mask
+ * @property  int                       $catid
+ * @property  string                    $created
+ * @property  int                       $created_by
+ * @property  string                    $created_by_alias
+ * @property  string                    $modified
+ * @property  int                       $modified_by
+ * @property  int                       $checked_out
+ * @property  string                    $checked_out_time
+ * @property  string                    $publish_up
+ * @property  string                    $publish_down
+ * @property  string                    $images
+ * @property  string                    $urls
+ * @property  \Hubzero\Config\Registry  $attribs           With the component's, through transformAttribs()
+ * @property  int                       $version
+ * @property  int                       $parentid
+ * @property  int                       $ordering
+ * @property  string                    $metakey
+ * @property  string                    $metadesc
+ * @property  int                       $access
+ * @property  int                       $hits
+ * @property  \Hubzero\Config\Registry  $metadata          Through transformMetadata()
+ * @property  int                       $featured
+ * @property  string                    $language
+ * @property  string                    $xreference
+ *
+ * Not columns:
+ *
+ * @property  string                                  $name      The title, through transformName()
+ * @property  \Components\Categories\Models\Category  $category  The category, through category()
  */
 class Article extends Relational implements \Hubzero\Search\Searchable
 {
