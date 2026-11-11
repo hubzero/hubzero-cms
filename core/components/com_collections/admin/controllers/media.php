@@ -536,10 +536,13 @@ class Media extends AdminController
         // Incoming
         $listdir = Request::getInt('dir', 0, 'request');
 
+        // There is one layout, the list of the item's assets; an unknown ID
+        // yields a new item, which has none
         $this->view
             ->set('config', $this->config)
             ->set('listdir', $listdir)
-            ->setLayout('display')
+            ->set('item', Item::oneOrNew($listdir))
+            ->setLayout('list')
             ->setErrors($this->getErrors())
             ->display();
     }

@@ -17,8 +17,9 @@ if (!$no_html) {
     $this->css();
 }
 
-$assets = $this->item->assets();
-if ($assets->total() > 0) {
+// The rows, not the relationship: only the rows can be walked
+$assets = $this->item->assets()->rows();
+if ($assets->count() > 0) {
     $i = 0;
     foreach ($assets as $asset) {
         $this
