@@ -18,6 +18,8 @@ use Hubzero\Facades\App;
 
 /**
  * Manage files for a group
+ *
+ * @property  \Components\Forum\Models\Post  $post  The post whose files are managed, loaded by execute()
  */
 class Media extends AdminController
 {

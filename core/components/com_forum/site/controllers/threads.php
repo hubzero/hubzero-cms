@@ -32,6 +32,9 @@ use Hubzero\Facades\Filesystem;
 
 /**
  * Forum controller class for threads
+ *
+ * @property  \Components\Forum\Models\Manager  $forum   The site forum, set by execute()
+ * @property  string                            $_title  The page title, built by buildTitle()
  */
 class Threads extends SiteController
 {

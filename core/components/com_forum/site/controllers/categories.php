@@ -25,6 +25,9 @@ use Hubzero\Facades\Event;
 
 /**
  * Controller class for forum categories
+ *
+ * @property  \Components\Forum\Models\Manager  $forum   The site forum, set by execute()
+ * @property  string                            $_title  The page title, built by buildTitle()
  */
 class Categories extends SiteController
 {

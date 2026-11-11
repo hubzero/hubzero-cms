@@ -22,6 +22,8 @@ use Hubzero\Facades\Event;
 
 /**
  * Controller class for forum sections
+ *
+ * @property  \Components\Forum\Models\Manager  $forum  The site forum, set by execute()
  */
 class Sections extends SiteController
 {
