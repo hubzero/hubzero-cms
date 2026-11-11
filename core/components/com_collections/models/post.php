@@ -145,12 +145,14 @@ class Post extends Base
     /**
      * Get the item for this post
      *
-     * @param   integer  $oid
+     * @param   integer|Item  $oid  An item's ID, or the item itself to use in place of the stored one
      * @return  object
      */
     public function item($oid = null)
     {
-        if (!($this->data instanceof Item)) {
+        if ($oid instanceof Item) {
+            $this->data = $oid;
+        } elseif (!($this->data instanceof Item)) {
             if ($oid === null) {
                 $oid = $this->get('item_id', 0);
             }

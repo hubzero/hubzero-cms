@@ -155,8 +155,11 @@ class Posts extends SiteController
 
     /**
      * Display a form for editing an entry
+     *
+     * @param   Item|null  $row  The item a failed save could not store, to show again as it was typed
+     * @return  void
      */
-    public function editTask()
+    public function editTask($row = null)
     {
         // Login is required
         if (User::isGuest()) {
@@ -171,10 +174,25 @@ class Posts extends SiteController
 
         $id = Request::getInt('post', 0);
 
+        // A save that failed comes back here with the form's own fields, where
+        // the post is post[id] and its description post[description], not ?post=
+        $posted = [];
+        if ($row instanceof Item) {
+            $posted = Request::getArray('post', [], 'post');
+            $id = isset($posted['id']) ? (int) $posted['id'] : 0;
+        }
+
         $this->view->collection = $this->model->collection(Request::getString('board', 0));
 
         // Load the post
         $this->view->entry = $this->view->collection->post($id);
+        if ($row instanceof Item) {
+            // Show what was typed rather than what is stored
+            $this->view->entry->item($row);
+            if (isset($posted['description']) && is_string($posted['description'])) {
+                $this->view->entry->set('description', $posted['description']);
+            }
+        }
         if (!$this->view->collection->exists() && $this->view->entry->exists()) {
             $this->view->collection = $this->model->collection($this->view->entry->get('collection_id'));
         }
