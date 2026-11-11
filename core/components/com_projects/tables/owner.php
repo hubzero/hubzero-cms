@@ -426,7 +426,7 @@ class Owner extends Table
      *
      * @param   integer  $projectid
      * @param   array    $filters
-     * @return  object
+     * @return  array|false
      */
     public function getOwners($projectid = null, $filters = [])
     {
@@ -521,7 +521,7 @@ class Owner extends Table
                 break;
         }
 
-        if (isset($limit) && $limit != 0) {
+        if ($limit != 0) {
             $query .= " LIMIT " . intval($limitstart) . ", " . intval($limit);
         }
 
@@ -547,7 +547,7 @@ class Owner extends Table
      * @param   string   $what
      * @param   boolean  $native
      * @param   integer  $join     verify if group exists
-     * @return  object
+     * @return  array|false
      */
     public function getProjectGroups($projectid = null, $what = 'o.groupid', $native = 0, $join = 0)
     {
@@ -1245,19 +1245,15 @@ class Owner extends Table
                 $found = 0;
 
                 // Change param
-                if (!empty($params)) {
-                    foreach ($params as $p) {
-                        if (trim($p) != '' && trim($p) != '=' && trim($p) != '{}') {
-                            $extracted = explode('=', $p);
-                            if (!empty($extracted)) {
-                                $in .= $extracted[0] . '=';
-                                $default = isset($extracted[1]) ? $extracted[1] : 0;
-                                $in .= $extracted[0] == $param ? $value : $default;
-                                $in .= "\n";
-                                if ($extracted[0] == $param) {
-                                    $found = 1;
-                                }
-                            }
+                foreach ($params as $p) {
+                    if (trim($p) != '' && trim($p) != '=' && trim($p) != '{}') {
+                        $extracted = explode('=', $p);
+                        $in .= $extracted[0] . '=';
+                        $default = isset($extracted[1]) ? $extracted[1] : 0;
+                        $in .= $extracted[0] == $param ? $value : $default;
+                        $in .= "\n";
+                        if ($extracted[0] == $param) {
+                            $found = 1;
                         }
                     }
                 }

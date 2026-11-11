@@ -751,7 +751,7 @@ class Projects extends Base
             $this->view->set('team', $this->model->tblOwner->getOwnerNames($this->model->get('alias')));
 
             // Output HTML
-            $this->view->set('pub', isset($pub) ? $pub : '');
+            $this->view->set('pub', $pub);
             $this->view->set('suggested', $name);
             $this->view->set('verified', $verified);
             $this->view->set('suggested', $verified ? $this->view->suggested : '');
@@ -1016,6 +1016,7 @@ class Projects extends Base
         $comment  = Request::getString('comment', '');
         $apvSens = Request::getInt('sensitive_project_review', -1);
         $apvSpon = 0;
+        $grant_approval = '';
         $filterby = Request::getString('filterby', 'pending');
         $notify   = Request::getString('notify', 0, 'post');
 

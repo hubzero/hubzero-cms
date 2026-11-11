@@ -913,8 +913,8 @@ class Publication extends Obj
     /**
      * Get group property
      *
-     * @param   object  $groups
-     * @param   string  $get
+     * @param   array|false  $groups
+     * @param   string       $get
      * @return  array
      */
     public function getGroupProperty($groups, $get = 'cn')

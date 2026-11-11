@@ -262,7 +262,7 @@ class Project extends Model
      * Get project member
      *
      * @param   boolean  $refresh
-     * @return  object
+     * @return  object|false
      */
     public function member($reload = false)
     {
@@ -611,7 +611,7 @@ class Project extends Model
             $cg = explode(',', $cg);
             $cg = array_map('trim', $cg);
 
-            if (!empty($cg) && !empty($cg[0])) {
+            if (!empty($cg[0])) {
                 foreach ($cg as $c) {
                     $group = \Hubzero\User\Group::getInstance($c);
 
@@ -975,8 +975,8 @@ class Project extends Model
     /**
      * Get group property
      *
-     * @param   object  $groups
-     * @param   string  $get
+     * @param   array|false  $groups
+     * @param   string       $get
      * @return  array
      */
     public function getGroupProperty($groups, $get = 'cn')

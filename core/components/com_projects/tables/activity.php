@@ -163,7 +163,7 @@ class Activity extends Table
         $query  .=  $sortby == 'class' ? " a.class $sortdir " : "";
 
         if (!$count) {
-            if (isset($limit) && $limit != 0) {
+            if ($limit != 0) {
                 $query .= " LIMIT " . (int) $limitstart . ", " . (int) $limit;
             }
         }
@@ -445,16 +445,14 @@ class Activity extends Table
         $query  = " SELECT COUNT(*) as activity ";
         $query .= " FROM $this->tableName ";
 
-        if (!empty($validProjects)) {
-            $query .= " WHERE projectid IN (";
+        $query .= " WHERE projectid IN (";
 
-            $tquery = '';
-            foreach ($validProjects as $v) {
-                $tquery .= "'" . intval($v) . "',";
-            }
-            $tquery = substr($tquery, 0, strlen($tquery) - 1);
-            $query .= $tquery . ") ";
+        $tquery = '';
+        foreach ($validProjects as $v) {
+            $tquery .= "'" . intval($v) . "',";
         }
+        $tquery = substr($tquery, 0, strlen($tquery) - 1);
+        $query .= $tquery . ") ";
 
         if ($get == 'average') {
             $query .= " GROUP BY projectid ";

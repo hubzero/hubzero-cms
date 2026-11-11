@@ -1290,10 +1290,6 @@ class Google extends Obj
             return $ext;
         }
 
-        if (empty($formats)) {
-            $formats[0] = 'PDF';
-        }
-
         return $getAll == true ? $formats : $formats[0];
     }
 

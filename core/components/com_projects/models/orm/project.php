@@ -877,7 +877,7 @@ class Project extends Relational implements \Hubzero\Search\Searchable
 
         // Is user project member?
         $member = $this->member();
-        if (empty($member) || $member->get('status') != 1) {
+        if ($member->get('status') != 1) {
             // If an open project
             if ($this->isOpen()) {
                 // Allow read-only mode for everything

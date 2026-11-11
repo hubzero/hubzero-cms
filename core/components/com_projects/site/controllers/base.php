@@ -266,6 +266,9 @@ class Base extends SiteController
         }
 
         // Project path
+        $alias = '';
+        $provisioned = false;
+        $title = '';
         if ($this->model->exists()) {
             $alias = $this->model->get('alias');
             $provisioned = $this->model->isProvisioned();

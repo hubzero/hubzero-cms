@@ -288,7 +288,7 @@ class Git extends Models\Adapter
         }
 
         // Return top level folders or not.
-        if (!isset($folders) || !$folders) {
+        if (!$folders) {
             return $results;
         } else {
             return [$results, $folders];

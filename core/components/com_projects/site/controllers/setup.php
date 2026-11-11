@@ -481,7 +481,7 @@ class Setup extends Base
                 } else {
                     $grant_agency_id = $this->getGrantAgencyId($grant_agency);
 
-                    if ($grant_agency_id != false && !empty($grant_agency_id)) {
+                    if ($grant_agency_id != false) {
                         $this->model->saveParam('grant_agency_id', $grant_agency_id);
                     }
                 }
@@ -826,7 +826,7 @@ class Setup extends Base
                                 } else {
                                     $grant_agency_id = $this->getGrantAgencyId($value);
 
-                                    if ($grant_agency_id != false && !empty($grant_agency_id)) {
+                                    if ($grant_agency_id != false) {
                                         $this->model->saveParam("grant_agency_id", $grant_agency_id);
                                     }
                                 }

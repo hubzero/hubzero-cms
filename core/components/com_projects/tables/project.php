@@ -778,19 +778,15 @@ class Project extends Table
                 $found = 0;
 
                 // Change param
-                if (!empty($params)) {
-                    foreach ($params as $p) {
-                        if (trim($p) != '' && trim($p) != '=') {
-                            $extracted = explode('=', $p);
-                            if (!empty($extracted)) {
-                                $in .= $extracted[0] . '=';
-                                $default = isset($extracted[1]) ? $extracted[1] : 0;
-                                $in .= $extracted[0] == $param ? $value : $default;
-                                $in .= "\n";
-                                if ($extracted[0] == $param) {
-                                    $found = 1;
-                                }
-                            }
+                foreach ($params as $p) {
+                    if (trim($p) != '' && trim($p) != '=') {
+                        $extracted = explode('=', $p);
+                        $in .= $extracted[0] . '=';
+                        $default = isset($extracted[1]) ? $extracted[1] : 0;
+                        $in .= $extracted[0] == $param ? $value : $default;
+                        $in .= "\n";
+                        if ($extracted[0] == $param) {
+                            $found = 1;
                         }
                     }
                 }

@@ -99,7 +99,7 @@ class Nogit extends Models\Adapter
         $sorting = [];
 
         // Apply the filter early, reduces iterations through foreach()
-        if (isset($filter) && $filter != '') {
+        if ($filter != '') {
             $files = preg_grep("(" . $filter . ")", $files);
         }
 

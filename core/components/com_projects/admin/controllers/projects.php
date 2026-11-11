@@ -429,6 +429,7 @@ class Projects extends AdminController
 
         // Admin actions
         if ($action) {
+            $what = '';
             switch ($action) {
                 case 'delete':
                     $model->set('state', 2);
@@ -507,7 +508,7 @@ class Projects extends AdminController
                 if ($key == "grant_agency") {
                     $grant_agency_id = $this->getGrantAgencyId($value);
 
-                    if ($grant_agency_id != false && !empty($grant_agency_id)) {
+                    if ($grant_agency_id != false) {
                         $model->saveParam("grant_agency_id", $grant_agency_id);
                     }
                 }

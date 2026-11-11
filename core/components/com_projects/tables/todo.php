@@ -143,7 +143,7 @@ class Todo extends Table
             }
 
             $query .= "ORDER BY $sort ";
-            if (isset($limit) && $limit != 0) {
+            if ($limit != 0) {
                 $query .= " LIMIT " . (int) $limitstart . ", " . (int) $limit;
             }
         }
