@@ -42,8 +42,10 @@ class AppStub
         self::$state[$key] = $value;
     }
 
-    public static function redirect(string $url): void
+    public static function redirect(string $url): never
     {
         self::$state['redirect_to'] = $url;
+
+        throw new \Hubzero\Test\Halted('redirect');
     }
 }

@@ -99,7 +99,12 @@ namespace Hubzero\Htmx\Tests {
         public function redirectFallsBackToStandardRedirectForNonHtmxRequests(): void
         {
             $service = new HtmxService();
-            $service->redirect('/classic');
+            try {
+                $service->redirect('/classic');
+                $this->fail('The request was not stopped');
+            } catch (\Hubzero\Test\Halted $e) {
+                // stopped, as the application would
+            }
 
             $this->assertSame('/classic', \App::get('redirect_to'));
         }
@@ -226,7 +231,12 @@ namespace Hubzero\Htmx\Tests {
 
             $payload = '<div id="fragment-ok">ok</div>';
             ob_start();
-            Htmx::fragment($payload);
+            try {
+                Htmx::fragment($payload);
+                $this->fail('The request was not stopped');
+            } catch (\Hubzero\Test\Halted $e) {
+                // stopped, as the application would
+            }
             $output = (string) ob_get_clean();
 
             $this->assertSame($payload, $output);
@@ -337,7 +347,12 @@ namespace Hubzero\Htmx\Tests {
             $service = new HtmxService();
 
             ob_start();
-            $service->noContent();
+            try {
+                $service->noContent();
+                $this->fail('The request was not stopped');
+            } catch (\Hubzero\Test\Halted $e) {
+                // stopped, as the application would
+            }
             $output = (string) ob_get_clean();
 
             $response = \App::get('response');
@@ -353,7 +368,12 @@ namespace Hubzero\Htmx\Tests {
             $service = new HtmxService();
 
             ob_start();
-            $service->stopPolling();
+            try {
+                $service->stopPolling();
+                $this->fail('The request was not stopped');
+            } catch (\Hubzero\Test\Halted $e) {
+                // stopped, as the application would
+            }
             $output = (string) ob_get_clean();
 
             $response = \App::get('response');
@@ -379,7 +399,12 @@ namespace Hubzero\Htmx\Tests {
             $html = '<div class="errors">Invalid input</div>';
 
             ob_start();
-            $service->validation($html, ['title' => 'Required']);
+            try {
+                $service->validation($html, ['title' => 'Required']);
+                $this->fail('The request was not stopped');
+            } catch (\Hubzero\Test\Halted $e) {
+                // stopped, as the application would
+            }
             $output = (string) ob_get_clean();
 
             $response = \App::get('response');
@@ -408,7 +433,12 @@ namespace Hubzero\Htmx\Tests {
 
             $payload = '<li id="todo-42">Ship docs</li>';
             ob_start();
-            $service->fragment($payload, 201);
+            try {
+                $service->fragment($payload, 201);
+                $this->fail('The request was not stopped');
+            } catch (\Hubzero\Test\Halted $e) {
+                // stopped, as the application would
+            }
             $output = (string) ob_get_clean();
 
             $response = \App::get('response');

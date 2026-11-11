@@ -38,7 +38,12 @@ namespace Hubzero\Component\Tests {
             $controller = new HtmxFlowController();
 
             ob_start();
-            $controller->fragmentTask();
+            try {
+                $controller->fragmentTask();
+                $this->fail('The request was not stopped');
+            } catch (\Hubzero\Test\Halted $e) {
+                // stopped, as the application would
+            }
             $output = ob_get_clean();
 
             $response = \App::get('response');
@@ -54,7 +59,12 @@ namespace Hubzero\Component\Tests {
             $controller = new HtmxFlowController();
 
             ob_start();
-            $controller->fragmentTask();
+            try {
+                $controller->fragmentTask();
+                $this->fail('The request was not stopped');
+            } catch (\Hubzero\Test\Halted $e) {
+                // stopped, as the application would
+            }
             $output = (string) ob_get_clean();
 
             $this->assertSame('<li>ok</li>', $output);
@@ -69,7 +79,12 @@ namespace Hubzero\Component\Tests {
             $controller = new HtmxFlowController();
 
             ob_start();
-            $controller->noContentTask();
+            try {
+                $controller->noContentTask();
+                $this->fail('The request was not stopped');
+            } catch (\Hubzero\Test\Halted $e) {
+                // stopped, as the application would
+            }
             $output = ob_get_clean();
 
             $response = \App::get('response');
@@ -85,7 +100,12 @@ namespace Hubzero\Component\Tests {
             $controller = new HtmxFlowController();
 
             ob_start();
-            $controller->stopPollingTask();
+            try {
+                $controller->stopPollingTask();
+                $this->fail('The request was not stopped');
+            } catch (\Hubzero\Test\Halted $e) {
+                // stopped, as the application would
+            }
             $output = ob_get_clean();
 
             $response = \App::get('response');

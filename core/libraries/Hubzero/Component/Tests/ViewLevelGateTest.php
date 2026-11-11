@@ -119,6 +119,8 @@ class ViewLevelGateTest extends Basic
                 public function redirect($url, $message = null, $type = 'message')
                 {
                     $this->test->recordRedirect($url, $message, $type);
+
+                    throw new \Hubzero\Test\Halted('redirect');
                 }
                 public function abort($code, $message = '')
                 {
@@ -218,7 +220,12 @@ class ViewLevelGateTest extends Basic
     {
         $this->boot(true, [1]);
 
-        $this->assertFalse($this->call('requireViewLevel', [2, 'COM_X_LOGIN']));
+        try {
+            $this->call('requireViewLevel', [2, 'COM_X_LOGIN']);
+            $this->fail('The request was not stopped');
+        } catch (\Hubzero\Test\Halted $e) {
+            // stopped, as the application would
+        }
 
         $this->assertNotNull($this->redirect);
         $this->assertSame(
@@ -238,7 +245,12 @@ class ViewLevelGateTest extends Basic
     {
         $this->boot(true, [1]);
 
-        $this->call('requireViewLevel', [2]);
+        try {
+            $this->call('requireViewLevel', [2]);
+            $this->fail('The request was not stopped');
+        } catch (\Hubzero\Test\Halted $e) {
+            // stopped, as the application would
+        }
 
         $this->assertSame('JGLOBAL_YOU_MUST_LOGIN_FIRST', $this->redirect['message']);
     }

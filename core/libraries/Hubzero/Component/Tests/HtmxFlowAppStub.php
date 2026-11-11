@@ -42,13 +42,17 @@ class HtmxFlowAppStub
         self::$state[$key] = $value;
     }
 
-    public static function close(): void
+    public static function close(): never
     {
         self::$state['closed'] = true;
+
+        throw new \Hubzero\Test\Halted('close');
     }
 
-    public static function redirect(string $url): void
+    public static function redirect(string $url): never
     {
         self::$state['redirect_to'] = $url;
+
+        throw new \Hubzero\Test\Halted('redirect');
     }
 }
