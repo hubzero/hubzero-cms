@@ -11,19 +11,20 @@ namespace Hubzero\Facades;
 /**
  * App facade
  *
- * @method static mixed  get(string $key, mixed $default = null)
+ * @method static mixed  get(string $key)
  * @method static void   set(string $key, mixed $value)
  * @method static bool   has(string $key)
- * @method static bool   bound(string $key)
+ * @method static void   forget(string $key)
  * @method static bool   isSite()
  * @method static bool   isAdmin()
  * @method static bool   isApi()
  * @method static bool   isCli()
  * @method static string version()
+ * @method static string hash(string $seed)
  * @method static object register(mixed $provider, array $options = [])
- * @method static never  redirect(string $url, int $code = 303)
- * @method static never  abort(int $code, string $text = '')
- * @method static never  close(int $code = 0)
+ * @method static never  redirect(string $url, string $message = null, string $type = 'success')
+ * @method static never  abort(int $code, string $message = '')
+ * @method static never  close()
  *
  * @codeCoverageIgnore
  */

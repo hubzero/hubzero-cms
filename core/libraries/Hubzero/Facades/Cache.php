@@ -16,7 +16,8 @@ namespace Hubzero\Facades;
  * @method static bool  add(string $key, mixed $value, int $minutes)
  * @method static bool  has(string $key)
  * @method static bool  forget(string $key)
- * @method static bool  clean()
+ * @method static void  clean(string $group = null)
+ * @method static bool  gc()
  *
  * @codeCoverageIgnore
  */

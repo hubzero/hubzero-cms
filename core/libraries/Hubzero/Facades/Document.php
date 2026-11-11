@@ -21,7 +21,16 @@ namespace Hubzero\Facades;
  * @method static string getDescription()
  * @method static object addStyleDeclaration(string $content, string $type = 'text/css')
  * @method static object addScriptDeclaration(string $content, string $type = 'text/javascript')
- * @method static object setMetaData(string $name, string $content, bool $http_equiv = false)
+ * @method static object setMetaData(string $name, string $content, bool $http_equiv = false, bool $sync = true)
+ * @method static object setCharset(string $type = 'utf-8')
+ * @method static string getLanguage()
+ * @method static object setLink(string $url)
+ * @method static mixed  getBuffer(string $type = null, string $name = null, array $attribs = [])
+ * @method static object setBuffer(mixed $content, mixed $options = [], string $name = null)
+ * @method static object addCustomTag(string $html)
+ * @method static object addHeadLink(string $href, string $relation, string $relType = 'rel', array $attribs = [])
+ * @method static array  getHeadData()
+ * @method static object addItem(\Hubzero\Document\Type\Feed\Item $item)
  *
  * @codeCoverageIgnore
  */

@@ -15,6 +15,7 @@ use Hubzero\Facades\Route;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\App;
+use Hubzero\Language\Translator;
 
 /**
  * Module class for displaying a login form
@@ -68,7 +69,7 @@ class Adminlogin extends Module
     public static function getLanguageList()
     {
         $langPath = PATH_APP . DS . 'language' . DS . strtolower(App::get('client')->name);
-        $languages = Lang::getList(null, $langPath, false, true);
+        $languages = Translator::getList(null, $langPath, false, true);
         array_unshift($languages, Html::select('option', '', Lang::txt('JDEFAULT')));
 
         return Html::select('genericlist', $languages, 'lang', ' class="inputbox"', 'value', 'text', null);

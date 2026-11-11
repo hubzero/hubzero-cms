@@ -15,6 +15,15 @@ namespace Hubzero\Facades;
  * @method static bool   has(string $name = null)
  * @method static array  getLoggers()
  * @method static string getDefaultLog()
+ * @method static object register(string $name, array $settings)
+ * @method static mixed  debug(mixed $message, array $context = [])
+ * @method static mixed  info(mixed $message, array $context = [])
+ * @method static mixed  notice(mixed $message, array $context = [])
+ * @method static mixed  warning(mixed $message, array $context = [])
+ * @method static mixed  error(mixed $message, array $context = [])
+ * @method static mixed  critical(mixed $message, array $context = [])
+ * @method static mixed  alert(mixed $message, array $context = [])
+ * @method static mixed  emergency(mixed $message, array $context = [])
  *
  * @codeCoverageIgnore
  */

@@ -11,10 +11,15 @@ namespace Hubzero\Facades;
 /**
  * User facade
  *
+ * Calls the facade does not know go to the current user, a Hubzero\User\User;
+ * that model's own static finders can be reached through it as well.
+ *
+ * @method static object   getInstance(mixed $id = null)
  * @method static mixed    get(string $key, mixed $default = null)
  * @method static object   set(string|array $key, mixed $value = null)
  * @method static bool     isGuest()
  * @method static bool     authorise(string $action, string $assetname = null)
+ * @method static bool     authorize(string $action, string $assetname = null)
  * @method static string   picture(int $anonymous = 0, bool $thumbnail = true, bool $serveFile = true)
  * @method static string   link(string $type = '')
  * @method static array    groups(string $role = 'all')
@@ -28,6 +33,15 @@ namespace Hubzero\Facades;
  * @method static mixed    getParam(string $key, mixed $default = null)
  * @method static mixed    setParam(string $key, mixed $value)
  * @method static bool     setLastVisit(string $timestamp = 'now')
+ * @method static string   getTableName()
+ * @method static object   one(int $id)
+ * @method static object   oneOrNew(int $id)
+ * @method static object   oneOrFail(int $id)
+ * @method static object   oneByUsername(string $username)
+ * @method static object   oneByEmail(string $email)
+ * @method static object   oneByActivationToken(string $token)
+ * @method static object   blank()
+ * @method static object   all(mixed $columns = null)
  *
  * @codeCoverageIgnore
  */

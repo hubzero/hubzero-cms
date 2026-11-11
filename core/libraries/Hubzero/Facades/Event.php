@@ -19,6 +19,7 @@ namespace Hubzero\Facades;
  * @method static array  getListeners(mixed $event = null)
  * @method static bool   hasListener(object $listener, mixed $event = null)
  * @method static int    countListeners(mixed $event)
+ * @method static array  getCalledListeners() Only while debugging, when the dispatcher is traceable
  */
 class Event extends Facade
 {

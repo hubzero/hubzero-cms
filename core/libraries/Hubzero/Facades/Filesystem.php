@@ -34,6 +34,10 @@ namespace Hubzero\Facades;
  * @method static bool   makeDirectory(string $path, int $mode = 0755, bool $recursive = true, bool $force = false)
  * @method static bool   copyDirectory(string $path, string $target, int $options = null)
  * @method static bool   deleteDirectory(string $path, bool $preserve = false)
+ * @method static bool   emptyDirectory(string $path)
+ * @method static array  directoryTree(string $path, $filter = '.', $maxLevel = 3, $level = 0, $parent = 0)
+ * @method static bool   setPermissions(string $path, string $filemode = '0644', string $foldermode = '0755')
+ * @method static string cleanDirectory(string $directory)
  * @method static string clean(string $file)
  * @method static string cleanPath(string $path)
  *
@@ -78,5 +82,63 @@ class Filesystem extends Facade
         ],
     ) {
         return static::getRoot()->listContents(...func_get_args());
+    }
+
+    /**
+     * List the files in a directory
+     *
+     * Declared here rather than as a tag because its signature does not fit
+     * on one line, and a tag cannot be wrapped.
+     *
+     * @param   string   $path       The path of the folder to read
+     * @param   string   $filter     A filter for file names
+     * @param   mixed    $recursive  True to search sub-folders, or an integer maximum depth
+     * @param   boolean  $full       True to return the full path to the file
+     * @param   array    $exclude    Names of files which should not be shown in the result
+     * @return  array
+     */
+    public static function files(
+        $path,
+        $filter = '.',
+        $recursive = false,
+        $full = false,
+        $exclude = [
+            '.svn',
+            '.git',
+            'CVS',
+            '.DS_Store',
+            '__MACOSX',
+        ],
+    ) {
+        return static::getRoot()->files(...func_get_args());
+    }
+
+    /**
+     * List the directories in a directory
+     *
+     * Declared here rather than as a tag because its signature does not fit
+     * on one line, and a tag cannot be wrapped.
+     *
+     * @param   string   $path       The path of the folder to read
+     * @param   string   $filter     A filter for directory names
+     * @param   mixed    $recursive  True to search sub-folders, or an integer maximum depth
+     * @param   boolean  $full       True to return the full path to the directory
+     * @param   array    $exclude    Names of directories which should not be shown in the result
+     * @return  array
+     */
+    public static function directories(
+        $path,
+        $filter = '.',
+        $recursive = false,
+        $full = false,
+        $exclude = [
+            '.svn',
+            '.git',
+            'CVS',
+            '.DS_Store',
+            '__MACOSX',
+        ],
+    ) {
+        return static::getRoot()->directories(...func_get_args());
     }
 }

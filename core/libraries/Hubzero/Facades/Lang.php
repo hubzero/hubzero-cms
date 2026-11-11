@@ -11,8 +11,16 @@ namespace Hubzero\Facades;
 /**
  * Language helper facade
  *
- * @method static string txt(string $string)
- * @method static string txts(string $string, int $n)
+ * @method static string txt(string $string, mixed ...$args)
+ * @method static string txts(string $string, int $n, mixed ...$args)
+ * @method static string alt(string $string, string $alt, bool $jsSafe = false, bool $interpretBackSlashes = true)
+ * @method static string transliterate(string $string)
+ * @method static array  available(string $key = 'default')
+ * @method static bool   isMultilang()
+ * @method static string setLanguage(string $lang)
+ * @method static array  getErrorFiles()
+ * @method static array  getLanguages(string $key = null)
+ * @method static string getLanguagePath(string $basePath = PATH_APP, string $language = null, string $client = null)
  * @method static bool   exists(string $lang, string $basePath = '', string $client = null)
  * @method static bool   hasKey(string $string)
  * @method static string translate(string $string, bool $jsSafe = false, bool $interpretBackSlashes = true)

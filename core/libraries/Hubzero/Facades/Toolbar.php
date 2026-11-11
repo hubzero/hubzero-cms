@@ -13,6 +13,8 @@ namespace Hubzero\Facades;
  *
  * Inspired by Joomla's JToolbarHelper class
  *
+ * @method static string render()
+ *
  * @codeCoverageIgnore
  */
 class Toolbar extends Facade
