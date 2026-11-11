@@ -16,6 +16,16 @@ defined('_HZEXEC_') or die;
  *
  * @var \Hubzero\Module\Module $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $count
+ * @var mixed $list
+ * @var mixed $moduleclass_sfx
+ * @var mixed $params
+ * @var mixed $separator
+ */
 ?>
 <nav class="breadcrumbs<?= $moduleclass_sfx ?> pathway<?= $moduleclass_sfx ?>"
     aria-label="<?= Lang::txt('MOD_BREADCRUMBS') ?>">

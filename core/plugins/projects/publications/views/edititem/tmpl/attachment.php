@@ -28,6 +28,13 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $dirpath
+ * @var mixed $gone
+ */
+
 $title       = Lang::txt('PLG_PROJECTS_PUBLICATIONS_CONTENT_RELABEL');
 $placeholder = Lang::txt('PLG_PROJECTS_PUBLICATIONS_NO_DESCRIPTION');
 $dTitle      = null;

@@ -20,6 +20,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{status: mixed, test: mixed, tests: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $status
+ */
+
 Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_AUDIT'), 'resources');
 
 $this->css('audit.css');

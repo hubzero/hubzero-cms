@@ -15,6 +15,14 @@ defined('_HZEXEC_') or die;
  * @var \Hubzero\Module\Module&object{parentLink: mixed, rootLink: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $ariaControlTarget
+ * @var mixed $disclosureMenu
+ * @var mixed $item
+ */
+
 $rootLink = $this->rootLink;
 $parentLink = $this->parentLink;
 

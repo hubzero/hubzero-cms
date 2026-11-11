@@ -14,6 +14,13 @@ defined('_HZEXEC_') or die;
  *
  * @var \Hubzero\Module\Module $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $list
+ * @var mixed $params
+ */
 $i = 0;
 $n = $list->count();
 ?>

@@ -18,6 +18,14 @@ defined('_HZEXEC_') or die();
  * @var \Modules\IncrementalRegistration\IncrementalRegistration $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $awardPer
+ * @var mixed $dbh
+ * @var mixed $introText
+ */
+
 // What the member posted, to fill the form in again. A field sent as a list
 // where one value is expected is flattened to a string.
 $posted = [];

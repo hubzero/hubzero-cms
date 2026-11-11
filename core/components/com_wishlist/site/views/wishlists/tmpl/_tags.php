@@ -17,6 +17,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{base: mixed, config: mixed, filters: mixed, tags: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $tags
+ */
+
 if (!$this->tags->count()) {
     echo '';
     return;

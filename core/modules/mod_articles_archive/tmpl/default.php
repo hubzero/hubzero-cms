@@ -14,6 +14,12 @@ defined('_HZEXEC_') or die;
  * @var \Hubzero\Module\Module $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $moduleclass_sfx
+ */
+
 if (!empty($list)) : ?>
     <ul class="archive-module<?php echo $moduleclass_sfx; ?>">
         <?php foreach ($list as $item) : ?>

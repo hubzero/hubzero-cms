@@ -1,3 +1,11 @@
+<?php
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $security
+ */
+?>
 <div class="verify-content">
     <div class="warning-box">
         <h3>Why This Step?</h3>

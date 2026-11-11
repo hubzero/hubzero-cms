@@ -32,6 +32,13 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $name
+ * @var mixed $total
+ */
+
 $this->css();
 
 // Add the "all" category

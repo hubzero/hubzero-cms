@@ -1,3 +1,11 @@
+<?php
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $installer
+ */
+?>
 <div class="welcome-content">
     <p class="lead">Welcome to the Hubzero installation wizard. This will guide you through setting up your new hub.</p>
 

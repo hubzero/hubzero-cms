@@ -18,6 +18,18 @@ defined('_HZEXEC_') or die;
  * @var \Hubzero\Module\Module $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $button
+ * @var mixed $button_pos
+ * @var mixed $button_text
+ * @var mixed $label
+ * @var mixed $moduleclass_sfx
+ * @var mixed $text
+ * @var mixed $width
+ */
+
 $inputId = 'searchword' . (Search::$instances > 1 ? $this->module->id : '');
 $formId  = 'searchform' . (Search::$instances > 1 ? $this->module->id : '');
 ?>

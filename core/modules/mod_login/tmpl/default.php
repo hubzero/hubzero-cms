@@ -24,6 +24,16 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Module\Module&object{local: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $authenticators
+ * @var mixed $freturn
+ * @var mixed $remember_me_default
+ * @var mixed $return
+ * @var mixed $returnQueryString
+ */
+
 $hash  = App::hash(App::get('client')->name . ':authenticator');
 
 if (($cookie = \Hubzero\Utility\Cookie::eat('authenticator')) && !Request::getInt('reset', false)) {

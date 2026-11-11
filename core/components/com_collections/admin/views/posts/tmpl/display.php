@@ -20,6 +20,13 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{filters: mixed, rows: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $alt
+ * @var mixed $class
+ */
+
 $canDo = \Components\Collections\Helpers\Permissions::getActions('post');
 
 Toolbar::title(

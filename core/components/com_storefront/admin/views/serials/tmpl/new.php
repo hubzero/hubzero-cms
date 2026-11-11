@@ -21,6 +21,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{sId: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $canDo
+ */
+
 $tmpl = Request::getCmd('tmpl', '');
 
 $text = 'Add serial number';

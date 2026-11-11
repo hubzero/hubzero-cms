@@ -17,6 +17,13 @@ defined('_HZEXEC_') or die();
  *
  * @var \Hubzero\Component\View&object{base: mixed, dep: mixed, pdf: mixed, resp: mixed} $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $limit
+ * @var mixed $realLimit
+ */
 ?>
 <p>
     You have <strong><?php echo Form::timeDiff($realLimit * 60); ?></strong> to complete this form.

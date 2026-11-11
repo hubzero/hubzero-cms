@@ -17,6 +17,14 @@ defined('_HZEXEC_') or die;
  * @var \Modules\Adminmenu\Adminmenu $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $menu
+ * @var mixed $params
+ * @var mixed $user
+ */
+
 //
 // Site SubMenu
 //

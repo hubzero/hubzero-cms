@@ -31,6 +31,13 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $data
+ * @var mixed $type
+ */
+
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
 $text = ($this->row->id ? Lang::txt('JACTION_EDIT') . ' #' . $this->row->id : Lang::txt('JACTION_CREATE'));

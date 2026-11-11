@@ -9,6 +9,12 @@
 // No direct access
 defined('_HZEXEC_') or die();
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $color
+ */
+
 return '.light #header {background-color: ' . $color . ';} '
     . '#login-body #toolbar-box, div.configuration, h2.modal-title, '
     . '.light .main-navigation {background: ' . $color . ';} '

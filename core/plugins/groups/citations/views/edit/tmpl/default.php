@@ -28,6 +28,13 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $badges
+ * @var mixed $tags
+ */
+
 $this->css()->js();
 
 $base = 'index.php?option=com_groups&cn=' . $this->group->get('cn') . '&active=citations';

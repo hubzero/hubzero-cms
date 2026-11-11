@@ -15,6 +15,12 @@ defined('_HZEXEC_') or die;
  * @var \Hubzero\Module\Module $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $item
+ */
+
 // Note. It is important to remove spaces between elements.
 $title = $item->anchor_title ? 'title="' . $item->anchor_title . '" ' : '';
 if ($item->menu_image) {

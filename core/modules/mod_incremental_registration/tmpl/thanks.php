@@ -17,6 +17,12 @@ defined('_HZEXEC_') or die();
  *
  * @var \Modules\IncrementalRegistration\IncrementalRegistration $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $award
+ */
 ?>
 <div id="overlay"></div>
 <div id="questions" data-redirect="true">

@@ -21,6 +21,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{group: mixed, page: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $profile
+ */
+
 $editPageUrl = 'index.php?option=com_groups&cn='
     . $this->group->get('cn')
     . '&controller=pages&task=edit&pageid='

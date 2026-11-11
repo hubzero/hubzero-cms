@@ -22,6 +22,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{config: mixed, filters: mixed, rows: mixed, total: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $type
+ */
+
 $canDo = \Components\Groups\Helpers\Permissions::getActions();
 
 Toolbar::title(Lang::txt('COM_GROUPS'), 'groups');

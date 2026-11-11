@@ -30,6 +30,12 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $usersgroups
+ */
+
 $this
      ->css()
      ->js()

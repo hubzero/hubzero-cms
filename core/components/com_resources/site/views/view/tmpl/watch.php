@@ -26,6 +26,12 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $type
+ */
+
 $this
      ->css('hubpresenter.css')
      ->js('hubpresenter.js')

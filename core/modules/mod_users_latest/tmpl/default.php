@@ -14,6 +14,12 @@ defined('_HZEXEC_') or die;
  *
  * @var \Hubzero\Module\Module $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $moduleclass_sfx
+ */
 ?>
 <?php if (!empty($names)) : ?>
     <ul class="latestusers<?php echo $moduleclass_sfx; ?>">

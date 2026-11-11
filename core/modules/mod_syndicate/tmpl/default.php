@@ -17,6 +17,15 @@ defined('_HZEXEC_') or die;
  *
  * @var \Hubzero\Module\Module $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $link
+ * @var mixed $moduleclass_sfx
+ * @var mixed $params
+ * @var mixed $text
+ */
 ?>
 <a href="<?php echo $link; ?>" class="syndicate-module<?php echo $moduleclass_sfx; ?>">
     <?php echo Html::asset('icon', 'feed'); ?>

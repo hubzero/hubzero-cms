@@ -22,6 +22,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{archive: mixed, category: mixed, catid: mixed, filters: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $cls
+ */
+
 $this
      ->css()
      ->js();

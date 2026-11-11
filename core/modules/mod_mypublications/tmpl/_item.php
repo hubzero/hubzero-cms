@@ -18,6 +18,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Module\Module $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $item
+ */
+
 $link = $item->link('version');
 
 if ($item->get('state') == Components\Publications\Models\Orm\Version::STATE_DRAFT) :

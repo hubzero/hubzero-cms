@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $installer
+ * @var mixed $timezones
+ */
+
 $sitenameVal = htmlspecialchars($config['sitename'] ?? 'My Hub');
 $mailfromVal = htmlspecialchars($config['mailfrom'] ?? '');
 $timezoneVal = $config['timezone'] ?? 'UTC';

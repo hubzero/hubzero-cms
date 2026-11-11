@@ -15,6 +15,17 @@ defined('_HZEXEC_') or die;
  * @var \Modules\Menu\Menu $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $active_id
+ * @var mixed $class_sfx
+ * @var mixed $disclosureMenu
+ * @var mixed $list
+ * @var mixed $params
+ * @var mixed $path
+ */
+
 $classnames = "menu{$class_sfx}";
 
 if ($disclosureMenu) {

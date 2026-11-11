@@ -18,6 +18,16 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Module\Module $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $footerText
+ * @var mixed $headerText
+ * @var mixed $list
+ * @var mixed $moduleclass_sfx
+ * @var mixed $params
+ */
+
 $this->css('template.css');
 ?>
 <div class="mod-languages<?php echo $moduleclass_sfx; ?>">

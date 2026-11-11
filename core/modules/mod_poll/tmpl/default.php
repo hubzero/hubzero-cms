@@ -10,7 +10,20 @@ use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
 
-defined('_HZEXEC_') or die(); ?>
+defined('_HZEXEC_') or die();
+
+/**
+ * What this template is given.
+ *
+ * @var \Modules\Poll\Poll $this
+ */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $poll
+ */
+?>
 
 <?php
 $formId = ($this->params->get('moduleclass_sfx'))

@@ -30,6 +30,12 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $name
+ */
+
 // define base links
 $base = Route::url(
     'index.php?option=' . $this->option . '&controller=' . $this->controller . '&gid=' . $this->group->cn,

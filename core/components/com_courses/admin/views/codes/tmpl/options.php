@@ -22,6 +22,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{section: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $canDo
+ */
+
 $tmpl = Request::getString('tmpl', '');
 
 if ($tmpl != 'component') {

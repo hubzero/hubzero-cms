@@ -19,6 +19,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{config: mixed, manifest: mixed, parent: mixed, resource: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $url
+ */
+
 $this
      ->css('video.css')
      ->js('video.js')

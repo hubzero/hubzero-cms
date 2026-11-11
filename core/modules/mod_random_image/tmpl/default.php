@@ -16,6 +16,14 @@ defined('_HZEXEC_') or die;
  *
  * @var \Hubzero\Module\Module $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $image
+ * @var mixed $link
+ * @var mixed $moduleclass_sfx
+ */
 ?>
 <div class="random-image<?php echo $moduleclass_sfx; ?>">
     <?php if ($link) : ?>

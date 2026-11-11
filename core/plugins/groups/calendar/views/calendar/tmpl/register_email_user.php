@@ -29,6 +29,12 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $tribe
+ */
+
 // The hub's own address, not the one the request claimed to be for.
 $eventLink = rtrim(trim((string) Config::get('live_site', '')) ?: Request::root(), '/')
     . DS

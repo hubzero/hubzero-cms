@@ -18,6 +18,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{count: mixed, course: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $cls
+ */
+
 switch ($this->count) {
     case 0:
         $cls = 'span4';

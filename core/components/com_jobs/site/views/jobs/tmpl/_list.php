@@ -20,6 +20,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{admin: mixed, emp: mixed, filters: mixed, jobs: mixed, mini: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $class
+ */
+
 $database = App::get('db');
 $jt = new \Components\Jobs\Tables\Type($database);
 $jc = new \Components\Jobs\Tables\Category($database);

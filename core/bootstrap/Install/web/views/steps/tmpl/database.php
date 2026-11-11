@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $installer
+ */
+
 // Determine current connection type from config
 $connectionType = '';
 $hostVal = '';

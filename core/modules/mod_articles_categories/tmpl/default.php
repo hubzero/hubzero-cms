@@ -13,6 +13,13 @@ defined('_HZEXEC_') or die;
  *
  * @var \Hubzero\Module\Module $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $moduleclass_sfx
+ * @var mixed $params
+ */
 ?>
 <ul class="categories-module<?php echo $moduleclass_sfx; ?>">
     <?php require $this->getLayoutPath($params->get('layout', 'default') . '_items'); ?>

@@ -16,6 +16,13 @@ defined('_HZEXEC_') or die;
  *
  * @var \Hubzero\Module\Module $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $lineone
+ * @var mixed $moduleclass_sfx
+ */
 ?>
 <footer class="footer<?php echo $moduleclass_sfx; ?>">
     <div class="footer1<?php echo $moduleclass_sfx; ?>"><?php echo $lineone; ?></div>

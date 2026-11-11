@@ -30,6 +30,12 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $anon
+ */
+
 $no_html = Request::getInt('no_html', 0);
 
 $base = $this->offering->link() . '&active=' . $this->name;

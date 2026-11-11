@@ -32,6 +32,12 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $name
+ */
+
 // add styles & scripts
 $this
      ->css()

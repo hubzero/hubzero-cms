@@ -21,6 +21,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{filters: mixed, page: mixed, rows: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $task
+ */
+
 $canDo = Components\Wiki\Helpers\Permissions::getActions('page');
 
 $toolbarTitle = Lang::txt('COM_WIKI') . ': ' . Lang::txt('COM_WIKI_PAGE') . ': ' . Lang::txt('COM_WIKI_REVISIONS');

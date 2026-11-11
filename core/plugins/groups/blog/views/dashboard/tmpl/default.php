@@ -19,6 +19,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Plugin\View&object{entries: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $area
+ */
+
 ?>
 <table class="activity">
     <tbody>

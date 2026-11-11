@@ -1,3 +1,14 @@
+<?php
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $content
+ * @var mixed $installer
+ * @var mixed $stepId
+ * @var mixed $title
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -35,6 +35,12 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $user
+ */
+
 // Get and add the js and extra css to the page
 $this->css('login.css');
 $this->css('providers.css');

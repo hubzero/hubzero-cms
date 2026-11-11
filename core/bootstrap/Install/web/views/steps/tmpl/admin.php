@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $defaultEmail
+ * @var mixed $installer
+ */
+
 $nameVal = htmlspecialchars($_POST['name'] ?? ($existingAdmin['name'] ?? 'Site Administrator'));
 $emailVal = htmlspecialchars($_POST['email'] ?? ($existingAdmin['email'] ?? $defaultEmail));
 $adminExists = !empty($existingAdmin);

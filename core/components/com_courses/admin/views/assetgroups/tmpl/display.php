@@ -29,6 +29,13 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $class
+ * @var mixed $task
+ */
+
 // Preprocess the list of items to find ordering divisions.
 $this->set('ordering', []);
 foreach ($this->rows as $row) {

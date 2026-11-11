@@ -14,6 +14,13 @@ defined('_HZEXEC_') or die;
  * @var \Modules\Adminmenu\Adminmenu $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $enabled
+ * @var mixed $menu
+ */
+
 require $this->getLayoutPath($enabled ? 'default_enabled' : 'default_disabled');
 
 $menu->renderMenu('menu', $enabled ? '' : 'disabled');

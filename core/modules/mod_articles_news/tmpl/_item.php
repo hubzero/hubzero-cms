@@ -15,6 +15,13 @@ defined('_HZEXEC_') or die;
  * @var \Hubzero\Module\Module $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $item
+ * @var mixed $params
+ */
+
 $item_heading = $params->get('item_heading', 'h4');
 ?>
 <?php if ($params->get('item_title')) : ?>

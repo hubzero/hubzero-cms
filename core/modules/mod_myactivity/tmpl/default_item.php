@@ -18,6 +18,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Module\Module $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $row
+ */
+
 $status = '';
 if (!$row->wasViewed()) {
     $status = 'new';

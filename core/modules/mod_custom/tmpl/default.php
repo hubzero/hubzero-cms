@@ -15,6 +15,14 @@ defined('_HZEXEC_') or die;
  * @var \Hubzero\Module\Module $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $module
+ * @var mixed $moduleclass_sfx
+ * @var mixed $params
+ */
+
 if ($params->get('backgroundimage')) {
     $this->css('
 	.custom' . $moduleclass_sfx . ' {

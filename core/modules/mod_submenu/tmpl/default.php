@@ -17,6 +17,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Module\Module $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $list
+ */
+
 $hide = Request::getInt('hidemainmenu');
 ?>
 <ul id="submenu">

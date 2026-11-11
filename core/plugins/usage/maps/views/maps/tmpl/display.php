@@ -17,6 +17,13 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Plugin\View&object{option: mixed, task: mixed, type: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $task
+ * @var mixed $type
+ */
+
 $period = Request::getString('period', '1999-12');
 $xres   = Request::getString('xres', '2050');
 $yres   = Request::getString('yres', '1050');

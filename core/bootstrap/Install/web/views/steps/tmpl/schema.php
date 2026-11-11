@@ -1,3 +1,13 @@
+<?php
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $installer
+ * @var mixed $startMigrations
+ * @var mixed $status
+ */
+?>
 <div class="schema-content">
     <p>The database schema and essential data will be loaded into your database.</p>
 

@@ -15,6 +15,16 @@ defined('_HZEXEC_') or die;
  *
  * @var \Hubzero\Module\Module&object{item: mixed} $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $grouped
+ * @var mixed $item_heading
+ * @var mixed $list
+ * @var mixed $moduleclass_sfx
+ * @var mixed $params
+ */
 ?>
 <ul class="category-module<?php echo $moduleclass_sfx; ?>">
 <?php if ($grouped) : ?>

@@ -20,6 +20,13 @@ defined('_HZEXEC_') or die;
  * @var \Modules\Adminmenu\Adminmenu $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $menu
+ * @var mixed $params
+ */
+
 $shownew = (bool) $params->get('shownew', 1);
 $lang = Lang::getRoot();
 

@@ -18,6 +18,16 @@ defined('_HZEXEC_') or die;
  * @var \Hubzero\Module\Module $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $authenticators
+ * @var mixed $freturn
+ * @var mixed $return
+ * @var mixed $returnQueryString
+ * @var mixed $site_display
+ */
+
 $this
      ->css('login')
      ->css('providers', 'com_login')

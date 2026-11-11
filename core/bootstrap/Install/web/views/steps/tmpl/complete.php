@@ -1,4 +1,11 @@
 <?php
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $siteUrl
+ */
+
 $siteUrlEsc = htmlspecialchars($siteUrl);
 $adminUrlEsc = htmlspecialchars($siteUrl . '/administrator');
 $sitenameEsc = htmlspecialchars($settings['sitename'] ?? 'Your Hub');

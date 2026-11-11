@@ -27,6 +27,12 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $curatorStatus
+ */
+
 // Get block/element properties
 $props    = $this->pub->curation('blocks', $this->master->blockId, 'props') . '-' . $this->elementId;
 $complete = $this->pub->curation('blocks', $this->master->blockId, 'elementStatus', $this->elementId);

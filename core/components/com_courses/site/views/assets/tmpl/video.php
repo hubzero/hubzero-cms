@@ -24,6 +24,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{asset: mixed, course: mixed, model: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $manifest
+ */
+
 // Set the path
 $path = rtrim($this->model->path($this->course->get('id'), false), DS);
 

@@ -21,6 +21,13 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{course: mixed, filters: mixed, offering: mixed, rows: mixed, total: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $class
+ * @var mixed $task
+ */
+
 $canDo = \Components\Courses\Helpers\Permissions::getActions();
 
 Toolbar::title(Lang::txt('COM_COURSES') . ': ' . Lang::txt('COM_COURSES_UNITS'), 'courses');

@@ -24,6 +24,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Plugin\View&object{course: mixed, member: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $ag
+ */
+
 // ---------------
 // Course Outline
 // ---------------

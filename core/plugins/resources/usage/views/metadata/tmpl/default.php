@@ -15,6 +15,12 @@ defined('_HZEXEC_') or die();
  *
  * @var \Hubzero\Plugin\View&object{clusters: mixed, resource: mixed, stats: mixed, url: mixed} $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $clusters
+ */
 ?>
 <p class="usage">
     <?php if ($this->resource->type == 7) : ?>

@@ -24,6 +24,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{filters: mixed, items: mixed, pagination: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $lang
+ */
+
 if (App::isSite()) {
     Session::checkToken('get') or die(Lang::txt('JINVALID_TOKEN'));
 }

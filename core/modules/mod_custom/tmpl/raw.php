@@ -14,5 +14,11 @@ defined('_HZEXEC_') or die;
  *
  * @var \Hubzero\Module\Module $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $module
+ */
 ?>
 <?php echo $module->content;

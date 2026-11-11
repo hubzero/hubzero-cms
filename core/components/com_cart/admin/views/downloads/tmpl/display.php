@@ -13,6 +13,13 @@ defined('_HZEXEC_') or die();
  *
  * @var \Hubzero\Component\View&object{filters: mixed, rows: mixed, skuRequestedName: mixed, total: mixed} $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $class
+ * @var mixed $task
+ */
 use Components\Storefront\Models\Product;
 use Components\Storefront\Models\Sku;
 use Hubzero\Facades\Html;

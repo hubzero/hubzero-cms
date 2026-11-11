@@ -19,6 +19,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Module\Module&object{cls: mixed, row: mixed, txt_length: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $row
+ */
+
 if ($this->getError()) {
     ?>
     <p class="error"><?php echo Lang::txt('MOD_FEATUREDBLOG_MISSING_CLASS'); ?></p>

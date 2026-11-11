@@ -17,6 +17,12 @@ defined('_HZEXEC_') or die();
  *
  * @var \Modules\IncrementalRegistration\IncrementalRegistration $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $uid
+ */
 ?>
 <div id="curl">
     <a href="<?php echo Route::url('index.php?option=com_members&id=' . $uid . '&active=profile'); ?>" class="whole">

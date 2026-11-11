@@ -21,6 +21,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{filters: mixed, rows: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $cls
+ */
+
 $canDo = \Components\Citations\Helpers\Permissions::getActions('citation');
 
 Toolbar::title(Lang::txt('CITATIONS'), 'citation');

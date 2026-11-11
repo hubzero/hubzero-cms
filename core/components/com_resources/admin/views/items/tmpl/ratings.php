@@ -19,6 +19,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{rows: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $thedate
+ */
+
 if ($this->getError()) { ?>
     <p><?php echo $this->getError(); ?></p>
 <?php } else { ?>

@@ -23,6 +23,16 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{filters: mixed, parent: mixed, rows: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $alt
+ * @var mixed $class
+ * @var mixed $color_access
+ * @var mixed $task
+ * @var mixed $task_access
+ */
+
 $canDo = \Components\Resources\Helpers\Permissions::getActions('resource');
 
 Toolbar::title(Lang::txt('COM_RESOURCES') . ': ' . Lang::txt('COM_RESOURCES_CHILDREN'), 'resources');

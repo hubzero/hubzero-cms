@@ -17,6 +17,13 @@ defined('_HZEXEC_') or die();
  *
  * @var \Modules\Mygroups\Mygroups $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $group
+ * @var mixed $status
+ */
 ?>
 <li class="group<?php echo $group->published == 2 ? ' archived' : ''; ?>">
     <?php

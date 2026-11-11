@@ -19,6 +19,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Plugin\View&object{accepted_files: mixed, group: mixed, messages: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $message
+ */
+
 $this
      ->css('import.css')
      ->js('import.js');

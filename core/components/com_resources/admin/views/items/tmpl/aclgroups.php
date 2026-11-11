@@ -17,6 +17,12 @@ defined('_HZEXEC_') or die();
  * @var \Hubzero\Component\View&object{aclgroupnames: mixed} $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $name
+ */
+
 $this->js('acl.js');
 
 $aclgroupIDs = [];

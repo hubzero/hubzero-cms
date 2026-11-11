@@ -1,4 +1,13 @@
 <?php
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $installer
+ * @var mixed $passed
+ * @var mixed $requirements
+ */
+
 // Extension package names for each OS
 $extPackages = [
     'pdo' => ['debian' => 'php-pdo', 'rhel' => 'php-pdo', 'mac' => ''],

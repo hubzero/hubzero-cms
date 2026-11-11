@@ -8,6 +8,16 @@
 
 defined('_HZEXEC_') or die();
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $bground
+ * @var mixed $color1
+ * @var mixed $color2
+ * @var mixed $opacity
+ * @var mixed $opacity2
+ */
+
 $hex2rgb = function ($hex) {
     $hex = str_replace('#', '', $hex);
 

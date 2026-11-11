@@ -1,6 +1,12 @@
 <?php
 
 /**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $security
+ */
+
+/**
  * Bootstrap Installer - Verification Step
  *
  * Requires proof of file system ownership before allowing composer install.

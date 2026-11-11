@@ -1,3 +1,12 @@
+<?php
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $docRoot
+ * @var mixed $tried
+ */
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

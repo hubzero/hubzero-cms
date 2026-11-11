@@ -29,6 +29,12 @@ defined('_HZEXEC_') or die();
  * } $this
  */
 
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $tribe
+ */
+
 $message  = 'Group "'
     . $this->group->get('description')
     . '" event registration: "'

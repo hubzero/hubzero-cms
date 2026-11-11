@@ -17,6 +17,14 @@ defined('_HZEXEC_') or die;
  *
  * @var \Hubzero\Module\Module $this
  */
+
+/**
+ * Set by the code that includes this file.
+ *
+ * @var mixed $list
+ * @var mixed $moduleclass_sfx
+ * @var mixed $showDate
+ */
 ?>
 <ul class="relateditems<?php echo $moduleclass_sfx; ?>">
     <?php foreach ($list as $item) : ?>
