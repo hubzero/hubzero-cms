@@ -1147,8 +1147,13 @@ class Item extends Nested
             // We don't have a component. Load the form XML to get the help path
             $xmlFile = Filesystem::find(__DIR__ . '/forms', 'item_' . $type . '.xml');
 
+            if (!$xmlFile) {
+                throw new \Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
+            }
+
             // Attempt to load the xml file.
-            if (!$xmlFile || ($xmlFile && !$xml = simplexml_load_file($xmlFile))) {
+            $xml = simplexml_load_file($xmlFile);
+            if (!$xml) {
                 throw new \Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
             }
 
@@ -1164,21 +1169,6 @@ class Item extends Nested
             $this->helpKey = $helpKey ? $helpKey : $this->helpKey;
             $this->helpURL = $helpURL ? $helpURL : $this->helpURL;
             $this->helpLocal = (($helpLoc == 'true') || ($helpLoc == '1') || ($helpLoc == 'local')) ? true : false;
-        }
-
-        // Now load the component params.
-        // TODO: Work out why 'fixing' this breaks Form
-        if ($isNew = false) {
-            $path = \Hubzero\Filesystem\Util::normalizePath(Component::path($option) . '/config/config.xml');
-        } else {
-            $path = 'null';
-        }
-
-        if (Filesystem::exists($path)) {
-            // Add the component params last of all to the existing form.
-            if (!$form->load($path, true, '/config')) {
-                throw new \Exception(Lang::txt('JERROR_LOADFILE_FAILED'));
-            }
         }
 
         // Load the specific type file

@@ -469,10 +469,12 @@ class Items extends AdminController
 
         User::setState('com_menus.edit.item.type', $row->get('type'));
 
+        // The request arguments of the item's link
+        $args = [];
+
         switch ($row->get('type')) {
             case 'alias':
                 $row->set('component_id', 0);
-                $args = [];
 
                 parse_str(parse_url($row->get('link'), PHP_URL_QUERY), $args);
                 break;
@@ -485,7 +487,6 @@ class Items extends AdminController
 
             case 'url':
                 $row->set('component_id', 0);
-                $args = [];
 
                 $url = parse_url($row->get('link', ''), PHP_URL_QUERY);
                 parse_str($url == null ? '' : $url, $args);
@@ -498,7 +499,6 @@ class Items extends AdminController
 
                 // Ensure the integrity of the component_id field is maintained,
                 // particularly when changing the menu item type.
-                $args = [];
                 $url = parse_url($row->get('link', ''), PHP_URL_QUERY);
                 parse_str($url == null ? '' : $url, $args);
 
