@@ -88,7 +88,10 @@ $crumbs = $draft
             <?php echo Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_INFO'); ?>
         </p>
         <?php } ?>
-        <?php if ($this->pub->state == 3  || $this->pub->state == 4 || ($this->pub->state == 1 && $this->publishedCount == 1)) {
+        <?php
+        if (
+            $this->pub->state == 3 || $this->pub->state == 4 || ($this->pub->state == 1 && $this->publishedCount == 1)
+        ) {
             $warning = Lang::txt('PLG_PROJECTS_PUBLICATIONS_PUB_UNPUBLISH_WARNING');
             if ($this->pub->state == 3 || $this->pub->state == 4) {
                 $warning = '';

@@ -170,7 +170,8 @@ $this
                         <?php } ?>
                         </td>
                         <td>
-                        <?php if ($t->state != 3 or ($t->state == 3 && $t->revision != $this->status['currentrevision'])) {
+                        <?php
+                        if ($t->state != 3 or ($t->state == 3 && $t->revision != $this->status['currentrevision'])) {
                             echo $t->revision;
                         } else {
                             echo '-';

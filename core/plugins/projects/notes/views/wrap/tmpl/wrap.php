@@ -115,7 +115,8 @@ $listed = $publicStamp ? $publicStamp->listed : false;
             <?php echo $this->content; ?>
             <div id="scope" class="hidden"><?php echo $this->scope; ?></div>
         </div>
-        <?php if ($this->params->get('enable_publinks') && $this->page->get('id') && $this->project->access('content')) {
+        <?php
+        if ($this->params->get('enable_publinks') && $this->page->get('id') && $this->project->access('content')) {
             $this
                  ->view('sharelink')
                  ->set('option', $this->option)

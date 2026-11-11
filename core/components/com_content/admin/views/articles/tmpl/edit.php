@@ -258,7 +258,8 @@ $editUrl = Route::url(
 
             <?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
             <?php foreach ($fieldSets as $name => $fieldSet) : ?>
-                <?php // If the parameter says to show the article options or if the parameters have never been set, we will
+                <?php
+                // If the parameter says to show the article options or if the parameters have never been set, we will
                       // show the article options.?>
 
                 <?php

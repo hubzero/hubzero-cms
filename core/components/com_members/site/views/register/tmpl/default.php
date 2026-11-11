@@ -289,7 +289,8 @@ if (!$form_redirect && !in_array($current, ['/register/update', '/members/update
                                             value="<?= $this->escape($this->registration['password']) ?>"
                                             autocomplete="off"<?= $ariaRequiredAttr ?><?= $ariaInvalidAttr ?>
                                             aria-describedby="passrules" />
-                                        <?php echo !empty($this->xregistration->invalid['password']) && !is_array($this->xregistration->invalid['password'])
+                                        <?php
+                                        echo !empty($this->xregistration->invalid['password']) && !is_array($this->xregistration->invalid['password'])
                                                     ? '<span class="error" role="alert">'
                                                         . $this->xregistration->invalid['password'] . '</span>'
                                                     : ''; ?>

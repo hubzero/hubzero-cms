@@ -114,7 +114,10 @@ $emailnewSelected = function ($value) use ($view) {
                             <?php endif; ?>
 
                             <?php foreach ($this->hooks as $hook) : ?>
-                                <?php if ($hook->get('event') != 'postparse' || in_array($hook->get('id'), $hooks->postparse)) {
+                                <?php
+                                if (
+                                    $hook->get('event') != 'postparse' || in_array($hook->get('id'), $hooks->postparse)
+                                ) {
                                     continue;
                                 } ?>
                                 <option value="<?= $hook->get('id') ?>"><?= $hook->get('name') ?></option>
@@ -142,7 +145,8 @@ $emailnewSelected = function ($value) use ($view) {
                             <?php endforeach; ?>
 
                             <?php foreach ($this->hooks as $hook) : ?>
-                                <?php if ($hook->get('event') != 'postmap' || in_array($hook->get('id'), $hooks->postmap)) {
+                                <?php
+                                if ($hook->get('event') != 'postmap' || in_array($hook->get('id'), $hooks->postmap)) {
                                     continue;
                                 } ?>
                                 <option value="<?= $hook->get('id') ?>"><?= $hook->get('name') ?></option>
@@ -169,7 +173,11 @@ $emailnewSelected = function ($value) use ($view) {
                                     value="<?= $importHook->get('id') ?>"><?= $importHook->get('name') ?></option>
                             <?php endforeach; ?>
                             <?php foreach ($this->hooks as $hook) : ?>
-                                <?php if ($hook->get('event') != 'postconvert' || in_array($hook->get('id'), $hooks->postconvert)) {
+                                <?php
+                                if (
+                                    $hook->get('event') != 'postconvert'
+                                    || in_array($hook->get('id'), $hooks->postconvert)
+                                ) {
                                     continue;
                                 } ?>
                                 <option value="<?= $hook->get('id') ?>"><?= $hook->get('name') ?></option>
