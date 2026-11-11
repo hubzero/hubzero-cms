@@ -565,7 +565,7 @@ class Offering extends Base
     /**
      * Get offering gradebook
      *
-     * @return     obj
+     * @return     object
      */
     public function gradebook($oid = null)
     {

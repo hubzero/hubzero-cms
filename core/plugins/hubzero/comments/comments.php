@@ -53,9 +53,9 @@ class Comments extends Plugin
      * Display comments on an object
      *
      * @param   object   $obj
-     * @param   unknown  $option
+     * @param   mixed  $option
      * @param   string   $url
-     * @param   unknown  $params
+     * @param   mixed  $params
      * @return  string   HTML
      */
     public function onAfterDisplayContent($obj, $option, $url = null, $params = null)

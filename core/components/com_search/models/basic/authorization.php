@@ -47,7 +47,7 @@ class Authorization
     /**
      * Is the user logged out?
      *
-     * @return  bolean
+     * @return  boolean
      */
     public function isGuest()
     {

@@ -67,7 +67,7 @@ class Collection extends ItemList
     /**
      * Sorts items using the provided callback function
      *
-     * @param   closure  $callback  The sorting function to use
+     * @param   \Closure  $callback  The sorting function to use
      * @return  static
      **/
     public function sortByCallback($callback)

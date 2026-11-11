@@ -26,7 +26,7 @@ class AssocScalar extends SearchResult
     /**
      * Description for 'row'
      *
-     * @var unknown
+     * @var mixed
      */
     private $row;
 
@@ -48,7 +48,7 @@ class AssocScalar extends SearchResult
      * Long description (if any) ...
      *
      * @param   array    $keys Parameter description (if any) ...
-     * @param   unknown  $row  Parameter description (if any) ...
+     * @param   mixed  $row  Parameter description (if any) ...
      * @return  void
      * @throws  Exception
      */
@@ -132,7 +132,7 @@ class AssocScalar extends SearchResult
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     mixed Return description (if any) ...
      */
     public function getResult()
     {
@@ -144,7 +144,7 @@ class AssocScalar extends SearchResult
      *
      * Long description (if any) ...
      *
-     * @return     unknown Return description (if any) ...
+     * @return     mixed Return description (if any) ...
      */
     public function toAssociative()
     {

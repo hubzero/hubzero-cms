@@ -32,7 +32,7 @@ class Permissions
      *
      * @param   string   $extension   The extension.
      * @param   integer  $categoryId  The category ID.
-     * @return  JObject
+     * @return  object
      */
     public static function getActions($assetType = 'component', $assetId = 0)
     {

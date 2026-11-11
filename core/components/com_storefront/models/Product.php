@@ -578,7 +578,7 @@ class Product
      * Get primary image
      *
      * @param   void
-     * @return  obj     image info
+     * @return  object     image info
      */
     public function getImage()
     {

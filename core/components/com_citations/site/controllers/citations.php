@@ -1052,7 +1052,7 @@ class Citations extends SiteController
     /**
      * Read a file in chunks
      *
-     * @param   unknown  $filename  File name
+     * @param   mixed  $filename  File name
      * @param   boolean  $retbytes
      * @return  mixed
      */

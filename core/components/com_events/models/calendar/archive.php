@@ -94,7 +94,7 @@ class Archive extends Model
      *
      * @param   string   $name
      * @param   string   $scope
-     * @param   unknown  $scope_id
+     * @param   mixed  $scope_id
      * @return  void
      */
     public function subscribe($name = 'Calendar Subscription', $scope = 'event', $scope_id = null)

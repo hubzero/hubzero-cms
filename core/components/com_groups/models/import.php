@@ -175,7 +175,7 @@ class Import extends Base
     /**
      * Get the generated record from the raw data
      *
-     * @param   mixes   $raw      Raw data
+     * @param   mixed   $raw      Raw data
      * @param   array   $options  Import options
      * @param   string  $mode     Operation mode (update|patch)
      * @return  object

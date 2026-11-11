@@ -53,7 +53,7 @@ class Solr extends SiteController
     /**
      * Display search form and results (if any)
      *
-     * @param   unknown  $response
+     * @param   mixed  $response
      * @return  void
      */
     public function displayTask($response = null)

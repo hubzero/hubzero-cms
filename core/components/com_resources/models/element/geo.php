@@ -141,7 +141,7 @@ class Geo extends Base
      * Create html tag for element.
      *
      * @param   string  $tag     Tag Name
-     * @param   sting   $value   Tag Value
+     * @param   string   $value   Tag Value
      * @param   string  $prefix  Tag prefix
      * @return  string  HTML
      */

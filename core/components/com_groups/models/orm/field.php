@@ -254,7 +254,7 @@ class Field extends Relational
     /**
      * Get fields for group, including answers provided.
      *
-     * @param   intenger  $group_id
+     * @param   integer  $group_id
      * @return  object    Hubzero\Database\Rows
      */
     public static function getAllGroupFields($group_id)

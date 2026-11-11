@@ -54,7 +54,7 @@ class Citations extends Base
      * @param   object   $pub
      * @param   object   $manifest
      * @param   string   $viewname
-     * @param   itneger  $blockId
+     * @param   integer  $blockId
      * @return  string   HTML
      */
     public function display($pub = null, $manifest = null, $viewname = 'edit', $blockId = 0)

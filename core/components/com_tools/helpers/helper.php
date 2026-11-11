@@ -107,7 +107,7 @@ class Helper
      *
      * @param   array  $uids
      * @param   array  $logins
-     * @return  arra
+     * @return  array
      */
     public static function getLogins($uids, $logins = [])
     {

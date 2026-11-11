@@ -281,7 +281,7 @@ class Extension extends Relational
      * Method to get Languages item data
      *
      * @param   string  $file
-     * @return  mixee   boolean or array
+     * @return  mixed   boolean or array
      */
     public static function metaFile($file)
     {

@@ -175,7 +175,7 @@ class GradeBook extends Table
     /**
      * Query to sync form scores with gradebook
      *
-     * @param      obj   $course
+     * @param      object   $course
      * @param      array $member_id
      * @return     void
      */

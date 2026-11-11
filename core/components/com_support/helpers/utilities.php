@@ -285,7 +285,7 @@ class Utilities
      * Add attachments
      *
      * @param   integer  $ticketid
-     * @param   itneger  $commentid
+     * @param   integer  $commentid
      * @return  void
      */
     public static function addAttachments($ticketid, $commentid = 0)

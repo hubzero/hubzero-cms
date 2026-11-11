@@ -48,7 +48,7 @@ class ManyToMany extends OneToManyThrough
      * Associates the model provided back to the model by way of their proper keys
      *
      * @param   object   $model     The model to associate
-     * @param   closure  $callback  A callback to potentially append additional data
+     * @param   \Closure  $callback  A callback to potentially append additional data
      * @return  object
      **/
     public function associate($model, $callback = null)
@@ -148,7 +148,7 @@ class ManyToMany extends OneToManyThrough
      * (not deleting either of the actual sides of the models themselves)
      *
      * @param   array    $ids         The identifiers to remove from the associative table
-     * @param   closure  $constraint  Additional constraints to place on the query
+     * @param   \Closure  $constraint  Additional constraints to place on the query
      * @return  $this
      **/
     public function disconnect($ids, $constraint = null)

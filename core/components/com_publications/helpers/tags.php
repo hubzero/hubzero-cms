@@ -22,7 +22,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * Database
      *
-     * @var unknown
+     * @var mixed
      */
     public $db  = null;
 
@@ -36,7 +36,7 @@ class Tags extends \Hubzero\Base\Obj
     /**
      * The object to be tagged
      *
-     * @var unknown
+     * @var mixed
      */
     public $oid = null;
 

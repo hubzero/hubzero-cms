@@ -33,7 +33,7 @@ class OneToMany extends Relationship
      * to loop over the items.
      *
      * @param   object|array   $models    A single model or array of models to associate
-     * @param   closure        $callback  A callback to potentially append additional data
+     * @param   \Closure        $callback  A callback to potentially append additional data
      * @return  object|array
      **/
     public function associate($models, $callback = null)
@@ -115,7 +115,7 @@ class OneToMany extends Relationship
     /**
      * Get keys based on given constraint
      *
-     * @param   closure  $constraint  The constraint function to apply
+     * @param   \Closure  $constraint  The constraint function to apply
      * @return  array
      **/
     public function getConstrainedKeys($constraint)

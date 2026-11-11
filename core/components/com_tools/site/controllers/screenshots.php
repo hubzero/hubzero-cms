@@ -826,7 +826,7 @@ class Screenshots extends SiteController
     /**
      * Check if the current user has access to this tool
      *
-     * @param      unknown $toolid       Tool ID
+     * @param      mixed $toolid       Tool ID
      * @param      integer $allowAdmins  Allow admins access?
      * @param      boolean $allowAuthors Allow authors access?
      * @return     boolean True if they have access

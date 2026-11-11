@@ -37,14 +37,14 @@ class Token
     /**
      * Description for '_iv'
      *
-     * @var  unknown
+     * @var  mixed
      */
     private $iv;
 
     /**
      * Description for '_key'
      *
-     * @var  unknown
+     * @var  mixed
      */
     private $key;
 

@@ -149,8 +149,8 @@ class Diff
      *
      * This is here only for debugging purposes.
      *
-     * @param   unknown $from_lines
-     * @param   unknown $to_lines
+     * @param   mixed $from_lines
+     * @param   mixed $to_lines
      * @return  void
      */
     public function check($from_lines, $to_lines)

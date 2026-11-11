@@ -62,7 +62,7 @@ class Category extends Table
     /**
      * Get a category
      *
-     * @param   itneger  $id       Category ID
+     * @param   integer  $id       Category ID
      * @param   string   $default  Default value if no record found
      * @return  mixed    False if errors, String upon success
      */

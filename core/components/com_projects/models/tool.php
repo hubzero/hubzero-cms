@@ -550,7 +550,7 @@ class Tool extends Model
     /**
      * Is sandbox open?
      *
-     * @return  bboolean
+     * @return  boolean
      */
     public function isOpenDev()
     {

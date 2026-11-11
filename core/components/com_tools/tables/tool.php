@@ -360,7 +360,7 @@ class Tool extends Table
     /**
      * Get tool info
      *
-     * @param   itneger  $toolid
+     * @param   integer  $toolid
      * @param   string   $toolname
      * @return  array
      */

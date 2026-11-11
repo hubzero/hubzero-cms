@@ -16,7 +16,7 @@ class RegexlikeReplacer extends Replacer
     /**
      * Description for 'r'
      *
-     * @var unknown
+     * @var mixed
      */
     public $r;
 
@@ -25,7 +25,7 @@ class RegexlikeReplacer extends Replacer
      *
      * Long description (if any) ...
      *
-     * @param      unknown $r Parameter description (if any) ...
+     * @param      mixed $r Parameter description (if any) ...
      * @return     void
      */
     public function __construct($r)

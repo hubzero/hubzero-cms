@@ -32,7 +32,7 @@ class Usage
     /**
      * Resource type
      *
-     * @var unknown
+     * @var mixed
      */
     public $type = null;
 

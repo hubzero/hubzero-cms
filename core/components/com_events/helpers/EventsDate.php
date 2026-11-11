@@ -30,7 +30,7 @@ class EventsDate
     /**
      * Day
      *
-     * @var unknown
+     * @var mixed
      */
     public $day    = null;
 

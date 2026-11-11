@@ -58,7 +58,7 @@ class Password
     /**
      * Description for 'shadowLastChange'
      *
-     * @var unknown
+     * @var mixed
      */
     private $shadowLastChange = null;
 
@@ -72,35 +72,35 @@ class Password
     /**
      * Description for 'shadowMax'
      *
-     * @var unknown
+     * @var mixed
      */
     private $shadowMax = null;
 
     /**
      * Description for 'shadowWarning'
      *
-     * @var unknown
+     * @var mixed
      */
     private $shadowWarning = null;
 
     /**
      * Description for 'shadowInactive'
      *
-     * @var unknown
+     * @var mixed
      */
     private $shadowInactive = null;
 
     /**
      * Description for 'shadowExpire'
      *
-     * @var unknown
+     * @var mixed
      */
     private $shadowExpire = null;
 
     /**
      * Description for 'shadowFlag'
      *
-     * @var unknown
+     * @var mixed
      */
     private $shadowFlag = null;
 
@@ -143,8 +143,8 @@ class Password
     /**
      * Short description for 'getInstance' Long description (if any) . ..
      *
-     * @param   unknown $instance Parameter description (if any) ...
-     * @param   unknown $storage Parameter description (if any) ...
+     * @param   mixed $instance Parameter description (if any) ...
+     * @param   mixed $storage Parameter description (if any) ...
      * @return  mixed Return description (if any) ...
      */
     public static function getInstance($instance, $storage = null)

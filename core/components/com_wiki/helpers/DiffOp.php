@@ -16,21 +16,21 @@ class DiffOp
     /**
      * Description for 'type'
      *
-     * @var unknown
+     * @var mixed
      */
     public $type;
 
     /**
      * Description for 'orig'
      *
-     * @var unknown
+     * @var mixed
      */
     public $orig;
 
     /**
      * Description for 'closing'
      *
-     * @var unknown
+     * @var mixed
      */
     public $closing;
 

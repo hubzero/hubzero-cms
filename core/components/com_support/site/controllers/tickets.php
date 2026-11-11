@@ -2158,7 +2158,7 @@ class Tickets extends SiteController
      * Uploads a file to a given directory and returns an attachment string
      * that is appended to report/comment bodies
      *
-     * @param   itneger  $listdir     Directory to upload files to
+     * @param   integer  $listdir     Directory to upload files to
      * @param   integer  $comment_id
      * @return  string   A string that gets appended to messages
      */
@@ -2421,7 +2421,7 @@ class Tickets extends SiteController
      * Generates a select list of Super Administrator names
      *
      * @param   string   $name        Select element 'name' attribute
-     * @param   itneger  $active      Selected option
+     * @param   integer  $active      Selected option
      * @param   integer  $nouser      Flag to set first option to 'No user'
      * @param   string   $javascript  Any inline JS to attach to the element
      * @param   string   $order       The sort order for items in the list

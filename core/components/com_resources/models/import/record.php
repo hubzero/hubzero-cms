@@ -41,7 +41,7 @@ class Record extends Obj
     /**
      * Resource Import Record Constructor
      *
-     * @param   mixes  $raw      Raw Resource data
+     * @param   mixed  $raw      Raw Resource data
      * @param   array  $options  Import options
      * @return  void
      */

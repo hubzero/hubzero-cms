@@ -23,7 +23,7 @@ class Element
     protected $current;
 
     /**
-     * @var  DomDocument
+     * @var  \DOMDocument
      */
     protected $dom;
 

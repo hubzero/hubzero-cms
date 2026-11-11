@@ -20,14 +20,14 @@ class ImgHandler extends Obj
     /**
      * Description for 'path'
      *
-     * @var unknown
+     * @var mixed
      */
     public $path = null;
 
     /**
      * Description for 'image'
      *
-     * @var unknown
+     * @var mixed
      */
     public $image = null;
 
@@ -48,7 +48,7 @@ class ImgHandler extends Obj
     /**
      * Description for 'cropratio'
      *
-     * @var unknown
+     * @var mixed
      */
     public $cropratio = null;
 
@@ -76,7 +76,7 @@ class ImgHandler extends Obj
     /**
      * Description for 'outputName'
      *
-     * @var unknown
+     * @var mixed
      */
     public $outputName = null;
 

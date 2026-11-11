@@ -198,7 +198,7 @@ class Relationship
     /**
      * Gets keys based on a given constraint
      *
-     * @param   closure  $constraint  The constraint function to apply
+     * @param   \Closure  $constraint  The constraint function to apply
      * @return  array
      **/
     public function getConstrainedKeys($constraint)
@@ -211,7 +211,7 @@ class Relationship
     /**
      * Gets rows based on given constraint
      *
-     * @param   closure  $constraint  The constraint function to apply
+     * @param   \Closure  $constraint  The constraint function to apply
      * @return  \Hubzero\Database\Rows
      **/
     public function getConstrainedRows($constraint)
@@ -240,7 +240,7 @@ class Relationship
     /**
      * Gets the constrained items
      *
-     * @param   closure  $constraint  The constraint function to apply
+     * @param   \Closure  $constraint  The constraint function to apply
      * @return  \Hubzero\Database\Rows
      **/
     protected function getConstrained($constraint)
@@ -292,7 +292,7 @@ class Relationship
      * model at at time.
      *
      * @param   object   $model     The model to associate
-     * @param   closure  $callback  A callback to potentially append additional data
+     * @param   \Closure  $callback  A callback to potentially append additional data
      * @return  object
      **/
     public function associate($model, $callback = null)
@@ -341,7 +341,7 @@ class Relationship
      *
      * @param   array    $rows        The rows that we'll be seeding
      * @param   string   $name        The relationship name that we'll use to attach to the rows
-     * @param   closure  $constraint  The constraint function to limit related items
+     * @param   \Closure  $constraint  The constraint function to limit related items
      * @param   string   $subs        The nested relationships that should be passed on to the child
      * @return  object
      **/
@@ -369,7 +369,7 @@ class Relationship
      * to any constraint closure provided during eager loading.
      *
      * @param   array    $keys        The keys for which to fetch related items
-     * @param   closure  $constraint  The constraint function to limit related items
+     * @param   \Closure  $constraint  The constraint function to limit related items
      * @return  array
      **/
     protected function getRelations($keys, $constraint = null)

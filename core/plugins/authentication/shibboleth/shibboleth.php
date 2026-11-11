@@ -150,7 +150,7 @@ class Shibboleth extends Plugin
     /**
      * Summary (if any) ...
      *
-     * @return unknown
+     * @return mixed
      */
     private static function getInstitutions()
     {
@@ -166,9 +166,9 @@ class Shibboleth extends Plugin
     /**
      * Summary
      *
-     * @param   unknown  $eid ID compared to entity_id
-     * @param   unknown  $key
-     * @return  unknown
+     * @param   mixed  $eid ID compared to entity_id
+     * @param   mixed  $key
+     * @return  mixed
      */
     public static function getInstitutionByEntityId($eid, $key = null)
     {
@@ -376,7 +376,7 @@ class Shibboleth extends Plugin
     /**
      * Actions to perform when logging in a user session
      *
-     * @param   unknown &$credentials Parameter description (if any) ...
+     * @param   mixed &$credentials Parameter description (if any) ...
      * @param   array &$options Parameter description (if any) ...
      * @return  void
      */

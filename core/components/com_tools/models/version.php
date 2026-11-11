@@ -19,14 +19,14 @@ class Version
     /**
      * Description for 'id'
      *
-     * @var unknown
+     * @var mixed
      */
     private $id = null;              //                     #__tool_version
 
     /**
      * Description for 'toolname'
      *
-     * @var unknown
+     * @var mixed
      */
     private $toolname = null;          //                       #__tool_version
 
@@ -40,56 +40,56 @@ class Version
     /**
      * Description for 'title'
      *
-     * @var unknown
+     * @var mixed
      */
     private $title = null;            // cn                 #__tool_version
 
     /**
      * Description for 'description'
      *
-     * @var unknown
+     * @var mixed
      */
     private $description = null;        // description          #__tool_version
 
     /**
      * Description for 'fulltxt'
      *
-     * @var unknown
+     * @var mixed
      */
     private $fulltxt = null;           //                       #__tool_version
 
     /**
      * Description for 'version'
      *
-     * @var unknown
+     * @var mixed
      */
     private $version = null;            // version              #__tool_version
 
     /**
      * Description for 'revision'
      *
-     * @var unknown
+     * @var mixed
      */
     private $revision = null;          // revision              #__tool_version
 
     /**
      * Description for 'toolaccess'
      *
-     * @var unknown
+     * @var mixed
      */
     private $toolaccess = null;      // public              #__tool_version
 
     /**
      * Description for 'codeaccess'
      *
-     * @var unknown
+     * @var mixed
      */
     private $codeaccess = null;      // sourcePublic            #__tool_version
 
     /**
      * Description for 'wikiaccess'
      *
-     * @var unknown
+     * @var mixed
      */
     private $wikiaccess = null;      // projectPublic       #__tool_version
 
@@ -103,56 +103,56 @@ class Version
     /**
      * Description for 'released_by'
      *
-     * @var unknown
+     * @var mixed
      */
     private $released_by = null;        //                      #__tool_version
 
     /**
      * Description for 'released'
      *
-     * @var unknown
+     * @var mixed
      */
     private $released = null;          // publishDate           #__tool_version
 
     /**
      * Description for 'unpublished'
      *
-     * @var unknown
+     * @var mixed
      */
     private $unpublished = null;        // unpublishDate        #__tool_version
 
     /**
      * Description for 'exportControl'
      *
-     * @var unknown
+     * @var mixed
      */
     private $exportControl = null;    // exportControl      #__tool_version
 
     /**
      * Description for 'license'
      *
-     * @var unknown
+     * @var mixed
      */
     private $license = null;            // usageAgreementText   #__tool_version
 
     /**
      * Description for 'vnc_geometry'
      *
-     * @var unknown
+     * @var mixed
      */
     private $vnc_geometry = null;      // vncGeometry           #__tool_version
 
     /**
      * Description for 'vnc_depth'
      *
-     * @var unknown
+     * @var mixed
      */
     private $vnc_depth = null;        // vncDepth               #__tool_version
 
     /**
      * Description for 'vnc_timeout'
      *
-     * @var unknown
+     * @var mixed
      */
     private $vnc_timeout = null;        // vncTimeout           #__tool_version
 
@@ -166,35 +166,35 @@ class Version
     /**
      * Description for 'vnc_command'
      *
-     * @var unknown
+     * @var mixed
      */
     private $vnc_command = null;        // vncCommand           #__tool_version
 
     /**
      * Description for 'mw'
      *
-     * @var unknown
+     * @var mixed
      */
     private $mw = null;              // defaultMiddleware   #__tool_version
 
     /**
      * Description for 'priority'
      *
-     * @var unknown
+     * @var mixed
      */
     private $priority = null;          // priority              #__tool_version
 
     /**
      * Description for 'toolid'
      *
-     * @var unknown
+     * @var mixed
      */
     private $toolid = null;          //                     #__tool_version
 
     /**
      * Description for 'toolid'
      *
-     * @var unknown
+     * @var mixed
      */
     private $params = null;          //                     #__tool_version
 
@@ -335,7 +335,7 @@ class Version
      *
      * Long description (if any) ...
      *
-     * @param     unknown $msg Parameter description (if any) ...
+     * @param     mixed $msg Parameter description (if any) ...
      * @return   void
      */
     private function logDebug($msg)
@@ -348,8 +348,8 @@ class Version
      *
      * Long description (if any) ...
      *
-     * @param     unknown $tool Parameter description (if any) ...
-     * @return   unknown Return description (if any) ...
+     * @param     mixed $tool Parameter description (if any) ...
+     * @return   mixed Return description (if any) ...
      */
     public function getToolVersionNames($tool = null)
     {
@@ -402,7 +402,7 @@ class Version
      *
      * Long description (if any) ...
      *
-     * @param     unknown $instance Parameter description (if any) ...
+     * @param     mixed $instance Parameter description (if any) ...
      * @return   mixed Return description (if any) ...
      */
     public static function getInstance($instance)
@@ -585,7 +585,7 @@ class Version
      *
      * Long description (if any) ...
      *
-     * @param     unknown $instance Parameter description (if any) ...
+     * @param     mixed $instance Parameter description (if any) ...
      * @return   boolean Return description (if any) ...
      */
     public function read($instance = null)
@@ -800,7 +800,7 @@ class Version
      *
      * Long description (if any) ...
      *
-     * @return   unknown Return description (if any) ...
+     * @return   mixed Return description (if any) ...
      */
     public function sync()
     {
@@ -1102,8 +1102,8 @@ class Version
      *
      * Long description (if any) ...
      *
-     * @param     unknown $key Parameter description (if any) ...
-     * @return   unknown Return description (if any) ...
+     * @param     mixed $key Parameter description (if any) ...
+     * @return   mixed Return description (if any) ...
      */
     public function get($key)
     {
@@ -1115,9 +1115,9 @@ class Version
      *
      * Long description (if any) ...
      *
-     * @param     unknown $key Parameter description (if any) ...
-     * @param     unknown $value Parameter description (if any) ...
-     * @return   unknown Return description (if any) ...
+     * @param     mixed $key Parameter description (if any) ...
+     * @param     mixed $value Parameter description (if any) ...
+     * @return   mixed Return description (if any) ...
      */
     public function set($key, $value)
     {
@@ -1129,7 +1129,7 @@ class Version
      *
      * Long description (if any) ...
      *
-     * @param     unknown $key Parameter description (if any) ...
+     * @param     mixed $key Parameter description (if any) ...
      * @param     array $value Parameter description (if any) ...
      * @return   void
      */
@@ -1143,7 +1143,7 @@ class Version
      *
      * Long description (if any) ...
      *
-     * @param     unknown $key Parameter description (if any) ...
+     * @param     mixed $key Parameter description (if any) ...
      * @param     array $value Parameter description (if any) ...
      * @return   void
      */
@@ -1158,7 +1158,7 @@ class Version
      * Long description (if any) ...
      *
      * @param     boolean $byid Parameter description (if any) ...
-     * @return   unknown Return description (if any) ...
+     * @return   mixed Return description (if any) ...
      */
     public function getDevelopmentGroup($byid = false)
     {

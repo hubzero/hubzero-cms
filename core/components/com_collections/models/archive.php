@@ -88,7 +88,7 @@ class Archive extends Obj
      * Constructor
      *
      * @param   string   $object_type  The object type
-     * @param   itneger  $object_id    The object ID
+     * @param   integer  $object_id    The object ID
      * @return  void
      */
     public function __construct($object_type = '', $object_id = 0)
@@ -103,7 +103,7 @@ class Archive extends Obj
      * Returns a reference to this model
      *
      * @param   string   $object_type  The object type
-     * @param   itneger  $object_id    The object ID
+     * @param   integer  $object_id    The object ID
      * @return  object
      */
     public static function &getInstance($object_type = '', $object_id = 0)

@@ -703,7 +703,7 @@ class Section extends Base
     /**
      * Get section badge
      *
-     * @return     obj
+     * @return     object
   */
     public function badge()
     {

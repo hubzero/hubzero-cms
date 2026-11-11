@@ -33,7 +33,7 @@ class Usage
     /**
      * Publication master type
      *
-     * @var unknown
+     * @var mixed
      */
     public $type = null;
 

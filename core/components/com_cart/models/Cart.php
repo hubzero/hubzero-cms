@@ -840,7 +840,7 @@ abstract class Cart
      * Set transaction items (the initial transaction at #__cart_transaction_info)
      *
      * @param   int  $tId    Transaction ID
-     * @param   obj  $items  Items
+     * @param   object  $items  Items
      * @return  bool
      */
     private static function setTransactionItems($tId, $items)
@@ -868,7 +868,7 @@ abstract class Cart
      * rest of the info.
      *
      * @param   int    $tId  transaction ID
-     * @param   obect  $tiInfo  transaction items info
+     * @param   object  $tiInfo  transaction items info
      * @param   bool   $returnChanges flag whether the changes should be recorded and returned
      * @return  mixed  bool if $returnChanges is set to false, array if $returnChanges is set to true
      */

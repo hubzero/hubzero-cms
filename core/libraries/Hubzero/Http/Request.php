@@ -172,7 +172,7 @@ class Request extends BaseRequest
      * @param   string   $key      Request key
      * @param   mixed    $default  Default value
      * @param   string   $hash     Where the var should come from (POST, GET, FILES, COOKIE, METHOD)
-     * @return  itneger  Request variable
+     * @return  integer  Request variable
      */
     public function getInt($key, $default = 0, $hash = 'input')
     {

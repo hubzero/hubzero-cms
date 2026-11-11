@@ -238,7 +238,7 @@ class Initialcon
     /**
      * Get the color
      *
-     * @return  arrray
+     * @return  array
      */
     public function getColor()
     {

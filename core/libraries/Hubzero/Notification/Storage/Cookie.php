@@ -107,7 +107,7 @@ class Cookie implements MessageStore
     /**
      * Get the expiration time a # of minutes from now
      *
-     * @param   itneger  $minutes
+     * @param   integer  $minutes
      * @return  integer
      */
     private function expires($minutes)

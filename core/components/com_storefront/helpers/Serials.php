@@ -74,7 +74,7 @@ class Serials
      *
      * @param   integer  $sID    SKU ID
      * @param   integer  Number of serials to get
-     * @return  obj
+     * @return  object
      */
     public static function issueSerials($sId, $qty = 1)
     {

@@ -24,7 +24,7 @@ class Tool
     /**
      * Description for 'id'
      *
-     * @var unknown
+     * @var mixed
      */
     private $id = null;
 
@@ -38,7 +38,7 @@ class Tool
     /**
      * Description for 'title'
      *
-     * @var unknown
+     * @var mixed
      */
     private $title = null;
 
@@ -52,49 +52,49 @@ class Tool
     /**
      * Description for 'registered'
      *
-     * @var unknown
+     * @var mixed
      */
     private $registered = null;
 
     /**
      * Description for 'registered_by'
      *
-     * @var unknown
+     * @var mixed
      */
     private $registered_by = null;
 
     /**
      * Description for 'state_changed'
      *
-     * @var unknown
+     * @var mixed
      */
     private $state_changed = null;
 
     /**
      * Description for 'ticketid'
      *
-     * @var unknown
+     * @var mixed
      */
     private $ticketid = null;
 
     /**
      * Description for 'published'
      *
-     * @var unknown
+     * @var mixed
      */
     private $published = null;
 
     /**
      * Description for 'state'
      *
-     * @var unknown
+     * @var mixed
      */
     private $state = null;
 
     /**
      * Description for 'priority'
      *
-     * @var unknown
+     * @var mixed
      */
     private $priority = null;
 
@@ -553,7 +553,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @return   unknown Return description (if any) ...
+     * @return   mixed Return description (if any) ...
      */
     public function sync()
     {
@@ -712,7 +712,7 @@ class Tool
      * Long description (if any) ...
      *
      * @param     string $property Parameter description (if any) ...
-     * @param     unknown $value Parameter description (if any) ...
+     * @param     mixed $value Parameter description (if any) ...
      */
     public function __set($property = null, $value = null)
     {
@@ -817,8 +817,8 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     unknown $key Parameter description (if any) ...
-     * @return   unknown Return description (if any) ...
+     * @param     mixed $key Parameter description (if any) ...
+     * @return   mixed Return description (if any) ...
      */
     public function get($key)
     {
@@ -830,9 +830,9 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     unknown $key Parameter description (if any) ...
-     * @param     unknown $value Parameter description (if any) ...
-     * @return   unknown Return description (if any) ...
+     * @param     mixed $key Parameter description (if any) ...
+     * @param     mixed $value Parameter description (if any) ...
+     * @return   mixed Return description (if any) ...
      */
     public function set($key, $value)
     {
@@ -844,7 +844,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     unknown $key Parameter description (if any) ...
+     * @param     mixed $key Parameter description (if any) ...
      * @param     array $value Parameter description (if any) ...
      * @return   void
      */
@@ -858,7 +858,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @param     unknown $key Parameter description (if any) ...
+     * @param     mixed $key Parameter description (if any) ...
      * @param     array $value Parameter description (if any) ...
      * @return   void
      */
@@ -872,7 +872,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @return   unknown Return description (if any) ...
+     * @return   mixed Return description (if any) ...
      */
     public function getCurrentVersion()
     {
@@ -884,7 +884,7 @@ class Tool
      *
      * Long description (if any) ...
      *
-     * @return   unknown Return description (if any) ...
+     * @return   mixed Return description (if any) ...
      */
     public function getDevelopmentVersion()
     {

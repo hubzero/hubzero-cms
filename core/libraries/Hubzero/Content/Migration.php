@@ -1545,7 +1545,7 @@ class Migration
      * Register a callback
      *
      * @param   string   $name      The callback name
-     * @param   closure  $callback  The function to run
+     * @param   \Closure  $callback  The function to run
      * @return  void
      **/
     public function registerCallback($name, $callback)

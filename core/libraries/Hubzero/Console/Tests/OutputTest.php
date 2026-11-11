@@ -20,7 +20,7 @@ class OutputTest extends Basic
     /**
      * Gets the buffered output for comparison
      *
-     * @param   closure  $function  The action to perform
+     * @param   \Closure  $function  The action to perform
      * @return  string
      **/
     private function getBuffered($function)

@@ -275,7 +275,7 @@ class Blocks extends Obj
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
-     * @return  booelan
+     * @return  boolean
      */
     public function saveBlock($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
     {
@@ -311,7 +311,7 @@ class Blocks extends Obj
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
-     * @return  booelan
+     * @return  boolean
      */
     public function reorder($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
     {
@@ -347,7 +347,7 @@ class Blocks extends Obj
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
-     * @return  booelan
+     * @return  boolean
      */
     public function saveItem($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
     {
@@ -383,7 +383,7 @@ class Blocks extends Obj
      * @param   object   $pub
      * @param   integer  $actor
      * @param   integer  $elementId
-     * @return  booelan
+     * @return  boolean
      */
     public function deleteItem($name, $manifest, $blockId, $pub, $actor = 0, $elementId = 0)
     {

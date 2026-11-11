@@ -78,7 +78,7 @@ class OneToManyThrough extends OneToMany
     /**
      * Get keys based on a given constraint
      *
-     * @param   closure  $constraint  The constraint function to apply
+     * @param   \Closure  $constraint  The constraint function to apply
      * @return  array
      **/
     public function getConstrainedKeys($constraint)
@@ -158,7 +158,7 @@ class OneToManyThrough extends OneToMany
      * Gets the relations that will be seeded on to the provided rows
      *
      * @param   array    $keys        The keys for which to fetch related items
-     * @param   closure  $constraint  The constraint function to limit related items
+     * @param   \Closure  $constraint  The constraint function to limit related items
      * @return  array
      **/
     protected function getRelations($keys, $constraint = null)

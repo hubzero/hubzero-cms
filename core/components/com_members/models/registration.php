@@ -40,7 +40,7 @@ class Registration
     public $registration;
 
     /**
-     * @var  unknown
+     * @var  mixed
      */
     public $encoded;
 

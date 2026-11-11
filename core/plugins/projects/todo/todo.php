@@ -64,7 +64,7 @@ class Todo extends Plugin
     /**
      * Event call to determine if this plugin should return data
      *
-     * @param   unknown  $alias
+     * @param   mixed  $alias
      * @return  array    Plugin name and title
      */
     public function &onProjectAreas($alias = null)

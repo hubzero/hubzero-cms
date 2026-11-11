@@ -232,7 +232,7 @@ class Identicon
     /**
      * Get the color
      *
-     * @return  arrray
+     * @return  array
      */
     public function getColor()
     {

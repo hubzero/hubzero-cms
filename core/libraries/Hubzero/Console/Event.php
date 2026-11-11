@@ -26,7 +26,7 @@ class Event
      * Registers an event callback
      *
      * @param   string   $name      The name of the hook to register the closure under
-     * @param   closure  $callback  The callback to fire when that hook is poked
+     * @param   \Closure  $callback  The callback to fire when that hook is poked
      * @return  void
      **/
     public static function register($name, \Closure $callback)

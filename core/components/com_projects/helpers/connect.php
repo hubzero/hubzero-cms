@@ -2167,7 +2167,7 @@ class Connect extends Obj
      *
      * @param   string   $service  Service name (google or dropbox)
      * @param   integer  $uid
-     * @param   itneger  $remoteid
+     * @param   integer  $remoteid
      * @return  mixed    JSON string or false
      */
     public function disconnectMember($service, $uid = 0, $remoteid = 0)

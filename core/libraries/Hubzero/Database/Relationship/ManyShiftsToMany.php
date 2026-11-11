@@ -105,7 +105,7 @@ class ManyShiftsToMany extends ManyToMany
      * (not deleting either of the actual sides of the models themselves)
      *
      * @param   array    $ids         The identifiers to remove from the associative table
-     * @param   closure  $constraint  Additional constraints to place on the query
+     * @param   \Closure  $constraint  Additional constraints to place on the query
      * @return  $this
      **/
     public function disconnect($ids, $constraint = null)
