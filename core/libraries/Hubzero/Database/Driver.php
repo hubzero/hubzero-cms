@@ -3406,8 +3406,8 @@ abstract class Driver implements LoggerAwareInterface
     /**
      * Escapes a string for usage in an SQL statement
      *
-     * @param   string   $text   The string to be escaped
-     * @param   boolean  $extra  Optional parameter to provide extra escaping
+     * @param   string|null  $text   The string to be escaped (null is escaped as an empty string)
+     * @param   boolean      $extra  Optional parameter to provide extra escaping
      * @return  string
      */
     public function escape($text, $extra = false)
