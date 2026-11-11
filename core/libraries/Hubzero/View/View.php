@@ -350,7 +350,7 @@ class View extends Obj
     /**
      * Get the site template.
      *
-     * @return  string
+     * @return  string|null  Null if no override path is set
      */
     public function getOverridePath()
     {
@@ -499,11 +499,7 @@ class View extends Obj
         $tpl  = preg_replace('/[^A-Z0-9_\.-]/i', '', (string) $tpl);
 
         // Change the template folder if alternative layout is in different template
-        if (
-            isset($layoutTemplate)
-            && $layoutTemplate != '_'
-            && $layoutTemplate != $template
-        ) {
+        if ($layoutTemplate != '_' && $layoutTemplate != $template) {
             $this->searchPaths['template'] = str_replace(
                 $template ?? '',
                 $layoutTemplate,

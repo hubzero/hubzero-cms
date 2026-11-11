@@ -6740,7 +6740,7 @@ class Relational implements \IteratorAggregate, \ArrayAccess
      * Gets the defined relationship
      *
      * @param   string  $name  The relationship to return
-     * @return  \Hubzero\Database\Rows|\Hubzero\Database\Relational|static
+     * @return  \Hubzero\Database\Rows|\Hubzero\Database\Relational|static|null  Null if it is not loaded
      **/
     public function getRelationship($name)
     {

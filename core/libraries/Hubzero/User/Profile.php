@@ -1288,9 +1288,9 @@ class Profile extends Obj
     /**
      * Remove from a list of values for multi-value properties
      *
-     * @param   string   $property  Property name
-     * @param   array    $value     Property values
-     * @return  boolean  True on success, False on error
+     * @param   string             $property  Property name
+     * @param   array|string|null  $value     Property values, a single value, or null to remove none
+     * @return  boolean            True on success, False on error
      */
     public function remove($property, $value)
     {

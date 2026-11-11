@@ -557,10 +557,10 @@ class Local implements AdapterInterface
     /**
      * Chmods files and directories recursively to given permissions.
      *
-     * @param   string   $path        Root path to begin changing mode [without trailing slash].
-     * @param   string   $filemode    Octal representation of the value to change file mode to [null = no change].
-     * @param   string   $foldermode  Octal representation of the value to change folder mode to [null = no change].
-     * @return  boolean  True if successful [one fail means the whole operation failed].
+     * @param   string       $path        Root path to begin changing mode [without trailing slash].
+     * @param   string|null  $filemode    Octal representation of the value to change file mode to [null = no change].
+     * @param   string|null  $foldermode  Octal representation of the value to change folder mode to [null = no change].
+     * @return  boolean      True if successful [one fail means the whole operation failed].
      */
     public function setPermissions($path, $filemode = '0644', $foldermode = '0755')
     {

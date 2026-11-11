@@ -116,7 +116,7 @@ class Git
     /**
      * Get the status of the repository
      *
-     * @return  string
+     * @return  array|string  Changed paths grouped by kind, or an empty string if git reported nothing
      **/
     public function status()
     {
@@ -182,13 +182,13 @@ class Git
     /**
      * Get the log
      *
-     * @param   int     $length     Number of entires to return
-     * @param   int     $start      Commit number to start at
-     * @param   bool    $upcoming   Whether or not to include upcoming commits in response
-     * @param   bool    $installed  Whether or not to include installed commits in response
-     * @param   string  $search     Filter by search string
-     * @param   string  $format     Format of response
-     * @param   bool    $count      Return count of entires
+     * @param   int          $length     Number of entires to return
+     * @param   int          $start      Commit number to start at
+     * @param   bool         $upcoming   Whether or not to include upcoming commits in response
+     * @param   bool         $installed  Whether or not to include installed commits in response
+     * @param   string       $search     Filter by search string
+     * @param   string|null  $format     Format of response, or null for git's default
+     * @param   bool         $count      Return count of entires
      * @return  array
      **/
     public function log(
@@ -593,7 +593,7 @@ class Git
      *
      * @param   string  $cmd   Git command being called
      * @param   array   $args  Arguments for the specific command
-     * @return  string
+     * @return  string|false|null  The output, as shell_exec() returns it
      **/
     private function call($cmd, $arguments = [])
     {

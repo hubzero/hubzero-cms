@@ -155,10 +155,10 @@ class Xml
     /**
      * Set the last error
      *
-     * @param   integer  $id  Error number
+     * @param   integer|null  $id  Error number, or null to leave it unchanged
      * @return  integer
      */
-    public static function lastError($id)
+    public static function lastError($id = null)
     {
         static $last_error = 0;
 
