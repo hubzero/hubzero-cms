@@ -23,10 +23,10 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_media/admin/controllers/media.php:582`](../../../core/components/com_media/admin/controllers/media.php#L582) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:611`](../../../core/components/com_media/admin/controllers/media.php#L611) with `['com_media.folder', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:708`](../../../core/components/com_media/admin/controllers/media.php#L708) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:737`](../../../core/components/com_media/admin/controllers/media.php#L737) with `['com_media.folder', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:584`](../../../core/components/com_media/admin/controllers/media.php#L584) with `['com_media.file', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:613`](../../../core/components/com_media/admin/controllers/media.php#L613) with `['com_media.folder', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:710`](../../../core/components/com_media/admin/controllers/media.php#L710) with `['com_media.file', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:739`](../../../core/components/com_media/admin/controllers/media.php#L739) with `['com_media.folder', &$object_file]`
 
 No plugin in the source tree listens for this event.
 
@@ -47,9 +47,9 @@ Listeners:
 Fired from:
 
 - [`core/components/com_media/admin/controllers/media.php:155`](../../../core/components/com_media/admin/controllers/media.php#L155) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:223`](../../../core/components/com_media/admin/controllers/media.php#L223) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:341`](../../../core/components/com_media/admin/controllers/media.php#L341) with `['com_media.file', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:491`](../../../core/components/com_media/admin/controllers/media.php#L491) with `['com_media.file', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:225`](../../../core/components/com_media/admin/controllers/media.php#L225) with `['com_media.folder', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:343`](../../../core/components/com_media/admin/controllers/media.php#L343) with `['com_media.file', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:493`](../../../core/components/com_media/admin/controllers/media.php#L493) with `['com_media.file', &$object_file, true]`
 
 No plugin in the source tree listens for this event.
 
@@ -67,10 +67,10 @@ No plugin in the source tree listens for this event.
 
 Fired from:
 
-- [`core/components/com_media/admin/controllers/media.php:563`](../../../core/components/com_media/admin/controllers/media.php#L563) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:592`](../../../core/components/com_media/admin/controllers/media.php#L592) with `['com_media.folder', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:689`](../../../core/components/com_media/admin/controllers/media.php#L689) with `['com_media.file', &$object_file]`
-- [`core/components/com_media/admin/controllers/media.php:718`](../../../core/components/com_media/admin/controllers/media.php#L718) with `['com_media.folder', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:565`](../../../core/components/com_media/admin/controllers/media.php#L565) with `['com_media.file', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:594`](../../../core/components/com_media/admin/controllers/media.php#L594) with `['com_media.folder', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:691`](../../../core/components/com_media/admin/controllers/media.php#L691) with `['com_media.file', &$object_file]`
+- [`core/components/com_media/admin/controllers/media.php:720`](../../../core/components/com_media/admin/controllers/media.php#L720) with `['com_media.folder', &$object_file]`
 
 Listeners:
 
@@ -103,8 +103,8 @@ Fired from:
 - [`core/components/com_groups/site/controllers/groups.php:680`](../../../core/components/com_groups/site/controllers/groups.php#L680) with `[ 'com_groups.group.public_desc', &$g_public_desc, ($this->task == 'new'), ]`
 - [`core/components/com_kb/models/comment.php:379`](../../../core/components/com_kb/models/comment.php#L379) with `[ 'com_kb.comment.content', &$this, $this->isNew(), ]`
 - [`core/components/com_media/admin/controllers/media.php:140`](../../../core/components/com_media/admin/controllers/media.php#L140) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:205`](../../../core/components/com_media/admin/controllers/media.php#L205) with `['com_media.folder', &$object_file, true]`
-- [`core/components/com_media/admin/controllers/media.php:323`](../../../core/components/com_media/admin/controllers/media.php#L323) with `['com_media.file', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:207`](../../../core/components/com_media/admin/controllers/media.php#L207) with `['com_media.folder', &$object_file, true]`
+- [`core/components/com_media/admin/controllers/media.php:325`](../../../core/components/com_media/admin/controllers/media.php#L325) with `['com_media.file', &$object_file, true]`
 - and 4 more call sites
 
 Listeners:
