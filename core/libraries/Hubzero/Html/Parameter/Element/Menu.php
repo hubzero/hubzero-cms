@@ -37,6 +37,7 @@ class Menu extends Element
     public function fetchElement($name, $value, &$node, $control_name)
     {
         $menuTypes = MenusHelper::getMenuTypes();
+        $options   = [];
 
         foreach ($menuTypes as $menutype) {
             $options[] = Builder\Select::option($menutype, $menutype);

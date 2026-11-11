@@ -99,7 +99,7 @@ class Token
         if (count($keyArray) <> 2) {
             throw new RuntimeException(__CLASS__
                 . '::__construct(); config.email_token_encryption_info_v'
-                . $tokenVersion
+                . $this->currentVersion
                 . ' cannot be split');
         }
 

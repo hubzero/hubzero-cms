@@ -605,6 +605,9 @@ class Project
             $group = '0';
         }
 
+        // A number is the group's ID already; anything else is its name
+        $group_id = $group;
+
         if (!is_numeric($group)) {
             $query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->quote($group) . ";";
             $db->setQuery($query);
@@ -702,6 +705,9 @@ class Project
         if ($group == 'authenticated') {
             $group = '0';
         }
+
+        // A number is the group's ID already; anything else is its name
+        $group_id = $group;
 
         if (!is_numeric($group)) {
             $query = "SELECT gidNumber FROM `#__xgroups` WHERE cn=" . $db->quote($group) . ";";

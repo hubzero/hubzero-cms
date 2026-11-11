@@ -321,6 +321,9 @@ class Scaffolding extends Base implements CommandInterface
                                 case 'p':
                                     $value = Inflector::pluralize($v);
                                     break;
+                                    // Leave a qualifier we do not know in place
+                                default:
+                                    continue 2;
                             }
 
                             $contents = str_replace("%={$k}+{$match}=%", $value, $contents);
@@ -340,7 +343,7 @@ class Scaffolding extends Base implements CommandInterface
         // Now parse for nested templates
         preg_match_all('/\$\^[[:alpha:]\.]*\^\$/', $contents, $matches, PREG_SET_ORDER);
 
-        if (isset($matches) && count($matches) > 0) {
+        if (count($matches) > 0) {
             foreach ($matches as $match) {
                 foreach ($match as $key) {
                     // Get template contents

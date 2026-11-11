@@ -581,12 +581,12 @@ class Request
     {
         if (empty($method)) {
             $method = $this->get('method');
+        }
 
-            if ($method == 'GET') {
-                $qkey = 'query';
-            } else {
-                $qkey = 'postdata';
-            }
+        if ($method == 'GET') {
+            $qkey = 'query';
+        } else {
+            $qkey = 'postdata';
         }
         //$qkey = 'query';
         switch ($type) {

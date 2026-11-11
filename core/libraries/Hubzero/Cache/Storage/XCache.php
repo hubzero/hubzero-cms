@@ -163,7 +163,7 @@ class XCache extends None
         foreach ($allinfo['cache_list'] as $key) {
             $namearr = explode('-', $key['name']);
 
-            if ($namearr !== false && $namearr[0] == $secret && $namearr[1] == 'cache') {
+            if ($namearr !== false && $namearr[0] == $hash && $namearr[1] == 'cache') {
                 $group = $namearr[2];
 
                 if (!isset($data[$group])) {

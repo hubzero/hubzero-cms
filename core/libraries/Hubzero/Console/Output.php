@@ -170,6 +170,11 @@ class Output
      **/
     public function addTable($rows, $headers = false)
     {
+        // With no rows there is no table to draw
+        if (empty($rows)) {
+            return $this;
+        }
+
         // Figure out some items we need to know
         $maxLengths = [];
 

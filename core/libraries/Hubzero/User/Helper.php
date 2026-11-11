@@ -316,6 +316,9 @@ class Helper
             case 'invitees':
                 $query = $query4 . " ORDER BY description, cn";
                 break;
+            default:
+                // Not a list there is a query for
+                return [];
         }
 
         $db->setQuery($query);
@@ -401,6 +404,9 @@ class Helper
             case 'invitees':
                 $query = $query4 . " ORDER BY title, alias";
                 break;
+            default:
+                // Not a list there is a query for
+                return [];
         }
 
         $db->setQuery($query);
