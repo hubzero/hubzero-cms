@@ -123,7 +123,7 @@ class Link extends Relational
 
         foreach ($links as $link) {
             if (!$link['page_id']) {
-                $this->addError('Missing page ID for link "%s"', $link['link']);
+                $this->addError(sprintf('Missing page ID for link "%s"', $link['link']));
                 continue;
             }
             $row = self::blank();

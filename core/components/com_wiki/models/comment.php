@@ -301,7 +301,7 @@ class Comment extends Relational
             }
         }
 
-        return parent::delete();
+        return parent::destroy();
     }
 
     /**
