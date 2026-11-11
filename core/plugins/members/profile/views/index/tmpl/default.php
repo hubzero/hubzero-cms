@@ -244,7 +244,10 @@ $dataUrlUrl = Route::url('index.php?option=com_members&id=' . $this->profile->ge
                 data-section-registration="usageAgreement" data-section-profile="usageAgreement">
                 <h2><?php echo Lang::txt('PLG_MEMBERS_PROFILE_NEW_TERMS_OF_USE'); ?></h2>
                 <div id="usage-agreement-box">
-                    <?php /*<iframe id="usage-agreement" src="<?php echo Request::base(true); ?>/legal/terms?tmpl=component"></iframe>*/ ?>
+                    <?php
+                    /*<iframe id="usage-agreement"
+                        src="<?php echo Request::base(true); ?>/legal/terms?tmpl=component"></iframe>*/
+                    ?>
                     <div id="usage-agreement">
                         <?php
                         $db = App::get('db');

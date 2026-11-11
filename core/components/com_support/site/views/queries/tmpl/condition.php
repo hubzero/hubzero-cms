@@ -54,7 +54,11 @@ if ($this->condition->expressions) {
                 <option value="report"<?= $expression->fldval == 'report' ? ' selected="selected"' : '' ?>>
                     <?= Lang::txt('COM_SUPPORT_QUERY_SORT_REPORT') ?>
                 </option>
-                <?php /*<option value="resolved"<?php if ($expression->fldval == 'resolved') { echo ' selected="selected"'; } ?>><?php echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/ ?>
+                <?php
+                /*<option value="resolved"<?php if ($expression->fldval == 'resolved') {
+                    echo ' selected="selected"'; } ?>><?php
+                    echo Lang::txt('COM_SUPPORT_QUERY_SORT_RESOLUTION'); ?></option>*/
+                ?>
                 <option value="severity"<?= $expression->fldval == 'severity' ? ' selected="selected"' : '' ?>>
                     <?= Lang::txt('COM_SUPPORT_QUERY_SORT_SEVERITY') ?>
                 </option>

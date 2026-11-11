@@ -263,9 +263,18 @@ defined('_HZEXEC_') or die();
             <?php $k = 1;
             for ($i = 0, $n = count($job->applications); $i < $n; $i++) {
                 if ($job->applications[$i]->seeker && $job->applications[$i]->status != 2) {
-                    $applied = ($job->applications[$i]->applied && $job->applications[$i]->applied != '0000-00-00 00:00:00') ? Date::of($job->applications[$i]->applied)->toLocal(Lang::txt('DATE_FORMAT_HZ1')) : Lang::txt('N/A'); ?>
+                    $applied = (
+                        $job->applications[$i]->applied && $job->applications[$i]->applied != '0000-00-00 00:00:00'
+                    )
+                        ? Date::of($job->applications[$i]->applied)->toLocal(Lang::txt('DATE_FORMAT_HZ1'))
+                        : Lang::txt('N/A');
+                    $resumeUrl = Route::url('members/' . $job->applications[$i]->uid . "/resume");
+                    $seekerName = $this->escape($job->applications[$i]->seeker->name);
+                    $appliedOn = ' ' . Lang::txt('applied on') . ' ' . $applied;
+                    $countText = $k . ". "; ?>
                     <li class="applic">
-                    <span class="countc"><?php echo $k . ". " ?></span><a href="<?= Route::url('members/' . $job->applications[$i]->uid . "/resume") ?>"><?php echo $this->escape($job->applications[$i]->seeker->name) ?></a><?php echo ' ' . Lang::txt('applied on') . ' ' . $applied;
+                    <span class="countc"><?= $countText ?></span><a href="<?= $resumeUrl ?>"><?= $seekerName ?></a><?php
+                    echo $appliedOn;
                     if ($job->applications[$i]->cover) { ?>
                         <?php
                         $coverText = nl2br($this->escape(trim(stripslashes($job->applications[$i]->cover))));

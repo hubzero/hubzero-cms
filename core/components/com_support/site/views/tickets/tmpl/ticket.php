@@ -643,7 +643,15 @@ $categorySelected = function ($value) use ($view) {
                                         <select name="ticket[status]" id="status" class="form-control">
                                             <optgroup label="<?php echo Lang::txt('COM_SUPPORT_COMMENT_OPT_OPEN'); ?>">
                                                 <?php foreach (Status::allOpen()->rows() as $status) { ?>
-                                                    <option value="<?= $status->get('id') ?>"<?= $this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
+                                                    <?php
+                                                    $value = $status->get('id');
+                                                    $selected = $this->row->isOpen()
+                                                            && $this->row->get('status') == $value
+                                                        ? ' selected="selected"'
+                                                        : '';
+                                                    $title = $this->escape($status->get('title'));
+                                                    ?>
+                                                    <option value="<?= $value ?>"<?= $selected ?>><?= $title ?></option>
                                                 <?php } ?>
                                             </optgroup>
                                             <optgroup label="<?php echo Lang::txt('COM_SUPPORT_CLOSED'); ?>">
@@ -655,7 +663,15 @@ $categorySelected = function ($value) use ($view) {
                                                 ?>
                                                 <option value="0"<?= $selectedAttr ?>><?= $optionText ?></option>
                                                 <?php foreach (Status::allClosed()->rows() as $status) { ?>
-                                                    <option value="<?= $status->get('id') ?>"<?= !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
+                                                    <?php
+                                                    $value = $status->get('id');
+                                                    $selected = !$this->row->isOpen()
+                                                            && $this->row->get('status') == $value
+                                                        ? ' selected="selected"'
+                                                        : '';
+                                                    $title = $this->escape($status->get('title'));
+                                                    ?>
+                                                    <option value="<?= $value ?>"<?= $selected ?>><?= $title ?></option>
                                                 <?php } ?>
                                             </optgroup>
                                         </select>
@@ -719,7 +735,12 @@ $categorySelected = function ($value) use ($view) {
                                         <?php
                                         foreach ($this->lists['categories'] as $category) {
                                             ?>
-                                            <option value="<?= $this->escape($category->alias) ?>"<?= $categorySelected($category->alias) ?>><?= $this->escape(stripslashes($category->title)) ?></option>
+                                            <?php
+                                            $value = $this->escape($category->alias);
+                                            $selected = $categorySelected($category->alias);
+                                            $title = $this->escape(stripslashes($category->title));
+                                            ?>
+                                            <option value="<?= $value ?>"<?= $selected ?>><?= $title ?></option>
                                             <?php
                                         }
                                         ?>
