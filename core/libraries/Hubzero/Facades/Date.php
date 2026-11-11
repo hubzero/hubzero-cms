@@ -18,6 +18,7 @@ namespace Hubzero\Facades;
  * @method static string toRFC822(bool $local = false)
  * @method static int    toUnix()
  * @method static string relative(string $unit = null, string $time = null)
+ * @method static object modify(string $modifier)
  *
  * @codeCoverageIgnore
  */
@@ -44,13 +45,16 @@ class Date extends Facade
     }
 
     /**
-     * Get the root object behind the facade.
+     * Create a date
      *
+     * @param   mixed    $date       The date, or 'now'
+     * @param   mixed    $tz         Time zone, as a name, an offset or a DateTimeZone
+     * @param   boolean  $ignoreDst  Keep the zone's standard offset all year rather than converting to DST
      * @return  object
      */
-    public static function of($date = 'now', $tz = null)
+    public static function of($date = 'now', $tz = null, $ignoreDst = false)
     {
         $date = $date ?: 'now';
-        return new \Hubzero\Utility\Date($date, $tz);
+        return new \Hubzero\Utility\Date($date, $tz, $ignoreDst);
     }
 }
