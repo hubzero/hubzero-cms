@@ -1434,7 +1434,7 @@ class Publications extends SiteController
 
         // Is project registration restricted?
         if ($action == 'start' && !$project->access('create')) {
-            $this->buildPathway(null);
+            $this->buildPathway();
 
             $this->view = new \Hubzero\Component\View([
                 'name'   => 'error',
@@ -1630,7 +1630,7 @@ class Publications extends SiteController
 
         // Is project registration restricted?
         if (!$pid && !$project->access('create')) {
-            $this->buildPathway(null);
+            $this->buildPathway();
 
             $this->view
                 ->set('error', Lang::txt('COM_PUBLICATIONS_ERROR_NOT_FROM_CREATOR_GROUP'))

@@ -622,7 +622,7 @@ class Elements
         }
 
         // Get value.
-        $value = $this->get($node->name, $node->default, $group);
+        $value = $this->get($node->name, $node->default);
 
         return $element->render($node, $value, $control_name);
     }
@@ -659,7 +659,7 @@ class Elements
         }
 
         // Get value.
-        $value = $this->get($node->name, $node->default, $group);
+        $value = $this->get($node->name, $node->default);
 
         return $element->fetchOptions($name, $value, $node, $control_name);
     }

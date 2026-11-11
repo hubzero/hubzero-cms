@@ -99,7 +99,7 @@ class Watch extends Plugin
         $this->project = $project;
 
         // Item watch class
-        $this->watch = new \Hubzero\Item\Watch($this->database);
+        $this->watch = new \Hubzero\Item\Watch();
         $this->action = strtolower(Request::getWord('action', ''));
 
         switch ($this->action) {

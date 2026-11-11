@@ -82,7 +82,7 @@ class Todo extends Model
         }
 
         if (!isset($instances[$key])) {
-            $instances[$key] = new self($oid);
+            $instances[$key] = new self();
         }
 
         return $instances[$key];

@@ -36,6 +36,12 @@ use Hubzero\Facades\User;
  * @property-read  string                               $subdir  The confined directory being browsed
  * @property-read  array                                $area    The plugin's area name and title
  * @property-read  \Hubzero\Config\Registry             $params  The plugin's parameters
+ *
+ * And calls these on the plugin through __call():
+ *
+ * @method void  registerUpdate(string $type = '', string $file = '', bool $append = true, string $appendMessage = '')
+ * @method void  onAfterUpdate(object $model = null, array $changes = [])
+ * @method mixed getError(int $i = null, bool $toString = true)
  */
 class Connections
 {
