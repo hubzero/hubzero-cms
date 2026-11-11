@@ -9,11 +9,12 @@
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Hubzero\Facades\Component;
 
 // no direct access
 defined('_HZEXEC_') or die();
 
-Html::addIncludePath(PATH_COMPONENT . '/helpers');
+Html::addIncludePath(Component::path('com_content') . '/site/helpers');
 ?>
 <?php if ($this->params->get('show_page_heading')) : ?>
     <header id="content-header">

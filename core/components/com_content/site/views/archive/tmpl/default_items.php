@@ -10,11 +10,12 @@ use Hubzero\Facades\Date;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Hubzero\Facades\Component;
 
 // no direct access
 defined('_HZEXEC_') or die();
 
-Html::addIncludePath(PATH_COMPONENT . '/helpers');
+Html::addIncludePath(Component::path('com_content') . '/site/helpers');
 $params = &$this->params;
 ?>
 

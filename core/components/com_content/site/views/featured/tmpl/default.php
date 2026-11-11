@@ -8,11 +8,12 @@
 
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Component;
 
 // no direct access
 defined('_HZEXEC_') or die();
 
-Html::addIncludePath(PATH_COMPONENT . '/helpers');
+Html::addIncludePath(Component::path('com_content') . '/site/helpers');
 
 // If the page class is defined, add to class as suffix.
 // It will be a separate class if the user starts it with a space

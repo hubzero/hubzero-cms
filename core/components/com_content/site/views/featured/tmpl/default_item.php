@@ -11,6 +11,7 @@ use Hubzero\Facades\Date;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Route;
+use Components\Content\Site\Helpers\HtmlIcon;
 
 // no direct access
 defined('_HZEXEC_') or die();
@@ -50,17 +51,17 @@ $canEdit = $this->item->params->get('access-edit');
     <ul class="actions">
         <?php if ($params->get('show_print_icon')) : ?>
             <li class="print-icon">
-                <?php echo Html::icon('printPopup', $this->item, $params); ?>
+                <?php echo HtmlIcon::printPopup($this->item, $params); ?>
             </li>
         <?php endif; ?>
         <?php if ($params->get('show_email_icon')) : ?>
             <li class="email-icon">
-                <?php echo Html::icon('email', $this->item, $params); ?>
+                <?php echo HtmlIcon::email($this->item, $params); ?>
             </li>
         <?php endif; ?>
         <?php if ($canEdit) : ?>
             <li class="edit-icon">
-                <?php echo Html::icon('edit', $this->item, $params); ?>
+                <?php echo HtmlIcon::edit($this->item, $params); ?>
             </li>
         <?php endif; ?>
     </ul>

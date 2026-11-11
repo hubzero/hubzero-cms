@@ -12,11 +12,13 @@ use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
 use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
+use Components\Content\Site\Helpers\HtmlIcon;
+use Hubzero\Facades\Component;
 
 // no direct access
 defined('_HZEXEC_') or die();
 
-Html::addIncludePath(PATH_COMPONENT . '/helpers/html');
+Html::addIncludePath(Component::path('com_content') . '/site/helpers/html');
 Html::behavior('tooltip');
 Html::behavior('framework');
 
@@ -152,7 +154,7 @@ $listDirn  = $this->escape($this->filters['direction']);
                             <?php if ($article->params->get('access-edit')) : ?>
                             <ul class="actions">
                                 <li class="edit-icon">
-                                    <?php echo Html::icon('edit', $article, $params); ?>
+                                    <?php echo HtmlIcon::edit($article, $params); ?>
                                 </li>
                             </ul>
                             <?php endif; ?>
@@ -221,7 +223,7 @@ $listDirn  = $this->escape($this->filters['direction']);
 
     <!-- <?php // REMOVE BECAUSE it is currently not working?>
     <?php if ($this->category->getParams()->get('access-create')) : ?>
-        <?php echo Html::icon('create', $this->category, $this->category->params); ?>
+        <?php echo HtmlIcon::create($this->category, $this->category->params); ?>
     <?php endif; ?> -->
 
     <?php // Add pagination links?>
