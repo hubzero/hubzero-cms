@@ -225,6 +225,7 @@ abstract class Modules
     public static function templates($clientId = 0, $state = '')
     {
         $templates = self::getTemplates($clientId, $state);
+        $options = [];
         foreach ($templates as $template) {
             $options[] = Html::select('option', $template->element, $template->name);
         }
