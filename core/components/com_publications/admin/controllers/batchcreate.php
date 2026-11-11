@@ -112,7 +112,12 @@ class Batchcreate extends AdminController
      */
     public function validateTask()
     {
-        if (!isset($this->reader) || !$this->reader->isValid()) {
+        if (!isset($this->reader)) {
+            $this->setError(Lang::txt('COM_PUBLICATIONS_BATCH_ERROR'));
+            return;
+        }
+
+        if (!$this->reader->isValid()) {
             $this->setError(Lang::txt('COM_PUBLICATIONS_BATCH_ERROR'));
             $this->reader->close();
             return;
