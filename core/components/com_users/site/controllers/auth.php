@@ -27,6 +27,10 @@ use Hubzero\Facades\Session;
 
 /**
  * Login Controller
+ *
+ * Set on the controller as it runs:
+ *
+ * @property  string  $return  Where to go after signing in, set by displayTask() for the plugins' display()
  */
 class Auth extends SiteController
 {
@@ -236,6 +240,7 @@ class Auth extends SiteController
         $plugins        = Plugin::byType('authentication');
         $authenticators = [];
         $remember_me_default = 0;
+        $site_display        = null;
 
         foreach ($plugins as $p) {
             $client  = App::get('client')->alias . '_login';
@@ -257,7 +262,7 @@ class Auth extends SiteController
                 $multiAuth = true;
             } elseif ($p->name == 'hubzero') {
                 $remember_me_default = $pparams->get('remember_me_default', 0);
-                $this->site_display  = $pparams->get('display_name', Config::get('sitename'));
+                $site_display        = $pparams->get('display_name', Config::get('sitename'));
                 $local               = true;
             }
         }
@@ -314,6 +319,7 @@ class Auth extends SiteController
             ->set('params', $params)
             ->set('returnQueryString', $returnQueryString)
             ->set('local', $local)
+            ->set('site_display', $site_display)
             ->setName('login')
             ->setLayout('default')
             ->addTemplatePath($this->getTemplatePath())
