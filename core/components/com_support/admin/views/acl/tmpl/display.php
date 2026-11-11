@@ -137,7 +137,8 @@ $db = App::get('db');
 $k = 0;
 $i = 0;
 foreach ($this->rows as $row) {
-    $sql = "SELECT m.*, r.model AS aro_model, r.foreign_key AS aro_foreign_key, r.alias AS aro_alias, c.model AS aco_model, c.foreign_key AS aco_foreign_key
+    $sql = "SELECT m.*, r.model AS aro_model, r.foreign_key AS aro_foreign_key, r.alias AS aro_alias, "
+        . "c.model AS aco_model, c.foreign_key AS aco_foreign_key
 		FROM `#__support_acl_aros_acos` AS m
 		LEFT JOIN `#__support_acl_aros` AS r ON m.aro_id=r.id
 		LEFT JOIN `#__support_acl_acos` AS c ON m.aco_id=c.id

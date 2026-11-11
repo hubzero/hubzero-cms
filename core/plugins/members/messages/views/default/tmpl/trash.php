@@ -94,7 +94,8 @@ $this
             <?php if ($this->rows) : ?>
                 <?php foreach ($this->rows as $row) : ?>
                     <?php
-                        $check = "<input class=\"chkbox\" type=\"checkbox\" id=\"msg{$row->id}\" value=\"{$row->id}\" name=\"mid[]\" />";
+                        $check = "<input class=\"chkbox\" type=\"checkbox\" id=\"msg{$row->id}\" "
+                            . "value=\"{$row->id}\" name=\"mid[]\" />";
 
                         //get the message status
                         $status = ($row->whenseen && $row->whenseen != '0000-00-00 00:00:00')

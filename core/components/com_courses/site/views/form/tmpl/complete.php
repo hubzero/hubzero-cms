@@ -76,14 +76,15 @@ if ($this->resp->getStartTime()) {
 								}
 							',
                             );
-                            echo '<input name="question-' . $qid . '" id="question-' . $qid . '-' . $aidx . '" value="' . $ans['id'] . '" ' . (
-                                (isset($_POST['question-' . $qid]) && $_POST['question-' . $qid] == $ans['id'])
-                                    || (!isset($_POST['question-' . $qid])
-                                        && isset($progress[$qid])
-                                        && $progress[$qid]['answer_id'] == $ans['id'])
-                                    ? ' checked="checked" '
-                                    : ''
-                            ) . 'class="placeholder" type="radio" />';
+                            echo '<input name="question-' . $qid . '" id="question-' . $qid . '-' . $aidx . '" value="'
+                                . $ans['id'] . '" ' . (
+                                    (isset($_POST['question-' . $qid]) && $_POST['question-' . $qid] == $ans['id'])
+                                        || (!isset($_POST['question-' . $qid])
+                                            && isset($progress[$qid])
+                                            && $progress[$qid]['answer_id'] == $ans['id'])
+                                        ? ' checked="checked" '
+                                        : ''
+                                ) . 'class="placeholder" type="radio" />';
                             if (isset($incomplete[$qid])) :
                                 $view->css(
                                     '

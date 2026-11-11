@@ -510,7 +510,8 @@ $option = 'com_groups';
                                     $html .= '<span class="membership-term">';
 
                                     if ($expires) {
-                                        $soon = (strtotime($expires . ' UTC') - time()) < ($this->expiration_warn_days * 86400);
+                                        $soon = (strtotime($expires . ' UTC') - time())
+                                            < ($this->expiration_warn_days * 86400);
 
                                         $html .= '<span class="term-expires' . ($soon ? ' term-expires-soon' : '')
                                             . '">';

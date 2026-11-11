@@ -242,12 +242,19 @@ $show_weight = array_key_exists('show_weight', $_GET);
                         <?php endif; ?>
                         <?php
                         $fc_child_flag = 'plgsearch' . $def['plugin_name'] . '::FIRST_CLASS_CHILDREN';
-                        if ((!defined($fc_child_flag) || constant($fc_child_flag)) && array_key_exists('sections', $def) && count($def['sections']) > 1) :
+                        if (
+                            (!defined($fc_child_flag) || constant($fc_child_flag))
+                            && array_key_exists('sections', $def)
+                            && count($def['sections']) > 1
+                        ) :
                             ?>
                             <ul>
                             <?php foreach ($def['sections'] as $section_key => $sdef) : ?>
                                 <?php
-                                if (!$this->plugin || !$this->section || $cat != $this->plugin || $this->section != $section_key) :
+                                if (
+                                    !$this->plugin || !$this->section || $cat != $this->plugin
+                                    || $this->section != $section_key
+                                ) :
                                     ?>
                                     <li><a href="<?php echo Route::url('index.php?option=com_search&terms=' . $cat . ':' . $section_key . ':' . $this->url_terms) ?>"><?= $this->escape($sdef['name']) ?> <span class="item-count"><?= $sdef['count'] ?></span></a></li>
                                 <?php else : ?>

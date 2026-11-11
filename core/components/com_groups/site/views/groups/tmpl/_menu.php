@@ -48,11 +48,14 @@ defined('_HZEXEC_') or die();
                 ($access == 'registered' && User::isGuest())
                 || ($access == 'members' && !in_array(User::get("id"), $this->group->get('members')))
             ) {
-                $item  = "<li class=\"protected group-overview-tab\"><span data-icon=\"&#x{$section['icon']};\" aria-disabled=\"true\" class=\"disabled overview\">Overview<span class=\"sr-only\"> - " . Lang::txt('COM_GROUPS_MENU_RESTRICTED') . "</span></span>";
+                $item  = "<li class=\"protected group-overview-tab\"><span data-icon=\"&#x{$section['icon']};\" "
+                    . "aria-disabled=\"true\" class=\"disabled overview\">Overview<span class=\"sr-only\"> - "
+                    . Lang::txt('COM_GROUPS_MENU_RESTRICTED') . "</span></span>";
             } else {
                 $item  = "<li class=\"{$liClass} group-overview-tab\">";
                 $_groupTitle = $this->escape($this->group->get('description', $this->group->get('cn')));
-                $item .= "<a class=\"overview\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent} aria-label=\"Overview — {$_groupTitle}\">Overview</a>";
+                $item .= "<a class=\"overview\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent} "
+                    . "aria-label=\"Overview — {$_groupTitle}\">Overview</a>";
             }
 
             // Append the pages under Overview.
@@ -102,7 +105,8 @@ defined('_HZEXEC_') or die();
                 //create menu item
                 $item  = "<li class=\"{$liClass} group-{$class}-tab {$cls}\">";
                 $_groupTitle = $this->escape($this->group->get('description', $this->group->get('cn')));
-                $item .= "<a class=\"{$class}\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent} aria-label=\"{$title} — {$_groupTitle}\">{$title}</a>";
+                $item .= "<a class=\"{$class}\" data-icon=\"&#x{$section['icon']};\" href=\"{$link}\"{$ariaCurrent} "
+                    . "aria-label=\"{$title} — {$_groupTitle}\">{$title}</a>";
                 $item .= '<span class="meta">';
                 if ($meta_count) {
                     $item .= '<span class="count">' . $meta_count . '</span>';

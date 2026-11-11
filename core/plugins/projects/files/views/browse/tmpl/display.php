@@ -292,7 +292,9 @@ if (isset($this->params['versionTracking']) && $this->params['versionTracking'] 
                 // [a11y] Ensure table headers have data cells when empty
             if (count($this->items) == 0 && !$this->subdir) {
                 // Count actual columns: Name+Type+Size+Modified+Options=5, plus conditionals
-                $cols = 5 + ($this->model->access('content') ? 1 : 0) + ($this->repo->getAdapterName() == 'git' ? 1 : 0) + ($this->publishing ? 1 : 0);
+                $cols = 5 + ($this->model->access('content') ? 1 : 0)
+                    + ($this->repo->getAdapterName() == 'git' ? 1 : 0)
+                    + ($this->publishing ? 1 : 0);
                 ?>
                 <tr><td colspan="<?= $cols ?>"><?= Lang::txt('PLG_PROJECTS_FILES_PROJECT_HAS_NO_FILES') ?></td></tr>
             <?php }

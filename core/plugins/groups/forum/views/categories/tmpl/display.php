@@ -31,7 +31,12 @@ $sortDir = function ($filters, $current, $dir = 'DESC') {
 };
 
 // prepare the URL parameters for the delete URLS to retain the sorting
-$sortingValues = (object) ['sortdir' => $this->filters['sort_Dir'], 'sortby' => $this->filters['sortby'], 'start' => $this->filters['start'], 'limit' => $this->filters['limit']];
+$sortingValues = (object) [
+    'sortdir' => $this->filters['sort_Dir'],
+    'sortby' => $this->filters['sortby'],
+    'start' => $this->filters['start'],
+    'limit' => $this->filters['limit'],
+];
 $sortingQueryString = '';
 if (!empty($sortingValues->sortby) || !empty($sortingValues->start || !empty($sortingValues->limit))) {
     $sortingQueryString = '?' . http_build_query($sortingValues);
