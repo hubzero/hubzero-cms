@@ -159,7 +159,10 @@ class Resourcetype extends Select
         /*$html[] = '
         <script id="plg_resources_coins" type="text/x-handlebars-template">
             <div class="input-wrap ">
-                <label id="fields_params_type_coins_-lbl" for="fields_params_type_coins_" class="hasTip" title="<div class=&quot;tip-title&quot;>PLG_RESOURCES_COINS_PAYLOAD_LABEL</div><div class=&quot;tip-text&quot;>PLG_RESOURCES_COINS_PAYLOAD_DESC</div>">PLG_RESOURCES_COINS_PAYLOAD_LABEL</label><br>
+                <label id="fields_params_type_coins_-lbl" for="fields_params_type_coins_" class="hasTip"
+                    title="<div class=&quot;tip-title&quot;>PLG_RESOURCES_COINS_PAYLOAD_LABEL</div><div
+                    class=&quot;tip-text&quot;>PLG_RESOURCES_COINS_PAYLOAD_DESC</div>"
+                    >PLG_RESOURCES_COINS_PAYLOAD_LABEL</label><br>
                 <select id="fields_params_type_coins_" name="fields[params][type][{{index}}][coin]">
                 </select>
                 <select id="fields_params_type_coins_" name="fields[params][type][{{index}}][field]">';

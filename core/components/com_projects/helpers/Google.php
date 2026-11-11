@@ -926,7 +926,8 @@ class Google extends Obj
 
         $parameters = [
             'q' => $q,//,
-            //'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels,fileSize,thumbnailLink,modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
+            //'fields' => 'items(id,title,mimeType,downloadUrl,md5Checksum,labels,fileSize,thumbnailLink,'
+            //    . 'modifiedDate,parents/id,originalFilename,lastModifyingUserName,ownerNames)'
         ];
 
         // Get a list of files in remote folder

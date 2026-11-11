@@ -669,9 +669,9 @@ class Validate
                 case 'us':
                 case 'ca':
                 case 'can': // deprecated three-letter-code
+                // 'all' includes all NANPA members. See
+                // http://en.wikipedia.org/wiki/North_American_Numbering_Plan#List_of_NANPA_countries_and_territories
                 case 'all':
-                    // includes all NANPA members.
-                    // see http://en.wikipedia.org/wiki/North_American_Numbering_Plan#List_of_NANPA_countries_and_territories
                     $regex = '/^(?:(?:\+?1\s*(?:[.-]\s*)?)?';
 
                     // Area code 555, X11 is not allowed.
