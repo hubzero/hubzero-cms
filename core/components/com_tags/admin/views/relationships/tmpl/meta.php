@@ -9,6 +9,7 @@
 use Hubzero\Facades\App;
 use Hubzero\Facades\Html;
 use Hubzero\Facades\Lang;
+use Hubzero\Facades\Request;
 use Hubzero\Facades\Route;
 use Hubzero\Facades\Toolbar;
 
@@ -190,7 +191,10 @@ $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . 
                 <?php
             endforeach;
             $fill_new = !isset($added_new_focus_area);
-            $type_ids = $fill_new && isset($_POST['types-new']) ? array_flip($_POST['types-new']) : [];
+            $type_ids = [];
+            if ($fill_new) {
+                $type_ids = array_flip(array_filter(Request::getArray('types-new', [], 'post'), 'is_scalar'));
+            }
             ?>
             </div><!-- / #fas -->
             <p>
