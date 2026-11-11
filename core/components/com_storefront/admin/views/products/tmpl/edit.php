@@ -38,25 +38,27 @@ if (empty($this->meta->qtyTxt)) {
     $this->meta->qtyTxt = '';
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$typeSelected = function ($value) {
-    if ($this->row->getType() == $value) {
+$typeSelected = function ($value) use ($view) {
+    if ($view->row->getType() == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$allowMultipleSelected = function ($value) {
-    if ($this->row->getAllowMultiple() == $value) {
+$allowMultipleSelected = function ($value) use ($view) {
+    if ($view->row->getAllowMultiple() == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$activeStatusSelected = function ($value) {
-    if ($this->row->getActiveStatus() == $value) {
+$activeStatusSelected = function ($value) use ($view) {
+    if ($view->row->getActiveStatus() == $value) {
         return ' selected="selected"';
     }
 

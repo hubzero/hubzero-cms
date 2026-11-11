@@ -41,9 +41,11 @@ $formUrl = Route::url(
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 $required = Lang::txt('JOPTION_REQUIRED');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->row->get('state') == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->row->get('state') == $value) {
         return ' selected="selected"';
     }
 

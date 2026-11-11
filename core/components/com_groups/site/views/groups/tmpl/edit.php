@@ -61,9 +61,11 @@ else :
         $title = Lang::txt('COM_GROUPS_ACTION_BACK');
 endif;
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$discoverabilityChecked = function ($value) {
-    if ($this->group->get('discoverability') == $value) {
+$discoverabilityChecked = function ($value) use ($view) {
+    if ($view->group->get('discoverability') == $value) {
         return ' checked="checked"';
     }
 

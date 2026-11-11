@@ -37,9 +37,11 @@ Toolbar::help('wishes');
 
 $this->css();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$statusSelected = function ($value) {
-    if ($this->filters['status'] == $value) {
+$statusSelected = function ($value) use ($view) {
+    if ($view->filters['status'] == $value) {
         return ' selected="selected"';
     }
 

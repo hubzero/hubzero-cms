@@ -37,9 +37,11 @@ $this->css('
 }
 ');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$openSelected = function ($value) {
-    if ($this->filters['open'] == $value) {
+$openSelected = function ($value) use ($view) {
+    if ($view->filters['open'] == $value) {
         return ' selected="selected"';
     }
 

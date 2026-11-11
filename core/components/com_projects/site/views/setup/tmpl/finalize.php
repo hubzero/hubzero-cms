@@ -31,41 +31,43 @@ $privacylink = $this->config->get('privacylink', '/legal/privacy');
 $hipaa       = $this->config->get('HIPAAlink', 'http://www.hhs.gov/ocr/privacy/');
 $ferpa       = $this->config->get('FERPAlink', 'http://www2.ed.gov/policy/gen/reg/ferpa/index.html');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$restrictedDataChecked = function ($value) {
-    if ($this->model->params->get('restricted_data') == $value) {
+$restrictedDataChecked = function ($value) use ($view) {
+    if ($view->model->params->get('restricted_data') == $value) {
         return 'checked="checked"';
     }
 
     return '';
 };
 
-$exportDataChecked = function ($value) {
-    if ($this->model->params->get('export_data') == $value) {
+$exportDataChecked = function ($value) use ($view) {
+    if ($view->model->params->get('export_data') == $value) {
         return 'checked="checked"';
     }
 
     return '';
 };
 
-$irbDataChecked = function ($value) {
-    if ($this->model->params->get('irb_data') == $value) {
+$irbDataChecked = function ($value) use ($view) {
+    if ($view->model->params->get('irb_data') == $value) {
         return 'checked="checked"';
     }
 
     return '';
 };
 
-$hipaaDataChecked = function ($value) {
-    if ($this->model->params->get('hipaa_data') == $value) {
+$hipaaDataChecked = function ($value) use ($view) {
+    if ($view->model->params->get('hipaa_data') == $value) {
         return 'checked="checked"';
     }
 
     return '';
 };
 
-$ferpaDataChecked = function ($value) {
-    if ($this->model->params->get('ferpa_data') == $value) {
+$ferpaDataChecked = function ($value) use ($view) {
+    if ($view->model->params->get('ferpa_data') == $value) {
         return 'checked="checked"';
     }
 

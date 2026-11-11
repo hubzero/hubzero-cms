@@ -37,9 +37,11 @@ foreach ($this->fields as $field) {
     }
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$sortDirSelected = function ($value) {
-    if ($this->filters['sort_Dir'] == $value) {
+$sortDirSelected = function ($value) use ($view) {
+    if ($view->filters['sort_Dir'] == $value) {
         return ' selected="selected"';
     }
 

@@ -48,17 +48,19 @@ if (substr($base, -13) == 'administrator') {
     $base = substr($base, 0, strlen($base) - 13);
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$filterbySelected = function ($value) {
-    if ($this->filters['filterby'] == $value) {
+$filterbySelected = function ($value) use ($view) {
+    if ($view->filters['filterby'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$quotaSelected = function ($value) {
-    if ($this->filters['quota'] == $value) {
+$quotaSelected = function ($value) use ($view) {
+    if ($view->filters['quota'] == $value) {
         return ' selected="selected"';
     }
 

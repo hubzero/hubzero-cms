@@ -36,17 +36,19 @@ $this->js();
 $formAction = Route::url('index.php?option=' . $this->option . '&controller=' . $this->controller);
 $invalidMsg = $this->escape(Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'));
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->row->get('state') == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->row->get('state') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$publicSelected = function ($value) {
-    if ($this->row->get('public') == $value) {
+$publicSelected = function ($value) use ($view) {
+    if ($view->row->get('public') == $value) {
         return ' selected="selected"';
     }
 

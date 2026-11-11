@@ -28,9 +28,11 @@ $sortbyDir = $this->filters['sortdir'] == 'ASC' ? 'DESC' : 'ASC';
 // Get count
 $total = $this->model->entries('count', $this->filters);
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$filterbySelected = function ($value) {
-    if ($this->filters['filterby'] == $value) {
+$filterbySelected = function ($value) use ($view) {
+    if ($view->filters['filterby'] == $value) {
         return ' selected="selected"';
     }
 

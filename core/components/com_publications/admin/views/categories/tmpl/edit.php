@@ -46,9 +46,11 @@ $params = $this->row->params;
 
 Html::behavior('framework', true);
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$dcTypeSelected = function ($value) {
-    if ($this->escape($this->row->dc_type) == $value) {
+$dcTypeSelected = function ($value) use ($view) {
+    if ($view->escape($view->row->dc_type) == $value) {
         return 'selected="selected"';
     }
 

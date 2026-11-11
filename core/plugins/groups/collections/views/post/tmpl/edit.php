@@ -41,9 +41,11 @@ if (!$dir) {
 
 $jbase = rtrim(Request::base(true), '/');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$idSelected = function ($value) {
-    if ($this->collection->get('id') == $value) {
+$idSelected = function ($value) use ($view) {
+    if ($view->collection->get('id') == $value) {
         return ' selected="selected"';
     }
 

@@ -98,9 +98,11 @@ if ($sq->conditions)
 */
 $cc = [];
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$categorySelected = function ($value) {
-    if ($this->row->get('category') == $value) {
+$categorySelected = function ($value) use ($view) {
+    if ($view->row->get('category') == $value) {
         return ' selected="selected"';
     }
 

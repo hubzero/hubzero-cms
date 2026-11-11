@@ -46,17 +46,19 @@ if ($this->entry->get('publish_down') && $this->entry->get('publish_down') == '0
     $this->entry->set('publish_down', '');
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$allowCommentsChecked = function ($value) {
-    if ($this->entry->get('allow_comments') == $value) {
+$allowCommentsChecked = function ($value) use ($view) {
+    if ($view->entry->get('allow_comments') == $value) {
         return ' checked="checked"';
     }
 
     return '';
 };
 
-$accessSelected = function ($value) {
-    if ($this->entry->get('access') == $value) {
+$accessSelected = function ($value) use ($view) {
+    if ($view->entry->get('access') == $value) {
         return ' selected="selected"';
     }
 

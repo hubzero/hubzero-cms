@@ -30,9 +30,11 @@ if ($canDo->get('core.delete')) {
 Toolbar::spacer();
 Toolbar::help('pages');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$activeSelected = function ($value) {
-    if ($this->filters['active'] == $value) {
+$activeSelected = function ($value) use ($view) {
+    if ($view->filters['active'] == $value) {
         return ' selected="selected"';
     }
 

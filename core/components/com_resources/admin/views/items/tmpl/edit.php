@@ -59,25 +59,27 @@ if ($this->row->id) {
 $time = $this->row->attribs->get('timeof', '');
 $time = strtotime($time) === false ? null : $time;
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$publishedSelected = function ($value) {
-    if ($this->row->published == $value) {
+$publishedSelected = function ($value) use ($view) {
+    if ($view->row->published == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$linkActionSelected = function ($value) {
-    if ($this->params->get('link_action') == $value) {
+$linkActionSelected = function ($value) use ($view) {
+    if ($view->params->get('link_action') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$restrictDirectAccessSelected = function ($value) {
-    if ($this->params->get('restrict_direct_access') == $value) {
+$restrictDirectAccessSelected = function ($value) use ($view) {
+    if ($view->params->get('restrict_direct_access') == $value) {
         return ' selected="selected"';
     }
 

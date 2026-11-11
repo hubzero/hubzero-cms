@@ -22,9 +22,11 @@ Html::behavior('framework');
 
 $this->view('_submenu')->display();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->filters['state'] == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->filters['state'] == $value) {
         return ' selected="selected"';
     }
 

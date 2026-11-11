@@ -43,41 +43,43 @@ Toolbar::help('category');
 
 $this->css();
 
+$template = $this;
+
 // The attribute that marks the current value in the form fields below
-$checkoutNotesRequiredSelected = function ($value) {
-    if ($this->row->getCheckoutNotesRequired() == $value) {
+$checkoutNotesRequiredSelected = function ($value) use ($template) {
+    if ($template->row->getCheckoutNotesRequired() == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$allowMultipleSelected = function ($value) {
-    if ($this->row->getAllowMultiple() == $value) {
+$allowMultipleSelected = function ($value) use ($template) {
+    if ($template->row->getAllowMultiple() == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$trackInventorySelected = function ($value) {
-    if ($this->row->getTrackInventory() == $value) {
+$trackInventorySelected = function ($value) use ($template) {
+    if ($template->row->getTrackInventory() == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$activeStatusSelected = function ($value) {
-    if ($this->row->getActiveStatus() == $value) {
+$activeStatusSelected = function ($value) use ($template) {
+    if ($template->row->getActiveStatus() == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$restrictedSelected = function ($value) {
-    if ($this->row->getRestricted() == $value) {
+$restrictedSelected = function ($value) use ($template) {
+    if ($template->row->getRestricted() == $value) {
         return ' selected="selected"';
     }
 

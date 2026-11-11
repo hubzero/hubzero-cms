@@ -29,9 +29,11 @@ Toolbar::help('downloads');
 
 $this->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$reportNotesSelected = function ($value) {
-    if ($this->filters['report-notes'] === $value) {
+$reportNotesSelected = function ($value) use ($view) {
+    if ($view->filters['report-notes'] === $value) {
         return ' selected="selected"';
     }
 

@@ -83,9 +83,11 @@ $grantedAttrs  = implode(' ', array_filter([
     $grantedLocked ? 'disabled="disabled"' : '',
 ]));
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$categoryChecked = function ($value) {
-    if ($this->wishlist->get('category') == $value) {
+$categoryChecked = function ($value) use ($view) {
+    if ($view->wishlist->get('category') == $value) {
         return 'checked="checked"';
     }
 

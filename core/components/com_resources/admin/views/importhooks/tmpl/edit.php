@@ -25,9 +25,11 @@ Toolbar::title(Lang::txt($title), 'import');
 Toolbar::save();
 Toolbar::cancel();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$typeSelected = function ($value) {
-    if ($this->hook->get('type') == $value) {
+$typeSelected = function ($value) use ($view) {
+    if ($view->hook->get('type') == $value) {
         return 'selected="selected"';
     }
 

@@ -20,17 +20,19 @@ Toolbar::addNew();
 Toolbar::editList();
 Toolbar::custom('restoreDefault', 'restore', 'restore', 'COM_TOOLS_USER_PREFS_DEFAULT');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$searchFieldSelected = function ($value) {
-    if ($this->filters['search_field'] == $value) {
+$searchFieldSelected = function ($value) use ($view) {
+    if ($view->filters['search_field'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$classAliasSelected = function ($value) {
-    if ($this->filters['class_alias'] == $value) {
+$classAliasSelected = function ($value) use ($view) {
+    if ($view->filters['class_alias'] == $value) {
         return ' selected="selected"';
     }
 

@@ -44,9 +44,11 @@ if (substr($this->profile->get('email', ''), -8) == '@invalid') {
     $incomplete = true;
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$approvedSelected = function ($value) {
-    if ($this->profile->get('approved') == $value) {
+$approvedSelected = function ($value) use ($view) {
+    if ($view->profile->get('approved') == $value) {
         return ' selected="selected"';
     }
 

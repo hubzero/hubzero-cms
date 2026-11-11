@@ -16,9 +16,11 @@ use Hubzero\Facades\User;
 // No direct access
 defined('_HZEXEC_') or die();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$accessSelected = function ($value) {
-    if ($this->model->get('access') == $value) {
+$accessSelected = function ($value) use ($view) {
+    if ($view->model->get('access') == $value) {
         return ' selected="selected"';
     }
 

@@ -55,33 +55,35 @@ foreach ($this->page->authors()->rows() as $auth) {
 }
 $authors = implode(', ', $authors);
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$parentSelected = function ($value) {
-    if ($this->page->get('parent') == $value) {
+$parentSelected = function ($value) use ($view) {
+    if ($view->page->get('parent') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$hideAuthorsChecked = function ($value) {
-    if ($this->page->param('hide_authors') == $value) {
+$hideAuthorsChecked = function ($value) use ($view) {
+    if ($view->page->param('hide_authors') == $value) {
         return ' checked="checked"';
     }
 
     return '';
 };
 
-$allowChangesChecked = function ($value) {
-    if ($this->page->param('allow_changes') == $value) {
+$allowChangesChecked = function ($value) use ($view) {
+    if ($view->page->param('allow_changes') == $value) {
         return ' checked="checked"';
     }
 
     return '';
 };
 
-$allowCommentsChecked = function ($value) {
-    if ($this->page->param('allow_comments') == $value) {
+$allowCommentsChecked = function ($value) use ($view) {
+    if ($view->page->param('allow_comments') == $value) {
         return ' checked="checked"';
     }
 

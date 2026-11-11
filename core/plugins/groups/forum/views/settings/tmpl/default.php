@@ -19,9 +19,11 @@ $this
      ->css()
      ->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$threadingSelected = function ($value) {
-    if ($this->config->get('threading', 'list') == $value) {
+$threadingSelected = function ($value) use ($view) {
+    if ($view->config->get('threading', 'list') == $value) {
         return ' selected="selected"';
     }
 

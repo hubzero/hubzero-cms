@@ -40,17 +40,19 @@ Html::behavior('keepalive');
 
 $this->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$approvedSelected = function ($value) {
-    if ($this->params->get('approved', 1) == $value) {
+$approvedSelected = function ($value) use ($view) {
+    if ($view->params->get('approved', 1) == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$emailnewSelected = function ($value) {
-    if ($this->params->get('emailnew', 0) == $value) {
+$emailnewSelected = function ($value) use ($view) {
+    if ($view->params->get('emailnew', 0) == $value) {
         return ' selected="selected"';
     }
 

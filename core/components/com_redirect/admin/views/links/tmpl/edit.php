@@ -87,9 +87,11 @@ $sel302 = (($hasNewUrl && !$statusCode) || $statusCode == 302)
     ? ' selected="selected"'
     : '';
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$publishedSelected = function ($value) {
-    if ($this->row->published == $value) {
+$publishedSelected = function ($value) use ($view) {
+    if ($view->row->published == $value) {
         return ' selected="selected"';
     }
 

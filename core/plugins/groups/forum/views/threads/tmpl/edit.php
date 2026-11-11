@@ -31,9 +31,11 @@ $this
      ->css()
      ->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$aliasSelected = function ($value) {
-    if ($this->category->get('alias') == $value) {
+$aliasSelected = function ($value) use ($view) {
+    if ($view->category->get('alias') == $value) {
         return ' selected="selected"';
     }
 

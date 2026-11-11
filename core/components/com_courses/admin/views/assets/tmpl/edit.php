@@ -39,25 +39,27 @@ if ($this->row->get('id')) {
     $id = 'tmp' . time() . rand(0, 10000);
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$typeSelected = function ($value) {
-    if ($this->row->get('type') == $value) {
+$typeSelected = function ($value) use ($view) {
+    if ($view->row->get('type') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$subtypeSelected = function ($value) {
-    if ($this->row->get('subtype') == $value) {
+$subtypeSelected = function ($value) use ($view) {
+    if ($view->row->get('subtype') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$stateSelected = function ($value) {
-    if ($this->row->get('state') == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->row->get('state') == $value) {
         return ' selected="selected"';
     }
 

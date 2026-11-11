@@ -39,9 +39,11 @@ $this
     ->js('tagLogListItem')
     ->js('tagLogsFetcher');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$adminSelected = function ($value) {
-    if ($this->tag->get('admin') == $value) {
+$adminSelected = function ($value) use ($view) {
+    if ($view->tag->get('admin') == $value) {
         return 'selected="selected"';
     }
 

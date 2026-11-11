@@ -26,9 +26,11 @@ $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this
 
 $searchCategory = $this->pub->config('search_category', 1);
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$categoryChecked = function ($value) {
-    if ($this->pub->category == $value) {
+$categoryChecked = function ($value) use ($view) {
+    if ($view->pub->category == $value) {
         return 'checked="checked"';
     }
 

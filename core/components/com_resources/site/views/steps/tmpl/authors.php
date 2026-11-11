@@ -16,9 +16,11 @@ $this
      ->css('create.css')
      ->js('create.js');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$accessSelected = function ($value) {
-    if ($this->row->access == $value) {
+$accessSelected = function ($value) use ($view) {
+    if ($view->row->access == $value) {
         return ' selected="selected"';
     }
 

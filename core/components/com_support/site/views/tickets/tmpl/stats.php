@@ -78,9 +78,11 @@ foreach ($severities as $severity) {
     }
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$groupSelected = function ($value) {
-    if ($this->group == $value) {
+$groupSelected = function ($value) use ($view) {
+    if ($view->group == $value) {
         return ' selected="selected"';
     }
 

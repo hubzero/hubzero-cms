@@ -27,9 +27,11 @@ $endPath = ' &raquo; <span class="subheader"><a href="' . $this->url . '/?action
     . '</span></a></span> &raquo; <span class="subheader">' . Lang::txt('PLG_PROJECTS_FILES_SHOW_HISTORY_DIFF')
     . '</span>';
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$modeChecked = function ($value) {
-    if ($this->params['mode'] == $value) {
+$modeChecked = function ($value) use ($view) {
+    if ($view->params['mode'] == $value) {
         return 'checked="checked"';
     }
 

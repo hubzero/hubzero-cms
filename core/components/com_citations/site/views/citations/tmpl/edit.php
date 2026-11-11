@@ -37,9 +37,11 @@ if (isset($_SERVER['HTTP_REFERER']) && filter_var($_SERVER['HTTP_REFERER'], FILT
 
 $pid = Request::getInt('publication', 0);
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$formatSelected = function ($value) {
-    if ($this->row->format == $value) {
+$formatSelected = function ($value) use ($view) {
+    if ($view->row->format == $value) {
         return 'selected="selected"';
     }
 

@@ -43,17 +43,19 @@ $this
      ->css('pipeline.css')
      ->js('pipeline.js');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$publishTypeChecked = function ($value) {
-    if ($this->defaults['publishType'] == $value) {
+$publishTypeChecked = function ($value) use ($view) {
+    if ($view->defaults['publishType'] == $value) {
         return 'checked="checked"';
     }
 
     return '';
 };
 
-$repohostChecked = function ($value) {
-    if ($this->defaults['repohost'] == $value) {
+$repohostChecked = function ($value) use ($view) {
+    if ($view->defaults['repohost'] == $value) {
         return 'checked="checked"';
     }
 

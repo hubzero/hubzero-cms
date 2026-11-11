@@ -35,9 +35,11 @@ Toolbar::help('downloads');
 
 $this->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$skuRequestedSelected = function ($value) {
-    if ($this->filters['skuRequested'] == $value) {
+$skuRequestedSelected = function ($value) use ($view) {
+    if ($view->filters['skuRequested'] == $value) {
         return ' selected="selected"';
     }
 

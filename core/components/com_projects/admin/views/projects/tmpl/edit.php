@@ -92,17 +92,19 @@ if ($this->model->groupOwner()) {
     $groups[] = $this->model->groupOwner();
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$layoutSelected = function ($value) {
-    if ($this->params->get('layout', 'standard') == $value) {
+$layoutSelected = function ($value) use ($view) {
+    if ($view->params->get('layout', 'standard') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$paramsLayoutSelected = function ($value) {
-    if ($this->params->get('layout') == $value) {
+$paramsLayoutSelected = function ($value) use ($view) {
+    if ($view->params->get('layout') == $value) {
         return ' selected="selected"';
     }
 

@@ -14,17 +14,19 @@ defined('_HZEXEC_') or die();
 
 $base = $this->base;
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$recvEmailOptionValueChecked = function ($value) {
-    if ($this->recvEmailOptionValue == $value) {
+$recvEmailOptionValueChecked = function ($value) use ($view) {
+    if ($view->recvEmailOptionValue == $value) {
         return ' checked="checked"';
     }
 
     return '';
 };
 
-$recvEmailOptionValueSelected = function ($value) {
-    if ($this->recvEmailOptionValue == $value) {
+$recvEmailOptionValueSelected = function ($value) use ($view) {
+    if ($view->recvEmailOptionValue == $value) {
         return ' selected="selected"';
     }
 

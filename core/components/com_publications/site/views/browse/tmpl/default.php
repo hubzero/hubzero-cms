@@ -19,9 +19,11 @@ $this
      ->css()
      ->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$categorySelected = function ($value) {
-    if ($this->filters['category'] == $value) {
+$categorySelected = function ($value) use ($view) {
+    if ($view->filters['category'] == $value) {
         return ' selected="selected"';
     }
 

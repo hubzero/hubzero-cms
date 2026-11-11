@@ -27,9 +27,11 @@ if ($canDo->get('core.delete')) {
     Toolbar::deleteList();
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$componentSelected = function ($value) {
-    if ($this->filters['component'] == $value) {
+$componentSelected = function ($value) use ($view) {
+    if ($view->filters['component'] == $value) {
         return ' selected="selected"';
     }
 

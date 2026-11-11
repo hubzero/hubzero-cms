@@ -52,9 +52,11 @@ Html::behavior('formvalidation');
 
 $this->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$publishedSelected = function ($value) {
-    if ($this->item->published == $value) {
+$publishedSelected = function ($value) use ($view) {
+    if ($view->item->published == $value) {
         return ' selected="selected"';
     }
 

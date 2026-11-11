@@ -14,9 +14,11 @@ defined('_HZEXEC_') or die();
 
 $this->css();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$sectionIdSelected = function ($value) {
-    if ($this->category->get('section_id') == $value) {
+$sectionIdSelected = function ($value) use ($view) {
+    if ($view->category->get('section_id') == $value) {
         return ' selected="selected"';
     }
 

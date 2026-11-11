@@ -35,9 +35,11 @@ $this->css();
 
 $params = new \Hubzero\Config\Registry($this->row->get('params'));
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->row->state == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->row->state == $value) {
         return ' selected="selected"';
     }
 

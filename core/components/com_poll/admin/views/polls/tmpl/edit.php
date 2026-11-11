@@ -64,9 +64,11 @@ $accessOptions = Html::select(
 );
 $optionLabel = Lang::txt('COM_POLL_FIELD_OPTION');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->poll->get('state') == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->poll->get('state') == $value) {
         return ' selected="selected"';
     }
 

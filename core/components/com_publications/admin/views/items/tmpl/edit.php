@@ -84,25 +84,27 @@ $panels = [
     'submitter' => $typeParams->get('show_submitter', 0),
 ];
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->model->get('state') == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->model->get('state') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$unpublishedReasonSelected = function ($value) {
-    if ($this->model->get('unpublished_reason') == $value) {
+$unpublishedReasonSelected = function ($value) use ($view) {
+    if ($view->model->get('unpublished_reason') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$featuredSelected = function ($value) {
-    if ($this->model->get('featured') == $value) {
+$featuredSelected = function ($value) use ($view) {
+    if ($view->model->get('featured') == $value) {
         return ' selected="selected"';
     }
 

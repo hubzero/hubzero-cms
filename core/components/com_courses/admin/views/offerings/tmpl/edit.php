@@ -43,9 +43,11 @@ $this
     ->js();
 $this->css();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->row->get('state') == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->row->get('state') == $value) {
         return ' selected="selected"';
     }
 

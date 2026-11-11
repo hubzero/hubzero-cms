@@ -39,17 +39,19 @@ if ($canDo->get('core.delete')) {
 Toolbar::spacer();
 Toolbar::help('collections');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->filters['state'] == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->filters['state'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$accessSelected = function ($value) {
-    if ($this->filters['access'] == $value) {
+$accessSelected = function ($value) use ($view) {
+    if ($view->filters['access'] == $value) {
         return ' selected="selected"';
     }
 

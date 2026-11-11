@@ -31,9 +31,11 @@ Html::behavior('keepalive');
 
 $this->js();
 
+$template = $this;
+
 // The attribute that marks the current value in the form fields below
-$statusSelected = function ($value) {
-    if ($this->row->status == $value) {
+$statusSelected = function ($value) use ($template) {
+    if ($template->row->status == $value) {
         return ' selected="selected"';
     }
 

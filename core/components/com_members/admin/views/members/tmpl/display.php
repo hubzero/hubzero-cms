@@ -73,9 +73,11 @@ $this
     ->css()
     ->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$activationSelected = function ($value) {
-    if ($this->filters['activation'] == $value) {
+$activationSelected = function ($value) use ($view) {
+    if ($view->filters['activation'] == $value) {
         return ' selected="selected"';
     }
 

@@ -45,25 +45,27 @@ $query = $db
 $db->setQuery($query->toString());
 $access_levels = $db->loadAssocList();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$scopeinfoSelected = function ($value) {
-    if ($this->filters['scopeinfo'] == $value) {
+$scopeinfoSelected = function ($value) use ($view) {
+    if ($view->filters['scopeinfo'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$stateSelected = function ($value) {
-    if ($this->filters['state'] == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->filters['state'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$filterStateSelected = function ($value) {
-    if ($this->filters['state'] === $value) {
+$filterStateSelected = function ($value) use ($view) {
+    if ($view->filters['state'] === $value) {
         return ' selected="selected"';
     }
 

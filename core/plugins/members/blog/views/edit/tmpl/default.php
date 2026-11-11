@@ -31,9 +31,11 @@ $this
      ->js('jquery.timepicker', 'system')
      ->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$accessSelected = function ($value) {
-    if ($this->entry->get('access') == $value) {
+$accessSelected = function ($value) use ($view) {
+    if ($view->entry->get('access') == $value) {
         return ' selected="selected"';
     }
 

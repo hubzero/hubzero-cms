@@ -19,17 +19,19 @@ $this
      ->css()
      ->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$feedsEnabledSelected = function ($value) {
-    if ($this->config->get('feeds_enabled', 1) == $value) {
+$feedsEnabledSelected = function ($value) use ($view) {
+    if ($view->config->get('feeds_enabled', 1) == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$feedEntriesSelected = function ($value) {
-    if ($this->config->get('feed_entries', 'partial') == $value) {
+$feedEntriesSelected = function ($value) use ($view) {
+    if ($view->config->get('feed_entries', 'partial') == $value) {
         return ' selected="selected"';
     }
 

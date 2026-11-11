@@ -42,65 +42,67 @@ $this->css('.none {
 	display: block;
 }');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$eventSelected = function ($value) {
-    if ($this->row->get('event') == $value) {
+$eventSelected = function ($value) use ($view) {
+    if ($view->row->get('event') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$recurrenceSelected = function ($value) {
-    if ($this->row->get('recurrence') == $value) {
+$recurrenceSelected = function ($value) use ($view) {
+    if ($view->row->get('recurrence') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$minuteSelected = function ($value) {
-    if ($this->row->get('minute') == $value) {
+$minuteSelected = function ($value) use ($view) {
+    if ($view->row->get('minute') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$hourSelected = function ($value) {
-    if ($this->row->get('hour') == $value) {
+$hourSelected = function ($value) use ($view) {
+    if ($view->row->get('hour') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$daySelected = function ($value) {
-    if ($this->row->get('day') == $value) {
+$daySelected = function ($value) use ($view) {
+    if ($view->row->get('day') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$monthSelected = function ($value) {
-    if ($this->row->get('month') == $value) {
+$monthSelected = function ($value) use ($view) {
+    if ($view->row->get('month') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$dayofweekSelected = function ($value) {
-    if ($this->row->get('dayofweek') == $value) {
+$dayofweekSelected = function ($value) use ($view) {
+    if ($view->row->get('dayofweek') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$stateSelected = function ($value) {
-    if ($this->row->get('state') == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->row->get('state') == $value) {
         return ' selected="selected"';
     }
 

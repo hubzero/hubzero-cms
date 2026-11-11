@@ -45,41 +45,43 @@ $query = $db
 $db->setQuery($query->toString());
 $access_levels = $db->loadAssocList();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$scopeinfoSelected = function ($value) {
-    if ($this->filters['scopeinfo'] == $value) {
+$scopeinfoSelected = function ($value) use ($view) {
+    if ($view->filters['scopeinfo'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$sectionIdSelected = function ($value) {
-    if ($this->filters['section_id'] == $value) {
+$sectionIdSelected = function ($value) use ($view) {
+    if ($view->filters['section_id'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$categoryIdSelected = function ($value) {
-    if ($this->filters['category_id'] == $value) {
+$categoryIdSelected = function ($value) use ($view) {
+    if ($view->filters['category_id'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$stateSelected = function ($value) {
-    if ($this->filters['state'] == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->filters['state'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$filterStateSelected = function ($value) {
-    if ($this->filters['state'] === $value) {
+$filterStateSelected = function ($value) use ($view) {
+    if ($view->filters['state'] === $value) {
         return ' selected="selected"';
     }
 

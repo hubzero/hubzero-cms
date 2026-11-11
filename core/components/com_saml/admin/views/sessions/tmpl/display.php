@@ -22,17 +22,19 @@ if (User::authorise('core.delete', $this->option)) {
     Toolbar::deleteList('COM_SAML_CONFIRM_DELETE_SESSIONS');
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$spSelected = function ($value) {
-    if ($this->filters['sp'] == $value) {
+$spSelected = function ($value) use ($view) {
+    if ($view->filters['sp'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$stateSelected = function ($value) {
-    if ($this->filters['state'] === $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->filters['state'] === $value) {
         return ' selected="selected"';
     }
 

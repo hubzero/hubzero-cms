@@ -29,17 +29,19 @@ $this
      ->css('pipeline.css')
      ->js('pipeline.js');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->status['state'] == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->status['state'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$prioritySelected = function ($value) {
-    if ($this->status['priority'] == $value) {
+$prioritySelected = function ($value) use ($view) {
+    if ($view->status['priority'] == $value) {
         return ' selected="selected"';
     }
 

@@ -34,9 +34,11 @@ if ($canDo->get('core.delete')) {
 Toolbar::spacer();
 Toolbar::help('pages');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$namespaceSelected = function ($value) {
-    if ($this->filters['namespace'] == $value) {
+$namespaceSelected = function ($value) use ($view) {
+    if ($view->filters['namespace'] == $value) {
         return ' selected="selected"';
     }
 

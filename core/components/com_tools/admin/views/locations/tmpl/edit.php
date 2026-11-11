@@ -282,9 +282,11 @@ $countries = [
     ['code' => 'ZW', 'name' => 'Zimbabwe', 'continent' => 'AF'],
 ];
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$continentSelected = function ($value) {
-    if ($this->row->get('continent') == $value) {
+$continentSelected = function ($value) use ($view) {
+    if ($view->row->get('continent') == $value) {
         return ' selected="selected"';
     }
 

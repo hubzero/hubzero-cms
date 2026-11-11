@@ -61,41 +61,43 @@ Html::behavior('keepalive');
 
 $this->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$typeSelected = function ($value) {
-    if ($this->group->type == $value) {
+$typeSelected = function ($value) use ($view) {
+    if ($view->group->type == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$publishedSelected = function ($value) {
-    if ($this->group->published == $value) {
+$publishedSelected = function ($value) use ($view) {
+    if ($view->group->published == $value) {
         return 'selected="selected"';
     }
 
     return '';
 };
 
-$approvedSelected = function ($value) {
-    if ($this->group->approved == $value) {
+$approvedSelected = function ($value) use ($view) {
+    if ($view->group->approved == $value) {
         return 'selected="selected"';
     }
 
     return '';
 };
 
-$joinPolicyChecked = function ($value) {
-    if ($this->group->join_policy == $value) {
+$joinPolicyChecked = function ($value) use ($view) {
+    if ($view->group->join_policy == $value) {
         return ' checked="checked"';
     }
 
     return '';
 };
 
-$discoverabilityChecked = function ($value) {
-    if ($this->group->discoverability == $value) {
+$discoverabilityChecked = function ($value) use ($view) {
+    if ($view->group->discoverability == $value) {
         return ' checked="checked"';
     }
 

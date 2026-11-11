@@ -36,9 +36,11 @@ if ($canDo->get('core.delete')) {
 Toolbar::spacer();
 Toolbar::help('entries');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$bySelected = function ($value) {
-    if ($this->filters['by'] == $value) {
+$bySelected = function ($value) use ($view) {
+    if ($view->filters['by'] == $value) {
         return ' selected="selected"';
     }
 

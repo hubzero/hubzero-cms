@@ -37,9 +37,11 @@ $this
     ->js('jquery.fileuploader.js', 'system')
     ->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$activeStatusSelected = function ($value) {
-    if ($this->row->getActiveStatus() == $value) {
+$activeStatusSelected = function ($value) use ($view) {
+    if ($view->row->getActiveStatus() == $value) {
         return ' selected="selected"';
     }
 

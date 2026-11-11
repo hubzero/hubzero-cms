@@ -32,17 +32,19 @@ Html::behavior('keepalive');
 
 $this->js('activity.js');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->row->get('state') == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->row->get('state') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$starredSelected = function ($value) {
-    if ($this->row->get('starred') == $value) {
+$starredSelected = function ($value) use ($view) {
+    if ($view->row->get('starred') == $value) {
         return ' selected="selected"';
     }
 

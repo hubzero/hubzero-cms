@@ -29,9 +29,11 @@ if (!($this->post instanceof \Components\Forum\Models\Post)) {
     $this->post = new \Components\Forum\Models\Post($this->post);
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$anonymousChecked = function ($value) {
-    if ($this->post->get('anonymous') == $value) {
+$anonymousChecked = function ($value) use ($view) {
+    if ($view->post->get('anonymous') == $value) {
         return ' checked="checked"';
     }
 

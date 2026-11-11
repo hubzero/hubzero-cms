@@ -29,9 +29,11 @@ Toolbar::title(Lang::txt($title), 'import');
 Toolbar::save();
 Toolbar::cancel();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$titlematchSelected = function ($value) {
-    if ($this->params->get('titlematch', 0) == $value) {
+$titlematchSelected = function ($value) use ($view) {
+    if ($view->params->get('titlematch', 0) == $value) {
         return 'selected="selected"';
     }
 

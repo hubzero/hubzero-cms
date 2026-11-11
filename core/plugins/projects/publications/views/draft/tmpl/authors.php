@@ -28,9 +28,11 @@ $elName = "authorList";
 // Get curator status
 $curatorStatus = $this->pub->_curationModel->getCurationStatus($this->pub, $this->step, 0, 'author');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$idSelected = function ($value) {
-    if ($this->pub->groupOwner('id') == $value) {
+$idSelected = function ($value) use ($view) {
+    if ($view->pub->groupOwner('id') == $value) {
         return 'selected="selected"';
     }
 

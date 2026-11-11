@@ -48,9 +48,11 @@ if ($canDo->get('core.delete')) {
 
 Html::behavior('tooltip');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$redeemedSelected = function ($value) {
-    if ($this->filters['redeemed'] == $value) {
+$redeemedSelected = function ($value) use ($view) {
+    if ($view->filters['redeemed'] == $value) {
         return ' selected="selected"';
     }
 

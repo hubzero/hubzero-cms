@@ -45,25 +45,27 @@ $nameidSources = [
     'id'       => Lang::txt('COM_SAML_NAMEID_SOURCE_ID'),
 ];
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$nameidSourceSelected = function ($value) {
-    if ($this->row->get('nameid_source', 'username') == $value) {
+$nameidSourceSelected = function ($value) use ($view) {
+    if ($view->row->get('nameid_source', 'username') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$nameidFormatSelected = function ($value) {
-    if ($this->row->get('nameid_format', 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified') == $value) {
+$nameidFormatSelected = function ($value) use ($view) {
+    if ($view->row->get('nameid_format', 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$stateSelected = function ($value) {
-    if ($this->row->get('state', 1) == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->row->get('state', 1) == $value) {
         return ' selected="selected"';
     }
 

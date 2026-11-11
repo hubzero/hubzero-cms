@@ -35,25 +35,27 @@ $formAction = Route::url(
 $searchVal = $this->escape($this->filters['search']);
 $searchPlaceholder = Lang::txt('COM_PROJECTS_FILTER_SEARCH_DESC');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$actionSelected = function ($value) {
-    if ($this->filters['action'] == $value) {
+$actionSelected = function ($value) use ($view) {
+    if ($view->filters['action'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$filterSelected = function ($value) {
-    if ($this->filters['filter'] == $value) {
+$filterSelected = function ($value) use ($view) {
+    if ($view->filters['filter'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$stateSelected = function ($value) {
-    if ($this->filters['state'] === $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->filters['state'] === $value) {
         return ' selected="selected"';
     }
 

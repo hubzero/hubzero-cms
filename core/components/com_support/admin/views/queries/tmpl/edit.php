@@ -35,17 +35,19 @@ if (!$tmpl) {
     Toolbar::cancel();
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$iscoreSelected = function ($value) {
-    if ($this->row->iscore == $value) {
+$iscoreSelected = function ($value) use ($view) {
+    if ($view->row->iscore == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$sortSelected = function ($value) {
-    if ($this->row->sort == $value) {
+$sortSelected = function ($value) use ($view) {
+    if ($view->row->sort == $value) {
         return ' selected="selected"';
     }
 

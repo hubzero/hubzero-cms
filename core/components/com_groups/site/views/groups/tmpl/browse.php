@@ -18,17 +18,19 @@ $this
      ->css()
      ->js('browse');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$publishedSelected = function ($value) {
-    if ($this->filters['published'] == $value) {
+$publishedSelected = function ($value) use ($view) {
+    if ($view->filters['published'] == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$policySelected = function ($value) {
-    if ($this->filters['policy'] == $value) {
+$policySelected = function ($value) use ($view) {
+    if ($view->filters['policy'] == $value) {
         return ' selected="selected"';
     }
 

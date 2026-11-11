@@ -30,9 +30,11 @@ Html::behavior('keepalive');
 
 $this->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$eventSelected = function ($value) {
-    if ($this->hook->get('event') == $value) {
+$eventSelected = function ($value) use ($view) {
+    if ($view->hook->get('event') == $value) {
         return 'selected="selected"';
     }
 

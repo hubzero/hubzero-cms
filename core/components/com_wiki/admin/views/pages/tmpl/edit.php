@@ -33,41 +33,43 @@ Html::behavior('keepalive');
 
 $this->js();
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$modeSelected = function ($value) {
-    if ($this->row->param('mode') == $value) {
+$modeSelected = function ($value) use ($view) {
+    if ($view->row->param('mode') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$hideAuthorsChecked = function ($value) {
-    if ($this->row->param('hide_authors') == $value) {
+$hideAuthorsChecked = function ($value) use ($view) {
+    if ($view->row->param('hide_authors') == $value) {
         return ' checked="checked"';
     }
 
     return '';
 };
 
-$allowChangesChecked = function ($value) {
-    if ($this->row->param('allow_changes') == $value) {
+$allowChangesChecked = function ($value) use ($view) {
+    if ($view->row->param('allow_changes') == $value) {
         return ' checked="checked"';
     }
 
     return '';
 };
 
-$allowCommentsChecked = function ($value) {
-    if ($this->row->param('allow_comments') == $value) {
+$allowCommentsChecked = function ($value) use ($view) {
+    if ($view->row->param('allow_comments') == $value) {
         return ' checked="checked"';
     }
 
     return '';
 };
 
-$stateSelected = function ($value) {
-    if ($this->row->get('state') == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->row->get('state') == $value) {
         return ' selected="selected"';
     }
 

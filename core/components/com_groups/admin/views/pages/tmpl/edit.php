@@ -37,9 +37,11 @@ Toolbar::help('page');
 // include modal for raw version links
 Html::behavior('modal', 'a.version', ['handler' => 'iframe', 'fullScreen' => true]);
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$privacySelected = function ($value) {
-    if ($this->page->get('privacy') == $value) {
+$privacySelected = function ($value) use ($view) {
+    if ($view->page->get('privacy') == $value) {
         return 'selected="selected"';
     }
 

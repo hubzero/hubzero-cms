@@ -62,9 +62,11 @@ $titleValue = $this->escape(
 $homeDesc = Lang::txt('COM_TEMPLATES_FIELD_HOME_SITE_DESC');
 $homeLabel = Lang::txt('COM_TEMPLATES_FIELD_HOME_LABEL');
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$homeSelected = function ($value) {
-    if ($this->item->home == $value) {
+$homeSelected = function ($value) use ($view) {
+    if ($view->item->home == $value) {
         return ' selected="selected"';
     }
 

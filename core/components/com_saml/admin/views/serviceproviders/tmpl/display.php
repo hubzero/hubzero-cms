@@ -41,9 +41,11 @@ if (User::authorise('core.delete', $this->option)) {
 $now = time();
 $certWarn = 30 * 24 * 60 * 60;
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->filters['state'] === $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->filters['state'] === $value) {
         return ' selected="selected"';
     }
 

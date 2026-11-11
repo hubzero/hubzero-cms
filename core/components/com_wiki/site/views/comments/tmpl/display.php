@@ -20,9 +20,11 @@ if (!$this->sub) {
          ->js();
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$ratingChecked = function ($value) {
-    if ($this->mycomment->get('rating') == $value) {
+$ratingChecked = function ($value) use ($view) {
+    if ($view->mycomment->get('rating') == $value) {
         return ' checked="checked"';
     }
 

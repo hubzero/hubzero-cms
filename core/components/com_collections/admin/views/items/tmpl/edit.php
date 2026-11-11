@@ -57,17 +57,19 @@ $validationMsg = $this->escape(
     Lang::txt('JGLOBAL_VALIDATION_FORM_FAILED'),
 );
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$stateSelected = function ($value) {
-    if ($this->row->get('state') == $value) {
+$stateSelected = function ($value) use ($view) {
+    if ($view->row->get('state') == $value) {
         return ' selected="selected"';
     }
 
     return '';
 };
 
-$accessSelected = function ($value) {
-    if ($this->row->get('access') == $value) {
+$accessSelected = function ($value) use ($view) {
+    if ($view->row->get('access') == $value) {
         return ' selected="selected"';
     }
 

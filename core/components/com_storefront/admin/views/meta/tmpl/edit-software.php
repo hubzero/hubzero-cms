@@ -41,9 +41,11 @@ if (empty($this->meta->globalDownloadLimit)) {
     $this->meta->globalDownloadLimit = '';
 }
 
+$view = $this;
+
 // The attribute that marks the current value in the form fields below
-$eulaRequiredSelected = function ($value) {
-    if ($this->meta->eulaRequired == $value) {
+$eulaRequiredSelected = function ($value) use ($view) {
+    if ($view->meta->eulaRequired == $value) {
         return ' selected="selected"';
     }
 
