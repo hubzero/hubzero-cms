@@ -8,6 +8,8 @@
 
 namespace Components\Cart\Models;
 
+use Hubzero\Facades\Lang;
+
 /**
  * User shopping cart
  */
@@ -30,7 +32,7 @@ class UserCart extends Cart
 
         $this->crtId = $crtId;
         if (!$this->exists()) {
-            throw new \Exception(COM_CART_NO_CART_FOUND);
+            throw new \Exception(Lang::txt('COM_CART_NO_CART_FOUND'));
         }
     }
 
