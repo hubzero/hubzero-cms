@@ -146,7 +146,12 @@ foreach ($this->getErrors() as $error) {
                                     if ($plugin->events) {
                                         foreach ($plugin->events as $event) {
                                             ?>
-                                            <option value="<?= $plugin->plugin ?>::<?= $event['name'] ?>"<?= $eventSelected($event['name']) ?>><?= $this->escape($event['label']) ?></option>
+                                            <?php
+                                            $fieldValue = $plugin->plugin . '::' . $event['name'];
+                                            $selected = $eventSelected($event['name']);
+                                            $optionText = $this->escape($event['label']);
+                                            ?>
+                                            <option value="<?= $fieldValue ?>"<?= $selected ?>><?= $optionText ?></option>
                                             <?php
                                         }
                                     }

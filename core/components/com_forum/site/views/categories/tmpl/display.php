@@ -311,8 +311,10 @@ $this->category->set('section_alias', $this->filters['section']);
                                                 ) { ?>
                                                     <?php
                                                     $actionUrl = Route::url($row->link('delete'));
+                                                    $confirm = Lang::txt('COM_FORUM_CONFIRM_DELETE');
+                                                    $label = Lang::txt('JACTION_DELETE');
                                                     ?>
-                                                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= Lang::txt('COM_FORUM_CONFIRM_DELETE') ?>"><?= Lang::txt('JACTION_DELETE') ?></button>
+                                                    <button type="submit" form="hz-post-action" formaction="<?= $actionUrl ?>" class="icon-delete delete" title="<?= Lang::txt('JACTION_DELETE') ?>" data-txt-confirm="<?= $confirm ?>"><?= $label ?></button>
                                                 <?php } ?>
                                             </td>
                                         <?php } ?>

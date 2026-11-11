@@ -124,7 +124,14 @@ $sortDirSelected = function ($value) use ($view) {
                                             id="filter-value-<?= $this->escape($field->get('name')) ?>">
                                             <option value="">- All -</option>
                                             <?php foreach ($field->options as $option) { ?>
-                                                <option value="<?= $this->escape($option->get('value')) ?>"<?= in_array($option->get('value'), $value) ? ' selected="selected"' : '' ?>><?= $this->escape($option->get('label')) ?></option>
+                                                <?php
+                                                $fieldValue = $this->escape($option->get('value'));
+                                                $selected = in_array($option->get('value'), $value)
+                                                    ? ' selected="selected"'
+                                                    : '';
+                                                $text = $this->escape($option->get('label'));
+                                                ?>
+                                                <option value="<?= $fieldValue ?>"<?= $selected ?>><?= $text ?></option>
                                             <?php } ?>
                                         </select>
                                     </label>

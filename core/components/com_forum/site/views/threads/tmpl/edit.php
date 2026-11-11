@@ -130,7 +130,12 @@ $aliasSelected = function ($value) use ($view) {
                                     if ($categories->count() > 0) { ?>
                                         <optgroup label="<?= $this->escape(stripslashes($section->get('title'))) ?>">
                                             <?php foreach ($categories as $category) { ?>
-                                                <option value="<?= $category->get('id') ?>"<?= $aliasSelected($category->get('alias')) ?>><?= $this->escape(stripslashes($category->get('title'))) ?></option>
+                                                <?php
+                                                $fieldValue = $category->get('id');
+                                                $selected = $aliasSelected($category->get('alias'));
+                                                $text = $this->escape(stripslashes($category->get('title')));
+                                                ?>
+                                                <option value="<?= $fieldValue ?>"<?= $selected ?>><?= $text ?></option>
                                             <?php } ?>
                                         </optgroup>
                                     <?php } ?>

@@ -762,7 +762,15 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                     <select name="ticket[status]" id="ticket-field-status">
                                         <optgroup label="<?= Lang::txt('COM_SUPPORT_TICKET_COMMENT_OPT_OPEN') ?>">
                                             <?php foreach (Status::allOpen()->rows() as $status) { ?>
-                                                <option value="<?= $status->get('id') ?>"<?= $this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
+                                                <?php
+                                                $value = $status->get('id');
+                                                $selected = $this->row->isOpen()
+                                                    && $this->row->get('status') == $status->get('id')
+                                                    ? ' selected="selected"'
+                                                    : '';
+                                                $title = $this->escape($status->get('title'));
+                                                ?>
+                                                <option value="<?= $value ?>"<?= $selected ?>><?= $title ?></option>
                                             <?php } ?>
                                         </optgroup>
                                         <optgroup
@@ -775,7 +783,15 @@ $actionUrl = Route::url('index.php?option=' . $this->option . '&controller=' . $
                                             ?>
                                             <option value="0"<?= $selectedAttr ?>><?= $optionText ?></option>
                                             <?php foreach (Status::allClosed()->rows() as $status) { ?>
-                                                <option value="<?= $status->get('id') ?>"<?= !$this->row->isOpen() && $this->row->get('status') == $status->get('id') ? ' selected="selected"' : '' ?>><?= $this->escape($status->get('title')) ?></option>
+                                                <?php
+                                                $value = $status->get('id');
+                                                $selected = !$this->row->isOpen()
+                                                    && $this->row->get('status') == $status->get('id')
+                                                    ? ' selected="selected"'
+                                                    : '';
+                                                $title = $this->escape($status->get('title'));
+                                                ?>
+                                                <option value="<?= $value ?>"<?= $selected ?>><?= $title ?></option>
                                             <?php } ?>
                                         </optgroup>
                                     </select>
